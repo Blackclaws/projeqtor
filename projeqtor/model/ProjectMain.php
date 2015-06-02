@@ -433,7 +433,7 @@ class ProjectMain extends SqlElement {
     	global $flashReport, $print;
     	if (! $print and $this->id and isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
     		$user=getSessionUser();
-    		$crit=array('idProfile'=>$user->idProfile, 'idReport'=>51);
+    		$crit=array('idProfile'=>$user->getProfile($this->id), 'idReport'=>51);
     		$hr=SqlElement::getSingleSqlElementFromCriteria('HabilitationReport', $crit);
     		if ($hr and $hr->allowAccess=='1') {
 	    		$top=30;$left=10;

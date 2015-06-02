@@ -191,7 +191,6 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
-debugLog("PlanningElement ".$plan->refType." #".$plan->refId." : ".$plan->refName);
       if (! $plan->id) {
         continue;
       }
@@ -289,7 +288,6 @@ debugLog("PlanningElement ".$plan->refType." #".$plan->refId." : ".$plan->refNam
           $startFraction=$startPossibleFraction;
         }
       }
-debugLog("   startPlan=$startPlan, startFraction=$startFraction");
       if ($plan->refType=='Milestone') {
         if ($profile!="FIXED") {
           if ($strictDependency or $startFraction==1) {
@@ -413,7 +411,6 @@ debugLog("   startPlan=$startPlan, startFraction=$startFraction");
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
-debugLog("   Assignment Resource #".$ass->idResource." : ".$ass->leftWork."d");          
           if ($profile=='GROUP' and $withProjectRepartition) {
           	foreach ($listAss as $asstmp) {
 	            foreach ($listTopProjects as $idProject) {
@@ -557,7 +554,6 @@ debugLog("   Assignment Resource #".$ass->idResource." : ".$ass->leftWork."d");
                   }
                 }
                 $value=($value>$left)?$left:$value;
-debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$startFraction");          
                 if ($currentDate==$startPlan and $value>((1-$startFraction)*$capacity)) {
                   $value=((1-$startFraction)*$capacity);
                 }

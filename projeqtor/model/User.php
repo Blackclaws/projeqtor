@@ -110,7 +110,9 @@ class User extends SqlElement {
   private $_affectedProjectsIncludingClosed;  // Array listing all affected projects
   private $_specificAffectedProfiles; // Array listing all projects affected with profile different from default
   private $_specificAffectedProfilesIncludingClosed; // Array listing all projects affected with profile different from default
-
+  private $_allProfiles;
+  private $_notReadableProjects;
+  
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
@@ -423,28 +425,16 @@ class User extends SqlElement {
         return $this->_specificAffectedProfilesIncludingClosed;
       }
     }
-    /*$result=array();
-    $aff=new Affectation();
-    $crit = array("idResource"=>$this->id);
-    if ($limitToActiveProjects) {
-      $crit["idle"]='0';
-    }
-    $affList=$aff->getSqlElementsFromCriteria($crit,false);
-    foreach ($affList as $aff) {
-      if ($aff->idProfile!=$this->idProfile) {
-        $result[$aff->idProject]=$aff->idProfile;
-        $proj=new Project($aff->idProject);
-        $list=$proj->getSubProjectsList($limitToActiveProjects);
-      }  
-    }
-    if ($limitToActiveProjects) {
-      $this->_specificAffectedProfiles=$result;
-    } else {
-      $this->_specificAffectedProfilesIncludingClosed=$result;
-    }
-    return $result;*/
   }
   
+  public function getAllProfiles() {
+    if ($this->_allProfiles) {
+      return $this->_allProfiles;
+    } else {
+      $this->getVisibleProjects(); // Will update_specificAffectedProfiles or _specificAffectedProfilesIncludingClosed
+      return $this->_allProfiles;
+    }
+  }  
   /** =========================================================================
    * Get the list of all projects the user can have readable access to, 
    * this means the projects the resource corresponding to the user is affected to
@@ -462,6 +452,10 @@ class User extends SqlElement {
     $result=array();
     // Retrieve current affectation profile for each project
     $resultAff=array();
+    $resultProf=array();
+    if ($this->idProfile) {
+      $resultProf[$this->idProfile]=$this->idProfile;
+    }
     $affProfile=array();
     $aff=new Affectation();
     $crit = array("idResource"=>$this->id);
@@ -473,6 +467,7 @@ class User extends SqlElement {
     foreach ($affList as $aff) {
       if ( (! $aff->startDate or $aff->startDate<$today) and (! $aff->endDate or $aff->endDate>$today)) {
         $affProfile[$aff->idProject]=$aff->idProfile;
+        $resultProf[$aff->idProfile]=$aff->idProfile;
       }
     }
     $accessRightRead=securityGetAccessRight('menuProject', 'read');
@@ -483,8 +478,6 @@ class User extends SqlElement {
     	}
     } else {
 	    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
-debugLog("User::getVisibleProjects() affPrjList");
-debugLog($affPrjList);
 	    $profile=$this->idProfile;
 	    foreach($affPrjList as $idPrj=>$namePrj) {
 	      if (isset($affProfile[$idPrj])) {	        
@@ -498,13 +491,9 @@ debugLog($affPrjList);
 	        }
 	      } 
 	    	$result[$idPrj]=$namePrj;
-//debugLog("loop affPrjList idPrj=$idPrj ($namePrj) profile=$profile");		    		    
 	    }
     }
-//debugLog("User::getVisibleProjects() resultAff");
-//debugLog($resultAff);
-//debugLog("User::getVisibleProjects() result");
-//debugLog($result);
+    $this->_allProfiles=$resultProf;
     if ($limitToActiveProjects) {
       $this->_visibleProjects=$result;
       $this->_specificAffectedProfiles=$resultAff;
@@ -619,6 +608,38 @@ debugLog($affPrjList);
     }
   }
   
+  // Return a list of project that user cannot read (not read acces to) for a given class
+  public function getNotReadableProjectsList($class) {
+    if ($this->_notReadableProjects and isset($this->_notReadableProjects[$class])) {
+      return $this->_notReadableProjects[$class];
+    }
+    $result=array();
+    $readProfile=array();
+    $listAffectedProfiles=$this->getSpecificAffectedProfiles();
+    foreach($listAffectedProfiles as $prj=>$prf) {
+      if (isset($readProfile[$prf])) {
+        $read=$readProfile[$prf];
+      } else {
+        $access=$this->getAccessControlRights($prj);
+        $menu='menu'.$class;
+        if (isset($access[$menu])) {
+          $read=$access[$menu]['read'];
+          $readProfile[$prf]=$read;
+        } else {
+          $read="";
+        }
+      }
+      if ($read=='NO') {
+        $result[$prj]=$prj;
+      }
+    }
+    if (! $this->_notReadableProjects) $this->_notReadableProjects=array();
+    $this->_notReadableProjects[$class]=$result;
+    if ($this->id==getSessionUser()->id) {
+      setSessionUser($this); // Store user to cache Data
+    }
+    return $result;
+  }
   /** =========================================================================
    * Reinitalise Visible Projects list to force recalculate
    * @return void
@@ -632,6 +653,8 @@ debugLog($affPrjList);
     $this->_hierarchicalViewOfVisibleProjectsNotClosed=null;
     $this->_specificAffectedProfiles=null;
     $this->_specificAffectedProfilesIncludingClosed=null;
+    $this->_allProfiles=null;
+    $this->_notReadableProjects=null;
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {

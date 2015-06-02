@@ -431,7 +431,7 @@ class PlanningElement extends SqlElement {
     	 	  $typeField='id'.$typeClass;
     	  	$type=new $typeClass($refObj->$typeField);
     	  	$user=getSessionUser();
-    	 	  $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->idProfile, 'allowed'=>'1');
+    	 	  $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->getProfile($this->idProject), 'allowed'=>'1');
     	 	  $ws=new WorkflowStatus();
     	 	  $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
     	 	  $in="(0";

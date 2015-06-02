@@ -311,7 +311,7 @@ class RequirementMain extends SqlElement {
         if ($user->id==$this->idLocker) {
           $canUnlock=true;
         } else {
-          $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'requirement'));        
+          $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->getProfile($this), 'scope'=>'requirement'));        
           if ($right) {
             $list=new ListYesNo($right->rightAccess);
             if ($list->code=='YES') {
