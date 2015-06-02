@@ -1025,7 +1025,7 @@ abstract class SqlElement {
 		$canForceDelete=false;
 	  if (getSessionUser()->id) {
 		  $user=getSessionUser();
-		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+		  $crit=array('idProfile'=>$user->getProfile($this), 'scope'=>'canForceDelete');
 		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
 		  if ($habil and $habil->id and $habil->rightAccess=='1') {
 		    $canForceDelete=true;
@@ -1459,7 +1459,7 @@ abstract class SqlElement {
 		}
 		if ($withAssignments and property_exists($this,"_Assignment") and property_exists($newObj,"_Assignment")) {
 		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', 
-		      array('idProfile' => getSessionUser()->idProfile,'scope' => 'assignmentEdit'));
+		      array('idProfile' => getSessionUser()->getProfile($this),'scope' => 'assignmentEdit'));
 		  if ($habil and $habil->rightAccess == 1) {
   			$ass=new Assignment();
   			// First delete existing Assignment (possibly created from Responsible)
@@ -2808,7 +2808,7 @@ abstract class SqlElement {
 				$type=new Type($this->$fldType);
 				$crit=array('idWorkflow'=>$type->idWorkflow,
 	    	            'idStatusTo'=>$this->idStatus,
-	    	            'idProfile'=>getSessionUser()->idProfile);
+	    	            'idProfile'=>getSessionUser()->getProfile($this));
 				if (trim($old->idStatus)!=trim($this->idStatus)) {
 					$crit['idStatusFrom']=$old->idStatus;
 				}
@@ -2855,7 +2855,7 @@ abstract class SqlElement {
 		$canForceDelete=false;
 	    if (getSessionUser()->id) {
 		  $user=getSessionUser();
-  		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+  		  $crit=array('idProfile'=>$user->getProfile($this), 'scope'=>'canForceDelete');
   		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
   		  if ($habil and $habil->id and $habil->rightAccess=='1') {
   		    $canForceDelete=true;
