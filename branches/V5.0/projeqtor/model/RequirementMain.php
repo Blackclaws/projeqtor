@@ -66,7 +66,7 @@ class RequirementMain extends SqlElement {
   public $_lib_cancelled;
   public $idTargetVersion;
   public $result;
-  //public $_sec_Lock;
+  public $_sec_Lock;
   public $_spe_lockButton;
   public $locked;
   public $idLocker;
