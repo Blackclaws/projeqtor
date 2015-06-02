@@ -310,7 +310,7 @@ scriptLog('   ->/tool/jsonList.php');
       $docVers=new documentVersion($idDocumentVersion);
     	$table=SqlList::getList('Status','name',$docVers->idStatus);
     	if ($docVers->idStatus) {      
-	      $profile=getSessionUser()->idProfile;
+	      $profile=getSessionUser()->getProfile($doc);
 	      $type=new DocumentType($doc->idDocumentType);
 	      $ws=new WorkflowStatus();
 	      $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$docVers->idStatus);
