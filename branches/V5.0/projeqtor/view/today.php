@@ -58,8 +58,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $msg=new Message();
     $where="idle=0";
     $where.=" and (idUser is null or idUser='" .Sql::fmtId( $user->id) . "')";
-    $where.=" and (idProfile is null or idProfile='" . Sql::fmtId($user->idProfile) . "')";
-    $where.=" and (idProject is null or idProject in " . transformListIntoInClause($prjLst=$user->getVisibleProjects()) . ")";
+    $where.=" and (idProfile is null or idProfile in " . transformListIntoInClause($user->getAllProfiles()) .")" ;
+    $where.=" and (idProject is null or idProject in " . transformListIntoInClause($user->getVisibleProjects()) . ")";
     
     $sort="id desc";
     $listMsg=$msg->getSqlElementsFromCriteria(null,false,$where,$sort);

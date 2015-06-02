@@ -164,7 +164,6 @@ if ($print) {
   echo '<br/>';
 }
 
-debugLog(" profile ? = $profile");
 // New refresh method
 if (array_key_exists('refresh', $_REQUEST)) {
   if (!$print) {
@@ -208,9 +207,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
           region="top" style="width: 100%; height: 100%;"><?php
   }
   $noData=htmlGetNoDataMessage($objClass);
-  debugLog("Check canRead");
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
-  debugLog("canRead=$canRead");
   if (!$obj->id) {
     $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";
     if (!$canRead or !$canUpdate) {
@@ -366,8 +363,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $fieldWidth=$smallWidth;
   $extName="";
   $user=getSessionUser();
-debugLog($user->getSpecificAffectedProfiles());
-debugLog(get_class($obj).' #'.$obj->id." profile=$profile");
   $displayComboButton=false;
   $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $profile,'scope' => 'combo'));
   if ($habil) {

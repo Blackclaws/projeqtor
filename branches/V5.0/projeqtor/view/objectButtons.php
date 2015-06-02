@@ -234,7 +234,7 @@
   		$cd=new ChecklistDefinition();
   		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
   		$user=getSessionUser();
-  		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+  		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->getProfile($obj),'scope'=>'checklist'));
   		$list=new ListYesNo($habil->rightAccess);
   		$displayChecklist=Parameter::getUserParameter('displayChecklist');
   		if ($list->code!='YES' or $displayChecklist!='REQ') {
