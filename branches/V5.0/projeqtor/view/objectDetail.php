@@ -2187,15 +2187,18 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     if ($line->check01) {
-      echo '<td class="noteData" style="position: relative; border-right:0; text-align:right" title="' . $line->title . '">' . htmlEncode($line->name) . '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">' . $line->sortOrder . '</div>' . ' : </td>';
+      echo '<td class="noteData" style="border-right:0; text-align:right" title="' . $line->title . '">' 
+        . '<div style="position: relative;">'  
+        . htmlEncode($line->name) . '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">' . $line->sortOrder . '</div>' . ' : '
+        . '</div></td>';
       echo '<td class="noteData" style="border-left:0;">';
       echo '<table witdh="100%"><tr>';
       for ($i=1; $i <= 5; $i++) {
         $check='check0' . $i;
         $title='title0' . $i;
         echo '<td style="min-width:100px; white-space:nowrap; vertical-align:top; " ' . (($line->$title)?'title="' . $line->$title . '"':'') . '>';
-        if ($line->$check) {
-          echo htmlDisplayCheckbox(0) . "&nbsp;" . $line->$check . "&nbsp;&nbsp;";
+        if ($line->$check ) {
+          echo "<table><tr><td>".htmlDisplayCheckbox(0) . "&nbsp;</td><td valign='top'>" . $line->$check . "&nbsp;&nbsp;</td></tr></table>";
         }
         echo '</td>';
       }
