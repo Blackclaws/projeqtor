@@ -135,7 +135,7 @@ if ($print) $canUpdate=false;
         }?>	 
 		    <tr >
 <?php   if ($line->check01) {?>
-			    <td class="noteData" style="<?php echo ($print)?'width:'.$nameWidth:'';?>position: relative; border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
+			    <td class="noteData" style="<?php echo ($print)?'width:'.$nameWidth:'';?>border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
 				  <?php echo htmlEncode( $line->name);?> :   
 		      </td>
 			    <td class="noteData" style="border-left:0;">
