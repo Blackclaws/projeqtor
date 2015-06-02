@@ -48,7 +48,6 @@ class ChecklistDefinition extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameChecklistable" formatter="translateFormatter" width="20%" >${element}</th>
     <th field="nameType" width="20%" >${type}</th>
-    <th field="lineCount" formatter="numericFormatter" width="10%" >${lineCount}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
