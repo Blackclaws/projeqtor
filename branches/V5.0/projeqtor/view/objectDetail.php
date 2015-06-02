@@ -343,6 +343,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
+  if (property_exists($obj, '_sec_Assignment')) {
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
+    if ($habil and $habil->rightAccess != 1) {
+      unset($obj->_sec_Assignment);
+    }
+  }
   if ($print) $obj->_nbColMax=1;
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
