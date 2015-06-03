@@ -711,7 +711,10 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
     //$queryWhere.=" or (".$clauseALLPRO.")";
     $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
   } else if ($accessRightRead=='ALL') {
-    $queryWhere="$tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null";
+    $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
+    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $clauseRES)";
+    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $clauseOWN)";
+    
   }
   
   /*

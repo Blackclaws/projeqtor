@@ -171,18 +171,6 @@
       }
     }
     
-    // --- Remove from list depending on possible profiles on each project
-    /*$notReadableProjectsList=getSessionUser()->getNotReadableProjectsList($objectClass);
-    if ( $objectClass=='Project' ) {
-      $queryWhere.= ($queryWhere=='')?'(':' and (';
-      $queryWhere.= $table.'.id not in '.transformListIntoInClause($notReadableProjectsList);
-      $queryWhere.= ')';
-    } else if ( property_exists($objectClass, 'idProject') ){
-      $queryWhere.= ($queryWhere=='')?'(':' and (';
-      $queryWhere.= $table.'.idProject not in '.transformListIntoInClause($notReadableProjectsList);
-      $queryWhere.= ')';
-    }*/
-    
     // --- Apply systematic restriction  criteria defined for the object class (for instance, for types, limit to corresponding type)
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
