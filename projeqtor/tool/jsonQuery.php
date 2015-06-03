@@ -653,7 +653,6 @@
       echo ' "items":[';
       if (Sql::$lastQueryNbRows > 0) {        
         while ($line = Sql::fetchLine($result)) {
-          debugLog($line);
           echo (++$nbRows>1)?',':'';
           echo  '{';
           $nbFields=0;
