@@ -405,6 +405,7 @@
 	        }
 	      }
 	    }
+	    $querySelect.=','.$table.'.idProject as idproject';
     }
     // --- build order by clause
     if ($objectClass=='DocumentDirectory') {
@@ -573,9 +574,11 @@
 	      echo $layout;
 	      echo '</tr>';
 	      if (Sql::$lastQueryNbRows > 0) {
+	        $hiddenField='<span style="color:#AAAAAA">(...)</span>';
 	        while ($line = Sql::fetchLine($result)) {
 	          echo '<tr>';
 	          $numField=0;
+	          $idProject=($objectClass=='Project')?$line['id']:((isset($line['idproject']))?$line['idproject']:null);
 	          foreach ($line as $id => $val) {
 	            $numField+=1;
 	            $disp="";
@@ -601,9 +604,17 @@
 	            } else if ($formatter[$numField]=="sortableFormatter") {
 	              $disp=sortableFormatter($val);
 	            } else if ($formatter[$numField]=="workFormatter") {
-                $disp=workFormatter($val);
+	              if ($idProject and ! $user->getWorkVisibility($idProject,$id)) {
+	                $disp=$hiddenField;
+	              } else {
+                  $disp=workFormatter($val);
+	              }
               } else if ($formatter[$numField]=="costFormatter") {
-                $disp=costFormatter($val);
+                if ($idProject and ! $user->getCostVisibility($idProject,$id)) {
+                  $disp=$hiddenField;
+                } else {
+                  $disp=costFormatter($val);
+                }
               } else if ($formatter[$numField]=="iconFormatter") {
                 $disp=iconFormatter($val);
               } else if (substr($formatter[$numField],0,9)=='thumbName') {
@@ -640,20 +651,33 @@
       // return result in json format
       echo '{"identifier":"id",' ;
       echo ' "items":[';
-      if (Sql::$lastQueryNbRows > 0) {
+      if (Sql::$lastQueryNbRows > 0) {        
         while ($line = Sql::fetchLine($result)) {
+          debugLog($line);
           echo (++$nbRows>1)?',':'';
           echo  '{';
           $nbFields=0;
+          $idProject=($objectClass=='Project')?$line['id']:((isset($line['idproject']))?$line['idproject']:null);
           foreach ($line as $id => $val) {
+            if ($id=='idproject') continue;
             echo (++$nbFields>1)?',':'';
             $numericLength=0;
             if ($id=='id') {
             	$numericLength=6;
             } else if ($formatter[$nbFields]=='percentFormatter') {
             	$numericLength=3;
-            } else if ($formatter[$nbFields]=='workFormatter' or $formatter[$nbFields]=='costFormatter') {
+            } else if ($formatter[$nbFields]=='workFormatter') {
+              $numericLength=9;
+              if ($idProject and ! $user->getWorkVisibility($idProject,$id)) {
+                $val='-';
+                $numericLength=0;
+              }
+            } else if ($formatter[$nbFields]=='costFormatter') {
             	$numericLength=9;
+            	if ($idProject and ! $user->getCostVisibility($idProject,$id)) {
+            	  $val='-';
+            	  $numericLength=0;
+            	}
             } else if ($formatter[$nbFields]=='numericFormatter') {
             	$numericLength=9;
             }

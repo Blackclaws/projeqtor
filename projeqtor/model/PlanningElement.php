@@ -1021,12 +1021,29 @@ class PlanningElement extends SqlElement {
   	}
   }
   
-  public function setVisibility() {
+  public static function getWorkVisibiliy($profile) {
+    if (! self::$staticWorkVisibility or ! isset(self::$staticWorkVisibility[$profile]) ) {
+      $pe=new PlanningElement();
+      $pe->setVisibility($profile);
+    }
+    return self::$staticWorkVisibility[$profile];
+  }
+  public static function getCostVisibiliy($profile) {
+    if (! self::$staticCostVisibility or ! isset(self::$staticCostVisibility[$profile]) ) {
+      $pe=new PlanningElement();
+      $pe->setVisibility($profile);
+    }
+    return self::$staticCostVisibility[$profile];
+  }
+  
+  public function setVisibility($profile=null) {
     if (! sessionUserExists()) {
       return;
     }
-    $user=getSessionUser();
-    $profile=$user->getProfile($this->idProject);
+    if (! $profile) {
+      $user=getSessionUser();
+      $profile=$user->getProfile($this->idProject);
+    }
     if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
     and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
       $this->_costVisibility=self::$staticCostVisibility[$profile];

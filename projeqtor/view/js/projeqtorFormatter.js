@@ -246,9 +246,10 @@ function numericFormatter(value) {
   return result;
 }
 
+var hiddenField='<span style="color:#AAAAAA">(...)</span>';
 function workFormatter(value) {
-  if (value == null)
-    return null;
+  if (value == null) return null;
+  if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
   if (top.paramWorkUnit != 'days')
     value = value * top.paramHoursPerDay;
@@ -261,6 +262,8 @@ function workFormatter(value) {
 }
 
 function costFormatter(value) {
+  if (value == null) return null;
+  if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
   roundedValue = dojo.number.format(Math.round(value * 100) / 100);
   // var result = roundedValue.replace(/^0+/g,'');
