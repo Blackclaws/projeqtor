@@ -1119,5 +1119,31 @@ class User extends SqlElement {
   	}
   	return $cookieHash;
   }
+  
+  public function getWorkVisibility($idProject,$col) {
+    return $this->getVisibility($idProject,$col,'work');
+  }
+  public function getCostVisibility($idProject,$col) {
+    return $this->getVisibility($idProject,$col,'cost');
+  }
+  public function getVisibility($idProject,$col,$type) {
+    $profile=$this->getProfile($idProject);
+    if ($type=='cost') {
+      $visibility=PlanningElement::getCostVisibiliy($profile);
+    } else {
+      $visibility=PlanningElement::getWorkVisibiliy($profile);
+    }
+    if ($visibility=='ALL') {
+      return true;
+    } else if ($visibility=='NO') {
+      return false;
+    } else if ($visibility=='VAL') {
+      if (strpos(strtolower($col),'validated')!==false) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
 ?>
