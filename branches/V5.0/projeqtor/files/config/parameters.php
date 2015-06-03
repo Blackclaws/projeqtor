@@ -8,8 +8,8 @@
   $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
   $paramDbName='projeqtor_v50';$paramDbPrefix='';
 // --- PostgreSql Default
-//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
-//$paramDbName='projeqtor';$paramDbPrefix=''; 
+$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
+$paramDbName='projeqtor';$paramDbPrefix=''; 
 $paramDbHost='127.0.0.1';         // With MySql on Windows, better use "127.0.0.1" rather than "localhost"
 $enforceUTF8 = '1';               // Positionned by default for new installs since V4.4.0
 
@@ -27,3 +27,4 @@ $debugQuery=false;                 // Debug all queries : trace Query and runnin
 $debugJsonQuery=false;             // Trace only JsonQuery queries  (retrieving lists)
 $debugPerf=true;                   // Add some timestamps and execution time at all debug lines
 $debugReport=true;                 // Displays report file name on report header 
+$memoryLimitForPDF = '512';
