@@ -471,28 +471,30 @@ class User extends SqlElement {
       }
     }
     $accessRightRead=securityGetAccessRight('menuProject', 'read');
+    // For ALL, by default can have access to all projects
     if ($accessRightRead=="ALL") {
     	$listAllProjects=SqlList::getList('Project');
     	foreach($listAllProjects as $idPrj=>$namePrj) {
     		$result[$idPrj]=$namePrj;
     	}
-    } else {
-	    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
-	    $profile=$this->idProfile;
-	    foreach($affPrjList as $idPrj=>$namePrj) {
-	      if (isset($affProfile[$idPrj])) {	        
-	        $profile=$affProfile[$idPrj];
-	        $resultAff[$idPrj]=$profile;
-	        $prj=new Project($idPrj);
-	        $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
-	        foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-	          $result[$idSubPrj]=$nameSubPrj;
-	          $resultAff[$idSubPrj]=$profile;
-	        }
-	      } 
-	    	$result[$idPrj]=$namePrj;
-	    }
+    } 
+    // Scpecific rights for projects affected to user : may change rights for ALL (admin)
+    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
+    $profile=$this->idProfile;
+    foreach($affPrjList as $idPrj=>$namePrj) {
+      if (isset($affProfile[$idPrj])) {	        
+        $profile=$affProfile[$idPrj];
+        $resultAff[$idPrj]=$profile;
+        $prj=new Project($idPrj);
+        $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+        foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+          $result[$idSubPrj]=$nameSubPrj;
+          $resultAff[$idSubPrj]=$profile;
+        }
+      } 
+    	$result[$idPrj]=$namePrj;
     }
+    
     $this->_allProfiles=$resultProf;
     if ($limitToActiveProjects) {
       $this->_visibleProjects=$result;
