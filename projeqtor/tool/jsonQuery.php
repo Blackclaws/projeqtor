@@ -160,7 +160,7 @@
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
     	// No limit, although idProject exists
     } else {
-      $clause=getAccesResctictionClause($objectClass,$table, $showIdleProjects);
+      $clause=getAccesRestrictionClause($objectClass,$table, $showIdleProjects);
       if (trim($clause)) {
         $queryWhere.= ($queryWhere=='')?'(':' and (';
         $queryWhere.= $clause;
@@ -405,7 +405,9 @@
 	        }
 	      }
 	    }
-	    $querySelect.=','.$table.'.idProject as idproject';
+	    if (property_exists($obj,'idProject')) {
+	      $querySelect.=','.$table.'.idProject as idproject';
+	    }
     }
     // --- build order by clause
     if ($objectClass=='DocumentDirectory') {

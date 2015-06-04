@@ -3057,8 +3057,9 @@ abstract class SqlElement {
 								}
 							}
 						}
-						if ($statusMail->mailToLeader and $resource->idProfile) {
-							$prf=new Profile($resource->idProfile);
+						if ($statusMail->mailToLeader and ($aff->idProfile or $resource->idProfile)) {
+						  $profile=($aff->idProfile)?$aff->idProfile:$resource->idProfile;
+							$prf=new Profile($profile);
 							if ($prf->profileCode=='PL') {
 								$newDest = "###" . $resource->email . "###";
 								if ($resource->email and strpos($dest,$newDest)===false) {

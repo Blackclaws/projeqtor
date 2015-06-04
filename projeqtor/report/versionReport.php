@@ -78,7 +78,7 @@ if (! isset($includedReport)) {
   include "header.php";
 }
 
-$where=getAccesResctictionClause('Ticket',false);
+$where=getAccesRestrictionClause('Ticket',false);
 if ($paramProject!="") {
   $where.=" and idProject='" . Sql::fmtId($paramProject) . "'";
 }

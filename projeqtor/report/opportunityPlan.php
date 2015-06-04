@@ -42,7 +42,7 @@ include "header.php";
 if ($paramProject!="") {
   
 }
-$queryWhereOpportunity=getAccesResctictionClause('Opportunity',false);
+$queryWhereOpportunity=getAccesRestrictionClause('Opportunity',false);
 
 $queryWherePlus="";
 if ($paramProject!="") {

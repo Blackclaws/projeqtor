@@ -92,16 +92,29 @@ scriptLog('   ->/tool/jsonList.php');
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       }
       
-    } else if ($type=='list') {    
+    } else if ($type=='list') {   
       $dataType=$_REQUEST['dataType'];
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];
       }
-      $class=substr($dataType,2);
+      if ($dataType=='planning') {
+        $class='Project';
+      } else {
+        $class=substr($dataType,2);
+      }
       if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
       	$user=getSessionUser();
       	$list=$user->getVisibleProjects();
+      } else if ($dataType=='planning') {
+      	$user=getSessionUser();
+      	$list=$user->getVisibleProjects();
+      	$restrictArray=$user->getListOfPlannableProjects();
+      	foreach ($list as $prj=>$prjname) {
+      	  if (! isset($restrictArray[$prj])) {
+      	    unset($list[$prj]);
+      	  }
+      	}
       } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
       	if (trim($_REQUEST['critValue'])) {    	
 	        $list=array();

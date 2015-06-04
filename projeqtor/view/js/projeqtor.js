@@ -71,6 +71,7 @@ var debugPerf=new Array();
 function refreshJsonList(className, keepUrl) {
   var grid = dijit.byId("objectGrid");
   if (grid) {
+    showWait();
 	var sortIndex=grid.getSortIndex();
   	var sortAsc=grid.getSortAsc();
   	var scrollTop=grid.scrollTop;
@@ -115,6 +116,7 @@ function refreshJsonList(className, keepUrl) {
     	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
         setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
         setTimeout('selectRowById("objectGrid", '+parseInt(objectId.value)+');',30);
+        setTimeout('hideWait();',40);
         filterJsonList();
       }
     });
@@ -205,6 +207,7 @@ function filterJsonList() {
     grid._refresh();
   }
   refreshGridCount();
+  selectGridRow();
 }
 
 function refreshGrid() {
@@ -1590,6 +1593,10 @@ function selectRowById(gridName, id) {
 function selectPlanningRow() {
 	setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
 }
+function selectGridRow() {
+  setTimeout("selectRowById('objectGrid',dojo.byId('objectId').value);",50);
+}
+
 /**
  * ============================================================================
  * i18n (internationalization) function to return all messages and caption in

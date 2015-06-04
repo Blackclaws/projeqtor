@@ -68,7 +68,7 @@ if ($paramVersion!="") {
 }
 include "header.php";
 
-$where=getAccesResctictionClause('TestSession',false);
+$where=getAccesRestrictionClause('TestSession',false);
 
 $order="";
 

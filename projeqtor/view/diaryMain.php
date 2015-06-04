@@ -97,38 +97,8 @@
            loadContent("../view/diary.php","detailDiv","diaryForm");
          </script>
          <?php 
-           $crit=array('scope'=>'diary', 'idProfile'=>$user->idProfile);
-           $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-           $scope=new AccessScope($habilitation->rightAccess);
-           $table=array();
-           if (! $user->isResource) {
-             $table[0]=' ';
-           }
-           if ($scope->accessCode=='NO') {
-             $table[$user->id]=' ';
-           } else if ($scope->accessCode=='ALL') {
-             $table=SqlList::getList('Resource');
-           } else if (($scope->accessCode=='OWN' or $scope->accessCode=='RES') and $user->isResource ) {
-             $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
-           } else if ($scope->accessCode=='PRO') {
-             $crit='idProject in ' . transformListIntoInClause($user->getVisibleProjects());
-             $aff=new Affectation();
-             $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
-             $fullTable=SqlList::getList('Resource');
-             foreach ($lstAff as $id=>$aff) {
-               if (array_key_exists($aff->idResource,$fullTable)) {
-                 $table[$aff->idResource]=$fullTable[$aff->idResource];
-               }
-             }
-           }
-           if (count($table)==0) {
-             $table[$user->id]=' ';
-           }
-           foreach($table as $key => $val) {
-             echo '<OPTION value="' . $key . '"';
-             if ( $key==$user->id ) { echo ' SELECTED '; } 
-             echo '>' . $val . '</OPTION>';
-           }?>  
+           $specific='diary';
+           include '../tool/drawResourceListForSpecificAccess.php'?>  
        </select>
 		   </form> </td>
    	</tr>

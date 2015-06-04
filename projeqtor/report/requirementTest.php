@@ -61,7 +61,7 @@ if ($paramVersion!="") {
 }
 include "header.php";
 
-$where=getAccesResctictionClause('Requirement',false);
+$where=getAccesRestrictionClause('Requirement',false);
 
 $order="";
 

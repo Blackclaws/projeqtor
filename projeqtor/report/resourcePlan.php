@@ -75,7 +75,7 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-$where=getAccesResctictionClause('Activity',false);
+$where=getAccesRestrictionClause('Activity',false);
 
 //$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';

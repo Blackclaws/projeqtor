@@ -31,14 +31,6 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/planningList.php');
 
-$canPlan=false;
-$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
-if ($right) {
-  $list=new ListYesNo($right->rightAccess);
-  if ($list->code=='YES') {
-    $canPlan=true;
-  }
-}
 $startDate=date('Y-m-d');
 $endDate=null;
 $user=getSessionUser();
@@ -64,6 +56,8 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
+$plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
+$canPlan=(count($plannableProjectsList)>0)?true:false;
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
