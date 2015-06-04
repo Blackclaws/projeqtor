@@ -46,7 +46,7 @@ $tab=array();
 // gets projects
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	$queryWhere=getAccesResctictionClause('Project',false);
+	$queryWhere=getAccesRestrictionClause('Project',false);
   $queryWhere.=  "and cancelled=0 and id in " . getVisibleProjectsList(true, $idProject);
   
 	$prj=new Project();
@@ -110,7 +110,7 @@ $tab=array();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   	$querySelect= 'select sum(realWork) as realWork, sum(leftWork) as leftWork, sum(assignedWork) as assignedWork, refId as idActivity, idProject';
-  	$queryWhere=getAccesResctictionClause('Activity',false);
+  	$queryWhere=getAccesRestrictionClause('Activity',false);
   	$queryWhere.=  " and reftype = 'Activity' and idProject " . $sqlPrj ;
   	$queryGroupBy = 'idActivity, idProject' ;
   	$queryHaving = ' realWork<>0 or leftWork<>0 or assignedWork<>0';

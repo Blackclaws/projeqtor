@@ -161,9 +161,11 @@ class PlannedWork extends GeneralWork {
     //-- Build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
-    $inClause.=" and " . getAccesResctictionClause('Activity',false);
+    //$inClause.=" and " . getAccesRestrictionClause('Activity',false);
     //-- Remove Projects with Fixed Planning flag
     $inClause.=" and idProject not in " . Project::getFixedProjectList() ;
+    $user=getSessionUser();
+    $inClause.=" and idProject in ". transformListIntoInClause($user->getListOfPlannableProjects());
     //-- Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
@@ -924,7 +926,7 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   	$cpt=0;
   	$proj=new Project($projectId);
   	$inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
-  	$inClause.=" and " . getAccesResctictionClause('Activity',false);
+  	$inClause.=" and " . getAccesRestrictionClause('Activity',false);
   	// Remove administrative projects :
   	$inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
   	// Remove Projects with Fixed Planning flag

@@ -625,14 +625,14 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
   return $result;
 }
 
-function getAccesResctictionClause($objectClass, $alias = null, $showIdle = false) {
+function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause=false, $excludeResourceClause=false) {
   if (! property_exists($objectClass,'idProject')) return ''; // If not project depedant, no extra clause
   
   $obj = new $objectClass ();
   $user=getSessionUser();
   if ($alias) {
     $tableAlias = $alias.'.';
-  } if ($alias === false) {
+  } else if ($alias === false) {
     $tableAlias = ''; // No alias for table
   } else {
     $tableAlias = $obj->getDatabaseTableName () . '.';
@@ -649,14 +649,14 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
   $clauseNO='(1=2)'; // Will dintinct the NO
   
   $clauseOWN='';
-  if (property_exists ( $obj, "idUser" )) {
+  if (! $excludeUserClause and property_exists ( $obj, "idUser" ) and $alias!='planningelement') {
     $clauseOWN="(".$tableAlias."idUser='".Sql::fmtId(getSessionUser()->id)."')";
   } else {
     $clauseOWN="(1=3)"; // Will distinct the OWN
   }
   
   $clauseRES='';
-  if (property_exists ( $obj, "idResource" )) {
+  if (! $excludeResourceClause and property_exists ( $obj, "idResource" ) and $alias!='planningelement') {
     $clauseRES="(".$tableAlias."idResource='".Sql::fmtId(getSessionUser()->id )."')";   
   } else {
     $clauseRES="(1=4)"; // Will distinct the RES

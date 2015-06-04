@@ -377,6 +377,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
   rowPerPage="<?php echo Parameter::getGlobalParameter('paramRowPerPage');?>"
   columnReordering="false"
   rowSelector="false"
+  onHeaderClick="selectGridRow();"
   onHeaderCellContextMenu="dijit.byId('listColumnSelector').toggleDropDown();"
   selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>

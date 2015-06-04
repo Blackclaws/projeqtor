@@ -54,6 +54,7 @@
   if ( array_key_exists('showResource',$_REQUEST) ) {
     $showResource=true;
   }
+  $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
   $starDate="";
   $endDate="";
   if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
@@ -124,10 +125,10 @@
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
   if ($portfolio) {
-  	//$queryWhere.=getAccesResctictionClause('Project',$table);
-  	$queryWhere.='('.getAccesResctictionClause('Project',$table).' OR '.getAccesResctictionClause('Milestone',$table,$showIdleProjects).')';
+  	$queryWhere.='('.getAccesRestrictionClause('Project',$table);
+  	//$queryWhere.=' OR '.getAccesRestrictionClause('Milestone',$table,$showIdleProjects).')';
   } else {
-    $queryWhere.=getAccesResctictionClause('Activity',$table,$showIdleProjects);
+    $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
   }
   if ( array_key_exists('report',$_REQUEST) ) {
     if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
@@ -221,6 +222,9 @@
         	$topProjectArray[$line['refid']]=$line['id'];
         	$proj=new Project($line["refid"]);
         	if ($proj->fixPlanning) {
+        	  $line['reftype']='Fixed';
+        	}
+        	if ( ! isset($plannableProjectsList[$line["refid"]]) ) {
         	  $line['reftype']='Fixed';
         	}
         } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {

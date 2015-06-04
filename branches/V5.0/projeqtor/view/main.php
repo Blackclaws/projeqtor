@@ -1935,7 +1935,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                         $proj=$_SESSION['project'];
                     }
                     if ($proj=="*" or ! $proj) $proj=null;
-                    htmlDrawOptionForReference('idProject', $proj, null, false);
+                    $user=getSessionUser();
+                    $projs=$user->getListOfPlannableProjects();
+                    htmlDrawOptionForReference('planning', $proj, null, false);
                  ?>
                </select>
              </td>

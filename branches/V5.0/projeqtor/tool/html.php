@@ -40,7 +40,11 @@ require_once "../tool/projeqtor.php";
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
-  $listType=substr($col,2);
+  if ($col=='planning') {
+    $listType='Project';
+  } else {
+    $listType=substr($col,2);
+  }
 	$column='name';
 	$user=getSessionUser();
 	if ($listType=='DocumentDirectory') {
@@ -75,12 +79,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($critFld and ! ($col=='idProduct' and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
-    if ($col=="idProject") { 
+    if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }  
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
-    if ($col=="idProject") { 
+    if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     }  
   }
@@ -174,8 +178,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ($user->_accessControlVisibility != 'ALL') {
       	$restrictArray=$user->getVisibleProjects($limitToActiveProjects);
   	  }
-    }
-    if ($col=="idProduct" and $critFld='idProject') {
+    } else if ($col=="planning") {
+      $user=getSessionUser();
+      $restrictArray=$user->getListOfPlannableProjects();
+    } else if ($col=="idProduct" and $critFld='idProject') {
    		echo '<OPTION value=" " ></OPTION>';
     	return ;
     }

@@ -5510,7 +5510,7 @@ function refreshProjectSelectorList() {
     load : function() {
       loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');
       if (dijit.byId('idProjectPlan')) {
-        refreshList('idProject', null, null, dijit.byId('idProjectPlan').get(
+        refreshList('planning', null, null, dijit.byId('idProjectPlan').get(
             'value'), 'idProjectPlan', false);
       }
     }

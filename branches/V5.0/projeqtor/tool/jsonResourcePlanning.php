@@ -115,7 +115,7 @@ $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=' ass.plannedWork>0 ';
 
 $queryWhere.= ($queryWhere=='')?'':' and ';
-$queryWhere.=getAccesResctictionClause('Activity',$table,$showIdleProjects);
+$queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
 if ( array_key_exists('report',$_REQUEST) ) {
 	if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 		$queryWhere.= ($queryWhere=='')?'':' and ';

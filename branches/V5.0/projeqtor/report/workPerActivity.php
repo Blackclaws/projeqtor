@@ -60,7 +60,7 @@
 
   // Where clause
   $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$table);
+  $queryWhere.=getAccesRestrictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;

@@ -171,7 +171,7 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
         	returnError($invalidQuery, $querySyntax);
         }
         // Add access restrictions
-        $where.=' and '.getAccesResctictionClause($class,null,true);
+        $where.=' and '.getAccesRestrictionClause($class,null,true);
     		echo '{"identifier":"id",' ;
         echo ' "items":[';        
         $list=$obj->getSqlElementsFromCriteria(null,null,$where);

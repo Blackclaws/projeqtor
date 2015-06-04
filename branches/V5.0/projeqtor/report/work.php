@@ -95,7 +95,7 @@ if ( $paramResource=='') {
 }
 include "header.php";
 
-$where=getAccesResctictionClause('Activity',false);
+$where=getAccesRestrictionClause('Activity',false);
 //$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';

@@ -39,10 +39,10 @@ if ($paramProject!="") {
 }  
 include "header.php";
 
-$queryWhereAction=getAccesResctictionClause('Action',false);
-$queryWhereRisk=getAccesResctictionClause('Risk',false);
-$queryWhereIssue=getAccesResctictionClause('Issue',false);
-$queryWhereOpportunity=getAccesResctictionClause('Opportunity',false);
+$queryWhereAction=getAccesRestrictionClause('Action',false);
+$queryWhereRisk=getAccesRestrictionClause('Risk',false);
+$queryWhereIssue=getAccesRestrictionClause('Issue',false);
+$queryWhereOpportunity=getAccesRestrictionClause('Opportunity',false);
 
 $queryWherePlus="";
 if ($paramProject!="") {

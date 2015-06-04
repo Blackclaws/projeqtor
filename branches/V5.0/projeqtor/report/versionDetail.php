@@ -70,7 +70,7 @@ if ($paramOtherVersion!="") {
   }
 include "header.php";
 
-$where=getAccesResctictionClause('Ticket',false);
+$where=getAccesRestrictionClause('Ticket',false);
 
 $order="";
 

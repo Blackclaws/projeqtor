@@ -610,39 +610,6 @@ class User extends SqlElement {
     }
   }
   
-  // Return a list of project that user cannot read (not read acces to) for a given class
-  /*public function getNotReadableProjectsList($class) {
-    if ($this->_notReadableProjects and isset($this->_notReadableProjects[$class])) {
-      return $this->_notReadableProjects[$class];
-    }
-    $result=array();
-    $readProfile=array();
-    $listAffectedProfiles=$this->getSpecificAffectedProfiles();
-    foreach($listAffectedProfiles as $prj=>$prf) {
-      if (isset($readProfile[$prf])) {
-        $read=$readProfile[$prf];
-      } else {
-        $access=$this->getAccessControlRights($prj);
-        $menu='menu'.$class;
-        if (isset($access[$menu])) {
-          $read=$access[$menu]['read'];
-          $readProfile[$prf]=$read;
-        } else {
-          $read="";
-        }
-      }
-      if ($read=='NO') {
-        $result[$prj]=$prj;
-      }
-    }
-    if (! $this->_notReadableProjects) $this->_notReadableProjects=array();
-    $this->_notReadableProjects[$class]=$result;
-    if ($this->id==getSessionUser()->id) {
-      setSessionUser($this); // Store user to cache Data
-    }
-    return $result;
-  }*/
-  
   // Return a list of project with specific access rights depending on profile (only read access taken into account) for a given class
   public function getAccessRights($class,$right=null) {
     if ($this->_allAccessRights and isset($this->_allAccessRights[$class])) {
@@ -1145,5 +1112,54 @@ class User extends SqlElement {
       }
     }
   }
+  
+  private $_allSpecificRightsForProfiles=array();
+  public function getAllSpecificRightsForProfiles($specific) {
+    if (isset($this->_allSpecificRightsForProfiles[$specific])) {
+      return $this->_allSpecificRightsForProfiles[$specific];
+    }
+    $result=array();
+    foreach ($this->getAllProfiles() as $prof) {
+      $crit=array('scope'=>$specific, 'idProfile'=>$prof);
+      $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+      $scope=new AccessScope($habilitation->rightAccess);
+      if (!isset($result[$scope->accessCode])) $result[$scope->accessCode]=array();
+      $result[$scope->accessCode][$prof]=$prof;
+    }
+    $this->_allSpecificRightsForProfiles[$specific]=$result;
+    if ($this->id==getSessionUser()->id) {
+      //setSessionUser($this); // Store user to cache Data
+    }
+    return $result;
+  }
+  public function allSpecificRightsForProfilesOneOnlyValue($specific,$value) {
+    $list=$this->getAllSpecificRightsForProfiles($specific);
+    foreach ($list as $val=>$lstProf) {
+      if ($val!=$value) return false;
+    }
+    return true;
+  }
+  public function allSpecificRightsForProfilesContainsValue($specific,$value) {
+    $list=$this->getAllSpecificRightsForProfiles($specific);
+    foreach ($list as $val=>$lstProf) {
+      if ($val==$value) return true;
+    }
+    return false;
+  }
+  
+  public function getListOfPlannableProjects() {
+    $rightsList=$this->getAllSpecificRightsForProfiles('planning');
+    $affProjects=$this->getSpecificAffectedProfiles(); 
+    $result=array();
+    // !!! returm for YES is NO (because of conversion for accessScope)
+    if (! isset ($rightsList['NO'])) return $result; 
+    foreach ($affProjects as $prj=>$prf) {
+      if (isset($rightsList['NO'][$prf])) {
+        $result[$prj]=$prj;
+      }
+    }
+    return $result;
+  }
+  
 }
 ?>

@@ -76,7 +76,7 @@ class ImputationLine {
 
 	static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, 
 			$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
-//scriptLog("      => ImputationLine->getLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
+	  
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
@@ -84,13 +84,6 @@ class ImputationLine {
 		}
 		$user=getSessionUser();
 		$user=new User($user->id);
-		
-		$visibleProjects=$user->getVisibleProjects();
-		
-		$crit=array('scope'=>'imputation', 'idProfile'=>$user->idProfile);
-    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-    $scope=new AccessScope($habilitation->rightAccess);
-    $scopeCode=$scope->accessCode;
 
 		$result=array();
 		if ($rangeType=='week') {
@@ -114,11 +107,25 @@ class ImputationLine {
 	  if ($showPlanned) {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
-		//echo "scopeCode='$scopeCode'";
-		// visibility security : hide line depending on access rights
-		if ($user->id != $resourceId and $scopeCode!='ALL') {
+		$profile=$user->getProfile(); // Default profile for user
+		$listAccesRightsForIMputation=$user->getAllSpecificRightsForProfiles('imputation');
+		$listAllowedProfiles=array(); // List will contain all profiles with visibility to Others imputation
+		if (isset($listAccesRightsForIMputation['PRO'])) {
+		  $listAllowedProfiles+=$listAccesRightsForIMputation['PRO'];
+		}
+		if (isset($listAccesRightsForIMputation['ALL'])) {
+		  $listAllowedProfiles+=$listAccesRightsForIMputation['ALL'];
+		}
+		$visibleProjects=array();
+		foreach ($user->getSpecificAffectedProfiles() as $prj=>$prf) {
+		  if (in_array($prf, $listAllowedProfiles)) {
+		    $visibleProjects[$prj]=$prj;
+		  }
+		}
+		
+		if ($user->id != $resourceId) {
 			foreach ($assList as $id=>$ass) {
-				if (! array_key_exists($ass->idProject, $visibleProjects) or $scopeCode!='PRO') {
+				if (! array_key_exists($ass->idProject, $visibleProjects) ) {
 					unset ($assList[$id]);
 				}
 			}
@@ -154,6 +161,7 @@ class ImputationLine {
 				if (! $found) {
 					$ass=new Assignment($work->idAssignment);
 					if ($ass->id) {
+					  $ass->_locked=true;
 						$assList[$ass->id]=$ass;
 					} else {
 						$id=$work->refType.'#'.$work->refId;
@@ -172,6 +180,7 @@ class ImputationLine {
 						  $ass=$assList[$id];
 						  $ass->realWork+=$work->work;
 						}
+						$ass->_locked=true;
 						$assList[$id]=$ass;
 					}
 					
@@ -225,6 +234,7 @@ class ImputationLine {
 			$elt->realWork=$ass->realWork;
 			$elt->leftWork=$ass->leftWork;
 			$elt->arrayWork=array();
+			if (isset($ass->_locked)) $elt->locked=true;
 			$elt->arrayPlannedWork=array();
 			if ($ass->idRole) {
 			  $elt->functionName=SqlList::getNameFromId('Role', $ass->idRole);
@@ -263,9 +273,9 @@ class ImputationLine {
 				$elt->idAssignment=null;
 				$elt->locked=true;
 			}
-			if ( ! ($user->id = $resourceId or $scopeCode!='ALL' or ($scopeCode='PRO' and array_key_exists($ass->idProject, $visibleProjects) ) ) ) {
-				$elt->locked=true;
-			}
+			//if ( ! ($user->id = $resourceId or $scopeCode!='ALL' or ($scopeCode='PRO' and array_key_exists($ass->idProject, $visibleProjects) ) ) ) {
+			//	$elt->locked=true;
+			//}
 			$key=$elt->wbsSortable . ' ' . $ass->refType . '#' . $ass->refId;
 			if (array_key_exists($key,$result)) {
 				$key.= '/#' . $ass->id;

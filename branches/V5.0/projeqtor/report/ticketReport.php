@@ -107,7 +107,7 @@ if (! isset($includedReport)) {
   }
   include "header.php";
 }
-$where=getAccesResctictionClause('Ticket',false);
+$where=getAccesRestrictionClause('Ticket',false);
 if ($periodType) {
   $start=date('Y-m-d');
   $end=date('Y-m-d');
