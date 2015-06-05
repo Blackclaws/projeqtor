@@ -1114,7 +1114,10 @@ class User extends SqlElement {
   }
   
   private $_allSpecificRightsForProfiles=array();
+  
   public function getAllSpecificRightsForProfiles($specific) {
+    SqlElement::$_cachedQuery['AccessScope']=array();
+    SqlElement::$_cachedQuery['ListYesNo']=array();
     if (isset($this->_allSpecificRightsForProfiles[$specific])) {
       return $this->_allSpecificRightsForProfiles[$specific];
     }
@@ -1122,9 +1125,15 @@ class User extends SqlElement {
     foreach ($this->getAllProfiles() as $prof) {
       $crit=array('scope'=>$specific, 'idProfile'=>$prof);
       $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-      $scope=new AccessScope($habilitation->rightAccess);
-      if (!isset($result[$scope->accessCode])) $result[$scope->accessCode]=array();
-      $result[$scope->accessCode][$prof]=$prof;
+      if ($specific=='planning') {
+        $scope=new ListYesNo($habilitation->rightAccess);
+        $code=$scope->code;
+      } else {
+        $scope=new AccessScope($habilitation->rightAccess);
+        $code=$scope->accessCode;
+      }
+      if (!isset($result[$code])) $result[$code]=array();
+      $result[$code][$prof]=$prof;
     }
     $this->_allSpecificRightsForProfiles[$specific]=$result;
     if ($this->id==getSessionUser()->id) {
@@ -1148,14 +1157,38 @@ class User extends SqlElement {
   }
   
   public function getListOfPlannableProjects() {
-    $rightsList=$this->getAllSpecificRightsForProfiles('planning');
-    $affProjects=$this->getSpecificAffectedProfiles(); 
+    $rightsList=$this->getAllSpecificRightsForProfiles('planning'); // Get planning rights for all user profiles
+    $affProjects=$this->getSpecificAffectedProfiles();              // Affected projects, with profile
     $result=array();
-    // !!! returm for YES is NO (because of conversion for accessScope)
-    if (! isset ($rightsList['NO'])) return $result; 
-    foreach ($affProjects as $prj=>$prf) {
-      if (isset($rightsList['NO'][$prf])) {
-        $result[$prj]=$prj;
+    $defProfile=$this->idProfile;
+    $access="NO";
+    $accessList=$this->getAccessControlRights();                    // Get acces rights
+    $canPlan=false;
+    $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$defProfile, 'scope'=>'planning'));
+    if ($right) {
+      $list=new ListYesNo($right->rightAccess);
+      if ($list->code=='YES') {
+        $canPlan=true;
+      }
+    }
+    if (isset($accessList['menuProject'])) {                        // Retrieve acces rights for projects
+      $access=$accessList['menuProject']['update'];                 // Retrieve update acces right for projects
+    }
+    if ($access=='ALL' and $canPlan) {        // Update rights for project = "ALL" (admin type) and Can Plan for defaut project
+      // List of plannable project is list of all project minus list of affected with no plan right
+      $result=$this->getVisibleProjects();
+      foreach ($affProjects as $prj=>$prf) {
+        if (isset($rightsList['NO'][$prf])) {
+          unset($result[$prj]);
+        }
+      }
+    } else {
+      // List of plannable project is list of all project minus list of affected with no plan right
+      if (! isset ($rightsList['YES'])) return $result; // Return empty array
+      foreach ($affProjects as $prj=>$prf) {
+        if (isset($rightsList['YES'][$prf])) {
+          $result[$prj]=$prj;
+        }
       }
     }
     return $result;
