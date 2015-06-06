@@ -36,38 +36,44 @@ class MeetingPlanningElement extends PlanningElement {
   public $refId;
   public $refName;
 
-  public $_tab_4_1=array('validated','assigned', 'real', 'left', 'work');
+  public $_tab_4_2=array('validated','assigned', 'real', 'left', 'work','cost');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
   public $leftWork;
+  public $validatedCost;
+  public $assignedCost;
+  public $realCost;
+  public $leftCost;
   public $priority;
   public $idMeetingPlanningMode;
   
   private static $_fieldsAttributes=array(
     "initialStartDate"=>"hidden",
-    "plannedStartDate"=>"hidden,noImport",
     "validatedStartDate"=>"hidden",
+    "plannedStartDate"=>"hidden,noImport",
     "realStartDate"=>"hidden,noImport",
-    "plannedEndDate"=>"hidden,noImport",
-    "realEndDate"=>"hidden,noImport",
     "initialEndDate"=>"hidden",
     "validatedEndDate"=>"hidden",
+    "plannedEndDate"=>"hidden,noImport",
+    "realEndDate"=>"hidden,noImport",
+    "initialDuration"=>"hidden",
+    "validatedDuration"=>"hidden",  
     "plannedDuration"=>"hidden,noImport",
     "realDuration"=>"hidden,noImport",
-    "initialDuration"=>"hidden",
-    "validatedDuration"=>"hidden",
     "initialWork"=>"hidden",
-    "plannedWork"=>"hidden,noImport",
-  	"notPlannedWork"=>"hidden",
+    "validatedWork"=>"",
+    "assignedWork"=>"readonly,noImport", 
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
-    "assignedWork"=>"readonly,noImport",
-    "validatedCost"=>"hidden",
-    "assignedCost"=>"hidden,readonly,noImport",
+    "plannedWork"=>"hidden,noImport",
+  	"notPlannedWork"=>"hidden",
+    "initialCost"=>"hidden",
+    "validatedCost"=>"",
+    "assignedCost"=>"readonly,noImport",
+    "realCost"=>"readonly,noImport",
+    "leftCost"=>"readonly,noImport",
     "plannedCost"=>"hidden,noImport",
-    "realCost"=>"hidden,readonly,noImport",
-    "leftCost"=>"hidden,readonly,noImport",
     "progress"=>"hidden,noImport",
     "expectedProgress"=>"hidden,noImport",
     //"priority"=>"hidden",
@@ -96,28 +102,28 @@ class MeetingPlanningElement extends PlanningElement {
   }
   
   private function hideWorkCost() {
-    unset($this->_tab_4_1);
+    unset($this->_tab_4_2);
   	self::$_fieldsAttributes['validatedWork']='hidden';
     self::$_fieldsAttributes['assignedWork']='hidden';
     self::$_fieldsAttributes['realWork']='hidden';
     self::$_fieldsAttributes['leftWork']='hidden';
-    //self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['validatedCost']='hidden';
     self::$_fieldsAttributes['assignedCost']='hidden';
     self::$_fieldsAttributes['realCost']='hidden';
     self::$_fieldsAttributes['leftCost']='hidden';
     //self::$_fieldsAttributes['priority']='hidden';
   }
   private function showWorkCost() {
-  	$this->_tab_4_1 = array('validated','assigned', 'real', 'left', 'work');
+  	$this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
   	//$this->_sec_progress=true;
     self::$_fieldsAttributes['validatedWork']='';
     self::$_fieldsAttributes['assignedWork']='readonly';
     self::$_fieldsAttributes['realWork']='readonly';
     self::$_fieldsAttributes['leftWork']='readonly';    
-    //self::$_fieldsAttributes['validatedCost']='hidden';
-    self::$_fieldsAttributes['assignedCost']='hidden';
-    self::$_fieldsAttributes['realCost']='hidden';
-    self::$_fieldsAttributes['leftCost']='hidden';
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='readonly';
+    self::$_fieldsAttributes['realCost']='readonly';
+    self::$_fieldsAttributes['leftCost']='readonly';
     //self::$_fieldsAttributes['priority']='';
   }
   
