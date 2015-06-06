@@ -71,7 +71,7 @@ if (!$user->id) {
 traceLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
 setSessionUser($user);
 
-IF ($_SERVER['REQUEST_METHOD']=='GET') {
+if ($_SERVER['REQUEST_METHOD']=='GET') {
   if (isset($_REQUEST['uri'])) {
     $uri=$_REQUEST['uri'];
     $split=explode('/',$uri);
@@ -275,16 +275,26 @@ function jsonDumpObj($obj, $included=false) {
 		                 or $fld=='handled' or $fld=='done' or $fld=='idle' or $fld=='cancelled') ) {
 			// Nothing
 		} else {
+		  if ($fld=='name' and property_exists($obj, '_isNameTranslatable') and $obj->_isNameTranslatable) { $val=i18n($val); }
 		  if ($res!="") { $res.=", ";}
 		  $res.='"' . htmlEncode($fld) . '":"' . htmlEncodeJson($val) . '"';
 		  if (substr($fld,0,2)=='id' and strlen($fld)>2) {
 		  	$idclass=substr($fld,2);
 		  	if (strtoupper(substr($idclass,0,1))==substr($idclass,0,1) and property_exists($idclass, 'name')) {
 		  		$res.=", ";
-		  		$res.='"name' . $idclass . '":"' . htmlEncodeJson(SqlList::getNameFromId($idclass, $val)) . '"';
+		  		$val2=SqlList::getNameFromId($idclass, $val);
+		  		$res.='"name' . $idclass . '":"' . htmlEncodeJson($val2) . '"';
 		  	}
-		  }
+		  } 
 		}  
+	}
+	if (property_exists($obj, 'refId') and property_exists($obj, 'refType') and !property_exists($obj, 'refName') and
+		 $obj->refId!="" and $obj->refType!="") {
+		$idclass=$obj->refType;
+		if (strtoupper(substr($idclass,0,1))==substr($idclass,0,1) and property_exists($idclass, 'name')) {
+			$res.=", ";
+			$res.='"refName":"' . htmlEncodeJson(SqlList::getNameFromId($idclass, $obj->refId)) . '"';
+		}
 	}
 	return $res;
 }
