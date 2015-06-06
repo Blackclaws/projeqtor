@@ -626,7 +626,7 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
 }
 
 function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause=false, $excludeResourceClause=false) {
-  if (! property_exists($objectClass,'idProject')) return ''; // If not project depedant, no extra clause
+  if (! property_exists($objectClass,'idProject')) return '(1=1)'; // If not project depedant, no extra clause
   
   $obj = new $objectClass ();
   $user=getSessionUser();
