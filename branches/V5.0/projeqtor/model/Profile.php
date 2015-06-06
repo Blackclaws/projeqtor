@@ -96,5 +96,23 @@ class Profile extends SqlElement {
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
+  
+  public function copy() {
+    $result=parent::copy();
+    $new=$result->id;
+    $toCopy=array('AccessRight', 'Habilitation', 'HabilitationOther', 'HabilitationReport');
+    foreach ($toCopy as $objectClass) {
+      $obj=new $objectClass();
+      $crit=array('idProfile'=>$this->id);
+      $lst=$obj->getSqlElementsFromCriteria($crit);
+      foreach ($lst as $obj) {
+        $obj->idProfile=$new;
+        $obj->id=null;
+        $obj->save();
+      }
+    }
+    Sql::$lastQueryNewid=$new;
+    return $result;
+  }
 }
 ?>
