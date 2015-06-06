@@ -5287,6 +5287,7 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
   var top=node.getBoundingClientRect().top;
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
+  var width=node.getBoundingClientRect().width;
   if (!height)
     height=40;
   if (objectClass == 'Affectable' || objectClass == 'Resource'
@@ -5313,6 +5314,9 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     }
     var topPx=(top - 40 + (height / 2)) + "px";
     var leftPx=(left - 85) + "px";
+    if (parseInt(leftPx)<3) {
+      leftPx=(left+width+5)+"px";
+    }
     centerThumb80.innerHTML=htmlPhoto;
     centerThumb80.style.top=topPx;
     centerThumb80.style.left=leftPx;
