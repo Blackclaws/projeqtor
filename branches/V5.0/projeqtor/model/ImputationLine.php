@@ -76,7 +76,8 @@ class ImputationLine {
 
 	static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, 
 			$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
-	  
+	  //SqlElement::$_cachedQuery['Assignment']=array();
+	  //SqlElement::$_cachedQuery['PlanningElement']=array();
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
@@ -610,7 +611,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
         . ' value="' . $line->locked . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
-			echo '<img src="css/images/icon' . $line->refType . '16.png" />';
+			echo '<img src="css/images/icon' . $line->refType . '16.png" onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');"/>';
 			echo '</td>';
 			echo '<td class="ganttName" >';
 			// tab the name depending on level
