@@ -382,7 +382,6 @@ class User extends SqlElement {
     if ($this->id==getSessionUser()->id) {
       setSessionUser($this); // Store user to cache Data
     }
-debugLog($accessRight);
     return $this->_accessControlRights[$profile];
   }
 
