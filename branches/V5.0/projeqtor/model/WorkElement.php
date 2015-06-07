@@ -35,10 +35,11 @@ class WorkElement extends SqlElement {
 	public $refId;
 	public $idActivity;
 	public $refName;
-	public $_tab_3_1 = array('planned', 'real','left','work');
+	public $_tab_4_1 = array('planned', 'real','left','','work');
 	public $plannedWork;
 	public $realWork;
 	public $leftWork;
+	public $_spe_dispatch;
 	public $_spe_run;
 	public $idUser;
 	public $ongoing;
@@ -370,7 +371,23 @@ class WorkElement extends SqlElement {
 			}
 			$result .= '</div>';
 			return $result;
-			return $result;
+		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle) {
+			if ($print) {
+				return "";
+			}
+			$user = getSessionUser();
+			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');
+			if ($canUpdate and $this->id) {
+			  $result .= '<div style="position:absolute; right:2px;width:80px !important;top:195px;text-align:right;">';
+				$result .= '<button id="dispatchWork" dojoType="dijit.form.Button" showlabel="true"';
+				$result .= ' title="'.i18n('dispatchWork').'" style="max-width:77px;vertical-align: middle;">';
+				$result .= '<span>' . i18n('dispatchWorkShort') . '</span>';
+				$result .= '<script type="dojo/connect" event="onClick" args="evt">';
+				$result .= 'dispatchWork("' . $this->refType . '",' . $this->refId . ');';
+				$result .= '</script>';
+				$result .= '</button>';
+				$result.='</div>';
+			}
 		}
 		return $result;
 	}

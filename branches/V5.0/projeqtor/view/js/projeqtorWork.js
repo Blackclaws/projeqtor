@@ -334,3 +334,11 @@ function saveImputation() {
     submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
   }
 }
+
+function dispatchWork(refType, refId) {
+  var params="&refType=" + refType+"&refId="+refId;
+  if (dijit.byId('WorkElement_realWork')) {
+    params+="&work="+dijit.byId('WorkElement_realWork').get('value');
+  }
+  loadDialog('dialogDispatchWork', null, true, params, true);
+}

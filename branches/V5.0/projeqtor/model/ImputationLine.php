@@ -611,7 +611,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
         . ' value="' . $line->locked . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
-			echo '<img src="css/images/icon' . $line->refType . '16.png" onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');"/>';
+			echo '<img src="css/images/icon' . $line->refType . '16.png" onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');" onmouseout="hideBigImage();"/>';
 			echo '</td>';
 			echo '<td class="ganttName" >';
 			// tab the name depending on level
