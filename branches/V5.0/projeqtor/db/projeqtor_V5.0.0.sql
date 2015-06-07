@@ -187,11 +187,40 @@ UPDATE `${prefix}planningmode` SET code='FIXED' WHERE name='PlanningModeFIXED';
 
 ALTER TABLE `${prefix}resource` ADD `function` VARCHAR(100) default NULL;
 
+INSERT INTO `${prefix}list` (`id`, `list`, `name`, `code`, `sortOrder`, `idle`) VALUES
+(1000001, 'readWrite', 'displayWrite', 'WRITE', 10, 0),
+(1000002, 'readWrite', 'displayReadOnly', 'READ', 20, 0);
+
+UPDATE `${prefix}menu` SET level='Project' 
+where name in ('menuBill', 'menuTerm', 'menuActivityPrice');
+
+UPDATE `${prefix}menu` SET level='ReadWriteEnvironment' 
+where name in ('menuProduct', 'menuVersion', 'menuActivityPrice', 'menuUser', 'menuResource', 'menuContact', 'menuClient','menuRecipient',
+'menuTeam','menuWorkflow','menuDocumentDirectory', 'menuCalendar',
+'menuStatusMail', 'menuTicketDelay','menuIndicatorDefinition','menuPredefinedNote', 'menuChecklistDefinition');
+UPDATE `${prefix}menu` SET level='ReadWriteType' 
+where idMenu=79;
+UPDATE `${prefix}menu` SET level='ReadWriteList' 
+where idMenu=36;
+
+ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(135, 'menuAccessRightNoProject', 37, 'item', 968, NULL, 0, 'HabilitationParameter');
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 135, 1),
+(2, 135, 0),
+(3, 135, 0),
+(4, 135, 0),
+(5, 135, 0),
+(6, 135, 0),
+(7, 135, 0);
+
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
+
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuProject';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuDocument';
@@ -305,6 +334,7 @@ UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuAc
 UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuHabilitation';
 UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuHabilitationReport';
 UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuAccessRight';
+UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuAccessRightNoProject';
 UPDATE `${prefix}menu` SET menuClass='HabilitationParameter ' WHERE name='menuHabilitationOther';
 UPDATE `${prefix}menu` SET menuClass='Admin ' WHERE name='menuAdmin';
 UPDATE `${prefix}menu` SET menuClass='Admin ' WHERE name='menuAudit';

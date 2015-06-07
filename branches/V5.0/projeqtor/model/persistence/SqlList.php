@@ -100,7 +100,11 @@ class SqlList {
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
     	if ($obj->getDatabaseColumnName($col)=='idProject' and ($val=='*' or !$val)) {$val=0;}
-      $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
+    	if ($val===null) {
+    	  $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . ' IS NULL';
+    	} else {
+        $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
+    	}
     }
     $query .=')';
     if ($selectedValue) {

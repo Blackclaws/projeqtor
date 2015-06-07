@@ -1562,9 +1562,9 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
-    if ($accessRight == 'NO') {
+    if ($accessRight == 'NO' or $accessRight=='READ') {
       // will return no
-    } else if ($accessRight == 'ALL') {
+    } else if ($accessRight == 'ALL' or $accessRight=='WRITE') {
       $accessRight = 'YES';
     } else if ($accessRight == 'PRO') {
       $accessRight = 'NO';

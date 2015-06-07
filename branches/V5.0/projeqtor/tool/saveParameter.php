@@ -157,6 +157,31 @@ if ($type=='habilitation') {
     }
     resetUser();
   }
+} else if ($type=='accessRightNoProject') {
+  $tableCrossRef=array('menuReadWriteEnvironment','menuReadWriteList','menuReadWriteType');
+  foreach ($tableCrossRef as $crossRef) {
+    $crosTable=htmlGetCrossTable($crossRef, 'profile', 'accessRight') ;
+    foreach($crosTable as $lineId => $line) {
+      foreach($line as $colId => $val) {
+        $crit['idMenu']=$lineId;
+        $crit['idProfile']=$colId;
+        $obj=SqlElement::getSingleSqlElementFromCriteria('AccessRight', $crit);
+        $obj->idAccessProfile=$val;
+        $result=$obj->save();
+        $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
+        $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
+        if ($isSaveNO_CHANGE===false) {
+          if ($isSaveOK===false) {
+            $status="ERROR";
+            $errors=$result;
+          } else if ($status=="NO_CHANGE") {
+            $status="OK";
+          }
+        }
+      }
+    }
+    resetUser();
+  }
 } else if ($type=='userParameter') {
   $parameterList=Parameter::getParamtersList($type);
   foreach($_REQUEST as $fld => $val) {

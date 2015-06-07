@@ -55,6 +55,7 @@ switch ($type) {
 	case ('habilitation'):
 	case ('habilitationReport'):
 	case ('accessRight'):
+	case ('accessRightNoProject'):
 	case ('habilitationOther'):
 		break;
 	default:
@@ -230,7 +231,7 @@ function drawTableFromObjectList($objectList) {
 <div id="parameterButtonDiv" class="listTitle" style="z-index:3;overflow:visible"
   dojoType="dijit.layout.ContentPane" region="top">
   <div id="resultDiv" dojoType="dijit.layout.ContentPane"
-      region="top" style="padding:5px;max-height:100px;padding-left:300px;z-index:999"></div>
+      region="top" style="padding:5px;padding-bottom:20px;max-height:100px;padding-left:300px;z-index:999"></div>
 <table width="100%">
   <tr>
     <td width="50px" align="center"><img
@@ -266,7 +267,35 @@ function drawTableFromObjectList($objectList) {
   if ($type=='habilitation') {
   	htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check', null,'idMenu') ;
   } else if ($type=='accessRight') {
-  	htmlDrawCrossTable('menuProject', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'accessProfile', 'idMenu') ;
+  	htmlDrawCrossTable('menuProject', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'accessProfile', 'idMenu');
+  } else if ($type=='accessRightNoProject') {
+  	$titlePane="habilitation_ReadWriteEnvironment";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('menuEnvironmentalParameter') . '">';
+  	htmlDrawCrossTable('menuReadWriteEnvironment', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'listReadWrite') ;
+  	echo '</div><br/>';
+  	$titlePane="habilitation_ReadWriteList";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('menuListOfValues') . '">';
+  	htmlDrawCrossTable('menuReadWriteList', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'listReadWrite') ;
+  	echo '</div><br/>';
+  	$titlePane="habilitation_ReadWriteType";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('menuType') . '">';
+  	htmlDrawCrossTable('menuReadWriteType', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'listReadWrite') ;
+  	echo '</div><br/>';
   } else if ($type=='habilitationReport') {
   	htmlDrawCrossTable('report', 'idReport', 'profile', 'idProfile', 'habilitationReport', 'allowAccess', 'check', null, 'idReportCategory') ;
   } else if ($type=='habilitationOther') {

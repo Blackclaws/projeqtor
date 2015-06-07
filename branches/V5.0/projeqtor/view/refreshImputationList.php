@@ -31,6 +31,7 @@
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 scriptLog('   ->/view/refrehImputationList.php'); 
+
 $rangeType=$_REQUEST['rangeType'];
 $rangeValue=$_REQUEST['rangeValue'];
 $userId=$_REQUEST['userId'];
@@ -76,5 +77,6 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
 ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
+debugLog("refreshImputationList - End");
 ?>
 </form>

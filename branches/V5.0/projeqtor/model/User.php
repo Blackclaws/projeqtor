@@ -314,6 +314,8 @@ class User extends SqlElement {
    */
   public function getAccessControlRights($obj=null) {
     // _accessControlRights fetched yet, just return it
+    SqlElement::$_cachedQuery['AccessProfile']=array();
+    
     $profile=$this->idProfile;
     if ($obj) {
       $profile=$this->getProfile($obj);
@@ -324,17 +326,19 @@ class User extends SqlElement {
     $menuList=SqlList::getListNotTranslated('Menu');
     $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
     $allAccessArray=array( 'read' => 'ALL', 'create' => 'ALL', 'update' => 'ALL', 'delete' => 'ALL');
+    $readAccessArray=array( 'read' => 'ALL', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
     // first time function is called for object, so go and fetch data
     $this->_accessControlVisibility='PRO';
     $accessControlRights=array();
     $accessScopeList=SqlList::getList('AccessScope', 'accessCode');
+    $accessScopeRW=SqlList::getList('ListReadWrite', 'code');
     $accessRight=new AccessRight();
     $crit=array('idProfile'=>$profile);
     $accessRightList=$accessRight->getSqlElementsFromCriteria( $crit, false);
     $habilitation=new Habilitation();
     $crit=array('idProfile'=>$profile, 'allowAccess'=>'1');
     $habilitationList=$habilitation->getSqlElementsFromCriteria( $crit, false);
-    foreach ($habilitationList as $hab) {
+    foreach ($habilitationList as $hab) { // if allowAcces = 1 in habilitation (access to screen), default access is all
     	if (array_key_exists($hab->idMenu,$menuList)) {
     	  $menuName=$menuList[$hab->idMenu];
     	  $accessControlRights[$menuName]=$allAccessArray;
@@ -345,11 +349,20 @@ class User extends SqlElement {
       if (! $menuName or ! array_key_exists($menuName, $accessControlRights)) {
         $accessControlRights[$menuName]=$noAccessArray;	
       } else {
-        $accessProfile=new AccessProfile($arObj->idAccessProfile);
-        $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
-                           'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
-                           'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
-                           'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete] );
+        if ($arObj->idAccessProfile<1000000) {
+          $accessProfile=new AccessProfile($arObj->idAccessProfile);
+          $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
+                             'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
+                             'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
+                             'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete] );
+        } else {
+           $RW=$accessScopeRW[$arObj->idAccessProfile];
+           if ($RW=='WRITE') {
+             $scopeArray=$allAccessArray;
+           } else {
+             $scopeArray=$readAccessArray;
+           }
+        }
         $accessControlRights[$menuName]=$scopeArray;
         if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {
           $this->_accessControlVisibility='ALL';
@@ -369,6 +382,7 @@ class User extends SqlElement {
     if ($this->id==getSessionUser()->id) {
       setSessionUser($this); // Store user to cache Data
     }
+debugLog($accessRight);
     return $this->_accessControlRights[$profile];
   }
 
