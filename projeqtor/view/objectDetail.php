@@ -2911,6 +2911,8 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create') == "YES";
   if (! (securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj) == "YES") ) {
     $canCreate=false;
+    $canUpdate=false;
+    $canDelete=false;
   }
   if ($obj->idle == 1) {
     $canUpdate=false;
@@ -2950,6 +2952,11 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   foreach ( $list as $aff ) {
     $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $aff) == "YES";
     $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete', $aff) == "YES";
+    if (! (securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj) == "YES") ) {
+      $canCreate=false;
+      $canUpdate=false;
+      $canDelete=false;
+    }
     if ($obj->idle == 1) {
       $canUpdate=false;
       $canCreate=false;

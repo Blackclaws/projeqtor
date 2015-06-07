@@ -176,12 +176,16 @@ class Affectable extends SqlElement {
     }
   }
   
-  public static function showBigImageEmpty($extraStylePosition) {
+  public static function showBigImageEmpty($extraStylePosition, $canAdd=true) {
     $result='<div style="position: absolute;'.$extraStylePosition.';'
       .'border-radius:40px;width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%;'
-      .'text-align:center;cursor: pointer;" '
-      .' onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'">'
-      .'<br/><br/><br/>'.i18n('addPhoto').'</div>';
+      .'text-align:center;'; 
+    if ($canAdd) {
+      $result.='cursor: pointer;"  onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'">';
+      $result.='<br/><br/><br/>'.i18n('addPhoto').'</div>';
+    } else {
+      $result.='" ></div>';
+    }
     return $result;
   }
   public static function showBigImage($extraStylePosition,$affId,$filename, $attachmentId) {
@@ -201,8 +205,11 @@ class Affectable extends SqlElement {
         //$result.='<td>&nbsp;&nbsp;';
         $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
+        $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
+        if ($canUpdate) {
         $result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
             .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+        }
         $horizontal='right:10px';
         $top='30px';
         $result.='</span>';
@@ -231,10 +238,13 @@ class Affectable extends SqlElement {
         //$result.='<td>&nbsp;&nbsp;';
         $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
-        $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+        $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
+        if ($canUpdate) {
+         $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+        }
         $result.='</span>';
         $extraStyle='top:30px;'.$horizontal;
-        $result.=Affectable::showBigImageEmpty($extraStyle);
+        $result.=Affectable::showBigImageEmpty($extraStyle,$canUpdate);
         //$result.='</td>';
         //$result.='</tr>';
         
