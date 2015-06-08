@@ -76,7 +76,7 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=getSessionUser();
-$queryWhere=getAccesRestrictionClause('Activity',false);
+$queryWhere=getAccesRestrictionClause('Activity',false,false,true,true);
 
 if ($idProject!='') {
   $queryWhere.=  " and idProject in " . getVisibleProjectsList(true, $idProject) ;

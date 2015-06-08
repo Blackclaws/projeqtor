@@ -65,7 +65,7 @@ if ($paramTeam!="") {
 }
 include "header.php";
 
-$where=getAccesRestrictionClause('Affectation',false);
+$where=getAccesRestrictionClause('Affectation',false,false,true,true);
 
 $resources=array();
 $resourceCalendar=array();

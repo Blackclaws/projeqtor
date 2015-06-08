@@ -76,7 +76,7 @@ $user=getSessionUser();
 
 $query = "select count(id) as nb, id" . $refType . "Type as idType, idStatus ";
 $query .= " from " . $obj->getDatabaseTableName();
-$query.=" where " . getAccesRestrictionClause($refType,false);
+$query.=" where " . getAccesRestrictionClause($refType,false,false,true,true);
 if ($paramProject!='') {
   $query.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;
 }

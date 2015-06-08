@@ -56,8 +56,8 @@ $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=getSessionUser();
 
-$queryWhereW=getAccesRestrictionClause('Activity','w');
-$queryWhereExp=getAccesRestrictionClause('Activity','exp');
+$queryWhereW=getAccesRestrictionClause('Activity','w',false,true,true);
+$queryWhereExp=getAccesRestrictionClause('Activity','exp',false,true,true);
 
 if ($idProject!='') {
   $queryWhereW.=  " and w.idProject in " . getVisibleProjectsList(true, $idProject) ;

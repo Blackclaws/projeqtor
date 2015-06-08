@@ -69,7 +69,7 @@ if ( $periodType=='week') {
 
 include "header.php";
 
-$where=getAccesRestrictionClause('Activity',false);
+$where=getAccesRestrictionClause('Activity',false,false,true,true);
 if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
   $where.= ($where=='')?'':' and ';
   $where.=  " idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;

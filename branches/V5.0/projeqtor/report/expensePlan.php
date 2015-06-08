@@ -55,7 +55,7 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=getSessionUser();
-$queryWhere=getAccesRestrictionClause('ProjectExpense','exp');
+$queryWhere=getAccesRestrictionClause('ProjectExpense','exp',false,true,true);
 //echo $queryWhere;
 
 if ($idProject!='') {
