@@ -1045,9 +1045,14 @@ abstract class SqlElement {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . $class => $this->id);
-					if (! property_exists($obj, 'id' . $class) and property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-						$crit=array("refType"=>$class, "refId"=>$this->id);
-					}
+					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+					  if (property_exists($this,'id' . $class)) {
+					    $crit=null;
+					    $where="id".$class."=".$this->id." or (refType='".$class."' and refId=".$this->id.")";
+					  } else {
+					    $crit=array("refType"=>$class, "refId"=>$this->id);
+					  }
+					}					
 					if ($object=="Dependency") {
 						$crit=null;
 						$where="(predecessorRefType='" . $class . "' and predecessorRefId=" . Sql::fmtId($this->id) .")"
@@ -2870,8 +2875,12 @@ abstract class SqlElement {
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-						//if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachment") {
-						$crit=array("refType"=>get_class($this), "refId"=>$this->id);
+						if (property_exists($this,'id' . get_class($this))) {
+						  $crit=null;
+						  $where="id".get_class($this)."=".$this->id." or (refType='".get_class($this)."' and refId=".$this->id.")";
+						} else {
+					    $crit=array("refType"=>get_class($this), "refId"=>$this->id);
+						}
 					}
 					if ($object=="Dependency") {
 						$crit=null;

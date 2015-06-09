@@ -39,8 +39,8 @@ class WorkElement extends SqlElement {
 	public $plannedWork;
 	public $realWork;
 	public $leftWork;
-	public $_spe_dispatch;
 	public $_spe_run;
+	public $_spe_dispatch;
 	public $idUser;
 	public $ongoing;
 	public $ongoingStartDateTime;
@@ -116,10 +116,9 @@ class WorkElement extends SqlElement {
 	protected function getStaticColCaptionTransposition($fld) {
 		return self::$_colCaptionTransposition;
 	}
-	public function save() {
+	public function save($noDispatch=false) {
 		$old = $this->getOld ();
-		if (! sessionUserExists())
-			return parent::save ();
+		if (! sessionUserExists()) return parent::save ();
 		$user = getSessionUser();
 		// Update left work
 		$this->leftWork = $this->plannedWork - $this->realWork;
@@ -141,7 +140,7 @@ class WorkElement extends SqlElement {
 			$this->leftWork = 0;
 			$this->done = 1;
 		}
-		if ($top and property_exists ( $top, 'idActivity' )) {
+		if ($top and property_exists ( $top, 'idActivity' ) and ! $noDispatch) {
 			$this->idActivity = $top->idActivity;
 			// Check if changed Planning Activity
 			if (! trim ( $old->idActivity ) and $old->idActivity != $this->idActivity) {
@@ -155,11 +154,15 @@ class WorkElement extends SqlElement {
 					$work->refType = 'Activity';
 					$work->refId = $this->idActivity;
 					$work->idAssignment = $this->updateAssignment ( $work, $work->work );
+					$work->idWorkElement=$this->id;
 					$work->save ();
 				}
 			}
 		}
 		$result = parent::save ();
+		if ($noDispatch) {
+		  return $result;
+	  }
 		$diff = $this->realWork - $old->realWork;
 		if ($diff != 0) {
 			// Set work to Ticket
@@ -194,6 +197,7 @@ class WorkElement extends SqlElement {
 				$work->idResource = $user->id;
 				$work->idProject = $topProject;
 				$work->dailyCost = 0;
+				$work->idWorkElement=$this->id;
 				$work->cost = 0;
 			}
 			if ($diff > 0) {
@@ -208,6 +212,7 @@ class WorkElement extends SqlElement {
 				}
 				$work->idProject = $topProject;
 				$work->idAssignment = $this->updateAssignment ( $work, $diff );
+				$work->idWorkElement=$this->id;
 				$work->save ();
 			} else {
 				while ( $diff < 0 and $idx >= 0 ) {
@@ -222,6 +227,7 @@ class WorkElement extends SqlElement {
 						$work->work = 0;
 					}
 					$work->idAssignment = $this->updateAssignment ( $work, $valDiff );
+					$work->idWorkElement=$this->id;
 					if ($work->work == 0) {
 						if ($work->id) {
 							$work->delete ();
@@ -321,7 +327,7 @@ class WorkElement extends SqlElement {
 	 * @return an html string able to display a specific item
 	 *         must be redefined in the inherited class
 	 */
-	public function drawSpecificItem($item) {
+	public function drawSpecificItem($item, $included=false) {
 		global $print, $comboDetail, $nbColMax;
 		$result = "";
 		$refObj = new $this->refType ( $this->refId );
@@ -334,10 +340,10 @@ class WorkElement extends SqlElement {
 			if ($this->ongoing) {
 				$title = i18n ( 'stopWork' );
 			}
-			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');
-			if ($user->isResource and $canUpdate and $this->id) {
-				$result .= '<div style="position:absolute; right:2px;width:150px !important';
-        $result .= ' border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
+			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');			
+			$result .= '<div style="position:absolute; right:2px;width:150px !important';
+      $result .= ' border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
+      if ($user->isResource and $canUpdate and $this->id) {
 				$result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';
 				if (($this->ongoing and $this->idUser != $user->id) or ! $user->isResource) {
 					$result .= ' disabled="disabled" ';
@@ -349,6 +355,10 @@ class WorkElement extends SqlElement {
 				// $result .= ' loadContent("../tool/startStopWork.php?action=' . (($this->ongoing) ? 'stop' : 'start') . '","resultDiv","objectForm",true);';
 				$result .= '</script>';
 				$result .= '</button><br/>';
+				
+			}
+			if ($canUpdate and $this->id and property_exists($this,'_spe_dispatch')) {
+			  $result.=$this->drawSpecificItem('dispatch', true);
 			}
 			if ($this->ongoing) {
 				if ($this->idUser == $user->id) {
@@ -371,14 +381,14 @@ class WorkElement extends SqlElement {
 			}
 			$result .= '</div>';
 			return $result;
-		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle) {
+		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and $included) {
 			if ($print) {
 				return "";
 			}
 			$user = getSessionUser();
 			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');
 			if ($canUpdate and $this->id) {
-			  $result .= '<div style="position:absolute; right:2px;width:80px !important;top:195px;text-align:right;">';
+			  $result .= '<div style="position:absolute; right:0px;width:80px !important;top:-24px;text-align:right;">';
 				$result .= '<button id="dispatchWork" dojoType="dijit.form.Button" showlabel="true"';
 				$result .= ' title="'.i18n('dispatchWork').'" style="max-width:77px;vertical-align: middle;">';
 				$result .= '<span>' . i18n('dispatchWorkShort') . '</span>';
