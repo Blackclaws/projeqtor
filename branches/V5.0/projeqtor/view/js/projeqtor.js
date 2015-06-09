@@ -884,10 +884,10 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='checklistDefinitionLine') {
         loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
       } else if (validationType=='testCaseRun') {
-    	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
-    	  loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
-    	}
+    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
+    	    loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
+    	  }
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
@@ -913,6 +913,8 @@ function finalizeMessageDisplay(destination, validationType) {
     	  hideWait(); 
       } else  if (validationType=='checklist'){
     	  hideWait(); 
+      } else  if (validationType=='dispatchWork'){
+        hideWait();
       } else if (lastOperation!='plan') {
     	  if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
             loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -1852,7 +1854,6 @@ function drawGantt() {
       }
       if (pEnd<pStart) pEnd=pStart;
       //
-//console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
       var realWork=parseFloat(item.realwork);
       var plannedWork=parseFloat(item.plannedwork);
       var progress=0;
@@ -2272,6 +2273,9 @@ function globalSave() {
     var button=dijit.byId('dialogChecklistSubmit');  
   } else if (dijit.byId('dialogCreationInfo') && dijit.byId('dialogCreationInfo').open) {
     var button=dijit.byId('dialogCreationInfoSubmit');  
+  } else if (dijit.byId('dialogDispatchWork') && dijit.byId('dialogDispatchWork').open) {
+    var button=dijit.byId('dialogDispatchWorkSubmit');  
+  
   } else {
     var button=dijit.byId('saveButton');
   }

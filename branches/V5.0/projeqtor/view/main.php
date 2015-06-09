@@ -89,6 +89,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojo.dnd.Container");
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
+    dojo.require("dojo.dom-construct");
     dojo.require("dojo.dom-geometry");
     dojo.require("dojo.i18n");
     dojo.require("dojo.fx.easing");

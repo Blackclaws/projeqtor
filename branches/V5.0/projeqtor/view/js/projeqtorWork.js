@@ -342,3 +342,72 @@ function dispatchWork(refType, refId) {
   }
   loadDialog('dialogDispatchWork', null, true, params, true);
 }
+
+function addDispatchWorkLine(unit,nbLines) {
+  index=updateDispatchWorkTotal();
+  var tr = dojo.create("tr", {}, "dialogDispatchTable");
+  var td1= dojo.create("td", {}, tr);
+  var td2= dojo.create("td", {}, tr);
+  var td3= dojo.create("td", {}, tr);
+  var td4= dojo.create("td", {}, tr);
+  var td5= dojo.create("td", {}, tr);
+  var td6= dojo.create("td", {}, tr);
+  
+  workDateId="dispatchWorkDate_"+index;
+  var dt = new dijit.form.DateTextBox({
+    'class': "input",
+    name: "dispatchWorkDate[]",
+    id: workDateId,
+    maxlength: "10",
+    style: "width:100px; text-align: center;",
+    hasDownArrow: "true"
+  },td1);
+  
+  workResourceId="dispatchWorkResource_"+index;
+  var lst = new dijit.form.FilteringSelect({
+    'class': "input",
+    id: workResourceId,
+    name: "dispatchWorkResource[]",
+    style: "width:150px;"
+  },td3);
+  
+  workValueId="dispatchWorkValue_"+index;
+  var val= new dijit.form.NumberTextBox({
+    'class': "input",
+    id: workValueId,
+    name: "dispatchWorkValue[]",
+    style: "width:50px;",
+    value: 0,
+    onChange:  function(){
+      updateDispatchWorkTotal();
+    }
+  },td5);
+  td6.innerHTML+='&nbsp;'+unit;
+  
+  refreshList('idResource', 'idProject', dijit.byId('idProject').get('value'), null, workResourceId, false); 
+}
+
+function updateDispatchWorkTotal() {
+  var cpt=1;
+  var sum=0;
+  while (dijit.byId('dispatchWorkValue_'+cpt)) {
+    val=dijit.byId('dispatchWorkValue_'+cpt).get('value');
+    if (val==0 && dojo.byId('dispatchWorkValue_'+cpt).value) {
+      val=dojo.byId('dispatchWorkValue_'+cpt).value;
+    }
+    sum+=parseFloat(val);
+    cpt++;
+  }
+  dijit.byId('dispatchWorkTotal').set('value',sum);
+  return cpt; // return next available value
+}
+
+function dispatchWorkSave() {
+  updateDispatchWorkTotal();
+  sum=dijit.byId('dispatchWorkTotal').get('value');
+  if (dijit.byId('WorkElement_realWork')) {
+    dijit.byId('WorkElement_realWork').set('value',sum);
+  }
+  loadContent("../tool/saveDispatchWork.php","resultDiv", "dialogDispatchWorkForm", true, 'dispatchWork');
+  dijit.byId('dialogDispatchWork').hide();
+}
