@@ -251,8 +251,9 @@ function workFormatter(value) {
   if (value == null) return null;
   if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
-  if (top.paramWorkUnit != 'days')
+  if (top.paramWorkUnit != 'days') {
     value = value * top.paramHoursPerDay;
+  }
   roundedValue = dojo.number.format(Math.round(value * 100) / 100);
   // var result = roundedValue.replace(/^0+/g,'');
   // result = value.replace(/^0+/g,'');

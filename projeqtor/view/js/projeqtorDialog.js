@@ -5740,7 +5740,6 @@ function changeCreationInfo() {
       val=dijit.byId('creationDateTime').get('value');
       valDate=val.substr(0, 10);
       valTime='T' + val.substr(11, 8);
-      console.log("val=" + val + " valDate=" + valDate + " valTime=" + valTime);
       dijit.byId('dialogCreationInfoDate').set('value', valDate);
       dijit.byId('dialogCreationInfoTime').set('value', valTime);
       dojo.byId('dialogCreationInfoDateLine').style.display='inline';
@@ -5788,8 +5787,6 @@ function saveCreationInfo() {
     if (dijit.byId('creationDateTime')) {
       valDate=formatDate(dijit.byId('dialogCreationInfoDate').get('value'));
       valTime=formatTime(dijit.byId('dialogCreationInfoTime').get('value'));
-      console.log(valDate);
-      console.log(valTime);
       val=valDate + ' ' + valTime;
       dijit.byId('creationDateTime').set('value', val);
     } else if (dojo.byId('creationDateTime')) {
