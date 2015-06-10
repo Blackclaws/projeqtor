@@ -2758,10 +2758,20 @@ function onKeyDownFunction(event, field, editorFld) {
   } else if (event.keyCode==9) { // Tab : prevent
 	  if (fullScreenEditor) event.preventDefault();
   } else {
-    if (field!='noteNoteEditor') {
+    //console.log("keyCode="+event.keyCode+", ctrlKey="+event.ctrlKey+", altKey="+event.altKey+", metaKey"+event.metaKey+" shiftKey="+event.shiftKey);
+    if (field=='noteNoteEditor') {
+      // nothing
+    } else if ( isEditingKey(event)) {
       formChanged();
     }
   }
+}
+function isEditingKey(evt) {
+  if (evt.ctrlKey && (evt.keyCode==65 || evt.keyCode==67)) return false; // Copy or Select All
+  if (evt.keyCode==8 || evt.keyCode==13 || evt.keyCode==32) return true; 
+  if (evt.keyCode<=40|| evt.keyCode==93 || evt.keyCode==144) return false;
+  if (evt.keyCode>=112 && evt.keyCode<=123) return false;
+  return true;
 }
 function onKeyDownFunctionEditorSave () {
   dijit.byId('id').focus();

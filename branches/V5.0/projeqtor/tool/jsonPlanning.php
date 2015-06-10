@@ -212,6 +212,11 @@
         	$line["plannedstartdate"]='';
         	$line["plannedenddate"]='';
         }
+        if (! $line["plannedduration"] and $line["validatedduration"]) { // Initialize planned duration to validated
+          if (!$line["plannedstartdate"]) $line["plannedstartdate"]=date('Y-m-d');
+          $line["plannedduration"]=$line["validatedduration"];
+          $line["plannedenddate"]=addWorkDaysToDate($line["plannedstartdate"], $line["validatedduration"]);
+        }
         $line["validatedworkdisplay"]=Work::displayWorkWithUnit($line["validatedwork"]);
         $line["assignedworkdisplay"]=Work::displayWorkWithUnit($line["assignedwork"]);
         $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);

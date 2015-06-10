@@ -2694,9 +2694,6 @@ label, .label, .smallLabel {
 /* ProjectomLight THEME                                                             */
 /* =============================================================================== */
 
-
-
-
 .ProjectomLight html, .ProjectomLight body, .ProjectomLight #leftDiv, .ProjectomLight #logoDiv,
 .ProjectomLight .dijitSplitterH, .ProjectomLight .dijitGutterH, .ProjectomLight .dijitSplitterV, .ProjectomLight .dijitGutterV,
 .ProjectomLight .loginBackground {
@@ -2711,7 +2708,8 @@ label, .label, .smallLabel {
   /* background-color: #d4d5da; color: #545281; */  
 }
 
-.ProjectomLight #mapDiv, .ProjectomLight #messageDiv, .ProjectomLight #listDiv, .ProjectomLight #detailDiv, .ProjectomLight #formDiv, .ProjectomLight .display, .ProjectomLight .background,
+.ProjectomLight #mapDiv, .ProjectomLight #messageDiv, .ProjectomLight #listDiv, 
+.ProjectomLight #detailDiv, .ProjectomLight #formDiv, .ProjectomLight .display, .ProjectomLight .background,
 .ProjectomLight #printPreview, .ProjectomLight .dijitTitlePaneContentInner, 
 .ProjectomLight #mainDiv,  .ProjectomLight #contentDiv, .ProjectomLight #centerDiv {
   background-color: #ececec;
@@ -2763,11 +2761,8 @@ label, .label, .smallLabel {
  color: #545281;  
 }
 
-
-
-
-
-.ProjectomLight html, .ProjectomLight body, .ProjectomLight #leftDiv, .ProjectomLight #logoDiv, .ProjectomLight .dijitGutterH, .ProjectomLight .dijitGutterV, .ProjectomLight .loginBackground {
+.ProjectomLight html, .ProjectomLight body, .ProjectomLight #leftDiv, .ProjectomLight #logoDiv, 
+.ProjectomLight .dijitGutterH, .ProjectomLight .dijitGutterV, .ProjectomLight .loginBackground {
     background-color: #545254;
     background: -moz-linear-gradient(center top , #666 0%, #999 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666), color-stop(100%,#999)); /* Chrome,Safari4+ */
@@ -3051,7 +3046,7 @@ color : #404952;
 
 }
 
-.Projectom .dijitTreeRowSelected .dijitTreeLabel,  .Projectom .dijitTreeRowSelected{
+.Projectom .dijitTreeRowSelected .dijitTreeLabel, .Projectom .dijitTreeRowSelected{
     background: none repeat scroll 0 0 #d4dad9;
 }
 
@@ -3059,7 +3054,7 @@ color : #404952;
     background-image: url("images/spriteArrowsGrey.png");
     }
 
-.Projectom .ganttLeftTitle, .ganttRightTitle {
+.Projectom .ganttLeftTitle, .Projectom .ganttRightTitle {
     background: none repeat scroll 0 0 #9099a2 !important;
     border-left: 1px solid #aaa;
  }

@@ -36,7 +36,7 @@ if ($logname=='last') {
   $log=new Logfile($logname);
 }
 ?>
-<table style="width: 100%;">
+<table style="width: 100%;" >
  <tr>
    <td style="width: 100%;" align="center">
      <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogLogfile').hide();">
@@ -45,12 +45,12 @@ if ($logname=='last') {
    </td>
  </tr>      
 </table>
-<pre>
+<pre id="logTableContainer">
 <?php 
 echo file_get_contents($log->filePath);
 ?>
 </pre>
-<table style="width: 100%;">
+<table style="width: 100%;" >
  <tr>
    <td style="width: 100%;" align="center">
      <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogLogfile').hide();">
