@@ -522,12 +522,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vNumDays = Math.ceil(vNumDays);
       vNumUnits = vNumDays / vColUnit;
       vNumUnits=Math.round(vNumUnits);
-      vChartWidth = vNumUnits * (vColWidth + 1);
+      vChartWidth = (vNumUnits * (vColWidth + 1))+1;
       vDayWidth = (vColWidth / vColUnit) + (1/vColUnit);
 // LEFT ===========================================================
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
-        +'<TR class="ganttHeight">'
+        +'<TR class="ganttHeight" style="height:24px">'
         //+'<TD class="ganttLeftTopLine" style="width:'+vIconWidth+'px;"></TD>'
         +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><NOBR>';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
@@ -571,7 +571,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vPlanningModeWidth + 'px;"></TD>' ;
 		  }
       }
-      vLeftTable += '</TR><TR class="ganttHeight">'
+      vLeftTable += '</TR><TR class="ganttHeight" style="height:24px">'
         +'<TD class="ganttLeftTitle" style="width:'+vIconWidth+'px;"></TD>'
         +'<TD class="ganttLeftTitle ganttAlignLeft ganntNoLeftBorder" style="width: ' + vNameWidth + 'px;">'
         +JSGantt.i18n('colTask') +'</TD>' ;     
@@ -642,7 +642,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vID = vTaskList[i].getID();
         var invisibleDisplay=(vTaskList[i].getVisible() == 0)?'style="display:none"':'';
         vLeftTable += '<TR id=child_' + vID + ' dndType="planningTask" class="dojoDndItem ganttTask' + vRowType + '" ' 
-          + invisibleDisplay + '>' ;
+          + invisibleDisplay + ' style="height:21px">' ;
         vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">'
           +'<span class="dojoDndHandle handleCursor">'
           + '<table><tr><td>'
@@ -767,39 +767,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       var vCurrentDay="";
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
     	+' onmouseout="JSGantt.cancelLink();" unselectable="ON" '   
-    	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
+    	+' style="width: ' + vChartWidth + 'px; border-left:0px; border-right:0px; position:absolute;">';
       // if (dojo.isFF) {vTopRightTable += '<DIV
       // '+((dojo.isFF)?'style="height:39px':'')+'">';}
       vTopRightTable += '<TABLE style="width: ' + vChartWidth + 'px;">'
-        + '<TBODY><TR class="ganttRightTitle">';
+        + '<TBODY><TR class="ganttRightTitle" style="height:24px">';
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vTmpDate.setHours(0);
       vTmpDate.setMinutes(0);
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         vStr = vTmpDate.getFullYear() + '';
         if (vFormat == 'day') {
-          vTopRightTable += '<td class="ganttRightTitle" colspan="7">' 
+          vTopRightTable += '<td class="ganttRightTitle" colspan="7" style="width:'+((vColWidth+1)*7)+'px">' 
             +JSGantt.formatDateStr(vTmpDate,"week-long",vMonthArr) + '</td>';
           vTmpDate.setDate(vTmpDate.getDate()+7);
         } else if (vFormat == 'week') {
-          vTopRightTable += '<td class="ganttRightTitle">' 
+          vTopRightTable += '<td class="ganttRightTitle" style="width:'+(vColWidth+1)+'px">' 
             +JSGantt.formatDateStr(vTmpDate,"week-short",vMonthArr); + '</td>';
           vTmpDate.setDate(vTmpDate.getDate()+7);
         } else if (vFormat == 'month') {
-          vTopRightTable += '<td class="ganttRightTitle" width='+vColWidth+'px>'+ vStr + '</td>';
+          vTopRightTable += '<td class="ganttRightTitle" style="width:'+(vColWidth+1)+'px">'+ vStr + '</td>';
           vTmpDate.setDate(vTmpDate.getDate() + 1);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         } else if (vFormat == 'quarter') {
-          vTopRightTable += '<td colspan="3" class="ganttRightTitle" width='+vColWidth+'px>Q'+ vQuarterArr[vTmpDate.getMonth()]+" "+vStr + '</td>';
+          vTopRightTable += '<td colspan="3" class="ganttRightTitle" style="width:'+((vColWidth+1)*3)+'px">Q'+ vQuarterArr[vTmpDate.getMonth()]+" "+vStr + '</td>';
           vTmpDate.setDate(vTmpDate.getDate() + 81);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         }
       }
-      vTopRightTable += '</TR><TR>';
+      vTopRightTable += '</TR><TR style="height:24px">'; // Option 1 (old) 1 single table with 2 lines
+      //vTopRightTable += '</TR></TBODY></TABLE><TABLE style="width: ' + vChartWidth + 'px;"><TBODY><TR style="height:24px">'; // Option 2 (new) separate lines in 2 tables
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vTmpDate.setHours(0);
       vTmpDate.setMinutes(0);
@@ -815,34 +816,34 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
           if (vPerf && isOffDayNotWeekEnd(vTmpDate))	{
-        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
-            vDayLeft=Math.ceil( (vTaskLeft-1) * vDayWidth);
+        	  vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+            vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth));
             vScpecificDayCount++;
             vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayWeekEnd" '
-        		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth+1)+'px"></DIV>';  
+        		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth)+'px"></DIV>';  
           }
-          if(vPerf && JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
-        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+          if (vPerf && JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
+        	  vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
           	vDayLeft=Math.ceil( (vTaskLeft- 1) * (vDayWidth));
           	vScpecificDayCount++;
           	vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'"class="specificDayCurrent" '
-          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth+1)+'px"></DIV>';   
+          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth)+'px"></DIV>';   
           } 
           if(isOffDay(vTmpDate)) {
-            vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
-              + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
-            vItemRowStr  += '<td class="ganttDetail" style="background-color:#' + vWeekendColor + ';">'
+            vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; width:'+(vColWidth+1)+'px" >'
+              + '<div style="width: '+(vColWidth)+'px">' + vTmpDate.getDate() + '</div></td>';
+            vItemRowStr  += '<td class="ganttDetail" style="background-color:#' + vWeekendColor + '; width: '+(vColWidth+1)+'px"">'
                + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
           } else {
             if( JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
-              vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '" >'
+              vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + ';width:'+(vColWidth+1)+'px" >'
                + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
-              vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + '" >'
+              vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + ';width: '+(vColWidth+1)+'px"" >'
                + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
             } else {
-              vDateRowStr += '<td class="ganttRightSubTitle" >'
+              vDateRowStr += '<td class="ganttRightSubTitle" style="width:'+(vColWidth+1)+'px" >'
                 + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
-              vItemRowStr += '<td class="ganttDetail" ><div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+              vItemRowStr += '<td class="ganttDetail" ><div style="width: '+(vColWidth+1)+'px">&nbsp;&nbsp;</div></td>';
             }
           }
           vTmpDate.setDate(vTmpDate.getDate() + 1);
@@ -935,7 +936,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       
       if (vPerf) {
-    	vItemRowStr='<td><div class="ganttDetail '+vFormat+'Background" style="width: ' + vChartWidth + 'px;"></div></td>';  
+    	vItemRowStr='<td><div class="ganttDetail '+vFormat+'Background" style="border-left:0px; height: 20px; width: ' + vChartWidth + 'px;"></div></td>';  
       }
       vTopRightTable += vDateRowStr + '</TR>';
       vTopRightTable += '</TBODY></TABLE></DIV>';
@@ -957,8 +958,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '>'
-            + '<TABLE class="rightTableLine" style="width: ' + vChartWidth + 'px; " >' 
-            + '<TR id=childrow_' + vID + ' class="ganttTaskmile" '
+            + '<TABLE class="rightTableLine" style="width: ' + (vChartWidth) + 'px; " >' 
+            + '<TR id=childrow_' + vID + ' class="ganttTaskmile" style="height: 21px;"'
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
@@ -1037,7 +1038,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           if( vTaskList[i].getGroup()) {            
             vRightTable += '<DIV ' + ffSpecificHeight+ '>'
               + '<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;">' 
-              + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
+              + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" style="height: 21px;"'
               + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
 	        if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
@@ -1093,7 +1094,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           } else { // task (not a milestone, not a group)
             vDivStr = '<DIV ' + ffSpecificHeight+ '>'
               +'<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;" >' 
-              +'<TR id=childrow_' + vID + ' class="ganttTaskrow" '
+              +'<TR id=childrow_' + vID + ' class="ganttTaskrow" style="height: 21px;"  '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
             if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {

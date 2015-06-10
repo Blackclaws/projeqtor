@@ -578,6 +578,9 @@ table.dojoDndAvatar {
 .dijitInlineEditBoxDisplayMode.input, #dijitEditorBody, .dijitEditorIFrameContainer {
 	background: #fff url(images/validationInputBg.gif) repeat-x top left;
 }
+.dijitInlineEditBoxDisplayMode.input span {
+	font-size: 14pt;
+}
 .dijitInlineEditBoxDisplayMode.input:hover {
 	/* border:1px solid #000000; */
 }

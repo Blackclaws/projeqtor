@@ -118,6 +118,7 @@ class PlannedWork extends GeneralWork {
 // ================================================================================================================================
 
     public static function plan($projectId, $startDate) {
+debugLog("***** PLAN *****");
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	
@@ -172,7 +173,6 @@ class PlannedWork extends GeneralWork {
     //-- #697 : moved the administrative project clause after the purge
     //-- Remove administrative projects
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
-    
     //-- Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause;
@@ -216,6 +216,9 @@ class PlannedWork extends GeneralWork {
       } else {
         $pm=new PlanningMode($plan->idPlanningMode);
         $profile=$pm->code;  
+      }
+      if ($profile=="ASAP" and $plan->assignedWork==0 and $plan->leftWork==0 and $plan->validatedDuration>0) {
+        $profile="FDUR";
       }
       if ($profile=="REGUL" or $profile=="FULL" 
        or $profile=="HALF" or $profile=="QUART") { // Regular planning

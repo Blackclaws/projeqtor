@@ -629,7 +629,12 @@ abstract class SqlElement {
 						$obj=new $object();
 						$crit=array('id' . get_class($this) => $this->id, 'idle'=>'0');
 						if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-							$crit=array("refType"=>get_class($this), "refId"=>$this->id);
+						  if (property_exists($obj,'id' . get_class($this))) {
+						    $crit=null;
+						    $where="(id".get_class($this)."=".$this->id." or (refType='".get_class($this)."' and refId=".$this->id.")) and idle=0";
+						  } else {
+						    $crit=array("refType"=>get_class($this), "refId"=>$this->id, "idle"=>'0');
+						  }
 						}
 						if ($object=="Dependency") {
 							$crit=null;
@@ -1046,7 +1051,7 @@ abstract class SqlElement {
 					$obj=new $object();
 					$crit=array('id' . $class => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-					  if (property_exists($this,'id' . $class)) {
+					  if (property_exists($obj,'id' . $class)) {
 					    $crit=null;
 					    $where="id".$class."=".$this->id." or (refType='".$class."' and refId=".$this->id.")";
 					  } else {
@@ -2760,8 +2765,13 @@ abstract class SqlElement {
 						$obj=new $object();
 						$crit=array('id' . get_class($this) => $this->id, 'idle'=>'0');
 						if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-							$crit=array("refType"=>get_class($this), "refId"=>$this->id);
-						}
+						  if (property_exists($obj,'id' . get_class($this))) {
+						    $crit=null;
+						    $where="(id".get_class($this)."=".$this->id." or (refType='".get_class($this)."' and refId=".$this->id.")) and idle=0";
+						  } else {
+						    $crit=array("refType"=>get_class($this), "refId"=>$this->id, "idle"=>'0');
+						  }
+						}						
 						if ($object=="Dependency") {
 							$crit=null;
 							$where="idle=0 and ((predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
@@ -2875,7 +2885,7 @@ abstract class SqlElement {
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-						if (property_exists($this,'id' . get_class($this))) {
+						if (property_exists($obj,'id' . get_class($this))) {
 						  $crit=null;
 						  $where="id".get_class($this)."=".$this->id." or (refType='".get_class($this)."' and refId=".$this->id.")";
 						} else {

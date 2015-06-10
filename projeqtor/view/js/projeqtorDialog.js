@@ -5068,19 +5068,24 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
       dijit.byId(dialogDiv).set('content', null);
     }
   }
+  extraClass="";
+  if (dialogDiv=="dialogLogfile") {
+    extraClass="logFile";
+  }
   if (!dijit.byId(dialogDiv)) {
     dialog=new dijit.Dialog({
       id : dialogDiv,
       title : i18n(dialogDiv),
       width : '500px',
       onHide : hideCallback,
-      content : i18n("loading")
+      content : i18n("loading"),
+      'class' : extraClass
     });
   } else {
     dialog=dijit.byId(dialogDiv);
   }
   if (!params) {
-    params=""
+    params="";
   }
   ;
   showWait();
@@ -5804,5 +5809,18 @@ function saveCreationInfo() {
 }
 
 function showLogfile(name) {
-  loadDialog('dialogLogfile', null, true, '&logname='+name, true);
+  var atEnd=null;
+  if (name=='last') {
+    atEnd=function(name){
+      var scroll=function() {
+        dojo.query(".logFile .dijitDialogPaneContent").forEach(function(node, index, arr){
+          node.scrollTop=parseInt(dojo.byId('logTableContainer').offsetHeight);
+          console.log(dojo.byId('logTableContainer').offsetHeight);
+        });
+      };
+      setTimeout(scroll,500);
+    };
+  }
+  
+  loadDialog('dialogLogfile', atEnd, true, '&logname='+name, true);
 }
