@@ -552,6 +552,10 @@ class Cron {
 		if (! $senderId) {
 			errorLog("Email message received from '$sender', not recognized as resource or user or contact : message not stored as note to avoid spamming");
 		}
+		$arrayFrom=array("\n","\r"," ");
+		$arrayTo=array("","","");
+		$class=str_replace($arrayFrom, $arrayTo, $class);
+		$id=str_replace($arrayFrom, $arrayTo, $id);
 		$obj=new $class($id);
 		if ($obj->id) {
 		  $note=new Note();

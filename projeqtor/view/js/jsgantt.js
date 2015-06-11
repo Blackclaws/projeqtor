@@ -312,8 +312,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		  vID = vList[i].getID();
 		  vBarDiv  = JSGantt.findObj("bardiv_"+vID);
 		  if(vBarDiv) {
-			  //vBarDiv.parentNode.removeChild(vBarDiv); 
-			  //dojo.destroy(vBarDiv);
 			  dojo.query("#bardiv_"+vID).orphan();
 		  }
 	  }
@@ -323,7 +321,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
   this.getList   = function() { return vTaskList; };
   this.clearDependencies = function(temp) {
-    //var parent = JSGantt.findObj('rightside');
 	var parent = JSGantt.findObj('rightGanttChartDIV');
 	var depLine;
     var vMaxId = vDepId;
@@ -339,10 +336,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vWid  = Math.abs(x2-x1) + 1;
     vHgt  = Math.abs(y2-y1) + 1;
     vDoc = JSGantt.findObj('rightGanttChartDIV');
-    //vDoc = JSGantt.findObj('rightside');
     var oDiv = document.createElement('div');
     oDiv.id = ((temp)?"temp":"")+"line"+vDepId++;
-    //oDiv.className="ganttTaskrowBar";
     oDiv.style.position = "absolute";
     oDiv.style.margin = "0px";
     oDiv.style.padding = "0px";
@@ -528,7 +523,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
         +'<TR class="ganttHeight" style="height:24px">'
-        //+'<TD class="ganttLeftTopLine" style="width:'+vIconWidth+'px;"></TD>'
         +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><NOBR>';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</NOBR></TD>'; 
@@ -757,50 +751,47 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vLeftTable += '</TR>';
       }
-      //vLeftTable += '<TR><TD style="width:16px;"></TD>';
-      //vLeftTable += '<TD colspan="' + sortArray.length +'"><NOBR>';
-      //vLeftTable += '</NOBR></TD></TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
-      var vPerf=(ganttPlanningOldStyle)?0:1;
+      vPerf=1; // New style is always used. No need to keep old style
       var vOutDays="";
       var vCurrentDay="";
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
     	+' onmouseout="JSGantt.cancelLink();" unselectable="ON" '   
-    	+' style="width: ' + vChartWidth + 'px; border-left:0px; border-right:0px; position:absolute;">';
-      // if (dojo.isFF) {vTopRightTable += '<DIV
-      // '+((dojo.isFF)?'style="height:39px':'')+'">';}
-      vTopRightTable += '<TABLE style="width: ' + vChartWidth + 'px;">'
-        + '<TBODY><TR class="ganttRightTitle" style="height:24px">';
+    	+' style="width: ' + vChartWidth + 'px; border-left:0px; border-right:0px; position:absolute;height:44px;">';
+      
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vTmpDate.setHours(0);
       vTmpDate.setMinutes(0);
-      while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
+      var vWidth=vColWidth+1;
+      var cpt=0;
+      while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) { 
         vStr = vTmpDate.getFullYear() + '';
         if (vFormat == 'day') {
-          vTopRightTable += '<td class="ganttRightTitle" colspan="7" style="width:'+((vColWidth+1)*7)+'px">' 
-            +JSGantt.formatDateStr(vTmpDate,"week-long",vMonthArr) + '</td>';
+          vTopRightTable += '<div class="ganttRightTitle" style="width:'+(vWidth*7)+'px;left:'+((vWidth*7)*cpt)+'px;">' 
+            +JSGantt.formatDateStr(vTmpDate,"week-long",vMonthArr)+'</div>';
           vTmpDate.setDate(vTmpDate.getDate()+7);
         } else if (vFormat == 'week') {
-          vTopRightTable += '<td class="ganttRightTitle" style="width:'+(vColWidth+1)+'px">' 
-            +JSGantt.formatDateStr(vTmpDate,"week-short",vMonthArr); + '</td>';
+          vTopRightTable += '<div class="ganttRightTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;">' 
+            +JSGantt.formatDateStr(vTmpDate,"week-short",vMonthArr)+'</div>';
           vTmpDate.setDate(vTmpDate.getDate()+7);
         } else if (vFormat == 'month') {
-          vTopRightTable += '<td class="ganttRightTitle" style="width:'+(vColWidth+1)+'px">'+ vStr + '</td>';
+          vTopRightTable += '<div class="ganttRightTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;">'
+            +vStr+'</div>';
           vTmpDate.setDate(vTmpDate.getDate() + 1);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         } else if (vFormat == 'quarter') {
-          vTopRightTable += '<td colspan="3" class="ganttRightTitle" style="width:'+((vColWidth+1)*3)+'px">Q'+ vQuarterArr[vTmpDate.getMonth()]+" "+vStr + '</td>';
+          vTopRightTable += '<div class="ganttRightTitle" style="width:'+(vWidth*3)+'px;left:'+((vWidth*3)*cpt)+'px">'
+            +'Q'+vQuarterArr[vTmpDate.getMonth()]+" "+vStr+'</div>';
           vTmpDate.setDate(vTmpDate.getDate() + 81);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         }
+        cpt++;
       }
-      vTopRightTable += '</TR><TR style="height:24px">'; // Option 1 (old) 1 single table with 2 lines
-      //vTopRightTable += '</TR></TBODY></TABLE><TABLE style="width: ' + vChartWidth + 'px;"><TBODY><TR style="height:24px">'; // Option 2 (new) separate lines in 2 tables
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vTmpDate.setHours(0);
       vTmpDate.setMinutes(0);
@@ -813,133 +804,101 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       var vTotalHeight=21*vTaskList.length;
       var vWeekendColor="dfdfdf";
       var vCurrentdayColor="ffffaa";
+      cpt=0;
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
-          if (vPerf && isOffDayNotWeekEnd(vTmpDate))	{
+          if (isOffDayNotWeekEnd(vTmpDate))	{
         	  vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
             vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth));
             vScpecificDayCount++;
             vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayWeekEnd" '
-        		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth)+'px"></DIV>';  
+        		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+vColWidth+'px"></DIV>';  
           }
-          if (vPerf && JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
+          if (JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
         	  vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
           	vDayLeft=Math.ceil( (vTaskLeft- 1) * (vDayWidth));
           	vScpecificDayCount++;
           	vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'"class="specificDayCurrent" '
-          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+(vColWidth)+'px"></DIV>';   
+          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px; width:'+vColWidth+'px"></DIV>';   
           } 
           if(isOffDay(vTmpDate)) {
-            vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; width:'+(vColWidth+1)+'px" >'
-              + '<div style="width: '+(vColWidth)+'px">' + vTmpDate.getDate() + '</div></td>';
-            vItemRowStr  += '<td class="ganttDetail" style="background-color:#' + vWeekendColor + '; width: '+(vColWidth+1)+'px"">'
-               + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;background:#'+vWeekendColor+'">' 
+              +vTmpDate.getDate()+'</div>';
           } else {
             if( JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
-              vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + ';width:'+(vColWidth+1)+'px" >'
-               + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
-              vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + ';width: '+(vColWidth+1)+'px"" >'
-               + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+              vDateRowStr += '<div class="ganttRightSubTitle" style="width: '+vWidth+'px;left:'+(vWidth*cpt)+'px;background:#' + vCurrentdayColor + '">' 
+                + vTmpDate.getDate() + '</div>';
             } else {
-              vDateRowStr += '<td class="ganttRightSubTitle" style="width:'+(vColWidth+1)+'px" >'
-                + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
-              vItemRowStr += '<td class="ganttDetail" ><div style="width: '+(vColWidth+1)+'px">&nbsp;&nbsp;</div></td>';
+              vDateRowStr += '<div class="ganttRightSubTitle" style="width: '+vWidth+'px;left:'+(vWidth*cpt)+'px;">' 
+              + vTmpDate.getDate() + '</div>';
             }
           }
           vTmpDate.setDate(vTmpDate.getDate() + 1);
         } else if (vFormat == 'week') {
           vNxtDate.setDate(vNxtDate.getDate() + 7);
-          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+          if(vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
           	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
             vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth));
             vScpecificDayCount++;
             vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
-            +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
+            +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+vColWidth+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) { 
-            vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '">'
-              + '<div style="width: '+vColWidth+'px">' 
-              + JSGantt.formatDateStr(vTmpDate,"week-firstday",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + '">'
-              + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;background:#' + vCurrentdayColor + '">' 
+              +JSGantt.formatDateStr(vTmpDate,"week-firstday",vMonthArr)+'</div>';          
           } else {
-            vDateRowStr += '<td class="ganttRightSubTitle">'
-              + '<div style="width: '+vColWidth+'px">' 
-              + JSGantt.formatDateStr(vTmpDate,"week-firstday",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" >' 
-              + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;">' 
+              +JSGantt.formatDateStr(vTmpDate,"week-firstday",vMonthArr)+'</div>';
           }
           vTmpDate.setDate(vTmpDate.getDate() + 7);
         } else if (vFormat == 'month') {
           vNxtDate.setFullYear(vTmpDate.getFullYear(), vTmpDate.getMonth(), vMonthDaysArr[vTmpDate.getMonth()]);
           vNxtDate.setHours(0);
           vNxtDate.setMinutes(0);
-          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+          if(vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
         	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
         	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
         	  vScpecificDayCount++;
               vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
-              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
+              +'style="top:0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+vColWidth+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
-            vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '"> '
-              + '<div style="width: '+vColWidth+'px">' 
-              + JSGantt.formatDateStr(vTmpDate,"month-long",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + '">'
-              +'<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;background:#'+vCurrentdayColor+'">' 
+              +JSGantt.formatDateStr(vTmpDate,"month-long",vMonthArr)+'</div>';
           } else {
-            vDateRowStr += '<td class="ganttRightSubTitle"> '
-              + '<div style="width: '+vColWidth+'px">' 
-              + JSGantt.formatDateStr(vTmpDate,"month-long",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" >'
-              + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;">' 
+              +JSGantt.formatDateStr(vTmpDate,"month-long",vMonthArr)+'</div>';
           }         
           vTmpDate.setDate(vTmpDate.getDate() + 1);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         } else if (vFormat == 'quarter') {
-          //vNxtDate.setDate(vNxtDate.getDate() + 122);
           vNxtDate.setFullYear(vTmpDate.getFullYear(), vTmpDate.getMonth(), vMonthDaysArr[vTmpDate.getMonth()]);
-          /*if( vTmpDate.getMonth()==0 || vTmpDate.getMonth()==1 || vTmpDate.getMonth()==2 ) {
-            vNxtDate.setFullYear(vTmpDate.getFullYear(), 2, 31);
-          } else if( vTmpDate.getMonth()==3 || vTmpDate.getMonth()==4 || vTmpDate.getMonth()==5 ) {
-            vNxtDate.setFullYear(vTmpDate.getFullYear(), 5, 30);
-          } else if( vTmpDate.getMonth()==6 || vTmpDate.getMonth()==7 || vTmpDate.getMonth()==8 ) {
-            vNxtDate.setFullYear(vTmpDate.getFullYear(), 8, 30);
-          } else if( vTmpDate.getMonth()==9 || vTmpDate.getMonth()==10 || vTmpDate.getMonth()==11 ) {
-            vNxtDate.setFullYear(vTmpDate.getFullYear(), 11, 31);
-          }*/
-          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+         if(vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
         	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
         	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
         	  vScpecificDayCount++;
               vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
-              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
+              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+vColWidth+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
-            vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '" >'
-              +'<div style="width: '+vColWidth+'px">' + JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + '">'
-              + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;background:#'+vCurrentdayColor+'">' 
+              +JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr)+'</div>';
           } else {
-            vDateRowStr += '<td class="ganttRightSubTitle" >'
-              +'<div style="width: '+vColWidth+'px">' + JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr) + '</div></td>';
-            vItemRowStr += '<td class="ganttDetail" >'
-              + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
+            vDateRowStr+='<div class="ganttRightSubTitle" style="width:'+vWidth+'px;left:'+(vWidth*cpt)+'px;">' 
+              +JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr)+'</div>';
           }        
           vTmpDate.setDate(vTmpDate.getDate() + 1);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         }
+        cpt++;
       }
       
-      if (vPerf) {
     	vItemRowStr='<td><div class="ganttDetail '+vFormat+'Background" style="border-left:0px; height: 20px; width: ' + vChartWidth + 'px;"></div></td>';  
-      }
-      vTopRightTable += vDateRowStr + '</TR>';
-      vTopRightTable += '</TBODY></TABLE></DIV>';
+      vTopRightTable += vDateRowStr + '</DIV>';
             
       for(i = 0; i < vTaskList.length; i++) {
         vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
@@ -963,10 +922,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
-          //vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000)) ;
-          //if (vMinDate>vDefaultMinDate) {
-          // vTaskLeft = vTaskLeft - 1;
-          //}
           vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
           //if (vMinDate>vDefaultMinDate) {
             vTaskLeft = vTaskLeft - 0.85;
