@@ -85,6 +85,25 @@ if ($tmpStatus=='OK') {
   }
 }
 
+debugLog("result=$result");
 // Message of correct saving
-
-displayLastOperationStatus($result);
+if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {	
+  Sql::rollbackTransaction();
+  $result=substr($result,0,strpos($result,'<input'));
+  $result.='<input type="hidden" id="lastOperation" value="insert" /><input type="hidden" id="lastOperationStatus" value="ERROR" />';
+	$result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
+  echo '<div class="messageERROR" >' . $result . '</div>';
+} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+  Sql::commitTransaction();
+  $result=substr($result,0,strpos($result,'<input'));
+  $result.='<input type="hidden" id="lastOperation" value="insert" /><input type="hidden" id="lastOperationStatus" value="OK" />';
+  $result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
+  echo '<div class="messageOK" >'.$result.'</div>';
+} else { 
+  Sql::rollbackTransaction();
+  $result=substr($result,0,strpos($result,'<input'));
+	$result.='<input type="hidden" id="lastOperation" value="insert" /><input type="hidden" id="lastOperationStatus" value="INVALID" />';
+  $result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
+  echo '<div class="messageERROR" >' . $result . '</div>';
+}
+?>
