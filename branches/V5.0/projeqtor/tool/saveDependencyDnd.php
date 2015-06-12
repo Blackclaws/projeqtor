@@ -77,9 +77,19 @@ $tmpStatus=getLastOperationStatus ($result);
 if ($tmpStatus=='OK') {
   if ($predecessor->plannedEndDate) {
     if ($predecessor->refType=='Milestone') {
-      $successor->plannedStartDate=$predecessor->plannedEndDate;
+      if ($successor->refType=='Milestone') {
+        $successor->plannedEndDate=$predecessor->plannedEndDate;
+        $successor->plannedStartDate=$predecessor->plannedEndDate;
+      } else {
+        $successor->plannedStartDate=$predecessor->plannedEndDate;
+      }
     } else {
-      $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+      if ($successor->refType=='Milestone') {
+        $successor->plannedEndDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+        $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+      } else {
+        $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+      }
     }
     $successor->save();
   }
