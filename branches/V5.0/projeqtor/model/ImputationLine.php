@@ -75,9 +75,9 @@ class ImputationLine {
 	}
 
 	static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, 
-			$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
-	  //SqlElement::$_cachedQuery['Assignment']=array();
-	  //SqlElement::$_cachedQuery['PlanningElement']=array();
+		$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
+	  SqlElement::$_cachedQuery['Assignment']=array();
+	  SqlElement::$_cachedQuery['PlanningElement']=array();
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
@@ -109,13 +109,13 @@ class ImputationLine {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
 		$profile=$user->getProfile(); // Default profile for user
-		$listAccesRightsForIMputation=$user->getAllSpecificRightsForProfiles('imputation');
+		$listAccesRightsForImputation=$user->getAllSpecificRightsForProfiles('imputation');
 		$listAllowedProfiles=array(); // List will contain all profiles with visibility to Others imputation
-		if (isset($listAccesRightsForIMputation['PRO'])) {
-		  $listAllowedProfiles+=$listAccesRightsForIMputation['PRO'];
+		if (isset($listAccesRightsForImputation['PRO'])) {
+		  $listAllowedProfiles+=$listAccesRightsForImputation['PRO'];
 		}
-		if (isset($listAccesRightsForIMputation['ALL'])) {
-		  $listAllowedProfiles+=$listAccesRightsForIMputation['ALL'];
+		if (isset($listAccesRightsForImputation['ALL'])) {
+		  $listAllowedProfiles+=$listAccesRightsForImputation['ALL'];
 		}
 		$visibleProjects=array();
 		foreach ($user->getSpecificAffectedProfiles() as $prj=>$prf) {
@@ -124,7 +124,9 @@ class ImputationLine {
 		  }
 		}
 		
-		if ($user->id != $resourceId) {
+		//
+		$accessRightRead=securityGetAccessRight('menuActivity', 'read');
+		if ($user->id != $resourceId and $accessRightRead!='ALL') {
 			foreach ($assList as $id=>$ass) {
 				if (! array_key_exists($ass->idProject, $visibleProjects) ) {
 					unset ($assList[$id]);
