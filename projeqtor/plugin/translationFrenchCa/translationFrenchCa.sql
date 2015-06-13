@@ -7,15 +7,13 @@
 -- // Good start for translation in other languages.                            //
 -- ///////////////////////////////////////////////////////////////////////////////
 
-
 -- ======================================
 -- ==   Message table                  ==
 -- ======================================
 
 -- message
 -- ProjeQtOr-Québec is an example of a use of ProjeQtOr in a local project in a French language environment. 
-UPDATE `${prefix}message` SET description='Bienvenue dans l''application ProjeQtOr-Québec v1.0' WHERE description='Welcome to ProjectOr web application';
-
+UPDATE `${prefix}message` SET description='Bienvenue dans l''application ProjeQtOr', name='Bienvenue' WHERE id='1' AND name='Welcome';
 
 -- =====================================
 -- ==   Controles & Automatismes      ==
@@ -157,9 +155,9 @@ UPDATE `${prefix}type` SET name='Administratif' WHERE scope='Project' AND name='
 UPDATE `${prefix}type` SET name='Gabarit' WHERE scope='Project' AND name='Template';
 
 -- ticket (Parametres/Liste des types/Types de tickets)
-UPDATE `${prefix}ticket` SET name='Incident' WHERE name='Incident';
-UPDATE `${prefix}ticket` SET name='Soutien / Assistance' WHERE name='Assistance';
-UPDATE `${prefix}ticket` SET name='Anomalie / Bogue' WHERE name='Anomaly / Bug';
+UPDATE `${prefix}type` SET name='Incident' WHERE scope='Ticket' AND name='Incident';
+UPDATE `${prefix}type` SET name='Soutien / Assistance' WHERE scope='Ticket' AND name='Assistance';
+UPDATE `${prefix}type` SET name='Anomalie / Bogue' WHERE scope='Ticket' AND name='Anomaly / Bug';
 
 -- type (Parametres/Liste des types/Types d'activités)
 UPDATE `${prefix}type` SET name='Développement' WHERE scope='Activity' AND name='Development';
@@ -322,3 +320,28 @@ Mise à jour et suppression sur les éléments de ses projets' WHERE name='acces
 UPDATE `${prefix}accessprofile` SET description='Aucun accès autorisé' WHERE name='accessProfileNoAccess';
 UPDATE `${prefix}accessprofile` SET description='Lecture uniquement sur les éléments pour lesquels il est déclaré comme créateur
 Creation impossible' WHERE name='accessReadOwnOnly';
+
+-- parameter (Parametres/Administration/Gestion des connexions)
+-- (message fermeture)
+UPDATE `${prefix}parameter` SET parameterValue='L''application est fermée.
+Seul l''administrateur peut se connecter.
+SVP Revenez plus tard.' WHERE parameterCode='msgClosedApplication';
+
+
+-- Autres messages de l'application
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Vous êtes l''approbateur de <a href="${url}" > Document #${id}</a> : "${name}".<br/>Veuillez accéder <a href="${url}" >ce document</a> et suivre le processus d''approbation.' WHERE parameterCode='paramMailBodyApprover';
+UPDATE `${prefix}parameter` SET parameterValue='Bienvenue dans ${dbName} à <a href="${url}">${url}</a>.<br/>Votre code utilisateur est <b>${login}</b>.<br/>Votre mot de passe est initialisé à <b>${password}</b><br/>Vous devrez le modifier à la première connexion.<br/><br/>En cas de problème, contactez votre administrateur à <b>${adminMail}</b>.' WHERE parameterCode='paramMailBodyUser';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] ${item} #${id} a été modifié : "${name}"' WHERE parameterCode='paramMailTitleAnyChange';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] message from ${sender} : Vous devez approuver un document' WHERE parameterCode='paramMailTitleApprover';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Une nouvelle affectation a été ajoutée à ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleAssignment';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Une affectation a été modifiée à ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleAssignmentChange';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Une nouvelle pièce a été transmise à ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleAttachment';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] La description a été modifiée à ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleDescription';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] le message de ${sender} : ${item} #${id}' WHERE parameterCode='paramMailTitleDirect';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] ${item} #${id} a été créé : "${name}"' WHERE parameterCode='paramMailTitleNew';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Une nouvelle note a été transmise à ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleNote';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Une note a été modifiée pour ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleNoteChange';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] ${responsible} est maintenant responsable de ${item} #${id} : "${name}"' WHERE parameterCode='paramMailTitleResponsible';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] Le résultat a été modifié pour ${item} #${id} : "${name}' WHERE parameterCode='paramMailTitleResult';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] ${item} #${id} modifié au statut ${status} : ${name}' WHERE parameterCode='paramMailTitleStatus';
+UPDATE `${prefix}parameter` SET parameterValue='[${dbName}] message de ${sender} : L''information de votre compte' WHERE parameterCode='paramMailTitleUser';
