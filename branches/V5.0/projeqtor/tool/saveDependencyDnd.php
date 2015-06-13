@@ -75,23 +75,34 @@ $dep->dependencyDelay=$dependencyDelay;
 $result=$dep->save();
 $tmpStatus=getLastOperationStatus ($result);
 if ($tmpStatus=='OK') {
+  if (! $predecessor->plannedEndDate and $predecessor->validatedDuration) {
+    if (! $predecessor->plannedStartDate) {
+      $predecessor->plannedStartDate=($predecessor->validatedStartDate)?$predecessor->validatedStartDate:date('Y-m-d');
+    }
+    $predecessor->plannedEndDate=addWorkDaysToDate($predecessor->plannedStartDate, $predecessor->validatedDuration);
+    $resPredecessor=$predecessor->save();
+  }
   if ($predecessor->plannedEndDate) {
     if ($predecessor->refType=='Milestone') {
       if ($successor->refType=='Milestone') {
-        $successor->plannedEndDate=$predecessor->plannedEndDate;
+        //$successor->plannedEndDate=$predecessor->plannedEndDate;
         $successor->plannedStartDate=$predecessor->plannedEndDate;
+        $successor->plannedEndDate=$successor->plannedStartDate;
       } else {
         $successor->plannedStartDate=$predecessor->plannedEndDate;
+        $successor->plannedEndDate=null;
       }
     } else {
       if ($successor->refType=='Milestone') {
-        $successor->plannedEndDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
         $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+        $successor->plannedEndDate=$successor->plannedStartDate;
       } else {
         $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+        $successor->plannedEndDate=null;
       }
     }
-    $successor->save();
+    $resSuccessor=$successor->save();
+    debugLog($resSuccessor);
   }
 }
 
@@ -114,6 +125,6 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   $result=substr($result,0,strpos($result,'<input'));
 	$result.='<input type="hidden" id="lastOperation" value="insert" /><input type="hidden" id="lastOperationStatus" value="INVALID" />';
   $result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
-  echo '<div class="messageERROR" >' . $result . '</div>';
+  echo '<div class="messageWARNING" >' . $result . '</div>';
 }
 ?>

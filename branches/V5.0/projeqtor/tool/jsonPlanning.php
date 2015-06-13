@@ -208,12 +208,12 @@
         echo  '{';
         $nbFields=0;
         $idPe="";
-        if ($line["plannedwork"]>0 and $line["leftwork"]==0) {
+        if ($line["plannedwork"]>0 and $line["leftwork"]==0 and $line["elementary"]==1) {
         	$line["plannedstartdate"]='';
         	$line["plannedenddate"]='';
         }
         if (! $line["plannedduration"] and $line["validatedduration"]) { // Initialize planned duration to validated
-          if (!$line["plannedstartdate"]) $line["plannedstartdate"]=date('Y-m-d');
+          if (!$line["plannedstartdate"]) $line["plannedstartdate"]=($line["validatedstartdate"])?$line["validatedstartdate"]:date('Y-m-d');
           $line["plannedduration"]=$line["validatedduration"];
           $line["plannedenddate"]=addWorkDaysToDate($line["plannedstartdate"], $line["validatedduration"]);
         }

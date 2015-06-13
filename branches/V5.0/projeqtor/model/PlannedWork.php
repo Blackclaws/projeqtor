@@ -295,7 +295,9 @@ debugLog("***** PLAN *****");
       }
       if ($plan->refType=='Milestone') {
         if ($profile!="FIXED") {
-          if ($strictDependency or $startFraction==1) {
+          if ($strictDependency) {
+            $plan->plannedStartDate=addWorkDaysToDate($startPlan,1);
+          } else if ($startFraction==1) {
           	if (count($precList)>0) {
               $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
           	} else {
