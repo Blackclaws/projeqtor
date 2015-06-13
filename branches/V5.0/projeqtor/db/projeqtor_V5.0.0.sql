@@ -221,6 +221,8 @@ CREATE INDEX workWorkelement ON `${prefix}work` (idWorkElement);
 UPDATE `${prefix}work` set idWorkElement=
 (select id from `${prefix}workelement` we where we.refType=`${prefix}work`.refType and we.refId=`${prefix}work`.refId);
 
+UPDATE `${prefix}workelement` set refName=(select name from `${prefix}ticket` t where refId=t.id) where refTYpe='Ticket';
+ 
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////

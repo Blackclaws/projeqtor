@@ -245,4 +245,3 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
      </form>
   </div>
 </div>
-<?php debugLog("imputationList - End");?>

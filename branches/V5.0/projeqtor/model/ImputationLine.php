@@ -78,8 +78,12 @@ class ImputationLine {
 		$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
 	  SqlElement::$_cachedQuery['Assignment']=array();
 	  SqlElement::$_cachedQuery['PlanningElement']=array();
+	  SqlElement::$_cachedQuery['WorkElement']=array();
+	  
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
+		
+		// Initialize parameters
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
 			$hideNotHandled=1;
 		}
@@ -90,16 +94,19 @@ class ImputationLine {
 		if ($rangeType=='week') {
 			$nbDays=7;
 		}
-		$crit=array('idResource' => $resourceId);
-		if (! $showIdle) {
-			$crit['idle']='0';
-		}
-
 		$startDate=self::getFirstDay($rangeType, $rangeValue);
 		$plus=$nbDays-1;
 		$endDate=date('Y-m-d',strtotime("+$plus days", strtotime($startDate)));
+		
+		// Get All assignments
+		$crit=array('idResource' => $resourceId);
+		if (! $showIdle) {
+		  $crit['idle']='0';
+		}
 		$ass=new Assignment();
-		$assList=$ass->getSqlElementsFromCriteria($crit,false);
+		$assList=$ass->getSqlElementsFromCriteria($crit,false,null,null, true);
+		
+		// Retrieve realwork and planned work entered for period
 		$crit=array('idResource' => $resourceId);
 		$crit[$rangeType]=$rangeValue;
 		$work=new Work();
@@ -108,6 +115,8 @@ class ImputationLine {
 	  if ($showPlanned) {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
+    
+    // Get acces restriction to hide projects dependong on access rights 
 		$profile=$user->getProfile(); // Default profile for user
 		$listAccesRightsForImputation=$user->getAllSpecificRightsForProfiles('imputation');
 		$listAllowedProfiles=array(); // List will contain all profiles with visibility to Others imputation
@@ -123,8 +132,7 @@ class ImputationLine {
 		    $visibleProjects[$prj]=$prj;
 		  }
 		}
-		
-		//
+		// ... and remove assignments not to be shown
 		$accessRightRead=securityGetAccessRight('menuActivity', 'read');
 		if ($user->id != $resourceId and $accessRightRead!='ALL') {
 			foreach ($assList as $id=>$ass) {
@@ -134,6 +142,7 @@ class ImputationLine {
 			}
 		}
 		
+		// Hide some lines depending on user criteria selected on page
 		if ($hideNotHandled or $hideDone or $displayOnlyCurrentWeekMeetings) {
 			foreach ($assList as $id=>$ass) {
 				if ($ass->refType and class_exists($ass->refType))
@@ -151,26 +160,25 @@ class ImputationLine {
 				}
 			}
 		}
-		// Check if assignment exists for each work (may be closed, so make it appear)
+		// Check if assignment exists for each work (may be closed or not assigned: so make it appear)
 		foreach ($workList as $work) {
 			if ($work->idAssignment) {
 				$found=false;
-				foreach ($assList as $ass) {
-					if ($work->refType==$ass->refType and $work->refId==$ass->refId) {
-						$found=true;
-						break;
-					}
+				// Look into assList
+				if (isset($assList['#'.$work->idAssignment])) {
+				  $ass=$assList['#'.$work->idAssignment];
+				  $found=true;
 				}
 				if (! $found) {
 					$ass=new Assignment($work->idAssignment);
-					if ($ass->id) {
+					if ($ass->id) { // Assignment exists, but not retrieve : display but readonly
 					  $ass->_locked=true;
 						$assList[$ass->id]=$ass;
-					} else {
-						$id=$work->refType.'#'.$work->refId;
-						if (! isset($assList[$id])) {
+					} else { // Assignment does not exist : this is an error case as $wor->idAssignment is set !!! SHOULD NOT BE SEEN
+						/*$id=$work->refType.'#'.$work->refId;
+						if (! isset($assList[$id])) { // neo-assignment do not exist : insert one
 						  $ass->id=null;
-						  $ass->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
+						  $ass->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . ' (1)</i></span>';
 						  if ($work->refType and $work->refId) {
 						    $ass->comment=i18n($work->refType) . ' #' . $work->refId;
 						  } else {
@@ -179,33 +187,50 @@ class ImputationLine {
 						  $ass->realWork=$work->work;
 						  $ass->refType=$work->refType;
               $ass->refId=$work->refId;
-						} else {
+						} else { // neo-assignment exists : add work (once again ,at this step this should not be displayed, it is an error case
 						  $ass=$assList[$id];
 						  $ass->realWork+=$work->work;
 						}
 						$ass->_locked=true;
-						$assList[$id]=$ass;
-					}
-					
+						$assList[$id]=$ass;*/
+					}				
 				}
-			} else {
+				if ($work->idWorkElement) { // Check idWorkElement : if set, add new line for ticket, locked
+				  $acticityAss=$ass; // Save reference to parent activity
+				  $ass=new Assignment();
+				  $we=new WorkElement($work->idWorkElement);
+				  $ass->id=$acticityAss->id;
+				  $ass->name=$we->refName;;
+				  $ass->refType=$we->refType;
+				  $ass->refId=$we->refId;
+				  $ass->realWork=$we->realWork;
+				  $ass->leftWork=$we->leftWork;
+				  $ass->_locked=true;
+				  $ass->_topRefType=$acticityAss->refType;
+				  $ass->_topRefId=$acticityAss->refId;
+				  $ass->_idWorkElement=$work->idWorkElement;
+				  $id=$work->refType.'#'.$work->refId;
+				  $assList[$id]=$ass;				  
+				}
+			} else { // Work->idAssignment not set (for tickets not linked to Activities for instance)
 				$id=$work->refType.'#'.$work->refId;
 				if (isset($assList[$id])) {
 					$ass=$assList[$id];
 				} else {
 					$ass=new Assignment();
 				}
-				if ($work->refType) {
+				if ($work->refType) { // refType exist (Ticket is best case)
 					$obj=new $work->refType($work->refId);
 					if ($obj->name) {
 					  $obj->name=htmlEncode($obj->name);
 					}
-				} else {
+				} else { // refType does not exist : is should not happen (name displayed in red), key ot to avoid errors
 					$obj=new Ticket();
-          $obj->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
+          $obj->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . ' (2)</i></span>';
           if (! $ass->comment) {
             $ass->comment='unexpected case : no reference object';
           }
+          $ass->_locked=true;
 				}
 				//$ass->name=$id . " " . $obj->name;
 				$ass->name=$obj->name;
@@ -217,12 +242,13 @@ class ImputationLine {
 				$ass->refType=$work->refType;
 				$ass->refId=$work->refId;
 				if ($work->refType) {
-					$ass->comment=i18n($work->refType) . ' #' . $work->refId;
+					//$ass->comment=i18n($work->refType) . ' #' . $work->refId;
 				}
 				$assList[$id]=$ass;
 			}
 		}
 		
+		$notElementary=array();
 		$cptNotAssigned=0;
 		foreach ($assList as $idAss=>$ass) {
 			$elt=new ImputationLine();
@@ -243,11 +269,34 @@ class ImputationLine {
 			  $elt->functionName=SqlList::getNameFromId('Role', $ass->idRole);
 			}
 			$crit=array('refType'=>$elt->refType, 'refId'=>$elt->refId);
+			if (isset($ass->_topRefType) and isset($ass->_topRefId)) {
+			  $crit=array('refType'=>$ass->_topRefType, 'refId'=>$ass->_topRefId);
+			}
 			$plan=null;
 			if ($ass->id) {
 			  $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
 			}
-			if ($plan and $plan->id) {
+			if ($plan and $plan->id and isset($ass->_topRefType) and isset($ass->_topRefId)) {
+			  $elt->wbs=$plan->wbs.'.'.$elt->refType.'#'.$elt->refId;
+			  $elt->wbsSortable=$plan->wbsSortable.'.'.$elt->refType.'#'.$elt->refId;
+			  $elt->topId=$plan->id;
+			  $elt->elementary=$plan->elementary;
+			  $elt->startDate=null;
+			  $elt->endDate=null;
+			  $elt->elementary=1;
+			  $elt->imputable=true;
+			  if (isset($ass->_idWorkElement)) {
+			    $elt->_idWorkElement=$ass->_idWorkElement;
+			  }
+			  $elt->name='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$ass->name; 
+			  $key=$plan->wbsSortable . ' ' . $ass->_topRefType . '#' . $ass->_topRefId;
+			  if (isset($result[$key])) {
+			    $result[$key]->elementary=0;
+			  } else {
+			    $notElementary[$key]=$key;
+			  }
+			  $elt->locked=true;
+			} else if ($plan and $plan->id) {
 				$elt->name=htmlEncode($plan->refName);
 				$elt->wbs=$plan->wbs;
 				$elt->wbsSortable=$plan->wbsSortable;
@@ -283,12 +332,15 @@ class ImputationLine {
 			if (array_key_exists($key,$result)) {
 				$key.= '/#' . $ass->id;
 			}
+debugLog($elt);
 			// fetch all work stored in database for this assignment
 			foreach ($workList as $work) {
-				if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment) or (!$work->idAssignment and $work->refType==$elt->refType and $work->refId==$elt->refId) ) {
+				if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment and !$work->idWorkElement and !isset($elt->_idWorkElement)) 
+				  or (!$work->idAssignment and $work->refType==$elt->refType and $work->refId==$elt->refId) 
+			    or ($work->idAssignment and $work->idAssignment==$elt->idAssignment and $work->idWorkElement and isset($elt->_idWorkElement) and $elt->_idWorkElement==$work->idWorkElement)) {
 					$workDate=$work->workDate;
 					$offset=dayDiffDates($startDate, $workDate)+1;
-					if (isset($elt->arrayWork[$offset])) {
+					if (isset($elt->arrayWork[$offset])) { 
 						$elt->arrayWork[$offset]->work+=$work->work;
 					} else {
 						$elt->arrayWork[$offset]=$work;
@@ -613,7 +665,11 @@ scriptLog("      => ImputationLine->getParent()-exit");
         . ' value="' . $line->locked . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
-			echo '<img src="css/images/icon' . $line->refType . '16.png" onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');" onmouseout="hideBigImage();"/>';
+			echo '<img src="css/images/icon' . $line->refType . '16.png" ';
+			if ($line->refType!='Imputation') {
+			  echo 'onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');" onmouseout="hideBigImage();"';
+			}
+			echo '/>';
 			echo '</td>';
 			echo '<td class="ganttName" >';
 			// tab the name depending on level

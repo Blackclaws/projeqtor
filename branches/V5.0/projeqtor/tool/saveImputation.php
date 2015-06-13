@@ -68,6 +68,7 @@ Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
   $imputable=$_REQUEST['imputable'][$i];
   $locked=$_REQUEST['locked'][$i];
+debugLog("$i imputable=$imputable, locked=$locked");
   if ($imputable and ! $locked) {
     $line=new ImputationLine();
     $line->idAssignment=$_REQUEST['idAssignment'][$i];
@@ -96,7 +97,7 @@ for ($i=0; $i<$nbLines; $i++) {
         $work=new Work($workId);
       } else {
         $crit=array('idAssignment'=>$line->idAssignment,
-                    'workDate'=>$workDate);
+                    'workDate'=>$workDate, 'idWorkElement'=>null);
         $work=SqlElement::getSingleSqlElementFromCriteria('Work', $crit);
       } 
       $arrayWork[$j]=$work;
