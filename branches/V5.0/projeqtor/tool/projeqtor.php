@@ -476,7 +476,9 @@ function throwError($message, $code = null) {
  *          the name of the class
  * @return void
  */
+$hideAutoloadError=false;
 function projeqtorAutoload($className) {
+  global $hideAutoloadError;
   $localfile = ucfirst ( $className ) . '.php'; // locally
   $customfile = '../model/custom/' . $localfile; // Custom directory
   $modelfile = '../model/' . $localfile; // in the model directory
@@ -488,7 +490,9 @@ function projeqtorAutoload($className) {
   } elseif (is_file ( $persistfile )) {
     require_once $persistfile;
   } else {
-    errorLog ( "Impossible to load class $className<br/>" . "  => Not found in $customfile <br/>" . "  => Not found in $modelfile <br/>" . "  => Not found in $persistfile <br/>" );
+    if (! $hideAutoloadError) {
+      errorLog ( "Impossible to load class $className<br/>" . "  => Not found in $customfile <br/>" . "  => Not found in $modelfile <br/>" . "  => Not found in $persistfile <br/>" );
+    }
     return false;
   }
 }
