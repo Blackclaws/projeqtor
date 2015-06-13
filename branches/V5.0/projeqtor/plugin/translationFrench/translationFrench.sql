@@ -11,7 +11,7 @@
 UPDATE `${prefix}accessprofile` SET description='Lecture seule sur les éléments de ses projets' WHERE name='accessProfileRestrictedReader';
 UPDATE `${prefix}accessprofile` SET description='Lecture seule sur les éléments de tous les projets' WHERE name='accessProfileGlobalReader';
 UPDATE `${prefix}accessprofile` SET description='Lecture et mise à jour sur les éléments de ses projets' WHERE name='accessProfileRestrictedUpdater';
-UPDATE `${prefix}accessprofile` SET description='Lecture  et mise à jour sur les éléments de tous les projets' WHERE name='accessProfileGlobalUpdater';
+UPDATE `${prefix}accessprofile` SET description='Lecture et mise à jour sur les éléments de tous les projets' WHERE name='accessProfileGlobalUpdater';
 UPDATE `${prefix}accessprofile` SET description='Lecture uniquement sur les éléments de ses projets
 Creation possible
 Mise à jour et suppression sur ses propres éléments' WHERE name='accessProfileRestrictedCreator';
