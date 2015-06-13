@@ -257,7 +257,7 @@ class PlanningElement extends SqlElement {
     	$this->idProject=$this->refId;
     }
     // If done and no work, set up end date
-    if (  $this->leftWork==0 and $this->realWork==0 ) {
+    if (  $this->leftWork==0 and $this->realWork==0) {
       $refType=$this->refType;
       if ($refType) {
         $refObj=new $refType($this->refId);
@@ -300,6 +300,14 @@ class PlanningElement extends SqlElement {
         $topElt->elementary=0;        
       }
     }
+    
+    // Initialize planned dates
+    /*if (! $this->plannedStartDate) {
+      $this->plannedStartDate=$this->validatedStartDate;
+    }
+    if (! $this->plannedEndDate and $this->plannedStartDate and $this->validatedDuration) {
+      $this->plannedEndDate=addWorkDaysToDate($this->plannedStartDate,$this->validatedDuration);
+    }*/
     
     // calculate wbs
     $dispatchNeeded=false;
@@ -586,6 +594,10 @@ class PlanningElement extends SqlElement {
         if ( !$pla->cancelled and $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
           $plannedEndDate=$pla->plannedEndDate;
         }  
+        // If realEnd calculated, but left task with no work, keep real not set
+        if ($realEndDate and !$pla->realEndDate and $pla->assignedWork==0 and $pla->leftWork==0 and $pla->plannedEndDate>$realEndDate) {
+          $realEndDate="";
+        }
         if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
         if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
       }

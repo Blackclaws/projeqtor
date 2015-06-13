@@ -1829,18 +1829,20 @@ function drawGantt() {
       if (trim(item.plannedstartdate)!="" && trim(item.realenddate)=="") {
         pStartFraction=item.plannedstartfraction;
       }
-      if (trim(item.plannedstartdate!="")
-       && trim(item.realstartdate)!="" 
-       && item.plannedstartdate<item.realstartdate) {
+      // If real work in the future, don't take it in account
+      if (trim(item.plannedstartdate)
+       && trim(item.realstartdate) 
+       && item.plannedstartdate<item.realstartdate
+       && item.realstartdate>now) { 
         pStart=item.plannedstartdate;
-      }
-      
+      }  
       // pEnd : end date of task
       var pEnd=now;
       var pEndFraction=1;
       pEnd=(trim(item.initialenddate)!="")?item.initialenddate:pEnd;
       pEnd=(trim(item.validatedenddate)!="")?item.validatedenddate:pEnd;
       pEnd=(trim(item.plannedenddate)!="")?item.plannedenddate:pEnd;
+
       pRealEnd="";
       pPlannedStart="";
       pWork="";
@@ -2275,7 +2277,6 @@ function globalSave() {
     var button=dijit.byId('dialogCreationInfoSubmit');  
   } else if (dijit.byId('dialogDispatchWork') && dijit.byId('dialogDispatchWork').open) {
     var button=dijit.byId('dialogDispatchWorkSubmit');  
-  
   } else {
     var button=dijit.byId('saveButton');
   }
@@ -2287,7 +2288,8 @@ function globalSave() {
   }
   if ( button && button.isFocusable() ) {
     button.focus();
-    button.onClick();
+    var id=button.get('id');
+    setTimeout("dijit.byId('"+id+"').onClick();",20);
   }
 }
 
