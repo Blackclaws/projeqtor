@@ -318,6 +318,7 @@ abstract class SqlElement {
                                   "TestSession"=>"control",
                                   "VersionProject"=>"cascade"),
     "VersioningType" =>     array("Versioning" => "controlStrict"),
+    "WorkElement" =>        array("Work"=>"cascade"),
     "Workflow" =>           array("ActionType"=>"controlStrict", 
                                   "ActivityType"=>"controlStrict", 
                                   "BillType"=>"controlStrict",

@@ -92,23 +92,26 @@ if ($we->realWork!=$total) {
 }
 foreach ($dateList as $idx=>$date) {
   if ($error) break;
-  $diff=null;
   if ( ($date and $resourceList[$idx]) or $workIdList[$idx]) {
     $work=new Work($workIdList[$idx]);
     $work->setDates($date);
     $work->idResource=$resourceList[$idx];
     $work->idProject=$obj->idProject;
     if (! $work->refType) {
-      $work->refType=$refType;
-      $work->refId=$refId;
+      if (property_exists($refType, 'idActivity') and $obj->idActivity) {
+        $work->refType='Activity';
+        $work->refId=$obj->idActivity;
+      } else {
+        $work->refType=$refType;
+        $work->refId=$refId;
+      }
     }
-    if ($work->work) {
-      $diff=$valueList[$idx]-$work->work;
-    }
+    $diff=$valueList[$idx]-$work->work;
     $work->work=$valueList[$idx];
     $work->idWorkElement=$weId;
     $work->dailyCost=0;//TODO
     $work->cost=0;//TODO
+    $work->idAssignment=WorkElement::updateAssignment($work, $diff);
     $resWork="";
     if ($work->work==0) {
       if ($work->id) {

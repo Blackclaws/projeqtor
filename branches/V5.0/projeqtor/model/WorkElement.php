@@ -215,6 +215,7 @@ class WorkElement extends SqlElement {
 				$work->save ();
 			} else {
 			  // Remove work : so need to remove from existing (reverse loop on date) 
+			  debugLog("diff negative=$diff");
 				while ( $diff < 0 and $idx >= 0 ) {
 					$valDiff = 0;
 					if ($work->work + $diff >= 0) {
@@ -235,13 +236,16 @@ class WorkElement extends SqlElement {
 					} else {
 						$work->save ();
 					}
+					debugLog("save work for date $work->day");
 					$idx --;
 					if ($idx >= 0) { // Retrieve previous work element
+					  debugLog("retrive previous");
 						$work = $workList [$idx];
-					} else if ($diff>0) { // Not more work for current user, but could not remove all difference (exiting work for other user)
+					} else if ($diff!=0) { // Not more work for current user, but could not remove all difference (exiting work for other user)
 					  // Reaffect work !!!
-					  $this->realWork=$diff;
-					  $this->save(true); // Save but do not try and dispatch any more
+					  $this->realWork=$diff*(-1);
+					  $resSaveLeft=$this->save(true); // Save but do not try and dispatch any more
+					  debugLog("left=$diff => $resSaveLeft");
 					}
 				}
 			}
@@ -328,7 +332,7 @@ class WorkElement extends SqlElement {
 		$result = "";
 		$refObj = new $this->refType ( $this->refId );
 		if ($item == 'run' and ! $comboDetail and ! $this->idle) {
-			if ($print) {
+			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
 			}
 			$user = getSessionUser();
@@ -378,7 +382,7 @@ class WorkElement extends SqlElement {
 			$result .= '</div>';
 			return $result;
 		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and $included) {
-			if ($print) {
+			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
 			}
 			$user = getSessionUser();
