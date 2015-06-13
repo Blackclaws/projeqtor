@@ -130,6 +130,7 @@ class WorkElement extends SqlElement {
 		$top = null;
 		if ($this->refType) {
 			$top = new $this->refType ( $this->refId ); // retrieve Ticket
+			$this->refName=$top->name;
 			$topProject = $top->idProject; // Retrive project from Ticket
 			if (isset ( $top->idActivity )) { // Retrive Activity from Ticket
 				$this->idActivity = $top->idActivity;
@@ -215,7 +216,6 @@ class WorkElement extends SqlElement {
 				$work->save ();
 			} else {
 			  // Remove work : so need to remove from existing (reverse loop on date) 
-			  debugLog("diff negative=$diff");
 				while ( $diff < 0 and $idx >= 0 ) {
 					$valDiff = 0;
 					if ($work->work + $diff >= 0) {
@@ -236,16 +236,13 @@ class WorkElement extends SqlElement {
 					} else {
 						$work->save ();
 					}
-					debugLog("save work for date $work->day");
 					$idx --;
 					if ($idx >= 0) { // Retrieve previous work element
-					  debugLog("retrive previous");
 						$work = $workList [$idx];
 					} else if ($diff!=0) { // Not more work for current user, but could not remove all difference (exiting work for other user)
 					  // Reaffect work !!!
 					  $this->realWork=$diff*(-1);
 					  $resSaveLeft=$this->save(true); // Save but do not try and dispatch any more
-					  debugLog("left=$diff => $resSaveLeft");
 					}
 				}
 			}

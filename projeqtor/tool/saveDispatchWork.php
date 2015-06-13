@@ -93,7 +93,8 @@ if ($we->realWork!=$total) {
 foreach ($dateList as $idx=>$date) {
   if ($error) break;
   if ( ($date and $resourceList[$idx]) or $workIdList[$idx]) {
-    $work=new Work($workIdList[$idx]);
+    $id=(isset($workIdList[$idx]))?$workIdList[$idx]:null;
+    $work=new Work($id);
     $work->setDates($date);
     $work->idResource=$resourceList[$idx];
     $work->idProject=$obj->idProject;

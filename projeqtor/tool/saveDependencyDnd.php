@@ -102,11 +102,9 @@ if ($tmpStatus=='OK') {
       }
     }
     $resSuccessor=$successor->save();
-    debugLog($resSuccessor);
   }
 }
 
-debugLog("result=$result");
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {	
   Sql::rollbackTransaction();

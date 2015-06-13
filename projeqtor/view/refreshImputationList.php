@@ -77,6 +77,5 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
 ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
-debugLog("refreshImputationList - End");
 ?>
 </form>
