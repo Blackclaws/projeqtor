@@ -67,6 +67,11 @@ $arrayWork[]=array('id'=>'', 'date'=>null, 'idResource'=>null,'work'=>0);
 <tbody id="dialogDispatchTable">
 <tr><td colspan="6">&nbsp;</td></tr>
 <?php $total=0;$cpt=0;
+$user=getSessionUser();
+$crit=array('scope'=>'imputation', 'idProfile'=>$user->getProfile($obj));
+$habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+$scope=new AccessScope($habilitation->rightAccess);
+$code=$scope->accessCode;
 foreach($arrayWork as $key=>$work) {
   $cpt++;?>
   
@@ -81,7 +86,12 @@ foreach($arrayWork as $key=>$work) {
  <td>&nbsp;</td>
  <td><select dojoType="dijit.form.FilteringSelect" class="input" style="width:150px;"
       id="dispatchWorkResource_<?php echo $cpt;?>" name="dispatchWorkResource[]">
-     <?php htmlDrawOptionForReference('idResource', $work['idResource'], $obj, false, 'idProject', $obj->idProject);?>
+     <?php 
+     if ($code=="PRO" or $code=="ALL") {
+        htmlDrawOptionForReference('idResource', $work['idResource'], $obj, false, 'idProject', $obj->idProject);
+     } else {
+       echo '<OPTION value="'.$user->id.'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';    
+     }?>
      </select>
  </td>
  <td>&nbsp;</td>
