@@ -125,35 +125,42 @@ class WorkElement extends SqlElement {
 		if ($this->leftWork < 0 or $this->done) {
 			$this->leftWork = 0;
 		}
+		
+		// Retrive informations from Ticket and possibly Parent Activity (from Ticket)
 		$top = null;
 		if ($this->refType) {
-			$top = new $this->refType ( $this->refId );
-			$topProject = $top->idProject;
-			if (isset ( $top->idActivity )) {
+			$top = new $this->refType ( $this->refId ); // retrieve Ticket
+			$topProject = $top->idProject; // Retrive project from Ticket
+			if (isset ( $top->idActivity )) { // Retrive Activity from Ticket
 				$this->idActivity = $top->idActivity;
 			}
-		} else {
+		} else { // Should never come here; workElement is always sub-item of Ticket
 			// $top = new Project();
 			$topProject = $this->idProject;
 		}
+		
+		// Set done if Ticket is done
 		if ($top and isset ( $top->done ) and $top->done == 1) {
 			$this->leftWork = 0;
 			$this->done = 1;
 		}
+		
 		if ($top and property_exists ( $top, 'idActivity' ) and ! $noDispatch) {
 			$this->idActivity = $top->idActivity;
 			// Check if changed Planning Activity
 			if (! trim ( $old->idActivity ) and $old->idActivity != $this->idActivity) {
+			  // If Activity changed, retrieve existing work
 				$crit = array (
 						'refType' => $this->refType,
 						'refId' => $this->refId 
 				);
 				$work = new Work ();
 				$workList = $work->getSqlElementsFromCriteria ( $crit );
+				// Assign existing work to the activity (preserve link through idWorkElement)
 				foreach ( $workList as $work ) {
 					$work->refType = 'Activity';
 					$work->refId = $this->idActivity;
-					$work->idAssignment = $this->updateAssignment ( $work, $work->work );
+					$work->idAssignment = self::updateAssignment ( $work, $work->work );
 					$work->idWorkElement=$this->id;
 					$work->save ();
 				}
@@ -164,33 +171,25 @@ class WorkElement extends SqlElement {
 		  return $result;
 	  }
 		$diff = $this->realWork - $old->realWork;
+		// If realWork has changed (not through Dispatch screen), update the work
 		if ($diff != 0) {
 			// Set work to Ticket
 			$idx = - 1;
-			if ($this->idActivity) {
-				$crit = array (
-						'refType' => 'Activity',
-						'refId' => $this->idActivity,
-						'idResource' => $user->id,
-						'idProject' => $topProject 
+			// Will retrive work for current WorkElement, Current resource
+			$crit = array (
+				'idWorkElement' => $this->id,
+				'idResource' => $user->id 
 				);
-			} else {
-				$crit = array (
-						'refType' => $this->refType,
-						'refId' => $this->refId,
-						'idResource' => $user->id,
-						'idProject' => $topProject 
-				);
-			}
+			// If change is add work, will input current date
 			if ($diff > 0) {
 				$crit ['workDate'] = date ( 'Y-m-d' );
 			}
 			$work = new Work ();
 			$workList = $work->getSqlElementsFromCriteria ( $crit, true, null, 'day asc' );
-			if (count ( $workList ) > 0) {
+			if (count ( $workList ) > 0) { // If work exists, retrive the last one
 				$idx = count ( $workList ) - 1;
 				$work = $workList [$idx];
-			} else {
+			} else { // If work does not exist, will create new one
 				$work = new Work ();
 				$work->refType = $this->refType;
 				$work->refId = $this->refId;
@@ -203,18 +202,19 @@ class WorkElement extends SqlElement {
 			if ($diff > 0) {
 				$work->work += $diff;
 				$work->setDates ( date ( 'Y-m-d' ) );
-				if ($work->work < 0) {
+				if ($work->work < 0) { // Should never happen as $diff is > 0 here 
 					$work->work = 0;
 				}
-				if (! $work->refType) {
+				if (! $work->refType) { // Ensure work is correcly set to ref item
 					$work->refType = $this->refType;
 					$work->refId = $this->refId;
 				}
 				$work->idProject = $topProject;
-				$work->idAssignment = $this->updateAssignment ( $work, $diff );
+				$work->idAssignment = self::updateAssignment ( $work, $diff );
 				$work->idWorkElement=$this->id;
 				$work->save ();
 			} else {
+			  // Remove work : so need to remove from existing (reverse loop on date) 
 				while ( $diff < 0 and $idx >= 0 ) {
 					$valDiff = 0;
 					if ($work->work + $diff >= 0) {
@@ -226,7 +226,7 @@ class WorkElement extends SqlElement {
 						$diff += $work->work;
 						$work->work = 0;
 					}
-					$work->idAssignment = $this->updateAssignment ( $work, $valDiff );
+					$work->idAssignment = self::updateAssignment ( $work, $valDiff );
 					$work->idWorkElement=$this->id;
 					if ($work->work == 0) {
 						if ($work->id) {
@@ -236,16 +236,12 @@ class WorkElement extends SqlElement {
 						$work->save ();
 					}
 					$idx --;
-					if ($idx >= 0) {
+					if ($idx >= 0) { // Retrieve previous work element
 						$work = $workList [$idx];
-					} else if (array_key_exists ( 'idResource', $crit )) {
-						unset ( $crit ['idResource'] );
-						$work = new Work ();
-						$workList = $work->getSqlElementsFromCriteria ( $crit, true, null, 'day asc' );
-						if (count ( $workList ) > 0) {
-							$idx = count ( $workList ) - 1;
-							$work = $workList [$idx];
-						}
+					} else if ($diff>0) { // Not more work for current user, but could not remove all difference (exiting work for other user)
+					  // Reaffect work !!!
+					  $this->realWork=$diff;
+					  $this->save(true); // Save but do not try and dispatch any more
 					}
 				}
 			}
@@ -262,7 +258,7 @@ class WorkElement extends SqlElement {
 		return $result;
 	}
 	
-	private function updateAssignment($work, $diff) {
+	public static function updateAssignment($work, $diff) {
 		if ($work->refType != 'Activity') {
 			return null;
 		}
