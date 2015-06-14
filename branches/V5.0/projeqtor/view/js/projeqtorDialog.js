@@ -2746,6 +2746,7 @@ function plan() {
   loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true, null);
   dijit.byId("dialogPlan").hide();
 }
+
 function cancelPlan() {
   if (!dijit.byId('idProjectPlan').get('value')) {
     dijit.byId('idProjectPlan').set('value', ' ');

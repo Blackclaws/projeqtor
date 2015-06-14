@@ -28,3 +28,5 @@ $debugJsonQuery=false;             // Trace only JsonQuery queries  (retrieving 
 $debugPerf=true;                   // Add some timestamps and execution time at all debug lines
 $debugReport=true;                 // Displays report file name on report header 
 $memoryLimitForPDF = '512';
+//$showAutoPlan=true;
+

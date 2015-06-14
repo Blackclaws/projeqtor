@@ -72,7 +72,7 @@ $canPlan=(count($plannableProjectsList)>0)?true:false;
             <img src="css/images/iconPlanning32.png" width="32" height="32" />
           </span>
 		    </td>
-		    <td><span class="title"><?php echo i18n('menuPlanning');?></span></td>
+		    <td><span class="title"><?php echo i18n('menuPlanning');?></span><br/></td>
 		    <td>   
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">
@@ -90,6 +90,13 @@ $canPlan=(count($plannableProjectsList)>0)?true:false;
                      return false;
                     </script>
 		              </button>
+<?php $autoPlan=false;?>
+                  <div style="white-space:nowrap;<?php if (!isset($showAutoPlan) or $showAutoPlan!=true) echo 'visibility:hidden;'?>">
+		              <span title="<?php echo i18n('automaticRunPlanHelp');?>" dojoType="dijit.form.CheckBox"
+                        type="checkbox" id="automaticRunPlan" name="automaticRunPlan" class="whiteCheck"
+                        <?php if ( $autoPlan) {echo 'checked="checked"'; } ?>  >                      
+                  </span>&nbsp;<?php echo i18n('automaticRunPlan')?>
+                  </div>
 <?php }?>             
 		            </td>
 		            <td style="white-space:nowrap;width:240px">

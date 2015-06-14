@@ -212,9 +212,16 @@ function filterJsonList() {
 
 function refreshGrid() {
   if (dijit.byId("objectGrid")) {
-    showWait();refreshJsonList(dojo.byId('objectClass').value, true);
+    showWait();
+    refreshJsonList(dojo.byId('objectClass').value, true);
   } else {
-	showWait();refreshJsonPlanning();  
+	  showWait();
+	  if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
+console.log("PLAN !!!");
+	    plan();
+	  } else {
+	    refreshJsonPlanning();
+	  }
   }
 }
 /**
@@ -924,7 +931,8 @@ function finalizeMessageDisplay(destination, validationType) {
           } else if (validationType=='dependency' && 
         		  (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
               noHideWait=true;
-              refreshJsonPlanning();  
+              //refreshJsonPlanning();
+              refreshGrid();
           }
     	  //hideWait();
       }
