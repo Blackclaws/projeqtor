@@ -1909,7 +1909,7 @@ startGuideActivity: "[Activities are the tasks planned on your projects. <br/>Yo
 startGuideAffectation: "[A resource must be affected to a project to see its items.<br/>Affectation to a project automatically gives visibility to items of its sub-projects.]",
 startGuideClient: "[Customers are the entities you are working for.<br/>They can be internal or ousite your organization.]",
 startGuideContact: "[Contacts are the persons you are in contact with inside your customers entities.]",
-startGuideFooter: "[Here are the main functionalities. <br/>Once you get familiar with these functions you'll be able to discover the (numerous) other modules able to cover your projects management.]",
+startGuideFooter: "[Here are the main features <br/>Once you get familiar with these functions you'll be able to discover the (numerous) other modules able to cover your projects management.]",
 startGuideImputation: "[Resources enter their real work on Real work allocation screen day by day and activity by activity.<br/> Re-estimation of the « left » work allows actualisation of project planning with real progress.]",
 startGuideIntro: "[Here is a short help to ease your first steps with ProjeQtOr.<br>Follow these steps to configure first elements.<br>Don't hesitate to hit [F1] to get to user manual where you'll find more help.<br>Return to Today page to find this 'start guide' page.]",
 startGuideMilestone: "[Milestones are the key dates of the projects.<br/>They can define incoming (fixed milestones) or deliverables (floating milestones).]",
