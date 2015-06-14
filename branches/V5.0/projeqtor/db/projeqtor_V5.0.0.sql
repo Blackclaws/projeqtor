@@ -223,10 +223,20 @@ UPDATE `${prefix}work` set idWorkElement=
 
 UPDATE `${prefix}workelement` set refName=(select name from `${prefix}ticket` t where refId=t.id) where refTYpe='Ticket';
  
+CREATE TABLE `${prefix}plugin` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `zipFile` varchar(4000),
+  `isDeployed` int(1) unsigned DEFAULT 0,
+  `versionDeployed`  varchar(100),
+  `versionCompatible` varchar(100),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+CREATE INDEX pluginName ON `${prefix}plugin` (name);
+
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////
-
 
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuProject';

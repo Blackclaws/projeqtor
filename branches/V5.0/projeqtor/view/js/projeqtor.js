@@ -2752,6 +2752,7 @@ function saveObject() {
 }
 
 function onKeyDownFunction(event, field, editorFld) {
+  console.log(event.keyCode);
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
@@ -2765,8 +2766,11 @@ function onKeyDownFunction(event, field, editorFld) {
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
-  } else if (event.keyCode==9) { // Tab : prevent
-	  if (fullScreenEditor) event.preventDefault();
+  } else if (event.keyCode==9 || event.keyCode==27) { // Tab : prevent
+	  if (fullScreenEditor) {
+	    event.preventDefault();
+	    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
+	  }
   } else {
     //console.log("keyCode="+event.keyCode+", ctrlKey="+event.ctrlKey+", altKey="+event.altKey+", metaKey"+event.metaKey+" shiftKey="+event.shiftKey);
     if (field=='noteNoteEditor') {
@@ -2793,9 +2797,10 @@ function editorBlur(fieldId, editorFld) {
   var screenWidth=document.body.getBoundingClientRect().width;
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
   top.dojo.byId(fieldId).value=editorFld.document.body.firstChild.innerHTML;
-  if (fullScreenEditor) { 
-    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS
+  if (fullScreenEditor) {
+    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
   }
+  return 'OK';
 }
 
 function menuFilter(filter) {
