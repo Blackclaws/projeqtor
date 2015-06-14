@@ -21,7 +21,6 @@ var allFiles = [].concat(
 	lessFiles = allFiles.filter(function(name){ return name && name != "variables.less" && /\.less$/.test(name); });
 
 lessFiles.forEach(function(fname){
-	console.log("=== " + fname);
 	fs.readFile(fname, 'utf-8', function(e, data){
 		if(e){
 			console.error("lessc: " + e.message);

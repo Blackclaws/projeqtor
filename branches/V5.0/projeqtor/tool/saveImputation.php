@@ -68,7 +68,6 @@ Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
   $imputable=$_REQUEST['imputable'][$i];
   $locked=$_REQUEST['locked'][$i];
-debugLog("$i imputable=$imputable, locked=$locked");
   if ($imputable and ! $locked) {
     $line=new ImputationLine();
     $line->idAssignment=$_REQUEST['idAssignment'][$i];

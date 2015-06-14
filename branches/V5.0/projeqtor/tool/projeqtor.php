@@ -276,20 +276,24 @@ function setupLocale() {
  *
  * @param $str the
  *          code of the message to search and translate
- * @return the translated message (or the �nput message if not found)
+ * @return the translated message (or the input message if not found)
  */
 function i18n($str, $vars = null) {
   global $i18nMessages, $currentLocale;
+  $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
   // on first use, initialize $i18nMessages
+  //if (! $i18nMessages) { // Try and retrieve from session : not activated as not performance increased
+  //  $i18nMessages=getSessionValue($i18nSessionValue,null,true); 
+  //}
   if (! $i18nMessages) {
     $filename = "../tool/i18n/nls/lang.js";
+    $i18nMessages = array ();
     if (isset ( $currentLocale )) {
       $testFile = "../tool/i18n/nls/" . $currentLocale . "/lang.js";
       if (file_exists ( $testFile )) {
         $filename = $testFile;
       }
     }
-    $i18nMessages = array ();
     $file = fopen ( $filename, "r" );
     while ( $line = fgets ( $file ) ) {
       $split = explode ( ":", $line );
@@ -302,6 +306,27 @@ function i18n($str, $vars = null) {
       }
     }
     fclose ( $file );
+    
+    // Retrieve personalized translations (if exist)
+    if (isset ( $currentLocale )) { 
+      $testFile = "../plugin/personalizedTranslations/" . $currentLocale . "/lang.js";
+      if (file_exists ( $testFile )) {
+        $filename = $testFile;
+        $file = fopen ( $filename, "r" );
+        while ( $line = fgets ( $file ) ) {
+          $split = explode ( ":", $line );
+          if (isset ( $split [1] )) {
+            $var = trim ( $split [0], ' ' );
+            $valTab = explode ( ",", $split [1] );
+            $val = trim ( $valTab [0], ' ' );
+            $val = trim ( $val, '"' );
+            $i18nMessages [$var] = $val;
+          }
+        }
+        fclose ( $file );
+      }
+    }
+    //setSessionValue($i18nSessionValue,$i18nMessages);
   }
   // fetch the message in the array
   if (array_key_exists ( $str, $i18nMessages )) {
