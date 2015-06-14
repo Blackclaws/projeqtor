@@ -25,15 +25,24 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 $maintenance=true;
-require_once "../db/maintenanceFunctions.php";
 require_once '../tool/projeqtor.php';
+require_once "../db/maintenanceFunctions.php";
+
+$user=getSessionUser();
+$profile=new Profile($user->idProfile);
+if ($profile->profileCode!='ADM') {
+  traceHack('Call to loadPlugin.php for non Admin user');
+  echo 'Call to loadPlugin.php for non Admin user.<br/>This action and your IP has been traced.';
+	exit;
+}
+
 Sql::$maintenanceMode=true;
-// TODO : Read zip files in plugin Directory : for each file call load
 $files=Plugin::getZipList();
 $result="";
 foreach ($files as $file) {
-  $p=new Plugin();
-  $result.=$p->load($file);
+  $plugin=new Plugin();
+  $result=$plugin->load($file);
+  echo $result.' ('.$plugin->name.')<br/>';
 }
 
-
+echo "loadPlugin.php executed at ".date('Y-m-d H:i:s');

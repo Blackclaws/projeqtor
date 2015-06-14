@@ -332,7 +332,6 @@ class ImputationLine {
 			if (array_key_exists($key,$result)) {
 				$key.= '/#' . $ass->id;
 			}
-debugLog($elt);
 			// fetch all work stored in database for this assignment
 			foreach ($workList as $work) {
 				if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment and !$work->idWorkElement and !isset($elt->_idWorkElement)) 

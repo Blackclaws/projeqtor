@@ -103,7 +103,7 @@ abstract class SqlElement {
                                   "Ticket"=>"controlStrict",
                                   "Version"=>"controlStrict"),
     "ContextType" =>        array("Context" => "controlStrict"),
-    "ContractType" =>       array("Contract" => "controlStrict"),
+    //"ContractType" =>       array("Contract" => "controlStrict"),
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Issue"=> "controlStrict",
                                   "Opportunity"=> "controlStrict",

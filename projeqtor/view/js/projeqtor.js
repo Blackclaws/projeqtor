@@ -68,6 +68,12 @@ var debugPerf=new Array();
  *            the idle filter parameter
  * @return void
  */
+
+// Function to call console log without messing with debug
+function consoleTraceLog(message) {
+  // console.log to keep
+  console.log(message);
+}
 function refreshJsonList(className, keepUrl) {
   var grid = dijit.byId("objectGrid");
   if (grid) {
@@ -217,7 +223,6 @@ function refreshGrid() {
   } else {
 	  showWait();
 	  if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
-console.log("PLAN !!!");
 	    plan();
 	  } else {
 	    refreshJsonPlanning();
@@ -663,8 +668,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
     	if (validationType) msg+=" | validationType='"+validationType+"'";
     	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
-    	//console.log to keep
-    	console.log(msg);
+    	consoleTraceLog(msg);
     },
     error: function(error,args){
         console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
@@ -817,35 +821,26 @@ function finalizeMessageDisplay(destination, validationType) {
     if (contentWidget) {
       returnMessage=contentWidget.get('content');
     }
-    //console.log to keep
-    console.log("***** ERROR ***** on finalizeMessageDisplay("+destination+", "+validationType+")");
+    consoleTraceLog("***** ERROR ***** on finalizeMessageDisplay("+destination+", "+validationType+")");
     if (! contentNode) {
-    	//console.log to keep
-    	console.log("contentNode unknown");
+      consoleTraceLog("contentNode unknown");
     } else {
-    	//console.log to keep
-    	console.log("contentNode="+contentNode.innerHTML);
+      consoleTraceLog("contentNode="+contentNode.innerHTML);
     }
     if (! contentWidget) {
-    	//console.log to keep
-    	console.log("contentWidget unknown");
+      consoleTraceLog("contentWidget unknown");
     } else {
-    	//console.log to keep
-    	console.log("contentWidget="+contentWidget.get("content"));
+      consoleTraceLog("contentWidget="+contentWidget.get("content"));
     }
     if (! lastOperationStatus) {
-    	//console.log to keep
-    	console.log("lastOperationStatus unknown");
+      consoleTraceLog("lastOperationStatus unknown");
     } else {
-    	//console.log to keep
-    	console.log("lastOperationStatus="+lastOperationStatus.value);
+      consoleTraceLog("lastOperationStatus="+lastOperationStatus.value);
     }
     if (! lastOperation) {
-    	//console.log to keep
-    	console.log("lastOperation unknown");
+      consoleTraceLog("lastOperation unknown");
     } else {
-    	//console.log to keep
-    	console.log("lastOperation="+lastOperation.value);
+      consoleTraceLog("lastOperation="+lastOperation.value);
     }
     showError(i18n("errorFinalizeMessage", new Array(destination,returnMessage)));
     hideWait();
@@ -2752,7 +2747,6 @@ function saveObject() {
 }
 
 function onKeyDownFunction(event, field, editorFld) {
-  console.log(event.keyCode);
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
@@ -2772,7 +2766,6 @@ function onKeyDownFunction(event, field, editorFld) {
 	    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
 	  }
   } else {
-    //console.log("keyCode="+event.keyCode+", ctrlKey="+event.ctrlKey+", altKey="+event.altKey+", metaKey"+event.metaKey+" shiftKey="+event.shiftKey);
     if (field=='noteNoteEditor') {
       // nothing
     } else if ( isEditingKey(event)) {

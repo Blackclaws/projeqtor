@@ -5109,8 +5109,7 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
       }
     },
     error : function() {
-      // console.log to keep
-      console.log("error loading dialog " + dialogDiv);
+      consoleTraceLog("error loading dialog " + dialogDiv);
       hideWait();
     }
   });
@@ -5146,8 +5145,7 @@ function loadReport(url, dialogDiv) {
       contentWidget.set('content', data);
     },
     error : function() {
-      // console.log to keep
-      console.log("error loading report " + url + " into " + dialogDiv);
+      consoleTraceLog("error loading report " + url + " into " + dialogDiv);
     }
   });
 }
@@ -5816,7 +5814,6 @@ function showLogfile(name) {
       var scroll=function() {
         dojo.query(".logFile .dijitDialogPaneContent").forEach(function(node, index, arr){
           node.scrollTop=parseInt(dojo.byId('logTableContainer').offsetHeight);
-          console.log(dojo.byId('logTableContainer').offsetHeight);
         });
       };
       setTimeout(scroll,500);

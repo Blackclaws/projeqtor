@@ -225,11 +225,15 @@ UPDATE `${prefix}workelement` set refName=(select name from `${prefix}ticket` t 
  
 CREATE TABLE `${prefix}plugin` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `description` mediumtext,
   `name` varchar(100),
   `zipFile` varchar(4000),
+  `deploymentDate` date DEFAULT NULL,
   `isDeployed` int(1) unsigned DEFAULT 0,
-  `versionDeployed`  varchar(100),
-  `versionCompatible` varchar(100),
+  `deploymentVersion`  varchar(100),
+  `compatibilityVersion` varchar(100),
+  `pluginVersion` varchar(100),
+  `idle` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX pluginName ON `${prefix}plugin` (name);
