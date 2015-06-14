@@ -32,7 +32,7 @@ session_start ();
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
 $version = "V5.0.0"; // Version of application : Major / Minor / Release
-$build = "0114"; // Build number. To be increased on each release
+$build = "0115"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage = ''; // About message to be displayed when clicking on application logo
 $aboutMessage .= '<div>' . $applicationName . ' ' . $version . ' (' . ($build + 0) . ')</div><br/>';
