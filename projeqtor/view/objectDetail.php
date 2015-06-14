@@ -1497,7 +1497,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
         echo ",'|','insertOrderedList','insertUnorderedList','|']";
         echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
-        echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this);}'; // hard coding default event
+        echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
         if (1) echo ",'|','fullScreen'";

@@ -32,7 +32,6 @@ class Logfile
     public $type;
     public $filePath;
     
-    
     function __construct($name = NULL) {
       $this->name=$name;
       $this->getInfos();
