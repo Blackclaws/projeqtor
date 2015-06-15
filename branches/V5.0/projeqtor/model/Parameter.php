@@ -479,7 +479,7 @@ class Parameter extends SqlElement {
       	                       'paramDbDisplayName'=>'text',  
       	                       'paramFadeLoadingMode'=>'list',
       	                       'paramIconSize'=>'list',
-      	                       'paramTopIconSize'=>'list',
+      	                       //'paramTopIconSize'=>'list',
       	                       'defaultTheme'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                     'sectionFiles'=>'section',
