@@ -388,7 +388,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               <div style="position:relative; width: 400px; height: 54px;">
     	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;text-align: center">
     	           <div id="waitLogin" style="position:absolute;top:50%"></div>  
-	    		        <img src="<?php 
+	    		        <img style="max-height:60px" src="<?php 
 	    		          if (file_exists("../logo.gif")) echo '../logo.gif';
 	    		          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
 	    		          else if (file_exists("../logo.png")) echo '../logo.png';
