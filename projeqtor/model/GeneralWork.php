@@ -234,7 +234,9 @@ class GeneralWork extends SqlElement {
   }
   
   public static function displayWorkWithUnit($val) {
-    return self::displayWork($val) . '&nbsp;' . self::displayShortWorkUnit();
+    $ret=rtrim(htmlDisplayNumeric(self::displayWork($val)),'0');
+    if (substr($ret,-1)==',' or substr($ret,-1)=='.') $ret=substr($ret,0,strlen($ret)-1);
+    return $ret . '&nbsp;' . self::displayShortWorkUnit();
   }
   
   public static function convertWork($val) {

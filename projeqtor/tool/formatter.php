@@ -193,7 +193,7 @@ function numericFixLengthFormatter($val, $numericLength=0) {
 
 function workFormatter($value) {
   //$val=ltrim($value,"0");
-  return Work::displayWorkWithUnit(htmlDisplayNumeric($value));
+  return Work::displayWorkWithUnit($value);
 }
 
 function costFormatter($value) {
