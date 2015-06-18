@@ -40,7 +40,7 @@
             <?php $logo="img/title.png"; 
                   if (file_exists("../logo.gif")) $logo="../logo.gif"; 
                   if (file_exists("../logo.png")) $logo="../logo.png"; ?> 
-            <img src="<?php echo $logo;?>" style="width: 300px; height:54px"/>
+            <img style="max-height:60px" src="<?php echo $logo;?>" style="width: 300px; height:54px"/>
           </div>
         </div>
       </td>
