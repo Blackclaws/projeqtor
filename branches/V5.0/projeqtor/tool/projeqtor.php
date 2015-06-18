@@ -741,9 +741,8 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
     $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
   } else if ($accessRightRead=='ALL') {
     $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
-    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $clauseRES)";
-    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $clauseOWN)";
-    
+    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES)";
+    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN)";
   }
   
   /*
