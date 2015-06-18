@@ -169,6 +169,11 @@
        . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
+  if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
+     debugTraceLog("jsonPlanning: ".$query); // Trace query
+     debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
+     debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
+  }
   $nbRows=0;
   //$nbQueriedRows=Sql::$lastQueryNbRows;
   if ($print) {
