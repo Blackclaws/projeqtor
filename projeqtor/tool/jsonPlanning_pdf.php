@@ -160,6 +160,11 @@
        . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
+  if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
+    debugTraceLog("jsonPlanning_pdf: ".$query); // Trace query
+    debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
+    debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
+  }
   $nbRows=0;
   if ($print) {
     if ( array_key_exists('report',$_REQUEST) ) {

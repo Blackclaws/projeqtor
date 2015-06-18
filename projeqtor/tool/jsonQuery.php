@@ -492,7 +492,7 @@
     // --- Execute query
     $result=Sql::query($query);
     if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
-       debugTraceLog($query); // Trace query
+       debugTraceLog("jsonQuery: ".$query); // Trace query
        debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
        debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
     }
