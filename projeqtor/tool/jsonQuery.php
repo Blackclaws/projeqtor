@@ -498,8 +498,10 @@
     }
     $nbRows=0;
     $dataType=array();
+    
+    // --- Format for "printing" 
     if ($print) {
-    	if ($outMode=='csv') {
+    	if ($outMode=='csv') { // CSV mode
     		$exportReferencesAs='name';
     		if (isset($_REQUEST['exportReferencesAs'])) {
     		  $exportReferencesAs=$_REQUEST['exportReferencesAs'];
@@ -565,11 +567,11 @@
     		if ($first) {
     			echo utf8_decode(i18n("reportNoData")); 
     		}
-    	} else {
+    	} else { // NON CSV mode : includes pure print and 'pdf' ($outMode=='pdf') mode
         echo '<br/>';
         echo '<div class="reportTableHeader" style="width:99%; font-size:150%;border: 0px solid #000000;">' . i18n('menu'.$objectClass) . '</div>';
         echo '<br/>';
-	      echo '<table>';
+	      echo '<table style="width:'.(($outMode=='pdf')?'950px':'100%').'">';
 	      echo '<tr>';
 	      $layout=str_ireplace('width="','style="border:1px solid black;width:',$layout);
 	      $layout=str_ireplace('<th ','<th class="reportHeader" ',$layout);
@@ -600,7 +602,7 @@
 	            } else if ($formatter[$numField]=="translateFormatter") {
 	              $disp=translateFormatter($val);
 	            } else if ($formatter[$numField]=="percentFormatter") {
-	              $disp=percentFormatter($val,true);
+	              $disp=percentFormatter($val,($outMode=='pdf')?false:true);
 	            } else if ($formatter[$numField]=="numericFormatter") {
 	              $disp=numericFormatter($val);
 	            } else if ($formatter[$numField]=="sortableFormatter") {
@@ -626,7 +628,7 @@
                 if ($val and $showThumb) {
                   $size=substr($formatter[$numField],9);
                   $radius=round($size/2,0);
-                  $thumbUrl=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$numField],9)).'#'.$val;
+                  $thumbUrl=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$numField],9),false, ($outMode=='pdf')?true:false);
                   $disp='<div style="text-align:left;">';
                   $disp.='<img style="border-radius:'.$radius.'px;height:'.$size.'px;float:left" src="'.$thumbUrl.'"';
                   $disp.='/>';
