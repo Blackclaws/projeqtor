@@ -79,7 +79,7 @@
           <tr style="height:10px;" >
             <td align="left" style="position:relative;height: 1%;" valign="top">
 			        <div style="position:relative;width: 400px; height: 54px;">
-			          <div style="z-index:10;overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;text-align: center">
+			          <div style="z-index:10;overflow:visible;position:absolute;width: 480px; height: 50px;top:15px;text-align: center">
 				        <img style="max-height:60px" src="<?php 
 				          if (file_exists("../logo.gif")) echo '../logo.gif';
 				          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
