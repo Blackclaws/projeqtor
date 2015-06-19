@@ -161,17 +161,25 @@ class Affectable extends SqlElement {
     purgeFiles($thumbLocation, null);
   }
 
-  public static function getThumbUrl($objectClass, $affId, $size, $nullIfEmpty=false) {
+  public static function getThumbUrl($objectClass, $affId, $size, $nullIfEmpty=false, $withoutUrlExtra=false) {
     $thumbLocation='../files/thumbs';
     $file="$thumbLocation/Affectable_$affId/thumb$size.png";
     if (file_exists($file)) {
-      $cache=filemtime($file);
-      return "$file?nocache=".$cache."#$affId#&nbsp;#Affectable";
+      if ($withoutUrlExtra) {
+        return $file;
+      } else {
+        $cache=filemtime($file);
+        return "$file?nocache=".$cache."#$affId#&nbsp;#Affectable";
+      }
     } else {
       if ($nullIfEmpty) {
         return null;
       } else {
-        return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
+        if ($withoutUrlExtra) {
+          return "../view/img/Affectable/thumb$size.png";
+        } else {
+          return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
+        }
       }
     }
   }
