@@ -2534,6 +2534,7 @@ function projeqtor_set_memory_limit($memory) {
   @ini_set ( 'memory_limit', $memory );
 }
 
+// Functions to set and retrieve data from SESSION : do not use direct $_SESSION
 function setSessionValue($code, $value, $global=false) {
   global $paramDbName, $paramDbPrefix;
   if ($global) {
@@ -2546,7 +2547,17 @@ function setSessionValue($code, $value, $global=false) {
   }
   $_SESSION [$projeqtorSession] [$code] = $value;
 }
-
+function unsetSessionValue($code, $global=false) {
+  global $paramDbName, $paramDbPrefix;
+  if ($global) {
+    $projeqtorSession = 'ProjeQtOr';
+  } else {
+    $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
+  }
+  if (isset ( $_SESSION [$projeqtorSession] [$code] )) {
+    unset($_SESSION [$projeqtorSession] [$code]);
+  }
+}
 function getSessionValue($code, $default = null, $global=false) {
   // Global parameter is forced when "whatever the databse" is required
   // it is mostly used to cases "also when database is not set yet" ;) 
@@ -2564,27 +2575,28 @@ function getSessionValue($code, $default = null, $global=false) {
   }
   return $_SESSION [$projeqtorSession] [$code];
 }
+// Functions to get and set current user value from session
 function getSessionUser() {
-  if (isset($_SESSION['user'])) {
-    return $_SESSION['user'];
-  } else {
+  $user=getSessionValue('user');
+  if ($user===null) {
     return new User();
+  } else {
+    return $user;  
   }
- // TODO : use getSessionValue;    	
 }
 function setSessionUser($user) {
   if ($user and is_object($user)) {
-    $_SESSION['user']=$user;
+    setSessionValue('user',$user);
   } else {
-    unset($_SESSION['user']);
+    unsetSessionValue('user');
   }
-  // TODO : use getSessionValue;
 }
 function sessionUserExists() {
-  if (isset($_SESSION['user'])) {
-    return true;
-  } else {
+  $user=getSessionValue('user');
+  if ($user===null) {
     return false;
+  } else {
+    return true;
   }
 }
 
