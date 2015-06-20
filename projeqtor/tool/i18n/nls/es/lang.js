@@ -1383,6 +1383,7 @@ newVersion: "Nueva versión ${1} está disponible desde la página de ProjecQtOr
 nextDays: "Próximos días",
 noChecklistDefined: "No hay lista de verificación definida para este elemento",
 noDataToDisplay: "No hay datos que mostrar",
+noEmailReceiver: "[No email receiver could be détgermined]",
 noFilterClause: "No hay cláusula de filtro",
 noItemSelected: "No se ha seleccionado un ítem",
 noMailSent: "No se pudo enviar E-Mail a '${1}'. ${2}",

@@ -1383,6 +1383,7 @@ newVersion: "Une nouvelle version ${1} est disponible sur le site web de ProjeQt
 nextDays: "prochains jours",
 noChecklistDefined: "aucune checklist n'est définie pour cet élément",
 noDataToDisplay: "Aucune donnée à afficher",
+noEmailReceiver: "Aucun destinataire d'email n'a pu être déterminé",
 noFilterClause: "aucun critère de filtre",
 noItemSelected: "Aucun élément n'est sélectionné",
 noMailSent: "Impossible d'envoyer un mail à '${1}'. ${2}",
