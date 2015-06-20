@@ -1383,6 +1383,7 @@ newVersion: "Нова версія ${1} доступна на сайті ProjecQ
 nextDays: "наступні дні",
 noChecklistDefined: "немає визначень в переліку (Checklist) для цього елемента",
 noDataToDisplay: "Немає даних для відображення",
+noEmailReceiver: "[No email receiver could be détgermined]",
 noFilterClause: "немає критеріїв фільтра",
 noItemSelected: "не обрано будь якого елементу ",
 noMailSent: "Не вдалося надіслати пошту '${1} '. ${2}",

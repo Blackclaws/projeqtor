@@ -1383,6 +1383,7 @@ newVersion: "На сайте доступна новая версия ProjecQtOr
 nextDays: "[next days]",
 noChecklistDefined: "[no checklist defined for this element]",
 noDataToDisplay: "Нет данных для отображения",
+noEmailReceiver: "[No email receiver could be détgermined]",
 noFilterClause: "Нет фильтра для пункта",
 noItemSelected: "Не выбран не один пункт",
 noMailSent: "Не удается отправить почту для '${1}'. ${2}",

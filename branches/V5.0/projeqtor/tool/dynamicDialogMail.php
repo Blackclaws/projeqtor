@@ -153,6 +153,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
                     class="input" ></textarea>
               </td>
             </tr>
+            <?php /* 
             <tr>
               <td class="dialogLabel">
                 <label for="dialogMailSaveAsNote"><?php echo i18n("colSaveAsNote") ?>&nbsp;:&nbsp;</label>
@@ -161,6 +162,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
                 <div id="dialogMailSaveAsNote" name="dialogMailSaveAsNote" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
               </td>
             </tr>
+            */ ?>
           </table>
        </form>
      </td>

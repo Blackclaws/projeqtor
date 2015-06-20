@@ -90,21 +90,25 @@
     $directStatusMail->message=htmlEncode($message,'html'); // Attention, do not save this status mail
     $resultMail=$obj->sendMailIfMailable(false,false,$directStatusMail,false,false,false,false,false,false,false,false,false);
     if (! $resultMail or ! is_array($resultMail)) {
-    	$result="";
+    	$result="NO";
     	$dest="";
     } else {
     	$result=$resultMail['result'];
       $dest=$resultMail['dest'];
     }
   }
-  
-  if ($result!="OK") {
-    echo '<div class="messageERROR" >' . i18n('noMailSent',array($dest, $result)) . '</div>';
-    echo '<input type="hidden" id="lastOperation" value="mail" />';
-    echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
-  } else {
+  debugLog($resultMail);
+  if ($result=="OK") { 
     echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="OK" />';
-  } 
+  } else if ($result=="NO") {
+    echo '<div class="messageWARNING" >' . i18n('noMailSent',array($dest, i18n('noEmailReceiver'))) . '</div>';
+    echo '<input type="hidden" id="lastOperation" value="mail" />';
+    echo '<input type="hidden" id="lastOperationStatus" value="OK" />';
+  } else {
+    echo '<div class="messageERROR" >' . i18n('noMailSent',array($dest, $result)) . '</div>';
+    echo '<input type="hidden" id="lastOperation" value="mail" />';
+    echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
+  }
 ?>
