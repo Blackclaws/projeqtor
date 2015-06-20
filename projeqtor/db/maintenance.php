@@ -329,6 +329,42 @@ if (beforeVersion($currVersion,"V4.2.0")) {
 if (beforeVersion($currVersion,"V5.0.0") and $currVersion!='V0.0.0') {
   Affectable::generateAllThumbs();
 }
+if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
+  // Attachments : directory name changed from attachement_x to attachment_x
+  $error=false;
+  $attDir=Parameter::getGlobalParameter('paramAttachmentDirectory');
+  $handle = opendir($attDir);
+  $globalCatchErrors=true;
+  while (!$error and ($file = readdir($handle)) !== false) {
+    if ($file == '.' || $file == '..' || $file=='index.php') {
+      continue;
+    }
+    $filepath = ($attDir == '.') ? $file : $attDir . '/' . $file;
+    if (is_link($filepath)) {
+      continue;
+    }
+    
+    if (is_dir($filepath) and substr($file,0,12)=='attachement_') { 
+      $newfilepath=str_replace('attachement_', 'attachment_', $filepath);
+      $res=rename($filepath,$newfilepath);
+      if (!$res) {
+        traceLog("Error rename $filepath into $newfilepath");
+        //$error=true;
+      }
+    }
+  }
+  $globalCatchErrors=false;
+  $att=new Attachment();
+  $lstAtt=$att->getSqlElementsFromCriteria(array()); // All attachments sotres in DB
+  foreach ($lstAtt as $att) {
+    if ($att->subDirectory) {
+      $arrayFrom=array('${attachementDirectory}','attachement_');
+      $arrayTo=array('${attachmentDirectory}','attachment_');
+      $att->subDirectory=str_replace($arrayFrom, $arrayTo, $att->subDirectory);
+      $att->save();
+    }
+  } 
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
