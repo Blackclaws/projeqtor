@@ -237,7 +237,7 @@ function drawTableFromObjectList($objectList) {
     <td width="50px" align="center"><img
       src="css/images/icon<?php echo ucfirst($type);?>32.png" width="32"
       height="32" /></td>
-    <td NOWRAP width="50px" class="title"><?php echo str_replace(" ","&nbsp;",i18n('menu'.ucfirst($type)))?>&nbsp;&nbsp;&nbsp;
+    <td NOWRAP width="300px" class="title" style="white-space:nowrap"><?php echo str_replace(" ","&nbsp;",i18n('menu'.ucfirst($type)))?>&nbsp;&nbsp;&nbsp;
     </td>
     <td width="10px">&nbsp;</td>
     <td width="50px">
