@@ -361,7 +361,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $treatedObjects []=$obj;
   $dateWidth='72';
   $verySmallWidth='44';
-  $smallWidth='75';
+  $smallWidth='72';
   $mediumWidth='200';
   $largeWidth='300';
   $labelWidth=160; // To be changed if changes in css file (label and .label)
@@ -487,7 +487,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
       $internalTableBorderTitle=($print)?'border:1px solid #A0A0A0;':'';
       for ($i=0; $i < $internalTableCols; $i++) { // draw table headers
-        echo '<td class="detail" style="'.$internalTableBorderTitle.'">';
+        echo '<td class="detail" style="min-width:75px;'.$internalTableBorderTitle.'">';
         if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {

@@ -188,7 +188,7 @@
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 10px; top:0px; z-index:30;"
+       style="position:relative;left: 10px; top:-5px; z-index:30;height:18px"
        iconClass="dijitButtonIcon dijitButtonIconPrevious" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           undoItemButton();
@@ -198,7 +198,7 @@
       <button id="menuBarRedoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonRedoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 10px; top: 0px; z-index:30"
+       style="position:relative;left: 10px; top:-5px; z-index:30;height:18px"
        iconClass="dijitButtonIcon dijitButtonIconNext" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           redoItemButton();
@@ -207,10 +207,10 @@
       </td></tr>
       <tr style="height:10px;"><td colspan="2">     
        <a id="menuBarNewtabButton" title="<?php echo i18n('buttonNewtabItem');?>"
-       style="height:10px; position:relative; top:-3px;left:10px;width:60px;" 
+       style="height:18px; position:relative; top:-4px;left:10px;width:60px;" 
        href="" target="_blank">
        <button dojoType="dijit.form.Button" iconClass="dijitButtonIcon iconNewtab" class="detailButton"
-       style="height:10px;width:60px;">
+       style="height:16px;width:60px;">
          <script type="dojo/connect" event="onClick" args="evt">
            var url="main.php?directAccess=true";
            if (dojo.byId('objectClass')) { 
