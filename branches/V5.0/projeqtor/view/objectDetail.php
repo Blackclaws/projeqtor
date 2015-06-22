@@ -1143,7 +1143,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="8" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
+        echo ' style="width:60px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $valTime . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';

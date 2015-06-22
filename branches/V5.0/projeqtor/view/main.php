@@ -818,7 +818,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     }
   ?> 
   <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="background">
-    <table>
+    <table style="width:100%;height:100%">
       <tr style="height:10px;"><td></td></tr>
       <tr>
         <td width="32px" align="left" style="white-space:nowrap">

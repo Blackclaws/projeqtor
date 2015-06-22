@@ -315,6 +315,8 @@ function formatPrivacyThumb($privacy, $team) {
 }
 
 function formatCommentThumb($comment) {
+  global $print;
+  if ($print) return "";//$userName;
   $res='';
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
