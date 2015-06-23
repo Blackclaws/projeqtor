@@ -343,6 +343,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
+  $editorMode=(Parameter::getUserParameter('editorModeAlwaysOn')=='YES')?'on':'off';
   if (property_exists($obj, '_sec_Assignment')) {
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
     if ($habil and $habil->rightAccess != 1) {
@@ -1485,38 +1486,72 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo htmlspecialchars($val);
         echo '</textarea>';
         echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
-        echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
-                                                          // echo '<div data-dojo-type="dijit.Editor"'; // TEST
-        echo ' id="' . $fieldId . 'Editor" ';
-        echo ' height="50px" title="' . i18n('clickToEditRichText') . '"';
-        echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
-        if ($readOnly)
-          echo ', disabled:true,';
-        echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
-        echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
-        echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
-        echo ",'|','insertOrderedList','insertUnorderedList','|']";
-        echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
-        echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
-        echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
-        // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
-        if (1) echo ",'|','fullScreen'";
-        // Font Choice ...
-        if (0) echo ",'fontName','fontSize'";
-        // Print option
-        if (1) echo ",'print'"; // Not setup
-        // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
-        echo "]}";
-        echo '" ';
-        echo $attributes;
-        if (strpos($attributes, 'readonly') > 0) {
-          $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+        if ($editorMode=='on') {
+          echo '<div data-dojo-type="dijit.Editor"'; // TEST
+          echo ' id="' . $fieldId . 'Editor" ';
+          echo ' title="' . i18n('clickToEditRichText') . '"';
+          echo ' data-dojo-props="height:\'125px\'';
+          if ($readOnly)
+            echo ', disabled:true,';
+          echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
+          echo ",plugins:['removeFormat','bold','italic','underline'";
+          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
+          echo ",'|','insertOrderedList','insertUnorderedList','|']";
+          echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
+          //echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
+          echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
+          // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
+          if (1) echo ",'|','fullScreen'";
+          // Font Choice ...
+          if (0) echo ",'fontName','fontSize'";
+          // Print option
+          if (1) echo ",'print'"; // Not setup
+          // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
+          echo "]";
+          echo '" ';
+          echo $attributes;
+          if (strpos($attributes, 'readonly') > 0) {
+            $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+          }
+          echo ' rows="2" style="min-height:16px;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
+          echo ' maxlength="' . $dataLength . '" ';
+          echo ' class="input '.(($isRequired)?'required':'').'" ';
+          //echo ' style="background: none; background-color: #AAAAFF" ';
+          echo '>';        
+        } else {
+          echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
+          // echo '<div data-dojo-type="dijit.Editor"'; // TEST
+          echo ' id="' . $fieldId . 'Editor" ';
+          echo ' height="50px" title="' . i18n('clickToEditRichText') . '"';
+          echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
+          if ($readOnly)
+            echo ', disabled:true,';
+          echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
+          echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
+          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
+          echo ",'|','insertOrderedList','insertUnorderedList','|']";
+          echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
+          echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
+          echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
+          // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
+          if (1) echo ",'|','fullScreen'";
+          // Font Choice ...
+          if (0) echo ",'fontName','fontSize'";
+          // Print option
+          if (1) echo ",'print'"; // Not setup
+          // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
+          echo "]}";
+          echo '" ';
+          echo $attributes;
+          if (strpos($attributes, 'readonly') > 0) {
+            $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+          }
+          echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
+          echo ' maxlength="' . $dataLength . '" ';
+          echo ' class="input '.(($isRequired)?'required':'').'" ';
+          echo ' style="background: none; background-color: #AAAAFF" ';
+          echo '>';
         }
-        echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
-        echo ' maxlength="' . $dataLength . '" ';
-        echo ' class="input '.(($isRequired)?'required':'').'" ';
-        echo ' style="background: none; background-color: #AAAAFF" ';
-        echo '>';
         //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
         //echo '   alert("OK");';
         //echo '  </script>';

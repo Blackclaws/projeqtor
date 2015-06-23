@@ -227,11 +227,12 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
             'REQ'=>i18n('displayOnRequest'));
         break;
-      case 'printHistory':
+      case 'printHistory': case 'editorModeAlwaysOn':
         $list=array('NO'=>i18n('displayNo'),
-            'YES'=>i18n('displayYes'));
+            'YES'=>i18n('displayYes')); 
+        break;
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
-      case 'dependencyStrictMode' :
+      case 'dependencyStrictMode' : 
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -394,6 +395,7 @@ class Parameter extends SqlElement {
                            "switchedMode"=>"list",
                            "paramConfirmQuit"=>"list",
                            "startPage"=>"list",
+                           "editorModeAlwaysOn"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
