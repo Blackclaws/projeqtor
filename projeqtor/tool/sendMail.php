@@ -97,7 +97,6 @@
       $dest=$resultMail['dest'];
     }
   }
-  debugLog($resultMail);
   if ($result=="OK") { 
     echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';

@@ -134,7 +134,6 @@ class Plugin extends SqlElement {
       $this->isDeployed=1;
       $this->idle=0;
       $resultSave=$this->save();
-      debugLog($resultSave);
       traceLog("Plugin completely deployed");
       return "OK";
     }
