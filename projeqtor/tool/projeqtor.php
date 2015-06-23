@@ -678,14 +678,14 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
   $clauseNO='(1=2)'; // Will dintinct the NO
   
   $clauseOWN='';
-  if (! $excludeUserClause and property_exists ( $obj, "idUser" ) and $alias!='planningelement') {
+  if (! $excludeUserClause and property_exists ( $obj, "idUser" ) and substr($alias,-15)!='planningelement') {
     $clauseOWN="(".$tableAlias."idUser='".Sql::fmtId(getSessionUser()->id)."')";
   } else {
     $clauseOWN="(1=3)"; // Will distinct the OWN
   }
   
   $clauseRES='';
-  if (! $excludeResourceClause and property_exists ( $obj, "idResource" ) and $alias!='planningelement') {
+  if (! $excludeResourceClause and property_exists ( $obj, "idResource" ) and substr($alias,-15)!='planningelement') {
     $clauseRES="(".$tableAlias."idResource='".Sql::fmtId(getSessionUser()->id )."')";   
   } else {
     $clauseRES="(1=4)"; // Will distinct the RES
