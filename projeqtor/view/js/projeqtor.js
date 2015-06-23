@@ -739,7 +739,7 @@ function checkLogin() {
   resultNode=dojo.byId('validated');
   resultWidget=dojo.byId('validated');
   if (resultNode && resultWidget) {
-	saveResolutionToSession();  
+	  saveResolutionToSession();  
     // showWait();
     if (changePassword) {
       quitConfirmed=true;
@@ -2749,7 +2749,7 @@ function saveObject() {
 function onKeyDownFunction(event, field, editorFld) {
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
-  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  var fullScreenEditor=(editorWidth>screenWidth*0.8)?true:false; // if editor is  > 90% screen width : editor is in full mode
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
 	  if (fullScreenEditor) return;
     event.preventDefault();
@@ -2763,6 +2763,7 @@ function onKeyDownFunction(event, field, editorFld) {
   } else if (event.keyCode==9 || event.keyCode==27) { // Tab : prevent
 	  if (fullScreenEditor) {
 	    event.preventDefault();
+	    console.log("yyy");   	    
 	    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
 	  }
   } else {
@@ -2788,9 +2789,10 @@ function onKeyDownFunctionEditorSave () {
 function editorBlur(fieldId, editorFld) {
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
-  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  var fullScreenEditor=(editorWidth>screenWidth*0.8)?true:false; // if editor is  > 90% screen width : editor is in full mode
   top.dojo.byId(fieldId).value=editorFld.document.body.firstChild.innerHTML;
   if (fullScreenEditor) {
+console.log("xxx");    
     editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
   }
   return 'OK';
