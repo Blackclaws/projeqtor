@@ -334,6 +334,7 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
   $error=false;
   $attDir=Parameter::getGlobalParameter('paramAttachmentDirectory');
   $handle = opendir($attDir);
+  if (! $handle) $error=true;
   $globalCatchErrors=true;
   while (!$error and ($file = readdir($handle)) !== false) {
     if ($file == '.' || $file == '..' || $file=='index.php') {
