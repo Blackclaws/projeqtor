@@ -191,7 +191,7 @@ html, body {
     #formDiv {
       overflow: auto; 
       border: 0px solid red;
-      margin: 0px; padding: 5px;
+      margin: 0px; padding: 5px 2px;
     }
     #detailFormDiv {
       overflow: hidden;
