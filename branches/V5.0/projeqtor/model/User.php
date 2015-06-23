@@ -922,7 +922,7 @@ class User extends SqlElement {
         traceLog("authenticate - LDAP Bind Error : not identified error" );
 			  return "ldap";
 			}
-			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
+			$filter_r = html_entity_decode(str_replace(array('%USERNAME%','%username%'), array($this->name,$this->name), $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {
 			  $this->unsuccessfullLogin();
