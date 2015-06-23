@@ -202,7 +202,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       }     
       ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
-      addMessage("<?php echo i18n('welcomeMessage');?>");
+      addMessage("<?php echo i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name);?>");
       //dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();

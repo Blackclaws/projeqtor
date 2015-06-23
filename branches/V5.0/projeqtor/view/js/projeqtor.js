@@ -739,7 +739,7 @@ function checkLogin() {
   resultNode=dojo.byId('validated');
   resultWidget=dojo.byId('validated');
   if (resultNode && resultWidget) {
-	  saveResolutionToSession();  
+	saveResolutionToSession();  
     // showWait();
     if (changePassword) {
       quitConfirmed=true;
@@ -849,11 +849,13 @@ function finalizeMessageDisplay(destination, validationType) {
   if (! contentWidget) {return;};
   // fetch last message type
   var message=contentWidget.get('content'); 
-  posdeb=message.indexOf('class="')+7;
-  posfin=message.indexOf('>')-1;
+console.log(message);  
+  posdeb=message.indexOf('class="message')+7;
+  posfin=message.indexOf('>',posdeb)-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
+console.log("posdeb="+posdeb+" posfin="+posfin);      
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
     msg=message.substr(posdeb, posfin-posdeb);
@@ -2742,6 +2744,7 @@ function saveObject() {
     showInfo(i18n("alertOngoingQuery"));
     return true;
   }
+  if (editorInFullScreen()) return;
   dojo.byId("saveButton").blur();
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
 }
@@ -2749,21 +2752,20 @@ function saveObject() {
 function onKeyDownFunction(event, field, editorFld) {
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
-  var fullScreenEditor=(editorWidth>screenWidth*0.8)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
-	  if (fullScreenEditor) return;
     event.preventDefault();
+    if (fullScreenEditor) return;
     if (top.dojo.isFF) {top.stopDef();}
     top.setTimeout("top.onKeyDownFunctionEditorSave();",10);
   } else if (event.keyCode == 112) { // On F1
-	  if (fullScreenEditor) return;
     event.preventDefault();
+    if (fullScreenEditor) return;
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
   } else if (event.keyCode==9 || event.keyCode==27) { // Tab : prevent
 	  if (fullScreenEditor) {
 	    event.preventDefault();
-	    console.log("yyy");   	    
 	    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
 	  }
   } else {
@@ -2789,13 +2791,26 @@ function onKeyDownFunctionEditorSave () {
 function editorBlur(fieldId, editorFld) {
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
-  var fullScreenEditor=(editorWidth>screenWidth*0.8)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
   top.dojo.byId(fieldId).value=editorFld.document.body.firstChild.innerHTML;
   if (fullScreenEditor) {
-console.log("xxx");    
     editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
   }
   return 'OK';
+}
+
+var fullScreenTest=false;
+function editorInFullScreen() {
+  fullScreenTest=false;
+  dojo.query(".dijitEditor").forEach(function(node, index, arr){
+    var editorWidth=node.offsetWidth;
+    var screenWidth=document.body.getBoundingClientRect().width;
+    var fullScreenEditor=(editorWidth>screenWidth*(0.8))?true:false;
+    if (fullScreenEditor) {
+      fullScreenTest=true;
+    }
+  });
+  return fullScreenTest;
 }
 
 function menuFilter(filter) {
