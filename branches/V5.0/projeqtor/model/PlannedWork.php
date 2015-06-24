@@ -930,7 +930,9 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   	$cpt=0;
   	$proj=new Project($projectId);
   	$inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
-  	$inClause.=" and " . getAccesRestrictionClause('Activity',false);
+  	$obj=new PlanningElement();
+  	$tablePE=$obj->getDatabaseTableName();
+  	$inClause.=" and " . getAccesRestrictionClause('Activity',$tablePE);
   	// Remove administrative projects :
   	$inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
   	// Remove Projects with Fixed Planning flag
