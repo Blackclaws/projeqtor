@@ -326,9 +326,6 @@ if (beforeVersion($currVersion,"V4.2.0")) {
 	}
 	
 }
-if (beforeVersion($currVersion,"V5.0.0") and $currVersion!='V0.0.0') {
-  Affectable::generateAllThumbs();
-}
 if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
   // Attachments : directory name changed from attachement_x to attachment_x
   $error=false;
@@ -366,6 +363,10 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
     }
   } 
 }
+if (beforeVersion($currVersion,"V5.0.2") and $currVersion!='V0.0.0') {
+  Affectable::generateAllThumbs();
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
