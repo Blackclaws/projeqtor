@@ -33,154 +33,162 @@ function runScript($vers,$pluginSqlFile=null) {
   traceLog("=====================================");
   traceLog("");
   if ($vers) {
-	  traceLog("VERSION " . $vers);
-	  traceLog("");
-	  $handle = @fopen("../db/projeqtor_" . $vers . ".sql", "r");
+    traceLog("VERSION " . $vers);
+    traceLog("");
+    $handle = @fopen("../db/projeqtor_" . $vers . ".sql", "r");
   } else {
-  	traceLog("PLUGIN SQL FILE : ".$pluginSqlFile);
-  	traceLog("");
-  	$handle = @fopen($pluginSqlFile, "r");
-  	$versionParameters=array();
+    traceLog("PLUGIN SQL FILE : ".$pluginSqlFile);
+    traceLog("");
+    $handle = @fopen($pluginSqlFile, "r");
+    $versionParameters=array();
   }
   $query="";
   $nbError=0;
+  $comment=false;
   if ($handle) {
     while (!feof($handle)) {
-        $buffer = fgets($handle);
-        $buffer=trim($buffer);
-        $buffer=str_replace('${database}', $paramDbName, $buffer);
-        $buffer=str_replace('${prefix}', $paramDbPrefix, $buffer);
-        if ( substr($buffer,0,2)=='--' ) {
-          $buffer=''; // remove comments
-        }
-        if ($buffer!='') {
-          $query.=$buffer . "\n";
-        }
-        if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
-        	$query=trim(formatForDbType($query));
-        	if ($query) {
-        		Sql::beginTransaction();
-	          $result=Sql::query($query);
-	          if ( ! $result or !$result->queryString ) {
-	          	Sql::rollbackTransaction();
-	          	$nbError++;
-	          	traceLog("");
-	          	if ($vers) {
-	              traceLog( "Error # $nbError => SQL error while executing maintenance query for version $vers (see above message)");
-	          	} else {
-	          		traceLog( "Error # $nbError => SQL error while executing Plugin query in file $pluginSqlFile (see above message)");
-	          	}
-	            traceLog("");
-	            //traceLog(Sql::$lastQueryErrorMessage);
-	            //traceLog("");
-	            traceLog("*************************************************");
-	            traceLog("");
-	            $query="";
-	          } else {	          	
-	            $action="";
-	            if (substr($query,0,12)=='CREATE TABLE') {
-	              $action="CREATE TABLE";
-	            } else if (substr($query,0,12)=='RENAME TABLE') {
-	              $action="RENAME TABLE";
-	            } else if (substr($query,0,11)=='INSERT INTO') {
-	              $action="INSERT INTO";
-	            } else if (substr($query,0,6)=='UPDATE') {
-	              $action="UPDATE";
-	            } else if (substr($query,0,11)=='ALTER TABLE') {
-	              $action="ALTER TABLE";
-	            } else if (substr($query,0,10)=='DROP TABLE') {
-	              $action="DROP TABLE";
-	            } else if (substr($query,0,11)=='DELETE FROM') {
-	              $action="DELETE FROM";
-	            } else if (substr($query,0,14)=='TRUNCATE TABLE') {
-	              $action="TRUNCATE TABLE";
-	            } else if (substr($query,0,12)=='CREATE INDEX') {
-                $action="CREATE INDEX";
+      $buffer = fgets($handle);
+      $buffer=trim($buffer);
+      $buffer=str_replace('${database}', $paramDbName, $buffer);
+      $buffer=str_replace('${prefix}', $paramDbPrefix, $buffer);
+      if ( substr($buffer,0,2)=='--' ) {
+        $buffer=''; // remove comments
+      }
+      if ( substr($buffer,0,2)=='/*' ) {
+          $comment=true; // identify start of long comments (to be removed)
+      }
+      if ( (substr($buffer,-3)=='*/;' or substr($buffer,-2)=='*/') and $comment) {
+        $buffer=''; // identify end of long comments : remove long comments
+        $comment=false;
+      }
+      if ($buffer!='') {
+        $query.=$buffer . "\n";
+      }
+      if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
+        $query=trim(formatForDbType($query));
+        if ($query) {
+          Sql::beginTransaction();
+          $result=Sql::query($query);
+          if ( ! $result or !$result->queryString ) {
+            Sql::rollbackTransaction();
+            $nbError++;
+            traceLog("");
+            if ($vers) {
+              traceLog( "Error # $nbError => SQL error while executing maintenance query for version $vers (see above message)");
+            } else {
+              traceLog( "Error # $nbError => SQL error while executing Plugin query in file $pluginSqlFile (see above message)");
+            }
+            traceLog("");
+            //traceLog(Sql::$lastQueryErrorMessage);
+            //traceLog("");
+            traceLog("*************************************************");
+            traceLog("");
+            $query="";
+          } else {              
+            $action="";
+            if (substr($query,0,12)=='CREATE TABLE') {
+              $action="CREATE TABLE";
+            } else if (substr($query,0,12)=='RENAME TABLE') {
+              $action="RENAME TABLE";
+            } else if (substr($query,0,11)=='INSERT INTO') {
+              $action="INSERT INTO";
+            } else if (substr($query,0,6)=='UPDATE') {
+              $action="UPDATE";
+            } else if (substr($query,0,11)=='ALTER TABLE') {
+              $action="ALTER TABLE";
+            } else if (substr($query,0,10)=='DROP TABLE') {
+              $action="DROP TABLE";
+            } else if (substr($query,0,11)=='DELETE FROM') {
+              $action="DELETE FROM";
+            } else if (substr($query,0,14)=='TRUNCATE TABLE') {
+              $action="TRUNCATE TABLE";
+            } else if (substr($query,0,12)=='CREATE INDEX') {
+              $action="CREATE INDEX";
+            }
+            $deb=strlen($action);
+            $end=strpos($query,' ', $deb+1);
+            $len=$end-$deb;
+            $tableName=substr($query, $deb, $len );
+            $pos=strpos($tableName,"\n");
+            if ($pos) {
+              $tableName=substr($tableName, 0,$pos);
+            }            
+            if ($action=="DROP TABLE") {            
+              $q=trim($query,"\n");
+              $q=trim($q,"\r");
+              $q=trim($q,' ;');
+              $q=trim($q,' ');
+              $tableName=substr($q,strrpos($q,' ',-2)+1);
+            }
+            $tableName=trim($tableName);
+            $tableName=trim($tableName,'`');
+            $tableName=trim($tableName,'"');
+            $tableName=trim($tableName,';');
+            if ( $action=="RENAME TABLE" or 
+               ($action=="ALTER TABLE" and Sql::isPgsql() and strpos($query,' RENAME TO ')>0 ) ) { // Must also rename sequence
+              $pos=strpos($query,' TO ');
+              $toTableName=substr($query,$pos+4);
+              $toTableName=trim($toTableName);
+              $toTableName=trim($toTableName,'`');
+              $toTableName=trim($toTableName,'"');
+              $toTableName=trim($toTableName,';');
+              if (Sql::isPgsql()) {
+                $action="RENAME TABLE";
+                $querySeq="ALTER SEQUENCE ".$tableName."_id_seq RENAME TO ".$toTableName."_id_seq";
+                $resultSeq=Sql::query($querySeq);
               }
-	            $deb=strlen($action);
-	            $end=strpos($query,' ', $deb+1);
-	            $len=$end-$deb;
-	            $tableName=substr($query, $deb, $len );
-	            $pos=strpos($tableName,"\n");
-	            if ($pos) {
-	              $tableName=substr($tableName, 0,$pos);
-	            }            
-	            if ($action=="DROP TABLE") {            
-                $q=trim($query,"\n");
-                $q=trim($q,"\r");
-	            	$q=trim($q,' ;');
-                $q=trim($q,' ');
-	            	$tableName=substr($q,strrpos($q,' ',-2)+1);
-	            }
-	            $tableName=trim($tableName);
-	            $tableName=trim($tableName,'`');
-	            $tableName=trim($tableName,'"');
-	            $tableName=trim($tableName,';');
-	            if ( $action=="RENAME TABLE" or 
-	                 ($action=="ALTER TABLE" and Sql::isPgsql() and strpos($query,' RENAME TO ')>0 ) ) { // Must also rename sequence
-	               $pos=strpos($query,' TO ');
-	               $toTableName=substr($query,$pos+4);
-	               $toTableName=trim($toTableName);
-	               $toTableName=trim($toTableName,'`');
-	               $toTableName=trim($toTableName,'"');
-	               $toTableName=trim($toTableName,';');
-	               if (Sql::isPgsql()) {
-	                 $action="RENAME TABLE";
-	                 $querySeq="ALTER SEQUENCE ".$tableName."_id_seq RENAME TO ".$toTableName."_id_seq";
-	                 $resultSeq=Sql::query($querySeq);
-	               }
-	            }
-	            Sql::commitTransaction();
-	            switch ($action) {
-	              case "CREATE TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" created."); 
-	                break;
-	              case "DROP TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" dropped."); 
-	                break;
-	              case "ALTER TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" altered."); 
-	                break;
-	              case "RENAME TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" renamed to \"".$toTableName."\""); 
-	                break;
-	              case "TRUNCATE TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" truncated.");
-	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
-	                break;                
-	              case "INSERT INTO":         	
-	              	traceLog(" " . Sql::$lastQueryNbRows . " lines inserted into table \"" . $tableName . "\".");
-	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
-	                break;
-	              case "UPDATE":
-	                traceLog(" " . Sql::$lastQueryNbRows . " lines updated into table \"" . $tableName . "\"."); 
-	                break;
-	              case "DELETE FROM":
-	                traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\".");
-	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
-	                break;              
-	              case "CREATE INDEX" :
-                  traceLog(" Index \"" . $tableName . "\" created."); 
-                  break;
-                default:
-	                traceLog("ACTION '$action' NOT EXPECTED FOR QUERY : " . $query);
-	            }
-	          }
-        	}
-          $query="";
+            }
+            Sql::commitTransaction();
+            switch ($action) {
+              case "CREATE TABLE" :
+                traceLog(" Table \"" . $tableName . "\" created."); 
+                break;
+              case "DROP TABLE" :
+                traceLog(" Table \"" . $tableName . "\" dropped."); 
+                break;
+              case "ALTER TABLE" :
+                traceLog(" Table \"" . $tableName . "\" altered."); 
+                break;
+              case "RENAME TABLE" :
+                traceLog(" Table \"" . $tableName . "\" renamed to \"".$toTableName."\""); 
+                break;
+              case "TRUNCATE TABLE" :
+                traceLog(" Table \"" . $tableName . "\" truncated.");
+                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
+                break;                
+              case "INSERT INTO":           
+                traceLog(" " . Sql::$lastQueryNbRows . " lines inserted into table \"" . $tableName . "\".");
+                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
+                break;
+              case "UPDATE":
+                traceLog(" " . Sql::$lastQueryNbRows . " lines updated into table \"" . $tableName . "\"."); 
+                break;
+              case "DELETE FROM":
+                traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\".");
+                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
+                break;              
+              case "CREATE INDEX" :
+                traceLog(" Index \"" . $tableName . "\" created."); 
+                break;
+              default:
+                traceLog("ACTION '$action' NOT EXPECTED FOR QUERY : " . $query);
+            }
+          }
         }
+        $query="";
+      }
     }
     if ($vers and array_key_exists($vers,$versionParameters)) {
       $nbParam=0;
       writeFile('// New parameters ' . $vers . "\n", $parametersLocation);
       foreach($versionParameters[$vers] as $id=>$val) {
-      	$param=Parameter::getGlobalParameter($id);
-      	if (! $param) {
+        $param=Parameter::getGlobalParameter($id);
+        if (! $param) {
           $nbParam++;
           writeFile('$' . $id . ' = \'' . addslashes($val) . '\';',$parametersLocation);
           writeFile("\n",$parametersLocation);
           traceLog('Parameter $' . $id . ' added');
-      	}
+        }
       }
       //echo i18n('newParameters', array($nbParam, $vers));
       echo '<br/>' . "\n";
@@ -230,7 +238,7 @@ function deleteDuplicate() {
       $idProfile=$hab->idProfile;
     }
   }
-// HABILITATIONOTHER
+  // HABILITATIONOTHER
   $hab=new HabilitationOther();
   $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'scope, idProfile, id ');
   $scope='';
@@ -256,8 +264,7 @@ function deleteDuplicate() {
       $idProfile=$acc->idProfile;
     }
   }
-  
-// PARAMETER
+  // PARAMETER
   $par=new Parameter();
   $parList=$par->getSqlElementsFromCriteria(array(), false, null, 'idUser, idProject, parameterCode, id');
   $idUser='';
@@ -272,7 +279,7 @@ function deleteDuplicate() {
       $parameterCode=$par->parameterCode;
     }
   }
-// REPORT PARAMETER
+  // REPORT PARAMETER
   $par=new ReportParameter();
   $parList=$par->getSqlElementsFromCriteria(array(), false, null, 'idReport, name');
   $idReport='';
@@ -289,16 +296,19 @@ function deleteDuplicate() {
 
 function formatForDbType($query) {
   $dbType=Parameter::getGlobalParameter('paramDbType');
+  if (substr($query,0,4)=='SET ') {
+	 return ''; // Remove SET instructions 
+  }
   if ($dbType=='mysql') {
     return $query;
   }
   $from=array();
   $to=array();
   if ($dbType=='pgsql') {
-  	if (stripos($query,'ADD INDEX')) {
-  		return '';
-  	}
-  	$from[]='  ';                                         $to[]=' ';
+    if (stripos($query,'ADD INDEX')) {
+      return '';
+    }
+    $from[]='  ';                                         $to[]=' ';
     $from[]='`';                                          $to[]='';
     $from[]=' int(12) unsigned NOT NULL AUTO_INCREMENT';  $to[]=' serial';
     $from[]=' int(';                                      $to[]=' numeric(';
@@ -313,27 +323,27 @@ function formatForDbType($query) {
     $res=str_ireplace($from, $to, $query);
     // ALTER TABLE : very different from MySql !!!
     if (substr($res,0,11)=='ALTER TABLE') {
-    	$posChange=strpos($res,'CHANGE');
-    	while ($posChange) {
-    		$colPos1=strpos($res,' ',$posChange+1);
-    		$colPos2=strpos($res,' ',$colPos1+1);
-    		$colPos3=strpos($res,' ',$colPos2+1);
-    		if (!$colPos3) {$colPos3=strlen($res)-1;}
-    		$col1=substr($res,$colPos1+1,$colPos2-$colPos1-1);
-    		$col2=substr($res,$colPos2+1,$colPos3-$colPos2-1);
+      $posChange=strpos($res,'CHANGE');
+      while ($posChange) {
+        $colPos1=strpos($res,' ',$posChange+1);
+        $colPos2=strpos($res,' ',$colPos1+1);
+        $colPos3=strpos($res,' ',$colPos2+1);
+        if (!$colPos3) {$colPos3=strlen($res)-1;}
+        $col1=substr($res,$colPos1+1,$colPos2-$colPos1-1);
+        $col2=substr($res,$colPos2+1,$colPos3-$colPos2-1);
         if ($col1==$col2) {
           $res=substr($res,0,$posChange-1). ' ALTER '.$col2.' TYPE '.substr($res,$colPos3+1);
         } else {
-        	$res=substr($res,0,$posChange-1). ' RENAME '.$col1.' TO '.$col2.';';
+          $res=substr($res,0,$posChange-1). ' RENAME '.$col1.' TO '.$col2.';';
         }
-    		$posChange=strpos($res,'CHANGE', $posChange+5);
-    	}
+        $posChange=strpos($res,'CHANGE', $posChange+5);
+      }
     } else if (substr($res,0,12)=='RENAME TABLE') {
-    	 $res=str_replace('RENAME TABLE','ALTER TABLE',$res);
-    	 $res=str_replace(' TO ',' RENAME TO ',$res);
+       $res=str_replace('RENAME TABLE','ALTER TABLE',$res);
+       $res=str_replace(' TO ',' RENAME TO ',$res);
     }
   } else {
-  	// not mysql, not pgsql, so WHAT ?
+    // not mysql, not pgsql, so WHAT ?
     echo "unknown database type '$dbType'";
     return '';
   }
@@ -342,9 +352,9 @@ function formatForDbType($query) {
 }
 
 function migrateParameters($arrayParamsToMigrate) {
-	global $parametersLocation;
-	include $parametersLocation;
-	foreach ($arrayParamsToMigrate as $param) {
+  global $parametersLocation;
+  include $parametersLocation;
+  foreach ($arrayParamsToMigrate as $param) {
     //$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
     //$parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
     //if (!$parameter or !$parameter->id) { 
@@ -355,11 +365,11 @@ function migrateParameters($arrayParamsToMigrate) {
     $parameter->parameterCode=$param;  
     $parameter->parameterValue=Parameter::getGlobalParameter($param);
     if ($param=='paramMailEol') {
-    	if ($parameter->parameterValue=='\n') {
-    		$parameter->parameterValue='LF';
-    	} else  {
-    		$parameter->parameterValue='CRLF';
-    	}
+      if ($parameter->parameterValue=='\n') {
+        $parameter->parameterValue='LF';
+      } else  {
+        $parameter->parameterValue='CRLF';
+      }
     }
     $parameter->save();
   }
@@ -367,13 +377,13 @@ function migrateParameters($arrayParamsToMigrate) {
 }
 
 function beforeVersion($V1,$V2) {
-	$V1=ltrim($V1,'V');
-	$V2=ltrim($V2,'V');
-	return(version_compare($V1, $V2,"<"));
+  $V1=ltrim($V1,'V');
+  $V2=ltrim($V2,'V');
+  return(version_compare($V1, $V2,"<"));
 }
 
 function afterVersion($V1,$V2) {
-	$V1=ltrim($V1,'V');
-	$V2=ltrim($V2,'V');
-	return(version_compare($V1, $V2,">="));
+  $V1=ltrim($V1,'V');
+  $V2=ltrim($V2,'V');
+  return(version_compare($V1, $V2,">="));
 }
