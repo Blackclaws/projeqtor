@@ -3507,7 +3507,12 @@ abstract class SqlElement {
 						$msg.= htmlFormatDateTime($creationDate);
 					}
 					$msg.=$labelEnd.$fieldStart;
-					$msg.=htmlEncode($note->note,'print');
+					//$msg.=htmlEncode($note->note,'print');
+					if (mb_strlen($note->note)>4000) {
+					  $msg.="...";
+					} else {
+					  $msg.=  nl2br($note->note); // nl2br for backward compatibility (before V5.0)
+					}
 					$msg.=$fieldEnd.$rowEnd;
 				}
 			}
