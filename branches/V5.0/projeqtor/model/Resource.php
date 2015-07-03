@@ -106,12 +106,17 @@ class Resource extends SqlElement {
       return;
     }     
     if (securityCheckDisplayMenu($menu->id)) {
-    	self::$_fieldsAttributes["isUser"]="";
-    	self::$_fieldsAttributes["idProfile"]="";
-    	if ($this->isUser) {
-    	  self::$_fieldsAttributes["idProfile"]="required";
-    	  self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
-    	}
+      $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");;
+      if (! $canUpdateUser) {
+        self::$_fieldsAttributes["idProfile"]="readonly";
+      } else {
+      	self::$_fieldsAttributes["isUser"]="";
+      	self::$_fieldsAttributes["idProfile"]="";
+      	if ($this->isUser) {
+      	  self::$_fieldsAttributes["idProfile"]="required";
+      	  self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+      	}
+      }
     }
     
     $crit=array("name"=>"menuContact");

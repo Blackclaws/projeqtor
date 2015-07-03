@@ -272,7 +272,8 @@ class User extends SqlElement {
     global $print, $outMode, $largeWidth;
     $result="";
     if ($item=='buttonSendMail') {
-      if ($print) {
+      $canUpdate=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");
+      if ($print or !$canUpdate) {
         return "";
       } 
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
