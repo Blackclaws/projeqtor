@@ -31,6 +31,8 @@ require_once('_securityCheck.php');
 class Work extends GeneralWork {
 
 	 public $idBill;
+	 public $idWorkElement;
+	 
   
    /** ==========================================================================
    * Constructor
