@@ -124,8 +124,10 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
                   </script>
                 </div>
               </td>
-              <td style="width: 10%; text-align: right; align: right;white-space:nowrap;" >
-				        &nbsp;&nbsp;<?php echo i18n("labelShowPlannedWork");?>
+              <td style="width: 20%;text-align: right; align: right;min-width:150px" >
+      	        &nbsp;&nbsp;<?php echo i18n("labelShowPlannedWork");?>
+              </td>
+              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
 				        <div title="<?php echo i18n('showPlannedWork')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
 				        class="whiteCheck"
 				         id="listShowPlannedWork" name="listShowPlannedWork" <?php if ($showPlanned) echo 'checked';?>>
@@ -146,7 +148,7 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
       <td width="50px" >
         &nbsp;
       </td>
-      <td> 
+      <td style="min-width:200px"> 
         <button id="saveParameterButton" dojoType="dijit.form.Button" showlabel="false"
           title="<?php echo i18n('buttonSaveImputation');?>"
           iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton" >
@@ -184,8 +186,10 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
       </td>
       <td>    
       </td>
-      <td style="width: 10%;text-align: right; align: right;white-space:nowrap;" >
+      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
       	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyCurrentWeekMeetings");?>
+      </td>
+      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
           <div title="<?php echo i18n('labelDisplayOnlyCurrentWeekMeetings')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
           id="listDisplayOnlyCurrentWeekMeetings" name="listDisplayOnlyCurrentWeekMeetings" <?php if ($displayOnlyCurrentWeekMeetings) echo 'checked';?>>
             <script type="dojo/method" event="onChange" >
@@ -194,8 +198,10 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
           </div>&nbsp;
       </td>
       <?php if ( $displayHandledGlobal!="YES") {?>
-      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
+      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
       	  &nbsp;&nbsp;<?php echo i18n("labelHideNotHandled");?>
+      </td>
+      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
           <div title="<?php echo i18n('labelHideNotHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
           id="listHideNotHandled" name="listHideNotHandled" <?php if ($hideNotHandled) echo 'checked';?>>
             <script type="dojo/method" event="onChange" >
@@ -204,8 +210,10 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
           </div>&nbsp;
       </td>
       <?php }?>
-      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
+      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
       	  &nbsp;&nbsp;<?php echo i18n("labelHideDone");?>
+      </td>
+      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
           <div title="<?php echo i18n('labelHideDone')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
           id="listHideDone" name="listHideDone" <?php if ($hideDone) echo 'checked';?>>
             <script type="dojo/method" event="onChange" >
@@ -213,8 +221,10 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
             </script>
           </div>&nbsp;
       </td>
-      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;" >
+      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
         &nbsp;&nbsp;<?php echo i18n("labelShowIdle");?>
+      </td>
+      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
         <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
           id="listShowIdle" name="listShowIdle">
           <script type="dojo/method" event="onChange" >

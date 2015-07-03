@@ -56,9 +56,9 @@
       </tr>
     </table>
   </div>
-  <div id="formAdminDiv" dojoType="dijit.layout.ContentPane" region="center"> 
+  <div id="formAdminDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-y:auto;"> 
     <form dojoType="dijit.form.Form" id="adminForm" jsId="adminForm" name="adminForm" encType="multipart/form-data" action="" method="" >
-      <table style="width:98%;margin:10px;padding:10px;vertical-align:top;">
+      <table style="width:97%;margin:10px;padding: 10px;vertical-align:top;">
         <tr style="">
           <td style="width:49%;vertical-align:top;">
             <?php $titlePane="Admin_cronTasks"; ?> 
@@ -262,12 +262,9 @@
                 </td>
               </tr>  
               
-            </table></div><br/> 
-            
-            
-             
+            </table></div><br/>    
           </td>
-          <td width="10px">&nbsp;</td>
+          <td style="width:10px">&nbsp;</td>
           <td style="width:49%;vertical-align:top;">
             <?php $titlePane="Admin_dbMaintenance"; ?> 
             <div dojoType="dijit.TitlePane"
