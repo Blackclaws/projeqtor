@@ -144,7 +144,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               </td>
               <td width="5px">
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
-                id="listNameFilter" name="listNameFilter" >
+                id="listNameFilter" name="listNameFilter" style="width:140px">
                   <script type="dojo/method" event="onKeyUp" >
                   setTimeout("filterJsonList()",10);
                 </script>
@@ -159,7 +159,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               </td>
               <td width="5px">
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
-                id="listTypeFilter" name="listTypeFilter" >
+                id="listTypeFilter" name="listTypeFilter" style="width:140px">
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');
@@ -345,12 +345,10 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             </td>
 <?php }?>       
 <?php if (! $comboDetail) {?> 
-            <td style="text-align: right; " width="5px">
-              <NOBR>&nbsp;&nbsp;&nbsp;
+            <td style="text-align: right; width:10%; min-width:80px;white-space:normal;">
               <?php echo i18n("labelShowIdle");?>
-              </NOBR>
             </td>
-            <td style="text-align: right; vertical-align: middle;" width="30px">
+            <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
                 class="whiteCheck" <?php if ($showIdle) echo " checked ";?>
                 type="checkbox" id="listShowIdle" name="listShowIdle">
