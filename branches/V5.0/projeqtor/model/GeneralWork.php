@@ -46,7 +46,6 @@ class GeneralWork extends SqlElement {
   public $year;
   public $dailyCost;
   public $cost;
-  public $idWorkElement;
   public $_noHistory;
   private static $hoursPerDay;
   private static $imputationUnit;
