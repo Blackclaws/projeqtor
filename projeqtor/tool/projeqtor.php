@@ -44,6 +44,10 @@ $aboutMessage .= '<div>' . i18n ( "aboutMessageWebsite" ) . ' : <a target=\'#\' 
  * $Revision$
  * $Date$
  */
+// some servers provide empty PHP_SELF, fill it
+if (! isset($_SERVER ['PHP_SELF']) or ! $_SERVER ['PHP_SELF']) { // PHP_SELF do not exist or is empty
+  $_SERVER ['PHP_SELF']=$_SERVER ['SCRIPT_NAME'];
+} 
 date_default_timezone_set ( 'Europe/Paris' );
 $globalCatchErrors = false;
 set_exception_handler ( 'exceptionHandler' );
@@ -102,6 +106,12 @@ if (isset($debugReport) and $debugReport) {
   $pos=strpos($_SERVER ["SCRIPT_NAME"], '/report/');
   if ($pos!==false) {
     echo substr($_SERVER ["SCRIPT_NAME"],$pos);
+  }
+}
+if (false === function_exists('lcfirst')) {
+  function lcfirst( $str ) {
+    $str[0] = strtolower($str[0]);
+    return (string)$str;
   }
 }
 /*
@@ -810,12 +820,12 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
  */
 function getTheme() {
   global  $indexPhp;
-  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup', null, true)) return "ProjeQtOr"; // On firs configuration, use default
+  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup', null, true)) return "ProjeQtOr"; // On first configuration, use default
   $defaultTheme = Parameter::getGlobalParameter ( 'defaultTheme' );
   if (substr ( $defaultTheme, 0, 12 ) == "ProjectOrRia") {
     $defaultTheme = "ProjeQtOr" . substr ( $defaultTheme, 12 );
   }
-  $theme = 'ProjeQtOr'; // default if never set
+  $theme = 'ProjeQtOr'; // default if not always set
   if (isset ( $defaultTheme )) {
     $theme = $defaultTheme;
   }
@@ -1897,7 +1907,7 @@ function addWeeksToDate($date, $weeks) {
 }
 
 function workTimeDiffDateTime($start, $end) {
-  $days = workDayDiffDates ( $start, $end ) - 1;
+  $days = workDayDiffDates ( $start, $end );
   $time = substr ( $start, 11, 5 );
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );

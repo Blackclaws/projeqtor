@@ -200,6 +200,11 @@ class GeneralWork extends SqlElement {
     } 
     return $res;
   }
+  public static function displayShortImputationUnit() {
+    self::setImputationUnit();
+    $res=mb_substr(i18n(self::$imputationUnit),0,1);
+    return $res;
+  }
   
   public static function getConvertedCapacity($capacity) {
     self::setImputationUnit();

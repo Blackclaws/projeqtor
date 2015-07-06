@@ -296,17 +296,20 @@ class WorkElement extends SqlElement {
 		// Then start current work
 		$this->idUser = getSessionUser()->id;
 		$this->ongoing = 1;
-		$this->ongoingStartDateTime = date ( 'Y-m-d H:i' );
+		$this->ongoingStartDateTime = date ( 'Y-m-d H:i:s' );
 		$this->save ();
 		// save to database
 	}
 	
 	/**
 	 */
-	public function stop() {
+	public function stop() {	  
 		$start = $this->ongoingStartDateTime;
-		$stop = date ( 'Y-m-d H:i' );
+		$stop = date ( 'Y-m-d H:i:s' );
+debugLog("start=$start");
+debugLog("stop=$stop");
 		$work = workTimeDiffDateTime ( $start, $stop );
+debugLog("work=$work");
 		$this->realWork += $work;
 		$this->idUser = null;
 		$this->ongoing = 0;
