@@ -82,7 +82,7 @@ abstract class SqlElement {
                                   "PlannedWork"=>"cascade",
                                   "Ticket"=>"control",),
     "ActivityType" =>       array("Activity"=>"controlStrict"),
-    "Bill" =>               array("BillLine"=>"control",
+    "Bill" =>               array("BillLine"=>"confirm",
                                   "Note"=>"cascade", ),
     "BillType" =>           array("Bill"=>"controlStrict"),
     "CalendarDefinition" => array("Calendar"=>"cascade",
@@ -1787,7 +1787,11 @@ abstract class SqlElement {
 						}
 					} else if ($dataType=='decimal' and (substr($key, -4,4)=='Work')) {
 						if (array_key_exists($formField,$_REQUEST)) {
-							$this->$key=Work::convertWork($_REQUEST[$formField]);
+						  if (get_class($this)=='WorkElement') {
+						    $this->$key=Work::convertImputation($_REQUEST[$formField]);
+						  } else {
+							  $this->$key=Work::convertWork($_REQUEST[$formField]);
+						  }
 						}
 					} else if ($dataType=='time') {
 						if (array_key_exists($formField,$_REQUEST)) {
