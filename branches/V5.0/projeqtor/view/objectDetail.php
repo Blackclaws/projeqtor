@@ -37,6 +37,12 @@ if (!isset($comboDetail)) {
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
 
+if(false === function_exists('lcfirst')) {
+  function lcfirst( $str ) {
+    $str[0] = strtolower($str[0]);
+    return (string)$str;
+  }
+}
 // ********************************************************************************************************
 // MAIN PAGE
 // ********************************************************************************************************
@@ -455,7 +461,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
     // If field is _tab_x_y, start a table presentation with x columns and y lines
     // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
-    // - the y line headers
+    // - the y line headers    
     if (substr($col, 0, 4) == '_tab') {
       $decomp=explode("_", $col);
       $internalTableCols=$decomp [2];
@@ -506,35 +512,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $section=substr($col, 5);
       } else {
         $section='';
-      }
-      $sectionField='_'.$section;
-      $sectionFieldVP='_VersionProject';
-      $cpt=null;
-      if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
-        $cpt=count($obj->$sectionField);
-      } else if (substr($section,0,14)=='Versionproject' and property_exists($obj,$sectionFieldVP ) and is_array($obj->$sectionFieldVP)){
-        $cpt=count($obj->$sectionFieldVP);
-      } else if ($section=='Affectations') {        
-        $crit=array('idProject=>'=>'0', 'idResource'=>'0');
-        if (get_class($obj)=='Project') {
-          $crit=array('idProject'=>$obj->id);
-        } else if (get_class($obj)=='Resource' or get_class($obj)=='User' or get_class($obj)=='Contact') {
-          $crit=array('idResource'=>$obj->id);
-        }
-        $aff=new Affectation();
-        $cpt=$aff->countSqlElementsFromCriteria($crit);
-      } else {
-        //echo $sectionField & "  " & $sectionFieldVP;
-      }
-      $colSpan=null;
-      $colSpanSection='_'.lcfirst($section).'_colSpan';
-      if ( property_exists($obj,$colSpanSection) ) {
-        $colSpan=$obj->$colSpanSection;
-      }
-      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
+      }    
+      // Determine number of items to be displayed in Header
       $sectionField='_'.$section;
       $sectionFieldDep='_Dependency_'.ucfirst($section);
       $sectionFieldDoc='_Document'.$section;
+      $sectionFieldVP='_VersionProject';
       if ($section=='trigger') {
         $sectionFieldDep='_Dependency_Predecessor';
       }
@@ -548,17 +531,27 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $cpt=count($obj->$sectionFieldDep);
       } else if (property_exists($obj,$sectionFieldDoc ) && is_array($obj->$sectionFieldDoc)){
         $cpt=count($obj->$sectionFieldDoc);
+      } else if (substr($section,0,14)=='Versionproject' and property_exists($obj,$sectionFieldVP ) and is_array($obj->$sectionFieldVP)){
+        $cpt=count($obj->$sectionFieldVP);
       } else if ($section=='Affectations') {
-          $aff=new Affectation();
-          if ($classObj=='Project') {
-            $crit=array('idProject'=>$obj->id);
-          } else {
-            $crit=array('idResource'=>$obj->id);
-          }
-          $cpt=$aff->countSqlElementsFromCriteria($crit);
+        $crit=array('idProject=>'=>'0', 'idResource'=>'0');
+        if ($classObj=='Project') {
+          $crit=array('idProject'=>$obj->id);
+        } else {
+          $crit=array('idResource'=>$obj->id);
+        }
+        $aff=new Affectation();
+        $cpt=$aff->countSqlElementsFromCriteria($crit);
       } else {
         // echo "***** $section *****<br/>";
       }
+      // Determine colSpan
+      $colSpan=null;
+      $colSpanSection='_'.lcfirst($section).'_colSpan';
+      if ( property_exists($obj,$colSpanSection) ) {
+        $colSpan=$obj->$colSpanSection;
+      }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
       if ($col=='_sec_void') {
         if ($prevSection) {
           echo '</table>';
@@ -997,19 +990,21 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       } else if ($col == 'password') {
         $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
         // Password specificity ============================================= PASSWORD
-        echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
-        echo $attributes;
-        $salt=hash('sha256', "projeqtor" . date('YmdHis'));
-        echo ' title="' . i18n('helpResetPassword') . '" >';
-        echo '<span>' . i18n('resetPassword') . '</span>';
-        echo '<script type="dojo/connect" event="onClick" args="evt">';
-        echo '  dijit.byId("salt").set("value","' . $salt . '");';
-        echo '  dijit.byId("crypto").set("value","sha256");';
-        echo '  dojo.byId("password").value="' . hash('sha256', $paramDefaultPassword . $salt) . '";';
-        echo '  formChanged();';
-        echo '  showInfo("' . i18n('passwordReset', array($paramDefaultPassword)) . '");';
-        echo '</script>';
-        echo '</button>';
+        if ($canUpdate) {
+          echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
+          echo $attributes;
+          $salt=hash('sha256', "projeqtor" . date('YmdHis'));
+          echo ' title="' . i18n('helpResetPassword') . '" >';
+          echo '<span>' . i18n('resetPassword') . '</span>';
+          echo '<script type="dojo/connect" event="onClick" args="evt">';
+          echo '  dijit.byId("salt").set("value","' . $salt . '");';
+          echo '  dijit.byId("crypto").set("value","sha256");';
+          echo '  dojo.byId("password").value="' . hash('sha256', $paramDefaultPassword . $salt) . '";';
+          echo '  formChanged();';
+          echo '  showInfo("' . i18n('passwordReset', array($paramDefaultPassword)) . '");';
+          echo '</script>';
+          echo '</button>';
+        }
         // password not visible
         echo '<input type="password"  ';
         echo $name;
@@ -1217,6 +1212,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $displayComboButtonCol=false;
             $displayDirectAccessButton=false;
           }
+        }
+        if ( $col=='idProfile' and !$obj->id and !$val and ($classObj=='Resource' or $classObj=='User')) { // set default 
+          $val=Parameter::getGlobalParameter('defaultProfile');
         }
         if ($col == 'idProject') {
           if ($obj->id == null) {
@@ -1443,7 +1441,16 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input '.(($isRequired)?'required':'').'" ';
         // echo ' layoutAlign ="right" ';
-        echo ' value="' . (($isWork)?Work::displayWork($val):htmlEncode($val)) . '" ';
+        if ($isWork) {
+          if ($classObj=='WorkElement') {
+            $dispVal=Work::displayImputation($val);
+          } else {
+            $dispVal=Work::displayWork($val);
+          }
+        } else {
+          $dispVal=htmlEncode($val);
+        }
+        echo ' value="' . $dispVal . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;
@@ -1452,7 +1459,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo $currency;
         }
         if ($isWork) {
-          echo Work::displayShortWorkUnit();
+          if ($classObj=='WorkElement') {
+            echo Work::displayShortImputationUnit();
+          } else {
+            echo Work::displayShortWorkUnit();
+          }
         }
         if ($isDuration) {
           echo i18n("shortDay");
