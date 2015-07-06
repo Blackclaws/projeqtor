@@ -260,7 +260,7 @@ if (beforeVersion($currVersion,"V4.0.0")) {
 	// Deleting old files referencing projector or projectorria : these files have been renamed
   $root=$_SERVER['SCRIPT_FILENAME'];
 	$root=substr($root,0,strpos($root, '/tool/'));
-  if (! $root) { // On IIS, previous method dos not return correct method 
+  if (! $root) { // On IIS, previous method does not return correct method 
 	  $root=__FILE__;
 	  $root=substr($root,0,strpos($root, '/db/'));
 	}
