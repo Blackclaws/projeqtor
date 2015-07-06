@@ -45,7 +45,7 @@ $refId=$_REQUEST['dispatchWorkObjectId'];
 if (! array_key_exists("dispatchWorkTotal",$_REQUEST) ) {
   throwError('dispatchWorkTotal parameter not found in REQUEST');
 }
-$total=$_REQUEST['dispatchWorkTotal'];
+$total=Work::convertImputation($_REQUEST['dispatchWorkTotal']);
 
 if (! array_key_exists('dispatchWorkDate',$_REQUEST)) {
   throwError('dispatchWorkDate parameter not found in REQUEST');
@@ -107,8 +107,10 @@ foreach ($dateList as $idx=>$date) {
         $work->refId=$refId;
       }
     }
-    $diff=$valueList[$idx]-$work->work;
-    $work->work=$valueList[$idx];
+
+    $newWork=Work::convertImputation($valueList[$idx]);   
+    $diff=$newWork-$work->work;
+    $work->work=$newWork;
     $work->idWorkElement=$weId;
     $work->dailyCost=0;//TODO
     $work->cost=0;//TODO

@@ -47,9 +47,11 @@ foreach ($list as $w) {
   $totalWork+=$w->work;
 }
 $key=date('Ymd').'#'.getSessionUser()->id;
-if (! isset($arrayWork[$key])) $arrayWork[$key]=array('id'=>'', 'date'=>date('Y-m-d'), 'idResource'=>getSessionUser()->id,'work'=>0);
+if (! isset($arrayWork[$key])) { 
+  $arrayWork[$key]=array('id'=>'', 'date'=>date('Y-m-d'), 'idResource'=>getSessionUser()->id,'work'=>0);
+}
 if (isset($_REQUEST['work'])) {
-  $newWork=$_REQUEST['work'];
+  $newWork=Work::convertImputation($_REQUEST['work']);
   if ($newWork>$totalWork) { $arrayWork[$key]['work']=$newWork-$totalWork;}
 }
 $arrayWork[]=array('id'=>'', 'date'=>null, 'idResource'=>null,'work'=>0);
@@ -96,10 +98,10 @@ foreach($arrayWork as $key=>$work) {
  </td>
  <td>&nbsp;</td>
  <td style="word-space:nowrap;width:52px">
-   <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayWork($work['work'])?>"
+   <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayImputation($work['work'])?>"
     onchange="updateDispatchWorkTotal();" name="dispatchWorkValue[]" id="dispatchWorkValue_<?php echo $cpt;?>">
      </div></td>
- <td style="width:1px;text-align:left;">&nbsp;<?php echo Work::displayShortWorkUnit();?></td>
+ <td style="width:1px;text-align:left;">&nbsp;<?php echo Work::displayShortImputationUnit();?></td>
 </tr> 
 <?php $total+=$work['work'];
 }?>
@@ -109,9 +111,9 @@ foreach($arrayWork as $key=>$work) {
 <td class="tabLabel" colspan="3"><?php echo i18n('sum');?></td>
 <td>&nbsp;</td>
 <td style="word-space:nowrap">
-  <div dojoType="dijit.form.NumberTextBox" id="dispatchWorkTotal" name="dispatchWorkTotal" readonly class="input" style="width:50px;" value="<?php echo Work::displayWork($total)?>">
+  <div dojoType="dijit.form.NumberTextBox" id="dispatchWorkTotal" name="dispatchWorkTotal" readonly class="input" style="width:50px;" value="<?php echo Work::displayImputation($total)?>">
      </div></td>
-<td>&nbsp;<?php echo Work::displayShortWorkUnit();?></td>
+<td>&nbsp;<?php echo Work::displayShortImputationUnit();?></td>
 <tr><td colspan="5">&nbsp;</td></tr>
 </tfoot>
 </table>
