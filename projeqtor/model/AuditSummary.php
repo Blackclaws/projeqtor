@@ -75,6 +75,7 @@ class AuditSummary extends SqlElement {
   	$summary->auditDay=$day;
   	$summary->firstConnection=null;
   	$summary->minDuration=null;
+  	$summary->maxDuration=null;
   	$totDuration=0;
   	$list=$audit->getSqlElementsFromCriteria($crit);
   	foreach($list as $audit) {
@@ -91,7 +92,9 @@ class AuditSummary extends SqlElement {
       if ($audit->duration>$summary->maxDuration) {
         $summary->maxDuration=$audit->duration;
       }
-      $totDuration+=strtotime($audit->lastAccessDateTime)-strtotime($audit->connectionDateTime);
+      if ($audit->lastAccessDateTime and $audit->connectionDateTime) {
+        $totDuration+=strtotime($audit->lastAccessDateTime)-strtotime($audit->connectionDateTime);
+      }
   	}
     if ($summary->numberSessions>0) {
   	  $meanDuration=round($totDuration/$summary->numberSessions,0);   
@@ -100,7 +103,11 @@ class AuditSummary extends SqlElement {
 	    $mm=floor($meanDuration/60);
 	    $meanDuration-=$mm*60;  
 	    $ss=$meanDuration;
-	    $summary->meanDuration=$hh.':'.$mm.':'.$ss;   
+	    if ($hh>=24) {
+	      $summary='23:59:59';
+	    } else {
+	      $summary->meanDuration=$hh.':'.$mm.':'.$ss;
+	    }   
     } else {
     	$summary->meanDuration='00:00:00';
     }
