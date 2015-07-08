@@ -104,7 +104,7 @@ class PeriodicMeetingMain extends SqlElement {
                                   "_lib_to"=>'nobr',
                                   "meetingEndTime"=>'',
                                   "idUser"=>"hidden",
-                                  "idResource"=>"idden",
+                                  "idResource"=>"",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
