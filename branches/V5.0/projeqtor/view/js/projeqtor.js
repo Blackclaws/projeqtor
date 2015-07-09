@@ -849,13 +849,11 @@ function finalizeMessageDisplay(destination, validationType) {
   if (! contentWidget) {return;};
   // fetch last message type
   var message=contentWidget.get('content'); 
-console.log(message);  
   posdeb=message.indexOf('class="message')+7;
   posfin=message.indexOf('>',posdeb)-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
-console.log("posdeb="+posdeb+" posfin="+posfin);      
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
     msg=message.substr(posdeb, posfin-posdeb);
@@ -1298,7 +1296,7 @@ function finalizeMultipleSave() {
 function formChanged() {
   var updateRight=dojo.byId('updateRight');
   if (updateRight && updateRight.value=='NO') {
-    rerurn;
+    return;
   }
   disableWidget('newButton');
   disableWidget('newButtonList');

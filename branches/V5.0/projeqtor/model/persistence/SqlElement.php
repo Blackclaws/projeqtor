@@ -190,7 +190,8 @@ abstract class SqlElement {
                                   "Milestone"=>"confirm",
                                   "Note"=>"cascade",
                                   "Opportunity"=>"control",
-                                  "Parameter"=>"cascade", 
+                                  "Parameter"=>"cascade",
+                                  "PlannedWork"=>"cascade", 
                                   "Project"=>"confirm", 
                                   "ProjectExpense"=>"control",
                                   "Requirement"=>"control",
@@ -3098,7 +3099,7 @@ abstract class SqlElement {
 			if ($statusMail->mailToManager) {
 				if (property_exists($this,'idProject')) {
 					$project=new Project($idProject);
-					$manager=new Affectable($project->idUser);
+					$manager=new Affectable($project->idResource);
 					$newDest = "###" . $manager->email . "###";
 					if ($manager->email and strpos($dest,$newDest)===false) {
 						$dest.=($dest)?', ':'';
@@ -3773,7 +3774,7 @@ abstract class SqlElement {
 	}
 
 	public function getTitle($col) {
-		return i18n('col'.$col);
+		return i18n('col'.ucfirst($col));
 	}
 
 	public static function unsetRelationShip($rel1, $rel2) {

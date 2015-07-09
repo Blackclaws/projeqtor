@@ -400,7 +400,7 @@ class IndicatorValue extends SqlElement {
     if ($def->mailToManager or $def->alertToManager) {
       if (property_exists($obj,'idProject')) {
         $project=new Project($obj->idProject);
-        $manager=new Affectable($project->idUser);
+        $manager=new Affectable($project->idResource);
         if ($def->alertToManager) {
           $arrayAlertDest[$manager->id]=$manager->name;
         }

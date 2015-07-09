@@ -202,12 +202,20 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arrayDisp["operator"]="<= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]="<=";
     $arrayDisp["value"]=htmlEncode($filterValue) . ' ' . i18n('days');
-    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+    if (Sql::isPgsql()) {
+      $arraySql["value"]= "NOW() + INTERVAL '" . $filterValue . " day'";
+    } else {
+      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+    }
   } else if ($idFilterOperator==">=now+") {  
     $arrayDisp["operator"]=">= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]=">=";
     $arrayDisp["value"]=htmlEncode($filterValue) . ' ' . i18n('days');
-    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+    if (Sql::isPgsql()) {
+      $arraySql["value"]= "NOW() + INTERVAL '" . $filterValue . " day'";
+    } else {
+      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+    }
   } else {
      echo htmlGetErrorMessage(i18n('incorrectOperator'));
      exit;
