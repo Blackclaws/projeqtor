@@ -1567,7 +1567,7 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
 
 /**
  * ===========================================================================
- * Get the access right for a menu and an access type, just returning Yes or No
+ * Get the access right for a menu and an access type, just returning 'YES' or 'NO'
  *
  * @param $menuName The
  *          name of the menu; should be 'menuXXX'
@@ -2591,6 +2591,7 @@ function getSessionUser() {
   if ($user===null) {
     return new User();
   } else {
+    $user->_isRetreivedFromSession=true;
     return $user;  
   }
 }

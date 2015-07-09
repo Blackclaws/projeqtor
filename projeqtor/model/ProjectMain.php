@@ -47,9 +47,9 @@ class ProjectMain extends SqlElement {
   public $clientCode;
   public $idProject;
   public $idSponsor;
+  public $idResource;
   public $idUser;
   public $creationDate;
-  
   public $color;
   //public $paymentDelay;
   public $idStatus;
@@ -130,7 +130,7 @@ class ProjectMain extends SqlElement {
                                   "cancelled"=>"nobr"
   );   
  
-  private static $_colCaptionTransposition = array('idUser'=>'manager',
+  private static $_colCaptionTransposition = array('idResource'=>'manager',
    'idProject'=> 'isSubProject',
    'idProjectType'=>'type',
    'idContact'=>'billContact');

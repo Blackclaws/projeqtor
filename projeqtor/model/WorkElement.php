@@ -306,10 +306,7 @@ class WorkElement extends SqlElement {
 	public function stop() {	  
 		$start = $this->ongoingStartDateTime;
 		$stop = date ( 'Y-m-d H:i:s' );
-debugLog("start=$start");
-debugLog("stop=$stop");
 		$work = workTimeDiffDateTime ( $start, $stop );
-debugLog("work=$work");
 		$this->realWork += $work;
 		$this->idUser = null;
 		$this->ongoing = 0;

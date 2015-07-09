@@ -380,7 +380,7 @@ class User extends SqlElement {
       $this->_accessControlRights=array();
     }
     $this->_accessControlRights[$profile]=$accessControlRights;
-    if ($this->id==getSessionUser()->id) {
+    if ($this->id==getSessionUser()->id and isset($this->_isRetreivedFromSession) and $this->_isRetreivedFromSession) {
       setSessionUser($this); // Store user to cache Data
     }
     return $this->_accessControlRights[$profile];
@@ -660,7 +660,7 @@ class User extends SqlElement {
     }
     if (! $this->_allAccessRights) $this->_allAccessRights=array();
     $this->_allAccessRights[$class]=$result;
-    if ($this->id==getSessionUser()->id) {
+    if ($this->id==getSessionUser()->id and isset($this->_isRetreivedFromSession) and $this->_isRetreivedFromSession) {
       setSessionUser($this); // Store user to cache Data
     }
     // Same code as beginning, but now _allAccessRights[$class] is set
@@ -1209,4 +1209,3 @@ class User extends SqlElement {
   }
   
 }
-?>

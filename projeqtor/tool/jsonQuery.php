@@ -29,7 +29,6 @@
  */
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
-debugLog($_REQUEST);
     $objectClass=$_REQUEST['objectClass'];
     $showThumb=Parameter::getUserParameter('paramShowThumbList');
     if ($showThumb=='NO') {
@@ -425,7 +424,6 @@ debugLog($_REQUEST);
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
-debugLog($arrayFilter);
     // --- Check for an advanced filter (stored in User)
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']!='SORT') { // Sorting already applied above

@@ -1501,9 +1501,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '<div data-dojo-type="dijit.Editor"'; // TEST
           echo ' id="' . $fieldId . 'Editor" ';
           echo ' title="' . i18n('clickToEditRichText') . '"';
+          if ($readOnly) echo ' disabled=true';
           echo ' data-dojo-props="height:\'125px\'';
-          if ($readOnly)
-            echo ', disabled:true,';
+          if ($readOnly) echo ', disabled:true';
           echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
           echo ",plugins:['removeFormat','bold','italic','underline'";
           echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
@@ -1535,8 +1535,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo ' id="' . $fieldId . 'Editor" ';
           echo ' height="50px" title="' . i18n('clickToEditRichText') . '"';
           echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
-          if ($readOnly)
-            echo ', disabled:true,';
+          if ($readOnly) echo ', disabled:true';
           echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
           echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
           echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";

@@ -174,9 +174,10 @@ class Audit extends SqlElement {
 		}
 		$audit->lastAccessDateTime = date ( 'Y-m-d H:i:s' );
 		// date_diff is only supported from PHP 5.3
-    $now=strtotime("now");
     date_default_timezone_set('UTC');
+    $now=strtotime("now");
 		$audit->duration = date ( 'H:i:s', strtotime ( $audit->lastAccessDateTime, $now ) - strtotime ( $audit->connectionDateTime, $now ) );
+		if ($audit->duration>'23:59:59') $audit->duration='23:59:59';
 		$tz=Parameter::getGlobalParameter('paramDefaultTimezone');
 		if ($tz) date_default_timezone_set($tz); else date_default_timezone_set('Europe/Paris');;
 		// $duration=date_diff(date_create($audit->connectionDateTime), date_create($audit->lastAccessDateTime)) ;
