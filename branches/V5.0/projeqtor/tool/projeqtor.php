@@ -26,7 +26,13 @@
 $projeqtor = 'loaded';
 spl_autoload_register ( 'projeqtorAutoload', true );
 include_once ('../model/User.php');
-session_start ();
+// Example
+if ( is_session_started() === FALSE ) {
+  session_start ();
+} else {
+  echo "ProjeQtOr is not compatible with session auto start.<br/>session.auto_start must be disabled (set to Off or 0). <br/>Update your php.ini file.";
+  exit;
+}
 // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
@@ -129,6 +135,7 @@ if (get_magic_quotes_runtime ()) {
 if (ini_get ( 'register_globals' )) {
   traceLog ( i18n ( "errorRegisterGlobals" ) );
 }
+
 $page = $_SERVER ['PHP_SELF'];
 if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and $batchMode) and ! (isset ( $indexPhp ) and $indexPhp)) {
   // Get the user from session. If not exists, request connection ===============
@@ -2694,6 +2701,14 @@ function calculateFractionBeetweenTimes($startTime,$endTime) {
   return($end-$start);
 }
 
+function is_session_started() {
+  if ( version_compare(phpversion(), '5.4.0', '>=') ) {
+    return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+  } else {
+    return session_id() === '' ? FALSE : TRUE;
+  }
+  return FALSE;
+}
  
 //
 ?>
