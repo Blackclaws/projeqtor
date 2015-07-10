@@ -1268,6 +1268,7 @@ function finalizeMultipleSave() {
 	msg=msg.replace(" class='messageERROR' ","");
 	msg=msg.replace(" class='messageOK' ","");
 	msg=msg.replace(" class='messageWARNING' ","");
+	msg=msg.replace(" class='messageNO_CHANGE' ","");
 	msg=msg.replace("</div><div>",", ");
 	msg=msg.replace("</div><div>",", ");
 	msg=msg.replace("<div>","");
