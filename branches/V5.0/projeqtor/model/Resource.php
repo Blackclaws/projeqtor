@@ -225,6 +225,7 @@ class Resource extends SqlElement {
 
   public function getWork($startDate, $withProjectRepartition=false) {
     $result=array();
+    $real=array();
     $startDay=str_replace('-','',$startDate);
     $where="day >= '" . $startDay . "'";
     $where.=" and idResource='" . Sql::fmtId($this->id) . "'"; 
@@ -308,9 +309,14 @@ class Resource extends SqlElement {
           $valProj+=$work->work; 
           $result[$projectKey][$week]=$valProj;
         }
+      } // ProjectRepartition - end
+      $key=$work->refType.'#'.$work->refId;
+      if (! isset($real[$key])) {
+        $real[$key]=array();
       }
-// ProjectRepartition - end
+      $real[$key][$date]=$work->work;
     }
+    $result['real']=$real;
     return $result;
   }
   

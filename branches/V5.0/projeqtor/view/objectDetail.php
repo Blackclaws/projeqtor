@@ -1676,7 +1676,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     $arrayPosition=array(
          'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
          'progress'=>      array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')),
-         'predecessor'=>   array('clear'=>(($nbCol==2)?'both':'none')),
+         'predecessor'=>   array('clear'=>(($nbCol==2)?'both':(($classObj=='Activity')?'left':'none'))),
          'successor'=>     array('float'=>(($nbCol==2 or $classObj!='Project')?'left':'right'),  'clear'=>'none'),
         
          //'subprojects'=>   array('float'=>(($nbCol==2)?'left':'left'),   'clear'=>(($nbCol==2)?'left':'none')),
