@@ -117,7 +117,7 @@ class PlannedWork extends GeneralWork {
 // PLAN
 // ================================================================================================================================
 
-    public static function plan($projectId, $startDate) {
+  public static function plan($projectId, $startDate) {
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	
@@ -144,6 +144,7 @@ class PlannedWork extends GeneralWork {
     $globalMinDate=date('Y')-1 . "-01-01"; // Don't try to plan before Jan-01 of current year -1
     
     $arrayPlannedWork=array();
+    $arrayRealWork=array();
     $arrayAssignment=array();
     $arrayPlanningElement=array();
 
@@ -172,7 +173,7 @@ class PlannedWork extends GeneralWork {
     //-- #697 : moved the administrative project clause after the purge
     //-- Remove administrative projects
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
-    //-- Get the list of all PlanningElements to plan (includes Activity and/or Projects)
+    //-- Get the list of all PlanningElements to plan (includes Activity, Projects, Meetings, Test Sessions)
     $pe=new PlanningElement();
     $clause=$inClause;
     $order="wbsSortable asc";
@@ -377,7 +378,7 @@ class PlannedWork extends GeneralWork {
 	          if (array_key_exists($ass->idResource,$resources)) {
 	            $ress=$resources[$ass->idResource];
 	          } else {
-	            $ress=$r->getWork($startDate, $withProjectRepartition);        
+	            $ress=$r->getWork($startDate, $withProjectRepartition);      
 	            $resources[$ass->idResource]=$ress;
 	          }
 	        	$assRate=1;
@@ -466,6 +467,7 @@ class PlannedWork extends GeneralWork {
           }
           //$projRate=$ress['Project#' . $ass->idProject]['rate'];
           $capacityRate=round($assRate*$capacity,2);
+          $keyElt=$ass->refType.'#'.$ass->refId;
           $left=$ass->leftWork;
           $regul=false;
           if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="QUART" or $profile=="FDUR") {
@@ -476,6 +478,7 @@ class PlannedWork extends GeneralWork {
           	$delai=0;          	
           	for($tmpDate=$currentDate; $tmpDate<=$endPlan;$tmpDate=addDaysToDate($tmpDate, 1)) {
           		if (isOffDay($tmpDate,$r->idCalendarDefinition)) continue;
+          		if (isset($ress['real'][$keyElt][$tmpDate])) continue;
           		$tempCapacity=$capacityRate;
           		if (isset($ress[$tmpDate])) {
           			$tempCapacity-=$ress[$tmpDate];
@@ -486,8 +489,7 @@ class PlannedWork extends GeneralWork {
           		} else {
           			$delai+=round($tempCapacity/$regulTh,2);
           		}
-          	}
-            
+          	}            
             if ($delai and $delai>0) { 
               $regul=round(($ass->leftWork/$delai)+0.000005,5);                            
               $regulDone=0;
@@ -518,15 +520,20 @@ class PlannedWork extends GeneralWork {
                 $planned=$ress[$currentDate];
               }
               if ($regul) {
-              	  $tmpStep=$step;
-              	  //if (isset($ress[$currentDate])) { $tmpStep;} // ????
-                  $interval+=$tmpStep;
+              	if (! isset($ress['real'][$keyElt][$currentDate])) {
+                  $interval+=$step;
+              	}
               }
               if ($planned < $capacity)  {
                 $value=$capacity-$planned; 
-                 if ($value>$capacityRate) {
-                 	 $value=$capacityRate;
-                 }
+                if ($value>$capacityRate) {
+               	  $value=$capacityRate;
+                }
+                if (isset($ress['real'][$keyElt][$currentDate])) {
+                  //$value-=$ress['real'][$keyElt][$currentDate]; // Case 1 remove existing
+                  //if ($value<0) $value=0;
+                  $value=0; // Case 2 : if real is defined, no more work to plan
+                }
                 if ($withProjectRepartition) {
                   foreach ($listTopProjects as $idProject) {
                     $projectKey='Project#' . $idProject;
@@ -565,6 +572,9 @@ class PlannedWork extends GeneralWork {
                 }
                 if ($regul) {
                 	$tmpTarget=$regul;
+                	if (isset($ress['real'][$keyElt][$currentDate])) {
+                	  $tmpTarget=0;
+                	}
                   $tempCapacity=$capacityRate;
                   if (isset($ress[$currentDate])) {
                     $tempCapacity-=$ress[$currentDate];
