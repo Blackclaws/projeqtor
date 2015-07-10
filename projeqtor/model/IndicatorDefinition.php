@@ -164,6 +164,7 @@ class IndicatorDefinition extends SqlElement {
 // ============================================================================**********
   
   public function save() {
+    $old=$this->getOld();
   	$indicatorable=new Indicatorable($this->idIndicatorable);
   	$this->nameIndicatorable=$indicatorable->name;
   	$delayUnit=new DelayUnit($this->idWarningDelayUnit);
@@ -174,7 +175,37 @@ class IndicatorDefinition extends SqlElement {
     $this->codeIndicator=$indicator->code;
   	$this->typeIndicator=$indicator->type;
   	$this->name=$indicator->name;
-  	return parent::save();
+  	$result=parent::save();
+  	if (!$old->idle and $this->idle) {
+  	  $this->purgeExistingIndicatorValue();
+  	} else if ($this->warningValue!=$old->warningValue or $this->idWarningDelayUnit!=$old->idWarningDelayUnit
+       or $this->alertValue!=$old->alertValue or $this->idAlertDelayUnit!=$old->idAlertDelayUnit){
+  	  $this->updateExistingIndicatorValue();
+  	}
+  	return $result;
+  }
+  
+  public function delete() {
+    $result=parent::delete();
+    $this->purgeExistingIndicatorValue();
+    return $result;
+  }
+  
+  private function purgeExistingIndicatorValue() {
+    $iv=new IndicatorValue();
+    $iv->purge("idIndicatorDefinition='".$this->id."'");
+  }
+  private function updateExistingIndicatorValue() {
+    $iv=new IndicatorValue();
+    $ivList=$iv->getSqlElementsFromCriteria(array('idIndicatorDefinition'=>$this->id));
+    foreach ($ivList as $iv) {
+      $obj=new $iv->refType($iv->refId);
+      if ($obj->id) {
+        IndicatorValue::addIndicatorValue($this,$obj);
+      } else {
+        $iv->delete();
+      }
+    }
   }
   
     /** ==========================================================================
