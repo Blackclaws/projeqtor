@@ -30,7 +30,10 @@ include_once ('../model/User.php');
 if ( is_session_started() === FALSE ) {
   session_start ();
 } else {
-  echo "ProjeQtOr is not compatible with session auto start.<br/>session.auto_start must be disabled (set to Off or 0). <br/>Update your php.ini file.";
+  echo "ProjeQtOr is not compatible with session auto start.<br/>";
+  echo "session.auto_start must be disabled (set to Off or 0). <br/>";
+  echo "Update your php.ini file : session.auto_start = 0<br/>";
+  echo "or create .htaccess at projeqtor root with : php_flag session.auto_start Off";
   exit;
 }
 // Setup session. Must be first command.
