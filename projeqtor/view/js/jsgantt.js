@@ -567,7 +567,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vLeftTable += '</TR><TR class="ganttHeight" style="height:24px">'
         +'<TD class="ganttLeftTitle" style="width:'+vIconWidth+'px;"></TD>'
-        +'<TD class="ganttLeftTitle ganttAlignLeft ganntNoLeftBorder" style="width: ' + vNameWidth + 'px;">'
+        +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;">'
         +JSGantt.i18n('colTask') +'</TD>' ;     
       for (iSort=0;iSort<sortArray.length;iSort++) {
 	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') {
