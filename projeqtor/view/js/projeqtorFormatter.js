@@ -269,10 +269,10 @@ function costFormatter(value) {
   roundedValue = dojo.number.format(Math.round(value * 100) / 100);
   // var result = roundedValue.replace(/^0+/g,'');
   // result = value.replace(/^0+/g,'');
-  if (paramCurrencyPosition == 'before') {
-    return paramCurrency + '&nbsp;' + roundedValue;
+  if (top.paramCurrencyPosition == 'before') {
+    return top.paramCurrency + '&nbsp;' + roundedValue;
   } else {
-    return roundedValue + '&nbsp;' + paramCurrency;
+    return roundedValue + '&nbsp;' + top.paramCurrency;
   }
 }
 /**
