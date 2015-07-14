@@ -211,6 +211,9 @@ class DocumentVersion extends SqlElement {
       $doc->revision=$dv->revision;  
       $doc->draft=$dv->draft;
       $doc->idDocumentVersion=$dv->id;
+      $doc->idStatus=$dv->idStatus;
+      $st=new Status($dv->idStatus);
+      $doc->idle=$st->setIdleStatus;
       $saveDoc=true;
   	}
   	if ($saveDoc==true) {
