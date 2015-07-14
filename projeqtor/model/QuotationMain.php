@@ -103,8 +103,8 @@ class QuotationMain extends SqlElement {
                                                    'idResource'=> 'responsible',
   		                      'validityEndDate'=>'offerValidityEndDate',
   													'idActivity'=>'linkActivity',
-  		                      'initialEndDate'=>'plannedEndDate',
-  		                      'initialWork'=>'plannedWork',
+  		                      'initialEndDate'=>'actualEndDate',
+  		                      'initialWork'=>'estimatedEffort',
   		                      'initialAmount'=>'plannedAmount',
   		                      'initialPricePerDayAmount'=>'pricePerDay',
                             'description'=>'request');
