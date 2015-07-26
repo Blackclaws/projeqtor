@@ -126,7 +126,8 @@ projeqtor_set_memory_limit('512M');
 		echo '<tr rowspan=' . $nb . '>';
 		echo '<td class="reportTableHeader" rowspan=' . $nb . ' style="width:150px;">' . i18n('colIdActivityType') . '</td>';
 		echo '<td class="reportTableHeader" colspan=2>' . i18n('colName') . '</td>';
-		echo '<td class="reportTableHeader" >' . i18n('colValidated') . '</td>';
+		//echo '<td class="reportTableHeader" >' . i18n('colValidated') . '</td>';
+		echo '<td class="reportTableHeader" ></td>';
 		
 	}
 	
@@ -162,7 +163,8 @@ projeqtor_set_memory_limit('512M');
 				echo '<td class="reportTableLineHeader">' . htmlEncode($tabPrj['charge'][$idActType]['name']) . '</td>';
 				echo '<td class="reportTableLineHeader" style="width:20px;" title='. Work::displayWork($diff) .'>
 						<img style="width:16px" src="../view/css/images/indicator_' . $indicator . '.png" /></td>';
-				echo '<td class="reportTableData">' . Work::displayWork($wValidated) . '</td>';	
+				//echo '<td class="reportTableData">' . Work::displayWork($wValidated) . '</td>';
+				echo '<td class="reportTableLineHeader"></td>';
 				echo '<td class="reportTableData">' . Work::displayWork($wAssign) . '</td>';
 				echo '<td class="reportTableData">' . Work::displayWork($wReal) . '</td>';
 				echo '<td class="reportTableData">' . Work::displayWork($wLeft) . '</td>';
