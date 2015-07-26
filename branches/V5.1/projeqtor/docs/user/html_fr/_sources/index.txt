@@ -1,0 +1,206 @@
+.. ProjeQtOr user guide documentation master file, created by
+   sphinx-quickstart on Fri May 29 11:17:53 2015.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome
+=======
+
+ProjeQtOr is a Quality based Project Organizer, as a web application.
+
+ProjeQtOr focuses on IT Projects, but is also compatible with all kinds of Projects.
+
+Its purpose is to propose a unique tool to gather all the information about the projects. 
+
+The fact is that many Project Management softwares just focus on planning. But it is a much too restrictive point of view. Of course, planning is an important activity of Project Management and is one of the keys to Project success, but it is not the only one.
+
+Project Managers need to foresee all what can happen, measure risks, build an action plan and mitigation plan.
+
+It is also important to track and keep traces of all what is happening to the Project : incidents, bugs , change requests, support requests, ...
+
+In this objective, ProjeQtOr gives visibility at all levels of Project Management.
+
+At lower level, the Project follow-up consists in gathering all information, and maintain it up to date. This involves all the operational teams.
+
+At upper level, Project Steering uses the follow-up data to take the decisions and build the action plan. This allows to bring the adjustments needed to target on the objectives of the project. 
+
+The goal of ProjeQtOr is to be Project Management Method independent. Whatever your choice of the method, you can use ProjeQtOr.
+
+Features
+========
+
+ProjeQtOr  is a "Quality based Project Organizer".
+
+It is particularly well suited to IT projects, but can manage any type of project.
+
+It offers all the features needed to different Project Management actors under a unique collaborative interface.
+
+.. toctree::
+   :maxdepth: 1
+   
+   Features
+
+Graphical user interface
+========================
+
+.. toctree::
+   :maxdepth: 1
+
+   Gui
+   UserParameter
+
+Planning elements
+=================
+
+.. toctree::
+   :maxdepth: 1
+
+   PlanningElements
+
+Real work allocation
+====================
+
+.. toctree::
+   :maxdepth: 1
+
+   RealWorkAllocation
+
+Follow-up
+=========
+
+.. toctree::
+   :maxdepth: 1
+
+   Today  
+   Gantt
+   Diary
+   Report
+
+Document management
+===================
+
+.. toctree::
+   :maxdepth: 1
+
+   Document
+
+Ticket management
+===================
+
+.. toctree::
+   :maxdepth: 1
+
+   Ticket
+
+  
+Requirements et Tests
+=====================
+
+.. toctree::
+   :maxdepth: 1
+
+   RequirementsTest
+
+Risk & Issue Management
+=======================
+
+.. toctree::
+   :maxdepth: 1
+
+   RiskIssueManagement
+
+
+Financial
+=========
+
+.. toctree::
+   :maxdepth: 1
+
+   Expense
+   Order   
+   Bill
+
+Review logs
+===========
+
+.. toctree::
+   :maxdepth: 1
+
+   ReviewLogs
+
+Environmental parameters
+========================
+
+.. toctree::
+   :maxdepth: 1
+
+   ProductVersion
+   Resource
+   Customer
+   Recipient
+   Context
+   DocumentDirectory 
+
+Tools
+=====
+
+.. toctree::
+   :maxdepth: 1
+ 
+   Tools
+
+Controls & Automation
+=====================
+
+.. toctree::
+   :maxdepth: 1
+ 
+   ControlAutomation
+
+Access rights
+=====================
+
+.. toctree::
+   :maxdepth: 1
+ 
+   AccessRights
+
+.. _index-element-types-label:
+
+Lists of types
+==============
+
+Every element is linked to a type, defining some mandatory data or other GUI behavior.
+
+.. toctree::
+   :maxdepth: 1
+   
+   ListsOfTypes
+
+Lists of values
+===============
+
+.. toctree::
+   :maxdepth: 1
+
+   ListsOfValues
+
+
+Administration
+==============
+
+.. toctree::
+   :maxdepth: 1
+
+   Administration
+
+
+Glossary
+========
+
+.. toctree::
+   :maxdepth: 1
+  
+   Glossary
+
+
