@@ -1,0 +1,227 @@
+<?php
+$section=array();
+$sectionName=array();
+$topics=array();
+$tags=array();
+$page=array();
+$slideRoot='img';
+$slideExt='.png';
+
+$slide[0]='Welcome '; $slideName[0]='Welcome'; $slidePage['Welcome']='0'; $slideTags[0]='welcome home'; $slideTopics[0]='';
+$slide[1]='Functional'; $slideName[1]='Functional '; $slidePage['Functional1']='1'; $slideTags[1]='functional'; $slideTopics[1]='Ticket Activity Milestone Action Planning Workload Cost Report';
+$slide[2]='Functional'; $slideName[2]='Functional (2)'; $slidePage['Functional2']='2'; $slideTags[2]='functional'; $slideTopics[2]='Expense Bill Risk Action Issue Meeting Decision Question Message Import ';
+$slide[3]='Functional'; $slideName[3]='Functional (3)'; $slidePage['Functional3']='3'; $slideTags[3]='functional'; $slideTopics[3]='Client User Resource AccessRight Calendar';
+$slide[4]='Functional'; $slideName[4]='Functional (4)'; $slidePage['Functional4']='4'; $slideTags[4]='functional'; $slideTopics[4]='Document Requirement Test Parameter';
+$slide[5]='Functional'; $slideName[5]='Functional (5)'; $slidePage['Functional5']='5'; $slideTags[5]='functional'; $slideTopics[5]='AccessProfile GuiFilter';
+$slide[6]='Technical'; $slideName[6]='Technical'; $slidePage['Technical1']='6'; $slideTags[6]='technical gui interface ajax browser'; $slideTopics[6]='GuiGenerality';
+$slide[7]='Technical'; $slideName[7]='Technical (2)'; $slidePage['Technical2']='7'; $slideTags[7]='install setup deploy'; $slideTopics[7]='Installation';
+$slide[8]='Technical'; $slideName[8]='Technical (3)'; $slidePage['Technical3']='8'; $slideTags[8]='parameter'; $slideTopics[8]='Parameters1';
+$slide[9]='Installation'; $slideName[9]='Installation'; $slidePage['Installation']='9'; $slideTags[9]='install setup deploy php mysql http server zip'; $slideTopics[9]='Configuration Parameters1 NewVersion Connection';
+$slide[10]='Configuration'; $slideName[10]='Configuration'; $slidePage['Configuration']='10'; $slideTags[10]='install setup config parameter'; $slideTopics[10]='Installation Parameters1 NewVersion Connection';
+$slide[11]='Parameters'; $slideName[11]='Parameters'; $slidePage['Parameters1']='11'; $slideTags[11]='config parameter install setup'; $slideTopics[11]='Installation Configuration NewVersion';
+$slide[12]='Parameters'; $slideName[12]='Parameters (2)'; $slidePage['Parameters2']='12'; $slideTags[12]='config parameter install setup'; $slideTopics[12]='Installation Configuration NewVersion';
+$slide[13]='Parameters'; $slideName[13]='Parameters (3)'; $slidePage['Parameters3']='13'; $slideTags[13]='config parameter install setup'; $slideTopics[13]='Installation Configuration NewVersion';
+$slide[14]='Parameters'; $slideName[14]='Parameters (4)'; $slidePage['Parameters4']='14'; $slideTags[14]='config parameter install setup'; $slideTopics[14]='Installation Configuration NewVersion';
+$slide[15]='Parameters'; $slideName[15]='Parameters (5)'; $slidePage['Parameters5']='15'; $slideTags[15]='config parameter install setup'; $slideTopics[15]='Installation Configuration NewVersion';
+$slide[16]='NewVersion'; $slideName[16]='Install new version'; $slidePage['NewVersion']='16'; $slideTags[16]='install setup deploy php mysql http server zip new version release update'; $slideTopics[16]='Installation Configuration Parameters1';
+$slide[17]='Connection'; $slideName[17]='Connection'; $slidePage['Connection']='17'; $slideTags[17]='connect login'; $slideTopics[17]='GuiGenerality Installation Configuration';
+$slide[18]='GUI'; $slideName[18]='User interface'; $slidePage['GuiGenerality']='18'; $slideTags[18]='gui interface'; $slideTopics[18]='Themes GuiToolbar GuiMenu GuiQuickMenu GuiList GuiFilter GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[19]='GUI'; $slideName[19]='Toolbars'; $slidePage['GuiToolbar']='19'; $slideTags[19]='gui interface toolbar show hide switch help manual hyperlink logo external-shortcuts shortcuts'; $slideTopics[19]='Themes GuiGenerality GuiMenu GuiQuickMenu GuiList GuiFilter GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[20]='GUI'; $slideName[20]='Menu'; $slidePage['GuiMenu']='20'; $slideTags[20]='gui interface menu project combo'; $slideTopics[20]='Themes GuiGenerality GuiToolbar GuiQuickMenu GuiList GuiFilter GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[21]='GUI'; $slideName[21]='Quick Menu'; $slidePage['GuiQuickMenu']='21'; $slideTags[21]='gui interface menu project combo'; $slideTopics[21]='Themes GuiGenerality GuiToolbar GuiMenu GuiList GuiFilter GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[22]='GUI'; $slideName[22]='List'; $slidePage['GuiList']='22'; $slideTags[22]='gui interface list column'; $slideTopics[22]='Themes GuiGenerality GuiToolbar GuiMenu GuiQuickMenu GuiFilter GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[23]='GUI'; $slideName[23]='Filter'; $slidePage['GuiFilter']='23'; $slideTags[23]='gui interface filter complex'; $slideTopics[23]='Themes GuiGenerality GuiToolbar GuiMenu GuiQuickMenu GuiList GuiDetail GuiCombo GuiAlert GuiProject';
+$slide[24]='GUI'; $slideName[24]='Detail'; $slidePage['GuiDetail']='24'; $slideTags[24]='gui interface detail item save print'; $slideTopics[24]='Themes GuiGenerality GuiToolbar GuiMenu GuiQuickMenu GuiList GuiFilter GuiCombo GuiAlert GuiProject';
+$slide[25]='GUI'; $slideName[25]='Combo detail'; $slidePage['GuiCombo']='25'; $slideTags[25]='gui interface detail item save print combo list'; $slideTopics[25]='Themes GuiGenerality GuiToolbar GuiMenu GuiQuickMenu GuiList GuiFilter GuiDetail  GuiAlert GuiProject';
+$slide[26]='GUI'; $slideName[26]='Alert'; $slidePage['GuiAlert']='26'; $slideTags[26]='gui interface detail item save print combo list alert info warning'; $slideTopics[26]='Themes GuiGenerality GuiToolbar GuiMenu GuiQuickMenu GuiList GuiFilter GuiDetail GuiCombo GuiProject';
+$slide[27]='Themes'; $slideName[27]='Themes'; $slidePage['Themes']='27'; $slideTags[27]='theme color'; $slideTopics[27]='GuiGenerality ThemesTemplates';
+$slide[28]='Themes'; $slideName[28]='Themes templates'; $slidePage['ThemesTemplates']='28'; $slideTags[28]='theme color example'; $slideTopics[28]='GuiGenerality Themes';
+$slide[29]='Multilingual'; $slideName[29]='Multilingual'; $slidePage['Multilingual']='29'; $slideTags[29]='english french german translat multiling'; $slideTopics[29]='GuiGenerality Configuration Parameters1';
+$slide[30]='Creation'; $slideName[30]='Creation'; $slidePage['Creation']='30'; $slideTags[30]='creation'; $slideTopics[30]='GuiGenerality Update Delete Copy';
+$slide[31]='Update'; $slideName[31]='Update'; $slidePage['Update']='31'; $slideTags[31]='update'; $slideTopics[31]='GuiGenerality Creation Delete copy';
+$slide[32]='Delete'; $slideName[32]='Delete'; $slidePage['Delete']='32'; $slideTags[32]='delete'; $slideTopics[32]='GuiGenerality Creation Update Copy';
+$slide[33]='Copy'; $slideName[33]='Copy'; $slidePage['Copy']='33'; $slideTags[33]='copy'; $slideTopics[33]='GuiGenerality Creation Update Delete';
+$slide[34]='Today'; $slideName[34]='Today'; $slidePage['Today']='34'; $slideTags[34]='today summary todo message'; $slideTopics[34]='Message Project Ticket Activity Milestone Risk Action Issue';
+$slide[35]='Project'; $slideName[35]='Project'; $slidePage['Project']='35'; $slideTags[35]='project planning sub-project'; $slideTopics[35]='ProjectFields ProjectProgress ProjectAffectation ProjectDependencies GuiGenerality Creation Update Delete Planning';
+$slide[36]='Project'; $slideName[36]='Project fields'; $slidePage['ProjectFields']='36'; $slideTags[36]='project planning sub-project hyperlink external-shortcuts shortcuts'; $slideTopics[36]='Project ProjectAffectation ProjectProgress ProjectDependencies GuiGenerality Creation Update Delete Planning Affectation Customer';
+$slide[37]='Project'; $slideName[37]='Project affectations and versions'; $slidePage['ProjectAffectation']='37'; $slideTags[37]='project planning affectation version'; $slideTopics[37]='Project ProjectFields ProjectProgress ProjectDependencies GuiGenerality Creation Update Delete Planning';
+$slide[38]='Project'; $slideName[38]='Project progress'; $slidePage['ProjectProgress']='38'; $slideTags[38]='project planning'; $slideTopics[38]='Project ProjectFields ProjectDependencies GuiGenerality Creation Update Delete Planning';
+$slide[39]='Project'; $slideName[39]='Project dependencies'; $slidePage['ProjectDependencies']='39'; $slideTags[39]='project planning'; $slideTopics[39]='Project ProjectFields ProjectProgress ProjectAffectation GuiGenerality Creation Update Delete Planning';
+$slide[40]='Document'; $slideName[40]='Document'; $slidePage['Document']='40'; $slideTags[40]='document directory file'; $slideTopics[40]='DocumentFields DocumentVersions DocumentDirectory DocumentApprovers Product Project';
+$slide[41]='Document'; $slideName[41]='Document fields'; $slidePage['DocumentFields']='41'; $slideTags[41]='document directory file'; $slideTopics[41]='Document DocumentVersions DocumentDirectory DocumentApprovers Product Project LinkedElements';
+$slide[42]='Document'; $slideName[42]='Document versions'; $slidePage['DocumentVersions']='42'; $slideTags[42]='document directory file version'; $slideTopics[42]='Document DocumentFields DocumentDirectory DocumentApprovers Product Project';
+$slide[43]='Document'; $slideName[43]='Document approvers'; $slidePage['DocumentApprovers']='43'; $slideTags[43]='document directory file version approvers approve'; $slideTopics[43]='Document DocumentFields DocumentDirectory DocumentVersion Product Project';
+$slide[44]='Ticket'; $slideName[44]='Ticket'; $slidePage['Ticket']='44'; $slideTags[44]='ticket bug task track'; $slideTopics[44]='TicketFields TicketSimple GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[45]='Ticket'; $slideName[45]='Ticket fields'; $slidePage['TicketFields']='45'; $slideTags[45]='ticket bug task track'; $slideTopics[45]='Ticket TicketSimple GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[46]='Ticket'; $slideName[46]='Ticket fields'; $slidePage['TicketFields2']='46'; $slideTags[46]='ticket bug task track work timer'; $slideTopics[46]='Ticket TicketSimple GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[47]='TicketSimple'; $slideName[47]='Simple Ticket'; $slidePage['TicketSimple']='47'; $slideTags[47]='ticket bug task track simple'; $slideTopics[47]='TicketSimpleFields Ticket GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[48]='TicketSimple'; $slideName[48]='Simple Ticket fields'; $slidePage['TicketSimpleFields']='48'; $slideTags[48]='ticket bug task track simple'; $slideTopics[48]='TicketSimple Ticket GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[49]='TicketSimple'; $slideName[49]='Simple Ticket fields'; $slidePage['TicketSimpleFields2']='49'; $slideTags[49]='ticket bug task track simple'; $slideTopics[49]='TicketSimple Ticket GuiGenerality Creation Update Delete TicketType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[50]='Activity'; $slideName[50]='Activity'; $slidePage['Activity']='50'; $slideTags[50]='activity task planning'; $slideTopics[50]='ActivityFields ActivityAssignment ActivityProgress ActivityDependencies GuiGenerality Creation Update Delete ActivityType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[51]='Activity'; $slideName[51]='Activity fields'; $slidePage['ActivityFields']='51'; $slideTags[51]='activity task planning'; $slideTopics[51]='Activity ActivityAssignement ActivityProgress ActivityDependencies GuiGenerality Creation Update Delete ActivityType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory Planning';
+$slide[52]='Activity'; $slideName[52]='Activity assignment'; $slidePage['ActivityAssignement']='52'; $slideTags[52]='activity task planning assignment'; $slideTopics[52]='Activity ActivityFields ActivityProgress ActivityDependencies GuiGenerality Creation Update Delete ActivityType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[53]='Activity'; $slideName[53]='Activity progress'; $slidePage['ActivityProgress']='53'; $slideTags[53]='activity task planning progress'; $slideTopics[53]='Activity ActivityFields ActivityAssignment ActivityDependencies GuiGenerality Creation Update Delete ActivityType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[54]='Activity'; $slideName[54]='Activity dependency'; $slidePage['ActivityDependencies']='54'; $slideTags[54]='activity task planning'; $slideTopics[54]='Activity ActivityFields ActivityAssignment ActivityProgress GuiGenerality Creation Update Delete ActivityType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[55]='Milestone'; $slideName[55]='Milestone'; $slidePage['Milestone']='55'; $slideTags[55]='milestone flag '; $slideTopics[55]='MilestoneFields MilestoneProgress MilestoneDependencies GuiGenerality Creation Update Delete MilestoneType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[56]='Milestone'; $slideName[56]='Milestone fields'; $slidePage['MilestoneFields']='56'; $slideTags[56]='milestone flag '; $slideTopics[56]='Milestone MilestoneProgress MilestoneDependencies GuiGenerality Creation Update Delete MilestoneType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory Planning';
+$slide[57]='Milestone'; $slideName[57]='Milestone progress'; $slidePage['MilestoneProgress']='57'; $slideTags[57]='milestone flag '; $slideTopics[57]='Milestone MilestoneFields MilestoneDependencies GuiGenerality Creation Update Delete MilestoneType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[58]='Milestone'; $slideName[58]='Milestone dependencies'; $slidePage['MilestoneDependencies']='58'; $slideTags[58]='milestone flag '; $slideTopics[58]='Milestone MilestoneFields MilestoneProgress GuiGenerality Creation Update Delete MilestoneType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory Planning';
+$slide[59]='Action'; $slideName[59]='Action'; $slidePage['Action']='59'; $slideTags[59]='risk action issue'; $slideTopics[59]='ActionFields ActionDependencies Risk Issue GuiGenerality Creation Update Delete ActionType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[60]='Action'; $slideName[60]='Action fields'; $slidePage['ActionFields']='60'; $slideTags[60]='risk action issue'; $slideTopics[60]='Action ActionDependencies Risk Issue GuiGenerality Creation Update Delete ActionType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[61]='Action'; $slideName[61]='Action dependencies'; $slidePage['ActionDependencies']='61'; $slideTags[61]='risk action issue'; $slideTopics[61]='Action ActionFields Risk Issue GuiGenerality Creation Update Delete ActionType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[62]='Imputation'; $slideName[62]='Real work allocation'; $slidePage['Imputation']='62'; $slideTags[62]='imputation work follow-up allocation'; $slideTopics[62]='Activity ActivityAssignement Planning Resource Project Affectation';
+$slide[63]='Planning'; $slideName[63]='Planning'; $slidePage['Planning1']='63'; $slideTags[63]='planning work plan date calculation gantt'; $slideTopics[63]='ActivityAssignement ActivityProgress ActivityDependencies';
+$slide[64]='Planning'; $slideName[64]='Planning (2)'; $slidePage['Planning2']='64'; $slideTags[64]='planning work plan date calculation gantt'; $slideTopics[64]='ActivityAssignement ActivityProgress ActivityDependencies';
+$slide[65]='Planning'; $slideName[65]='Planning (3)'; $slidePage['Planning3']='65'; $slideTags[65]='planning work plan date calculation gantt'; $slideTopics[65]='ActivityAssignement ActivityProgress ActivityDependencies';
+$slide[66]='Planning'; $slideName[66]='Planning (4)'; $slidePage['Planning4']='66'; $slideTags[66]='planning work plan date calculation gantt'; $slideTopics[66]='ActivityAssignement ActivityProgress ActivityDependencies';
+$slide[67]='Planning'; $slideName[67]='Planning (5)'; $slidePage['Planning5']='67'; $slideTags[67]='planning work plan date calculation gantt'; $slideTopics[67]='ActivityAssignement ActivityProgress ActivityDependencies';
+$slide[68]='ResourcePlanning'; $slideName[68]='Resource Planning'; $slidePage['ResourcePlanning']='68'; $slideTags[68]='planning work plan date calculation gantt resource'; $slideTopics[68]='ActivityAssignement ActivityProgress ActivityDependencies Planning';
+$slide[69]='Report'; $slideName[69]='Report'; $slidePage['Report']='69'; $slideTags[69]='parameter report print '; $slideTopics[69]='';
+$slide[70]='Requirement'; $slideName[70]='Requirement'; $slidePage['Requirement']='70'; $slideTags[70]='requirement'; $slideTopics[70]='RequirementFields TestCase TestSession GuiGenerality Creation Update Delete RequirementType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[71]='Requirement'; $slideName[71]='Requirement fields'; $slidePage['RequirementFields']='71'; $slideTags[71]='requirement'; $slideTopics[71]='Requirement TestCase TestSession GuiGenerality Creation Update Delete RequirementType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[72]='Requirement'; $slideName[72]='Requirement fields'; $slidePage['RequirementFields2']='72'; $slideTags[72]='requirement'; $slideTopics[72]='Requirement TestCase TestSession GuiGenerality Creation Update Delete RequirementType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[73]='TestCase'; $slideName[73]='Test case'; $slidePage['TestCase']='73'; $slideTags[73]='test case'; $slideTopics[73]='TestCaseFields Requirement TestSession GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[74]='TestCase'; $slideName[74]='Test case fields'; $slidePage['TestCaseFields']='74'; $slideTags[74]='test case'; $slideTopics[74]='TestCase Requirement TestSession GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[75]='TestCase'; $slideName[75]='Test case fields'; $slidePage['TestCaseFields2']='75'; $slideTags[75]='test case'; $slideTopics[75]='TestCase Requirement TestSession GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[76]='TestSession'; $slideName[76]='Test session'; $slidePage['TestSession']='76'; $slideTags[76]='test session'; $slideTopics[76]='TestSessionFields Requirement TestCase GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[77]='TestSession'; $slideName[77]='Test session fields'; $slidePage['TestSessionFields']='77'; $slideTags[77]='test session'; $slideTopics[77]='TestSession Requirement TestCase GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[78]='TestSession'; $slideName[78]='Test session fields'; $slidePage['TestSessionFields2']='78'; $slideTags[78]='test session'; $slideTopics[78]='TestSession Requirement TestCase GuiGenerality Creation Update Delete TestCaseType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[79]='IndividualExpense'; $slideName[79]='Individual expense'; $slidePage['IndividualExpense']='79'; $slideTags[79]='expense cost travel '; $slideTopics[79]='IndividualExpenseFields IndividualExpenseDetails ProjectExpense';
+$slide[80]='IndividualExpense'; $slideName[80]='Individual expense fields'; $slidePage['IndividualExpenseFields']='80'; $slideTags[80]='expense cost travel '; $slideTopics[80]='IndividualExpense IndividualExpenseDetails ProjectExpense';
+$slide[81]='IndividualExpense'; $slideName[81]='Individual expense details'; $slidePage['IndividualExpenseDetails']='81'; $slideTags[81]='expense cost travel detail'; $slideTopics[81]='IndividualExpenseFields IndividualExpense ProjectExpense';
+$slide[82]='ProjectExpense'; $slideName[82]='Project expense'; $slidePage['ProjectExpense']='82'; $slideTags[82]='expense'; $slideTopics[82]='ProjectExpenseFields IndividualExpense';
+$slide[83]='ProjectExpense'; $slideName[83]='Project expense fields'; $slidePage['ProjectExpenseFields']='83'; $slideTags[83]='expense'; $slideTopics[83]='ProjectExpense IndividualExpense';
+$slide[84]='Term'; $slideName[84]='Term'; $slidePage['Term']='84'; $slideTags[84]='term trigger bill fixed price'; $slideTopics[84]='TermFileds Bill';
+$slide[85]='Term'; $slideName[85]='Term fields'; $slidePage['TermFields']='85'; $slideTags[85]='term trigger bill fixed price'; $slideTopics[85]='Term Bill';
+$slide[86]='Bill'; $slideName[86]='Bill'; $slidePage['Bill']='86'; $slideTags[86]='bill billing'; $slideTopics[86]='Term Bill ActivityPrice BillingType BillType';
+$slide[87]='Bill'; $slideName[87]='Bill fields'; $slidePage['BillFields']='87'; $slideTags[87]='bill billing'; $slideTopics[87]='Term Bill ActivityPrice BillingType BillType Recipient Contact';
+$slide[88]='Bill'; $slideName[88]='Bill lines'; $slidePage['BillLines']='88'; $slideTags[88]='risk action issue opportunity'; $slideTopics[88]='Term Bill ActivityPrice BillingType BillType';
+$slide[89]='ActiviyPrice'; $slideName[89]='Activity price'; $slidePage['ActiviyPrice']='89'; $slideTags[89]='risk action issue opportunity'; $slideTopics[89]='Activity ActivityType BillingType';
+$slide[90]='Risk'; $slideName[90]='Risk'; $slidePage['Risk']='90'; $slideTags[90]='risk action issue'; $slideTopics[90]='RiskFields Action Issue Opportunity GuiGenerality Creation Update Delete RiskType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[91]='Risk'; $slideName[91]='Risk fields'; $slidePage['RiskFields']='91'; $slideTags[91]='risk action issue'; $slideTopics[91]='Risk Action Issue Opportunity GuiGenerality Creation Update Delete RiskType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[92]='Opportunity'; $slideName[92]='Opportunity'; $slidePage['Opportunity']='92'; $slideTags[92]='meeting workshop steering committee invitation attendees'; $slideTopics[92]='OpportunityFields Risk Action Issue GuiGenerality Creation Update Delete RiskType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[93]='Opportunity'; $slideName[93]='Opportunity fields'; $slidePage['OpportunityFields']='93'; $slideTags[93]='meeting workshop steering committee'; $slideTopics[93]='Opportunity Risk Action Issue GuiGenerality Creation Update Delete RiskType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[94]='Issue'; $slideName[94]='Issue'; $slidePage['Issue']='94'; $slideTags[94]='risk action issue'; $slideTopics[94]='IssueFields IssueDependencies Risk Action GuiGenerality Creation Update Delete IssueType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[95]='Issue'; $slideName[95]='Issue fields'; $slidePage['IssueFields']='95'; $slideTags[95]='risk action issue'; $slideTopics[95]='Issue IssueDependencies Risk Action GuiGenerality Creation Update Delete IssueType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[96]='Meeting'; $slideName[96]='Meeting'; $slidePage['Meeting']='96'; $slideTags[96]='meeting workshop steering committee invitation attendees'; $slideTopics[96]='MeetingFields MeetingDependencies Question Decision GuiGenerality Creation Update Delete MeetingType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[97]='Meeting'; $slideName[97]='Meeting fields'; $slidePage['MeetingFields']='97'; $slideTags[97]='meeting workshop steering committee'; $slideTopics[97]='Meeting MeetingDependencies Question Decision GuiGenerality Creation Update Delete MeetingType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[98]='Decision'; $slideName[98]='Decision'; $slidePage['Decision']='98'; $slideTags[98]='decision'; $slideTopics[98]='DecisionFields DecisionDependencies Meeting GuiGenerality Creation Update Delete DecisionType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[99]='Decision'; $slideName[99]='Decision fields'; $slidePage['DecisionFields']='99'; $slideTags[99]='decision'; $slideTopics[99]='Decision DecisionDependencies Meeting GuiGenerality Creation Update Delete DecisionType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[100]='Question'; $slideName[100]='Question'; $slidePage['Question']='100'; $slideTags[100]='question answer'; $slideTopics[100]='QuestionFields QuestionDependencies Meeting GuiGenerality Creation Update Delete QuestionType Status AutomaticEmailing Workflow Attachments Notes ChangeHistory';
+$slide[101]='Question'; $slideName[101]='Question fields'; $slidePage['QuestionFields']='101'; $slideTags[101]='question answer'; $slideTopics[101]='Question QuestionDependencies Meeting GuiGenerality Creation Update Delete QuestionType Status AutomaticEmailing Workflow LinkedElements Attachments Notes ChangeHistory';
+$slide[102]='Mail'; $slideName[102]='Emails'; $slidePage['Mail']='102'; $slideTags[102]='email mail'; $slideTopics[102]='AutomaticEmailing';
+$slide[103]='Alert'; $slideName[103]='Alerts'; $slidePage['Alert']='103'; $slideTags[103]='alert warning information indicator'; $slideTopics[103]='GuiAlert IndicatorDefinition';
+$slide[104]='Message'; $slideName[104]='Message'; $slidePage['Message']='104'; $slideTags[104]='message alert'; $slideTopics[104]='User Project Profile Today';
+$slide[105]='Import'; $slideName[105]='Import'; $slidePage['Import']='105'; $slideTags[105]='import load'; $slideTopics[105]='AutomaticImport Ticket Activity Milestone Risk Action Issue Meeting Decision Question Project Resource';
+$slide[106]='Import'; $slideName[106]='Import Run'; $slidePage['ImportRun']='106'; $slideTags[106]='import load'; $slideTopics[106]='AutomaticImport Ticket Activity Milestone Risk Action Issue Meeting Decision Question Project Resource';
+$slide[107]='AutomaticImport'; $slideName[107]='Automatic Import'; $slidePage['AutomaticImport']='107'; $slideTags[107]='automatic automated import cron'; $slideTopics[107]='Import GlobalParameter';
+$slide[108]='Affectation'; $slideName[108]='Affectation'; $slidePage['Affectation']='108'; $slideTags[108]='affectation resource contact user project'; $slideTopics[108]='GuiGenerality Resource Contact User Project';
+$slide[109]='User'; $slideName[109]='User'; $slidePage['User']='109'; $slideTags[109]='contact resource user login password'; $slideTopics[109]='GuiGenerality Contact Resource UserAffectation';
+$slide[110]='User'; $slideName[110]='User affectations'; $slidePage['UserAffectation']='110'; $slideTags[110]='contact resource user login password affectation'; $slideTopics[110]='GuiGenerality Contact Resource User';
+$slide[111]='Resource'; $slideName[111]='Resource description'; $slidePage['Resource']='111'; $slideTags[111]='resource capacity affectation'; $slideTopics[111]='ResourceCost GuiGenerality User Contact Team Planning Affectation';
+$slide[112]='Resource'; $slideName[112]='Resource function cost & affectation'; $slidePage['ResourceCost']='112'; $slideTags[112]='resource capacity affectation cost'; $slideTopics[112]='GuiGenerality User Contact Team Planning Affectation Resource';
+$slide[113]='Contact'; $slideName[113]='Contact'; $slidePage['Contact']='113'; $slideTags[113]='contact customer requestor'; $slideTopics[113]='Client User GuiGenerality Creation Update Delete AutomaticEmailing ContactAffectation';
+$slide[114]='Contact'; $slideName[114]='Contact affectations'; $slidePage['ContactAffectation']='114'; $slideTags[114]='contact customer requestor affectation'; $slideTopics[114]='Client User GuiGenerality Creation Update Delete AutomaticEmailing Contact';
+$slide[115]='Client'; $slideName[115]='Customer'; $slidePage['Client']='115'; $slideTags[115]='client customer contact'; $slideTopics[115]='Contact Project GuiGenerality Creation Update Delete';
+$slide[116]='Recipient'; $slideName[116]='Recipient'; $slidePage['Recipient']='116'; $slideTags[116]='recipient bill'; $slideTopics[116]='Bill';
+$slide[117]='Team'; $slideName[117]='Team'; $slidePage['Team']='117'; $slideTags[117]='team resource affectation'; $slideTopics[117]='GuiGenerality Resource';
+$slide[118]='Product'; $slideName[118]='Product'; $slidePage['Product']='118'; $slideTags[118]='product version'; $slideTopics[118]='Version Project Customer Contact';
+$slide[119]='Version'; $slideName[119]='Version'; $slidePage['Version']='119'; $slideTags[119]='product version'; $slideTopics[119]='Product Project Customer Contact';
+$slide[120]='Context'; $slideName[120]='Context'; $slidePage['Context']='120'; $slideTags[120]='context environment os browser'; $slideTopics[120]='Ticket TranslatableName';
+$slide[121]='Calendar'; $slideName[121]='Calendar'; $slidePage['Calendar']='121'; $slideTags[121]='calendar off open closed day'; $slideTopics[121]='GuiGenerality Planning';
+$slide[122]='DocumentDirectory'; $slideName[122]='Document directory'; $slidePage['DocumentDirectory']='122'; $slideTags[122]='document directory folder place'; $slideTopics[122]='Document';
+$slide[123]='Role'; $slideName[123]='Function'; $slidePage['Role']='123'; $slideTags[123]='function resource cost'; $slideTopics[123]='GuiGenerality Resource';
+$slide[124]='Status'; $slideName[124]='Status'; $slidePage['Status']='124'; $slideTags[124]='status workflow lifecycle'; $slideTopics[124]='Workflow Ticket Activity Milestone Risk Action Issue Meeting Decision Question GuiGenerality';
+$slide[125]='HealthStatus'; $slideName[125]='HealthStatus'; $slidePage['HealthStatus']='125'; $slideTags[125]='health'; $slideTopics[125]='Project Today';
+$slide[126]='Likelihood'; $slideName[126]='Likelihood'; $slidePage['Likelihood']='126'; $slideTags[126]='likelihood probability'; $slideTopics[126]='GuiGenerality criticality severity risk';
+$slide[127]='Criticality'; $slideName[127]='Criticality'; $slidePage['Criticality']='127'; $slideTags[127]='criticality'; $slideTopics[127]='GuiGenerality risk ticket likelihood severity priority urgency';
+$slide[128]='Severity'; $slideName[128]='Severity'; $slidePage['Severity']='128'; $slideTags[128]='severity'; $slideTopics[128]='GuiGenerality risk criticality likelihood';
+$slide[129]='Urgency'; $slideName[129]='Urgency'; $slidePage['Urgency']='129'; $slideTags[129]='urgency priority'; $slideTopics[129]='GuiGenerality ticket priority criticality';
+$slide[130]='Priority'; $slideName[130]='Priority'; $slidePage['Priority']='130'; $slideTags[130]='priority urgency'; $slideTopics[130]='GuiGenerality urgency criticality ticket';
+$slide[131]='RiskLevel'; $slideName[131]='Risk level'; $slidePage['RiskLevel']='131'; $slideTags[131]='risk level'; $slideTopics[131]='GuiGenerality';
+$slide[132]='Feasibility'; $slideName[132]='Feasibility'; $slidePage['Feasibility']='132'; $slideTags[132]='feasibility'; $slideTopics[132]='GuiGenerality';
+$slide[133]='PredefinedNote'; $slideName[133]='Predefined note'; $slidePage['PredefinedNote']='133'; $slideTags[133]='predefined note text'; $slideTopics[133]='Notes';
+$slide[134]='Workflow'; $slideName[134]='Workflow description'; $slidePage['Workflow']='134'; $slideTags[134]='workflow status'; $slideTopics[134]='Status Ticket Activity Milestone Risk Action Issue Meeting Decision Question GuiGenerality';
+$slide[135]='Workflow'; $slideName[135]='Workflow table'; $slidePage['WorkflowTable']='135'; $slideTags[135]='workflow status'; $slideTopics[135]='Status Ticket Activity Milestone Risk Action Issue Meeting Decision Question GuiGenerality';
+$slide[136]='StatusMail'; $slideName[136]='Mail on status change'; $slidePage['StatusMail']='136'; $slideTags[136]='mail emailing status'; $slideTopics[136]='GuiGenerality Mail Status AutomaticEmailing';
+$slide[137]='TicketDelay'; $slideName[137]='Delay for tickets'; $slidePage['TicketDelay']='137'; $slideTags[137]='delay ticket'; $slideTopics[137]='GuiGenerality Ticket';
+$slide[138]='IndicatorDefinition'; $slideName[138]='Indicator'; $slidePage['IndicatorDefinition']='138'; $slideTags[138]='delay indicator alert warning'; $slideTopics[138]='Status Ticket Activity Milestone Risk Action Issue Meeting Decision Question GuiGenerality';
+$slide[139]='ProjectType'; $slideName[139]='Project type'; $slidePage['ProjectType']='139'; $slideTags[139]='project type template administrative operational billing'; $slideTopics[139]='Project Bill';
+$slide[140]='TicketType'; $slideName[140]='Ticket type'; $slidePage['TicketType']='140'; $slideTags[140]='type ticket'; $slideTopics[140]='Ticket GuiGenerality';
+$slide[141]='ActivityType'; $slideName[141]='Activity type'; $slidePage['ActivityType']='141'; $slideTags[141]='activity type'; $slideTopics[141]='Activity GuiGenerality';
+$slide[142]='MilestoneType'; $slideName[142]='Milestone type'; $slidePage['MilestoneType']='142'; $slideTags[142]='milestone type'; $slideTopics[142]='Milestone GuiGenerality';
+$slide[143]='IndividualExpenseType'; $slideName[143]='Individual expense type'; $slidePage['IndividualExpenseType']='143'; $slideTags[143]='expense type'; $slideTopics[143]='IndividualExpense GuiGenerality';
+$slide[144]='ProjectExpenseType'; $slideName[144]='Project expensetype'; $slidePage['ProjectExpenseType']='144'; $slideTags[144]='expense type'; $slideTopics[144]='ProjectExpense GuiGenerality';
+$slide[145]='ExpenseDetailType'; $slideName[145]='Expense detail type'; $slidePage['ExpenseDetailType']='145'; $slideTags[145]='expense type'; $slideTopics[145]='IndividualExpense ProjectExpense GuiGenerality';
+$slide[146]='BillType'; $slideName[146]='Bill type'; $slidePage['BillType']='146'; $slideTags[146]='bill type'; $slideTopics[146]='Bill GuiGenerality Creation Update Delete';
+$slide[147]='RiskType'; $slideName[147]='Risk type'; $slidePage['RiskType']='147'; $slideTags[147]='risk type'; $slideTopics[147]='Risk GuiGenerality Creation Update Delete';
+$slide[148]='RiskType'; $slideName[148]='Opportunity type'; $slidePage['Opportunity Type']='148'; $slideTags[148]='opportunity type'; $slideTopics[148]='Opportunity GuiGenerality Creation Update Delete';
+$slide[149]='ActionType'; $slideName[149]='Action type'; $slidePage['ActionType']='149'; $slideTags[149]='action type'; $slideTopics[149]='Action GuiGenerality Creation Update Delete';
+$slide[150]='IssueType'; $slideName[150]='Issue type'; $slidePage['IssueType']='150'; $slideTags[150]='issue type'; $slideTopics[150]='Issue GuiGenerality Creation Update Delete';
+$slide[151]='MeetingType'; $slideName[151]='Meeting type'; $slidePage['MeetingType']='151'; $slideTags[151]='meeting type'; $slideTopics[151]='Meeting GuiGenerality Creation Update Delete';
+$slide[152]='DecisionType'; $slideName[152]='Decision type'; $slidePage['DecisionType']='152'; $slideTags[152]='decision type'; $slideTopics[152]='Decision GuiGenerality Creation Update Delete';
+$slide[153]='QuestionType'; $slideName[153]='Question type'; $slidePage['QuestionType']='153'; $slideTags[153]='question type'; $slideTopics[153]='Question GuiGenerality Creation Update Delete';
+$slide[154]='MessageType'; $slideName[154]='Message type'; $slidePage['MessageType']='154'; $slideTags[154]='message type'; $slideTopics[154]='Message GuiGenerality Creation Update Delete';
+$slide[155]='DocumentType'; $slideName[155]='Document type'; $slidePage['DocumentType']='155'; $slideTags[155]='document type'; $slideTopics[155]='Document GuiGenerality Creation Update Delete';
+$slide[156]='ContextType'; $slideName[156]='Context type'; $slidePage['ContextType']='156'; $slideTags[156]='context type'; $slideTopics[156]='Context GuiGenerality Creation Update Delete';
+$slide[157]='RequirementType'; $slideName[157]='Requirement type'; $slidePage['RequirementType']='157'; $slideTags[157]='requirement type'; $slideTopics[157]='Requirement GuiGenerality Creation Update Delete';
+$slide[158]='TestCaseType'; $slideName[158]='Test case type'; $slidePage['TestCaseType']='158'; $slideTags[158]='test case type'; $slideTopics[158]='TestCase GuiGenerality Creation Update Delete';
+$slide[159]='TestSessionType'; $slideName[159]='Test session type'; $slidePage['TestSessionType']='159'; $slideTags[159]='test session type'; $slideTopics[159]='TestSession GuiGenerality Creation Update Delete';
+$slide[160]='Profile'; $slideName[160]='Profile'; $slidePage['Profile']='160'; $slideTags[160]='connection profile'; $slideTopics[160]='TranslatableName User';
+$slide[161]='AccessProfile'; $slideName[161]='Access mode'; $slidePage['AccessProfile']='161'; $slideTags[161]='access mode read write update delete'; $slideTopics[161]='TranslatableName User Resource Profile';
+$slide[162]='Habilitation'; $slideName[162]='Access to forms'; $slidePage['Habilitation']='162'; $slideTags[162]='ticket bug task track habilitation'; $slideTopics[162]='Profile AccessRight';
+$slide[163]='HabilitationReport'; $slideName[163]='Access to reports'; $slidePage['HabilitationReport']='163'; $slideTags[163]='access report rights'; $slideTopics[163]='Profile';
+$slide[164]='AccessRight'; $slideName[164]='Access mode to data'; $slidePage['AccessMode']='164'; $slideTags[164]='access screen form rights'; $slideTopics[164]='Profile Habilitation';
+$slide[165]='HabilitationOther'; $slideName[165]='Specific access mode'; $slidePage['HabilitationOther']='165'; $slideTags[165]='access specific'; $slideTopics[165]='User Profile GuiCombo';
+$slide[166]='HabilitationOther'; $slideName[166]='Specific access mode'; $slidePage['HabilitationOther2']='166'; $slideTags[166]='access specific'; $slideTopics[166]='User Profile GuiCombo';
+$slide[167]='Administration'; $slideName[167]='Global parameters'; $slidePage['Administration']='167'; $slideTags[167]='administration cron maintenance purge'; $slideTopics[167]='';
+$slide[168]='Audit'; $slideName[168]='Audit connections'; $slidePage['Audit']='168'; $slideTags[168]='connections who_is_online'; $slideTopics[168]='';
+$slide[169]='GlobalParameter'; $slideName[169]='Global parameters'; $slidePage['GlobalParameter']='169'; $slideTags[169]='parameters ldap reference format'; $slideTopics[169]='';
+$slide[170]='GlobalParameter'; $slideName[170]='Global parameters'; $slidePage['GlobalParameter2']='170'; $slideTags[170]='parameters ldap billing format'; $slideTopics[170]='';
+$slide[171]='GlobalParameter'; $slideName[171]='Global parameters'; $slidePage['GlobalParameter3']='171'; $slideTags[171]='parameters ldap billing format'; $slideTopics[171]='';
+$slide[172]='GlobalParameter'; $slideName[172]='Global parameters'; $slidePage['GlobalParameter4']='172'; $slideTags[172]='parameters ldap billing format'; $slideTopics[172]='';
+$slide[173]='GlobalParameter'; $slideName[173]='Global parameters'; $slidePage['GlobalParameter5']='173'; $slideTags[173]='parameters ldap billing format'; $slideTopics[173]='';
+$slide[174]='UserParameter'; $slideName[174]='User parameters'; $slidePage['UserParameter']='174'; $slideTags[174]='parameters'; $slideTopics[174]='';
+$slide[175]='TranslatableName'; $slideName[175]='Translatable name'; $slidePage['translatableName']='175'; $slideTags[175]='translatable translation name profile'; $slideTopics[175]='AccessProfile ConnectionProfile';
+$slide[176]='AutomaticEmailing'; $slideName[176]='Automatic emailing'; $slidePage['AutomaticEmailing']='176'; $slideTags[176]=''; $slideTopics[176]='Mail Status GuiGenerality Creation Update Delete';
+$slide[177]='LinkedElements'; $slideName[177]='Linked elements'; $slidePage['LinkedElements']='177'; $slideTags[177]='link linked'; $slideTopics[177]='';
+$slide[178]='Attachments'; $slideName[178]='Attachments'; $slidePage['Attachments']='178'; $slideTags[178]='attach file link privacy'; $slideTopics[178]='Ticket Activity Milestone Risk Issue Meeting Decision Question Parameters4 UserParameters';
+$slide[179]='Notes'; $slideName[179]='Notes'; $slidePage['Notes']='179'; $slideTags[179]='note comment privacy predefined'; $slideTopics[179]='Ticket Activity Milestone Risk Action Issue Meeting Decision Question UserParameters';
+$slide[180]='ChangeHistory'; $slideName[180]='Change history'; $slidePage['ChangeHistory']='180'; $slideTags[180]='change history track update'; $slideTopics[180]='UserParameters';
+$slide[181]='Backup'; $slideName[181]='Backup / Restore'; $slidePage['Backup']='181'; $slideTags[181]='backup restore'; $slideTopics[181]='';
+$slide[182]='Shortcuts'; $slideName[182]='Shortcuts'; $slidePage['Shortcuts']='182'; $slideTags[182]='shortcut key'; $slideTopics[182]='';
+$slide[183]='LastWords'; $slideName[183]='Last words'; $slidePage['LastWords']='183'; $slideTags[183]='murphy hofstader history version'; $slideTopics[183]='';
+
+if (! isset($includeManual)) {
+  foreach ($slide as $id=>$name) {
+    echo 'slide[' . $id . ']=' . $name . '<br/>';
+  }
+}
+
+$prec='';
+foreach ($slide as $id=>$name) {
+  if (substr($name,0,2)=='X ') {
+    unset($slide[$id]);
+    unset($slideName[$id]);
+    unset($slidePage[$id]);
+    unset($slideTags[$id]);
+    unset($slideTopics[$id]);
+  } else {
+    if ($name!=$prec) {
+      $section[$id]=$name;
+      $sectionName[$name]=$slideName[$id];
+      $prec=$name;
+    }
+  }
+}
+$tags=array();
+foreach ($slideTags as $id=>$name) {
+ $split=explode(" ",$name);
+ foreach ($split as $tag) {
+   if (trim($tag) and !array_key_exists($tag, $tags)) {
+     $tags[$tag]=array();
+   }
+   $tags[$tag][]=$id;
+ }
+}
+ksort($tags);
