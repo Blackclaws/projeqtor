@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Bill &mdash; ProjeQtOr User guide 5.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/projeqtor.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="ProjeQtOr User guide 5.0 documentation" href="index.html" />
+    <link rel="next" title="Meeting" href="ReviewLogs.html" />
+    <link rel="prev" title="Quotation" href="Order.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ReviewLogs.html" title="Meeting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Order.html" title="Quotation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ProjeQtOr User guide 5.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="contents local topic" id="bill">
+<p class="topic-title first">Bill</p>
+<ul class="simple">
+<li><a class="reference internal" href="#index-0" id="id2">Bill</a><ul>
+<li><a class="reference internal" href="#bill-lines" id="id3">Bill lines</a></li>
+<li><a class="reference internal" href="#billing-type" id="id4">Billing type</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#term" id="id5">Term</a></li>
+<li><a class="reference internal" href="#activity-price" id="id6">Activity Price</a></li>
+</ul>
+</div>
+<div class="section" id="index-0">
+<span id="id1"></span><h1><a class="toc-backref" href="#bill">Bill</a><a class="headerlink" href="#index-0" title="Permalink to this headline">¶</a></h1>
+<p>A bill is a request for payment for delivered work.</p>
+<p>Billing will depend on billing type defined for the bill.</p>
+<p>Each bill is linked to project, a project has a project type, and a project type is linked to a billing type.</p>
+<p>So billing type is automatically defined from selected project.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-linkelement-section-label"><span>Section: Linked element</span></a></li>
+<li><a class="reference internal" href="Gui.html#gui-attachment-section-label"><span>Section: Attachments</span></a></li>
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><span>Section: Notes</span></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><span>Section: Change history</span></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><span class="xref std std-term">Id</span></a></td>
+<td>Unique Id for the bill.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the bill.</td>
+</tr>
+<tr class="row-even"><td><strong>Bill type</strong></td>
+<td>Type of bill.</td>
+</tr>
+<tr class="row-odd"><td><strong>Project</strong></td>
+<td>The project concerned by the bill.</td>
+</tr>
+<tr class="row-even"><td>Customer</td>
+<td>Customer who will pay for the bill.</td>
+</tr>
+<tr class="row-odd"><td>Bill contact</td>
+<td>Contact who will receive the bill.</td>
+</tr>
+<tr class="row-even"><td>Recipient</td>
+<td>Recipient who will receive the payment for the bill.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-origin"><span class="xref std std-term">Origin</span></a></td>
+<td>Element which is the origin of the bill.</td>
+</tr>
+<tr class="row-even"><td>Billing type</td>
+<td>Type of billing <strong>(Read only)</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Bill type</p>
+<ul class="simple">
+<li>Default types of bill are :<ul>
+<li>Partial</li>
+<li>Final</li>
+<li>Complete</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Field: Customer</p>
+<ul class="simple">
+<li>Automatically updated from project customer.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Field: Billing type</p>
+<ul class="simple">
+<li>Calculated from project, project type, billing type.</li>
+<li>Will influence bill lines format.</li>
+</ul>
+</div>
+<p class="rubric">Section: Treatment</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Bill id</td>
+<td>Id of bill.</td>
+</tr>
+<tr class="row-odd"><td><strong>Status</strong></td>
+<td>Actual <a class="reference internal" href="Glossary.html#term-status"><span class="xref std std-term">status</span></a> of the bill.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-done"><span class="xref std std-term">Done</span></a></td>
+<td>Flag to indicate that bill has been treated.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><span class="xref std std-term">Closed</span></a></td>
+<td>Flag to indicate that bill is archived.</td>
+</tr>
+<tr class="row-even"><td>Cancelled</td>
+<td>Flag to indicate that bill is cancelled.</td>
+</tr>
+<tr class="row-odd"><td>Untaxed amount</td>
+<td>Amount for the bill, without taxes.</td>
+</tr>
+<tr class="row-even"><td>Tax</td>
+<td>Tax rate.</td>
+</tr>
+<tr class="row-odd"><td>Full amount</td>
+<td>Amount for the bill, including taxes.</td>
+</tr>
+<tr class="row-even"><td>Comments</td>
+<td>Comments for the bill.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Bill id</p>
+<ul class="simple">
+<li>Calculated when status of bill is “done”, taking into account “start number for bill” defined in <a class="reference internal" href="Administration.html#administration-global-parameters-label"><span>Global parameters</span></a>.</li>
+</ul>
+</div>
+<p><strong>* Required field</strong></p>
+<div class="section" id="bill-lines">
+<h2><a class="toc-backref" href="#bill">Bill lines</a><a class="headerlink" href="#bill-lines" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Section: Bill lines</p>
+<p>Input for each bill line depends on billing type.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> the corresponding section to add a bill line. A “Bill line” pop up will be displayed depends on billing type.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonEdit.png"><img alt="Button edit" src="_images/smallButtonEdit.png" style="width: 12.0px; height: 12.0px;" /></a> to modify an existing bill line.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the bill line.</p>
+<p class="rubric">Fields of bill line</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>N°</td>
+<td>Number of the line for the bill.</td>
+</tr>
+<tr class="row-odd"><td>Quantity</td>
+<td>Quantity of billed element.</td>
+</tr>
+<tr class="row-even"><td>Description</td>
+<td>Description of the line.</td>
+</tr>
+<tr class="row-odd"><td>Detail</td>
+<td>Detail of the line.</td>
+</tr>
+<tr class="row-even"><td>Price</td>
+<td>Unitary price of billed element.</td>
+</tr>
+<tr class="row-odd"><td>Sum</td>
+<td>Total price for the line = Price x Quantity.</td>
+</tr>
+<tr class="row-even"><td>Term</td>
+<td>Billed term for “At terms” bill.</td>
+</tr>
+<tr class="row-odd"><td>Resource</td>
+<td>Resource whose work is billed.</td>
+</tr>
+<tr class="row-even"><td>Activity price</td>
+<td>Activity price defining the billed activity type.</td>
+</tr>
+<tr class="row-odd"><td>Start date</td>
+<td>Start date of the period to take into account work to be billed.</td>
+</tr>
+<tr class="row-even"><td>End date</td>
+<td>End date of the period to take into account work to be billed.</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Fields: Description &amp; Detail</p>
+<ul class="simple">
+<li>Automatically created depending on billing type.</li>
+<li>Can be modified on update.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Fields: Resource, Activity price, Start date et End date</p>
+<ul class="simple">
+<li>Available only on produced work and capped produced work bill.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="billing-type">
+<span id="bill-billing-type-label"></span><span id="index-1"></span><h2><a class="toc-backref" href="#bill">Billing type</a><a class="headerlink" href="#billing-type" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">At terms</p>
+<ul class="simple">
+<li>A term must be defined to generate the bill, generally following a billing calendar.</li>
+<li>Used for instance for: <strong>Fixed price projects</strong>.</li>
+</ul>
+<p class="rubric">On produced work</p>
+<ul class="simple">
+<li>No term is needed, the billing will be calculated based on produced work for resources on selected activities, on a selected period.</li>
+<li>Used for instance for: <strong>Time &amp; Materials projects</strong>.</li>
+</ul>
+<p class="rubric">On capped produced work</p>
+<ul class="simple">
+<li>No term is needed, the billing will be calculated based on produced work for resources on selected activities, on a selected period, taking into account validated work so that total billing cannot be more than validated work.</li>
+<li>Used for instance for: <strong>Capped Time &amp; Materials projects</strong>.</li>
+</ul>
+<p class="rubric">Manual billing</p>
+<ul class="simple">
+<li>Billing is defined manually, with no link to the project activity.</li>
+<li>Used for instance for: <strong>Any kind of project where no link to activity is needed</strong>.</li>
+</ul>
+<p class="rubric">Not billed</p>
+<ul class="simple">
+<li>No billing is possible for these kinds of projects.</li>
+<li>Used for instance for: <strong>internal projects, administrative projects</strong></li>
+</ul>
+</div>
+</div>
+<div class="section" id="term">
+<span id="index-2"></span><h1><a class="toc-backref" href="#bill">Term</a><a class="headerlink" href="#term" title="Permalink to this headline">¶</a></h1>
+<p>A term is a planned trigger for billing.</p>
+<p>You can define as many terms as you wish, to define the billing calendar.</p>
+<p class="rubric">Activities as triggers</p>
+<ul class="simple">
+<li>You may insert activities as triggers.</li>
+<li>the activities that should be billed at this term.</li>
+<li>This is a help (as a reminder) as the summary for activities is displayed for validated and planned amount and end date. You can then define the term amount and date corresponding to these data.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Terms are mandatory to bill “Fixed price” project.</p>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><span>Section: Notes</span></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><span>Section: Change history</span></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><span class="xref std std-term">Id</span></a></td>
+<td>Unique Id for the term.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the term.</td>
+</tr>
+<tr class="row-even"><td><strong>Project</strong></td>
+<td>The project concerned by the term.</td>
+</tr>
+<tr class="row-odd"><td>Bill</td>
+<td>Bill name that uses these term.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><span class="xref std std-term">Closed</span></a></td>
+<td>Flag to indicate that term is archived</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<p class="rubric">Section: Fixed price for term</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Real amount</td>
+<td>Defined amount for term.</td>
+</tr>
+<tr class="row-odd"><td>Real date</td>
+<td>Defined date for term.</td>
+</tr>
+<tr class="row-even"><td>Validated amount</td>
+<td>Sum of validated amounts of activities defined as triggers <strong>(Read only)</strong>.</td>
+</tr>
+<tr class="row-odd"><td>Validated date</td>
+<td>Max of validated end dates of activities defined as triggers <strong>(Read only)</strong>.</td>
+</tr>
+<tr class="row-even"><td>Planned amount</td>
+<td>Sum of planned amounts of activities defined as triggers <strong>(Read only)</strong>.</td>
+</tr>
+<tr class="row-odd"><td>Planned date</td>
+<td>Max of validated end dates of activities defined as triggers <strong>(Read only)</strong>.</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Fields: Amount and Date (Planned &amp; Validated)</p>
+<ul class="simple">
+<li>When a trigger is entered, planned and validated values are automatically updated to sum and max of triggers amount.</li>
+</ul>
+</div>
+<p class="rubric">Section: Trigger element for the term</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> the corresponding section to add a trigger. A pop up will be displayed.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the trigger.</p>
+<div class="topic">
+<p class="topic-title first">Pop up “Add an Predecessor to element”</p>
+<p>Linked element type  - Type of element to be selected.</p>
+<p>Linked element - item selected</p>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/iconView.png"><img alt="Button icon view" src="_images/iconView.png" style="width: 12.0px; height: 12.0px;" /></a> to search a item of element.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="activity-price">
+<span id="index-3"></span><h1><a class="toc-backref" href="#bill">Activity Price</a><a class="headerlink" href="#activity-price" title="Permalink to this headline">¶</a></h1>
+<p>Activity price defines daily price for activities of a given <strong>activity type</strong> and a given <strong>project</strong>.</p>
+<p>This is used to calculate bill amount for billing type <strong>produced work</strong> and <strong>capped produced work</strong>.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><span>Section: Change history</span></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><span class="xref std std-term">Id</span></a></td>
+<td>Unique Id for the activity price.</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>Short description of the activity price.</td>
+</tr>
+<tr class="row-even"><td><strong>Project</strong></td>
+<td>The project concerned by the activity price.</td>
+</tr>
+<tr class="row-odd"><td><strong>Activity type</strong></td>
+<td>Type of activities concerned by the activity price.</td>
+</tr>
+<tr class="row-even"><td>Price of the activity</td>
+<td>Daily price of the activities of the given activity type and the given project.</td>
+</tr>
+<tr class="row-odd"><td>Sort order</td>
+<td>Number to define order of display in lists.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><span class="xref std std-term">Closed</span></a></td>
+<td>Flag to indicate that activity price is archived</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo_White.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Bill</a><ul>
+<li><a class="reference internal" href="#bill-lines">Bill lines</a></li>
+<li><a class="reference internal" href="#billing-type">Billing type</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#term">Term</a></li>
+<li><a class="reference internal" href="#activity-price">Activity Price</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Order.html"
+                        title="previous chapter">Quotation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ReviewLogs.html"
+                        title="next chapter">Meeting</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="ReviewLogs.html" title="Meeting"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Order.html" title="Quotation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ProjeQtOr User guide 5.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, ProjeQtOr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

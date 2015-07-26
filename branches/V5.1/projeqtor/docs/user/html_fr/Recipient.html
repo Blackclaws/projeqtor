@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Recipient &mdash; documentation ProjeQtOr User guide 5.0</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="documentation ProjeQtOr User guide 5.0" href="index.html" />
+    <link rel="next" title="Context" href="Context.html" />
+    <link rel="prev" title="Customer" href="Customer.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Context.html" title="Context"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="Customer.html" title="Customer"
+             accesskey="P">précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="recipient">
+<span id="index-0"></span><h1>Recipient<a class="headerlink" href="#recipient" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The Recipient is the beneficiary of bill payments.</p>
+<p>Recipients are mainly defined to store billing information.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the recipient.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short name of the recipient.</td>
+</tr>
+<tr class="row-even"><td>Company number</td>
+<td>Company number, to be displayed on bill.</td>
+</tr>
+<tr class="row-odd"><td>Tax number</td>
+<td>Tax reference number, to be displayed on bill.</td>
+</tr>
+<tr class="row-even"><td>Tax free</td>
+<td>Flag to indicate that tax is automatically set to zero for this recipient.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that recipient is archived.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<p class="rubric">Section: International Bank Account Number (IBAN)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Bank</td>
+<td>Bank name.</td>
+</tr>
+<tr class="row-odd"><td>Country</td>
+<td>Country code. IBAN format.</td>
+</tr>
+<tr class="row-even"><td>Key</td>
+<td>Key code. IBAN format.</td>
+</tr>
+<tr class="row-odd"><td>Account number</td>
+<td>Full account number defining the BBAN account code.</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Field: Key</p>
+<ul class="simple">
+<li>Automatically calculated from other IBAN fields.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Field: Account number</p>
+<ul class="simple">
+<li>Format depends on country.</li>
+</ul>
+</div>
+<p class="rubric">Section: Addreses</p>
+<ul class="simple">
+<li>Full address of the recipient.</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="Customer.html"
+                        title="Chapitre précédent">Customer</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="Context.html"
+                        title="Chapitre suivant">Context</a></p>
+  <h3>Cette page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/Recipient.txt"
+           rel="nofollow">Montrer la source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Saisissez un mot clef ou un nom de module, classe ou fonction.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="Context.html" title="Context"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="Customer.html" title="Customer"
+             >précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, ProjeQtOr.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

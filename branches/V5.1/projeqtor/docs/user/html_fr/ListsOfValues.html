@@ -1,0 +1,925 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lists of values &mdash; documentation ProjeQtOr User guide 5.0</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="documentation ProjeQtOr User guide 5.0" href="index.html" />
+    <link rel="next" title="Administration console" href="Administration.html" />
+    <link rel="prev" title="Project type" href="ListsOfTypes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Administration.html" title="Administration console"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="ListsOfTypes.html" title="Project type"
+             accesskey="P">précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="contents local topic" id="lists-of-values">
+<p class="topic-title first">Liste de valeurs</p>
+<ul class="simple">
+<li><a class="reference internal" href="#function" id="id1">Fonction</a></li>
+<li><a class="reference internal" href="#status" id="id2">Status</a><ul>
+<li><a class="reference internal" href="#status-definition" id="id3">Status definition</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quality-level" id="id4">Niveau de qualité</a></li>
+<li><a class="reference internal" href="#health-status" id="id5">États de santé</a></li>
+<li><a class="reference internal" href="#overall-progress" id="id6">Avancement global</a></li>
+<li><a class="reference internal" href="#trend" id="id7">Tendance</a></li>
+<li><a class="reference internal" href="#likelihood" id="id8">Probabilité</a></li>
+<li><a class="reference internal" href="#criticality" id="id9">Criticités</a></li>
+<li><a class="reference internal" href="#severity" id="id10">Sévérité</a></li>
+<li><a class="reference internal" href="#urgency" id="id11">Urgence</a></li>
+<li><a class="reference internal" href="#priority" id="id12">Priorité</a></li>
+<li><a class="reference internal" href="#risk-level" id="id13">Niveau de risque</a></li>
+<li><a class="reference internal" href="#feasibility" id="id14">Feasibility</a></li>
+<li><a class="reference internal" href="#efficiency" id="id15">Efficacité</a></li>
+</ul>
+</div>
+<div class="section" id="function">
+<span id="index-0"></span><h1><a class="toc-backref" href="#lists-of-values">Fonction</a><a class="headerlink" href="#function" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The function defines the generic competency of a resource.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Description</td>
+<td><p class="first last">Description complète de la valeur.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="status">
+<span id="index-1"></span><h1><a class="toc-backref" href="#lists-of-values">Status</a><a class="headerlink" href="#status" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The status is an important element of items lifecycle.</p>
+<p>It defines the progress of the treatment of the element.</p>
+<p>Some automations are implemented, depending on status definition, to set ‘handled’, ‘done’ and ‘closed’ flags on items.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Handled status</td>
+<td>Defines whether ‘handled’ flag is automatically set for this status.</td>
+</tr>
+<tr class="row-odd"><td>Done status</td>
+<td>Defines whether ‘done’ flag is automatically set for this status.</td>
+</tr>
+<tr class="row-even"><td>Closed status</td>
+<td>Defines whether ‘closed’ flag is automatically set for this status.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the status in element lists.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+<div class="section" id="status-definition">
+<h2><a class="toc-backref" href="#lists-of-values">Status definition</a><a class="headerlink" href="#status-definition" title="Lien permanent vers ce titre">¶</a></h2>
+<p class="rubric">Handled status</p>
+<ul class="simple">
+<li>This status specifies that the treatment of item is taken over.</li>
+<li>A responsible can be determined.</li>
+<li>It is possible to require the appointment of a responsible when the status change to &#8220;handled&#8221;.</li>
+</ul>
+<p class="rubric">Done status</p>
+<ul class="simple">
+<li>This status specifies that the treatment of item is done.</li>
+<li>A result can be specify.</li>
+<li>It is possible to require a result when the status change to &#8220;done&#8221;.</li>
+</ul>
+<p class="rubric">Closed status</p>
+<ul class="simple">
+<li>This status specifies that the item is closed.</li>
+<li>This item is archived, and it disappeared in the list.</li>
+<li>Item can reappear when &#8220;show closed item&#8221; is checked.</li>
+</ul>
+<p class="rubric">Cancelled status</p>
+<ul class="simple">
+<li>This status specifies that the item is cancelled.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="quality-level">
+<span id="quality-label"></span><span id="index-2"></span><h1><a class="toc-backref" href="#lists-of-values">Niveau de qualité</a><a class="headerlink" href="#quality-level" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The quality is a manual indicator for the conformity of a project to quality processes.</p>
+<p>It defines in a visual way the global conformity of the project.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the quality level in element lists and on today screen.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Icône</p>
+</td>
+<td>Icon that can be displayed for this quality level.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Icon</p>
+<ul class="simple">
+<li>If no icon is defined, color is used.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="health-status">
+<span id="index-3"></span><h1><a class="toc-backref" href="#lists-of-values">États de santé</a><a class="headerlink" href="#health-status" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The health status is a manual indicator for the health of a project.</p>
+<p>It defines in a visual way the global health of the project.</p>
+<p>It is displayed on Today screen, for each project, as a Red / Amber / Green traffic light.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the health status in element lists and on today screen.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Icône</p>
+</td>
+<td>Icon that can be displayed for this health status.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Icon</p>
+<ul class="simple">
+<li>If no icon is defined, color is used.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="overall-progress">
+<span id="index-4"></span><h1><a class="toc-backref" href="#lists-of-values">Avancement global</a><a class="headerlink" href="#overall-progress" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The overall progress is a manual indicator for global progress of a project.</p>
+<p>It defines in a visual way the global progress of the project, independently from work progress.</p>
+<p>It is displayed on Today screen, for each project.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="trend">
+<span id="index-5"></span><h1><a class="toc-backref" href="#lists-of-values">Tendance</a><a class="headerlink" href="#trend" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The trend is a manual indicator for the global trend of project health.</p>
+<p>It defines in a visual way the health trend of the project.</p>
+<p>It is displayed on Today screen, for each project.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the trend in element lists and on today screen.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Icône</p>
+</td>
+<td>Icon that can be displayed for this trend.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Icon</p>
+<ul class="simple">
+<li>If no icon is defined, color is used.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="likelihood">
+<span id="index-6"></span><h1><a class="toc-backref" href="#lists-of-values">Probabilité</a><a class="headerlink" href="#likelihood" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The likelihood is the probability for a risk to occur.</p>
+<p>The more likely a risk is, the more critical it is.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Value</td>
+<td>Value used to calculate criticality from likelihood and severity.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the likelihood in element lists</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="criticality">
+<span id="index-7"></span><h1><a class="toc-backref" href="#lists-of-values">Criticités</a><a class="headerlink" href="#criticality" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The criticality is the importance  of an element to its context.</p>
+<p>The risk criticality designs the level of impact the risk may have to the project.</p>
+<p>The ticket criticality is the estimated impact that the subject of the ticket may have to the product.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Value</td>
+<td>Value used to calculate criticality from likelihood and severity, and to calculate priority from criticality and urgency.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the criticality in element lists.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="severity">
+<span id="index-8"></span><h1><a class="toc-backref" href="#lists-of-values">Sévérité</a><a class="headerlink" href="#severity" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The risk severity designs the level of impact the risk may have to the product.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Value</td>
+<td>Value used to calculate criticality from likelihood and severity.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the severity in element lists.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="urgency">
+<span id="index-9"></span><h1><a class="toc-backref" href="#lists-of-values">Urgence</a><a class="headerlink" href="#urgency" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The ticket urgency is an element given by the requestor to indicate the quickness of treatment needed for the ticket.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Value</td>
+<td>Value used to calculate priority from criticality and urgency.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the urgency in element lists.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="priority">
+<span id="index-10"></span><h1><a class="toc-backref" href="#lists-of-values">Priorité</a><a class="headerlink" href="#priority" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The ticket priority defines the order to treat different tickets.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td>Value</td>
+<td>Value used to calculate priority from criticality and urgency.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the priority in element lists.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="risk-level">
+<span id="index-11"></span><h1><a class="toc-backref" href="#lists-of-values">Niveau de risque</a><a class="headerlink" href="#risk-level" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The risk level measures the technical risk of implementation of a requirement.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the risk level in element lists.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="feasibility">
+<span id="index-12"></span><h1><a class="toc-backref" href="#lists-of-values">Feasibility</a><a class="headerlink" href="#feasibility" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The feasibility defines the first analysis of implementation of a requirement.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for this status.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td>Name of this status.</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the feasibility in element lists.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td>Flag to indicate this status is archived.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+<div class="section" id="efficiency">
+<span id="index-13"></span><h1><a class="toc-backref" href="#lists-of-values">Efficacité</a><a class="headerlink" href="#efficiency" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The efficiency measures the result of an action.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Champ</p>
+</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td><p class="first last">Id unique de la valeur.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><strong>Nom</strong></p>
+</td>
+<td><p class="first last">Nom de la valeur.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last">Couleur</p>
+</td>
+<td>Color to display the efficiency in element lists.</td>
+</tr>
+<tr class="row-odd"><td><p class="first last">Ordre de tri</p>
+</td>
+<td><p class="first last">Nombre qui défini l&#8217;ordre d&#8217;affichage.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Clos</em></a></p>
+</td>
+<td><p class="first last">Indique que la valeur est archivé.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Champ requis</strong></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Fonction</a></li>
+<li><a class="reference internal" href="#status">Status</a><ul>
+<li><a class="reference internal" href="#status-definition">Status definition</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quality-level">Niveau de qualité</a></li>
+<li><a class="reference internal" href="#health-status">États de santé</a></li>
+<li><a class="reference internal" href="#overall-progress">Avancement global</a></li>
+<li><a class="reference internal" href="#trend">Tendance</a></li>
+<li><a class="reference internal" href="#likelihood">Probabilité</a></li>
+<li><a class="reference internal" href="#criticality">Criticités</a></li>
+<li><a class="reference internal" href="#severity">Sévérité</a></li>
+<li><a class="reference internal" href="#urgency">Urgence</a></li>
+<li><a class="reference internal" href="#priority">Priorité</a></li>
+<li><a class="reference internal" href="#risk-level">Niveau de risque</a></li>
+<li><a class="reference internal" href="#feasibility">Feasibility</a></li>
+<li><a class="reference internal" href="#efficiency">Efficacité</a></li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="ListsOfTypes.html"
+                        title="Chapitre précédent">Project type</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="Administration.html"
+                        title="Chapitre suivant">Administration console</a></p>
+  <h3>Cette page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ListsOfValues.txt"
+           rel="nofollow">Montrer la source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Saisissez un mot clef ou un nom de module, classe ou fonction.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="Administration.html" title="Administration console"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="ListsOfTypes.html" title="Project type"
+             >précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, ProjeQtOr.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
