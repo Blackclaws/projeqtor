@@ -1,0 +1,128 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Context.rst:10 ../../Context.rst:7
+msgid "Context"
+msgstr ""
+
+#: ../../Context.rst:12
+msgid ""
+"The contexts defines list of elements selectable to define ticket context."
+msgstr ""
+
+#: ../../Context.rst:14
+msgid ""
+"Contexts are initially set to be able to define contexts for IT Projects, "
+"for three context types :"
+msgstr ""
+
+#: ../../Context.rst:16
+msgid "Environment"
+msgstr ""
+
+#: ../../Context.rst:18
+msgid "Operating System"
+msgstr ""
+
+#: ../../Context.rst:20
+msgid "Browser"
+msgstr ""
+
+#: ../../Context.rst:22
+msgid "They can be changed to be adapted to any kind of project."
+msgstr ""
+
+#: ../../Context.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Context.rst:26
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Context.rst:36
+msgid "Field"
+msgstr ""
+
+#: ../../Context.rst:37
+msgid "Description"
+msgstr ""
+
+#: ../../Context.rst:38
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Context.rst:39
+msgid "Unique Id for the context."
+msgstr ""
+
+#: ../../Context.rst:40
+msgid "Context type"
+msgstr ""
+
+#: ../../Context.rst:41
+msgid "One on the three context type."
+msgstr ""
+
+#: ../../Context.rst:42
+msgid "**Name**"
+msgstr ""
+
+#: ../../Context.rst:43
+msgid "Name of the context."
+msgstr ""
+
+#: ../../Context.rst:44
+msgid "Sort order"
+msgstr ""
+
+#: ../../Context.rst:45
+msgid "Number to define order of display in lists"
+msgstr ""
+
+#: ../../Context.rst:46
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Context.rst:47
+msgid "Flag to indicate that context is archived."
+msgstr ""
+
+#: ../../Context.rst:49
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Context.rst:53
+msgid "List is fixed."
+msgstr ""
+
+#: ../../Context.rst:54
+msgid "Captions are translated and so can be changed in language file."
+msgstr ""
+
+#: ../../Context.rst:29
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Context.rst:0
+msgid "Fields: Context type"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Context type**"
+#~ msgstr ""

@@ -1,0 +1,331 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Expense.rst:0
+msgid "Expense"
+msgstr ""
+
+#: ../../Expense.rst:18 ../../Expense.rst:15
+msgid "Individual expense"
+msgstr ""
+
+#: ../../Expense.rst:20
+msgid ""
+"An individual expense stores information about individual costs, such as "
+"travel costs or else."
+msgstr ""
+
+#: ../../Expense.rst:22
+msgid "Individual expense has detail listing for all items of expense."
+msgstr ""
+
+#: ../../Expense.rst:24
+msgid ""
+"This can for instance be used to detail all the expense on one month so that"
+" each user opens only one individual expense per month (per project), or "
+"detail all the elements of a travel expense."
+msgstr ""
+
+#: ../../Expense.rst:0 ../../Expense.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Expense.rst:28 ../../Expense.rst:168
+msgid ":ref:`gui-LinkElement-section-label`"
+msgstr ""
+
+#: ../../Expense.rst:30 ../../Expense.rst:170
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ""
+
+#: ../../Expense.rst:32 ../../Expense.rst:172
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../Expense.rst:34 ../../Expense.rst:174
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Expense.rst:44 ../../Expense.rst:69 ../../Expense.rst:184
+#: ../../Expense.rst:211
+msgid "Field"
+msgstr ""
+
+#: ../../Expense.rst:45 ../../Expense.rst:56 ../../Expense.rst:70
+#: ../../Expense.rst:185 ../../Expense.rst:194 ../../Expense.rst:212
+msgid "Description"
+msgstr ""
+
+#: ../../Expense.rst:46 ../../Expense.rst:186
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Expense.rst:47 ../../Expense.rst:187
+msgid "Unique Id for the expense."
+msgstr ""
+
+#: ../../Expense.rst:48 ../../Expense.rst:188
+msgid "**Name**"
+msgstr ""
+
+#: ../../Expense.rst:49 ../../Expense.rst:189
+msgid "Short description of the expense."
+msgstr ""
+
+#: ../../Expense.rst:50 ../../Expense.rst:190
+msgid "**Type**"
+msgstr ""
+
+#: ../../Expense.rst:51 ../../Expense.rst:191
+msgid "Type of expense."
+msgstr ""
+
+#: ../../Expense.rst:52
+msgid "**Resource**"
+msgstr ""
+
+#: ../../Expense.rst:53
+msgid "Resource concerned by the expense."
+msgstr ""
+
+#: ../../Expense.rst:54 ../../Expense.rst:192
+msgid "**Project**"
+msgstr ""
+
+#: ../../Expense.rst:55 ../../Expense.rst:193
+msgid "The project concerned by the expense."
+msgstr ""
+
+#: ../../Expense.rst:57 ../../Expense.rst:195
+msgid "Complete description of the expense."
+msgstr ""
+
+#: ../../Expense.rst:59 ../../Expense.rst:86 ../../Expense.rst:197
+#: ../../Expense.rst:228
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Expense.rst:71 ../../Expense.rst:213
+msgid "**Status**"
+msgstr ""
+
+#: ../../Expense.rst:72 ../../Expense.rst:214
+msgid "Actual :term:`status` of the expense."
+msgstr ""
+
+#: ../../Expense.rst:73 ../../Expense.rst:215
+msgid "Planned date"
+msgstr ""
+
+#: ../../Expense.rst:74 ../../Expense.rst:216
+msgid "Planned date of the expense."
+msgstr ""
+
+#: ../../Expense.rst:75 ../../Expense.rst:217
+msgid "Planned amount"
+msgstr ""
+
+#: ../../Expense.rst:76 ../../Expense.rst:218
+msgid "Planned amount of the expense."
+msgstr ""
+
+#: ../../Expense.rst:77 ../../Expense.rst:219
+msgid "Real date"
+msgstr ""
+
+#: ../../Expense.rst:78 ../../Expense.rst:220
+msgid "Real date of the expense."
+msgstr ""
+
+#: ../../Expense.rst:79 ../../Expense.rst:221
+msgid "Real amount"
+msgstr ""
+
+#: ../../Expense.rst:80 ../../Expense.rst:222
+msgid "Real amount of the expense."
+msgstr ""
+
+#: ../../Expense.rst:81 ../../Expense.rst:223
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Expense.rst:82 ../../Expense.rst:224
+msgid "Flag to indicate that expense is archived."
+msgstr ""
+
+#: ../../Expense.rst:83 ../../Expense.rst:225
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Expense.rst:84 ../../Expense.rst:226
+msgid "Flag to indicate that expense is cancelled."
+msgstr ""
+
+#: ../../Expense.rst:90 ../../Expense.rst:232
+msgid ""
+"**Planned amount** will help to have an overview of project total costs, "
+"even before expense is realized."
+msgstr ""
+
+#: ../../Expense.rst:95 ../../Expense.rst:237
+msgid "When planned date or planned amount is set, other must also be set."
+msgstr ""
+
+#: ../../Expense.rst:99 ../../Expense.rst:241
+msgid "When real date or real amount is set, other must also be set."
+msgstr ""
+
+#: ../../Expense.rst:103
+msgid ""
+"If detail lines are entered, real amount is automatically calculated as sum "
+"of detail amounts, and is then locked."
+msgstr ""
+
+#: ../../Expense.rst:112
+msgid "Expense detail"
+msgstr ""
+
+#: ../../Expense.rst:116
+msgid "Detail of individual expense can be entered line by line :"
+msgstr ""
+
+#: ../../Expense.rst:118
+msgid ""
+"Click on |buttonAdd| the corresponding section to add a detail line. A "
+"“Expense detail” pop up will be displayed."
+msgstr ""
+
+#: ../../Expense.rst:121
+msgid "Click on |buttonEdit| to modify an existing detail line."
+msgstr ""
+
+#: ../../Expense.rst:123
+msgid "Click on |buttonRemove| to delete the detail line."
+msgstr ""
+
+#: ../../Expense.rst:129
+msgid ""
+"**When a line is entered, expense real amount is automatically updated to "
+"sum of lines amount.**"
+msgstr ""
+
+#: ../../Expense.rst:0
+msgid "Pop up \"Expense detail\""
+msgstr ""
+
+#: ../../Expense.rst:133
+msgid "Name - Name of the detail."
+msgstr ""
+
+#: ../../Expense.rst:135
+msgid "Date - Date of the detail."
+msgstr ""
+
+#: ../../Expense.rst:137
+msgid ""
+"This allows to input several items, during several days, for the same "
+"expense, to have for instance one expense per travel or per month."
+msgstr ""
+
+#: ../../Expense.rst:139
+msgid "Type - Type of expense detail."
+msgstr ""
+
+#: ../../Expense.rst:141
+msgid "Depending on type, new fields will appear to help calculate of amount."
+msgstr ""
+
+#: ../../Expense.rst:143
+msgid "Amount - Amount of the detail."
+msgstr ""
+
+#: ../../Expense.rst:145
+msgid ""
+"Automatically calculated from fields depending on type. May also be input "
+"for type “justified expense”."
+msgstr ""
+
+#: ../../Expense.rst:155 ../../Expense.rst:152
+msgid "Project expense"
+msgstr ""
+
+#: ../../Expense.rst:157
+msgid ""
+"A project expense stores information about project costs that are not "
+"resource costs."
+msgstr ""
+
+#: ../../Expense.rst:159
+msgid "This can be used for all kind of project cost :"
+msgstr ""
+
+#: ../../Expense.rst:161
+msgid "Machines (rent or buy)"
+msgstr ""
+
+#: ../../Expense.rst:162
+msgid "Softwares"
+msgstr ""
+
+#: ../../Expense.rst:163
+msgid "Office"
+msgstr ""
+
+#: ../../Expense.rst:164
+msgid "Any logistic item"
+msgstr ""
+
+#: ../../Expense.rst:37 ../../Expense.rst:177
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Expense.rst:62 ../../Expense.rst:204
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Expense.rst:0 ../../Expense.rst:0
+msgid "Fields: Planned date and amount"
+msgstr ""
+
+#: ../../Expense.rst:0 ../../Expense.rst:0
+msgid "Fields: Real date and amount"
+msgstr ""
+
+#: ../../Expense.rst:0
+msgid "Field: Real amount"
+msgstr ""
+
+#: ../../Expense.rst:115
+msgid "Section: Expense detail lines"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Treatment section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Planned date and amount**"
+#~ msgstr ""
+
+#~ msgid "**Real date and amount**"
+#~ msgstr ""
+
+#~ msgid "**Real amount**"
+#~ msgstr ""
+
+#~ msgid "Expense detail lines section"
+#~ msgstr ""

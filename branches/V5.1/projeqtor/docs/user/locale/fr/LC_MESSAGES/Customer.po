@@ -1,0 +1,165 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Customer.rst:10 ../../Customer.rst:7
+msgid "Customer"
+msgstr ""
+
+#: ../../Customer.rst:12
+msgid "The Customer is the entity for which the Project is set."
+msgstr ""
+
+#: ../../Customer.rst:14
+msgid ""
+"It is generally the owner of the project, and in many cases it is the payer."
+msgstr ""
+
+#: ../../Customer.rst:16
+msgid ""
+"It can be an internal entity, into the same enterprise, or a different "
+"enterprise, or the entity of an enterprise."
+msgstr ""
+
+#: ../../Customer.rst:18
+msgid ""
+"The customer defined here is not a person. Real persons into customer entity"
+" are called “Contacts”."
+msgstr ""
+
+#: ../../Customer.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Customer.rst:22
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ""
+
+#: ../../Customer.rst:24
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../Customer.rst:26
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Customer.rst:36
+msgid "Field"
+msgstr ""
+
+#: ../../Customer.rst:37 ../../Customer.rst:52
+msgid "Description"
+msgstr ""
+
+#: ../../Customer.rst:38
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Customer.rst:39
+msgid "Unique Id for the customer."
+msgstr ""
+
+#: ../../Customer.rst:40
+msgid "**Customer name**"
+msgstr ""
+
+#: ../../Customer.rst:41
+msgid "Short name of the customer."
+msgstr ""
+
+#: ../../Customer.rst:42
+msgid "Type of customer"
+msgstr ""
+
+#: ../../Customer.rst:43
+msgid "Type of customer."
+msgstr ""
+
+#: ../../Customer.rst:44
+msgid "Customer code"
+msgstr ""
+
+#: ../../Customer.rst:45
+msgid "Code of the customer."
+msgstr ""
+
+#: ../../Customer.rst:46
+msgid "Delay for payment"
+msgstr ""
+
+#: ../../Customer.rst:47
+msgid "Delay for payment (in days) that can be displayed in the bill."
+msgstr ""
+
+#: ../../Customer.rst:48
+msgid "Tax"
+msgstr ""
+
+#: ../../Customer.rst:49
+msgid "Tax rates that are applied to bill amounts for this customer."
+msgstr ""
+
+#: ../../Customer.rst:50
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Customer.rst:51
+msgid "Flag to indicate that customer is archived."
+msgstr ""
+
+#: ../../Customer.rst:53
+msgid "Complete description of the customer."
+msgstr ""
+
+#: ../../Customer.rst:55
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Customer.rst:59
+msgid "Full address of the customer."
+msgstr ""
+
+#: ../../Customer.rst:63
+msgid "List of the projects of the customer."
+msgstr ""
+
+#: ../../Customer.rst:67
+msgid "List of the contacts known in the entity of the customer."
+msgstr ""
+
+#: ../../Customer.rst:29
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Customer.rst:58
+msgid "Section: Addreses"
+msgstr ""
+
+#: ../../Customer.rst:62
+msgid "Section: Projects"
+msgstr ""
+
+#: ../../Customer.rst:66
+msgid "Section: Contacts"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Addreses section"
+#~ msgstr ""
+
+#~ msgid "Projects section"
+#~ msgstr ""
+
+#~ msgid "Contacts section"
+#~ msgstr ""
