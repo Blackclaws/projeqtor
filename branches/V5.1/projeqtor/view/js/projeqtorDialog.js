@@ -3848,7 +3848,7 @@ function affectationChangeResource() {
 // =============================================================================
 
 // var manualWindow=null;
-function showHelp() {
+function showHelpOld() {
   var objectClass=dojo.byId('objectClass');
   var objectClassManual=dojo.byId('objectClassManual');
   var section='';
@@ -3867,7 +3867,34 @@ function showHelp() {
 
   return false;
 }
-
+var manualWindow=null;
+function showHelp() {
+  var objectClass=dojo.byId('objectClass');
+  var objectClassManual=dojo.byId('objectClassManual');
+  var section='';
+  if (objectClassManual) {
+    section=objectClassManual.value;
+  } else if (objectClass) {
+    section=objectClass.value;
+  }
+  dojo.xhrGet({
+    url : "../tool/getManualUrl.php?section=" + section,
+    handleAs : "text",
+    load : function(data, args) {
+      var url=data;
+      var name="Manual";
+      var attributes='toolbar=no, titlebar=no, menubar=no, status=no, scrollbars=no, directories=no, location=no, resizable=yes,'
+          + 'height=650, width=1024, top=0, left=0';
+      manualWindow=window.open(url, name, attributes);
+      manualWindow.focus();
+    },
+    error : function() {
+      console.log("Error retrieving Manual URL for section '"+section+"'");
+    }
+  });
+  // manualWindow.window.focus();
+  return false;
+}
 /**
  * Refresh a list (after update)
  */
