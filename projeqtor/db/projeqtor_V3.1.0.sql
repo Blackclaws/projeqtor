@@ -27,7 +27,7 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (1,'workValid','4'),
 (2,'workValid','2'),
 (3,'workValid','3'),
-(4,'workValid','2'),
+(4,'workValid','1'),
 (6,'workValid','1'),
 (7,'workValid','1'),
 (5,'workValid','1');
