@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Controls &amp; Automation &mdash; documentation ProjeQtOr User guide 5.0</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="documentation ProjeQtOr User guide 5.0" href="index.html" />
+    <link rel="next" title="Profile" href="AccessRights.html" />
+    <link rel="prev" title="Emails sent" href="Tools.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AccessRights.html" title="Profile"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="Tools.html" title="Emails sent"
+             accesskey="P">précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="contents local topic" id="controls-automation">
+<p class="topic-title first">Controls &amp; Automation</p>
+<ul class="simple">
+<li><a class="reference internal" href="#workflow" id="id1">Workflow</a></li>
+<li><a class="reference internal" href="#mail-on-event" id="id2">Mail on event</a></li>
+<li><a class="reference internal" href="#delay-for-ticket" id="id3">Delay for Ticket</a></li>
+<li><a class="reference internal" href="#indicator" id="id4">Indicator</a></li>
+<li><a class="reference internal" href="#predefined-notes" id="id5">Predefined notes</a></li>
+<li><a class="reference internal" href="#checklist-definition" id="id6">Checklist definition</a></li>
+<li><a class="reference internal" href="#receivers-list" id="id7">Receivers list</a></li>
+</ul>
+</div>
+<div class="section" id="workflow">
+<span id="ctrlauto-workflow-label"></span><span id="index-0"></span><h1><a class="toc-backref" href="#controls-automation">Workflow</a><a class="headerlink" href="#workflow" title="Lien permanent vers ce titre">¶</a></h1>
+<p>A workflow defines the possibility to go from one status to another one, and who (depending on profile) can do this operation for each status.</p>
+<p>Once defined, a workflow can be linked to any type of any item.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the workflow.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Name of the workflow.</td>
+</tr>
+<tr class="row-even"><td>Sort order</td>
+<td>Number to define order of display in lists</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that workflow is archived.</td>
+</tr>
+<tr class="row-even"><td>Description</td>
+<td>Complete description of the workflow.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>The parameter button <img alt="Button icon parameter" src="_images/iconParameter32.png" /> can be used to show or hide needed status.</li>
+</ul>
+</div>
+<p class="rubric">Section: Workflow Diagram</p>
+<ul class="simple">
+<li>The workflow diagram presents a visual representation of the workflow displaying all possible transitions (independently to profile rights).</li>
+</ul>
+<p class="rubric">Section: Habilitation to change from a status to another</p>
+<ul class="simple">
+<li>The habilitation table helps defining who can move from one status to another one.</li>
+<li>Each line correspond to the status from which you want to be able to move.</li>
+<li>Each column correspond to the status to which you want to be able to go.</li>
+<li>It is not possible to go from one status to itself (these cells are blank).</li>
+<li>Just check the profile (or “all”) who is allowed to pass from one status to the other.</li>
+</ul>
+</div>
+<div class="section" id="mail-on-event">
+<span id="index-1"></span><h1><a class="toc-backref" href="#controls-automation">Mail on event</a><a class="headerlink" href="#mail-on-event" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The application is able to automatically send mails on event such as status change or responsible change.</p>
+<p>This must be defined for each type of element, and each new status or other event.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>The message of the mails is formatted to display information on the item.</li>
+<li>Title of the mail is defined under &#8220;Mail titles&#8221; section in <a class="reference internal" href="Administration.html#administration-global-parameters-label"><em>Global parameters</em></a>.</li>
+</ul>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the status mail.</td>
+</tr>
+<tr class="row-odd"><td>Element updated</td>
+<td>Type of elements that will be concerned by automatic emailing.</td>
+</tr>
+<tr class="row-even"><td>New status</td>
+<td>Positioning the elements to this status will generate emails.</td>
+</tr>
+<tr class="row-odd"><td>Or other event</td>
+<td>Other event that will possibly generate email.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that status mail is archived.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Section: Mail receivers</p>
+<ul class="simple">
+<li>List of addressees of the mails.</li>
+<li>The list is not nominative but defined as roles on the element.</li>
+<li>Each addressee will receive mail only once, even if a person has several “checked” roles on the element</li>
+<li>see : <a class="reference internal" href="#ctrlauto-msg-receivers"><em>Receivers list</em></a> for receivers detail.</li>
+</ul>
+</div>
+<div class="section" id="delay-for-ticket">
+<span id="index-2"></span><h1><a class="toc-backref" href="#controls-automation">Delay for Ticket</a><a class="headerlink" href="#delay-for-ticket" title="Lien permanent vers ce titre">¶</a></h1>
+<p>It is possible to define default delay for tickets, for each ticket type and each urgency of ticket.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>On creation, due date will automatically be calculated as creation date + delay.</li>
+</ul>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the delay definition.</td>
+</tr>
+<tr class="row-odd"><td><strong>Ticket type</strong></td>
+<td>Ticket type the delay applies to.</td>
+</tr>
+<tr class="row-even"><td><strong>Urgency</strong></td>
+<td>Urgency of ticket the delay applied to.</td>
+</tr>
+<tr class="row-odd"><td><strong>Value</strong></td>
+<td>Value of delay.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that delay definition is archived.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Value</p>
+<ul class="simple">
+<li>Unit for the value can be :<ul>
+<li>Days : simple calculation as days.</li>
+<li>Hours : simple calculation as hours.</li>
+<li>Open days : calculation excluding off days (week-ends and off days defined on “calendar”).</li>
+<li>Open hours : calculation only on the “standard open hours” defined on the global parameters.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indicator">
+<span id="index-3"></span><h1><a class="toc-backref" href="#controls-automation">Indicator</a><a class="headerlink" href="#indicator" title="Lien permanent vers ce titre">¶</a></h1>
+<p>It is possible to define indicators on each type of element.</p>
+<p>Depending on type of elements the type of indicators that can be selected in list differs.</p>
+<p>Some indicators are based on delay (due date), some on work, some on cost.</p>
+<p>For each indicator a warning value and an alert value can be defined.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the indicator definition.</td>
+</tr>
+<tr class="row-odd"><td>Element</td>
+<td>The elements the indicator applies to.</td>
+</tr>
+<tr class="row-even"><td>Type</td>
+<td>Type of the elements the indicator applies to.</td>
+</tr>
+<tr class="row-odd"><td>Reminder</td>
+<td>Delay before due date or % of work or % or cost to send a warning.</td>
+</tr>
+<tr class="row-even"><td>Alert</td>
+<td>Delay before due date or % of work or % or cost to send an alert.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that delay definition is archived.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Section: Mail receivers</p>
+<ul class="simple">
+<li>List of addressees of the mails.</li>
+<li>The list is not nominative but defined as roles on the element.</li>
+<li>Each addressee will receive mail only once, even if a person has several “checked” roles on the element.</li>
+<li>see : <a class="reference internal" href="#ctrlauto-msg-receivers"><em>Receivers list</em></a> for receivers detail.</li>
+</ul>
+<p class="rubric">Section: Internal alert receivers</p>
+<ul class="simple">
+<li>List of addressees of the internal alert.</li>
+<li>The list is not nominative but defined as roles on the element.</li>
+<li>see : <a class="reference internal" href="#ctrlauto-msg-receivers"><em>Receivers list</em></a> for receivers detail.</li>
+</ul>
+</div>
+<div class="section" id="predefined-notes">
+<span id="ctrlauto-predefined-notes-label"></span><span id="index-4"></span><h1><a class="toc-backref" href="#controls-automation">Predefined notes</a><a class="headerlink" href="#predefined-notes" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The predefined note set the possibility to define some predefined texts for notes.</p>
+<p>When some predefined notes are defined for an element and / or type a list will appear on note creation.</p>
+<p>Selecting an item in the list will automatically fill in the note text field.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the predefined note.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Name of the predefined note.</td>
+</tr>
+<tr class="row-even"><td>Element</td>
+<td>Kind of item (Ticket, Activity, …) for which this predefined note will be proposed on note creation.</td>
+</tr>
+<tr class="row-odd"><td>Type</td>
+<td>Type of element for witch this predefined note will be proposed on note creation.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that delay definition is archived.</td>
+</tr>
+<tr class="row-odd"><td>Text</td>
+<td>Predefined text for notes.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Element</p>
+<ul class="simple">
+<li>If not set, predefined note is valid for every find of item.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Field: Type</p>
+<ul class="simple">
+<li>If not set, predefined note is valid for every type of the element.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="checklist-definition">
+<span id="ctrlauto-checklist-def-label"></span><span id="index-5"></span><h1><a class="toc-backref" href="#controls-automation">Checklist definition</a><a class="headerlink" href="#checklist-definition" title="Lien permanent vers ce titre">¶</a></h1>
+<p>It is possible to define checklists on each type of element.</p>
+<p>When a checklist definition exists for a given element, a checklist section will appear on the element.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the checklist definition.</td>
+</tr>
+<tr class="row-odd"><td>Element</td>
+<td>The elements the checklist applies to.</td>
+</tr>
+<tr class="row-even"><td>Type</td>
+<td>Type of the elements the checklist applies to.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that checklist definition is archived.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Section: Checklist lines</p>
+<p>A checklist is built from checklist lines.</p>
+<p>Click <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> on to create a new checklist line. A “Choice for the checklist line” pop up will be displayed.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonEdit.png"><img alt="Button edit" src="_images/smallButtonEdit.png" style="width: 12.0px; height: 12.0px;" /></a> to update an existing checklist line.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the corresponding checklist line.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/choicesChecklistLine.png"><img alt="Choices for the checklist line Popup" src="_images/choicesChecklistLine.png" style="width: 283.8px; height: 223.2px;" /></a>
+<p class="caption">Choices for the checklist line</p>
+</div>
+<table border="1" class="docutils">
+<caption>Choices for the checklist line fields</caption>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Name</td>
+<td>Name of the subject of the checklist line.</td>
+</tr>
+<tr class="row-odd"><td>Sort order</td>
+<td>Order of the line in the list.</td>
+</tr>
+<tr class="row-even"><td>Choice #n</td>
+<td>Possible choices (checks) for the list (up to 5 choices).</td>
+</tr>
+<tr class="row-odd"><td>Exclusive</td>
+<td>Are the choices exclusive (select one will unselect others).</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Details of Pop up</p>
+<ul class="simple">
+<li>Each line has a name, an order and up to 5 check choices.</li>
+<li>A line with no check choice will be displayed as <strong>section title</strong>.</li>
+<li>Name and Choices have 2 fields :<ul>
+<li>first is the displayed caption,</li>
+<li>second is help text that will be displayed as tooltip.</li>
+</ul>
+</li>
+<li>Checks can be exclusive (select one will unselect others) or not (multi selection is then possible).</li>
+</ul>
+</div>
+</div>
+<div class="section" id="receivers-list">
+<span id="ctrlauto-msg-receivers"></span><span id="index-6"></span><h1><a class="toc-backref" href="#controls-automation">Receivers list</a><a class="headerlink" href="#receivers-list" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Receivers can receive email and alert.</p>
+<p>A description of receivers below.</p>
+<div class="topic">
+<p class="topic-title first">Requestor</p>
+<ul class="simple">
+<li>The Contact defined as “requestor” on current item; sometimes appears as “contact” (on Quotation and Order for instance) and sometimes have no meaning (for instance for Milestone).</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Issuer</p>
+<ul class="simple">
+<li>The User defined as “Issuer”.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Responsible</p>
+<ul class="simple">
+<li>The Resource defined as “responsible”.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Project team</p>
+<ul class="simple">
+<li>All Resources affected to the Project.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Project leader</p>
+<ul class="simple">
+<li>The Resource(s) affected to the Project with a “Project Leader” profile.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Project manager</p>
+<ul class="simple">
+<li>The User defined as “manager” on the Project.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Assigned resource</p>
+<ul class="simple">
+<li>All Resources assigned.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Other</p>
+<ul class="simple">
+<li>Provides an extra field to manually enter email addresses.</li>
+<li>If “other” is checked, an input box is displayed to enter a static mail address list.</li>
+<li>Several addresses can be entered, separated by semicolon.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Workflow</a></li>
+<li><a class="reference internal" href="#mail-on-event">Mail on event</a></li>
+<li><a class="reference internal" href="#delay-for-ticket">Delay for Ticket</a></li>
+<li><a class="reference internal" href="#indicator">Indicator</a></li>
+<li><a class="reference internal" href="#predefined-notes">Predefined notes</a></li>
+<li><a class="reference internal" href="#checklist-definition">Checklist definition</a></li>
+<li><a class="reference internal" href="#receivers-list">Receivers list</a></li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="Tools.html"
+                        title="Chapitre précédent">Emails sent</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="AccessRights.html"
+                        title="Chapitre suivant">Profile</a></p>
+  <h3>Cette page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ControlAutomation.txt"
+           rel="nofollow">Montrer la source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Saisissez un mot clef ou un nom de module, classe ou fonction.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="AccessRights.html" title="Profile"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="Tools.html" title="Emails sent"
+             >précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, ProjeQtOr.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

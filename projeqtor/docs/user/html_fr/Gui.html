@@ -1,0 +1,1192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Graphical User Interface &mdash; documentation ProjeQtOr User guide 5.0</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="documentation ProjeQtOr User guide 5.0" href="index.html" />
+    <link rel="next" title="User parameters" href="UserParameter.html" />
+    <link rel="prev" title="Gestion des délais" href="Features.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="UserParameter.html" title="User parameters"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="Features.html" title="Gestion des délais"
+             accesskey="P">précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="contents local topic" id="graphic-user-interface">
+<p class="topic-title first">Graphic user interface</p>
+<ul class="simple">
+<li><a class="reference internal" href="#top-bar" id="id1">Top bar</a></li>
+<li><a class="reference internal" href="#logo-area" id="id2">Logo area</a></li>
+<li><a class="reference internal" href="#menu-and-documents-windows" id="id3">Menu and Documents windows</a></li>
+<li><a class="reference internal" href="#message-and-link-windows" id="id4">Message and Link windows</a></li>
+<li><a class="reference internal" href="#main-area" id="id5">Main area</a></li>
+<li><a class="reference internal" href="#list-window" id="id6">List window</a><ul>
+<li><a class="reference internal" href="#advanced-filter" id="id7">Advanced filter</a></li>
+<li><a class="reference internal" href="#displayed-columns" id="id8">Displayed columns</a></li>
+<li><a class="reference internal" href="#export-to-csv-format" id="id9">Export to CSV format</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#detail-window" id="id10">Detail window</a><ul>
+<li><a class="reference internal" href="#copy-item" id="id11">Copy item</a></li>
+<li><a class="reference internal" href="#email-detail" id="id12">Email detail</a></li>
+<li><a class="reference internal" href="#multiple-update" id="id13">Multiple update</a></li>
+<li><a class="reference internal" href="#combo-list-fields" id="id14">Combo list fields</a></li>
+<li><a class="reference internal" href="#long-text-fields" id="id15">Long text fields</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#info-bar" id="id16">Info bar</a></li>
+<li><a class="reference internal" href="#common-sections" id="id17">Common sections</a><ul>
+<li><a class="reference internal" href="#section-description" id="id18">Section: Description</a></li>
+<li><a class="reference internal" href="#section-treatment" id="id19">Section: Treatment</a></li>
+<li><a class="reference internal" href="#section-checklist" id="id20">Section: Checklist</a></li>
+<li><a class="reference internal" href="#section-linked-element" id="id21">Section: Éléments liés</a></li>
+<li><a class="reference internal" href="#section-attachments" id="id22">Section: Fichiers attachés</a></li>
+<li><a class="reference internal" href="#section-notes" id="id23">Section: Notes</a></li>
+<li><a class="reference internal" href="#section-change-history" id="id24">Section: Historique des modifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#alerts" id="id25">Alerts</a></li>
+<li><a class="reference internal" href="#themes" id="id26">Themes</a></li>
+<li><a class="reference internal" href="#multilingual" id="id27">Multilingual</a></li>
+</ul>
+</div>
+<p>ProjeQtor graphical user interface is set into several areas.</p>
+<p>Those areas are :</p>
+<ul class="simple">
+<li>Top bar</li>
+<li>Logo area</li>
+<li>Menu and Document windows</li>
+<li>Message and Link windows</li>
+<li>List window</li>
+<li>Detail window</li>
+<li>Info bar</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/GUIwithArea.png"><img alt="GUI with areas" src="_images/GUIwithArea.png" style="width: 1398.0px; height: 669.6px;" /></a>
+<p class="caption">GUI with areas</p>
+</div>
+<p class="rubric">Splitters</p>
+<ul class="simple">
+<li>Splitters allow resizing areas in graphic user interface.</li>
+<li>Green splitter allows resizing Menu and Documents windows &amp; Message and Link windows areas.</li>
+<li>Red splitter allows resizing left and right side areas.</li>
+<li>Orange splitter allows resizing list and detail windows areas.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/windowsSplitters.png"><img alt="Windows splitters" src="_images/windowsSplitters.png" style="width: 1123.8px; height: 580.8px;" /></a>
+<p class="caption">Splitters</p>
+</div>
+<div class="section" id="top-bar">
+<span id="gui-top-bar-label"></span><span id="index-0"></span><h1><a class="toc-backref" href="#graphic-user-interface">Top bar</a><a class="headerlink" href="#top-bar" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/topBar.png"><img alt="Top bar" src="_images/topBar.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Top bar</p>
+</div>
+<p class="rubric" id="index-1">Menu buttons</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/menuButtons.png"><img alt="Menu buttons" src="_images/menuButtons.png" style="width: 1475.2px; height: 143.2px;" /></a>
+</div>
+<ul class="simple">
+<li>Menu buttons gives rapid access to main elements.</li>
+<li>Arrows allow to display buttons list.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Contextual menu buttons</p>
+<ul class="simple">
+<li>Allows to select a work context to limit the visibility on displayed buttons.</li>
+</ul>
+</div>
+<p class="rubric" id="index-2">Project selector</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/projectSelector.png"><img alt="Project selector" src="_images/projectSelector.png" style="width: 458.4px; height: 59.4px;" /></a>
+</div>
+<ul class="simple">
+<li>Allows to restrict the visibility of all objects to the dedicated project, including sub-projects if any.</li>
+<li>The selection will also define de &#8220;default&#8221; project for new items.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Project selector parameters</p>
+<p>Through the project selector parameter icon <img alt="Button icon parameter" src="_images/iconParameter32.png" />, you can select :</p>
+<ul class="simple">
+<li>View closed projects.</li>
+<li>Change the project selector format.</li>
+<li>Refresh the list.</li>
+</ul>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/projectSelectorParameters.png"><img alt="Project selector parameters" src="_images/projectSelectorParameters.png" style="width: 628.2px; height: 187.8px;" /></a>
+</div>
+<p class="rubric" id="index-3">Navigation buttons</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/navigationButtons.png"><img alt="Navigation buttons" src="_images/navigationButtons.png" style="width: 1133.4px; height: 94.8px;" /></a>
+</div>
+<ul class="simple">
+<li>The navigation buttons <a class="reference internal" href="_images/buttonIconBackNavigation.png"><img alt="Button icon back navigation" src="_images/buttonIconBackNavigation.png" style="width: 15.75px; height: 18.0px;" /></a> <a class="reference internal" href="_images/buttonIconForwardNavigation.png"><img alt="Button icon forward navigation" src="_images/buttonIconForwardNavigation.png" style="width: 15.75px; height: 17.25px;" /></a> give access to previous and next items in the history.</li>
+</ul>
+<p class="rubric">New tab button</p>
+<ul class="simple">
+<li>Allows to open a new tab with the same session.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/newTabButton.png"><img alt="New tab button" src="_images/newTabButton.png" style="width: 1137.0px; height: 80.4px;" /></a>
+</div>
+</div>
+<div class="section" id="logo-area">
+<h1><a class="toc-backref" href="#graphic-user-interface">Logo area</a><a class="headerlink" href="#logo-area" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/logoArea.png"><img alt="GUI logo area" src="_images/logoArea.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Logo area</p>
+</div>
+<p class="rubric">Software information</p>
+<ul class="simple">
+<li>Clicking on the Logo Area will display the “About” pop-up.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/softwareInformation.png"><img alt="Software information" src="_images/softwareInformation.png" style="width: 202.8px; height: 120.0px;" /></a>
+</div>
+<p class="rubric">Online user manual</p>
+<ul class="simple">
+<li>Click on the Help icon <a class="reference internal" href="_images/iconHelp.png"><img alt="Button icon help" src="_images/iconHelp.png" style="width: 14.4px; height: 14.4px;" /></a> will open the online user manual, to the page corresponding to the actual screen.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>You can change logo with your own.</li>
+<li>Refer to administrative guide to replace the logo.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="menu-and-documents-windows">
+<h1><a class="toc-backref" href="#graphic-user-interface">Menu and Documents windows</a><a class="headerlink" href="#menu-and-documents-windows" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/menuAndDocumentsWindows.png"><img alt="Menu and Documents windows" src="_images/menuAndDocumentsWindows.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Menu and Documents windows</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Toggle windows</p>
+<ul class="last simple">
+<li>You can toggle between Menu and Documents windows.</li>
+<li>Just click on window header.</li>
+</ul>
+</div>
+<p class="rubric">Menu window</p>
+<p>Menu is proposed as a tree view of reachable items.</p>
+<p>The presented items will depend on user habilitation to the screens.</p>
+<p>Click on a grouping line will expand-shrink the group.</p>
+<p>Click on a item will display the corresponding screen in the main area (right side of the screen).</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/menuWindow.png"><img alt="Menu window" src="_images/menuWindow.png" style="width: 223.2px; height: 213.6px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>icon size in menu</p>
+<ul class="last simple">
+<li>This parameter defines the size of icons in menu.</li>
+<li>See this parameter under &#8220;Display parameters&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+<p class="rubric">Documents window</p>
+<ul class="simple">
+<li>Document directories give direct access to documents contained in the directory.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/documentsWindow.png"><img alt="Documents window" src="_images/documentsWindow.png" style="width: 234.6px; height: 180.0px;" /></a>
+</div>
+<div class="topic">
+<p class="topic-title first">Document directories</p>
+<p>This icon <a class="reference internal" href="_images/iconDocumentDirectory32.png"><img alt="Button icon document directory" src="_images/iconDocumentDirectory32.png" style="width: 24.0px; height: 24.0px;" /></a> gives direct access to the directories management screen.</p>
+</div>
+</div>
+<div class="section" id="message-and-link-windows">
+<h1><a class="toc-backref" href="#graphic-user-interface">Message and Link windows</a><a class="headerlink" href="#message-and-link-windows" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/messageAndLinkWindows.png"><img alt="Message and Link area" src="_images/messageAndLinkWindows.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Message and Link windows</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Toggle windows</p>
+<ul class="last simple">
+<li>You can toggle between External shortcuts and Console messages windows.</li>
+<li>Just click on window header.</li>
+</ul>
+</div>
+<p class="rubric">External shortcuts window</p>
+<ul class="simple">
+<li>Displays hyperlinks to remote web pages.</li>
+<li>Theses links are defined as hyperlink attachements on projects.</li>
+<li>Links displayed here depend on selected project.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/externalShortcuts.png"><img alt="External shortcuts window" src="_images/externalShortcuts.png" style="width: 225.6px; height: 39.0px;" /></a>
+</div>
+<p class="rubric">Console messages window</p>
+<ul class="simple">
+<li>Displays information about main actions : insert, update, delete.</li>
+<li>Timestamp indicates when action was done.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/consoleMessages.png"><img alt="Console messages window" src="_images/consoleMessages.png" style="width: 225.0px; height: 37.8px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>This is only a temporary logging area.</li>
+<li>Messages displayed here are not stored and will not live more than user connection.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="main-area">
+<h1><a class="toc-backref" href="#graphic-user-interface">Main area</a><a class="headerlink" href="#main-area" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The main area (right side of the screen) is generally divided in two parts : List window and Detail window.</p>
+</div>
+<div class="section" id="list-window">
+<span id="gui-list-window-label"></span><h1><a class="toc-backref" href="#graphic-user-interface">List window</a><a class="headerlink" href="#list-window" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/listWindow.png"><img alt="GUI list window" src="_images/listWindow.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">List window</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/listWindowPart.png"><img alt="GUI list window Part" src="_images/listWindowPart.png" style="width: 1023.0px; height: 141.0px;" /></a>
+</div>
+<p class="rubric">Element identified</p>
+<ul class="simple">
+<li>Identifies the element and the number of listed items is displayed.</li>
+<li>Each element are associated to a distinctive icon.</li>
+</ul>
+<p class="rubric">Rapid filter</p>
+<ul class="simple">
+<li>Rapid filtering fields are proposed : “id”, “name” and “type”.</li>
+<li>Any change on “id” and “name” will instantly filter data.<ul>
+<li>Search is considered as “contains”, so typing “1” in “id” will select “1”, “10”, “11”, “21”, “31” and so on.</li>
+</ul>
+</li>
+<li>Selecting a “type” in the combo box will restrict the list to the corresponding type.</li>
+</ul>
+<p class="rubric">Buttons</p>
+<ul class="simple">
+<li>Click on the “search button” <a class="reference internal" href="_images/buttonIconSearch.png"><img alt="Button icon search" src="_images/buttonIconSearch.png" style="width: 18.75px; height: 18.0px;" /></a> to display the textual search area.</li>
+<li>Click on the “advanced filter” <a class="reference internal" href="_images/iconFilter.png"><img alt="Button icon filter" src="_images/iconFilter.png" style="width: 18.0px; height: 18.0px;" /></a> to set advanced filter (see : <a class="reference internal" href="#gui-advanced-filter-label"><em>Advanced filter</em></a>).</li>
+<li>Click on the “select columns to display” <a class="reference internal" href="_images/buttonIconColumn.png"><img alt="Button icon column" src="_images/buttonIconColumn.png" style="width: 16.5px; height: 17.25px;" /></a> to set columns order (see : <a class="reference internal" href="#gui-diplayed-columns-label"><em>Displayed columns</em></a>).</li>
+<li>Click on the “print the list” <a class="reference internal" href="_images/buttonIconPrint.png"><img alt="Button icon print" src="_images/buttonIconPrint.png" style="width: 18.0px; height: 18.0px;" /></a> to get a printable version of the list.</li>
+<li>Click on the “export to PDF format” <a class="reference internal" href="_images/buttonIconPdf.png"><img alt="Button icon PDF" src="_images/buttonIconPdf.png" style="width: 17.25px; height: 17.25px;" /></a> to export it to PDF format.</li>
+<li>Click on the “export to CSV format” <a class="reference internal" href="_images/buttonIconCsv.png"><img alt="Button icon CSV" src="_images/buttonIconCsv.png" style="width: 17.25px; height: 18.0px;" /></a> to export all the data of the selected items into CSV format file (see : <a class="reference internal" href="#gui-exportcsv-format-label"><em>Export to CSV format</em></a>).</li>
+<li>Click on the “create a new <strong>item</strong>” <a class="reference internal" href="_images/buttonIconNew.png"><img alt="Button icon new" src="_images/buttonIconNew.png" style="width: 14.25px; height: 18.0px;" /></a> to create a new item of element.</li>
+</ul>
+<p class="rubric">Show closed items flag</p>
+<ul class="simple">
+<li>Check the “show closed items” to list also closed items.</li>
+</ul>
+<p class="rubric">Columns header</p>
+<ul class="simple">
+<li>Click on the header of a column will sort the list on that column (first ascending, then descending).</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>The sorting is not always on the displayed name.<ul>
+<li>if the sorted column is linked to a reference list with sort order value, the sorting is executed on this sort value<ul>
+<li>for instance, here the sorting on the status is executed corresponding to Status sort order value, defined as a logic workflow for status change.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p class="rubric">Items list</p>
+<ul class="simple">
+<li>Click on a line (any column) will display the corresponding item in the detail window.</li>
+</ul>
+<div class="section" id="advanced-filter">
+<span id="gui-advanced-filter-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Advanced filter</a><a class="headerlink" href="#advanced-filter" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/advancedFilterDefinition.png"><img alt="Advanced filter definition pop-up" src="_images/advancedFilterDefinition.png" style="width: 470.4px; height: 169.2px;" /></a>
+</div>
+<p>The filter pop-up presents two areas : “Active filter” and “Saved filter”.</p>
+<p class="rubric">Active filter</p>
+<ul class="simple">
+<li>Enter new clause in Active filter : in “Add a filter or sort clause”, select the name of the field, the operator and the value for the clause.<ul>
+<li>Then click on <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> to add the clause to the filter criteria.</li>
+</ul>
+</li>
+<li>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> on a clause line to remove it.</li>
+<li>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> on the header of Filter criteria to remove all clauses.<ul>
+<li>This can also be done by clicking the “Clear” button.</li>
+</ul>
+</li>
+<li>When Filter criteria is correct, click on “OK” button to apply the filter to the list.</li>
+<li>You can also click “Cancel” button to revert to previous filter.</li>
+<li>At any step you can enter a filter name and click on <a class="reference internal" href="_images/iconSave.png"><img alt="Button icon save" src="_images/iconSave.png" style="width: 12.0px; height: 13.5px;" /></a> to save the filter definition.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Operators detail</p>
+<ul class="simple">
+<li><strong>Sort</strong> operator define a sort criteria, then possible values are “ascending” or “descending”.</li>
+<li><strong>Amongst</strong> operator allows multi-value selection is possible using <tt class="kbd docutils literal"><span class="pre">Control</span></tt> key.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Filters are defined and stored for a user and a type of item (a screen).</li>
+<li>When a filter is applied to a type of item, coming back after moving to another type (another selection in the menu) will apply the previously defined filter.</li>
+<li>After disconnection, currently applied filter is lost, but stored filters are saved.<ul>
+<li>Default filter (if selected) is also stored and will be automatically applied on next connection.</li>
+</ul>
+</li>
+</ul>
+</div>
+<p class="rubric">Saved filter</p>
+<ul class="simple">
+<li>Click on a Saved filter to retrieve its definition (filter criteria).</li>
+<li>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> on a saved filter to delete it.</li>
+<li>Click on “Default” button to set actual stored filter as default, kept even after disconnection.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>When filter is applied, filter button in the list area is checked <a class="reference internal" href="_images/iconActiveFilter.png"><img alt="Button icon active filter" src="_images/iconActiveFilter.png" style="width: 18.0px; height: 18.0px;" /></a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="displayed-columns">
+<span id="gui-diplayed-columns-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Displayed columns</a><a class="headerlink" href="#displayed-columns" title="Lien permanent vers ce titre">¶</a></h2>
+<ul class="simple">
+<li>This button opens the list of all available fields.</li>
+<li>Just check the fields you want to display in the list.</li>
+<li>You can reorder fields with drag &amp; drop feature, using the selector area <a class="reference internal" href="_images/iconDrag.png"><img alt="Button icon drag" src="_images/iconDrag.png" style="width: 6.4px; height: 12.8px;" /></a>.</li>
+<li>When a field is selected, you can change its width with the spinner button.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Width</p>
+<ul class="simple">
+<li>Width is in % of total list width.</li>
+<li>Minimum width is 1%. Maximum width is 50%.</li>
+<li>So, if you select to many columns or set columns width too large, you may have total width over 100%.<ul>
+<li>This will be highlighted beside buttons.</li>
+</ul>
+</li>
+<li>This may lead to strange display, over page width, on List, reports or pdf export, depending on browser.</li>
+<li>It is possible to reset the list display to its default format using the &#8220;reset&#8221; button.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>id and name</p>
+<ul class="last simple">
+<li>“id” and “name” are mandatory fileds : they cannot be removed from display.</li>
+<li>The “name” width is automatically adjusted so that total list width is 100%.</li>
+<li>Take care that “name” width cannot be less than 10%.</li>
+</ul>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/selectColunmsToDisplay.png"><img alt="Select columns to display pop-up" src="_images/selectColunmsToDisplay.png" style="width: 220.2px; height: 396.0px;" /></a>
+</div>
+</div>
+<div class="section" id="export-to-csv-format">
+<span id="gui-exportcsv-format-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Export to CSV format</a><a class="headerlink" href="#export-to-csv-format" title="Lien permanent vers ce titre">¶</a></h2>
+<p>The Export pop-up allows to choose fields to export.</p>
+<p>The fields are presented in the order as they appear in the item description.</p>
+<div class="topic">
+<p class="topic-title first">Selecting fields</p>
+<ul class="simple">
+<li>You can easily check or uncheck all fields to export.</li>
+<li>You can also easily restrict selected fields to the ones that are actually displayed in the list.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">id or name for references</p>
+<ul class="simple">
+<li>For fields that reference another item (displayed as lists in the item description), you can select to export either the id or the clear name of the referenced item.</li>
+</ul>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/chooseColumnsToExport.png"><img alt="Choose columns to export pop-up" src="_images/chooseColumnsToExport.png" style="width: 379.2px; height: 300.0px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>CSV exported files can directly be imported through the Import functionality.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="detail-window">
+<h1><a class="toc-backref" href="#graphic-user-interface">Detail window</a><a class="headerlink" href="#detail-window" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/detailWindow.png"><img alt="GUI detail window" src="_images/detailWindow.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Detail window</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/detailWindowPart.png"><img alt="GUI detail window Part" src="_images/detailWindowPart.png" style="width: 1066.2px; height: 121.2px;" /></a>
+</div>
+<p class="rubric">Element identified</p>
+<ul class="simple">
+<li>Identifies the element and the item id number.</li>
+<li>Each element are associated to a distinctive icon.</li>
+</ul>
+<p class="rubric">Creation information</p>
+<ul class="simple">
+<li>Information about item creation : issuer and date.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Administrator can change information.</li>
+</ul>
+</div>
+<p class="rubric">Buttons</p>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/buttonIconNew.png"><img alt="Button icon new" src="_images/buttonIconNew.png" style="width: 14.25px; height: 18.0px;" /></a> to create new item.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconSave.png"><img alt="Button icon save" src="_images/buttonIconSave.png" style="width: 16.5px; height: 18.0px;" /></a> to save the changes.<ul>
+<li>You can rapidly save with <tt class="kbd docutils literal"><span class="pre">Control-s</span></tt>.</li>
+</ul>
+</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconPrint.png"><img alt="Button icon print" src="_images/buttonIconPrint.png" style="width: 18.0px; height: 18.0px;" /></a> to get a printable version of the detail.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconPdf.png"><img alt="Button icon PDF" src="_images/buttonIconPdf.png" style="width: 17.25px; height: 17.25px;" /></a>  to get a printable version of the detail in PDF format.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconCopy.png"><img alt="Button icon copy" src="_images/buttonIconCopy.png" style="width: 17.25px; height: 18.0px;" /></a> to copy the current item (see : <a class="reference internal" href="#gui-copyandtransform-item-label"><em>Copy item</em></a>).</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconUndo.png"><img alt="Button icon undo" src="_images/buttonIconUndo.png" style="width: 18.0px; height: 18.0px;" /></a> to cancel ongoing changes.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconDelete.png"><img alt="Button icon delete" src="_images/buttonIconDelete.png" style="width: 17.25px; height: 18.0px;" /></a> to delete the item.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconRefresh.png"><img alt="Button icon refresh" src="_images/buttonIconRefresh.png" style="width: 18.0px; height: 18.0px;" /></a> to refresh the display.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconEmail.png"><img alt="Button icon email" src="_images/buttonIconEmail.png" style="width: 19.5px; height: 18.0px;" /></a> to send detail of item by email (see : <a class="reference internal" href="#gui-email-detail-label"><em>Email detail</em></a>).</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconMultipleUpdate.png"><img alt="Button icon multiple update" src="_images/buttonIconMultipleUpdate.png" style="width: 15.75px; height: 17.25px;" /></a> to update several items in one operation (see : <a class="reference internal" href="#gui-multiple-update-label"><em>Multiple update</em></a>).</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconShowChecklist.png"><img alt="Button icon show checklist" src="_images/buttonIconShowChecklist.png" style="width: 13.5px; height: 17.25px;" /></a> to show checklist.<ul>
+<li>Available only when user set user parameter &#8220;display checklists&#8221; to &#8220;On request&#8221;.</li>
+<li>For detail of checklist information, see <a class="reference internal" href="#gui-checklist-section-label"><em>Section: Checklist</em></a>.</li>
+</ul>
+</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconShowHistory.png"><img alt="Button icon show history" src="_images/buttonIconShowHistory.png" style="width: 16.5px; height: 17.25px;" /></a> to show history of changes.<ul>
+<li>Available only when user set user parameter &#8220;display history&#8221; to &#8220;On request&#8221;.</li>
+<li>For detail of history of changes information, see <a class="reference internal" href="#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a>.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Some buttons are not clickable when change are ongoing.</li>
+<li><a class="reference internal" href="_images/buttonIconUndo.png"><img alt="Button icon undo" src="_images/buttonIconUndo.png" style="width: 18.0px; height: 18.0px;" /></a> button is clickable only when changes are ongoing.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>When changes are ongoing, you can not select another item or another menu item.</li>
+<li>Save or cancel ongoing changes first.</li>
+</ul>
+</div>
+<p class="rubric">Drop file area</p>
+<ul class="simple">
+<li>This area allows to add a attachement file in item.<ul>
+<li>You can drag and drop file.</li>
+<li>Or click on area to select file.</li>
+</ul>
+</li>
+</ul>
+<p class="rubric">Sections</p>
+<ul class="simple">
+<li>The fields are regrouped under section.</li>
+<li>All sections can be folded or unfolded, clicking on the section title.</li>
+<li>The sections are organized in columns.<ul>
+<li>Maximum three columns can be displayed.</li>
+</ul>
+</li>
+<li>Some sections are displayed on almost all screens, see : <a class="reference internal" href="#gui-sections-label"><em>Common sections</em></a></li>
+</ul>
+<div class="section" id="copy-item">
+<span id="gui-copyandtransform-item-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Copy item</a><a class="headerlink" href="#copy-item" title="Lien permanent vers ce titre">¶</a></h2>
+<ul class="simple">
+<li>Allows copied item of element.</li>
+<li>Options displayed in pop-up depends on whether an item is simple or complex.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/copyElement.png"><img alt="GUI copy element" src="_images/copyElement.png" style="width: 427.2px; height: 229.2px;" /></a>
+</div>
+<div class="topic">
+<p class="topic-title first">Simple items</p>
+<ul class="simple">
+<li>Simple items (environment parameters, lists, …) can only be copied “as is”.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Complex items</p>
+<ul>
+<li><p class="first">Complex items (Tickets, Activities, …) it is possible to copy them into new kind of elements.</p>
+</li>
+<li><p class="first">For instance, it is possible to copy a Ticket (the request) into an Activity (the task to manage the request).</p>
+</li>
+<li><p class="first">It is possible to select :</p>
+<ul class="simple">
+<li>New kind of element.</li>
+<li>Select new type (corresponding to the kind of element).</li>
+<li>Change the name.</li>
+<li>Select whether the initial element will be indicated as origin of the copied one.</li>
+<li>For main items, it is also possible to choose to copy links, attachments and notes.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>For Projects and Activities, it is also possible to copy the hierarchic structure of activities (sub-projects, sub-activities).</li>
+<li>The new item are the status &#8220;copied&#8221;.</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="email-detail">
+<span id="gui-email-detail-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Email detail</a><a class="headerlink" href="#email-detail" title="Lien permanent vers ce titre">¶</a></h2>
+<p>It is possible to send an informative email to defined recipients list.</p>
+<p><strong>message</strong></p>
+<ul class="simple">
+<li>The message that will be included in the body of the email, in addition to complete description of item.</li>
+</ul>
+</div>
+<div class="section" id="multiple-update">
+<span id="gui-multiple-update-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Multiple update</a><a class="headerlink" href="#multiple-update" title="Lien permanent vers ce titre">¶</a></h2>
+<p>To update several items in one operation.</p>
+<p>This will switch to new detail view :</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/multipleModePart1.png"><img alt="GUI Multiple mode part 1" src="_images/multipleModePart1.png" style="width: 550.8px; height: 282.6px;" /></a>
+</div>
+<p>At this step, although the list does not seem to have changed, but it is now multi-selectable :</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/multipleModePart2.png"><img alt="GUI Multiple mode part 2" src="_images/multipleModePart2.png" style="width: 930.0px; height: 85.8px;" /></a>
+</div>
+<p>Select lines of items you want to update, specify update and save : the update will be applied to all the items (if possible) and a report will be displayed on the right of the Multiple mode detail screen.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/multipleModePart3.png"><img alt="GUI Multiple mode part 3" src="_images/multipleModePart3.png" style="width: 812.4px; height: 285.6px;" /></a>
+</div>
+</div>
+<div class="section" id="combo-list-fields">
+<span id="gui-combo-list-fields-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Combo list fields</a><a class="headerlink" href="#combo-list-fields" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Combo list field allows to search, view or create item associate with the field.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/comboListFields.png"><img alt="GUI Combo list fields" src="_images/comboListFields.png" style="width: 300.0px; height: 16.8px;" /></a>
+<p class="caption">Example</p>
+</div>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/comboArrowDown.png"><img alt="Button combo arrow down" src="_images/comboArrowDown.png" style="width: 5.25px; height: 3.0px;" /></a> to get the list of value.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconSearch.png"><img alt="Button icon search" src="_images/buttonIconSearch.png" style="width: 18.75px; height: 18.0px;" /></a> to access item details.<ul>
+<li>The action depends on whether the element is selected or not.</li>
+</ul>
+</li>
+<li>Click on <a class="reference internal" href="_images/iconGoto.png"><img alt="Button icon goto" src="_images/iconGoto.png" style="width: 12.0px; height: 12.0px;" /></a> will directly go to the selected item.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Access to view or create item depends on your access rights.</li>
+<li>Some buttons become not available.</li>
+</ul>
+</div>
+<p class="rubric">Element is selected</p>
+<p>If element is selected in the combo, detail of element is displayed.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/detailOfListElementOpt1.png"><img alt="GUI Detail of liste element option one" src="_images/detailOfListElementOpt1.png" style="width: 784.2px; height: 419.4px;" /></a>
+</div>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/buttonIconSearch.png"><img alt="Button icon search" src="_images/buttonIconSearch.png" style="width: 18.75px; height: 18.0px;" /></a> to search an item.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconUndo.png"><img alt="Button icon undo" src="_images/buttonIconUndo.png" style="width: 18.0px; height: 18.0px;" /></a> to close the window.</li>
+</ul>
+<p class="rubric">No element is selected</p>
+<p>If no element is selected, list of elements is displayed, allowing to select an item.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/detailOfListElementOpt2.png"><img alt="GUI Detail of liste element option two" src="_images/detailOfListElementOpt2.png" style="width: 784.8px; height: 216.6px;" /></a>
+</div>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/buttonIconSelect.png"><img alt="Button icon select" src="_images/buttonIconSelect.png" style="width: 16.5px; height: 17.25px;" /></a> to select item.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconNew.png"><img alt="Button icon new" src="_images/buttonIconNew.png" style="width: 14.25px; height: 18.0px;" /></a> to create a new item.</li>
+<li>Click on <a class="reference internal" href="_images/buttonIconUndo.png"><img alt="Button icon undo" src="_images/buttonIconUndo.png" style="width: 18.0px; height: 18.0px;" /></a> to close the window.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Header window</p>
+<ul class="last simple">
+<li>You have access to rapid filter, search button and advanced filter.</li>
+<li>For detail, see : <a class="reference internal" href="#gui-list-window-label"><em>List window</em></a>.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Select several items</p>
+<ul class="last simple">
+<li>Some elements is possible to select several items, use <tt class="kbd docutils literal"><span class="pre">Control</span></tt> or <tt class="kbd docutils literal"><span class="pre">Shift</span></tt>.</li>
+</ul>
+</div>
+<p class="rubric">Go to selected item</p>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/iconGoto.png"><img alt="Button icon goto" src="_images/iconGoto.png" style="width: 12.0px; height: 12.0px;" /></a> will directly go to the selected item.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Return to last screen</p>
+<ul class="last simple">
+<li>Click on <a class="reference internal" href="_images/buttonIconBackNavigation.png"><img alt="Button icon back navigation" src="_images/buttonIconBackNavigation.png" style="width: 15.75px; height: 18.0px;" /></a> to return on last screen.</li>
+<li>For detail, see <strong>Navigation buttons</strong> in <a class="reference internal" href="#gui-top-bar-label"><em>Top bar</em></a> section.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="long-text-fields">
+<h2><a class="toc-backref" href="#graphic-user-interface">Long text fields</a><a class="headerlink" href="#long-text-fields" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/longTextFields.png"><img alt="GUI long text fields" src="_images/longTextFields.png" style="width: 289.2px; height: 27.0px;" /></a>
+<p class="caption">Example</p>
+</div>
+<ul class="simple">
+<li>Long text fields allow to write description, results, notes, ...</li>
+<li>A mini editor is provided.</li>
+<li>Text zone is expendable.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Editor mode always on</p>
+<ul class="last simple">
+<li>This parameter defines editor is always on in long text fields.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="info-bar">
+<h1><a class="toc-backref" href="#graphic-user-interface">Info bar</a><a class="headerlink" href="#info-bar" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/infobar.png"><img alt="GUI info bar" src="_images/infobar.png" style="width: 1122.0px; height: 580.8px;" /></a>
+<p class="caption">Info bar</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/infobarPart.png"><img alt="GUI info bar Part" src="_images/infobarPart.png" style="width: 1123.8px; height: 105.6px;" /></a>
+</div>
+<p class="rubric">Log out button</p>
+<ul class="simple">
+<li>Allow to disconnect user.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>confirm quit application</p>
+<ul class="last simple">
+<li>This parameter defines whether a confirm disconnection will be displayed before.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+<p class="rubric">User parameters button</p>
+<ul class="simple">
+<li>Allow to access user parameters.</li>
+</ul>
+<p class="rubric">Hide and show menu button</p>
+<ul class="simple">
+<li>Allow to hide or show menu button</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>hide menu</p>
+<ul class="last simple">
+<li>This parameter defines whether the menu is hidden by default.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+<p class="rubric">Switched mode button</p>
+<ul class="simple">
+<li>Allow to enable or disable switched mode between list and detail windows.</li>
+<li>Window selected is displayed in &#8220;full screen&#8221; mode.</li>
+<li>Hidden window are replaced by a gray bar.</li>
+<li>Click on he gray bar to switch between windows.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>switched mode</p>
+<ul class="last simple">
+<li>This parameter defines wheater switched mode is enable or not.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+<p class="rubric">Database name</p>
+<ul class="simple">
+<li>Display database name.</li>
+</ul>
+<p class="rubric">Version button</p>
+<ul class="simple">
+<li>Display application version.</li>
+<li>Click on button access to ProjeQtOr site.</li>
+</ul>
+</div>
+<div class="section" id="common-sections">
+<span id="gui-sections-label"></span><h1><a class="toc-backref" href="#graphic-user-interface">Common sections</a><a class="headerlink" href="#common-sections" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Some sections are displayed on almost all screens.</p>
+<p>Those sections allows to set information or link information to item of the element.</p>
+<div class="section" id="section-description">
+<h2><a class="toc-backref" href="#graphic-user-interface">Section: Description</a><a class="headerlink" href="#section-description" title="Lien permanent vers ce titre">¶</a></h2>
+<p>This section allows to put information about item of the element.</p>
+</div>
+<div class="section" id="section-treatment">
+<h2><a class="toc-backref" href="#graphic-user-interface">Section: Treatment</a><a class="headerlink" href="#section-treatment" title="Lien permanent vers ce titre">¶</a></h2>
+<p>This section allows to put information treatment done on the item of the element.</p>
+<p>Mostly information under this section are :</p>
+<ul class="simple">
+<li>Status and Dates</li>
+<li>Responsible</li>
+<li>Result, Comment</li>
+<li>And so on</li>
+</ul>
+</div>
+<div class="section" id="section-checklist">
+<span id="gui-checklist-section-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Section: Checklist</a><a class="headerlink" href="#section-checklist" title="Lien permanent vers ce titre">¶</a></h2>
+<p>If a checklist is defined for the current element a checklist section will appear.</p>
+<p>The user just has to check information corresponding to the situation.</p>
+<p>When done, the user name and checked date are recorded and displayed.</p>
+<p>Each line can get an extra comment, as well a globally on the checklist.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>How to define a checklist, see: <a class="reference internal" href="ControlAutomation.html#ctrlauto-checklist-def-label"><em>Checklist definition</em></a>.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>display checklists</p>
+<ul class="last simple">
+<li>This parameter defines whether the checklist section is hidden or not.</li>
+<li>If the value &#8220;On request&#8221; is set <a class="reference internal" href="_images/buttonIconShowChecklist.png"><img alt="Button icon show checklist" src="_images/buttonIconShowChecklist.png" style="width: 13.5px; height: 17.25px;" /></a> button appear on detail header window.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-linked-element">
+<span id="gui-linkelement-section-label"></span><h2><a class="toc-backref" href="#graphic-user-interface">Section: Éléments liés</a><a class="headerlink" href="#section-linked-element" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Most items can be linked to most of all other items (Actions, Activities, Tickets, Documents, …).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Linked elements must belong to the same project.</p>
+</div>
+<p>Click <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> on the corresponding section to add a link to an element. A “add link” pop up will be displayed.</p>
+<p>Select the linked element in the list and validate (OK).</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the corresponding link.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/addLink.png"><img alt="GUI add link Pop-up" src="_images/addLink.png" style="width: 358.2px; height: 211.2px;" /></a>
+<p class="caption">Add link Popup</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Linked element</p>
+<ul class="simple">
+<li>Click on <a class="reference internal" href="_images/buttonIconSearch.png"><img alt="Button icon search" src="_images/buttonIconSearch.png" style="width: 18.75px; height: 18.0px;" /></a> to show element detail.</li>
+<li>Depends on whether the element is selected or not a pop up is displayed.</li>
+<li>Detail about pop up, see <a class="reference internal" href="#gui-combo-list-fields-label"><em>Combo list fields</em></a></li>
+</ul>
+</div>
+<p class="rubric">Linked elements information</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Element</td>
+<td>Type and id of the linked element.</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>Name of the linked element.</td>
+</tr>
+<tr class="row-even"><td>Date</td>
+<td>Date of creation of the link.</td>
+</tr>
+<tr class="row-odd"><td>User</td>
+<td>User who created the link.</td>
+</tr>
+<tr class="row-even"><td>Status</td>
+<td>Actual status of the linked element.</td>
+</tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Reciprocally interrelated</p>
+<ul class="simple">
+<li>If Item A is linked to Item B, Item B is automatically linked to Item A.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Go to</p>
+<ul class="simple">
+<li>Click on the name of a item in the link list will directly move to it.</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Link with Document</p>
+<blockquote>
+<div><ul class="simple">
+<li>If you select a Document to link, you’ll have the possibility to select a version of the document, so that it is the version that will be linked.</li>
+<li>For Documents and Document Versions, a direct link to the corresponding file is proposed.</li>
+<li>For document, the last version of document will be proposed, the proposed download will change with document lifecycle.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="section-attachments">
+<span id="gui-attachment-section-label"></span><span id="index-4"></span><h2><a class="toc-backref" href="#graphic-user-interface">Section: Fichiers attachés</a><a class="headerlink" href="#section-attachments" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Users can attach files or hyperlinks on most of items.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> to add a attachment to an element. A “Attachment file” pop up will be displayed.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonLink.png"><img alt="Button button link" src="_images/smallButtonLink.png" style="width: 12.0px; height: 12.0px;" /></a> to add hyperlink to an element. A “Attachment hyperlink” pop up will be displayed.</p>
+<p>Select the attachment depends on either is a file or a hyperlink and validate (OK).</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonDownload.png"><img alt="Button button download" src="_images/smallButtonDownload.png" style="width: 12.0px; height: 12.0px;" /></a> to download attachment file.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonLink.png"><img alt="Button button link" src="_images/smallButtonLink.png" style="width: 12.0px; height: 12.0px;" /></a> to access to hyperlink.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the attachment.</p>
+<p class="rubric">Attachment file</p>
+<ul class="simple">
+<li>To upload file :<ul>
+<li>Select file with &#8220;Browse&#8221; button.</li>
+<li>Drop the file in &#8220;drop files here&#8221; area.</li>
+</ul>
+</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/attachmentFile.png"><img alt="GUI attachment file Pop-up" src="_images/attachmentFile.png" style="width: 312.6px; height: 85.8px;" /></a>
+<p class="caption">Attachment file Pop up</p>
+</div>
+<p class="rubric">Hyperlink</p>
+<ul class="simple">
+<li>Set hyperlink in hyperlink field.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/attachmentHyperLink.png"><img alt="GUI attachment hyperlink Pop-up" src="_images/attachmentHyperLink.png" style="width: 313.8px; height: 86.4px;" /></a>
+<p class="caption">Attachment hyperlink Pop up</p>
+</div>
+<p class="rubric">Attachment visibilty</p>
+<ul class="simple">
+<li>public : Visible to anyone.</li>
+<li>team : Visible to every member of the creator’s team.</li>
+<li>private :  Visible only to creator.</li>
+</ul>
+<p class="rubric">Attachment information</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the attachment.</td>
+</tr>
+<tr class="row-odd"><td>File</td>
+<td>File name or hyperlink.</td>
+</tr>
+<tr class="row-even"><td>Date</td>
+<td>Date of creation of the attachment.</td>
+</tr>
+<tr class="row-odd"><td>User</td>
+<td>User who created the attchment.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="section-notes">
+<span id="gui-note-section-label"></span><span id="index-5"></span><h2><a class="toc-backref" href="#graphic-user-interface">Section: Notes</a><a class="headerlink" href="#section-notes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Users can add notes on most items.</p>
+<p>Notes are comments, that can be shared to track some information or progress.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonAdd.png"><img alt="Button add" src="_images/smallButtonAdd.png" style="width: 12.0px; height: 12.0px;" /></a> to add a note to an element. A “note” pop up will be displayed.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonEdit.png"><img alt="Button edit" src="_images/smallButtonEdit.png" style="width: 12.0px; height: 12.0px;" /></a> to edit the note.</p>
+<p>Click on <a class="reference internal" href="_images/smallButtonRemove.png"><img alt="Button remove" src="_images/smallButtonRemove.png" style="width: 12.0px; height: 12.0px;" /></a> to delete the note.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/note1.png"><img alt="GUI note Pop-up" src="_images/note1.png" style="width: 318.0px; height: 163.2px;" /></a>
+<p class="caption">Note Pop up</p>
+</div>
+<p class="rubric">Predefined note</p>
+<ul class="simple">
+<li>Predefined note list of value appear whetear a prefedefined note is created.</li>
+<li>Selecting an item in the list will automatically fill in the note text field.</li>
+<li>How to define predefined note, see: <a class="reference internal" href="ControlAutomation.html#ctrlauto-predefined-notes-label"><em>Predefined notes</em></a>.</li>
+</ul>
+<p class="rubric">Attachment visibilty</p>
+<ul class="simple">
+<li>public : Visible to anyone.</li>
+<li>team : Visible to every member of the creator’s team.</li>
+<li>private :  Visible only to creator.</li>
+</ul>
+<p class="rubric">Note information</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the note.</td>
+</tr>
+<tr class="row-odd"><td>Note</td>
+<td>Text of the note.</td>
+</tr>
+<tr class="row-even"><td>Date</td>
+<td>Date of creation or modification of the note.</td>
+</tr>
+<tr class="row-odd"><td>User</td>
+<td>Name of the user who created the note.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="section-change-history">
+<span id="gui-chg-history-section-label"></span><span id="index-6"></span><h2><a class="toc-backref" href="#graphic-user-interface">Section: Historique des modifications</a><a class="headerlink" href="#section-change-history" title="Lien permanent vers ce titre">¶</a></h2>
+<p>All the changes items are tracked.</p>
+<p>They are stored and displayed on each item.</p>
+<p>On creation, just an insert operation is stored, not all the initial values on creation.</p>
+<p class="rubric">Change history information</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Operation</td>
+<td>The operation on the item (insert or update).</td>
+</tr>
+<tr class="row-odd"><td>Data</td>
+<td>The field modified.</td>
+</tr>
+<tr class="row-even"><td>Value before</td>
+<td>The value of the field before the update.</td>
+</tr>
+<tr class="row-odd"><td>Value after</td>
+<td>The value of the field after the update.</td>
+</tr>
+<tr class="row-even"><td>Date</td>
+<td>Date of change operation.</td>
+</tr>
+<tr class="row-odd"><td>User</td>
+<td>Name of the user who operated the change.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>display history</p>
+<ul class="last simple">
+<li>This parameter defines whether the display history section is hidden or not.</li>
+<li>If the value &#8220;On request&#8221; is set <a class="reference internal" href="_images/buttonIconShowHistory.png"><img alt="Button icon show history" src="_images/buttonIconShowHistory.png" style="width: 16.5px; height: 17.25px;" /></a> button appear on the detail header window.</li>
+<li>See this parameter under &#8220;Graphic interface behavior&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="alerts">
+<h1><a class="toc-backref" href="#graphic-user-interface">Alerts</a><a class="headerlink" href="#alerts" title="Lien permanent vers ce titre">¶</a></h1>
+<p>You may receive some information displayed as pop-up on the bottom right corner of the screen.</p>
+<p>Three kinds of information may be displayed :</p>
+<ul class="simple">
+<li>Information</li>
+<li>Warning</li>
+<li>Alert</li>
+</ul>
+<p>Two possible actions :</p>
+<ul class="simple">
+<li>You can select to remind you in a given number of minutes (message will close and appear  again in the given number of minutes).</li>
+<li>You can mark it as read to definitively hide it.</li>
+</ul>
+<p>An alert can be sent by the administrator or indicator calculation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Administrator</p>
+<ul class="last simple">
+<li>Administrator can send alert by administration console.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Indicator calculation</p>
+<ul class="last simple">
+<li>Indicator calculation send only warning and alert message.</li>
+<li>Alert coming from indicator calculation message contains more information :<ul>
+<li>Item id and type.</li>
+<li>Indicator description.</li>
+<li>Target value.</li>
+<li>Alert or warning value.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="themes">
+<h1><a class="toc-backref" href="#graphic-user-interface">Themes</a><a class="headerlink" href="#themes" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Users can select colors Theme to display the interface.</p>
+<p>New theme is automatically applied when selected.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>theme</p>
+<ul class="last simple">
+<li>This parameter defines the theme to display.</li>
+<li>Save parameters to retrieve this theme on each new connection.</li>
+<li>See this parameter under &#8220;Display parameters&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="multilingual">
+<h1><a class="toc-backref" href="#graphic-user-interface">Multilingual</a><a class="headerlink" href="#multilingual" title="Lien permanent vers ce titre">¶</a></h1>
+<p>ProjeQtOr is multilingual.</p>
+<p>Each user can choose the language to display all the captions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Of course, data is displayed as input, no translation is operated.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>language</p>
+<ul class="last simple">
+<li>This parameter defines language is used to display captions.</li>
+<li>Save parameters to retrieve this theme on each new connection.</li>
+<li>See this parameter under &#8220;Display parameters&#8221; section in <a class="reference internal" href="UserParameter.html#user-parameters-label"><em>User parameters</em></a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Top bar</a></li>
+<li><a class="reference internal" href="#logo-area">Logo area</a></li>
+<li><a class="reference internal" href="#menu-and-documents-windows">Menu and Documents windows</a></li>
+<li><a class="reference internal" href="#message-and-link-windows">Message and Link windows</a></li>
+<li><a class="reference internal" href="#main-area">Main area</a></li>
+<li><a class="reference internal" href="#list-window">List window</a><ul>
+<li><a class="reference internal" href="#advanced-filter">Advanced filter</a></li>
+<li><a class="reference internal" href="#displayed-columns">Displayed columns</a></li>
+<li><a class="reference internal" href="#export-to-csv-format">Export to CSV format</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#detail-window">Detail window</a><ul>
+<li><a class="reference internal" href="#copy-item">Copy item</a></li>
+<li><a class="reference internal" href="#email-detail">Email detail</a></li>
+<li><a class="reference internal" href="#multiple-update">Multiple update</a></li>
+<li><a class="reference internal" href="#combo-list-fields">Combo list fields</a></li>
+<li><a class="reference internal" href="#long-text-fields">Long text fields</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#info-bar">Info bar</a></li>
+<li><a class="reference internal" href="#common-sections">Common sections</a><ul>
+<li><a class="reference internal" href="#section-description">Section: Description</a></li>
+<li><a class="reference internal" href="#section-treatment">Section: Treatment</a></li>
+<li><a class="reference internal" href="#section-checklist">Section: Checklist</a></li>
+<li><a class="reference internal" href="#section-linked-element">Section: Éléments liés</a></li>
+<li><a class="reference internal" href="#section-attachments">Section: Fichiers attachés</a></li>
+<li><a class="reference internal" href="#section-notes">Section: Notes</a></li>
+<li><a class="reference internal" href="#section-change-history">Section: Historique des modifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#alerts">Alerts</a></li>
+<li><a class="reference internal" href="#themes">Themes</a></li>
+<li><a class="reference internal" href="#multilingual">Multilingual</a></li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="Features.html"
+                        title="Chapitre précédent">Gestion des délais</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="UserParameter.html"
+                        title="Chapitre suivant">User parameters</a></p>
+  <h3>Cette page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/Gui.txt"
+           rel="nofollow">Montrer la source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Saisissez un mot clef ou un nom de module, classe ou fonction.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="UserParameter.html" title="User parameters"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="Features.html" title="Gestion des délais"
+             >précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, ProjeQtOr.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

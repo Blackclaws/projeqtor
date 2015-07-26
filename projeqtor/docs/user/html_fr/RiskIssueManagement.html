@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Risk &amp; Issue Management &mdash; documentation ProjeQtOr User guide 5.0</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="documentation ProjeQtOr User guide 5.0" href="index.html" />
+    <link rel="next" title="Individual expense" href="Expense.html" />
+    <link rel="prev" title="Requirement" href="RequirementsTest.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Expense.html" title="Individual expense"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="RequirementsTest.html" title="Requirement"
+             accesskey="P">précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="contents local topic" id="risk-issue-management">
+<p class="topic-title first">Risk &amp; Issue Management</p>
+<ul class="simple">
+<li><a class="reference internal" href="#risk" id="id1">Risk</a></li>
+<li><a class="reference internal" href="#opportunity" id="id2">Opportunity</a></li>
+<li><a class="reference internal" href="#issue" id="id3">Issue</a></li>
+<li><a class="reference internal" href="#action" id="id4">Action</a></li>
+</ul>
+</div>
+<div class="section" id="risk">
+<span id="index-0"></span><h1><a class="toc-backref" href="#risk-issue-management">Risk</a><a class="headerlink" href="#risk" title="Lien permanent vers ce titre">¶</a></h1>
+<p>A risk is any threat of an event that may have a negative impact to the project, and which may be neutralized, or at least minimized, through pre-defined actions.</p>
+<p>The risk management plan is a key point to Project Management :</p>
+<blockquote>
+<div><ul class="simple">
+<li>identify risks and estimate their severity and likelihood.</li>
+<li>identify mitigating actions</li>
+<li>identify opportunities</li>
+<li>follow-up actions</li>
+<li>identify risks that finally occur (becoming an issue)</li>
+</ul>
+</div></blockquote>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-linkelement-section-label"><em>Section: Éléments liés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-attachment-section-label"><em>Section: Fichiers attachés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><em>Section: Notes</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the risk.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the risk.</td>
+</tr>
+<tr class="row-even"><td><strong>Type</strong></td>
+<td>Type of risk.</td>
+</tr>
+<tr class="row-odd"><td><strong>Project</strong></td>
+<td>The project concerned by the risk.</td>
+</tr>
+<tr class="row-even"><td>Severity</td>
+<td>Level of importance of the impact for the project.</td>
+</tr>
+<tr class="row-odd"><td>Likelihood</td>
+<td>Probability level of the risk to occur.</td>
+</tr>
+<tr class="row-even"><td>Criticality</td>
+<td>Global evaluation level of the risk.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-origin"><em class="xref std std-term">Origin</em></a></td>
+<td>Element which is the origin of the risk.</td>
+</tr>
+<tr class="row-even"><td>Cause</td>
+<td>Description of the event that may trigger the risk.</td>
+</tr>
+<tr class="row-odd"><td>Impact</td>
+<td>Description of the estimated impact on the project if the risk occurs.</td>
+</tr>
+<tr class="row-even"><td>Description</td>
+<td>Complete description of the risk.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Criticality</p>
+<ul class="simple">
+<li>Automatically calculated from Severity and Likelihood values.</li>
+<li>Value can be changed.</li>
+</ul>
+</div>
+<p class="rubric">Section: Treatment</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Status</strong></td>
+<td>Actual <a class="reference internal" href="Glossary.html#term-status"><em class="xref std std-term">status</em></a> of the risk.</td>
+</tr>
+<tr class="row-odd"><td>Responsible</td>
+<td>Resource who is responsible for the treatment of the risk.</td>
+</tr>
+<tr class="row-even"><td>Priority</td>
+<td>Expected priority to take into account this risk.</td>
+</tr>
+<tr class="row-odd"><td>Initial end date</td>
+<td>Initially expected end date of the risk.</td>
+</tr>
+<tr class="row-even"><td>Planned end date</td>
+<td>Updated end date of the risk.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-handled"><em class="xref std std-term">Handled</em></a></td>
+<td>Flag to indicate that risk is taken into account.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-done"><em class="xref std std-term">Done</em></a></td>
+<td>Flag to indicate that risk has been treated.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that risk is archived.</td>
+</tr>
+<tr class="row-even"><td>Cancelled</td>
+<td>Flag to indicate that risk is cancelled.</td>
+</tr>
+<tr class="row-odd"><td>Result</td>
+<td>Complete description of the treatment done on the risk.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+</div>
+<div class="section" id="opportunity">
+<span id="index-1"></span><h1><a class="toc-backref" href="#risk-issue-management">Opportunity</a><a class="headerlink" href="#opportunity" title="Lien permanent vers ce titre">¶</a></h1>
+<p>An opportunity can be seen as a positive risk. It is not a threat but the opportunity to have a positive impact to the project.</p>
+<p>The risk management plan is a key point to Project Management :</p>
+<blockquote>
+<div><ul class="simple">
+<li>identify risks and estimate their severity and likelihood.</li>
+<li>identify mitigating actions</li>
+<li>identify opportunities</li>
+<li>follow-up actions</li>
+<li>identify risks that finally occur (becoming an issue)</li>
+</ul>
+</div></blockquote>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-linkelement-section-label"><em>Section: Éléments liés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-attachment-section-label"><em>Section: Fichiers attachés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><em>Section: Notes</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the opportunity.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the opportunity.</td>
+</tr>
+<tr class="row-even"><td><strong>Type</strong></td>
+<td>Type of opportunity.</td>
+</tr>
+<tr class="row-odd"><td><strong>Project</strong></td>
+<td>The project concerned by the opportunity.</td>
+</tr>
+<tr class="row-even"><td>Severity</td>
+<td>Level of importance of the impact for the project.</td>
+</tr>
+<tr class="row-odd"><td>Expected improvement</td>
+<td>Evaluation of the estimated improvement, or positive impact, on the project of the opportunity.</td>
+</tr>
+<tr class="row-even"><td>Criticality</td>
+<td>Global evaluation level of the opportunity.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-origin"><em class="xref std std-term">Origin</em></a></td>
+<td>Element which is the origin of the opportunity.</td>
+</tr>
+<tr class="row-even"><td>Opportunity source</td>
+<td>Description of the event that may trigger the opportunity.</td>
+</tr>
+<tr class="row-odd"><td>Impact</td>
+<td>Description of the estimated positive impact on the project.</td>
+</tr>
+<tr class="row-even"><td>Description</td>
+<td>Complete description of the opportunity.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<div class="topic">
+<p class="topic-title first">Field: Criticality</p>
+<ul class="simple">
+<li>Automatically calculated from Severity and Likelihood (Expected improvement) values.</li>
+<li>Value can be changed.</li>
+</ul>
+</div>
+<p class="rubric">Section: Treatment</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Status</strong></td>
+<td>Actual <a class="reference internal" href="Glossary.html#term-status"><em class="xref std std-term">status</em></a> of the opportunity.</td>
+</tr>
+<tr class="row-odd"><td>Responsible</td>
+<td>Resource who is responsible for the opportunity.</td>
+</tr>
+<tr class="row-even"><td>Priority</td>
+<td>Expected priority to take into account this opportunity.</td>
+</tr>
+<tr class="row-odd"><td>Initial end date</td>
+<td>Initially expected end date of the opportunity.</td>
+</tr>
+<tr class="row-even"><td>Planned end date</td>
+<td>Updated end date of the opportunity.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-handled"><em class="xref std std-term">Handled</em></a></td>
+<td>Flag to indicate that opportunity is taken into account.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-done"><em class="xref std std-term">Done</em></a></td>
+<td>Flag to indicate that opportunity has been treated.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that opportunity is archived.</td>
+</tr>
+<tr class="row-even"><td>Cancelled</td>
+<td>Flag to indicate that opportunity is cancelled.</td>
+</tr>
+<tr class="row-odd"><td>Result</td>
+<td>Complete description of the treatment of the opportunity.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+</div>
+<div class="section" id="issue">
+<span id="index-2"></span><h1><a class="toc-backref" href="#risk-issue-management">Issue</a><a class="headerlink" href="#issue" title="Lien permanent vers ce titre">¶</a></h1>
+<p>An issue is a problem that occurs during the project.</p>
+<p>If the Risk Management Plan has been correctly managed, issues should always be occurring identified Risks.</p>
+<p>Actions must be defined to solve the issue.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-linkelement-section-label"><em>Section: Éléments liés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-attachment-section-label"><em>Section: Fichiers attachés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><em>Section: Notes</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the issue.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the issue.</td>
+</tr>
+<tr class="row-even"><td><strong>Type</strong></td>
+<td>Type of issue.</td>
+</tr>
+<tr class="row-odd"><td><strong>Project</strong></td>
+<td>The project concerned by the issue.</td>
+</tr>
+<tr class="row-even"><td>Criticality</td>
+<td>Level of importance of the impact for the project.</td>
+</tr>
+<tr class="row-odd"><td>Priority</td>
+<td>Priority requested to the treatment of the issue.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-origin"><em class="xref std std-term">Origin</em></a></td>
+<td>Element which is the origin of the issue.</td>
+</tr>
+<tr class="row-odd"><td>Cause</td>
+<td>Description of the event that led to the issue.</td>
+</tr>
+<tr class="row-even"><td>Impact</td>
+<td>Description of the impact of the issue on the project.</td>
+</tr>
+<tr class="row-odd"><td>Description</td>
+<td>Complete description of the issue.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<p class="rubric">Section: Treatment</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Status</strong></td>
+<td>Actual <a class="reference internal" href="Glossary.html#term-status"><em class="xref std std-term">status</em></a> of the issue.</td>
+</tr>
+<tr class="row-odd"><td>Responsible</td>
+<td>Resource who is responsible for the issue.</td>
+</tr>
+<tr class="row-even"><td>Initial end date</td>
+<td>Initially expected end date of the issue.</td>
+</tr>
+<tr class="row-odd"><td>Planned end date</td>
+<td>Updated end date of the issue.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-handled"><em class="xref std std-term">Handled</em></a></td>
+<td>Flag to indicate that issue is taken into account.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-done"><em class="xref std std-term">Done</em></a></td>
+<td>Flag to indicate that issue has been treated.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that issue is archived.</td>
+</tr>
+<tr class="row-odd"><td>Cancelled</td>
+<td>Flag to indicate that issue is cancelled.</td>
+</tr>
+<tr class="row-even"><td>Result</td>
+<td>Complete description of the treatment of the issue.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+</div>
+<div class="section" id="action">
+<span id="index-3"></span><h1><a class="toc-backref" href="#risk-issue-management">Action</a><a class="headerlink" href="#action" title="Lien permanent vers ce titre">¶</a></h1>
+<p>An action is a task or activity that is set-up in order to :</p>
+<blockquote>
+<div><ul class="simple">
+<li>reduce the likelihood of a risk</li>
+<li>or reduce the impact of a risk</li>
+<li>or solve an issue</li>
+<li>or build a post-meeting action plan</li>
+<li>or just define a “to do list”.</li>
+</ul>
+</div></blockquote>
+<p>The actions are the main activities of the risk management plan.</p>
+<p>They must be regularly followed-up.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Other sections</p>
+<ul class="last simple">
+<li><a class="reference internal" href="Gui.html#gui-linkelement-section-label"><em>Section: Éléments liés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-attachment-section-label"><em>Section: Fichiers attachés</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-note-section-label"><em>Section: Notes</em></a></li>
+<li><a class="reference internal" href="Gui.html#gui-chg-history-section-label"><em>Section: Historique des modifications</em></a></li>
+</ul>
+</div>
+<p class="rubric">Section: Description</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-id"><em class="xref std std-term">Id</em></a></td>
+<td>Unique Id for the action.</td>
+</tr>
+<tr class="row-odd"><td><strong>Name</strong></td>
+<td>Short description of the action.</td>
+</tr>
+<tr class="row-even"><td><strong>Action type</strong></td>
+<td>Type of action.</td>
+</tr>
+<tr class="row-odd"><td><strong>Project</strong></td>
+<td>The project concerned by the action.</td>
+</tr>
+<tr class="row-even"><td>Priority</td>
+<td>Priority requested to the treatment of the action.</td>
+</tr>
+<tr class="row-odd"><td>Description</td>
+<td>Complete description of the action.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+<p class="rubric">Section: Treatment</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Status</strong></td>
+<td>Actual <a class="reference internal" href="Glossary.html#term-status"><em class="xref std std-term">status</em></a> of the action.</td>
+</tr>
+<tr class="row-odd"><td>Responsible</td>
+<td>Resource who is responsible for the action.</td>
+</tr>
+<tr class="row-even"><td>Initial end date</td>
+<td>Initially expected end date of the action.</td>
+</tr>
+<tr class="row-odd"><td>Planned end date</td>
+<td>Updated end date of the action.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-handled"><em class="xref std std-term">Handled</em></a></td>
+<td>Flag to indicate that action is taken into account.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="Glossary.html#term-done"><em class="xref std std-term">Done</em></a></td>
+<td>Flag to indicate that action has been treated.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="Glossary.html#term-closed"><em class="xref std std-term">Closed</em></a></td>
+<td>Flag to indicate that action is archived.</td>
+</tr>
+<tr class="row-odd"><td>Cancelled</td>
+<td>Flag to indicate that action is cancelled.</td>
+</tr>
+<tr class="row-even"><td>Efficiency</td>
+<td>Evaluation of the efficiency the action had on the objective (for instance on the risk mitigation).</td>
+</tr>
+<tr class="row-odd"><td>Result</td>
+<td>Complete description of the treatment of the action.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>* Required field</strong></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Projeqtor_Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Risk</a></li>
+<li><a class="reference internal" href="#opportunity">Opportunity</a></li>
+<li><a class="reference internal" href="#issue">Issue</a></li>
+<li><a class="reference internal" href="#action">Action</a></li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="RequirementsTest.html"
+                        title="Chapitre précédent">Requirement</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="Expense.html"
+                        title="Chapitre suivant">Individual expense</a></p>
+  <h3>Cette page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/RiskIssueManagement.txt"
+           rel="nofollow">Montrer la source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Saisissez un mot clef ou un nom de module, classe ou fonction.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="Expense.html" title="Individual expense"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="RequirementsTest.html" title="Requirement"
+             >précédent</a> |</li>
+        <li><a href="index.html">documentation ProjeQtOr User guide 5.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, ProjeQtOr.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
