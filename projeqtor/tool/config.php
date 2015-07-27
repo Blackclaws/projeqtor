@@ -43,38 +43,44 @@ $label['DbType'] = "Database type";
 $value['DbType'] = "'mysql' or 'pgsql' (for PostgreSql)";
 $pname['DbType'] = 'paramDbType';
 $ctrls['DbType'] = '=mysql=pgsql=';
+$requi['DbType'] = true;
 
 $param['DbHost'] = 'localhost';                       
 $label['DbHost'] = "Database host";
 $value['DbHost'] = "Database Server name (default is 'localhost')";
 $pname['DbHost'] = 'paramDbHost';
 $ctrls['DbHost'] = 'mandatory';
+$requi['DbHost'] = true;
 
 $param['DbPort'] = '3306';                       
 $label['DbPort'] = "Database port";
 $value['DbPort'] = "Database Server Port (default is '3306' for MySql, '5432' for PostgreSql)";
 $pname['DbPort'] = 'paramDbPort';
 $ctrls['DbPort'] = '';
+$requi['DbPort'] = true;
 
 $param['DbUser'] = 'root';                            
 $label['DbUser'] = "Database user to connect";
 $value['DbUser'] = "valid user (default is 'root' for MySql, 'postgres' for PostgreSql)";
 $pname['DbUser'] = 'paramDbUser';
 $ctrls['DbUser'] = 'mandatory';
+$requi['DbUser'] = true;
 
 $param['DbPassword'] = 'mysql';                       
 $label['DbPassword'] = "Database password for user";
 $value['DbPassword'] = "password for user (default is 'mysql' or '' for MySql)";
 $pname['DbPassword'] = 'paramDbPassword';
 $ctrls['DbPassword'] = '';
+$requi['DbPassword'] = true;
 
 $param['DbName'] = 'projeqtor';                       
 $label['DbName'] = "Database schema name";  
 $value['DbName'] = "database instance name";  
 $pname['DbName'] = 'paramDbName';
 $ctrls['DbName'] = 'mandatory';
+$requi['DbName'] = true;
 
-$param['DbDisplayName'] = 'My Own ProjeQtOr';         
+$param['DbDisplayName'] = 'ProjeQtOr';         
 $label['DbDisplayName'] = "Name to be displayed"; 
 $value['DbDisplayName'] = "any value possible to identify connected database"; 
 $pname['DbDisplayName'] = 'paramDbDisplayName';
@@ -91,7 +97,7 @@ $label['crlf00']='crlf';
 
 $param['ldap_allow_login'] = 'false';                              
 $label['ldap_allow_login'] = "Allow login from Ldap";
-$value['ldap_allow_login'] = "'true' or 'false', if set to true, ProjeQtO can log user from Ldap";
+$value['ldap_allow_login'] = "'true' or 'false', if set to true, ProjeQtOr can log users from Ldap";
 $pname['ldap_allow_login'] = 'paramLdap_allow_login';
 $ctrls['ldap_allow_login'] = '=false=true=';
 
@@ -200,12 +206,14 @@ $label['DefaultLocale'] = "Default locale to be used on i18n";
 $value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'fr-ca' for French Canada, 'de' for German, 'es' for Spanish, 'pt' for Portuguese, 'pt-br' for Portuguese Brazil, 'ru' for Russian, 'zh' for Chinese, 'nl' for Dutch, 'fa' for Farsi (Persian), 'ja' for Japanese, 'el' for Greek, 'ua' for Ukrainian";
 $pname['DefaultLocale'] = 'paramDefaultLocale';
 $ctrls['DefaultLocale'] = '=en=fr=fr-ca=de=es=pt=pt-br=ru=zh=nl=fa=ja=el=ua=';
+$requi['DefaultLocale'] = true;
 
 $param['DefaultTimezone'] = 'Europe/Paris';                              
 $label['DefaultTimezone'] = "Default time zone";
 $value['DefaultTimezone'] = "default time zone, list can be found at <a href='http://us3.php.net/manual/en/timezones.php' target='#'>http://us3.php.net/manual/en/timezones.php</a>";
 $pname['DefaultTimezone'] = 'paramDefaultTimezone';
 $ctrls['DefaultTimezone'] = '';
+$requi['DefaultTimezone'] = true;
 
 $param['Currency'] = '€';                              
 $label['Currency'] = "Currency";
@@ -302,13 +310,14 @@ $label['logFile'] = "Log file name";
 $value['logFile'] = 'any valid file name, may contain \'${date}\' to get 1 file a day<br/><b>Security hint :</b> move it ouside web access';
 $pname['logFile'] = 'logFile';
 $ctrls['logFile'] = '';
+$requi['logFile'] = true;
 
 $param['logLevel'] = '2';                              
 $label['logLevel'] = "Log level";
 $value['logLevel'] = "'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none";
 $pname['logLevel'] = 'logLevel';
 $ctrls['logLevel'] = '=4=3=2=1=0=';
-
+$requi['logLevel'] = true;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -344,7 +353,8 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
       userBrowserLocaleForDates="";
-      saveBrowserLocaleToSession();
+      var browserLocaleDateFormat=null;
+      //saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
       //dojo.byId('login').focus();
       <?php 
@@ -362,6 +372,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
+      <tr height="5%"><td colspan="4">&nbsp;</td></tr>
     <tr height="10%">
       <td rowspan="2" width="80px" valign="top">
       </td>
@@ -379,11 +390,15 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
       <td colspan="3" align="left" valign="top">
           <form  dojoType="dijit.form.Form" id="configForm" jsId="configForm" name="configForm" encType="multipart/form-data" action="" method="POST" >
             <script type="dojo/method" event="onSubmit" >
-              loadContent("../tool/configCheck.php","configResultDiv", "configForm");
+              var callBck=function() {
+                dojo.byId("bottom").scrollIntoView();
+              };
+              loadContent("../tool/configCheck.php","configResultDiv", "configForm", null, null, null, null,callBck);
               return false;        
             </script>
             <table>
             <?php foreach ($param as $par=>$val) {
+              $requiredClass=(isset($requi[$par]) and  $requi[$par]=true)?'required':'';
               if ($label[$par]=='crlf') {?>
               <tr><td colspan="4">&nbsp;</td></tr>
               <?php } else {?>
@@ -391,9 +406,9 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
                 <td class="label" style="width:300px"><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
                 <td>
                 <?php if (substr($ctrls[$par],0,1)=='=') {?>
-                <select id="param[<?php echo $par;?>]" class="input" name="param[<?php echo $par;?>]" 
+                <select id="param[<?php echo $par;?>]" class="input <?php echo $requiredClass;?>" name="param[<?php echo $par;?>]" 
                    style="width:300px" dojoType="dijit.form.FilteringSelect" 
-                   value="<?php echo $val;?>" >
+                   value="<?php echo $val;?>">
                  <?php $split=explode('=',$ctrls[$par]);
                  foreach($split as $val) {
                    if ($val!='=' and $val) {
@@ -407,7 +422,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
                 </select>                    
                 <?php } else {?>
                 <input id="param[<?php echo $par;?>]" name="param[<?php echo $par;?>]" 
-                   style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
+                   style="width:300px" type="text"  dojoType="dijit.form.TextBox" class="input <?php echo $requiredClass;?>"
                    value="<?php echo $val;?>" />
                 <?php }?>
                 </td>
@@ -431,7 +446,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
               <tr><td colspan="4">&nbsp;</td></tr>
               <tr>
                 <td class="label" style="width:300px"><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
-                <td><input id="location" name="location" 
+                <td><input id="location" name="location" class="input required"
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="../files/config/parameters.php" />
                 </td>
@@ -466,5 +481,6 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
       </td>
     </tr>
   </table>
+  <div id="bottom" name="bottom" style="width:100%; border: 0px solid black; overflow: auto;">&nbsp;<br/></div>
 </body>
 </html>

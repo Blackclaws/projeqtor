@@ -28,6 +28,7 @@
  * Chek login/password entered in connection screen
  */
   include_once("../tool/file.php");
+  include_once("../tool/configCheckPrerequisites.php");
   restore_error_handler();
   error_reporting(0);
   $param=$_REQUEST["param"];
@@ -63,13 +64,9 @@
     }
   }
   // Check that PDO is enabled
-  if (! extension_loaded('pdo')) {
-    showError('PDO module is not available - check your php configuration (php.ini)');
+  if (checkPrerequisites(true,$param['DbType'])!="OK") {
+    echo "<br/>";
     exit;
-  }
-  if ( ! extension_loaded('pdo_'.$param['DbType']) ) {
-  	showError('Module PDO for ' . strtoupper($param['DbType']).' is not available - check your php configuration (php.ini)');
-  	exit; 	
   }
   
   // check database connexion
@@ -125,7 +122,9 @@
       showError($e->getMessage().'<br/>dsn = '.$dsn);
       exit;
     }  
-    showMsg('Database \'' . $param['DbName'] . '\' created.');
+    showMessage("Database '" . $param['DbName'] . "' created : OK");
+  } else {
+    showMessage("Database '" . $param['DbName'] . "' already exists : OK");
   }
   
   // Check attachment directory (may be empty)
@@ -202,22 +201,12 @@
   writeFile('$parametersLocation = \'' . $paramFile . '\';', $paramLocation);
   
   //rename ('../tool/config.php','../tool/config.php.old');
-  showMsg("Parameters are saved.");
+  showMessage("Parameters are saved.");
   
   echo '<br/><button id="continueButton" dojoType="dijit.form.Button" showlabel="true">continue';
   echo '<script type="dojo/connect" event="onClick" args="evt">';
   echo '  window.location = ".";';
   echo '</script>';
   echo '</button>';
-  
-  function showError($msg) {
-    global $error;
-    $error=true;
-    echo "<div class='messageERROR'>" . $msg . "</div>";
-  }
-
-  function showMsg($msg) {
-    echo "<div class='messageOK'>" . $msg . "</div>";
-  }
 
 ?>

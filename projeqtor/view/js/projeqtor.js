@@ -518,7 +518,7 @@ function cleanContent(destination) {
  *            some treatment, calling finalizeMessageDisplay
  * @return void
  */
-function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent) {
+function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction) {
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -681,6 +681,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	    onEnd: function() { }
 	  }).play();
   }
+  if (callBackFunction!=null) setTimeout(callBackFunction,100);
 }
 
 /** 

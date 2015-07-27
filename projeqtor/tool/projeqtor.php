@@ -40,8 +40,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.0.3"; // Version of application : Major / Minor / Release
-$build = "0118"; // Build number. To be increased on each release
+$version = "V5.1.0"; // Version of application : Major / Minor / Release
+$build = "0120"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage = ''; // About message to be displayed when clicking on application logo
 $aboutMessage .= '<div>' . $applicationName . ' ' . $version . ' (' . ($build + 0) . ')</div><br/>';
@@ -128,15 +128,8 @@ if (false === function_exists('lcfirst')) {
  */
 
 // Check 'magic_quotes' : must be disabled ====================================
-if (get_magic_quotes_gpc ()) {
-  traceLog ( i18n ( "errorMagicQuotesGpc" ) );
-}
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime ( 0 );
-}
-// Check Register Globals
-if (ini_get ( 'register_globals' )) {
-  traceLog ( i18n ( "errorRegisterGlobals" ) );
 }
 
 $page = $_SERVER ['PHP_SELF'];
