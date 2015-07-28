@@ -325,9 +325,9 @@ class User extends SqlElement {
       return $this->_accessControlRights[$profile];
     }
     $menuList=SqlList::getListNotTranslated('Menu');
-    $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
-    $allAccessArray=array( 'read' => 'ALL', 'create' => 'ALL', 'update' => 'ALL', 'delete' => 'ALL');
-    $readAccessArray=array( 'read' => 'ALL', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
+    $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO','report'=>'NO');
+    $allAccessArray=array( 'read' => 'ALL', 'create' => 'ALL', 'update' => 'ALL', 'delete' => 'ALL', 'report'=>'ALL');
+    $readAccessArray=array( 'read' => 'ALL', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO', 'report'=>'ALL');
     // first time function is called for object, so go and fetch data
     $this->_accessControlVisibility='PRO';
     $accessControlRights=array();
@@ -337,12 +337,17 @@ class User extends SqlElement {
     $crit=array('idProfile'=>$profile);
     $accessRightList=$accessRight->getSqlElementsFromCriteria( $crit, false);
     $habilitation=new Habilitation();
-    $crit=array('idProfile'=>$profile, 'allowAccess'=>'1');
+    $crit=array('idProfile'=>$profile);
     $habilitationList=$habilitation->getSqlElementsFromCriteria( $crit, false);
     foreach ($habilitationList as $hab) { // if allowAcces = 1 in habilitation (access to screen), default access is all
     	if (array_key_exists($hab->idMenu,$menuList)) {
     	  $menuName=$menuList[$hab->idMenu];
-    	  $accessControlRights[$menuName]=$allAccessArray;
+    	  if ($hab->allowAccess==1) {
+    	    $accessControlRights[$menuName]=$allAccessArray;
+    	  } else {
+    	    $accessControlRights[$menuName]=$noAccessArray;
+    	    $accessControlRights[$menuName]['report']='ALL';
+    	  }
     	}
     }
     foreach ($accessRightList as $arObj) {
@@ -355,7 +360,8 @@ class User extends SqlElement {
           $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
                              'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
                              'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
-                             'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete] );
+                             'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete],
+                             'report' =>  $accessScopeList[$accessProfile->idAccessScopeRead], );
         } else {
            $RW=$accessScopeRW[$arObj->idAccessProfile];
            if ($RW=='WRITE') {
