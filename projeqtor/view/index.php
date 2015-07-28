@@ -1,6 +1,10 @@
 <?php
 $indexPhp=true;
-include_once '../tool/projeqtor.php';
+$theme="ProjeQtOr";
+if (is_file ( "../tool/parametersLocation.php" )) {
+  include_once '../tool/projeqtor.php';
+  $theme=getTheme();
+} 
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -50,7 +54,7 @@ include_once '../tool/projeqtor.php';
   </script>
 </head>
 
-<body class="tundra <?php echo getTheme();?>" style='background-color: #C3C3EB' >
+<body class="tundra <?php echo $theme;?>" style='background-color: #C3C3EB' >
   <div id="wait">
   &nbsp;
   </div> 
