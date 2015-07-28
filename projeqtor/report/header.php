@@ -24,6 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+$reportContext=true;
 // Header
 //echo "<page_header>";
 if (Parameter::getGlobalParameter('logLevel')>='4') {

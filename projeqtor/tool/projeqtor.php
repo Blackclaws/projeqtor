@@ -668,6 +668,7 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
 }
 
 function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause=false, $excludeResourceClause=false) {
+  global $reportContext;
   if (! property_exists($objectClass,'idProject')) return '(1=1)'; // If not project depedant, no extra clause
   
   $obj = new $objectClass ();
@@ -680,7 +681,11 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
     $tableAlias = $obj->getDatabaseTableName () . '.';
   }
   // Retrieve acces right for default profile
-  $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'read' );
+  if (isset($reportContext) and $reportContext==true) {
+    $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'report' );
+  } else {
+    $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'read' );
+  }
   $listNO=transformListIntoInClause($user->getAccessRights($objectClass,'NO'));
   $listOWN=(property_exists($obj,"idUser"))?transformListIntoInClause($user->getAccessRights($objectClass,'OWN')):null;
   $listRES=(property_exists($obj,"idResource"))?transformListIntoInClause($user->getAccessRights($objectClass,'RES')):null;
@@ -757,63 +762,6 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
     if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES)";
     if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN)";
   }
-  
-  /*
-  if ($accessRightRead == 'NO') {
-    // Not applied here any more : will be applied for each project where profile has access = NO
-    //$queryWhere .= ($queryWhere == '') ? '' : ' and ';
-    //$queryWhere .= "(1 = 1)";
-  } else if ($accessRightRead == 'OWN') {
-    if (property_exists ( $obj, "idUser" )) {
-      $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-      if ($alias === false) {
-        $queryWhere .= "idUser = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
-      } else {
-        $queryWhere .= $table . ".idUser = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
-      }
-    } else {
-      $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-      $queryWhere .= "(1 = 2)";
-    }
-  } else if ($accessRightRead == 'RES') {
-    if (property_exists ( $obj, "idResource" )) {
-      $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-      if ($alias === false) {
-        $queryWhere .= "idResource = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
-      } else {
-        $queryWhere .= $table . ".idResource = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
-      }
-    } else {
-      $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-      $queryWhere .= "(1 = 2)";
-    }
-  } else if ($accessRightRead == 'PRO') {
-    $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-    if ($alias === false) {
-      if ($objectClass == 'Project') {
-        $queryWhere .= "id in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
-      } else if ($objectClass == 'Document') {
-        $v = new Version ();
-        $vp = new VersionProject ();
-        $queryWhere .= "(idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . " or (idProject is null and idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
-      } else {
-        $queryWhere .= "idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
-      }
-    } else {
-      if ($objectClass == 'Project') {
-        $queryWhere .= $table . ".id in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
-      } else if ($objectClass == 'Document') {
-        $v = new Version ();
-        $vp = new VersionProject ();
-        $queryWhere .= "(" . $table . ".idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . " or (" . $table . ".idProject is null and " . $table . ".idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
-      } else {
-        $queryWhere .= $table . ".idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
-      }
-    }
-  } else if ($accessRightRead == 'ALL') {
-    $queryWhere .= ' (1=1) ';
-  }*/
-  
   return " " . $queryWhere . " ";
 }
 
