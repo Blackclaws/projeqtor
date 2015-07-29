@@ -468,7 +468,7 @@ function isUpdatableKey(keyCode) {
                     // (left, right, up, down)
    || (keyCode==67)                   // ctrl+C
    || keyCode==91                     // Windows
-// || (keyCode>=112 && keyCode<=123) // Function keys
+   || (keyCode>=112 && keyCode<=123) // Function keys
    || keyCode==144                     // numlock
    || keyCode==145                     // stop
    || keyCode>=166                    // Media keys
