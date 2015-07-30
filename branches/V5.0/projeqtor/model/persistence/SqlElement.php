@@ -1218,7 +1218,7 @@ abstract class SqlElement {
 			} else {
 				$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
 				if (! $st or ! $st->id) {
-					errorLog("Error : several on no status exist with isCopyStatus=1");
+					errorLog("Error : several or no status exist with isCopyStatus=1");
 				}
 				$newObj->idStatus=$st->id;
 			}
