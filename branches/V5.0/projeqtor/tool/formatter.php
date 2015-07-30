@@ -226,8 +226,10 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	if ($title) {
 		$title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
 	}
-	if (! $print and ($known or $alwaysDisplayBigImage)) {
+  if (! $print and ($known or $alwaysDisplayBigImage)) {
 	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?",false":",true").',\''.$nocache.'\');" onMouseOut="hideBigImage();"';
+	} else if (!$known and $userName) {
+	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\',true,\''.$nocache.'\');" onMouseOut="hideBigImage();"';
 	}
 	$res.='/>';
 	return $res;
