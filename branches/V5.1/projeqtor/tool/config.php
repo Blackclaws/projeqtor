@@ -45,9 +45,9 @@ $pname['DbType'] = 'paramDbType';
 $ctrls['DbType'] = '=mysql=pgsql=';
 $requi['DbType'] = true;
 
-$param['DbHost'] = 'localhost';                       
+$param['DbHost'] = '127.0.0.1';                       
 $label['DbHost'] = "Database host";
-$value['DbHost'] = "Database Server name (default is 'localhost')";
+$value['DbHost'] = "Database Server name (default is '127.0.0.1' for mysql, can also be 'localhost')";
 $pname['DbHost'] = 'paramDbHost';
 $ctrls['DbHost'] = 'mandatory';
 $requi['DbHost'] = true;
