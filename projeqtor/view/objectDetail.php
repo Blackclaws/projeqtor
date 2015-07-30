@@ -1367,7 +1367,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '<div class="roundedVisibleButton roundedButton"';
           echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
           echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
-          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $next . ');setTimeout(\'saveObject()\',10);">';
+          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $next . ');setTimeout(\'saveObject()\',100);">';
           echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
           echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . SqlList::getNameFromId('Status', $next) . '<div>';
           echo '</div>';
@@ -1376,7 +1376,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '<div class="roundedVisibleButton roundedButton"';
           echo ' title="' . i18n("assignToMe") . '"';
           echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
-          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $user->id . ');setTimeout(\'saveObject()\',10);"';
+          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $user->id . ');setTimeout(\'saveObject()\',100);"';
           echo '>';
           echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
           echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . i18n('assignToMeShort') . '<div>';
@@ -1474,7 +1474,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       } else if ($dataLength > 100 and $dataLength <= 4000 and !array_key_exists('testingMode', $_REQUEST)) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
-        echo ' onKeyPress="if (dojo.isFF || isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
+        echo ' onKeyPress="if (dojo.isFF || isEditingKey(event)) {formChanged();}" '; // hard coding default event
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly') > 0) {

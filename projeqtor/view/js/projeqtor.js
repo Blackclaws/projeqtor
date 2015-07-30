@@ -461,14 +461,14 @@ function saveResolutionToSession() {
  *            the code of the key
  * @return boolean : true if able to change field, else false
  */
-function isUpdatableKey(keyCode) {
+/*function isUpdatableKey(keyCode) {
   if (keyCode==9                      // tab
    || (keyCode>=16 && keyCode<=20)    // shift, ctrl, alt, pause, caps lock
    || (keyCode>=33 && keyCode<=40)    // Home, end, page up, page down, arrows
                     // (left, right, up, down)
    || (keyCode==67)                   // ctrl+C
    || keyCode==91                     // Windows
-// || (keyCode>=112 && keyCode<=123) // Function keys
+   || (keyCode>=112 && keyCode<=123) // Function keys
    || keyCode==144                     // numlock
    || keyCode==145                     // stop
    || keyCode>=166                    // Media keys
@@ -476,7 +476,7 @@ function isUpdatableKey(keyCode) {
     return false;
   } 
   return true;                        // others
-}
+}*/
 
 /**
  * ============================================================================

@@ -75,6 +75,7 @@
     $otherMail=(array_key_exists('dialogOtherMail', $_REQUEST))?$_REQUEST['dialogOtherMail']:'';
     $otherMail=str_replace('"','',$otherMail);
     $message=(array_key_exists('dialogMailMessage', $_REQUEST))?$_REQUEST['dialogMailMessage']:'';  
+    $saveAsNote=(array_key_exists('dialogMailSaveAsNote', $_REQUEST))?true:false;
     $obj=new $class($id);
     $directStatusMail=new StatusMail();
     $directStatusMail->mailToContact=$mailToContact;
@@ -97,7 +98,16 @@
       $dest=$resultMail['dest'];
     }
   }
-  if ($result=="OK") { 
+  if ($result=="OK") {
+    if ($typeSendMail=="Mailable" and $saveAsNote) {
+      $note=new Note();
+      $note->refType=$class;
+      $note->refId=$id;
+      $note->idUser=getSessionUser()->id;
+      $note->creationDate=date('Y-m-d H:i:s');
+      $note->note=i18n('mailSentTo',array($dest))." :<br/>".$message;
+      $note->save();
+    }
     echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="OK" />';

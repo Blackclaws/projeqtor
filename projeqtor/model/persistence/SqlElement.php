@@ -1218,7 +1218,7 @@ abstract class SqlElement {
 			} else {
 				$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
 				if (! $st or ! $st->id) {
-					errorLog("Error : several on no status exist with isCopyStatus=1");
+					errorLog("Error : several or no status exist with isCopyStatus=1 (expected is 1 only and only 1)");
 				}
 				$newObj->idStatus=$st->id;
 			}
@@ -2437,7 +2437,7 @@ abstract class SqlElement {
 		}
 		if ( ! (substr($colName,0,2)=='id' and strlen($colName)>2 ) ) { // OTHER => onKeyPress
 			$colScript .= '<script type="dojo/method" event="onKeyDown" args="event">'; // V4.2 Changed onKeyPress to onKeyDown because was not triggered
-			$colScript .= '  if (isUpdatableKey(event.keyCode)) {';
+			$colScript .= '  if (isEditingKey(event)) {';
 			$colScript .= '    formChanged();';
 			$colScript .= '  }';
 			$colScript .= '</script>';

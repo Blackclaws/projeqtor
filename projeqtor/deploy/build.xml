@@ -106,7 +106,15 @@
   
   <target name="copyModel">
     <copy todir="${deploy.dir}/model">
-      <fileset dir="${src.dir}/model"/>
+      <fileset dir="${src.dir}/model">
+        <include name="**" />
+        <exclude name="**/custom/*.*"/>
+      </fileset>
+    </copy>
+    <copy todir="${deploy.dir}/model/custom">
+      <fileset dir="${src.dir}/model/custom">
+         <include name="**/_securityCheck.php"/>
+      </fileset>
     </copy>
   </target>
 
