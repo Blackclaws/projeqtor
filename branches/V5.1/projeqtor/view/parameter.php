@@ -233,11 +233,11 @@ function drawTableFromObjectList($objectList) {
   <div id="resultDiv" dojoType="dijit.layout.ContentPane"
       region="top" style="padding:5px;padding-bottom:20px;max-height:100px;padding-left:300px;z-index:999"></div>
 <table width="100%">
-  <tr>
+  <tr height="100%" style="vertical-align: middle;">
     <td width="50px" align="center"><img
       src="css/images/icon<?php echo ucfirst($type);?>32.png" width="32"
       height="32" /></td>
-    <td NOWRAP width="300px" class="title" style="white-space:nowrap"><?php echo str_replace(" ","&nbsp;",i18n('menu'.ucfirst($type)))?>&nbsp;&nbsp;&nbsp;
+    <td><span class="title"><?php echo str_replace(" ","&nbsp;",i18n('menu'.ucfirst($type)))?>&nbsp;</span>
     </td>
     <td width="10px">&nbsp;</td>
     <td width="50px">

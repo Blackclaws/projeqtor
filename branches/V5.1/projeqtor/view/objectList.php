@@ -71,7 +71,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
         <td width="50px" align="center">
           <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
         </td>
-        <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
+        <td><span class="title" ><?php echo i18n("menu" . $objectClass);?></span></td>
         <td style="text-align:right;" width="200px">
                 <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("quickSearch");?>
