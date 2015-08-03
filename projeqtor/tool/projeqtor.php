@@ -1865,7 +1865,9 @@ function addWeeksToDate($date, $weeks) {
 }
 
 function workTimeDiffDateTime($start, $end) {
-  $days = workDayDiffDates ( $start, $end );
+  $hoursPerDay=Parameter::getGlobalParameter ( 'dayTime' );
+  $startDay=substr($start,0,10);
+  $endDay=substr($end,0,10);
   $time = substr ( $start, 11, 5 );
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
@@ -1874,7 +1876,19 @@ function workTimeDiffDateTime($start, $end) {
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
   $mnStop = $hh * 60 + $mn;
-  $delay = $days + ($mnStop - $mnStart) / (60 * Parameter::getGlobalParameter ( 'dayTime' ));
+  $mnFullDay=60*24;
+  if ($startDay==$endDay) {
+    $days=0;
+    $delay = ($mnStop - $mnStart) / (60 * $hoursPerDay);
+  } else {
+    $days = dayDiffDates ( $startDay, $endDay )-1;
+    $delay=0;
+    if ($days>0) {
+      $delay=($days*$mnFullDay)/ (60 * $hoursPerDay);
+    }
+    $delay+=($mnFullDay - $mnStart) / (60 * $hoursPerDay);
+    $delay+=($mnStop) / (60 * $hoursPerDay);
+  }
   return $delay;
 }
 
