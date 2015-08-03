@@ -529,6 +529,7 @@ label, .label, .smallLabel {
     font-weight: bold;
     display: block;
     max-height: 2em;
+    white-space: nowrap;
 }
 
 .titleProject {
