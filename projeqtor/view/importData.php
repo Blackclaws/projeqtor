@@ -39,11 +39,11 @@
       target="resultImportData"
       onSubmit="return importData();" >
     <table width="100%">
-      <tr>
-        <td width="5%" align="center">
+      <tr height="100%" style="vertical-align: middle;">
+        <td width="50px" align="center">
           <img src="css/images/iconImportData32.png" width="32" height="32" />
         </td>
-        <td NOWRAP width="45%" class="title" >
+        <td><span class="title">
           <?php echo i18n('menuImportData')?>&nbsp;&nbsp;&nbsp;
         </td>
         <td width="5%" >&nbsp;
