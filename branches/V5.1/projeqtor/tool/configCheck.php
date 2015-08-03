@@ -48,21 +48,27 @@
     if (substr($ct,0,1)=="=") {
       if ( strpos($ct, '=' . $val . '=')===false) {
         showError("incorrect value for '" . $label[$id] . "', valid values are : " . str_replace("="," ",$ct));
+        $error=true;
       }
     } else if ($ct=="mandatory") {
       if ( ! $val) {
         showError("incorrect value for '" . $label[$id] . "', field is mandatory");
+        $error=true;
       }
     } else if ($ct=="email") {
       if ($val and !filter_var($val, FILTER_VALIDATE_EMAIL)) {
-        showError("incorrect value for '" . $label[$id] . "', invalid email address");  
+        showError("incorrect value for '" . $label[$id] . "', invalid email address");
+        $error=true;
       }
     } else if ($ct=="integer") {
       if (! is_numeric($val) or !is_int($val*1)) {
-        showError("incorrect value for '" . $label[$id] . "', field must be an integer");  
+        showError("incorrect value for '" . $label[$id] . "', field must be an integer");
+        $error=true;
       }
     }
   }
+  if ($error) exit;
+  
   // Check that PDO is enabled
   if (checkPrerequisites(true,$param['DbType'])!="OK") {
     echo "<br/>";
@@ -146,7 +152,7 @@
     if (! $error) {
       $logFile=str_replace('${date}',date('Ymd'),$param['logFile']);
       if (! writeFile ( 'CONFIGURATION CONTROLS ARE OK', $logFile )) {
-        showError("incorrect value for '" . $label['logFile'] . "', cannot write to such a file");
+        showError("incorrect value for '" . $label['logFile'] . "', cannot write to such a file : check access rights");
       } else {
         //echo "Write in $logFile OK<br/>";
         kill($logFile);
@@ -169,7 +175,7 @@
     }
     if (! $error) {
       if (! writeFile ( 'TEST' , $paramFile)) {
-        showError("incorrect value for 'Parameter file name', cannot write to such a file");
+        showError("incorrect value for 'Parameter file name', cannot write to such a file : check access rights");
       } else {
         kill($paramFile);
       }
@@ -194,7 +200,7 @@
   $paramLocation="../tool/parametersLocation.php";
   kill($paramLocation);
   if (! writeFile(' ',$paramLocation)) {
-    showError("impossible to write \'$paramLocation\' file, cannot write to such a file");
+    showError("impossible to write \'$paramLocation\' file, cannot write to such a file : check access rights");
   }
   kill($paramLocation);
   writeFile('<?php ' . "\n", $paramLocation);
