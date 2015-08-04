@@ -28,6 +28,7 @@
  * Chek login/password entered in connection screen
  */
   include_once("../tool/file.php");
+  include_once("../tool/configCheckPrerequisites.php");
   restore_error_handler();
   error_reporting(0);
   $param=$_REQUEST["param"];
@@ -47,29 +48,31 @@
     if (substr($ct,0,1)=="=") {
       if ( strpos($ct, '=' . $val . '=')===false) {
         showError("incorrect value for '" . $label[$id] . "', valid values are : " . str_replace("="," ",$ct));
+        $error=true;
       }
     } else if ($ct=="mandatory") {
       if ( ! $val) {
         showError("incorrect value for '" . $label[$id] . "', field is mandatory");
+        $error=true;
       }
     } else if ($ct=="email") {
       if ($val and !filter_var($val, FILTER_VALIDATE_EMAIL)) {
-        showError("incorrect value for '" . $label[$id] . "', invalid email address");  
+        showError("incorrect value for '" . $label[$id] . "', invalid email address");
+        $error=true;
       }
     } else if ($ct=="integer") {
       if (! is_numeric($val) or !is_int($val*1)) {
-        showError("incorrect value for '" . $label[$id] . "', field must be an integer");  
+        showError("incorrect value for '" . $label[$id] . "', field must be an integer");
+        $error=true;
       }
     }
   }
+  if ($error) exit;
+  
   // Check that PDO is enabled
-  if (! extension_loaded('pdo')) {
-    showError('PDO module is not available - check your php configuration (php.ini)');
+  if (checkPrerequisites(true,$param['DbType'])!="OK") {
+    echo "<br/>";
     exit;
-  }
-  if ( ! extension_loaded('pdo_'.$param['DbType']) ) {
-  	showError('Module PDO for ' . strtoupper($param['DbType']).' is not available - check your php configuration (php.ini)');
-  	exit; 	
   }
   
   // check database connexion
@@ -125,7 +128,9 @@
       showError($e->getMessage().'<br/>dsn = '.$dsn);
       exit;
     }  
-    showMsg('Database \'' . $param['DbName'] . '\' created.');
+    showMessage("Database '" . $param['DbName'] . "' created : OK");
+  } else {
+    showMessage("Database '" . $param['DbName'] . "' already exists : OK");
   }
   
   // Check attachment directory (may be empty)
@@ -147,7 +152,7 @@
     if (! $error) {
       $logFile=str_replace('${date}',date('Ymd'),$param['logFile']);
       if (! writeFile ( 'CONFIGURATION CONTROLS ARE OK', $logFile )) {
-        showError("incorrect value for '" . $label['logFile'] . "', cannot write to such a file");
+        showError("incorrect value for '" . $label['logFile'] . "', cannot write to such a file : check access rights");
       } else {
         //echo "Write in $logFile OK<br/>";
         kill($logFile);
@@ -170,7 +175,7 @@
     }
     if (! $error) {
       if (! writeFile ( 'TEST' , $paramFile)) {
-        showError("incorrect value for 'Parameter file name', cannot write to such a file");
+        showError("incorrect value for 'Parameter file name', cannot write to such a file : check access rights");
       } else {
         kill($paramFile);
       }
@@ -195,29 +200,19 @@
   $paramLocation="../tool/parametersLocation.php";
   kill($paramLocation);
   if (! writeFile(' ',$paramLocation)) {
-    showError("impossible to write \'$paramLocation\' file, cannot write to such a file");
+    showError("impossible to write \'$paramLocation\' file, cannot write to such a file : check access rights");
   }
   kill($paramLocation);
   writeFile('<?php ' . "\n", $paramLocation);
   writeFile('$parametersLocation = \'' . $paramFile . '\';', $paramLocation);
   
   //rename ('../tool/config.php','../tool/config.php.old');
-  showMsg("Parameters are saved.");
+  showMessage("Parameters are saved.");
   
   echo '<br/><button id="continueButton" dojoType="dijit.form.Button" showlabel="true">continue';
   echo '<script type="dojo/connect" event="onClick" args="evt">';
   echo '  window.location = ".";';
   echo '</script>';
   echo '</button>';
-  
-  function showError($msg) {
-    global $error;
-    $error=true;
-    echo "<div class='messageERROR'>" . $msg . "</div>";
-  }
-
-  function showMsg($msg) {
-    echo "<div class='messageOK'>" . $msg . "</div>";
-  }
 
 ?>

@@ -26,6 +26,7 @@
 
 require_once('../model/_securityCheck.php');
 require_once('maintenanceFunctions.php');
+require_once('../tool/configCheckPrerequisites.php');
 $maintenance=true;
 Sql::$maintenanceMode=true;
 setSessionValue('setup', false, true);
@@ -61,6 +62,10 @@ $SqlEndOfCommand=";";
 $SqlComment="--";
    
 require_once (dirname(__FILE__) . '/../tool/projeqtor.php');
+// New in V5.1 => check again prerequisites (may have been changed on new version, but only displays errors
+if (checkPrerequisites()!="OK") {
+  exit;
+} 
 
 $nbErrors=0;
 $currVersion=Sql::getDbVersion();
