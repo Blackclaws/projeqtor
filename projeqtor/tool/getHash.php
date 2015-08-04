@@ -36,9 +36,8 @@ if (isset($_REQUEST['username'])) {
 	$username=AesCtr::decrypt($username, md5(session_id()), 256);	
 }
 if (! function_exists('mb_check_encoding')) {
-  errorLog ("mdstring module not enabled (mb_check_encoding not existing)");
-}
-if (! mb_check_encoding($username,'UTF-8')) {
+  errorLog ("mbstring module not enabled (mb_check_encoding not existing) : install module and unable module in php.ini");
+} else if (! mb_check_encoding($username,'UTF-8')) {
   echo 'SESSION'.md5(session_id());
   exit;
 }
