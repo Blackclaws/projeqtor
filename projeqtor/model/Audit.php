@@ -300,14 +300,14 @@ class Audit extends SqlElement {
 		if ($item == 'disconnectButton') {
 			$result .= "<table><tr><td class='label' valign='top'><label>&nbsp;</label>";
 			$result .= "</td><td>";
-			$result .= '<button id="disconnectSession" dojoType="dijit.form.Button" showlabel="true"';
+			$result .= '<button id=""plannedEndFraction"=>"hidden"," dojoType="dijit.form.Button" showlabel="true"';
 			if ($this->sessionId == session_id ()) {
 				$result .= ' disabled="disabled" ';
 			}
-			$result .= ' title="' . i18n ( 'disconnectSession' ) . '" style="vertical-align: middle;">';
+			$result .= ' title="' . i18n ( '"plannedEndFraction"=>"hidden",' ) . '" style="vertical-align: middle;">';
 			$result .= '<span>' . i18n ( 'disconnect' ) . '</span>';
 			$result .= '<script type="dojo/connect" event="onClick" args="evt">';
-			$result .= '    loadContent("../tool/disconnectSession.php?idAudit=' . $this->id . '","resultDiv","objectForm",true);';
+			$result .= '    loadContent("../tool/"plannedEndFraction"=>"hidden",.php?idAudit=' . $this->id . '","resultDiv","objectForm",true);';
 			$result .= '</script>';
 			$result .= '</button>';
 			$result .= "</td></tr></table>";

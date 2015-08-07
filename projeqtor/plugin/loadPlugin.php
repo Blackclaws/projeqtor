@@ -28,6 +28,10 @@ $maintenance=true;
 require_once '../tool/projeqtor.php';
 require_once "../db/maintenanceFunctions.php";
 
+$oneFile=null;
+if (isset($_REQUEST['pluginFile']) ) {
+  $oneFile=urldecode($_REQUEST['pluginFile']);
+}
 $user=getSessionUser();
 $profile=new Profile($user->idProfile);
 if ($profile->profileCode!='ADM') {
@@ -37,7 +41,7 @@ if ($profile->profileCode!='ADM') {
 }
 
 Sql::$maintenanceMode=true;
-$files=Plugin::getZipList();
+$files=Plugin::getZipList($oneFile);
 $result="";
 foreach ($files as $file) {
   $plugin=new Plugin();

@@ -142,7 +142,7 @@ class Plugin extends SqlElement {
       return "../plugin"; 
     }
     
-    static function getZipList() {
+    static function getZipList($oneOnlyFile=null) {
       $error='';
       $dir=self::getDir();
       if (! is_dir($dir)) {
@@ -163,6 +163,9 @@ class Plugin extends SqlElement {
         }
         $filepath = ($dir == '.') ? $file : $dir . '/' . $file;
         if (is_link($filepath)) {
+          continue;
+        }
+        if ($oneOnlyFile and $oneOnlyFile!=$file) {
           continue;
         }
         if (is_file($filepath) and strtolower(substr($file,-4))=='.zip') {
