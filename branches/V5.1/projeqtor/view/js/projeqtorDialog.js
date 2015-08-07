@@ -5851,3 +5851,25 @@ function showLogfile(name) {
   
   loadDialog('dialogLogfile', atEnd, true, '&logname='+name, true);
 }
+
+function installPlugin(fileName,confirmed) {
+  if (! confirmed) {
+    actionOK=function() {
+      installPlugin(fileName, true);
+    };
+    msg=i18n('confirmInstallPlugin', new Array(fileName));
+    showConfirm(msg,actionOK);
+  } else {
+    showWait();
+    dojo.xhrGet({
+      url : "../plugin/loadPlugin.php?pluginFile="
+          + encodeURIComponent(fileName),
+      load : function(data) {
+        loadContent("pluginManagement.php", "centerDiv");
+      },
+      error : function() {
+        hideWait();
+      }
+    });
+  }
+}

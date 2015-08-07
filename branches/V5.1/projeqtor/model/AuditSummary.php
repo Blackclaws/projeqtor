@@ -104,7 +104,7 @@ class AuditSummary extends SqlElement {
 	    $meanDuration-=$mm*60;  
 	    $ss=$meanDuration;
 	    if ($hh>=24) {
-	      $summary='23:59:59';
+	      $summary->meanDuration='23:59:59';
 	    } else {
 	      $summary->meanDuration=$hh.':'.$mm.':'.$ss;
 	    }   

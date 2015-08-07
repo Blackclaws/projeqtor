@@ -1706,7 +1706,9 @@ function disconnect(cleanCookieHash) {
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=disconnect"+extUrl,
       handleAs: "text",
-      load: function(data,args) { window.location="../index.php"; }
+      load: function(data,args) { 
+        if (data) showError(data);
+        else window.location="../index.php"; }
     });
   };
   if ( ! checkFormChangeInProgress() ) {
