@@ -92,6 +92,26 @@
       var changePassword=false;
       hideWait();
       showMessage(1, <?php echo count($msgList);?>);
+      if (dojo.isIE<=7) {
+        $varsParam=new Array();
+        $varsParam[0]=dojo.isIE;
+        dojo.byId('loginResultDiv').innerHTML=
+          '<input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />'
+          +'<div class="messageERROR" style="width:100%">'+i18n("warningIE", $varsParam )+'</div>';
+        //dojo.byId('loginResultDiv').style.position="fixed";
+        //dojo.byId('loginResultDiv').style.top="0px";
+        //dojo.byId('loginResultDiv').style.width="100%";
+        var hideMessage=function() {
+          dojo.byId('loginResultDiv').innerHTML=
+          '<input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />'
+        };
+        disableWidget('password');
+        disableWidget('login');
+        disableWidget('loginButton');
+        disableWidget('passwordButton');
+        disableWidget('passwordButton');
+        disableWidget('rememberMe');
+      }
     });
 
     function showMessage(id, idMax) {

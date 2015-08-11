@@ -75,7 +75,15 @@
         echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         echo '</div>';
-        echo '</td>';    	
+        echo '</td>'; 
+    } else if ($menu->type=='plugin') {
+      $class=substr($menuName,4);
+      echo '<td  title="' .i18n($menu->name) . '" >';
+      echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarPlugin(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
+      echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';
+      echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
+      echo '</div>';
+      echo '</td>';
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
