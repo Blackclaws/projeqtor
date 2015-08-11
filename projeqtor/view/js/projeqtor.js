@@ -54,6 +54,7 @@ var directAccessIndex=null;
 
 var debugPerf=new Array();
 
+var pluginMenuPage=new Array();
 // =============================================================================
 // = Functions
 // =============================================================================
@@ -1109,7 +1110,7 @@ function finalizeMessageDisplay(destination, validationType) {
     	//loadContent("../view/menuBar.php", "toolBarDiv",null,false);
     	showWait();
     	noDisconnect=true;
-        quitConfirmed=true;        
+      quitConfirmed=true;        
     	//window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
     	dojo.byId("directAccessPage").value="parameter.php";
         dojo.byId("menuActualStatus").value=menuActualStatus;
