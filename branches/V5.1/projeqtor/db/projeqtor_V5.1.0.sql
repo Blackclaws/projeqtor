@@ -15,3 +15,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 136, 0),
 (6, 136, 0),
 (7, 136, 0);
+
+ALTER TABLE `${prefix}plugin` ADD `comment` varchar(4000) DEFAULT NULL,
+ADD `uniqueCode` varchar (100) DEFAULT null;
