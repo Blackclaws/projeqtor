@@ -292,6 +292,12 @@ function setupLocale() {
  * @return the translated message (or the input message if not found)
  */
 function i18n($str, $vars = null) {
+  // **********************************************************
+  // IMPORTANT
+  // ==========================================================
+  // This procedure is called before any parameter is set
+  // So don't use any database access (objects use db)
+  // and don't use any log function (such as debugLog)
   global $i18nMessages, $currentLocale;
   $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
   // on first use, initialize $i18nMessages
@@ -320,9 +326,29 @@ function i18n($str, $vars = null) {
     }
     fclose ( $file );
     
-    // Retrieve personalized translations (if exist)
-    if (isset ( $currentLocale )) { 
-      $testFile = "../plugin/personalizedTranslations/" . $currentLocale . "/lang.js";
+    // Retrieve Plugin Translation files ==============================
+    $langFileList=array();
+    $pluginList=Plugin::getInstalledPluginNames();
+    $locale=(isset($currentLocale))?$currentLocale:'';
+    foreach ($pluginList as $plugin) {
+      $testLocale=Plugin::getDir().'/'.$plugin.'/nls/'.$locale."/lang.js";
+      $testDefault=Plugin::getDir().'/'.$plugin."/nls/lang.js";
+      if ($locale and file_exists($testLocale)) {
+        $langFileList[$plugin]=$testLocale;
+      } else if (file_exists($testDefault)){
+        $langFileList[$plugin]=$testDefault;
+      }
+    }
+    
+    // extra for personalizedTranslations plugin
+    $testLocale= "../plugin/personalizedTranslations/" . $currentLocale . "/lang.js";
+    $testDefault="../plugin/personalizedTranslations/nls/lang.js";
+    if (file_exists($testLocale)) {
+      $langFileList['personalizedTranslationsLang']=$testLocale;
+    } else if (file_exists($testDefault)) {
+      $langFileList['personalizedTranslationsLang']=$testDefault;
+    }
+    foreach ($langFileList as $testFile) {
       if (file_exists ( $testFile )) {
         $filename = $testFile;
         $file = fopen ( $filename, "r" );
@@ -339,7 +365,7 @@ function i18n($str, $vars = null) {
         fclose ( $file );
       }
     }
-    //setSessionValue($i18nSessionValue,$i18nMessages);
+    //setSessionValue($i18nSessionValue,$i18nMessages); // does not improve unitary perfs, but may on high loaded server
   }
   // fetch the message in the array
   if (array_key_exists ( $str, $i18nMessages )) {
