@@ -48,6 +48,7 @@ class Plugin extends SqlElement {
     }
     
     public function load($file) {
+      global $globalCatchErrors;
       traceLog("New plugin found : ".$file['name']);
       $this->name=str_replace('.zip','',$file['name']);
       $pos=strpos(strtolower($this->name),'_v');
@@ -58,20 +59,22 @@ class Plugin extends SqlElement {
       $result="OK";
       // unzip plugIn files
       $zip = new ZipArchive;
+      $globalCatchErrors=true;
       $res = $zip->open($this->zipFile);
       if ($res === TRUE) {
-        $zip->extractTo(self::getDir());
+        $res=$zip->extractTo(self::getDir());
         $zip->close();
-      } else {
-        $result="not able to unzip file '$this->zipFile'";
+      } 
+      if ($res !== TRUE) {
+        $result=i18n('pluginUnzipFail', array(self::unrelativeDir($this->zipFile), self::unrelativeDir(self::getDir()) ));
         errorLog("Plugin::load() : $result");
         return $result;
       }
       traceLog("Plugin unzipped succefully");
       
-      $descriptorFileName="../plugin/$plugin/pluginDescriptor.xml";
+      $descriptorFileName=self::getDir()."/$plugin/pluginDescriptor.xml";
       if (! is_file($descriptorFileName)) {
-        $result="cannot find descriptor file $descriptorFileName for plugin $plugin";
+        $result=i18n('pluginNoXmlDescriptor',array(self::unrelativeDir($descriptorFileName),$plugin));
         errorLog("Plugin::load() : $result");
         return $result;
       }
@@ -80,16 +83,41 @@ class Plugin extends SqlElement {
       xml_parse_into_struct($parse, $descriptorXml, $value, $index);
       xml_parser_free($parse);
     
-      foreach($value as $prop) {
+      foreach($value as $ind=>$prop) {
         if ($prop['tag']=='PROPERTY') {
           //print_r($prop);
           $name='plugin'.ucfirst($prop['attributes']['NAME']);
           $value=$prop['attributes']['VALUE'];
           $$name=$value;
         }
+        if ($prop['tag']=='FILE') {
+          if (isset($prop['attributes']) and is_array($prop['attributes'])) {
+            $attr=$prop['attributes'];
+            $fileName=(isset($attr['NAME']))?$attr['NAME']:null;
+            $fileTarget=(isset($attr['TARGET']))?$attr['TARGET']:null;
+            $fileAction=(isset($attr['ACTION']))?$attr['ACTION']:null;
+            if ($fileName and $fileTarget and ($fileAction=='move' or $fileAction=='copy')) {
+              $res=copy(self::getDir()."/$plugin/$fileName","$fileTarget/$fileName");
+              if (! $res) {
+                $result=i18n('pluginErrorCopy',array($fileName,$fileTarget,$plugin));
+                errorLog("Plugin::load() : $result");
+                return $result;
+              } else {
+                if ($fileAction=='move') {
+                  $res=kill(self::getDir()."/$plugin/$fileName");
+                  if (! $res) {
+                    $result=i18n('pluginErrorMove',array($fileName,$plugin));
+                    errorLog("Plugin::load() : $result");
+                  }
+                }
+              }
+            }
+          }
+        }
       }
       // TODO : check version compatibility
-        
+      $globalCatchErrors=false;
+      
       if (isset($pluginName)) $this->name=$pluginName;
       if (isset($pluginDescription)) $this->description=$pluginDescription;
       if (isset($pluginVersion)) $this->pluginVersion=$pluginVersion;
@@ -103,19 +131,18 @@ class Plugin extends SqlElement {
       
       // Update database for plugIn
       if (isset($pluginSql) and $pluginSql) {
-        $sqlfile="../plugin/$plugin/$pluginSql";
+        $sqlfile=self::getDir()."/$plugin/$pluginSql";
         if (! is_file($sqlfile)) {
           $result="cannot find Sql file $sqlfile for plugin $plugin";
           errorLog("Plugin::load() : $result");
           return $result;
         }
-        //$enforceUTF8=true;
-        //Sql::query("SET NAMES utf8");
         // Run Sql defined in Descriptor
-        // !!!! to be able to call runScrip, the calling script must include "../db/maintenanceFunctions.php"
+        // !IMPORTANT! to be able to call runScrip, the calling script must include "../db/maintenanceFunctions.php"
         $nbErrors=runScript(null,$sqlfile);
         traceLog("Plugin updated database with $nbErrors errors from script $sqlfile");
         // TODO : display error and decide action (stop / continue)
+        deleteDuplicate(); // Avoid dupplicate for habilitation, ....
       }
       
       // TODO : move files if needed
@@ -134,7 +161,10 @@ class Plugin extends SqlElement {
       $this->isDeployed=1;
       $this->idle=0;
       $resultSave=$this->save();
-      traceLog("Plugin completely deployed");
+      traceLog("Plugin $plugin V".$this->pluginVersion. " completely deployed");
+      if (isset($pluginReload) and $pluginReload) {
+        return 'RELOAD';
+      }
       return "OK";
     }
     
@@ -179,6 +209,59 @@ class Plugin extends SqlElement {
       }
       if (! $error) closedir($handle);
       return $files;
+    }
+    
+    public static function getActivePluginList() {
+      // Retreive list from database
+      $plugin=new Plugin();
+      $pluginList=$plugin->getSqlElementsFromCriteria(array('idle'=>'0'));
+      return $pluginList;
+    }
+    
+    public static function getInstalledPluginNames() {
+      $dir=self::getDir();
+      if (! is_dir($dir)) {
+        traceLog ("Plugin->getInstalledPluginNames() - directory '$dir' does not exist");
+        return array();
+      }
+      $handle = opendir($dir);
+      if (! is_resource($handle)) {
+        return array();
+      }
+      $files=array();
+      while ( ($file = readdir($handle)) !== false) {
+        $filepath = ($dir == '.') ? $file : $dir . '/' . $file;
+        if (is_dir($filepath)) {
+          $files[]=$file;
+        }
+      }
+      closedir($handle);
+      return $files;
+    } 
+    
+    public static function includeAllFiles () {
+      $list=self::getActivePluginList();
+      foreach ($list as $plugin) {
+        $plugin->includeFiles();
+      }
+    }
+    
+    public function includeFiles() {
+      $root=self::getDir().'/'.$this->name.'/'.$this->name;
+      // Javascript
+      $jsFile=$root.'.js';
+      if (file_exists($jsFile)) {
+        echo '<script type="text/javascript" src="'.$jsFile.'?version='.$this->pluginVersion.'" ></script>';
+      }
+      // CSS (style sheet)
+      $cssFile=$root.'.css';
+      if (file_exists($cssFile)) {
+        echo '<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />';
+      }
+    }
+
+    public static function unrelativeDir($dir) {
+      return str_replace('../','/',$dir);
     }
 }
  
