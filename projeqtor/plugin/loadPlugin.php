@@ -46,7 +46,12 @@ $result="";
 foreach ($files as $file) {
   $plugin=new Plugin();
   $result=$plugin->load($file);
-  echo $result.' ('.$plugin->name.')<br/>';
+  if ($oneFile) {
+    echo $result;
+  } else {
+    echo $result.' ('.$plugin->name.')<br/>';
+  }
 }
-
-echo "loadPlugin.php executed at ".date('Y-m-d H:i:s');
+if (! $oneFile) {
+  echo "loadPlugin.php executed at ".date('Y-m-d H:i:s');
+}
