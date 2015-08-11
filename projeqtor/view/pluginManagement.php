@@ -84,7 +84,7 @@ require_once "../tool/formatter.php";
             <table style="width:100%;">
               <tr>
                 <td class="display" colspan="6">
-                 <?php echo i18n('pluginDir',array(Plugin::getDir()));?>
+                 <?php echo i18n('pluginDir',array(Plugin::unrelativeDir(Plugin::getDir()) ));?>
                 <br/><br/></td>
               </tr>
               <?php displayPluginList('local');?>
@@ -150,7 +150,7 @@ function displayPluginList($location) {
 
 function displayInstalledPlugin() {
   $pl=new Plugin();
-  $plList=$pl->getSqlElementsFromCriteria(array('isDeployed'=>'1'));
+  $plList=$pl->getSqlElementsFromCriteria(array('isDeployed'=>'1','idle'=>'0'),false,null,'name asc');
   if (count($plList)==0) {
     echo '<tr><td class="display" width="100%" colspan="6" style="text-align:center">';
     echo '<br/><i>'.i18n("noPluginAvailable").'</i></td></tr>';

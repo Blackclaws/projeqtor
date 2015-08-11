@@ -79,9 +79,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             parseOnLoad: true,
             isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>
         };
-    </script>
+  </script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js?version=<?php echo $version;?>"></script>
+  <?php Plugin::includeAllFiles();?>
   <script type="text/javascript"> 
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojo.date");

@@ -166,7 +166,10 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 	    loadContent("objectMain.php?objectClass="+item.objectClass,"centerDiv");
 	  } else if (item.type=='menu') {
        // Nothing
+    } else if (item.type=='plugin') {
+      loadMenuBarPlugin(item.id, item.name,'tree');
     } else {
+console.log('3:'+item.id);
 	    showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
 	  }
       </script>
