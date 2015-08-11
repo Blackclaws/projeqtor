@@ -4515,10 +4515,25 @@ function loadMenuBarItem(item, itemName, from) {
   } else if (item == 'Calendar') {
     // loadContent("calendar.php","centerDiv");
     loadContent("objectMain.php?objectClass=CalendarDefinition", "centerDiv");
-  } else {
+  } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
+    loadMenuBarPlugin(item, itemName, from);
+  } else {  
+    console.log('2:'+item);
     showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
   return true;
+}
+
+function loadMenuBarPlugin(item, itemName, from) {
+  if (checkFormChangeInProgress()) {
+    return false;
+  }
+  if (! pluginMenuPage || ! pluginMenuPage['menu'+item]) {
+    console.log('1:'+item);
+    showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
+    return;
+  }
+  loadContent(pluginMenuPage['menu'+item], "centerDiv");
 }
 
 // ====================================================================================
@@ -5865,10 +5880,26 @@ function installPlugin(fileName,confirmed) {
       url : "../plugin/loadPlugin.php?pluginFile="
           + encodeURIComponent(fileName),
       load : function(data) {
-        loadContent("pluginManagement.php", "centerDiv");
+        if (data=="OK") {
+          loadContent("pluginManagement.php", "centerDiv");
+        } else if (data=="RELOAD") {
+          showWait();
+          noDisconnect=true;
+          quitConfirmed=true;        
+          dojo.byId("directAccessPage").value="pluginManagement.php";
+          dojo.byId("menuActualStatus").value=menuActualStatus;
+          dojo.byId("p1name").value="type";
+          dojo.byId("p1value").value=forceRefreshMenu;
+          forceRefreshMenu="";
+          dojo.byId("directAccessForm").submit();     
+        } else {
+          hideWait();
+          showError(data+'<br/>');
+        }
       },
-      error : function() {
+      error : function(data) {
         hideWait();
+        showError(data);
       }
     });
   }
