@@ -1,6 +1,6 @@
 <?php
 $indexPhp=true;
-chdir(__DIR__.'/view');
+chdir(dirname(__FILE__).'/view');
 $theme="ProjeQtOr";
 if (is_file ( "../tool/parametersLocation.php" )) {
   include_once '../tool/projeqtor.php';
