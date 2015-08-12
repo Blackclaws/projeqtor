@@ -901,6 +901,7 @@ errorDeleteDoneBill: "Не удается удалить сделанный би
 errorDeleteRights: "[you don't have rights to delete this item]",
 errorDependencyHierarchy: "Невозможно создать зависимость с родительским элементом",
 errorDependencyLoop: "Невозможно создать цикл с зависимостями",
+errorDuplicate: "[This item already exists]",
 errorDuplicateActivityPrice: "Цена деятельности уже существует с таким же проектом и типом",
 errorDuplicateAffectation: "Дубликат аффектации",
 errorDuplicateApprover: "Это утверждение уже существует",
