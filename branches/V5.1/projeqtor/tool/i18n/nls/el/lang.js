@@ -901,6 +901,7 @@ errorDeleteDoneBill: "Δεν μπορεί να διαγραφεί ολοκληρ
 errorDeleteRights: "δεν έχετε δικαίωμα να διαγράψετε αυτό το στοιχείο",
 errorDependencyHierarchy: "Can't create dependency with parent item",
 errorDependencyLoop: "Can't create loop dependency",
+errorDuplicate: "[This item already exists]",
 errorDuplicateActivityPrice: "An Activity Price already exists with same Έργο and type",
 errorDuplicateAffectation: "Διπλή επιτήδευση",
 errorDuplicateApprover: "Ο υπεύθυνος έγκρισης υπάρχει ήδη",
