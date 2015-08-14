@@ -610,11 +610,11 @@ class PlanningElement extends SqlElement {
         $this->realEndDate=null;
       }
     }
-    $this->plannedStartDate=$plannedStartDate;
+    if ($plannedStartDate) {$this->plannedStartDate=$plannedStartDate;}
     if ($this->elementary and $plannedStartDate and $realStartDate and $realStartDate<$plannedStartDate) {
       $this->plannedStartDate=$realStartDate;
     }
-    $this->plannedEndDate=$plannedEndDate;
+    if ($plannedEndDate) {$this->plannedEndDate=$plannedEndDate;}
     // save cumulated data
     $this->assignedWork=$assignedWork;
     $this->leftWork=$leftWork;
