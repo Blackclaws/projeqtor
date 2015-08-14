@@ -52,6 +52,9 @@ foreach ($files as $file) {
     echo $result.' ('.$plugin->name.')<br/>';
   }
 }
+$i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
+unsetSessionValue($i18nSessionValue,false);
+
 if (! $oneFile) {
   echo "loadPlugin.php executed at ".date('Y-m-d H:i:s');
 }
