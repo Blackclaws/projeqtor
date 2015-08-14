@@ -331,11 +331,13 @@ $requi['logLevel'] = true;
   <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
-    djConfig='modulePaths: {i18n: "../../tool/i18n"},
+    djConfig='modulePaths: {"i18n":"../../tool/i18n",
+                            "i18nCustom":"../../plugin"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
   <script type="text/javascript"> 
+    var customMessageExists=false;
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
     dojo.require("dojo.date");

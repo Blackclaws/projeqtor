@@ -46,8 +46,9 @@ function writeFile($msg,$file) {
  */
 function kill($file) {
 	if (file_exists($file)) {
-		unlink($file);
+		return unlink($file);
 	}
+	return false;
 }
 
 /**
