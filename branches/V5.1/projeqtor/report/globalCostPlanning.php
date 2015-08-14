@@ -101,7 +101,7 @@ if ($paramTeam) {
     $inClause.=','.$res->id;
   }
   $inClause.=')';
-  $queryWhere.= " and idResource in ".$inClause;
+  $queryWhere.= " and w.idResource in ".$inClause;
 }
 
 $querySelect1= 'select sum(w.cost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
