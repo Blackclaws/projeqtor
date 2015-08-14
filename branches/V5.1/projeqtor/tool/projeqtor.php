@@ -301,9 +301,9 @@ function i18n($str, $vars = null) {
   global $i18nMessages, $currentLocale;
   $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
   // on first use, initialize $i18nMessages
-  //if (! $i18nMessages) { // Try and retrieve from session : not activated as not performance increased
-  //  $i18nMessages=getSessionValue($i18nSessionValue,null,true); 
-  //}
+  if (! $i18nMessages) { // Try and retrieve from session : not activated as not performance increased
+    $i18nMessages=getSessionValue($i18nSessionValue,null,false); 
+  }
   if (! $i18nMessages) {
     $filename = "../tool/i18n/nls/lang.js";
     $i18nMessages = array ();
@@ -340,9 +340,14 @@ function i18n($str, $vars = null) {
       }
     }
     
-    // extra for personalizedTranslations plugin
+    // extra for personalizedTranslations plugin : old format (for plugin version < 1.0)
     $testLocale= "../plugin/personalizedTranslations/" . $currentLocale . "/lang.js";
-    $testDefault="../plugin/personalizedTranslations/nls/lang.js";
+    if (file_exists($testLocale)) {
+      $langFileList['personalizedTranslationsLangOld']=$testLocale;
+    }
+    // extra for personalizedTranslations plugin : new format (for plugin version >= 1.0)
+    $testLocale= "../plugin/nls/" . $currentLocale . "/lang.js";
+    $testDefault="../plugin/nls/lang.js";
     if (file_exists($testLocale)) {
       $langFileList['personalizedTranslationsLang']=$testLocale;
     } else if (file_exists($testDefault)) {
@@ -365,7 +370,7 @@ function i18n($str, $vars = null) {
         fclose ( $file );
       }
     }
-    //setSessionValue($i18nSessionValue,$i18nMessages); // does not improve unitary perfs, but may on high loaded server
+    setSessionValue($i18nSessionValue,$i18nMessages,false); // does not improve unitary perfs, but may on high loaded server
   }
   // fetch the message in the array
   if (array_key_exists ( $str, $i18nMessages )) {
