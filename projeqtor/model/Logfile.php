@@ -115,10 +115,11 @@ class Logfile
           $date=date('Y-m-d H:i',$dt);
           $fileDesc['date']=$date;
           $fileDesc['size']=filesize($filepath);
-          $files[]=$fileDesc;
+          $files[$date]=$fileDesc;
         }
       }
       if (! $error) closedir($handle);
+      ksort($files);
       return $files;
     }
     

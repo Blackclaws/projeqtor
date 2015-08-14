@@ -145,7 +145,9 @@ class Plugin extends SqlElement {
         deleteDuplicate(); // Avoid dupplicate for habilitation, ....
       }
       
-      // TODO : move files if needed
+      if (isset($pluginPostInstall)) {
+        include self::getDir()."/$plugin/$pluginPostInstall";
+      }
       
       // Delete zip
       kill($this->zipFile);
@@ -262,6 +264,41 @@ class Plugin extends SqlElement {
 
     public static function unrelativeDir($dir) {
       return str_replace('../','/',$dir);
+    }
+    
+    public static function getTranslationJsArrayForPlugins($arrayName) {
+      global $currentLocale;
+      $langFileList=array();
+      $pluginList=self::getInstalledPluginNames();
+      $locale=(isset($currentLocale))?$currentLocale:'';
+      foreach ($pluginList as $plugin) {
+        $testLocale=Plugin::getDir().'/'.$plugin.'/nls/'.$locale."/lang.js";
+        $testDefault=Plugin::getDir().'/'.$plugin."/nls/lang.js";
+        if ($locale and file_exists($testLocale)) {
+          $langFileList[$plugin]=$testLocale;
+        } else if (file_exists($testDefault)){
+          $langFileList[$plugin]=$testDefault;
+        }
+      }
+      echo "$arrayName=new Array();\n";
+      foreach ($langFileList as $testFile) {
+        if (file_exists ( $testFile )) {
+          $filename = $testFile;
+          $file = fopen ( $filename, "r" );
+          while ( $line = fgets ( $file ) ) {
+            $split = explode ( ":", $line );
+            if (isset ( $split [1] )) {
+              $var = trim ( $split [0], ' ' );
+              $valTab = explode ( ",", $split [1] );
+              $val = trim ( $valTab [0], ' ' );
+              $val = trim ( $val, '"' );
+              //$i18nMessages [$var] = $val;
+              echo $arrayName.'["'.$var.'"]="'.$val.'";'."\n";
+            }
+          }
+          fclose ( $file );
+        }
+      }
     }
 }
  
