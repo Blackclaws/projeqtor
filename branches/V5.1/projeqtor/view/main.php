@@ -75,7 +75,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript">
         var dojoConfig = {
-            modulePaths: {"i18n":"../../tool/i18n"},
+            modulePaths: {"i18n":"../../tool/i18n",
+                          "i18nCustom":"../../plugin"},
             parseOnLoad: true,
             isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>
         };
@@ -83,7 +84,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js?version=<?php echo $version;?>"></script>
   <?php Plugin::includeAllFiles();?>
-  <script type="text/javascript"> 
+  <script type="text/javascript">
+    var customMessageExists=<?php echo(file_exists(Plugin::getDir()."/nls/$currentLocale/lang.js"))?'true':'false';?>; 
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojo.date");
     dojo.require("dojo.date.locale");
@@ -328,49 +330,60 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var textableArray=new Array();
     var checklistableArray=new Array();
     var planningColumnOrder=new Array();
-    <?php 
+    <?php
+      echo "\n";
       $list=SqlList::getListNotTranslated('Dependable');
       foreach ($list as $id=>$name) {
       	$right=securityGetAccessRightYesNo('menu' . $name,'create');
       	echo "canCreateArray['" . $name . "']='" . $right . "';";
       	echo "dependableArray['" . $id . "']='" . $name . "';";
       }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Linkable');
       foreach ($list as $id=>$name) {
         $right=securityGetAccessRightYesNo('menu' . $name,'create');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
         echo "linkableArray['" . $id . "']='" . $name . "';";
-      }    
+      }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Originable');
       foreach ($list as $id=>$name) {
         $right=securityGetAccessRightYesNo('menu' . $name,'create');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
         echo "originableArray['" . $id . "']='" . $name . "';";
       }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Copyable');
       foreach ($list as $id=>$name) {
         echo "copyableArray['" . $id . "']='" . $name . "';";
       }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Indicatorable');
       foreach ($list as $id=>$name) {
         echo "indicatorableArray['" . $id . "']='" . $name . "';";
       }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Mailable');
       foreach ($list as $id=>$name) {
         echo "mailableArray['" . $id . "']='" . $name . "';";
       }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Textable');
       foreach ($list as $id=>$name) {
         echo "textableArray['" . $id . "']='" . $name . "';";
-      }          
+      }
+      echo "\n";
       $list=SqlList::getListNotTranslated('Checklistable');
       foreach ($list as $id=>$name) {
       	echo "checklistableArray['" . $id . "']='" . $name . "';";
-      }  
+      }
+      echo "\n";
       $list=Parameter::getPlanningColumnOrder();
       foreach ($list as $order=>$name) {
         echo "planningColumnOrder[" . ($order-1) . "]='" . $name . "';";
       }
+      echo "\n";
+      Plugin::getTranslationJsArrayForPlugins('i18nPluginArray');
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
