@@ -1581,12 +1581,12 @@ function selectRowById(gridName, id) {
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
   if (dojo.isIE && parseInt(dojo.isIE,10)<='8') { 
-	return;
+	  return;
   }
   var nbRow=grid.rowCount;
   gridReposition=true;
   for (i=0; i<nbRow; i++) {
-	item=grid.getItem(i);
+	  item=grid.getItem(i);
     //itemId=item.id;
     if (item && item.id==id) {
       grid.selection.setSelected(i,true);
