@@ -102,7 +102,8 @@ class ResourceCost extends SqlElement {
         $prec->save();
       }
     }
-    if ($newCost) {
+    if ($newCost) { // Cost has changed : must dispatch to stored costs
+      // Update Cost for Real Work : for the start date of new cost only (if set)
       $wk=new Work();
       $where="idResource='" . Sql::fmtId($this->idResource) . "'";
       if ($this->startDate) {
@@ -120,6 +121,10 @@ class ResourceCost extends SqlElement {
       $ass=new Assignment();
       $assList=$ass->getSqlElementsFromCriteria(null, false, $where);
       foreach ($assList as $ass) {
+        if ($ass->realWork==0 and trim($this->startDate)=='') {
+          // If single cost only and real work not defined : update defaut cost so that assigned cost is updated
+          $ass->dailyCost=$this->cost;
+        }
         $ass->saveWithRefresh();
       }
     }
