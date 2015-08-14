@@ -117,6 +117,19 @@
       </fileset>
     </copy>
   </target>
+	
+	<target name="copyPlugin">
+	    <copy todir="${deploy.dir}/plugin">
+	      <fileset dir="${src.dir}/plugin">
+	        <include name="*.*" />
+	      </fileset>
+	    </copy>
+	    <copy todir="${deploy.dir}/plugin/nls">
+	      <fileset dir="${src.dir}/plugin/nls">
+	         <include name="lang.js"/>
+	      </fileset>
+	    </copy>
+	  </target>
 
   <target name="copyApi">
       <copy todir="${deploy.dir}/api">
@@ -173,6 +186,7 @@
     <antcall target="copyManual"/>
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
+  	<antcall target="copyPlugin"/>
     <antcall target="copyReport"/>
     <antcall target="copyTool"/>
     <antcall target="copyView"/>
@@ -188,6 +202,7 @@
     <antcall target="copyManual"/>
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
+  	<antcall target="copyPlugin"/>
     <antcall target="copyReport"/>
     <antcall target="copyTool"/>
     <antcall target="copyView"/>
