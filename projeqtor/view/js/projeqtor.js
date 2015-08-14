@@ -33,6 +33,7 @@
 //=============================================================================
 
 var i18nMessages=null;                 // array containing i18n messages
+var i18nMessagesCustom=null;           // array containing i18n messages
 var currentLocale=null;                // the locale, from browser or user set
 var browserLocale=null;                // the locale, from browser
 var cancelRecursiveChange_OnGoingChange = false; // boolean to avoid
@@ -1583,19 +1584,23 @@ function selectRowById(gridName, id) {
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
   if (dojo.isIE && parseInt(dojo.isIE,10)<='8') { 
-	return;
+	  return;
   }
   var nbRow=grid.rowCount;
   gridReposition=true;
-  for (i=0; i<nbRow; i++) {
-	item=grid.getItem(i);
-    //itemId=item.id;
-    if (item && item.id==id) {
-      grid.selection.setSelected(i,true);
-      gridReposition=false;
-      return;
+  dojo.forEach(grid.store._getItemsArray(), 
+    function(item, i){ 
+      //itemId=item.id;
+      if (item && item.id==id) {
+        grid.selection.setSelected(i,true);
+        first=grid.scroller.firstVisibleRow;
+        last=grid.scroller.lastVisibleRow;
+        if (i<first || i>last) grid.scrollToRow(i);
+        gridReposition=false;
+        return;
+      }
     }
-  }
+  );
   gridReposition=false;
 }
 function selectPlanningRow() {
@@ -1621,16 +1626,34 @@ function selectGridRow() {
  */
 function i18n(str, vars) {
   if ( ! i18nMessages ) {
-	try {
-	  //dojo.registerModulePath('i18n', '/tool/i18n'); 
-      dojo.requireLocalization("i18n","lang", currentLocale);
-      i18nMessages=dojo.i18n.getLocalization("i18n","lang", currentLocale);
-	} catch(err) {
-	  i18nMessages=new Array();
+  	try {
+  	  //dojo.registerModulePath('i18n', '/tool/i18n'); 
+        dojo.requireLocalization("i18n","lang", currentLocale);
+        i18nMessages=dojo.i18n.getLocalization("i18n","lang", currentLocale);
+  	} catch(err) {
+  	  i18nMessages=new Array();
     }
+  	if (customMessageExists) {
+    	try {
+        //dojo.registerModulePath('i18n', '/tool/i18n'); 
+          dojo.requireLocalization("i18nCustom","lang", currentLocale);
+          i18nMessagesCustom=dojo.i18n.getLocalization("i18nCustom","lang", currentLocale);
+      } catch(err) {
+        i18nMessagesCustom=new Array();
+      }
+  	} else {
+  	  i18nMessagesCustom=new Array();
+  	}
   }
-  if (i18nMessages[str]) {
+  var ret=null;
+  if (i18nMessagesCustom[str]) {
+    ret = i18nMessagesCustom[str];
+  } else if (i18nMessages[str]) {
     ret = i18nMessages[str];
+  } else if (i18nPluginArray && i18nPluginArray[str]) {
+    ret =  i18nPluginArray[str];
+  }
+  if (ret) {
     if (vars) {
       for (i=0; i<vars.length; i++) {
         rep='${' + (parseInt(i,10)+1) +'}';

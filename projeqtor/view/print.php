@@ -101,12 +101,14 @@
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../external/dojo/dojo.js"
-    djConfig='modulePaths: {i18n: "../../tool/i18n"},
+    djConfig='modulePaths: {"i18n":"../../tool/i18n",
+                            "i18nCustom":"../../plugin"},
               parseOnLoad: true,
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
   <script type="text/javascript" src="../view/js/jsgantt.js"></script>
   <script type="text/javascript"> 
+    var customMessageExists=<?php echo(file_exists(Plugin::getDir()."/nls/$currentLocale/lang.js"))?'true':'false';?>;
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
     //dojo.require("dojo.date.locale");
@@ -185,11 +187,13 @@
       $html2pdf = new HTML2PDF($orientation,'A4','en');
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');
-      //$html2pdf->setDefaultFont('freesans');
-      $html2pdf->setDefaultFont('helvetica');
+      $html2pdf->setDefaultFont('freesans');
+      //$html2pdf->setDefaultFont('courier');
+      //$html2pdf->setDefaultFont('helvetica');
+      //$html2pdf->setDefaultFont('arial');
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
-      //$html2pdf->setDefaultFont('uni2cid_ag15');
+      $content=str_replace("à","&agrave;",$content);
 //traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();;
