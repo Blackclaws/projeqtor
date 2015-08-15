@@ -300,5 +300,29 @@ class Plugin extends SqlElement {
         }
       }
     }
+    public static function getMetadata($zipFileName) {
+      $file=self::getDir().'/'.$zipFileName;
+      $zip = new ZipArchive;
+      $globalCatchErrors=true;
+      $res = $zip->open($file);
+      $descriptorXml="";
+      if ($res === TRUE) {
+        $idx=$zip->locateName('pluginDescriptor.xml',ZIPARCHIVE::FL_NODIR);
+        $descriptorXml=$zip->getFromIndex($idx);
+        $zip->close();
+      }
+      $parse = xml_parser_create();
+      xml_parse_into_struct($parse, $descriptorXml, $value, $index);
+      xml_parser_free($parse);
+      $data=array();
+      foreach($value as $ind=>$prop) {
+        if ($prop['tag']=='PROPERTY') {
+          $name='plugin'.ucfirst($prop['attributes']['NAME']);
+          $value=$prop['attributes']['VALUE'];
+          $data[$name]=$value;
+        }
+      }
+      return $data;
+    }
 }
  

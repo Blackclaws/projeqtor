@@ -150,8 +150,27 @@ class ProjectPlanningElement extends PlanningElement {
   }
     
   public function save() {
+    $old=$this->getOld();
   	$this->updateTotal();
-  	return parent::save();
+  	$result=parent::save();
+
+  	// Save History (for burndown graph)
+  	if ($this->realWork and	($this->realWork!=$old->realWork or $this->leftWork!=$old->leftWork
+  	                      or $this->realCost!=$old->realCost or $this->leftCost!=$old->leftCost
+  	                      or $this->totalRealCost!=$old->totalRealCost or $this->leftCost!=$old->leftCost) ) {
+  	  $crit=array('idProject'=>$this->refId, 'day'=>date('Ymd'));
+  	  $histo=SqlElement::getSingleSqlElementFromCriteria('ProjectHistory', $crit);
+  	  $histo->idProject=$this->refId;
+  	  $histo->day=date('Ymd');
+  	  $histo->realWork=$this->realWork;
+  	  $histo->leftWork=$this->leftWork;
+  	  $histo->realCost=$this->realCost;
+  	  $histo->leftCost=$this->leftCost;
+  	  $histo->totalRealCost=$this->totalRealCost;
+  	  $histo->totalLeftCost=$this->totalLeftCost;
+  	  $histo->save();
+  	}
+  	return $result;
   }
   
   public function updateTotal() {
