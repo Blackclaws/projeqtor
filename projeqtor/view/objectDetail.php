@@ -1090,7 +1090,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           $val=date('Y-m-d');
         }
         $negative='';
-        $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
+        if (property_exists($obj, 'validatedEndDate')) {
+          $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
+        }
         echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
         echo $attributes;
