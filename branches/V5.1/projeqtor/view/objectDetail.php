@@ -369,7 +369,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $dateWidth='72';
   $verySmallWidth='44';
   $smallWidth='72';
-  $mediumWidth='200';
+  $mediumWidth='197';
   $largeWidth='300';
   $labelWidth=160; // To be changed if changes in css file (label and .label)
   $labelStyleWidth='145px';
@@ -1829,7 +1829,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
       echo '<img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" ';
       echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="roundedButtonSmall"/> ';
     }
-    echo '</td><td width="5%" xclass="noteData" xvalign="top">';
+    echo '</td><td width="5%" xclass="noteData" xvalign="top" style="white-space:nowrap">';
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
     echo '</td><td xclass="noteData" style="height: 15px">';
     $orig=new $refType($refId);

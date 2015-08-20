@@ -33,3 +33,26 @@ CREATE TABLE `${prefix}projecthistory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX projecthistoryProjectDay ON `${prefix}projecthistory` (idProject,day);
+
+ALTER TABLE `${prefix}recipient` ADD `legalNotice` varchar(1000) DEFAULT NULL,
+ADD `contactName` varchar (100) DEFAULT null,
+ADD `contactEmail` varchar (100) DEFAULT null,
+ADD `contactPhone` varchar (100) DEFAULT null,
+ADD `contactMobile` varchar (100) DEFAULT null,
+ADD `bankNationalAccountNumber` varchar (100) DEFAULT null,
+ADD `bankInternationalAccountNumber` varchar (100) DEFAULT null,
+ADD `bankIdentificationCode` varchar (100) DEFAULT null,
+CHANGE `companyNumber` `companyNumber`  varchar (100),
+CHANGE `bank` `bankName`  varchar (100);
+
+UPDATE `${prefix}recipient` set `bankInternationalAccountNumber`=concat(ibanCountry,ibanKey,' ',ibanBban);
+
+ALTER TABLE `${prefix}bill` ADD `reference` varchar (100) DEFAULT null,
+ADD `paymentDone` int(1) unsigned DEFAULT 0,
+ADD `paymentDate` date DEFAULT NULL,
+ADD `paymentAmount` DECIMAL(11,2) UNSIGNED;
+
+INSERT INTO `${prefix}referencable` (`name`, `idle`) VALUES
+('Bill',0);
+
+ALTER TABLE `${prefix}client` ADD `paymentDelayEndOfMonth` int(1) unsigned DEFAULT 0;

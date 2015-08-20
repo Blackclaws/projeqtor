@@ -858,7 +858,8 @@ abstract class SqlElement {
 				//$col_old_value=SQL::str(trim($col_old_value));
 				if ($col_old_value=='') {$col_old_value=NULL;};
 				// if changed
-				if ($col_new_value != $col_old_value) {
+				$isText=($dataType=='varchar' or substr($dataType,-4)=='text')?true:false;
+				if ( $col_new_value != $col_old_value or ($isText and ('x'.$col_new_value != 'x'.$col_old_value) )) {
 					if ($col_name=='idle') {$idleChange=true;}
 					$insertableColName= $this->getDatabaseColumnName($col_name);
 					if (Sql::isPgsql()) {$insertableColName=strtolower($insertableColName);}
@@ -3678,6 +3679,12 @@ abstract class SqlElement {
 		if ($class=='TicketSimple') $class='Ticket';
 		$fmtPrefix=Parameter::getGlobalParameter('referenceFormatPrefix');
 		$fmtNumber=Parameter::getGlobalParameter('referenceFormatNumber');
+		if ($class=='Bill') {
+		  $fmtPrefixBill=Parameter::getGlobalParameter('billReferenceFormatPrefix');
+		  $fmtNumberBill=Parameter::getGlobalParameter('billNumSize');
+		  if ($fmtPrefixBill) $fmtPrefix=$fmtPrefixBill;
+		  if ($fmtNumberBill) $fmtNumber=$fmtNumberBill;
+		}
 		$change=Parameter::getGlobalParameter('changeReferenceOnTypeChange');
 		$type='id' . $class . 'Type';
 		if ($this->reference and ! $force) {
