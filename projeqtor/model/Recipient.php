@@ -35,14 +35,19 @@ class Recipient extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $companyNumber;
+  public $legalNotice;
   public $numTax;  
   public $taxFree;
+  public $contactName;
+  public $contactEmail;
+  public $contactPhone;
+  public $contactMobile;
   public $idle;
   public $_sec_IBAN;
-  public $bank;
-  public $ibanCountry;
-  public $ibanKey;
-  public $ibanBban;
+  public $bankName;
+  public $bankInternationalAccountNumber;
+  public $bankIdentificationCode;
+  public $bankNationalAccountNumber;
   public $_sec_Address;
   public $designation;
   public $street;
@@ -58,14 +63,16 @@ class Recipient extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="20%">${name}</th>
-    <th field="companyNumber" width="20%">${companyNumber}</th>
+    <th field="name" width="25%">${name}</th>
+    <th field="companyNumber" width="15%">${companyNumber}</th>
     <th field="numTax" width="20%">${numTax}</th>
-    <th field="bank" width="10%">${bank}</th>
+    <th field="bankName" width="25%">${bank}</th>
     <th field="idle" formatter="booleanFormatter" width="5%">${idle}</th>
     ';
   
-  private static $_fieldsAttributes=array("name"=>"required");
+  private static $_fieldsAttributes=array("name"=>"required",
+                                          "contactPhone"=>"nobr,mediumWidth",
+                                          "contactMobile"=>"mediumWidth");
 
   
    /** ==========================================================================
@@ -97,7 +104,9 @@ class Recipient extends SqlElement {
   protected function getStaticLayout() {
     return self::$_layout;
   }
-  
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
 /** =========================================================================
    * Draw a specific item for the current class.
    * @param $item the item. Correct values are : 

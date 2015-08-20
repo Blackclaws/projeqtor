@@ -231,6 +231,24 @@ function percentFormatter(value) {
   }
 }
 
+function percentSimpleFormatter(value) {
+  if (value) {
+    return value+"&nbsp;%";
+  } else {
+    return '';
+  }
+}
+
+function dayFormatter(value) {
+  var val = parseInt(value, 10);
+  if (value=='') {
+    return '';
+  } else if (val<=1) {
+    return value+' '+i18n('day');
+  } else {
+    return value+' '+i18n('days');;
+  }
+}
 /**
  * ============================================================================
  * Format numeric value (removes leading zeros)

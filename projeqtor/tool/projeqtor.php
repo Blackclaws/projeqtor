@@ -370,7 +370,9 @@ function i18n($str, $vars = null) {
         fclose ( $file );
       }
     }
-    setSessionValue($i18nSessionValue,$i18nMessages,false); // does not improve unitary perfs, but may on high loaded server
+    if (! isset($i18nNocache) or $i18nNocache==false) { // To help dev, do not cache captions
+      //setSessionValue($i18nSessionValue,$i18nMessages,false); // does not improve unitary perfs, but may on high loaded server
+    }
   }
   // fetch the message in the array
   if (array_key_exists ( $str, $i18nMessages )) {

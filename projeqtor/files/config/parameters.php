@@ -26,7 +26,8 @@ $flashReport=true;                 // Specific evolution Parameter
 $debugQuery=false;                 // Debug all queries : trace Query and running time for each query
 $debugJsonQuery=false;             // Trace only JsonQuery queries  (retrieving lists)
 $debugPerf=true;                   // Add some timestamps and execution time at all debug lines
-$debugReport=true;                 // Displays report file name on report header 
+$debugReport=true;                 // Displays report file name on report header
+$i18nNocache=true; 
 $memoryLimitForPDF = '512';
 //$showAutoPlan=true;
 
