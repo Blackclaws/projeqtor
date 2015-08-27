@@ -11,7 +11,7 @@
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
 //$paramDbName='projeqtor';$paramDbPrefix=''; 
 $paramDbHost='127.0.0.1';         // With MySql on Windows, better use "127.0.0.1" rather than "localhost"
-$enforceUTF8 = '1';               // Positionned by default for new installs since V4.4.0
+$enforceUTF8 = '0';               // Positionned by default for new installs since V4.4.0
 
 // ========== Log file configuration =====================================================
 $logFile='../files/logs/projeqtor_${date}.log';
@@ -29,5 +29,6 @@ $debugPerf=true;                   // Add some timestamps and execution time at 
 $debugReport=true;                 // Displays report file name on report header
 $i18nNocache=true; 
 $memoryLimitForPDF = '512';
+$debugIEcompatibility=false;
 //$showAutoPlan=true;
 

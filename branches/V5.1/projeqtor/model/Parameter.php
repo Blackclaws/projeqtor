@@ -732,7 +732,7 @@ class Parameter extends SqlElement {
   	$fileHandler = fopen($parametersLocation,"r");
     if (!$fileHandler) {
     	throwError("Error opening file $parameterLocation");
-    	exit;
+    	return;
     }
     $cptLine=0;
     $cptVar=0;
@@ -778,6 +778,14 @@ class Parameter extends SqlElement {
         $result="moved to database";
         $resultHtml="<span style=\"color:red\">$result</span>";   
         $cptVarDb+=1;     
+      } if ($paramCode=='$enforceUTF8' and $paramValue) {
+        global $maintenanceDisableEnforceUTF8;
+        if (isset($maintenanceDisableEnforceUTF8) and $maintenanceDisableEnforceUTF8) {
+          fwrite($fileHandler,$paramCode."='0';".$nl);
+          $msg="For compatibility reason, \$enforceUTF8 parameter has been set to '0' in your parameters.php file<br/>";
+          $msg.="Check your data through ProjeQtOr : if non ASCCII characters (like accentuated characters) are not displayed correctly, revert to \$enforceUTF8='1';";
+          echo "<div class='messageWARNING'><i>" . $msg . "</i></div><br/>"; 
+        }
       } else {
       	fwrite($fileHandler,$paramCode.'='.$paramValue.';'.$nl);
       	$result="kept in parameter file";

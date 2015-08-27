@@ -39,6 +39,9 @@ if (is_file ( "../tool/parametersLocation.php" )) {
 <html style="margin: 0px; padding: 0px;">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<?php }?> 
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />

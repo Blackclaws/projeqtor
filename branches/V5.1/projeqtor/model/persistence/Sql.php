@@ -244,6 +244,7 @@ class Sql {
    * @return resource connexion to database
    */
   private static function getConnection() {
+    global $enforceUTF8;
     if (self::$connexion != NULL) {
     	//if (mysql_ping(self::$connexion)) {
         return self::$connexion;
@@ -280,7 +281,7 @@ class Sql {
     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
     	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     	// Could solve some erroneous default storing in non utf8 format
-    	if (isset($enforceUTF8) and $enforceUTF8) {
+    	if (self::$dbType == "mysql" and isset($enforceUTF8) and $enforceUTF8) {
     	  self::$connexion->query("SET NAMES utf8");
     	}
     }

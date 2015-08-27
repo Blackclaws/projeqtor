@@ -36,6 +36,9 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<?php }?> 
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />

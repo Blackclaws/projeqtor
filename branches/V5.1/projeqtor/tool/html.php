@@ -189,7 +189,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (! $required) {
     echo '<OPTION value=" " ></OPTION>';
   }
-  if ($listType=='Linkable') {
+  if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' ) {
     asort($table);
   }
   if ($col=="idProject") {
