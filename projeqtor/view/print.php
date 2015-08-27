@@ -100,6 +100,9 @@
   <link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
+<?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<?php }?> 
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {"i18n":"../../tool/i18n",
                             "i18nCustom":"../../plugin"},

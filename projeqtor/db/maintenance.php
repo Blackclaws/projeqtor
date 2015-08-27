@@ -372,6 +372,12 @@ if (beforeVersion($currVersion,"V5.0.2") and $currVersion!='V0.0.0') {
   Affectable::generateAllThumbs();
 }
 
+
+if (beforeVersion($currVersion,"V5.1.0") and $currVersion!='V0.0.0' and Sql::isMysql()) {
+  // Must remove default enforceUTF8
+  $maintenanceDisableEnforceUTF8=true;
+  Parameter::regenerateParamFile();
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

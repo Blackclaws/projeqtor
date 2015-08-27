@@ -47,6 +47,9 @@
   <meta name="keywork" content="projeqtor, project management" />
   <meta name="author" content="projeqtor" />
   <meta name="Copyright" content="Pascal BERNARD" />
+<?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<?php }?>  
   <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />

@@ -82,10 +82,10 @@ foreach ($lst as $risk) {
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'R' . $risk->id . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('RiskType', $risk->idRiskType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($risk->name); 
-  if ($risk->description and $risk->name!=$risk->description) { echo ':<br/>' . htmlEncode($risk->description); }
+  if ($risk->description and $risk->name!=$risk->description) { echo ':<br/>' . ($risk->description); }
   echo '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($risk->cause) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($risk->impact) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($risk->cause) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($risk->impact) . '</td>';
   
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Severity', $risk->idSeverity) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Likelihood', $risk->idLikelihood) . '</td>';
@@ -105,7 +105,7 @@ foreach ($lst as $risk) {
   echo '</table></td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $risk->idStatus) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($risk) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:10%">' . htmlEncode($risk->result) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:10%">' . ($risk->result) . '</td>';
   echo '</tr>';
 }
 unset($risk);
@@ -142,11 +142,11 @@ foreach ($lst as $opportunity) {
   $done=($opportunity->done)?'Done':'';
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'O' . $opportunity->id . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('OpportunityType', $opportunity->idOpportunityType) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($opportunity->name); 
-  if ($opportunity->description and $opportunity->name!=$opportunity->description) { echo ':<br/>' . htmlEncode($opportunity->description); }
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($opportunity->name); 
+  if ($opportunity->description and $opportunity->name!=$opportunity->description) { echo ':<br/>' . ($opportunity->description); }
   echo '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($opportunity->cause) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($opportunity->impact) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($opportunity->cause) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($opportunity->impact) . '</td>';
   
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Severity', $opportunity->idSeverity) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Likelihood', $opportunity->idLikelihood) . '</td>';
@@ -166,7 +166,7 @@ foreach ($lst as $opportunity) {
   echo '</table></td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $opportunity->idStatus) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($opportunity) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:10%">' . htmlEncode($opportunity->result) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:10%">' . ($opportunity->result) . '</td>';
   echo '</tr>';
 }
 unset($opportunity);
@@ -200,10 +200,10 @@ foreach ($lst as $issue) {
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'I' . $issue->id . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:8%">' . SqlList::getNameFromId('IssueType', $issue->idIssueType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($issue->name); 
-  if ($issue->description and $issue->name!=$issue->description) { echo ':<br/>' . htmlEncode($issue->description); }
+  if ($issue->description and $issue->name!=$issue->description) { echo ':<br/>' . ($issue->description); }
   echo '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($issue->cause) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($issue->impact) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($issue->cause) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($issue->impact) . '</td>';
   
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $issue->idPriority) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:10%">' . SqlList::getNameFromId('Resource', $issue->idResource) . '</td>';
@@ -220,7 +220,7 @@ foreach ($lst as $issue) {
   echo '</table></td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $issue->idStatus) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($issue) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($issue->result) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($issue->result) . '</td>';
   echo '</tr>';
 }
 echo '</table><br/><br/>';
@@ -254,7 +254,7 @@ foreach ($lst as $action) {
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'A' . $action->id . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:10%">' . SqlList::getNameFromId('ActionType', $action->idActionType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($action->name) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:31%">' . htmlEncode($action->description) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:31%">' . ($action->description) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $action->idPriority) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('Resource', $action->idResource) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:6%"><table width="100%">';
@@ -270,7 +270,7 @@ foreach ($lst as $action) {
   echo '</table></td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $action->idStatus) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($action) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($action->result) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($action->result) . '</td>';
   echo '</tr>';
 }
 echo '</table><br/>';
