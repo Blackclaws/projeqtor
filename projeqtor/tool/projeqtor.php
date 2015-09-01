@@ -1575,6 +1575,8 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       global $maintenance;
       if ($maintenance) {
         return 'YES';
+      } else {
+      	exit; //return 'NO'; // This is a case that should not exist unles hacking attempt
       }
     } else {
       $user = getSessionUser();
@@ -1584,8 +1586,14 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
-    if ($accessRight == 'NO' or $accessRight=='READ') {
-      // will return no
+    if ($accessRight == 'NO') {
+      $accessRight="NO";// will return no
+    } else if  ($accessRight=='READ') {
+      if ($accessType == 'read') {
+      	$accessRight="NO";
+      } else {
+      	$accessRight="NO";
+      }
     } else if ($accessRight == 'ALL' or $accessRight=='WRITE') {
       $accessRight = 'YES';
     } else if ($accessRight == 'PRO') {
