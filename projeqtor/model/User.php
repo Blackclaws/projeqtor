@@ -347,6 +347,7 @@ class User extends SqlElement {
     	  } else {
     	    $accessControlRights[$menuName]=$noAccessArray;
     	    $accessControlRights[$menuName]['report']='ALL';
+    	    $noAccessAllowed=true;
     	  }
     	}
     }
@@ -363,12 +364,16 @@ class User extends SqlElement {
                              'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete],
                              'report' =>  $accessScopeList[$accessProfile->idAccessScopeRead], );
         } else {
-           $RW=$accessScopeRW[$arObj->idAccessProfile];
-           if ($RW=='WRITE') {
-             $scopeArray=$allAccessArray;
-           } else {
-             $scopeArray=$readAccessArray;
-           }
+          if (isset($noAccessAllowed) and $noAccessAllowed) {
+          	// Nothing
+          } else {
+            $RW=$accessScopeRW[$arObj->idAccessProfile];
+            if ($RW=='WRITE') {
+              $scopeArray=$allAccessArray;
+            } else {
+              $scopeArray=$readAccessArray;
+            }
+          }
         }
         $accessControlRights[$menuName]=$scopeArray;
         if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {

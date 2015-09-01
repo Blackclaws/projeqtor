@@ -642,7 +642,7 @@ class Parameter extends SqlElement {
     if (count($lst)==1) {
       $val=$lst[0]->parameterValue;
     } else if ($user->id) {
-    	$val=self::getGlobalParameter($code);
+      $val=self::getGlobalParameter($code);
     }
     if ($user->id) {
       $_SESSION['userParamatersArray'][$code]=$val;
@@ -652,6 +652,12 @@ class Parameter extends SqlElement {
   
   static function storeUserParameter($code,$value) {
   	$userId=getSessionUser()->id;
+  	if (! $userId) {
+  		global $maintenance;
+  		if (isset($maintenance) and $maintenance) {
+  		  $user->id=1;
+  		}
+  	}
   	$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>$userId,'parameterCode'=>$code));
   	if (! $param->id) {
   		$param->parameterCode=$code;
