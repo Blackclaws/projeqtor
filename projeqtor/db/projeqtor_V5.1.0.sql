@@ -56,3 +56,5 @@ INSERT INTO `${prefix}referencable` (`name`, `idle`) VALUES
 ('Bill',0);
 
 ALTER TABLE `${prefix}client` ADD `paymentDelayEndOfMonth` int(1) unsigned DEFAULT 0;
+
+DELETE FROM `${prefix}parameter` where idUser is null and parameterCode='startPage';
