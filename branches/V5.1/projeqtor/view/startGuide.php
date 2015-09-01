@@ -60,10 +60,13 @@
      $hideAutoloadError=true; // Avoid error message is autoload
      $is_object=class_exists($item,true);
      $hideAutoloadError=false;
+     $canRead=(securityGetAccessRightYesNo('menuUser', 'read') == "YES");
      echo '<tr VALIGN="top" style="padding:0;margin:0;white-space:nowrap">';
      echo '<td class="siteH2" style="text-align:right;">&nbsp;&nbsp;&nbsp;'.i18n("startGuideActionCreate")." ".i18n('menu'.$item).'</td>';
      echo '<td>&nbsp;&nbsp;&nbsp;';
-     echo '<span style="cursor:pointer" onClick="loadMenuBar'.(($is_object)?'Object':'Item').'(\'' . $item .  '\',null,\'bar\');" >';
+     if ($canRead) {
+       echo '<span style="cursor:pointer" onClick="loadMenuBar'.(($is_object)?'Object':'Item').'(\'' . $item .  '\',null,\'bar\');" >';
+     }
      echo '<img src="../view/css/images/icon'.$item.'32.png" />';
      echo '</span>';
      echo '&nbsp;&nbsp;&nbsp;';
