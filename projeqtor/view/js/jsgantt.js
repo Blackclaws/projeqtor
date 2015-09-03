@@ -571,51 +571,51 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         +JSGantt.i18n('colTask') +'</TD>' ;     
       for (iSort=0;iSort<sortArray.length;iSort++) {
 	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colValidated') + '</TD>' ;
 	      }
 	      if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colAssigned') + '</TD>' ;
 	      }
 	      if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colReal') + '</TD>' ;
 	      }
 	      if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colLeft') + '</TD>' ;
 	      }
 	      if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colPlanned') + '</TD>' ;
 	      }
 	      if(vShowDur ==1 && sortArray[iSort]=='Duration') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDurationWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDurationWidth + 'px;max-width: ' + vDurationWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colDuration') + '</TD>' ;
 	      }
 	      if(vShowComp==1 && sortArray[iSort]=='Progress') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vProgressWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vProgressWidth + 'px;max-width: ' + vProgressWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colPct') + '</TD>' ;
 	      }
 	      if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;max-width: ' + vDateWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colStart') + '</TD>' ;
 	      }
 	      if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;max-width: ' + vDateWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colEnd') + '</TD>' ;
 	      }
 	      if(vShowRes ==1 && sortArray[iSort]=='Resource') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;max-width: ' + vResourceWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colResource') + '</TD>' ;
 	      }
 	      if(vShowPriority ==1 && sortArray[iSort]=='Priority') {
-			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPriorityWidth + 'px;" nowrap>' 
+			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPriorityWidth + 'px;max-width: ' + vPriorityWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colPriorityShort') + '</TD>' ;
 		  }
 		  if(vShowPlanningMode ==1 && sortArray[iSort]=='IdPlanningMode') {
-			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPlanningModeWidth + 'px;" nowrap>' 
+			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPlanningModeWidth + 'px;max-width: ' + vPlanningModeWidth + 'px;overflow:hidden" nowrap>' 
 	          + JSGantt.i18n('colIdPlanningMode') + '</TD>' ;
 		  }
       }
