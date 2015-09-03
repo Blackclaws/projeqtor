@@ -448,7 +448,7 @@ class Parameter extends SqlElement {
       	                       'paramLockAfterWrongTries'=>'number',
       	                       'passwordValidityDays'=>'number',
       	                       'rememberMe'=>'list',
-      	                       'initializePassword'=>'list', 
+      	                       'initializePassword'=>'list',
       	                     'sectionLdap'=>'section', 
       	                       'paramLdap_allow_login'=>'list',
 											         'paramLdap_base_dn'=>'text',

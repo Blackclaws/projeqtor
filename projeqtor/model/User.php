@@ -334,6 +334,7 @@ class User extends SqlElement {
     $accessScopeList=SqlList::getList('AccessScope', 'accessCode');
     $accessScopeRW=SqlList::getList('ListReadWrite', 'code');
     $accessRight=new AccessRight();
+    $noAccessAllowed=array();
     $crit=array('idProfile'=>$profile);
     $accessRightList=$accessRight->getSqlElementsFromCriteria( $crit, false);
     $habilitation=new Habilitation();
@@ -347,7 +348,7 @@ class User extends SqlElement {
     	  } else {
     	    $accessControlRights[$menuName]=$noAccessArray;
     	    $accessControlRights[$menuName]['report']='ALL';
-    	    $noAccessAllowed=true;
+    	    $noAccessAllowed[$menuName]=true;
     	  }
     	}
     }
@@ -363,8 +364,8 @@ class User extends SqlElement {
                              'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
                              'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete],
                              'report' =>  $accessScopeList[$accessProfile->idAccessScopeRead], );
-        } else {
-          if (isset($noAccessAllowed) and $noAccessAllowed) {
+        } else {     
+          if (isset($noAccessAllowed[$menuName]) and $noAccessAllowed[$menuName]) {
           	// Nothing
           } else {
             $RW=$accessScopeRW[$arObj->idAccessProfile];

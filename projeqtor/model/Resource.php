@@ -79,6 +79,7 @@ class Resource extends SqlElement {
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
                                           "password"=>"hidden" ,
+                                          "idRole"=>"required",
                                           "idCalendarDefinition"=>"required"
   );    
   
