@@ -214,6 +214,7 @@ class Affectable extends SqlElement {
         $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
+        if ($id==getSessionUser()->id) $canUpdate=true;
         if ($canUpdate) {
         $result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
             .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
@@ -247,6 +248,7 @@ class Affectable extends SqlElement {
         $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
+        if ($id==getSessionUser()->id) $canUpdate=true;
         if ($canUpdate) {
          $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
         }
