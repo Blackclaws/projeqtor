@@ -58,3 +58,7 @@ INSERT INTO `${prefix}referencable` (`name`, `idle`) VALUES
 ALTER TABLE `${prefix}client` ADD `paymentDelayEndOfMonth` int(1) unsigned DEFAULT 0;
 
 DELETE FROM `${prefix}parameter` where idUser is null and parameterCode='startPage';
+
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) VALUES 
+(null, null, 'startPage', 'today.php'),
+(null, null, 'setDoneOnNoLeftWork', 'YES');
