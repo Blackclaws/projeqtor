@@ -359,7 +359,7 @@ class Parameter extends SqlElement {
         	break;
       case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
-      case 'displayOnlyHandled': case 'setHandledOnRealWork':
+      case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
@@ -435,6 +435,7 @@ class Parameter extends SqlElement {
       	                     'sectionImputation'=>'section',
       	                       'displayOnlyHandled'=>'list',
       	                       'setHandledOnRealWork'=>'list',
+      	                       'setDoneOnNoLeftWork'=>'list',
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
@@ -485,6 +486,7 @@ class Parameter extends SqlElement {
       	                       'paramIconSize'=>'list',
       	                       //'paramTopIconSize'=>'list',
       	                       'defaultTheme'=>'list',
+      	                       'startPage'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                     'sectionFiles'=>'section',
       	                       'paramAttachmentDirectory'=>'text',
