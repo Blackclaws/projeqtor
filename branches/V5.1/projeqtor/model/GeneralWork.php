@@ -49,9 +49,11 @@ class GeneralWork extends SqlElement {
   public $_noHistory;
   private static $hoursPerDay;
   private static $imputationUnit;
+  private static $shortImputationUnit;
   private static $imputationCoef;
   private static $workUnit;
   private static $workCoef;
+  private static $shortWorkUnit;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -181,6 +183,7 @@ class GeneralWork extends SqlElement {
   	$unit=Parameter::getGlobalParameter('imputationUnit');
     $unit=($unit)?$unit:'days';
     self::$imputationUnit=$unit;
+    self::$shortImputationUnit=($unit=='days')?i18n('shortDay'):i18n('shortHour');
     if (self::$hoursPerDay) {
       $hoursPerDay=self::$hoursPerDay;
     } else {
@@ -202,8 +205,8 @@ class GeneralWork extends SqlElement {
   }
   public static function displayShortImputationUnit() {
     self::setImputationUnit();
-    $res=mb_substr(i18n(self::$imputationUnit),0,1);
-    return $res;
+    //$res=mb_substr(i18n(self::$imputationUnit),0,1);
+    return self::$shortImputationUnit;
   }
   
   public static function getConvertedCapacity($capacity) {
@@ -220,6 +223,7 @@ class GeneralWork extends SqlElement {
     $unit=Parameter::getGlobalParameter('workUnit');
     $unit=($unit)?$unit:'days';
     self::$workUnit=$unit;
+    self::$shortWorkUnit=($unit=='days')?i18n('shortDay'):i18n('shortHour');
     if (self::$hoursPerDay) {
     	$hoursPerDay=self::$hoursPerDay;
     } else {
@@ -251,8 +255,8 @@ class GeneralWork extends SqlElement {
   
   public static function displayShortWorkUnit() {
     self::setWorkUnit();
-    $res=mb_substr(i18n(self::$workUnit),0,1);
-    return $res;
+    //$res=mb_substr(i18n(self::$workUnit),0,1);
+    return self::$shortWorkUnit;
   }
   public static function getWorkUnit() {
   	self::setWorkUnit();
