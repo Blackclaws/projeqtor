@@ -434,33 +434,14 @@ class PlanningElement extends SqlElement {
        $pw->purge($crit);
     }
     
-    //
+    // set to first handled status on first work input
+    //if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
     if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
-      $refType=$this->refType;     
-      $refObj=new $refType($this->refId);
-      if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setHandledOnRealWork')=='YES') {
-    	  $st=new Status($refObj->idStatus);
-    	  if (!$st->setHandledStatus) { // if current stauts is not handled, move to first allowed handled status (fitting workflow)
-    	 	  $typeClass=$refType.'Type';
-    	 	  $typeField='id'.$typeClass;
-    	  	$type=new $typeClass($refObj->$typeField);
-    	  	$user=getSessionUser();
-    	 	  $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->getProfile($this->idProject), 'allowed'=>'1');
-    	 	  $ws=new WorkflowStatus();
-    	 	  $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
-    	 	  $in="(0";
-    	 	  foreach ($possibleStatus as $ws) {
-    	 	  	$in.=",".$ws->idStatusTo;
-    	 	  }
-    	 	  $in.=")";
-    	 	  $st=new Status();
-    	 	  $stList=$st->getSqlElementsFromCriteria(null, null, " setHandledStatus=1 and id in ".$in, 'sortOrder asc');
-    	 	  if (count($stList)>0) {
-    	 	  	$refObj->idStatus=$stList[0]->id;
-    	 	  	$resSetStatus=$refObj->save();
-    	 	  }
-    	  }
-      }
+      $this->setHandledOnRealWork('save');
+    }
+    // set to first done status on lastt work input (left work = 0)
+    if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
+      $this->setDoneOnNoLeftWork('save');
     }
     if ($old->topId!=$this->topId) {
     	$pe=new PlanningElement($old->topId);
@@ -468,6 +449,104 @@ class PlanningElement extends SqlElement {
     }
     return $result;
   }
+  public function setHandledOnRealWork ($action='check') {
+debugLog("PlanningElement : first real work");
+debugLog("parameter = ".Parameter::getGlobalParameter('setHandledOnRealWork'));
+    $refType=$this->refType;
+    $refObj=new $refType($this->refId);
+    $newStatus=null;
+    if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setHandledOnRealWork')=='YES') {
+debugLog("PlanningElement : must set to first handled $this->refType #$this->refId");
+      $st=new Status($refObj->idStatus);
+debugLog("Current status is ".$st->name);
+      if (!$st->setHandledStatus) { // if current stauts is not handled, move to first allowed handled status (fitting workflow)
+        $typeClass=$refType.'Type';
+        $typeField='id'.$typeClass;
+        $type=new $typeClass($refObj->$typeField);
+        $user=getSessionUser();
+        // Is change possible ?
+        if ($type->mandatoryResourceOnHandled) { // Resource Mandatroy
+          if (property_exists($refObj, 'idResource') and ! $refObj->idResource) { // Resource not set
+					  if (! $user->isResource or Parameter::getGlobalParameter('setResponsibleIfNeeded')=='NO') { // Resource will not be set
+              // So, cannot change status to handled (responsible needed)
+              return '[noResource]';
+            } 
+          }
+        } 
+        $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->getProfile($this->idProject), 'allowed'=>'1');
+        $ws=new WorkflowStatus();
+        $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
+        $in="(0";
+        foreach ($possibleStatus as $ws) {
+          $in.=",".$ws->idStatusTo;
+        }
+        $in.=")";
+        $st=new Status();
+debugLog("criteria : setHandledStatus=1 and id in ".$in);
+        $stList=$st->getSqlElementsFromCriteria(null, null, " setHandledStatus=1 and id in ".$in, 'sortOrder asc');
+        if (count($stList)>0) {
+          if ($action=='save') {
+            $refObj->idStatus=$stList[0]->id;
+            $resSetStatus=$refObj->save();
+debugLog("result of update status = $resSetStatus");
+          }
+          return $stList[0]->name; // Return new status name
+        }
+      }
+    }
+    return null; // OK nothing to do
+  } 
+  public function setDoneOnNoLeftWork($action='check', $simulatedStartStatus=null) {
+    debugLog("PlanningElement : no more left work");
+    debugLog("parameter = ".Parameter::getGlobalParameter('setDoneOnNoLeftWork'));
+    $refType=$this->refType;
+    $refObj=new $refType($this->refId);
+    if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setDoneOnNoLeftWork')=='YES') {
+debugLog("PlanningElement : must set to first handled $this->refType #$this->refId");
+      $st=null;
+      if ($simulatedStartStatus) {
+        $st=new Status(SqlList::getIdFromName('Status', $simulatedStartStatus));
+      }
+      if (! $st or !$st->id) {
+        $st=new Status($refObj->idStatus);
+      }
+debugLog("Current status is ".$st->name);
+      if (!$st->setDoneStatus) { // if current status is not handled, move to first allowed handled status (fitting workflow)
+        $typeClass=$refType.'Type';
+        $typeField='id'.$typeClass;
+        $type=new $typeClass($refObj->$typeField);
+        $user=getSessionUser();
+        // Is change possible ?
+        if ($type->mandatoryResultOnDone) { // Result Mandatroy
+          if (property_exists($refObj, 'result') and !$refObj->result) { // Result not set
+            // So, cannot change status to done (result needed)
+            return '[noResult]';
+          }
+        }
+        $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->getProfile($this->idProject), 'allowed'=>'1');
+        $ws=new WorkflowStatus();
+        $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
+        $in="(0";
+        foreach ($possibleStatus as $ws) {
+          $in.=",".$ws->idStatusTo;
+        }
+        $in.=")";
+        $st=new Status();
+        debugLog("criteria : setDoneStatus=1 and id in ".$in);
+        $stList=$st->getSqlElementsFromCriteria(null, null, " setDoneStatus=1 and id in ".$in, 'sortOrder asc');
+        if (count($stList)>0) {
+          if ($action=='save') {
+            $refObj->idStatus=$stList[0]->id;
+            $resSetStatus=$refObj->save();
+            debugLog("result of update status = $resSetStatus");
+          }
+          return $stList[0]->name;
+        }
+      }
+    }
+    return null; // OK nothing to do
+  }
+  
   
   public function simpleSave() {
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);

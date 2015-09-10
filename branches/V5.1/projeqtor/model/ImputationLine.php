@@ -640,6 +640,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 					$closedWbs=$line->wbsSortable;
 				}
 			}
+			$canRead=false;
+			$canGoto=false;
+			if ($line->refType and $line->refId) {
+			  $obj=new $line->refType($line->refId);
+			  $canRead=(securityGetAccessRightYesNo('menu' . $line->refType, 'read', $obj)=='YES');
+			  $canGoto=($canRead and securityCheckDisplayMenu(null, $line->refType))?true:false;
+			}
+			
 			echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '"';
 			if ($closedWbs and $closedWbs!=$line->wbsSortable) {
 				echo ' style="display:none" ';
@@ -666,7 +674,12 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if (! $line->refType) {$line->refType='Imputation';};
 			echo '<img src="css/images/icon' . $line->refType . '16.png" ';
 			if ($line->refType!='Imputation') {
-			  echo 'onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'\');" onmouseout="hideBigImage();"';
+			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'<br/>';
+			  if ($canRead) echo '<i>'. i18n("clickToView").'</i>';
+			  echo '\');" onmouseout="hideBigImage();"';
+			}
+			if (! $print and $canRead) {
+			  echo ' class="pointer" onClick="directDisplayDetail(\''.$line->refType.'\',\''.$line->refId.'\')"';
 			}
 			echo '/>';
 			echo '</td>';
@@ -728,7 +741,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 					$line->description=$descriptionActivity->description;
 				}
 			}
-			echo '<td width="100%">' . $line->name ;
+			echo '<td width="100%" style="position:relative"';
+			if (! $print and $canGoto) {
+			  echo ' class="pointer" onClick="gotoElement(\''.$line->refType.'\',\''.$line->refId.'\')"';
+			}
+			echo '>' . $line->name ;
+			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
+				
 			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
 					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">' . $line->functionName . '</div>';
 			}
