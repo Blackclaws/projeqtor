@@ -1553,14 +1553,14 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
  * ===========================================================================
  * Get the access right for a menu and an access type, just returning 'YES' or 'NO'
  *
- * @param $menuName The
- *          name of the menu; should be 'menuXXX'
+ * @param $menuName name  
+ *   : name of the menu as 'menuXXX'
  * @param $accessType requested
  *          access type : 'read', 'create', 'update', 'delete'
  * @return the right as Yes or No (depending on object properties)
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
-  // ATTENTION, NOT FOR READ ACCESS
+  // ATTENTION, NOT FOR READ ACCESS : result may be unexpected
   if (! class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
   }
