@@ -164,12 +164,13 @@ function drawTableFromObjectList($objectList) {
 				echo ' >';
 				echo $obj->getValidationScript($code);
 				echo '</div>';
-			} else if ($format=='text') {
+			} else if ($format=='text' or $format=='password') {
 				echo '<div dojoType="dijit.form.TextBox" ';
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
 				echo ' style="width: 200px;" ';
 				echo ' class="input" ';
+				if ($format=='password') echo ' type="password" ';
 				echo ' value="' .  $obj->parameterValue  . '" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);

@@ -2776,9 +2776,9 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="assignHeader" style="width:' . (($print)?'15':'10') . '%">' . i18n('colDate') . '</td>';
-  echo '<td class="assignHeader"style="width:35%">' . i18n('colName') . '</td>';
+  echo '<td class="assignHeader" style="width:35%">' . i18n('colName') . '</td>';
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colType') . '</td>';
-  echo '<td class="assignHeader"style="width:25%">' . i18n('colDetail') . '</td>';
+  echo '<td class="assignHeader" style="width:25%">' . i18n('colDetail') . '</td>';
   // if ($workVisible) {
   echo '<td class="assignHeader" style="width:10%">' . i18n('colAmount') . '</td>';
   // }
@@ -2787,7 +2787,7 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
   foreach ( $list as $expenseDetail ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap;width:5%">';
       // if ($canUpdate and ! $print and $workVisible) {
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(\''.$scope.'\',' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
@@ -2799,8 +2799,8 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData" >' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
-    echo '<td class="assignData" ';
+    echo '<td class="assignData" style="width:' . (($print)?'15':'10') . '%">' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
+    echo '<td class="assignData" style="width:35%"';
     echo '>' . $expenseDetail->name;
     if ($expenseDetail->description and !$print) {
       echo formatCommentThumb($expenseDetail->description);
@@ -2808,11 +2808,11 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode($expenseDetail->name, 'none') . '"/>';
     
     echo '</td>';
-    echo '<td class="assignData" >' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) . '</td>';
-    echo '<td class="assignData" >';
+    echo '<td class="assignData" style="width:15%">' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) . '</td>';
+    echo '<td class="assignData" style="width:25%">';
     echo $expenseDetail->getFormatedDetail();
     echo '</td>';
-    echo '<td class="assignData" style="text-align:right;">' . htmlDisplayCurrency($expenseDetail->amount) . '</td>';
+    echo '<td class="assignData" style="text-align:right;width:10%"">' . htmlDisplayCurrency($expenseDetail->amount) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';

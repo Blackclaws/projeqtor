@@ -761,15 +761,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.document.title=i18n('applicationTitle');dojo.byId('printFrame').src='../view/preparePreview.php';" >
   <?php 
     $printHeight=600;
-    $printWidth=1075;
+    $printWidth=1010;
     //if (array_key_exists('screenWidth',$_SESSION)) {
     //   $printWidth = $_SESSION['screenWidth'] * 0.8;
     //}
     if (array_key_exists('screenHeight',$_SESSION)) {
-      $printHeight=round($_SESSION['screenHeight']*0.50);
+      $printHeight=round($_SESSION['screenHeight']*0.65);
     }
-    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1200) {
-      $printWidth=round($_SESSION['screenWidth']*0.9);
+    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1160) {
+      $printWidth=round($_SESSION['screenWidth']*0.87);
     }
   ?> 
   <div style="widht:100%" id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
@@ -806,7 +806,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="dialogShowHtml" dojoType="dijit.Dialog" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
   <?php 
     $printHeight=600;
-    $printWidth=1000;
+    $printWidth=1010;
     if (array_key_exists('screenHeight',$_SESSION)) {
       $printHeight=round($_SESSION['screenHeight']*0.50);
     }
@@ -827,8 +827,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetailCombo");?>" class="background" >
   <?php 
     $detailHeight=600;
-    $detailWidth=1000;
-    if (array_key_exists('screenWidth',$_SESSION)) {
+    $detailWidth=1010;
+    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1160) {
        $detailWidth = $_SESSION['screenWidth'] * 0.87;
     }
     if (array_key_exists('screenHeight',$_SESSION)) {
@@ -887,7 +887,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       </tr>
       <tr><td colspan="3">&nbsp;</td></tr>
       <tr>
-        <td colspan="3">   
+        <td width="<?php echo $detailWidth;?>px" colspan="3">   
           <iframe width="100%" height="<?php echo $detailHeight;?>px"
             scrolling="auto" frameborder="0px" name="comboDetailFrame" id="comboDetailFrame" src="" >
           </iframe>
