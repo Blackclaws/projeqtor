@@ -986,7 +986,10 @@ class User extends SqlElement {
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  setSessionUser($this);
+debugLog($this);
+debugLog(getSessionUser());
 				  $resultSaveUser=$this->save();
+debugLog($resultSaveUser);		  
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
 						$title="ProjeQtOr - " . i18n('newUser');
