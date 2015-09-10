@@ -213,6 +213,21 @@ function dispatchWorkValueChange(rowId, colId) {
 	dojo.byId('workOldValue_' + rowId + '_' + colId).value=newWorkValue;
 	formChanged();
 	checkCapacity();
+	 // TODO : check if status will change to 'handled'
+  if ((oldReal==0 && newReal>0) || (oldLeft>0 && newLeft==0) || (newReal<oldReal) ) {
+    var url= '../tool/checkStatusChange.php';
+    url+='?newReal='+newReal;
+    url+='&newLeft='+newLeft;
+    url+='&idAssignment='+dojo.byId('idAssignment_' + rowId).value;
+    dojo.xhrGet({
+      url:url,
+      handleAs: "text",
+      load: function (data) {
+        dojo.byId('extra_'+rowId).innerHTML=data;
+        console.log(data);
+      }
+    });
+  }
 }
 
 function isOffDay(vDate) {

@@ -481,6 +481,7 @@ function showDetail(comboName, canCreate, objectClass, multiSelect) {
   dojo.byId('comboName').value=comboName;
   dojo.byId('comboClass').value=objectClass;
   dojo.byId('comboMultipleSelect').value=(multiSelect) ? 'true' : 'false';
+  dijit.byId('comboDetailResult').set('content',null);
   var val=null;
   if (dijit.byId(comboName)) {
     val=dijit.byId(comboName).get('value');
@@ -510,8 +511,24 @@ function displayDetail(objClass, objId) {
   hideField('comboNewButton');
   hideField('comboSaveButton');
   showField('comboCloseButton');
+  dijit.byId('comboDetailResult').set('content',null);
   frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="
       + objClass + "&objectId=" + objId + "&detail=true";
+}
+
+function directDisplayDetail(objClass, objId) {
+  showWait();
+  hideField('comboSearchButton');
+  hideField('comboSelectButton');
+  hideField('comboNewButton');
+  hideField('comboSaveButton');
+  showField('comboCloseButton');
+  dijit.byId('comboDetailResult').set('content',null);
+  window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
+    + i18n("messagePreview") + '</i>';
+  dijit.byId("dialogDetail").show();
+  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="
+    + objClass + "&objectId=" + objId + "&detail=true";
 }
 
 function selectDetailItem(selectedValue) {
@@ -4251,8 +4268,16 @@ function stockHistory(curClass, curId) {
    * Array(curClass, curId); historyPosition=len; if (historyPosition>=1) {
    * enableWidget('menuBarUndoButton'); } disableWidget('menuBarRedoButton'); }
    */
+  if (historyPosition>0) {
+    current=historyTable[historyPosition];
+    if (current[0]==curClass && current[1]==curId) return; // do not re-stock current item
+  }
   historyPosition+=1;
   historyTable[historyPosition]=new Array(curClass, curId);
+  // Purge next history (not valid any more)
+  for (i=historyPosition+1;i<historyTable.length;i++) {
+    historyTable.splice(i,1);
+  }
   if (historyPosition > 0) {
     enableWidget('menuBarUndoButton');
   }

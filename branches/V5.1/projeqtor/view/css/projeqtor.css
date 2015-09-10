@@ -574,6 +574,9 @@ label, .label, .smallLabel {
 .display .pointer {
 	cursor: pointer !important;
 }
+.pointer {
+	cursor: pointer;
+}
 
 .detail {
   width: 1px;

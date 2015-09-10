@@ -2233,7 +2233,9 @@ function gotoElement(eltClass, eltId, noHistory) {
   }
   selectTreeNodeById(dijit.byId('menuTree'), eltClass);
   formChangeInProgress=false;
-  if ( dojo.byId("GanttChartDIV") && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone') ) {
+  if ( dojo.byId("GanttChartDIV") 
+      && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' 
+        || eltClass=='TestSession' || eltClass=='Meeting' || eltClass=='PeriodicMeeting') ) {
 	refreshJsonPlanning();
 	dojo.byId('objectClass').value=eltClass;
 	dojo.byId('objectId').value=eltId;
@@ -2247,6 +2249,7 @@ function gotoElement(eltClass, eltId, noHistory) {
   if (! noHistory) {
     stockHistory(eltClass,eltId);
   }
+console.log(historyTable);
 }
 
 function runReport() {
