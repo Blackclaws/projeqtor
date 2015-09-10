@@ -51,5 +51,41 @@ class Work extends GeneralWork {
     parent::__destruct();
   }
   
+  function save() {
+    // On saving remove corresponding planned work if exists
+    $oldWork=0;
+    if ($this->id) { // Update existing
+      $old=new Work($this->id);
+      $oldWork=$old->work;
+    }
+    $additionalWork=$this->work-$oldWork;
+    if ($additionalWork>0) {
+      $pw=new PlannedWork();
+      $crit=array('idAssignment'=>$this->idAssignment, 
+                  'refType'=>$this->refType, 'refId'=>$this->refId, 
+                  'idResource'=>$this->idResource,
+                  'workDate'=>$this->workDate);
+      $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
+      while ($additionalWork>0 and count($list)>0) {
+        $pw=array_shift($list);
+        if ($pw->work > $additionalWork) {
+          $pw->work-=$additionalWork;
+          $pw->save();
+          $additionalWork=0;
+        } else {
+          $additionalWork-=$pw->work;
+          $pw->delete();
+        }
+        if (count($list)==0 and isset($crit['workDate']) ) {
+          unset($crit['workDate']);
+          $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
+        }
+      }
+debugLog("End - removed planned work : left = $additionalWork");
+    }
+    
+    return parent::save();
+  }
+  
 }
 ?>

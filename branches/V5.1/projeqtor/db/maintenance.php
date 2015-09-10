@@ -123,7 +123,7 @@ if ($currVersion=='V0.0.0') {
   $prm->parameterValue='IFSET';
   $prm->save();
   // New in V5 : Start Guide Page
-  Parameter::storeUserParameter('startPage', 'startGuide.php');
+  Parameter::storeUserParameter('startPage', 'startGuide.php',1);
 }
 
 //echo "for V1.6.1<br/>";

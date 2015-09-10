@@ -652,14 +652,10 @@ class Parameter extends SqlElement {
     return $val;
   }
   
-  static function storeUserParameter($code,$value) {
-  	$userId=getSessionUser()->id;
-  	if (! $userId) {
-  		global $maintenance;
-  		if (isset($maintenance) and $maintenance) {
-  		  $userId=1;
-  		}
-  	}
+  static function storeUserParameter($code,$value,$userId=null) {
+    if (! $userId) {
+  	  $userId=getSessionUser()->id;
+    }
   	$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>$userId,'parameterCode'=>$code));
   	if (! $param->id) {
   		$param->parameterCode=$code;
