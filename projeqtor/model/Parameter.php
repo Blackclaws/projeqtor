@@ -657,7 +657,7 @@ class Parameter extends SqlElement {
   	if (! $userId) {
   		global $maintenance;
   		if (isset($maintenance) and $maintenance) {
-  		  $user->id=1;
+  		  $userId=1;
   		}
   	}
   	$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>$userId,'parameterCode'=>$code));
