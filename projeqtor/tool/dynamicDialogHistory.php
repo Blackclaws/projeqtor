@@ -41,20 +41,41 @@ $objectId=$_REQUEST['objectId'];
 
 $dynamicDialogHistory=true;
 $_REQUEST['refreshHistory']=true;
+$showWorkHistory=false;
+if (getSessionValue('showWorkHistory')) {
+  $showWorkHistory=true;
+}
 ?>
-<table style="width: 100%;">
- <tr>
-   <td style="width: 100%;" align="center">
-     <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogHistory').hide();">
-       <?php echo i18n("close");?>
-     </button>
-   </td>
- </tr>      
-</table>
+
+<?php showCloseButton();?>
 
 <div xstyle="width:300px">
 <?php include '../view/objectDetail.php';?>
 </div>
+
+<?php // Centralise button, to be displayed on top and bottom 
+function showCloseButton() {
+  global $objectClass,$showWorkHistory;?> 
+  
+  <table style="width: 100%;">
+   <tr>
+     <td style="width: 50%;" align="left">
+       <?php if (property_exists($objectClass, $objectClass.'PlanningElement')) {?>
+       <button dojoType="dijit.form.Button" type="button" onclick="historyShowHideWork();">
+         <?php if ($showWorkHistory) echo i18n("hideWork");
+           else echo i18n("showWork");?>
+       </button>
+       <?php }?>
+     </td>
+     <td style="width: 50%;" align="right">
+       <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogHistory').hide();">
+         <?php echo i18n("close");?>
+       </button>
+     </td>
+   </tr>      
+  </table>
+<?php 
+} ?>
 
 
 

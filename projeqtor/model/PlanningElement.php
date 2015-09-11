@@ -450,15 +450,11 @@ class PlanningElement extends SqlElement {
     return $result;
   }
   public function setHandledOnRealWork ($action='check') {
-debugLog("PlanningElement : first real work");
-debugLog("parameter = ".Parameter::getGlobalParameter('setHandledOnRealWork'));
     $refType=$this->refType;
     $refObj=new $refType($this->refId);
     $newStatus=null;
     if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setHandledOnRealWork')=='YES') {
-debugLog("PlanningElement : must set to first handled $this->refType #$this->refId");
       $st=new Status($refObj->idStatus);
-debugLog("Current status is ".$st->name);
       if (!$st->setHandledStatus) { // if current stauts is not handled, move to first allowed handled status (fitting workflow)
         $typeClass=$refType.'Type';
         $typeField='id'.$typeClass;
@@ -482,13 +478,11 @@ debugLog("Current status is ".$st->name);
         }
         $in.=")";
         $st=new Status();
-debugLog("criteria : setHandledStatus=1 and id in ".$in);
         $stList=$st->getSqlElementsFromCriteria(null, null, " setHandledStatus=1 and id in ".$in, 'sortOrder asc');
         if (count($stList)>0) {
           if ($action=='save') {
             $refObj->idStatus=$stList[0]->id;
             $resSetStatus=$refObj->save();
-debugLog("result of update status = $resSetStatus");
           }
           return $stList[0]->name; // Return new status name
         }
@@ -497,12 +491,9 @@ debugLog("result of update status = $resSetStatus");
     return null; // OK nothing to do
   } 
   public function setDoneOnNoLeftWork($action='check', $simulatedStartStatus=null) {
-    debugLog("PlanningElement : no more left work");
-    debugLog("parameter = ".Parameter::getGlobalParameter('setDoneOnNoLeftWork'));
     $refType=$this->refType;
     $refObj=new $refType($this->refId);
     if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setDoneOnNoLeftWork')=='YES') {
-debugLog("PlanningElement : must set to first handled $this->refType #$this->refId");
       $st=null;
       if ($simulatedStartStatus) {
         $st=new Status(SqlList::getIdFromName('Status', $simulatedStartStatus));
@@ -510,7 +501,6 @@ debugLog("PlanningElement : must set to first handled $this->refType #$this->ref
       if (! $st or !$st->id) {
         $st=new Status($refObj->idStatus);
       }
-debugLog("Current status is ".$st->name);
       if (!$st->setDoneStatus) { // if current status is not handled, move to first allowed handled status (fitting workflow)
         $typeClass=$refType.'Type';
         $typeField='id'.$typeClass;
@@ -532,13 +522,11 @@ debugLog("Current status is ".$st->name);
         }
         $in.=")";
         $st=new Status();
-        debugLog("criteria : setDoneStatus=1 and id in ".$in);
         $stList=$st->getSqlElementsFromCriteria(null, null, " setDoneStatus=1 and id in ".$in, 'sortOrder asc');
         if (count($stList)>0) {
           if ($action=='save') {
             $refObj->idStatus=$stList[0]->id;
             $resSetStatus=$refObj->save();
-            debugLog("result of update status = $resSetStatus");
           }
           return $stList[0]->name;
         }
@@ -610,7 +598,8 @@ debugLog("Current status is ".$st->name);
     $realCost=0;
     $validatedCost=0;
     $validatedExpense=0;
-    $this->_noHistory=true;
+    //$this->_noHistory=true; // Should keep history of changes
+    $this->_workHistory=true; // History will be tagged in order to select visibility
     // Add data from assignments directly linked to this item
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
     $assignment=new Assignment();

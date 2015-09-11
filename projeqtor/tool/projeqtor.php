@@ -175,6 +175,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
         $loginSave = true;
         $user->setCookieHash ();
         $user->save ();
+        $user->finalizeSuccessfullConnection(true);
         setSessionUser($user);
       }
     }
@@ -297,7 +298,7 @@ function i18n($str, $vars = null) {
   // ==========================================================
   // This procedure is called before any parameter is set
   // So don't use any database access (objects use db)
-  // and don't use any log function (such as debugLog)
+  // and don't use any log function (such as traceLog or other debug tracing function)
   global $i18nMessages, $currentLocale;
   $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
   // on first use, initialize $i18nMessages
@@ -1583,7 +1584,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   }
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-//debugLog("securityGetAccessRightYesNo($menuName, $accessType)=$accessRight");
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {

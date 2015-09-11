@@ -40,6 +40,7 @@ class History extends SqlElement {
   public $newValue;
   public $operationDate;
   public $idUser;
+  public $isWorkHistory;
   
   public $_noHistory=true; // Will never save history for this object
   
@@ -92,6 +93,9 @@ class History extends SqlElement {
     } else {
     	$hist->oldValue=$oldValue;
     	$hist->newValue=$newValue;
+    }
+    if ($obj and property_exists($obj, '_workHistory')) {
+      $hist->isWorkHistory=1;
     }
     $hist->idUser=$user->id;
     $returnValue=$hist->save();

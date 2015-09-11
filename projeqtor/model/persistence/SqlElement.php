@@ -1759,7 +1759,7 @@ abstract class SqlElement {
 					}
 					if ($dataType=='int' and $dataLength==1) {
 						if (array_key_exists($formField,$_REQUEST)) {
-							//if filed is hidden, must check value, otherwise just check existence
+							//if field is hidden, must check value, otherwise just check existence
 							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
 								$this->$key = $_REQUEST[$formField];
 							} else {

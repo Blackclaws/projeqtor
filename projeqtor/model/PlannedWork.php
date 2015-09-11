@@ -727,7 +727,7 @@ class PlannedWork extends GeneralWork {
             }
           }
           if ($changedAss) {
-            $ass->_noHistory=true;    
+            $ass->_noHistory=true; // Will only save planning data, so no history required  
             $arrayAssignment[]=$ass;
           }
           $resources[$ass->idResource]=$ress;

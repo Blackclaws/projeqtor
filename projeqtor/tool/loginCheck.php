@@ -209,65 +209,14 @@
     exit;
   }
   
-   /** ========================================================================
-   * Valid login
-   * @param $user the user object containing login information
-   * @return void
-   */
-  function loginOk ($user) {
-    global $login;
-    setSessionUser($user);
-  	$_SESSION['appRoot']=getAppRoot();
-    $crit=array();
-    $crit['idUser']=$user->id;
-    $crit['idProject']=null;
-    $obj=new Parameter();
-    $objList=$obj->getSqlElementsFromCriteria($crit,false);
-//$user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
-    foreach($objList as $obj) {
-      if ($obj->parameterCode=='lang' and $obj->parameterValue) {
-        $_SESSION['currentLocale']=$obj->parameterValue;
-        $i18nMessages=null; 
-      } else if ($obj->parameterCode=='defaultProject') {
-        $prj=new Project($obj->parameterValue);
-        if ($prj->name!=null and $prj->name!='') {
-            $_SESSION['project']=$obj->parameterValue;
-        } else {
-          $_SESSION['project']='*';
-        }
-      } else if (substr($obj->parameterCode,0,6)=='Filter') {
-        if (! $user->_arrayFilters) {
-          $user->_arrayFilters=array();
-        }
-        $idFilter=$obj->parameterValue;
-        $filterObjectClass=substr($obj->parameterCode,6);
-        $filterArray=array();
-        $filter=new Filter($idFilter);
-        $arrayDisp=array();
-        $arraySql=array();
-        if (is_array($filter->_FilterCriteriaArray)) {
-          foreach ($filter->_FilterCriteriaArray as $filterCriteria) {
-            $arrayDisp["attribute"]=$filterCriteria->dispAttribute;
-            $arrayDisp["operator"]=$filterCriteria->dispOperator;
-            $arrayDisp["value"]=$filterCriteria->dispValue;
-            $arraySql["attribute"]=$filterCriteria->sqlAttribute;
-            $arraySql["operator"]=$filterCriteria->sqlOperator;
-            $arraySql["value"]=$filterCriteria->sqlValue;
-            $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
-          }
-        } 
-        $user->_arrayFilters[$filterObjectClass]=$filterArray;
-        $user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
-      } else {
-        $_SESSION[$obj->parameterCode]=$obj->parameterValue;
-      }
-    }
+  function loginOK($user) {
+    $user->finalizeSuccessfullConnection(false);
     echo '<div class="messageOK">';
     echo i18n('loginOK');
     echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
     echo '</div>';
     echo '</div>';
-    traceLog("NEW CONNECTED USER '" . $login . "'");
-    Audit::updateAudit();
   }
+  
+
 ?>

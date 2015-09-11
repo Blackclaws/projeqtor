@@ -113,10 +113,8 @@ if ($noselect) {
       }
     }
     drawHistoryFromObjects(true);
-    if (isset($dynamicDialogHistory)) {
-      echo '<table style="width: 100%;"><tr><td style="width: 100%;" align="center">';
-      echo '<button dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'dialogHistory\').hide();">';
-      echo i18n("close").'</button></td></tr></table>';
+    if (isset($dynamicDialogHistory) and $dynamicDialogHistory and function_exists('showCloseButton')) {
+      showCloseButton();
     }
     exit();
   }
@@ -294,7 +292,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     $displayHistory='NO';
   }
   echo '<br/>';
-  if ((!$noselect) and $displayHistory == 'YES' and !$comboDetail) {
+  if ((!$noselect) and ($displayHistory == 'YES' or $displayHistory=='YESW') and !$comboDetail) {
     if ($print) {
       ?>
 <table width="<?php echo $printWidth;?>px;">
@@ -1856,6 +1854,11 @@ function drawHistoryFromObjects($refresh=false) {
       $inList.=", ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ")";
     }
   }
+  $showWorkHistory=false;
+  $paramDisplayHistory=Parameter::getUserParameter('displayHistory');
+  if ( ($paramDisplayHistory=='REQ' and getSessionValue('showWorkHistory')) or $paramDisplayHistory=='YESW') {
+    $showWorkHistory=true;
+  }
   $inList.=')';
   $where=' (refType, refId) in ' . $inList;
   $order=' operationDate desc, id asc';
@@ -1893,7 +1896,7 @@ function drawHistoryFromObjects($refresh=false) {
       $refType='';
       $refId='';
       $refObject='';
-    }
+    }  
     if ($refType=='Attachement') $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
     $curObj=null;
     $dataType="";
@@ -1941,6 +1944,9 @@ function drawHistoryFromObjects($refresh=false) {
     if (substr($hist->refType, -15) == 'PlanningElement' and $hist->operation == 'insert') {
       $hide=true;
     }
+    if ($hist->isWorkHistory and ! $showWorkHistory) {
+      $hide=true;
+    }
     if (!$hide) {
       echo '<tr>';
       echo '<td class="historyData' . $class . '" width="10%">' . $oper . '</td>';
@@ -1974,6 +1980,15 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
         $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
         $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
+      } else if ($dataType == 'decimal' and (substr($colName, -4, 4) == 'Cost' or strtolower(substr($colName,-6,6))=='amount')) {
+          $oldValue=htmlDisplayCurrency($oldValue);
+          $newValue=htmlDisplayCurrency($newValue);
+      } else if (substr($colName, -8, 8) == 'Duration') {
+        $oldValue=$oldValue . ' ' . i18n('shortDay');
+        $newValue=$newValue . ' ' . i18n('shortDay');
+      } else if (substr($colName, -8, 8) == 'Progress') {
+        $oldValue=$oldValue . ' ' . i18n('colPct');
+        $newValue=$newValue . ' ' . i18n('colPct');
       } else if ($dataLength>4000) {
         $diff=diffValues($oldValue,$newValue);
         // Nothing, préserve html format 
