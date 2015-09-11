@@ -221,7 +221,9 @@ class Parameter extends SqlElement {
       case 'displayHistory':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'),
+                    'YESW'=>i18n('displayYesWithWork'),
                     'REQ'=>i18n('displayOnRequest'));
+        //if () {unset($list['YESW']);}
         break;
       case 'displayChecklist':
         $list=array('YES'=>i18n('displayYes'),

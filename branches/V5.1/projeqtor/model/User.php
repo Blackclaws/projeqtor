@@ -986,10 +986,7 @@ class User extends SqlElement {
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  setSessionUser($this);
-debugLog($this);
-debugLog(getSessionUser());
 				  $resultSaveUser=$this->save();
-debugLog($resultSaveUser);		  
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
 						$title="ProjeQtOr - " . i18n('newUser');
@@ -1059,8 +1056,65 @@ debugLog($resultSaveUser);
   		$loginSave=true;
       $this->setCookieHash();
       $this->save();
-  	}   
+  	}
   }
+  
+  /** ========================================================================
+   * Valid login
+   * @param $user the user object containing login information
+   * @return void
+   */
+  public function finalizeSuccessfullConnection($rememberMe) {
+    setSessionUser($this);
+    $_SESSION['appRoot']=getAppRoot();
+    $crit=array();
+    $crit['idUser']=$this->id;
+    $crit['idProject']=null;
+    $obj=new Parameter();
+    $objList=$obj->getSqlElementsFromCriteria($crit,false);
+    //$this->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
+    foreach($objList as $obj) {
+      if ($obj->parameterCode=='lang' and $obj->parameterValue) {
+        $_SESSION['currentLocale']=$obj->parameterValue;
+        $i18nMessages=null;
+      } else if ($obj->parameterCode=='defaultProject') {
+        $prj=new Project($obj->parameterValue);
+        if ($prj->name!=null and $prj->name!='') {
+          $_SESSION['project']=$obj->parameterValue;
+        } else {
+          $_SESSION['project']='*';
+        }
+      } else if (substr($obj->parameterCode,0,6)=='Filter') {
+        if (! $this->_arrayFilters) {
+          $this->_arrayFilters=array();
+        }
+        $idFilter=$obj->parameterValue;
+        $filterObjectClass=substr($obj->parameterCode,6);
+        $filterArray=array();
+        $filter=new Filter($idFilter);
+        $arrayDisp=array();
+        $arraySql=array();
+        if (is_array($filter->_FilterCriteriaArray)) {
+          foreach ($filter->_FilterCriteriaArray as $filterCriteria) {
+            $arrayDisp["attribute"]=$filterCriteria->dispAttribute;
+            $arrayDisp["operator"]=$filterCriteria->dispOperator;
+            $arrayDisp["value"]=$filterCriteria->dispValue;
+            $arraySql["attribute"]=$filterCriteria->sqlAttribute;
+            $arraySql["operator"]=$filterCriteria->sqlOperator;
+            $arraySql["value"]=$filterCriteria->sqlValue;
+            $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+          }
+        }
+        $this->_arrayFilters[$filterObjectClass]=$filterArray;
+        $this->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
+      } else {
+        $_SESSION[$obj->parameterCode]=$obj->parameterValue;
+      }
+    }
+    traceLog("NEW CONNECTED USER '" . $this->name . "'".(($rememberMe)?' (using remember me feature)':''));
+    Audit::updateAudit();
+  }
+  
   
   public function disconnect() {
     purgeFiles(Parameter::getGlobalParameter('paramReportTempDirectory'),"user" . $this->id . "_");

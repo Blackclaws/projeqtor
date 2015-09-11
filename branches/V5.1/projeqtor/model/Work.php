@@ -81,7 +81,6 @@ class Work extends GeneralWork {
           $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
         }
       }
-debugLog("End - removed planned work : left = $additionalWork");
     }
     
     return parent::save();

@@ -172,6 +172,7 @@ class ActivityPlanningElement extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+    $this->updateWorkElementSummary(true);
     return parent::save();
   }
   
@@ -216,8 +217,8 @@ class ActivityPlanningElement extends PlanningElement {
    * Called by workElement
    * @return void
    */
-  public function updateWorkElementSummary() {
-  	$we=new WorkElement();  	
+  public function updateWorkElementSummary($noSave=false) {
+    $we=new WorkElement();  	
   	$weList=$we->getSqlElementsFromCriteria(array('idActivity'=>$this->refId));
   	$this->workElementEstimatedWork=0;
   	$this->workElementRealWork=0;
@@ -229,7 +230,9 @@ class ActivityPlanningElement extends PlanningElement {
   		$this->workElementLeftWork+=$we->leftWork;
   		$this->workElementCount+=1;
   	}
-  	$this->simpleSave();
+  	if (! $noSave) {
+  	  $this->simpleSave();
+  	}
   }
 }
 ?>

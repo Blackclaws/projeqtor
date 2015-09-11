@@ -40,7 +40,7 @@ class ProjectHistory extends SqlElement {
   public $leftCost;
   public $totalRealCost;
   public $totalLeftCost;
-
+  public $_noHistory; // This is an history, so don't save history on history
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

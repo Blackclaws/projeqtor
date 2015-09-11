@@ -247,7 +247,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       	$firstPage="today.php";
       }
       $paramFirstPage=Parameter::getUserParameter('startPage');
-      debugLog("paramFirstPage=$paramFirstPage");
       if ($paramFirstPage) {
         $firstPage=$paramFirstPage;
       }

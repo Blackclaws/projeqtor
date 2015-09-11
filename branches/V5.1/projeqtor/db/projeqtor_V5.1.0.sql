@@ -62,3 +62,5 @@ DELETE FROM `${prefix}parameter` where idUser is null and parameterCode='startPa
 INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) VALUES 
 (null, null, 'startPage', 'today.php'),
 (null, null, 'setDoneOnNoLeftWork', 'YES');
+
+ALTER TABLE `${prefix}history` ADD `isWorkHistory` int(1) unsigned DEFAULT 0;

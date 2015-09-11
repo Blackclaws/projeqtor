@@ -5570,8 +5570,7 @@ function checkExportColumns(scope) {
 // Project Selector Functions
 // ==================================================================
 function changeProjectSelectorType(displayMode) {
-  dojo
-      .xhrPost({
+  dojo.xhrPost({
         url : "../tool/saveDataToSession.php?saveUserParam=true&id=projectSelectorDisplayMode&value="
             + displayMode,
         load : function() {
@@ -5928,4 +5927,18 @@ function installPlugin(fileName,confirmed) {
       }
     });
   }
+}
+var historyShowHideWorkStatus=0;
+function historyShowHideWork() {
+  if (! dojo.byId('objectClass')) {return;}
+  historyShowHideWorkStatus=((historyShowHideWorkStatus)?0:1);
+  if (dijit.byId('dialogHistory')) {
+    dijit.byId('dialogHistory').hide();
+  } 
+  dojo.xhrPost({
+    url : "../tool/saveDataToSession.php?saveUserParam=false&id=showWorkHistory&value="+historyShowHideWorkStatus,
+    load : function() {
+      showHistory(dojo.byId('objectClass').value);  
+    }
+  });
 }
