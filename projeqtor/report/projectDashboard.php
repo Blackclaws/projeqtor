@@ -113,7 +113,7 @@ $tab=array();
   	$queryWhere=getAccesRestrictionClause('Activity',false,false,true,true);
   	$queryWhere.=  " and reftype = 'Activity' and idProject " . $sqlPrj ;
   	$queryGroupBy = 'idActivity, idProject' ;
-  	$queryHaving = ' realWork<>0 or leftWork<>0 or assignedWork<>0';
+  	$queryHaving = ' sum(realWork)<>0 or sum(leftWork)<>0 or sum(assignedWork)<>0';
   
   	// constitute query and execute
   	$obj=new Assignment();
