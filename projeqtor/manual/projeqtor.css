@@ -200,7 +200,7 @@ html, body {
       /* border: 1px solid red; */
     }
     #workDiv {
-      overflow: auto;
+      overflow: auto;    
     }
 #statusBarDiv {
   border: 0px; margin: 0px; padding: 1px;
