@@ -169,7 +169,6 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
     } else if (item.type=='plugin') {
       loadMenuBarPlugin(item.id, item.name,'tree');
     } else {
-console.log('3:'+item.id);
 	    showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
 	  }
       </script>

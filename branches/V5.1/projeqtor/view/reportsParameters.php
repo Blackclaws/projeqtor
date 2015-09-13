@@ -413,6 +413,7 @@ foreach ($listParam as $param) {
     $defaultValue='';
     $saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
     $defaultValue=$saveShowMilestoneObj->parameterValue;
+    if (! is_numeric($defaultValue)) $defaultValue=null;
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>

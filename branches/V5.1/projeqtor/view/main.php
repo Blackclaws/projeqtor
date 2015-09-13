@@ -191,6 +191,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var paramConfirmQuit="<?php echo Parameter::getUserParameter("paramConfirmQuit")?>";
     var browserLocaleDateFormat="<?php echo Parameter::getUserParameter('browserLocaleDateFormat');?>";
     var browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
+    <?php $fmt=new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );?>
+    var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
