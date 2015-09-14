@@ -66,6 +66,7 @@ ini_set('suhosin.post.max_vars', 50*$nbLines+20);
 ini_set('suhosin.request.max_vars', 50*$nbLines+20);
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
+  
   $imputable=$_REQUEST['imputable'][$i];
   $locked=$_REQUEST['locked'][$i];
   if ($imputable and ! $locked) {

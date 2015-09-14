@@ -3906,7 +3906,7 @@ function showHelp() {
       manualWindow.focus();
     },
     error : function() {
-      console.log("Error retrieving Manual URL for section '"+section+"'");
+      consoleTraceLog("Error retrieving Manual URL for section '"+section+"'");
     }
   });
   // manualWindow.window.focus();
@@ -4543,7 +4543,6 @@ function loadMenuBarItem(item, itemName, from) {
   } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
     loadMenuBarPlugin(item, itemName, from);
   } else {  
-    console.log('2:'+item);
     showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
   return true;
@@ -4554,7 +4553,6 @@ function loadMenuBarPlugin(item, itemName, from) {
     return false;
   }
   if (! pluginMenuPage || ! pluginMenuPage['menu'+item]) {
-    console.log('1:'+item);
     showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
     return;
   }

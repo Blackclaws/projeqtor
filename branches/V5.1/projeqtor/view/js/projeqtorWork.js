@@ -179,8 +179,10 @@ function refreshImputationPeriod(directDate) {
  * @param colId
  * @return
  */
+//var oldImputationWorkValue=0;
 function dispatchWorkValueChange(rowId, colId) {
 	var oldWorkValue=dojo.byId('workOldValue_' + rowId + '_' + colId).value;
+	//var oldWorkValue=oldImputationWorkValue;
 	if (oldWorkValue==null || oldWorkValue=='') {oldWorkValue=0;}		
 	var newWorkValue=dijit.byId('workValue_' + rowId + '_' + colId).get('value');
 	if (isNaN(newWorkValue)) {
@@ -193,11 +195,11 @@ function dispatchWorkValueChange(rowId, colId) {
 	newSum=Math.round(newSum*100)/100;
 	dijit.byId('colSumWork_' + colId).set("value",newSum);
   //Update real work
-	var oldReal=dijit.byId('realWork_' + rowId).get("value");
+	var oldReal=formatDisplayToDecimal(dojo.byId('realWork_' + rowId).value);
 	var newReal=oldReal + diff;
-	dijit.byId('realWork_' + rowId).set("value",newReal);
+	dojo.byId('realWork_' + rowId).value=formatDecimalToDisplay(newReal);
   //Update left work
-	var assigned=dijit.byId('assignedWork_' + rowId).get("value");
+	var assigned=formatDisplayToDecimal(dojo.byId('assignedWork_' + rowId).value);
 	var oldLeft=dijit.byId('leftWork_' + rowId).get("value");
 	if (assigned>0 || diff>0 || oldLeft>0) {
 	  var newLeft=oldLeft - diff;
@@ -208,9 +210,10 @@ function dispatchWorkValueChange(rowId, colId) {
 	}
   //Update planned work
 	var newPlanned=newReal+newLeft;
-	dijit.byId('plannedWork_' + rowId).set("value",newPlanned);
+	dojo.byId('plannedWork_' + rowId).value=formatDecimalToDisplay(newPlanned);
 	// store new value for next calculation...
 	dojo.byId('workOldValue_' + rowId + '_' + colId).value=newWorkValue;
+	//oldImputationWorkValue=newWorkValue;
 	formChanged();
 	checkCapacity();
 	 // TODO : check if status will change to 'handled'
@@ -224,7 +227,6 @@ function dispatchWorkValueChange(rowId, colId) {
       handleAs: "text",
       load: function (data) {
         dojo.byId('extra_'+rowId).innerHTML=data;
-        console.log(data);
       }
     });
   }
@@ -276,9 +278,9 @@ function dispatchLeftWorkValueChange(rowId) {
 		dijit.byId('leftWork_' + rowId).set("value",'0');
 		newLeft=0;
 	}
-	var newReal=dijit.byId('realWork_' + rowId).get("value");
+	var newReal=formatDisplayToDecimal(dojo.byId('realWork_' + rowId).value);
 	var newPlanned=newReal+newLeft;
-	dijit.byId('plannedWork_' + rowId).set("value",newPlanned);
+	dojo.byId('plannedWork_' + rowId).value=formatDecimalToDisplay(newPlanned);
 	formChanged();
 }
 
@@ -425,4 +427,19 @@ function dispatchWorkSave() {
   }
   loadContent("../tool/saveDispatchWork.php","resultDiv", "dialogDispatchWorkForm", true, 'dispatchWork');
   dijit.byId('dialogDispatchWork').hide();
+}
+
+function formatDisplayToDecimal(val) {
+  val=val+"";
+  val=val.replace(browserLocaleDecimalSeparator,".");
+  if (val==null || isNaN(val) || val=='') {
+    val=0;
+  }
+  return parseFloat(val);
+}
+function formatDecimalToDisplay(val) {
+  val=Math.round(val*100)/100;
+  val=val+"";
+  val=val.replace(".", browserLocaleDecimalSeparator);
+  return val;
 }

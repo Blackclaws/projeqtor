@@ -1817,6 +1817,8 @@ abstract class SqlElement {
 	private function getSqlElement($withoutDependentObjects=false) {
 		$curId=$this->id;
 		if (! trim($curId)) {$curId=null;}
+		
+		// Cache management
 		if ($curId and array_key_exists(get_class($this),self::$_cachedQuery)) {
 			$whereClause='#id=' . $curId;
 			$class=get_class($this);
@@ -1843,7 +1845,7 @@ abstract class SqlElement {
 				foreach ($this as $col_name => $col_value) {
 					if (substr($col_name,0,1)=="_") {
 						$colName=substr($col_name,1);
-						if (is_array($this->{$col_name}) and ucfirst($colName) == $colName ) {
+						if (is_array($this->{$col_name}) and ucfirst($colName) == $colName and ! $withoutDependentObjects) {
 							if (substr($colName,0,4)=="Link") {
 								$linkClass=null;
 								if (strlen($colName)>4) {
@@ -1927,7 +1929,6 @@ abstract class SqlElement {
 			$class=get_class($this);
 			self::$_cachedQuery[get_class($this)][$whereClause]=clone($this);
 		}
-
 	}
 
 	/** ==========================================================================

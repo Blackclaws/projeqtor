@@ -113,7 +113,7 @@ class User extends SqlElement {
   private $_allProfiles;
   private $_allAccessRights;
   
-  private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
+  public $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
   private $_hierarchicalViewOfVisibleProjectsNotClosed;
@@ -416,7 +416,7 @@ class User extends SqlElement {
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
     foreach ($affList as $aff) {
-    	$prj=new Project($aff->idProject,true);
+      $prj=new Project($aff->idProject,true); 
     	if (! isset($result[$aff->idProject])) {
 	      $result[$aff->idProject]=$prj->name;
 	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
@@ -469,12 +469,16 @@ class User extends SqlElement {
    */
   public function getVisibleProjects($limitToActiveProjects=true) {
 //scriptLog("getVisibleProjects()");
+//debugLog("IN");
+//debugLog($this->_visibleProjects);
     if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;
     }
     if (! $limitToActiveProjects and $this->_visibleProjectsIncludingClosed) {
       return $this->_visibleProjectsIncludingClosed;
     }
+ debugLog("getVisibleProjects() - NO CACHE");   
+ //debugLog($this);
     $result=array();
     // Retrieve current affectation profile for each project
     $resultAff=array();
@@ -511,7 +515,7 @@ class User extends SqlElement {
       if (isset($affProfile[$idPrj])) {	        
         $profile=$affProfile[$idPrj];
         $resultAff[$idPrj]=$profile;
-        $prj=new Project($idPrj);
+        $prj=new Project($idPrj,true);
         $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
         foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
           $result[$idSubPrj]=$nameSubPrj;
@@ -529,6 +533,11 @@ class User extends SqlElement {
       $this->_visibleProjectsIncludingClosed=$result;
       $this->_specificAffectedProfilesIncludingClosed=$resultAff;
     }
+    if (getSessionUser()->id==$this->id) {
+      debugLog("store user to session");
+      setSessionUser($this); // Store user to cache Data
+    }  
+    //debugLog($this);
     return $result;
   }
   
@@ -1220,10 +1229,11 @@ class User extends SqlElement {
     }
     $this->_allSpecificRightsForProfiles[$specific]=$result;
     if ($this->id==getSessionUser()->id) {
-      //setSessionUser($this); // Store user to cache Data
+      setSessionUser($this); // Store user to cache Data
     }
     return $result;
   }
+  
   public function allSpecificRightsForProfilesOneOnlyValue($specific,$value) {
     $list=$this->getAllSpecificRightsForProfiles($specific);
     foreach ($list as $val=>$lstProf) {
