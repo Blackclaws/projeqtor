@@ -571,6 +571,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     form: dojo.byId(formName),
     handleAs: "text",
     load: function(data,args){
+      var debugTemp=(new Date()).getTime();
     	var contentNode = dojo.byId(destination);
     	var contentWidget = dijit.byId(destination);
     	if (fadingMode) {
@@ -670,6 +671,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
     	if (validationType) msg+=" | validationType='"+validationType+"'";
     	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
+    	var debugDurationServer=debugTemp-debugStart;
+    	var debugDurationClient=debugEnd-debugTemp;
+    	msg+=" (server:"+debugDurationServer+"ms, client:"+debugDurationClient+"ms)";
     	consoleTraceLog(msg);
     },
     error: function(error,args){
@@ -2249,7 +2253,6 @@ function gotoElement(eltClass, eltId, noHistory) {
   if (! noHistory) {
     stockHistory(eltClass,eltId);
   }
-console.log(historyTable);
 }
 
 function runReport() {

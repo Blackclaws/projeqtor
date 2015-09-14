@@ -857,6 +857,16 @@ function htmlDisplayNumeric($val) {
   //return $data;
 }
 
+function htmlDisplayNumericWithoutTrailingZeros($val) {
+  global $browserLocale;
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  $res=$val;
+  if ($fmt->decimalSeparator!='.') {
+    $res=str_replace('.', $fmt->decimalSeparator, $res);
+  }
+  return $res ;
+}
+
 function htmlDisplayPct($val) {
   return $val . '&nbsp;%';
 }

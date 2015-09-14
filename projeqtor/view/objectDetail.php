@@ -1989,9 +1989,10 @@ function drawHistoryFromObjects($refresh=false) {
       } else if (substr($colName, -8, 8) == 'Progress') {
         $oldValue=$oldValue . ' ' . i18n('colPct');
         $newValue=$newValue . ' ' . i18n('colPct');
-      } else if ($dataLength>4000) {
-        $diff=diffValues($oldValue,$newValue);
+      } else if ($dataLength>4000 or $refType=='Note') {
+        //$diff=diffValues($oldValue,$newValue);
         // Nothing, préserve html format 
+        $oldValue=$colName;
       } else if ($colName=='password' or $colName=='apiKey') {
         $allstars="**********";
         if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);

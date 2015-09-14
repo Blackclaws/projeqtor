@@ -79,7 +79,7 @@ class ImputationLine {
 	  SqlElement::$_cachedQuery['Assignment']=array();
 	  SqlElement::$_cachedQuery['PlanningElement']=array();
 	  SqlElement::$_cachedQuery['WorkElement']=array();
-	  
+		
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 		
@@ -88,7 +88,7 @@ class ImputationLine {
 			$hideNotHandled=1;
 		}
 		$user=getSessionUser();
-		$user=new User($user->id);
+		//$user=new User($user->id);
 
 		$result=array();
 		if ($rangeType=='week') {
@@ -141,12 +141,12 @@ class ImputationLine {
 				}
 			}
 		}
-		
+
 		// Hide some lines depending on user criteria selected on page
 		if ($hideNotHandled or $hideDone or $displayOnlyCurrentWeekMeetings) {
 			foreach ($assList as $id=>$ass) {
 				if ($ass->refType and class_exists($ass->refType))
-				$refObj=new $ass->refType($ass->refId);
+				$refObj=new $ass->refType($ass->refId, true);
 				if ($hideNotHandled and property_exists($refObj,'handled') and ! $refObj->handled) {
 					unset ($assList[$id]);
 				}
@@ -220,7 +220,7 @@ class ImputationLine {
 					$ass=new Assignment();
 				}
 				if ($work->refType) { // refType exist (Ticket is best case)
-					$obj=new $work->refType($work->refId);
+					$obj=new $work->refType($work->refId, true);
 					if ($obj->name) {
 					  $obj->name=htmlEncode($obj->name);
 					}
@@ -247,7 +247,7 @@ class ImputationLine {
 				$assList[$id]=$ass;
 			}
 		}
-		
+
 		$notElementary=array();
 		$cptNotAssigned=0;
 		foreach ($assList as $idAss=>$ass) {
@@ -403,7 +403,7 @@ class ImputationLine {
 		$plan=null;
 		$user=getSessionUser();
 		$visibleProjectList=$user->getVisibleProjects();
-		
+
 		//$visibleProjectList=explode(', ', getVisibleProjectsList());
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
@@ -498,7 +498,11 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		$width=600;
 		if (isset($_REQUEST['destinationWidth'])) {
 		  $width=($_REQUEST['destinationWidth'])-155-30;
-		} 
+		}
+		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
+		if (! $print and count($tab)>=20) {
+		  echo '<table style="width:100%" ><TR><TD>';
+		}
 		echo '<table class="imputationTable" style="width:100%">';
 		echo '<TR class="ganttHeight">';
 		echo '<td class="label" ><label for="imputationComment" >'.i18n("colComment").'&nbsp;:&nbsp;</label></td>';
@@ -612,7 +616,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
 		. i18n('colPlanned') . '</TD>';
 		echo '</TR>';
-		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
 		if (! $print) {
 			echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';
 		}
@@ -643,7 +646,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			$canRead=false;
 			$canGoto=false;
 			if ($line->refType and $line->refId) {
-			  $obj=new $line->refType($line->refId);
+			  $obj=new $line->refType($line->refId,true);
 			  $canRead=(securityGetAccessRightYesNo('menu' . $line->refType, 'read', $obj)=='YES');
 			  $canGoto=($canRead and securityCheckDisplayMenu(null, $line->refType))?true:false;
 			}
@@ -667,13 +670,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo '<input type="hidden" id="idAssignment_' . $nbLine . '" name="idAssignment[]"'
 				. ' value="' . $line->idAssignment . '"/>';
 				echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable[]"'
-				. ' value="' . $line->imputable . '"/>';
+				. ' value="' . (($line->imputable)?'1':'0') . '"/>';
 				echo '<input type="hidden" id="locked_' . $nbLine . '" name="locked[]"'
-        . ' value="' . $line->locked . '"/>';
+        . ' value="' . (($line->locked)?'1':'0') . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
 			echo '<img src="css/images/icon' . $line->refType . '16.png" ';
-			if ($line->refType!='Imputation') {
+			if ($line->refType!='Imputation' and !$print) {
 			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'<br/>';
 			  if ($canRead) echo '<i>'. i18n("clickToView").'</i>';
 			  echo '\');" onmouseout="hideBigImage();"';
@@ -763,14 +766,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
 			if ($line->imputable) {
 				if (!$print) {
-					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
 					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo ' style="width: 60px; text-align: center; " ';
-					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1" ';
+					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
 					echo ' id="assignedWork_' . $nbLine . '"';
-					echo ' value="' . Work::displayImputation($line->assignedWork) . '" ';
-					echo ' >';
-					echo '</div>';
+					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)) . '" ';
+					echo ' />';
+					//echo '</div>';
 				} else {
 					echo  Work::displayImputation($line->assignedWork);
 				}
@@ -779,14 +782,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
 			if ($line->imputable) {
 				if (!$print) {
-					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
 					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo ' style="width: 60px; text-align: center;" ';
-					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1" ';
+					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
 					echo ' id="realWork_' . $nbLine . '"';
-					echo ' value="' .  Work::displayImputation($line->realWork) . '" ';
-					echo ' >';
-					echo '</div>';
+					echo ' value="' .  htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)) . '" ';
+					echo ' />';
+					//echo '</div>';
 				} else {
 					echo   Work::displayImputation($line->realWork);
 				}
@@ -824,6 +827,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 							echo ' readOnly="true" ';
 						}
 						echo ' >';
+						//echo '<script type="dojo/method" event="onFocus" args="evt">';
+						//echo ' oldImputationWorkValue=this.value;';
+						//echo '</script>';
 						echo '<script type="dojo/method" event="onChange" args="evt">';
 						echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
 						echo '</script>';
@@ -875,14 +881,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '<td class="ganttDetail" align="center" width="5%">';
 			if ($line->imputable) {
 				if (!$print) {
-					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
 					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo '  style="width: 60px; text-align: center;" ';
-					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1"';
+					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
 					echo ' id="plannedWork_' . $nbLine . '"';
-					echo ' value="' .  Work::displayImputation($line->plannedWork) . '" ';
-					echo ' >';
-					echo '</div>';
+					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->plannedWork)) . '" ';
+					echo ' />';
+					//echo '</div>';
 				} else {
 					echo  Work::displayImputation($line->plannedWork);
 				}
@@ -937,6 +943,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		.  '</NOBR></TD>';
 		echo '</TR>';
 		echo '</table>';
+		if (! $print and count($tab)>20) {
+		  echo '</TD><TD style="width:17px">&nbsp;</TD></TR></TABLE>';
+		}
 	}
 	// ============================================================================**********
 	// GET STATIC DATA FUNCTIONS
