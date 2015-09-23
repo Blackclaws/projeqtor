@@ -719,8 +719,16 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
   //$clausePRO='';
   $clauseAffPRO='';
   $fieldProj='idProject';
+  $extraFieldCriteria='';
+  $extraFieldCriteriaReverse='';
   if ($objectClass == 'Project') {
-    $fieldProj='id';
+    if ($alias=='planningelement') {
+      $fieldProj='refId';
+      $extraFieldCriteria=" and refType='Project'";
+      $extraFieldCriteriaReverse=" or refType!='Project'";
+    } else { 
+      $fieldProj='id';
+    }
   }
   if ($objectClass == 'Document') {
     $v = new Version ();
@@ -737,7 +745,7 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
             .")))";
   } else {
     //$clausePRO= "(".$tableAlias.$fieldProj." in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle)).")";
-    $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO.")";
+    $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO." $extraFieldCriteria)";
   }
   
   $clauseALL='(1=1)'; // Will distinct the ALL
@@ -745,29 +753,29 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
   // Build where clause depending 
   if ($accessRightRead=='NO') { // Default profile is No Access
     $queryWhere=$clauseNO;
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN)";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES)";
+    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
     $queryWhere.=" or ($clauseALLPRO)";
   } else if ($accessRightRead=='OWN') {
     $queryWhere="($clauseOWN";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES)";
+    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
     $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
+    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
   } else if ($accessRightRead=='RES') {
     $queryWhere="($clauseRES";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN)";
+    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
     $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
+    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
   } else if ($accessRightRead=='PRO') {
     $queryWhere="($clauseALLPRO";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES)";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN)";
+    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
     //$queryWhere.=" or (".$clauseALLPRO.")";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
+    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
   } else if ($accessRightRead=='ALL') {
-    $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null)";
-    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES)";
-    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN)";
+    $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES $extraFieldCriteriaReverse)";
+    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
   }
   return " " . $queryWhere . " ";
 }
