@@ -977,7 +977,7 @@ class User extends SqlElement {
 						$this->resourceName=$first_user['cn'][0];    
 					} 
 				  $this->isLdap=1;
-				  $this->name=$paramlogin;
+				  $this->name=$paramlogin;  
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  setSessionUser($this);
 				  $resultSaveUser=$this->save();
