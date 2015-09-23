@@ -1,4 +1,28 @@
 <?php
+/*** COPYRIGHT NOTICE *********************************************************
+ *
+* Copyright 2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+* Contributors : -
+*
+* This file is part of ProjeQtOr.
+*
+* ProjeQtOr is free software: you can redistribute it and/or modify it under
+* the terms of the GNU General Public License as published by the Free
+* Software Foundation, either version 3 of the License, or (at your option)
+* any later version.
+*
+* ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
+*
+* You can get complete code of ProjeQtOr, other resource, help and information
+* about contributors at http://www.projeqtor.org
+*
+*** DO NOT REMOVE THIS NOTICE ************************************************/
 
 function checkPrerequisites($showOK=false,$dbType=null) {
   global $projeqtor;
@@ -67,6 +91,12 @@ function checkPrerequisites($showOK=false,$dbType=null) {
   } else {
     if ($showOK) showMessage("Module MBSTRING is available : OK");
     $checkOK++;
+  }
+  
+  // safe_mode should be disabled  
+  if (ini_get ( 'safe_mode' )) {
+    showWarning("PHP safe_mode is enabled, it should be disabled as it may lead to unexpected behaviors.<br/>Notice that safe_mode is deprecated in PHP 5.3 and removed in PHP 5.4.");
+    $checkWarnings++;
   }
   
   // Optional configuration
