@@ -325,11 +325,11 @@ abstract class SqlElement {
                                   "BillType"=>"controlStrict",
                                   "ClientType"=>"controlStrict",
                                   "CommandType"=>"controlStrict",
-                                  "ContextType"=>"controlStrict",
+                                  //"ContextType"=>"controlStrict",
                                   "ContractType"=>"controlStrict",
                                   "DecisionType"=>"controlStrict",
                                   "DocumentType"=>"controlStrict",
-                                  "ExpenseDetailType"=>"controlStrict",
+                                  //"ExpenseDetailType"=>"controlStrict",
                                   "IndividualExpenseType"=>"controlStrict",
                                   "InvoiceType"=>"controlStrict",
                                   "IssueType"=>"controlStrict",
@@ -1363,7 +1363,7 @@ abstract class SqlElement {
 				and $col_name!="handled" and $col_name!="handledDate" and $col_name!="handledDateTime"
 				and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
 				and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"
-				and $col_name!="idStatus" and $col_name!="reference"){ //topId ?
+				and $col_name!="idStatus" and $col_name!="reference" and $col_name!="billId"){ //topId ?
 					$newObj->$col_name=$this->$col_name;
 				}
 			}
@@ -3678,13 +3678,21 @@ abstract class SqlElement {
 		}
 		$class=get_class($this);
 		if ($class=='TicketSimple') $class='Ticket';
+		if ($class=='Bill' and !$this->billId) return; // Do not set Reference until billId is set
+		
 		$fmtPrefix=Parameter::getGlobalParameter('referenceFormatPrefix');
+		$fmtSuffix='';
 		$fmtNumber=Parameter::getGlobalParameter('referenceFormatNumber');
 		if ($class=='Bill') {
-		  $fmtPrefixBill=Parameter::getGlobalParameter('billReferenceFormatPrefix');
+		  $fmtPrefixBill=Parameter::getGlobalParameter('billReferenceFormat');
 		  $fmtNumberBill=Parameter::getGlobalParameter('billNumSize');
 		  if ($fmtPrefixBill) $fmtPrefix=$fmtPrefixBill;
 		  if ($fmtNumberBill) $fmtNumber=$fmtNumberBill;
+		}
+		$posNume=strpos($fmtPrefix,'{NUME}');
+		if ($posNume!==false) {
+		  $fmtSuffix=substr($fmtPrefix,$posNume+6);
+		  $fmtPrefix=substr($fmtPrefix,0,$posNume);
 		}
 		$change=Parameter::getGlobalParameter('changeReferenceOnTypeChange');
 		$type='id' . $class . 'Type';
@@ -3723,10 +3731,12 @@ abstract class SqlElement {
 		} else if (property_exists($this,'creationDateTime')) {
 			$year=substr($this->creationDateTime,0,4);
 			$month=substr($this->creationDateTime,5,2);
-		}
-		$prefix=str_replace(array('{PROJ}', '{TYPE}','{YEAR}','{MONTH}'), 
-				                array($projObj->projectCode,$typeObj->code, $year, $month),
-				                $fmtPrefix);
+		}		
+		$arrayFrom=array('{PROJ}', '{TYPE}','{YEAR}','{MONTH}');
+		$arrayTo=array($projObj->projectCode,$typeObj->code, $year, $month);
+		$prefix=str_replace($arrayFrom, $arrayTo, $fmtPrefix);
+		$suffix=str_replace($arrayFrom, $arrayTo, $fmtSuffix);
+debugLog('setReference : prefix=$prefix, suffix=$suffix');
 		$query="select max(reference) as ref from " . $this->getDatabaseTableName();
 		$query.=" where reference like '" . $prefix . "%'";
 		$query.=" and length(reference)=( select max(length(reference)) from " . $this->getDatabaseTableName();
@@ -3747,7 +3757,7 @@ abstract class SqlElement {
 		} else {
 			$num=$numMax;
 		}
-		$this->reference=$prefix.$num;
+		$this->reference=$prefix.$num.$suffix;
 		if (get_class($this)=='Document' and property_exists($this, 'documentReference')) {
 			$fmtDocument=Parameter::getGlobalParameter('documentReferenceFormat');
 			$docRef=str_replace(array('{PROJ}',              '{TYPE}',      '{NUM}', '{NAME}'),

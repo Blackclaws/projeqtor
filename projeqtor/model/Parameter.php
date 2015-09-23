@@ -469,7 +469,7 @@ class Parameter extends SqlElement {
       	                       'documentReferenceFormat'=>'text',
       	                       'versionReferenceSuffix'=>'text',
       	                       'preserveUploadedFileName'=>'list',
-      	                       'billReferenceFormatPrefix'=>'text',
+      	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',
@@ -670,6 +670,16 @@ class Parameter extends SqlElement {
   		$_SESSION['userParamatersArray']=array();
   	}
   	$_SESSION['userParamatersArray'][$code]=$value;
+  }
+  static function storeGlobalParameter($code,$value) {
+    $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>null,'parameterCode'=>$code));
+    if (! $param->id) {
+    		$param->parameterCode=$code;
+    		$param->idUser=null;
+    		$param->idProject=null;
+    }
+    $param->parameterValue=$value;
+    $param->save();
   }
   
   static public function getPlanningColumnOrder($all=false) {

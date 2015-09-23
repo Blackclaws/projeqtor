@@ -93,6 +93,12 @@ function checkPrerequisites($showOK=false,$dbType=null) {
     $checkOK++;
   }
   
+  // safe_mode should be disabled
+  if (ini_get ( 'safe_mode' )) {
+    showWarning("PHP safe_mode is enabled, it should be disabled as it may lead to unexpected behaviors.<br/>Notice that safe_mode is deprecated in PHP 5.3 and removed in PHP 5.4.");
+    $checkWarnings++;
+  }
+  
   // Optional configuration
   if (! function_exists('ImagePng')) {
     showWarning("GD Library not enabled - impossible to draw charts on reports");

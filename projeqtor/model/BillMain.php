@@ -50,8 +50,10 @@ class BillMain extends SqlElement {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
+  public $_tab_4_1_smallLabel = array('untaxedAmount', 'tax', '', 'fullAmount', 'amount');
   public $untaxedAmount;
   public $tax;
+  public $taxAmount;
   public $fullAmount;
   public $description;
   public $billingType;
@@ -84,6 +86,8 @@ class BillMain extends SqlElement {
                       'idBillType'=>'required',
                       'idProject'=>'required',
   										'billId'=>'hidden',
+                      'tax'=>'nobr',
+                      'taxAmount'=>'calculated,readonly',
   										'idPrec'=>'required',
                       'billingType'=>'hidden',
                       'fullAmount'=>'readonly',
@@ -112,10 +116,13 @@ class BillMain extends SqlElement {
     	self::$_fieldsAttributes['idProject']='readonly';
     	self::$_fieldsAttributes['idRecipient']='readonly';
     	self::$_fieldsAttributes['idContact']='readonly';
-    	self::$_fieldsAttributes['tax']='readonly';
+    	self::$_fieldsAttributes['tax']='readonly,nobr';
     }
     if (count($this->_BillLine)) {
     	self::$_fieldsAttributes['idProject']='readonly';
+    }
+    if ($this->fullAmount) {
+      $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
     }
   }
 
@@ -282,6 +289,7 @@ class BillMain extends SqlElement {
 			$billList = $bill->getSqlElementsFromCriteria($crit,false);
 			$num=count($billList)+$numStart;
 			$this->billId = $num;
+			$this->setReference();
 		}
 
 		// Get Client
@@ -296,7 +304,7 @@ class BillMain extends SqlElement {
 		// Get the tax from Client / Contact / Recipient 
 		if (trim($this->idClient)) {
 			$client=new Client($this->idClient);
-			if ($client->tax!='') {
+			if ($client->tax!='' and !$this->tax) {
 		  	$this->tax=$client->tax;
 			}
 		}

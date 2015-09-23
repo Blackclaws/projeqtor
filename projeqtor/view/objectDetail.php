@@ -824,7 +824,14 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       } else if (substr($col, 0, 7) == '_label_') {
         $captionName=substr($col, 7);
         echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
-      } else if ($print) { // ================================================ Printing areas
+       
+      
+      } else if ($print) { 
+        // ============================================================================================================
+        // ================================================
+        // ================================================ PRINT
+        // ================================================
+        // ============================================================================================================
         if ($hide) { // hidden field
                        // nothing
         } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
@@ -893,6 +900,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
         } else if ($dataType == 'decimal' and substr($col, -4, 4) == 'Work') {
           echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
+        } else if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
+            echo $val.'&nbsp;%';
         } else if ($col == 'icon') {
           if ($val) {
             echo '<img src="../view/icons/' . $val . '" />';
@@ -917,6 +926,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             }
           }
         }
+        // ============================================================================================================
+        // ================================================
+        // ================================================ END OF PRINT : Entering general case
+        // ================================================
+        // ============================================================================================================    
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
         if (!$print) {

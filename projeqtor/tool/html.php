@@ -861,6 +861,12 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
   global $browserLocale;
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   $res=$val;
+  if (strpos($res, '.')!==false) {
+    $res=trim($res,'0');
+  }
+  if (substr($res, -1)=='.') {
+    $res=trim($res,'.');
+  }
   if ($fmt->decimalSeparator!='.') {
     $res=str_replace('.', $fmt->decimalSeparator, $res);
   }
@@ -868,7 +874,7 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
 }
 
 function htmlDisplayPct($val) {
-  return $val . '&nbsp;%';
+  return htmlDisplayNumericWithoutTrailingZeros($val) . '&nbsp;%';
 }
 
 function htmlRemoveDocumentTags($val) {
