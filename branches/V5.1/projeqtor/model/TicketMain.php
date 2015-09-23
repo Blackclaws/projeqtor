@@ -132,7 +132,7 @@ class TicketMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if ($this->idActivity and $this->WorkElement->realWork>0) {
+    if ($this->idActivity and is_object($this->WorkElement) and $this->WorkElement->realWork>0) {
       self::$_fieldsAttributes['idActivity']='readonly';
     }
     if (Parameter::getGlobalParameter('realWorkOnlyForResponsible')=='YES') {

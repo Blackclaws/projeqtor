@@ -918,9 +918,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
 				//echo ' constraints="{pattern:\'###0.0#\'}"';
 				echo ' trim="true" disabled="true" ';
-				if ($colSum[$i]>$capacity) {
+				if (round($colSum[$i],2)>$capacity) {
 				  echo ' class="imputationInvalidCapacity"';
-				} else if ($colSum[$i]<$capacity) {
+				} else if (round($colSum[$i],2)<$capacity) {
 					echo ' class="displayTransparent"'; 
 				} else  {
 					echo ' class="imputationValidCapacity"';

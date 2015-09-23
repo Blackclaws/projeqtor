@@ -267,8 +267,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                    	      }
 			                    	      echo '</div>';
 			                          } else if (array_key_exists('lostConnection',$_REQUEST)) {
-			                            echo '<div class="messageWARNING">'.i18n("disconnectMessage");
-			                            echo '<br/>';
+			                            //echo '<div class="messageWARNING">'.i18n("disconnectMessage");
+			                            echo '<div class="messageWARNING">';
+			                            //echo '<br/>';
 			                            echo i18n("errorConnection").'</div>';
 			                          } 
 			                     ?>

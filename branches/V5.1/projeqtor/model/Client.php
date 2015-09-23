@@ -36,12 +36,10 @@ class Client extends SqlElement {
   public $name;
   public $idClientType;
   public $clientCode;
-  public $paymentDelay;
-  public $_lib_days;
-  public $paymentDelayEndOfMonth;
-  public $_lib_colEndOfMonth;
+  public $idPaymentDelay;
   public $tax;
   public $_lib_colPct;
+  public $numTax;
   public $idle;
   public $description;
   public $_sec_Address;
@@ -70,11 +68,8 @@ class Client extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_colCaptionTransposition = array('name'=> 'clientName');
-  private static $_fieldsAttributes=array('paymentDelay'=>'nobr',
-  '_lib_days'=>'nobr',
-  'paymentDelayEndOfMonth'=>'nobr',
-  'tax'=>'nobr');
+  private static $_colCaptionTransposition = array('name'=> 'clientName', 'idPaymentDelay'=>'paymentDelay');
+  private static $_fieldsAttributes=array('tax'=>'nobr');
   
    /** ==========================================================================
    * Constructor

@@ -24,12 +24,33 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/** ============================================================================
- * Activity is main planned element
- */  
+/* ============================================================================
+ * Stauts defines list urgencies an activity or action can get in (lifecylce).
+ */ 
 require_once('_securityCheck.php');
-class ActivityPlanningElement extends ActivityPlanningElementMain {
+class PaymentDelay extends SqlElement {
 
+  // extends SqlElement, so has $id
+  public $_sec_Description;
+  public $id;    // redefine $id to specify its visible place 
+  public $name;
+  public $days;
+  public $endOfMonth;
+  public $sortOrder;
+  public $idle;
+  public $_sec_void;
+  
+  // Define the layout that will be used for lists
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
+    <th field="name" width="60%">${name}</th>
+    <th field="days" width="10%" >${value}</th>
+    <th field="endOfMonth" width="5%" formatter="booleanFormatter">${color}</th>
+    <th field="sortOrder" width="10%">${sortOrderShort}</th>  
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
+
+  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -39,6 +60,7 @@ class ActivityPlanningElement extends ActivityPlanningElementMain {
     parent::__construct($id,$withoutDependentObjects);
   }
 
+  
    /** ==========================================================================
    * Destructor
    * @return void
@@ -47,6 +69,17 @@ class ActivityPlanningElement extends ActivityPlanningElementMain {
     parent::__destruct();
   }
 
-
+// ============================================================================**********
+// GET STATIC DATA FUNCTIONS
+// ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
+  
 }
 ?>

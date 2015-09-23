@@ -315,7 +315,7 @@ function submitWorkPeriod(action) {
 function checkCapacity() {
   var capacity=parseFloat(dojo.byId('resourceCapacity').value);
   for (colId=1; colId<=7; colId++) {
-	valSum=parseFloat(dijit.byId('colSumWork_' + colId).get("value"));
+	valSum=Math.round(parseFloat(dijit.byId('colSumWork_' + colId).get("value"))*100)/100;
 	if (valSum > capacity) {
 		//dojo.style('colSumWork_' + colId, "backgroung","red");
 		dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity");

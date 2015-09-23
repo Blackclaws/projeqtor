@@ -37,7 +37,7 @@ $versionHistory = array(
   "V2.0.0", "V2.0.1",  "V2.1.0",  "V2.1.1",  "V2.2.0",  "V2.3.0",  "V2.4.0",  "V2.4.1",  "V2.4.2",  "V2.5.0",  "V2.6.0",
   "V3.0.0", "V3.0.1",  "V3.1.0",  "V3.2.0",  "V3.3.0",  "V3.3.1",  "V3.4.0",  "V3.4.1",
   "V4.0.0", "V4.0.1",  "V4.1.-",  "V4.1.0",  "V4.2.0",  "V4.2.1",  "V4.3.0.a","V4.3.0",  "V4.3.2",  "V4.4.0",  "V4.5.0", "V4.5.3", "V4.5.6",
-  "V5.0.0", "V5.1.0");
+  "V5.0.0", "V5.1.0.a","V5.1.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -371,9 +371,24 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
 if (beforeVersion($currVersion,"V5.0.2") and $currVersion!='V0.0.0') {
   Affectable::generateAllThumbs();
 }
+debugLog("SETUP");
+if (beforeVersion($currVersion,"V5.1.0.a")) {
+  include_once("../tool/formatter.php");
+  // Take into account of BillId and prefix/suffix to define new Reference format
+  $prefix=Parameter::getGlobalParameter('billPrefix');
+  $suffix=Parameter::getGlobalParameter('billSuffix');
+  $length=Parameter::getGlobalParameter('billNumSize');
+  $ref="$prefix{NUME}$suffix";
+  Parameter::storeGlobalParameter('billReferenceFormat', $ref);
+  $bill=new Bill();
+  $bills=$bill->getSqlElementsFromCriteria(null,null, 'billId is not null', 'billId asc');
+  foreach($bills as $bill) {
+    $bill->reference=str_replace('{NUME}', numericFixLengthFormatter( $bill->billId,$length), $ref);
+    $bill->save();
+  }
+}  
 
-
-if (beforeVersion($currVersion,"V5.1.0") and $currVersion!='V0.0.0' and Sql::isMysql()) {
+if (beforeVersion($currVersion,"V5.1.0.a") and $currVersion!='V0.0.0' and Sql::isMysql()) {
   // Must remove default enforceUTF8
   $maintenanceDisableEnforceUTF8=true;
   Parameter::regenerateParamFile();
