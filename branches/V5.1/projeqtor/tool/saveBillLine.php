@@ -101,6 +101,10 @@ $unit=null;
 if (array_key_exists('billLineUnit',$_REQUEST)) {
   $unit=$_REQUEST['billLineUnit'];
 }
+$extra=0;
+if (array_key_exists('billLineExtra',$_REQUEST)) {
+  $extra=1;
+}
 
 $lineId=trim($lineId);
 if ($lineId=='') {
@@ -122,6 +126,7 @@ $line->description=$description;
 $line->detail=$detail;
 $line->price=$price;
 $line->idUnit=$unit;
+$line->extra=$extra;
 $result=$line->save();
 debugLog($result);
 debugLog($line);  

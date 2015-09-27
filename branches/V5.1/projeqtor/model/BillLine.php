@@ -46,6 +46,7 @@ class BillLine extends SqlElement {
   public $idActivityPrice;
   public $startDate;
   public $endDate;
+  public $extra;
   
   public $_noHistory=true; // Will never save history for this object
   

@@ -57,24 +57,33 @@ class CommandMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $_tab_3_3 = array('initial', 'add', 'validated', 'Work', 'PricePerDay', 'Amount');
-  public $initialWork;
-  public $addWork;
-  public $validatedWork;
-  public $initialPricePerDayAmount;
-  public $addPricePerDayAmount;
-  public $validatedPricePerDayAmount;
-  public $initialAmount;
-  public $addAmount;
-  public $validatedAmount;
   public $idActivityType;
-  public $_tab_2_2 = array('initial', 'validated', 'startDate', 'endDate');
+  public $idPaymentDelay;
+  public $_tab_5_3_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','work', 'initial', 'add', 'countTotal');
+  public $untaxedAmount;
+  public $taxPct;
+  public $taxAmount;
+  public $fullAmount;
+  public $initialWork;
+  public $addUntaxedAmount;
+  public $_void_1;
+  public $addTaxAmount;
+  public $addFullAmount;
+  public $addWork;
+  public $totalUntaxedAmount;
+  public $_void_2;
+  public $totalTaxAmount;
+  public $totalFullAmount;
+  public $validatedWork;
+  public $_tab_2_2_smallLabel = array('initial', 'validated', 'startDate', 'endDate');
   public $initialStartDate;
   public $validatedStartDate;
   public $initialEndDate;
   public $validatedEndDate;
   public $comment;
-  
+  //public $_sec_BillLine;
+  public $_BillLine=array();
+  public $_BillLine_colSpan="2";
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -90,9 +99,9 @@ class CommandMain extends SqlElement {
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="validatedEndDate" width="8%" formatter="dateFormatter" >${validatedEndDate}</th>
-  	<th field="validatedWork" formatter="workFormatter" width="5%" >${validatedWork}</th>
-  	<th field="validatedPricePerDayAmount" formatter="costFormatter" width="7%" >${validatedPricePerDayAmount}</th>
-  	<th field="validatedAmount" formatter="costFormatter" width="7%" >${validatedAmount}</th>
+  	<th field="untaxedAmount" formatter="workFormatter" width="5%" >${$untaxedAmountShort}</th>
+  	<th field="addUntaxedAmount" formatter="costFormatter" width="7%" >${add}</th>
+  	<th field="totalUntaxedAmount" formatter="costFormatter" width="7%" >${total}</th>
   	<th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
@@ -105,19 +114,25 @@ class CommandMain extends SqlElement {
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-  								                "validatedWork"=>"readonly",
-						  							      "validatedPricePerDayAmount"=>"readonly",
-						  							      "validatedAmount"=>"readonly",
+                                  "idPaymentDelay"=>"hidden",
+						  							      "taxAmount"=>"calculated,readonly",
+                                  "fullAmount"=>"readonly",
+                                  "addTaxAmount"=>"calculated,readonly",
+                                  "addFullAmount"=>"readonly",
+                                  "totalTaxAmount"=>"calculated,readonly",
+                                  "totalFullAmount"=>"readonly",
+                                  "totalUntaxedAmount"=>"readonly",
 						  							      "externalReference"=>"required",
                                   "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr", 
+                                  "validatedWork"=>"readonly"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
   													'idActivity'=>'linkActivity',
   													'creationDate'=>'receptionDateTime');
-  
+  private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     
    /** ==========================================================================
@@ -135,6 +150,18 @@ class CommandMain extends SqlElement {
     if ($status->isCopyStatus) {
     	self::$_fieldsAttributes["externalReference"]="";
     }*/
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['addUntaxedAmount']='readonly';
+      self::$_fieldsAttributes['totalUntaxedAmount']='readonly';
+      self::$_fieldsAttributes['initialWork']='readonly';
+      self::$_fieldsAttributes['addWork']='readonly';
+    }
+    if ($this->fullAmount) {
+      $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+      $this->addTaxAmount=$this->addFullAmount-$this->addUntaxedAmount;
+      $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
+    }
   }
 
    /** ==========================================================================
@@ -175,14 +202,13 @@ class CommandMain extends SqlElement {
   }
 
   /** ========================================================================
-   * Return the specific databaseColumnName
+   * Return the specific databaseTableName
    * @return the databaseTableName
    */
-  /**protected function getStaticDatabaseColumnName() {
+  protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
   }
-  */
-
+    
 /** =========================================================================
    * control data corresponding to Model constraints
    * @param void
@@ -223,72 +249,61 @@ class CommandMain extends SqlElement {
   public function save() {
   	$result='';
   	
-  	$oldInitialAmount=0;
-  	$oldAddAmount=0;
-  	$oldValidatedWork=0;
   	$oldIdProject=0;
-  	
+  	$oldTotalUntaxedAmount=0;
   	//Check if we are in CREATION
 
     if (trim($this->id)=='') {
     	// fill the creatin date if it's empty - creationDate is not empty for import ! 
     	if ($this->creationDate=='') $this->creationDate=date('Y-m-d H:i');
-	} else {
-		$old=$this->getOld();
-		$oldIdProject=$old->idProject;
-		//$oldInitialAmount=$old->initialAmount;
-		//$oldAddAmount=$old->addAmount;
-		//$oldValidatedWork=$old->validatedWork;
-	}
-
-	if (!$this->initialAmount) $this->initialAmount=0;
-	if (!$this->initialWork) $this->initialWork=0;
-	if (!$this->initialPricePerDayAmount) $this->initialPricePerDayAmount=0;
-	
-	if (!$this->addAmount) $this->addAmount=0;
-	if (!$this->addWork) $this->addWork=0;
-	if (!$this->addPricePerDayAmount) $this->addPricePerDayAmount=0;
-	
-	/* Skip these updates : done in JS
-  	if ($this->initialAmount!=$oldInitialAmount && $this->initialWork!=0) {
-		$this->initialPricePerDayAmount=round($this->initialAmount/$this->initialWork, 2);
-	} else if ($this->initialWork==0) {
-		$this->initialPricePerDayAmount=0;
-	} else if ($this->initialAmount==$oldInitialAmount) {
-		$this->initialAmount=round($this->initialPricePerDayAmount*$this->initialWork, 2);
-	}
-	
-  	if ($this->addAmount!=$oldAddAmount && $this->addWork!=0) {
-		$this->addPricePerDayAmount=round($this->addAmount/$this->addWork, 2);
-	} else if ($this->addWork==0) {
-		$this->addPricePerDayAmount=0;
-	} else if ($this->addAmount==$oldAddAmount) {
-		$this->addAmount=round($this->addPricePerDayAmount*$this->addWork, 2);
-	}
-	*/
-	$this->validatedWork=$this->initialWork+$this->addWork;
-	$this->validatedAmount=$this->initialAmount+$this->addAmount;
-	if ($this->validatedWork!=0) {
-		$this->validatedPricePerDayAmount=round($this->validatedAmount/$this->validatedWork, 2);
-	} else {
-		$this->validatedPricePerDayAmount=0;
-	}
-	
-	//$this->externalReference=strtoupper(trim($this->externalReference));
-    $this->name=trim($this->name);
-    
-    // #305 : need to recalculate before dispatching to PE
-    $this->recalculateCheckboxes();
-        	
-	$resultClass = parent::save();
-    
+  	} else {
+  		$old=$this->getOld();
+  		$oldIdProject=$old->idProject;
+  		$oldTotalUntaxedAmount=$old->totalUntaxedAmount;
+  	}
+  
+  	$billLine=new BillLine();
+  	$crit = array("refType"=> "Command", "refId"=>$this->id);
+  	$billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
+  	if (count($billLineList)>0) {
+  	  $amount=0;
+  	  $addAmount=0;
+  	  $work=0;
+  	  $addWork=0;
+  	  foreach ($billLineList as $line) {
+  	    if ($line->extra) {
+  	      $addAmount+=$line->amount;
+  	      if ($line->idUnit==3) $addWork+=$line->quantity; // Only if unit is Days
+  	    } else {
+  	      $amount+=$line->amount;
+  	      if ($line->idUnit==3) $work+=$line->quantity;
+  	    }
+  	  }
+  	  $this->untaxedAmount=$amount;
+  	  $this->addUntaxedAmount=$addAmount;
+  	  $this->initialWork=$work;
+  	  $this->addWork=$addWork;
+  	}
+  	if (!$this->untaxedAmount) $this->untaxedAmount=0;
+  	if (!$this->addUntaxedAmount) $this->addUntaxedAmount=0;
+  	$this->totalUntaxedAmount=$this->untaxedAmount+$this->addUntaxedAmount;
+  	$this->validatedWork=$this->initialWork+$this->addWork;
+  	
+  	$this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
+  	$this->addFullAmount=$this->addUntaxedAmount*(1+$this->taxPct/100);
+  	$this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
+  	
+  	$this->name=trim($this->name);
+      
+    $resultClass = parent::save();
+      
     if (! strpos($resultClass,'id="lastOperationStatus" value="OK"')) {
     	return $resultClass;
     }
     
-    if ($oldValidatedWork!=$this->validatedWork || 
+    /* dispatch of command to validated may be weird */
+    if ($oldTotalUntaxedAmount!=$this->totalUntaxedAmount || 
     	$oldIdProject!=$this->idProject) {
-    	
     	if (trim($oldIdProject)!='') {
 	    	$prj=new Project($oldIdProject);
 	    	$prj->updateValidatedWork();
@@ -300,7 +315,9 @@ class CommandMain extends SqlElement {
     }
     return $resultClass;
   }
-  
+  public function simpleSave() {
+    return $this->save();
+  }
     /** ==========================================================================
    * Return the validation sript for some fields
    * @return the validation javascript (for dojo frameword)
@@ -308,43 +325,7 @@ class CommandMain extends SqlElement {
   public function getValidationScript($colName) {
     
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="initialWork") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
-      $colScript .= '  var initialWork=this.value;';
-      $colScript .= '  if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '  var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");';
-      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
-      $colScript .= '  if (initialPricePerDayAmount) {';
-      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
-      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
-      $colScript .= '  } else if (initialWork){';
-      $colScript .= '    initialPricePerDayAmount=Math.round(initialAmount/initialWork*100)/100; ';
-      $colScript .= '    dijit.byId("initialPricePerDayAmount").set("value",initialPricePerDayAmount)';
-      $colScript .= '  }';
-      $colScript .= '  updateCommandTotal();';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="initialPricePerDayAmount") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
-      $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
-      $colScript .= '  if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '  var initialPricePerDayAmount=this.value;';
-      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
-      $colScript .= '  if (initialWork) {';
-      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
-      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
-      $colScript .= '  } else if (initialAmount){';
-      $colScript .= '    initialWork=initialAmount/initialPricePerDayAmount;';
-      $colScript .= '    if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '    initialWork=Math.round(initialWork*10)/10; ';
-      $colScript .= '    dijit.byId("initialWork").set("value",initialWork)';
-      $colScript .= '  }';
-      $colScript .= '  updateCommandTotal();';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';    	
-    } else if ($colName=="initialAmount") {
+    /*if ($colName=="initialAmount") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
       $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
@@ -418,7 +399,8 @@ class CommandMain extends SqlElement {
       $colScript .= '  updateCommandTotal();';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    } else if ($colName=="idProject") {
+    } else */
+    if ($colName=="idProject") {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  setClientValueFromProject("idClient",this.value);';
     	$colScript .= '  formChanged();';

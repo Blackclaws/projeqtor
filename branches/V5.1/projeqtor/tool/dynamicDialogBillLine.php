@@ -50,6 +50,7 @@ $divResourceStyle='';
 $divDescriptionStyle='';
 $divQuantityStyle='';
 $divUnitStyle='';
+$divExtraStyle='display:none;';
 
 $billingType='M';
 if (property_exists($obj, 'billingType')) {
@@ -91,6 +92,9 @@ if ($billingType == 'E') {
     $divTermStyle='display:none;';
     $divResourceStyle='display:none;';
     $divDescriptionStyle='display:block;';
+    if ($refType=='Command') {
+      $divExtraStyle='';
+    }
   } else if ($billingType == 'N') {
     echo (i18n('billingTypeN'));
   } else {
@@ -126,6 +130,21 @@ if ($line->line) {
 		         </td>
 		       </tr>
           </table>
+          <div style='<?php echo $divExtraStyle;?>'>
+          <table>
+           <tr>
+             <td class="dialogLabel" >
+              <label for="billLineLine" >&nbsp;</label>
+             </td>
+             <td>
+		           <div dojoType="dijit.form.CheckBox" type="checkbox"
+		            <?php if ($line->extra) echo "checked";?>
+			          id="billLineExtra" name="billLineExtra"></div>
+			          <?php echo i18n("colAdd");?>
+		         </td>
+		       </tr>
+          </table>
+          </div>
           <div id='billLineFrameTerm' style='<?php echo $divTermStyle;?>'>
           <table>
 		       <tr>

@@ -75,12 +75,22 @@ INSERT INTO `${prefix}unit` (`id`, `name`, `namePlural`, `sortOrder`, `idle`) VA
 (3, 'day', 'days', 30, 0),
 (4, 'month', 'months', 40, 0);
 
-ALTER TABLE `${prefix}billline` ADD `idUnit` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}billline` ADD `idUnit` int(12) unsigned DEFAULT NULL,
+ADD `extra` int(1) UNSIGNED DEFAULT 0;
 
 ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
 ADD `paymentDueDate` date DEFAULT NULL;
 
 ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
 CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
-ADD COLUMN `tax` decimal(5,2) DEFAULT NULL,
+ADD `tax` decimal(5,2) DEFAULT NULL,
 ADD `fullAmount` decimal(12,2) DEFAULT NULL;
+
+ALTER TABLE `${prefix}command` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
+ADD `tax` decimal(5,2) DEFAULT NULL,
+ADD `fullAmount` decimal(12,2) DEFAULT NULL,
+CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2) UNSIGNED,
+ADD `addFullAmount` decimal(12,2) DEFAULT NULL,
+CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED,
+ADD `totalFullAmount` decimal(12,2) DEFAULT NULL;
