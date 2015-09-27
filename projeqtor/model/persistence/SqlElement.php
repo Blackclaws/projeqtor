@@ -1502,6 +1502,17 @@ abstract class SqlElement {
   	  	}
 		  }
 		}
+		if (property_exists($this, '_BillLine') and property_exists($this, '_BillLine')) { // Copy BillLines
+		  $crit=array('refType'=>get_class($this),'refId'=>$this->id);
+		  $line=new BillLine();
+		  $lines=$line->getSqlElementsFromCriteria($crit);
+		  foreach ($lines as $line) {
+		    $line->id=null;
+		    $line->refType=get_class($newObj);
+		    $line->refId=$newObj->id;
+		    $line->save();
+		  }
+		}
 		$newObj->_copyResult=$returnValue;
 		return $newObj;
 	}

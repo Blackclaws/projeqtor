@@ -665,7 +665,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id, 'cancelled'=>'0'));
   	foreach ($lst as $item) { 		
   		$sumValidatedWork+=$item->validatedWork;
-  		$sumValidatedCost+=$item->validatedAmount;
+  		$sumValidatedCost+=$item->totalUntaxedAmount;
   	}
   	
   	$lst=null;
