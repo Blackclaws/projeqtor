@@ -154,5 +154,25 @@ class Recipient extends SqlElement {
     return $colScript;
   }
   
+  public function control() {
+    $result="";
+    
+    if (substr($this->bankInternationalAccountNumber,0,2)=="FR") {
+      $from=array(' ','-');
+      $to=array('','');
+      $bank=str_replace($from,$to,$this->bankNationalAccountNumber);
+      $iban=str_replace($from,$to,$this->bankInternationalAccountNumber);
+      if (substr($iban,(-1)*strlen($bank)) != $bank) {
+        $result.=i18n('errorIncompatibleFields', array(i18n('colBankNationalAccountNumber'),i18n('colBankInternationalAccountNumber'))).'<br/>';
+      }
+    }
+    
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }  
+    if ($result=="") $result='OK';
+    return $result;
+  }
 }
 ?>
