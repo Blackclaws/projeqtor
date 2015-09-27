@@ -39,6 +39,7 @@ class BillLine extends SqlElement {
   public $description;
   public $detail;
   public $price;
+  public $idUnit;
   public $amount;
   public $idTerm;
   public $idResource;
@@ -78,9 +79,13 @@ class BillLine extends SqlElement {
    */
   public function control(){
     $result="";    
-  	$bill = new Bill($this->refId);
-    $billingType=$bill->billingType;
-	  if (is_numeric($bill->billId)) {
+    
+  	$bill = new $this->refType($this->refId);
+  	$billingType='M';
+  	if (property_exists($bill, 'billingType')) {
+      $billingType=$bill->billingType;
+  	}
+	  if (property_exists($bill, 'billId') and is_numeric($bill->billId)) {
 		  $result.='<br/>' . i18n('errorLockedBill');
 	  }
 	  if ($billingType=='E') {
@@ -120,8 +125,8 @@ class BillLine extends SqlElement {
   
   public function deleteControl() {
   	$result="";    
-    $bill = new Bill($this->refId);
-    if (is_numeric($bill->billId)) {
+    $bill = new $this->refType($this->refId);
+    if (property_exists($bill, 'billId') and is_numeric($bill->billId)) {
       $result.='<br/>' . i18n('errorLockedBill');
     }    
   	if (! $result) {  
@@ -149,8 +154,11 @@ class BillLine extends SqlElement {
   {  	
   	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   		
-	  $bill=new Bill($this->refId);
-    $billingType=$bill->billingType;
+	  $bill=new $this->refType($this->refId);
+	  $billingType='M';
+	  if (property_exists($bill, 'billingType')) {
+      $billingType=$bill->billingType;
+	  }
 	  if ($billingType=='E') {
       $term=new Term($this->idTerm);
       $term->idBill=null;
@@ -199,10 +207,13 @@ class BillLine extends SqlElement {
     }
 //Debut Code Marc
     // Update Bill to get total of amount
-    $bill->untaxedAmount=$bill->untaxedAmount-$this->amount;
-    $bill->fullAmount=$bill->untaxedAmount*(1+$bill->tax*0.01);
+    if (property_exists($bill, 'untaxedAmount') and property_exists($bill, 'fullAmount') and property_exists($bill, 'taxPct')) {
+      $bill->untaxedAmount=$bill->untaxedAmount-$this->amount;
+      $bill->fullAmount=$bill->untaxedAmount*(1+$bill->taxPct*0.01);
+      $bill->simpleSave();
+    } 
     // Only save without calculate the amount
-    $bill->simpleSave(); 
+    
 // Fin Code Marc
     
     return parent::delete();
@@ -215,8 +226,12 @@ class BillLine extends SqlElement {
    */  
   public function save() {
   	
-    $bill=new Bill($this->refId);
-  	$billingType=$bill->billingType;
+    $bill=new $this->refType($this->refId);
+    
+    $billingType='M';
+    if (property_exists($bill,'billingType')) {
+  	  $billingType=$bill->billingType;
+    }
   	
   	if ($billingType=='E') {
   		if (! $this->id) {

@@ -1541,6 +1541,7 @@ function getIP() {
  *         'ALL' => any element
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
+//scriptLog("securityGetAccessRight($menuName, $accessType, ".(($obj)?get_class($obj).' #'.$obj->id:'').",". (($user)?'User #'.$user->id:'').")");  
   if (! $user) {
     $user = getSessionUser();
   }
@@ -1579,6 +1580,9 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   if (property_exists ( substr ( $menuName, 4 ), '_readOnly' ) and $accessType != 'read') {
     return 'NO';
   }
+  if ($obj and $obj->id==0) {
+    $obj->id=null;
+  }
   if (! $user) {
     if (! sessionUserExists()) {
       global $maintenance;
@@ -1590,7 +1594,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     } else {
       $user = getSessionUser();
     }
-  }
+  } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';

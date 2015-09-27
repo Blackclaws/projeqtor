@@ -43,6 +43,7 @@ if(false === function_exists('lcfirst')) {
     return (string)$str;
   }
 }
+$preseveHtmlFormatingForPDF=true;
 // ********************************************************************************************************
 // MAIN PAGE
 // ********************************************************************************************************
@@ -213,7 +214,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
   if (!$obj->id) {
-    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";
+    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";  
     if (!$canRead or !$canUpdate) {
       $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
       $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
@@ -343,7 +344,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
-   $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
+   $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
@@ -687,6 +688,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       }
       $dataType=$obj->getDataType($col);
       $dataLength=$obj->getDataLength($col);
+      if ( $obj->isAttributeSetToField($col,'calculated') and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
+        $dataType='decimal';
+      }
       if ($internalTable == 0) {
         if (!is_object($val) and !is_array($val) and !$hide and !$nobr_before) {
           echo '<tr class="detail">';
@@ -881,8 +885,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col)).'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;">';
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
-            $val=str_replace(array('<div>','</div>'),array('<br/>',''), $val);
-            $val=strip_tags($val,'<br><br/><font><b>');            
+            if ($preseveHtmlFormatingForPDF) {
+              $val='<div>'.$val.'</div>';
+            } else {
+              $val=str_replace(array('<div>','</div>'),array('<br/>',''), $val);
+              $val=strip_tags($val,'<br><br/><font><b>');
+            }            
           }
           echo $val.'&nbsp;';
           echo '</div>';
@@ -1411,7 +1419,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '&nbsp;%';
         }
         echo '</div>';
-      } else if ($dataType == 'int' or $dataType == 'decimal') {
+      } else if ($dataType == 'int' or $dataType == 'decimal' ) {
         // Draw a number field ================================================ NUMBER
         $isCost=false;
         $isWork=false;
@@ -1432,8 +1440,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if (($isCost or $isWork or $isDuration) and $internalTable != 0 and $displayWidth < 1600) {
           $fieldWidth-=12;
         }
-        if ($dataType == 'int' and (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct')) {
+        if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
           $isPercent=true;
+          
         }
         $spl=explode(',', $dataLength);
         $dec=0;
@@ -1451,7 +1460,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $attributes;
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="'.$negative.'width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
-        echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
+        if ($max) {
+          echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
+        }
         echo ' class="input '.(($isRequired)?'required':'').'" ';
         // echo ' layoutAlign ="right" ';
         if ($isWork) {
@@ -2149,7 +2160,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     $canUpdate=false;
   }
   $lock=false;
-  if ($obj->done or $obj->idle or $obj->billingType == "N") {
+  if ($obj->done or $obj->idle or (property_exists($obj, 'billingType') and $obj->billingType == "N") ) {
     $lock=true;
   }
   if (isset($obj->_BillLine)) {
@@ -2165,16 +2176,16 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
     if ($obj->id != null and !$print and !$lock) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count($lines) + 1) . ');" title="' . i18n('addLine') . '" class="roundedButtonSmall"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine();" title="' . i18n('addLine') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colLineNumber') . '</td>';
-  echo '<td class="noteHeader" style="width:25%">' . i18n('colDescription') . '</td>';
-  echo '<td class="noteHeader" style="width:35%">' . i18n('colDetail') . '</td>';
-  echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
-  echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
+  echo '<td class="noteHeader" style="width:20%">' . i18n('colDescription') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('colDetail') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colUnitPrice') . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . i18n('colQuantity') . '</td>';
   echo '<td class="noteHeader" style="width:15%">' . strtolower(i18n('sum')) . '</td>';
   echo '</tr>';
   
@@ -2182,33 +2193,35 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   $lines=array_reverse($lines);
   foreach ( $lines as $line ) {
+    $unit=new Unit($line->idUnit);
     echo '<tr>';
     if (!$print) {
       echo '<td class="noteData" style="text-align:center;white-space:nowrap">';
       if ($lock == 0) {
-        echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
-		      ' .
-             "'" . $line->id . "'" . ",'" . $line->line . "'" . ",'" . $fmtd->format($line->quantity) . "'" . ",'" . $line->idTerm . "'" . ",'" . $line->idResource . "'" . ",'" . $line->idActivityPrice . "'" . ",'" . $line->startDate . "'" . ",'" . $line->endDate . "'" . ",'" .
-             $fmtd->format($line->price) . "'" . ');" title="' . i18n('editLine') . '" class="roundedButtonSmall"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="roundedButtonSmall"/> ';
+        echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine('.$line->id.');" ';
+        echo '  title="' . i18n('editLine') . '" class="roundedButtonSmall"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' ';
+        echo '  title="' . i18n('removeLine') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
     echo '<td class="noteData" style="width:5%">#' . $line->id . '</td>';
     echo '<td class="noteData" style="width:5%">' . $line->line . '</td>';
-    echo '<td class="noteData" style="width:25%">' . htmlEncode($line->description, 'withBR');
+    echo '<td class="noteData" style="width:20%">' . htmlEncode($line->description, 'withBR');
     if (!$print) {
       echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
     }
     echo '</td>';
-    echo '<td class="noteData" style="width:35%">' . htmlEncode($line->detail, 'withBR');
+    echo '<td class="noteData" style="width:30%">' . htmlEncode($line->detail, 'withBR');
     if (!$print) {
       echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
     }
     echo '</td>';
-    echo '<td class="noteData" style="width:10%">' . $line->price . '</td>';
-    echo '<td class="noteData" style="width:5%">' . $line->quantity . '</td>';
-    echo '<td class="noteData" style="width:15%">' . $line->amount . '</td>';
+    $unitPrice=($unit->name)?' / '.$unit->name:'';
+    echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->price) . $unitPrice.'</td>';
+    $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->namePlural:$unit->name):'';
+    echo '<td class="noteData" style="width:10%">' . htmlDisplayNumericWithoutTrailingZeros($line->quantity) . $unitQuantity. '</td>';
+    echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->amount) . '</td>';
     echo '</tr>';
   }
   echo '<tr>';

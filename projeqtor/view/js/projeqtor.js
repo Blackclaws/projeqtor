@@ -888,6 +888,7 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+        refreshGrid();
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='checklistDefinitionLine') {

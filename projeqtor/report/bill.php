@@ -194,7 +194,7 @@ foreach ($billList as $bill)
   echo '</tr>';
   echo '<tr>';
     echo '<td colspan="3" style="text-align: right;">' . i18n('colTax') . '&nbsp;</td>';
-    echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayPct($bill->tax) . '</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayPct($bill->taxPct) . '</td>';
     echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayCurrency(( $bill->fullAmount - $bill->untaxedAmount) ) . '</td>';   
   echo '</tr>';
   echo '<tr>';
@@ -284,8 +284,8 @@ foreach ($billList as $bill)
 	echo "<table>";
 	
 	echo "<tr><td width=100px>Total HT : </td><td>".$acc."</td></tr>";
-	echo "<tr><td>TVA : </td><td>".$client->tax."</td></tr>";
-	echo "<tr><td>Total TTC : </td><td>".($acc+$acc/100*$client->tax)."</td></tr>";
+	echo "<tr><td>TVA : </td><td>".$client->taxPct."</td></tr>";
+	echo "<tr><td>Total TTC : </td><td>".($acc+$acc/100*$client->taxPct)."</td></tr>";
 	
 	echo "</table>";
 	echo "</td></tr>";

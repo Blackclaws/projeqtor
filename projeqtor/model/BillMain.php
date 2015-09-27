@@ -38,6 +38,8 @@ class BillMain extends SqlElement {
   public $idBillType;
   public $idProject;
   public $date;
+  public $idPaymentDelay;
+  public $paymentDueDate;
   public $idClient;
   public $idContact;
   public $idRecipient;
@@ -50,11 +52,15 @@ class BillMain extends SqlElement {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  public $_tab_4_1_smallLabel = array('untaxedAmount', 'tax', '', 'fullAmount', 'amount');
+  public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort', 'amount');
   public $untaxedAmount;
-  public $tax;
+  public $taxPct;
   public $taxAmount;
   public $fullAmount;
+  public $_tab_3_1_smallLabel = array('date', 'amount', 'paymentDone', 'payment');
+  public $paymentDate;
+  public $paymentAmount;
+  public $paymentDone;
   public $description;
   public $billingType;
   //public $_sec_BillLine;
@@ -86,20 +92,21 @@ class BillMain extends SqlElement {
                       'idBillType'=>'required',
                       'idProject'=>'required',
   										'billId'=>'hidden',
-                      'tax'=>'nobr',
                       'taxAmount'=>'calculated,readonly',
   										'idPrec'=>'required',
                       'billingType'=>'hidden',
                       'fullAmount'=>'readonly',
                       'untaxedAmount'=>'readonly',
                       "idle"=>"nobr",
-                      "cancelled"=>"nobr"
+                      "cancelled"=>"nobr",
+                      'paymentDueDate'=>'readonly'
                       );  
   
   private static $_colCaptionTransposition = array('description'=>'comment',
-                                                   'idContact'=>'billContact');
+                                                   'idContact'=>'billContact',
+                                                   'idPaymentDelay'=>'paymentDelay');
   
-  private static $_databaseColumnName = array();
+  private static $_databaseColumnName = array('taxPct'=>'tax');
     
    /** ==========================================================================
    * Constructor
@@ -116,13 +123,17 @@ class BillMain extends SqlElement {
     	self::$_fieldsAttributes['idProject']='readonly';
     	self::$_fieldsAttributes['idRecipient']='readonly';
     	self::$_fieldsAttributes['idContact']='readonly';
-    	self::$_fieldsAttributes['tax']='readonly,nobr';
+    	self::$_fieldsAttributes['taxPct']='readonly';
     }
     if (count($this->_BillLine)) {
     	self::$_fieldsAttributes['idProject']='readonly';
     }
     if ($this->fullAmount) {
       $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+    }
+    if ($this->paymentDone) {
+      self::$_fieldsAttributes['paymentDate']='readonly';
+      self::$_fieldsAttributes['paymentAmount']='readonly';
     }
   }
 
@@ -304,17 +315,30 @@ class BillMain extends SqlElement {
 		// Get the tax from Client / Contact / Recipient 
 		if (trim($this->idClient)) {
 			$client=new Client($this->idClient);
-			if ($client->tax!='' and !$this->tax) {
-		  	$this->tax=$client->tax;
+			if ($client->taxPct!='' and !$this->taxPct) {
+		  	$this->taxPct=$client->taxPct;
+			}
+			if (!trim($this->idPaymentDelay)) {
+			  $this->idPaymentDelay=$client->idPaymentDelay;
 			}
 		}
 	  if (trim($this->idRecipient)) {
       $recipient=new Recipient($this->idRecipient);
       if ($recipient->taxFree) {
-      	$this->tax=0;
+      	$this->taxPct=0;
       }
     }
-		
+		if (trim($this->idPaymentDelay) and $this->date) {
+		  $delay=new PaymentDelay($this->idPaymentDelay);
+		  $date=addDaysToDate($this->date, $delay->days);
+		  if ($delay->endOfMonth) {
+		    $date=date("Y-m-t", strtotime($date));
+		  }
+		  $this->paymentDueDate=$date;
+		}
+		if ($this->paymentAmount==$this->fullAmount) {
+		  $this->paymentDone=1;
+		}
 		
 		// calculate amounts for bill lines
 		$billLine=new BillLine();
@@ -325,7 +349,7 @@ class BillMain extends SqlElement {
     	$amount+=$line->amount;
     }
     $this->untaxedAmount=$amount;
-    $this->fullAmount=$amount*(1+$this->tax/100);
+    $this->fullAmount=$amount*(1+$this->taxPct/100);
       
 		$result= parent::save();
 		return $result;

@@ -461,7 +461,7 @@ class PlanningElement extends SqlElement {
         $type=new $typeClass($refObj->$typeField);
         $user=getSessionUser();
         // Is change possible ?
-        if ($type->mandatoryResourceOnHandled) { // Resource Mandatroy
+        if (property_exists($type, 'mandatoryResourceOnHandled') and $type->mandatoryResourceOnHandled) { // Resource Mandatroy
           if (property_exists($refObj, 'idResource') and ! $refObj->idResource) { // Resource not set
 					  if (! $user->isResource or Parameter::getGlobalParameter('setResponsibleIfNeeded')=='NO') { // Resource will not be set
               // So, cannot change status to handled (responsible needed)
@@ -507,7 +507,7 @@ class PlanningElement extends SqlElement {
         $type=new $typeClass($refObj->$typeField);
         $user=getSessionUser();
         // Is change possible ?
-        if ($type->mandatoryResultOnDone) { // Result Mandatroy
+        if (property_exists($type, 'mandatoryResultOnDone') and $type->mandatoryResultOnDone) { // Result Mandatroy
           if (property_exists($refObj, 'result') and !$refObj->result) { // Result not set
             // So, cannot change status to done (result needed)
             return '[noResult]';

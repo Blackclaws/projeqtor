@@ -321,9 +321,9 @@ class User extends SqlElement {
     if ($obj) {
       $profile=$this->getProfile($obj);
     }
-    if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {    
+    if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {       
       return $this->_accessControlRights[$profile];
-    }
+    }        
     $menuList=SqlList::getListNotTranslated('Menu');
     $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO','report'=>'NO');
     $allAccessArray=array( 'read' => 'ALL', 'create' => 'ALL', 'update' => 'ALL', 'delete' => 'ALL', 'report'=>'ALL');
@@ -469,16 +469,12 @@ class User extends SqlElement {
    */
   public function getVisibleProjects($limitToActiveProjects=true) {
 //scriptLog("getVisibleProjects()");
-//debugLog("IN");
-//debugLog($this->_visibleProjects);
     if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;
     }
     if (! $limitToActiveProjects and $this->_visibleProjectsIncludingClosed) {
       return $this->_visibleProjectsIncludingClosed;
     }
- debugLog("getVisibleProjects() - NO CACHE");   
- //debugLog($this);
     $result=array();
     // Retrieve current affectation profile for each project
     $resultAff=array();
@@ -534,10 +530,8 @@ class User extends SqlElement {
       $this->_specificAffectedProfilesIncludingClosed=$resultAff;
     }
     if (getSessionUser()->id==$this->id) {
-      debugLog("store user to session");
       setSessionUser($this); // Store user to cache Data
     }  
-    //debugLog($this);
     return $result;
   }
   
@@ -920,8 +914,8 @@ class User extends SqlElement {
 			try { 
 	    	$ldapCnx=ldap_connect($paramLdap_host, $paramLdap_port);
 			} catch (Exception $e) {
-          traceLog("authenticate - LDAP connection error : " . $e->getMessage() );
-          return "ldap";
+        traceLog("authenticate - LDAP connection error : " . $e->getMessage() );
+        return "ldap";
 	    }
 	    if (! $ldapCnx) {
         traceLog("authenticate - LDAP connection error : not identified error");        
@@ -947,15 +941,18 @@ class User extends SqlElement {
 			$filter_r = html_entity_decode(str_replace(array('%USERNAME%','%username%'), array($this->name,$this->name), $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {
+			  traceLog("authenticate - Filter error : ldap_search failed for filter $filter_r)" );			  
 			  $this->unsuccessfullLogin();
 				return "login";
 			}
 			$result_user = ldap_get_entries($ldapCnx, $result);
 			if ($result_user['count'] == 0) {
+			  traceLog("authenticate - Filter error : ldap_search returned no result for filter $filter_r)" );
 			  $this->unsuccessfullLogin();
 				return "login";
 			}
 		  if ($result_user['count'] > 1) {
+		    traceLog("authenticate - Filter error : ldap_search returned more than one result for filter $filter_r)" );
 		    $this->unsuccessfullLogin();
         return "login";
       }

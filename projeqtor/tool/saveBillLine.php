@@ -97,10 +97,16 @@ if (array_key_exists('billLinePrice',$_REQUEST)) {
   $price=$_REQUEST['billLinePrice'];
 }
 
+$unit=null;
+if (array_key_exists('billLineUnit',$_REQUEST)) {
+  $unit=$_REQUEST['billLineUnit'];
+}
+
 $lineId=trim($lineId);
 if ($lineId=='') {
   $lineId=null;
 } 
+
 Sql::beginTransaction();
 $line=new BillLine($lineId);
 $line->refType=$refType;
@@ -115,8 +121,10 @@ $line->endDate=$endDate;
 $line->description=$description;
 $line->detail=$detail;
 $line->price=$price;
+$line->idUnit=$unit;
 $result=$line->save();
-
+debugLog($result);
+debugLog($line);  
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>
