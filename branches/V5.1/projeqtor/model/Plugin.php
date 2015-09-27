@@ -34,6 +34,7 @@ class Plugin extends SqlElement {
     public $deploymentVersion;
     public $compatibilityVersion;
     public $pluginVersion;
+    public $uniqueCode;
     public $idle;
     
     function __construct() {
@@ -83,12 +84,29 @@ class Plugin extends SqlElement {
       xml_parse_into_struct($parse, $descriptorXml, $value, $index);
       xml_parser_free($parse);
     
+      $testUnicity=false;
       foreach($value as $ind=>$prop) {
         if ($prop['tag']=='PROPERTY') {
           //print_r($prop);
           $name='plugin'.ucfirst($prop['attributes']['NAME']);
           $value=$prop['attributes']['VALUE'];
           $$name=$value;
+        }
+        if (isset($pluginName) and isset($pluginUniqueCode) and ! $testUnicity) {
+          $testUnicity=true;
+          $old=self::getFromName($pluginName);
+          if ($old->uniqueCode and $pluginUniqueCode and $pluginUniqueCode!=$old->uniqueCode) {
+            $result=i18n('pluginAlreadyExistsWithName',array($pluginName, $old->uniqueCode, $pluginUniqueCode,));
+            errorLog("Plugin::load() : $result");
+            return $result;
+          }
+          $crit=array('uniqueCode'=>$pluginUniqueCode, 'idle'=>'0');
+          $old=SqlElement::getSingleSqlElementFromCriteria('Plugin', $crit);
+          if ($old->name and $pluginName and $pluginName!=$old->name) {
+            $result=i18n('pluginAlreadyExistsWithCode',array($pluginUniqueCode, $old->name, $pluginName));
+            errorLog("Plugin::load() : $result");
+            return $result;
+          }
         }
         if ($prop['tag']=='FILE') {
           if (isset($prop['attributes']) and is_array($prop['attributes'])) {
@@ -122,6 +140,9 @@ class Plugin extends SqlElement {
       if (isset($pluginDescription)) $this->description=$pluginDescription;
       if (isset($pluginVersion)) $this->pluginVersion=$pluginVersion;
       if (isset($pluginCompatibility)) $this->compatibilityVersion=$pluginCompatibility;
+      if (isset($pluginUniqueCode)) $this->uniqueCode=$pluginUniqueCode;
+      
+      $old=self::getFromName($this->name);
       
       traceLog("Plugin descriptor information :");
       traceLog(" => name : $this->name");
@@ -152,7 +173,6 @@ class Plugin extends SqlElement {
       // Delete zip
       kill($this->zipFile);
       // set previous version to idle (if exists)
-      $old=self::getFromName($this->name);
       if ($old->id) {
         $old->idle=1;
         $old->save();
