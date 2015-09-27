@@ -67,6 +67,6 @@ if ($resDone) {
   if ($resDone=='[noResult]'){
     echo '<img src="../view/css/images/statusFinishKO.png" title="'.i18n('moveToDoneStatusFailResult').'" />';
   } else {
-    echo '<img src="../view/css/images/statusFinish.png" title="'.i18n('moveToNewStatus',array($resHandled)).'" />';
+    echo '<img src="../view/css/images/statusFinish.png" title="'.i18n('moveToNewStatus',array($resDone)).'" />';
   } 
 }

@@ -176,7 +176,7 @@
           loadContent("objectDetail.php", "detailDiv", 'listForm');
         </script>
       </button>    
-    <?php } 
+    <?php 
     $clsObj=get_class($obj);
     if ($clsObj=='TicketSimple') {$clsObj='Ticket';}
     $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>$clsObj));
@@ -220,7 +220,7 @@
         </script>
       </button>
     </span>
-    <?php //}?> 
+    <?php }?> 
     <?php 
       $crit="nameChecklistable='".get_class($obj)."'";
       $type='id'.get_class($obj).'Type';

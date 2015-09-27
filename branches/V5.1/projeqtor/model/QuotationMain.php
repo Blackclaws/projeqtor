@@ -57,12 +57,21 @@ class QuotationMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $initialWork;
-  public $initialPricePerDayAmount;
-  public $initialAmount; 
+  //public $initialWork;
+  //public $initialPricePerDayAmount;
+  //public $initialAmount; 
   public $initialEndDate;
   public $idActivityType;
+  public $idPaymentDelay;
+  public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort', 'amount');
+  public $untaxedAmount;
+  public $taxPct;
+  public $taxAmount;
+  public $fullAmount;
   public $comment;
+  //public $_sec_BillLine;
+  public $_BillLine=array();
+  public $_BillLine_colSpan="2";
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -79,8 +88,8 @@ class QuotationMain extends SqlElement {
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="validityEndDate" width="8%" formatter="dateFormatter" >${offerValidityEndDate}</th>
-  	<th field="initialWork" formatter="workFormatter" width="7%" >${validatedWork}</th>
-  	<th field="initialAmount" formatter="costFormatter" width="7%" >${validatedAmount}</th>
+  	<th field="untaxedAmount" formatter="workFormatter" width="7%" >${untaxedAmount}</th>
+  	<th field="fullAmount" formatter="costFormatter" width="7%" >${fullAmount}</th>
   	<th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
@@ -96,7 +105,9 @@ class QuotationMain extends SqlElement {
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
   								                "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  'taxAmount'=>'calculated,readonly',
+                                  'fullAmount'=>'readonly'
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -104,11 +115,12 @@ class QuotationMain extends SqlElement {
   		                      'validityEndDate'=>'offerValidityEndDate',
   													'idActivity'=>'linkActivity',
   		                      'initialEndDate'=>'actualEndDate',
-  		                      'initialWork'=>'estimatedEffort',
-  		                      'initialAmount'=>'plannedAmount',
-  		                      'initialPricePerDayAmount'=>'pricePerDay',
-                            'description'=>'request');
-  
+  		                      //'initialWork'=>'estimatedEffort',
+  		                      //'initialAmount'=>'plannedAmount',
+  		                      //'initialPricePerDayAmount'=>'pricePerDay',
+                            'description'=>'request',
+                            'idPaymentDelay'=>'paymentDelay');
+  private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     
    /** ==========================================================================
@@ -118,6 +130,12 @@ class QuotationMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
+    if ($this->fullAmount) {
+      $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+    }
   }
 
    /** ==========================================================================
@@ -158,13 +176,12 @@ class QuotationMain extends SqlElement {
   }
 
   /** ========================================================================
-   * Return the specific databaseColumnName
+   * Return the specific databaseTableName
    * @return the databaseTableName
    */
-  /**protected function getStaticDatabaseColumnName() {
+  protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
   }
-  */
 
 /** =========================================================================
    * control data corresponding to Model constraints
@@ -200,18 +217,29 @@ class QuotationMain extends SqlElement {
    */
   public function save() {
   	$result='';
-  	
     if (trim($this->id)=='') {
     	// fill the creatin date if it's empty - creationDate is not empty for import ! 
     	if ($this->creationDate=='') $this->creationDate=date('Y-m-d H:i');
 	  }
-
     $this->name=trim($this->name);
+	  $billLine=new BillLine();
+	  $crit = array("refType"=> "Quotation", "refId"=>$this->id);
+	  $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
+	  if (count($billLineList)>0) {
+  	  $amount=0;
+  	  foreach ($billLineList as $line) {
+  	    $amount+=$line->amount;
+  	  }
+  	  $this->untaxedAmount=$amount;
+	  }
+    $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
     
-	  $result = parent::save();
+    $result = parent::save();
     return $result;
   }
-  
+  public function simpleSave() {
+    return parent::save();
+  }
     /** ==========================================================================
    * Return the validation sript for some fields
    * @return the validation javascript (for dojo frameword)

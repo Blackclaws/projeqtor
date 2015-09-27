@@ -125,7 +125,7 @@ echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
 echo '<td class="largeReportHeader" style="width:7%">' . i18n('colType') . '</td>';
 echo '<td class="largeReportHeader" style="width:10%">' . i18n('Opportunity') . '</td>';
-echo '<td class="largeReportHeader" style="width:15%">' . i18n('colCause') . '</td>';
+echo '<td class="largeReportHeader" style="width:15%">' . i18n('colOpportunitySourceShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colImpact') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colSeverityShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colOpportunityImprovementShort') . '</td>';

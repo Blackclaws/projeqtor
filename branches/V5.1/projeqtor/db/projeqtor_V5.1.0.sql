@@ -59,3 +59,28 @@ CHANGE `complement` `complement`  varchar (100),
 CHANGE `city` `city`  varchar (100),
 CHANGE `state` `state`  varchar (100),
 CHANGE `country` `country`  varchar (100);
+
+CREATE TABLE `${prefix}unit` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name`varchar(100),
+  `namePlural` varchar(100),
+  `sortOrder` int(3) DEFAULT 0,
+  `idle` int(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}unit` (`id`, `name`, `namePlural`, `sortOrder`, `idle`) VALUES
+(1, 'piece', 'pieces', 10, 0),
+(2, 'lot', 'lots', 20, 0),
+(3, 'day', 'days', 30, 0),
+(4, 'month', 'months', 40, 0);
+
+ALTER TABLE `${prefix}billline` ADD `idUnit` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+ADD `paymentDueDate` date DEFAULT NULL;
+
+ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
+ADD COLUMN `tax` decimal(5,2) DEFAULT NULL,
+ADD `fullAmount` decimal(12,2) DEFAULT NULL;

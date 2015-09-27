@@ -37,8 +37,7 @@ class Client extends SqlElement {
   public $idClientType;
   public $clientCode;
   public $idPaymentDelay;
-  public $tax;
-  public $_lib_colPct;
+  public $taxPct;
   public $numTax;
   public $idle;
   public $description;
@@ -64,12 +63,13 @@ class Client extends SqlElement {
     <th field="clientCode" width="15%">${clientCode}</th> 
     <th field="paymentDelay" width="10%" formatter="dayFormatter">${paymentDelay}</th>
     <th field="paymentDelayEndOfMonth" formatter="booleanFormatter" width="5%">${endOfMonth}</th>
-    <th field="tax" width="5%" formatter="percentSimpleFormatter">${tax}</th>
+    <th field="taxPct" width="5%" formatter="percentSimpleFormatter">${tax}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
   private static $_colCaptionTransposition = array('name'=> 'clientName', 'idPaymentDelay'=>'paymentDelay');
-  private static $_fieldsAttributes=array('tax'=>'nobr');
+  private static $_fieldsAttributes=array();
+  private static $_databaseColumnName = array('taxPct'=>'tax');
   
    /** ==========================================================================
    * Constructor
@@ -115,6 +115,14 @@ class Client extends SqlElement {
    */
   protected function getStaticColCaptionTransposition($fld) {
     return self::$_colCaptionTransposition;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
   }
   
   /** =========================================================================

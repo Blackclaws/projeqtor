@@ -3736,7 +3736,6 @@ abstract class SqlElement {
 		$arrayTo=array($projObj->projectCode,$typeObj->code, $year, $month);
 		$prefix=str_replace($arrayFrom, $arrayTo, $fmtPrefix);
 		$suffix=str_replace($arrayFrom, $arrayTo, $fmtSuffix);
-debugLog('setReference : prefix=$prefix, suffix=$suffix');
 		$query="select max(reference) as ref from " . $this->getDatabaseTableName();
 		$query.=" where reference like '" . $prefix . "%'";
 		$query.=" and length(reference)=( select max(length(reference)) from " . $this->getDatabaseTableName();

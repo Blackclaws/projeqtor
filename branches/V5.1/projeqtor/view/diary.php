@@ -153,7 +153,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 				.i18n('colIdProject').": <i>".$item['project'].'</i><br/>';
 		if ($item['date']) { $hintHtml.=i18n('colDate').": <i>".$item['date']."</i>"; }
 		if ($item['work'] and $item['real']) { $hintHtml.=i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
-		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('colPlannedWork').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
+		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('planned').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
 		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';

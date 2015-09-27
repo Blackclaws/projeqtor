@@ -371,7 +371,6 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
 if (beforeVersion($currVersion,"V5.0.2") and $currVersion!='V0.0.0') {
   Affectable::generateAllThumbs();
 }
-debugLog("SETUP");
 if (beforeVersion($currVersion,"V5.1.0.a")) {
   include_once("../tool/formatter.php");
   // Take into account of BillId and prefix/suffix to define new Reference format

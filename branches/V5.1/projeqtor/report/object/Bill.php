@@ -46,7 +46,7 @@ $ref=$bill->reference;
 $refShort=str_replace(array('ProjeQtOr-','PROJEQTOR-','Poojeqtor-'),array('','',''),$ref);
 $delay="";
 if ($client->idPaymentDelay) {
-  $delay=SqlList::getNameFromId('PaymentDelay', $client->idPaymentDelay);
+  $delay=SqlList::getNameFromId('PaymentDelay', $bill->idPaymentDelay);
 }
 $orderRef="";
 if ($bill->Origin and is_object($bill->Origin)) {
@@ -79,10 +79,18 @@ echo '<div style="page-break-before:always;"></div>'.$nl;
 //echo '<div style="position:absolute;top:0mm; left:0mm;width:190mm;height:277mm;'
 //     .'background-size: 190mm 277mm;background-image:url(../report/object/backgroundA4.png);">&nbsp;</div>';
 //echo '**START**'.$nl;
+$logo="../report/object/backgroundA4.png";
+$logoA4=true;
+if (file_exists("../logo.gif")) {$logo='../logo.gif'; $logoA4=false;}
+else if (file_exists("../logo.jpg")) {$logo='../logo.jpg'; $logoA4=false;}
+else if (file_exists("../logo.png")) {$logo='../logo.png'; $logoA4=false;}
 echo '<div style="position:absolute;'.(($outMode=='pdf')?'left:5mm; top:5mm':'').'">'.$nl;
 echo $nl;
 echo '<div style="position:absolute;top:0mm; left:0mm;width:190mm;height:270mm;">'.$nl;
-echo ' <img src="../report/object/backgroundA4.png"  style="width:190mm; height:270mm" />'.$nl;
+echo ' <img src="'.$logo.'"';
+if ($logoA4) echo ' style="width:190mm; height:270mm"';
+else echo ' style="max-width:80mm;max-height:20mm"';
+echo ' />'.$nl;
 echo '</div>'.$nl;
 
 // Header 
@@ -204,44 +212,47 @@ echo '</div>'.$nl;
 echo '<div style="'.$cssframe.'top: 130mm;">'.$nl;
 echo ' <table style="width:100%;">'.$nl;
 echo '  <tr style="height:8mm">'.$nl;
-echo '   <td colspan="2" style="'.$cssheaderborder.'width:60%">'.i18n('ProductOrService').'</td>'.$nl;
-echo '   <td colspan="3" style="'.$cssheaderborder.'width:40%">'.ucfirst(i18n('colPrice')).'</td>'.$nl;
+echo '   <td colspan="2" style="'.$cssheaderborder.'width:50%">'.i18n('ProductOrService').'</td>'.$nl;
+echo '   <td colspan="3" style="'.$cssheaderborder.'width:50%">'.ucfirst(i18n('colPrice')).'</td>'.$nl;
 echo '  </tr>'.$nl;
 echo '  <tr style="height:8mm">'.$nl;
 echo '   <td style="'.$csssubheaderborder.'width:20%">'.i18n('codDesignation').'</td>'.$nl;
-echo '   <td style="'.$csssubheaderborder.'width:40%">'.i18n('colDetail').'</td>'.$nl;
-echo '   <td style="'.$csssubheaderborder.'width:15%">'.i18n('colUnit').'</td>'.$nl;
-echo '   <td style="'.$csssubheaderborder.'width:10%">'.i18n('colQuantity').'</td>'.$nl;
+echo '   <td style="'.$csssubheaderborder.'width:30%">'.i18n('colDetail').'</td>'.$nl;
+echo '   <td style="'.$csssubheaderborder.'width:20%">'.i18n('colUnitPrice').'</td>'.$nl;
+echo '   <td style="'.$csssubheaderborder.'width:15%">'.i18n('colQuantity').'</td>'.$nl;
 echo '   <td style="'.$csssubheaderborder.'width:15%">'.i18n('colCountTotal').'</td>'.$nl;
 echo '  </tr>'.$nl;
 // each line
 foreach ($billLines as $line) {
-echo '  <tr style="height:8mm">'.$nl;
-echo '   <td style="'.$csscellleft.'width:20%">'.$line->description.'</td>'.$nl;
-echo '   <td style="'.$csscellleft.'width:40%">'.$line->detail.'</td>'.$nl;
-echo '   <td style="'.$csscellright.'width:15%">'.htmlDisplayCurrency($line->price).'</td>'.$nl;
-echo '   <td style="'.$csscellcenter.'width:10%">'.htmlDisplayNumericWithoutTrailingZeros($line->quantity).'</td>'.$nl;
-echo '   <td style="'.$csscellright.'width:15%">'.htmlDisplayCurrency($line->amount).'</td>'.$nl;
+$unit=new Unit($line->idUnit);
+$unitPrice=($unit->name)?' / '.$unit->name:'';
+$unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->namePlural:$unit->name):'';
+echo '  <tr style="height:8mm;font-size:80%">'.$nl;
+echo '   <td style="'.$csscellleft.'width:20%;">'.$line->description.'</td>'.$nl;
+echo '   <td style="'.$csscellleft.'width:30%;">'.$line->detail.'</td>'.$nl;
+echo '   <td style="'.$csscellright.'width:20%;">'.htmlDisplayCurrency($line->price).$unitPrice.'</td>'.$nl;
+echo '   <td style="'.$csscellcenter.'width:15%;">'.htmlDisplayNumericWithoutTrailingZeros($line->quantity).$unitQuantity.'</td>'.$nl;
+echo '   <td style="'.$csscellright.'width:15%;">'.htmlDisplayCurrency($line->amount).'</td>'.$nl;
 echo '  </tr>'.$nl;
 }
-echo '  <tr style="height:8mm">'.$nl;
+echo '  <tr style="height:8mm;font-size:80%">'.$nl;
 echo '   <td style="'.$cssheader.$csscellright.'font-weight:normal" colspan="3">'.i18n('colUntaxedAmount').'</td>'.$nl;
 echo '   <td style="'.$cssheader.'">&nbsp;</td>'.$nl;
 echo '   <td style="'.$cssheader.$csscellright.'font-weight:normal">'.htmlDisplayCurrency($bill->untaxedAmount).'</td>'.$nl;
 echo '  </tr>'.$nl;
-echo '  <tr style="height:8mm">'.$nl;
+echo '  <tr style="height:8mm;font-size:80%">'.$nl;
 echo '   <td style="'.$csscellright.'" colspan="3">'.i18n('colTax').'</td>'.$nl;
-echo '   <td style="'.$csscellcenter.'">'.htmlDisplayPct($bill->tax).'</td>'.$nl;
+echo '   <td style="'.$csscellcenter.'">'.htmlDisplayPct($bill->taxPct).'</td>'.$nl;
 echo '   <td style="'.$csscellright.'">'.htmlDisplayCurrency($bill->fullAmount-$bill->untaxedAmount).'</td>'.$nl;
 echo '  </tr>'.$nl;
-echo '  <tr style="height:8mm">'.$nl;
+echo '  <tr style="height:8mm;font-size:80%">'.$nl;
 echo '   <td style="'.$cssheader.$csscellright.'" colspan="3">'.i18n('colFullAmount').'</td>'.$nl;
 echo '   <td style="'.$cssheader.$csscellright.'">&nbsp;</td>'.$nl;
 echo '   <td style="'.$cssheader.$csscellright.'">'.htmlDisplayCurrency($bill->fullAmount).'</td>'.$nl;
 echo '  </tr>'.$nl;
 echo ' </table>'.$nl;
 echo '<br/>';
-echo '<div style="'.$csscomment.'">'.$bill->description.'</div>';
+echo '<div style="'.$csscomment.';font-size:80%">'.$bill->description.'</div>';
 echo '</div>'.$nl;
 
 // Bank account
