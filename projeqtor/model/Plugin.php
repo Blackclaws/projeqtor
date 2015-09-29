@@ -75,7 +75,7 @@ class Plugin extends SqlElement {
       
       $descriptorFileName=self::getDir()."/$plugin/pluginDescriptor.xml";
       if (! is_file($descriptorFileName)) {
-        $result=i18n('pluginNoXmlDescriptor',array(self::unrelativeDir($descriptorFileName),$plugin));
+        $result=i18n('pluginNoXmlDescriptor',array('pluginDescriptor.xml',self::unrelativeDir($descriptorFileName),$plugin));
         errorLog("Plugin::load() : $result");
         return $result;
       }
@@ -86,8 +86,18 @@ class Plugin extends SqlElement {
     
       $testUnicity=false;
       foreach($value as $ind=>$prop) {
+        if ($prop['tag']=='PLUGIN') {
+          if (isset($prop['attributes']['NAME'])) {
+            $pluginName=$prop['attributes']['NAME'];
+            if ($plugin!=$pluginName) {
+              $result=i18n('pluginNameIncompatibility',array($pluginName, $plugin,self::unrelativeDir($this->zipFile)));
+              errorLog("Plugin::load() : $result");
+              return $result;
+            }           
+          }
+        }
         if ($prop['tag']=='PROPERTY') {
-          //print_r($prop);
+          //debugLog($prop);
           $name='plugin'.ucfirst($prop['attributes']['NAME']);
           $value=$prop['attributes']['VALUE'];
           $$name=$value;
@@ -96,7 +106,7 @@ class Plugin extends SqlElement {
           $testUnicity=true;
           $old=self::getFromName($pluginName);
           if ($old->uniqueCode and $pluginUniqueCode and $pluginUniqueCode!=$old->uniqueCode) {
-            $result=i18n('pluginAlreadyExistsWithName',array($pluginName, $old->uniqueCode, $pluginUniqueCode,));
+            $result=i18n('pluginAlreadyExistsWithName',array($pluginName, $old->uniqueCode, $pluginUniqueCode));
             errorLog("Plugin::load() : $result");
             return $result;
           }
@@ -124,8 +134,9 @@ class Plugin extends SqlElement {
                 if ($fileAction=='move') {
                   $res=kill(self::getDir()."/$plugin/$fileName");
                   if (! $res) {
-                    $result=i18n('pluginErrorMove',array($fileName,$plugin));
-                    errorLog("Plugin::load() : $result");
+                    // Not blocking error : delete of source is not really mandatory as long as copy is ok
+                    //$result=i18n('pluginErrorMove',array($fileName,$plugin));
+                    //errorLog("Plugin::load() : $result");
                   }
                 }
               }
@@ -154,7 +165,7 @@ class Plugin extends SqlElement {
       if (isset($pluginSql) and $pluginSql) {
         $sqlfile=self::getDir()."/$plugin/$pluginSql";
         if (! is_file($sqlfile)) {
-          $result="cannot find Sql file $sqlfile for plugin $plugin";
+          $result=i18n("pluginSqlFileError",array($sqlfile, $plugin));
           errorLog("Plugin::load() : $result");
           return $result;
         }
