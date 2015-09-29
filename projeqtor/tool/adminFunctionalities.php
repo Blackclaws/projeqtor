@@ -33,6 +33,11 @@ if (! isset($adminFunctionality)) {
 	echo "ERROR - functionality not defined";
 	return;
 }
+if (securityGetAccessRightYesNo('menuAdmin','read')!='YES') {
+  traceHack ( "admin functionality reached without access right" );
+  exit ();
+}
+
 Sql::beginTransaction();
 $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
 if ($adminFunctionality=='sendAlert') {
