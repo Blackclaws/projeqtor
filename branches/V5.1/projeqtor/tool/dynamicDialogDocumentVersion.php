@@ -50,7 +50,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
     <input id="typeEvo" name="typeEvo" type="hidden" value="" />
 <div id="inputFileDocumentVersion" name="inputFileDocumentVersion">
     <table>
-      <tr height="30px"> 
+      <tr height="32px"> 
         <td class="dialogLabel" >
          <label for="documentVersionFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
         </td>
