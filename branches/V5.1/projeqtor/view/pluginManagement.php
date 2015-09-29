@@ -30,7 +30,10 @@
   require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
   scriptLog('   ->/view/pluginManagement.php');
-
+  $isIE=false;
+  if (array_key_exists('isIE',$_REQUEST)) {
+    $isIE=$_REQUEST['isIE'];
+  }
   $user=getSessionUser();
   $collapsedList=Collapsed::getCollaspedList();
 ?>  
@@ -56,7 +59,13 @@ require_once "../tool/formatter.php";
     </table>
   </div>
   <div id="formPluginDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-y:auto;"> 
-    <form dojoType="dijit.form.Form" id="pluginForm" jsId="pluginForm" name="pluginForm" encType="multipart/form-data" action="" method="" >
+    <form dojoType="dijit.form.Form" id="pluginForm" jsId="pluginForm" name="pluginForm" encType="multipart/form-data" method="POST" 
+    <?php if ($isIE and $isIE<=9) {?>
+    action="../tool/uploadPlugin.php?isIE=<?php echo $isIE;?>"
+    target="pluginPost"
+    onSubmit="return true; //uploadPlugin();"
+    <?php }?> 
+    >
       <table style="width:97%;margin:10px;padding: 10px;vertical-align:top;">
         <tr style="">
           <td style="width:49%;vertical-align:top;">
@@ -82,6 +91,45 @@ require_once "../tool/formatter.php";
              onShow="saveExpanded('<?php echo $titlePane;?>');"
              title="<?php echo i18n('pluginAvailableLocal');?>">
             <table style="width:100%;">
+              <tr height="30px"> 
+              <td colspan="6"><table><tr>
+                <td class="dialogLabel" >
+                  <label for="uploadPlugin" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
+                </td>
+                <td>
+                 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />     
+                 <?php  if ($isIE and $isIE<=9) {?>
+                 <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
+                  dojoType="dojox.form.FileInput" type="file" 
+                  name="pluginFile" id="pluginFile" 
+                  cancelText="<?php echo i18n("buttonReset");?>"
+                  label="<?php echo i18n("buttonBrowse");?>"
+                  title="<?php echo i18n("helpSelectFile");?>" />
+                 <?php } else {?>  
+                 <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
+                  dojoType="dojox.form.Uploader" type="file" 
+                  url="../tool/uploadPlugin.php"
+                  name="pluginFile" id="pluginFile" 
+                  cancelText="<?php echo i18n("buttonReset");?>"
+                  multiple="false" 
+                  onBegin="uploadFile();"
+                  onChange="changePluginFile(this.getFileList());"
+                  onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
+                  label="<?php echo i18n("buttonBrowse");?>"
+                  title="<?php echo i18n("helpSelectFile");?>"  />
+                 <?php }?>
+                 <i><span name="pluginFileName" id="pluginFileName"></span></i> 
+                </td>
+              </tr>
+              <tr>
+        <td colspan="2" align="center">
+         <div style="display:none">
+           <iframe name="pluginPost" id="pluginPost"></iframe>
+         </div>
+        </td>
+      </tr>
+              </table></td>
+              </tr>        
               <tr>
                 <td class="display" colspan="6">
                  <?php echo i18n('pluginDir',array(Plugin::unrelativeDir(Plugin::getDir()) ));?>

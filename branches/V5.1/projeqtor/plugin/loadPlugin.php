@@ -27,6 +27,10 @@
 $maintenance=true;
 require_once '../tool/projeqtor.php';
 require_once "../db/maintenanceFunctions.php";
+if (securityGetAccessRightYesNo('menuPlugin','read')!='YES') {
+  traceHack ( "plugin management tried without access right" );
+  exit ();
+}
 
 $oneFile=null;
 if (isset($_REQUEST['pluginFile']) ) {
