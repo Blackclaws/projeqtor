@@ -932,15 +932,18 @@ class User extends SqlElement {
 			$filter_r = html_entity_decode(str_replace(array('%USERNAME%','%username%'), array($this->name,$this->name), $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {
+			  traceLog("authenticate - Filter error : ldap_search failed for filter $filter_r)" );			  
 			  $this->unsuccessfullLogin();
 				return "login";
 			}
 			$result_user = ldap_get_entries($ldapCnx, $result);
 			if ($result_user['count'] == 0) {
+			  traceLog("authenticate - Filter error : ldap_search returned no result for filter $filter_r)" );
 			  $this->unsuccessfullLogin();
 				return "login";
 			}
 		  if ($result_user['count'] > 1) {
+		    traceLog("authenticate - Filter error : ldap_search returned more than one result for filter $filter_r)" );
 		    $this->unsuccessfullLogin();
         return "login";
       }
@@ -962,6 +965,7 @@ class User extends SqlElement {
         return "login";
       }
 			if (! $bind_user or !$parampassword) {
+			  traceLog("authenticate - LdapBind Error : no result returned or no password" );
 			  $this->unsuccessfullLogin();
 				return "login";
 			}
