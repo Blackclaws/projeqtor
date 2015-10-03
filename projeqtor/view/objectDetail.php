@@ -3222,6 +3222,7 @@ function drawChecklistFromObject($obj) {
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'checklist'));
   $list=new ListYesNo($habil->rightAccess);
   $displayChecklist=Parameter::getUserParameter('displayChecklist');
+  if (! $displayChecklist) $displayChecklist='YES';
   if (!$noselect and $obj->id and $list->code=='YES' and ($displayChecklist=='YES' or $print) ) {
       if ($print) {
         //echo '<table class="detail" width="'.$printWidth.'px;">';
