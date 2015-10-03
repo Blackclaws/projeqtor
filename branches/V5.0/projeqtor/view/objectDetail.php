@@ -1976,7 +1976,7 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
         $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
         $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
-      } else if ($dataLength>4000) {
+      } else if ($dataLength>4000 or $refType=='Note') {
         $diff=diffValues($oldValue,$newValue);
         // Nothing, préserve html format 
       } else if ($colName=='password' or $colName=='apiKey') {
