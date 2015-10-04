@@ -40,8 +40,6 @@ require_once "../tool/formatter.php";
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Plugin" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="pluginButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top" style="z-index:3;overflow:visible">
-    <div id="resultDiv" dojoType="dijit.layout.ContentPane"
-      region="top" style="padding:5px;max-height:100px;padding-left:300px;z-index:999"></div>
     <table width="100%">
       <tr height="100%" style="vertical-align: middle;">
         <td width="50px" align="center">
@@ -53,7 +51,9 @@ require_once "../tool/formatter.php";
         </td>
         <td width="50px"> 
         </td>
-        <td>      
+        <td>
+          <div id="pluginResultDiv"
+             style="position:absolute; top: 5px; left:50%; padding:5px; max-height:100px;z-index:999;"></div>    
         </td>
       </tr>
     </table>
@@ -63,7 +63,7 @@ require_once "../tool/formatter.php";
     <?php if ($isIE and $isIE<=9) {?>
     action="../tool/uploadPlugin.php?isIE=<?php echo $isIE;?>"
     target="pluginPost"
-    onSubmit="return true; //uploadPlugin();"
+    onSubmit="uploadPlugin();"
     <?php }?> 
     >
       <table style="width:97%;margin:10px;padding: 10px;vertical-align:top;">
@@ -90,13 +90,21 @@ require_once "../tool/formatter.php";
              onHide="saveCollapsed('<?php echo $titlePane;?>');"
              onShow="saveExpanded('<?php echo $titlePane;?>');"
              title="<?php echo i18n('pluginAvailableLocal');?>">
+            
+            <table style="width:100%;">
+              <tr>
+                <td class="display" colspan="6">
+                 <?php echo i18n('pluginDir',array(Plugin::unrelativeDir(Plugin::getDir()) ));?>
+                <br/><br/></td>
+              </tr>
+              <?php displayPluginList('local');?>
+            </table><br/>
             <table style="width:100%;">
               <tr height="30px"> 
-              <td colspan="6"><table><tr>
-                <td class="dialogLabel" >
-                  <label for="uploadPlugin" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
+                <td class="dialogLabel" style="width:200px";>
+                  <label for="uploadPlugin" style="width:200px"><?php echo i18n("addPluginFile");?>&nbsp;:&nbsp;</label>
                 </td>
-                <td>
+                <td style="text-align:left;">
                  <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />     
                  <?php  if ($isIE and $isIE<=9) {?>
                  <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
@@ -106,37 +114,37 @@ require_once "../tool/formatter.php";
                   label="<?php echo i18n("buttonBrowse");?>"
                   title="<?php echo i18n("helpSelectFile");?>" />
                  <?php } else {?>  
-                 <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
+                 <div MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
                   dojoType="dojox.form.Uploader" type="file" 
                   url="../tool/uploadPlugin.php"
+                  target="pluginPost"
                   name="pluginFile" id="pluginFile" 
                   cancelText="<?php echo i18n("buttonReset");?>"
                   multiple="false" 
-                  onBegin="uploadFile();"
+                  uploadOnSelect="true"
+                  onBegin="uploadPlugin();"
                   onChange="changePluginFile(this.getFileList());"
-                  onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
+                  onError="hideWait(); dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
                   label="<?php echo i18n("buttonBrowse");?>"
-                  title="<?php echo i18n("helpSelectFile");?>"  />
+                  title="<?php echo i18n("helpSelectFile");?>">
+                  <script type="dojo/connect" event="onComplete" args="dataArray">
+                    savePluginAck(dataArray);
+	                </script>
+          				<script type="dojo/connect" event="onProgress" args="data">
+                    saveAttachmentProgress(data);
+	                </script>
+	              </div>
                  <?php }?>
-                 <i><span name="pluginFileName" id="pluginFileName"></span></i> 
+                 <i><span xname="pluginFileName" id="pluginFileName"></span></i> 
+                  <div style="display:none">
+                    <iframe name="pluginPost" id="pluginPost" jsid="pluginPost"></iframe>
+                  </div>
                 </td>
               </tr>
-              <tr>
-        <td colspan="2" align="center">
-         <div style="display:none">
-           <iframe name="pluginPost" id="pluginPost"></iframe>
-         </div>
-        </td>
-      </tr>
-              </table></td>
-              </tr>        
-              <tr>
-                <td class="display" colspan="6">
-                 <?php echo i18n('pluginDir',array(Plugin::unrelativeDir(Plugin::getDir()) ));?>
-                <br/><br/></td>
-              </tr>
-              <?php displayPluginList('local');?>
-            </table><br/></div><br/>
+              <tr><td></td><td></tr>
+            </table>          
+            </div><br/>
+            
             <?php $titlePane="Plugin_available_remote"; ?> 
             <div dojoType="dijit.TitlePane"
              open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"

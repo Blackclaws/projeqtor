@@ -128,8 +128,6 @@ $line->price=$price;
 $line->idMeasureUnit=$unit;
 $line->extra=$extra;
 $result=$line->save();
-debugLog($result);
-debugLog($line);  
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>
