@@ -48,6 +48,7 @@ class QuotationMain extends SqlElement {
   public $idStatus;
   public $idResource;  
   public $sendDate;
+  public $idDeliveryMode; 
   public $validityEndDate;
   public $handled;
   public $handledDate;
@@ -119,7 +120,8 @@ class QuotationMain extends SqlElement {
   		                      //'initialAmount'=>'plannedAmount',
   		                      //'initialPricePerDayAmount'=>'pricePerDay',
                             'description'=>'request',
-                            'idPaymentDelay'=>'paymentDelay');
+                            'idPaymentDelay'=>'paymentDelay',
+      'idDeliveryMode'=>'sendMode');
   private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     

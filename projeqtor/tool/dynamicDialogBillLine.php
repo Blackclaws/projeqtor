@@ -79,7 +79,7 @@ if ($billingType == 'E') {
     $readOnly['price']=true;
     $readOnly['quantity']=true;
     $readOnly['unit']=true;
-    $line->idUnit=3;
+    $line->idMeasureUnit=3;
     if (!$line->id) { // add
       $divDescriptionStyle='display:none;';
     } else { // edit
@@ -283,8 +283,8 @@ if ($line->line) {
                     id="billLineUnit" name="billLineUnit" 
                     style="width: 100px;"
                     <?php if (isset($readOnly['unit'])) echo " readonly ";?>
-                    class="input" value="<?php if ($line->idUnit) echo $line->idUnit; else echo ' ';?>" >
-                      <?php htmlDrawOptionForReference('idUnit', null, null, false);?>
+                    class="input" value="<?php if ($line->idMeasureUnit) echo $line->idMeasureUnit; else echo ' ';?>" >
+                      <?php htmlDrawOptionForReference('idMeasureUnit', null, null, false);?>
                     </select>
             </div></td>
 	        </tr>
@@ -303,7 +303,7 @@ if ($line->line) {
                 onChange="billLineUpdateAmount();"
                 class="input"  value="<?php echo $line->quantity;?>">  
                </input>
-               <?php if ($line->idUnit) echo SqlList::getFieldFromId('Unit', $line->idUnit, ($line->quantity>1)?'namePlural':'name');?> 
+               <?php if ($line->idMeasureUnit) echo SqlList::getFieldFromId('MeasureUnit', $line->idMeasureUnit, ($line->quantity>1)?'pluralName':'name');?> 
              </td>
            </tr>
            <tr>

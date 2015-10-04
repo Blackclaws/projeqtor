@@ -2193,7 +2193,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   $lines=array_reverse($lines);
   foreach ( $lines as $line ) {
-    $unit=new Unit($line->idUnit);
+    $unit=new MeasureUnit($line->idMeasureUnit);
     echo '<tr>';
     if (!$print) {
       echo '<td class="noteData" style="text-align:center;white-space:nowrap">';
@@ -2219,7 +2219,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     echo '</td>';
     $unitPrice=($unit->name)?' / '.$unit->name:'';
     echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->price) . $unitPrice.'</td>';
-    $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->namePlural:$unit->name):'';
+    $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->pluralName:$unit->name):'';
     echo '<td class="noteData" style="width:10%">' . htmlDisplayNumericWithoutTrailingZeros($line->quantity) . $unitQuantity. '</td>';
     echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->amount) . '</td>';
     echo '</tr>';
@@ -3263,6 +3263,7 @@ function drawChecklistFromObject($obj) {
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'checklist'));
   $list=new ListYesNo($habil->rightAccess);
   $displayChecklist=Parameter::getUserParameter('displayChecklist');
+  if (! $displayChecklist) $displayChecklist='YES';
   if (!$noselect and $obj->id and $list->code=='YES' and ($displayChecklist=='YES' or $print) ) {
       if ($print) {
         //echo '<table class="detail" width="'.$printWidth.'px;">';
