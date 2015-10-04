@@ -411,7 +411,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, $divName, $title) {
   	//                   Assign  idRess  idUser  idCont  Items
-  	// $where :          NO      YES     YES     NO      Milestone, Risk, Action, Issue, Opportunity
+  	// $where :          NO      YES     YES     NO      Milestone, Risk, Action, Issue, Opportunity, Decision, Question, Quote, Order, Bill
   	// $whereActivity :  YES     YES     YES     YES     Activity
   	// $whereTicket :    NO      YES     YES     YES     Ticket
   	// $whereMeeting :   YES     YES     YES     NO      Meeting, TestSession
@@ -455,6 +455,19 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $listSession=$session->getSqlElementsFromCriteria(null, null, 
     		str_replace(array('Meeting',$meeting->getDatabaseTableName()), array('TestSession', $session->getDatabaseTableName()), $whereMeeting), $order, null, true,$cptMax+1);
     $list=array_merge($list, $listSession);   
+    $decision= new Decision();
+    $listDecision=$decision->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listDecision); 
+    $quotation= new Quotation();
+    $listQuotation=$quotation->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listQuotation); 
+    $command= new Command();
+    $listCommand=$command->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listCommand);
+    $bill= new Bill();
+    $listBill=$bill->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listBill);
+    
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';

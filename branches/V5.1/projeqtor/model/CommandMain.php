@@ -47,7 +47,6 @@ class CommandMain extends SqlElement {
   public $description;
   public $additionalInfo;
   public $_sec_treatment;
-  public $idActivity;
   public $idStatus;
   public $idResource;  
   public $handled;
@@ -59,6 +58,7 @@ class CommandMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   public $idActivityType;
+  public $idActivity;
   public $idPaymentDelay;
   public $_tab_5_3_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','work', 'initial', 'add', 'countTotal');
   public $untaxedAmount;
