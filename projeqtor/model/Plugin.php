@@ -97,7 +97,6 @@ class Plugin extends SqlElement {
           }
         }
         if ($prop['tag']=='PROPERTY') {
-          //debugLog($prop);
           $name='plugin'.ucfirst($prop['attributes']['NAME']);
           $value=$prop['attributes']['VALUE'];
           $$name=$value;
