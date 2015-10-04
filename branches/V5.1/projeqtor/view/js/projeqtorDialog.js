@@ -5797,22 +5797,57 @@ function uploadPlugin() {
   if (!isHtml5()) {
     return true;
   }
-  /*if (dojo.byId('pluginFileName').innerHTML == "") {
+  if (dojo.byId('pluginFileName').innerHTML == "") {
     return false;
-  }*/
+  }
   dojo.style(dojo.byId('downloadProgress'), {
     display : 'block'
   });
   showWait();
   return true;
-  console.log("upload");
 }
 
 function changePluginFile(list) {
   if (list.length > 0) {
-    console.log(list[0]['name']);
-    setTimeout("dijit.byId('pluginForm').submit();",5000);
-    console.log("change");
+    dojo.byId("pluginFileName").innerHTML=list[0]['name'];
     return true;
+  }
+}
+
+function savePluginAck(dataArray) {
+  if (!isHtml5()) {
+    resultFrame=document.getElementById("resultPost");
+    resultText=resultPost.document.body.innerHTML;
+    dijit.byId('pluginResultDiv').set('content',resultText);
+    savePluginFinalize();
+    return;
+  }
+  if (dojo.isArray(dataArray)) {
+    result=dataArray[0];
+  } else {
+    result=dataArray;
+  }
+  dojo.style(dojo.byId('downloadProgress'), {
+    display : 'none'
+  });
+  if (dojo.isArray(dataArray)) {
+    result=dataArray[0];
+  } else {
+    result=dataArray;
+  }
+  dojo.style(dojo.byId('downloadProgress'), {
+    display : 'none'
+  });
+  contentNode = dojo.byId('pluginResultDiv');
+  contentNode.innerHTML=result.message;
+  contentNode.style.display="block"; 
+  savePluginFinalize();
+}
+function savePluginFinalize() {
+  contentNode = dojo.byId('pluginResultDiv');
+  if (contentNode.innerHTML.indexOf('resultOK')>0) {
+    setTimeout('loadContent("pluginManagement.php", "centerDiv");',1000);
+  } else {
+    hideWait();
   }
 }

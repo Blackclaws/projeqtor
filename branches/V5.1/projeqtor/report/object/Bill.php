@@ -92,7 +92,6 @@ if ($logoA4) {
   echo ' style="width:190mm; height:270mm"';
 } else {
   $size=getimagesize($logo);
-  debugLog($size);
   $addStyle='';
   if ($size[0]>300 and ($size[1]*6)<=$size[0]) $addStyle.='width:300px';
   else if ($size[1]>50 or ($size[1]*6)>$size[0]) $addStyle.='height:50px';

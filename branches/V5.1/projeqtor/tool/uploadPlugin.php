@@ -34,7 +34,7 @@ header ('Content-Type: text/html; charset=UTF-8');
  * Save a document version (file) : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
  */
-exit;
+
 // ATTENTION, this PHP script returns its result into an iframe (the only way to submit a file)
 // then the iframe returns the result to resultDiv to reproduce expected behaviour
 $isIE=false;
@@ -45,243 +45,111 @@ if ($isIE and $isIE<=9) {?>
 <html>
 <head>   
 </head>
-<body onload="parent.saveDocumentVersionAck();">
-<?php } ?>
+<body onload="parent.savePluginAck();">
+<?php } else { ob_start();}?>
 <?php 
 $error=false;
-$documentVersionLink="";
 $uploadedFile=false;
 projeqtor_set_time_limit(3600); // 60mn
-
-$documentVersionId=null;
-if (array_key_exists('documentVersionId',$_REQUEST)) {
-    $documentVersionId=$_REQUEST['documentVersionId'];
-}
 $attachmentMaxSize=Parameter::getGlobalParameter('paramAttachmentMaxSize');
-if (! $documentVersionId) { // Get file only on insert
-	if (array_key_exists('documentVersionLink',$_REQUEST)) {
-		$documentVersionLink=$_REQUEST['documentVersionLink'];
-	}
-	if (array_key_exists('documentVersionFile',$_FILES)) {
-	  $uploadedFile=$_FILES['documentVersionFile'];
-	} else if ($documentVersionLink!='') {
-		// OK Link instead of file
-	} else if (isset($_REQUEST['MAX_FILE_SIZE']) ) {
-    // OK : no file	
-	} else {
-	  $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
-	  errorLog("[1] ".i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
-	  //$error=true; 
-	}
-	if ($uploadedFile and $documentVersionLink and $uploadedFile['name']) {
-		$error=htmlGetWarningMessage(i18n('errorFileOrLink',null));
-		//$error=true; 
-	}
-	if (! $error and $uploadedFile and $uploadedFile['name']) {
-	  if ( $uploadedFile['error']!=0 ) {
-	  	//$error="[".$uploadedFile['error']."] ";
-      errorLog("[".$uploadedFile['error']."] saveDocumentVersion.php");
-	    switch ($uploadedFile['error']) {
-	      case 1:
-	        $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-	        errorLog("[2] ".i18n("[".$uploadedFile['error']."] ".'errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-	        break; 
-	      case 2:
-	        $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
-	        errorLog("[3] ".i18n("[".$uploadedFile['error']."] ".'errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
-	        break;  
-	      case 4:
-	        $error.=htmlGetWarningMessage(i18n('errorNoFile'));
-	        errorLog(i18n('errorNoFile'));
-	        break;  
-	      default:
-	        $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorUploadFile',array($uploadedFile['error'])));
-	        errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
-	        break;
-	    }
-	    //$error=true; 
-	  }
-	}
-	if (! $error and ! $uploadedFile and !$documentVersionLink) {
-	  if (! $uploadedFile['name']) {
-	    $error=htmlGetWarningMessage(i18n('errorNoFile'));
-	    errorLog(i18n('errorNoFile'));
-	    //$error=true; 
-	  }
-	}
-}
-$documentVersionNewVersion=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionNewVersion',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionNewVersion parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionNewVersion=$_REQUEST['documentVersionNewVersion'];
+$uploadedFileArray=array();
+
+if (array_key_exists('pluginFile',$_FILES)) {
+  $uploadedFileArray[]=$_FILES['pluginFile'];
+} else if (array_key_exists('uploadedfile0',$_FILES)) {
+  $cnt = 0;
+  while(isset($_FILES['uploadedfile'.$cnt])){
+  		$uploadedFileArray[]=$_FILES['uploadedfile'.$cnt];
   }
-}
-
-$documentVersionNewRevision=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionNewRevision',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionNewRevision parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionNewRevision=$_REQUEST['documentVersionNewRevision'];
-	}
-}
-
-$documentVersionNewDraft=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionNewDraft',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionNewDraft parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionNewDraft=$_REQUEST['documentVersionNewDraft'];
-	}
-}
-
-$documentId=null;
-if (!$error) {
-	if (! array_key_exists('documentId',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentId parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentId=$_REQUEST['documentId'];
-	}
-}
-
-Sql::beginTransaction();
-// Verify that user has rights to update the document
-$doc=new Document($documentId);
-if (securityGetAccessRightYesNo('menuDocument', 'update', $doc)!="YES" or $doc->locked) {
-  $error=htmlGetWarningMessage(i18n('msgNotGranted'));
+} else if (array_key_exists('pluginFile',$_FILES) and array_key_exists('name',$_FILES['pluginFile'])) {
+  for ($i=0;$i<count($_FILES['pluginFile']['name']);$i++) {
+    $uf=array();
+    $uf['name']=$_FILES['pluginFile']['name'][$i];
+    $uf['type']=$_FILES['pluginFile']['type'][$i];
+    $uf['tmp_name']=$_FILES['pluginFile']['tmp_name'][$i];
+    $uf['error']=$_FILES['pluginFile']['error'][$i];
+    $uf['size']=$_FILES['pluginFile']['size'][$i];
+    $uploadedFileArray[$i]=$uf;
+  }
+} else {
+  $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
+  errorLog(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
   //$error=true;
 }
 
-$documentVersionDate=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionDate',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionDate parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionDate=$_REQUEST['documentVersionDate'];
-	}
-}
-$documentVersionIsRef=0;
-if (array_key_exists('documentVersionIsRef',$_REQUEST)) {
-  $documentVersionIsRef=1;
-}
-
-$documentVersionIdStatus=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionIdStatus',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionIdStatus parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionIdStatus=$_REQUEST['documentVersionIdStatus'];
-	}
-}
-
-$documentVersionDescription=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionDescription',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionDescription parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionDescription=$_REQUEST['documentVersionDescription'];
-	}
-}
-
-$documentVersionNewVersionDisplay=null;
-if (!$error) {
-	if (! array_key_exists('documentVersionNewVersionDisplay',$_REQUEST)) {
-	    $error=htmlGetErrorMessage('documentVersionNewVersionDisplay parameter not found in REQUEST');
-	    //$error=true;
-	} else {
-	  $documentVersionNewVersionDisplay=$_REQUEST['documentVersionNewVersionDisplay'];
-	}
-}
-
-if (! $error) {
-	$dv=new DocumentVersion($documentVersionId);
-  $dv->idDocument=$documentId;
-  $dv->idAuthor=$user->id;
-  $dv->versionDate=$documentVersionDate;
-  if (! $documentVersionId) {
-	  if ($documentVersionLink) {
-	  	
-	  } else {
-	    $dv->fileName=$uploadedFile['name'];
-	    $dv->mimeType=$uploadedFile['type'];
-	    $dv->fileSize=$uploadedFile['size'];
-	  }
+foreach ($uploadedFileArray as $uploadedFile) {
+  if (! $error) {
+    if ( $uploadedFile['error']!=0) {
+      //$error="[".$uploadedFile['error']."] ";
+      errorLog("[".$uploadedFile['error']."] uploadPlugin.php");
+      //$error=true;
+      switch ($uploadedFile['error']) {
+      	case 1:
+      	  $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+      	  errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+      	  break;
+      	case 2:
+      	  $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
+      	  errorLog(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
+      	  break;
+      	case 4:
+      	  $error.=htmlGetWarningMessage("[".$uploadedFile['error']."] ".i18n('errorNoFile'));
+      	  errorLog(i18n('errorNoFile'));
+      	  break;
+      	case 3:
+      	  $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorUploadNotComplete'));
+      	  errorLog(i18n('errorUploadNotComplete'));
+      	  break;
+      	default:
+      	  $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorUploadFile',array($uploadedFile['error'])));
+      	  errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
+      	  break;
+      }
+    }
   }
-  $dv->description=$documentVersionDescription;
-  $dv->version=$documentVersionNewVersion;
-  $dv->revision=$documentVersionNewRevision;
-  $dv->draft=$documentVersionNewDraft;
-  $dv->idStatus=$documentVersionIdStatus;
-  $dv->isRef=$documentVersionIsRef;
-  $dv->name=$documentVersionNewVersionDisplay;
-  $result=$dv->save();
-  $newId= $dv->id;
+  if (! $error) {
+    if (! $uploadedFile['name']) {
+      $error=htmlGetWarningMessage(i18n('errorNoFile'));
+      errorLog(i18n('errorNoFile'));
+      //$error=true;
+    }
+  }
 }
-
 $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-if (! $documentVersionId) {
-	if (! $error and !$documentVersionLink ) {
-		$uploadfile = $dv->getUploadFileName();
-		$split=explode($pathSeparator,$uploadfile);
-		unset($split[count($split)-1]);
-		$dir='';
-		foreach ($split as $dirElt) { 
-			$dir.=$dirElt.$pathSeparator;
-	    if (! file_exists($dir)) {
-	      mkdir($dir,0777,true);
-	    }
-		}
-	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-	     $error=htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-	     errorLog(i18n('errorUploadFile','hacking ?'));
-	     //$error=true;
-	     $dv->delete(); 
-	  } else {
-	    //$dv->subDirectory=$uploaddir;
-	    //$otherResult=$dv->save();
-	  }
-	}
-}
-if (! $error) {
-  // Message of correct saving
-  if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-  	Sql::rollbackTransaction();
-    $message='<div class="messageERROR" >' . $result . '</div>';
-  } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-  	Sql::commitTransaction();
-    $message='<div class="messageOK" >' . $result . '</div>';
-  } else { 
-  	Sql::rollbackTransaction();
-    $message='<div class="messageWARNING" >' . $result . '</div>';
+if (!$error) {
+  foreach ($uploadedFileArray as $uploadedFile) {
+    $fileName=$uploadedFile['name'];
+    $mimeType=$uploadedFile['type'];
+    $fileSize=$uploadedFile['size'];   
+    $uploaddir = Plugin::getDir();
+    /*if (! file_exists($uploaddir)) {
+      mkdir($uploaddir,0777,true);
+    }*/
+    $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+    if ($paramFilenameCharset) {
+      $uploadfile = $uploaddir . $pathSeparator . iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$fileName);
+    } else {
+      $uploadfile = $uploaddir . $pathSeparator . $fileName;
+    }
+    if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
+      $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
+      errorLog(i18n('errorUploadFile','hacking ?'));
+    } 
+    $message="<div class='messageOK' >" . i18n('pluginFileUploaded') . "</div>"
+      	      ."<input type='hidden' value='resultOK' />";
   }
-} else {
-	 Sql::rollbackTransaction();
-	 $message=$error;
-   //$message='<input type="hidden" id="lastSaveId" value="" />';
-   //$message.='<input type="hidden" id="lastOperation" value="file upload" />';
-   //$message.='<input type="hidden" id="lastOperationStatus" value="ERROR" />';
 }
-
-if (!isset($dv)) $dv=new DocumentVersion();
-$jsonReturn='{"file":"'.$dv->fileName.'",'
- .'"name":"'.$dv->fileName.'",'
- .'"type":"'.$dv->mimeType.'",'
- .'"size":"'.$dv->fileSize.'"  ,'
- .'"message":"'.str_replace('"',"'",$message).'"}';
+$jsonReturn='{"file":"'.$fileName.'",'
+    .'"name":"'.$fileName.'",'
+        .'"type":"'.$mimeType.'",'
+            .'"size":"'.$fileSize.'"  ,'
+                .'"message":"'.$message.'"}';
 
 if ($isIE and $isIE<=9) {
   echo $message;
   echo '</body>';
   echo '</html>';
 } else {
+  ob_end_clean();
   echo $jsonReturn;
 }?>
