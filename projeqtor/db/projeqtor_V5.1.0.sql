@@ -80,7 +80,11 @@ ADD `extra` int(1) UNSIGNED DEFAULT 0;
 
 ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
 ADD `paymentDueDate` date DEFAULT NULL,
-ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
+ADD `idDeliveryMode` int(12) unsigned DEFAULT null,
+ADD `idResource` int(12) unsigned DEFAULT null,
+ADD `idUser` int(12) unsigned DEFAULT null;
+
+UPDATE `${prefix}bill` b set `idUser` = (select idUser from `${prefix}history` h where h.refType='Bill' and h.refId=b.id order by operationDate LIMIT 1); 
 
 ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
 CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
@@ -146,3 +150,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 140, 0),
 (6, 140, 0),
 (7, 140, 0);
+
+ALTER TABLE `${prefix}decision` ADD `done` int(1) unsigned DEFAULT 0;
+UPDATE `${prefix}decision` set done=1 where idStatus in (select id from `${prefix}status` where setDoneStatus=1);

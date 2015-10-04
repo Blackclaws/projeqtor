@@ -37,6 +37,7 @@ class BillMain extends SqlElement {
   public $name;
   public $idBillType;
   public $idProject;
+  public $idUser;
   public $date;
   public $idPaymentDelay;
   public $paymentDueDate;
@@ -48,6 +49,7 @@ class BillMain extends SqlElement {
   public $_sec_treatment;  
   public $billId;
   public $idStatus;
+  public $idResource;
   public $idDeliveryMode;
   public $done;
   public $idle;
@@ -106,7 +108,9 @@ class BillMain extends SqlElement {
   private static $_colCaptionTransposition = array('description'=>'comment',
                                                    'idContact'=>'billContact',
                                                    'idPaymentDelay'=>'paymentDelay',
-                                                   'idDeliveryMode'=>'sendMode');
+                                                   'idDeliveryMode'=>'sendMode',
+                                                   "idUser"=>"hidden",
+                                                   'idResource'=>'responsible');
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
     

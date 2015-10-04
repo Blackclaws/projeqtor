@@ -44,6 +44,7 @@ class DecisionMain extends SqlElement {
   public $decisionDate;
   public $origin;
   public $idResource;
+  public $done;
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
