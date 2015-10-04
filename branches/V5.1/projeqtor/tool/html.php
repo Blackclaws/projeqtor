@@ -626,7 +626,7 @@ function htmlGetMimeType($mimeType,$fileName, $id=null) {
     $img= "../view/img/mime/unknown.png";
   }
   $image='<img src="' . $img . '" title="' . $mimeType . '" ';
-  if ($id and ($ext=="htm" or $ext=="html")) {
+  if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf")) {
   	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.$fileName.'\')" ';
   }
   $image.='/>&nbsp;';

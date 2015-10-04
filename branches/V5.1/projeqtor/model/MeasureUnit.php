@@ -28,13 +28,13 @@
  * Stauts defines list urgencies an activity or action can get in (lifecylce).
  */ 
 require_once('_securityCheck.php');
-class Unit extends SqlElement {
+class MeasureUnit extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $namePlural;
+  public $pluralName;
   public $sortOrder=0;
   public $idle;
   public $_sec_void;
@@ -42,11 +42,10 @@ class Unit extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="60%">${name}</th>
-    <th field="value" width="10%" >${value}</th>
-    <th field="color" width="10%" formatter="colorFormatter">${color}</th>
-    <th field="sortOrder" width="5%">${sortOrderShort}</th>  
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    <th field="name" width="35%">${name}</th>
+    <th field="pluralName" width="35%" >${pluralName}</th>
+    <th field="sortOrder" width="10%">${sortOrderShort}</th>  
+    <th field="idle" width="10%" formatter="booleanFormatter">${idle}</th>
     ';
 
   

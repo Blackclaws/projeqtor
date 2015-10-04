@@ -40,6 +40,7 @@ class CommandMain extends SqlElement {
   public $idClient;
   public $idContact;
   public $externalReference;  
+  public $idDeliveryMode;
   public $idUser;
   public $creationDate;
   public $Origin;
@@ -131,7 +132,8 @@ class CommandMain extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
   													'idActivity'=>'linkActivity',
-  													'creationDate'=>'receptionDateTime');
+  													'creationDate'=>'receptionDateTime',
+  'idDeliveryMode'=>'receiveMode');
   private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     
@@ -273,10 +275,10 @@ class CommandMain extends SqlElement {
   	  foreach ($billLineList as $line) {
   	    if ($line->extra) {
   	      $addAmount+=$line->amount;
-  	      if ($line->idUnit==3) $addWork+=$line->quantity; // Only if unit is Days
+  	      if ($line->idMeasureUnit==3) $addWork+=$line->quantity; // Only if unit is Days
   	    } else {
   	      $amount+=$line->amount;
-  	      if ($line->idUnit==3) $work+=$line->quantity;
+  	      if ($line->idMeasureUnit==3) $work+=$line->quantity;
   	    }
   	  }
   	  $this->untaxedAmount=$amount;

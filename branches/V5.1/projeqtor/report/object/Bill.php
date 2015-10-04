@@ -45,7 +45,7 @@ $address=($contact->designation or $contact->street or $contact->complement)?$co
 $ref=$bill->reference;
 $refShort=str_replace(array('ProjeQtOr-','PROJEQTOR-','Poojeqtor-'),array('','',''),$ref);
 $delay="";
-if ($client->idPaymentDelay) {
+if ($bill->idPaymentDelay) {
   $delay=SqlList::getNameFromId('PaymentDelay', $bill->idPaymentDelay);
 }
 $orderRef="";
@@ -88,8 +88,16 @@ echo '<div style="position:absolute;'.(($outMode=='pdf')?'left:5mm; top:5mm':'')
 echo $nl;
 echo '<div style="position:absolute;top:0mm; left:0mm;width:190mm;height:270mm;">'.$nl;
 echo ' <img src="'.$logo.'"';
-if ($logoA4) echo ' style="width:190mm; height:270mm"';
-else echo ' style="max-width:80mm;max-height:20mm"';
+if ($logoA4) {
+  echo ' style="width:190mm; height:270mm"';
+} else {
+  $size=getimagesize($logo);
+  debugLog($size);
+  $addStyle='';
+  if ($size[0]>300 and ($size[1]*6)<=$size[0]) $addStyle.='width:300px';
+  else if ($size[1]>50 or ($size[1]*6)>$size[0]) $addStyle.='height:50px';
+  echo ' style="max-width:80mm;max-height:20mm;'.$addStyle.'"';
+}
 echo ' />'.$nl;
 echo '</div>'.$nl;
 
@@ -224,12 +232,12 @@ echo '   <td style="'.$csssubheaderborder.'width:15%">'.i18n('colCountTotal').'<
 echo '  </tr>'.$nl;
 // each line
 foreach ($billLines as $line) {
-$unit=new Unit($line->idUnit);
+$unit=new MeasureUnit($line->idMeasureUnit);
 $unitPrice=($unit->name)?' / '.$unit->name:'';
-$unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->namePlural:$unit->name):'';
+$unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->pluralName:$unit->name):'';
 echo '  <tr style="height:8mm;font-size:80%">'.$nl;
-echo '   <td style="'.$csscellleft.'width:20%;">'.$line->description.'</td>'.$nl;
-echo '   <td style="'.$csscellleft.'width:30%;">'.$line->detail.'</td>'.$nl;
+echo '   <td style="'.$csscellleft.'width:20%;">'.nl2br($line->description).'</td>'.$nl;
+echo '   <td style="'.$csscellleft.'width:30%;">'.nl2br($line->detail).'</td>'.$nl;
 echo '   <td style="'.$csscellright.'width:20%;">'.htmlDisplayCurrency($line->price).$unitPrice.'</td>'.$nl;
 echo '   <td style="'.$csscellcenter.'width:15%;">'.htmlDisplayNumericWithoutTrailingZeros($line->quantity).$unitQuantity.'</td>'.$nl;
 echo '   <td style="'.$csscellright.'width:15%;">'.htmlDisplayCurrency($line->amount).'</td>'.$nl;

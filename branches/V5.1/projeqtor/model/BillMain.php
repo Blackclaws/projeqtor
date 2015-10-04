@@ -48,6 +48,7 @@ class BillMain extends SqlElement {
   public $_sec_treatment;  
   public $billId;
   public $idStatus;
+  public $idDeliveryMode;
   public $done;
   public $idle;
   public $cancelled;
@@ -104,7 +105,8 @@ class BillMain extends SqlElement {
   
   private static $_colCaptionTransposition = array('description'=>'comment',
                                                    'idContact'=>'billContact',
-                                                   'idPaymentDelay'=>'paymentDelay');
+                                                   'idPaymentDelay'=>'paymentDelay',
+                                                   'idDeliveryMode'=>'sendMode');
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
     
@@ -124,6 +126,7 @@ class BillMain extends SqlElement {
     	self::$_fieldsAttributes['idRecipient']='readonly';
     	self::$_fieldsAttributes['idContact']='readonly';
     	self::$_fieldsAttributes['taxPct']='readonly';
+    	self::$_fieldsAttributes['idPaymentDelay']='readonly';
     }
     if (count($this->_BillLine)) {
     	self::$_fieldsAttributes['idProject']='readonly';
@@ -249,12 +252,12 @@ class BillMain extends SqlElement {
   	}
   	
   	// Cannot delete bill with lines
-    $line = new BillLine();
+    /*$line = new BillLine();
     $crit = array("refId"=>$this->id);
     $lineList = $line->getSqlElementsFromCriteria($crit,false);
     if (count($lineList)>0) {
       $result.="<br/>" . i18n('errorControlDelete') . "<br/>&nbsp;-&nbsp;" . i18n('BillLine') . " (" . count($lineList) . ")";; ;
-    }
+    }*/
   	
     if (! $result) {  
       $result=parent::deleteControl();

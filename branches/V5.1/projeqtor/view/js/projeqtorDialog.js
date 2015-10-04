@@ -5267,7 +5267,7 @@ function showHtml(id, file) {
       + id + '&showHtml=true';
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
-}
+} 
 
 // *******************************************************
 // Dojo code to position into a tree

@@ -475,8 +475,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		$oldValues="";
 		$nameWidth=220;
 		$dateWidth=80;
-		$workWidth=60;
-		$inputWidth=30;
+		$workWidth=65;
+		$inputWidth=55;
+		$iconWidth=16;
+		if ($outMode=='pdf') {
+		  $dateWidth=40;
+		  $workWidth=40;
+		  $inputWidth=35;
+		}
 		$resource=new Resource($resourceId);
 		$cal=$resource->idCalendarDefinition;
 		if (!$cal) $cal=1;
@@ -500,8 +506,10 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		  $width=($_REQUEST['destinationWidth'])-155-30;
 		}
 		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
-		if (! $print and count($tab)>=20) {
-		  echo '<table style="width:100%" ><TR><TD>';
+		
+		if (!$print) {
+		  echo '<div dojoType="dijit.layout.BorderContainer">';
+		  echo '<div dojoType="dijit.layout.ContentPane" region="top" style="overflow-y: scroll; height: auto;">';
 		}
 		echo '<table class="imputationTable" style="width:100%">';
 		echo '<TR class="ganttHeight">';
@@ -509,7 +517,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if (! $print) {
 		echo '<td><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
 		           .' onChange="formChanged();"'
-               .' style="width: '.$width.'px;" maxlength="4000" class="input">'.$period->comment.'</textarea></td>';
+               .' style="width: '.$width.'px;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.$period->comment.'</textarea></td>';
 		} else {
 			echo htmlEncode($period->comment,'print');
 		}
@@ -520,7 +528,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		}
 		echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
 		echo '<TR class="ganttHeight">';
-		echo '  <TD class="ganttLeftTopLine" ></TD>';
+		echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
 		echo '  <TD class="ganttLeftTopLine" colspan="5">';
 		echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
 		echo '</td>';
@@ -582,8 +590,8 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTopLine" colspan="2" style="text-align:center;color: #707070">' .  htmlFormatDate($today) . '</TD>';
 		echo '</TR>';
 		echo '<TR class="ganttHeight">';
-		echo '  <TD class="ganttLeftTitle" style="width:15px;"></TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $nameWidth . 'px;text-align: left; '
+		echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;"></TD>';
+		echo '  <TD class="ganttLeftTitle" style="text-align: left; '
 		. 'border-left:0px; " nowrap>' .  i18n('colTask') . '</TD>';
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;">'
 		. i18n('colStart') . '</TD>';
@@ -618,6 +626,12 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '</TR>';
 		if (! $print) {
 			echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';
+		}
+		if (!$print) {
+		  echo '</table>';
+		  echo '</div>';
+		  echo '<div style="position:relative;overflow-y:scroll;" dojoType="dijit.layout.ContentPane" region="center">';
+		  echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
 		}
 		$nbLine=0;
 		$collapsedList=Collapsed::getCollaspedList();
@@ -656,7 +670,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo ' style="display:none" ';
 			}
 			echo '>';
-			echo '<td class="ganttName" >';
+			echo '<td class="ganttName" style="width:'.($iconWidth+1).'px;">';
 			if (! $print) {
 				echo '<input type="hidden" id="wbs_' . $nbLine . '" '
 				. ' value="' . $line->wbsSortable . '"/>';
@@ -797,7 +811,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</td>';
 			$curDate=$startDate;
 			for ($i=1; $i<=$nbDays; $i++) {
-				echo '<td class="ganttDetail" align="center" width="5%"';
+				echo '<td class="ganttDetail" align="center" width="'.$inputWidth.'px;"';
 				if ($today==$curDate) {
 					echo ' style="background-color:#' . $currentdayColor . ';"';
 				} else if (isOffDay($curDate,$cal)) {
@@ -853,7 +867,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo '</td>';
 				$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 			}
-			echo '<td class="ganttDetail" align="center" width="5%">';
+			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -878,7 +892,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
 			}
 			echo '</td>';
-			echo '<td class="ganttDetail" align="center" width="5%">';
+			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
@@ -896,8 +910,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</td>';
 			echo '</tr>';
 		}
+		if (!$print and count($tab)>20) {
+		  echo '</table>';
+		  echo '</div>';
+		  echo '<div dojoType="dijit.layout.ContentPane" region="bottom" style="overflow-y: scroll; height: auto;">';
+		  echo '<table class="imputationTable" style="width:100%">';
+		}
 		echo '<TR class="ganttDetail" >';
-		echo '  <TD class="ganttLeftTopLine" style="width:15px;"></TD>';
+		echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
 		echo '  <TD class="ganttLeftTopLine" colspan="5" style="text-align: left; '
 		. 'border-left:0px;" nowrap><NOBR>';
 		echo  Work::displayImputationUnit();
@@ -937,15 +957,17 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</NOBR></TD>';
 			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 		}
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>'
+		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><NOBR>'
 		.  '</NOBR></TD>';
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>'
+		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><NOBR>'
 		.  '</NOBR></TD>';
 		echo '</TR>';
 		echo '</table>';
-		if (! $print and count($tab)>20) {
-		  echo '</TD><TD style="width:17px">&nbsp;</TD></TR></TABLE>';
+		if (!$print) {
+		  echo '</div>';
+		  echo '</div>';
 		}
+
 	}
 	// ============================================================================**********
 	// GET STATIC DATA FUNCTIONS

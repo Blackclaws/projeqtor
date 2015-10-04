@@ -125,7 +125,7 @@ $line->endDate=$endDate;
 $line->description=$description;
 $line->detail=$detail;
 $line->price=$price;
-$line->idUnit=$unit;
+$line->idMeasureUnit=$unit;
 $line->extra=$extra;
 $result=$line->save();
 debugLog($result);

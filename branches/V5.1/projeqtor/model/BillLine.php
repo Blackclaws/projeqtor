@@ -39,7 +39,7 @@ class BillLine extends SqlElement {
   public $description;
   public $detail;
   public $price;
-  public $idUnit;
+  public $idMeasureUnit;
   public $amount;
   public $idTerm;
   public $idResource;
@@ -86,7 +86,7 @@ class BillLine extends SqlElement {
   	if (property_exists($bill, 'billingType')) {
       $billingType=$bill->billingType;
   	}
-	  if (property_exists($bill, 'billId') and is_numeric($bill->billId)) {
+	  if (property_exists($bill, 'billId') and is_numeric($bill->billId) and $bill->done) {
 		  $result.='<br/>' . i18n('errorLockedBill');
 	  }
 	  if ($billingType=='E') {
