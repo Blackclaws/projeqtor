@@ -55,6 +55,7 @@ if (isset($_REQUEST['work'])) {
   if ($newWork>$totalWork) { $arrayWork[$key]['work']=$newWork-$totalWork;}
 }
 $arrayWork[]=array('id'=>'', 'date'=>null, 'idResource'=>null,'work'=>0);
+$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
 ?>
 <form id="dialogDispatchWorkForm" name="dialogDispatchWorkForm" action="">
 <input type="hidden" name="dispatchWorkObjectClass" value="<?php echo $objectClass;?>" />
@@ -99,7 +100,9 @@ foreach($arrayWork as $key=>$work) {
  <td>&nbsp;</td>
  <td style="word-space:nowrap;width:52px">
    <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayImputation($work['work'])?>"
-    onchange="updateDispatchWorkTotal();" name="dispatchWorkValue[]" id="dispatchWorkValue_<?php echo $cpt;?>">
+    onchange="updateDispatchWorkTotal();" name="dispatchWorkValue[]" 
+    <?php echo $commaEvent;?>
+    id="dispatchWorkValue_<?php echo $cpt;?>">
      </div></td>
  <td style="width:1px;text-align:left;">&nbsp;<?php echo Work::displayShortImputationUnit();?></td>
 </tr> 

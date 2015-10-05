@@ -95,5 +95,22 @@ class NumberFormatter52  {
   	}
   	return number_format($value,$this->type,$this->decimalSeparator,'');
   }
+  
+  static function getCommaEvent() {
+    global $browserLocale;
+    $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+    if ($fmt->decimalSeparator=='.') return '';
+    $evt=' onKeyDown="if (event.keyCode==110) {return intercepPointKey(this);}" ';
+    return $evt;
+  }
+  static function completeKeyDownEvent($colScript) {
+    global $browserLocale;
+    $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+    if ($fmt->decimalSeparator=='.') return $colScript;
+    $tagEvent='<script type="dojo/method" event="onKeyDown" args="event">';
+    $evt=' if (event.keyCode==110) {formChanged();return intercepPointKey(this);}';
+    $result=str_replace($tagEvent,$tagEvent.$evt,$colScript);
+    return $result;
+  }
 }
 ?>

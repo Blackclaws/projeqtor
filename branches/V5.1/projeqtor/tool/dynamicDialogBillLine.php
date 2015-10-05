@@ -58,6 +58,7 @@ if (property_exists($obj, 'billingType')) {
 }
 $currency=Parameter::getGlobalParameter('currency');
 $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
+$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
 $readOnly=array();
 if ($billingType == 'E') {
     if (!$line->quantity) $line->quantity=1;
@@ -275,6 +276,7 @@ if ($line->line) {
 	          <?php if (isset($readOnly['price'])) echo " readonly ";?>
 	          class="input"
 	          onChange="billLineUpdateAmount();"
+	          <?php echo $commaEvent;?>
 	          value="<?php echo $line->price;?>"/>
 	          <?php if ($currencyPosition=='after') echo $currency;?>
 	          </td>
@@ -301,6 +303,7 @@ if ($line->line) {
                 <?php if (isset($readOnly['quantity'])) echo " readonly ";?>
                 style="width:100px;"
                 onChange="billLineUpdateAmount();"
+                <?php echo $commaEvent;?>
                 class="input"  value="<?php echo $line->quantity;?>">  
                </input>
                <?php if ($line->idMeasureUnit) echo SqlList::getFieldFromId('MeasureUnit', $line->idMeasureUnit, ($line->quantity>1)?'pluralName':'name');?> 

@@ -1675,6 +1675,7 @@ pluginNameIncompatibility: "Le nom du plugin '${1}' est incompatible avec le pr�
 pluginNoXmlDescriptor: "impossible de trouver le fichier de description '${1}' dans le répertoire '${2}' pour le plugin '${3}'",
 pluginSqlFileError: "Impossible de trouver le fichier Sql '${1}' pour le plugin '${2}'",
 pluginUnzipFail: "Impossible de décompresser le fichier ${1}.<br/>Vérifiez que l'utilisateur lançant PHP a des droits en encriture sur ce fichier et plus globalement sur le répertoire ${2}.",
+pluginVersionNotCompatible: "Votre version actuelle ('${1}') n'est pas compatible avec ce plugin.<br/>Une version '${2}' ou supérieure est requise",
 Predecessor: "Prédécesseur",
 PredefinedNote: "Note prédéfinie",
 print: "imprimer",
