@@ -85,6 +85,7 @@ class Plugin extends SqlElement {
       xml_parser_free($parse);
     
       $testUnicity=false;
+      $testCompatibility=false;
       foreach($value as $ind=>$prop) {
         if ($prop['tag']=='PLUGIN') {
           if (isset($prop['attributes']['NAME'])) {
@@ -113,6 +114,15 @@ class Plugin extends SqlElement {
           $old=SqlElement::getSingleSqlElementFromCriteria('Plugin', $crit);
           if ($old->name and $pluginName and $pluginName!=$old->name) {
             $result=i18n('pluginAlreadyExistsWithCode',array($pluginUniqueCode, $old->name, $pluginName));
+            errorLog("Plugin::load() : $result");
+            return $result;
+          }
+        }
+        if (isset($pluginCompatibility) and !$testCompatibility) {
+          $testCompatibility=true;
+          global $version;
+          if (version_compare(ltrim($version,'V'),ltrim($pluginCompatibility,'V'),"<")) {
+            $result=i18n('pluginVersionNotCompatible',array($version, $pluginCompatibility));
             errorLog("Plugin::load() : $result");
             return $result;
           }

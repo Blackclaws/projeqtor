@@ -57,10 +57,12 @@ function showLine($nb, $value, $unit) {
 		  //echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value="' . $value . '"'; 
 		  //echo '  type="hidden"/>';	
 	    //} else {
+	    $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
 	      echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value="' . $value . '"'; 
           echo '  dojoType="dijit.form.NumberTextBox"'; 
           echo '  constraints="{min:0}" ';
           echo '  onChange=expenseDetailRecalculate();';
+          echo $commaEvent;
           echo '  style="width:97px"';              
           echo '  />';	
 	    //}

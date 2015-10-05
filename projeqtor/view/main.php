@@ -51,6 +51,7 @@ checkVersion();
 SqlElement::$_cachedQuery['Project']=array();
 SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
 SqlElement::$_cachedQuery['PlanningElement']=array();
+$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -1543,6 +1544,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
                <input id="assignmentDailyCost" name="assignmentDailyCost" value="" 
                  dojoType="dijit.form.NumberTextBox" 
+                 <?php echo $commaEvent;?>
                  constraints="{min:0}" 
                  style="width:97px" 
                  
@@ -1560,6 +1562,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <input id="assignmentRate" name="assignmentRate" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:999}" 
+                 <?php echo $commaEvent;?> 
                  style="width:97px" 
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 
                  required="true" />
@@ -1572,6 +1575,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <input id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
                  dojoType="dijit.form.NumberTextBox" 
+                 <?php echo $commaEvent;?>
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px"
                  onchange="assignmentUpdateLeftWork('assignment');"
@@ -1591,6 +1595,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <input id="assignmentRealWork" name="assignmentRealWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
+                 <?php echo $commaEvent;?>
                  style="width:97px" readonly />
                <input id="assignmentRealUnit" name="assignmentRealUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
@@ -1607,6 +1612,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                  constraints="{min:0,max:9999.99}" 
                  onchange="assignmentUpdatePlannedWork('assignment');"
                  onblur="assignmentUpdatePlannedWork('assignment');"  
+                 <?php echo $commaEvent;?>
                  style="width:97px" />
                <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
@@ -1623,6 +1629,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <input id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
+                 <?php echo $commaEvent;?>
                  style="width:97px" readonly /> 
                <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
@@ -1729,6 +1736,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <input id="expenseDetailAmount" name="expenseDetailAmount" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0}" 
+                 <?php echo $commaEvent;?>
                  style="width:97px"
                  readonly="readonly"              
                />
@@ -1956,6 +1964,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <input id="resourceCostValue" name="resourceCostValue" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0}" 
+                 <?php echo $commaEvent;?>
                  style="width:97px; text-align: right;" 
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colCost')));?>" 
                  required="true" />
@@ -2276,6 +2285,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="affectationRate" name="affectationRate" value="" 
                  dojoType="dijit.form.NumberTextBox" 
+                 <?php echo $commaEvent;?>
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >

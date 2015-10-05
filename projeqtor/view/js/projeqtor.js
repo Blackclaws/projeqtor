@@ -2914,3 +2914,13 @@ function getExtraRequiredFields() {
     }
   }); 
 }
+
+function intercepPointKey(obj){ 
+  event.preventDefault();
+  setTimeout('replaceDecimalPoint('+obj.id+');',1);
+  return false;
+}
+function replaceDecimalPoint(field) {
+  var dom=dojo.byId(field);
+  dom.value=dom.value+browserLocaleDecimalSeparator;
+}

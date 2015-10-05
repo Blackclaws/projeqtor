@@ -397,6 +397,11 @@ function addDispatchWorkLine(unit,nbLines) {
     value: 0,
     onChange:  function(){
       updateDispatchWorkTotal();
+    },
+    onKeyDown: function() {
+      if (event.keyCode==110) {
+        return intercepPointKey(this);
+      }
     }
   },td5);
   td6.innerHTML+='&nbsp;'+unit;

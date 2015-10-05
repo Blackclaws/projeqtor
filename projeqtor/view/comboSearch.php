@@ -121,6 +121,10 @@
   dojo.require("dojox.fx");
   dojo.require("dojox.grid.DataGrid");
   dojo.require("dojox.image.Lightbox");
+  var browserLocaleDateFormat="<?php echo Parameter::getUserParameter('browserLocaleDateFormat');?>";
+  var browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
+  <?php $fmt=new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );?>
+  var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
   dojo.addOnLoad(function(){
       var onKeyPressFunc = function(event) {
             if(event.ctrlKey && event.keyChar == 's'){

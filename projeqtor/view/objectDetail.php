@@ -1421,6 +1421,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '</div>';
       } else if ($dataType == 'int' or $dataType == 'decimal' ) {
         // Draw a number field ================================================ NUMBER
+        $colScript=NumberFormatter52::completeKeyDownEvent($colScript);
         $isCost=false;
         $isWork=false;
         $isDuration=false;
