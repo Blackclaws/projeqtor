@@ -62,10 +62,50 @@ class ReportParameter extends SqlElement {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
-   */
+  public static function displayParameters($params) {
+    echo "<table>";
+    foreach ($params as $col=>$val) {
+      $stCol=$col;
+      if (substr($col,0,2)=='id' and strlen($col)>2) {
+        $class=substr($col,2);
+        if (class_exists($class)) {
+          $col=i18n($class);
+          $val=SqlList::getNameFromId($class, $val);
+        }
+      } else if ($col=="periodType" or $col=="periodValue") {
+        $col="";
+        $val="";
+      } else if (substr($col,-7)=="Spinner") {
+        $col=i18n(substr($col,0, -7));
+      } else if ($col=="requestor" or $col=="issuer" or $col=="responsible") {
+        $col=i18n('col'.ucfirst($col));
+        $val=SqlList::getNameFromId('Affectable', $val);
+      } else if ($col=="listShowMilestone") {
+        $col=i18n('col'.ucfirst($col));
+        $val=SqlList::getNameFromId('MilestoneType', $val);
+      } else {
+        if (substr($col,-4)=="Date") {
+          $val=htmlFormatDate($val);
+        }
+        if (i18n('col'.ucfirst($col))!="[$col]") {
+          $col=i18n('col'.ucfirst($col));
+        } else {
+          $col=i18n($col);
+        }
+        if (i18n($val)!="[$val]") {
+          $val=i18n($val);
+        } else if ($val=='on') {
+          $val=i18n('displayYes');
+        } 
+      }
+      if ($col and $val) {
+        echo '<tr>';
+        echo '<td>'.$col.'&nbsp;:&nbsp;'.$val.'</td>';
+        echo '</tr>';
+      }
+    }
+    echo "</table>";
+  }
   
 }
 ?>
