@@ -153,3 +153,30 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 ALTER TABLE `${prefix}decision` ADD `done` int(1) unsigned DEFAULT 0;
 UPDATE `${prefix}decision` set done=1 where idStatus in (select id from `${prefix}status` where setDoneStatus=1);
+
+CREATE TABLE `${prefix}favorite` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `scope` varchar(100) DEFAULT NULL,
+  `idReport` int(12) unsigned DEFAULT NULL,
+  `idMenu` int(12) unsigned DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX favoriteUser ON `${prefix}favorite` (idUser);
+
+CREATE TABLE `${prefix}favoriteparameter` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `idReport` int(12) unsigned DEFAULT NULL,
+  `idFavorite` int(12) unsigned DEFAULT NULL,
+  `parameterName` varchar(100) DEFAULT NULL,
+  `parameterValue` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX favoriteParameterUser ON `${prefix}favoriteparameter` (idUser);
+CREATE INDEX favoriteParameterReport ON `${prefix}favoriteparameter` (idReport);
+CREATE INDEX favoriteParameterToday ON `${prefix}favoriteparameter` (idToday);
