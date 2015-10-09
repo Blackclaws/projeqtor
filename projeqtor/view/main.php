@@ -113,7 +113,7 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
     dojo.require("dijit._editor.plugins.FontChoice");
     dojo.require("dijit._editor.plugins.Print");
     dojo.require("dijit._editor.plugins.TextColor");
-    //dojo.require("dijit._editor.plugins.LinkDialog ");
+    //dojo.require("dijit._editor.plugins.LinkDialog");
     //dojo.require("dojox.editor.plugins.LocalImage");
     dojo.require("dijit.Fieldset");
     dojo.require("dijit.form.Button");
@@ -285,7 +285,8 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
         	  $directAccessIndex=array();
           }
           $index=count($directAccessIndex)+1;
-          $directAccessIndex[$index]=new $class($id);
+          if ($class) $directAccessIndex[$index]=new $class($id);
+          else $directAccessIndex[$index]='';
           $_SESSION['directAccessIndex']=$directAccessIndex;
         	echo "directAccessIndex=$index;";
         }
@@ -2462,6 +2463,13 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
   <input pe="hidden" name="menuActualStatus" id="menuActualStatus" value="" />
   <input pe="hidden" name="p1name" id="p1name" value="" />
   <input pe="hidden" name="p1value" id="p1value" value="" />
+</form>
+<form id='favoriteForm' name='favoriteForm' onSubmit="return false;">
+  <input type="hidden" id="page" name="page" value=""/>
+  <input type="hidden" id="print" name="print" value=true />
+  <input type="hidden" id="report" name="report" value=true />
+  <input type="hidden" id="outMode" name="outMode" value='html' />
+  <input type="hidden" id="reportName" name="reportName" value="test" />
 </form>
 </body>
 </html>

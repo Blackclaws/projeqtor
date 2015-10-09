@@ -601,6 +601,14 @@ foreach ($listParam as $param) {
          iconClass="dijitButtonIcon dijitButtonIconToday" class="detailButton whiteBackground" showLabel="false"
          onclick="saveReportInToday();">
       </button>
+      <?php if (isHtml5()) {?>
+      <button title="<?php echo i18n('defineAsFavorit')?>"   
+         dojoType="dijit.form.Button" type="button" 
+         id="reportDefineAsFavorit" name="reportDefineAsFavorit" 
+         iconClass="iconReportsFavorite" class="detailButton whiteBackground" showLabel="false"
+         onclick="saveReportAsFavorite();">
+      </button>
+      <?php }?>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />

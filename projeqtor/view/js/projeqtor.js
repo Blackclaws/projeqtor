@@ -601,6 +601,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       if (destination=="detailDiv" || destination=="centerDiv") {
         finaliseButtonDisplay();
       }
+      if (destination=="detailDiv" 
+        && dojo.byId('objectClass') && dojo.byId('objectClass').value
+        && dojo.byId('objectId') && dojo.byId('objectId').value ) { 
+          stockHistory(dojo.byId('objectClass').value, dojo.byId('objectId').value);
+      }
       if (destination=="centerDiv" && switchedMode) {
         showList();
       }
@@ -661,7 +666,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       } else {
         if (! silent) hideWait();
       } 
-      // For debugging purpose : will display call page wil execution time
+      // For debugging purpose : will display call page with execution time
       var debugEnd=(new Date()).getTime();
     	var debugDuration=debugEnd-debugStart;
     	var msg = "=> "+debugDuration+"ms";
@@ -698,7 +703,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
  * @param destinationDiv name of distination div
  * @param formName nale of form to post (optional)
  */
-function loadDiv(page, destinationDiv, formName) {
+function loadDiv(page, destinationDiv, formName, callback) {
   var contentNode = dojo.byId(destinationDiv);
   dojo.xhrPost({
     url: page,
@@ -706,6 +711,7 @@ function loadDiv(page, destinationDiv, formName) {
     handleAs: "text",
     load: function(data,args){
       contentNode.innerHTML=data;
+      if (callback) setTimeout(callback, 10);
     }
   });
 }
@@ -2241,15 +2247,23 @@ function gotoElement(eltClass, eltId, noHistory) {
   if ( dojo.byId("GanttChartDIV") 
       && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' 
         || eltClass=='TestSession' || eltClass=='Meeting' || eltClass=='PeriodicMeeting') ) {
-	refreshJsonPlanning();
-	dojo.byId('objectClass').value=eltClass;
-	dojo.byId('objectId').value=eltId;
+	  //refreshJsonPlanning();
+	  dojo.byId('objectClass').value=eltClass;
+	  dojo.byId('objectId').value=eltId;
     loadContent('objectDetail.php','detailDiv','listForm');
   } else {
-	if (dojo.byId("detailDiv")) {
-	  cleanContent("detailDiv");
-	}
-    loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
+	  if (dojo.byId("detailDiv")) {
+	    cleanContent("detailDiv");
+	  }
+	  if (dojo.byId('objectClass').value!=eltClass) {
+      loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
+	  } else {
+	    dojo.byId('objectClass').value=eltClass;
+	    dojo.byId('objectId').value=eltId;
+	    loadContent('objectDetail.php','detailDiv','listForm');
+	    hideList();
+      setTimeout('selectRowById("objectGrid", '+parseInt(eltId)+');',100);
+	  }
   }
   if (! noHistory) {
     stockHistory(eltClass,eltId);
@@ -2779,7 +2793,7 @@ function saveObject() {
   }
   if (editorInFullScreen()) return;
   dojo.byId("saveButton").blur();
-  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
 }
 
 function onKeyDownFunction(event, field, editorFld) {

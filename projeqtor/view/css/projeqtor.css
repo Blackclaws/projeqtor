@@ -725,7 +725,15 @@ label, .label, .smallLabel {
     width:400px;
     font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
-
+.selectableList {
+	cursor:pointer;
+	height:100%;
+	padding:0px 5px 5px 5px;
+	vertical-align:top;
+}
+.selectableList:hover {
+  background:#eeeeee;
+}
 .crossTable {
   border: 0px solid black;
 }
