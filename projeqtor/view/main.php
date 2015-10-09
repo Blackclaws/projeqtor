@@ -164,6 +164,8 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
            setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
          } else if (target.id=='dndTodayParameters') {
         	 setTimeout('reorderTodayItems()',100);  
+         } else if (target.id=='dndFavoriteReports') {
+        	 setTimeout('reorderFavoriteReportItems()',100);  
          }
        }
     });

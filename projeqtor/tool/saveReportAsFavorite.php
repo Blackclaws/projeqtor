@@ -49,11 +49,17 @@ $item->sortOrder=count($lst)+1;
 $result=$item->save();
 $rpt=new Report($reportId);
 $params=FavoriteParameter::returnReportParameters($rpt,true);
+if (isset($params['period']) and isset($_REQUEST['periodScale']) and isset($_REQUEST['periodValue'])) {
+  unset($params['period']);
+  $params['periodScale']='';
+  $params['periodValue']='';
+}
 foreach ($params as $pName=>$pValue) {
-	$reqValue='';
+  $reqValue='';
 	if (isset($_REQUEST[$pName])) {
 		$reqValue=$_REQUEST[$pName];
 	}
+	debugLog("$pName=>$pValue : $reqValue");
 	if (trim($reqValue)!=trim($pValue)) {
 		$tp=new FavoriteParameter();
 		$tp->idUser=$item->idUser;

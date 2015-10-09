@@ -75,6 +75,10 @@ class ReportParameter extends SqlElement {
       } else if ($col=="periodType" or $col=="periodValue") {
         $col="";
         $val="";
+      } else if ($col=="periodScale" and isset($params['periodValue'])) {
+        $col=i18n("colPeriod");
+        $val=$params['periodValue'].' '.i18n($val);
+        unset($params['periodValue']);
       } else if (substr($col,-7)=="Spinner") {
         $col=i18n(substr($col,0, -7));
       } else if ($col=="requestor" or $col=="issuer" or $col=="responsible") {
