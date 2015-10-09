@@ -32,7 +32,7 @@ CREATE TABLE `${prefix}todayparameter` (
 
 CREATE INDEX todayParameterUser ON `${prefix}todayparameter` (idUser);
 CREATE INDEX todayParameterReport ON `${prefix}todayparameter` (idReport);
-CREATE INDEX todayParameterToiday ON `${prefix}todayparameter` (idToday);
+CREATE INDEX todayParameterToday ON `${prefix}todayparameter` (idToday);
 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','Projects',null,1,0 FROM `${prefix}resource` where isUser=1 and idle=0;
