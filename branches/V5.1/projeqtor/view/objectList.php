@@ -212,6 +212,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                   showFilterDialog();
                 </script>
                 <script type="dojo/method" event="onMouseEnter" args="evt">
+                  clearTimeout(closeFilterListTimeout);
                   this.openDropDown();
                 </script>
                 <script type="dojo/method" event="onMouseLeave" args="evt">

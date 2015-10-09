@@ -32,6 +32,7 @@
 // =============================================================================
 var filterType="";
 var closeFilterListTimeout;
+var closeFavoriteReportsTimeout;
 // =============================================================================
 // = Wait spinner
 // =============================================================================
@@ -254,6 +255,9 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode == "mpp") {
     printInNewWin=true;
   }
+  if (context=='favorite') {
+    printInNewWin=false;
+  }
   if (!printInNewWin) {
     dijit.byId("dialogPrint").show();
   }
@@ -328,8 +332,12 @@ function showPrint(page, context, comboName, outMode, orientation) {
         }
       }
     }
-  } else if (context == 'report') {
-    var frm=dojo.byId('reportForm');
+  } else if (context == 'report' || context=='favorite') {
+    if (context == 'report' ) { 
+      var frm=dojo.byId('reportForm'); 
+    } else {
+      var frm=dojo.byId('favoriteForm'); 
+    }
     frm.action="../view/print.php";
     if (outMode) {
       frm.page.value=page;
@@ -4118,11 +4126,15 @@ function stockHistory(curClass, curId) {
    * Array(curClass, curId); historyPosition=len; if (historyPosition>=1) {
    * enableWidget('menuBarUndoButton'); } disableWidget('menuBarRedoButton'); }
    */
-  if (historyPosition>0) {
+  if (historyPosition>=0) {
     current=historyTable[historyPosition];
     if (current[0]==curClass && current[1]==curId) return; // do not re-stock current item
   }
   historyPosition+=1;
+  screen="object";
+  if (dojo.byId("GanttChartDIV")) {
+    screen="planning";
+  }
   historyTable[historyPosition]=new Array(curClass, curId);
   // Purge next history (not valid any more)
   for (i=historyPosition+1;i<historyTable.length;i++) {
@@ -4134,7 +4146,8 @@ function stockHistory(curClass, curId) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
-
+console.log("stockHistory "+historyPosition);
+console.log(historyTable);
 }
 
 function undoItemButton() {
@@ -4152,6 +4165,8 @@ function undoItemButton() {
   if (historyPosition == 0) {
     disableWidget('menuBarUndoButton');
   }
+console.log("undoItemButton "+historyPosition);
+console.log(historyTable);
 }
 
 function redoItemButton() {
@@ -4169,11 +4184,11 @@ function redoItemButton() {
   if (historyPosition == (len - 1)) {
     disableWidget('menuBarRedoButton');
   }
+console.log("redoItemButton "+historyPosition);
+console.log(historyTable);
+
 }
 
-function newTab() {
-  
-}
 // Stock id and name, to
 // => avoid filterJsonList to reduce visibility => clear this data on open
 // => retrieve data before close to retrieve the previous visibility
@@ -5791,7 +5806,9 @@ function historyShowHideWork() {
   });
 }
 
+// ====================================================
 // * UPLOAD PLUGIN * //
+// ====================================================
 
 function uploadPlugin() {
   if (!isHtml5()) {
@@ -5849,5 +5866,67 @@ function savePluginFinalize() {
     setTimeout('loadContent("pluginManagement.php", "centerDiv");',1000);
   } else {
     hideWait();
+  }
+}
+
+// ===================================================
+// favorite reports management
+// ===================================================
+
+function refreshFavoriteReportList() {
+  if (!dijit.byId('favoriteReports')) return;
+  dijit.byId('favoriteReports').refresh();
+  var listContent=trim(dijit.byId('favoriteReports').get('content'));
+}
+function saveReportAsFavorite() {
+  var fileName=dojo.byId('reportFile').value;
+  var callback=function(){
+    refreshFavoriteReportList();
+    dijit.byId('listFavoriteReports').openDropDown();
+    var delay=2000;
+    var listContent=trim(dijit.byId('favoriteReports').get('content'));
+    if (listContent=="") {delay=1;}
+    hideReportFavoriteTooltip(delay);
+  };
+  loadContent("../tool/saveReportAsFavorite.php" , "resultDiv", "reportForm", true, 'report',false,false, callback);
+}
+
+function showReportFavoriteTooltip() {
+  var listContent=trim(dijit.byId('favoriteReports').get('content'));
+  if (listContent=="") {
+    return;
+  }
+  clearTimeout(closeFavoriteReportsTimeout);
+  dijit.byId('listFavoriteReports').openDropDown(); 
+}
+
+function hideReportFavoriteTooltip(delay) {
+  if (!dijit.byId("listFavoriteReports")) return;
+  clearTimeout(closeFavoriteReportsTimeout);
+  closeFavoriteReportsTimeout=setTimeout('dijit.byId("listFavoriteReports").closeDropDown();',delay);
+}
+
+function removeFavoriteReport(id) {
+  dojo.xhrGet({
+    url: '../tool/removeFavoriteReport.php?idFavorite='+id,
+    load: function(data,args) { 
+      refreshFavoriteReportList(); 
+    }
+  });
+}
+function reorderFavoriteReportItems() {
+  var nodeList=dndTodayParameters.getAllNodes();
+  for (i=0; i < nodeList.length; i++) {
+    item=nodeList[i].id.substr(24);
+    var order=dojo.byId("dialogTodayParametersOrder" + item);
+    if (order) {
+      order.value=i + 1;
+    }
+  }
+}
+function checkEmptyReportFavoriteTooltip() {
+  var listContent=trim(dijit.byId('favoriteReports').get('content'));
+  if (listContent=="") {
+    dijit.byId("listFavoriteReports").closeDropDown();
   }
 }

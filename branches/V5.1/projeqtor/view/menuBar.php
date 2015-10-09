@@ -70,10 +70,28 @@
     	}
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
-        echo '<td  title="' .i18n($menu->name) . '" >';
-        echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
+        echo '<td  title="' .(($menuName=='menuReports')?'':i18n($menu->name)) . '" >';
+        echo '<div class="'.$menuClass.'" style="position:relative;'.$style.'" ';
+        echo 'onClick="hideReportFavoriteTooltip(0);loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');"';
+        if ($menuName=='menuReports' and isHtml5() ) {
+          echo ' onMouseEnter="showReportFavoriteTooltip();"';
+          echo ' onMouseLeave="hideReportFavoriteTooltip(2000);"';
+        }
+        echo '>';
         echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
+        if ($menuName=='menuReports' and isHtml5() ) {?>
+          <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
+           id="listFavoriteReports" name="listFavoriteReports">
+            <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="display:none;"
+              href="../tool/refreshFavoriteReportList.php"
+              onMouseEnter="clearTimeout(closeFavoriteReportsTimeout);"
+              onMouseLeave="hideReportFavoriteTooltip(200)"
+              onDownloadEnd="checkEmptyReportFavoriteTooltip()">
+              <?php Favorite::drawReportList();?>
+            </div>
+          </button>
+        <?php }
         echo '</div>';
         echo '</td>'; 
     } else if ($menu->type=='plugin') {
@@ -215,21 +233,21 @@
       </td></tr>
       <tr style="height:10px;"><td colspan="2">     
        <a id="menuBarNewtabButton" title="<?php echo i18n('buttonNewtabItem');?>"
-       style="height:18px; position:relative; top:-4px;left:10px;width:60px;" 
+       style="height:18px; position:relative; top:-1px;left:10px;width:60px;" 
        href="" target="_blank">
        <button dojoType="dijit.form.Button" iconClass="dijitButtonIcon iconNewtab" class="detailButton"
        style="height:16px;width:60px;">
          <script type="dojo/connect" event="onClick" args="evt">
            var url="main.php?directAccess=true";
-           if (dojo.byId('objectClass')) { 
+           if (dojo.byId('objectClass') && dojo.byId('objectClass').value) { 
              url+="&objectClass="+dojo.byId('objectClass').value;
            } else {
              url+="&objectClass=Today";
            }
-           if (dojo.byId('objectId')) {
+           if (dojo.byId('objectId') && dojo.byId('objectId').value) {
              url+="&objectId="+dojo.byId('objectId').value;
            } else {
-             url+="&objectId=0";
+             url+="&objectId=";
            }
            dojo.byId("menuBarNewtabButton").href=url;
          </script>

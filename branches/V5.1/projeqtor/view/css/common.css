@@ -775,7 +775,14 @@ table.dojoDndAvatar {
   border: 1px solid #ffffff;
   height: 24px;
 }
-
+.comboButtonInvisible {
+	border-radius:0px;
+  /*background: rgba(255,255,255,0.0);
+  color:rgba(255,255,255,0.0);*/
+  border: 0px solid #ff0000;
+  height: 0px;width:0px;
+  position:relative;left:-40px;;
+}
 .whiteCheck {
   /*background: #FFFFFF; -moz-opacity: 0.5;  opacity: 0.5; filter: Alpha(Opacity = 50);*/
   background:rgba(255,255,255,0.4);

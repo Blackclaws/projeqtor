@@ -87,6 +87,10 @@ if ($paramVersion) {
 				$lstVersion[$vp->idVersion]=$vers->name;
 			}
 		}
+		if (! $paramDoneVersion) {
+		  $lstVersionNotDone=SqlList::getListWithCrit('Version',array('isEis'=>'0'),'name',null,true);
+		  $lstVersion=array_intersect($lstVersion,$lstVersionNotDone);
+		}
 	} else {
   	if ($paramDoneVersion) {
   	  $lstVersion=SqlList::getList('Version','name',null,true);
