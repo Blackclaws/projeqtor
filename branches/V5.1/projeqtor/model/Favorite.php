@@ -72,10 +72,14 @@ class Favorite extends SqlElement {
       echo '</div>';
       return;
     }
-    echo '<table id="dndFavoriteReports" jsId="dndFavoriteReportParameters" dojotype="dojo.dnd.Source"  
-        dndType="favoriteReports" withhandles="true" class="container" style="height:10px;width:100%;cellspacing:0; cellpadding:0;">';
+    echo '<form dojoType="dijit.form.Form" id="favoriteReportsForm" name="todayParametersForm" onSubmit="return false;">';
+    echo '<table style="width:100%">';
     echo '<tr><td class="dialogSection" colspan="4" height="20px">'.i18n('favoriteReports').'</td></tr>';
     echo '<tr><td colspan="4">&nbsp;</td></tr>';
+    echo '</table>';
+    echo '<table id="dndFavoriteReports" jsId="dndFavoriteReports" dojotype="dojo.dnd.Source"
+        singular=true
+        dndType="favoriteReports" withhandles="true" class="container" style="height:10px;width:100%;cellspacing:0; cellpadding:0;">';
     foreach($list as $rpt) {
       $params=FavoriteParameter::returnReportParameters($rpt['reportObject']);
       $paramsFavorite=FavoriteParameter::returnFavoriteReportParameters($rpt['favoriteObject']);
@@ -99,8 +103,7 @@ class Favorite extends SqlElement {
       echo '</td>';
       echo '<td  style="vertical-align:top;">';
       $cmd="dojo.byId('favoriteForm').reportName.value='". htmlEncode(i18n($rpt['name']),'quotes')."';";
-      $cmd.="showPrint('../report/$fileName$urlParam', 'favorite',null,null,'$orientation');";  
-      debugLog($cmd);    
+      $cmd.="showPrint('../report/$fileName$urlParam', 'favorite',null,null,'$orientation');";   
       echo '<div class="selectableList" onClick="'.$cmd.'">'.i18n($rpt['name']).'</div>';
       echo '<input type="hidden" style="width:100px"
        id="favoriteReportOrder' . $favorite->id. '" name="favoriteReportOrder' . $favorite->id. '"
@@ -112,13 +115,14 @@ class Favorite extends SqlElement {
       echo '</tr>';
     }
     echo '</table>';
+    echo '</form>';
     //echo '</div>';
   }
   
   static function getReportList() {
     $result=array();
     $f=new Favorite();
-    $fl=$f->getSqlElementsFromCriteria(array('idUser'=>getSessionUser()->id));
+    $fl=$f->getSqlElementsFromCriteria(array('idUser'=>getSessionUser()->id), false, null, 'sortOrder asc');
     foreach ($fl as $f) {
       $r=new Report($f->idReport);
       $result[]=array('id'=>$f->idReport,

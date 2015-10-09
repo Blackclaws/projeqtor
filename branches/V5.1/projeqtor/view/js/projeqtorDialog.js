@@ -5876,7 +5876,7 @@ function savePluginFinalize() {
 function refreshFavoriteReportList() {
   if (!dijit.byId('favoriteReports')) return;
   dijit.byId('favoriteReports').refresh();
-  var listContent=trim(dijit.byId('favoriteReports').get('content'));
+  //var listContent=trim(dijit.byId('favoriteReports').get('content'));
 }
 function saveReportAsFavorite() {
   var fileName=dojo.byId('reportFile').value;
@@ -5915,15 +5915,34 @@ function removeFavoriteReport(id) {
   });
 }
 function reorderFavoriteReportItems() {
-  var nodeList=dndTodayParameters.getAllNodes();
+  var nodeList=dndFavoriteReports.getAllNodes();
+  var param="";
   for (i=0; i < nodeList.length; i++) {
-    item=nodeList[i].id.substr(24);
-    var order=dojo.byId("dialogTodayParametersOrder" + item);
+    var domNode=nodeList[i];
+    item=nodeList[i].id.substr(11);
+    var order=dojo.byId("favoriteReportOrder" + item);
+    if (dojo.hasClass(domNode,'dojoDndItemAnchor')) {
+      order.value=null;
+      dojo.removeClass(domNode,'dojoDndItemAnchor');
+      dojo.query('dojoDndItemAnchor').removeClass('dojoDndItemAnchor');
+      continue;
+    }
     if (order) {
       order.value=i + 1;
+      param+=((param)?'&':'?')+"favoriteReportOrder"+item+"="+(i+1);
+      console.log(order.id+"="+order.value);
     }
   }
+  console.log(param);
+  dojo.xhrPost({
+    url: '../tool/saveReportFavoriteOrder.php'+param,
+    handleAs: "text",
+    load: function(data,args) { 
+      refreshFavoriteReportList(); 
+    }
+  });
 }
+
 function checkEmptyReportFavoriteTooltip() {
   var listContent=trim(dijit.byId('favoriteReports').get('content'));
   if (listContent=="") {

@@ -87,7 +87,12 @@ $today=new Today();
         echo "<nobr>".i18n('today'.$todayItem->staticSection)."</nobr>";
       } else if ($todayItem->scope=="report"){
         $rpt=new Report($todayItem->idReport);
+        echo "<table><tr><td>";
         echo "<nobr>".i18n('colReport').' "'.i18n($rpt->name).'"</nobr>';
+        echo "</td><td>&nbsp;&nbsp;&nbsp;</td><td style='font-size:80%'>";
+        $params=TodayParameter::returnTodayReportParameters($todayItem);
+        ReportParameter::displayParameters($params);
+        echo "</td></tr></table>";
       } else {
         echo "unknown today scope";
       }
