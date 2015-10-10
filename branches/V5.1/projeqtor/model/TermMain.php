@@ -36,6 +36,8 @@ class TermMain extends SqlElement {
   public $name;
   public $idProject;
   public $idBill;
+  public $idUser;
+  public $creationDate;
   public $idle;
   public $_sec_Price;
   public $_tab_3_2 = array('real', 'validated', 'planned', 'amount', 'date');
@@ -73,6 +75,9 @@ class TermMain extends SqlElement {
                                           "plannedAmount"=>"readonly",
                                           "plannedDate"=>"readonly"
   );  
+  
+  private static $_colCaptionTransposition = array("idUser"=>"issuer");
+  
   //private static $_databaseColumnName = array('realAmount'=>'amount');
    /** ==========================================================================
    * Constructor
@@ -125,6 +130,13 @@ class TermMain extends SqlElement {
     return self::$_fieldsAttributes;
   }
   
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
   /** ========================================================================
    * Return the specific databaseColumnName
    * @return the databaseTableName

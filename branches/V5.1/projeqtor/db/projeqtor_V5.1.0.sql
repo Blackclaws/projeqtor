@@ -82,7 +82,9 @@ ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
 ADD `paymentDueDate` date DEFAULT NULL,
 ADD `idDeliveryMode` int(12) unsigned DEFAULT null,
 ADD `idResource` int(12) unsigned DEFAULT null,
-ADD `idUser` int(12) unsigned DEFAULT null;
+ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `creationDate` date,
+ADD `paymentsCount` int(3) default 0;
 
 UPDATE `${prefix}bill` b set `idUser` = (select idUser from `${prefix}history` h where h.refType='Bill' and h.refId=b.id order by operationDate LIMIT 1); 
 
@@ -180,3 +182,41 @@ CREATE TABLE `${prefix}favoriteparameter` (
 CREATE INDEX favoriteParameterUser ON `${prefix}favoriteparameter` (idUser);
 CREATE INDEX favoriteParameterReport ON `${prefix}favoriteparameter` (idReport);
 CREATE INDEX favoriteParameterToday ON `${prefix}favoriteparameter` (idToday);
+
+UPDATE `${prefix}menu` SET idle=0 where `name` in ('menuPayment', 'menuPaymentType'); 
+DELETE FROM `${prefix}habilitation` WHERE idMenu in (78, 83);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 78, 1),
+(2, 78, 0),
+(3, 78, 0),
+(4, 78, 0),
+(5, 78, 0),
+(6, 78, 0),
+(7, 78, 0),
+(1, 83, 1),
+(2, 83, 0),
+(3, 83, 0),
+(4, 83, 0),
+(5, 83, 0),
+(6, 83, 0),
+(7, 83, 0);
+
+ALTER TABLE `${prefix}payment` ADD `idPaymentType` int(12) unsigned DEFAULT null,
+ADD `paymentAmount`  DECIMAL(11,2) UNSIGNED,
+ADD `paymentFeeAmount`  DECIMAL(11,2) UNSIGNED,
+ADD `paymentCreditAmount` DECIMAL(11,2) UNSIGNED,
+ADD `description` mediumtext,
+ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `creationDate` date,
+ADD `referenceBill` varchar(100) DEFAULT null,
+ADD `idClient` int(12) unsigned DEFAULT null,
+ADD `idRecipient` int(12) unsigned DEFAULT null;
+
+DELETE FROM `${prefix}type` WHERE `scope`='Payment' and `name`='event payment';
+UPDATE `${prefix}type` SET sortOrder=10 WHERE `scope`='Payment' and `name`='final payment';
+
+ALTER TABLE `${prefix}term` ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `creationDate` date;
+
+ALTER TABLE `${prefix}activityprice` ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `creationDate` date;
