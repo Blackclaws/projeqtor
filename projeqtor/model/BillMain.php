@@ -38,6 +38,7 @@ class BillMain extends SqlElement {
   public $idBillType;
   public $idProject;
   public $idUser;
+  public $creationDate;
   public $date;
   public $idPaymentDelay;
   public $paymentDueDate;
@@ -64,6 +65,7 @@ class BillMain extends SqlElement {
   public $paymentDate;
   public $paymentAmount;
   public $paymentDone;
+  public $paymentsCount;
   public $description;
   public $billingType;
   //public $_sec_BillLine;
@@ -102,7 +104,8 @@ class BillMain extends SqlElement {
                       'untaxedAmount'=>'readonly',
                       "idle"=>"nobr",
                       "cancelled"=>"nobr",
-                      'paymentDueDate'=>'readonly'
+                      'paymentDueDate'=>'readonly',
+                      'paymentsCount'=>'hidden'
                       );  
   
   private static $_colCaptionTransposition = array('description'=>'comment',
@@ -141,6 +144,11 @@ class BillMain extends SqlElement {
     if ($this->paymentDone) {
       self::$_fieldsAttributes['paymentDate']='readonly';
       self::$_fieldsAttributes['paymentAmount']='readonly';
+    }
+    if ($this->paymentsCount>0) {
+      self::$_fieldsAttributes['paymentDate']='readonly';
+      self::$_fieldsAttributes['paymentAmount']='readonly';
+      self::$_fieldsAttributes['paymentDone']='readonly';
     }
   }
 
@@ -357,8 +365,8 @@ class BillMain extends SqlElement {
     }
     $this->untaxedAmount=$amount;
     $this->fullAmount=$amount*(1+$this->taxPct/100);
-      
-		$result= parent::save();
+    $this->retreivePayments(false);
+		$result=parent::save();
 		return $result;
 	}  
 
@@ -411,6 +419,29 @@ class BillMain extends SqlElement {
   
   public function simpleSave() {
      return parent::save();
+  }
+  
+  public function retreivePayments($save=true) {
+    $pay=new Payment();
+    $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
+    $this->paymentsCount=count($payList);
+    if (count($payList)==0) {
+      if ($save) {
+        $this->simpleSave();
+      }
+      return;
+    }
+    $this->paymentAmount=0;
+    $this->paymentDate='';
+    $this->paymentDone=0;
+    foreach ($payList as $pay) {
+      $this->paymentAmount+=$pay->paymentAmount;
+      if ($pay->paymentDate>$this->paymentDate) $this->paymentDate=$pay->paymentDate;
+    }
+    if ($this->paymentAmount>=$this->fullAmount) $this->paymentDone=1;
+    if ($save) {
+      $this->simpleSave();
+    }
   }
 }
 ?>
