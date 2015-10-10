@@ -520,13 +520,18 @@ function cleanContent(destination) {
  *            some treatment, calling finalizeMessageDisplay
  * @return void
  */
+var formDivPosition=null; // to replace scrolling of detail after save.
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction) {
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var fadingMode=top.fadeLoading;
+  
   if (top.dojo.isIE >= 8) { fadingMode=false;}
+  if (dojo.byId('formDiv')) {
+    formDivPosition=dojo.byId('formDiv').scrollTop;
+  }
   if (page.substr(0,16)=='objectDetail.php') {
     // if item = current => refresh without fading
     if (dojo.byId('objectClass') && dojo.byId('objectId') && dojo.byId('className') && dojo.byId('id')) {
@@ -605,6 +610,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         && dojo.byId('objectClass') && dojo.byId('objectClass').value
         && dojo.byId('objectId') && dojo.byId('objectId').value ) { 
           stockHistory(dojo.byId('objectClass').value, dojo.byId('objectId').value);
+      }
+      if (dojo.byId('formDiv') && formDivPosition>=0) {
+        dojo.byId('formDiv').scrollTop=formDivPosition;
       }
       if (destination=="centerDiv" && switchedMode) {
         showList();
@@ -2339,7 +2347,9 @@ function globalSave() {
 	  button=dijit.byId('saveButtonMultiple');
   }
   if ( button && button.isFocusable() ) {
-    button.focus();
+    if (dojo.byId('formDiv')) formDivPosition=dojo.byId('formDiv').scrollPosition;
+    button.focus(); //V5.1 : attention, may loose scroll position on formDiv (see above and below lines)
+    if (dojo.byId('formDiv')) dojo.byId('formDiv').scrollPosition=formDivPosition;
     var id=button.get('id');
     setTimeout("dijit.byId('"+id+"').onClick();",20);
   }
