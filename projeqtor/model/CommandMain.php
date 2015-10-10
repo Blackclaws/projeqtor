@@ -40,6 +40,7 @@ class CommandMain extends SqlElement {
   public $idClient;
   public $idContact;
   public $externalReference;  
+  public $receptionDate;
   public $idDeliveryMode;
   public $idUser;
   public $creationDate;
@@ -147,6 +148,8 @@ class CommandMain extends SqlElement {
     
     if ($this->id) {
     	self::$_fieldsAttributes["creationDate"]='readonly';
+    } else {
+      $this->receptionDate=date('Y-m-d');
     }
     /*$status=new Status($this->idStatus);
     if ($status->isCopyStatus) {

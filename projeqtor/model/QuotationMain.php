@@ -50,6 +50,7 @@ class QuotationMain extends SqlElement {
   public $sendDate;
   public $idDeliveryMode; 
   public $validityEndDate;
+  public $idLikelihood;
   public $handled;
   public $handledDate;
   public $done;
@@ -64,11 +65,13 @@ class QuotationMain extends SqlElement {
   public $initialEndDate;
   public $idActivityType;
   public $idPaymentDelay;
-  public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort', 'amount');
+  public $_tab_5_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort', 'estimatedWork', 'amount');
   public $untaxedAmount;
   public $taxPct;
   public $taxAmount;
   public $fullAmount;
+  public $plannedWork;
+
   public $comment;
   //public $_sec_BillLine;
   public $_BillLine=array();
@@ -121,7 +124,8 @@ class QuotationMain extends SqlElement {
   		                      //'initialPricePerDayAmount'=>'pricePerDay',
                             'description'=>'request',
                             'idPaymentDelay'=>'paymentDelay',
-      'idDeliveryMode'=>'sendMode');
+                            'idDeliveryMode'=>'sendMode', 
+                            'plannedWork'=>'estimatedWork');
   private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     
