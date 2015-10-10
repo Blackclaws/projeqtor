@@ -51,20 +51,23 @@ class BillMain extends SqlElement {
   public $billId;
   public $idStatus;
   public $idResource;
+  public $sendDate;
   public $idDeliveryMode;
   public $done;
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort', 'amount');
+  public $_tab_5_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','commandAmountPctShort', 'amount');
   public $untaxedAmount;
   public $taxPct;
   public $taxAmount;
   public $fullAmount;
-  public $_tab_3_1_smallLabel = array('date', 'amount', 'paymentDone', 'payment');
+  public $commandAmountPct;
+  public $_tab_4_1_smallLabel = array('date', 'amount', 'paymentDone', '', 'payment');
   public $paymentDate;
   public $paymentAmount;
   public $paymentDone;
+  public $_spe_paymentsList;
   public $paymentsCount;
   public $description;
   public $billingType;
@@ -124,7 +127,9 @@ class BillMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    
+    if (! $this->id) {
+      $this->commandAmountPct=100;
+    }
     if ($this->done) {
     	self::$_fieldsAttributes['idClient']='readonly';
     	self::$_fieldsAttributes['idBillType']='readonly';
@@ -414,6 +419,20 @@ class BillMain extends SqlElement {
       }
 	    $result .= '</td></tr></table>';
       return $result;     
+    } else if ($item=='paymentsList') {
+      $pay=new Payment();
+      $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
+      $result='<div style="position:relative;top:-22px;left:300px;">';
+      $result.='<table>';
+      foreach ($payList as $pay) {
+        $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'Payment\','.$pay->id.');">';
+        $result.='<td style="padding:0px 5px"><img src="../view/css/images/iconPayment16.png"></td>';
+        $result.='<td >#'.$pay->id.'</td><td>&nbsp;&nbsp;&nbsp;</td>';
+        $result.='<td style="padding:0px 5px">'.$pay->name.'</td></tr>';
+      }
+      $result.='</table>';
+      $result.='</div>';
+      return $result;
     }
   }
   
@@ -443,5 +462,6 @@ class BillMain extends SqlElement {
       $this->simpleSave();
     }
   }
+
 }
 ?>

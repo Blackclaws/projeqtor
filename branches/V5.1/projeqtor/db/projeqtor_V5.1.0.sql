@@ -220,3 +220,11 @@ ADD `creationDate` date;
 
 ALTER TABLE `${prefix}activityprice` ADD `idUser` int(12) unsigned DEFAULT null,
 ADD `creationDate` date;
+
+ALTER TABLE `${prefix}quotation` ADD `idLikelihood` int(12) unsigned DEFAULT null,
+ADD `plannedWork` decimal(12,2) DEFAULT 0;
+
+ALTER TABLE `${prefix}bill` ADD `commandAmountPct` int(3) unsigned DEFAULT 100,
+ADD `sendDate` date;
+
+ALTER TABLE `${prefix}command` ADD `receptionDate` date;
