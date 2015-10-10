@@ -4146,8 +4146,6 @@ function stockHistory(curClass, curId) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
-console.log("stockHistory "+historyPosition);
-console.log(historyTable);
 }
 
 function undoItemButton() {
@@ -4165,8 +4163,6 @@ function undoItemButton() {
   if (historyPosition == 0) {
     disableWidget('menuBarUndoButton');
   }
-console.log("undoItemButton "+historyPosition);
-console.log(historyTable);
 }
 
 function redoItemButton() {
@@ -4184,9 +4180,6 @@ function redoItemButton() {
   if (historyPosition == (len - 1)) {
     disableWidget('menuBarRedoButton');
   }
-console.log("redoItemButton "+historyPosition);
-console.log(historyTable);
-
 }
 
 // Stock id and name, to
@@ -5930,10 +5923,8 @@ function reorderFavoriteReportItems() {
     if (order) {
       order.value=i + 1;
       param+=((param)?'&':'?')+"favoriteReportOrder"+item+"="+(i+1);
-      console.log(order.id+"="+order.value);
     }
   }
-  console.log(param);
   dojo.xhrPost({
     url: '../tool/saveReportFavoriteOrder.php'+param,
     handleAs: "text",

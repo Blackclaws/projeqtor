@@ -109,7 +109,7 @@ class BillMain extends SqlElement {
                                                    'idContact'=>'billContact',
                                                    'idPaymentDelay'=>'paymentDelay',
                                                    'idDeliveryMode'=>'sendMode',
-                                                   "idUser"=>"hidden",
+                                                   "idUser"=>"issuer",
                                                    'idResource'=>'responsible');
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
