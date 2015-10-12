@@ -32,6 +32,8 @@
   $cpt=0;
   $arrayActivities=array(); // Array of activities to display
   $idRessource=getSessionUser()->id;
+  $showDone=false;
+  $showIdle=false;
   if (! isset($period)) {
   	$period=htmlentities($_REQUEST['diaryPeriod']);
     $year=htmlentities($_REQUEST['diaryYear']);
@@ -40,6 +42,8 @@
     $day=htmlentities($_REQUEST['diaryDay']);
     Parameter::storeUserParameter("diaryPeriod",$period);
     $idRessource=$_REQUEST['diaryResource'];
+    $showIdle=(isset($_REQUEST['showIdle']))?true:false;
+    $showDone=(isset($_REQUEST['showDone']))?true:false;
   }
 
   $ress=new Resource($idRessource);
@@ -94,7 +98,7 @@
   } else {
   	echo '<tr height="0px"><td></td>';
   }
-  $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource);
+  $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource,$showDone,$showIdle);
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
   while ($currentDay<=$endDay) {
   	if ($period=="month") {
@@ -193,13 +197,19 @@ function getActivity($date) {
 	}
 }
 
-function getAllActivities($startDate, $endDate, $ress) {
+function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdle=false) {
 	global $projectColorArray, $projectNameArray, $allActi;
 	$result=array();
 	// 
 	$arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement());
 	foreach ($arrObj as $obj) {
-		$critWhere="done=0 and idResource=".Sql::fmtId($ress);
+		$critWhere="idResource=".Sql::fmtId($ress);
+		if (!$showDone) {
+		  $critWhere.=" and done=0 ";
+		}
+		if (!$showIdle) {
+		  $critWhere.=" and idle=0 ";
+		}
 		if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
 		  $critWhere.=" and ( "
 		   ." (actualDueDate>='$startDate' and actualDueDate<='$endDate') "
@@ -290,6 +300,8 @@ function getAllActivities($startDate, $endDate, $ress) {
 	$workList=array_merge($pwList,$wList);
 	foreach ($workList as $pw) {
 		$item=new $pw->refType($pw->refId);
+		if ($item->done and !$showDone) continue;
+		if ($item->idle and !$showIdle) continue;
 		if ($pw->refType=='Meeting') {
 			$display=substr($item->meetingStartTime,0,5).' - '.htmlEncode($item->name);
 		} else if (get_class($pw)=='Work') {

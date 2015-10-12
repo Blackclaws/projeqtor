@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "μόνο συναντήσεις τρέχ. 
 labelHideDone: "απόκρ. ολοκληρ. στοιχείων",
 labelHideNotHandled: "απόκρυψη στοιχείων χωρίς χειρισμό",
 labelMultipleMode: "Πολλαπλή μέθοδος",
+labelShowDone: "[show done items]",
 labelShowIdle: "κλειστά στοιχεία",
 labelShowLeftWork: "εμφάν. υπολ. εργασίας",
 labelShowMilestone: "εμφάν. ορόσημων",

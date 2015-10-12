@@ -39,7 +39,7 @@
       <td width="50px" align="center">
         <img src="css/images/iconDiary32.png" width="32" height="32" />
       </td>
-      <td width="200px" ><span class="title"><?php echo i18n('menuDiary');?></span></td>
+      <td width="100px" ><span class="title"><?php echo i18n('menuDiary');?></span></td>
       <td style="text-align: center"> 
 		   <?php 
 		   $period=Parameter::getUserParameter("diaryPeriod");
@@ -54,7 +54,7 @@
 		   } else if ($period=='week') {
          $firstday=date('Y-m-d',firstDayofWeek($week, $year));
          $lastday=addDaysToDate($firstday, 6);
-         echo $year.' #'.$week." (".htmlFormatDate($firstday)." - ".htmlFormatDate($lastday).")";
+         echo $year.' #'.$week."<span style='font-size:70%'> (".htmlFormatDate($firstday)." - ".htmlFormatDate($lastday).")</span>";
        } else if ($period=='day') {
          $vDayArr = array('', i18n("Monday"),i18n("Tuesday"),i18n("Wednesday"),
 		                i18n("Thursday"), i18n("Friday"),i18n("Saturday"),i18n("Sunday"));
@@ -83,12 +83,13 @@
                   </script>
                 </div>
               </td>
-		   <td nowrap="nowrap" width="250px" ><form id="diaryForm" name="diaryForm">
+		   <td nowrap="nowrap" width="400px" ><form id="diaryForm" name="diaryForm">
 		   <input type="hidden" name="diaryPeriod" id="diaryPeriod" value="<?php echo $period;?>" />
 		   <input type="hidden" name="diaryYear" id="diaryYear" value="<?php echo $year;?>" />
 		   <input type="hidden" name="diaryMonth" id="diaryMonth" value="<?php echo $month;?>" />
 		   <input type="hidden" name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" />
 		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $day;?>" />
+		   <table style="width:100%"><tr><td>
 		   <?php echo i18n("colIdResource");?> 
 		   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" style="width: 150px;"
         name="diaryResource" id="diaryResource"
@@ -100,6 +101,29 @@
            $specific='diary';
            include '../tool/drawResourceListForSpecificAccess.php'?>  
        </select>
+       </td><td style="text-align:right">
+         <table style="width:99%"><tr>
+           <td><?php echo i18n("labelShowDone")?>&nbsp;</td>
+           <td>
+             <div title="<?php echo i18n('labelShowDone')?>" dojoType="dijit.form.CheckBox" 
+                class="whiteCheck" type="checkbox" id="showDone" name="showDone">
+                <script type="dojo/method" event="onChange" >
+                  loadContent("../view/diary.php","detailDiv","diaryForm");
+                </script>
+              </div>
+            </td>
+          </tr><tr>
+            <td><?php echo i18n("labelShowIdle")?>&nbsp;</td>
+            <td>
+              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                class="whiteCheck" type="checkbox" id="showIdle" name="showIdle">
+                <script type="dojo/method" event="onChange" >
+                  loadContent("../view/diary.php","detailDiv","diaryForm");
+                </script>
+              </div>
+            </td>
+          </tr></table>
+       </td></tr></table>
 		   </form> </td>
    	</tr>
    	<tr height="18px" vertical-align="middle">

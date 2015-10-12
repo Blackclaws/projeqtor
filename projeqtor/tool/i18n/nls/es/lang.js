@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "Sólo mostrar reuniones de la semana actua
 labelHideDone: "Ocultar ítems realizados",
 labelHideNotHandled: "Ocultar ítems no manejados por mí",
 labelMultipleMode: "Modo múltiple",
+labelShowDone: "[show done items]",
 labelShowIdle: "Mostrar ítems cerrados",
 labelShowLeftWork: "Mostrar trabajo restante",
 labelShowMilestone: "Mostrar hitos",
