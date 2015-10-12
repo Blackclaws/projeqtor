@@ -2263,7 +2263,7 @@ function gotoElement(eltClass, eltId, noHistory) {
 	  if (dojo.byId("detailDiv")) {
 	    cleanContent("detailDiv");
 	  }
-	  if (dojo.byId('objectClass').value!=eltClass) {
+	  if (! dojo.byId('objectClass') || dojo.byId('objectClass').value!=eltClass) {
       loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
 	  } else {
 	    dojo.byId('objectClass').value=eltClass;

@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "ne montrer que les réunions de la semaine
 labelHideDone: "cacher les éléments faits",
 labelHideNotHandled: "cacher les éléments non pris en compte",
 labelMultipleMode: "Mode multiple",
+labelShowDone: "montrer les éléments faits",
 labelShowIdle: "montrer les éléments clos",
 labelShowLeftWork: "montrer la charge restante",
 labelShowMilestone: "montrer les jalons",

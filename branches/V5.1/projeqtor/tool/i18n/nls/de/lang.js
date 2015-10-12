@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "Zeige nur Besprechungen der aktuellen Woch
 labelHideDone: "'nicht bearbeitete' Elemente ausblenden",
 labelHideNotHandled: "'erledigte' Elemente ausblenden",
 labelMultipleMode: "Mehrfach-Modus",
+labelShowDone: "[show done items]",
 labelShowIdle: "Zeige abgeschlossene Elemente",
 labelShowLeftWork: "Zeige verbleibende Arbeit",
 labelShowMilestone: "Meilensteine anzeigen",

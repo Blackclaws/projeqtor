@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "отображать только теку
 labelHideDone: "спрятать сделанные элементы",
 labelHideNotHandled: "спрятать не отслеживаемые элементы",
 labelMultipleMode: "Множественный режим",
+labelShowDone: "[show done items]",
 labelShowIdle: "Показать закрытые пункты",
 labelShowLeftWork: "Показать доработки",
 labelShowMilestone: "показать вехи",

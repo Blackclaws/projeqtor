@@ -1196,6 +1196,7 @@ labelDisplayOnlyCurrentWeekMeetings: "показ.тільки поточні т�
 labelHideDone: "приховати виконані елементи",
 labelHideNotHandled: "приховати не  оброблені елементи",
 labelMultipleMode: "мульті-режим",
+labelShowDone: "[show done items]",
 labelShowIdle: "показ. закриті елем.",
 labelShowLeftWork: "показати доробки",
 labelShowMilestone: "показ.репери (віхи)",
