@@ -81,9 +81,71 @@ class Work extends GeneralWork {
           $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
         }
       }
-    }
-    
+    }   
     return parent::save();
+  }
+  
+  public function saveWork() {
+    if ($this->id) { // update existing work
+      $old=$this->getOld();
+      $result=$this->save();
+      $this->updateAssignment($this->work-$old->work);
+      return $result;
+    } else { // add new work
+      if (! $this->idResource and ! $this->idAssignment) { // idResource Mandatory
+        return "ERROR idResouce mandatory";
+      }
+      if (! $this->workDate) { 
+        if ($this->day) {
+          $this->workDate=substr($this->day,0,4).'-'.substr($this->day,4,2).'-'.substr($this->day,6,2);
+        } else { // Work Date is mandatory
+          return "ERROR workDate mandatory";
+        }
+      }
+      if (!$this->idAssignment) { // unknown assignment
+        if ($this->refType and $this->refId) {
+          $crit=array('refType'=>$this->refType,'refId'=>$this->refId,'idResource'=>$this->idResource);
+          $ass=SqlElement::getSingleSqlElementFromCriteria('Assignment', $crit);
+          if ($ass->id) {
+            $this->idAssignment=$ass->id;
+          } else {
+            return "ERROR idAssignment mandatory"; // could not retrieve assignment, so is mandatory
+          }
+        }
+      } else { // refType & refId can be retreived from assignment
+        $ass=new Assignment($this->idAssignment);
+        $this->refType=$ass->refType;
+        $this->refId=$ass->refId;
+        $this->idResource=$ass->idResource;
+      }
+      $crit=array('idAssignment'=>$this->idAssignment,'workDate'=>$this->workDate); // retreive work for this assignment & day (assignment includes resource)
+      $work=SqlElement::getSingleSqlElementFromCriteria('Work', $crit);
+      if ($work->id) {
+        $work->work+=$this->work;
+        $result=$work->save();
+        $work->updateAssignment($this->work);
+        return $result;
+      } else {
+        $this->setDates($this->workDate);
+        $result=$this->save();
+        $work->updateAssignment($this->work);
+        return $result;
+      }
+    }
+  }
+   
+  public function deleteWork() {
+    $result=$this->delete();
+    $this->updateAssignment($this->work*(-1));
+    return $result;
+  }
+
+  public function updateAssignment($decrementLeftWork=0) {
+    $ass=new Assignment($this->idAssignment);
+    $ass->leftWork-=$decrementLeftWork; // Remove current work from left work
+    if ($ass->leftWork<0) $ass->leftWork=0;
+    $resultAss=$ass->saveWithRefresh();
+    return $resultAss;
   }
   
 }

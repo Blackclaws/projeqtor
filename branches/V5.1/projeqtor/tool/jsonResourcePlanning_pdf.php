@@ -612,7 +612,7 @@ function displayGantt($list) {
         if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
         if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReal') . '</TD>' ;
         if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeft') . '</TD>' ;
-        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colPlanned') . '</TD>' ;
+        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReassessed') . '</TD>' ;
         if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colDuration') . '</TD>' ;
         if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPct') . '</TD>' ;
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colStart') . '</TD>' ;

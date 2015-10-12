@@ -139,7 +139,7 @@ $htmlresult.="<br/>";
     </td>
     <td style="width: 50%; text-align: left;">
     <button align="left" dojoType="dijit.form.Button"
-      id="dialogePrintSubmit"
+      id="dialogPrintSubmit"
       onclick="executeExport('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
       <?php echo i18n("buttonOK");?></button>
     </td>

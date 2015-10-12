@@ -588,7 +588,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      }
 	      if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap>' 
-	          + JSGantt.i18n('colPlanned') + '</TD>' ;
+	          + JSGantt.i18n('colReassessed') + '</TD>' ;
 	      }
 	      if(vShowDur ==1 && sortArray[iSort]=='Duration') {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDurationWidth + 'px;max-width: ' + vDurationWidth + 'px;overflow:hidden" nowrap>' 

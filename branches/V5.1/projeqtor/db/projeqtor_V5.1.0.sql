@@ -228,3 +228,5 @@ ALTER TABLE `${prefix}bill` ADD `commandAmountPct` int(3) unsigned DEFAULT 100,
 ADD `sendDate` date;
 
 ALTER TABLE `${prefix}command` ADD `receptionDate` date;
+
+INSERT INTO `${prefix}importable` (`name`, `idle`) VALUES ('Work', '0');

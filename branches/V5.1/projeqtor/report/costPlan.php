@@ -87,9 +87,9 @@
     echo '  <TD class="reportTableHeader" style="width:200px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colValidated') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colAssigned') . '</TD>' ;
-    echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colPlanned') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colLeft') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colReassessed') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
     echo '</TR>';
     // Treat each line
@@ -131,9 +131,9 @@
       echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refname']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($validatedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($assignedCost,true)  . '</TD>' ;
-      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($plannedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($realCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($leftCost,true)  . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($plannedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
       echo '</TR>';
     }

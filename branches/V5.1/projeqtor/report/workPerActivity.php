@@ -98,9 +98,9 @@
     echo '  <TD class="reportTableHeader" style="width:200px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colValidated') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colAssigned') . '</TD>' ;
-    echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colPlanned') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colLeft') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colReassessed') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
 	echo '  <TD class="reportTableHeader" style="width:70px" nowrap>Indicator</TD>' ;
     echo '</TR>';
@@ -183,9 +183,9 @@
       echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refname']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($validatedWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning . '">' . Work::displayWorkWithUnit($assignedWork) . '</TD>' ;
-      echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning  . '">' . Work::displayWorkWithUnit($plannedWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($realWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning  . '">' . Work::displayWorkWithUnit($leftWork) . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning  . '">' . Work::displayWorkWithUnit($plannedWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
 	  echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/indicator_' . $indicator . '.png" /></TD>';
       echo '</TR>';

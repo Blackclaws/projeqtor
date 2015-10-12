@@ -382,7 +382,12 @@ class BillMain extends SqlElement {
 	public function getValidationScript($colName) {
 	
 		$colScript = parent::getValidationScript($colName);
-		if ($colName=="idProject") {
+		if ($colName=="untaxedAmount" || $colName=="taxPct") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  updateBillTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if ($colName=="idProject") {
 			$colScript .= '<script type="dojo/connect" event="onChange" >';
 			$colScript .= '  setClientValueFromProject("idClient",this.value);';
 			$colScript .= '  formChanged();';

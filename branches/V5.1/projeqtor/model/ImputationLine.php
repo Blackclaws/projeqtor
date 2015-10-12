@@ -623,7 +623,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
 		. i18n('colLeft') . '</TD>';
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
-		. i18n('colPlanned') . '</TD>';
+		. i18n('colReassessed') . '</TD>';
 		echo '</TR>';
 		if (! $print) {
 			echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';

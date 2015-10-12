@@ -90,11 +90,18 @@ $canPlan=(count($plannableProjectsList)>0)?true:false;
                      return false;
                     </script>
 		              </button>
-<?php $autoPlan=false;?>
+<?php $autoPlan=getSessionValue('automaticPlanning');$showAutoPlan=true;?>
                   <div style="white-space:nowrap;<?php if (!isset($showAutoPlan) or $showAutoPlan!=true) echo 'visibility:hidden;'?>">
 		              <span title="<?php echo i18n('automaticRunPlanHelp');?>" dojoType="dijit.form.CheckBox"
                         type="checkbox" id="automaticRunPlan" name="automaticRunPlan" class="whiteCheck"
-                        <?php if ( $autoPlan) {echo 'checked="checked"'; } ?>  >                      
+                        <?php if ( $autoPlan) {echo 'checked="checked"'; } ?>  >  
+                        <script type="dojo/connect" event="onChange" args="evt">
+                          dojo.xhrPost({
+                            url: "../tool/saveDataToSession.php?id=automaticPlanning&value=" + this.checked,
+                            handleAs: "text",
+                            load: function(data,args) { }
+                          });
+                        </script>                    
                   </span>&nbsp;<?php echo i18n('automaticRunPlan')?>
                   </div>
 <?php }?>             
