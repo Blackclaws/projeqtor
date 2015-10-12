@@ -142,6 +142,11 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($work->day,$realDays[$work->idResource][$work->idProject][$ref])) { // Do not add planned if real exists 
     $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
+  } else if ($work->day>date('Ymd')) {
+    $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
+    if (isset($realDays[$work->idResource][$work->idProject][$ref][$work->day])) {
+      unset($realDays[$work->idResource][$work->idProject][$ref][$work->day]);
+    }
   }
 }
 
@@ -166,7 +171,7 @@ echo "<td class='reportTableDataFull' style='width:20px;text-align:center;'>1</t
 echo "<td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
-echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
+echo "<td width='100px' class='legend'>" . i18n('colPlanned') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "<td class='legend'>" . Work::displayWorkUnit() . "</td>";
 echo "<td>&nbsp;</td>";

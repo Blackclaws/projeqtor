@@ -139,6 +139,7 @@ class Assignment extends SqlElement {
     }
     
     if (! $this->idProject) {
+      if (!class_exists($this->refType)) return "ERROR '$this->refType' is not a valid class";
     	$refObj=new $this->refType($this->refId);
     	$this->idProject=$refObj->idProject;
     }

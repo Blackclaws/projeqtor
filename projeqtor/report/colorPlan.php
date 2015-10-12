@@ -175,7 +175,7 @@ echo '<td style="width:5px";>&nbsp;&nbsp;&nbsp;</td>';
 echo '<td class="reportTableDataFull">';
 echo '<div style="height:20px;width:20px;position:relative;background-color:#DDDDDD;">&nbsp;';
 echo '</div>';
-echo '</td><td style="width;100px; padding-left:5px;" class="legend">' . i18n('colPlannedWork') . '</td>';
+echo '</td><td style="width;100px; padding-left:5px;" class="legend">' . i18n('colPlanned') . '</td>';
 echo '<td>&nbsp;</td>';
 echo "</tr></table>";
 //echo "<br/>";

@@ -819,6 +819,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 var resultDivFadingOut=null;
+var planningResultDivFadingOut=null;
 var forceRefreshCreationInfo=false;
 function finalizeMessageDisplay(destination, validationType) {
   var contentNode = dojo.byId(destination);
@@ -1153,17 +1154,26 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
   }
   // If operation is correct (not an error) slowly fade the result message
-  if (resultDivFadingOut) resultDivFadingOut.stop();
+  if (destination=='planResultDiv') {
+    if (planningResultDivFadingOut) planningResultDivFadingOut.stop();
+  } else {
+    if (resultDivFadingOut) resultDivFadingOut.stop();
+  }
   if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" 
 	  && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
-    resultDivFadingOut=dojo.fadeOut({
-      node: contentNode, 
-      duration: 3000,
-      onEnd: function(){
-        contentNode.style.display="none";
-      }  
-    }).play(
-        );
+    if (destination=='planResultDiv') {
+      planningResultDivFadingOut=dojo.fadeOut({
+        node: contentNode, 
+        duration: 3000,
+        onEnd: function(){contentNode.style.display="none";}  
+      }).play();
+    } else {
+      resultDivFadingOut=dojo.fadeOut({
+        node: contentNode, 
+        duration: 3000,
+        onEnd: function(){contentNode.style.display="none";}  
+      }).play();
+    }
   } else {
     if (lastOperationStatus.value=="ERROR") {
       showError(message);
@@ -2337,6 +2347,8 @@ function globalSave() {
     var button=dijit.byId('dialogCreationInfoSubmit');  
   } else if (dijit.byId('dialogDispatchWork') && dijit.byId('dialogDispatchWork').open) {
     var button=dijit.byId('dialogDispatchWorkSubmit');  
+  } else if (dijit.byId('dialogExport') && dijit.byId('dialogExport').open) {
+    var button=dijit.byId('dialogPrintSubmit');  
   } else {
     var button=dijit.byId('saveButton');
   }
@@ -2601,26 +2613,53 @@ function isHtml5() {
 }
 
 function updateCommandTotal() {
+  if (cancelRecursiveChange_OnGoingChange) return;
+  cancelRecursiveChange_OnGoingChange=true;
+  // Retrieve values used for calculation
+	var untaxedAmount=dijit.byId("untaxedAmount").get("value");
+	if (! untaxedAmount) untaxedAmount=0;
+	var taxPct=dijit.byId("taxPct").get("value");
+	if (! taxPct) taxPct=0;
+	var addUntaxedAmount=dijit.byId("addUntaxedAmount").get("value");
+	if (! addUntaxedAmount) addUntaxedAmount=0;
 	var initialWork=dijit.byId("initialWork").get("value");
-	var initialAmount=dijit.byId("initialAmount").get("value");
-	var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");
-	if (!initialWork) initialWork=0;
-	if (!initialAmount) initialAmount=0;
-	if (!initialPricePerDayAmount) initialPricePerDayAmount=0;
 	var addWork=dijit.byId("addWork").get("value");
-	var addAmount=dijit.byId("addAmount").get("value");
-	var addPricePerDayAmount=dijit.byId("addPricePerDayAmount").get("value");
-	if (!addWork) addWork=0;
-	if (!addAmount) addAmount=0;
-	if (!addPricePerDayAmount) addPricePerDayAmount=0;
-	dijit.byId("validatedWork").set("value", initialWork+addWork);
-	dijit.byId("validatedAmount").set("value", initialAmount+addAmount);
-	validatedPricePerDayAmount=null;
-	if ( (initialWork+addWork)>0) {
-	  validatedPricePerDayAmount=Math.round((initialAmount+addAmount)/(initialWork+addWork)*100)/100;
-	}
-	dijit.byId("validatedPricePerDayAmount").set("value", validatedPricePerDayAmount);	
-	terminateChange();
+	// Calculated values
+	var taxAmount=Math.round(untaxedAmount*taxPct)/100;
+	var fullAmount=taxAmount+untaxedAmount;
+	var addTaxAmount=Math.round(addUntaxedAmount*taxPct)/100;
+	var addFullAmount=addTaxAmount+addUntaxedAmount;
+	var totalUntaxedAmount=untaxedAmount+addUntaxedAmount;
+	var totalTaxAmount=taxAmount+addTaxAmount;
+	var totalFullAmount=fullAmount+addFullAmount;
+	var validatedWork=initialWork+addWork;
+	// Set values to fields
+	dijit.byId("taxAmount").set('value',taxAmount);
+	dijit.byId("fullAmount").set('value',fullAmount);
+	dijit.byId("addTaxAmount").set('value',addTaxAmount);
+	dijit.byId("addFullAmount").set('value',addFullAmount);
+	dijit.byId("totalUntaxedAmount").set('value',totalUntaxedAmount);
+	dijit.byId("totalTaxAmount").set('value',totalTaxAmount);
+	dijit.byId("totalFullAmount").set('value',totalFullAmount);
+	dijit.byId("validatedWork").set('value',validatedWork);
+	
+	cancelRecursiveChange_OnGoingChange=false;
+}
+function updateBillTotal() { // Also used for Qutation !!!
+  if (cancelRecursiveChange_OnGoingChange) return;
+  cancelRecursiveChange_OnGoingChange=true;
+  // Retrieve values used for calculation
+  var untaxedAmount=dijit.byId("untaxedAmount").get("value");
+  if (! untaxedAmount) untaxedAmount=0;
+  var taxPct=dijit.byId("taxPct").get("value");
+  if (! taxPct) taxPct=0;
+  // Calculated values
+  var taxAmount=Math.round(untaxedAmount*taxPct)/100;
+  var fullAmount=taxAmount+untaxedAmount;
+  // Set values to fields
+  dijit.byId("taxAmount").set('value',taxAmount);
+  dijit.byId("fullAmount").set('value',fullAmount);
+  cancelRecursiveChange_OnGoingChange=false;
 }
 
 function copyDirectLinkUrl() {

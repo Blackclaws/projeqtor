@@ -182,7 +182,7 @@ echo "</td><td width='100px' class='legend'>" . i18n('colRealCost') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
-echo "</td><td width='100px' class='legend'>" . i18n('colPlannedCost') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colPlanned') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";

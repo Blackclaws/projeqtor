@@ -188,7 +188,7 @@ echo "<td class='reportTableDataFull' style='width:20px;text-align:center;'>1</t
 echo "<td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
-echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
+echo "<td width='100px' class='legend'>" . i18n('colPlanned') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "<td class='reportTableDataFull' style='width:20px;text-align:center;color: #00AA00;background-color:#FAFAFA'>1</td>";
 echo "<td width='100px' class='legend'>" . i18n('colNoWork') . "</td>";

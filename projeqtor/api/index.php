@@ -230,9 +230,17 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 		$obj=new $class($id);
 		if ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST') {
 			jsonFillObj($obj, $objArray);
-			$result=$obj->save();
+			if (get_class($obj)=="Work") {
+			  $result=$obj->saveWork();
+			} else {
+			  $result=$obj->save();
+			}
 		} else if ($_SERVER['REQUEST_METHOD']=='DELETE') {
-			$result=$obj->delete();
+			if (get_class($obj)=="Work") {
+			  $result=$obj->deleteWork();
+			} else {
+			  $result=$obj->delete();
+			}
 		}
 		$resultStatus="KO";
 		$search='id="lastOperationStatus" value="';

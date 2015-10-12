@@ -253,56 +253,9 @@ class QuotationMain extends SqlElement {
   public function getValidationScript($colName) {
     
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="initialWork") {
+    if ($colName=="untaxedAmount" || $colName=="taxPct") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      //$colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
-      $colScript .= '  var initialWork=this.value;';
-      $colScript .= '  if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '  var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");';
-      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
-      $colScript .= '  if (initialPricePerDayAmount) {';
-      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
-      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
-      $colScript .= '  } else if (initialWork){';
-      $colScript .= '    initialPricePerDayAmount=Math.round(initialAmount/initialWork*100)/100; ';
-      $colScript .= '    dijit.byId("initialPricePerDayAmount").set("value",initialPricePerDayAmount)';
-      $colScript .= '  }';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="initialPricePerDayAmount") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      //$colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
-      $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
-      $colScript .= '  if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '  var initialPricePerDayAmount=this.value;';
-      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
-      $colScript .= '  if (initialWork) {';
-      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
-      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
-      $colScript .= '  } else if (initialAmount){';
-      $colScript .= '    initialWork=initialAmount/initialPricePerDayAmount;';
-      $colScript .= '    if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '    initialWork=Math.round(initialWork*10)/10; ';
-      $colScript .= '    dijit.byId("initialWork").set("value",initialWork)';
-      $colScript .= '  }';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';    	
-    } else if ($colName=="initialAmount") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      //$colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
-      $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
-      $colScript .= '  if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '  var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");';
-      $colScript .= '  var initialAmount=this.value;';
-      $colScript .= '  if (initialWork) {';
-      $colScript .= '    initialPricePerDayAmount=Math.round(initialAmount/initialWork*100)/100;';
-      $colScript .= '    dijit.byId("initialPricePerDayAmount").set("value",initialPricePerDayAmount)';
-      $colScript .= '  } else if (initialPricePerDayAmount){';
-      $colScript .= '    initialWork=initialAmount/initialPricePerDayAmount;';
-      $colScript .= '    if (paramWorkUnit!="days") initialWork=initialWork/paramHoursPerDay;';
-      $colScript .= '    initialWork=Math.round(initialWork*10)/10; ';
-      $colScript .= '    dijit.byId("initialWork").set("value",initialWork)';
-      $colScript .= '  }';
+      $colScript .= '  updateBillTotal();';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idProject") {
