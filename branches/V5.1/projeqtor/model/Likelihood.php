@@ -35,6 +35,7 @@ class Likelihood extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $value;
+  public $valuePct;
   public $color;
   public $sortOrder=0;
   public $idle;

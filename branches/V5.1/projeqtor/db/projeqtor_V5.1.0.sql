@@ -230,3 +230,16 @@ ADD `sendDate` date;
 ALTER TABLE `${prefix}command` ADD `receptionDate` date;
 
 INSERT INTO `${prefix}importable` (`name`, `idle`) VALUES ('Work', '0');
+
+ALTER TABLE `${prefix}likelihood` ADD `valuePct` int(3) unsigned DEFAULT 0;
+UPDATE `${prefix}likelihood` SET `valuePct`='10' WHERE name like '%10%';
+UPDATE `${prefix}likelihood` SET `valuePct`='50' WHERE name like '%50%';
+UPDATE `${prefix}likelihood` SET `valuePct`='90' WHERE name like '%90%';
+
+ALTER TABLE `${prefix}risk` ADD `impactCost` DECIMAL(11,2) UNSIGNED DEFAULT 0,
+ADD `projectReserveAmount` DECIMAL(11,2) UNSIGNED DEFAULT 0;
+
+ALTER TABLE `${prefix}opportunity` ADD `impactCost` DECIMAL(11,2) UNSIGNED DEFAULT 0,
+ADD `projectReserveAmount` DECIMAL(11,2) UNSIGNED DEFAULT 0;
+
+ALTER TABLE `${prefix}planningelement` ADD `reserveAmount` DECIMAL(11,2) UNSIGNED DEFAULT 0;

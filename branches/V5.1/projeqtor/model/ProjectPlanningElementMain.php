@@ -52,8 +52,8 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $realDuration;
   public $_void_34;
   public $initialDuration;
-  public $_tab_5_7_smallLabel = array('validated','assigned','real','left','reassessed',
-      'work','cost','expense','totalCost','progress','margin','priority');
+  public $_tab_5_8_smallLabel = array('validated','assigned','real','left','reassessed',
+      'work','cost','expense','reserveAmountShort','totalCost','progress','margin','priority');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
@@ -69,6 +69,11 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $expenseRealAmount;
   public $expenseLeftAmount;
   public $expensePlannedAmount;
+  public $_void_res_11;
+  public $_void_res_12;
+  public $_void_res_13;
+  public $reserveAmount;
+  public $_void_res_15;
   public $totalValidatedCost;
   public $totalAssignedCost;
   public $totalRealCost;
@@ -117,7 +122,8 @@ class ProjectPlanningElementMain extends PlanningElement {
     "plannedStartFraction"=>"hidden",
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
-    "validatedEndFraction"=>"hidden"
+    "validatedEndFraction"=>"hidden",
+    "reserveAmount"=>"readonly"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -175,8 +181,8 @@ class ProjectPlanningElementMain extends PlanningElement {
   
   public function updateTotal() {
   	$this->totalAssignedCost=$this->assignedCost+$this->expenseAssignedAmount;
-  	$this->totalLeftCost=$this->leftCost+$this->expenseLeftAmount;
-  	$this->totalPlannedCost=$this->plannedCost+$this->expensePlannedAmount;
+  	$this->totalLeftCost=$this->leftCost+$this->expenseLeftAmount+$this->reserveAmount;
+  	$this->totalPlannedCost=$this->plannedCost+$this->expensePlannedAmount+$this->reserveAmount;
   	$this->totalRealCost=$this->realCost+$this->expenseRealAmount;
   	$this->totalValidatedCost=$this->validatedCost+$this->expenseValidatedAmount;
   	if ($this->plannedWork!=0 and $this->validatedWork!=0) {
@@ -201,6 +207,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   protected function updateSynthesisProject ($doNotSave=false) {
   	parent::updateSynthesisObj(true); // Will update work and resource cost, but not save yet ;)
   	$this->updateExpense(true); // Will retrieve expense directly on the project
+  	$this->updateReserve(true); // Will retrieve reserve for risk directly on the project
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->_noHistory=true;
   	// Add expense data from other planningElements
@@ -220,6 +227,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   			if (!$pla->cancelled and $pla->expensePlannedAmount) $plannedExpense+=$pla->expensePlannedAmount;
   		  $realExpense+=$pla->expenseRealAmount;
   			if (!$pla->cancelled and $pla->expenseLeftAmount) $leftExpense+=$pla->expenseLeftAmount;
+  			if (isset($pla->reserveAmount) and $pla->reserveAmount) $this->reserveAmount+=$pla->reserveAmount;
   		}
   	}
   	// save cumulated data
@@ -272,6 +280,31 @@ class ProjectPlanningElementMain extends PlanningElement {
   			self::updateSynthesis($this->topRefType, $this->topRefId);
   		}
   	}
+  }
+  public function updateReserve($doNotSave=false) {
+    $reserve=0;
+    $risk=new Risk();
+    $lstRisk=$risk->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+    foreach ($lstRisk as $risk) {
+    	if ($risk->projectReserveAmount) {
+    	  $reserve+=$risk->projectReserveAmount;
+    	}
+    }
+    $opportunity=new Opportunity();
+    $lstOpportunity=$opportunity->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+    foreach ($lstOpportunity as $opportunity) {
+      if ($opportunity->projectReserveAmount) {
+        $reserve-=$opportunity->projectReserveAmount;
+      }
+    }
+    $this->reserveAmount=$reserve;
+    $this->updateTotal();
+    if (! $doNotSave) {
+    		$this->simpleSave();
+    		if ($this->topId) {
+    		  self::updateSynthesis($this->topRefType, $this->topRefId);
+    		}
+    }
   }
   /** ==========================================================================
    * Return the specific fieldsAttributes

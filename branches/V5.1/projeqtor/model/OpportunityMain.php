@@ -42,6 +42,8 @@ class OpportunityMAin extends SqlElement {
   public $idSeverity;
   public $idLikelihood;
   public $idCriticality;
+  public $impactCost;
+  public $projectReserveAmount;
   public $Origin;
   public $cause;
   public $impact;
@@ -99,14 +101,17 @@ class OpportunityMAin extends SqlElement {
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "projectReserveAmount"=>"readonly"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer',
                                                    'idResource'=> 'responsible',
                                                    'idOpportunityType'=>'type',
-                                                   'idLikelihood'=>'opportunityImprovement',
-                                                   'cause'=>'opportunitySource');
+                                                   'idSeverity'=>'opportunitySignificance',
+                                                   'cause'=>'opportunitySource',
+                                                   'impactCost'=>'opportunityImprovement',
+                                                   'projectReserveAmount'=>'projectReserveGain');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -188,6 +193,11 @@ class OpportunityMAin extends SqlElement {
       $colScript .= '  calculatedValue = Math.round(serverityValue*likelihoodValue/2);';
       $colScript .= '  var filterCriticality=dojo.filter(tabCriticality, function(item){return item.value==calculatedValue;});';
       $colScript .= '  dojo.forEach(filterCriticality, function(item, i) {dijit.byId("idCriticality").set("value",item.id);});';
+      if ($colName=="idLikelihood") {
+        $colScript .= 'stock=dijit.byId("impactCost").get("value");';
+        $colScript .= 'dijit.byId("impactCost").set("value",null);';
+        $colScript .= 'dijit.byId("impactCost").set("value",stock);';
+      }
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="initialEndDate") {
@@ -204,8 +214,29 @@ class OpportunityMAin extends SqlElement {
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';           
+    } else if ($colName=="impactCost") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= htmlGetJsTable('Likelihood', 'valuePct');
+      $colScript .= '  var likelihoodValue=0;';
+      $colScript .= '  var filterLikelihood=dojo.filter(tabLikelihood, function(item){return item.id==dijit.byId("idLikelihood").value;});';
+      $colScript .= '  dojo.forEach(filterLikelihood, function(item, i) {likelihoodValue=item.valuePct;});';
+      $colScript .= '  calculatedValue = Math.round(dijit.byId("impactCost").get("value")*likelihoodValue)/100;';
+      $colScript .= '  dijit.byId("projectReserveAmount").set("value",calculatedValue);';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     } 
     return $colScript;
+  }
+  public function save() {
+    if ($this->impactCost and $this->idLikelihood) {
+      $likelihood=new Likelihood($this->idLikelihood);
+      $this->projectReserveAmount=round($this->impactCost*$likelihood->valuePct/100,2);
+    } else {
+      $this->projectReserveAmount=0;
+    }
+    $result=parent::save();
+    PlanningElement::updateSynthesis('Project', $this->idProject);
+    return $result;
   }
 }
 ?>
