@@ -231,13 +231,13 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 		if ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST') {
 			jsonFillObj($obj, $objArray);
 			if (get_class($obj)=="Work") {
-			  $result=$obj->saveWork();
+			  $result=$obj->saveWork(); // Specific save method for import and API
 			} else {
 			  $result=$obj->save();
 			}
 		} else if ($_SERVER['REQUEST_METHOD']=='DELETE') {
 			if (get_class($obj)=="Work") {
-			  $result=$obj->deleteWork();
+			  $result=$obj->deleteWork(); // Specific delete method for import and API
 			} else {
 			  $result=$obj->delete();
 			}
