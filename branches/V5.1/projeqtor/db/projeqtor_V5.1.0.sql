@@ -181,7 +181,7 @@ CREATE TABLE `${prefix}favoriteparameter` (
 
 CREATE INDEX favoriteParameterUser ON `${prefix}favoriteparameter` (idUser);
 CREATE INDEX favoriteParameterReport ON `${prefix}favoriteparameter` (idReport);
-CREATE INDEX favoriteParameterToday ON `${prefix}favoriteparameter` (idToday);
+CREATE INDEX favoriteParameterToday ON `${prefix}favoriteparameter` (idFavorite);
 
 UPDATE `${prefix}menu` SET idle=0 where `name` in ('menuPayment', 'menuPaymentType'); 
 DELETE FROM `${prefix}habilitation` WHERE idMenu in (78, 83);
