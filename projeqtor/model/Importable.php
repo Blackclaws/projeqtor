@@ -388,7 +388,9 @@ class Importable extends SqlElement {
 					}
 				}
 				Sql::beginTransaction();
-				if ($forceInsert) { // object with defined id was not found : force insert
+				if ($class=="Work") {
+				  $result = $obj->saveWork(); // Specific save method for import and API
+				} else if ($forceInsert) { // object with defined id was not found : force insert
 					$result = $obj->insert();
 				} else {
 					$result = $obj->save();
