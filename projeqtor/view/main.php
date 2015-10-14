@@ -60,6 +60,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <meta name="keywork" content="projeqtor, project management" />
   <meta name="author" content="projeqtor" />
   <meta name="Copyright" content="Pascal BERNARD" />
+  <?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <?php }?> 
   <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
