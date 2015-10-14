@@ -284,14 +284,14 @@ class ProjectPlanningElementMain extends PlanningElement {
   public function updateReserve($doNotSave=false) {
     $reserve=0;
     $risk=new Risk();
-    $lstRisk=$risk->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+    $lstRisk=$risk->getSqlElementsFromCriteria(array('idProject'=>$this->refId,'idle'=>'0'));
     foreach ($lstRisk as $risk) {
     	if ($risk->projectReserveAmount) {
     	  $reserve+=$risk->projectReserveAmount;
     	}
     }
     $opportunity=new Opportunity();
-    $lstOpportunity=$opportunity->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+    $lstOpportunity=$opportunity->getSqlElementsFromCriteria(array('idProject'=>$this->refId,'idle'=>'0'));
     foreach ($lstOpportunity as $opportunity) {
       if ($opportunity->projectReserveAmount) {
         $reserve-=$opportunity->projectReserveAmount;
