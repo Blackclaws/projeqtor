@@ -925,7 +925,7 @@ function finalizeMessageDisplay(destination, validationType) {
           var lastSaveClass=dojo.byId('objectClass');
           if (lastSaveClass && lastSaveId) {
         	 waitingForReply=false;
-             gotoElement(lastSaveClass.value, lastSaveId.value);
+             gotoElement(lastSaveClass.value, lastSaveId.value,null,true);
              waitingForReply=true;
           }         
       } else if (validationType=='admin'){
@@ -2256,7 +2256,7 @@ function refreshTodayProjectsList(value) {
   loadContent("../view/today.php?refreshProjects=true", "Today_project", "todayProjectsForm", false);  
 }
 
-function gotoElement(eltClass, eltId, noHistory) {
+function gotoElement(eltClass, eltId, noHistory, forceListRefresh) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
@@ -2273,7 +2273,7 @@ function gotoElement(eltClass, eltId, noHistory) {
 	  if (dojo.byId("detailDiv")) {
 	    cleanContent("detailDiv");
 	  }
-	  if (! dojo.byId('objectClass') || dojo.byId('objectClass').value!=eltClass) {
+	  if (! dojo.byId('objectClass') || dojo.byId('objectClass').value!=eltClass || forceListRefresh) {
       loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
 	  } else {
 	    dojo.byId('objectClass').value=eltClass;
