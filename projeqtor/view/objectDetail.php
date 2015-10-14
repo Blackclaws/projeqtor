@@ -1338,7 +1338,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $showExtraButton=false;
         if ($col == 'idStatus' or $col == 'idResource') {
           if ( (($col == 'idStatus') or ($col == 'idResource' and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
-            and $classObj!='Document' and $classObj!='StatusMail' and $canUpdate) {
+            and $classObj!='Document' and $classObj!='StatusMail'  and $classObj!="TicketSimple" and $canUpdate) {
             $showExtraButton=true;
             $fieldWidth=round($fieldWidth / 2) - 5;
           }
@@ -1903,7 +1903,8 @@ function drawHistoryFromObjects($refresh=false) {
   $stockUser=null;
   $stockOper=null;
   foreach ( $historyList as $hist ) {
-    if (substr($hist->colName, 0, 25) == 'subDirectory|Attachment|' or substr($hist->colName, 0, 19) == 'idTeam|Attachment|') {
+    if (substr($hist->colName, 0, 24) == 'subDirectory|Attachment|' or substr($hist->colName, 0, 18) == 'idTeam|Attachment|' 
+     or substr($hist->colName, 0, 25) == 'subDirectory|Attachement|' or substr($hist->colName, 0, 19) == 'idTeam|Attachement|') {
       continue;
     }
     $colName=($hist->colName == null)?'':$hist->colName;
@@ -1923,7 +1924,9 @@ function drawHistoryFromObjects($refresh=false) {
       $refId='';
       $refObject='';
     }  
-    if ($refType=='Attachement') $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
+    if ($refType=='Attachement') {
+      $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
+    }
     $curObj=null;
     $dataType="";
     $dataLength=0;
@@ -2018,13 +2021,13 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($dataLength>4000 or $refType=='Note') {
         //$diff=diffValues($oldValue,$newValue);
         // Nothing, préserve html format 
-        $oldValue=$colName;
+        //$oldValue=$colName;
       } else if ($colName=='password' or $colName=='apiKey') {
         $allstars="**********";
         if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
         if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
       } else {
-        $diff=diffValues($oldValue,$newValue);
+        //$diff=diffValues($oldValue,$newValue);
         $oldValue=htmlEncode($oldValue, 'print');
         $newValue=htmlEncode($newValue, 'print');
       }
