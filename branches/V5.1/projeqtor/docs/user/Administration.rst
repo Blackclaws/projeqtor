@@ -1,79 +1,96 @@
-.. raw:: latex
 
-    \newpage
-
-.. contents:: Administration
+.. contents::
    :depth: 2
    :backlinks: top
-   :local:
 
 .. title:: Administration
 
 .. note::
 
-   * The screens describe below  is restricted to users with administrator profile.
-   * Users with others profiles can have access whether is given access rights to screens.   
+   * The screens described below are restricted to users with administrator profile.
+   * Users with others profiles can have access whether access rights is granted.   
 
 
 .. index:: ! Administration console
+
+.. _admin-console:
 
 Administration console
 ----------------------
 
 Administration console allows to execute administration tasks on application.
 
+.. index:: ! Alert (Background tasks)
+.. index:: ! Email (Background tasks)
+.. index:: ! Import data (Background tasks)
 
 .. rubric:: Section: Background tasks
 
 * Allows to start and stop background task is a specific threaded treatment that regularly checks for indicators to generate corresponding alerts, warnings and automatic import when needed.
 
+
+.. index:: ! Alert (Send)
+
 .. rubric:: Section: Send an internal alert
 
 * Allows to send an internal alert to users.
+
+.. index:: ! Connection (Management)
 
 .. rubric:: Section: Manage connections
 
 * Allows to force disconnection of active users and close the application for new connections.
 
-.. topic:: Users disconnection
+ .. compound:: **Button: Disconnect all users**
 
-   * Allows to disconnect all connected users except your own connection.
+    * Allows to disconnect all connected users except your own connection.
+    * The application status is displayed below.
 
-   .. note::
+    .. note::
 
-      * Disconnection will be effective for each user when his browser will ckeck for alerts to be displayed.
- 
-      * Delay for the effective disconnection of users will depend on the parameter “delay (in second) to check alerts” in :ref:`administration-global-parameters-label`.
+       * Disconnection will be effective for each user when his browser will ckeck for alerts to be displayed.
+       * The delay for the effective disconnection of users will depend on the parameter “delay (in second) to check alerts” in :ref:`Global parameters<automated-service>` screen.
+
+ .. compound:: **Button: Open/Close application**
+
+    * Allows to open and close application.
+    * When the application is closed the message below will appear on login screen.
 
 
-.. topic:: Open and close application.
-
-   * Allows to open and close application.
-   * When the application is closed the closed message will appear on login screen. 
+.. index:: ! Email (Maintenance of Data)
+.. index:: ! Alert (Maintenance of Data)
+.. index:: ! Connection (Maintenance of Data)
 
 .. rubric:: Section: Maintenance of Data
  
-* Administrator has the possibility to :
+* The administrator has the possibility to:
 
   * Close and delete sent emails and alerts. 
-  * Delete connections history log. 
-  * Update reference for any kind of element.  
+  * Delete history of connections. 
+  * Updating references for any kind of element.
+
+.. index:: ! Log file (Maintenance)   
 
 .. rubric:: Section: Log files maintenance
 
-* Administrator has the possibility to :
+* The administrator has the possibility to:
   
   * Delete old log files.
   * Show the list and specific log file.
 
 .. index:: ! Audit connections
+.. index:: ! Connection (Audit)
+
+.. _audit-connections:
 
 Audit connections
 -----------------
 
 * Audit connection proposes a view of “who is online”.
 
-* Administrator has the possibility to force the disconnection of any user (except his own current connection).
+.. note::
+
+   * The administrator has the possibility to force the disconnection of any user (except his own current connection), see: :ref:`admin-console`.
 
 .. raw:: latex
 
@@ -81,7 +98,7 @@ Audit connections
 
 .. index:: ! Global parameters
 
-.. _administration-global-parameters-label:
+.. _global-parameters:
 
 Global parameters
 -----------------
@@ -92,6 +109,10 @@ Global parameters screen allows configuration of application settings.
 
    * Moving the mouse over the caption of a parameter will display a tooltip with more description about the parameter.
 
+.. index:: ! Daily work hours (Parameters)
+
+.. _daily-work-hours-section:
+
 .. rubric:: Section: Daily work hours
 
 * Definition of regular “work hours”.
@@ -100,27 +121,32 @@ Global parameters screen allows configuration of application settings.
 
 
 
+.. index:: ! Real work allocation (Unit for work)
+.. index:: ! Workload (Unit form work)
 
+.. _unitForWork-section:
 
 .. rubric:: Section: Units for work
 
-.. topic:: Fields: Unit for real work allocation and for all work data
+* The parameters to real work allocation and workload.
 
-   * Definition of the unit can be in days or hours.
+ .. compound:: **Fields: Unit for real work allocation and for all work data**
 
-   .. note::
+    * Definition of the unit can be in days or hours.
+
+    .. note::
      
-      * If both values are different, rounding errors may occur.
-      * Remember that data is always stored in days.   
-      * Duration will always be displayed in days, whatever the workload unit. 
+       * If both values are different, rounding errors may occur.
+       * Remember that data is always stored in days.   
+       * Duration will always be displayed in days, whatever the workload unit. 
 
-.. topic:: Field: Number of hours per day
+ .. compound:: **Number of hours per day**
 
-   * Allows to set number of hours per day.
+    * Allows to set number of hours per day.
 
-.. topic:: Field: Max days to book work
+ .. compound:: **Max days to book work**
 
-   * Allows to set a max of days resource can enter real work without receiving an alert. 
+    * Allows to set a max of days resource can enter real work without receiving an alert. 
 
 
 
@@ -129,71 +155,105 @@ Global parameters screen allows configuration of application settings.
 
 * Specific parameters about Gantt planning presentation.
 
-.. topic:: Field: Show resource in Gantt
+ .. compound:: **Show resource in Gantt**
 
-   * Select if the resource can be displayed in a Gantt chart, and format for display : name or initials.
+    * Select if the resource can be displayed in a Gantt chart, and format for display (name or initials).
 
-.. topic:: Field: Max projects to display 
+ .. compound:: **Max projects to display**
 
-   * Select max project to display (to avoid performance issue).
+    * Defines maximum number of projects to display.
+    * To avoid performance issues.
 
-.. topic:: Field: Print Gantt with 'old style' format
+ .. compound:: **Print Gantt with 'old style' format**
 
-   * Propose possibility to display “old style” Gantt : may cause performance issue, but could fix some display issue on browsers.
+    * Propose possibility to display “old style” Gantt.
+    * May cause performance issues, but could fix some display issue on browsers.
 
-.. topic:: Field: Consolidate validated work & cost
+ .. compound:: **Consolidate validated work & cost**
 
-   * Select if validated work & cost are consolidated on top activities and projects :
+    * Select if validated work & cost are consolidated on top activities and projects :
   
-     * Never : Not consolidate
-     * Always : Consolidate value replace value set of activities and project.
-     * Only is set : Consolidate value don't replace value set of activities and project.
+      * **Never** : Not consolidate
+      * **Always** : Values are replaced on activities and project.
+      * **Only is set** : Replaces values, only if not already set. 
 
-.. topic:: Field: Apply strict mode for dependencies
+ .. compound:: **Apply strict mode for dependencies**
 
-   * If no, a task can begin the same day as the preceding one.
+    * Defines if a task can begin the same day as the preceding one.
  
 
 
+.. index:: ! Real work allocation (Behavior)
 
-
+.. _realWorkAllocation-section:
 
 .. rubric:: Section: Real work allocation
 
-* Behavior of real work allocation screen, to define displayed tasks, and set handled status on first real work.
+* Defines behavior of tasks in the real work allocation screen.
 
-.. topic:: Field: Display only handled tasks
+ .. compound:: **Display only handled tasks**
 
-   * Select if only task with handled status is displayed.
+    * Display only tasks with "handled" status.
 
-.. topic:: Field: Set to first 'handled' status 
+ .. compound:: **Set to first 'handled' status**
 
-   * [Besoin d'explication]
+    * Change status of the task to the first "handled" status when  real work is entered.
+
+ .. compound:: **Set to first 'done' status**
+
+    * Change status of the task to the first "done" status when no left work remains.
 
 
+.. _responsible-section:
 
 .. rubric:: Section: Responsible
 
-Behavior about management of responsible, including automatic initialization of responsible.
+* Behavior about management of responsible, including automatic initialization of responsible.
+
+ .. compound:: **Auto set responsible if single resource**
+
+    * Automatically set responsible if not set and only one resource if affected to the project.
+
+ .. compound:: **Auto set responsible if needed**
+
+    * Automatically set responsible to current resource if not set and the responsible is required (depending on status).
+
+ .. compound:: **Only responsible works on ticket**
+
+    * Only responsible can enter some real work on the ticket.
+
+
+
+.. _user-password-section:
 
 .. rubric:: Section: User and password
 
-Security constraints about users and passwords.
+* Security constraints about users and passwords.
+
+.. _ldap-management-section:
 
 .. rubric:: Section: Ldap management parameters
 
-Information about LDAP connection and behavior on creation of new user from LDAP connection.
+* Information about LDAP connection and behavior on creation of new user from LDAP connection.
+
+.. _format-reference-numbering-section:
 
 .. rubric:: Section: Format for reference numbering
 
-Global parameters for reference formatting :
+* Allows to define reference formats for items of element, documents and bills.
 
-* Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
+ .. compound:: **Reference format for items of element**
 
-Global parameters for Document reference formatting :
+    *
 
-* format : can contain {PROJ} for project code, {TYPE} for type code, {NUM} for number as computed for reference, and {NAME} for document name.
-* Suffix : can contain {VERS} for version name.
+ .. compound:: **Global parameters for reference formatting**
+
+    * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
+
+ .. compound:: **Global parameters for document reference formatting**
+
+    * format : can contain {PROJ} for project code, {TYPE} for type code, {NUM} for number as computed for reference, and {NAME} for document name.
+    * Suffix : can contain {VERS} for version name.
 
 .. rubric:: Section: Localization
 
@@ -209,11 +269,17 @@ Miscellaneous parameters :
 
 * Memory limit for PDF generation.
 
+
+.. _global-display-section:
+
 .. rubric:: Section: Display
 
 * Selection of graphic interface behavior and generic display parameter for users.
 
 * Icon size are default : user can overwrite these values
+
+
+.. _file-directory-section:
 
 .. rubric:: Section: Files and Directories
 
@@ -227,6 +293,8 @@ Definition of directories and other parameters used for Files management.
   
    Must be kept in web reach.
 
+.. _document-section:
+
 .. rubric:: Section: Document
 
 Definition of directories and other parameters used for Documents management.
@@ -235,10 +303,9 @@ Definition of directories and other parameters used for Documents management.
 
    Should be set out of web reach. 
 
+-----------------------
 
-.. rubric:: Section: Billing
-
-Billing parameters, used to format bill number.
+.. _automated-service:
 
 .. rubric:: Section: Management of automated service (CRON)
 
@@ -276,9 +343,33 @@ Parameters for the “Cron” process.
    
       * Ex: to connect to GMAIL input box, host must be: {imap.gmail.com:993/imap/ssl}INBOX
 
+.. _automatic-import:
+
+.. rubric:: Automatic import
+
+.. topic:: Field: Automatic import cron delay
+
+   *
+
+.. topic:: Field: Directory of automated integration files
+
+   *
+
+.. topic:: Field: Log destination
+
+   * 
+
+.. topic:: Field: Mailing list for logs
+
+   *
+
+------------------------
+
 .. rubric:: Section: Emailing
 
 Parameters to allow the application to send emails.
+
+.. _mail-titles:
 
 .. rubric:: Section: Mail titles
 

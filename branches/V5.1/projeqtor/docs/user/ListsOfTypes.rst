@@ -2,61 +2,62 @@
 
     \newpage
 
-
-.. contents:: Lists of types
+.. contents::
    :depth: 1
    :backlinks: top
-   :local:
 
 .. title:: Lists of types
 
+.. raw:: latex
 
-.. index:: ! Project - type
+    \newpage
 
-.. _project-type-label:
+.. index:: ! Project (Type)
 
-Project type
-------------
+.. _project-type:
+
+Projects types
+--------------
 
 Project type is a way to define common behavior on group of projects.
 
-Some important behavior will depend on code :
 
-.. index:: project operational
+.. glossary::
 
-.. rubric:: OPE : Operational project
+   Code of the project type
 
-Most common project to follow activity.
+      * Some important behavior will depend on code of the project type.
 
-.. index:: project administrative
+      **OPE** : Operational project
 
-.. rubric:: ADM : Administrative project
+          * Most common project to follow activity.
 
-Type of project to follow non productive work : holidays, sickness, training, …
-Every resource will be able to enter some real work on such projects, without having to be affected to the project, nor assigned to project activities.
-Assignments to all project task will be automatically created for users to enter real work.
+          .. note::
 
-.. index:: project template
-.. rubric:: TMP : Template project 
+             All new types are created with **OPE** code.
 
-These projects will not be used to follow some work.
-They are just designed to define templates, to be copied as operational projects.
-Any project leader can copy such projects, without having to be affected to them.
+      **ADM** : Administrative project
 
-.. note::
+          * Type of project to follow non productive work : holidays, sickness, training, …
+          * Every resource will be able to enter some real work on such projects, without having to be affected to the project, nor assigned to project activities.
+          * Assignments to all project task will be automatically created for users to enter real work.
 
-   All new types are created with **OPE** code.
+      **TMP** : Template project 
+
+          * These projects will not be used to follow some work.
+          * They are just designed to define templates, to be copied as operational projects.
+          * Any project leader can copy such projects, without having to be affected to them.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -67,53 +68,13 @@ Any project leader can copy such projects, without having to be affected to them
    * - **Name**
      - Name of the type.
    * - Code
-     - Code of the type.
+     - :term:`Code of the project type`.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - Billing type
-     - Will define billing behavior (see: :ref:`bill-billing-type-label`).
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
-   * - Description
-     - Description of the type.
-
-**\* Required field**
-
-
-.. index:: ! Ticket - type
-
-Ticket type
------------
-
-Ticket type is a way to define common behavior on group of tickets.
-
-.. sidebar:: Other sections
-
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table::
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the type.
-   * - **Name**
-     - Name of the type.
-   * - Code
-     - Code of the type.
-   * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
-   * - Sort order
-     - Number to define order of display in lists.
+     - Will define billing behavior (see: :term:`Billing types`).
    * - :term:`Closed`
      - Flag to indicate that type is archived.
    * - Description
@@ -126,23 +87,26 @@ Ticket type is a way to define common behavior on group of tickets.
 
     \newpage
 
-.. index:: ! Activity - type
 
-Activity type
+.. index:: ! Ticket (Type)
+
+.. _ticket-type:
+
+Tickets types
 -------------
 
-Activity type is a way to define common behavior on group of activities.
+Ticket type is a way to define common behavior on group of tickets.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -155,7 +119,7 @@ Activity type is a way to define common behavior on group of activities.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -166,23 +130,26 @@ Activity type is a way to define common behavior on group of activities.
 **\* Required field**
 
 
-.. index:: ! Milestone - type
 
-Milestone type
---------------
+.. index:: ! Activity (Type)
 
-Milestone type is a way to define common behavior on group of milestones.
+.. _activity-type:
+
+Activities types
+----------------
+
+Activity type is a way to define common behavior on group of activities.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -195,7 +162,53 @@ Milestone type is a way to define common behavior on group of milestones.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+.. raw:: latex
+
+    \newpage
+
+
+.. index:: ! Milestone (Type)
+
+.. _milestone-type:
+
+Milestones types
+----------------
+
+Milestone type is a way to define common behavior on group of milestones.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table:: Description section fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -206,27 +219,27 @@ Milestone type is a way to define common behavior on group of milestones.
 **\* Required field**
 
   
-.. raw:: latex
 
-    \newpage
 
-.. index:: ! Quotation - type
+.. index:: ! Quotation (Type)
 
-Quotation type
---------------
+.. _quotation-type:
+
+Quotations types
+----------------
 
 Quotation type is a way to define the way the concerned activity should be billed.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -239,7 +252,7 @@ Quotation type is a way to define the way the concerned activity should be bille
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -250,23 +263,29 @@ Quotation type is a way to define the way the concerned activity should be bille
 **\* Required field**
 
 
-.. index:: ! Order - type
+.. raw:: latex
 
-Order type
-----------
+    \newpage
+
+.. index:: ! Order (Type)
+
+.. _order-type:
+
+Orders types
+------------
 
 Order type is a way to define the way the activity references by the order will be billed.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -279,7 +298,7 @@ Order type is a way to define the way the activity references by the order will 
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -290,27 +309,27 @@ Order type is a way to define the way the activity references by the order will 
 **\* Required field**
 
 
-.. raw:: latex
 
-    \newpage
 
-.. index:: ! Individual expense - type
+.. index:: ! Expense (Individual expense type)
 
-Individual expense type
------------------------
+.. _individual-expense-type:
+
+Individual expenses types
+-------------------------
 
 Individual expense type is a way to define common behavior on group of individual expense.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -321,45 +340,7 @@ Individual expense type is a way to define common behavior on group of individua
    * - **Name**
      - Name of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
-   * - Sort order
-     - Number to define order of display in lists.
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
-   * - Description
-     - Description of the type.
-
-**\* Required field**
-
-
-.. index:: ! Project expense - type
-
-Project expense type
---------------------
-
-Project expense type is a way to define common behavior on group of project expense.
-
-.. sidebar:: Other sections
-
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table::
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the type.
-   * - **Name**
-     - Name of the type.
-   * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -373,22 +354,67 @@ Project expense type is a way to define common behavior on group of project expe
 
     \newpage
 
-.. index:: ! Expense detail - type
+.. index:: ! Expense (Project expense type)
 
-Expense detail type
--------------------
+.. _project-expense-type:
 
-Expense detail type is a way to define common behavior and calculation mode on group of expense details.
+Project expenses types
+----------------------
+
+Project expense type is a way to define common behavior on group of project expense.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Expense (Detail type)
+
+.. _expense-detail-type:
+
+Expenses details types
+----------------------
+
+Expense detail type is a way to define common behavior and calculation mode on group of expense details.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -419,7 +445,7 @@ Expense detail type is a way to define common behavior and calculation mode on g
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Scope section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -434,23 +460,25 @@ Expense detail type is a way to define common behavior and calculation mode on g
 
     \newpage
 
-.. index:: ! Bill - type
+.. index:: ! Bill (Type)
 
-Bill type
----------
+.. _bill-type:
+
+Bills types
+-----------
 
 Bill type is a way to define common behavior on group of bills.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -463,7 +491,7 @@ Bill type is a way to define common behavior on group of bills.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -474,23 +502,25 @@ Bill type is a way to define common behavior on group of bills.
 **\* Required field**
 
 
-.. index:: ! Risk - type
+.. index:: ! Risk (Type)
 
-Risk type
----------
+.. _risk-type:
+
+Risks types
+-----------
 
 Risk type is a way to define common behavior on group of risks.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -503,7 +533,7 @@ Risk type is a way to define common behavior on group of risks.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -518,23 +548,25 @@ Risk type is a way to define common behavior on group of risks.
     \newpage
 
 
-.. index:: ! Opportunity - type
+.. index:: ! Opportunity (Type)
 
-Opportunity type
-----------------
+.. _opportunity-type:
+
+Opportunities types
+-------------------
 
 Opportunity type is a way to define common behavior on group of opportunities.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -547,7 +579,7 @@ Opportunity type is a way to define common behavior on group of opportunities.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -560,23 +592,25 @@ Opportunity type is a way to define common behavior on group of opportunities.
 
 
 
-.. index:: ! Action - type
+.. index:: ! Action (Type)
 
-Action type
------------
+.. _action-type:
+
+Actions types
+-------------
 
 Action type is a way to define common behavior on group of actions.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -589,7 +623,7 @@ Action type is a way to define common behavior on group of actions.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -603,23 +637,25 @@ Action type is a way to define common behavior on group of actions.
 
     \newpage
 
-.. index:: ! Issue - type
+.. index:: ! Issue (Type)
 
-Issue type
------------
+.. _issue-type:
+
+Issues types
+------------
 
 Issue type is a way to define common behavior on group of issues.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -632,7 +668,7 @@ Issue type is a way to define common behavior on group of issues.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -644,25 +680,28 @@ Issue type is a way to define common behavior on group of issues.
 
 
 
-.. index:: ! Meeting - type
+.. index:: ! Meeting (Type)
 
-Meeting type
-------------
+.. _meeting-type:
+
+Meetings types
+--------------
 
 Meeting type is a way to define common behavior on group of meetings.
 
-Meeting type is also used for periodic meetings definition.
+.. note::
+   * Meeting type is also used for periodic meetings definition.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -675,7 +714,7 @@ Meeting type is also used for periodic meetings definition.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -690,23 +729,25 @@ Meeting type is also used for periodic meetings definition.
 
     \newpage
 
-.. index:: ! Decision - type
+.. index:: ! Decision (Type)
 
-Decision type
--------------
+.. _decision-type:
+
+Decisions types
+---------------
 
 Decision type is a way to define common behavior on group of decisions.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -719,7 +760,7 @@ Decision type is a way to define common behavior on group of decisions.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -733,23 +774,25 @@ Decision type is a way to define common behavior on group of decisions.
 
 
 
-.. index:: ! Question - type
+.. index:: ! Question (Type)
 
-Question type
--------------
+.. _question-type:
 
-Ticket type is a way to define common behavior on group of tickets.
+Questions types
+---------------
+
+Question type is a way to define common behavior on group of questions.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -762,7 +805,7 @@ Ticket type is a way to define common behavior on group of tickets.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -776,23 +819,25 @@ Ticket type is a way to define common behavior on group of tickets.
 
     \newpage
 
-.. index:: ! Message - type
+.. index:: ! Message (Type)
 
-Message type
-------------
+.. _message-type:
+
+Messages types
+--------------
 
 Message type is a way to define common behavior on group of messages (appearing on today screen).
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -816,23 +861,25 @@ Message type is a way to define common behavior on group of messages (appearing 
 
 
 
-.. index:: ! Document - type
+.. index:: ! Document (Type)
 
-Document type
--------------
+.. _document-type:
 
-Document type is a way to define common behavior on group documents.
+Documents types
+---------------
+
+Document type is a way to define common behavior on group of documents.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -845,7 +892,7 @@ Document type is a way to define common behavior on group documents.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -859,14 +906,16 @@ Document type is a way to define common behavior on group documents.
 
     \newpage
 
-.. index:: ! Context - type
+.. index:: ! Context (Type)
 
-Context type
-------------
+.. _context-type:
+
+Contexts types
+--------------
 
 Context type is defining a fixed list of environmental context to describe ticket or test case.
 
-Only three context types exist, corresponding to the three selectable fields in ticket or test case.
+Only three context types exist, corresponding to the three selectable fields.
 
 .. note::
 
@@ -878,13 +927,13 @@ Only three context types exist, corresponding to the three selectable fields in 
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -903,23 +952,25 @@ Only three context types exist, corresponding to the three selectable fields in 
 
 
 
-.. index:: ! Requirement - type
+.. index:: ! Requirement (Type)
 
-Requirement type
-----------------
+.. _requirement-type:
+
+Requirements types
+------------------
 
 Requirement type is a way to define common behavior on group of requirements.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -932,7 +983,7 @@ Requirement type is a way to define common behavior on group of requirements.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -946,23 +997,25 @@ Requirement type is a way to define common behavior on group of requirements.
 
     \newpage
 
-.. index:: ! Test case - type
+.. index:: ! Test case (Type)
 
-Test case type
---------------
+.. _test-case-type:
+
+Test cases types
+----------------
 
 Test case type is a way to define common behavior on group of test cases.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -975,7 +1028,7 @@ Test case type is a way to define common behavior on group of test cases.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -988,23 +1041,25 @@ Test case type is a way to define common behavior on group of test cases.
 
 
 
-.. index:: ! Test session - type
+.. index:: ! Test session (Type)
 
-Test session type
------------------
+.. _test-session-type:
+
+Test sessions types
+-------------------
 
 Test session type is a way to define common behavior on group of test sessions.
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -1017,7 +1072,7 @@ Test session type is a way to define common behavior on group of test sessions.
    * - Code
      - Code of the type.
    * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`ctrlAuto-workflow-label`).
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -1031,23 +1086,25 @@ Test session type is a way to define common behavior on group of test sessions.
 
     \newpage
 
-.. index:: ! Customer - type
+.. index:: ! Customer (Type)
 
-Customer type
--------------
+.. _customer-type:
+
+Customers types
+---------------
 
 Customer type is a way to define different status of customers  (prospects or clients).
 
 .. sidebar:: Other sections
 
-   * :ref:`LOT-Behavior-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -1067,44 +1124,42 @@ Customer type is a way to define different status of customers  (prospects or cl
 **\* Required field**
 
 
-.. _LOT-Behavior-label:
+.. raw:: latex
 
-Section: Behavior
------------------
-
-Allows to determine some GUI behavior, according to the type of element.
-
-.. topic:: Description, Comments
-
-   * This field allows to fill a specific detail on an item.  
-   * Depending on the type of element, name of field can be different. 
-   * Flag on defining that field is mandatory.
-  
-
-.. topic:: Responsible
-
-   * This field allows to select a resource responsible who took over item. 
-   * Flag on defining that field is mandatory when the handled status is on.
-
-.. topic:: Result 
-
-   * This field allows to fill a result of an item has been treated.  
-   * Flag on defining that field is mandatory when the done status is on.
-
-.. topic:: Flags status (handled, done, closed et canceled)
-
-   * Allows to determine whether flags status are locked or not.
-   * When a flag status is locked, move to this status through status change. 
+    \newpage
 
 
+.. _behavior-section:
+
+Behavior section
+----------------
+
+* This section is common to several element types.
+* Allows to determine some GUI behavior, according to element types.
+
+.. note::
+ 
+   * Depending on the element type the following fields can be displayed.
 
 
+.. rubric:: :term:`Description` or Comments
 
+* This field allows to define that description field to this element type is mandatory.  
 
+.. rubric:: :term:`Responsible`
 
+* This field allows to define that responsible field to this element type is mandatory when the status to treatment of an item is handled.  
 
+.. rubric:: :term:`Result`
 
+* This field allows to define that result field to this element type is mandatory when the status to treatment of an item is done.  
 
+ 
+.. rubric:: Flag status
 
+* Those fields allow to determine whether flags status are locked or not.
+* When a flag status is locked, move to this status through status change.
 
+.. rubric:: Show in flash report
 
+* [To complete]

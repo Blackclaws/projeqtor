@@ -1,174 +1,152 @@
+.. |iconNotPlanned| image:: images/iconNotPlanned32.png
+   :alt: Icon not planned
+
+.. |iconPlanned| image:: images/iconPlanned32.png
+   :alt: Icon planned
+
+.. |iconPassed| image:: images/iconPassed32.png
+   :alt: Icon passed
+
+.. |iconFailed| image:: images/iconFailed32.png
+   :alt: Icon failed
+
+.. |iconBlocked| image:: images/iconBlocked32.png
+   :alt: Icon blocked
+
 .. |buttonAdd| image:: images/smallButtonAdd.png
    :alt: Button add
-   :scale: 75
 
 .. |buttonEdit| image:: images/smallButtonEdit.png
    :alt: Button edit
-   :scale: 75
 
 .. |buttonRemove| image:: images/smallButtonRemove.png
    :alt: Button remove
-   :scale: 75
-
-.. |buttonRemoveOld| image:: images/smallButtonRemoveOld.png
-   :alt: Button old remove 
-   :scale: 75
 
 .. |buttonIconView| image:: images/iconView.png
    :alt: Button icon view 
-   :scale: 75
 
 .. |iconGoto| image:: images/iconGoto.png
    :alt: Button icon goto 
-   :scale: 75
 
 .. |iconSave| image:: images/iconSave.png
    :alt: Button icon save 
-   :scale: 75
 
 .. |iconPrint| image:: images/iconPrint.png
    :alt: Button icon print
-   :scale: 90
-
 
 .. |iconLink| image:: images/smallButtonLink.png
-   :alt: Button button link 
-   :scale: 75
+   :alt: Icon link
 
 .. |iconDownload| image:: images/smallButtonDownload.png
-   :alt: Button button download 
-   :scale: 75
+   :alt: Icon download 
 
 .. |iconSwitch| image:: images/smallButtonSwitch.png
    :alt: Button small button switch 
-   :scale: 75
-
 
 .. |buttonIconHelp| image:: images/iconHelp.png
    :alt: Button icon help 
-   :scale: 90
 
 .. |Note| image:: images/note.png
    :alt: Note 
-   :scale: 90
+
+.. |Description| image:: images/description.png
+   :alt: Icon description 
+
+.. |Prerequisite| image:: images/prerequisite.png
+   :alt: Icon prerequisite 
+
+.. |Result| image:: images/result.png
+   :alt: Icon result 
 
 .. |buttonIconParameter| image:: images/iconParameter32.png
-   :alt: Button icon parameter
-   :scale: 50 
-
-.. |buttonIconCheckListDef| image:: images/iconChecklistDefinition32.png
-   :alt: Button icon checklist definition
-   :scale: 75
+   :alt: Button icon parameter 
 
 .. |buttonIconDocDir| image:: images/iconDocumentDirectory32.png
    :alt: Button icon document directory
-   :scale: 75
 
 .. |buttonIconToday| image:: images/iconToday32.png
    :alt: Button icon Today
-   :scale: 75
 
 .. |buttonIconDisplay| image:: images/display.png
    :alt: Button icon display
-   :scale: 75
-
 
 .. |buttonIconSearch| image:: images/buttonIconSearch.png
    :alt: Button icon search
-   :scale: 75
 
 .. |buttonIconActiveFilter| image:: images/iconActiveFilter.png
    :alt: Button icon active filter
-   :scale: 75
 
 .. |buttonIconDrag| image:: images/iconDrag.png
    :alt: Button icon drag
-   :scale: 80
-
 
 .. |buttonIconFilter| image:: images/iconFilter.png
    :alt: Button icon filter
-   :scale: 75
 
 .. |comboArrowDown| image:: images/comboArrowDown.png
    :alt: Button combo arrow down
-   :scale: 75
 
 .. |buttonIconColumn| image:: images/buttonIconColumn.png
    :alt: Button icon column
-   :scale: 75
 
 .. |buttonIconPrint| image:: images/buttonIconPrint.png
    :alt: Button icon print
-   :scale: 75
 
 .. |buttonIconPdf| image:: images/buttonIconPdf.png
    :alt: Button icon PDF
-   :scale: 75
 
-.. |buttonIconCsv| image:: images/buttonIconCsv.png
+.. |buttonIconCsv| image:: images/buttonIconCSV.png
    :alt: Button icon CSV
-   :scale: 75
 
 .. |buttonIconNew| image:: images/buttonIconNew.png
    :alt: Button icon new
-   :scale: 75
 
 .. |buttonIconSave| image:: images/buttonIconSave.png
    :alt: Button icon save
-   :scale: 75
 
 .. |buttonIconCopy| image:: images/buttonIconCopy.png
    :alt: Button icon copy
-   :scale: 75
 
 .. |buttonIconUndo| image:: images/buttonIconUndo.png
    :alt: Button icon undo
-   :scale: 75
 
 .. |buttonIconDelete| image:: images/buttonIconDelete.png
    :alt: Button icon delete
-   :scale: 75
 
 .. |buttonIconRefresh| image:: images/buttonIconRefresh.png
    :alt: Button icon refresh
-   :scale: 75
 
 .. |buttonIconEmail| image:: images/buttonIconEmail.png
    :alt: Button icon email
-   :scale: 75
 
 .. |buttonIconMultipleUpdate| image:: images/buttonIconMultipleUpdate.png
    :alt: Button icon multiple update
-   :scale: 75
 
 .. |buttonIconBackNavigation| image:: images/buttonIconBackNavigation.png
    :alt: Button icon back navigation
-   :scale: 75
 
 .. |buttonIconForwardNavigation| image:: images/buttonIconForwardNavigation.png
    :alt: Button icon forward navigation
-   :scale: 75
 
 .. |buttonIconSelect| image:: images/buttonIconSelect.png
    :alt: Button icon select
-   :scale: 75
-
+ 
 .. |buttonIconShowHistory| image:: images/buttonIconShowHistory.png
    :alt: Button icon show history
-   :scale: 75
 
 .. |buttonIconShowChecklist| image:: images/buttonIconShowChecklist.png
    :alt: Button icon show checklist
-   :scale: 75
+
+.. |yes| image:: images/buttonIconSelect.png
+   :alt: Yes icon
+
+.. |no| image:: images/buttonIconDelete.png
+   :alt: No icon
 
 .. |arrowLeft| image:: images/left.png
    :alt: Arrow left
-   :scale: 75
 
 .. |arrowRight| image:: images/right.png
    :alt: Arrow right
-   :scale: 75
 
 .. |one| image:: images/one.png
    :alt: One
@@ -181,7 +159,7 @@
 .. |three| image:: images/three.png
    :alt: Three
    :scale: 30
-   
+
 .. |four| image:: images/four.png
    :alt: Four
    :scale: 30

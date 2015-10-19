@@ -4,7 +4,6 @@
 
     \newpage
 
-
 .. contents:: Bill
    :depth: 2
    :backlinks: top
@@ -12,28 +11,77 @@
 
 .. title:: Bill
 
-.. index:: ! Bill 
+.. index:: ! Bill
 
-Bill
-----
+.. _bill:
+
+Bills
+-----
 
 A bill is a request for payment for delivered work.
 
-Billing will depend on billing type defined for the bill.
+Billing will depend on billing type defined for the project.
 
-Each bill is linked to project, a project has a project type, and a project type is linked to a billing type.
+---------------
 
-So billing type is automatically defined from selected project. 
+.. glossary::
+
+   Billing types
+
+----------------
+
+    Each bill is linked to project, a project has a project type, and a project type is linked to a billing type.
+    
+    So the billing type is automatically defined for the selected project. 
+    
+    Billing type will influence bill line format.
+
+----------------
+
+    **At terms**
+
+    * A :ref:`term <term>` must be defined to generate the bill, generally following a billing calendar.
+    * Used for instance for: **Fixed price projects**.
+
+    **On produced work**
+
+    * No term is needed.
+    * The billing will be calculated based on produced work for resources on selected :ref:`activities <activity-price>`, on a selected period.
+    * Used, for instance for: **Time & Materials projects**.
+
+    **On capped produced work**
+
+    * No term is needed.
+    * The billing will be calculated based on produced work for resources on selected :ref:`activities <activity-price>`, on a selected period. 
+
+    * Used, for instance for: **Capped Time & Materials projects**.
+
+    .. note::
+
+       * Taking into account that total billing cannot be more than project validated work.
+
+    **Manual**
+ 
+    * Billing is defined manually, with no link to the project activity.
+    * Used, for instance for: **Any kind of project where no link to activity is needed**.
+
+    **Not billed**
+
+    * No billing is possible for these kinds of projects.
+    * Used, for instance for: **Internal projects & Administrative projects**.
+
+---------------
+
+.. raw:: latex
+
+    \newpage
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -53,6 +101,8 @@ So billing type is automatically defined from selected project.
      - Type of bill.
    * - **Project**
      - The project concerned by the bill.
+   * - Date
+     - Date of the bill.
    * - Customer
      - Customer who will pay for the bill.
    * - Bill contact
@@ -62,26 +112,17 @@ So billing type is automatically defined from selected project.
    * - :term:`Origin`
      - Element which is the origin of the bill.
    * - Billing type
-     - Type of billing **(Read only)**.
+     - Project billing type.
 
 **\* Required field**
 
-.. topic:: Field: Bill type
-
-   * Default types of bill are :
+.. topic:: Fields: Customer & Bill contact 
      
-     * Partial  
-     * Final
-     * Complete
+   * Automatically updated from project fields.
 
-.. topic:: Field: Customer  
-     
-   * Automatically updated from project customer.
+.. raw:: latex
 
-.. topic:: Field: Billing type  
-     
-   * Calculated from project, project type, billing type.
-   * Will influence bill lines format.
+    \newpage
 
 .. rubric:: Section: Treatment
 
@@ -93,55 +134,190 @@ So billing type is automatically defined from selected project.
 
    * - Field
      - Description
-   * - Bill id
-     - Id of bill.
    * - **Status**
      - Actual :term:`status` of the bill.
    * - :term:`Done`
-     - Flag to indicate that bill has been treated.
+     - Flag to indicate that the bill has been treated.
    * - :term:`Closed`
-     - Flag to indicate that bill is archived.
+     - Flag to indicate that the bill is archived.
    * - Cancelled
-     - Flag to indicate that bill is cancelled.
+     - Flag to indicate that the bill is cancelled.
    * - Untaxed amount
-     - Amount for the bill, without taxes.
+     - Amount of the bill, without taxes.
    * - Tax
      - Tax rate.
    * - Full amount
-     - Amount for the bill, including taxes.
-   * - Comments
+     - Amount of the bill, including taxes.
+   * - :term:`Comments<Description>`
      - Comments for the bill.
 
 **\* Required field**
 
-.. topic:: Field: Bill id
+.. topic:: Field: Untaxed amount
+  
+   * The amount is the sum of bill lines.
+   * Used only for at terms and manual billing types.
 
-   * Calculated when status of bill is “done”, taking into account “start number for bill” defined in :ref:`administration-global-parameters-label`.
+.. topic:: Field: Tax
 
-**\* Required field**
+   * Automatically updated from customer field.  
+
 
 .. raw:: latex
 
     \newpage
 
-Bill lines
-^^^^^^^^^^
-
 .. rubric:: Section: Bill lines
 
 Input for each bill line depends on billing type.
 
-Click on |buttonAdd| the corresponding section to add a bill line. A “Bill line” pop up will be displayed depends on billing type. 
+.. tabularcolumns:: |l|l|
 
-Click on |buttonEdit| to modify an existing bill line.
+.. list-table:: Bill lines fields
+   :widths: 20, 80
+   :header-rows: 1
 
-Click on |buttonRemove| to delete the bill line.
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the bill line.
+   * - N°
+     - Number of the line for the bill.
+   * - Description
+     - Description of the line.
+   * - Detail
+     - Detail of the line.
+   * - Price
+     - Unitary price of billed element.
+   * - Quantity
+     - Quantity of billed element.
+   * - Sum
+     - Total price for the line (Price x Quantity).
+ 
+.. rubric:: Bill lines management
 
-.. rubric:: Fields of bill line
+* Click on |buttonAdd| to add a bill line. A different “Bill line” dialog box will be displayed depends on billing type. 
+* Click on |buttonEdit| to modify an existing bill line.
+* Click on |buttonRemove| to delete the bill line.
+
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Bill line: At terms
+
+.. figure:: /images/GUI/BOX_BillLineAtTerms.png
+   :alt: Bill line dialog box - At terms 
+   :align: center
+
+   Bill line dialog box - At terms
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Bill line dialog box fields - At terms
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - N°
+     - Number of the line for the bill.
+   * - Quantity
+     - Quantity of billed element.
+   * - **Term**
+     - Project terms to be selected.
+   * - Description
+     - Description of line.
+   * - Detail
+     - Detail of the line.
+   * - Price
+     - Real amount of term.
+
+**\* Required field**
+
+.. topic:: Field: Description
+ 
+   * Automatically set with the term name.
+   * Can be modified on update.
+
+.. topic:: Field: Detail
+
+   * Can be set on update.
+
+
+
+
+
+
+
+
+
+.. raw:: latex
+
+    \newpage
+
+
+.. rubric:: Bill line: On produced work & On capped produced work
+
+.. figure:: /images/GUI/BOX_BillLineOnProduceWork.png
+   :alt: Bill line dialog box - On produced work & On capped produced work
+   :align: center
+
+   Bill line dialog box - On produced work & On capped produced work
+
+.. list-table:: Bill line dialog box fields - On produced work & On capped produced work
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - N°
+     - Number of the line for the bill.
+   * - Quantity
+     - Not applicable.
+   * - **Resource**
+     - Project resources to be selected.
+   * - **Activity price**
+     - Project activities price to be selected.
+   * - **Start date**
+     - Start date of the period to take into account.
+   * - **End date**
+     - End date of the period  to take into account.
+   * - Description
+     - Description of line.
+   * - Detail
+     - Detail of the line.
+   * - Price
+     - Price of the activity.
+
+**\* Required field**
+
+.. topic:: Field: Description
+ 
+   * Automatically set with selected resource, activity price name and dates.
+   * Can be modified on update.
+
+.. topic:: Field: Detail
+
+   * Can be set on update.
+
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Bill line: Manual billing
+
+.. figure:: /images/GUI/BOX_BillLineManual.png
+   :alt: Bill line dialog box - Manual billing 
+   :align: center
+
+   Bill line dialog box - Manual billing
+
+.. tabularcolumns:: |l|l|
+
+.. list-table:: Bill line dialog box fields - Manual billing
    :widths: 20, 80
    :header-rows: 1
 
@@ -157,95 +333,40 @@ Click on |buttonRemove| to delete the bill line.
      - Detail of the line.
    * - Price
      - Unitary price of billed element.
-   * - Sum
-     - Total price for the line = Price x Quantity.
-   * - Term
-     - Billed term for “At terms” bill.
-   * - Resource
-     - Resource whose work is billed.
-   * - Activity price
-     - Activity price defining the billed activity type.
-   * - Start date
-     - Start date of the period to take into account work to be billed.
-   * - End date
-     - End date of the period to take into account work to be billed.
-
-.. topic:: Fields: Description & Detail
-
-   * Automatically created depending on billing type.
-   * Can be modified on update.
-
-.. topic:: Fields: Resource, Activity price, Start date et End date
-
-   * Available only on produced work and capped produced work bill.
-
-
-
-.. raw:: latex
-
-    \newpage
-
-.. index:: ! Billing type 
-
-.. _bill-billing-type-label:
-
-Billing type
-^^^^^^^^^^^^
-
-.. rubric:: At terms
-
-* A term must be defined to generate the bill, generally following a billing calendar.
-* Used for instance for: **Fixed price projects**.
-
-.. rubric:: On produced work
-
-* No term is needed, the billing will be calculated based on produced work for resources on selected activities, on a selected period.
-* Used for instance for: **Time & Materials projects**.
-
-.. rubric:: On capped produced work
-
-* No term is needed, the billing will be calculated based on produced work for resources on selected activities, on a selected period, taking into account validated work so that total billing cannot be more than validated work.
-* Used for instance for: **Capped Time & Materials projects**.
-
-.. rubric:: Manual billing
  
-* Billing is defined manually, with no link to the project activity.
-* Used for instance for: **Any kind of project where no link to activity is needed**.
-
-.. rubric:: Not billed
-
-* No billing is possible for these kinds of projects.
-* Used for instance for: **internal projects, administrative projects**
-
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Term 
+.. index:: ! Bill (Term)
 
-Term
-----
+.. _term:
+
+Terms
+-----
 
 A term is a planned trigger for billing.
 
 You can define as many terms as you wish, to define the billing calendar.
 
-.. rubric:: Activities as triggers
-
-* You may insert activities as triggers.
-* the activities that should be billed at this term.
-* This is a help (as a reminder) as the summary for activities is displayed for validated and planned amount and end date. You can then define the term amount and date corresponding to these data.
-
 .. note::
 
-   Terms are mandatory to bill “Fixed price” project.
+   * Terms are mandatory to bill “Fixed price” project.
+   * A term can be used just one time. The name bill will be displayed.
+
+.. rubric:: A term has triggers
+
+* You can link the activities that should be billed at this term.
+* A summary of activities is displayed for validated and planned amount and end date.
+* Validated and planned values play the role of reminder.
+* You can use these values to set real amount and date.
+
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -262,9 +383,9 @@ You can define as many terms as you wish, to define the billing calendar.
    * - **Name**
      - Short description of the term.
    * - **Project**
-     - The project concerned by the term.
+     - The project concerned with the term.
    * - Bill
-     - Bill name that uses these term.
+     - Bill name that uses this term.
    * - :term:`Closed`
      - Flag to indicate that term is archived
 
@@ -281,9 +402,9 @@ You can define as many terms as you wish, to define the billing calendar.
    * - Field
      - Description
    * - Real amount
-     - Defined amount for term.
+     - Defined amount for the term.
    * - Real date
-     - Defined date for term.
+     - Defined date for the term.
    * - Validated amount 
      - Sum of validated amounts of activities defined as triggers **(Read only)**.
    * - Validated date
@@ -299,30 +420,49 @@ You can define as many terms as you wish, to define the billing calendar.
 
 .. rubric:: Section: Trigger element for the term
 
-Click on |buttonAdd| the corresponding section to add a trigger. A pop up will be displayed. 
+This section allows to manage element trigger.
 
-Click on |buttonRemove| to delete the trigger.
+.. rubric:: Trigger element management
 
-.. topic:: Pop up “Add an Predecessor to element”
+* Click on |buttonAdd| to add an element trigger. 
+* Click on |buttonRemove| to delete an element trigger.
 
-   Linked element type  - Type of element to be selected.
+.. figure:: /images/GUI/BOX_AddTriggerElementToTerm.png
+   :alt: Add a trigger element to term dialog box
+   :align: center
 
-   Linked element - item selected
+   Add a trigger element to term dialog box
 
-   * Click on |buttonIconView| to search a item of element.
 
-.. index:: ! Activity Price 
+.. list-table:: Add a trigger element to term dialog box fields
+   :widths: 20, 80
+   :header-rows: 1
 
-Activity Price
---------------
+   * - Field
+     - Description
+   * - Linked element type
+     - Type of element to be selected (Activity, Meeting, Milestone, Project, Test session).
+   * - Linked element
+     - Item to be selected.
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Bill (Activity Price)
+
+.. _activity-price:
+
+Activities prices
+-----------------
 
 Activity price defines daily price for activities of a given **activity type** and a given **project**.
 
-This is used to calculate bill amount for billing type **produced work** and **capped produced work**.
+This is used to calculate a billing amount for billing type **On produced work** and **On capped produced work**.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -339,15 +479,15 @@ This is used to calculate bill amount for billing type **produced work** and **c
    * - Name
      - Short description of the activity price.
    * - **Project**
-     - The project concerned by the activity price.
+     - The project concerned with the activity price.
    * - **Activity type**
-     - Type of activities concerned by the activity price.
+     - Type of activities concerned with the activity price.
    * - Price of the activity
      - Daily price of the activities of the given activity type and the given project.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that activity price is archived
+     - Flag to indicate that activity price is archived.
 
 **\* Required field**
 

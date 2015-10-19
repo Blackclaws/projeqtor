@@ -1,38 +1,35 @@
 .. include:: ImageReplacement.txt
 
-.. raw:: latex
-
-    \newpage
-
-
-.. contents:: Product & Version
+.. contents::
    :depth: 1
    :backlinks: top
-   :local:
-
 
 .. title:: Product & Version
 
-.. index:: ! Product 
+.. index:: ! Product
 
-Product
--------
+.. _product:
 
-Product is the element de project is built for.
+Products
+--------
+
+Product is the element a project is built for.
 
 A project works on one or more versions of the product . 
 
-A product is any element delivered by the project. For IT/IS Projects, products are generally Applications.
+A product is any element delivered by the project. For IT/IS projects, products are generally applications.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -40,34 +37,16 @@ A product is any element delivered by the project. For IT/IS Projects, products 
      - Description
    * - :term:`Id`
      - Unique Id for the product.
-   * - **Real name**
-     - Name of the resource. Can contain first and last name.
-   * - User name
-     - User name.
-   * - Initials
-     - Initials of the resource.
-   * - Email address
-     - Email address of the resource. 
-   * - Profile
-     - Profile of the user.
-   * - Capacity (FTE)
-     - Capacity of the resource, in Full Time Equivalent.
-   * - Calendar
-     - Calendar defining the availability of the resource (off days).
-   * - Team
-     - The team to which the resource belongs.
-   * - Phone
-     - Phone number of the resource.
-   * - Mobile
-     - Mobile phone number of the resource.
-   * - Fax
-     - Fax number of the resource.
-   * - Is a contact
-     - Is this resource also a contact ?
-   * - Is a user
-     - Is this resource also a user ?
-
- 
+   * - **Name**
+     - Name of the product.
+   * - Designation
+     - Trade name of the product known outside the company.
+   * - Customer
+     - The customer the product should be delivered to.
+   * - Prime contractor
+     - The contact, into customer organization, who will be responsible for the product delivery.
+   * - Is sub-product of 
+     - Name of the top product if this product is a sub-product. 
    * - :term:`Closed`
      - Flag to indicate that product is archived.
    * - Description
@@ -85,9 +64,12 @@ List of the versions defined for the product.
     \newpage
 
 .. index:: ! Version 
+.. index:: ! Product (Version)
 
-Version
--------
+.. _version:
+
+Versions
+--------
 
 Version is the declination of the product life.
 
@@ -95,21 +77,19 @@ A project works on one or more versions of the product .
 
 A version of product is any stable status of the element delivered by the project.
 
-For IT/IS Projects, versions are generally Applications Versions.
+For IT/IS projects, versions are generally applications versions.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -136,7 +116,7 @@ For IT/IS Projects, versions are generally Applications Versions.
 
 .. topic:: Field: Prime contractor
      
-   * Can be different from Product prime contractor.
+   * Can be different from product prime contractor.
 
 .. topic:: Field: Entry into service
 
@@ -144,28 +124,46 @@ For IT/IS Projects, versions are generally Applications Versions.
 
 .. topic:: Field: End date
 
-   * Done is checked when real is set, corresponding to :term:`closed` version.
+   * Done is checked when real is set, corresponding to closed version.
 
+
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Section: Projects linked to this version
 
 Projects can be directly linked to version.
 
-Click |buttonAdd| on to create a new link to project. A “Project – Version link” pop up will be displayed. 
+.. rubric:: Link version to projects management
 
-Click on |buttonEdit| to update an existing link to project.
+* Click on |buttonAdd| to create a new link to project. 
+* Click on |buttonEdit| to update an existing link to project.
+* Click on |buttonRemove| to delete the corresponding link to project.
 
-Click on |buttonRemove| to delete the corresponding link to project.
 
-.. topic:: Pop up “Project – Version link”
+.. figure:: /images/GUI/BOX_ProjectVersionLink.png
+   :alt: Project - Version link dialog box
+   :align: center
 
-   Project  - Project linked to the version.
+   Project - Version link dialog box
 
-   Version - Current version.
 
-   Start date - Start date for validity of the link.
- 
-   End date - End date for validity of the link.
+.. list-table:: Project - Version link dialog box fields
+   :widths: 20, 80
+   :header-rows: 1
 
-   Closed - Flag to indicate that link is not active any more, without deleting it.
+   * - Field
+     - Description
+   * - Project
+     - Project linked to the version.
+   * - Version
+     - Current version.
+   * - Start date
+     - Start date for validity of the link.
+   * - End date
+     - End date for validity of the link.
+   * - Closed
+     - Flag to indicate that link is not active any more, without deleting it.
 

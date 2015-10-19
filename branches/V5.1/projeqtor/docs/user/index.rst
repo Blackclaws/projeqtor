@@ -33,6 +33,7 @@ This allows to bring the adjustments needed to target on the objectives of the p
 The goal of ProjeQtOr is to be Project Management Method independent. 
 Whatever your choice of the method, you can use ProjeQtOr.
 
+
 Features
 ========
 
@@ -46,6 +47,19 @@ It offers all the features needed to different Project Management actors under a
    :maxdepth: 1
    
    Features
+
+Concepts
+========
+
+This chapter defines the concepts of ProjeQtOr.
+
+They can be referred in the following chapters.
+
+.. toctree::
+   :maxdepth: 1
+
+   Concept
+
 
 Graphical user interface
 ========================
@@ -128,15 +142,6 @@ Requirements et Tests
 
    RequirementsTest
 
-Risk & Issue Management
-=======================
-
-.. toctree::
-   :maxdepth: 1
-
-   RiskIssueManagement
-
-
 Financial
 =========
 
@@ -146,6 +151,14 @@ Financial
    Expense
    Order   
    Bill
+
+Risk & Issue Management
+=======================
+
+.. toctree::
+   :maxdepth: 1
+
+   RiskIssueManagement
 
 Review logs
 ===========
@@ -162,6 +175,8 @@ Environmental parameters
    :maxdepth: 1
 
    ProductVersion
+   Affectation
+   User
    Resource
    Customer
    Recipient
@@ -192,6 +207,15 @@ Access rights
  
    AccessRights
 
+Lists of values
+===============
+
+.. toctree::
+   :maxdepth: 1
+
+   ListsOfValues
+
+
 .. _index-element-types-label:
 
 Lists of types
@@ -204,13 +228,6 @@ Every element is linked to a type, defining some mandatory data or other GUI beh
    
    ListsOfTypes
 
-Lists of values
-===============
-
-.. toctree::
-   :maxdepth: 1
-
-   ListsOfValues
 
 
 Administration

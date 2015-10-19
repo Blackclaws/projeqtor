@@ -14,7 +14,7 @@
 .. title:: Planning elements
 
 
-Planning elements are : :ref:`pe-project-label`, :ref:`pe-activity-label`, :ref:`pe-milestone-label`, :ref:`reqTest-test-session-label`, :ref:`reviewLogs-meeting-label` and :ref:`reviewLogs-periodic-meeting-label`.
+Planning elements are : :ref:`project`, :ref:`activity`, :ref:`pe-milestone-label`, :ref:`Test session <test-session>`, :ref:`meeting` and :ref:`periodic-meeting`.
 
 All previous elements can be planning, following with Gantt chart.
 
@@ -27,9 +27,9 @@ All previous elements can be planning, following with Gantt chart.
 
     \newpage
 
-.. index:: ! project 
+.. index:: ! Project 
 
-.. _pe-project-label:
+.. _project:
 
 Project
 -------
@@ -37,24 +37,18 @@ Project
 .. sidebar:: Other sections
 
    * :ref:`pe-progress-section-label`
-
-   * :ref:`pe-affectations-section-label`
-
+   * :ref:`Affectations<affectations-section>`
    * :ref:`pe-predSuces-element-section-label`
-
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Project description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -80,8 +74,8 @@ Project
      - Name of the top project if this project is a sub-project. 
    * - Sponsor
      - Name of the sponsor of the project.
-   * - Manager
-     - Name of the resource who manages the project (Project Leader).
+   * - :term:`Manager<Project manager>`
+     - Name of the resource who manages the project.
    * - Color
      - Color of the project, to be displayed in some reports.
    * - **Status**
@@ -102,7 +96,7 @@ Project
      - Flag to indicate that project is archived.
    * - Cancelled
      - Flag to indicate that project is cancelled.
-   * - Description
+   * - :term:`Description`
      - Complete description of the project.
    * - Objectives
      - Objectives of the project.
@@ -121,9 +115,9 @@ Project
 
     \newpage
 
-.. index:: ! activity 
+.. index:: ! Activity 
 
-.. _pe-activity-label:
+.. _activity:
 
 Activity
 --------
@@ -162,24 +156,18 @@ For instance, you can manage as activities :
 .. sidebar:: Other sections
 
    * :ref:`pe-assignment-section-label`
-
    * :ref:`pe-progress-section-label`
-
    * :ref:`pe-predSuces-element-section-label`
-
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Activity description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -195,11 +183,11 @@ For instance, you can manage as activities :
      - The project concerned by the activity.
    * - :term:`External reference`
      - External reference of the activity.
-   * - Requestor
+   * - :term:`Requestor`
      - Contact at the origin of the activity.
    * - :term:`Origin`
      - Element which is the origin of the activity.
-   * - Description
+   * - :term:`Description`
      - Complete description of the activity.
 
 **\* Required field**
@@ -208,7 +196,7 @@ For instance, you can manage as activities :
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Activity treatment section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -218,7 +206,7 @@ For instance, you can manage as activities :
      - Parent activity for grouping purpose. 
    * - **Status**
      - Actual :term:`status` of the activity.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the activity.
    * - :term:`Handled`
      - Flag to indicate that activity is taken into account.
@@ -230,7 +218,7 @@ For instance, you can manage as activities :
      - Flag to indicate that activity is cancelled.
    * - Target version
      - The target version of the product that will deliver the object of the activity.	
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment done on the activity. 
  
 **\* Required field**
@@ -239,7 +227,7 @@ For instance, you can manage as activities :
 
     \newpage
 
-.. index:: ! milestone
+.. index:: ! Milestone
 
 .. _pe-milestone-label:
 
@@ -266,20 +254,16 @@ Opposite to Activities, Milestones have no duration and no work.
 .. sidebar:: Other sections
 
    * :ref:`pe-predSuces-element-section-label`
-
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Milestone description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -295,7 +279,7 @@ Opposite to Activities, Milestones have no duration and no work.
      - The project concerned by the milestone.
    * - :term:`Origin`
      - Element which is the origin of the milestone.
-   * - Description
+   * - :term:`Description`
      - Long description of the milestone.
 
 **\* Required field**
@@ -305,7 +289,7 @@ Opposite to Activities, Milestones have no duration and no work.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Milestone treatment section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -315,7 +299,7 @@ Opposite to Activities, Milestones have no duration and no work.
      - Parent activity for grouping purpose. 
    * - **Status**
      - Actual :term:`status` of the milestone.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the milestone.
    * - :term:`Handled`
      - Flag to indicate that milestone is taken into account.
@@ -327,7 +311,7 @@ Opposite to Activities, Milestones have no duration and no work.
      - Flag to indicate that milestone is cancelled.
    * - Target version
      - The target version of the product that will deliver the object of the milestone.	
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment done on the milestone. 
  
 **\* Required field**
@@ -367,86 +351,7 @@ Opposite to Activities, Milestones have no duration and no work.
 Common sections
 ----------------
 
-.. _pe-affectations-section-label:
 
-Section: Affectations
-"""""""""""""""""""""
-
-The affectation defines that a Resource, or Contact or User works on a given project, and so has visibility to the given elements of the project (depending on habilitation).
-
-.. note::
-
-   * Affectation to a project will be inherited by sub-projects of that project.
-
-   * This means that resources affected to a project will also have access to the elements of the sub-projects of that project.
-
-.. sidebar:: Other sections
-   
-   * :ref:`gui-chg-history-section-label`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table::
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the affectation.
-   * - Resource Or Contact Or User
-     - Affected Resource, or contact or User.
-   * - **profile**
-     - [profile].
-   * - Project
-     - Project to affect to.
-   * - Rate
-     - Affectation rate, in percent.
-   * - Start date
-     - Start date of affectation.
-   * - End date
-     - End date of affectation.
-   * - :term:`Closed`
-     - Flag to indicate that affectation is archived.
-   * - Description
-     - Complete description of the affectation.
-
-.. topic:: Details of fields
-
-   **Resource Or Contact Or User**
-
-   * When selecting one of the three, if the selected item is also of another king, then corresponding list is automatically selected.
-   
-   * For instance, if you select Resource R1 and that this resource is also a User U1, then U1 will automatically be selected in User list. 
-
-   **Rate**
-
-   * 100% means a full time affectation.
-
-
-Affectations of user can be directly created from this screen.
-
-Click |buttonAdd| on to create a new affectation. A “add affectation” pop up will be displayed. 
-
-Click on |buttonEdit| to update an existing affectation.
-
-Click on |buttonRemove| to delete the corresponding affectation.
-
-.. topic:: Pop up "Affectation”
-
-   Project - Project the resource is affected to.
-  
-   Resource - Name of the resource.
-
-   Rate - Rate (in %) of the affectation to the project.
-
-   Start date - Start date of affectation
-
-   End date - End date of affectation
-
-   Closed - Flag to indicate that affectation in not active any more, without deleting it.
 
 
 .. raw:: latex
@@ -455,8 +360,8 @@ Click on |buttonRemove| to delete the corresponding affectation.
 
 .. _pe-assignment-section-label:
 
-Section: Assignment
-"""""""""""""""""""
+Assignment
+""""""""""
 
 Resources can be assigned to activities.
 
@@ -487,18 +392,15 @@ Click on |buttonRemove| to delete the assignment.
 
    * If real work exists for an assignment, it can not be deleted.
 
-.. figure:: /images/GUI/assignment.png
-   :scale: 60 %
-   :alt: GUI assignment Popup
+.. figure:: /images/GUI/BOX_Assignment.png
+   :alt: Assignment dialog box
    :align: center
 
-   Assignment Popup
-
-.. rubric:: Assignment Popup information
+   Assignment dialog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields Assignment Popup
+.. list-table:: Assignment dialog box fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -552,8 +454,8 @@ Click on |buttonRemove| to delete the assignment.
 
 .. _pe-progress-section-label:
 
-Section: Progress
-"""""""""""""""""
+Progress
+""""""""
 
 The progress allows to follow up planning element.
 
@@ -752,8 +654,8 @@ This section cover progress to planning element : project, activity and test ses
 
 .. _pe-predSuces-element-section-label:
 
-Sections: Predecessor and Sucessor element
-""""""""""""""""""""""""""""""""""""""""""
+Predecessor and Sucessor element
+""""""""""""""""""""""""""""""""
 
 Planning element can have predecessors and successors, to generate dependencies. 
 
@@ -768,12 +670,13 @@ Click on |buttonEdit| to edit the dependency.
 
 Click on |buttonRemove| to delete the corresponding dependency.
 
-.. figure:: /images/GUI/addPredecessorElement.png
-   :scale: 60 %
-   :alt: GUI add predecessor element Pop-up
+.. figure:: /images/GUI/BOX_PredecessorSuccessorElement.png
+   :alt: Predecessor or Successor element dialog box
    :align: center
 
-   Add predecessor element Popup
+   Predecessor or Successor element dialog box
+
+
 
 .. note:: 
 
