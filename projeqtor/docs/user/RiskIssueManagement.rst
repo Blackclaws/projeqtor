@@ -1,45 +1,37 @@
-.. raw:: latex
-
-    \newpage
-
-
-.. contents:: Risk & Issue Management
+.. contents::
    :depth: 1
    :backlinks: top
-   :local:
-
 
 .. title:: Risk & Issue Management
 
 .. index:: ! Risk 
 
-Risk
-----
+.. _risk:
+
+Risks
+-----
 
 A risk is any threat of an event that may have a negative impact to the project, and which may be neutralized, or at least minimized, through pre-defined actions.
 
-The risk management plan is a key point to Project Management :
+The risk management plan is a key point to project management :
 
+ - Identify risks and estimate their severity and likelihood.
+ - Identify mitigating actions.
+ - Identify opportunities.
+ - Follow-up actions.
+ - Identify risks that finally occur (becoming an issue).
 
- - identify risks and estimate their severity and likelihood.
+.. rubric:: Initial and planned end dates
 
- - identify mitigating actions
-
- - identify opportunities
-
- - follow-up actions
-
- - identify risks that finally occur (becoming an issue)
+* Possibility to define indicators to follow the respect of dates values.
+* See: :ref:`indicator` screen. 
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -71,15 +63,16 @@ The risk management plan is a key point to Project Management :
      - Description of the event that may trigger the risk.
    * - Impact
      - Description of the estimated impact on the project if the risk occurs.
-   * - Description
+   * - :term:`Description`
      - Complete description of the risk.
 
 **\* Required field**
 
 .. topic:: Field: Criticality
 
-   * Automatically calculated from Severity and Likelihood values.
+   * Automatically calculated from Severity and Likelihood values. See: :ref:`criticality-calculation`.
    * Value can be changed. 
+
 
 .. rubric:: Section: Treatment
 
@@ -93,7 +86,7 @@ The risk management plan is a key point to Project Management :
      - Description
    * - **Status**
      - Actual :term:`status` of the risk.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the treatment of the risk.
    * - Priority
      - Expected priority to take into account this risk.
@@ -109,10 +102,13 @@ The risk management plan is a key point to Project Management :
      - Flag to indicate that risk is archived.
    * - Cancelled
      - Flag to indicate that risk is cancelled.
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment done on the risk.  
  
 **\* Required field**
+
+
+
 
 .. raw:: latex
 
@@ -120,32 +116,27 @@ The risk management plan is a key point to Project Management :
 
 .. index:: ! Opportunity 
 
-Opportunity
------------
+.. _opportunity:
+
+Opportunities
+-------------
 
 An opportunity can be seen as a positive risk. It is not a threat but the opportunity to have a positive impact to the project.
 
-The risk management plan is a key point to Project Management :
+The risk management plan is a key point to project management :
 
- - identify risks and estimate their severity and likelihood.
-
- - identify mitigating actions
-
- - identify opportunities
-
- - follow-up actions
-
- - identify risks that finally occur (becoming an issue)
+ - Identify risks and estimate their severity and likelihood.
+ - Identify mitigating actions.
+ - Identify opportunities.
+ - Follow-up actions.
+ - Identify risks that finally occur (becoming an issue).
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -177,14 +168,14 @@ The risk management plan is a key point to Project Management :
      - Description of the event that may trigger the opportunity.
    * - Impact
      - Description of the estimated positive impact on the project.
-   * - Description
+   * - :term:`Description`
      - Complete description of the opportunity.
 
 **\* Required field**
 
 .. topic:: Field: Criticality
 
-   * Automatically calculated from Severity and Likelihood (Expected improvement) values.
+   * Automatically calculated from Severity and Likelihood (Expected improvement) values. See: :ref:`criticality-calculation`.
    * Value can be changed. 
 
 .. rubric:: Section: Treatment
@@ -199,7 +190,7 @@ The risk management plan is a key point to Project Management :
      - Description
    * - **Status**
      - Actual :term:`status` of the opportunity.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the opportunity.
    * - Priority
      - Expected priority to take into account this opportunity.
@@ -215,10 +206,42 @@ The risk management plan is a key point to Project Management :
      - Flag to indicate that opportunity is archived.
    * - Cancelled
      - Flag to indicate that opportunity is cancelled.
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment of the opportunity.  
  
 **\* Required field**
+
+
+
+.. raw:: latex
+
+    \newpage
+
+.. _criticality-calculation:
+
+Criticality value calculation
+-----------------------------
+
+Criticality value is automatically calculated from **Severity** and **Likelihood** values.
+
+Criticality, Severity and Likelihood values are defined in lists of values screens. See: :ref:`criticality`, :ref:`severity` and :ref:`likelihood` screens.
+
+In the previous screens, a name of value is set with numeric value.  
+
+Criticality numeric value is determined by a simple equation as follows:
+
+.. topic:: Equation
+
+   * [Criticality value] = [Severity value] X [Likelihood value] / 2
+   * For example:
+
+     * Critical (8) = High (4) X High (4) / 2
+
+.. rubric:: Default values
+
+* Default values are determined.
+* You can change its values while respecting the equation defined above. 
+
 
 .. raw:: latex
 
@@ -226,24 +249,29 @@ The risk management plan is a key point to Project Management :
 
 .. index:: ! Issue 
 
-Issue
------
+.. _issue:
+
+Issues
+------
 
 An issue is a problem that occurs during the project.
 
-If the Risk Management Plan has been correctly managed, issues should always be occurring identified Risks.
+If the risk Management plan has been correctly managed, issues should always be occurring identified risks.
 
 Actions must be defined to solve the issue.
 
+
+.. rubric:: Initial and planned end dates
+
+* Possibility to define indicators to follow the respect of dates values.
+* See: :ref:`indicator` screen. 
+
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -273,7 +301,7 @@ Actions must be defined to solve the issue.
      - Description of the event that led to the issue.
    * - Impact
      - Description of the impact of the issue on the project.
-   * - Description
+   * - :term:`Description`
      - Complete description of the issue.
 
 **\* Required field**
@@ -290,7 +318,7 @@ Actions must be defined to solve the issue.
      - Description
    * - **Status**
      - Actual :term:`status` of the issue.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the issue.
    * - Initial end date
      - Initially expected end date of the issue.
@@ -304,7 +332,7 @@ Actions must be defined to solve the issue.
      - Flag to indicate that issue is archived.
    * - Cancelled
      - Flag to indicate that issue is cancelled.
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment of the issue.  
  
 **\* Required field**
@@ -315,34 +343,35 @@ Actions must be defined to solve the issue.
 
 .. index:: ! Action 
 
-Action
-------
+
+.. _action:
+
+Actions
+-------
 
 An action is a task or activity that is set-up in order to :
 
- - reduce the likelihood of a risk
-
+ - Reduce the likelihood of a risk
  - or reduce the impact of a risk
-
  - or solve an issue
-
  - or build a post-meeting action plan
-
  - or just define a “to do list”.
 
 The actions are the main activities of the risk management plan.
 
 They must be regularly followed-up.
 
+.. rubric:: Initial and planned due dates
+
+* Possibility to define indicators to follow the respect of dates values.
+* See: :ref:`indicator` screen. 
+
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -364,7 +393,7 @@ They must be regularly followed-up.
      - The project concerned by the action.
    * - Priority
      - Priority requested to the treatment of the action.
-   * - Description
+   * - :term:`Description`
      - Complete description of the action.
 
 **\* Required field**
@@ -381,7 +410,7 @@ They must be regularly followed-up.
      - Description
    * - **Status**
      - Actual :term:`status` of the action.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the action.
    * - Initial end date
      - Initially expected end date of the action.
@@ -397,7 +426,7 @@ They must be regularly followed-up.
      - Flag to indicate that action is cancelled.
    * - Efficiency
      - Evaluation of the efficiency the action had on the objective (for instance on the risk mitigation).
-   * - Result
+   * - :term:`Result`
      - Complete description of the treatment of the action.  
  
 **\* Required field**

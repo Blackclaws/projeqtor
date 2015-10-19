@@ -1,24 +1,22 @@
 .. include:: ImageReplacement.txt
 
-.. raw:: latex
-
-    \newpage
-
-
-.. contents:: Controls & Automation
+.. contents::
    :depth: 1
    :backlinks: top
-   :local:
 
 
 .. title:: Controls & Automation
 
 .. index:: ! Workflow
 
-.. _ctrlAuto-workflow-label:
+.. _workflow:
 
-Workflow
---------
+Workflows
+---------
+
+.. sidebar:: Concepts 
+
+   * :ref:`profiles-definition`
 
 A workflow defines the possibility to go from one status to another one, and who (depending on profile) can do this operation for each status.
 
@@ -26,7 +24,7 @@ Once defined, a workflow can be linked to any type of any item.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -43,7 +41,7 @@ Once defined, a workflow can be linked to any type of any item.
    * - **Name**
      - Name of the workflow.
    * - Sort order
-     - Number to define order of display in lists
+     - Number to define the order of display in lists.
    * - :term:`Closed`
      - Flag to indicate that workflow is archived.
    * - Description
@@ -51,45 +49,76 @@ Once defined, a workflow can be linked to any type of any item.
 
 **\* Required field**
 
-.. note::
+.. rubric:: Button: Select status to show or hide
 
-   * The parameter button |buttonIconParameter| can be used to show or hide needed status.
+* This button |buttonIconParameter|  can be used to hide some unnecessary status.
 
+.. figure:: /images/GUI/BOX_SelectStatusToShowOrHide.png
+   :alt: Select status to show or hide dialog box
+   :align: center
+
+   Select status to show or hide dialog box
 
 .. rubric:: Section: Workflow Diagram
 
 * The workflow diagram presents a visual representation of the workflow displaying all possible transitions (independently to profile rights).
 
-.. rubric:: Section: Habilitation to change from a status to another
+.. figure:: /images/GUI/SEC_WorkflowDiagram.png
+   :alt: Workflow Diagram
+   :align: center
 
-* The habilitation table helps defining who can move from one status to another one.
-* Each line correspond to the status from which you want to be able to move.
-* Each column correspond to the status to which you want to be able to go.
-* It is not possible to go from one status to itself (these cells are blank).
-* Just check the profile (or “all”) who is allowed to pass from one status to the other.
+   Workflow Diagram
+
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Mail on event
 
-Mail on event
--------------
+.. rubric:: Section: Habilitation to change from a status to another
 
-The application is able to automatically send mails on event such as status change or responsible change.
+* The habilitation table helps defining who can move from one status to another one.
+* Each line corresponds to the status from which you want to be able to move.
+* Each column corresponds to the status to which you want to be able to go.
+* It is not possible to go from one status to itself (these cells are blank).
+* Just check the profile (or “all”) who is allowed to pass from one status to the other.
 
-This must be defined for each type of element, and each new status or other event.
+
+.. figure:: /images/GUI/SEC_HabilitationTable.png
+   :alt: Habilitation table
+   :align: center
+
+   Habilitation table
+
+   In the upper example:
+  
+   * Anyone can move an item from “recorded” to “assigned” and from “recorded” to “cancelled”.
+   * No one can move an item from “qualified” status to any other status. In this case, pay attention that it must never be possible to move an item to “qualified” status, because it will not be possible to leave this status.
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: Email (Event)
+
+.. _mail-on-event:
+
+Mails on event
+--------------
+
+The application is able to automatically send mails on updating event.
+
+Events are defined on an element and element type.
+
 
 .. note::
 
-   * The message of the mails is formatted to display information on the item.
-
-   * Title of the mail is defined under "Mail titles" section in :ref:`administration-global-parameters-label`.
+   * The mail message is formatted to display item information.
+   * Mail titles is defined in :ref:`Global parameters<mail-titles>` screen.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -102,41 +131,51 @@ This must be defined for each type of element, and each new status or other even
    * - Field
      - Description
    * - :term:`Id`
-     - Unique Id for the status mail.
+     - Unique Id for the event.
    * - Element updated
      - Type of elements that will be concerned by automatic emailing.
+   * - Type
+     - Type of the selected element updated. 
    * - New status
-     - Positioning the elements to this status will generate emails.
+     - Positioning the elements to this status will generate an email.
    * - Or other event
-     - Other event that will possibly generate email.
+     - Other event that will possibly generate an email.
    * - :term:`Closed`
      - Flag to indicate that status mail is archived.
 
+
+.. topic:: Field: Type
+
+   * If not set, the event is valid for every type of the element.
+
+
 .. rubric:: Section: Mail receivers
 
-* List of addressees of the mails.
-* The list is not nominative but defined as roles on the element.
-* Each addressee will receive mail only once, even if a person has several “checked” roles on the element
-* see : :ref:`ctrlAuto-msg-receivers` for receivers detail.
+* List of addresses of the mails.
+* The list is not nominative, but defined as roles on the element.
+* Each addressee will receive mail only once, even if a person has several “checked” roles on the element.
+* See: :ref:`receivers-list` for receivers detail.
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Delay for Ticket
+.. index:: ! Ticket (Delay)
 
-Delay for Ticket
-----------------
+.. _delay-for-ticket:
 
-It is possible to define default delay for tickets, for each ticket type and each urgency of ticket.
+Delays for tickets
+------------------
+
+It is possible to define a default delay for tickets, for each ticket type and each ticket urgency.
 
 .. note::
 
-   * On creation, due date will automatically be calculated as creation date + delay.
+   * On creation, the due date will automatically be calculated as creation date + delay.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -167,17 +206,24 @@ It is possible to define default delay for tickets, for each ticket type and eac
     
      - Days : simple calculation as days.
      - Hours : simple calculation as hours.
-     - Open days : calculation excluding off days (week-ends and off days defined on “calendar”).
-     - Open hours : calculation only on the “standard open hours” defined on the global parameters. 
+     - Open days : calculation excluding days off (weekends and days off defined on “calendar”).
+     - Open hours : calculation only on the “standard open hours” defined in :ref:`Global parameters<daily-work-hours-section>` screen. 
+
+
+
 
 .. raw:: latex
 
     \newpage
 
 .. index:: ! Indicator
+.. index:: Email (Event)
+.. index:: ! Alert (Event)
 
-Indicator
----------
+.. _indicator:
+
+Indicators
+----------
 
 It is possible to define indicators on each type of element.
 
@@ -189,7 +235,7 @@ For each indicator a warning value and an alert value can be defined.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -207,6 +253,8 @@ For each indicator a warning value and an alert value can be defined.
      - The elements the indicator applies to.
    * - Type
      - Type of the elements the indicator applies to.
+   * - Indicator
+     - Indicator applies to.
    * - Reminder
      - Delay before due date or % of work or % or cost to send a warning.
    * - Alert
@@ -216,24 +264,25 @@ For each indicator a warning value and an alert value can be defined.
 
 .. rubric:: Section: Mail receivers
 
-* List of addressees of the mails.
-* The list is not nominative but defined as roles on the element.
+* List of addresses of the mails.
+* The list is not nominative, but defined as roles on the element.
 * Each addressee will receive mail only once, even if a person has several “checked” roles on the element. 
-* see : :ref:`ctrlAuto-msg-receivers` for receivers detail.
+* See : :ref:`receivers-list` for receivers detail.
 
 .. rubric:: Section: Internal alert receivers
 
-* List of addressees of the internal alert.
-* The list is not nominative but defined as roles on the element.
-* see : :ref:`ctrlAuto-msg-receivers` for receivers detail.
+* List of addresses of the internal alert.
+* The list is not nominative, but defined as roles on the element.
+* See : :ref:`receivers-list` for receivers detail.
 
 .. raw:: latex
 
     \newpage
 
 .. index:: ! Predefined notes
+.. index:: ! Note (Predefined)
 
-.. _ctrlAuto-predefined-notes-label:
+.. _predefined-notes:
 
 Predefined notes
 ----------------
@@ -246,7 +295,7 @@ Selecting an item in the list will automatically fill in the note text field.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -265,7 +314,7 @@ Selecting an item in the list will automatically fill in the note text field.
    * - Element
      - Kind of item (Ticket, Activity, …) for which this predefined note will be proposed on note creation.
    * - Type
-     - Type of element for witch this predefined note will be proposed on note creation.
+     - Type of element for which this predefined note will be proposed on note creation.
    * - :term:`Closed`
      - Flag to indicate that delay definition is archived.
    * - Text
@@ -275,7 +324,7 @@ Selecting an item in the list will automatically fill in the note text field.
 
 .. topic:: Field: Element
 
-   * If not set, predefined note is valid for every find of item.
+   * If not set, predefined note is valid for every element type.
 
 .. topic:: Field: Type
 
@@ -285,21 +334,21 @@ Selecting an item in the list will automatically fill in the note text field.
 
     \newpage
 
-.. index:: ! Checklist Definition
+.. index:: ! Checklist (Definition)
 
-.. _ctrlAuto-checklist-def-label:
+.. _checklist-definition:
 
-Checklist definition
---------------------
+Checklists
+----------
 
-It is possible to define checklists on each type of element.
+It is possible to define checklists for each type of element.
 
 When a checklist definition exists for a given element, a checklist section will appear on the element.
 
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -324,22 +373,19 @@ When a checklist definition exists for a given element, a checklist section will
 
 A checklist is built from checklist lines.
 
-Click |buttonAdd| on to create a new checklist line. A “Choice for the checklist line” pop up will be displayed. 
+* Click on |buttonAdd|  to create a new checklist line. 
+* Click on |buttonEdit| to update an existing checklist line.
+* Click on |buttonRemove| to delete the corresponding checklist line.
 
-Click on |buttonEdit| to update an existing checklist line.
-
-Click on |buttonRemove| to delete the corresponding checklist line.
-
-.. figure:: /images/GUI/choicesChecklistLine.png
-   :scale: 60 %
-   :alt: Choices for the checklist line Popup
+.. figure:: /images/GUI/BOX_ChoicesForChecklistLines.png
+   :alt: Choices for the checklist lines dialog box
    :align: center
 
-   Choices for the checklist line
+   Choices for the checklist lines dialog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Choices for the checklist line fields
+.. list-table:: Choices for the checklist lines dialog box fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -354,16 +400,14 @@ Click on |buttonRemove| to delete the corresponding checklist line.
    * - Exclusive
      - Are the choices exclusive (select one will unselect others).
 
-.. topic:: Details of Pop up
+.. topic:: Details of dialog box
 
    * Each line has a name, an order and up to 5 check choices.
-
-   * A line with no check choice will be displayed as **section title**.
-
+   * A line with no check choice will be displayed as a **section title**.
    * Name and Choices have 2 fields : 
 
-     * first is the displayed caption, 
-     * second is help text that will be displayed as tooltip.
+     1. Displayed caption. 
+     2. Help text that will be displayed as tooltip.
 
    * Checks can be exclusive (select one will unselect others) or not (multi selection is then possible).
 
@@ -375,9 +419,10 @@ Click on |buttonRemove| to delete the corresponding checklist line.
 
     \newpage
 
-.. index:: ! Mail receivers
+.. index:: ! Email - Receivers
+.. index:: ! Alert - Receivers
 
-.. _ctrlAuto-msg-receivers:
+.. _receivers-list:
 
 Receivers list
 --------------
@@ -386,40 +431,37 @@ Receivers can receive email and alert.
 
 A description of receivers below.
 
-.. topic:: Requestor
+.. rubric:: Requestor
 
-   * The Contact defined as “requestor” on current item; sometimes appears as “contact” (on Quotation and Order for instance) and sometimes have no meaning (for instance for Milestone).
+* The contact defined as :term:`requestor` on current item; sometimes appears as “contact” (on quotation and order, for instance) and sometimes have no meaning (for instance for milestone).
 
-.. topic:: Issuer
+.. rubric:: Issuer
 
-   * The User defined as “Issuer”.
+* The user defined as :term:`Issuer`.
 
+.. rubric:: Responsible
 
-.. topic:: Responsible
+* The resource defined as :term:`responsible`.
 
-   * The Resource defined as “responsible”.
+.. rubric:: Project team
 
-.. topic:: Project team
+* All resources affected to the project.
 
-   * All Resources affected to the Project.
+.. rubric:: Project leader
 
-.. topic:: Project leader
+* The resource(s) affected to the project with a “Project Leader” profile.
 
-   * The Resource(s) affected to the Project with a “Project Leader” profile.
+.. rubric:: Project manager
 
-.. topic:: Project manager
+* The resource defined as the manager on a project.
 
-   * The User defined as “manager” on the Project.
+.. rubric:: Assigned resource
 
-.. topic:: Assigned resource
+* All resources assigned.
 
-   * All Resources assigned.
+.. rubric:: Other
 
-.. topic:: Other
-
-    * Provides an extra field to manually enter email addresses.
-
-    * If “other” is checked, an input box is displayed to enter a static mail address list.
-
-    * Several addresses can be entered, separated by semicolon.
+* Provides an extra field to manually enter email addresses.
+* If “other” is checked, an input box is displayed to enter a static mail address list.
+* Several addresses can be entered, separated by semicolon.
 

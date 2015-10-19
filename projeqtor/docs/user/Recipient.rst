@@ -2,20 +2,23 @@
 
     \newpage
 
-.. title:: Recipient
+.. title:: Recipients
 
-.. index:: ! Recipient 
+.. index:: ! Recipient
+.. index:: ! Bill (Recipient) 
 
-Recipient
----------
+.. _recipient:
 
-The Recipient is the beneficiary of bill payments.
+Recipients
+----------
+
+The recipient is the beneficiary of bill payments.
 
 Recipients are mainly defined to store billing information. 
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -32,17 +35,25 @@ Recipients are mainly defined to store billing information.
    * - **Name**
      - Short name of the recipient.
    * - Company number
-     - Company number, to be displayed on bill.
+     - Company number, to be displayed on the bill.
+   * - Legal notice
+     - Legal notice for the recipient.
    * - Tax number
-     - Tax reference number, to be displayed on bill.
+     - Tax reference number, to be displayed on the bill.
    * - Tax free
      - Flag to indicate that tax is automatically set to zero for this recipient.
+   * - Contact name
+     - Name of contact for the recipient.
+   * - Contact email
+     - Email of contact for the recipient.
+   * - Contact phone
+     - Phone of contact for the recipient.
    * - :term:`Closed`
-     - Flag to indicate that recipient is archived.
+     - Flag to indicate that the recipient is archived.
  
 **\* Required field**
 
-.. rubric:: Section: International Bank Account Number (IBAN)
+.. rubric:: Section: International Bank Account Number
 
 .. tabularcolumns:: |l|l|
 
@@ -54,20 +65,12 @@ Recipients are mainly defined to store billing information.
      - Description
    * - Bank
      - Bank name.
-   * - Country
-     - Country code. IBAN format.
-   * - Key
-     - Key code. IBAN format.
-   * - Account number
+   * - International number (IBAN)
+     - IBAN for the recipient.
+   * - Bank code (BIC)
+     - BIC for the recipient. 
+   * - National account number
      - Full account number defining the BBAN account code.
-
-.. topic:: Field: Key
-
-   * Automatically calculated from other IBAN fields.
-
-.. topic:: Field: Account number
- 
-   * Format depends on country.
 
 .. rubric:: Section: Addreses
 

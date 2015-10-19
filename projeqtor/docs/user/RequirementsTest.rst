@@ -1,51 +1,76 @@
-.. raw:: latex
+.. include:: ImageReplacement.txt
 
-    \newpage
-
-
-.. contents:: Requirements and Tests
+.. contents::
    :depth: 1
    :backlinks: top
-   :local:
 
 
 .. title:: Requirements and Tests
 
-.. index:: ! Requirement 
+.. index:: ! Requirement
 
-Requirement
------------
+.. _requirement:
 
-Requirements are rules that must be applied to a product.
+Requirements
+------------
 
-In most IT projects, requirements are functional rules for a software.
+Requirement is a rule that must be defined to a product or a project. It can be applied to both.
 
-A requirement must be defined for a Product and/or a project (at least one of both must be selected).
+In most IT projects, requirement can be a functional rule for a software.
 
-A requirement can also be defined for a given version of the product, meaning the rule is valid since this “target version”.  
+It allows to define and monitor cost and delays.
 
-Linking requirements to a project will limit the visibility, respecting rights management at project level.
+It can be linked to test cases, it's used to describe how you will test that a given requirement.
 
-Requirements can be linked to many items (like other items), but the most interesting are links to test cases.
+.. rubric:: Target version
 
-Linking a requirement to a test case will display summary of test case run (defined in test session). This way, you will have instant display of test coverage for the requirement.
+* A given version of the product can be defined, meaning the rule is valid at this version.
 
+.. rubric:: Rights management
+
+* Linking requirements to a project will limit the visibility, respecting rights management at project level.
+
+.. rubric:: Requirement link to test cases
+
+* Test cases can be linked to a requirement in **linked element section**.
+* Linking a requirement to a test case will display a summary of test case run (defined in test session).
+* This way, you will have an instant display of test coverage for the requirement.
+
+.. rubric:: Requirement link to tickets
+
+* When test case run status is set to **failed**, the reference to a ticket must be defined (reference to the incident).
+* When the requirement is linked to a test case with this run status, ticket is automatically linked to the requirement. 
+
+.. rubric:: Initial and planned due dates
+
+* Possibility to define indicators to follow the respect of dates values.
+* See: :ref:`indicator` screen. 
+
+.. rubric:: Predecessor and successor elements
+
+* Requirements can have predecessors and successors.
+* This defines some dependencies on the requirements.
+* The dependencies don’t have specific effects. It is just an information.
+
+
+.. raw:: latex
+
+    \newpage
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`pe-predSuces-element-section-label`
+   * :ref:`Summary of test cases <summary-test-case-section>`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -57,23 +82,23 @@ Linking a requirement to a test case will display summary of test case run (defi
      - Short description of the requirement.
    * - **Requirement type**
      - Type of requirement.
-   * - **Project**
+   * - Project
      - The project concerned by the requirement.
-   * - **Product**
+   * - Product
      - The product concerned by the requirement.
    * - :term:`External reference`
      - External reference for the requirement.
-   * - Requestor
+   * - :term:`Requestor`
      - Contact who requested the requirement.
    * - :term:`Origin`
      - Element which is the origin of the requirement.
    * - Urgency
      - Urgency of implementation of the requirement.
    * - Initial due date
-     - Initial date due.
+     - Initial due date.
    * - Planned due date
      - Planned due date.
-   * - **Description**
+   * - :term:`Description`
      - Long description of the requirement.
 
 **\* Required field**
@@ -87,7 +112,7 @@ Linking a requirement to a test case will display summary of test case run (defi
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Treatment section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -97,7 +122,7 @@ Linking a requirement to a test case will display summary of test case run (defi
      - Parent requirement, defining a hierarchic structure.
    * - **Status**
      - Actual :term:`status` of the requirement.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the requirement.
    * - Criticality
      - Level of criticality of the requirement for the product.
@@ -117,28 +142,28 @@ Linking a requirement to a test case will display summary of test case run (defi
      - Flag to indicate that requirement is cancelled.
    * - Target version
      - Version of the product where the requirement will be active.	
-   * - Result
+   * - :term:`Result`
      - Description of the implementation of the requirement. 
  
 **\* Required field**
 
 .. rubric:: Section: Lock
 
-A requirement can be locked to ensure that its definition is not changed during the implementation process.
+A requirement can be locked to ensure that its definition has not changed during the implementation process.
 
-Only the user who locked the requirement or a habilitated user can unlock a requirement.
-
-.. topic:: Button: Lock / Unlock requirement
+   **Button: Lock/Unlock requirement**
 
    * Button to lock or unlock the requirement to preserve it from being changed.
+   * Only the user who locked the requirement or a habilitated user can unlock a requirement.
 
-.. topic:: Requirement locked
+   **Requirement locked**
 
-   * When requirement is locked the next fields are set.
+   * When a requirement is locked the following fields are displayed.
+
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields when requirement is locked
+.. list-table:: Fields when the requirement is locked
    :widths: 20, 80
    :header-rows: 1
 
@@ -147,95 +172,64 @@ Only the user who locked the requirement or a habilitated user can unlock a requ
    * - Locked
      - Flag to indicated that the requirement is locked.
    * - Locked by
-     - User who locked the requirement (if locked).
+     - User who locked the requirement.
    * - Locked since
-     - Date and time when requirement was locked (if locked).
+     - Date and time when the requirement was locked.
+
+
+
+
 
 
 .. raw:: latex
 
     \newpage
 
-.. rubric:: Section: Summary of tests cases
+.. index:: ! Test case
 
-When test cases are linked to a requirement, this section summarizes the status of theses tests.
+.. _test-case:
 
-.. topic:: Details of fields
-
-   **Summary**
-
-   * Global status of tests linked to the requirement, as appering in all tests sessions including the tests.
- 
-   **failed**
-
-   * At least one test failed.
-
-   **blocked**
-
-   * No test failed, at least one test blocked.
-
-   **planned**
-
-   * No test failed or blocked, at least one test planned.
-
-   **passed**
-
-   * All tests passed.
-
-   **not planned**
-
-   * No test linked.
-
-   **Linked**
-
-   * Number of test cases linked to the requirement.
-
-   **Total**
-
-   * Number of test cases on a test session whatever the status of the test case.
- 
-   * Because a test case can be linked to several test sessions, total can be greater than linked.
-
-   * Planned, Passed, Blocked, Failed : number of test cases on a test session in the corresponding status. 
-
-   **Issues**
-
-   * Number of tickets linked to the requirement.
-
-.. raw:: latex
-
-    \newpage
-
-.. index:: ! Test case 
-
-Test case
----------
+Test cases
+----------
 
 Test cases are elementary actions executed to test a requirement.
+
 You may define several tests to check a requirement, or check several requirements with one test.
 
-A test case must be defined for a Product and/or a project (at least one of both must be selected).
-A test case can also be defined for a given version of the product, meaning the test is valid since this “version”.
-Linking test case to a project will limit the visibility, respecting rights management at project level.
+Test case must be defined to a product or a project. It can be applied to both.
 
-In the test case screen, you’ll find a complete list of test case run. These are links of the test to test sessions.
-You cannot change links or status here, you must go to the corresponding test session.
+.. rubric:: Product version
+
+* A given version of the product can be defined, meaning the test case is valid at this version.
+
+.. rubric:: Rights management
+
+* Linking test case to a project will limit the visibility, respecting rights management at project level.
+
+.. rubric:: Predecessor and successor elements
+
+* Test case can have predecessors and successors.
+* This defines some dependencies on the test case.
+* Dependencies don’t have specific effects. It is just an information.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`pe-predSuces-element-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
+
+.. raw:: latex
+
+    \newpage
+
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -247,9 +241,9 @@ You cannot change links or status here, you must go to the corresponding test se
      - Short description of the test case.
    * - **Test type**
      - Type of test case.
-   * - **Project**
+   * - Project
      - The project concerned by the test case.
-   * - **Product**
+   * - Product
      - The product concerned by the test case.
    * - Product version
      - Version of the product where the test case will be valid.
@@ -257,7 +251,7 @@ You cannot change links or status here, you must go to the corresponding test se
      - External reference for the test case.
    * - Environment
      - List of 3 items describing the context of the test case.
-   * - **Description**
+   * - :term:`Description`
      - Complete description of the test case.
 
 **\* Required field**
@@ -267,20 +261,27 @@ You cannot change links or status here, you must go to the corresponding test se
    * Project or product must be set. 
    * You can set both.
 
-.. topic:: Field: Environment
+.. topic:: Field: Environment (Context)
 
-   * Contexts are initialized for IT Projects as “Environment”, “OS” and “Browser”.
-   * This can be easily changed in the “Contexts” definition screen.
+   * Contexts are initialized for IT Projects as “Environment”, “OS” and “Browser”. 
+   * This can be easily changed values in :ref:`context` screen.  
 
 .. topic:: Field: Description
 
-   * The description for test case should describe the steps to run the test.
+   * The description of test case should describe the steps to run the test.
+
+
+
+.. raw:: latex
+
+    \newpage
+
 
 .. rubric:: Section: Treatment
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Treatment section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -290,7 +291,7 @@ You cannot change links or status here, you must go to the corresponding test se
      - Parent test case, defining a hierarchic structure for test cases.
    * - **Status**
      - Actual :term:`status` of the requirement.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible of the test case.
    * - Priority
      - Level of priority for the test case.
@@ -304,10 +305,10 @@ You cannot change links or status here, you must go to the corresponding test se
      - Flag to indicate that test case is cancelled.
    * - Prerequisite
      - List of steps that must be performed before running the test.	
-   * - Expected result
+   * - :term:`Expected result<Result>`
      - Description of expected result of the test.
    * - Summary
-     - Summary of test case run in the test sessions. 
+     - :term:`Summary of test case run status`. 
  
 **\* Required field**
 
@@ -317,65 +318,105 @@ You cannot change links or status here, you must go to the corresponding test se
 
 .. rubric:: Section: Test case runs
 
-In the test case screen, you’ll find a complete list of test case run.
+* This section allows to display a complete list of test case runs.
+* These are links of the test to test sessions.
+* This list also displays the current status of the test in the sessions.
 
-These are links of the test to test sessions.
+.. note ::
 
-This list also displays the current status of the test in the sessions.
+   * To go, click on the corresponding test session.
 
-You cannot change links or status here, you must go to the corresponding test session.
+
+.. tabularcolumns:: |l|l|
+
+.. list-table:: Test case runs list fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Test session
+     - Composed of session type, Id and description. 
+   * - Status
+     - Current status of the test case run in the test session.
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Test session 
+.. index:: ! Test session
 
-.. _reqTest-test-session-label:
+.. _test-session:
 
-Test session
-------------
+Test sessions
+-------------
 
 A test session defines all the tests to be executed to reach a given target.
 
-When running the test, you be able to easily change the status of the test run.
+Define in the test case runs all test cases will be running to this test session.
 
-The status for tests cases on session are :
+----------
 
-* Planned : test to be executed.
+For each test case run sets the status of test results.
 
-* Passed : test passed with success (result is conform to expected result).
+.. glossary::
 
-* Blocked : impossible to run the test because of prior incident (blocking incident or incident on preceding test) or missing prerequisite.
+    Test case run status
 
-* Failed : test has return wrong result.
+      Test case run status is:
 
-  * When status is set to failed, the reference to a ticket must be defined (reference to the incident).
+      * |iconPlanned| **Planned:** Test to be executed.
+      * |iconPassed| **Passed:** Test passed with success (result is conform to expected result).
+      * |iconBlocked| **Blocked:** Impossible to run the test because of a prior incident  (blocking incident or incident on preceding test) or missing prerequisite.
+      * |iconFailed| **Failed:** Test has returned wrong result.
+      
+      .. note:: 
+        
+         * When status is set to failed, the reference to a ticket must be defined (reference to the incident).
+         * The referenced ticket is automatically added in linked element. 
 
-.. rubric:: Ressources assignment
 
-* Resources can be assigned to Test sessions, exactly in the same way as assignment to activities.
-* See : :ref:`pe-assignment-section-label`
+----------
+
+Test session must be defined to a product or a project. It can be applied to both.
+
+.. rubric:: Product version
+
+* A given version of the product can be defined, meaning the test session is valid at this version.
+
+.. rubric:: Rights management
+
+* Linking test session to a project will limit the visibility, respecting rights management at project level.
+
+----------
+
+.. rubric:: Planning element
+
+* A test session is a planning element like activity.
+* A test session is a task in a project planning.
+* Allows to assigned resource and follow up progress.
+
+.. rubric:: Predecessor and successor elements
+
+* Test sessions can have predecessors and successors.
+* This defines some dependencies on test cases or planning constraints.
 
 .. sidebar:: Other sections
 
    * :ref:`pe-assignment-section-label`
-
    * :ref:`pe-progress-section-label`
+   * :ref:`Summary of test cases <summary-test-case-section>`
+   * :ref:`pe-predSuces-element-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
-
-.. rubric:: Section: Description
+.. rubric:: Section: Description 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -387,15 +428,15 @@ The status for tests cases on session are :
      - Short description of the test session.
    * - **Session type**
      - Type of test session.
-   * - **Project**
+   * - Project
      - The project concerned by the test session.
-   * - **Product**
+   * - Product
      - The product concerned by the test session.
    * - Product version
      - Version of the product where the test session will be valid.
    * - :term:`External reference`
      - External reference for the test session.
-   * - **Description**
+   * - :term:`Description`
      - Complete description of the test session.
 
 **\* Required field**
@@ -409,7 +450,7 @@ The status for tests cases on session are :
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Treatment section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -421,7 +462,7 @@ The status for tests cases on session are :
      - Parent session, to define session of sessions.
    * - **Status**
      - Actual :term:`status` of the test session.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible of the test session.
    * - :term:`Handled`
      - Flag to indicate that test session is taken into account.
@@ -431,8 +472,177 @@ The status for tests cases on session are :
      - Flag to indicate that test session is archived.
    * - Cancelled
      - Flag to indicate that test session is cancelled.
-   * - Result
+   * - :term:`Result`
      - Summary result of the test session. 
  
 **\* Required field**
+
+.. rubric:: Section: Test case runs
+
+This section allows to manage test case runs.
+
+.. list-table:: Test case runs list fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Test case
+     - Information about test case (type, Id and name).
+   * - Detail
+     - Detail of test case.
+   * - Status
+     - Status of test case run.
+
+.. topic:: Field: Test case
+   
+   * This icon |Note| appears when the test case run comment field is filled.
+   * Moving the mouse over the icon will display the test case run comments.
+
+.. topic:: Field: Detail
+
+   * Moving the mouse over the icon |Description| will display the test case description.
+   * Moving the mouse over the icon |Result| will display the test case expected result.
+   * Moving the mouse over the icon |Prerequisite| will display the test case prerequisite. 
+
+.. topic:: Field: Status
+ 
+   * If status of test case run is **failed**, information about selected ticket is displayed too.
+
+
+.. raw:: latex
+
+    \newpage
+
+
+.. rubric:: Manage test case runs list
+
+* Click on |buttonAdd| to add a test case run. A **Test case run dialog box** will be appear.
+* Click on |buttonEdit| to edit a test case run. A **Test case run detail dialog box** will be appear.
+* Click on |buttonRemove| to remove a test case run.
+* Click on |iconPassed| to mark test case run as passed.
+* Click on |iconFailed| to mark test case run as failed.
+* Click on |iconBlocked| to mark test case run as blocked.
+
+.. figure:: /images/GUI/BOX_TestCaseRun.png
+   :alt: Test case run dialog box
+   :align: center
+
+   Test case run dialog box
+
+
+.. list-table:: Test case run dialog box fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Test cases
+     - Test cases list.
+   * - Allow duplicate
+     - Flag on if you permit that test case is use more one time in a test session.
+
+
+
+
+
+.. figure:: /images/GUI/BOX_TestCaseRunDetail.png
+   :alt: Test case run detail dialog box
+   :align: center
+
+   Test case run detail dialog box
+
+
+
+
+
+.. list-table:: Test case run detail dialog box fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Test case
+     - Selected test case.
+   * - Status
+     - List of :term:`test case run status`.
+   * - Ticket
+     - List of ticket.
+   * - Comments
+     - Comments of test case run.
+
+.. topic:: Field: Ticket
+
+   * Field appear only whether status of test case run is **failed**.
+
+
+
+.. raw:: latex
+
+    \newpage
+
+
+.. _summary-test-case-section:
+
+Summary of test cases section
+-----------------------------
+
+This section summarizes the status of test case runs to requirement and test session.
+
+.. rubric:: Requirement
+
+* This section summarizes the status of test case runs for test cases are linked to the requirement.
+
+.. topic:: Field: Total 
+
+    * Because a test case can be linked to several test sessions, total can be greater than linked to the requirement.
+
+----------
+
+.. rubric:: Test session
+
+* This section summarizes the status of test case runs in the test session.
+
+----------
+
+.. glossary::
+
+   Summary of test case run status
+
+
+     * |iconNotPlanned| **Not planned:**  No test case planned.
+     * |iconPlanned| **Planned:** No test failed or blocked, at least one test planned.
+     * |iconPassed| **Passed:** All tests passed.
+     * |iconFailed| **Failed:** At least one test failed.
+     * |iconBlocked| **Blocked:** No test failed, at least one test blocked.
+
+----------
+
+.. list-table:: Summary of test cases fields
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Total
+     - Number of test case runs whatever the status.
+   * - Planned
+     - Number of test case runs with the status **Planned**.
+   * - Passed
+     - Number of test case runs with the status **Passed**.
+   * - Blocked
+     - Number of test case runs with the status **Blocked**.
+   * - Failed
+     - Number of test case runs with the status **Failed**.
+   * - Summary
+     - :term:`Summary of test case run status`.
+   * - Issues
+     - Number of tickets linked to the requirement or the test session. 
+
+.. note::
+
+   * Percent to each status is displayed.
+
+
+
 

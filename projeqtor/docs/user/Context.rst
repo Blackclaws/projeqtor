@@ -2,14 +2,18 @@
 
     \newpage
 
-.. title:: Context
+.. title:: Contexts
 
-.. index:: ! Context 
+.. index:: ! Context
+.. index:: ! Ticket (Context)
+.. index:: ! Test case (Environment)  
 
-Context
--------
+.. _context:
 
-The contexts defines list of elements selectable to define ticket context.
+Contexts
+--------
+
+The contexts defines a list of elements selectable to define ticket context and test case environment.
 
 Contexts are initially set to be able to define contexts for IT Projects, for three context types :
 
@@ -23,7 +27,7 @@ They can be changed to be adapted to any kind of project.
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -38,18 +42,18 @@ They can be changed to be adapted to any kind of project.
    * - :term:`Id`
      - Unique Id for the context.
    * - Context type
-     - One on the three context type.
+     - One of the three context type.
    * - **Name**
      - Name of the context.
    * - Sort order
-     - Number to define order of display in lists
+     - Number to define the order of display in lists
    * - :term:`Closed`
-     - Flag to indicate that context is archived.
+     - Flag to indicate that the context is archived.
  
 **\* Required field**
 
 .. topic:: Fields: Context type
 
-   * List is fixed. 
+   * The list is fixed. 
    * Captions are translated and so can be changed in language file.
 

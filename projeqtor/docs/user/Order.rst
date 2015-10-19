@@ -2,37 +2,46 @@
 
     \newpage
 
-
 .. contents:: Quotation and Order
    :depth: 1
    :backlinks: top
    :local:
 
-
 .. title:: Quotation and Order
 
 .. index:: ! Quotation 
 
-Quotation
----------
+.. _quotation:
 
-An quotation is a proposal estimate sent to customer to get approval of what’s to be done, and how must the customer will pay for it.
+Quotations
+----------
 
-On the quotation form, you can record all the information of the sent proposal, including attaching some file completely describing the proposal with details terms and conditions.
+A quotation is a proposal estimate sent to customer to get approval of what’s to be done, and how must the customer will pay for it.
 
-.. note::
+On the quotation form, you can record all the information about the sent proposal, including attaching some file completely describing the proposal with details terms and conditions.
 
-   A quotation can be copied into an order when corresponding document is received as customer agreement.
+.. rubric:: Transform quotation to order
+
+* A quotation can be copied into an order when corresponding document is received as customer agreement.
+
+
+--------------
+
+.. glossary::
+
+   PPD
+
+    * Price Per Day.
+    * It represent the cost of one work day.
+
+--------------
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -57,8 +66,8 @@ On the quotation form, you can record all the information of the sent proposal, 
    * - Customer
      - Customer concerned by the quotation.
    * - Contact
-     - Contact in customer organization to who you sent the quotation.
-   * - Request
+     - Contact in customer organization to whom you sent the quotation.
+   * - :term:`Request<Description>`
      - Request description.
    * - Additional info.
      - Any additional information about the quotation.
@@ -77,7 +86,7 @@ On the quotation form, you can record all the information of the sent proposal, 
      - Description
    * - **Status**
      - Actual :term:`status` of the quotation.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the quotation.
    * - Sent date
      - Date when quotation is sent to customer contact.
@@ -91,7 +100,7 @@ On the quotation form, you can record all the information of the sent proposal, 
      - Flag to indicate that quotation is archived.
    * - Cancelled
      - Flag to indicate that quotation is cancelled.
-   * - Planned work
+   * - Estimated work
      - Work days corresponding to the quotation.
    * - :term:`PPD`
      - Price Per Day for the quotation.
@@ -110,7 +119,7 @@ On the quotation form, you can record all the information of the sent proposal, 
      
    * Planned amount = Planned work * PPD.
 
-.. note:: Activity type
+.. hint:: Activity type
 
    * The activity should be created only after approval.
 
@@ -123,28 +132,26 @@ On the quotation form, you can record all the information of the sent proposal, 
 
 .. index:: ! Order 
 
-Order
------
+.. _order:
+
+Orders
+------
 
 An order (also called command) is the trigger to start work.
 
 On the order form, you can record all the information of the received order.
 
-.. note:: **Work on the activity**
+.. rubric:: Work on the activity
 
-   * An order can be linked to an activity. It then represents the command of the work on the activity.
-
-   * In that case, validated work of the activity is the sum of the orders linked to the activity.
+* An order can be linked to an activity. It then represents the command of the work on the activity.
+* In that case, validated work of the activity is the sum of the orders linked to the activity.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   
-   * :ref:`gui-attachment-section-label`
-   
-   * :ref:`gui-note-section-label`
-   
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -167,7 +174,7 @@ On the order form, you can record all the information of the received order.
    * - Customer
      - Customer concerned by the order.
    * - Contact
-     - Contact in customer organization to who you sent the order.
+     - Contact in customer organization to whom you sent the order.
    * - **External reference**
      - :term:`External reference` of the order (as received).
    * - :term:`Origin`
@@ -193,7 +200,7 @@ On the order form, you can record all the information of the received order.
      - Activity representing the execution of the order.
    * - **Status**
      - Actual :term:`status` of the order.
-   * - Responsible
+   * - :term:`Responsible`
      - Resource who is responsible for the order.
    * - :term:`Handled`
      - Flag to indicate that order is taken into account.
@@ -232,12 +239,12 @@ On the order form, you can record all the information of the received order.
 
    * Amount = Work * PPD.
 
-.. topic:: Fields: Start and End date
+.. topic:: Fields: Start and end date
 
    * **Initial** : Initial dates
    * **Validated** : Validated dates
 
-.. note:: Activity type
+.. hint:: Activity type
 
    * The activity should be created only after approval.
 

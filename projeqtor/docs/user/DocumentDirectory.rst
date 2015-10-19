@@ -2,28 +2,30 @@
 
     \newpage
 
-.. title:: Document Directory
+.. title:: Document directories
 
-.. index:: ! Document Directory 
+.. index:: ! Document directory 
 
-Document Directory
-------------------
+.. _document-directory:
+
+Document directories
+--------------------
 
 The document directories define a structure for document storage.
 
 The document files (defined on document version) will be stored in the folder defined as “location” in the “document root” place.
 
-“Document root” is defined in the global parameters file. 
+“Document root” is defined in :ref:`Global parameters <document-section>` screen. 
 
 .. sidebar:: Other sections
    
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields 
    :widths: 20, 80
    :header-rows: 1
 
@@ -38,9 +40,9 @@ The document files (defined on document version) will be stored in the folder de
    * - Location
      - Folder where files will be stored.
    * - Project
-     - Project the directory is dedicated to.
+     - Directory is dedicated to this project.
    * - Product
-     - Product the directory is dedicated to.
+     - Directory is dedicated to this product.
    * - Default type
      - Type of document the directory is dedicated to.
    * - :term:`Closed`
@@ -48,18 +50,13 @@ The document files (defined on document version) will be stored in the folder de
  
 **\* Required field**
 
-.. topic:: Field: Name
-
-   * Location will automatically be “parent location” / “name”. 
-
 .. topic:: Field: Parent directory
 
    * The current directory is then a sub-directory of parent.
 
 .. topic:: Field: Location
 
-   * Location is automatically defined as “parent location” / “name”.
-   * Location is defined relatively to “document root”, defined in global parameters.
+   * Location is automatically defined as “Parent directory” / “Name”.
 
 .. topic:: Field: Project
 

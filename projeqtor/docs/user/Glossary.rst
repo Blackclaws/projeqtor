@@ -5,117 +5,104 @@ Glossary
 
 .. glossary::
   
-   closed
+   Closed
 
-* Flag to indicate that item is archived.
+     * Flag to indicate that item is archived.
+     * Item will not appear in lists any more, unless “show closed” is checked.
 
-* Item will not appear in lists any more, unless “show closed” is checked.
+   Description
 
-.. glossary::
+    * This field allows to define a description on an item.  
+    * Depending on the element type, name of field can be different.
+
+    .. seealso:: GUI behavior
+
+       * It is possible to define that description field is mandatory.
+       * The element type screens allow to set this parameter to several elements. 
+       * More detail, see: :ref:`behavior-section`. 
+ 
+ 
   
-   done
+   Done
 
-* Flag to indicate that item has been done.
+    * Flag to indicate that item has been done.
+    * Date of done is saved.
 
-* Date of done is saved.
+   External reference
 
+    * This field allows fill free input.
+    * It uses to refer information from an external source.
+    * External reference value can be put in email message with **externalReference** special field.
 
-.. glossary::
+    * More detail, see: **Administration guide**. 
   
-   external reference
+   Handled
 
-* This field allows fill free input.
-* It uses to refer information from an external source.
-* External reference value can be put in email message with **externalReference** special field.
+    * Flag to indicate that item has been taken into account.
+    * Date of handling is saved.
+    * This generally means that responsible has been named.
 
-  * More detail, see: **Administration guide**. 
+   Id
 
-.. glossary::
+    * Every item has a unique Id, automatically generated on creation.
+    * Id is chronologically affected, for all kind of items (Activity, Ticket).
+    * Id is shared for all projects and all types (i.e. incident) of the same kind items (i.e. Ticket).
+    * **Reference** is displayed after id, automatically generated on creation. 
+
+    * Reference depends on defined format, see under "Format for reference numbering" section in :ref:`global-parameters` screen.
   
-   handled
 
-* Flag to indicate that item has been taken into account.
-
-* Date of handling is saved.
-
-* This generally means that Responsible has been named.
-
-.. glossary::
-
-   id
-
-* Every item has a unique Id, automatically generated on creation.
-
-* Id is chronologically affected, for all kind of items (Activity, Ticket).
-
-* Id is shared for all projects and all types (i.e. incident) of the same kind items (i.e. Ticket).
-
-* **Reference** is displayed after id, automatically generated on creation. 
-
-* Reference depends on defined format, see under "Format for reference numbering" section in :ref:`administration-global-parameters-label`.
+    * Default format defines an numbering specific for each project and each type of items.
 
 
 
 
-* Default format defines an numbering specific for each project and each type of items.
+   Origin
 
-.. glossary::
+    * Determines the element of origin.
+    * The origin is used to keep track of events (ex.: order from quote, action from meeting).
+    * More detail, see : :ref:`gui-origin-field-label`.
 
-   origin
+   Status
 
-* Determines the element of origin.
+    * The status determines the life cycle of items.
+    * It defines the progress of the treatment of the item.
+    * Item is linked to a element type, element type is linked to a workflow.
+    * A workflow defines the possibility to go from one status to another one, more detail, see: :ref:`workflow`.
 
-* The origin is used to keep track of events (ex.: order from quote, action from meeting).
+    .. seealso:: Accelerator button
 
-* The origin may be selected manually or automatically inserted on copy. 
-
-* Click on |buttonAdd| to add a orgin element. A “Add an orgin element” pop up will be displayed. 
-
-* Click on |buttonRemove| to delete the link.
-
-.. topic:: Pop up “Add an orgin element”
-
-   Type of the orign  - Type of element to be selected.
-
-   Origin element - item selected
-
-   * Click on |buttonIconView| to search a item of element.
-
-
-.. glossary::
-
-   status
-
-* The status determines the life cycle of items.
-
-* It defines the progress of the treatment of the element. 
-
-.. glossary::
+       * This button allows to skip to the next status.
+       * More detail, see: :ref:`Move to next status button<moveToNextStatus-button>`.    
    
-   planning priority
+   Planning priority
 
-* This priority allows to define planned order among planning element.
+    * This priority allows to define planned order among planning element.
+    * The smaller priority element is planned first.
+    * The default priority is 500 (medium). 
+    * If projects have different priorities, all elements of project with smaller value priority are planned first.
 
-* The smaller priority element is planned first.
 
-* The default priority is 500 (medium). 
+ 
 
-* If projects have different priorities, all elements of project with smaller value priority are planned first.
 
-.. glossary::
 
-   PPD
+   Result
 
-* Price Per Day.
+    * A result is a description of the treatment of an item.
+    * Usually, the result is set when the status of the item is :term:`done<Done status>`.  
 
-* It represent the cost of one work day.
+    .. seealso:: GUI behavior
 
-.. glossary::
+       * It is possible to define that result field is mandatory on done status.
+       * The element type screens allow to set this parameter to several elements. 
+       * More detail, see: :ref:`behavior-section`. 
+
+
 
    WBS
 
-* Work Breakdown Structure. 
-
-* Hierarchical position of the element in the global planning.    
+    * Work Breakdown Structure. 
+    * Hierarchical position of the element in the global planning.    
        
 

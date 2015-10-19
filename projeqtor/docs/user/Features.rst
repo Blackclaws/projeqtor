@@ -338,7 +338,7 @@ It is also appropriate to provide mitigation actions for identified risks that d
 Perimeter management
 --------------------
 
-ProjeQtOr  allows you to monitor and record all events on your projects and helps you in managing of deviations, to control the perimeter of projects.
+ProjeQtOr allows you to monitor and record all events on your projects and helps you in managing of deviations, to control the perimeter of projects.
 
 .. index:: meeting
 .. rubric:: Meetings
@@ -378,11 +378,39 @@ This allows you to link your activities to target version.
 
 This also allows to know, in the case of Bug Tracking, the version on which a problem is identified and the version on which it is (or will be) fixed.
 
-.. index:: document
-.. rubric:: Document
- 
-Finally, ProjeQtOr offers integrated Document Management . Not replacing a business ECM, this tool is simple and efficient to manage your projects and / or products documents.
 
+
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Document management
+
+Documents management
+--------------------
+ 
+ProjeQtOr offers integrated **Document Management**.
+
+This tool is simple and efficient to manage your project and product documents.
+
+ProjeQtOr supported only digital document. Document file will be stored in the tool as versions.
+
+Document can be versioning and an approver process can be defined.
+
+.. rubric:: Directories structure management
+
+* Allows to define a structure for document storage.
+* Directories structure is defined in :ref:`document-directory` screen.
+
+.. rubric:: Document management
+  
+* :ref:`document` screen allows to manage documents.
+
+.. rubric:: Document access
+
+* Global definition of directories is directly displayed in the document menu, to give direct access to documents depending on the defined structure.
+* See: :ref:`menu-document-window`.
 
 .. raw:: latex
 

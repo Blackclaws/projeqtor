@@ -7,22 +7,21 @@
 
 .. index:: ! Report
 
-Report
-------
+Reports
+-------
 
-A list of report are available in different catagory.
+A list of reports is available in different categories.
 
 #. Select a category |one|, report list |two| will update.
 #. Select a report in the list, this will display specific parameters |three| for the report.
 #. Update the parameters to get the information you need.
-#. Click on a buttons to produce report. |four|
+#. Click on a button to produce the report. |four|
 
-.. figure:: /images/GUI/reports.png
-   :scale: 60 %
-   :alt: Reports
+.. figure:: /images/GUI/SCR_Reports.png
+   :alt: Reports screen
    :align: center
 
-   Reports
+   Reports screen
 
 
 .. rubric:: Buttons

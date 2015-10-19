@@ -3,29 +3,30 @@
     \newpage
 
 
-.. contents:: Lists of values
+.. contents::
    :depth: 2
    :backlinks: top
-   :local:
 
 .. title:: Lists of values
 
-.. index:: ! Function - lists of values
+.. index:: ! Function - Lists of values
 
-Function
-^^^^^^^^
+.. _function:
+
+Functions
+^^^^^^^^^
 
 The function defines the generic competency of a resource.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -45,11 +46,16 @@ The function defines the generic competency of a resource.
 
 **\* Required field**
 
+
+
+
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Status - lists of values
+.. index:: ! Status - Lists of values
+
+.. _status:
 
 Status
 ^^^^^^
@@ -58,17 +64,42 @@ The status is an important element of items lifecycle.
 
 It defines the progress of the treatment of the element.
 
-Some automations are implemented, depending on status definition, to set ‘handled’, ‘done’ and ‘closed’ flags on items.
+Some automations are implemented, depending on status definition, to set on items.
+
+.. glossary::
+
+   Handled status
+
+      * This status specifies that the treatment of item is taken over.
+      * A :term:`responsible` can be determined.
+      * It is possible to require the appointment of a responsible when the status change to "handled".
+
+   Done status
+
+      * This status specifies that the treatment of item is done.
+      * A :term:`result` can be specify.
+      * It is possible to require a result when the status change to "done".
+
+   Closed status
+
+     * This status specifies that the item is closed.
+     * This item is archived, and it disappeared in the list.
+     * Item can reappear when "show closed item" is checked.
+
+   Cancelled status
+
+     * This status specifies that the item is cancelled.
+
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -78,12 +109,14 @@ Some automations are implemented, depending on status definition, to set ‘hand
      - Unique Id for this value.
    * - **Name**
      - Name of this value.
-   * - Handled status
+   * - :term:`Handled status`
      - Defines whether ‘handled’ flag is automatically set for this status.
-   * - Done status
+   * - :term:`Done status`
      - Defines whether ‘done’ flag is automatically set for this status.
-   * - Closed status
+   * - :term:`Closed status`
      - Defines whether ‘closed’ flag is automatically set for this status.
+   * - :term:`Cancelled status`
+     - Defines whether ‘cancelled’ flag is automatically set for this status.
    * - Color
      - Color to display the status in element lists.
    * - Sort order
@@ -93,46 +126,17 @@ Some automations are implemented, depending on status definition, to set ‘hand
 
 **\* Required field**
 
-.. raw:: latex
-
-    \newpage
-
-Status definition
-"""""""""""""""""
-
-.. rubric:: Handled status
-
-* This status specifies that the treatment of item is taken over.
-* A responsible can be determined.
-* It is possible to require the appointment of a responsible when the status change to "handled".
-
-.. rubric:: Done status
-
-* This status specifies that the treatment of item is done.
-* A result can be specify.
-* It is possible to require a result when the status change to "done".
-
-.. rubric:: Closed status
-
-* This status specifies that the item is closed.
-* This item is archived, and it disappeared in the list.
-* Item can reappear when "show closed item" is checked.
-
-.. rubric:: Cancelled status
-
-* This status specifies that the item is cancelled.
-
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Quality level - lists of values
+.. index:: ! Quality level - Lists of values
 
-.. _Quality-label:
+.. _quality-level:
 
-Quality level
-^^^^^^^^^^^^^
+Quality levels
+^^^^^^^^^^^^^^
 
 The quality is a manual indicator for the conformity of a project to quality processes.
 
@@ -140,13 +144,13 @@ It defines in a visual way the global conformity of the project.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -170,6 +174,7 @@ It defines in a visual way the global conformity of the project.
 .. topic:: Field: Icon
    
    * If no icon is defined, color is used.
+   * You can define your own icons list (see: administration guide).
 
 
 
@@ -178,9 +183,11 @@ It defines in a visual way the global conformity of the project.
     \newpage
 
 
-.. index:: ! Health Status - lists of values
+.. index:: ! Health status - Lists of values
 
-Health Status
+.. _health-status:
+
+Health status
 ^^^^^^^^^^^^^
 
 The health status is a manual indicator for the health of a project.
@@ -191,13 +198,13 @@ It is displayed on Today screen, for each project, as a Red / Amber / Green traf
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -221,10 +228,16 @@ It is displayed on Today screen, for each project, as a Red / Amber / Green traf
 .. topic:: Field: Icon
    
    * If no icon is defined, color is used.
+   * You can define your own icons list (see: administration guide).
 
 
+.. raw:: latex
 
-.. index:: ! Overall progress - lists of values
+    \newpage
+
+.. index:: ! Overall progress - Lists of values
+
+.. _overall-progress:
 
 Overall progress
 ^^^^^^^^^^^^^^^^
@@ -237,13 +250,13 @@ It is displayed on Today screen, for each project.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -266,10 +279,12 @@ It is displayed on Today screen, for each project.
 
     \newpage
 
-.. index:: ! Trend - lists of values
+.. index:: ! Trend - Lists of values
 
-Trend
-^^^^^
+.. _trend:
+
+Trends
+^^^^^^
 
 The trend is a manual indicator for the global trend of project health.
 
@@ -279,13 +294,13 @@ It is displayed on Today screen, for each project.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -309,26 +324,30 @@ It is displayed on Today screen, for each project.
 .. topic:: Field: Icon
    
    * If no icon is defined, color is used.
+   * You can define your own icons list (see: administration guide).
 
+.. raw:: latex
 
-.. index:: ! Likelihood - lists of values
+    \newpage
 
-Likelihood
-^^^^^^^^^^
+.. index:: ! Likelihood - Lists of values
 
-The likelihood is the probability for a risk to occur.
+.. _likelihood:
 
-The more likely a risk is, the more critical it is.
+Likelihoods
+^^^^^^^^^^^
+
+The likelihood is the probability of a risk or an opportunity to occur.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -339,7 +358,7 @@ The more likely a risk is, the more critical it is.
    * - **Name**
      - Name of this value.
    * - Value
-     - Value used to calculate criticality from likelihood and severity.
+     - Value of likelihood.
    * - Color
      - Color to display the likelihood in element lists
    * - Sort order
@@ -350,31 +369,38 @@ The more likely a risk is, the more critical it is.
 **\* Required field**
 
 
+
 .. raw:: latex
 
     \newpage
 
 
-.. index:: ! Criticality - lists of values
+.. index:: ! Criticality - Lists of values
 
-Criticality
-^^^^^^^^^^^
+.. _criticality:
 
-The criticality is the importance  of an element to its context.
+Criticalities
+^^^^^^^^^^^^^
 
-The risk criticality designs the level of impact the risk may have to the project.
+The criticality is the importance of an element to its context.
 
-The ticket criticality is the estimated impact that the subject of the ticket may have to the product.
+.. topic:: Risk and Opportunity
+
+   * The criticality designs the level of impact the risk or opportunity may have to the project.
+
+.. topic:: Ticket
+
+   * The criticality is the estimated impact that the subject of the ticket may have for the product.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -385,7 +411,7 @@ The ticket criticality is the estimated impact that the subject of the ticket ma
    * - **Name**
      - Name of this value.
    * - Value
-     - Value used to calculate criticality from likelihood and severity, and to calculate priority from criticality and urgency.
+     - Value of criticality.
    * - Color
      - Color to display the criticality in element lists.
    * - Sort order
@@ -396,23 +422,28 @@ The ticket criticality is the estimated impact that the subject of the ticket ma
 **\* Required field**
 
 
+.. raw:: latex
 
-.. index:: ! Severity - lists of values
+    \newpage
 
-Severity
-^^^^^^^^
+.. index:: ! Severity - Lists of values
 
-The risk severity designs the level of impact the risk may have to the product.
+.. _severity:
+	
+Severities
+^^^^^^^^^^
+
+The severity designs the level of negative or positive impact the risk or opportunity may have for the product.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -423,7 +454,7 @@ The risk severity designs the level of impact the risk may have to the product.
    * - **Name**
      - Name of this value.
    * - Value
-     - Value used to calculate criticality from likelihood and severity.
+     - Value of severity.
    * - Color
      - Color to display the severity in element lists.
    * - Sort order
@@ -434,26 +465,24 @@ The risk severity designs the level of impact the risk may have to the product.
 **\* Required field**
 
 
-.. raw:: latex
+.. index:: ! Urgency - Lists of values
 
-    \newpage
+.. _urgency:
 
-.. index:: ! Urgency - lists of values
-
-Urgency
-^^^^^^^
+Urgencies
+^^^^^^^^^
 
 The ticket urgency is an element given by the requestor to indicate the quickness of treatment needed for the ticket.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -464,7 +493,7 @@ The ticket urgency is an element given by the requestor to indicate the quicknes
    * - **Name**
      - Name of this value.
    * - Value
-     - Value used to calculate priority from criticality and urgency.
+     - Value of urgency.
    * - Color
      - Color to display the urgency in element lists.
    * - Sort order
@@ -476,22 +505,28 @@ The ticket urgency is an element given by the requestor to indicate the quicknes
 
 
 
-.. index:: ! Priority - lists of values
+.. raw:: latex
 
-Priority
-^^^^^^^^
+    \newpage
+
+.. index:: ! Priority - Lists of values
+
+.. _priority:
+
+Priorities
+^^^^^^^^^^
 
 The ticket priority defines the order to treat different tickets.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -502,7 +537,7 @@ The ticket priority defines the order to treat different tickets.
    * - **Name**
      - Name of this value.
    * - Value
-     - Value used to calculate priority from criticality and urgency.
+     - Value of priority.
    * - Color
      - Color to display the priority in element lists.
    * - Sort order
@@ -512,26 +547,26 @@ The ticket priority defines the order to treat different tickets.
    
 **\* Required field**
 
-.. raw:: latex
 
-    \newpage
 
-.. index:: ! Risk level - lists of values
+.. index:: ! Risk level - Lists of values
 
-Risk level
-^^^^^^^^^^
+.. _risk-level:
+
+Risk levels
+^^^^^^^^^^^
 
 The risk level measures the technical risk of implementation of a requirement.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -550,24 +585,28 @@ The risk level measures the technical risk of implementation of a requirement.
    
 **\* Required field**
 
+.. raw:: latex
 
+    \newpage
 
-.. index:: ! Feasibility - lists of values
+.. index:: ! Feasibility - Lists of values
 
-Feasibility
-^^^^^^^^^^^
+.. _feasibility:
+
+Feasibilities
+^^^^^^^^^^^^^
 
 The feasibility defines the first analysis of implementation of a requirement.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -587,27 +626,24 @@ The feasibility defines the first analysis of implementation of a requirement.
 **\* Required field**
 
 
+.. index:: ! Efficiency - Lists of values
 
-.. raw:: latex
+.. _efficiency:
 
-    \newpage
-
-.. index:: ! Efficiency - lists of values
-
-Efficiency
-^^^^^^^^^^
+Efficiencies
+^^^^^^^^^^^^
 
 The efficiency measures the result of an action.
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 

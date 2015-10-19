@@ -4,74 +4,93 @@
 
     \newpage
 
-.. title:: Document
+.. title:: Documents
 
 .. index:: ! Document 
 
-Document
---------
+.. _document:
 
-A document is a referential element that give description to a product or a project.
+Documents
+---------
 
-A global definition of a document refers to any kind of information.
+A document is a referential element that gives a description of a product or a project.
 
-This means that a document can be a file (text document, image, …) or any non digital item (paper mail, fax, …), or non file digital item (email, …).
+A document must be linked either to a project (for project documentation), to a product (for product document) or both.
 
-In ProjeQtOr, documents will reference files item, that will be stored in the tool as versions.
+Document item describes general information about the document.
 
-So a document will always refer to a directory where the file is stored.
+The file document will be stored in the tool as versions.
 
-The Document item describes general information about the document.
+.. topic:: Document files storage
 
-The file is not stored at this level.
+   * Document will always refer to a directory where the file is physically stored.
+   * Directories are defined in :ref:`document-directory` screen.
 
-A document can evolve and a new file is generated at each evolution.
+.. topic:: Document versioning
 
-So files are stored at document version level.
+   * Document versioning allows to keep different version at each evolution of the document.
+   * Document can evolve and a new file is generated at each evolution.
+   * :term:`Type of versioning` must be defined for a document. 
+
+.. topic:: Approval process
+   
+   * You can define approvers to a document.
+   * When all approvers have approved the document version, it is considered as approved and then appears with a check in the list of versions.
+   * When creating an approver in the list, the approver is also automatically added to the latest version of the document.
+   * When adding a version to the document, the approvers are automatically added to the version.
 
 .. raw:: latex
 
     \newpage
 
-.. rubric:: Versioning type
 
-A document can evolve following 4 ways defined as versioning type :
+.. glossary::   
 
-.. topic:: Evolutive
+   
+   Type of versioning
+       |
+       A document can evolve following four ways defined as versioning type :
 
-   * Version is a standard Vx.y format. 
-   * It is the most commonly used versioning type.
-   * Major updates increase x and reset y to zero. 
-   * Minor updates increase y.
+       **Evolutive**
 
-.. topic:: Chronological
+       * Version is a standard Vx.y format. 
+       * It is the most commonly used versioning type.
+       * Major updates increase x and reset y to zero. 
+       * Minor updates increase y.
 
-   * Version is a date. 
-   * This versioning type is commonly used for periodical documents
-   * For instance : weekly boards.
+       **Chronological**
 
-.. topic:: Sequential
+       * Version is a date. 
+       * This versioning type is commonly used for periodical documents.
+       * For instance : weekly boards.
 
-   * Version is a sequential number. 
-   * This versioning type is commonly used for recurring documents
-   * For instance : Meeting reviews.
+       **Sequential**
 
-.. topic:: Custom
+       * Version is a sequential number. 
+       * This versioning type is commonly used for recurring documents.
+       * For instance : Meeting reviews.
 
-   * Version is manually set. 
-   * This versioning type is commonly used for external documents, when version is not managed by the tool, or when the format cannot fit any other versioning type.
+       **Custom**
+
+       * Version is manually set. 
+       * This versioning type is commonly used for external documents, when version is not managed by the tool, or when the format cannot fit any other versioning type.
+
+
+.. raw:: latex
+
+    \newpage
 
 .. sidebar:: Other sections
 
-   * :ref:`gui-LinkElement-section-label`
-   * :ref:`gui-note-section-label`
-   * :ref:`gui-chg-history-section-label`
+   * :ref:`Linked element<linkElement-section>`
+   * :ref:`Notes<note-section>`
+   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Description section fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -102,22 +121,17 @@ A document can evolve following 4 ways defined as versioning type :
 
 **\* Required field**
 
-.. note::
-
-   * A document must be linked either to a project (for project documentation) or to a product (for product document).
-
-.. topic:: Field: Directory
-   
-   * The directory also defines the place where files will be physically stored.
-
 .. topic:: Field: Document reference
 
-   * Document reference name is calculated from format defined in the Global Parameters screen
+   * Document reference name is calculated from format defined in the :ref:`Global parameters <format-reference-numbering-section>` screen.
 
 .. topic:: Field: Author
 
    * Positioned by default as the connected user.
    * Can be changed (for instance if the author is not  the current user).
+
+
+
 
 .. raw:: latex
 
@@ -125,16 +139,18 @@ A document can evolve following 4 ways defined as versioning type :
 
 .. rubric:: Section: Versions
 
+This section allows to manage version list of document.
+
 .. tabularcolumns:: |l|l|
 
-.. list-table::
+.. list-table:: Version list fields
    :widths: 20, 80
    :header-rows: 1
 
    * - Field
      - Description
    * - **Versioning type**
-     - Type of versioning for the document.
+     - :term:`Type of versioning` for the document.
    * - Last version
      - Caption of the last version of the document.
    * - :term:`Status`
@@ -143,38 +159,37 @@ A document can evolve following 4 ways defined as versioning type :
 **\* Required field**
 
 
-.. topic:: Field: Versioning type
 
-   * This will impact the version number format for versions.
+.. rubric:: Version list management
 
-.. rubric:: Version management
+* Click on |buttonAdd| to add a new version. 
+* Click on |buttonEdit| to modifiy a version.
+* Click on |buttonRemove| to delete a version.
+* Click on |iconDownload| to download file at this version.
 
-Click |buttonAdd| on to add a new version. A “Document version” pop up will be displayed. 
+.. note:: Name of download file
 
-Click on |buttonEdit| to modifiy the document version.
+   * The name of download file will be the document reference name displayed in **description** section.
+   * If you want to preserve the uploaded file name, set the parameter in  the :ref:`Global parameters <format-reference-numbering-section>` screen. 
 
-Click on |buttonRemove| to delete the version.
 
-Click on |iconDownload| to download file at this version.
-
-.. figure:: /images/GUI/documentVersion.png
-   :scale: 60 %
-   :alt: GUI document version Popup
+.. figure:: /images/GUI/BOX_DocumentVersion.png
+   :alt: Document version dialog box 
    :align: center
 
-   Document version Popup
+   Document version dialog box
 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::  Document version fields
+.. list-table::  Document version dialog box fields
    :widths: 20, 80
    :header-rows: 1
 
    * - Field
      - Description
    * - File
-     - Locale file that will be uploaded as new version.
+     - This button allows to upload locale file.
    * - Last version
      - Caption of the last existing version.
    * - Update
@@ -203,24 +218,22 @@ Click on |iconDownload| to download file at this version.
 .. topic:: Field: Description
    
    * May be used to describe updates brought by the version.
+   * This icon |Note| appears when the description field is filled.
+   * Moving the mouse over the icon will display description text.
+
+
+.. raw:: latex
+
+    \newpage
+
 
 .. rubric:: Section: Approvers
 
-It is possible to define approvers of a document.
-
-When creating an approver in the list, the approver is also automatically added to the latest version of the document.
-
-When adding a version to the document, the approvers are automatically added to the version.
-
-.. topic:: Approval of documents
-
-   * When an approver looks at the document, he can see a button "approve now" in the approver list.
-   * Just click on the button to approve the latest version of the document.
-   * When all approvers have approved the document version, it is considered as approved and then appears with a check in the list of versions.
+This section allows to manage approver list of a document.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Approvers section fields
+.. list-table:: Approver list fields
    :widths: 20, 80
    :header-rows: 1
 
@@ -232,56 +245,50 @@ When adding a version to the document, the approvers are automatically added to 
      - Name of the approver.
    * - Status
      - Status of the approval of the last version of document.
+
+
+**Button: Approve now**
+
+  * This button appears in approver list.
+  * Just click on the button to approve the latest version of the document.
+
+**Button: Send a reminder email to the approvers**
+
+  * This button allows to send a reminder email to all the approvers who have not yet approved the document.
+
  
-.. rubric:: Select an approver
+.. rubric:: Approver list management
+
+* Click on |buttonAdd| to add a new approver. 
+* Click on |buttonRemove| to delete the approver.
 
 
-Click |buttonAdd| on to add a new approver. A “Select an approver” pop up will be displayed. 
-
-Click on |buttonRemove| to delete the approver.
-
-.. figure:: /images/GUI/selectApprover.png
-   :scale: 60 %
-   :alt: GUI Select an approver Popup
-   :align: center
-
-   Select an approver Popup
-
-.. topic:: Select an approver Popup
-
-   * Click on |buttonIconSearch| to show element detail.
-   * Depends on whether the element is selected or not a different pop up is displayed.
-   * Detail about pop up, see :ref:`gui-combo-list-fields-label`
-
-.. rubric:: Button: Send a reminder email to the approvers
-
-* This button allows to send a reminder email to all the approvers who have not yet approved the document.
 
 
 .. rubric:: Section: Lock
 
-.. topic:: Button: lock/unlock this document
+This section allows to manage document locking.
 
-   * Button to lock or unlock the document to preserve it from being editing, or new version added.
-   * When document is locked it cannot be modified.
-   * Only the user who locked the document, or a user with privilege to unlock any document, can unlock it.
+  **Button: lock/unlock this document**
 
-.. topic:: Document locked
+  * Button to lock or unlock the document to preserve it from being editing, or new version added.
+  * When document is locked it cannot be modified.
+  * Only the user who locked the document, or a user with privilege to unlock any document, can unlock it.
 
-   * When document is locked the next fields are set.
+  **Document locked**
+   
+  * When a document is locked the following fields are displayed.
 
-   .. tabularcolumns:: |l|l|
+  .. tabularcolumns:: |l|l|
+  .. list-table:: Fields when the document is locked
+     :widths: 20, 80
+     :header-rows: 1
 
-.. list-table:: Fields when document is locked
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - Locked
-     - Flag to indicated that the document is locked.
-   * - Locked by
-     - User who locked the document.
-   * - Locked since
-     - Date and time when document was locked.
-
+     * - Field
+       - Description
+     * - Locked
+       - Flag to indicated that the document is locked.
+     * - Locked by
+       - User who locked the document.
+     * - Locked since
+       - Date and time when document was locked.
