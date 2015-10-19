@@ -71,12 +71,12 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $priority;
   public $_label_idActivityPlanningMode;
   public $idActivityPlanningMode;
-  public $_tab_4_1_smallLabel = array('workElementCount', 'estimated', 'real', 'left', 'ticket');
+  public $_tab_5_1_smallLabel = array('workElementCount', 'estimated', 'real', 'left', '', 'ticket');
   public $workElementCount;
   public $workElementEstimatedWork;
   public $workElementRealWork;
   public $workElementLeftWork;
-
+  public $_button_showTickets;
   
   
   //public $_label_wbs;
@@ -233,6 +233,19 @@ class ActivityPlanningElementMain extends PlanningElement {
   	if (! $noSave) {
   	  $this->simpleSave();
   	}
+  }
+  
+  public function drawSpecificItem($item) {
+    if ($item='showTickets') {
+      echo '<div id="' . $item . 'Button" ';
+      echo ' title="' . i18n('showTickets') . '" style="float:right;margin-right:3px;"';
+      echo ' class="roundedButton">';
+      echo '<div class="iconView" ';
+      $jsFunction="showTickets('Activity',$this->refId);";
+      echo ' onclick="' . $jsFunction . '"';
+      echo '></div>';
+      echo '</div>';
+    }
   }
 }
 ?>
