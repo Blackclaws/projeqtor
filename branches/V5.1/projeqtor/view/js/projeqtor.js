@@ -614,7 +614,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       if (dojo.byId('formDiv') && formDivPosition>=0) {
         dojo.byId('formDiv').scrollTop=formDivPosition;
       }
-      if (destination=="centerDiv" && switchedMode) {
+      if (destination=="centerDiv" && switchedMode && !directAccess) {
         showList();
       }
       if (destination=="dialogLinkList") {

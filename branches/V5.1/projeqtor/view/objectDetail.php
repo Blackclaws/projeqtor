@@ -644,7 +644,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
       drawBillLinesFromObject($obj, false);
-    } else if (substr($col, 0, 1) == '_' and substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_') { // field not to be displayed
+    } else if (substr($col, 0, 1) == '_' and 
+    substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
                                                                                                                               //
     } else {
       $attributes='';
@@ -829,7 +830,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $captionName=substr($col, 7);
         echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
        
-      
+      } else if (substr($col, 0, 8) == '_button_') {
+        if (! $print and !$comboDetail) {
+          $item=substr($col, 8);
+          echo $obj->drawSpecificItem($item);
+        }
       } else if ($print) { 
         // ============================================================================================================
         // ================================================
