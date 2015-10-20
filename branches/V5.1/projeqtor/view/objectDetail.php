@@ -1534,11 +1534,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($readOnly) echo ' disabled=true';
           echo ' data-dojo-props="height:\'125px\'';
           if ($readOnly) echo ', disabled:true';
-          echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
+          echo ',onChange:function(){dojo.byId(\'' . $fieldId . '\').value=arguments[0];formChanged();}';
           echo ",plugins:['removeFormat','bold','italic','underline'";
           echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
           echo ",'|','insertOrderedList','insertUnorderedList','|']";
-          echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
+          echo ',onKeyDown:function(event){onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
           //echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
           echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
           // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
@@ -1566,12 +1566,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo ' height="50px" title="' . i18n('clickToEditRichText') . '"';
           echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
           if ($readOnly) echo ', disabled:true';
-          echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
+          echo ',onChange:function(){dojo.byId(\'' . $fieldId . '\').value=arguments[0];formChanged();}';
           echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
           echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
           echo ",'|','insertOrderedList','insertUnorderedList','|']";
-          echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
-          echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
+          echo ',onKeyDown:function(event){onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
+          echo ',onBlur:function(event){editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
           echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
           // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
           if (1) echo ",'|','fullScreen'";
