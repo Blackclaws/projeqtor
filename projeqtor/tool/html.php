@@ -82,12 +82,16 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }  
+  } else if ($col=='idBill') {
+    $crit=array('paymentDone'=>'0','done'=>'1');
+    $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     }  
   }
+  
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {

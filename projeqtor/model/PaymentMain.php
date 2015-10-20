@@ -48,6 +48,7 @@ class PaymentMain extends SqlElement {
   public $referenceBill;
   public $idClient;
   public $idRecipient;
+  public $billAmount;
   public $idle;
   
  
@@ -58,8 +59,8 @@ class PaymentMain extends SqlElement {
     <th field="namePaymentType" width="10%" >${idPaymentType}</th>
     <th field="name" width="20%">${name}</th>
     <th field="namePaymentMode" width="10%" >${idPaymentMode}</th>
-    <th field="paymentDate" width="10%" >${paymentDate}</th>
-    <th field="paymentAmount" width="10%" >${paymentAmount}</th>  
+    <th field="paymentDate" formatter="dateFormatter" width="10%" >${paymentDate}</th>
+    <th field="paymentAmount" formatter="costFormatter" width="10%" >${paymentAmount}</th>  
     <th field="referenceBill" width="10%" >${referenceBill}</th>
     <th field="nameClient" width="10%" >${idClient}</th>
     <th field="nameRecipient" width="10%" >${idRecipient}</th>
@@ -75,7 +76,8 @@ class PaymentMain extends SqlElement {
       "paymentCreditAmount"=>"readonly",
       "idClient"=>"readonly",
       "idRecipient"=>"readonly",
-      "referenceBill"=>"readonly"
+      "referenceBill"=>"readonly",
+      "billAmount"=>"readonly"
   );
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer',
@@ -155,7 +157,7 @@ class PaymentMain extends SqlElement {
     $old=$this->getOld();
     
     // Chek that bill is not already paid
-    if ( $this->idBill and ($this->idBill!=$old->idBill)) {
+    if ( trim($this->idBill) and (trim($this->idBill)!=trim($old->idBill))) {
       $bill=new Bill($this->idBill);
       debugLog($bill);
       if ($bill->paymentsCount>0 and $bill->paymentDone) {
@@ -167,7 +169,7 @@ class PaymentMain extends SqlElement {
           $result.="<br/>" . i18n('paymentExceedBill',array($paidBill, $bill->fullAmount));
         }
       }
-    } else if ( $this->idBill and $this->paymentAmount > $old->paymentAmount) {
+    } else if ( trim($this->idBill) and $this->paymentAmount > $old->paymentAmount) {
       $bill=new Bill($this->idBill);
       $paidBill=$bill->paymentAmount+$this->paymentAmount-$old->paymentAmount;
       if ( $paidBill > $bill->fullAmount) {
@@ -193,20 +195,43 @@ class PaymentMain extends SqlElement {
       $this->idRecipient=$bill->idRecipient;
       $this->idClient=$bill->idClient;
       $this->referenceBill=$bill->reference;
+      $this->billAmount=$bill->fullAmount;
     }
     $result=parent::save();
     if (isset($bill) and $bill->id) {
       $bill->retreivePayments();
       if ($old->idBill and $old->idBill!=$this->idBill) {
         $oldBill=new Bill($old->idBill);
+        $oldBill->paymentDone=0;
+        $oldBill->paymentAmount-=$old->paymentAmount;
+        if ($oldBill->paymentAmount==0) $oldBill->paymentDate=null;
         $oldBill->retreivePayments();
       }
     } else if ($old->idBill) {
       $oldBill=new Bill($old->idBill);
+      $oldBill->paymentDone=0;
+      $oldBill->paymentAmount-=$old->paymentAmount;
+      if ($oldBill->paymentAmount==0) $oldBill->paymentDate=null;
       $oldBill->retreivePayments();
     }
     
     return $result;
+  }
+  
+  public function getValidationScript($colName) {
+  
+    $colScript = parent::getValidationScript($colName);
+    if ($colName=="paymentAmount" || $colName=="paymentFeeAmount") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  var feeAmount=dijit.byId("paymentFeeAmount").get("value");';
+      $colScript .= '  if (!feeAmount) feeAmount=0;';
+      $colScript .= '  var amount=dijit.byId("paymentAmount").get("value");';
+      $colScript .= '  if (!amount) amount=0;';
+      $colScript .= '  dijit.byId("paymentCreditAmount").set("value",amount-feeAmount);';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
+    return $colScript;
   }
 }
 ?>

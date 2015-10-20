@@ -243,3 +243,7 @@ ALTER TABLE `${prefix}opportunity` ADD `impactCost` DECIMAL(11,2) UNSIGNED DEFAU
 ADD `projectReserveAmount` DECIMAL(11,2) UNSIGNED DEFAULT 0;
 
 ALTER TABLE `${prefix}planningelement` ADD `reserveAmount` DECIMAL(11,2) UNSIGNED DEFAULT 0;
+
+ALTER TABLE `${prefix}payment` ADD `billAmount` DECIMAL(11,2) UNSIGNED;
+
+UPDATE `${prefix}accessright` SET idAccessProfile=1 WHERE idAccessProfile=2 and idProfile in (6,7);

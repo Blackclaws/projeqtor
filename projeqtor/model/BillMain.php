@@ -90,7 +90,7 @@ class BillMain extends SqlElement {
     <th field="name" width="15%" >${name}</th>
     <th field="date" formatter="dateFormatter" width="10%" >${date}</th>  
     <th field="nameRecipient" width="10%" >${idRecipient}</th>
-    <th field="fullAmount" width="10%" >${fullAmount}</th>
+    <th field="fullAmount" formatter="costFormatter" width="10%" >${fullAmount}</th>
     <th field="done" formatter="booleanFormatter" width="5%" >${done}</th>
     <th field="idle" formatter="booleanFormatter" width="5%" >${idle}</th>
     ';
@@ -119,6 +119,7 @@ class BillMain extends SqlElement {
                                                    'idResource'=>'responsible');
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
+  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''),' - ',name,' (',coalesce(fullAmount,''),')')");
     
    /** ==========================================================================
    * Constructor
@@ -356,7 +357,7 @@ class BillMain extends SqlElement {
 		  }
 		  $this->paymentDueDate=$date;
 		}
-		if ($this->paymentAmount==$this->fullAmount) {
+		if ($this->paymentAmount==$this->fullAmount and $this->fullAmount>0) {
 		  $this->paymentDone=1;
 		}
 		
@@ -462,7 +463,7 @@ class BillMain extends SqlElement {
       $this->paymentAmount+=$pay->paymentAmount;
       if ($pay->paymentDate>$this->paymentDate) $this->paymentDate=$pay->paymentDate;
     }
-    if ($this->paymentAmount>=$this->fullAmount) $this->paymentDone=1;
+    if ($this->paymentAmount>=$this->fullAmount and $this->fullAmount>0) $this->paymentDone=1;
     if ($save) {
       $this->simpleSave();
     }
