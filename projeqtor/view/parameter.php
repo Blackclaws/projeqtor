@@ -249,9 +249,6 @@ function drawTableFromObjectList($objectList) {
       title="<?php echo i18n('buttonSaveParameters');?>"
       iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton"><script
       type="dojo/connect" event="onClick" args="evt">
-<?php if ($type=='habilitation') {?>
-          forceRefreshMenu="<?php echo $type;?>";
-<?php	}?>
         	submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
           </script></button>
     <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveParameter")?></div>
