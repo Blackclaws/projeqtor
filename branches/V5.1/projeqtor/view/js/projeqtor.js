@@ -684,6 +684,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
     	if (validationType) msg+=" | validationType='"+validationType+"'";
     	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
+    	if (callBackFunction!=null) setTimeout(callBackFunction,100);
     	var debugDurationServer=debugTemp-debugStart;
     	var debugDurationClient=debugEnd-debugTemp;
     	msg+=" (server:"+debugDurationServer+"ms, client:"+debugDurationClient+"ms)";
@@ -700,7 +701,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	    onEnd: function() { }
 	  }).play();
   }
-  if (callBackFunction!=null) setTimeout(callBackFunction,100);
 }
 
 /** 
@@ -1110,7 +1110,8 @@ function finalizeMessageDisplay(destination, validationType) {
         dojo.byId("historyButtonDiv").style.display="none";
       }
     }
-    var classObj=dojo.byId('objectClass');
+    var classObj=null;
+    if (dojo.byId('objectClass')) classObj=dojo.byId('objectClass');
     if (classObj && classObj.value=='DocumentDirectory') {
     	dijit.byId("documentDirectoryTree").model.store.clearOnClose = true;
     	dijit.byId("documentDirectoryTree").model.store.close();
@@ -1125,6 +1126,9 @@ function finalizeMessageDisplay(destination, validationType) {
    	    // Rebuild the tree
    	    dijit.byId("documentDirectoryTree").postMixInProperties();
    	    dijit.byId("documentDirectoryTree")._load();
+    }
+    if (dojo.byId("forceRefreshMenu") && dojo.byId("forceRefreshMenu").value!="") {
+      forceRefreshMenu=dojo.byId("forceRefreshMenu").value;
     }
     if (forceRefreshMenu) {
     	//loadContent("../view/menuTree.php", "mapDiv",null,false);

@@ -34,6 +34,7 @@ $status="NO_CHANGE";
 $errors="";
 $type=$_REQUEST['parameterType'];
 Sql::beginTransaction();
+$forceRefreshMenu='';
 if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable('menu', 'profile', 'habilitation') ;
   $hab=new Habilitation();
@@ -42,6 +43,7 @@ if ($type=='habilitation') {
     $allHab[$hab->idMenu.'#'.$hab->idProfile]=$hab;
     unset($allHab[$hab->id]);
   }
+  $forceRefreshMenu=false;
   foreach($crosTable as $lineId => $line) {
     foreach($line as $colId => $val) {
       //$crit['idMenu']=$lineId;
@@ -67,6 +69,9 @@ if ($type=='habilitation') {
             $errors=$result;
           } else if ($status=="NO_CHANGE") {
             $status="OK";
+            if ($obj->idProfile==getSessionUser()->idProfile) {
+              $forceRefreshMenu='habilitation';
+            }
           }
         }
       }
@@ -93,6 +98,9 @@ if ($type=='habilitation') {
           $errors=$result;
         } else if ($status=="NO_CHANGE") {
           $status="OK";
+          //if ($obj->idProfile==getSessionUser()->idProfile) {
+          //  $forceRefreshMenu='habilitationReport';
+          //}
         }
       }
     }
@@ -131,6 +139,9 @@ if ($type=='habilitation') {
           $errors=$result;
         } else if ($status=="NO_CHANGE") {
           $status="OK";
+          //if ($obj->idProfile==getSessionUser()->idProfile) {
+          //  $forceRefreshMenu='habilitationOther';
+          //}
         }
       }
     }
@@ -152,6 +163,9 @@ if ($type=='habilitation') {
           $errors=$result;
         } else if ($status=="NO_CHANGE") {
           $status="OK";
+          //if ($obj->idProfile==getSessionUser()->idProfile) {
+          //  $forceRefreshMenu='accessRight';
+          //}
         }
       }
     }
@@ -176,6 +190,9 @@ if ($type=='habilitation') {
             $errors=$result;
           } else if ($status=="NO_CHANGE") {
             $status="OK";
+            //if ($obj->idProfile==getSessionUser()->idProfile) {
+            //  $forceRefreshMenu='accessRightNoProject';
+            //}
           }
         }
       }
@@ -250,6 +267,7 @@ if ($status=='ERROR') {
 	Sql::rollbackTransaction();
   echo '<span class="messageNO_CHANGE" >' . i18n('messageParametersNoChangeSaved') . '</span>';
 }
+echo '<input type="hidden" id="forceRefreshMenu" value="'.$forceRefreshMenu.'" />';
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';
 

@@ -261,7 +261,8 @@
         }
         if ($line['reftype']!='Project' and $line['reftype']!='Fixed') {
           $arrayResource=array();
-          if ($showResource) {
+          // if ($showResource) { //
+          if (1) { // Miust always retreive resource to display value in column, even if not displayed 
           	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
             $ass=new Assignment();
             $assList=$ass->getSqlElementsFromCriteria($crit,false); 
@@ -280,11 +281,22 @@
   	        }
   	        foreach ($assList as $ass) {       	
   	        	$res=new Resource($ass->idResource);
-  	        	if ($res->$displayResource)	{
-  	        	  $arrayResource[$res->id]=$res->$displayResource;
-  	        	  if ($resp and $resp==$res->id ) {
-  	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
-  	        	  }
+  	        	if (! isset($arrayResource[$res->id])) {
+    	        	$display=$res->$displayResource;
+    	        	if ($displayResource=='initials' and ! $display) {
+    	        	  $words=explode(' ',$res->name);
+    	        	  $display='';
+    	        	  foreach ($words as $word) {
+    	        	    $display.=strtoupper(substr($word,0,1));
+    	        	  }
+    	        	  //$display=
+    	        	}
+    	        	if ($display)	{
+    	        	  $arrayResource[$res->id]=$display;
+    	        	  if ($resp and $resp==$res->id ) {
+    	        		  $arrayResource[$res->id]='<b>'.$display.'</b>';
+    	        	  }
+    	        	}
   	        	}
   	        }
           }
