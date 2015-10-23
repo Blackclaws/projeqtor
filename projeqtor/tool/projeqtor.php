@@ -2640,16 +2640,16 @@ function formatNumericOutput($val) {
 function formatNumericInput($val) {
   global $browserLocale;
   $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
-  $from = array (
-      $fmt->decimalSeparator,
-      $fmt->thouthandSeparator,
-      ' ' 
-  );
-  $to = array (
-      '.',
-      '',
-      '' 
-  );
+  if ($fmt->thouthandSeparator=='.' and substr_count($val,$fmt->decimalSeparator)!=1) { 
+    // Thouthand separator is "." but locale decimal is not present : 
+    // as we are dealing with decimals we expect it is generic format,
+    // if not it will raise an error (expected behavior)
+    $from = array ( ' ' );
+    $to =   array ( ''  );
+  } else {
+    $from = array ( $fmt->thouthandSeparator, $fmt->decimalSeparator, ' ' ); // Take care to replace thouthand first
+    $to   = array ( ''                      , '.'                   , ''  );
+  }
   return str_replace ( $from, $to, $val );
 }
 
