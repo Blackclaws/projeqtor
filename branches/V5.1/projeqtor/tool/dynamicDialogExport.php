@@ -135,9 +135,9 @@ $htmlresult.="<br/>";
     <td style="width: 50%; text-align: right;">
     <button align="right" dojoType="dijit.form.Button"
       onclick="closeExportDialog();">
-      <?php echo i18n("buttonCancel");?></button>
+      <?php echo i18n("buttonCancel");?></button>&nbsp;
     </td>
-    <td style="width: 50%; text-align: left;">
+    <td style="width: 50%; text-align: left;">&nbsp;
     <button align="left" dojoType="dijit.form.Button"
       id="dialogPrintSubmit"
       onclick="executeExport('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
