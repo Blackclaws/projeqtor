@@ -226,9 +226,12 @@ class PlannedWork extends GeneralWork {
         $endPlan=$plan->validatedEndDate;
         $step=1;
       } else if ($profile=="FDUR") { // Fixed duration
-      	if ($plan->validatedStartDate) { 
-      	  $startPlan=$plan->validatedStartDate;
-      	}
+        // #V5.1.0 : removed this option
+        // This leads to issue when saving validate dates : it fixed start, which may not be expected
+        // If one want Fixed duration with fixed start, use regular beetween dates, or use milestone to define start
+      	//if ($plan->validatedStartDate) {   
+      	//  $startPlan=$plan->validatedStartDate;
+      	//}
         $step=1;
       } else if ($profile=="ASAP" or $profile=="GROUP") { // As soon as possible
         //$startPlan=$plan->validatedStartDate;
@@ -324,24 +327,28 @@ class PlannedWork extends GeneralWork {
         if (! $plan->realStartDate) {
           //$plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
         	if ($plan->plannedWork==0 and $plan->elementary==1) {
-	        	if ($plan->validatedStartDate) {
+	        	if ($plan->validatedStartDate and $plan->validatedStartDate>$startPlan) {
 	            $plan->plannedStartDate=$plan->validatedStartDate;
-	          } else if ($plan->initialStartDate) {
+	          } else if ($plan->initialStartDate and $plan->initialStartDate>$startPlan) {
 	            $plan->plannedStartDate=$plan->initialStartDate;
 	          } else {
-	            $plan->plannedStartDate=date('Y-m-d');
+	            // V5.1.0 : should never start before startplan
+	            //$plan->plannedStartDate=date('Y-m-d');
+	            $plan->plannedStartDate=$startPlan;
 	          }
         	}
         }
         if (! $plan->realEndDate) {
           //$plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
         	if ($plan->plannedWork==0 and $plan->elementary==1) {
-	          if ($plan->validatedEndDate) {
+	          if ($plan->validatedEndDate and $plan->validatedEndDate>$startPlan) {
 	            $plan->plannedEndDate=$plan->validatedEndDate;
-	          } else if ($plan->initialEndDate) {
+	          } else if ($plan->initialEndDate and $plan->initialEndDate>$startPlan) {
 	            $plan->plannedEndDate=$plan->initialEndDate;
 	          } else {
-	            $plan->plannedEndDate=date('Y-m-d');
+	            // V5.1.0 : should never start before startplan
+	            //$plan->plannedEndDate=date('Y-m-d');
+	            $plan->plannedEndDate=$startPlan;
 	          }
           }        	
         }
