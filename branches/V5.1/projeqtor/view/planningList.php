@@ -45,17 +45,23 @@ if ($paramEnd->id) {
   $endDate=$paramEnd->parameterValue;
   $saveDates=true;
 }
-$saveShowWbsObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWbs'));
-$saveShowWbs=$saveShowWbsObj->parameterValue;
-$saveShowResourceObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowResource'));
-$saveShowResource=$saveShowResourceObj->parameterValue;
-$saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWork'));
-$saveShowWork=$saveShowWorkObj->parameterValue;
-$saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
-$saveShowClosed=$saveShowClosedObj->parameterValue;
+//$saveShowWbsObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWbs'));
+//$saveShowWbs=$saveShowWbsObj->parameterValue;
+$saveShowWbs=Parameter::getUserParameter('planningShowWbs');
+//$saveShowResourceObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowResource'));
+//$saveShowResource=$saveShowResourceObj->parameterValue;
+$saveShowResource=Parameter::getUserParameter('planningShowResource');
+//$saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWork'));
+//$saveShowWork=$saveShowWorkObj->parameterValue;
+$saveShowWork=Parameter::getUserParameter('planningShowWork');
+//$saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
+//$saveShowClosed=$saveShowClosedObj->parameterValue;
+$saveShowClosed=Parameter::getUserParameter('planningShowClosed');
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
+$automaticRunPlanning=Parameter::getUserParameter('automaticRunPlanning');
+
 $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
 $canPlan=(count($plannableProjectsList)>0)?true:false;
 //$objectClass='Task';
@@ -90,17 +96,13 @@ $canPlan=(count($plannableProjectsList)>0)?true:false;
                      return false;
                     </script>
 		              </button>
-<?php $autoPlan=getSessionValue('automaticPlanning');$showAutoPlan=true;?>
+<?php $showAutoPlan=true;?>
                   <div style="white-space:nowrap;<?php if (!isset($showAutoPlan) or $showAutoPlan!=true) echo 'visibility:hidden;'?>">
 		              <span title="<?php echo i18n('automaticRunPlanHelp');?>" dojoType="dijit.form.CheckBox"
                         type="checkbox" id="automaticRunPlan" name="automaticRunPlan" class="whiteCheck"
-                        <?php if ( $autoPlan) {echo 'checked="checked"'; } ?>  >  
+                        <?php if ( $automaticRunPlanning) {echo 'checked="checked"'; } ?>  >  
                         <script type="dojo/connect" event="onChange" args="evt">
-                          dojo.xhrPost({
-                            url: "../tool/saveDataToSession.php?id=automaticPlanning&value=" + this.checked,
-                            handleAs: "text",
-                            load: function(data,args) { }
-                          });
+                          saveUserParameter('automaticRunPlanning',((this.checked)?'1':'0'));
                         </script>                    
                   </span>&nbsp;<?php echo i18n('automaticRunPlan')?>
                   </div>

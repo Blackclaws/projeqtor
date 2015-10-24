@@ -16,7 +16,7 @@ Planning management
 
 ProjeQtOr  provides all the elements needed to build a planning from workload, constraints between tasks and resources availability.
 
-.. index:: project
+.. index:: Planning management (Project)
 
 .. rubric:: Project
 
@@ -30,7 +30,7 @@ You can also define sub-projects of a project and sub-project of sub-projects wi
 
 This allows for example to define projects that are not real projects , but just a definition of the structure for your organization.
 
-.. index:: activity
+.. index:: Planning management (Activity)
  
 .. rubric:: Activity
  
@@ -40,7 +40,7 @@ This is usually a task that has a certain duration and should be assigned to one
 
 Activities appear on the Gantt Planning view.
 
-.. index:: milestone
+.. index:: Planning management (Milestone)
 
 .. rubric:: Milestone
  
@@ -52,7 +52,7 @@ They can also be used to highlight the transition from one phase to the next one
 
 Unlike activities , milestones have no duration and no work.
 
-.. index:: resource
+.. index:: Planning management (Resource)
 .. rubric:: Resources
  
 Resources can be assigned to activities.
@@ -61,7 +61,7 @@ This means that some work is defined on this activity for the resource.
 
 Only the resources affected to the project of the activity can be assigned to the activity.
 
-.. index:: real work allocation 
+.. index:: Planning management (Real work allocation) 
 .. rubric:: Real work allocation
  
 Resources enter their time spent on the Real work allocation screen.
@@ -70,7 +70,7 @@ This allows for a real-time monitoring of work.
 
 Moreover, updating the left work allows to recalculate the planning taking into account the actual progress on each task.
 
-.. index:: planning
+.. index:: Planning management (Planning)
 .. rubric:: Planning
  
 The planning is based on all the constraints defined:
@@ -89,7 +89,7 @@ The planning is based on all the constraints defined:
 
 The planning is displayed as a Gantt chart.
 
-.. index:: project portfolio
+.. index:: Planning management (Project portfolio)
 .. rubric:: Project Portfolio
  
 The planning can also be viewed as a Project Portfolio, which is a Gantt planning view restricted to one line per project, plus optionally selected milestones.
@@ -105,7 +105,7 @@ Resource management
 
 ProjeQtOr  manages the availability of resources that can be affected to multiple projects. Tool calculates a reliable, optimized and realistic planning.
 
-.. index:: resource
+.. index:: Resource management (Resource)
 .. rubric:: Resources
 
 Resources are the persons working on the project activities.
@@ -114,12 +114,12 @@ A resource can also be a group of persons (team) for which you do not want to ma
 
 You can manage this through the capacity of the resource, that can be greater than 1 (for a group of people) or less than 1 (for a person working part-time).
 
-.. index:: affectation
+.. index:: Resource management (Affectation)
 .. rubric:: Affectations
  
 The first step is to affect each resource to the projects on which it has to work, specifying the affectation rate (% of maximum weekly time spent on this project).
 
-.. index:: assignment
+.. index:: Resource management (Assignment)
 .. rubric:: Assignments
  
 Then you can assign resources to project activities.
@@ -128,7 +128,7 @@ This means that some work is defined on this activity for the resource.
 
 Only the resources affected to the project of the activity can be assigned to the activity.
 
-.. index:: calendar
+.. index:: Resource management (Calendar)
 .. rubric:: Calendars
  
 To manage off days, you have a global calendar.
@@ -141,7 +141,7 @@ This calendar can be split into multiple calendars, to manage distinct availabil
 
 Each resource is then assigned to a calendar.
 
-.. index:: real work allocation
+.. index:: Resource management (Real work allocation)
 .. rubric:: Real work allocation
  
 Resources enter their time spent on the Real work allocation screen. This allows for a real-time monitoring of work.
@@ -160,7 +160,7 @@ Tickets management
 
 ProjeQtOr includes a Bug Tracker to monitor incidents on your projects, with possibility to include work on planned tasks of your projects.
 
-.. index:: ticket
+.. index:: Tickets management (Ticket)
 .. rubric:: Ticket
 
 A Ticket is any intervention not needing to be planned (or that cannot be planned).
@@ -172,7 +172,7 @@ For example, bugs or problems can be managed through Tickets:
 * You can not schedule the bugs before they are identified and registered 
 * You must be able to give a solution to a bug (workaround or fix).
 
-.. index:: ticket simple
+.. index:: Tickets management (Ticket simple)
 
 .. rubric:: Simple tickets
 
@@ -192,35 +192,35 @@ Costs management
 
 All elements related to delays can also be followed as costs (from resources work) and managing other expenses all costs of the project are monitored and can generate invoices.
 
-.. index:: project
+.. index:: Costs management (Project)
 .. rubric:: Projects
 
 The Project is the main entity of ProjeQtOr.
 In addition to tracking work on projects, ProjeQtOr can track the costs associated with this work.
 
-.. index:: activity
+.. index:: Costs management (Activity)
 .. rubric:: Activities
  
 An Activity is a task that must be planned, or includes other activities.
 Work assigned to resources on activities is converted into associated costs.
 
-.. index:: resource cost
+.. index:: Costs management (Resource cost)
 .. rubric:: Resource cost
  
 To calculate the cost of expenses ProjeQtOr  defines the Resources cost.
 This cost may vary depending on the role of the resource and may change over time.
 
-.. index:: project expense
+.. index:: Costs management (Project expense)
 .. rubric:: Project expenses
  
 Projects expenses can also record expenses not related to resource costs (purchase , lease, sub-contracting).
 
-.. index:: individual expense
+.. index:: Costs management (Individual expense)
 .. rubric:: Individual expenses
  
 Individual expenses can record expenses generated by a given resource.
 
-.. index:: quote, order, term, bill
+.. index:: Costs management (Quote, Order, Term, Bill)
 .. rubric:: Quote, Orders, Term, Bill
  
 ProjeQtOr  can manage various financial elements found on a project: Quotation (proposals), Orders (received from customers), the invoicing Terms and Bills.
@@ -239,7 +239,7 @@ The specificity of ProjeQtOr  is that it is Quality Oriented : it integrates the
 
 This way, the approval stage of your Quality Systems are eased, whatever the reference (ISO, CMMI, ...).
 
-.. index:: workflow
+.. index:: Quality management (Workflow)
 .. rubric:: Workflows
 
 Workflows are defined to monitor changes of possible status.
@@ -248,29 +248,29 @@ This allows, among other things, to restrict certain profiles from changing some
 
 You can, for instance, limit the change to a validation status to a given profile, to ensure that only an authorized user will perform this validation.
 
-.. index:: ticket delay
+.. index:: Quality management (Ticket delay)
 .. rubric:: Delays for tickets
  
 You can define Delays for ticket. This will automatically calculate the due date of the Ticket when creating the Ticket.
 
-.. index:: indicator
+.. index:: Quality management (Indicator)
 .. rubric:: Indicators
  
 Indicators can be calculated relative to respect of expected work, end date or cost values.
 
 Some indicators are configured by default , and you can configure your own depending on your needs.
 
-.. index:: alert
+.. index:: Quality management (Alert)
 .. rubric:: Alerts
  
 Non respect of indicators (or the approach of non-respect target) can generate Alerts.
 
-.. index:: checklist
+.. index:: Quality management (Checklist)
 .. rubric:: Checklists
  
 It is possible to define custom Checklists that will allow, for instance, to ensure that a process is applied.
 
-.. index:: report
+.. index:: Quality management (Report)
 .. rubric:: Reports
  
 Many Reports are available to track activity on projects, some displayed as graphs.
@@ -294,7 +294,7 @@ Risks management
 
 ProjeQtOr  includes a comprehensive risks and opportunities management, including the action plan necessary to mitigate or treat them and monitoring occurring problems.
 
-.. index:: risk
+.. index:: Risks management (Risk)
 .. rubric:: Risks
 
 A Risk is a threat or event that could have a negative impact on the project, which can be neutralized, or at least minimize, by predefined actions.
@@ -307,21 +307,21 @@ The risk management plan is a key point of the project management. Its objective
 * monitor the actions of risks contingency and mitigation,
 * identify risks that eventually do happen (so they become issues).
 
-.. index:: opportunity
+.. index:: Risks management (Opportunity)
 .. rubric:: Opportunities
  
 An Opportunity can be seen as a positive risk. This is not a threat but an opportunity to have a positive impact on the project.
 
 They must be identified and followed-up not to be missed out.
 
-.. index:: issue
+.. index:: Risks management (Issue)
 .. rubric:: Issues
  
 Issue is a risk that happens during the project.
 
 If the risk management plan has been properly managed, the issue should be an identified and qualified risk.
 
-.. index:: action
+.. index:: Risks management (Action)
 .. rubric:: Actions
  
 Actions shall be defined to avoid risks, not miss the opportunities and solve issues.
@@ -340,17 +340,17 @@ Perimeter management
 
 ProjeQtOr allows you to monitor and record all events on your projects and helps you in managing of deviations, to control the perimeter of projects.
 
-.. index:: meeting
+.. index:: Perimeter management (Meeting)
 .. rubric:: Meetings
 
 Follow-up and organize Meetings, track associated action plans, decisions and easily find this information afterwards.
 
-.. index:: periodic meeting
+.. index:: Perimeter management (Periodic meeting)
 .. rubric:: Periodic meetings
 
 You can also create Periodic meetings, which are regularly recurring meetings (steering committees, weekly progress meetings, ... )
 
-.. index:: decision
+.. index:: Perimeter management (Decision)
 .. rubric:: Decisions
  
 Decisions follow-up allows you to easily retrieve the information about the origin of a decision :
@@ -362,12 +362,12 @@ Decisions follow-up allows you to easily retrieve the information about the orig
 
 Not revolutionary, this feature can save you many hours of research in case of dispute .
 
-.. index:: question
+.. index:: Perimeter management (Question)
 .. rubric:: Questions
  
 Tracking Questions / Answers can also simplify your life on such exchanges, which often end up as a game of Ping - Pong with a poor Excel sheet in the role of the ball (when it is not a simple email exchange... ).
 
-.. index:: product, version
+.. index:: Perimeter management (Product & Version)
 .. rubric:: Product and Version
 
 ProjeQtOr includes Product management and Product Versions.
@@ -427,17 +427,17 @@ In addition to the standard functionalities to manage your projects and monitor 
 
 By linking these three elements, you can obtain a requirements covering matrix, simply, efficiently and in real time.
 
-.. index:: requirement
+.. index:: Commitments management (Requirement)
 .. rubric:: Requirements
 
 Requirements management  helps in describing requirements explicitly and quantitatively monitor progress in building a product. 
 
-.. index:: test case
+.. index:: Commitments management (Test case)
 .. rubric:: Test cases
  
 The definition of Test cases is used to describe how you will test that a given requirement is met. 
 
-.. index:: test session
+.. index:: Commitments management (Test session)
 .. rubric:: Test sessions
  
 Test sessions group test cases to be executed for a particular purpose.
@@ -454,29 +454,29 @@ Tools
 
 ProjeQtOr includes some tools to generate alerts, automatically send emails on chosen events, import or export data in various formats.
 
-.. index:: import
+.. index:: Tools (Import)
 .. rubric:: Imports
 
 ProjeQtOr includes an import feature for almost all elements of project management, from CSV or XLSX files.
 
-.. index:: CSV, PDF, export
+.. index:: Tools (CSV & PDF export)
 .. rubric:: CSV and PDF exports 
  
 All lists of items can be printed and exported to CSV and PDF format.
 
 The details of each item can be printed or exported in PDF format.
 
-.. index:: MS-Project, export
+.. index:: Tools (MS-Project export)
 .. rubric:: MS-Project export
  
 The Gantt planning can be exported to MS-Project format (XML).
 
-.. index:: alert
+.. index:: Tools (Alert)
 .. rubric:: Alerts
  
 Internal alerts can be generated automatically based on defined events.
 
-.. index:: email
+.. index:: Tools (Email)
 .. rubric:: Emails
  
 These alerts can also be dispatched as emails.
@@ -485,12 +485,12 @@ It is also possible to manually send emails from the application, attaching the 
 
 It is also possible to retrieve answers to this type of email to save the message in the notes of the relevant item.
 
-.. index:: administration
+.. index:: Tools (Administration)
 .. rubric:: Administration
  
 ProjeQtOr provides administrative features to manage connections, send special alerts and manage background tasks treatments.
 
-.. index:: CRON
+.. index:: Tools (CRON)
 .. rubric:: CRON
 
 Moreover, the tool features its own CRON system, independent of the operating system and able to handle the PHP stop and restart.

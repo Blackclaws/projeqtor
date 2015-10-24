@@ -103,6 +103,7 @@ $userLink['RiskLevel']='ListsOfValues.html#risk-level';
 $userLink['Feasibility']='ListsOfValues.html#feasibility';
 $userLink['Efficiency']='ListsOfValues.html#efficiency';
 $userLink['Administration']='Administration.html#administration-console';
+$userLink['Plugin']='Plugin.html';
 $userLink['Audit']='Administration.html#audit-connections';
 $userLink['GlobalParameter']='Administration.html#global-parameters';
 

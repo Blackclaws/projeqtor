@@ -59,7 +59,6 @@ foreach ($params as $pName=>$pValue) {
 	if (isset($_REQUEST[$pName])) {
 		$reqValue=$_REQUEST[$pName];
 	}
-	debugLog("$pName=>$pValue : $reqValue");
 	if (trim($reqValue)!=trim($pValue)) {
 		$tp=new FavoriteParameter();
 		$tp->idUser=$item->idUser;

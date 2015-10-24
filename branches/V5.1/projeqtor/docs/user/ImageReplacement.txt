@@ -67,6 +67,9 @@
 .. |buttonIconToday| image:: images/iconToday32.png
    :alt: Button icon Today
 
+.. |buttonIconReportFavorite| image:: images/iconReportsFavorite.png
+   :alt: Button icon report favorite
+
 .. |buttonIconDisplay| image:: images/display.png
    :alt: Button icon display
 
