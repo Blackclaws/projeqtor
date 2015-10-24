@@ -602,9 +602,9 @@ foreach ($listParam as $param) {
          onclick="saveReportInToday();">
       </button>
       <?php if (isHtml5()) {?>
-      <button title="<?php echo i18n('defineAsFavorit')?>"   
+      <button title="<?php echo i18n('defineAsFavorite')?>"   
          dojoType="dijit.form.Button" type="button" 
-         id="reportDefineAsFavorit" name="reportDefineAsFavorit" 
+         id="reportDefineAsFavorite" name="reportDefineAsFavorite" 
          iconClass="iconReportsFavorite" class="detailButton whiteBackground" showLabel="false"
          onclick="saveReportAsFavorite();">
       </button>

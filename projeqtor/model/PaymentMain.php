@@ -159,7 +159,6 @@ class PaymentMain extends SqlElement {
     // Chek that bill is not already paid
     if ( trim($this->idBill) and (trim($this->idBill)!=trim($old->idBill))) {
       $bill=new Bill($this->idBill);
-      debugLog($bill);
       if ($bill->paymentsCount>0 and $bill->paymentDone) {
         $result.="<br/>" . i18n('billAlreadyPaid',array($bill->id, $bill->name, $bill->reference));
       } else {

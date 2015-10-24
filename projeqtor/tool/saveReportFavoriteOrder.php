@@ -28,16 +28,13 @@
  * Save Today displayed info list
  */
 require_once "../tool/projeqtor.php";
-debugLog($_REQUEST);
 Sql::beginTransaction();
 $user=getSessionUser();
 $crit=array('idUser'=>$user->id);
 $favorite=new Favorite();
 $favoriteList=$favorite->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
 foreach ($favoriteList as $item) {
-  debugLog('favorite #'.$item->id);
 	if (isset($_REQUEST['favoriteReportOrder' . $item->id])) {
-	  debugLog('order='.$_REQUEST['favoriteReportOrder' . $item->id]);
 		$item->sortOrder=$_REQUEST['favoriteReportOrder' . $item->id];
 		$item->save();
 	}

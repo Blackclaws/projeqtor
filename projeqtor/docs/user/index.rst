@@ -228,6 +228,13 @@ Every element is linked to a type, defining some mandatory data or other GUI beh
    
    ListsOfTypes
 
+Plug-ins
+========
+
+.. toctree::
+   :maxdepth: 1
+
+   Plugin
 
 
 Administration

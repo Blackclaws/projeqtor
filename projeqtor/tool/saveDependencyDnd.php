@@ -118,6 +118,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   $result.='<input type="hidden" id="lastOperation" value="insert" /><input type="hidden" id="lastOperationStatus" value="OK" />';
   $result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
   echo '<div class="messageOK" >'.$result.'</div>';
+  echo '<input type="hidden" id="saveDependencySuccess" value="true" />';
 } else { 
   Sql::rollbackTransaction();
   $result=substr($result,0,strpos($result,'<input'));

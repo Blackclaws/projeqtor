@@ -219,10 +219,10 @@ function filterJsonList() {
 }
 
 function refreshGrid() {
-  if (dijit.byId("objectGrid")) {
+  if (dijit.byId("objectGrid")) { // Grid exists : refresh it
     showWait();
     refreshJsonList(dojo.byId('objectClass').value, true);
-  } else {
+  } else { // If Grid does not exist, we are displaying Planning : refresh it 
 	  showWait();
 	  if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
 	    plan();
@@ -917,17 +917,17 @@ function finalizeMessageDisplay(destination, validationType) {
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
     	  if (validationType=='copyProject') {
-    		dojo.byId('objectClass').value="Project";
+    		  dojo.byId('objectClass').value="Project";
     	  } else {
-    		dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
+    		  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
     	  }
     	  var lastSaveId=dojo.byId('lastSaveId');
-          var lastSaveClass=dojo.byId('objectClass');
-          if (lastSaveClass && lastSaveId) {
+        var lastSaveClass=dojo.byId('objectClass');
+        if (lastSaveClass && lastSaveId) {
         	 waitingForReply=false;
-             gotoElement(lastSaveClass.value, lastSaveId.value,null,true);
-             waitingForReply=true;
-          }         
+           gotoElement(lastSaveClass.value, lastSaveId.value,null,true);
+           waitingForReply=true;
+        }         
       } else if (validationType=='admin'){
     	  hideWait();
       } else if (validationType=='link' && 
@@ -945,12 +945,12 @@ function finalizeMessageDisplay(destination, validationType) {
             loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  }
           if (validationType=='assignment' || validationType=='documentVersion') {
-        	refreshGrid();
+        	  refreshGrid();
           } else if (validationType=='dependency' && 
         		  (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
               noHideWait=true;
               //refreshJsonPlanning();
-              refreshGrid();
+              refreshGrid(); // Will call refreshJsonPlanning() if needed and plan() if required
           }
     	  //hideWait();
       }
@@ -981,7 +981,15 @@ function finalizeMessageDisplay(destination, validationType) {
       // Refresh the planning Gantt (if visible)
       if (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV") ) {
         noHideWait=true;
-        refreshJsonPlanning();
+        if (destination=="planResultDiv") {
+          if (dojo.byId("saveDependencySuccess") && dojo.byId("saveDependencySuccess").value=='true') {
+            refreshGrid(); // It is a dependency add throught D&D => must replan is needed
+          } else {
+            refreshJsonPlanning(); // Must not call refreshGrid() to avoid never ending loop
+          }
+        } else {
+          refreshGrid();
+        }
         // loadContent("planningList.php", "listDiv", 'listForm');    
       }
       // last operations depending on the executed operatoin (insert, delete,
@@ -1943,7 +1951,7 @@ function drawGantt() {
       // display color of the task bar
       var pColor='50BB50';
       // show in red not respected constraints
-      if (item.validatedenddate!=" " && item.validatedenddate < pEnd) {
+      if (trim(item.validatedenddate)!="" && item.validatedenddate < pEnd) {
         pColor='BB5050';  
       }
       if (item.notplannedwork>0) {
@@ -2269,7 +2277,10 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh) {
   if ( dojo.byId("GanttChartDIV") 
       && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' 
         || eltClass=='TestSession' || eltClass=='Meeting' || eltClass=='PeriodicMeeting') ) {
-	  //refreshJsonPlanning();
+    if (forceListRefresh) {
+      refreshGrid();
+      //refreshJsonPlanning();
+    }
 	  dojo.byId('objectClass').value=eltClass;
 	  dojo.byId('objectId').value=eltId;
     loadContent('objectDetail.php','detailDiv','listForm');
