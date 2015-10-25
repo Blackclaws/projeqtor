@@ -100,16 +100,25 @@ if (array_key_exists('copyWithAssignments',$_REQUEST)) {
 	$copyAssignments=true;
 }
 Sql::beginTransaction();
+$error=false;
 // copy from existing object
 $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
-// save the new object to session (modified status)
 $result=$newObj->_copyResult;
-unset($newObj->_copyResult);
-$res="OK";
-if ($copyWithStructure and get_class($obj)=='Activity' and get_class($newObj)=='Activity') {
-	$res=copyStructure($obj, $newObj, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
+if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+  $error=true;
 }
-if ($copyToLinkOrigin) {
+unset($newObj->_copyResult);
+if (!$error and $copyWithStructure and get_class($obj)=='Activity' and get_class($newObj)=='Activity') {
+	//$res=copyStructure($obj, $newObj, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
+	$res=PlanningElement::copyStructure($obj, $newObj, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
+	if ($res!='OK') {
+	  $error=true;
+	  $result=$res;
+	} else {
+	  PlanningElement::copyStructureFinalize();
+	}
+}
+if (!$error and $copyToLinkOrigin) {
 	$link=new Link();
   $link->ref1Id=$obj->id;
   $link->ref1Type=get_class($obj);
@@ -122,22 +131,19 @@ if ($copyToLinkOrigin) {
   $resLink=$link->save();
 }
 
-
 // Message of correct saving
 $status = displayLastOperationStatus($result);
 if ($status == "OK") {
-  if ($res=="OK") {
-    if (! array_key_exists('comboDetail', $_REQUEST)) {
-      if (isset($_REQUEST['directAccessIndex'])) {
-        $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=$newObj;
-      } else {
-        $_SESSION['currentObject']=$newObj;
-      }
+  if (! array_key_exists('comboDetail', $_REQUEST)) {
+    if (isset($_REQUEST['directAccessIndex'])) {
+      $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=$newObj;
+    } else {
+      $_SESSION['currentObject']=$newObj;
     }
   }
 }
 
-function copyStructure($from, $to, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments) {
+/*function copyStructure($from, $to, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments) {
   	$nbErrors=0;
   	$errorFullMessage="";
   	$milArray=array();
@@ -274,5 +280,5 @@ function customSortByWbsSortable($a,$b) {
   $pe=get_class($b).'PlanningElement';
   $wbsB=$b->$pe->wbsSortable;
   return ($wbsA > $wbsB)?1:-1;
-}
+}*/
 ?>

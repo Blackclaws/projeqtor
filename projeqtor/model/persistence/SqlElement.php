@@ -495,8 +495,8 @@ abstract class SqlElement {
 		return $this->copySqlElement();
 	}
 
-	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false) {
-		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments);
+	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null) {
+		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments, $withAffectations, $toProject, $toActivity);
 	}
 	/** =========================================================================
 	 * Save an object to the database
@@ -1303,7 +1303,7 @@ abstract class SqlElement {
 		return $newObj;
 	}
 
-	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks,$withAssignments=false) {
+	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks,$withAssignments=false,$withAffectations=false, $toProject=null, $toActivity=null) {
 		$newObj=new $newClass();
 		$newObj->id=null;
 		$typeName='id' . $newClass . 'Type';
@@ -1389,6 +1389,12 @@ abstract class SqlElement {
 		}
 		if (property_exists($newObj,"reference")) {
 			$newObj->reference=null;
+		}
+		if (property_exists($newObj,"idProject") and $toProject) {
+		  $newObj->idProject=$toProject;
+		}
+		if (property_exists($newObj,"idActivity") and $toActivity) {
+		  $newObj->idActivity=$toActivity;
 		}
 		$newObj->name=$newName;
 		// check description

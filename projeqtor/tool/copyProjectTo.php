@@ -72,13 +72,36 @@ $copyAssignments=false;
 if (array_key_exists('copyProjectAssignments',$_REQUEST)) {
 	$copyAssignments=true;
 }
-		
 // copy from existing object
 Sql::beginTransaction();
-$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
-// save the new object to session (modified status)
+$error=false;
+//$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
+$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false, false, $copyAssignments);
 $result=$newProj->_copyResult;
+if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+  $error=true;
+}
 unset($newProj->_copyResult);
+if (!$error and $copyStructure) {
+  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,false, $copyAssignments, $copyAffectations,$newProj->id,$copySubProjects);
+  if ($res!='OK') {
+    $result=$res;
+    $error=true;
+  } else {
+    PlanningElement::copyStructureFinalize();
+  }
+}
+// copy affectations
+if (!$error and $copyAffectations) {
+  $aff=new Affectation();
+  $crit=array('idProject'=>$proj->id);
+  $lstAff=$aff->getSqlElementsFromCriteria($crit);
+  foreach ($lstAff as $aff) {
+  		$aff->id=null;
+  		$aff->idProject=$newProj->id;
+  		$aff->save();
+  }
+}
 // Message of correct saving
 $status = displayLastOperationStatus($result);
 if ($status == "OK") {
@@ -89,12 +112,12 @@ if ($status == "OK") {
       $_SESSION ['currentObject'] = new Project ( $newProj->id );
     }
   }
+  User::resetAllVisibleProjects(null,getSessionUser()->id); // Will reteive visibiity for new project and sub-projects
 }
 
+/*
 function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop=null) {
-//debugLog("copyProject($proj->id, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop)");
   $newProj=$proj->copyTo('Project',$toType, $toName, false, false,false,false, $copyAssignments);
-//debugLog(" => project copied");
   $result=$newProj->_copyResult;
 	$nbErrors=0;
 	$errorFullMessage="";
@@ -105,9 +128,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
     $project=New Project();
     $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
     foreach ($projects as $project) {
-//debugLog(" => Copy sub-project $project->id : $project->name");
       $newSubProject=copyProject($project, $project->name, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $proj->id);
-//debugLog(" => sub-project copied");
       $subResult=$newSubProject->_copyResult;
       unset($newSubProject->_copyResult);
       if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -147,9 +168,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  $itemArray=array();
 	  $itemArrayAssignment=array();
 	  foreach ($items as $id=>$item) {
-//debugLog("    => copy structure : item = ".get_class($item)." #".$item->id);
 	  	$new=$item->copy();
-//debugLog("    => copy structure : done");	  	
 	  	$tmpRes=$new->_copyResult;
 	  	if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
           errorLog($tmpRes);
@@ -164,7 +183,6 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
         }
 	  }
 	  foreach ($itemArrayObj as $new) {
-//debugLog("    => changes for structure (idProject, wbs) new =  ".get_class($new)." #".$new->id);
 			$new->idProject=$newProj->id;
 			if ($new->idActivity) {
 			 if (array_key_exists('Activity_' . $new->idActivity,$itemArray)) {
@@ -175,7 +193,6 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 			$pe=get_class($new).'PlanningElement';
 			$new->$pe->wbs=null;
 			$tmpRes=$new->save();
-//debugLog("    => changes for structure done");		
 			if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 				errorLog($tmpRes);
 				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
@@ -276,5 +293,5 @@ function customSortByWbsSortable($a,$b) {
 	$pe=get_class($b).'PlanningElement';
   $wbsB=$b->$pe->wbsSortable;
   return ($wbsA > $wbsB)?1:-1;
-}
+}*/
 ?>

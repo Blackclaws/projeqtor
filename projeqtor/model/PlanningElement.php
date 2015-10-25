@@ -80,7 +80,7 @@ class PlanningElement extends SqlElement {
   public $idBill;
   public $validatedCalculated;
   public $notPlannedWork;
-
+  
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
                                   "refType"=>"hidden",
@@ -130,6 +130,9 @@ class PlanningElement extends SqlElement {
 
   private static $staticCostVisibility=null;
   private static $staticWorkVisibility=null;
+  public static $_noDispatch=false;
+  public static $_noDispatchArray=array();
+  public static $_copiedItems=array();
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -301,14 +304,6 @@ class PlanningElement extends SqlElement {
       }
     }
     
-    // Initialize planned dates
-    /*if (! $this->plannedStartDate) {
-      $this->plannedStartDate=$this->validatedStartDate;
-    }
-    if (! $this->plannedEndDate and $this->plannedStartDate and $this->validatedDuration) {
-      $this->plannedEndDate=addWorkDaysToDate($this->plannedStartDate,$this->validatedDuration);
-    }*/
-    
     // calculate wbs
     $dispatchNeeded=false;
     //$wbs="";
@@ -389,7 +384,7 @@ class PlanningElement extends SqlElement {
     }
 
     // Update dependant objects
-    if ($dispatchNeeded) {
+    if ($dispatchNeeded and ! self::$_noDispatch) {
     	projeqtor_set_time_limit(600);
       $cpt=0;
       foreach ($lstElt as $elt) {
@@ -404,22 +399,28 @@ class PlanningElement extends SqlElement {
     
     // update topObject
     if ($topElt) {
-    	if ($topElt->refId) {
-        $topElt->save();   
-    	} 
+      if ($topElt->refId) {
+        if (! self::$_noDispatch) {
+          $topElt->save();   
+      	} else {
+      	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
+            self::$_noDispatchArray[$topElt->id]=$topElt;
+      	  }
+      	}
+      }
     }
     
     if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
-    if ($old->topId!='' and $old->topId!=$this->topId) {
+    if ($old->topId!='' and $old->topId!=$this->topId and ! self::$_noDispatch) {
       $this->updateSynthesis($old->topRefType, $old->topRefId);
     }
     // save new parent (for synthesis update) if parent has changed
-    if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
+    if ($this->topId!='' and ! self::$_noDispatch) { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
-    }          
-    if ($this->wbsSortable!=$old->wbsSortable) {
+    }
+    if ($this->wbsSortable!=$old->wbsSortable ) {
     	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
@@ -443,7 +444,7 @@ class PlanningElement extends SqlElement {
     if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
       $this->setDoneOnNoLeftWork('save');
     }
-    if ($old->topId!=$this->topId) {
+    if ($old->topId!=$this->topId  and ! self::$_noDispatch) { // This renumbering is to avoid holes in numbering
     	$pe=new PlanningElement($old->topId);
     	$pe->renumberWbs();
     }
@@ -743,13 +744,6 @@ class PlanningElement extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function delete() { 
-    // Delete existing Assignment
-    //$critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
-    //$assignment=new Assignment();
-    //$assList=$assignment->getSqlElementsFromCriteria($critAss, false);
-    //foreach ($assList as $ass) {
-    //  $ass->delete();
-    //}
     $refType=$this->topRefType;
     $refId=$this->topRefId;
     $result = parent::delete();
@@ -766,6 +760,10 @@ class PlanningElement extends SqlElement {
       	}
         self::updateSynthesis($refType, $refId);          
       }
+    }
+    if ($this->topId) { // This renumbering is to avoid holes in numbering
+      $pe=new PlanningElement($this->topId);
+      $pe->renumberWbs();
     }
     
     // Dispatch value
@@ -1328,6 +1326,98 @@ class PlanningElement extends SqlElement {
       return +1;
     }
     return 0;       
+  }
+  
+  static function copyStructure($obj, $newObj, $copyToOrigin=false, 
+      $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false, 
+      $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
+    self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
+    $pe=new PlanningElement();
+    $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
+    foreach ($list as $pe) { // each planning element corresponding to item to copy
+      if ($pe->refType!='Activity' and $pe->refType!='Project' and $pe->refType!='Milestone') continue;
+      if ($pe->refType=='Project' and ! $copySubProjects) continue;
+      $item=new $pe->refType($pe->refId);
+      $type='id'.get_class($item).'Type';
+      $newItem=$item->copyTo(get_class($item),$item->$type, $item->name, $copyToOrigin, 
+                             $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, 
+                             $copyAssignments, $copyAffectations, $toProject, (get_class($newObj)=='Activity')?$newObj->id:null );
+      $resultItem=$newItem->_copyResult;
+      unset($newItem->_copyResult);
+      if (! stripos($resultItem,'id="lastOperationStatus" value="OK"')>0 ) {
+        return $resultItem;
+      }
+      self::$_copiedItems[get_class($item).'#'.$item->id]=array('from'=>$item,'to'=>$newItem);
+      if ($pe->refType=='Project' and $copyAffectations) {
+        $aff=new Affectation();
+        $crit=array('idProject'=>$item->id);
+        $lstAff=$aff->getSqlElementsFromCriteria($crit);
+        foreach ($lstAff as $aff) {
+        		$aff->id=null;
+        		$aff->idProject=$newItem->id;
+        		$aff->save();
+        }
+      }
+      // recursively call copy structure
+      $res=self::copyStructure($item, $newItem, $copyToOrigin,
+                          $copyToWithNotes, $copyToWithAttachments, $copyToWithLinks,
+                          $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects);
+      if ($res!='OK') {
+        return $res;
+      }
+    }
+    return "OK"; // No error ;)
+  }
+  
+  static function copyStructureFinalize() {
+    self::$_noDispatch=false;
+    // Update synthesys for non elementary item (will just be done once ;)
+    foreach (PlanningElement::$_noDispatchArray as $pe) {
+      $method='updateSynthesis'.$pe->refType;
+      if (method_exists($pe,$method )) {
+        $res=$pe->$method();
+      } else {
+        $res=$pe->updateSynthesisObj();
+      }
+    }
+    // copy dependencies
+    $critWhere="";
+    foreach (self::$_copiedItems as $id=>$fromTo) {
+      $from=$fromTo['from'];
+      $critWhere.=(($critWhere)?',':'')."('".get_class($from)."','" . Sql::fmtId($from->id) . "')";
+    }
+    if ($critWhere) {
+      $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
+          . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
+    } else {
+      $clauseWhere=" 1=0 ";
+    }
+    $dep=New dependency();
+    $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
+    foreach ($deps as $dep) {      
+      if (array_key_exists($dep->predecessorRefType . "#" . $dep->predecessorRefId, self::$_copiedItems) ) {
+        $to=self::$_copiedItems[$dep->predecessorRefType . "#" . $dep->predecessorRefId]['to'];
+        $dep->predecessorRefType=get_class($to);
+        $dep->predecessorRefId=$to->id;
+        $crit=array('refType'=>get_class($to), 'refId'=>$to->id);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->predecessorId=$pe->id;
+      }
+      if (array_key_exists($dep->successorRefType . "#" . $dep->successorRefId, self::$_copiedItems) ) {
+        $to=self::$_copiedItems[$dep->successorRefType . "#" . $dep->successorRefId]['to'];
+        $dep->successorRefType=get_class($to);
+        $dep->successorRefId=$to->id;
+        $crit=array('refType'=>get_class($to), 'refId'=>$to->id);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->successorId=$pe->id;
+      }
+      $dep->id=null;
+      $tmpRes=$dep->save();
+      if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
+        errorLog($tmpRes); // Will not raise an error but will trace it in log
+      }
+    }
+    $result="OK";
   }
 }
 ?>
