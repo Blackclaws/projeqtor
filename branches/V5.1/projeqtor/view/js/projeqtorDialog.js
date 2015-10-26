@@ -3734,7 +3734,7 @@ function showHelpOld() {
   }
   var url='../manual/manual.php?section=' + section;
   var name="Manual";
-  var attributes='toolbar=no, titlebar=no, menubar=no, status=no, scrollbars=no, directories=no, location=no, resizable=no,'
+  var attributes='toolbar=no, titlebar=no, menubar=no, status=no, scrollbars=yes, directories=no, location=no, resizable=yes,'
       + 'height=650, width=1024, top=0, left=0';
   manualWindow=window.open(url, name, attributes);
   manualWindow.focus();
@@ -3743,7 +3743,11 @@ function showHelpOld() {
   return false;
 }
 var manualWindow=null;
+var helpTimer=false;
 function showHelp() {
+  if (helpTimer) return; // avoid double open
+  helpTimer=true;
+  if (manualWindow) manualWindow.close();
   var objectClass=dojo.byId('objectClass');
   var objectClassManual=dojo.byId('objectClassManual');
   var section='';
@@ -3758,7 +3762,7 @@ function showHelp() {
     load : function(data, args) {
       var url=data;
       var name="Manual";
-      var attributes='toolbar=no, titlebar=no, menubar=no, status=no, scrollbars=no, directories=no, location=no, resizable=yes,'
+      var attributes='toolbar=yes, titlebar=no, menubar=no, status=no, scrollbars=yes, directories=no, location=no, resizable=yes,'
           + 'height=650, width=1024, top=0, left=0';
       manualWindow=window.open(url, name, attributes);
       manualWindow.focus();
@@ -3767,7 +3771,7 @@ function showHelp() {
       consoleTraceLog("Error retrieving Manual URL for section '"+section+"'");
     }
   });
-  // manualWindow.window.focus();
+  setTimeout("helpTimer=false;",1000);
   return false;
 }
 /**
