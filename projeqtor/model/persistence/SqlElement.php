@@ -1396,6 +1396,15 @@ abstract class SqlElement {
 		if (property_exists($newObj,"idActivity") and $toActivity) {
 		  $newObj->idActivity=$toActivity;
 		}
+		if (get_class($newObj)=='Bill') {
+		  $newObj->paymentDate=null;
+		  $newObj->paymentAmount=null;
+		  $newObj->paymentDone=null;
+		  $newObj->paymentsCount=null;
+		  $newObj->date=date('Y-m-d');
+		  $newObj->sendDate=null;
+		  $newObj->idDeliveryMode=null;
+		}
 		$newObj->name=$newName;
 		// check description
 		if (property_exists($newObj,'description') and ! $newObj->description ) {
