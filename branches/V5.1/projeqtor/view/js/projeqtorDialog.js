@@ -4070,10 +4070,6 @@ function showList(mode, skipAnimation) {
 
 function hideList(mode, skipAnimation) {
   duration=300; 
-  if (switchModeSkipAnimation) {
-    skipAnimation=true;
-    duration=0;
-  }
   if (mode == 'mouse' && switchListMode == 'CLICK')
     return;
   if (!switchedMode) {
@@ -4084,6 +4080,10 @@ function hideList(mode, skipAnimation) {
   }
   if (skipAnimation && dijit.byId("detailDiv")) {
     dijit.byId("detailDiv").set('content', '');
+  }
+  if (switchModeSkipAnimation) {
+    skipAnimation=true;
+    duration=0;
   }
   if (dojo.byId('listDiv_splitter')) {
     dojo.byId('listDiv_splitter').style.display='none';

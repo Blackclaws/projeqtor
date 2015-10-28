@@ -148,8 +148,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       }
       echo '</tr>';
       echo '</table></form>';          
-      $width=($print)?'45':'60';
-      echo '<table align="center" style="width:95%">';
+      $width=($print)?'45':'55';
+      echo '<table align="center" style="width:95%; ">';
       echo '<tr>' .
            '  <td class="messageHeader" colspan="3">' . i18n('menuProject') . '</td>' . 
            '  <td class="messageHeader" colspan="2" width="' . ($width) . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
@@ -159,13 +159,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       }
       echo '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' .
            '  <td class="messageHeader" width="5%"><div xstyle="width:60px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuTicket') . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuActivity') . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuMilestone') . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuAction') . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuRisk') . '</div></td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden;text-align:center;text-overflow: hidden;">' . i18n('menuTicket') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuActivity') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuMilestone') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuAction') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuRisk') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuIssue') . '</div></td>' .
+           '  <td class="messageHeader" width="' . $width . 'px;"><div style="width:' . ($width+10) . 'px; overflow: hidden; text-align:center;text-overflow: hidden;">' . i18n('menuQuestion') . '</div></td>' . 
            '</tr>';   
       $cpt=0;
       foreach($prjLst as $sharpid=>$sharpName) {
@@ -333,7 +333,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
     global $cptDisplayId, $print, $workVisibility;
     if ($value==='') {return $value;}
-    $width=($print)?'60':'70';;
+    $width=($print)?'45':'55';;
     $green=($allValue!=0 and $allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
     $red=$width-$green;
 
