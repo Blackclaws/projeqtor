@@ -152,7 +152,7 @@ class GeneralWork extends SqlElement {
         $this->idProject=$refObj->idProject;
       }
     }
-    if ($this->dailyCost==null) {
+    if (!$this->dailyCost) {
       $ass=new Assignment($this->idAssignment);
       $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($ass->idRole) . "'"
        . " and (startDate is null or startDate<='" . $this->workDate . "')"

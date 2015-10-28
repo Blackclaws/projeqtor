@@ -1043,6 +1043,8 @@ abstract class SqlElement {
 		if ($class=='TicketSimple') {$class='Ticket';}
 		if (array_key_exists($class,$relationShip)) {
 			$relations=$relationShip[$class];
+			$relations['Alert']='cascade';
+			$relations['IndicatorValue']='cascade';
 			foreach ($relations as $object=>$mode) {
 			  if ($mode=="control" and $canForceDelete) {
 			    $mode="confirm";
