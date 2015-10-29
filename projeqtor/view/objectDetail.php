@@ -1526,6 +1526,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '>';
         echo htmlspecialchars($val);
         echo '</textarea>';
+        if (isIE() and ! $val) $val='<div></div>'; 
         echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
         if ($editorMode=='on') {
           echo '<div data-dojo-type="dijit.Editor"'; // TEST
