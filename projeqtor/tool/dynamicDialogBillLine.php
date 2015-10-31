@@ -58,7 +58,7 @@ if (property_exists($obj, 'billingType')) {
 }
 $currency=Parameter::getGlobalParameter('currency');
 $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
-$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
+$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 $readOnly=array();
 if ($billingType == 'E') {
     if (!$line->quantity) $line->quantity=1;
@@ -270,14 +270,15 @@ if ($line->line) {
              </td>
              <td>
               <?php if ($currencyPosition=='before') echo $currency;?>
-              <input dojoType="dijit.form.NumberTextBox" 
+              <div dojoType="dijit.form.NumberTextBox" 
 	          id="billLinePrice" name="billLinePrice"
 	          style="width: 100px;"
 	          <?php if (isset($readOnly['price'])) echo " readonly ";?>
 	          class="input"
 	          onChange="billLineUpdateAmount();"
-	          <?php echo $commaEvent;?>
-	          value="<?php echo $line->price;?>"/>
+	          value="<?php echo $line->price;?>">
+	          <?php echo $keyDownEventScript;?>
+	          </div>
 	          <?php if ($currencyPosition=='after') echo $currency;?>
 	          </td>
 	          <td><div style="display:inline;<?php echo $divUnitStyle;?>">&nbsp;/&nbsp;
@@ -298,14 +299,14 @@ if ($line->line) {
                <label for="billLineQuantity" ><?php echo i18n("colQuantity");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input dojoType="dijit.form.NumberTextBox" 
+               <div dojoType="dijit.form.NumberTextBox" 
                 id="billLineQuantity" name="billLineQuantity"
                 <?php if (isset($readOnly['quantity'])) echo " readonly ";?>
                 style="width:100px;"
                 onChange="billLineUpdateAmount();"
-                <?php echo $commaEvent;?>
-                class="input"  value="<?php echo $line->quantity;?>">  
-               </input>
+                class="input"  value="<?php echo $line->quantity;?>">
+                <?php echo $keyDownEventScript;?>  
+               </div>
                <?php if ($line->idMeasureUnit) echo SqlList::getFieldFromId('MeasureUnit', $line->idMeasureUnit, ($line->quantity>1)?'pluralName':'name');?> 
              </td>
            </tr>

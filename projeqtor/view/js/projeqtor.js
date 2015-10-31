@@ -324,12 +324,12 @@ function saveUserParameter(parameter, value) {
  * @param none
  * @return void
  */
-function saveBrowserLocaleToSession() {
+function saveBrowserLocaleToSession() {  
   browserLocale=dojo.locale;
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=browserLocale&value=" + browserLocale,
     handleAs: "text",
-    load: function(data,args) { }
+    load: function(data,args) {}
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
   if (browserLocaleDateFormat) {
@@ -2998,9 +2998,9 @@ function getExtraRequiredFields() {
   }); 
 }
 
-function intercepPointKey(obj){ 
+function intercepPointKey(obj,event){ 
   event.preventDefault();
-  setTimeout('replaceDecimalPoint('+obj.id+');',1);
+  setTimeout('replaceDecimalPoint("'+obj.id+'");',1);
   return false;
 }
 function replaceDecimalPoint(field) {

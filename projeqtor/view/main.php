@@ -51,7 +51,7 @@ checkVersion();
 SqlElement::$_cachedQuery['Project']=array();
 SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
 SqlElement::$_cachedQuery['PlanningElement']=array();
-$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
+$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -1545,13 +1545,13 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
              </td>
              <td>
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
-               <input id="assignmentDailyCost" name="assignmentDailyCost" value="" 
+               <div id="assignmentDailyCost" name="assignmentDailyCost" value="" 
                  dojoType="dijit.form.NumberTextBox" 
-                 <?php echo $commaEvent;?>
                  constraints="{min:0}" 
-                 style="width:97px" 
-                 
-                 readonly />
+                 style="width:97px"            
+                 readonly >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <?php echo ($currencyPosition=='after')?$currency:'';
                      echo " / ";
                      echo i18n('shortDay'); ?>
@@ -1562,13 +1562,14 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentRate" name="assignmentRate" value="" 
+               <div id="assignmentRate" name="assignmentRate" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:999}" 
-                 <?php echo $commaEvent;?> 
                  style="width:97px" 
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 
-                 required="true" />
+                 required="true" >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
              </td>
            </tr>
            <tr>
@@ -1576,13 +1577,14 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
                <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
+               <div id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
                  dojoType="dijit.form.NumberTextBox" 
-                 <?php echo $commaEvent;?>
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px"
                  onchange="assignmentUpdateLeftWork('assignment');"
-                 onblur="assignmentUpdateLeftWork('assignment');" />
+                 onblur="assignmentUpdateLeftWork('assignment');" >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px; background-color:white; color:#000000; border:0px;"/>
@@ -1595,11 +1597,12 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentRealWork" name="assignmentRealWork" value=""  
+               <div id="assignmentRealWork" name="assignmentRealWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
-                 <?php echo $commaEvent;?>
-                 style="width:97px" readonly />
+                 style="width:97px" readonly >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <input id="assignmentRealUnit" name="assignmentRealUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
@@ -1610,13 +1613,14 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
                <label for="assignmentLeftWork" ><?php echo i18n("colLeftWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentLeftWork" name="assignmentLeftWork" value=""  
+               <div id="assignmentLeftWork" name="assignmentLeftWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
                  onchange="assignmentUpdatePlannedWork('assignment');"
                  onblur="assignmentUpdatePlannedWork('assignment');"  
-                 <?php echo $commaEvent;?>
-                 style="width:97px" />
+                 style="width:97px" >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
@@ -1629,11 +1633,12 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
                <label for="assignmentPlannedWork" ><?php echo i18n("colPlannedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
+               <div id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
-                 <?php echo $commaEvent;?>
-                 style="width:97px" readonly /> 
+                 style="width:97px" readonly > 
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; border:0px;"/>
@@ -1736,13 +1741,13 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
              </td>
              <td>
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
-               <input id="expenseDetailAmount" name="expenseDetailAmount" value="" 
+               <div id="expenseDetailAmount" name="expenseDetailAmount" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0}" 
-                 <?php echo $commaEvent;?>
                  style="width:97px"
-                 readonly="readonly"              
-               />
+                 readonly="readonly" >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <?php echo ($currencyPosition=='after')?$currency:'';?>
              </td>
            </tr> 
@@ -1964,13 +1969,14 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
              </td>
              <td><nobr>
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
-               <input id="resourceCostValue" name="resourceCostValue" value="" 
+               <div id="resourceCostValue" name="resourceCostValue" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0}" 
-                 <?php echo $commaEvent;?>
                  style="width:97px; text-align: right;" 
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colCost')));?>" 
-                 required="true" />
+                 required="true" >
+                 <?php echo $keyDownEventScript;?>
+                 </div>
                <?php echo ($currencyPosition=='after')?$currency:'';
                      echo " / ";
                      echo i18n('shortDay'); ?>
@@ -2288,10 +2294,10 @@ $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
              <td>
                <div id="affectationRate" name="affectationRate" value="" 
                  dojoType="dijit.form.NumberTextBox" 
-                 <?php echo $commaEvent;?>
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >
+               <?php echo $keyDownEventScript;?>
                </div>
              </td>    
            </tr>

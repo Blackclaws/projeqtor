@@ -70,7 +70,6 @@ switch ($type) {
  * @return void
  */
 function drawTableFromObjectList($objectList) { 
-  $commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
 	global $criteriaRoot, $type, $collapsedList;
 	$displayWidth='98%';
 	$longTextWidth="500px";
@@ -159,12 +158,12 @@ function drawTableFromObjectList($objectList) {
 				echo '<div dojoType="dijit.form.NumberTextBox" ';
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
-				echo $commaEvent;
 				echo ($format=='longnumber')?' style="width: 100px;" ':' style="width: 50px;" ';
+				echo ' constraints="{places:\'0\'}" ';
 				echo ' class="input" ';
 				echo ' value="' .  $obj->parameterValue  . '" ';
 				echo ' >';
-				echo $obj->getValidationScript($code);
+				echo NumberFormatter52::completeKeyDownEvent($obj->getValidationScript($code));
 				echo '</div>';
 			} else if ($format=='text' or $format=='password') {
 				echo '<div dojoType="dijit.form.TextBox" ';
