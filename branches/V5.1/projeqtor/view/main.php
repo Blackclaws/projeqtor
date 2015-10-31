@@ -152,7 +152,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dojox.image.Lightbox");
     dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
        if (source.id!=target.id) { return;}
-       if (nodes.length>0 && nodes[0] && target) {
+       if (nodes.length>0 && nodes[0] && target && target.current) {
          var idFrom = nodes[0].id;
          var idTo = target.current.id;                   
          if (target.id=='dndSourceTable') {
@@ -163,7 +163,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          } else  if (target.id=='dndListColumnSelector') {
            setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
          } else if (target.id=='dndTodayParameters') {
-        	 setTimeout('reorderTodayItems()',100);  
+           setTimeout('reorderTodayItems()',100);  
          } else if (target.id=='dndFavoriteReports') {
         	 setTimeout('reorderFavoriteReportItems()',100);  
          }

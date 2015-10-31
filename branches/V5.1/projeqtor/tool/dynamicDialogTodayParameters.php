@@ -64,7 +64,7 @@ $today=new Today();
   echo '<tr style="border-bottom:2px solid #F0F0F0;"><td></td><td>&nbsp;</td></tr>';
   echo '<tr><td></td><td>&nbsp;</td></tr>';
   echo '</table>';
-  echo '<table id="dndTodayParameters" jsId="dndTodayParameters" dojotype="dojo.dnd.Source"  dndType="today"
+  echo '<table id="dndTodayParameters" jsId="dndTodayParameters" dojotype="dojo.dnd.Source" dndType="today"
                withhandles="true" class="container" style="height:10px;width:100%;cellspacing:0; cellpadding:0;">';
   echo '<tr><td class="dialogSection" colspan="4">'.i18n('listTodayItems').'</td></tr>';
   echo '<tr><td colspan="4">&nbsp;</td></tr>';

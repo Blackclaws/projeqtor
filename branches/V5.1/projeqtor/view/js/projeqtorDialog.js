@@ -5093,7 +5093,7 @@ function loadReport(url, dialogDiv) {
 function reorderTodayItems() {
   var nodeList=dndTodayParameters.getAllNodes();
   for (i=0; i < nodeList.length; i++) {
-    item=nodeList[i].id.substr(24);
+    var item=nodeList[i].id.substr(24);
     var order=dojo.byId("dialogTodayParametersOrder" + item);
     if (order) {
       order.value=i + 1;
@@ -5927,7 +5927,7 @@ function reorderFavoriteReportItems() {
   var param="";
   for (i=0; i < nodeList.length; i++) {
     var domNode=nodeList[i];
-    item=nodeList[i].id.substr(11);
+    var item=nodeList[i].id.substr(11);
     var order=dojo.byId("favoriteReportOrder" + item);
     if (dojo.hasClass(domNode,'dojoDndItemAnchor')) {
       order.value=null;
