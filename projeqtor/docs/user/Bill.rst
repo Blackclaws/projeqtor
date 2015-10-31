@@ -24,6 +24,10 @@ Billing will depend on billing type defined for the project.
 
 ---------------
 
+.. raw:: latex
+
+    \newpage
+
 .. glossary::
 
    Billing types
@@ -103,6 +107,10 @@ Billing will depend on billing type defined for the project.
      - The project concerned by the bill.
    * - Date
      - Date of the bill.
+   * - Payment deadline
+     - Payment deadline.
+   * - Payment due date
+     - Due date for payment (read only).
    * - Customer
      - Customer who will pay for the bill.
    * - Bill contact
@@ -115,6 +123,10 @@ Billing will depend on billing type defined for the project.
      - Project billing type.
 
 **\* Required field**
+
+.. topic:: Field: Payment due date
+
+   * The value is calculated with date of bill + payment deadline. 
 
 .. topic:: Fields: Customer & Bill contact 
      
@@ -136,31 +148,52 @@ Billing will depend on billing type defined for the project.
      - Description
    * - **Status**
      - Actual :term:`status` of the bill.
+   * - :term:`Responsible`
+     - Resource who is responsible for the bill.
+   * - Sent date
+     - Date when bill is sent to customer contact.
+   * - Send mode
+     - Delivery mode.  
    * - :term:`Done`
      - Flag to indicate that the bill has been treated.
    * - :term:`Closed`
      - Flag to indicate that the bill is archived.
    * - Cancelled
      - Flag to indicate that the bill is cancelled.
-   * - Untaxed amount
-     - Amount of the bill, without taxes.
-   * - Tax
-     - Tax rate.
-   * - Full amount
-     - Amount of the bill, including taxes.
+   * - Amount
+     - Total amount of the bill.
+   * - % of order
+     - Percentage of the bill balance over order amount. 
+   * - Payment
+     - Payment of bill.
    * - :term:`Comments<Description>`
      - Comments for the bill.
 
+
 **\* Required field**
 
-.. topic:: Field: Untaxed amount
-  
-   * The amount is the sum of bill lines.
-   * Used only for at terms and manual billing types.
+.. topic:: Fields: Amount
 
-.. topic:: Field: Tax
+   Columns:
 
-   * Automatically updated from customer field.  
+   * **Ex VAT**: Amount without taxes.
+     
+     * The value is automatically updated with the sum of bill line amounts. 
+
+   * **Tax**: Applicable tax. 
+
+     * Automatically updated from customer field.  
+
+   * **Full**: Amount with taxes.
+
+.. topic:: Fields: Payment
+
+   Columns:
+
+   * **Date**: Date of payment.
+   * **Amount**: Payment amount.   
+   * **Complete**: Flag to indicate that complete payment. 
+
 
 
 .. raw:: latex
@@ -173,7 +206,7 @@ Input for each bill line depends on billing type.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Bill lines fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -187,7 +220,7 @@ Input for each bill line depends on billing type.
      - Description of the line.
    * - Detail
      - Detail of the line.
-   * - Price
+   * - Unit price
      - Unitary price of billed element.
    * - Quantity
      - Quantity of billed element.
@@ -215,7 +248,7 @@ Input for each bill line depends on billing type.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Bill line dialog box fields - At terms
+.. list-table:: Fields of bill line dialog box - At terms
    :widths: 20, 80
    :header-rows: 1
 
@@ -223,8 +256,6 @@ Input for each bill line depends on billing type.
      - Description
    * - N°
      - Number of the line for the bill.
-   * - Quantity
-     - Quantity of billed element.
    * - **Term**
      - Project terms to be selected.
    * - Description
@@ -266,7 +297,7 @@ Input for each bill line depends on billing type.
 
    Bill line dialog box - On produced work & On capped produced work
 
-.. list-table:: Bill line dialog box fields - On produced work & On capped produced work
+.. list-table:: Fields of bill line dialog box - On produced work & On capped produced work
    :widths: 20, 80
    :header-rows: 1
 
@@ -274,8 +305,6 @@ Input for each bill line depends on billing type.
      - Description
    * - N°
      - Number of the line for the bill.
-   * - Quantity
-     - Not applicable.
    * - **Resource**
      - Project resources to be selected.
    * - **Activity price**
@@ -290,6 +319,12 @@ Input for each bill line depends on billing type.
      - Detail of the line.
    * - Price
      - Price of the activity.
+   * - Quantity
+     - Quantity of element.
+   * - Amount
+     - Amount for the line (Price x Quantity).
+ 
+
 
 **\* Required field**
 
@@ -307,6 +342,8 @@ Input for each bill line depends on billing type.
 
     \newpage
 
+.. _manual-billing:
+
 .. rubric:: Bill line: Manual billing
 
 .. figure:: /images/GUI/BOX_BillLineManual.png
@@ -317,22 +354,30 @@ Input for each bill line depends on billing type.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Bill line dialog box fields - Manual billing
+.. list-table:: Fields of bill line dialog box - Manual billing
    :widths: 20, 80
    :header-rows: 1
 
    * - Field
      - Description
    * - N°
-     - Number of the line for the bill.
-   * - Quantity
-     - Quantity of billed element.
+     - Number of the line.
+   * - Amendment
+     - Flag to indicate this is an amendment line.
    * - Description
      - Description of the line.
    * - Detail
      - Detail of the line.
    * - Price
-     - Unitary price of billed element.
+     - Unitary price of element / measure unit.
+   * - Quantity
+     - Quantity of element.
+   * - Amount
+     - Amount for the line (Price x Quantity).
+
+.. topic:: Field: Amendment 
+     
+   * This field is used for amendment values in order detail.
  
 
 .. raw:: latex
@@ -353,7 +398,7 @@ You can define as many terms as you wish, to define the billing calendar.
 .. note::
 
    * Terms are mandatory to bill “Fixed price” project.
-   * A term can be used just one time. The name bill will be displayed.
+   * A term can be used just one time. The bill name will be displayed.
 
 .. rubric:: A term has triggers
 
@@ -416,9 +461,9 @@ You can define as many terms as you wish, to define the billing calendar.
 
 .. topic:: Fields: Amount and Date (Planned & Validated)
 
-   * When a trigger is entered, planned and validated values are automatically updated to sum and max of triggers amount.
+   * When a trigger is entered, the values of planned and validated are automatically updated with the sum and the max of triggered amounts.
 
-.. rubric:: Section: Trigger element for the term
+.. rubric:: Section: Trigger elements for the term
 
 This section allows to manage element trigger.
 
@@ -434,7 +479,7 @@ This section allows to manage element trigger.
    Add a trigger element to term dialog box
 
 
-.. list-table:: Add a trigger element to term dialog box fields
+.. list-table:: Fields of add a trigger element to term dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -490,6 +535,86 @@ This is used to calculate a billing amount for billing type **On produced work**
      - Flag to indicate that activity price is archived.
 
 **\* Required field**
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Bill (Payment)
+.. index:: ! Payment
+
+.. _payment:
+
+Payments
+--------
+
+Allow to define payment of bills. 
+
+The bill keeps track of payment.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the payment.
+   * - **Name**
+     - Short description of the payment.
+   * - **Payment type**
+     - Type of payment.
+   * - Description
+     - Description of the payment.
+
+**\* Required field**
+
+
+.. rubric:: Section: Treatment
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - **Payment mode**
+     - The mode of payment.
+   * - **Payment date**
+     - Date of payment.
+   * - **Payment amount**
+     - Amount of the payment.
+   * - Payment fee
+     - Payment of the fee.  
+   * - Payment credit
+     - Balance of payment amount less payment fee.
+   * - Bill
+     - Bill concerned with the payment.
+   * - Bill reference
+     - Reference of bill.
+   * - Customer
+     - Customer of bill.
+   * - Recipient
+     - Recipient of bill. 
+   * - Bill amount 
+     - Amount of bill.
+   * - :term:`Closed`
+     - Flag to indicate that payment is archived.
+
+
+**\* Required field**
+
+
 
 
 

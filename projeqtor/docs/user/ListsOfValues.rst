@@ -26,7 +26,7 @@ The function defines the generic competency of a resource.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -99,7 +99,7 @@ Some automations are implemented, depending on status definition, to set on item
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -150,7 +150,7 @@ It defines in a visual way the global conformity of the project.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -204,7 +204,7 @@ It is displayed on Today screen, for each project, as a Red / Amber / Green traf
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -256,7 +256,7 @@ It is displayed on Today screen, for each project.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -300,7 +300,7 @@ It is displayed on Today screen, for each project.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -347,7 +347,7 @@ The likelihood is the probability of a risk or an opportunity to occur.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -400,7 +400,7 @@ The criticality is the importance of an element to its context.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -443,7 +443,7 @@ The severity designs the level of negative or positive impact the risk or opport
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -482,7 +482,7 @@ The ticket urgency is an element given by the requestor to indicate the quicknes
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -526,7 +526,7 @@ The ticket priority defines the order to treat different tickets.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -566,7 +566,7 @@ The risk level measures the technical risk of implementation of a requirement.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -606,7 +606,7 @@ The feasibility defines the first analysis of implementation of a requirement.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -643,7 +643,7 @@ The efficiency measures the result of an action.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -661,3 +661,156 @@ The efficiency measures the result of an action.
      - Flag to indicate this value is archived.
    
 **\* Required field**
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Payment deadline - Lists of values
+
+.. _payment-deadline:
+
+Payment deadlines
+^^^^^^^^^^^^^^^^^
+
+The payment deadline is stated on the bill.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Number of days
+     - Delay in payment (in days).
+   * - End of month
+     - Flag to indicate that delay for payment is set at the end of month.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+.. index:: ! Payment method - Lists of values
+
+.. _payment-method:
+
+Payment methods
+^^^^^^^^^^^^^^^
+
+The mode of payment.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Delivery mode - Lists of values
+
+.. _delivery-mode:
+
+Delivery modes
+^^^^^^^^^^^^^^
+
+The mode of delivery.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+.. index:: ! Measure unit - Lists of values
+
+.. _measure-unit:
+
+Measure units
+^^^^^^^^^^^^^
+
+The measure units.
+
+.. sidebar:: Other sections
+
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Plural of name
+     - Plural form of name.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+

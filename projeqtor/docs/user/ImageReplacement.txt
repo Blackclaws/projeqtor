@@ -44,10 +44,10 @@
    :alt: Button small button switch 
 
 .. |buttonIconHelp| image:: images/iconHelp.png
-   :alt: Button icon help 
+   :alt: Button icon help
 
 .. |Note| image:: images/note.png
-   :alt: Note 
+   :alt: Note
 
 .. |Description| image:: images/description.png
    :alt: Icon description 
@@ -151,6 +151,19 @@
 .. |arrowRight| image:: images/right.png
    :alt: Arrow right
 
+.. |statusStart| image:: images/statusStart.png
+   :alt: Status start
+
+.. |statusStartKO| image:: images/statusStartKO.png
+   :alt: Status start KO
+
+.. |statusFinish| image:: images/statusFinish.png
+   :alt: Status finish
+
+.. |statusFinishKO| image:: images/statusFinishKO.png
+   :alt: Status finish KO
+
+
 .. |one| image:: images/one.png
    :alt: One
    :scale: 30
@@ -178,6 +191,15 @@
 .. |seven| image:: images/seven.png
    :alt: Seven
    :scale: 30
+
+.. |eight| image:: images/eight.png
+   :alt: Eight
+   :scale: 30
+
+.. |nine| image:: images/nine.png
+   :alt: Nine
+   :scale: 30
+
 
 .. |alpha| image:: images/alpha.png
    :alt: Alpha

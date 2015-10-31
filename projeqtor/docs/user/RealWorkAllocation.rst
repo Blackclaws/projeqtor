@@ -37,6 +37,10 @@ The input is for one resource, on a weekly basis.
 * Allows to select a timesheet for a resource and for a period. |one|
 * More detail about selection timesheet, see : :ref:`selectionTimesheet-section`.
 
+.. raw:: latex
+
+    \newpage
+
 .. rubric:: Show planned work
 
 * Flag selected allows to display planned work. |two|
@@ -49,11 +53,9 @@ The input is for one resource, on a weekly basis.
 
    Planned work displayed zone
 
+.. note::
 
-
-.. raw:: latex
-
-    \newpage
+   * The planned work will be deleted when the real work is entered (to avoid duplication of work in reports).
 
 .. rubric:: Filters
 
@@ -84,10 +86,30 @@ Buttons of the timesheet: |four|
 * Click on |buttonIconPdf| to export timesheet in PDF format.
 * Click on |buttonIconUndo| to undo modification on the timesheet.
 
+.. rubric:: Data entry validation
+
+Buttons allow to send and validate real work. |five|
+
+ .. compound:: **Button: Submit work**
+
+    * Users can send works to project leader.
+
+ .. compound:: **Button: Validate work**
+
+    * Project leaders can validate works.
+
+
+.. rubric:: Scroll bar
+
+* |six| Scroll bar allows the scrolling on imputation lines.
+* The header of table stays visible.
+* The footer of the table (with the sum of inputs) remains visible, fixed, as soon as the number of lines is greater than 20.
+
 .. rubric:: Input fields
 
-* Input fields in timesheet. |five|
+* Input fields in timesheet. |seven|
 * More detail about, see : :ref:`inputFields-section`
+
 
 .. raw:: latex
 
@@ -95,7 +117,7 @@ Buttons of the timesheet: |four|
 
 .. rubric:: Tasks list
 
-Task list allows to display each resource affectation task. |six| 
+Task list allows to display each resource affectation task. |eight|
 
 .. figure:: /images/GUI/ZONE_TaskList.png
    :alt: Task list zone
@@ -113,6 +135,9 @@ Task list allows to display each resource affectation task. |six|
       * Assigned tasks planified during this period.
       * Selected filter flags.
       * Behavior defined in :ref:`Global parameters<realWorkAllocation-section>` screen.
+
+    * Click on the name of the activity to access it.
+    * Click on the icon of the activity to display it detail without leaving the current screen.  
  
 
  .. compound:: **Function of the assignement** |beta|
@@ -131,24 +156,9 @@ Task list allows to display each resource affectation task. |six|
     * **Assigned**: Assigned work for the task.
     * **Real**: Sum of real work for the task.
     * **Left**: Left work for the task. 
-    * **Planned**: Planned work for the task.  
+    * **Reassessed**: Reassessed work for the task  
 
-.. raw:: latex
 
-    \newpage
-
-.. rubric:: Data entry validation
-
-Buttons allow to send and validate real work. |seven|
-
- .. compound:: **Button: Submit work**
-
-    * Users can send works to project leader.
-
- .. compound:: **Button: Validate work**
-
-    * Project leaders can validate works.
- 
 
 
 .. raw:: latex
@@ -232,7 +242,7 @@ Input fields
 
 .. rubric:: Unit for real work
 
-* Unit for real work is set with "unit for real work allocation" parameter in "Units for work" section, see: * :ref:`global-parameters` screen.
+* Unit for real work allocation is set :ref:`Global parameters<unitForWork-section>` screen.
 * Selected unit is displayed on left at bottom window |four|.   
 
 .. raw:: latex
@@ -266,6 +276,34 @@ Input entry validation
 .. note::
 
    * This control is not blocking.
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Automatic status change
+
+Status can change automatically depending on whether real work is entered or no more left work.
+
+Automatic status change is defined  in :ref:`Global parameters<realWorkAllocation-section>` screen.
+
+ .. compound:: **Display of icons**
+
+    * An icon will be displayed on the task if a status change is applicable.
+
+    * |statusStart| Due to real work is entered, the task status will be changed to the first 'handled' status.
+    * |statusStartKO| The real work is entered, but the task status will not change because at issue is occurring. 
+    * |statusFinish| Due to no more left work, the task status will be changed to the first ‘done’ status.
+    * |statusFinishKO| No more left work, but the task status will not change because at issue is occurring. 
+
+    .. note::
+
+       * Move the cursor over the icon to see the message.
+
+ .. compound:: **Common issue**
+
+    * If a :term:`responsible` or a :term:`result` are set as mandatory in element type definition for the task. It's impossible to set those values by real work allocation screen.
+    * The change status must be done in treatment section on the task definition screen.
 
 .. rubric:: Entering real work is in excess of the number of days specified 
 

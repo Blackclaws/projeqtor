@@ -54,15 +54,19 @@ Just click on any task to access directly.
 
     * Allows to select the resource calendar.
 
- .. compound:: **Top buttons** |four| 
+ .. compound:: **Show done items & Show closed items** |four| 
+
+    * Allows to display or not the done and closed items.
+
+ .. compound:: **Top buttons** |five| 
 
     * Allows to change current month, week, or day.
 
- .. compound:: **Left side buttons** |five| 
+ .. compound:: **Left side buttons** |six| 
 
     * Click on |arrowRight| to go to week display mode.
     * Click on |arrowLeft| to return to the last display mode.
 
- .. compound:: **Day number button** |six| 
+ .. compound:: **Day number button** |seven| 
 
     * Click on the day number button to go day display mode.

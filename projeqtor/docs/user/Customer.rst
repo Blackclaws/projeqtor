@@ -10,7 +10,8 @@
 
 .. title:: Customers & Contacts
 
-.. index:: ! Customer 
+.. index:: ! Customer
+.. index:: ! Bill (Customer) 
 
 .. _customer:
 
@@ -25,16 +26,6 @@ It can be an internal entity, into the same enterprise, or a different enterpris
 
 The customer defined here is not a person. Real persons into a customer entity are called “Contacts”. 
 
-.. rubric:: Bill information
-
-.. topic:: Field: Delay for payment
-
-   * Delay in payment can be displayed on the customer bill.
-
-.. topic:: Field: Tax
-
-   * Tax rates that will be applied to bills amounts for this customer.  
-
 .. sidebar:: Other sections
   
    * :ref:`Attachments<attachment-section>`   
@@ -45,7 +36,7 @@ The customer defined here is not a person. Real persons into a customer entity a
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Customers description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -59,12 +50,12 @@ The customer defined here is not a person. Real persons into a customer entity a
      - Type of customer.
    * - Customer code
      - Code of the customer.
-   * - Delay for payment
-     - Delay in payment (in days).
-   * - End of month
-     - Flag to indicate that delay for payment is set at the end of month.
+   * - Payment deadline
+     - The payment deadline is stated on the bill for this customer.
    * - Tax
      - Tax rates that are applied to bill amounts for this customer.
+   * - Tax number
+     - Tax reference number, to be displayed on the bill. 
    * - :term:`Closed`
      - Flag to indicate that the customer is archived.
    * - :term:`Description`
@@ -72,7 +63,7 @@ The customer defined here is not a person. Real persons into a customer entity a
 
 **\* Required field**
 
-.. rubric:: Section: Addreses
+.. rubric:: Section: Address
 
 * Full address of the customer.
 
@@ -122,7 +113,7 @@ A contact can be the contact person for contracts, sales and billing.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Contacts description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -176,7 +167,7 @@ A contact can be the contact person for contracts, sales and billing.
    * The contact will then also appear in the “Users” list. 
 
 
-.. rubric:: Section: Addreses
+.. rubric:: Section: Address
 
 Full address of the contact.
 
@@ -185,7 +176,7 @@ Full address of the contact.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Contacts miscellanous section fields
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
