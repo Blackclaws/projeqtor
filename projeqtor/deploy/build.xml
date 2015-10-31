@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V5.1" default="buildQuick">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V5.1.0" />
+  <property name="version"       value="V5.1.1" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -122,6 +122,7 @@
 	    <copy todir="${deploy.dir}/plugin">
 	      <fileset dir="${src.dir}/plugin">
 	        <include name="*.*" />
+	      	<exclude name="*.zip" />
 	      </fileset>
 	    </copy>
 	    <copy todir="${deploy.dir}/plugin/nls">
