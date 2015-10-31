@@ -45,7 +45,6 @@ class NumberFormatter52  {
   function __construct($locale, $type) {
     $this->locale=$locale;
     $this->type=$type;
-    
     if (false !== setlocale(LC_ALL, $locale . ".UTF-8@euro", $locale . ".UTF-8", $locale) ) {
       $locale_info = localeconv();
       $this->decimalSeparator=$locale_info['decimal_point'];
@@ -96,19 +95,22 @@ class NumberFormatter52  {
   	return number_format($value,$this->type,$this->decimalSeparator,'');
   }
   
-  static function getCommaEvent() {
+  static function getKeyDownEvent() {
     global $browserLocale;
     $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
     if ($fmt->decimalSeparator=='.') return '';
-    $evt=' onKeyDown="if (event.keyCode==110) {return intercepPointKey(this);}" ';
-    return $evt;
+    $result='<script type="dojo/method" event="onKeyDown" args="event">';
+    $result.=' if (event.keyCode==110) {return intercepPointKey(this,event);}';
+    $result.='</script>';
+    return $result;
   }
   static function completeKeyDownEvent($colScript) {
     global $browserLocale;
     $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
-    if ($fmt->decimalSeparator=='.') return $colScript;
+    if ($fmt->decimalSeparator=='.') return $colScript;    
     $tagEvent='<script type="dojo/method" event="onKeyDown" args="event">';
-    $evt=' if (event.keyCode==110) {formChanged();return intercepPointKey(this);}';
+    if (substr_count($colScript,$tagEvent)==0) return $colScript.self::getKeyDownEvent();
+    $evt=' if (event.keyCode==110) {formChanged();return intercepPointKey(this,event);}';
     $result=str_replace($tagEvent,$tagEvent.$evt,$colScript);
     return $result;
   }

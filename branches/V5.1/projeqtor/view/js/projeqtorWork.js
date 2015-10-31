@@ -400,7 +400,7 @@ function addDispatchWorkLine(unit,nbLines) {
     },
     onKeyDown: function() {
       if (event.keyCode==110) {
-        return intercepPointKey(this);
+        return intercepPointKey(this,event);
       }
     }
   },td5);

@@ -131,7 +131,6 @@ if (false === function_exists('lcfirst')) {
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime ( 0 );
 }
-
 $page = $_SERVER ['PHP_SELF'];
 if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and $batchMode) and ! (isset ( $indexPhp ) and $indexPhp)) {
   // Get the user from session. If not exists, request connection ===============
@@ -164,7 +163,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
     $page = substr ( $page, $pos + 1 );
   }
   scriptLog ( "Page=" . $page );
-  if (! $user and $page != 'loginCheck.php' and $page != 'getHash.php') {
+  if (! $user and $page != 'loginCheck.php' and $page != 'getHash.php' and $page != 'saveDataToSession.php') {
     $cookieHash = User::getRememberMeCookie ();
     if (! empty ( $cookieHash )) {
       $cookieUser = SqlElement::getSingleSqlElementFromCriteria ( 'User', array (

@@ -446,7 +446,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
 		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
 //scriptLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");
-		$commaEvent=NumberFormatter52::getCommaEvent(); // Will add event $commaEvent
+		$keyDownEventScript=NumberFormatter52::getKeyDownEvent(); // Will add event $commaEvent
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
 		$user=getSessionUser();		
@@ -837,7 +837,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 						echo ' trim="true" maxlength="4" class="input" ';
 						echo ' id="workValue_' . $nbLine . '_' . $i . '"';
 						echo ' name="workValue_' . $i . '[]"';
-						echo $commaEvent;
 						echo ' value="' .  Work::displayImputation($valWork) . '" ';
 						if ($line->idle or $line->locked) {
 							echo ' readOnly="true" ';
@@ -846,6 +845,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 						//echo '<script type="dojo/method" event="onFocus" args="evt">';
 						//echo ' oldImputationWorkValue=this.value;';
 						//echo '</script>';
+						echo $keyDownEventScript;
 						echo '<script type="dojo/method" event="onChange" args="evt">';
 						echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
 						echo '</script>';
@@ -876,7 +876,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 					echo ' constraints="{min:0}"';
 					echo '  style="width: 60px; text-align: center;' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
 					echo ' trim="true" class="input" ';
-					echo $commaEvent;
 					echo ' id="leftWork_' . $nbLine . '"';
 					echo ' name="leftWork[]"';
 					echo ' value="' .  Work::displayImputation($line->leftWork) . '" ';
@@ -884,6 +883,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 						echo ' readOnly="true" ';
 					}
 					echo ' >';
+					echo $keyDownEventScript;
 					echo '<script type="dojo/method" event="onChange" args="evt">';
 					echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
 					echo '</script>';
