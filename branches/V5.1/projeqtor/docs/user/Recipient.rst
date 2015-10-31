@@ -72,7 +72,7 @@ Recipients are mainly defined to store billing information.
    * - National account number
      - Full account number defining the BBAN account code.
 
-.. rubric:: Section: Addreses
+.. rubric:: Section: Address
 
 * Full address of the recipient.
 

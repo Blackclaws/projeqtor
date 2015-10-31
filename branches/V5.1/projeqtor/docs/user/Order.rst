@@ -24,24 +24,19 @@ On the quotation form, you can record all the information about the sent proposa
 
 * A quotation can be copied into an order when corresponding document is received as customer agreement.
 
+.. rubric:: Bill lines section
 
---------------
+* This section allows to detail the quotation modality.
 
-.. glossary::
-
-   PPD
-
-    * Price Per Day.
-    * It represent the cost of one work day.
-
---------------
 
 .. sidebar:: Other sections
 
+   * :ref:`Bill lines<manual-billing>`
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
    * :ref:`Change history<chg-history-section>`
+
 
 .. rubric:: Section: Description
 
@@ -74,6 +69,10 @@ On the quotation form, you can record all the information about the sent proposa
 
 **\* Required field**
 
+.. topic:: Field: Customer 
+     
+   * Automatically updated from project field.
+
 .. rubric:: Section: Treatment
 
 .. tabularcolumns:: |l|l|
@@ -90,8 +89,12 @@ On the quotation form, you can record all the information about the sent proposa
      - Resource who is responsible for the quotation.
    * - Sent date
      - Date when quotation is sent to customer contact.
+   * - Send mode
+     - Delivery mode.
    * - Offer validity
      - Limit date of the validity of the proposal.
+   * - Likelihood
+     - The probability that the proposal will be accepted.
    * - :term:`Handled`
      - Flag to indicate that quotation is taken into account.
    * - :term:`Done`
@@ -99,25 +102,34 @@ On the quotation form, you can record all the information about the sent proposa
    * - :term:`Closed`
      - Flag to indicate that quotation is archived.
    * - Cancelled
-     - Flag to indicate that quotation is cancelled.
-   * - Estimated work
-     - Work days corresponding to the quotation.
-   * - :term:`PPD`
-     - Price Per Day for the quotation.
-   * - Planned amount
-     - Total amount of the quotation.  
+     - Flag to indicate that quotation is cancelled. 
    * - Planned end date
      - Target end date of the activity object of the quotation.
    * - Activity type
-     - Type of the activity object of the quotation.  
+     - Type of the activity object of the quotation.
+   * - Payment deadline
+     - The payment deadline is stated on the quotation.
+   * - Amount
+     - Total amount of the quotation.  
+   * - Estimated work
+     - Work days corresponding to the quotation.
    * - Comments
      - Comment about the treatment of the quotation.
 
 **\* Required field**
 
-.. topic:: Field: Planned amount
-     
-   * Planned amount = Planned work * PPD.
+.. topic:: Fields: Amount
+
+   Columns:
+
+   * **Ex VAT**: Amount without taxes.
+   * **Tax**: Applicable tax. 
+   * **Full**: Amount with taxes.
+
+.. topic:: Column: Ex VAT
+
+   * The column value is automatically updated with the sum of bill line amounts. 
+
 
 .. hint:: Activity type
 
@@ -146,8 +158,13 @@ On the order form, you can record all the information of the received order.
 * An order can be linked to an activity. It then represents the command of the work on the activity.
 * In that case, validated work of the activity is the sum of the orders linked to the activity.
 
+.. rubric:: Bill lines section
+
+* This section allows to detail the order modality.
+
 .. sidebar:: Other sections
 
+   * :ref:`Bill lines<manual-billing>`
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
@@ -177,6 +194,10 @@ On the order form, you can record all the information of the received order.
      - Contact in customer organization to whom you sent the order.
    * - **External reference**
      - :term:`External reference` of the order (as received).
+   * - Submitted date
+     - Date when order is sent to customer.
+   * - Receive mode
+     - Delivery mode. 
    * - :term:`Origin`
      - Element which is the origin of the order.
    * - Description
@@ -185,6 +206,10 @@ On the order form, you can record all the information of the received order.
      - Any additional information about the order.
 
 **\* Required field**
+
+.. topic:: Field: Customer 
+     
+   * Automatically updated from project field.
 
 .. rubric:: Section: Treatment
 
@@ -196,8 +221,6 @@ On the order form, you can record all the information of the received order.
 
    * - Field
      - Description
-   * - Linked activity
-     - Activity representing the execution of the order.
    * - **Status**
      - Actual :term:`status` of the order.
    * - :term:`Responsible`
@@ -210,14 +233,16 @@ On the order form, you can record all the information of the received order.
      - Flag to indicate that order is archived.
    * - Cancelled
      - Flag to indicate that order is cancelled.
-   * - Work
-     - Work days corresponding to the order.
-   * - :term:`PPD`
-     - Price Per Day for the order.
-   * - Amount
-     - Total amount of the order.  
    * - Activity type
      - Type of the activity object of the order.
+   * - Linked activity
+     - Activity representing the execution of the order.
+   * - Initial
+     - Initial values.
+   * - Amendment
+     - Additional values.  
+   * - Total
+     - Sum of the initial values and amendment.  
    * - Start date
      - Initial start date of the execution of the order.
    * - End date 
@@ -225,19 +250,27 @@ On the order form, you can record all the information of the received order.
    * - Comments
      - Comment about the treatment of the order.
 
+
 **\* Required field**
 
-.. topic:: Fields: Work, PPD and Amount
+.. topic:: Fields: Initial, Amendment and Total
 
    Columns:
 
-   * **Initial** : Initial values.
-   * **Amendment** : Additionnal values.
-   * **Validated** : Sum of the initial values and amendment.
+   * **Ex VAT**: Amount without taxes.
 
-   Calculation:
+     * The column value is automatically updated with the sum of bill line amounts.
 
-   * Amount = Work * PPD.
+   * **Tax**: Applicable tax. 
+   * **Full**: Amount with taxes.
+   * **Work**: Work days corresponding to the order.
+ 
+     * The column value is automatically updated with the sum of bill lines quantities.
+     * When the measure unit is "day". 
+
+.. topic:: Field: Amendment
+
+   * The columns values "Ex VAT" and "Work" are automatically updated with the sum of billing lines with selected amendment checkboxes.
 
 .. topic:: Fields: Start and end date
 
@@ -247,4 +280,5 @@ On the order form, you can record all the information of the received order.
 .. hint:: Activity type
 
    * The activity should be created only after approval.
+
 

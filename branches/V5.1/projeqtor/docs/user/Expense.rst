@@ -228,7 +228,7 @@ It allows to enter detail on expense line.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Expense detail lines fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -260,7 +260,7 @@ It allows to enter detail on expense line.
    Expense detail dialog box
 
 
-.. list-table:: Expense detail dialog box fields
+.. list-table:: Fields of expense detail dialog box 
    :widths: 20, 80
    :header-rows: 1
 

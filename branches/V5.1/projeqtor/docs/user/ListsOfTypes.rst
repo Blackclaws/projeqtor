@@ -57,7 +57,7 @@ Project type is a way to define common behavior on group of projects.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -106,7 +106,7 @@ Ticket type is a way to define common behavior on group of tickets.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -149,7 +149,7 @@ Activity type is a way to define common behavior on group of activities.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -195,7 +195,7 @@ Milestone type is a way to define common behavior on group of milestones.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -239,7 +239,7 @@ Quotation type is a way to define the way the concerned activity should be bille
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -285,7 +285,7 @@ Order type is a way to define the way the activity references by the order will 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -329,7 +329,7 @@ Individual expense type is a way to define common behavior on group of individua
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -372,7 +372,7 @@ Project expense type is a way to define common behavior on group of project expe
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -414,7 +414,7 @@ Expense detail type is a way to define common behavior and calculation mode on g
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -445,7 +445,7 @@ Expense detail type is a way to define common behavior and calculation mode on g
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Scope section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -478,7 +478,7 @@ Bill type is a way to define common behavior on group of bills.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -500,6 +500,50 @@ Bill type is a way to define common behavior on group of bills.
      - Description of the type.
 
 **\* Required field**
+
+.. index:: ! Payment (Type)
+
+.. _payment-type:
+
+Payments types
+--------------
+
+Payment type is a way to define common behavior on group of payments.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
 
 
 .. index:: ! Risk (Type)
@@ -520,7 +564,7 @@ Risk type is a way to define common behavior on group of risks.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -543,9 +587,7 @@ Risk type is a way to define common behavior on group of risks.
 
 **\* Required field**
 
-.. raw:: latex
 
-    \newpage
 
 
 .. index:: ! Opportunity (Type)
@@ -566,7 +608,54 @@ Opportunity type is a way to define common behavior on group of opportunities.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
+
+
+.. index:: ! Action (Type)
+
+.. _action-type:
+
+Actions types
+-------------
+
+Action type is a way to define common behavior on group of actions.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -591,15 +680,14 @@ Opportunity type is a way to define common behavior on group of opportunities.
 
 
 
+.. index:: ! Issue (Type)
 
-.. index:: ! Action (Type)
+.. _issue-type:
 
-.. _action-type:
+Issues types
+------------
 
-Actions types
--------------
-
-Action type is a way to define common behavior on group of actions.
+Issue type is a way to define common behavior on group of issues.
 
 .. sidebar:: Other sections
 
@@ -610,7 +698,7 @@ Action type is a way to define common behavior on group of actions.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -636,49 +724,6 @@ Action type is a way to define common behavior on group of actions.
 .. raw:: latex
 
     \newpage
-
-.. index:: ! Issue (Type)
-
-.. _issue-type:
-
-Issues types
-------------
-
-Issue type is a way to define common behavior on group of issues.
-
-.. sidebar:: Other sections
-
-   * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Description section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the type.
-   * - **Name**
-     - Name of the type.
-   * - Code
-     - Code of the type.
-   * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
-   * - Sort order
-     - Number to define order of display in lists.
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
-   * - Description
-     - Description of the type.
-
-**\* Required field**
-
-
 
 .. index:: ! Meeting (Type)
 
@@ -701,7 +746,51 @@ Meeting type is a way to define common behavior on group of meetings.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+
+
+.. index:: ! Decision (Type)
+
+.. _decision-type:
+
+Decisions types
+---------------
+
+Decision type is a way to define common behavior on group of decisions.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -728,50 +817,6 @@ Meeting type is a way to define common behavior on group of meetings.
 .. raw:: latex
 
     \newpage
-
-.. index:: ! Decision (Type)
-
-.. _decision-type:
-
-Decisions types
----------------
-
-Decision type is a way to define common behavior on group of decisions.
-
-.. sidebar:: Other sections
-
-   * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Description section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the type.
-   * - **Name**
-     - Name of the type.
-   * - Code
-     - Code of the type.
-   * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
-   * - Sort order
-     - Number to define order of display in lists.
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
-   * - Description
-     - Description of the type.
-
-**\* Required field**
-
-
-
 
 
 .. index:: ! Question (Type)
@@ -792,7 +837,7 @@ Question type is a way to define common behavior on group of questions.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -815,9 +860,7 @@ Question type is a way to define common behavior on group of questions.
 
 **\* Required field**
 
-.. raw:: latex
 
-    \newpage
 
 .. index:: ! Message (Type)
 
@@ -837,7 +880,7 @@ Message type is a way to define common behavior on group of messages (appearing 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -859,7 +902,9 @@ Message type is a way to define common behavior on group of messages (appearing 
 **\* Required field**
 
 
+.. raw:: latex
 
+    \newpage
 
 .. index:: ! Document (Type)
 
@@ -879,7 +924,7 @@ Document type is a way to define common behavior on group of documents.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -902,9 +947,7 @@ Document type is a way to define common behavior on group of documents.
 
 **\* Required field**
 
-.. raw:: latex
 
-    \newpage
 
 .. index:: ! Context (Type)
 
@@ -933,7 +976,7 @@ Only three context types exist, corresponding to the three selectable fields.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -950,7 +993,9 @@ Only three context types exist, corresponding to the three selectable fields.
 
 **\* Required field**
 
+.. raw:: latex
 
+    \newpage
 
 .. index:: ! Requirement (Type)
 
@@ -970,7 +1015,50 @@ Requirement type is a way to define common behavior on group of requirements.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
+   * - **Workflow**
+     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+
+.. index:: ! Test case (Type)
+
+.. _test-case-type:
+
+Test cases types
+----------------
+
+Test case type is a way to define common behavior on group of test cases.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+   * :ref:`Change history<chg-history-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -996,49 +1084,6 @@ Requirement type is a way to define common behavior on group of requirements.
 .. raw:: latex
 
     \newpage
-
-.. index:: ! Test case (Type)
-
-.. _test-case-type:
-
-Test cases types
-----------------
-
-Test case type is a way to define common behavior on group of test cases.
-
-.. sidebar:: Other sections
-
-   * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Description section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the type.
-   * - **Name**
-     - Name of the type.
-   * - Code
-     - Code of the type.
-   * - **Workflow**
-     - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
-   * - Sort order
-     - Number to define order of display in lists.
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
-   * - Description
-     - Description of the type.
-
-**\* Required field**
-
-
 
 
 .. index:: ! Test session (Type)
@@ -1059,7 +1104,7 @@ Test session type is a way to define common behavior on group of test sessions.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -1082,9 +1127,7 @@ Test session type is a way to define common behavior on group of test sessions.
 
 **\* Required field**
 
-.. raw:: latex
 
-    \newpage
 
 .. index:: ! Customer (Type)
 
@@ -1104,7 +1147,7 @@ Customer type is a way to define different status of customers  (prospects or cl
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -1160,6 +1203,3 @@ Behavior section
 * Those fields allow to determine whether flags status are locked or not.
 * When a flag status is locked, move to this status through status change.
 
-.. rubric:: Show in flash report
-
-* [To complete]

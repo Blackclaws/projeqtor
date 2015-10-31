@@ -10,6 +10,10 @@
 
 .. title:: Graphical User Interface
 
+.. raw:: latex
+
+    \newpage
+
 Global view
 -----------
 
@@ -32,6 +36,11 @@ Those areas are :
    General screen
 
 ------------------
+
+.. raw:: latex
+
+    \newpage
+
 
 .. index:: ! GUI (Splitters)
 
@@ -183,7 +192,7 @@ Logo area
 
 .. rubric:: Online user manual
 
-* Click on the online manual icon |buttonIconHelp| will open the online user manual, to the page corresponding to the actual screen. 
+* Click on |buttonIconHelp| or use shortcut key :kbd:`F1` will open the online user manual, to the page corresponding to the actual screen. 
 
   .. note:: 
 
@@ -212,6 +221,9 @@ Menu and Documents windows
    * Just click on window header.
 
 
+.. raw:: latex
+
+   \newpage
 
 
 .. rubric:: Menu window
@@ -233,6 +245,11 @@ Menu and Documents windows
    * Icon size in the menu can be defined in :ref:`User parameters<display-parameters>` screen.
 
 ---------------------
+
+
+.. raw:: latex
+
+   \newpage
 
 .. rubric:: Documents window
 
@@ -315,6 +332,9 @@ List window
 
    List window
 
+.. raw:: latex
+
+    \newpage
 
 .. figure:: /images/GUI/ZONE_ListWindowPart.png
    :alt: List window zone
@@ -337,6 +357,8 @@ List window
       * Search is considered as “contains”, so typing “1” in “id” will select “1”, “10”, “11”, “21”, “31” and so on.
   
     * Selecting a “type” in the combo box will restrict the list to the corresponding type.
+
+
 
 
  .. compound:: **Buttons** |three|
@@ -546,10 +568,7 @@ Detail window
  .. compound:: **Buttons** |three|
 
     * Click on |buttonIconNew| to create new item.        
-    * Click on |buttonIconSave| to save the changes. 
- 
-      * You can rapidly save with :kbd:`Control-s`.      
-
+    * Click on |buttonIconSave| or use shortcut key :kbd:`Control-s` to save the changes. 
     * Click on |buttonIconPrint| to get a printable version of the detail.
     * Click on |buttonIconPdf|  to get a printable version of the detail in PDF format.
     * Click on |buttonIconCopy| to copy the current item (see : :ref:`copy-item`).        
@@ -638,6 +657,11 @@ Copy item
         * For Projects and Activities, it is also possible to copy the hierarchic structure of activities (sub-projects, sub-activities). 
 
         * The new item are the status "copied".
+
+
+.. raw:: latex
+
+    \newpage
   
 .. _email-detail:
 
@@ -653,9 +677,13 @@ It is possible to send an informative email to defined recipients list.
    Email detail dialog box
 
 
-**message**
+**Message**
 
 * The message that will be included in the body of the email, in addition to complete description of item.
+
+**Save as note**
+
+* Flag to indicate the email message will be saved as a note.
 
 
 
@@ -828,14 +856,14 @@ The origin may be selected manually or automatically inserted on copy.
 * Click on |buttonRemove| to delete the link.
 
 .. figure:: /images/GUI/BOX_AddAnOriginElement.png
-   :alt: Add an origin element diaglog box
+   :alt: Add an origin element dialog box
    :align: center
 
    Add an origin element diaglog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Add an origin element Popup fields
+.. list-table:: Fields of add an origin element dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -1030,7 +1058,7 @@ This section allows to manage project affectation.
 
 
 
-.. list-table:: Affectations section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -1078,7 +1106,7 @@ This section allows to manage project affectation.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Affectation dialog box fields
+.. list-table:: Fields of affectation dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -1191,7 +1219,7 @@ Click on |buttonRemove| to delete the corresponding link.
     \newpage
 
 
-  .. index:: ! attachment - section
+.. index:: ! attachment - section
 
 .. _attachment-section:
 
@@ -1202,7 +1230,7 @@ Users can attach files or hyperlinks on most of items.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Attachments section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -1233,6 +1261,14 @@ Select an attachment depends on whether is a file or a hyperlink.
 .. rubric:: Delete an attachment
 
 * Click on |buttonRemove| to delete an attachment.
+
+.. rubric:: PDF file
+
+* Click on |buttonIconPdf| to view the PDF file online.
+
+.. raw:: latex
+
+    \newpage
 
 .. _attachment-file:
 
@@ -1271,7 +1307,7 @@ Select an attachment depends on whether is a file or a hyperlink.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Attachment dialog box fields
+.. list-table:: Fields of attachment dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -1287,6 +1323,9 @@ Select an attachment depends on whether is a file or a hyperlink.
      - Attachment is visible only to creator.
 
 
+.. raw:: latex
+
+    \newpage
 
 .. index:: ! Note (section)
 
@@ -1466,5 +1505,19 @@ Each user can choose the language to display all the captions.
    * This parameter defines language is used to display captions.
    * Save parameters to retrieve this theme on each new connection.
    * See this parameter under "Display parameters" section in :ref:`User parameters<display-parameters>` screen. 
+
+.. index:: ! Keyboard functionality 
+
+Keyboard functionality
+----------------------
+
+.. rubric:: Shortcut keys
+
+* :kbd:`Control-s` to save the changes. 
+* :kbd:`F1` to open the online user manual, to the page corresponding to the actual screen.
+
+.. rubric:: Numeric keypad
+
+* The point will be replaced by a comma if the numeric format requires it.
 
 

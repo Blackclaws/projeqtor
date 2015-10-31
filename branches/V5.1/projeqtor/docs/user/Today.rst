@@ -186,7 +186,7 @@ The projects list is limited to the project visibility scope of the connected us
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Project metrics fields
+.. list-table:: Fields of project metrics
    :widths: 20, 80
    :header-rows: 1
 
@@ -219,7 +219,7 @@ Sections: Tasks
 
 Here are listed, as a “To do list” all the items for which the connected user is either “assigned to”, “:term:`responsible` of” or “:term:`issuer` or :term:`requestor` of”.
 
-Click on the name of an item will directly move to it.
+Click on an item will directly move to it.
 
 .. note:: Parameter: Max items to display
 
