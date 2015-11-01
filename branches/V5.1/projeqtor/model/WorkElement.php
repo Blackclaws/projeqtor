@@ -206,14 +206,17 @@ class WorkElement extends SqlElement {
 				if ($work->work < 0) { // Should never happen as $diff is > 0 here 
 					$work->work = 0;
 				}
-				if (! $work->refType) { // Ensure work is correcly set to ref item
+				if ($this->idActivity) {
+				  $work->refType = 'Activity';
+				  $work->refId = $this->idActivity;
+				} else { // Ensure work is correcly set to ref item
 					$work->refType = $this->refType;
 					$work->refId = $this->refId;
 				}
 				$work->idProject = $topProject;
 				$work->idAssignment = self::updateAssignment ( $work, $diff );
 				$work->idWorkElement=$this->id;
-				$work->save ();
+				$work->save();
 			} else {
 			  // Remove work : so need to remove from existing (reverse loop on date) 
 				while ( $diff < 0 and $idx >= 0 ) {
