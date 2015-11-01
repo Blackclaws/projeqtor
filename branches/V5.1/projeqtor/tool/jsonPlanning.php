@@ -125,8 +125,8 @@
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
   if ($portfolio) {
-  	$queryWhere.=getAccesRestrictionClause('Project',$table);
-  	//$queryWhere.=' OR '.getAccesRestrictionClause('Milestone',$table,$showIdleProjects).')';
+  	$queryWhere.='( ('.getAccesRestrictionClause('Project',$table).')';
+  	$queryWhere.=' OR ('.getAccesRestrictionClause('Milestone',$table,$showIdleProjects).') )';
   } else {
     $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
   }

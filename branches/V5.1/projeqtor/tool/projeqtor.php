@@ -1703,39 +1703,6 @@ function transformValueListIntoInClause($list) {
  *          date - format yyyy-mm-dd
  * @return int number of work days (remove week-ends)
  */
-function workDayDiffDates_old($start, $end) {
-  if (! $start or ! $end) {
-    return "";
-  }
-  $tStart = explode ( "-", $start );
-  $tEnd = explode ( "-", $end );
-  $dStart = mktime ( 0, 0, 0, $tStart [1], $tStart [2], $tStart [0] );
-  $dEnd = mktime ( 0, 0, 0, $tEnd [1], $tEnd [2], $tEnd [0] );
-  if (date ( "N", $dEnd ) >= 6) {
-    $dEnd = mktime ( 0, 0, 0, $tEnd [1], $tEnd [2] + 5 - date ( "N", $dEnd ), $tEnd [0] );
-  }
-  if (date ( "N", $dStart ) >= 6) {
-    $dStart = mktime ( 0, 0, 0, $tStart [1], $tStart [2] + 8 - date ( "N", $dStart ), $tStart [0] );
-  }
-  if ($dStart > $dEnd) {
-    return 0;
-  }
-  $diff = $dEnd - $dStart;
-  $diffDay = ($diff / 86400);
-  $diffDay = round ( $diffDay, 0 );
-  // remove week-ends
-  if ($diffDay >= 7) {
-    $diffDay -= (floor ( $diffDay / 7 ) * 2);
-  }
-  // Remove 1 more week-end if not complete week including a week-end
-  if (date ( "N", $dEnd ) < date ( "N", $dStart )) {
-    $diffDay -= 2;
-  }
-  // add 1 day to include first day, workDayDiffDates(X,X)=1, workDayDiffDates(X,X+1)=2
-  $diffDay += 1;
-  return ($diffDay);
-}
-
 function workDayDiffDates($start, $end) {
   if (! $start or ! $end) {
     return "";

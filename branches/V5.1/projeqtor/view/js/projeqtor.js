@@ -2063,38 +2063,11 @@ function unselectPlanningLines() {
 /**
  * calculate diffence (in work days) between dates
  */ 
-function workDayDiffDates_old(paramStartDate, paramEndDate) {
-  var startDate=paramStartDate;
-  var endDate=paramEndDate;
-  var valDay=(24 * 60 * 60 * 1000);
-  if ( ! ( ( startDate!=null && startDate!="") && ( endDate!=null && endDate!="") ) ) {
-    return "";
-  }
-  if (getDay(endDate)>=6) {
-    endDate.setDate(endDate.getDate()+5-getDay(endDate));
-  }
-  if (getDay(startDate)>=6) {
-    startDate.setDate(startDate.getDate()+8-getDay(startDate));
-  }
-  if (startDate>endDate) {
-    return 0;
-  }
-  var duration=(endDate - startDate) / valDay;
-  duration=Math.round(duration);
-  if (duration>=7) {
-    duration-=Math.floor(duration/7)*2;
-  }
-  if (getDay(endDate) < getDay(startDate)) {
-    duration-=2;
-  }
-  // add 1 day to include first day, dayDiffDates(X,X)=1,
-  // dayDiffDates(X,X+1)=2
-  duration+=1;
-  return duration;
-}
 
 function workDayDiffDates(paramStartDate, paramEndDate) {
   var currentDate=new Date();
+  if (! isDate(paramStartDate)) return '';
+  if (! isDate(paramEndDate)) return '';  
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate.getMonth(), paramStartDate.getDate());
   var endDate=paramEndDate;
   if (paramEndDate<paramStartDate) {
@@ -2261,6 +2234,11 @@ function workflowChange(line, column, profileList) {
   
 }
 
+function isDate(date) {
+  if (! date) return false;
+  if (date instanceof Date && !isNaN(date.valueOf())) return true;
+  return false;
+}
 /**
  * refresh Projects List on Today screen
  */
