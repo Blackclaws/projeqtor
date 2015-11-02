@@ -184,7 +184,7 @@
     <antcall target="copyDb"/>
     <antcall target="copyExternal"/>
     <antcall target="copyFiles"/>
-    <antcall target="copyManual"/>
+    <!-- <antcall target="copyManual"/> -->
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
   	<antcall target="copyPlugin"/>
@@ -200,7 +200,7 @@
   <target name="buildQuick">
     <antcall target="copyDb"/>
     <antcall target="copyFiles"/>
-    <antcall target="copyManual"/>
+    <!-- <antcall target="copyManual"/> -->
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
   	<antcall target="copyPlugin"/>

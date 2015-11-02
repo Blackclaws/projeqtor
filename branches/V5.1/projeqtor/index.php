@@ -80,7 +80,7 @@ if (is_file ( "../tool/parametersLocation.php" )) {
             <td style="height:99%" align="left" valign="middle">
               <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden">
   <form id="indexForm" name="indexForm" action="view/main.php" method="post">
-    <input type="hidden" id="currentLocale" name="currentLocale" value="fr" />
+    <input type="hidden" id="xcurrentLocale" name="xcurrentLocale" value="en" />
   </form>
               </div>
             </td>
