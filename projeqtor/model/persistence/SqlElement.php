@@ -1489,10 +1489,10 @@ abstract class SqlElement {
   			$ass=new Assignment();
   			// First delete existing Assignment (possibly created from Responsible)
   			if (property_exists($this, 'idResource') and $this->idResource) {
-  			  $crit=array('idResource'=>$this->idResource,'refType'=>get_class($this), 'refId'=>$this->id);
+  			  $crit=array('idResource'=>$this->idResource,'refType'=>get_class($this), 'refId'=>$newObj->id);
   			  $assResp=SqlElement::getSingleSqlElementFromCriteria('Assignment', $crit);
   			  if ($assResp and $assResp->id) {
-  			    $assResp->delete();
+  			    $resDel=$assResp->delete();
   			  }
   			}
   	  	$crit=array('refType'=>get_class($this), 'refId'=>$this->id);
