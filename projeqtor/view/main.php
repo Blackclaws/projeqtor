@@ -462,7 +462,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                       background-repeat: no-repeat; height: 50px;" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
-          <div style="position:absolute; right:0; bottom:0px" id="helpbutton" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
+          <div style="position:absolute; right:0; bottom:0px" id="helpbutton" style="text-align:right;" onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
           <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
@@ -915,7 +915,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           id="noteNote" name="noteNote"
           style="width: 500px;display:none;"></textarea>
          
-        <div data-dojo-type="dijit.Editor"' id="noteNoteEditor" height="125px" 
+        <div data-dojo-type="dijit.Editor" id="noteNoteEditor" height="125px" 
          data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];}
           ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 
                     'justifyRight', 'justifyFull','|','insertOrderedList','insertUnorderedList','|']
@@ -973,10 +973,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <label for="linkRef2Type" ><?php echo i18n("linkType") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <select dojoType="dijit.form.FilteringSelect" 
-                id="linkRef2Type" name="linkRef2Type" 
-                onchange="refreshLinkList();"
-                class="input" value="" >
+               <select dojoType="dijit.form.FilteringSelect" id="linkRef2Type" name="linkRef2Type" onchange="refreshLinkList();"
+                class="input" value="">
                  <?php htmlDrawOptionForReference('idLinkable', null, null, true);?>
                </select>
              </td>
