@@ -35,7 +35,7 @@ class WorkElement extends SqlElement {
 	public $refId;
 	public $idActivity;
 	public $refName;
-	public $_tab_4_1 = array('estimated', 'real','left','','work');
+	public $_tab_3_1 = array('estimated', 'real','left','work');
 	public $plannedWork;
 	public $realWork;
 	public $leftWork;

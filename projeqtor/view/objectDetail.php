@@ -729,7 +729,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
         }
       } else {
-        $internalTableBorder=($print)?'border:1px dotted #A0A0A0;':'';
+        //$internalTableBorder=($print)?'border:1px dotted #A0A0A0;':'';
+        $internalTableBorder='';
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';

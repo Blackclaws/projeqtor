@@ -65,6 +65,9 @@ if ($idProject!='') {
 } else {
   // 
 }
+// Remove Admin Projects : should not appear in Work Plan
+$queryWhereW.= " and w.idProject not in " . Project::getAdminitrativeProjectList() ;
+$queryWhereExp.= " and exp.idProject not in " . Project::getAdminitrativeProjectList() ;
   
 $querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
 $queryGroupBy1 = 'exp.'.$scale . ', exp.idProject';

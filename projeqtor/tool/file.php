@@ -2,7 +2,7 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
- * Contributors : -
+ * Contributors : BRW
  *
  * This file is part of ProjeQtOr.
  * 
@@ -171,11 +171,21 @@ function createThumb($imageFile,$size,$thumb=null, $square=false) {
     if (! $thumb) {
       $thumb=getThumbFileName($imageFile,$size);
     }
+    enableCatchErrors();
     $dir=pathinfo($thumb, PATHINFO_DIRNAME);
     if (! file_exists($dir)) {
       mkdir($dir,0777,true);
     }
-    $imagesave($nimg,$thumb);
+    try {
+			$res=@$imagesave($nimg,$thumb);
+		} catch (Exception $e) {
+      errorLog("create thumb error : " . $e->getMessage() );
+      $res=false;
+    }
+    if (! $res) {
+      errorLog("Cannot write thumb file : '$thumb' (check write access to folder)" );
+    }
+    disableCatchErrors();
     return true;
   }
   return false;

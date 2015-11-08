@@ -61,8 +61,7 @@ class Client extends SqlElement {
     <th field="name" width="30%">${clientName}</th>
   	<th field="nameClientType" width="15%">${idClientType}</th> 
     <th field="clientCode" width="15%">${clientCode}</th> 
-    <th field="paymentDelay" width="10%" formatter="dayFormatter">${paymentDelay}</th>
-    <th field="paymentDelayEndOfMonth" formatter="booleanFormatter" width="5%">${endOfMonth}</th>
+    <th field="namePaymentDelay" width="15%">${paymentDelay}</th>
     <th field="taxPct" width="5%" formatter="percentSimpleFormatter">${tax}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';

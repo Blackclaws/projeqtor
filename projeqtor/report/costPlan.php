@@ -62,7 +62,9 @@
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
-
+  // Remove Admin Projects : should not appear in Work Plan
+  $queryWhere.= " and $table.idProject not in " . Project::getAdminitrativeProjectList() ;
+  
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;
   $queryOrderBy .= $table . ".wbsSortable ";
