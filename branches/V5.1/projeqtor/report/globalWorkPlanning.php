@@ -83,6 +83,9 @@ if ($idProject!='') {
 } else {
   //
 }
+// Remove Admin Projects : should not appear in Work Plan
+$queryWhere.= " and idProject not in " . Project::getAdminitrativeProjectList() ;
+
 if ($paramYear) {
 	$queryWhere.=  " and year=".Sql::str($paramYear);
 }

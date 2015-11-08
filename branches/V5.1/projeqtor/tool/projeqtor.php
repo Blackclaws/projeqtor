@@ -40,12 +40,10 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.1.1"; // Version of application : Major / Minor / Release
-$build = "0123"; // Build number. To be increased on each release
+$version = "V5.1.2"; // Version of application : Major / Minor / Release
+$build = "0124"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
-$aboutMessage = ''; // About message to be displayed when clicking on application logo
-$aboutMessage .= '<div>' . $applicationName . ' ' . $version . ' (' . ($build + 0) . ')</div><br/>';
-$aboutMessage .= '<div>' . i18n ( "aboutMessageWebsite" ) . ' : <a target=\'#\' href=\'' . $website . '\'>' . $website . '</a></div><br/>';
+
 /**
  * ============================================================================
  * Global tool script for the application.
@@ -91,6 +89,7 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   }
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
+
 $tz = Parameter::getGlobalParameter ( 'paramDefaultTimezone' );
 if ($tz)
   date_default_timezone_set ( $tz );
@@ -102,6 +101,14 @@ $i18nMessages = null; // Array containing messages depending on local (initializ
 
 setupLocale (); // Set up the locale : must be called before any call to i18n()
 securityCheckRequest ();
+
+// About message (click on Logo)
+$aboutMessage = ''; // About message to be displayed when clicking on application logo
+$aboutMessage .= '<div>' . $applicationName . ' ' . $version . ' (' . ($build + 0) . ')</div><br/>';
+$aboutMessage .= '<div>' . i18n ( "aboutMessageWebsite" ) . ' : <a target=\'#\' href=\'' . $website . '\'>' . $website . '</a></div><br/>';
+if (isset($paramSupportEmail)) {
+  $aboutMessage .= '<div>' . i18n ( "colEmail" ) . ' : <a target=\'#\' href=\'mailto:' . $paramSupportEmail . '\'>' . $paramSupportEmail . '</a></div><br/>';
+}
 
 // $paramIconSize=setupIconSize(); //Not used any more this way - user Parameter::getUserParameter("paramIconSize");
 $cr = "\n"; // Line feed (just for html dynamic building, to ease debugging

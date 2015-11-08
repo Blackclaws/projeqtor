@@ -31,5 +31,4 @@ $i18nNocache=true;
 $memoryLimitForPDF = '512';
 $debugIEcompatibility=false;
 //$showAutoPlan=true;
-$memoryLimitForPDF = '512';
-$memoryLimitForPDF = '512';$memoryLimitForPDF = '512';
+$paramSupportEmail="support@projeqtor.org";
