@@ -1453,7 +1453,7 @@ msgEnterPlannedDA: "Vous devez renseigner à la fois la date et le montant plani
 msgEnterRealDA: "Vous devez renseigner à la fois la date et le montant réels",
 msgEnterRPAmount: "Vous devez renseigner un montant (prévu ou réel)",
 msgEnterRPDate: "Vous devez renseigner une date (prévue ou réelle)",
-msgFirstStatusMandatoryInWorkflow: "vous devez include l'état initial '${1}' dans le workflow",
+msgFirstStatusMandatoryInWorkflow: "vous devez inclure l'état initial '${1}' dans le workflow",
 msgIncorrectReceiver: "ce destinataire ne peut pas être sélectionné pour cet élément",
 msgNotGranted: "Vous n'êtes pas autorisé à réaliser cette opération",
 msgParentActivityInSameProject: "L'activité parente doit appartenir au même projet",
