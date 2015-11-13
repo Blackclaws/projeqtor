@@ -30,7 +30,6 @@ The customer defined here is not a person. Real persons into a customer entity a
   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -107,7 +106,6 @@ A contact can be the contact person for contracts, sales and billing.
 .. sidebar:: Other sections
 
    * :ref:`Affectations<affectations-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

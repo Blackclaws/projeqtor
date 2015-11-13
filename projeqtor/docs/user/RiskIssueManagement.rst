@@ -31,7 +31,6 @@ The risk management plan is a key point to project management :
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -57,6 +56,10 @@ The risk management plan is a key point to project management :
      - Probability level of the risk to occur.
    * - Criticality
      - Global evaluation level of the risk.
+   * - Cost of impact
+     - Impact cost of the risk.
+   * - Project reserved cost
+     - The reserve amount according to the risk likelihood.
    * - :term:`Origin`
      - Element which is the origin of the risk.
    * - Cause
@@ -72,6 +75,10 @@ The risk management plan is a key point to project management :
 
    * Automatically calculated from Severity and Likelihood values. See: :ref:`criticality-calculation`.
    * Value can be changed. 
+
+.. topic:: Field: Project reserved cost
+
+   * Automatically calculated from the percentage defined to the likelihood.
 
 
 .. rubric:: Section: Treatment
@@ -136,7 +143,6 @@ The risk management plan is a key point to project management :
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -156,12 +162,16 @@ The risk management plan is a key point to project management :
      - Type of opportunity.
    * - **Project**
      - The project concerned by the opportunity.
-   * - Severity
+   * - Significance
      - Level of importance of the impact for the project.
-   * - Expected improvement
+   * - Likelihood
      - Evaluation of the estimated improvement, or positive impact, on the project of the opportunity.
    * - Criticality
      - Global evaluation level of the opportunity.
+   * - Expected improvement
+     - Expected amount of the opportunity.
+   * - Project reserved gain
+     - The estimated gain, according to the opportunity likelihood.
    * - :term:`Origin`
      - Element which is the origin of the opportunity.
    * - Opportunity source
@@ -175,8 +185,12 @@ The risk management plan is a key point to project management :
 
 .. topic:: Field: Criticality
 
-   * Automatically calculated from Severity and Likelihood (Expected improvement) values. See: :ref:`criticality-calculation`.
+   * Automatically calculated from Significance and Likelihood values. See: :ref:`criticality-calculation`.
    * Value can be changed. 
+
+.. topic:: Field: Project reserved gain
+
+   * Automatically calculated from the percentage defined to the likelihood.
 
 .. rubric:: Section: Treatment
 
@@ -222,9 +236,9 @@ The risk management plan is a key point to project management :
 Criticality value calculation
 -----------------------------
 
-Criticality value is automatically calculated from **Severity** and **Likelihood** values.
+Criticality value is automatically calculated from **Severity (Significance)** and **Likelihood** values.
 
-Criticality, Severity and Likelihood values are defined in lists of values screens. See: :ref:`criticality`, :ref:`severity` and :ref:`likelihood` screens.
+Criticality, Severity (Significance) and Likelihood values are defined in lists of values screens. See: :ref:`criticality`, :ref:`severity` and :ref:`likelihood` screens.
 
 In the previous screens, a name of value is set with numeric value.  
 
@@ -271,7 +285,6 @@ Actions must be defined to solve the issue.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -371,7 +384,6 @@ They must be regularly followed-up.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

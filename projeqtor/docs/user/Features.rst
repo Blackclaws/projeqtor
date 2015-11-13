@@ -2,8 +2,9 @@
 
     \newpage
 
+
 .. contents:: Features
-   :depth: 1
+   :depth: 2
    :backlinks: top
    :local:
 

@@ -16,10 +16,6 @@ The recipient is the beneficiary of bill payments.
 
 Recipients are mainly defined to store billing information. 
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|

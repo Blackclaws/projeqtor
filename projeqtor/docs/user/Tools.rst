@@ -8,34 +8,30 @@
 
 .. title:: Tools
 
-.. index:: ! Email (Display)
+.. index:: ! Email (Sent)
 
 .. _emails-sent:
 
 Emails sent
 -----------
 
-You can have a look at the list of the automatic emails sent.
+Users can have a look at the list of the automatic emails sent.
 
-You will have all the information about the email, including the status showing whether the email was correctly sent or not.
-
-.. note:: 
-
-   * The information on the screen is read-only.
+All the information about the email, including the status showing whether the email was correctly sent or not.
 
 .. raw:: latex
 
     \newpage
 
 
-.. index:: ! Alert (Display)
+.. index:: ! Alert (Sent)
 
 .. _alerts:
 
 Alerts
 ------
 
-You can have a look at the alerts sent.
+Users can have a look at the alerts sent.
 
 By default, administrators can see all the alerts sent, and other users only see their own alerts.
 
@@ -49,13 +45,7 @@ By default, administrators can see all the alerts sent, and other users only see
 
 .. topic:: Button: Mark as read
 
-   * The button is available if a user the alert is not tagged “read” yet.
-
-     * For instance, you clicked “remind me” when the alert was displayed. 
-
-.. note:: 
-
-   * The information on the screen is read-only.
+   * The button is available if  the user alert is not tagged “read” yet.
 
 
 .. raw:: latex
@@ -84,9 +74,6 @@ You can limit the display to some profile and project.
 
 The message will be displayed in a color depending on the message type.
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

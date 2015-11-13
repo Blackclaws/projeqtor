@@ -25,10 +25,6 @@ Contexts are initially set to be able to define contexts for IT Projects, for th
 
 They can be changed to be adapted to any kind of project.
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|

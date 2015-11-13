@@ -85,7 +85,6 @@ Billing will depend on billing type defined for the project.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -231,7 +230,7 @@ Input for each bill line depends on billing type.
 
 * Click on |buttonAdd| to add a bill line. A different “Bill line” dialog box will be displayed depends on billing type. 
 * Click on |buttonEdit| to modify an existing bill line.
-* Click on |buttonRemove| to delete the bill line.
+* Click on |buttonIconDelete| to delete the bill line.
 
 
 .. raw:: latex
@@ -411,7 +410,6 @@ You can define as many terms as you wish, to define the billing calendar.
 .. sidebar:: Other sections
 
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -470,7 +468,7 @@ This section allows to manage element trigger.
 .. rubric:: Trigger element management
 
 * Click on |buttonAdd| to add an element trigger. 
-* Click on |buttonRemove| to delete an element trigger.
+* Click on |buttonIconDelete| to delete an element trigger.
 
 .. figure:: /images/GUI/BOX_AddTriggerElementToTerm.png
    :alt: Add a trigger element to term dialog box
@@ -504,10 +502,6 @@ Activities prices
 Activity price defines daily price for activities of a given **activity type** and a given **project**.
 
 This is used to calculate a billing amount for billing type **On produced work** and **On capped produced work**.
-
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -551,10 +545,6 @@ Payments
 Allow to define payment of bills. 
 
 The bill keeps track of payment.
-
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

@@ -35,7 +35,6 @@ On the quotation form, you can record all the information about the sent proposa
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 
 .. rubric:: Section: Description
@@ -168,7 +167,6 @@ On the order form, you can record all the information of the received order.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

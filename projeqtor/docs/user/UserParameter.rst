@@ -11,7 +11,7 @@
 .. _user-parameters:
 
 User parameters
----------------
+===============
 
 .. sidebar:: Concepts 
 

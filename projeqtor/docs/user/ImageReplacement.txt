@@ -19,12 +19,6 @@
 .. |buttonEdit| image:: images/smallButtonEdit.png
    :alt: Button edit
 
-.. |buttonRemove| image:: images/smallButtonRemove.png
-   :alt: Button remove
-
-.. |buttonIconView| image:: images/iconView.png
-   :alt: Button icon view 
-
 .. |iconGoto| image:: images/iconGoto.png
    :alt: Button icon goto 
 
@@ -58,10 +52,10 @@
 .. |Result| image:: images/result.png
    :alt: Icon result 
 
-.. |buttonIconParameter| image:: images/iconParameter32.png
+.. |buttonIconParameter| image:: images/iconParameter.png
    :alt: Button icon parameter 
 
-.. |buttonIconDocDir| image:: images/iconDocumentDirectory32.png
+.. |buttonIconDocDir| image:: images/iconDocumentDirectory.png
    :alt: Button icon document directory
 
 .. |buttonIconToday| image:: images/iconToday32.png
@@ -74,7 +68,7 @@
    :alt: Button icon display
 
 .. |buttonIconSearch| image:: images/buttonIconSearch.png
-   :alt: Button icon search
+   :alt: button icon search
 
 .. |buttonIconActiveFilter| image:: images/iconActiveFilter.png
    :alt: Button icon active filter
@@ -83,7 +77,7 @@
    :alt: Button icon drag
 
 .. |buttonIconFilter| image:: images/iconFilter.png
-   :alt: Button icon filter
+   :alt: button icon filter
 
 .. |comboArrowDown| image:: images/comboArrowDown.png
    :alt: Button combo arrow down
@@ -110,7 +104,7 @@
    :alt: Button icon copy
 
 .. |buttonIconUndo| image:: images/buttonIconUndo.png
-   :alt: Button icon undo
+   :alt: button icon undo
 
 .. |buttonIconDelete| image:: images/buttonIconDelete.png
    :alt: Button icon delete
@@ -162,6 +156,9 @@
 
 .. |statusFinishKO| image:: images/statusFinishKO.png
    :alt: Status finish KO
+
+.. |buttonQuitMultiMode| image:: images/buttonQuitMultipleUpdateMode.png
+   :alt: button quit multiple update mode
 
 
 .. |one| image:: images/one.png

@@ -22,17 +22,13 @@ Affectations
    * :ref:`project-affectation`
 
 
-This tool allows to manage project affectation.
+Allows to manage project affectations.
 
 Offers a global view of affectation.
 
 .. hint::
  
    * You can use filters. 
-
-.. sidebar:: Other sections
-  
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -56,7 +52,7 @@ Offers a global view of affectation.
    * - **Project**
      - Project affected to.
    * - Rate
-     - Affectation rate for the projet (%).
+     - Affectation rate for the project (%).
    * - Start date
      - Start date of affectation.
    * - End date

@@ -40,7 +40,6 @@ This will provide an easy way to find back when, where and why a decision has be
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -172,7 +171,6 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
    * :ref:`Progress <progress-meeting-section>`
    * :ref:`pe-predSuces-element-section-label`
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -342,7 +340,6 @@ You can link a decision to a meeting to rapidly find the minutes where the decis
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -433,7 +430,6 @@ You can link a question to a meeting to rapidly find the minutes where the quest
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

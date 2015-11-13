@@ -18,10 +18,6 @@ Functions
 
 The function defines the generic competency of a resource.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -91,10 +87,6 @@ Some automations are implemented, depending on status definition, to set on item
      * This status specifies that the item is cancelled.
 
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -142,10 +134,6 @@ The quality is a manual indicator for the conformity of a project to quality pro
 
 It defines in a visual way the global conformity of the project.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -178,9 +166,6 @@ It defines in a visual way the global conformity of the project.
 
 
 
-.. raw:: latex
-
-    \newpage
 
 
 .. index:: ! Health status - Lists of values
@@ -196,9 +181,6 @@ It defines in a visual way the global health of the project.
 
 It is displayed on Today screen, for each project, as a Red / Amber / Green traffic light.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -248,9 +230,6 @@ It defines in a visual way the global progress of the project, independently fro
 
 It is displayed on Today screen, for each project.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -275,10 +254,6 @@ It is displayed on Today screen, for each project.
 
 
 
-.. raw:: latex
-
-    \newpage
-
 .. index:: ! Trend - Lists of values
 
 .. _trend:
@@ -292,9 +267,6 @@ It defines in a visual way the health trend of the project.
 
 It is displayed on Today screen, for each project.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -339,10 +311,6 @@ Likelihoods
 
 The likelihood is the probability of a risk or an opportunity to occur.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -359,6 +327,8 @@ The likelihood is the probability of a risk or an opportunity to occur.
      - Name of this value.
    * - Value
      - Value of likelihood.
+   * - % value
+     - Value in percent.
    * - Color
      - Color to display the likelihood in element lists
    * - Sort order
@@ -368,11 +338,9 @@ The likelihood is the probability of a risk or an opportunity to occur.
    
 **\* Required field**
 
+.. topic:: Field: % value
 
-
-.. raw:: latex
-
-    \newpage
+   * This field is used to calculate a reserve amount according to the likelihood of risk or opportunity.
 
 
 .. index:: ! Criticality - Lists of values
@@ -392,9 +360,6 @@ The criticality is the importance of an element to its context.
 
    * The criticality is the estimated impact that the subject of the ticket may have for the product.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -435,9 +400,6 @@ Severities
 
 The severity designs the level of negative or positive impact the risk or opportunity may have for the product.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -473,10 +435,6 @@ Urgencies
 ^^^^^^^^^
 
 The ticket urgency is an element given by the requestor to indicate the quickness of treatment needed for the ticket.
-
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -518,9 +476,6 @@ Priorities
 
 The ticket priority defines the order to treat different tickets.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -558,9 +513,6 @@ Risk levels
 
 The risk level measures the technical risk of implementation of a requirement.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -598,9 +550,6 @@ Feasibilities
 
 The feasibility defines the first analysis of implementation of a requirement.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -635,9 +584,6 @@ Efficiencies
 
 The efficiency measures the result of an action.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -675,9 +621,6 @@ Payment deadlines
 
 The payment deadline is stated on the bill.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -713,9 +656,6 @@ Payment methods
 
 The mode of payment.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -752,9 +692,6 @@ Delivery modes
 
 The mode of delivery.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -786,9 +723,6 @@ Measure units
 
 The measure units.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

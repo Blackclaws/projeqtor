@@ -64,7 +64,6 @@ It can be linked to test cases, it's used to describe how you will test that a g
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -218,7 +217,6 @@ Test case must be defined to a product or a project. It can be applied to both.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. raw:: latex
 
@@ -410,7 +408,6 @@ Test session must be defined to a product or a project. It can be applied to bot
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description 
 
@@ -519,7 +516,7 @@ This section allows to manage test case runs.
 
 * Click on |buttonAdd| to add a test case run. A **Test case run dialog box** will be appear.
 * Click on |buttonEdit| to edit a test case run. A **Test case run detail dialog box** will be appear.
-* Click on |buttonRemove| to remove a test case run.
+* Click on |buttonIconDelete| to remove a test case run.
 * Click on |iconPassed| to mark test case run as passed.
 * Click on |iconFailed| to mark test case run as failed.
 * Click on |iconBlocked| to mark test case run as blocked.

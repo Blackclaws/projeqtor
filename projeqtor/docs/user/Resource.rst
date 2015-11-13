@@ -44,7 +44,6 @@ Project affectation defines its availability.
 .. sidebar:: Other sections
    
    * :ref:`Affectations<affectations-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -116,7 +115,7 @@ Project affectation defines its availability.
 
     \newpage
 
-.. index:: Resource (Function & Cost)
+.. index:: ! Resource (Function & Cost definition)
 
 .. rubric:: Section: Function and cost
 
@@ -151,7 +150,7 @@ This section allows to define functions and cost of the resource.
 
 * Click on |buttonAdd| to create a new resource cost. 
 * Click on |buttonEdit| to update an existing resource cost.
-* Click on |buttonRemove| to delete the resource cost.
+* Click on |buttonIconDelete| to delete the resource cost.
 
 .. figure:: /images/GUI/BOX_ResourceCost.png
    :alt: Resource cost dialog box
@@ -224,9 +223,6 @@ The team is a group of resources gathered on any criteria.
 * To filter resource data in work, cost and planning reports.
 * To set attachment, note and document visibility to the team.
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -260,8 +256,8 @@ The team is a group of resources gathered on any criteria.
 
     \newpage
 
-.. index:: ! Calendar
-.. index:: Resource (Calendar)  
+.. index:: ! Calendar definition
+.. index:: ! Resource (Calendar definition)  
 
 .. _calendar:
 
@@ -311,9 +307,6 @@ This tool allows to define calendars.
 
     \newpage
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

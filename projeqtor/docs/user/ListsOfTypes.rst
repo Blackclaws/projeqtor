@@ -51,7 +51,6 @@ Project type is a way to define common behavior on group of projects.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -100,7 +99,6 @@ Ticket type is a way to define common behavior on group of tickets.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -143,7 +141,6 @@ Activity type is a way to define common behavior on group of activities.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -189,7 +186,6 @@ Milestone type is a way to define common behavior on group of milestones.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -233,7 +229,6 @@ Quotation type is a way to define the way the concerned activity should be bille
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -279,7 +274,6 @@ Order type is a way to define the way the activity references by the order will 
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -323,7 +317,6 @@ Individual expense type is a way to define common behavior on group of individua
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -366,7 +359,6 @@ Project expense type is a way to define common behavior on group of project expe
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -406,9 +398,6 @@ Expenses details types
 
 Expense detail type is a way to define common behavior and calculation mode on group of expense details.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -472,7 +461,6 @@ Bill type is a way to define common behavior on group of bills.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -513,7 +501,6 @@ Payment type is a way to define common behavior on group of payments.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -558,7 +545,6 @@ Risk type is a way to define common behavior on group of risks.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -602,7 +588,6 @@ Opportunity type is a way to define common behavior on group of opportunities.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -649,7 +634,6 @@ Action type is a way to define common behavior on group of actions.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -692,7 +676,6 @@ Issue type is a way to define common behavior on group of issues.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -740,7 +723,6 @@ Meeting type is a way to define common behavior on group of meetings.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -784,7 +766,6 @@ Decision type is a way to define common behavior on group of decisions.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -831,7 +812,6 @@ Question type is a way to define common behavior on group of questions.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -874,7 +854,6 @@ Message type is a way to define common behavior on group of messages (appearing 
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -918,7 +897,6 @@ Document type is a way to define common behavior on group of documents.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -968,10 +946,6 @@ Only three context types exist, corresponding to the three selectable fields.
 
    * No context type can be deleted.
 
-.. sidebar:: Other sections
-
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -1009,7 +983,6 @@ Requirement type is a way to define common behavior on group of requirements.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -1052,7 +1025,6 @@ Test case type is a way to define common behavior on group of test cases.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -1098,7 +1070,6 @@ Test session type is a way to define common behavior on group of test sessions.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -1141,7 +1112,6 @@ Customer type is a way to define different status of customers  (prospects or cl
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -1185,17 +1155,17 @@ Behavior section
    * Depending on the element type the following fields can be displayed.
 
 
-.. rubric:: :term:`Description` or Comments
+.. rubric:: Description or Comments
 
-* This field allows to define that description field to this element type is mandatory.  
+* This field allows to define that :term:`description` field to this element type is mandatory.  
 
-.. rubric:: :term:`Responsible`
+.. rubric:: Responsible
 
-* This field allows to define that responsible field to this element type is mandatory when the status to treatment of an item is handled.  
+* This field allows to define that :term:`responsible` field to this element type is mandatory when the status to treatment of an item is handled.  
 
-.. rubric:: :term:`Result`
+.. rubric:: Result
 
-* This field allows to define that result field to this element type is mandatory when the status to treatment of an item is done.  
+* This field allows to define that :term:`result` field to this element type is mandatory when the status to treatment of an item is done.  
 
  
 .. rubric:: Flag status

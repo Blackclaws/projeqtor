@@ -159,7 +159,7 @@ function drawTableFromObjectList($objectList) {
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
 				echo ($format=='longnumber')?' style="width: 100px;" ':' style="width: 50px;" ';
-				echo ' constraints="{places:\'0\'}" ';
+				//echo ' constraints="{places:\'0\'}" ';
 				echo ' class="input" ';
 				echo ' value="' .  $obj->parameterValue  . '" ';
 				echo ' >';

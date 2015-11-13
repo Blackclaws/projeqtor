@@ -23,7 +23,6 @@ A product is any element delivered by the project. For IT/IS projects, products 
    
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -83,7 +82,6 @@ For IT/IS projects, versions are generally applications versions.
 
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -140,7 +138,7 @@ Projects can be directly linked to version.
 
 * Click on |buttonAdd| to create a new link to project. 
 * Click on |buttonEdit| to update an existing link to project.
-* Click on |buttonRemove| to delete the corresponding link to project.
+* Click on |buttonIconDelete| to delete the corresponding link to project.
 
 
 .. figure:: /images/GUI/BOX_ProjectVersionLink.png
