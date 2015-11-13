@@ -35,7 +35,6 @@ Planned amount will help to have an overview of project total costs, even before
    * :ref:`Linked element<linkElement-section>`
    * :ref:`Attachments<attachment-section>`
    * :ref:`Notes<note-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -138,7 +137,6 @@ Planned amount will help to have an overview of project total costs, even before
    * :ref:`Linked element<linkElement-section>`
    * :ref:`Attachments<attachment-section>`
    * :ref:`Notes<note-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -250,7 +248,7 @@ It allows to enter detail on expense line.
  
 * Click on |buttonAdd| to add a detail line.
 * Click on |buttonEdit| to modify an existing detail line.
-* Click on |buttonRemove| to delete the detail line.
+* Click on |buttonIconDelete| to delete the detail line.
 
 
 .. figure:: /images/GUI/BOX_ExpenseDetail.png

@@ -87,7 +87,6 @@ For instance, bugs should be managed through tickets :
    * :ref:`Linked element<linkElement-section>`
    * :ref:`Attachments<attachment-section>`
    * :ref:`Notes<note-section>`
-   * :ref:`Change history<chg-history-section>`
    
 
 .. rubric:: Section: Description
@@ -392,7 +391,7 @@ For version fields, it possible to set multi version of product.
 
 
 * Click on |buttonAdd| to add a other version. 
-* Click on |buttonRemove| to delete a version.
+* Click on |buttonIconDelete| to delete a version.
 
 .. figure:: /images/GUI/BOX_AddOtherVersion.png
    :alt: Add other version dialog box

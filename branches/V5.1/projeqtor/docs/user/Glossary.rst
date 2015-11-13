@@ -61,7 +61,7 @@ Glossary
 
     * Determines the element of origin.
     * The origin is used to keep track of events (ex.: order from quote, action from meeting).
-    * More detail, see : :ref:`gui-origin-field-label`.
+    * More detail, see : :ref:`Origin field<origin-field>`.
 
    Status
 

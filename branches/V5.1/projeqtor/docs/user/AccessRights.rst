@@ -53,10 +53,6 @@ Each user is linked to a profile to define the data he can see and possibly mana
     \newpage
 
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -123,9 +119,6 @@ Each access is defined as scope of visible and updatable elements, that can be :
 
 -----------------------
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -299,6 +292,8 @@ This section allows to:
 .. rubric:: Section: Assignment management
 
 * This section defines the visibility and the possibility to edit assignments (on activities or else).
+
+.. index:: ! Checklist (Access rights)
 
 .. rubric:: Section: Display specific buttons
 

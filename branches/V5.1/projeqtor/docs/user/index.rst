@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
 Welcome
 =======
 
@@ -74,6 +75,7 @@ as all screens have the same frames and sections always have simular structure a
    :maxdepth: 1
 
    Gui
+   CommonSections
    UserParameter
 
 Planning elements

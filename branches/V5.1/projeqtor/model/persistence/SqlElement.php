@@ -176,6 +176,7 @@ abstract class SqlElement {
     "Project" =>            array("Action"=>"control",
                                   "Activity"=>"confirm",
                                   "Affectation"=>"confirm",
+                                  "Assignment"=>"cascade",
                                   "Attachment"=>"cascade",
                                   "Bill"=>"control",
                                   "Command"=>"control",

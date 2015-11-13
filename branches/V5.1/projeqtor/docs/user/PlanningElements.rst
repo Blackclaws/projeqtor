@@ -42,7 +42,6 @@ Project
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -161,7 +160,6 @@ For instance, you can manage as activities :
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -257,7 +255,6 @@ Opposite to Activities, Milestones have no duration and no work.
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -386,7 +383,7 @@ Click on |buttonAdd| to assign a new resource. An "Assignment" pop up will be di
 
 Click on |buttonEdit| to modify the assignment.
 
-Click on |buttonRemove| to delete the assignment.
+Click on |buttonIconDelete| to delete the assignment.
 
 .. note::
 
@@ -668,7 +665,7 @@ Select the type of element to add as predecessor or successor.
 
 Click on |buttonEdit| to edit the dependency.
 
-Click on |buttonRemove| to delete the corresponding dependency.
+Click on |buttonIconDelete| to delete the corresponding dependency.
 
 .. figure:: /images/GUI/BOX_PredecessorSuccessorElement.png
    :alt: Predecessor or Successor element dialog box
@@ -687,7 +684,7 @@ Click on |buttonRemove| to delete the corresponding dependency.
 
    * Click on |buttonIconSearch| to show element detail.
    * Depends on whether the element is selected or not a pop up is displayed.
-   * Detail about pop up, see :ref:`gui-combo-list-fields-label`
+   * Detail about pop up, see :ref:`Combo list fields<combo-list-fields>`
 
 .. topic:: Multi-value selection
 

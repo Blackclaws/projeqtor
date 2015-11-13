@@ -7,7 +7,7 @@
 
 .. title:: Users
 
-.. index:: ! User (Screen)
+.. index:: ! User (Definition)
 
 .. _user:
 
@@ -62,7 +62,6 @@ The user is a person that will be able to connect to the application.
 .. sidebar:: Other sections
 
    * :ref:`Affectations<affectations-section>`   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 

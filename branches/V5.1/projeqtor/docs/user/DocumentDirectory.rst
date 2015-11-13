@@ -2,30 +2,25 @@
 
     \newpage
 
-.. title:: Document directories
+.. title:: Document directories management
 
-.. index:: ! Document directory 
+.. index:: ! Document (Directories management) 
 
 .. _document-directory:
 
 Document directories
 --------------------
 
-The document directories define a structure for document storage.
+Document directories management allows to define a structure for document storage.
 
-The document files (defined on document version) will be stored in the folder defined as “location” in the “document root” place.
-
-“Document root” is defined in :ref:`Global parameters <document-section>` screen. 
-
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
+* The files of document will be stored in the folder defined by the parameters  «Document root» and «Location».
+* «Document root» is defined in :ref:`Global parameters <document-section>` screen. 
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields 
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
@@ -56,16 +51,16 @@ The document files (defined on document version) will be stored in the folder de
 
 .. topic:: Field: Location
 
-   * Location is automatically defined as “Parent directory” / “Name”.
+   * Location is automatically defined as «Parent directory» / «Name».
 
 .. topic:: Field: Project
 
-   * New document in this directory will have default project positioned to this value.
+   * This project will be the default to new stored documents in this directory.
 
 .. topic:: Field: Product
 
-   * New document in this directory will have default product positioned to this value.
+   * This product will be the default to new stored documents in this directory.
 
 .. topic:: Field: Default type
 
-   * New document in this directory will have default document type positioned to this value.
+   * This document  type  will be the default to new stored documents in this directory.

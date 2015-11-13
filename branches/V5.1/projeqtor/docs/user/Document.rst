@@ -84,7 +84,6 @@ The file document will be stored in the tool as versions.
 
    * :ref:`Linked element<linkElement-section>`
    * :ref:`Notes<note-section>`
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -164,7 +163,7 @@ This section allows to manage version list of document.
 
 * Click on |buttonAdd| to add a new version. 
 * Click on |buttonEdit| to modifiy a version.
-* Click on |buttonRemove| to delete a version.
+* Click on |buttonIconDelete| to delete a version.
 * Click on |iconDownload| to download file at this version.
 
 .. note:: Name of download file
@@ -246,7 +245,6 @@ This section allows to manage approver list of a document.
    * - Status
      - Status of the approval of the last version of document.
 
-
 **Button: Approve now**
 
   * This button appears in approver list.
@@ -260,7 +258,7 @@ This section allows to manage approver list of a document.
 .. rubric:: Approver list management
 
 * Click on |buttonAdd| to add a new approver. 
-* Click on |buttonRemove| to delete the approver.
+* Click on |buttonIconDelete| to delete the approver.
 
 
 

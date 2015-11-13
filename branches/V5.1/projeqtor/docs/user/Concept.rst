@@ -363,6 +363,10 @@ Project affectation is used to:
 * Defines resource availability.
 * Defines the period of access to project data by the user. 
 
+.. note::
+
+   * The :ref:`affectation` screen allows to manage overall project affectations. 
+
 The following sections describe project affectation, performed for user, resource or contact.
 
 User affectation
@@ -370,7 +374,7 @@ User affectation
 
 Project affectation gives data visibility on a project.
 
-Project affectation can be defined in the :ref:`user` and :ref:`affectation` screens.
+Project affectation can be defined in the :ref:`user` screen.
 
 .. rubric:: Profile selection
 
@@ -406,7 +410,7 @@ Project affectation allows to define the resource availability on project.
 
 A resource may be affected to projects at a specified rate for a period.
 
-Project affectation can be defined in :ref:`project`, :ref:`resource` and :ref:`affectation` screens.
+Project affectation can be defined in :ref:`project` and :ref:`resource` screens.
 
 It is also possible to affect a team to a project in :ref:`team` screens.
 
@@ -448,7 +452,7 @@ Contact affectation
 
 A contact affected to a project can be defined as :term:`requestor`.
 
-Project affectation can be defined in :ref:`project`, :ref:`contact` and :ref:`affectation` screens.
+Project affectation can be defined in :ref:`project` and :ref:`contact` screens.
 
 
 
@@ -618,7 +622,7 @@ It is a visual identification associated with the name.
 .. rubric:: Photo management
 
 * Click on |buttonAdd| or photo frame to add an image file. To complete instruction see: :ref:`Attachment file<attachment-file>`.
-* Click on |buttonRemove| to remove  the image.
+* Click on |buttonIconDelete| to remove  the image.
 * Click on image to display the photo.
 
 .. note::

@@ -109,8 +109,6 @@ Global parameters screen allows configuration of application settings.
 
    * Moving the mouse over the caption of a parameter will display a tooltip with more description about the parameter.
 
-.. index:: ! Daily work hours (Parameters)
-
 .. _daily-work-hours-section:
 
 .. rubric:: Section: Daily work hours
@@ -365,9 +363,14 @@ Parameters for the “Cron” process.
 
 ------------------------
 
+.. index:: ! Email (Parameters)
+
 .. rubric:: Section: Emailing
 
 Parameters to allow the application to send emails.
+
+
+.. index:: ! Email (Formatted message)
 
 .. _mail-titles:
 

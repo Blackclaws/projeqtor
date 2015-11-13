@@ -22,10 +22,6 @@ A workflow defines the possibility to go from one status to another one, and who
 
 Once defined, a workflow can be linked to any type of any item. 
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -99,7 +95,7 @@ Once defined, a workflow can be linked to any type of any item.
 
     \newpage
 
-.. index:: Email (Event)
+.. index:: ! Email (Event)
 
 .. _mail-on-event:
 
@@ -115,10 +111,6 @@ Events are defined on an element and element type.
 
    * The mail message is formatted to display item information.
    * Mail titles is defined in :ref:`Global parameters<mail-titles>` screen.
-
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -173,10 +165,6 @@ It is possible to define a default delay for tickets, for each ticket type and e
 
    * On creation, the due date will automatically be calculated as creation date + delay.
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -216,9 +204,9 @@ It is possible to define a default delay for tickets, for each ticket type and e
 
     \newpage
 
-.. index:: ! Indicator
-.. index:: Email (Event)
-.. index:: ! Alert (Event)
+.. index:: ! Indicator (Definition)
+.. index:: ! Email (Indicator)
+.. index:: ! Alert (Indicator)
 
 .. _indicator:
 
@@ -232,10 +220,6 @@ Depending on type of elements the type of indicators that can be selected in lis
 Some indicators are based on delay (due date), some on work, some on cost.
 
 For each indicator a warning value and an alert value can be defined.
-
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
 
 .. rubric:: Section: Description
 
@@ -293,10 +277,6 @@ When some predefined notes are defined for an element and / or type a list will 
 
 Selecting an item in the list will automatically fill in the note text field.
 
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -341,14 +321,9 @@ Selecting an item in the list will automatically fill in the note text field.
 Checklists
 ----------
 
-It is possible to define checklists for each type of element.
+It is possible to define checklist forms for each type of element.
 
-When a checklist definition exists for a given element, a checklist section will appear on the element.
-
-
-.. sidebar:: Other sections
-   
-   * :ref:`Change history<chg-history-section>`
+When a checklist form exists for a given element, the checklist is available for the element.
 
 .. rubric:: Section: Description
 
@@ -375,7 +350,7 @@ A checklist is built from checklist lines.
 
 * Click on |buttonAdd|  to create a new checklist line. 
 * Click on |buttonEdit| to update an existing checklist line.
-* Click on |buttonRemove| to delete the corresponding checklist line.
+* Click on |buttonIconDelete| to delete the corresponding checklist line.
 
 .. figure:: /images/GUI/BOX_ChoicesForChecklistLines.png
    :alt: Choices for the checklist lines dialog box
@@ -419,8 +394,8 @@ A checklist is built from checklist lines.
 
     \newpage
 
-.. index:: ! Email - Receivers
-.. index:: ! Alert - Receivers
+.. index:: ! Email (Receivers)
+.. index:: ! Alert (Receivers)
 
 .. _receivers-list:
 
