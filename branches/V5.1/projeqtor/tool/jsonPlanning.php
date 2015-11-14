@@ -284,12 +284,13 @@
   	        	if (! isset($arrayResource[$res->id])) {
     	        	$display=$res->$displayResource;
     	        	if ($displayResource=='initials' and ! $display) {
-    	        	  $words=explode(' ',$res->name);
+    	        	  //$encoding=mb_detect_encoding($res->name, 'ISO-8859-1, UTF-8');
+    	        	  //$display=$encoding;
+    	        	  $words=mb_split(' ',$res->name);
     	        	  $display='';
     	        	  foreach ($words as $word) {
-    	        	    $display.=strtoupper(substr($word,0,1));
+    	        	    $display.=(mb_substr($word,0,1,'UTF-8'));
     	        	  }
-    	        	  //$display=
     	        	}
     	        	if ($display)	{
     	        	  $arrayResource[$res->id]=$display;
