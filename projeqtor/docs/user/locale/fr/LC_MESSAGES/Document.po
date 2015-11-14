@@ -1,0 +1,614 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Document.rst:12 ../../Document.rst:9
+msgid "Document"
+msgstr ""
+
+#: ../../Document.rst:14
+msgid ""
+"A document is a referential element that give description to a product or a "
+"project."
+msgstr ""
+
+#: ../../Document.rst:16
+msgid "A global definition of a document refers to any kind of information."
+msgstr ""
+
+#: ../../Document.rst:18
+msgid ""
+"This means that a document can be a file (text document, image, …) or any "
+"non digital item (paper mail, fax, …), or non file digital item (email, …)."
+msgstr ""
+
+#: ../../Document.rst:20
+msgid ""
+"In ProjeQtOr, documents will reference files item, that will be stored in "
+"the tool as versions."
+msgstr ""
+
+#: ../../Document.rst:22
+msgid ""
+"So a document will always refer to a directory where the file is stored."
+msgstr ""
+
+#: ../../Document.rst:24
+msgid "The Document item describes general information about the document."
+msgstr ""
+
+#: ../../Document.rst:26
+msgid "The file is not stored at this level."
+msgstr ""
+
+#: ../../Document.rst:28
+msgid "A document can evolve and a new file is generated at each evolution."
+msgstr ""
+
+#: ../../Document.rst:30
+msgid "So files are stored at document version level."
+msgstr ""
+
+#: ../../Document.rst:37
+msgid "Versioning type"
+msgstr ""
+
+#: ../../Document.rst:38
+msgid "A document can evolve following 4 ways defined as versioning type :"
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Evolutive"
+msgstr ""
+
+#: ../../Document.rst:42
+msgid "Version is a standard Vx.y format."
+msgstr ""
+
+#: ../../Document.rst:43
+msgid "It is the most commonly used versioning type."
+msgstr ""
+
+#: ../../Document.rst:44
+msgid "Major updates increase x and reset y to zero."
+msgstr ""
+
+#: ../../Document.rst:45
+msgid "Minor updates increase y."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Chronological"
+msgstr ""
+
+#: ../../Document.rst:49
+msgid "Version is a date."
+msgstr ""
+
+#: ../../Document.rst:50
+msgid "This versioning type is commonly used for periodical documents"
+msgstr ""
+
+#: ../../Document.rst:51
+msgid "For instance : weekly boards."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Sequential"
+msgstr ""
+
+#: ../../Document.rst:55
+msgid "Version is a sequential number."
+msgstr ""
+
+#: ../../Document.rst:56
+msgid "This versioning type is commonly used for recurring documents"
+msgstr ""
+
+#: ../../Document.rst:57
+msgid "For instance : Meeting reviews."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Custom"
+msgstr ""
+
+#: ../../Document.rst:61
+msgid "Version is manually set."
+msgstr ""
+
+#: ../../Document.rst:62
+msgid ""
+"This versioning type is commonly used for external documents, when version "
+"is not managed by the tool, or when the format cannot fit any other "
+"versioning type."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Document.rst:66
+msgid ":ref:`gui-LinkElement-section-label`"
+msgstr ""
+
+#: ../../Document.rst:67
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../Document.rst:68
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Document.rst:71
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Document.rst:78 ../../Document.rst:134 ../../Document.rst:174
+#: ../../Document.rst:227 ../../Document.rst:279
+msgid "Field"
+msgstr ""
+
+#: ../../Document.rst:79 ../../Document.rst:135 ../../Document.rst:175
+#: ../../Document.rst:190 ../../Document.rst:228 ../../Document.rst:280
+msgid "Description"
+msgstr ""
+
+#: ../../Document.rst:80
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Document.rst:81
+msgid "Unique Id for the document."
+msgstr ""
+
+#: ../../Document.rst:82
+msgid "**Name**"
+msgstr ""
+
+#: ../../Document.rst:83
+msgid "Short description of the document."
+msgstr ""
+
+#: ../../Document.rst:84
+msgid "**Type**"
+msgstr ""
+
+#: ../../Document.rst:85
+msgid "Type of document."
+msgstr ""
+
+#: ../../Document.rst:86
+msgid "Project"
+msgstr ""
+
+#: ../../Document.rst:87
+msgid "The project concerned by the document."
+msgstr ""
+
+#: ../../Document.rst:88
+msgid "Product"
+msgstr ""
+
+#: ../../Document.rst:89
+msgid "The product concerned by the document."
+msgstr ""
+
+#: ../../Document.rst:90
+msgid "**Directory**"
+msgstr ""
+
+#: ../../Document.rst:91
+msgid "Place where the document is stored  to organize document structure."
+msgstr ""
+
+#: ../../Document.rst:92
+msgid "Document reference"
+msgstr ""
+
+#: ../../Document.rst:93
+msgid "Document reference name."
+msgstr ""
+
+#: ../../Document.rst:94
+msgid ":term:`External reference`"
+msgstr ""
+
+#: ../../Document.rst:95
+msgid "External reference of the document."
+msgstr ""
+
+#: ../../Document.rst:96
+msgid "Author"
+msgstr ""
+
+#: ../../Document.rst:97
+msgid "User or Resource or Contact who created the document."
+msgstr ""
+
+#: ../../Document.rst:98
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Document.rst:99
+msgid "Flag to indicate that document is archived."
+msgstr ""
+
+#: ../../Document.rst:100
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Document.rst:101
+msgid "Flag to indicate that document is cancelled."
+msgstr ""
+
+#: ../../Document.rst:103 ../../Document.rst:143
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Document.rst:107
+msgid ""
+"A document must be linked either to a project (for project documentation) or"
+" to a product (for product document)."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Directory"
+msgstr ""
+
+#: ../../Document.rst:111
+msgid ""
+"The directory also defines the place where files will be physically stored."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Document reference"
+msgstr ""
+
+#: ../../Document.rst:115
+msgid ""
+"Document reference name is calculated from format defined in the Global "
+"Parameters screen"
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Author"
+msgstr ""
+
+#: ../../Document.rst:119
+msgid "Positioned by default as the connected user."
+msgstr ""
+
+#: ../../Document.rst:120
+msgid "Can be changed (for instance if the author is not  the current user)."
+msgstr ""
+
+#: ../../Document.rst:127
+msgid "Section: Versions"
+msgstr ""
+
+#: ../../Document.rst:136
+msgid "**Versioning type**"
+msgstr ""
+
+#: ../../Document.rst:137
+msgid "Type of versioning for the document."
+msgstr ""
+
+#: ../../Document.rst:138 ../../Document.rst:178
+msgid "Last version"
+msgstr ""
+
+#: ../../Document.rst:139
+msgid "Caption of the last version of the document."
+msgstr ""
+
+#: ../../Document.rst:140
+msgid ":term:`Status`"
+msgstr ""
+
+#: ../../Document.rst:141
+msgid "Status of the last version of the document."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Versioning type"
+msgstr ""
+
+#: ../../Document.rst:148
+msgid "This will impact the version number format for versions."
+msgstr ""
+
+#: ../../Document.rst:151
+msgid "Version management"
+msgstr ""
+
+#: ../../Document.rst:152
+msgid ""
+"Click |buttonAdd| on to add a new version. A “Document version” pop up will "
+"be displayed."
+msgstr ""
+
+#: ../../Document.rst:154
+msgid "Click on |buttonEdit| to modifiy the document version."
+msgstr ""
+
+#: ../../Document.rst:156
+msgid "Click on |buttonRemove| to delete the version."
+msgstr ""
+
+#: ../../Document.rst:158
+msgid "Click on |iconDownload| to download file at this version."
+msgstr ""
+
+#: ../../Document.rst:165
+msgid "Document version Popup"
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Document version fields"
+msgstr ""
+
+#: ../../Document.rst:176
+msgid "File"
+msgstr ""
+
+#: ../../Document.rst:177
+msgid "Locale file that will be uploaded as new version."
+msgstr ""
+
+#: ../../Document.rst:179
+msgid "Caption of the last existing version."
+msgstr ""
+
+#: ../../Document.rst:180
+msgid "Update"
+msgstr ""
+
+#: ../../Document.rst:181
+msgid "Importance of the update concerned by the new version."
+msgstr ""
+
+#: ../../Document.rst:182
+msgid "New version"
+msgstr ""
+
+#: ../../Document.rst:183
+msgid "New caption for the created version."
+msgstr ""
+
+#: ../../Document.rst:184
+msgid "Date"
+msgstr ""
+
+#: ../../Document.rst:185
+msgid "Date of the version."
+msgstr ""
+
+#: ../../Document.rst:186 ../../Document.rst:233
+msgid "Status"
+msgstr ""
+
+#: ../../Document.rst:187
+msgid "Current status of the version."
+msgstr ""
+
+#: ../../Document.rst:188
+msgid "Is a reference"
+msgstr ""
+
+#: ../../Document.rst:189
+msgid "Flag to set that this version is the new reference of the document."
+msgstr ""
+
+#: ../../Document.rst:191
+msgid "Description of the version."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Update"
+msgstr ""
+
+#: ../../Document.rst:195
+msgid "A version can have a draft status, that may be removed afterwards."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Is a reference"
+msgstr ""
+
+#: ../../Document.rst:199
+msgid "Should be checked when version is validated."
+msgstr ""
+
+#: ../../Document.rst:200
+msgid "Only one version can be the reference for a document."
+msgstr ""
+
+#: ../../Document.rst:201
+msgid "Reference version is displayed in bold format in the versions list."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Field: Description"
+msgstr ""
+
+#: ../../Document.rst:205
+msgid "May be used to describe updates brought by the version."
+msgstr ""
+
+#: ../../Document.rst:208
+msgid "Section: Approvers"
+msgstr ""
+
+#: ../../Document.rst:209
+msgid "It is possible to define approvers of a document."
+msgstr ""
+
+#: ../../Document.rst:211
+msgid ""
+"When creating an approver in the list, the approver is also automatically "
+"added to the latest version of the document."
+msgstr ""
+
+#: ../../Document.rst:213
+msgid ""
+"When adding a version to the document, the approvers are automatically added"
+" to the version."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Approval of documents"
+msgstr ""
+
+#: ../../Document.rst:217
+msgid ""
+"When an approver looks at the document, he can see a button \"approve now\" "
+"in the approver list."
+msgstr ""
+
+#: ../../Document.rst:218
+msgid ""
+"Just click on the button to approve the latest version of the document."
+msgstr ""
+
+#: ../../Document.rst:219
+msgid ""
+"When all approvers have approved the document version, it is considered as "
+"approved and then appears with a check in the list of versions."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Approvers section fields"
+msgstr ""
+
+#: ../../Document.rst:229
+msgid "Id"
+msgstr ""
+
+#: ../../Document.rst:230
+msgid "Id of the approver."
+msgstr ""
+
+#: ../../Document.rst:231
+msgid "Name"
+msgstr ""
+
+#: ../../Document.rst:232
+msgid "Name of the approver."
+msgstr ""
+
+#: ../../Document.rst:234
+msgid "Status of the approval of the last version of document."
+msgstr ""
+
+#: ../../Document.rst:238
+msgid "Select an approver"
+msgstr ""
+
+#: ../../Document.rst:239
+msgid ""
+"Click |buttonAdd| on to add a new approver. A “Select an approver” pop up "
+"will be displayed."
+msgstr ""
+
+#: ../../Document.rst:241
+msgid "Click on |buttonRemove| to delete the approver."
+msgstr ""
+
+#: ../../Document.rst:248 ../../Document.rst:0
+msgid "Select an approver Popup"
+msgstr ""
+
+#: ../../Document.rst:252
+msgid "Click on |buttonIconSearch| to show element detail."
+msgstr ""
+
+#: ../../Document.rst:253
+msgid ""
+"Depends on whether the element is selected or not a different pop up is "
+"displayed."
+msgstr ""
+
+#: ../../Document.rst:254
+msgid "Detail about pop up, see :ref:`gui-combo-list-fields-label`"
+msgstr ""
+
+#: ../../Document.rst:257
+msgid "Button: Send a reminder email to the approvers"
+msgstr ""
+
+#: ../../Document.rst:258
+msgid ""
+"This button allows to send a reminder email to all the approvers who have "
+"not yet approved the document."
+msgstr ""
+
+#: ../../Document.rst:262
+msgid "Section: Lock"
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Button: lock/unlock this document"
+msgstr ""
+
+#: ../../Document.rst:265
+msgid ""
+"Button to lock or unlock the document to preserve it from being editing, or "
+"new version added."
+msgstr ""
+
+#: ../../Document.rst:266
+msgid "When document is locked it cannot be modified."
+msgstr ""
+
+#: ../../Document.rst:267
+msgid ""
+"Only the user who locked the document, or a user with privilege to unlock "
+"any document, can unlock it."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Document locked"
+msgstr ""
+
+#: ../../Document.rst:271
+msgid "When document is locked the next fields are set."
+msgstr ""
+
+#: ../../Document.rst:0
+msgid "Fields when document is locked"
+msgstr ""
+
+#: ../../Document.rst:281
+msgid "Locked"
+msgstr ""
+
+#: ../../Document.rst:282
+msgid "Flag to indicated that the document is locked."
+msgstr ""
+
+#: ../../Document.rst:283
+msgid "Locked by"
+msgstr ""
+
+#: ../../Document.rst:284
+msgid "User who locked the document."
+msgstr ""
+
+#: ../../Document.rst:285
+msgid "Locked since"
+msgstr ""
+
+#: ../../Document.rst:286
+msgid "Date and time when document was locked."
+msgstr ""
