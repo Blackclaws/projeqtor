@@ -209,7 +209,7 @@ class ImputationLine {
 				  $ass->_topRefType=$acticityAss->refType;
 				  $ass->_topRefId=$acticityAss->refId;
 				  $ass->_idWorkElement=$work->idWorkElement;
-				  $id=$work->refType.'#'.$work->refId;
+				  $id=$work->refType.'#'.$work->refId.'#'.$work->idWorkElement;
 				  $assList[$id]=$ass;				  
 				}
 			} else { // Work->idAssignment not set (for tickets not linked to Activities for instance)
