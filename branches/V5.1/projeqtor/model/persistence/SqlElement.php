@@ -269,7 +269,8 @@ abstract class SqlElement {
                                   "StatusMail"=>"controlStrict",
                                   "TestCase"=>"controlStrict",
                                   "TestSession"=>"controlStrict",
-                                  "Ticket"=>"controlStrict"),
+                                  "Ticket"=>"controlStrict",
+                                  "WorkflowStatus"=>"cascade"),
     "Team" =>               array("Resource"=>"control"),
     "Term" =>               array("Dependency"=>"cascade"),
     "TestCase" =>           array("TestCase"=>"control",
@@ -1073,6 +1074,11 @@ abstract class SqlElement {
 						$crit=null;
 						$where="(ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($this->id) .")"
 						. " or (ref2Type='" . $class . "' and ref2Id=" . Sql::fmtId($this->id) .")";
+					}
+					if ($object=="WorkflowStatus" and $class=='Status') {
+					  $crit=null;
+					  $where="idStatusFrom=" . Sql::fmtId($this->id) 
+					     . " or idStatusTo=" . Sql::fmtId($this->id);
 					}
 					$list=$obj->getSqlElementsFromCriteria($crit,false,$where);
 					foreach ($list as $subObj) {
