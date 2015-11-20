@@ -34,8 +34,8 @@
   $dest="";
   $typeSendMail="";
   
-  if (array_key_exists('className',$_REQUEST)) {
-    $typeSendMail=$_REQUEST['className'];
+  if (array_key_exists('objectClassName',$_REQUEST)) {
+    $typeSendMail=$_REQUEST['objectClassName'];
   }
 
   $result="";
