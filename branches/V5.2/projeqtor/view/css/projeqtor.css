@@ -3134,3 +3134,23 @@ color : #404952;
 	/*background: #FFFFDD !important;*/
 	border-left: 3px solid #FF0000;
 }
+/* CKE */
+.cke_toolgroup {
+	margin: 0px 4px 4px 0px !important;
+}
+.cke_top {
+	padding: 4px 0px 0px 4px ! important;
+}
+.cke_combo_text {
+	padding-left: 5px !important;
+	width: auto !important;
+}
+a.cke_combo_button {
+	margin: 0px 4px 4px 0px !important;
+}
+.cke_editable {
+	margin: 0px !important;
+} 
+.cke_dialog_ui_input_file {
+	height: auto !important;
+	padding-top: 3px !important;
