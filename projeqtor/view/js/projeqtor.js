@@ -521,6 +521,7 @@ function cleanContent(destination) {
  * @return void
  */
 var formDivPosition=null; // to replace scrolling of detail after save.
+var editorArray=new Array();
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction) {
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
@@ -534,8 +535,8 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   }
   if (page.substr(0,16)=='objectDetail.php') {
     // if item = current => refresh without fading
-    if (dojo.byId('objectClass') && dojo.byId('objectId') && dojo.byId('className') && dojo.byId('id')) {
-      if (dojo.byId('objectClass').value==dojo.byId('className').value 
+    if (dojo.byId('objectClassName') && dojo.byId('objectId') && dojo.byId('objectClassName') && dojo.byId('id')) {
+      if (dojo.byId('objectClass').value==dojo.byId('objectClassName').value 
           && dojo.byId('objectId').value==dojo.byId('id').value) {
         fadingMode=false;
       }     
@@ -595,8 +596,39 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           //dijit.byId('planResultDiv').set('content',"");
         }
       }
+      // Must destroy existing instances of CKEDITOR before refreshing the page.
+      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
+        editorArray=new Array();
+        for(name in CKEDITOR.instances) {
+          CKEDITOR.instances[name].removeAllListeners();
+          CKEDITOR.instances[name].destroy(false);
+        }
+      }
       contentWidget.set('content',data);
       checkDestination(destination);
+      // Create instances of CKEDITOR
+      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
+        /*editorArray=new Array();
+        for(name in CKEDITOR.instances) {
+          CKEDITOR.instances[name].removeAllListeners();
+          CKEDITOR.instances[name].destroy(false);
+        }*/
+        var numEditor=1;
+        while (dojo.byId('ckeditor'+numEditor)) {
+          var editorName=dojo.byId('ckeditor'+numEditor).value;
+          editorArray[numEditor]=CKEDITOR.replace( editorName, {
+            customConfig: 'projeqtorConfig.js',
+            filebrowserUploadUrl: '../tool/uploadImage.php'
+          } );
+          editorArray[numEditor].on( 'change', function( evt ) {
+            evt.editor.updateElement();
+          });
+          editorArray[numEditor].on( 'key', function( evt ) {
+            onKeyDownCkEditorFunction(evt,this);
+          });
+          numEditor++;
+        }
+      }
       if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
         var section=destination.substr(dojo.byId('objectClass').value.length+1);
         if (dojo.byId(section+"SectionCount") && dojo.byId(section+"Badge")) {
@@ -1824,8 +1856,8 @@ function beforequit() {
  */
 function drawGantt() {
   // first, if detail is displayed, reload class
-  if (dojo.byId("objectClass") && !dojo.byId("objectClass").value && dojo.byId("className") && dojo.byId("className").value) {
-	  dojo.byId("objectClass").value=dojo.byId("className").value;
+  if (dojo.byId("objectClass") && !dojo.byId("objectClass").value && dojo.byId("objectClassName") && dojo.byId("objectClassName").value) {
+	  dojo.byId("objectClass").value=dojo.byId("objectClassName").value;
   } 
   if (dojo.byId("objectId") && ! dojo.byId("objectId").value && dijit.byId("id") && dijit.byId("id").get("value")) {
 	  dojo.byId("objectId").value=dijit.byId("id").get("value");
@@ -2866,6 +2898,22 @@ function onKeyDownFunction(event, field, editorFld) {
     } else if ( isEditingKey(event)) {
       formChanged();
     }
+  }
+}
+function onKeyDownCkEditorFunction(event,editor) {
+  var editorWidth=editor.document.$.body.offsetWidth;
+  var screenWidth=top.document.body.getBoundingClientRect().width;
+  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  if (event.data.keyCode==CKEDITOR.CTRL+83) { // CTRL + S
+    event.cancel();
+    if (fullScreenEditor) return;
+    if (top.dojo.isFF) {top.stopDef();}
+    top.setTimeout("top.onKeyDownFunctionEditorSave();",10);
+  } else if (event.data.keyCode == 112) { // On F1
+    event.cancel();
+    if (fullScreenEditor) return;
+    if (top.dojo.isFF) {top.stopDef();}
+    top.showHelp();
   }
 }
 function isEditingKey(evt) {
