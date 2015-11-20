@@ -34,10 +34,10 @@
  */
 require_once "../tool/projeqtor.php";
 // Get the object class from request
-if (! array_key_exists ( 'className', $_REQUEST )) {
-  throwError ( 'className parameter not found in REQUEST' );
+if (! array_key_exists ( 'objectClassName', $_REQUEST )) {
+  throwError ( 'objectClassName parameter not found in REQUEST' );
 }
-$className = $_REQUEST ['className'];
+$className = $_REQUEST ['objectClassName'];
 
 if ($className == "Workflow") {
   ini_set ( 'max_input_vars', 5000 );

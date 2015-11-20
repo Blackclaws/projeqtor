@@ -47,10 +47,10 @@ if (! is_object($obj)) {
 }
 
 // Get the object class from request
-if (! array_key_exists('className',$_REQUEST)) {
+if (! array_key_exists('objectClassName',$_REQUEST)) {
   throwError('className parameter not found in REQUEST');
 }
-$className=$_REQUEST['className'];
+$className=$_REQUEST['objectClassName'];
 
 // compare expected class with object class
 if ($className!=get_class($obj)) {

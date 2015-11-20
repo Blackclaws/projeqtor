@@ -104,7 +104,7 @@ class CommandMain extends SqlElement {
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="validatedEndDate" width="8%" formatter="dateFormatter" >${validatedEndDate}</th>
-  	<th field="untaxedAmount" formatter="workFormatter" width="5%" >${untaxedAmount}</th>
+  	<th field="untaxedAmount" formatter="costFormatter" width="7%" >${untaxedAmount}</th>
   	<th field="addUntaxedAmount" formatter="costFormatter" width="7%" >${addUntaxedAmount}</th>
   	<th field="totalUntaxedAmount" formatter="costFormatter" width="7%" >${totalUntaxedAmount}</th>
   	<th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
@@ -304,9 +304,9 @@ class CommandMain extends SqlElement {
   	$this->addFullAmount=$this->addUntaxedAmount*(1+$this->taxPct/100);
   	$this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
   	
-  	$this->validatedPricePerDayAmount=($this->validatedWork)?($this->totalUntaxedAmount/$this->validatedWork):0;
-  	$this->initialPricePerDayAmount=($this->initialWork)?($this->untaxedAmount/$this->initialWork):0;
-  	
+  	$this->validatedPricePerDayAmount=($this->validatedWork!=0)?($this->totalUntaxedAmount/$this->validatedWork):0;
+  	$this->initialPricePerDayAmount=($this->initialWork!=0)?($this->untaxedAmount/$this->initialWork):0;
+  	  	
   	$this->name=trim($this->name);
       
     $resultClass = parent::save();

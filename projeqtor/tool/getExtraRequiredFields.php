@@ -30,8 +30,8 @@
 require_once "../tool/projeqtor.php";
 
 $objectClass=null;
-if (isset($_REQUEST['className'])) {
-  $objectClass=$_REQUEST['className'];
+if (isset($_REQUEST['objectClassName'])) {
+  $objectClass=$_REQUEST['objectClassName'];
 }
 $objectId=null;
 if (isset($_REQUEST['id'])) {
