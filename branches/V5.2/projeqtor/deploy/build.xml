@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<project name="ProjeQtOr V5.1" default="buildQuick">
+<project name="ProjeQtOr V5.2" default="buildQuick">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V5.1.3" />
+  <property name="version"       value="V5.2.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="${drive}/www/projeqtorV5.1" />
+  <property name="src.dir"       value="${drive}/www/projeqtorV5.2" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -74,6 +74,7 @@
     <mkdir dir="${deploy.dir}/files/attach"/>
     <mkdir dir="${deploy.dir}/files/thumbs"/>
     <mkdir dir="${deploy.dir}/files/config"/>
+  	<mkdir dir="${deploy.dir}/files/images"/>
     <mkdir dir="${deploy.dir}/files/logs"/>
     <mkdir dir="${deploy.dir}/files/report"/>
     <mkdir dir="${deploy.dir}/files/cron"/>

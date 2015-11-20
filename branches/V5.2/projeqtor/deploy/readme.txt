@@ -40,6 +40,8 @@ Set-up :
   
 Configuration : 
   - At first run, configuration screen will be displayed.
+  - Default parameters may work for a test instance. 
+  - For MySql, default user is 'root', default password is 'mysql' but may also be '' (blank) on some xAMP stacks. 
   - To run again configuration screen, just delete "/tool/parametersLocation.php" file.
   - On first connection, database will be automatically updated.
   - login : admin/admin
