@@ -660,6 +660,9 @@ function saveDetailItem() {
     showError(i18n("errorSubmitForm", new Array(page, destination, formName)));
     return;
   }
+  for(name in frames['comboDetailFrame'].CKEDITOR.instances) {
+    frames['comboDetailFrame'].CKEDITOR.instances[name].updateElement();
+  }
   // validate form Data
   if (formVar.validate()) {
     showWait();
