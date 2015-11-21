@@ -992,6 +992,7 @@ errorMandatoryValidatedStartDate: "Підтвердження (validated) дат
 errorMessage: "Сталася помилка на ${1} в ${2}",
 errorMessageCopy: "${1} помилка(и) сталися під час копіювання",
 errorNoFile: "Нема файлів для завантажень",
+errorNotAnImage: "[This file is not a valid image.]",
 errorNotFoundFile: "файл імпорту не знайдено",
 errorObjectId: "Помилка на кнопку 'Створити': objectId не 'вузол'",
 errorRegisterGlobals: "'register_globals' мусить бути вимкнений (встановити FALSE). <br/>Оновіть файл php.ini.",
