@@ -992,6 +992,7 @@ errorMandatoryValidatedStartDate: "Утверждение даты начала 
 errorMessage: "Произошла ошибка ${1} в ${2}",
 errorMessageCopy: "${1} ошибка(ок) произошла(о0 во время копирования",
 errorNoFile: "Нет файлов для загрузки",
+errorNotAnImage: "[This file is not a valid image.]",
 errorNotFoundFile: "Файл импорта не найден",
 errorObjectId: "Ошибка на новые кнопки;objectId не является узлом",
 errorRegisterGlobals: "register_globals  должен быть отключен (значение false). <br/>Обновите ваш Php.ini file.",
