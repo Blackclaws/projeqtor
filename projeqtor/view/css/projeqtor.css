@@ -3154,3 +3154,10 @@ a.cke_combo_button {
 .cke_dialog_ui_input_file {
 	height: auto !important;
 	padding-top: 3px !important;
+}
+p {
+ font-size: 1em;
+ margin-top: 0 !important;
+ margin-bottom: 0 !important;
+ line-height: normal !important;
+}

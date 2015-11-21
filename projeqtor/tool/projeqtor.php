@@ -2696,5 +2696,10 @@ function is_session_started() {
   return FALSE;
 }
  
+function getEditorType() {
+  // Todo : use parameter (user or global)
+  // Default should be CK ?
+  return "CK";
+}
 //
 ?>

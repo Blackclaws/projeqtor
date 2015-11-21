@@ -349,7 +349,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   // $obj->splitLongFields ();
   // }
   $editorMode=(Parameter::getUserParameter('editorModeAlwaysOn')=='YES')?'on':'off';
-  $editor="CK"; // May be "CK" or "DOJO";
   $ckEditorNumber=0;
   
   if (property_exists($obj, '_sec_Assignment')) {
@@ -1523,7 +1522,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
-        if (isset($editor) and $editor=="CK") {
+        if (getEditorType()=="CK") {
           //if (isIE() and ! $val) $val='<div></div>';
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
           $ckEditorNumber++;

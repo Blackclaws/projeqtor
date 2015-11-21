@@ -59,6 +59,7 @@
   </script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js?version=<?php echo $version;?>"></script>
+  <script type="text/javascript" src="../external/ckeditor/ckeditor.js"></script>
   <script type="text/javascript">
   var customMessageExists=<?php echo(file_exists(Plugin::getDir()."/nls/$currentLocale/lang.js"))?'true':'false';?>; 
   dojo.require("dojo.data.ItemFileWriteStore");
@@ -136,7 +137,7 @@
     });
   </script>
 </head>
-<body id="body" class="<?php echo getTheme();?>" onload="top.hideWait();">
+<body id="body" class="<?php echo getTheme();?>" onload="ckEditorReplaceAll();top.hideWait();">
   <input type="hidden" id="comboDetail" name="comboDetail" value="true" />
   <input type="hidden" id="comboDetailId" name="comboDetailId" value="" />
   <input type="hidden" id="comboDetailName" name="comboDetailName" value="" />

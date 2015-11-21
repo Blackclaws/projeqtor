@@ -608,26 +608,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       checkDestination(destination);
       // Create instances of CKEDITOR
       if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
-        /*editorArray=new Array();
-        for(name in CKEDITOR.instances) {
-          CKEDITOR.instances[name].removeAllListeners();
-          CKEDITOR.instances[name].destroy(false);
-        }*/
-        var numEditor=1;
-        while (dojo.byId('ckeditor'+numEditor)) {
-          var editorName=dojo.byId('ckeditor'+numEditor).value;
-          editorArray[numEditor]=CKEDITOR.replace( editorName, {
-            customConfig: 'projeqtorConfig.js',
-            filebrowserUploadUrl: '../tool/uploadImage.php'
-          } );
-          editorArray[numEditor].on( 'change', function( evt ) {
-            evt.editor.updateElement();
-          });
-          editorArray[numEditor].on( 'key', function( evt ) {
-            onKeyDownCkEditorFunction(evt,this);
-          });
-          numEditor++;
-        }
+        ckEditorReplaceAll();
       }
       if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
         var section=destination.substr(dojo.byId('objectClass').value.length+1);
@@ -2383,6 +2364,9 @@ function globalSave() {
   if (! button) {
 	  button=dijit.byId('saveButtonMultiple');
   }
+  for(name in CKEDITOR.instances) {
+    CKEDITOR.instances[name].updateElement();
+  }
   if ( button && button.isFocusable() ) {
     if (dojo.byId('formDiv')) formDivPosition=dojo.byId('formDiv').scrollPosition;
     button.focus(); //V5.1 : attention, may loose scroll position on formDiv (see above and below lines)
@@ -3032,4 +3016,26 @@ function intercepPointKey(obj,event){
 function replaceDecimalPoint(field) {
   var dom=dojo.byId(field);
   dom.value=dom.value+browserLocaleDecimalSeparator;
+}
+function ckEditorReplaceAll() {
+  var numEditor=1;
+  while (dojo.byId('ckeditor'+numEditor)) {
+    var editorName=dojo.byId('ckeditor'+numEditor).value;
+    editorArray[numEditor]=CKEDITOR.replace( editorName, {
+      customConfig: 'projeqtorConfig.js',
+      filebrowserUploadUrl: '../tool/uploadImage.php'
+    } );
+    editorArray[numEditor].on( 'change', function( evt ) {
+      //evt.editor.updateElement();
+      formChanged();
+    });
+    editorArray[numEditor].on( 'blur', function( evt ) { // Trigger after paster image : notificationShow, afterCommandExec, dialogShow
+      evt.editor.updateElement();
+      //formChanged();
+    });
+    editorArray[numEditor].on( 'key', function( evt ) {
+      onKeyDownCkEditorFunction(evt,this);
+    });
+    numEditor++;
+  }
 }
