@@ -992,6 +992,7 @@ errorMandatoryValidatedStartDate: "Η επικυρωμένη ημ. έναρξη�
 errorMessage: "An error occurred on ${1} at ${2}",
 errorMessageCopy: "${1} error(s) occured during copy",
 errorNoFile: "Δεν υπάρχει αρχείο για μεταφόρτωση",
+errorNotAnImage: "[This file is not a valid image.]",
 errorNotFoundFile: "δεν βρέθηκε το αρχείο εισαγωγής",
 errorObjectId: "Error on button new : objectId is not a node",
 errorRegisterGlobals: "register_globals must be disabled (set to false). <br/>Update your Php.ini file.",
