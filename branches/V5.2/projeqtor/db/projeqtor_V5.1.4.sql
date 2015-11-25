@@ -1,15 +1,9 @@
 -- ///////////////////////////////////////////////////////////
 -- // PROJECTOR                                             //
 -- //-------------------------------------------------------//
--- // Version : 4.5.3                                       //
--- // Date : 2014-12-02                                     //
+-- // Version : 5.1.4                                       //
+-- // Date : 2015-11-25                                     //
 -- ///////////////////////////////////////////////////////////
-
-CREATE TABLE `${prefix}tempupdate` (
-  `id` int(12),
-  `refType` varchar(100) DEFAULT NULL,
-  `refId` int(12)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
 
