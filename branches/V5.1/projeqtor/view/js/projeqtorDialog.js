@@ -4146,9 +4146,9 @@ function stockHistory(curClass, curId) {
     if (current[0]==curClass && current[1]==curId) return; // do not re-stock current item
   }
   historyPosition+=1;
-  screen="object";
+  currentScreen="object";
   if (dojo.byId("GanttChartDIV")) {
-    screen="planning";
+    currentScreen="planning";
   }
   historyTable[historyPosition]=new Array(curClass, curId);
   // Purge next history (not valid any more)
