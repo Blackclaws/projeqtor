@@ -41,17 +41,7 @@ if (! array_key_exists('objectClassName',$_REQUEST)) {
 $className=$_REQUEST['objectClassName'];
 
 // Get the object from session(last status before change)
-if (isset($_REQUEST['directAccessIndex'])) {
-  if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-} else {
-  if (! array_key_exists('currentObject',$_SESSION)) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $obj=$_SESSION['currentObject'];
-}
+$obj=SqlElement::getCurrentObject(null,null,true,false);
 
 if (! is_object($obj)) {
   throwError('last saved object is not a real object');

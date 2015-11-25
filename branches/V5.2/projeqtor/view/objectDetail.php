@@ -126,11 +126,7 @@ if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
   $print=true;
 }
 if (!$print and !$comboDetail and $obj) {
-  if (isset($_REQUEST ['directAccessIndex'])) {
-    $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']]=$obj;
-  } else {
-    $_SESSION ['currentObject']=$obj;
-  }
+  SqlElement::setCurrentObject ($obj);
 }
 $refresh=false;
 if (array_key_exists('refresh', $_REQUEST)) {

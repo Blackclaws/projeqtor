@@ -184,8 +184,6 @@ scriptLog('   ->/tool/jsonList.php');
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
-	      //$obj=$_SESSION['currentObject'];
-	      //$prj=new Project($obj->idProject);
 	      $idPrj=$_REQUEST['idProject'];
 	      $prj=new Project($idPrj);
 	      $lstTopPrj=$prj->getTopProjectList(true);
@@ -220,11 +218,12 @@ scriptLog('   ->/tool/jsonList.php');
 	      }
 	    } else if ($type=='listTermProject') {
 	    	if(!isset($_REQUEST['selected']))	{
-	    	  if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+	    	  /*if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
             $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
           } else {
           	$obj=$_SESSION['currentObject'];
-          }
+          }*/
+	    	  $obj=SqlElement::getCurrentObject(null,null,false,false); // V5.2
 	        $idPrj=$_REQUEST['idProject'];
 	        $prj=new Project($obj->idProject);
 	        $lstTopPrj=$prj->getTopProjectList(true);
@@ -314,11 +313,12 @@ scriptLog('   ->/tool/jsonList.php');
         }
       }
     } else if ($type=='listStatusDocumentVersion') {
-      if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+      /*if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
         $doc=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
       } else {
         $doc=$_SESSION['currentObject'];
-      }
+      }*/
+      $doc=SqlElement::getCurrentObject(null,null,false,false); // V5.2
     	$idDocumentVersion=$_REQUEST['idDocumentVersion'];
       $docVers=new documentVersion($idDocumentVersion);
     	$table=SqlList::getList('Status','name',$docVers->idStatus);

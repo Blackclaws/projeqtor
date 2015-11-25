@@ -32,17 +32,7 @@ require_once "../tool/projeqtor.php";
 projeqtor_set_time_limit(300);
 
 // Get the object from session(last status before change)
-if (isset($_REQUEST['directAccessIndex'])) {
-  if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $proj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-} else {
-  if (! array_key_exists('currentObject',$_SESSION)) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $proj=$_SESSION['currentObject'];
-}
+$proj=SqlElement::getCurrentObject(null,null,true,false);
 if (! is_object($proj)) {
   throwError('last saved object is not a real object');
 }
@@ -106,11 +96,7 @@ if (!$error and $copyAffectations) {
 $status = displayLastOperationStatus($result);
 if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
-    if (isset ( $_REQUEST ['directAccessIndex'] )) {
-      $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new Project( $newProj->id );
-    } else {
-      $_SESSION ['currentObject'] = new Project ( $newProj->id );
-    }
+    SqlElement::setCurrentObject (new Project( $newProj->id ));
   }
   User::resetAllVisibleProjects(null,getSessionUser()->id); // Will reteive visibiity for new project and sub-projects
 }

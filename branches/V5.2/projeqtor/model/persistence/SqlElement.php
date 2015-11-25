@@ -779,6 +779,65 @@ abstract class SqlElement {
 		return $returnValue;
 	}
 
+	/** 
+	 * Get old values (stored in session) to : 
+	 *  1) build the smallest query 
+	 *  2) save change history
+	 * @param string $objectClass
+	 * @param string $force
+	 * @return Ambigous <NULL, unknown>
+	 */
+	public static function getCurrentObject ($objectClass=null, $objectId=null, $throwError=false, $force=false) {
+	  $oldObject = null;
+	  if ($force) {
+	    if ($objectClass) {
+	      return new $objectClass($objectId);
+	    } else {
+	      return null;
+	    }
+	  }
+	  if ( isset($_REQUEST['directAccessIndex'])) {
+	    if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]) ) {
+  	    $testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+  	    if (!$objectClass or get_class($testObject)==$objectClass) {
+  	      $oldObject=$testObject;
+  	    } else if ($throwError) {
+  	      throwError('currentObject ('.get_class($testObject).' #'.$obj->id.') is not of the expectec class ('.$objectClass.')');
+  	      return null;
+  	    }
+	    } else if ($throwError) {
+	      throwError('currentObject parameter not found in SESSION');
+	      return null;
+	    }
+	  } else if (array_key_exists('currentObject',$_SESSION)) {
+	    $testObject = $_SESSION['currentObject'];
+	    if (!$objectClass or get_class($testObject)==$objectClass) {
+	      $oldObject=$testObject;
+	    } else if ($throwError) {
+	      throwError('currentObject ('.get_class($testObject).' #'.$obj->id.') is not of the expectec class ('.$objectClass.')');
+	      return null;
+	    }
+	  }
+	  if (! $oldObject and $objectClass) {
+	    $oldObject = new $objectClass($objectId);
+	  }
+	  return $oldObject;
+	}
+	public static function setCurrentObject ($obj) {
+	  if (isset($_REQUEST ['directAccessIndex'])) {
+	    if (!isset($_SESSION ['directAccessIndex'])) $_SESSION ['directAccessIndex']=array();
+	    $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]=$obj;
+	  } else {
+	    $_SESSION ['currentObject']=$obj;
+	  }
+	}
+	public static function unsetCurrentObject () {
+	  if (isset($_REQUEST ['directAccessIndex']) and isset($_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']])) {
+	    unset($_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]);
+	  } else if (isset($_SESSION ['currentObject'])){
+	    unset($_SESSION ['currentObject']);
+	  }
+	}
 	/** =========================================================================
 	 * save an object to the database : existing object
 	 * @return void
@@ -792,26 +851,7 @@ abstract class SqlElement {
 		$arrayCols=array();
 		$idleChange=false;
 		// Get old values (stored) to : 1) build the smallest query 2) save change history
-		$oldObject = null;
-		if ( isset($_REQUEST['directAccessIndex'])
-		and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]) ) {
-			$testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-			if ($testObject and ! $force) {
-				if (get_class($testObject)==$objectClass) {
-					$oldObject=$testObject;
-				}
-			}
-		} else if (array_key_exists('currentObject',$_SESSION)) {
-			$testObject = $_SESSION['currentObject'];
-			if ($testObject and ! $force) {
-				if (get_class($testObject)==$objectClass) {
-					$oldObject=$testObject;
-				}
-			}
-		}
-		if (! $oldObject) {
-			$oldObject = new $objectClass($this->id);
-		}
+		$oldObject = self::getCurrentObject (get_class($this),$this->id,false,$force);
 		// Specific treatment for other versions
 		$versionTypes=array('Version', 'OriginalVersion', 'TargetVersion');
 		foreach ($versionTypes as $versType) {
