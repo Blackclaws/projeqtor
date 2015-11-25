@@ -1202,6 +1202,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         echo ' >';
         echo $colScript;
+        if (!strpos('formChanged()',$colScript)) {
+          echo '<script type="dojo/connect" event="onChange" args="evt">';
+  			  echo '    formChanged();';
+  			  echo '</script>';
+        }
         echo '</div>';
       } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
         // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
