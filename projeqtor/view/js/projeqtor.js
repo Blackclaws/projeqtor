@@ -3021,21 +3021,28 @@ function ckEditorReplaceAll() {
   var numEditor=1;
   while (dojo.byId('ckeditor'+numEditor)) {
     var editorName=dojo.byId('ckeditor'+numEditor).value;
-    editorArray[numEditor]=CKEDITOR.replace( editorName, {
-      customConfig: 'projeqtorConfig.js',
-      filebrowserUploadUrl: '../tool/uploadImage.php'
-    } );
-    editorArray[numEditor].on( 'change', function( evt ) {
-      //evt.editor.updateElement();
-      formChanged();
-    });
-    editorArray[numEditor].on( 'blur', function( evt ) { // Trigger after paster image : notificationShow, afterCommandExec, dialogShow
-      evt.editor.updateElement();
-      //formChanged();
-    });
-    editorArray[numEditor].on( 'key', function( evt ) {
-      onKeyDownCkEditorFunction(evt,this);
-    });
+    ckEditorReplaceEditor(editorName,numEditor);
     numEditor++;
   }
+}
+var maxEditorHeight=Math.round(screen.height*0.6);
+function ckEditorReplaceEditor(editorName,numEditor) {
+  var height=200;
+  if (editorName=='noteNote') height=maxEditorHeight-150;
+  editorArray[numEditor]=CKEDITOR.replace( editorName, {
+    customConfig: 'projeqtorConfig.js',
+    filebrowserUploadUrl: '../tool/uploadImage.php',
+    height: height
+  } );
+  editorArray[numEditor].on( 'change', function( evt ) {
+    //evt.editor.updateElement();
+    formChanged();
+  });
+  editorArray[numEditor].on( 'blur', function( evt ) { // Trigger after paster image : notificationShow, afterCommandExec, dialogShow
+    evt.editor.updateElement();
+    //formChanged();
+  });
+  editorArray[numEditor].on( 'key', function( evt ) {
+    onKeyDownCkEditorFunction(evt,this);
+  });
 }

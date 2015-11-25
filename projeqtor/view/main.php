@@ -903,62 +903,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
 </div>
 
-<div id="dialogNote" dojoType="dijit.Dialog" title="<?php echo i18n("dialogNote");?>">
-  <table>
-    <tr><td><div id="dialogNotePredefinedDiv" dojoType="dijit.layout.ContentPane" region="center"></div></td></tr>
-    <tr>
-      <td>
-       <form id='noteForm' name='noteForm' onSubmit="return false;">
-         <input id="noteId" name="noteId" type="hidden" value="" />
-         <input id="noteRefType" name="noteRefType" type="hidden" value="" />
-         <input id="noteRefId" name="noteRefId" type="hidden" value="" />
-         <textarea dojoType="dijit.form.Textarea" type="hidden"
-          id="noteNote" name="noteNote"
-          style="width: 500px;display:none;"></textarea>
-         
-        <div data-dojo-type="dijit.Editor" id="noteNoteEditor" height="125px" 
-         data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];}
-          ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 
-                    'justifyRight', 'justifyFull','|','insertOrderedList','insertUnorderedList','|']
-          ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}
-          ,onBlur:function(event){top.editorBlur('noteNoteEditor',this);}
-          ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
-          style="width: 500px;color:#606060 !important; background:none; 
-            padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;"
-          class="input" >
-        </div>
-
-          <table width="100%"><tr height="25px">
-            <td width="33%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="notePrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyPublic" value="1" />
-            </td>
-            <td width="34%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="notePrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyTeam" value="2" />
-            </td>
-            <td width="33%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="notePrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyPrivate" value="3" />
-            </td>
-          </tr></table>
-       </form>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <input type="hidden" id="dialogNoteAction">
-        <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogNote').hide();">
-          <?php echo i18n("buttonCancel");?>
-        </button>
-        <button class="mediumTextButton"  id="dialogNoteSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveNote();return false;">
-          <?php echo i18n("buttonOK");?>
-        </button>
-      </td>
-    </tr>
-  </table>
-</div>
-
 <div id="dialogLink" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLink");?>">
   <table>
     <tr>
@@ -1781,7 +1725,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idProjectPlan" name="idProjectPlan" 
-                class="input" value="" >
+                class="input" value=" " >
                  <?php 
                     $proj=null; 
                     if (array_key_exists('project',$_SESSION)) {

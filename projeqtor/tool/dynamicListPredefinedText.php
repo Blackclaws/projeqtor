@@ -30,14 +30,24 @@
 
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListPredefinedText.php');
-$refType=$_REQUEST['objectClass'];
-$refId=$_REQUEST['objectType'];
 
-$refTypeId=SqlList::getIdFromTranslatableName('Textable', $refType);
-//echo $refType.'/'.$refId;
+$idTextable="";
+$idType="";
 
-$crit="scope='Note' and (idTextable is null or idTextable='" . Sql::fmtId($refTypeId) ."')";
-$crit.=" and (idType is null or idType='" . Sql::fmtId($refId) ."') and idle=0";
+if (isset($objectClass) and isset($objectId)) {
+  $obj=new $objectClass($objectId);
+  $refType=$objectClass;
+  $nameType='id'.$objectClass.'Type';
+  $idType=$obj->$nameType;
+  $idTextable=SqlList::getIdFromTranslatableName('Textable', $refType);
+} else {
+  $refType=$_REQUEST['objectClass'];
+  $idType=$_REQUEST['objectType'];
+  $idTextable=SqlList::getIdFromTranslatableName('Textable', $refType);
+  echo ("refType=$refType, idType=$idType, idTextable=$idTextable");
+}
+$crit="scope='Note' and (idTextable is null or idTextable='" . Sql::fmtId($idTextable) ."')";
+$crit.=" and (idType is null or idType='" . Sql::fmtId($idType) ."') and idle=0";
 
 $txt=new PredefinedNote();
 $list=$txt->getSqlElementsFromCriteria(null, false, $crit, 'name asc');
