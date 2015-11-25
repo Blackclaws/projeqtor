@@ -293,7 +293,7 @@
 			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
-			url="../tool/saveAttachment.php"
+			url="../tool/saveAttachment.php?attachmentRefType=<?php echo get_class($obj);?>&attachmentRefId=<?php echo $obj->id;?>"
 			multiple="true" class="directAttachment" 			
 			uploadOnSelect="true"
 			target="resultPost"
