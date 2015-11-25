@@ -720,30 +720,18 @@ function addNote() {
     dijit.byId("noteToolTip").destroy();
     dijit.byId("noteNote").set("class", "");
   }
-  dijit.byId("noteNoteEditor").set("class", "input");
-  dojo.byId("noteId").value="";
-  dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
-  dojo.byId("noteRefId").value=dojo.byId("objectId").value;
-  dijit.byId("noteNote").set("value", null);
-  dijit.byId("noteNoteEditor").set('value', '');
-  dijit.byId("dialogNote").set('title', i18n("dialogNote"));
-  dojo.xhrGet({
-    url : '../tool/dynamicListPredefinedText.php?objectClass='
-        + dojo.byId("noteRefType").value + '&objectType='
-        + dijit.byId('id' + dojo.byId("noteRefType").value + 'Type'),
-    handleAs : "text",
-    load : function(data) {
-      var contentWidget=dijit.byId('dialogNotePredefinedDiv');
-      if (!contentWidget) {
-        return;
-      }
-      contentWidget.set('content', data);
+  var callBack=function() {
+    if (dijit.byId("noteNoteEditor")) { // Dojo type editor
+      dijit.byId("noteNoteEditor").set("class", "input");
+    } else { // CKeditor type
+      ckEditorReplaceEditor("noteNote",999);
     }
-  });
-  dijit.byId('notePrivacyPublic').set('checked', 'true');
-  dijit.byId("dialogNote").show();
-  // dijit.byId("noteNoteEditor").focus();
-  // dojo.byId("noteNoteEditor").focus();
+  };
+  var params="&objectClass="+dojo.byId("objectClass").value;
+  params+="&objectId="+dojo.byId("objectId").value;
+  params+="&noteId="; // Null    
+  loadDialog('dialogNote', callBack, true, params, true);
+
 }
 
 function noteSelectPredefinedText(idPrefefinedText) {
@@ -751,8 +739,12 @@ function noteSelectPredefinedText(idPrefefinedText) {
     url : '../tool/getPredefinedText.php?id=' + idPrefefinedText,
     handleAs : "text",
     load : function(data) {
-      dijit.byId('noteNote').set('value', data);
-      dijit.byId('noteNoteEditor').set('value', data);
+      if (dijit.byId('noteNoteEditor')) {
+        dijit.byId('noteNote').set('value', data);
+        dijit.byId('noteNoteEditor').set('value', data);
+      } else {
+        CKEDITOR.instances['noteNote'].setData(data);
+      }
     }
   });
 }
@@ -765,24 +757,18 @@ function editNote(noteId, privacy) {
     dijit.byId("noteToolTip").destroy();
     dijit.byId("noteNote").set("class", "");
   }
-  dijit.byId("noteNoteEditor").set("class", "input");
-  dojo.byId("noteId").value=noteId;
-  dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
-  dojo.byId("noteRefId").value=dojo.byId("objectId").value;
-  dijit.byId("noteNote").set("value", dojo.byId("note_" + noteId).innerHTML);
-  dijit.byId("noteNoteEditor").set('value',
-      dojo.byId("note_" + noteId).innerHTML);
-  dijit.byId("dialogNote").set('title', i18n("dialogNote") + " #" + noteId);
-  if (privacy == 1) {
-    dijit.byId('notePrivacyPublic').set('checked', 'true');
-  } else if (privacy == 2) {
-    dijit.byId('notePrivacyTeam').set('checked', 'true');
-  } else if (privacy == 3) {
-    dijit.byId('notePrivacyPrivate').set('checked', 'true');
-  }
-  dijit.byId("dialogNote").show();
-  // dijit.byId("noteNoteEditor").focus();
-  // dojo.byId("noteNoteEditor").focus();
+  var callBack=function() {
+    //dijit.byId('notePrivacyPublic').set('checked', 'true');
+    if (dijit.byId("noteNoteEditor")) { // Dojo type editor
+      dijit.byId("noteNoteEditor").set("class", "input");
+    } else { // CKeditor type
+      ckEditorReplaceEditor("noteNote",999);
+    }
+  };
+  var params="&objectClass="+dojo.byId("objectClass").value;
+  params+="&objectId="+dojo.byId("objectId").value;
+  params+="&noteId="+noteId;    
+  loadDialog('dialogNote', callBack, true, params, true);
 }
 
 /**
@@ -790,16 +776,27 @@ function editNote(noteId, privacy) {
  * 
  */
 function saveNote() {
-  if (dijit.byId("noteNote").getValue() == '') {
-    dijit.byId("noteNoteEditor").set("class", "input required");
-    var msg=i18n('messageMandatory', new Array(i18n('Note')));
-    dijit.byId("noteNoteEditor").focus();
-    dojo.byId("noteNoteEditor").focus();
-    showAlert(msg);
+  if (dijit.byId("noteNoteEditor")) {
+    if (dijit.byId("noteNote").getValue() == '') {
+      dijit.byId("noteNoteEditor").set("class", "input required");
+      var msg=i18n('messageMandatory', new Array(i18n('Note')));
+      dijit.byId("noteNoteEditor").focus();
+      dojo.byId("noteNoteEditor").focus();
+      showAlert(msg);
+      return;
+    }
   } else {
-    loadContent("../tool/saveNote.php", "resultDiv", "noteForm", true, 'note');
-    dijit.byId('dialogNote').hide();
+    noteEditor=CKEDITOR.instances['noteNote'];
+    noteEditor.updateElement();
+    if (noteEditor.getData()=="") {
+      var msg=i18n('messageMandatory', new Array(i18n('Note')));
+      noteEditor.focus();
+      showAlert(msg);
+      return;
+    }
   }
+  loadContent("../tool/saveNote.php", "resultDiv", "noteForm", true, 'note');
+  dijit.byId('dialogNote').hide();
 }
 
 /**
@@ -807,11 +804,11 @@ function saveNote() {
  * 
  */
 function removeNote(noteId) {
-  dojo.byId("noteId").value=noteId;
-  dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
-  dojo.byId("noteRefId").value=dojo.byId("objectId").value;
+  var param="?noteId="+noteId;
+  param+="&noteRefType="+dojo.byId("objectClass").value;
+  param+="&noteRefId="+dojo.byId("objectId").value;
   actionOK=function() {
-    loadContent("../tool/removeNote.php", "resultDiv", "noteForm", true, 'note');
+    loadContent("../tool/removeNote.php"+param, "resultDiv", "noteForm", true, 'note');
   };
   msg=i18n('confirmDelete', new Array(i18n('Note'), noteId));
   showConfirm(msg, actionOK);
@@ -2621,6 +2618,10 @@ function plan() {
   if (!dijit.byId('idProjectPlan').get('value')) {
     dijit.byId('idProjectPlan').set('value', ' ');
   }
+  if (!dijit.byId('startDatePlan').get('value')) {
+    showAlert(i18n('messageInvalidDate'));
+    return;
+  }
   loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true, null);
   dijit.byId("dialogPlan").hide();
 }
@@ -4149,9 +4150,9 @@ function stockHistory(curClass, curId) {
     if (current[0]==curClass && current[1]==curId) return; // do not re-stock current item
   }
   historyPosition+=1;
-  screen="object";
+  currentScreen="object";
   if (dojo.byId("GanttChartDIV")) {
-    screen="planning";
+    currentScreen="planning";
   }
   historyTable[historyPosition]=new Array(curClass, curId);
   // Purge next history (not valid any more)

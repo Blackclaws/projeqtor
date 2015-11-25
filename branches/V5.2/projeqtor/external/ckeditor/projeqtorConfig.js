@@ -12,11 +12,19 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'styles', items: [ 'Font', 'FontSize' ] },
     { name: 'links', items: [ 'Link', 'Unlink', 'Image','Table','SpecialChar','PasteFromWord'] }
   ];
-  //config.enterMode = CKEDITOR.ENTER_DIV;
-  config.enterMode = CKEDITOR.ENTER_BR;
+  // 'showBlocks'
+  config.enterMode = CKEDITOR.ENTER_DIV;
+  //config.enterMode = CKEDITOR.ENTER_BR;
   config.extraPlugins = 'uploadimage';
+  config.removePlugins='magicline';
   config.uploadUrl = '../tool/uploadImage.php';
   config.imageUploadUrl = '../tool/uploadImage.php';
+  config.image_previewText = CKEDITOR.tools.repeat( 'Image', 1 );
+  config.magicline_color = '#aaaaaa';
+  //config.extraAllowedContent = 'span{*}(*);';
+  //config.pasteFilter='span{*}(*);'; // Remove paste filter, only AEF will be applied
+  config.extraAllowedContent =true;
+  config.pasteFilter=null;
 };
 /*
 CKEDITOR.editorConfig = function( config ) {
