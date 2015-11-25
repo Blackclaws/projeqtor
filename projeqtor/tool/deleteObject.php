@@ -31,17 +31,7 @@
 require_once "../tool/projeqtor.php";
 
 // Get the object from session(last status before change)
-if (isset($_REQUEST['directAccessIndex'])) {
-  if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-} else {
-  if (! array_key_exists('currentObject',$_SESSION)) {
-    throwError('currentObject parameter not found in SESSION');
-  }
-  $obj=$_SESSION['currentObject'];
-}
+$obj=SqlElement::getCurrentObject(null,null,true,false);
 if (! is_object($obj)) {
   throwError('last saved object is not a real object');
 }
@@ -73,11 +63,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
   echo '<div class="messageOK" >' . $result . '</div>';
-  if (isset($_REQUEST['directAccessIndex'])) {
-  	unset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]);
-  } else {
-    unset($_SESSION['currentObject']);
-  }
+  SqlElement::unsetCurrentObject();
 } else { 
 	Sql::commitTransaction();
   echo '<div class="messageWARNING" >' . $result . '</div>';

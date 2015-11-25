@@ -131,7 +131,9 @@ if (array_key_exists('idType',$_REQUEST)) {
 }
 
 
-unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
+//unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
+SqlElement::unsetCurrentObject();
+
 $cptOk=0;
 $cptError=0;
 $cptWarning=0;

@@ -132,18 +132,14 @@ if ($type=='file') {
 }
 $obj=null;
 $refType="";
-if (! array_key_exists('currentObject',$_SESSION)) {
-  //$error=htmlGetErrorMessage('unkown current object in SESSION');
-  //errorLog('unkown current object in SESSION');
-} else { 
-  $obj=$_SESSION['currentObject'];
-}
+
+$obj=SqlElement::getCurrentObject(null,null,false,false);
+
 if (! $error) {
   if (! array_key_exists('attachmentRefType',$_REQUEST)) {
   	if (!$obj) {
       $error=htmlGetErrorMessage('attachmentRefType parameter not found in REQUEST');
       errorLog('attachmentRefType parameter not found in REQUEST');
-      //$error=true;
   	} else {
   		$refType=get_class($obj);
   	} 
@@ -162,7 +158,6 @@ if (! $error) {
   	if (!$obj) {
       $error=htmlGetErrorMessage('attachmentRefId parameter not found in REQUEST');
       errorLog('attachmentRefId parameter not found in REQUEST');
-      //$error=true;
   	} else {
   		$refId=$obj->id;
   	} 
@@ -172,18 +167,12 @@ if (! $error) {
 }
 if (! $error) {    
   if (! array_key_exists('attachmentDescription',$_REQUEST)) {
-  	//$error= htmlGetErrorMessage('attachmentDescrition parameter not found in REQUEST');
-    //errorLog('attachmentDescrition parameter not found in REQUEST');
-    //$error=true;
     $attachmentDescription="";
   } else {
     $attachmentDescription=$_REQUEST['attachmentDescription'];
   }
 }
 if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
-	//$error='attachmentPrivacy parameter not found in REQUEST';
-	//$error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
-  //errorLog('attachmentPrivacy parameter not found in REQUEST');
   $idPrivacy=1;
 } else  {
   $idPrivacy=$_REQUEST['attachmentPrivacy'];
