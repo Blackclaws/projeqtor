@@ -1780,7 +1780,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idProjectPlan" name="idProjectPlan" 
-                class="input" value="" >
+                class="input" value=" " >
                  <?php 
                     $proj=null; 
                     if (array_key_exists('project',$_SESSION)) {
