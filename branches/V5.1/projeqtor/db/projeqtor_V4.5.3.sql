@@ -23,4 +23,3 @@ DELETE FROM `${prefix}workelement` WHERE id in
   (select id from `${prefix}tempupdate`);
 
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
-r
