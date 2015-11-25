@@ -2758,7 +2758,7 @@ abstract class SqlElement {
 			// TODO Check HTML validity for Long Texts
 			if ($dataLength>4000) {
 			  // Remove "\n" that have no use here
-			  $this->$col=str_replace( array("\n", '<p>', '</p>','<div></div>'), array(' ','<div>','</div>',''), $val );
+			  $this->$col=str_replace( array("\n", '<div></div>'), array(' ',''), $val );
 			  /*try {
 			    $test=strip_tags($val);
 			  } catch (Exception $e) {
