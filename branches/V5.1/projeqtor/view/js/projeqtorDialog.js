@@ -2618,6 +2618,10 @@ function plan() {
   if (!dijit.byId('idProjectPlan').get('value')) {
     dijit.byId('idProjectPlan').set('value', ' ');
   }
+  if (!dijit.byId('startDatePlan').get('value')) {
+    showAlert(i18n('messageInvalidDate'));
+    return;
+  }
   loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true, null);
   dijit.byId("dialogPlan").hide();
 }
