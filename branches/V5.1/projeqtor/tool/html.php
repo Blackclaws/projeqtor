@@ -541,7 +541,7 @@ function htmlEncode($val,$context="default") {
     return nl2br(htmlentities($val,ENT_COMPAT,'UTF-8'));
   } else if ($context=='withBR') {
     return nl2br(htmlspecialchars($val,ENT_QUOTES,'UTF-8'));
-  } else if ($context=='mail') {
+  } else if ($context=='mail') { // Not used any more, may be removed
     $str=$val;
     if (get_magic_quotes_gpc()) {
       $str=str_replace('\"','"',$str);
@@ -564,6 +564,19 @@ function htmlEncode($val,$context="default") {
     $str=$val;
     $str=htmlspecialchars(htmlspecialchars($str,ENT_QUOTES,'UTF-8'),ENT_QUOTES,'UTF-8');
     $str=str_replace( array("\r\n","\n","\r"), array('<br/>','<br/>','<br/>'),$str);
+    return $str;
+  } else if ($context=="formatted") { // For long text, html format must be preserved but <script> must be removed (Mandatory for Editor fields)
+    // Step one : remove <script> tags
+    $str = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $val);
+    // Step two : if some dangerous scripting capacitites still exist : replace text by warning image
+    $test=strtolower($str);
+    if (strpos($test,'<script')!==false or strpos($test,'onmouseover')!==false) {
+      $str='<img src="../view/img/error.png"/><br/>'.i18n('textHiddenForSecurity');
+    }
+    return $str;
+  } else if ($context=="pdf") {
+    $str=str_replace(array('</div>','</p>'),array('</div><br/>','</p><br/>'), $val);
+    $str=strip_tags($str,'<br><br/><font><b>');
     return $str;
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
