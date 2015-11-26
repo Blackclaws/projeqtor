@@ -881,7 +881,7 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   $res=$val;
   if (strpos($res, '.')!==false) {
-    $res=trim($res,'0');
+    $res=rtrim($res,'0');
   }
   if (substr($res, -1)=='.') {
     $res=trim($res,'.');
