@@ -86,7 +86,7 @@ class Logfile
       return pathinfo($logName,PATHINFO_DIRNAME); 
     }
     
-    static function getList() {
+    static function getList($numericIndexes=false) {
       $error='';
       $dir=self::getDir();
       if (! is_dir($dir)) {
@@ -119,7 +119,10 @@ class Logfile
         }
       }
       if (! $error) closedir($handle);
-      ksort($files);
+      ksort($files); 
+      if ($numericIndexes) {
+        $files=array_values($files);
+      }
       return $files;
     }
     
