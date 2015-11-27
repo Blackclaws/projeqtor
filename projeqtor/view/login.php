@@ -136,8 +136,9 @@
 
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
 <?php if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST)  ) {
+	SqlElement::checkValidClass($_REQUEST['objectClass']);
 echo '<input type="hidden" id="objectClass" value="' . $_REQUEST['objectClass'] . '" />';
-echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" />';
+echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['objectId']) . '" />';
 }
 ?>
   <div id="waitLogin" style="display:none" >
