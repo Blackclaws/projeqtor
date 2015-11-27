@@ -260,7 +260,13 @@ function setupLocale() {
     $currentLocale = $_SESSION ['currentLocale'];
   } else if (isset ( $_REQUEST ['currentLocale'] )) {
     // Second fetch from request (for screens before user id identified)
-    $currentLocale = $_REQUEST ['currentLocale'];
+    $currentLocale = trim($_REQUEST ['currentLocale']);
+    // TODO (SECURITY) : filter locale (list is not valid as local comes from browser
+/*	if (preg_match('/^(de|el|en|es|fa|fr(-ca)?|ja|nl|pt|pt-br|ru|ua|zh)$/', $currentLocale) != true)
+	{
+		traceHack("Invalid value in currentLocale = [$currentLocale]");
+		exit;
+	}*/
     $_SESSION ['currentLocale'] = $currentLocale;
     $i18nMessages = null; // Should be null at this moment, just to be sure
   } else {
@@ -498,7 +504,13 @@ function traceHack($msg = "Unidentified source code") {
 }
 
 function securityCheckPage($page) {
-  if (substr ( $page, 0, 6 ) == '../../' or substr ( $page, 1, 1 ) == ':') {
+  // Note: this is really a poor way of protecting against directory traversal. 
+  // Proper way is to check against a white-list of allowed file paths. 
+  // This does not provide protection against various encoding schemes, etc... 
+  // but as this function is only used in main.php attack surface is not that large, and I have not yet gone over main.php to inspect it. 
+  // TODO (SECURITY) : update this note once view/main.php has been reviewed.
+  if ((preg_match_all('/\.\.\//', $page) > 1) or 
+     (substr ( $page, 0, 6 ) == '../../' or substr ( $page, 1, 1 ) == ':')) { // does not protect against '//././.././../[some file]'
     traceHack ( "securityCheckPage($page)" );
     exit ();
   } else if (substr ( $page, - 4 ) != '.php') {
@@ -531,7 +543,7 @@ function throwError($message, $code = null) {
       exit ();
     }
   } else {
-    echo '<div class="messageERROR" >ERROR : ' . $message . '</div>';
+    echo '<div class="messageERROR" >ERROR : ' . htmlspecialchars($message,ENT_QUOTES,'UTF-8') . '</div>';
     echo '<input type="hidden" id="lastSaveId" value="" />';
     echo '<input type="hidden" id="lastOperation" value="ERROR" />';
     echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
@@ -557,6 +569,11 @@ function throwError($message, $code = null) {
 $hideAutoloadError=false;
 function projeqtorAutoload($className) {
   global $hideAutoloadError;
+  if (preg_match('/\.\./', trim($className)) == true) {
+	  traceHack("Directory traversal in className = $className");
+	  exit;	
+  }
+
   $localfile = ucfirst ( $className ) . '.php'; // locally
   $customfile = '../model/custom/' . $localfile; // Custom directory
   $modelfile = '../model/' . $localfile; // in the model directory
@@ -2416,11 +2433,15 @@ function formatColor($type, $val) {
 
 function getPrintTitle() {
   $result = i18n ( "applicationTitle" );
-  if (isset ( $_REQUEST ['objectClass'] ) and isset ( $_REQUEST ['page'] )) {
+  if (isset ( $_REQUEST ['objectClass'] ) and isset ( $_REQUEST ['page'] ))
+  {
+	$objectClass=$_REQUEST['objectClass'];
+	SqlElement::checkValidClass($objectClass, 'objectClass');
+
     if ($_REQUEST ['page'] == 'objectDetail.php') {
-      $result .= ' - ' . i18n ( $_REQUEST ['objectClass'] ) . ' #' . ($_REQUEST ['objectId'] + 0);
+      $result .= ' - ' . i18n ( $objectClass ) . ' #' . ($_REQUEST ['objectId'] + 0);
     } else if ($_REQUEST ['page'] == '../tool/jsonQuery.php') {
-      $result .= ' - ' . i18n ( 'menu' . $_REQUEST ['objectClass'] );
+      $result .= ' - ' . i18n ( 'menu' . $objectClass );
     }
   }
   return $result;
@@ -2699,7 +2720,7 @@ function is_session_started() {
 function getEditorType() {
   // Todo : use parameter (user or global)
   // Default should be CK ?
-  // return "DOJO";
+  //return "DOJO";
   return "CK";
   
 }
