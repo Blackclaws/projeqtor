@@ -63,7 +63,7 @@ foreach($statusList as $idStatus=>$status) {
 
 if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   $result=i18n('Workflow') . ' #'. $workflowId . ' ' . i18n('resultUpdated');
-  $result .= '<input type="hidden" id="lastSaveId" value="' . $workflowId . '" />';
+  $result .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($workflowId) . '" />';
   $result .= '<input type="hidden" id="lastOperation" value="update" />';
   $result .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
 }
