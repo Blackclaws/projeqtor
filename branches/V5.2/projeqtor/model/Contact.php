@@ -303,7 +303,7 @@ class Contact extends SqlElement {
 	        $obj=new Resource($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.='<b><br/>'.i18n('Resource').' #'.$this->id.' :</b>'.$resultDelete;
+	          $result.='<b><br/>'.i18n('Resource').' #'.htmlEncode($this->id).' :</b>'.$resultDelete;
 	        }
 	    }
 	  // if uncheck isUser must check user for deletion
@@ -311,7 +311,7 @@ class Contact extends SqlElement {
 	        $obj=new User($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.='<b><br/>'.i18n('User').' #'.$this->id.' :</b>'.$resultDelete;
+	          $result.='<b><br/>'.i18n('User').' #'.htmlEncode($this->id).' :</b>'.$resultDelete;
 	        }
 	    }
     }
@@ -320,7 +320,7 @@ class Contact extends SqlElement {
     }
     $resultDelete=parent::deleteControl();
     if ($result and $resultDelete) {
-      $resultDelete='<b><br/>'.i18n('Contact').' #'.$this->id.' :</b>'.$resultDelete.'<br/>';
+      $resultDelete='<b><br/>'.i18n('Contact').' #'.htmlEncode($this->id).' :</b>'.$resultDelete.'<br/>';
     } 
     $result=$resultDelete.$result;
     return $result;
@@ -359,8 +359,8 @@ class Contact extends SqlElement {
     $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
     if ($image->id and $image->isThumbable()) {
       $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
-             . ' title="'.$image->fileName.'" style="cursor:pointer"'
-             . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+             . ' title="'.htmlEncode($image->fileName).'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" />';
     } else {
       $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
     }

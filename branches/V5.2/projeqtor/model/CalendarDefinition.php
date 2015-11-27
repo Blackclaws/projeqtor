@@ -105,7 +105,7 @@ class CalendarDefinition extends SqlElement {
   		 . ' constraints="{min:2000,max:2100,places:0,pattern:\'###0\'}" intermediateChanges="true" maxlength="4" '
        . ' value="'. $currentYear.'" smallDelta="1" id="calendartYearSpinner" name="calendarYearSpinner" >'
   		 . ' <script type="dojo/method" event="onChange" >'
-  		 . ' 	loadContent("../tool/saveCalendar.php?idCalendarDefinition='.$this->id.'&year="+this.value,"CalendarDefinition_Calendar");'
+  		 . ' 	loadContent("../tool/saveCalendar.php?idCalendarDefinition='.htmlEncode($this->id).'&year="+this.value,"CalendarDefinition_Calendar");'
   		 . ' </script>'
   		 . '</div>';
   		 return $result;
@@ -114,7 +114,7 @@ class CalendarDefinition extends SqlElement {
   		  $result.='<div type="button" dojoType="dijit.form.Button" showlabel="true">'
   			. i18n('copyFromCalendar')	
   		  . ' <script type="dojo/method" event="onClick" >'
-  			. ' 	loadContent("../tool/saveCalendar.php?copyYearFrom="+dijit.byId("calendarCopyFrom").get("value")+"&idCalendarDefinition='.$this->id.'&year="+dijit.byId("calendartYearSpinner").get("value"),"CalendarDefinition_Calendar");'
+  			. ' 	loadContent("../tool/saveCalendar.php?copyYearFrom="+dijit.byId("calendarCopyFrom").get("value")+"&idCalendarDefinition='.htmlEncode($this->id).'&year="+dijit.byId("calendartYearSpinner").get("value"),"CalendarDefinition_Calendar");'
   			. ' </script>'
   			. '</div>&nbsp;&nbsp;';
   		  $result.='<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" '

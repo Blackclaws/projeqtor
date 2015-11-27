@@ -189,7 +189,7 @@ class Calendar extends SqlElement {
   	$lst=$cal->getSqlElementsFromCriteria($crit);
   	$res='';
   	foreach ($lst as $obj) {
-  		$res.='#' . $obj->day . '#';
+  		$res.='#' . htmlEncode($obj->day) . '#';
   	}
   	return $res; 
   }
@@ -199,7 +199,7 @@ class Calendar extends SqlElement {
     $lst=$cal->getSqlElementsFromCriteria($crit);
     $res='';
     foreach ($lst as $obj) {
-      $res.='#' . $obj->day . '#';
+      $res.='#' . htmlEncode($obj->day) . '#';
     }
     return $res;   	
   }
@@ -254,7 +254,7 @@ class Calendar extends SqlElement {
           	$style.=($isOff)?'#DDDDDD;':'#FFFFFF;';
           }
       		$result.= '<td class="calendar" style="'.$style.'">';
-      		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'../tool/saveCalendar.php?idCalendarDefinition='.$this->idCalendarDefinition.'&day='. $day . '\',\'CalendarDefinition_Calendar\');">';
+      		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'../tool/saveCalendar.php?idCalendarDefinition='.htmlEncode($this->idCalendarDefinition).'&day='. $day . '\',\'CalendarDefinition_Calendar\');">';
       		$result.=  mb_substr(i18n(date('l',$iDay)),0,1,"UTF-8") . $d ;
       		$result.= '</div>';
       		$result.= '</td>';
