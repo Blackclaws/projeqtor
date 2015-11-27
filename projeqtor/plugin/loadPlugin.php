@@ -35,6 +35,10 @@ if (securityGetAccessRightYesNo('menuPlugin','read')!='YES') {
 $oneFile=null;
 if (isset($_REQUEST['pluginFile']) ) {
   $oneFile=urldecode($_REQUEST['pluginFile']);
+  if (preg_match('/[^a-zA-Z0-9_-\.]/', $oneFile) == True){
+	  error_log("invalid chars found in oneFile - [$oneFile]");
+	  $oneFile=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $oneFile); // only allow [a-z, A-Z, 0-9, _, -] in file name
+  }
 }
 $user=getSessionUser();
 $profile=new Profile($user->idProfile);
@@ -53,7 +57,7 @@ foreach ($files as $file) {
   if ($oneFile) {
     echo $result;
   } else {
-    echo $result.' ('.$plugin->name.')<br/>';
+    echo $result.' ('.htmlEncode($plugin->name).')<br/>';
   }
 }
 $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
