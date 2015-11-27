@@ -182,7 +182,7 @@ class ImputationLine {
 						  if ($work->refType and $work->refId) {
 						    $ass->comment=i18n($work->refType) . ' #' . $work->refId;
 						  } else {
-						    $ass->comment='unexpected case : assignment #' . $work->idAssignment . ' not found';
+						    $ass->comment='unexpected case : assignment #' . htmlEncode($work->idAssignment) . ' not found';
 						  }
 						  $ass->realWork=$work->work;
 						  $ass->refType=$work->refType;
@@ -277,8 +277,8 @@ class ImputationLine {
 			  $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
 			}
 			if ($plan and $plan->id and isset($ass->_topRefType) and isset($ass->_topRefId)) {
-			  $elt->wbs=$plan->wbs.'.'.$elt->refType.'#'.$elt->refId;
-			  $elt->wbsSortable=$plan->wbsSortable.'.'.$elt->refType.'#'.$elt->refId;
+			  $elt->wbs=$plan->wbs.'.'.htmlEncode($elt->refType).'#'.$elt->refId;
+			  $elt->wbsSortable=$plan->wbsSortable.'.'.htmlEncode($elt->refType).'#'.$elt->refId;
 			  $elt->topId=$plan->id;
 			  $elt->elementary=$plan->elementary;
 			  $elt->startDate=null;
@@ -328,7 +328,7 @@ class ImputationLine {
 			//if ( ! ($user->id = $resourceId or $scopeCode!='ALL' or ($scopeCode='PRO' and array_key_exists($ass->idProject, $visibleProjects) ) ) ) {
 			//	$elt->locked=true;
 			//}
-			$key=$elt->wbsSortable . ' ' . $ass->refType . '#' . $ass->refId;
+			$key=$elt->wbsSortable . ' ' . htmlEncode($ass->refType) . '#' . $ass->refId;
 			if (array_key_exists($key,$result)) {
 				$key.= '/#' . $ass->id;
 			}
@@ -409,7 +409,7 @@ class ImputationLine {
 			$plan=new PlanningElement($elt->topId);
 		}
 		if ($plan) {
-			$key=$plan->wbsSortable . ' ' . $plan->refType . '#' . $plan->refId;
+			$key=$plan->wbsSortable . ' ' . htmlEncode($plan->refType) . '#' . $plan->refId;
 			if (! array_key_exists($key,$result) 
 			and ($plan->refType!='Project' or $direct or $accessRight=='ALL' or array_key_exists($plan->refId,$visibleProjectList))) {
 				$top=new ImputationLine();
@@ -445,6 +445,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false, 
 			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
 		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
+		$outMode=preg_replace('/.*(pdf|csv|html|mpp).*/','$1', $outMode); // can only be [pdf|csv|html|mpp]
 //scriptLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");
 		$keyDownEventScript=NumberFormatter52::getKeyDownEvent(); // Will add event $commaEvent
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
@@ -504,7 +505,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		}
 		$width=600;
 		if (isset($_REQUEST['destinationWidth'])) {
-		  $width=($_REQUEST['destinationWidth'])-155-30;
+			$width=$_REQUEST['destinationWidth'];
+			$width=preg_replace('/[^0-9]/','', $width); // only allow digits
+			$width=($width)-155-30;
 		}
 		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
 		
@@ -518,7 +521,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if (! $print) {
 		echo '<td><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
 		           .' onChange="formChanged();"'
-               .' style="width: '.$width.'px;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.$period->comment.'</textarea></td>';
+               .' style="width: '.$width.'px;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.htmlEncode($period->comment).'</textarea></td>';
 		} else {
 			echo htmlEncode($period->comment,'print');
 		}
@@ -650,7 +653,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if ($closedWbs and (strlen($line->wbsSortable)<=strlen($closedWbs) or $closedWbs!=substr($line->wbsSortable,0,strlen($closedWbs)) ) ) {
 				$closedWbs="";
 			}
-			$scope='Imputation_'.$resourceId.'_'.$line->refType.'_'.$line->refId;
+			$scope='Imputation_'.$resourceId.'_'.htmlEncode($line->refType).'_'.$line->refId;
 			$collapsed=false;
 			if ($rowType=="group" and array_key_exists($scope, $collapsedList)) {
 				$collapsed=true;
@@ -674,7 +677,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '<td class="ganttName" style="width:'.($iconWidth+1).'px;">';
 			if (! $print) {
 				echo '<input type="hidden" id="wbs_' . $nbLine . '" '
-				. ' value="' . $line->wbsSortable . '"/>';
+				. ' value="' . htmlEncode($line->wbsSortable) . '"/>';
 				echo '<input type="hidden" id="status_' . $nbLine . '" ';
 				if ($collapsed) {
 					echo   ' value="closed"';
@@ -683,21 +686,21 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				}
 				echo '/>';
 				echo '<input type="hidden" id="idAssignment_' . $nbLine . '" name="idAssignment[]"'
-				. ' value="' . $line->idAssignment . '"/>';
+				. ' value="' . htmlEncode($line->idAssignment) . '"/>';
 				echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable[]"'
 				. ' value="' . (($line->imputable)?'1':'0') . '"/>';
 				echo '<input type="hidden" id="locked_' . $nbLine . '" name="locked[]"'
         . ' value="' . (($line->locked)?'1':'0') . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
-			echo '<img src="css/images/icon' . $line->refType . '16.png" ';
+			echo '<img src="css/images/icon' . htmlEncode($line->refType) . '16.png" ';
 			if ($line->refType!='Imputation' and !$print) {
-			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.$line->refId.'<br/>';
+			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.htmlEncode($line->refId).'<br/>';
 			  if ($canRead) echo '<i>'. i18n("clickToView").'</i>';
 			  echo '\');" onmouseout="hideBigImage();"';
 			}
 			if (! $print and $canRead) {
-			  echo ' class="pointer" onClick="directDisplayDetail(\''.$line->refType.'\',\''.$line->refId.'\')"';
+			  echo ' class="pointer" onClick="directDisplayDetail(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
 			}
 			echo '/>';
 			echo '</td>';
@@ -761,13 +764,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '<td width="100%" style="position:relative"';
 			if (! $print and $canGoto) {
-			  echo ' class="pointer" onClick="gotoElement(\''.$line->refType.'\',\''.$line->refId.'\')"';
+			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
 			}
 			echo '>' . $line->name ;
 			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
 				
 			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
-					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">' . $line->functionName . '</div>';
+					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">' . htmlEncode($line->functionName) . '</div>';
 			}
 			echo '</td>';
 			if ($line->comment and !$print) {
@@ -775,7 +778,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '</tr></table>';
 			echo '</td>';
-			//echo '<td class="ganttDetail" align="center">' . $line->description . '</td>';
+			//echo '<td class="ganttDetail" align="center">' . htmlEncode($line->description) . '</td>';
 			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->startDate) . '</td>';
 			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->endDate) . '</td>';
 			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
