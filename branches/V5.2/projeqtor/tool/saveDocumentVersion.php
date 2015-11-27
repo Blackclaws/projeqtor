@@ -268,10 +268,10 @@ if (! $error) {
 }
 
 if (!isset($dv)) $dv=new DocumentVersion();
-$jsonReturn='{"file":"'.$dv->fileName.'",'
- .'"name":"'.$dv->fileName.'",'
- .'"type":"'.$dv->mimeType.'",'
- .'"size":"'.$dv->fileSize.'"  ,'
+$jsonReturn='{"file":"'.htmlEncodeJson($dv->fileName).'",'
+ .'"name":"'.htmlEncodeJson($dv->fileName).'",'
+ .'"type":"'.htmlEncodeJson($dv->mimeType).'",'
+ .'"size":"'.htmlEncodeJson($dv->fileSize).'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
 
 if ($isIE and $isIE<=9) {
