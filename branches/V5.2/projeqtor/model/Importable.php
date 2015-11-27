@@ -72,9 +72,10 @@ class Importable extends SqlElement {
 	// ============================================================================**********
 	public static function import($fileName, $class){
 		require_once '../external/XLSXReader/XLSXReader.php';
-		$extension=substr(strrchr($fileName,'.'),1) ;
+		$extension=pathinfo($fileName, PATHINFO_EXTENSION); // get the real file extension
 		if (isset($_REQUEST['fileType'])) {
 		  $fileType=$_REQUEST['fileType'];
+		  $fileType=preg_replace('/[^a-zA-Z0-9-_]/','', $fileType); // only allow [a-z,A-Z,-,_] for file extension
 		} else {
 			$fileType=$extension;
 		}
