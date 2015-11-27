@@ -95,19 +95,19 @@ class Favorite extends SqlElement {
       $orientation=$rpt['orientation'];
       $favorite=$rpt['favoriteObject'];
       
-      echo '<tr id="favoriteRow' . $favorite->id. '" class="dojoDndItem" dndType="favoriteReports" style="height:10px;">';
+      echo '<tr id="favoriteRow' . htmlEncode($favorite->id). '" class="dojoDndItem" dndType="favoriteReports" style="height:10px;">';
       echo '<td class="dojoDndHandle handleCursor" style="vertical-align:top;"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;</td>';
       echo '<td style="width:20px;vertical-align:top;">';
-      echo '<img class="roundedButtonSmall" src="../view/css/images/smallButtonRemove.png" onClick="removeFavoriteReport(' . $favorite->id. ');" />';
-      echo '<input type="hidden" name="favoriteReport' . $favorite->id. '" id="favoriteReport' . $favorite->id. '" value="0" />';
+      echo '<img class="roundedButtonSmall" src="../view/css/images/smallButtonRemove.png" onClick="removeFavoriteReport(' . htmlEncode($favorite->id). ');" />';
+      echo '<input type="hidden" name="favoriteReport' . htmlEncode($favorite->id). '" id="favoriteReport' . htmlEncode($favorite->id). '" value="0" />';
       echo '</td>';
       echo '<td  style="vertical-align:top;">';
       $cmd="dojo.byId('favoriteForm').reportName.value='". htmlEncode(i18n($rpt['name']),'quotes')."';";
       $cmd.="showPrint('../report/$fileName$urlParam', 'favorite',null,null,'$orientation');";   
       echo '<div class="selectableList" onClick="'.$cmd.'">'.i18n($rpt['name']).'</div>';
       echo '<input type="hidden" style="width:100px"
-       id="favoriteReportOrder' . $favorite->id. '" name="favoriteReportOrder' . $favorite->id. '"
-       value="' . $favorite->sortOrder. '"/>';
+       id="favoriteReportOrder' . htmlEncode($favorite->id). '" name="favoriteReportOrder' . htmlEncode($favorite->id). '"
+       value="' . htmlEncode($favorite->sortOrder). '"/>';
       echo '</td>';
       echo '<td style="padding:2px 5px 0px 5px;font-size:80%;vertical-align:top;">';
       echo ReportParameter::displayParameters($paramsFavorite);
