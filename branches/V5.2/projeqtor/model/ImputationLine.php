@@ -594,21 +594,21 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;"></TD>';
 		echo '  <TD class="ganttLeftTitle" style="text-align: left; '
 		. 'border-left:0px; " nowrap>' .  i18n('colTask') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
 		. i18n('colStart') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
 		. i18n('colEnd') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colAssigned') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colReal') . '</TD>';
 		$curDate=$startDate;
 		for ($i=1; $i<=$nbDays; $i++) {
-			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
+			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;max-width:'.$inputWidth.'px;overflow:hidden;';
 			if ($today==$curDate) {
-				echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;"';
+				echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;';
 			} else if (isOffDay($curDate,$cal)) {
-				echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;"';
+				echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;';
 			}
 			echo '">';
 			if ($rangeType=='week') {
@@ -620,9 +620,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</TD>';
 			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 		}
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colLeft') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colReassessed') . '</TD>';
 		echo '</TR>';
 		if (! $print) {

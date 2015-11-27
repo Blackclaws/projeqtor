@@ -888,12 +888,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col)).'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;">';
+          $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
             if ($preseveHtmlFormatingForPDF) {
               $val='<div>'.$val.'</div>';
             } else {
-              $val=str_replace(array('<div>','</div>'),array('<br/>',''), $val);
-              $val=strip_tags($val,'<br><br/><font><b>');
+              $val=htmlEncode($val,'pdf'); // remove all tags but line breaks
             }            
           }
           echo $val.'&nbsp;';

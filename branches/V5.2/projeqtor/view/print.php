@@ -191,7 +191,7 @@
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->pdf->SetMargins(10,10,10,10);
-      $html2pdf->setDefaultFont('helvetica');
+      $html2pdf->setDefaultFont('freesans');
       //$html2pdf->setDefaultFont('courier');
       //$html2pdf->setDefaultFont('helvetica');
       //$html2pdf->setDefaultFont('arial');

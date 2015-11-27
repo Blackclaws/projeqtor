@@ -41,14 +41,15 @@ echo '<td width="20%" class="reportTableHeader">'.i18n('colDate').'</td>';
 echo '<td width="20%" class="reportTableHeader">'.i18n('colSize').'</td>';
 echo '<td width="10%" class="reportTableHeader"></td>';
 echo '</tr>';
-$list=Logfile::getList();
-foreach ($list as $file) {
+$list=Logfile::getList(true);
+setSessionValue('logFilesList', $list);
+foreach ($list as $id=>$file) {
   echo '<tr>';
   echo '<td class="reportTableData" style="text-align:left;padding:0px 10px">'.$file['name'].'</td>';
   echo '<td class="reportTableData" style="padding:0px 10px">'.htmlFormatDateTime($file['date'],false).'</td>';
   echo '<td class="reportTableData">'.byteSize($file['size']).'</td>';
   echo '<td class="reportTableData">';
-  echo '<a href="../tool/download.php?class=Logfile&id=' . $file['name'] . '" target="printFrame" title="' . i18n('helpDownload') . '">';
+  echo '<a href="../tool/download.php?class=Logfile&id=' . $id . '" target="printFrame" title="' . i18n('helpDownload') . '">';
   echo '<img src="../view/css/images/smallButtonDownload.png" class"roundedButtonSmall" onClick=""/>';
   echo '</a>&nbsp;&nbsp;';
   echo '<img style="cursor:pointer" src="../view/css/images/display.png" class"roundedButtonSmall" title="'. i18n('helpLogfile').'" onClick="showLogfile(\''.$file['name'].'\');" />';
