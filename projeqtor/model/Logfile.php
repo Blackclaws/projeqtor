@@ -40,7 +40,8 @@ class Logfile
       if ($this->name) {
         $dir=self::getDir();
         $filepath=$dir."/".$this->name;
-        if (is_file($filepath) and substr($this->name,0,1)!='.') {
+        if (is_file($filepath) and substr($this->name,0,1)!='.' and and substr($this->name,0,1)!='/' 
+            and substr($this->name,-4)=='.log') {
           $dt=filemtime ($filepath);
           $this->date=date('Y-m-d H:i',$dt);
           $this->size=filesize($filepath);
