@@ -104,7 +104,7 @@ class Team extends SqlElement {
 	      $result .= ' title="' . i18n('affectTeamMembers') . '" >';
 	      $result .= '<span>' . i18n('affectTeamMembers') . '</span>';
 	      $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-	      $result .=  '  affectTeamMembers(' . $this->id . ');';
+	      $result .=  '  affectTeamMembers(' . htmlEncode($this->id) . ');';
 	      $result .= '</script>';
 	      $result .= '</button>';
 	      return $result;
