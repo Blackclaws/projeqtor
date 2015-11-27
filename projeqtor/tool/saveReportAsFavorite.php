@@ -47,7 +47,7 @@ $item->idle=0;
 $lst=$item->getSqlElementsFromCriteria(array('idUser'=>$user->id));
 $item->sortOrder=count($lst)+1;
 $result=$item->save();
-$rpt=new Report($reportId);
+$rpt=new Report($reportId); // validated to be numeric value in SqlElement base constructor.
 $params=FavoriteParameter::returnReportParameters($rpt,true);
 if (isset($params['period']) and isset($_REQUEST['periodScale']) and isset($_REQUEST['periodValue'])) {
   unset($params['period']);
