@@ -615,7 +615,7 @@ abstract class SqlElement {
 				$returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
 				$returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
 			}
-			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
 			return $returnValue;
 		}
@@ -766,14 +766,14 @@ abstract class SqlElement {
 		}
 		// Prepare return data
 		if ($returnStatus!="ERROR") {
-			$returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultInserted');
+			$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultInserted');
 		} else {
 			$returnValue=Sql::$lastQueryErrorMessage;
 		}
 		if ($returnStatus=="OK") {
 			$returnValue .= '${mailMsg}';
 		}
-		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="insert" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus . '" />';
 		return $returnValue;
@@ -942,7 +942,7 @@ abstract class SqlElement {
 						$returnStatus = 'NO_CHANGE';
 					}
 				} else {
-					$returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultUpdated');
+					$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultUpdated');
 					$returnStatus='OK';
 				}
 			} else {
@@ -972,14 +972,14 @@ abstract class SqlElement {
 				$returnValue=Sql::$lastQueryErrorMessage;
 			}
 			if ($returnStatus=="OK") {
-				$returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultUpdated');
+				$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultUpdated');
 			}
 		}
 		if ($returnStatus=="OK") {
 			$returnValue .= '${mailMsg}';
 		}
 		// Prepare return data
-		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus . '" />';
 		return $returnValue;
@@ -1045,7 +1045,7 @@ abstract class SqlElement {
 			  $returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
 			  $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
 			}
-			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
 			
 			return $returnValue;
@@ -1156,12 +1156,12 @@ abstract class SqlElement {
 		}
 		if ($returnValue=='') { // If $returnValue set from sub object, do not override with possibly empty.
   		if ($returnStatus!="ERROR") {
-  			$returnValue=i18n($class) . ' #' . $this->id . ' ' . i18n('resultDeleted');
+  			$returnValue=i18n($class) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultDeleted');
   		} else  { 
   			$returnValue=Sql::$lastQueryErrorMessage;
   		}
 		}	
-		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="delete" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
 		$returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
@@ -1209,7 +1209,7 @@ abstract class SqlElement {
 		} else {
 			$returnValue=Sql::$lastQueryErrorMessage;
 		}
-		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="delete" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
 		$returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
@@ -1239,7 +1239,7 @@ abstract class SqlElement {
 		} else {
 			$returnValue=Sql::$lastQueryErrorMessage;
 		}
-		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
 		$returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
@@ -1341,8 +1341,8 @@ abstract class SqlElement {
 		}
 		$result=$newObj->saveSqlElement();
 		if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-			$returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
-			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $newObj->id . '" />';
+			$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
+			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($newObj->id) . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="copy" />';
 			$returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
 		} else {
@@ -1468,8 +1468,8 @@ abstract class SqlElement {
 		}
 		$result=$newObj->save();
 		if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-			$returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
-			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $newObj->id . '" />';
+			$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
+			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($newObj->id) . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="copy" />';
 			$returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
 		} else {
@@ -1836,7 +1836,7 @@ abstract class SqlElement {
 						if (array_key_exists($formField,$_REQUEST)) {
 							//if field is hidden, must check value, otherwise just check existence
 							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
-								$this->$key = $_REQUEST[$formField];
+								$this->$key = self::checkValidBoolean($_REQUEST[$formField]);
 							} else {
 								$this->$key = 1;
 							}
@@ -1850,15 +1850,17 @@ abstract class SqlElement {
 							$formFieldBis = get_class($this) . '_' . $key . "Bis" . $ext;
 						}
 						if (isset($_REQUEST[$formFieldBis])) {
+							$test=self::checkValidDateTime($_REQUEST[$formField]);
+							$test=self::checkValidDateTime($_REQUEST[$formFieldBis]);
 							$this->$key = $_REQUEST[$formField] . " ";
-                            if (substr($_REQUEST[$formFieldBis],0,1)=='T') {
-							  $this->$key .= substr($_REQUEST[$formFieldBis],1);
-                            } else {
-                              $this->$key .= $_REQUEST[$formFieldBis];
-                            }
+              if (substr($_REQUEST[$formFieldBis],0,1)=='T') {
+ 							  $this->$key .= substr($_REQUEST[$formFieldBis],1);
+              } else {
+							  $this->$key .= $_REQUEST[$formFieldBis];
+              }
 						} else {
 							//hidden field
-							if (isset($_REQUEST[$formField])) {
+							if (isset($_REQUEST[$formField])) {							
 								$this->$key = $_REQUEST[$formField];
 							}
 						}
@@ -1872,9 +1874,14 @@ abstract class SqlElement {
 						}
 					} else if ($dataType=='time') {
 						if (array_key_exists($formField,$_REQUEST)) {
+						  $test=self::checkValidDateTime($_REQUEST[$formField]);
 							$this->$key=substr($_REQUEST[$formField],1);
 						}
-
+					} else if ($dataType=='date') {
+					  $test=self::checkValidDateTime($_REQUEST[$formField]);
+					// TODO : check validity for other formats
+					// done : boolean, date, time, datetime
+					// todo : varchar <=4000, vachar >4000, numeric, and verify other possible formats
 					} else {
 						if (array_key_exists($formField,$_REQUEST)) {
 							$this->$key = $_REQUEST[$formField];
@@ -2164,9 +2171,9 @@ abstract class SqlElement {
 				continue;
 			}
 			$result.='<th';
-			$result.=' field="'.$col->field.'"';
+			$result.=' field="'.htmlEncode($col->field).'"';
 			$result.=' width="'.(($col->field=='name')?'auto':$col->widthPct.'%').'"';
-			$result.=($col->formatter)?' formatter="'.$col->formatter.'"':'';
+			$result.=($col->formatter)?' formatter="'.htmlEncode($col->formatter).'"':'';
 			$result.=($col->_from)?' from="'.$col->_from.'"':'';
 			$result.=($col->hidden)?' hidden="true"':'';
 			$result.='>'.$col->_displayName.'</th>'."\n";
@@ -2445,7 +2452,7 @@ abstract class SqlElement {
 					$colScript .= '   refreshList("idActivity","idProject", this.value);';
 				}
 				if ($colName=='idProject' and property_exists($this,'idResource')) {
-					$colScript .= '   refreshList("idResource","idProject", this.value, "' . $this->idResource. '");';
+					$colScript .= '   refreshList("idResource","idProject", this.value, "' . htmlEncode($this->idResource). '");';
 				}
 				if ($colName=='idProject' and property_exists($this,'idProduct')) {
 					//$colScript .= 'alert("1");';
@@ -3426,7 +3433,7 @@ abstract class SqlElement {
 		$tableEnd='</table>';
 		$msg=$tableStart;
 		$ref=$this->getReferenceUrl();
-		$msg.='<tr><td colspan="3" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
+		$msg.='<tr><td colspan="3" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.htmlEncode($this->id).'</a></td></tr>';
 		$nobr=false;
 		foreach ($this as $col => $val) {
 			$hide=false;
@@ -3483,7 +3490,7 @@ abstract class SqlElement {
 				if (is_object($val)) {
 					if (get_class($val)=='Origin') {
 						if ($val->originType and $val->originId) {
-							$val=i18n($val->originType) . ' #'.$val->originId.' : '. SqlList::getNameFromId($val->originType, $val->originId);
+							$val=i18n($val->originType) . ' #'.htmlEncode($val->originId).' : '. htmlEncode(SqlList::getNameFromId($val->originType, $val->originId));
 						} else {
 							$val="";
 						}
@@ -4041,7 +4048,7 @@ abstract class SqlElement {
 	    }
 	  }
 	  return $result;
-	}
+	} 
 	 
 	public static function checkValidClass($className) {
 	  if (!file_exists('../model/'.$className.'.php')) {
@@ -4058,6 +4065,13 @@ abstract class SqlElement {
 	  }
 	  return $id;
 	}
-	
+	public static function checkValidBoolean($boolean) {
+	  // TODO check that $boolean is a valid boolean
+	  return $boolean;
+	}
+	public static function checkValidDateTime($dateTime) {
+	  // TODO check that $dateTime is a valid dateTime
+	  return $dateTime;
+	}
 }
 ?>
