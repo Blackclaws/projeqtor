@@ -796,7 +796,7 @@ class PlannedWork extends GeneralWork {
     		$ass=new Assignment($assId);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
-    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' : '.$oName; 
+    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName; 
     	}	
     	//$result.='</div>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
