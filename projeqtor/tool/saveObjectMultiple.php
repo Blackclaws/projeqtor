@@ -39,6 +39,8 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $className=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($className);
+
 if (! array_key_exists('selection',$_REQUEST)) {
   throwError('selection parameter not found in REQUEST');
 }
@@ -148,7 +150,7 @@ foreach ($selectList as $id) {
 	if (property_exists($item, 'locked') and $item->locked) {
 		Sql::rollbackTransaction();
     $cptWarning++;
-    echo '<td><span class="messageWARNING" >' . i18n($className) . " #" . $item->id . ' '.i18n('colLocked'). '</span></td>';
+    echo '<td><span class="messageWARNING" >' . i18n($className) . " #" . htmlEncode($item->id) . ' '.i18n('colLocked'). '</span></td>';
 		continue;
 	}
 	$typeField='id'.$className.'Type';
