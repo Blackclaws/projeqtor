@@ -279,6 +279,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         echo "dojo.byId('menuActualStatus').value='';";
       } else if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) ) {
         $class=$_REQUEST['objectClass'];
+		    SqlElement::checkValidClass($class);
         $id=$_REQUEST['objectId'];
         if (array_key_exists('directAccess', $_REQUEST)) {
         	echo "noDisconnect=true;";
