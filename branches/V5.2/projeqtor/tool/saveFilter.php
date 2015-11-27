@@ -99,7 +99,7 @@ if (! $name) {
   }
 }
 echo '<table width="100%"><tr><td align="center" >';
-echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.$filter->id.')</span>';
+echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.htmlEncode($filter->id).')</span>';
 echo '</td></tr></table>';
 
 $flt=new Filter();
