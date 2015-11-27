@@ -65,9 +65,9 @@ if (array_key_exists('displayOnlyCurrentWeekMeetings',$_REQUEST)) {
 Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displayOnlyCurrentWeekMeetings);
 ?>
 <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
-  <input type="hidden" name="userId" id="userId" value="<?php echo $userId;?>"/>
-  <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
-  <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
+  <input type="hidden" name="userId" id="userId" value="<?php echo htmlEncode($userId);?>"/>
+  <input type="hidden" name="rangeType" id="rangeType" value="<?php echo htmlEncode($rangeType);?>"/>
+  <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo htmlEncode($rangeValue);?>"/>
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
   <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />

@@ -61,7 +61,7 @@ require_once "../tool/formatter.php";
   <div id="formPluginDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-y:auto;"> 
     <form dojoType="dijit.form.Form" id="pluginForm" jsId="pluginForm" name="pluginForm" encType="multipart/form-data" method="POST" 
     <?php if ($isIE and $isIE<=9) {?>
-    action="../tool/uploadPlugin.php?isIE=<?php echo $isIE;?>"
+    action="../tool/uploadPlugin.php?isIE=<?php echo htmlEncode($isIE);?>"
     target="pluginPost"
     onSubmit="uploadPlugin();"
     <?php }?> 
@@ -224,12 +224,12 @@ function displayInstalledPlugin() {
     echo '</tr>';
     foreach ($plList as $plugin) {
       echo '<tr>';
-      echo '<td class="noteData">'.$plugin->name.'</td>';
-      echo '<td class="noteData">'.$plugin->description.'</td>';
-      echo '<td class="noteData">V'.$plugin->pluginVersion.'</td>';
+      echo '<td class="noteData">'.htmlEncode($plugin->name).'</td>';
+      echo '<td class="noteData">'.htmlEncode($plugin->description).'</td>';
+      echo '<td class="noteData">V'.htmlEncode($plugin->pluginVersion).'</td>';
       echo '<td class="noteData" style="text-align:center">'.htmlFormatDate($plugin->deploymentDate,true).'</td>';
-      echo '<td class="noteData" style="text-align:center">'.$plugin->deploymentVersion.'</td>';
-      echo '<td class="noteData" style="text-align:center">'.$plugin->compatibilityVersion.'</td>';
+      echo '<td class="noteData" style="text-align:center">'.htmlEncode($plugin->deploymentVersion).'</td>';
+      echo '<td class="noteData" style="text-align:center">'.htmlEncode($plugin->compatibilityVersion).'</td>';
       echo '</tr>';
     }
   }
