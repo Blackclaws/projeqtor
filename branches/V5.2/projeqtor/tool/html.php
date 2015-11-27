@@ -446,7 +446,9 @@ function htmlGetCrossTable($lineObj, $columnObj, $pivotObj) {
       if (array_key_exists($name,$_REQUEST)) {
         $val=$_REQUEST[$name];
       }
-      $result[$lineId][$colId]=$val;
+      // Note: this needs an in-depth security review - seems to allow arbitrary manipulations of values (including access rights) by calls to saveParameter.php
+      // TODO (SECURITY) : check validity of returned values
+      $result[$lineId][$colId]=$val; 
     }
   }
   return $result;
@@ -782,7 +784,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
     echo '<td style="cursor:pointer;font-size:8pt;font-style:italic;' 
            . '"' 
            . ' class="filterData" '
-           . 'onClick="selectStoredFilter(\'0\',\'' . $context . '\');" ' 
+           . 'onClick="selectStoredFilter(\'0\',\'directFilterList\');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
            . i18n("noFilterClause")
            . "</td>";
@@ -793,15 +795,15 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
       echo "<tr>";
       echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter and $context=='directFilterList')?'color:white; background-color: grey;':'cursor: pointer;') . '"' 
            . ' class="filterData" '
-           //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" ')
-           . 'onClick="selectStoredFilter(\'' . $filter->id . '\',\'' . $context . '\');" ' 
+           //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . htmlEncode($filter->id) . "'" . ');" ')
+           . 'onClick="selectStoredFilter(\'' . htmlEncode($filter->id) . '\',\'' . htmlEncode($context) . '\');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
            . htmlEncode($filter->name)
            . ( ($defaultFilter==$filter->id and $context!='directFilterList')?' (' . i18n('defaultValue') . ')':'')
            . "</td>";
       if ($context!='directFilterList') {
         echo "<td class='filterData' style='text-align: center;'>";      
-        echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removeStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
         echo "</td>";
       }
       echo "</tr>";
@@ -881,7 +883,7 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   $res=$val;
   if (strpos($res, '.')!==false) {
-    $res=rtrim($res,'0');
+    $res=trim($res,'0');
   }
   if (substr($res, -1)=='.') {
     $res=trim($res,'.');
@@ -906,7 +908,7 @@ function htmlDrawLink($obj, $display=null) {
 	$canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
 	$disp=htmlencode(($display)?$display:$obj->name);
 	if ($canRead) {
-	  $result='<a class="link" onClick="gotoElement(\'' . get_class($obj) .'\',\''. $obj->id .'\');">' . $disp . '</a>';
+	  $result='<a class="link" onClick="gotoElement(\'' . get_class($obj) .'\',\''. htmlEncode($obj->id) .'\');">' . $disp . '</a>';
 	} else {
 		$result=$disp;
 	}  
