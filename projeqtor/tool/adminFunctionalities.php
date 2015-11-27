@@ -25,6 +25,10 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 require_once "../tool/projeqtor.php";
+if (securityGetAccessRightYesNo('menuAdmin','read')!='YES') {
+  traceHack ( "admin functionality reached without access right" );
+  exit ();
+}
 scriptLog("adminFunctionalities.php");
 if (array_key_exists('adminFunctionality', $_REQUEST)) {
 	$adminFunctionality=$_REQUEST['adminFunctionality'];
@@ -33,13 +37,16 @@ if (! isset($adminFunctionality)) {
 	echo "ERROR - functionality not defined";
 	return;
 }
-if (securityGetAccessRightYesNo('menuAdmin','read')!='YES') {
-  traceHack ( "admin functionality reached without access right" );
-  exit ();
-}
 
 Sql::beginTransaction();
 $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
+if (preg_match('/[^0-9]/', $nbDays) == true)
+{
+	Sql::rollbackTransaction();
+	traceHack("invalid nbDays value - $nbDays");
+	exit;
+}
+
 if ($adminFunctionality=='sendAlert') {
 	$result=sendAlert();
 } else if ($adminFunctionality=='maintenance') {
@@ -51,7 +58,14 @@ if ($adminFunctionality=='sendAlert') {
 	}
 	if ($element=='*') {
 		$element=null;
-	}	else {
+	}
+	else {
+		if (preg_match('/[^0-9]/', $element) == true)
+		{
+			traceHack("invalid element value - $element");
+			Sql::rollbackTransaction();
+			exit;
+		}
 		if (intval($element)>0) {
 			$elt=new Referencable($element);
 			$element=$elt->name;
@@ -74,12 +88,26 @@ if ($adminFunctionality=='sendAlert') {
   }
 } else if ($adminFunctionality=='setApplicationStatusTo') { 
 	$newStatus=$_REQUEST['newStatus'];
+	if (preg_match('/[^0-9a-zA-Z]/', $newStatus) == true)
+	{
+		traceHack("invalid newStatus value - $newStatus");
+		Sql::rollbackTransaction();
+		exit;
+	}
 	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'applicationStatus');
   $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
   $obj->parameterValue=$newStatus;
   $result=$obj->save();
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'msgClosedApplication'));
-  $param->parameterValue=$_REQUEST['msgClosedApplication'];
+  
+  $msgClosedApplication=$_REQUEST['msgClosedApplication'];
+  if (preg_match('/[^0-9a-zA-Z]/', $msgClosedApplication) == true)
+  {
+	traceHack("invalid msgClosedApplication value - $msgClosedApplication");
+	Sql::rollbackTransaction();
+	exit;
+  }
+  $param->parameterValue=$msgClosedApplication;
   $param->save();
   Parameter::clearGlobalParameters();
 } else {
@@ -91,11 +119,27 @@ displayLastOperationStatus($result);
 
 function sendAlert(){
   $alertSendTo=(array_key_exists('alertSendTo', $_REQUEST))?$_REQUEST['alertSendTo']:'';
+  if (preg_match('/[^0-9a-zA-Z*]/', $alertSendTo) == true) {
+	  traceHack("invalid alertSendTo value - $alertSendTo");
+	  Sql::rollbackTransaction();
+	  exit;
+  }
   $alertSendDate=(array_key_exists('alertSendDate', $_REQUEST))?$_REQUEST['alertSendDate']:'';
+  if (preg_match('/[^0-9-]/', $alertSendDate) == true) {
+	  traceHack("invalid alertSendDate value - $alertSendDate");
+	  Sql::rollbackTransaction();
+	  exit;
+  }
   $alertSendTime=(array_key_exists('alertSendTime', $_REQUEST))?$_REQUEST['alertSendTime']:'';
-  $alertSendType=(array_key_exists('alertSendType', $_REQUEST))?$_REQUEST['alertSendType']:'';
-  $alertSendTitle=(array_key_exists('alertSendTitle', $_REQUEST))?$_REQUEST['alertSendTitle']:'';
-  $alertSendMessage=(array_key_exists('alertSendMessage', $_REQUEST))?$_REQUEST['alertSendMessage']:'';
+  if (preg_match('/[^0-9:]/', $alertSendTime) == true) {
+	  traceHack("invalid alertSendTime value - $alertSendTime");
+	  Sql::rollbackTransaction();
+	  exit;
+  }
+
+  $alertSendType=(array_key_exists('alertSendType', $_REQUEST))?$_REQUEST['alertSendType']:''; // Note: escaped before use using htmlspecialchars().
+  $alertSendTitle=(array_key_exists('alertSendTitle', $_REQUEST))?$_REQUEST['alertSendTitle']:''; // Note: escaped before use using htmlspecialchars().
+  $alertSendMessage=(array_key_exists('alertSendMessage', $_REQUEST))?$_REQUEST['alertSendMessage']:''; // Note: escaped before use using htmlspecialchars().
   $ctrl="";
   if (! trim($alertSendTitle)) {
     $ctrl.= i18n("messageMandatory", array(i18n('colTitle'))).'<br/>';
@@ -125,11 +169,11 @@ function sendAlert(){
   foreach ($lstUser as $id=>$name) {
  	  $alert=new Alert();
  	  $alert->idUser=$id;
-    $alert->alertType=$alertSendType;
+    $alert->alertType=htmlspecialchars($alertSendType,ENT_QUOTES,'UTF-8');
     $alert->alertInitialDateTime=$alertSendDate . " " . substr($alertSendTime,1);
     $alert->alertDateTime=$alertSendDate . " " . substr($alertSendTime,1);
-    $alert->title=ucfirst(i18n($alertSendType)) . ' - ' . $alertSendTitle;
-    $alert->message=$alertSendMessage;  
+    $alert->title=htmlspecialchars((ucfirst(i18n($alertSendType)) . ' - ' . $alertSendTitle),ENT_QUOTES,'UTF-8');
+    $alert->message=htmlspecialchars($alertSendMessage,ENT_QUOTES,'UTF-8');
     $alert->save();
   }
   $returnValue= i18n('sentAlertTo',array(count($lstUser)));
@@ -142,13 +186,19 @@ function sendAlert(){
 function maintenance() {
 	$operation=(array_key_exists('operation', $_REQUEST))?$_REQUEST['operation']:'';
 	$item=(array_key_exists('item', $_REQUEST))?$_REQUEST['item']:'';
-	$nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'0';
+	$nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'0'; // Note: already filtered at top of file.
 	$ctrl="";
   if (! trim($operation) or ($operation!='delete' and $operation!='close' and $operation!='read')) {
     $ctrl.='ERROR<br/>';
+	traceHack("invalid operation value - $operation");
+	Sql::rollbackTransaction();
+	exit;
   }
   if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit' and $item!="Logfile")) {
     $ctrl.='ERROR<br/>';
+	traceHack("invalid item value - $item");
+	Sql::rollbackTransaction();
+	exit;
   }
   if ( trim($nbDays)=='' or (intval($nbDays)=='0' and $nbDays!='0')) {
     $ctrl.= i18n("messageMandatory", array(i18n('days'))) .'<br/>';
