@@ -4041,6 +4041,23 @@ abstract class SqlElement {
 	    }
 	  }
 	  return $result;
-	} 
+	}
+	 
+	public static function checkValidClass($className) {
+	  if (!file_exists('../model/'.$className.'.php')) {
+	    traceHack("Invalid class name '$className'");
+	  }
+	  if (! is_a($className, 'SqlElement', true )) {
+	    traceHack("Class '$className' does not extend SqlElement");
+	  }
+	  return $className;
+	}
+	public static function checkValidId($id) {
+	  if (! is_numeric($id)) {
+	    traceHack("Id '$id' is not numeric");
+	  }
+	  return $id;
+	}
+	
 }
 ?>

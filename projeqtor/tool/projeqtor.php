@@ -2699,7 +2699,7 @@ function is_session_started() {
 function getEditorType() {
   // Todo : use parameter (user or global)
   // Default should be CK ?
-  //return "DOJO";
+  // return "DOJO";
   return "CK";
   
 }

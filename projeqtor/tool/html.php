@@ -565,6 +565,19 @@ function htmlEncode($val,$context="default") {
     $str=htmlspecialchars(htmlspecialchars($str,ENT_QUOTES,'UTF-8'),ENT_QUOTES,'UTF-8');
     $str=str_replace( array("\r\n","\n","\r"), array('<br/>','<br/>','<br/>'),$str);
     return $str;
+  } else if ($context=="formatted") { // For long text, html format must be preserved but <script> must be removed (Mandatory for Editor fields)
+    // Step one : remove <script> tags
+    $str = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $val);
+    // Step two : if some dangerous scripting capacitites still exist : replace text by warning image
+    $test=strtolower($str);
+    if (strpos($test,'<script')!==false or strpos($test,'onmouseover')!==false) {
+      $str='<img src="../view/img/error.png"/><br/>'.i18n('textHiddenForSecurity');
+    }
+    return $str;
+  } else if ($context=="pdf") {
+    $str=str_replace(array('</div>','</p>'),array('</div><br/>','</p><br/>'), $val);
+    $str=strip_tags($str,'<br><br/><font><b>');
+    return $str;
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
@@ -868,7 +881,7 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   $res=$val;
   if (strpos($res, '.')!==false) {
-    $res=trim($res,'0');
+    $res=rtrim($res,'0');
   }
   if (substr($res, -1)=='.') {
     $res=trim($res,'.');
