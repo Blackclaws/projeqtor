@@ -35,6 +35,8 @@ if (! array_key_exists('otherVersionRefType',$_REQUEST)) {
   throwError('otherVersionRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['otherVersionRefType'];
+SqlElement::checkValidClass($refType);
+
 if (! array_key_exists('otherVersionRefId',$_REQUEST)) {
   throwError('otherVersionRefId parameter not found in REQUEST');
 }
