@@ -149,7 +149,7 @@ function drawTableFromObjectList($objectList) {
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
 				echo ' type="text" maxlength="5" ';
 				echo ' style="width:50px; text-align: center;" class="input" ';
-				echo ' value="T' . $obj->parameterValue . '" ';
+				echo ' value="T' . htmlEncode($obj->parameterValue) . '" ';
 				echo ' hasDownArrow="false" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);
@@ -161,7 +161,7 @@ function drawTableFromObjectList($objectList) {
 				echo ($format=='longnumber')?' style="width: 100px;" ':' style="width: 50px;" ';
 				//echo ' constraints="{places:\'0\'}" ';
 				echo ' class="input" ';
-				echo ' value="' .  $obj->parameterValue  . '" ';
+				echo ' value="' .  htmlEncode($obj->parameterValue)  . '" ';
 				echo ' >';
 				echo NumberFormatter52::completeKeyDownEvent($obj->getValidationScript($code));
 				echo '</div>';
@@ -172,7 +172,7 @@ function drawTableFromObjectList($objectList) {
 				echo ' style="width: 200px;" ';
 				echo ' class="input" ';
 				if ($format=='password') echo ' type="password" ';
-				echo ' value="' .  $obj->parameterValue  . '" ';
+				echo ' value="' .  htmlEncode($obj->parameterValue)  . '" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);
 				echo '</div>';
@@ -190,7 +190,7 @@ function drawTableFromObjectList($objectList) {
 			  echo "</td></tr>";
 			  $user=getSessionUser();
 			  $user->drawSpecificItem('image');
-			  echo '<input type="hidden" id="objectId" value="'.$user->id.'"/>';
+			  echo '<input type="hidden" id="objectId" value="'.htmlEncode($user->id).'"/>';
 			  echo '<input type="hidden" id="objectClass" value="User"/>';
 			  echo '<input type="hidden" id="parameter" value="true"/>';
 			  echo "<tr><td></td><td>";
