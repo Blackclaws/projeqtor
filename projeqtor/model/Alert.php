@@ -151,7 +151,7 @@ class Alert extends SqlElement {
     } else {
       $returnValue=Sql::$lastQueryErrorMessage;
     }
-    $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+    $returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($this->id) . '" />';
     $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
     $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
     $returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
