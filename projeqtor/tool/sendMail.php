@@ -61,6 +61,7 @@
   	$result=($dest!='' and $dest!='0')?'OK':'';
   } else if ($typeSendMail=="Mailable") {
   	$class=$_REQUEST['mailRefType'];
+	  SqlElement::checkValidClass($class);
   	if ($class=='TicketSimple') {$class='Ticket';}
   	$id=$_REQUEST['mailRefId'];
   	$mailToContact=(array_key_exists('dialogMailToContact', $_REQUEST))?true:false;
