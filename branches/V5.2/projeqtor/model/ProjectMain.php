@@ -442,14 +442,14 @@ class ProjectMain extends SqlElement {
 	    		  . ' title="'.i18n('flashReport').'"'
 	          . ' iconClass="iconFlash" >'
 	          . ' <script type="dojo/connect" event="onClick" args="evt">'
-	          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'");'
+	          . '  showPrint("../report/projectFlashReport.php?idProject='.htmlEncode($this->id).'");'
 	          . ' </script>'
 	          . '</button>'  
 	          . '<button id="printButtonPefRf" dojoType="dijit.form.Button" showlabel="false"'
 	          . ' title="'.i18n('flashReport').'"'
 	          . ' iconClass="iconFlashPdf" >'
 	          . ' <script type="dojo/connect" event="onClick" args="evt">'
-	          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'", null, null, "pdf");'
+	          . '  showPrint("../report/projectFlashReport.php?idProject='.htmlEncode($this->id).'", null, null, "pdf");'
 	          . ' </script>'
 	          . '</button>'  
 	          . '</div>';
@@ -527,9 +527,9 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
           if ($selectField==null) {
             $result .= '<td class="display"  NOWRAP>' . htmlDrawLink($prj);
           } else if (! $reachLine) {
-            $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . $prj->name . '</div>';
+            $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . htmlEncode($prj->name) . '</div>';
           } else {
-            $clickEvent=' onClick=\'setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
+            $clickEvent=' onClick=\'setSelectedProject("' . htmlEncode($prj->id) . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
             $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
             $result .= htmlEncode($prj->name);
             $result .= '</div>';
