@@ -30,7 +30,7 @@
 require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
-$scope=$_REQUEST['scope'];
+$scope=$_REQUEST['scope']; // escaped before DB query
 $value=$_REQUEST['value'];
 if ($value=='true') {
   Collapsed::collapse($scope);
