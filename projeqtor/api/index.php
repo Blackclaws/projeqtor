@@ -24,6 +24,12 @@
 * about contributors at http://www.projeqtor.org
 *
 *** DO NOT REMOVE THIS NOTICE ************************************************/
+
+// For security reasons, this code can be disabled to avoid API access
+// To disable API, just add $paramDisableAPI=true; in your parameters.php file
+if (isset($paramDisableAPI) and $paramDisableAPI) {
+  die; 
+}
 $querySyntax='Possible values are :  
 GET    ../api/{objectClass}/{objectId}
        ../api/{objectClass}/all
@@ -71,9 +77,10 @@ if (!$user->id) {
 traceLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
 setSessionUser($user);
 
+// TODO : filter fields coming from REQUEST
 if ($_SERVER['REQUEST_METHOD']=='GET') {
-  if (isset($_REQUEST['uri'])) {
-    $uri=$_REQUEST['uri'];
+  if (isset($_REQUEST['uri'])) { 
+    $uri=htmlEncode($_REQUEST['uri']);
     $split=explode('/',$uri);
     if (count($split>1)) {
     	$class=ucfirst($split[0]);
@@ -205,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 		returnError($invalidQuery, "'data' missing for method ".$_SERVER['REQUEST_METHOD']);
 	}
 	$class="";
-	$uri=$_REQUEST['uri'];
+	$uri=htmlEncode($_REQUEST['uri']);
 	$split=explode('/',$uri);
 	if (count($split>1)) {
 		$class=ucfirst($split[0]);
