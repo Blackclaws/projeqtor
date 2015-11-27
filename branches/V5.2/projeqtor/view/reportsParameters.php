@@ -51,8 +51,8 @@ if (!$idReport) {
   exit;
 }
 $report=new Report($idReport);
-echo "<input type='hidden' id='reportFile' name='reportFile' value='" . $report->file . "' />";
-echo "<input type='hidden' id='reportId' name='reportId' value='" . $report->id . "' />";
+echo "<input type='hidden' id='reportFile' name='reportFile' value='" . htmlEncode($report->file) . "' />";
+echo "<input type='hidden' id='reportId' name='reportId' value='" . htmlEncode($report->id) . "' />";
 $param=new ReportParameter();
 $crit=array('idReport'=>$idReport);
 $listParam=$param->getSqlElementsFromCriteria($crit,false,null,'sortOrder');

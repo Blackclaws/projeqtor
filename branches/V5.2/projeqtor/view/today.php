@@ -74,8 +74,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       	}
         //echo'<br />';
         $type=new MessageType($msg->idMessageType);
-        echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . htmlEncode($msg->name) . '</td></tr>';
-        echo '<tr><td class="messageData" >' . $msg->description . '</td></tr>';
+        echo '<tr><td class="messageHeader" style="color:' . htmlEncode($type->color) . ';">' . htmlEncode($msg->name) . '</td></tr>';
+        echo '<tr><td class="messageData" >' . htmlEncode($msg->description,'formatted') . '</td></tr>';
       }
       echo'</table>';
     }
@@ -540,7 +540,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $goto="";
       if (! $print and securityCheckDisplayMenu(null,$class) 
       and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {
-        $goto=' onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;" ';  
+        $goto=' onClick="gotoElement(' . "'" . $class . "','" . htmlEncode($elt->id) . "'" . ');" style="cursor: pointer;" ';  
       }
       $alertLevelArray=$elt->getAlertLevel(true);
       $alertLevel=$alertLevelArray['level'];
