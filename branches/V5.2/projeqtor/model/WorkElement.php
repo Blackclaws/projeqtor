@@ -351,7 +351,7 @@ class WorkElement extends SqlElement {
 				$result .= ' title="' . $title . '" style="vertical-align: middle;">';
 				$result .= '<span>' . $title . '</span>';
 				$result .= '<script type="dojo/connect" event="onClick" args="evt">';
-				$result .= 'startStopWork("' . (($this->ongoing) ? 'stop' : 'start') . '","' . $this->refType . '",' . $this->refId . ');';
+				$result .= 'startStopWork("' . (($this->ongoing) ? 'stop' : 'start') . '","' . htmlEncode($this->refType) . '",' . htmlEncode($this->refId) . ');';
 				// $result .= ' loadContent("../tool/startStopWork.php?action=' . (($this->ongoing) ? 'stop' : 'start') . '","resultDiv","objectForm",true);';
 				$result .= '</script>';
 				$result .= '</button><br/>';
@@ -393,7 +393,7 @@ class WorkElement extends SqlElement {
 				$result .= ' title="'.i18n('dispatchWork').'" style="max-width:77px;vertical-align: middle;">';
 				$result .= '<span>' . i18n('dispatchWorkShort') . '</span>';
 				$result .= '<script type="dojo/connect" event="onClick" args="evt">';
-				$result .= 'dispatchWork("' . $this->refType . '",' . $this->refId . ');';
+				$result .= 'dispatchWork("' . htmlEncode($this->refType) . '",' . htmlEncode($this->refId) . ');';
 				$result .= '</script>';
 				$result .= '</button>';
 				$result.='</div>';

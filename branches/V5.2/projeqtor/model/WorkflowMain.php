@@ -165,6 +165,7 @@ class WorkflowMain extends SqlElement {
     global $_REQUEST, $print;
     if (array_key_exists('destinationWidth', $_REQUEST)) {
       $detailWidth=$_REQUEST['destinationWidth'];
+	    $detailWidth=preg_replace('/[^0-9]/','', $detailWidth); // only allow digits
       $detailWidth-=40;
       $detailWidth.='px';
     } else {
@@ -461,7 +462,7 @@ class WorkflowMain extends SqlElement {
         $result.='title="'.i18n('workflowParameters').'"'; 
         $result.='iconClass="iconParameter16" style="position:relative;left:-31px;top:12px;">';
         $result.=' <script type="dojo/connect" event="onClick" args="evt">';
-		    $result.='  showWorkflowParameter('.$this->id.');';
+		    $result.='  showWorkflowParameter('.htmlEncode($this->id).');';
         $result.=' </script>';
         $result.='</button>';
       }
@@ -481,7 +482,8 @@ class WorkflowMain extends SqlElement {
     $firstStatusName=current($statusList);
     $firstStatusFound=false;
     $search = 'val_' . $firstStatus . '_';
-    foreach ($_REQUEST as $field=>$value) {
+    foreach ($_REQUEST as $field=>$value) { // Note: this control() function does not seem to be called at all. Not on instances of this class, or of other classes.
+	  error_log("DEBUG: WorkflowMain.php - [field]=>[value]: [$field]=>[$value]");
       if (substr($field,0,strlen($search))==$search) {
         $firstStatusFound=true;
         break;
