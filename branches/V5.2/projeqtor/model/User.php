@@ -796,7 +796,7 @@ class User extends SqlElement {
 	        $obj=new Resource($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.='<b><br/>'.i18n('Resource').' #'.$this->id.' :</b>'.$resultDelete;
+	          $result.='<b><br/>'.i18n('Resource').' #'.htmlEncode($this->id).' :</b>'.$resultDelete;
 	        }
 	    }
 	    // if uncheck isContact must check contact for deletion
@@ -804,7 +804,7 @@ class User extends SqlElement {
 	        $obj=new Contact($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.='<b><br/>'.i18n('Contact').' #'.$this->id.' :</b>'.$resultDelete;
+	          $result.='<b><br/>'.i18n('Contact').' #'.htmlEncode($this->id).' :</b>'.$resultDelete;
 	        }
       }
     }
@@ -813,7 +813,7 @@ class User extends SqlElement {
     }
     $resultDelete=parent::deleteControl();
     if ($result and $resultDelete) {
-      $resultDelete='<b><br/>'.i18n('User').' #'.$this->id.' :</b>'.$resultDelete.'<br/>';
+      $resultDelete='<b><br/>'.i18n('User').' #'.htmlEncode($this->id).' :</b>'.$resultDelete.'<br/>';
     } 
     $result=$resultDelete.$result;
     return $result;
@@ -1147,8 +1147,8 @@ class User extends SqlElement {
     $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
     if ($image->id and $image->isThumbable()) {
       $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
-             . ' title="'.$image->fileName.'" style="cursor:pointer"'
-             . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+             . ' title="'.htmlEncode($image->fileName).'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" />';
     } else {
       $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
     }
@@ -1156,7 +1156,13 @@ class User extends SqlElement {
   }
   
   public function setCookieHash() {
-  	$cookieHash = md5(sha1($this->name . microtime()));
+  	$cookieHash = md5(sha1($this->name . microtime().rand(10000000,99999999))); // not secure - at least use an unknown value such as password...
+	  /* to be checked later on : openssl_random_pseudo_bytes is compatible with PHP >= 5.3
+       Compatibility with PHP 5.2 must be preserved
+    $cookieHash = openssl_random_pseudo_bytes(32, $crypto_strong); // but this is better...
+	  if (!$crypto_strong){
+		  error_log("DEBUG: openssl_random_pseudo_bytes() uses not cryptographiclly secure algorithm for login cookie");
+	  }*/
   	$this->cookieHash=$cookieHash;
   	$domain=$_SERVER['SERVER_NAME'];
   	if ($domain=='localhost') {$domain="";}

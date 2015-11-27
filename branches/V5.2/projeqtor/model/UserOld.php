@@ -283,7 +283,7 @@ class UserOld extends SqlElement {
           $result.='<tr style="height:20px;">';
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
-          $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
+          $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachment('.htmlEncode($image->id).');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
         } else {
           if ($outMode=='pdf') {
             $left=450;
@@ -295,8 +295,8 @@ class UserOld extends SqlElement {
         }
         $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;">'
            . ' <img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
-           . ' title="'.$image->fileName.'" style="cursor:pointer;"'
-           . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
+           . ' title="'.htmlEncode($image->fileName).'" style="cursor:pointer;"'
+           . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" /></div>';
         if (!$print) {
           $result.='</td></tr>';
         }
@@ -896,8 +896,8 @@ class UserOld extends SqlElement {
     $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
     if ($image->id and $image->isThumbable()) {
       $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
-             . ' title="'.$image->fileName.'" style="cursor:pointer"'
-             . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+             . ' title="'.htmlEncode($image->fileName).'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" />';
     } else {
       $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
     }
