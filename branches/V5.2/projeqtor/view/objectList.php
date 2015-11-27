@@ -35,6 +35,7 @@ if (! isset($comboDetail)) {
   $comboDetail=false;
 }
 $objectClass=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($objectClass);
 $objectType='';
 if (array_key_exists('objectType',$_REQUEST)) {
   $objectType=$_REQUEST['objectType'];
@@ -123,7 +124,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
           <tr>
             <td style="text-align:right;" width="5px">
               <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
-              <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo $_REQUEST['objectId'];}?>" />
+              <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo htmlEncode($_REQUEST['objectId']);}?>" />
               <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;
               <?php echo i18n("colId");?>
               &nbsp;</NOBR> 
