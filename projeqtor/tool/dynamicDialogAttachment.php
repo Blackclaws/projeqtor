@@ -33,7 +33,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
   <form id='attachmentForm' name='attachmentForm' 
   ENCTYPE="multipart/form-data" method="POST"
 <?php if ($isIE and $isIE<=9) {?>
-  action="../tool/saveAttachment.php?isIE=<?php echo $isIE;?>"
+  action="../tool/saveAttachment.php?isIE=<?php echo ($isIE?1:0);?>"
   target="resultPost"
   onSubmit="return saveAttachment();"
 <?php }?> 
