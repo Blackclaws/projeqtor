@@ -68,7 +68,7 @@ if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
     $resultStartStop=$newObj->WorkElement->stop();
   }
   if  (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-    $result='<input type="hidden" id="lastSaveId" value="' . $newObj->id .'" /><input type="hidden" id="lastOperation" value="update" /><input type="hidden" id="lastOperationStatus" value="OK" />';
+    $result='<input type="hidden" id="lastSaveId" value="' . htmlEncode($newObj->id) .'" /><input type="hidden" id="lastOperation" value="update" /><input type="hidden" id="lastOperationStatus" value="OK" />';
   } else {
     $result=$resultStartStop;
   }
