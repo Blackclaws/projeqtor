@@ -293,7 +293,7 @@ class Plugin extends SqlElement {
       // Javascript
       $jsFile=$root.'.js';
       if (file_exists($jsFile)) {
-        echo '<script type="text/javascript" src="'.$jsFile.'?version='.$this->pluginVersion.'" ></script>';
+        echo '<script type="text/javascript" src="'.$jsFile.'?version='.htmlEncode($this->pluginVersion).'" ></script>';
       }
       // CSS (style sheet)
       $cssFile=$root.'.css';
