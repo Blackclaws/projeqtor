@@ -4050,7 +4050,7 @@ abstract class SqlElement {
 	  return $result;
 	} 
 	 
-	public static function checkValidClass($className) {
+	public static function checkValidClass($className, $notUsed=null) {
 	  if (!file_exists('../model/'.$className.'.php')) {
 	    traceHack("Invalid class name '$className'");
 	  }
@@ -4066,11 +4066,18 @@ abstract class SqlElement {
 	  return $id;
 	}
 	public static function checkValidBoolean($boolean) {
-	  // TODO check that $boolean is a valid boolean
+	  if (!$boolean or $boolean===false) $boolean=0;
+	  if ($boolean==-1 or $boolean===true) $boolean=1;
+	  if ($boolean!=0 and $boolean!=1) {
+	    traceHack("the value '$boolean' is not a boolean");
+	  }
 	  return $boolean;
 	}
 	public static function checkValidDateTime($dateTime) {
 	  // TODO check that $dateTime is a valid dateTime
+	  /*$f = DateTime::createFromFormat($format, $date);
+    $valid = DateTime::getLastErrors();         
+    return ($valid['warning_count']==0 and $valid['error_count']==0);*/
 	  return $dateTime;
 	}
 }
