@@ -220,7 +220,7 @@ public $_noCopy;
         $disp.=SqlList::getNameFromId('Project', $aff->idProject);
       }
       if ($aff->rate ) {
-        $disp.=' (' . $aff->rate . '%)';
+        $disp.=' (' . htmlEncode($aff->rate) . '%)';
       }
       $result.=htmlDrawLink($aff,$disp);
       $result.= '</td></tr>';
@@ -245,8 +245,8 @@ public $_noCopy;
       	$this->idResource=$this->idUser;
       }
     }
-    //echo " ress=".$this->idResourceSelect." cont=".$this->idContact." user=".$this->idUser;
-    //echo " id=".$this->idResource;
+    //echo " ress=".htmlEncode($this->idResourceSelect)." cont=".htmlEncode($this->idContact)." user=".$this->idUser;
+    //echo " id=".htmlEncode($this->idResource);
     $affectable=new Affectable($this->idResource);
     if ($affectable->isResource) {
       $this->idResourceSelect=$this->idResource;
@@ -268,12 +268,12 @@ public $_noCopy;
     }
     
     if (! $this->idResource) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdResource') 
-    	                                         . ' ' . i18n('colOrContact') 
-    	                                         . ' ' . i18n('colOrUser')));
+    	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdResource')) 
+    	                                         . ' ' . htmlEncode(i18n('colOrContact')) 
+    	                                         . ' ' . htmlEncode(i18n('colOrUser'))));
     }
     if (! $this->idProject) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
+    	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdProject'))));
     }
     if ($result=='') {
       /*$clauseWhere=" idResource=".Sql::fmtId($this->idResource)
@@ -281,7 +281,7 @@ public $_noCopy;
          ." and id<>".Sql::fmtId($this->id);
       $search=$this->getSqlElementsFromCriteria(null, false, $clauseWhere);
       if (count($search)>0) { 
-      	$result.='<br/>' . i18n('errorDuplicateAffectation');
+      	$result.='<br/>' . htmlEncode(i18n('errorDuplicateAffectation'));
       }*/
     } else {
     
