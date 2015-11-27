@@ -217,7 +217,7 @@ class Affectable extends SqlElement {
         if ($id==getSessionUser()->id) $canUpdate=true;
         if ($canUpdate) {
         $result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
-            .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+            .'onClick="removeAttachment('.htmlEncode($image->id).');" title="'.i18n('removePhoto').'" class="smallButton"/>';
         }
         $horizontal='right:10px';
         $top='30px';
