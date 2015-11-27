@@ -35,6 +35,7 @@
   }
   $id=null;
   $class=$_REQUEST['objectClass'];
+  SqlElement::checkValidClass($class);
   if (array_key_exists('objectId',$_REQUEST)) {
   	$id=$_REQUEST['objectId'];
   }	
