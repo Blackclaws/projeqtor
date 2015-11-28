@@ -32,11 +32,11 @@ require_once "../tool/projeqtor.php";
 
 $idType=$_REQUEST['idType'];
 
-$detail=new ExpenseDetailType($idType);
+$detail=new ExpenseDetailType($idType); // Note: validates idType to be numeric value in SqlElement base constructor.
 
 if (array_key_exists('expenseDetailId',$_REQUEST)) {
 	$expenseDetailId=$_REQUEST['expenseDetailId'];
-	$detail=new ExpenseDetail($expenseDetailId);
+	$detail=new ExpenseDetail($expenseDetailId); // Note: validates expenseDetailId to be numeric value in SqlElement base constructor.
 }
 
 echo "<table>";
