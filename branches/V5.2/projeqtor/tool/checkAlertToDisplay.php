@@ -48,8 +48,8 @@ foreach($lst as $alert) {
 	  echo '<b>' . htmlEncode($alert->title) . '</b>';
 	  echo '<br/><br/>';
 	  echo  $alert->message;
-	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . $alert->id . ' " ./>';
-	  echo '<input type="hidden" id="alertType" name="alertType" value="' . $alert->alertType . '" ./>';
+	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . htmlEncode($alert->id) . ' " ./>';
+	  echo '<input type="hidden" id="alertType" name="alertType" value="' . htmlEncode($alert->alertType) . '" ./>';
 	  echo '<input type="hidden" id="alertCount" name="alertCount" value="' . count($lst) . '" ./>';
 	  return;
 	}
