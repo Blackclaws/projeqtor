@@ -4467,6 +4467,12 @@ function checkAlertRetour(data) {
       refreshProjectSelectorList();
       setTimeout('checkAlert();', alertCheckTime * 1000);
     } else if (dojo.byId('alertType')) {
+      if (dojo.byId('alertCount') && dojo.byId('alertCount').value>1) {
+        dijit.byId('markAllAsReadButton').set('label',i18n('markAllAsRead',new Array(dojo.byId('alertCount').value)));
+        dojo.byId("markAllAsReadButtonDiv").style.display="inline";
+      } else {
+        dojo.byId("markAllAsReadButtonDiv").style.display="none";
+      }
       dojo.style(dialogReminder, {
         visibility : 'visible',
         display : 'inline',
@@ -4505,6 +4511,11 @@ function setAlertReadMessage() {
   if (dojo.byId('idAlert') && dojo.byId('idAlert').value) {
     setAlertRead(dojo.byId('idAlert').value);
   }
+}
+function setAllAlertReadMessage() {
+  // alertDisplayed=false;
+  closeAlertBox();
+  setAlertRead('*');
 }
 function setAlertReadMessageInForm() {
   dijit.byId('readFlag').set('checked', 'checked');
