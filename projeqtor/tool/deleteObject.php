@@ -52,6 +52,7 @@ if (array_key_exists('confirmed',$_REQUEST) ) {
   }
 }
 Sql::beginTransaction();
+
 $obj=new $className($obj->id); // Get the last saved version, to fetch last version for array of objects
 // delete from database
 $result=$obj->delete();
