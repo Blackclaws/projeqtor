@@ -3002,6 +3002,13 @@ function getExtraRequiredFields() {
             //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input');
             dojo.removeClass(dijit.byId(keyEditor).domNode,'required');
           }
+    		} else if (dojo.byId('cke_'+key)) {
+    		  var ckeKey='cke_'+key;
+    		  if (obj[key]=='required') {
+            dojo.addClass(ckeKey,'input required');
+          } else if (obj[key]=='optional') {
+            dojo.removeClass(ckeKey,'input required');
+          }
     		}
     	}
     }
@@ -3029,10 +3036,15 @@ var maxEditorHeight=Math.round(screen.height*0.6);
 function ckEditorReplaceEditor(editorName,numEditor) {
   var height=200;
   if (editorName=='noteNote') height=maxEditorHeight-150;
+  var readOnly=false;
+  if (dojo.byId('ckeditor'+numEditor+'ReadOnly') && dojo.byId('ckeditor'+numEditor+'ReadOnly').value=='true') {
+    readOnly=true;
+  }
   editorArray[numEditor]=CKEDITOR.replace( editorName, {
     customConfig: 'projeqtorConfig.js',
     filebrowserUploadUrl: '../tool/uploadImage.php',
-    height: height
+    height: height,
+    readOnly: readOnly
   } );
   editorArray[numEditor].on( 'change', function( evt ) {
     //evt.editor.updateElement();
@@ -3045,4 +3057,11 @@ function ckEditorReplaceEditor(editorName,numEditor) {
   editorArray[numEditor].on( 'key', function( evt ) {
     onKeyDownCkEditorFunction(evt,this);
   });
+  editorArray[numEditor].on( 'instanceReady', function( evt ) {
+    console.log(evt.editor.name);
+    if (dojo.hasClass(evt.editor.name,'input required')) {
+      dojo.addClass('cke_'+evt.editor.name,'input required');
+    }
+  });
+  
 }
