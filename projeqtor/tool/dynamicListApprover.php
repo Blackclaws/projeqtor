@@ -31,6 +31,8 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListApprover.php');
 $refType=$_REQUEST['approverRefType'];
+SqlElement::checkValidClass($refType);
+
 $refId=$_REQUEST['approverRefId'];
 
 $selected=null;
@@ -62,13 +64,13 @@ class="selectList" >
     $found[$lstObj->id]=true;
    }
    $name=($lstObj->name)?$lstObj->name:$lstObj->userName;
-   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($name)."</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($name)."</option>";
  }
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	   $lstObj=new Affectable($selected);
 	   $name=($lstObj->name)?$lstObj->name:$lstObj->userName;
-	   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($name)."</option>";
+	   echo "<option value='$lstObj->id' selected='selected' >#".htmlEncode($lstObj->id)." - ".htmlEncode($name)."</option>";
 	 }
  }
  ?>
