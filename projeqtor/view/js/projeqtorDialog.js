@@ -742,6 +742,8 @@ function noteSelectPredefinedText(idPrefefinedText) {
       if (dijit.byId('noteNoteEditor')) {
         dijit.byId('noteNote').set('value', data);
         dijit.byId('noteNoteEditor').set('value', data);
+        dijit.byId("noteNoteEditor").focus();
+        //setTimeout("iframes['noteNoteEditor_iframe'].focus();",1000);
       } else {
         CKEDITOR.instances['noteNote'].setData(data);
       }
@@ -761,6 +763,7 @@ function editNote(noteId, privacy) {
     //dijit.byId('notePrivacyPublic').set('checked', 'true');
     if (dijit.byId("noteNoteEditor")) { // Dojo type editor
       dijit.byId("noteNoteEditor").set("class", "input");
+      dijit.byId("noteNoteEditor").focus();
     } else { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
     }
