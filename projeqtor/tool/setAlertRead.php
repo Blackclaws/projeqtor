@@ -34,17 +34,29 @@ if (! array_key_exists('idAlert',$_REQUEST)) {
 }
 $remind=0;
 if (array_key_exists('remind',$_REQUEST)) {
-  $remind=$_REQUEST['remind'];
+  $remind=SqlElement::checkValidNumeric($_REQUEST['remind']);
 }
 Sql::beginTransaction();
 $idAlert=trim($_REQUEST['idAlert']);
-$alert=new Alert($idAlert);
-if ($remind) {
-	$alert->alertDateTime= (addDelayToDatetime(date('Y-m-d H:i'), ($remind/60), 'HH'));
-	$alert->readFlag='0';
+if ($idAlert=='*') {
+  $crit=array('idUser'=>$user->id,'readFlag'=>'0', 'idle'=>'0');
+  $alert=new Alert();
+  $lst=$alert->getSqlElementsFromCriteria($crit, false, null, 'id asc');
+  foreach ($lst as $alert) {
+    $alert->readFlag='1';
+    $alert->alertReadDateTime=date('Y-m-d H:i:s');
+    $result=$alert->save();
+  }
 } else {
-  $alert->readFlag='1';
-  $alert->alertReadDateTime=date('Y-m-d H:i:s');
+  $idAlert=SqlElement::checkValidId($idAlert);
+  $alert=new Alert($idAlert);
+  if ($remind) {
+  	$alert->alertDateTime= (addDelayToDatetime(date('Y-m-d H:i'), ($remind/60), 'HH'));
+  	$alert->readFlag='0';
+  } else {
+    $alert->readFlag='1';
+    $alert->alertReadDateTime=date('Y-m-d H:i:s');
+  }
 }
 $result=$alert->save();
 Sql::commitTransaction();
