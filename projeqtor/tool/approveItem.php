@@ -34,6 +34,7 @@ if (! array_key_exists('approverId',$_REQUEST)) {
   throwError('approverId parameter not found in REQUEST');
 }
 $approverId=$_REQUEST['approverId'];
+$approverId=htmlspecialchars($approverId,ENT_QUOTES,'UTF-8');
 
 $approver=new Approver($approverId);
 $approver->approved=1;
