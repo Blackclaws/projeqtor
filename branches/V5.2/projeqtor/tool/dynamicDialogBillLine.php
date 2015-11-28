@@ -23,7 +23,7 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
+require_once "../tool/projeqtor.php";
 scriptLog('dynamicDialogBillLine.php');
 $id=null;
 if (array_key_exists('id',$_REQUEST)) {
@@ -32,6 +32,7 @@ if (array_key_exists('id',$_REQUEST)) {
 $refType="";
 if (array_key_exists("refType", $_REQUEST)) {
 	$refType=$_REQUEST['refType'];
+	SqlElement::checkValidClass($refType);
 }
 $refId="";
 if (array_key_exists("refId", $_REQUEST)) {
@@ -41,8 +42,9 @@ if (!$refType or !$refId) {
   traceLog("call dynamicDialogBillLine.php without refType and refId");
   exit;
 }
-$obj=new $refType($refId);
-$line=new BillLine($id);  
+
+$obj=new $refType($refId); // Note: $refId is checked in base SqlElement constructor to be numeric value
+$line=new BillLine($id);   // Note: $id is checked in base SqlElement constructor to be numeric value
 if ($line->quantity==null) $line->quantity=0;
 if ($line->amount==null) $line->amount=0;
 $divTermStyle='';
@@ -115,8 +117,8 @@ if ($line->line) {
       <td>
        <form id='billLineForm' name='billLineForm' onSubmit="return false;">
       	 <input id="billLineId" name="billLineId" type="hidden" value="<?php echo $line->id;?>" />
-         <input id="billLineRefType" name="billLineRefType" type="hidden" value="<?php echo $refType;?>" />
-         <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo $refId;?>" />
+         <input id="billLineRefType" name="billLineRefType" type="hidden" value="<?php echo htmlEncode($refType);?>" />
+         <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo htmlEncode($refId);?>" />
        	 <table>
            <tr>
              <td class="dialogLabel" >
