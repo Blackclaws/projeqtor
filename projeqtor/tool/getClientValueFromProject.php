@@ -31,5 +31,5 @@
 require_once "../tool/projeqtor.php";
 $idProject=$_REQUEST['idProject'];
 
-$proj=new Project($idProject);
+$proj=new Project($idProject); // Note: validates idProject to be numeric (or == '*', in which case it is treated as '') in SqlElement base constructor.
 echo $proj->idClient;
