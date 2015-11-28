@@ -345,8 +345,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
-  $editorMode=(Parameter::getUserParameter('editorModeAlwaysOn')=='YES')?'on':'off';
-  $ckEditorNumber=0;
+  $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
   
   if (property_exists($obj, '_sec_Assignment')) {
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
@@ -1552,26 +1551,27 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '</textarea>';
           if (isIE() and ! $val) $val='<div></div>'; 
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
-          if ($editorMode=='on') {
+          if (getEditorType()=="Dojo") {
             echo '<div data-dojo-type="dijit.Editor"'; // TEST
             echo ' id="' . $fieldId . 'Editor" ';
             echo ' title="' . i18n('clickToEditRichText') . '"';
             if ($readOnly) echo ' disabled=true';
-            echo ' data-dojo-props="height:\'125px\'';
+            echo ' data-dojo-props="height:\'200px\'';
             if ($readOnly) echo ', disabled:true';
             echo ',onChange:function(){dojo.byId(\'' . $fieldId . '\').value=arguments[0];formChanged();}';
-            echo ",plugins:['removeFormat','bold','italic','underline'";
+            echo ",plugins:['bold','italic','underline','removeFormat'";
             echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
             echo ",'|','insertOrderedList','insertUnorderedList','|']";
             echo ',onKeyDown:function(event){onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
             //echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
             echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
             // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
-            if (1) echo ",'|','fullScreen'";
+            echo ",'|','print'";
+            echo ",'fullScreen'";
             // Font Choice ...
             if (0) echo ",'fontName','fontSize'";
             // Print option
-            if (1) echo ",'print'"; // Not setup
+            
             // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
             echo "]";
             echo '" ';
@@ -1584,7 +1584,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             echo ' class="input '.(($isRequired)?'required':'').'" ';
             //echo ' style="background: none; background-color: #AAAAFF" ';
             echo '>';        
-          } else {
+          } else { //  getEditorType()=="DojoInline"
             echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
             // echo '<div data-dojo-type="dijit.Editor"'; // TEST
             echo ' id="' . $fieldId . 'Editor" ';
@@ -1592,18 +1592,16 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
             if ($readOnly) echo ', disabled:true';
             echo ',onChange:function(){dojo.byId(\'' . $fieldId . '\').value=arguments[0];formChanged();}';
-            echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
+            echo ",editorParams:{height:'200px',plugins:['bold','italic','underline','removeFormat'";
             echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
             echo ",'|','insertOrderedList','insertUnorderedList','|']";
             echo ',onKeyDown:function(event){onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
             echo ',onBlur:function(event){editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
             echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
-            // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
-            if (1) echo ",'|','fullScreen'";
+            echo ",'|','print'";
+            echo ",'fullScreen'";
             // Font Choice ...
             if (0) echo ",'fontName','fontSize'";
-            // Print option
-            if (1) echo ",'print'"; // Not setup
             // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
             echo "]}";
             echo '" ';

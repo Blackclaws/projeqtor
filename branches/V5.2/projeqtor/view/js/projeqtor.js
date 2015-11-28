@@ -3040,11 +3040,13 @@ function ckEditorReplaceEditor(editorName,numEditor) {
   if (dojo.byId('ckeditor'+numEditor+'ReadOnly') && dojo.byId('ckeditor'+numEditor+'ReadOnly').value=='true') {
     readOnly=true;
   }
+  autofocus=(editorName=='noteNote')?true:false;
   editorArray[numEditor]=CKEDITOR.replace( editorName, {
     customConfig: 'projeqtorConfig.js',
     filebrowserUploadUrl: '../tool/uploadImage.php',
     height: height,
-    readOnly: readOnly
+    readOnly: readOnly,
+    startupFocus : autofocus
   } );
   editorArray[numEditor].on( 'change', function( evt ) {
     //evt.editor.updateElement();
@@ -3058,7 +3060,6 @@ function ckEditorReplaceEditor(editorName,numEditor) {
     onKeyDownCkEditorFunction(evt,this);
   });
   editorArray[numEditor].on( 'instanceReady', function( evt ) {
-    console.log(evt.editor.name);
     if (dojo.hasClass(evt.editor.name,'input required')) {
       dojo.addClass('cke_'+evt.editor.name,'input required');
     }

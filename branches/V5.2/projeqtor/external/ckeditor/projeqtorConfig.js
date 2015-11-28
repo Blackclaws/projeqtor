@@ -8,7 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', '-', 'RemoveFormat'] },
     { name: 'paragraph', items: [ 'Indent', 'Outdent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','-','NumberedList', 'BulletedList'] },
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-    { name: 'tools', items: [ 'Maximize', 'Print' ] },
+    { name: 'tools', items: [ 'Print','Maximize' ] },
     { name: 'styles', items: [ 'Font', 'FontSize' ] },
     { name: 'links', items: [ 'Link', 'Unlink', 'Image','Table','SpecialChar','PasteFromWord'] }
   ];

@@ -229,7 +229,7 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
             'REQ'=>i18n('displayOnRequest'));
         break;
-      case 'printHistory': case 'editorModeAlwaysOn':
+      case 'printHistory':
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -370,6 +370,10 @@ class Parameter extends SqlElement {
       	             'ALWAYS'=>i18n('consolidateAlways'),
       	            'IFSET'=>i18n('consolidateIfSet'));
       	break;
+      case 'editor' :
+        $list=array('CK'=>i18n('CKEditor'),
+                    'Dojo'=>i18n('DojoEditor'),
+                    'DojoInline'=>i18n('DojoEditorInline'));
     } 
     return $list;
   }
@@ -397,7 +401,7 @@ class Parameter extends SqlElement {
                            "switchedMode"=>"list",
                            "paramConfirmQuit"=>"list",
                            "startPage"=>"list",
-                           "editorModeAlwaysOn"=>'list',
+                           "editor"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
@@ -481,6 +485,7 @@ class Parameter extends SqlElement {
       	                       'getVersion'=>'list',
       	                       'csvSeparator'=>'list',
       	                       'paramMemoryLimitForPDF'=>'number',
+      	                       "editor"=>'list',
       	                   'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  

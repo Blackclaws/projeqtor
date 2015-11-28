@@ -54,7 +54,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
   $detailHeight=round($_SESSION['screenHeight']*0.60);
 }
 ?>
-<div style="width:<?php echo $detailWidth;?>px;">
+<div>
   <table style="width:100%;">
     <tr><td>
       <div <?php if (!$noteId) echo 'style="padding-bottom:7px"';?> id="dialogNotePredefinedDiv" dojoType="dijit.layout.ContentPane" region="center">
@@ -72,17 +72,17 @@ if (array_key_exists('screenHeight',$_SESSION)) {
         <?php } else {?>
           <textarea dojoType="dijit.form.Textarea" type="hidden"
            id="noteNote" name="noteNote"
-           style="width: 500px;display:none;"><?php echo htmlspecialchars($note->note);?></textarea>    
-           <div data-dojo-type="dijit.Editor" id="noteNoteEditor" height="<?php echo $detailWidth;?>px" width="<?php echo $detailWidth;?>px" 
+           style="display:none;"><?php echo htmlspecialchars($note->note);?></textarea>    
+           <div data-dojo-type="dijit.Editor" id="noteNoteEditor"
              data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];}
               ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 
                         'justifyRight', 'justifyFull','|','insertOrderedList','insertUnorderedList','|']
               ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}
               ,onBlur:function(event){top.editorBlur('noteNoteEditor',this);}
               ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
-              style="width: 500px;color:#606060 !important; background:none; 
-                padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;"
-              class="input"><?php echo htmlspecialchars($note->note);?></div>
+              style="color:#606060 !important; background:none; 
+                padding:3px 0px 3px 3px;margin-right:2px;height:<?php echo $detailHeight;?>px;width:<?php echo $detailWidth;?>px;min-height:16px;overflow:auto;"
+              class="input"><?php echo str_replace( "\n", '<br/>', $note->note);?></div>
         <?php }?>
           <table width="100%"><tr height="25px">
             <td width="33%" class="smallTabLabel" >

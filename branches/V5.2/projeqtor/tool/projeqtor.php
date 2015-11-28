@@ -2718,11 +2718,12 @@ function is_session_started() {
 }
  
 function getEditorType() {
-  // Todo : use parameter (user or global)
-  // Default should be CK ?
-  //return "DOJO";
-  return "CK";
-  
+  $editor=Parameter::getUserParameter('editor');
+  if ($editor) {
+    return $editor;
+  } else {
+    return "CK";
+  }
 }
 //
 ?>

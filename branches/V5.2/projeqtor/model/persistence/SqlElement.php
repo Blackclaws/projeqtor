@@ -1879,6 +1879,7 @@ abstract class SqlElement {
 						}
 					} else if ($dataType=='date') {
 					  $test=self::checkValidDateTime($_REQUEST[$formField]);
+					  $this->$key=$_REQUEST[$formField];
 					// TODO : check validity for other formats
 					// done : boolean, date, time, datetime
 					// todo : varchar <=4000, vachar >4000, numeric, and verify other possible formats
@@ -2805,9 +2806,6 @@ abstract class SqlElement {
 			// TODO Check HTML validity for Long Texts
 			if ($dataLength>4000) {
 			  // Remove "\n" that have no use here
-			  /*$this->$col=str_replace( array("\n",'<p ',  '<p>',  '</p>',  '</ p>', '<div></div>'), 
-			                           array(' ', '<div ','<div>','</div>','</div>',''           ), 
-			                           $val );*/
 			  $this->$col=str_replace( array("\n",'<div></div>'),
 			                           array(' ', ''           ),
 			      $val );
@@ -2816,6 +2814,7 @@ abstract class SqlElement {
 			  } catch (Exception $e) {
 			    $result.='<br/>' . i18n('messageInvalidHTML',array(i18n('col' . ucfirst($col))));
 			  }
+			  $val=htmlEncode($val,'formatted'); // Erase <script tags and erase value if messy tags
 			}
 		}
 		$idType='id'.((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
