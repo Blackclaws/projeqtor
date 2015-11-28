@@ -30,5 +30,5 @@
 
 require_once "../tool/projeqtor.php";
 $id=$_REQUEST['id'];
-$txt=new PredefinedNote($id);
+$txt=new PredefinedNote($id); // validated to be numeric value in SqlElement base constructor.
 echo nl2br($txt->text);
