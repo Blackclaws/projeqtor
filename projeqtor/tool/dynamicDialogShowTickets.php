@@ -64,7 +64,7 @@
     echo '</td>';
     $goto="";
     if ($canGoto) {
-      $goto=' onClick="dijit.byId(\'dialogShowTickets\').hide();gotoElement(' . "'" . $class . "','" . $ticket->id . "'" . ');" style="cursor: pointer;" ';
+      $goto=' onClick="dijit.byId(\'dialogShowTickets\').hide();gotoElement(' . "'" . $class . "','" . htmlEncode($ticket->id) . "'" . ');" style="cursor: pointer;" ';
     }
     echo '<td class="linkData" ' . $goto . ' style="position:relative;width:65%">';
     echo htmlEncode($ticket->name);
