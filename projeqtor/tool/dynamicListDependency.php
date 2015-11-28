@@ -31,6 +31,8 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListDependency.php');
 $refType=$_REQUEST['dependencyRefType'];
+SqlElement::checkValidClass($refType);
+
 $refId=$_REQUEST['dependencyRefId'];
 //$refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
 $refTypeDepObj=new Dependable($_REQUEST['dependencyRefTypeDep']);
@@ -92,13 +94,13 @@ class="selectList" >
      $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
      $val = $sep.$val;
    }
-   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($val)."</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($val)."</option>";
  }
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {   
 	 	 $lstObj=new $refTypeDep($selected);
 	 	 $val=$lstObj->name;
-	 	 echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($val)."</option>";
+	 	 echo "<option value='$lstObj->id' selected='selected' >#".htmlEncode($lstObj->id)." - ".htmlEncode($val)."</option>";
 	 }
  }
  ?>
