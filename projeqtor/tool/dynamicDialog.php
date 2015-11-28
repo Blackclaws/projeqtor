@@ -31,8 +31,13 @@ if (! array_key_exists('dialog', $_REQUEST)) {
 $dialog=$_REQUEST['dialog'];
 //echo "<br/>".$dialog."<br/>";
 $dialogFile="../tool/dynamic".ucfirst($dialog).'.php';
+if (preg_match('/[^a-zA-Z0-9]/', $dialog) == True)
+{
+	traceHack("invalid dialog value - [$dialog]");
+	exit;
+}
 if (file_exists($dialogFile)) {
 	include $dialogFile;
 } else {
-	echo "ERROR dialog=".$dialog." is not an expected dialog";
+	echo "ERROR dialog=".htmlEncode($dialog)." is not an expected dialog";
 }
