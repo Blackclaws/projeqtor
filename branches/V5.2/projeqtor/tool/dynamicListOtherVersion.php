@@ -31,8 +31,11 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicLisOtherVersion.php');
 $refType=$_REQUEST['otherVersionRefType'];
+SqlElement::checkValidClass($refType);
+
 $refId=$_REQUEST['otherVersionRefId'];
 $versionType=$_REQUEST['otherVersionType'];
+SqlElement::checkValidClass($versionType);
 
 //otherVersionId
 $selected=null;
@@ -79,7 +82,7 @@ class="selectList" >
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	   $lstObj=new $versionType($selected);
-	   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
+	   echo "<option value='$lstObj->id' selected='selected' >#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
 	 }
  }
  ?>
