@@ -115,7 +115,7 @@ $userLink['GlobalParameter']='Administration.html#global-parameters';
 
 $section=null;
 if (isset($_REQUEST['section'])) {
-  $section=$_REQUEST['section'];
+  $section=$_REQUEST['section']; // Note: can only be a valid index in $userLink. Value is not echo'ed in HTML.
 }
 
 $userRoot='../docs/user/html_en/'; // TODO : take locale into account
