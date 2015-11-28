@@ -35,7 +35,7 @@ $lineId=0;
 if ( array_key_exists('lineId',$_REQUEST)) {
 	$lineId=$_REQUEST['lineId'];
 }
-$line=new ChecklistDefinitionLine($lineId);
+$line=new ChecklistDefinitionLine($lineId); // Note: $lineId is checked in base SqlElement constructor to be numeric value.
 if ($line->id) {
 	$checkId=$line->idChecklistDefinition;
 } else {
@@ -54,7 +54,7 @@ if ($line->id) {
 ?>
 <form id="dialogChecklistDefinitionLineForm" name="dialogChecklistDefinitionLineForm" action="">
 <input type="hidden" name="checklistDefinitionLineId" value="<?php echo $line->id;?>" />
-<input type="hidden" name="checklistDefinitionId" value="<?php echo $checkId;?>" />
+<input type="hidden" name="checklistDefinitionId" value="<?php echo htmlEncode($checkId);?>" />
 <table style="width: 100%;">
   <tr>
     <td class="dialogLabel" ><label><?php echo i18n('colName');?> : </label></td>
