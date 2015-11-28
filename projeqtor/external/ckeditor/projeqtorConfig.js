@@ -15,16 +15,18 @@ CKEDITOR.editorConfig = function( config ) {
   // 'showBlocks'
   config.enterMode = CKEDITOR.ENTER_DIV;
   //config.enterMode = CKEDITOR.ENTER_BR;
+  config.removeDialogTabs = 'link:advanced;image:advanced;image:link';
   config.extraPlugins = 'uploadimage';
   config.removePlugins='magicline';
   config.uploadUrl = '../tool/uploadImage.php';
   config.imageUploadUrl = '../tool/uploadImage.php';
   config.image_previewText = CKEDITOR.tools.repeat( 'Image', 1 );
   config.magicline_color = '#aaaaaa';
-  //config.extraAllowedContent = 'span{*}(*);';
-  //config.pasteFilter='span{*}(*);'; // Remove paste filter, only AEF will be applied
-  config.extraAllowedContent =true;
-  config.pasteFilter=null;
+  config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};style;';
+  config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};style';
+  config.pasteFromWordRemoveStyles = false;
+  config.pasteFromWordRemoveFontStyles = false;
+  
 };
 /*
 CKEDITOR.editorConfig = function( config ) {
