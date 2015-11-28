@@ -4079,5 +4079,11 @@ abstract class SqlElement {
     return ($valid['warning_count']==0 and $valid['error_count']==0);*/
 	  return $dateTime;
 	}
+	public static function checkValidNumeric($numeric) {
+	  if (! is_numeric($numeric)) {
+	    traceHack("Value '$numeric' is not numeric");
+	  }
+	  return $numeric;
+	}
 }
 ?>
