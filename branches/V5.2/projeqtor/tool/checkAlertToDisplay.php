@@ -50,6 +50,7 @@ foreach($lst as $alert) {
 	  echo  $alert->message;
 	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . $alert->id . ' " ./>';
 	  echo '<input type="hidden" id="alertType" name="alertType" value="' . $alert->alertType . '" ./>';
+	  echo '<input type="hidden" id="alertCount" name="alertCount" value="' . count($lst) . '" ./>';
 	  return;
 	}
 }

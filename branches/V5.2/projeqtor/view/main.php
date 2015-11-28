@@ -640,9 +640,18 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
    </button>
  </div>
  <div style="width:100%; height:10%; text-align:right">
+   <table><tr><td width="80%">
+   <span id="markAllAsReadButtonDiv" >
+	 <button  dojoType="dijit.form.Button" id="markAllAsReadButton" onclick="setAllAlertReadMessage();">
+	          <?php echo i18n("markAllAsRead");?>
+	 </button>
+	 &nbsp;
+	 </span>
+	 </td><td>
 	 <button  dojoType="dijit.form.Button" onclick="setAlertReadMessage();">
 	          <?php echo i18n("markAsRead");?>
 	 </button>
+	 </td></tr></table>
  </div>
 </div>
 <div id="dialogInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogInformation");?>">
