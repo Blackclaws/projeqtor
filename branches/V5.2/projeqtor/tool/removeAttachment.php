@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $attachmentId=null;
 if (array_key_exists('attachmentId',$_REQUEST)) {
-  $attachmentId=$_REQUEST['attachmentId'];
+  $attachmentId=$_REQUEST['attachmentId']; // validated to be numeric value in SqlElement base constructor.
 }
 $attachmentId=trim($attachmentId);
 if ($attachmentId=='') {
