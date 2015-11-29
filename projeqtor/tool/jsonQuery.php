@@ -30,6 +30,8 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
+	SqlElement::checkValidClass($objectClass);
+	
     $showThumb=Parameter::getUserParameter('paramShowThumbList');
     if ($showThumb=='NO') {
       $showThumb=false;
@@ -710,7 +712,7 @@
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
 	              if ($image->id and $image->isThumbable()) {
-	            	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.$image->id.'#'.$image->fileName; 
+	            	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.htmlEncodeJson($image->id, 6).'#'.htmlEncodeJson($image->fileName); 
 	              } else {
 	              	$val="##";
 	              }
