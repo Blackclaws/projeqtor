@@ -4059,7 +4059,7 @@ abstract class SqlElement {
 	  return $className;
 	}
 	public static function checkValidId($id) {
-	  if (! is_numeric($id)) {
+	  if (! is_numeric($id) and $id!='*' and trim($id)!='') {
 	    traceHack("Id '$id' is not numeric");
 	  }
 	  return $id;
