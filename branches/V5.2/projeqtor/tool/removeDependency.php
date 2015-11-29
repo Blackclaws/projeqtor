@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $dependencyId=null;
 if (array_key_exists('dependencyId',$_REQUEST)) {
-  $dependencyId=$_REQUEST['dependencyId'];
+  $dependencyId=$_REQUEST['dependencyId']; // validated to be numeric value in SqlElement base constructor.
 }
 $dependencyId=trim($dependencyId);
 if ($dependencyId=='') {

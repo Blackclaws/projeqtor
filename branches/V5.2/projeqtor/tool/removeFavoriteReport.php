@@ -35,7 +35,7 @@ require_once "../tool/projeqtor.php";
 if (! array_key_exists('idFavorite',$_REQUEST)) {
   throwError('idFavorite parameter not found in REQUEST');
 }
-$id=$_REQUEST['idFavorite'];
+$id=$_REQUEST['idFavorite']; // validated to be numeric value in SqlElement base constructor.
 
 Sql::beginTransaction();
 $item=new Favorite($id);

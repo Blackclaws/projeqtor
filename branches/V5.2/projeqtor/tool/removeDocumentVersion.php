@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $documentVersionId=null;
 if (array_key_exists('documentVersionId',$_REQUEST)) {
-  $documentVersionId=$_REQUEST['documentVersionId'];
+  $documentVersionId=$_REQUEST['documentVersionId']; // validated to be numeric value in SqlElement base constructor.
 }
 $documentVersionId=trim($documentVersionId);
 if ($documentVersionId=='') {
