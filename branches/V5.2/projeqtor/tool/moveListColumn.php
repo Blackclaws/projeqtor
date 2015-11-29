@@ -33,7 +33,7 @@ if (! array_key_exists('orderedList',$_REQUEST)) {
   throwError('orderedList parameter not found in REQUEST');
 }
 $list=$_REQUEST['orderedList'];
-$arrayList=explode("|", $list);
+$arrayList=explode("|", $list); // verifies valus are numeric in SqlElement base constructor.
 $user=getSessionUser();
 
 Sql::beginTransaction();
