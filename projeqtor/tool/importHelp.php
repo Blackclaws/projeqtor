@@ -46,12 +46,18 @@ $class='';
 if (! array_key_exists('elementType',$_REQUEST)) {
   throwError('elementType parameter not found in REQUEST');
 }
-$class=SqlList::getNameFromId('Importable',$_REQUEST['elementType'],false);
+$elementType = $_REQUEST['elementType'];
+SqlElement::checkValidClass($elementType);
 
+$class=SqlList::getNameFromId('Importable',$elementType,false);
+
+// Note: $fileType is not used - commenting out.
+/*
 if (! array_key_exists('fileType',$_REQUEST)) {
   throwError('fileType parameter not found in REQUEST');
 }
 $fileType=$_REQUEST['fileType'];
+*/
 
 //echo $class . '<br/>';
 $obj=new $class();
