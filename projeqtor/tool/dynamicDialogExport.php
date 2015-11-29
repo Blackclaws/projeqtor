@@ -23,11 +23,13 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
+require_once "../tool/projeqtor.php";
 if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($objectClass);
+
 $obj=new $objectClass();
 
 $idUser = getSessionUser()->id;
