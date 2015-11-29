@@ -31,10 +31,14 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListLink.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
+SqlElement::checkValidClass($ref1Type);
+
 $ref1Id=$_REQUEST['linkRef1Id'];
 //$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
-$ref2TypeObj=new Linkable($_REQUEST['linkRef2Type']);
+$ref2TypeObj=new Linkable($_REQUEST['linkRef2Type']); // SqlElement base constructor validates numeric argument.
 $ref2Type=$ref2TypeObj->name;
+SqlElement::checkValidClass($ref2Type);
+
 //$id=$_REQUEST['id'];
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
@@ -93,12 +97,12 @@ class="selectList" >
      $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
      $val = $sep.$val;
    }
-   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($val)."</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($val)."</option>";
  }
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	   $lstObj=new $ref2Type($selected);
-	   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
+	   echo "<option value='$lstObj->id' selected='selected' >#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
 	 }
  }
  ?>
