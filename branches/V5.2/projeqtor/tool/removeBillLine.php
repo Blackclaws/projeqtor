@@ -42,7 +42,7 @@ if ($lineId==null) {
   throwError('billLineId parameter not found in REQUEST');
 }
 Sql::beginTransaction();
-$obj=new BillLine($lineId);
+$obj=new BillLine($lineId); // validated to be numeric value in SqlElement base constructor.
 $result=$obj->delete();
 
 // Message of correct saving
