@@ -442,9 +442,17 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
-  
+  <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
+     $leftWidth=($leftWidth)?$leftWidth.'px':'20%';?>
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
-    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
+    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
+      <script type="dojo/connect" event="resize" args="evt">
+         dojo.xhrPost({
+            url : "../tool/saveDataToSession.php?saveUserParam=true"
+              +"&id=contentPaneLeftDivWidth"
+              +"&value="+dojo.byId("leftDiv").offsetWidth
+         });;
+      </script>
      <div id="menuBarShow" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');"><div id="menuBarIcon" valign="middle"></div></div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
@@ -494,7 +502,16 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <?php }?>
           </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height: 300px;">
+        <?php $leftBottomHeight=Parameter::getUserParameter('contentPaneLeftBottomDivHeight');
+           $leftBottomHeight=($leftBottomHeight)?$leftBottomHeight.'px':'300px';?>
+        <div dojoType="dijit.layout.ContentPane" id="leftBottomDiv" region="bottom" splitter="true" style="height:<?php echo $leftBottomHeight;?>;">
+          <script type="dojo/connect" event="resize" args="evt">
+             dojo.xhrPost({
+               url : "../tool/saveDataToSession.php?saveUserParam=true"
+                  +"&id=contentPaneLeftBottomDivHeight"
+                  +"&value="+dojo.byId("leftBottomDiv").offsetHeight
+             });;
+          </script>
           <div dojoType="dijit.layout.AccordionContainer">
             <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" selected="true" title="<?php echo i18n('ExternalShortcuts');?>">
               <?php include "../view/shortcut.php"?>

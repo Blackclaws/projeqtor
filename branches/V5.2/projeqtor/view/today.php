@@ -588,8 +588,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 ?>      
 
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
-<div  class="container" dojoType="dijit.layout.BorderContainer" style="padding:10px">
-  <div style="overflow: <?php echo(!$print)?'auto':'hidden';?>;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+<div  class="container" dojoType="dijit.layout.BorderContainer" >
+  <div style="overflow: <?php echo(!$print)?'auto':'hidden';?>;padding:10px" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
     <?php if (!$print) {?>
     <div class="parametersButton">
 	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
