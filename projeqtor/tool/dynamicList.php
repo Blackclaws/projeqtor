@@ -31,8 +31,12 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicList.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
+SqlElement::checkValidClass($ref1Type);
+
 $ref1Id=$_REQUEST['linkRef1Id'];
 $ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
+SqlElement::checkValidClass($ref2Type);
+
 //$id=$_REQUEST['id'];
 
 $obj=new $ref1Type($ref1Id);
@@ -68,7 +72,7 @@ class="selectList" >
      $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
      $val = $sep.$val;
    }
-   echo "<option value='$lstObj->id'>#".$lstObj->id." - ".htmlEncode($val)."</option>";
+   echo "<option value='$lstObj->id'>#".htmlEncode($lstObj->id)." - ".htmlEncode($val)."</option>";
  }
  ?>
 </select>
