@@ -30,14 +30,27 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/objectMain.php');
   $listHeight='40%';
+  $objectClass="";
   if (isset($_REQUEST['objectClass'])) {
+    $objectClass=$_REQUEST['objectClass'];
+    SqlElement::checkValidClass($objectClass);
   	if ($_REQUEST['objectClass']=='CalendarDefinition') {
   		$listHeight='25%';
   	}
+  	$topDetailDivHeight=Parameter::getUserParameter('contentPaneTopDetailDivHeight'.$objectClass);
+  	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
   }
 ?>
 <div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>">
+   <script type="dojo/connect" event="resize" args="evt">
+         if (switchedMode) return;
+             dojo.xhrPost({
+               url : "../tool/saveDataToSession.php?saveUserParam=true"
+                  +"&id=contentPaneTopDetailDivHeight<?php echo $objectClass;?>"
+                  +"&value="+dojo.byId("listDiv").offsetHeight
+             });;
+    </script>
    <?php include 'objectList.php'?>
   </div>
   <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
