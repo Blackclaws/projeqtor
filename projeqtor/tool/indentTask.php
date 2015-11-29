@@ -33,16 +33,17 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($objectClass);
 
 if (! array_key_exists('objectId',$_REQUEST)) {
   throwError('objectId parameter not found in REQUEST');
 }
-$objectId=$_REQUEST['objectId'];
+$objectId=$_REQUEST['objectId']; // value is escaped before being used in SQL query.
 
 if (! array_key_exists('way',$_REQUEST)) {
   throwError('way parameter not found in REQUEST');
 }
-$way=$_REQUEST['way'];
+$way=$_REQUEST['way']; // Note: checked against constant values.
 if ($way!='increase' and $way!='decrease') {
   $way='increase';
 }
