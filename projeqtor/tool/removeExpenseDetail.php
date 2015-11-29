@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $expenseDetailId=null;
 if (array_key_exists('expenseDetailId',$_REQUEST)) {
-  $expenseDetailId=$_REQUEST['expenseDetailId'];
+  $expenseDetailId=$_REQUEST['expenseDetailId']; // validated to be numeric value in SqlElement base constructor.
 }
 $expenseDetailId=trim($expenseDetailId);
 if ($expenseDetailId=='') {
