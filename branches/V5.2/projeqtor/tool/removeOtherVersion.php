@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $id=null;
 if (array_key_exists('otherVersionId',$_REQUEST)) {
-  $id=$_REQUEST['otherVersionId'];
+  $id=$_REQUEST['otherVersionId']; // validated to be numeric value in SqlElement base constructor.
 }
 $id=trim($id);
 if ($id=='') {

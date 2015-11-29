@@ -36,18 +36,19 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+SqlElement::checkValidClass($filterObjectClass, 'filterObjectClass');
 
 if (! array_key_exists('idFilter',$_REQUEST)) {
   throwError('idFilter parameter not found in REQUEST');
 }
-$idFilter=$_REQUEST['idFilter'];
+$idFilter=$_REQUEST['idFilter']; // validated to be numeric value in SqlElement base constructor.
 Sql::beginTransaction();
 $filter=new Filter($idFilter);
 $name=$filter->name;
 $filter->delete();
 
 echo '<table width="100%"><tr><td align="center" >';
-echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultDeleted') . ' (#'.$filter->id.')</span>';
+echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultDeleted') . ' (#'.htmlEncode($filter->id).')</span>';
 echo '</td></tr></table>';
 
 $flt=new Filter();

@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $testCaseRunId=null;
 if (array_key_exists('testCaseRunId',$_REQUEST)) {
-  $testCaseRunId=$_REQUEST['testCaseRunId'];
+  $testCaseRunId=$_REQUEST['testCaseRunId']; // validated to be numeric value in SqlElement base constructor.
 }
 Sql::beginTransaction();
 $obj=new TestCaseRun($testCaseRunId);
