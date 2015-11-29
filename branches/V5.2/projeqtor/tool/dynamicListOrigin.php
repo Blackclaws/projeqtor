@@ -31,9 +31,12 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListOrigin.php');
 $refType=$_REQUEST['originRefType'];
+SqlElement::checkValidClass($refType);
+
 $refId=$_REQUEST['originRefId'];
-$originTypeObj=new Originable($_REQUEST['originOriginType']);
+$originTypeObj=new Originable($_REQUEST['originOriginType']); // SqlElement base constructor validates numeric value.
 $originType=$originTypeObj->name;
+
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
   $selected=$_REQUEST['selected'];
@@ -60,11 +63,11 @@ class="selectList" >
     $sel=" selected='selected' ";
     $found=true;
    }
-   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
  }
  if ($selected and ! $found) {
    $lstObj=new $originType($selected);
-   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
+   echo "<option value='$lstObj->id' selected='selected' >#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
  }
  ?>
 </select>
