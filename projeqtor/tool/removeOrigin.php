@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $originId=null;
 if (array_key_exists('originId',$_REQUEST)) {
-  $originId=$_REQUEST['originId'];
+  $originId=$_REQUEST['originId']; // validated to be numeric value in SqlElement base constructor.
 }
 $originId=trim($originId);
 if ($originId=='') {

@@ -32,7 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $noteId=null;
 if (array_key_exists('noteId',$_REQUEST)) {
-  $noteId=$_REQUEST['noteId'];
+  $noteId=$_REQUEST['noteId']; // validated to be numeric value in SqlElement base constructor.
 }
 $noteId=trim($noteId);
 if ($noteId=='') {
