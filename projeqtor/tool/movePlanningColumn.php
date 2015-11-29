@@ -39,7 +39,12 @@ $user=getSessionUser();
 
 Sql::beginTransaction();
 foreach ($arrayList as $order=>$col) {
-	if (trim($col)) {
+	$col = trim($col);
+	if ($col) {
+		if (preg_match('/[^a-zA-Z0-9]/', $col) == True){
+			traceHack("invalid value for col - [$col]");
+			exit;
+		}
 		$critArray=array('idUser'=>$user->id, 'parameterCode'=>'planningColumnOrder'.$col);
 		$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', $critArray);
 		$param->parameterValue=$order+1;
