@@ -47,8 +47,8 @@ if ($mode!='before' and $mode!='after') {
   $mode='before';
 }
 
-$idFrom=substr($from, 6);
-$idTo=substr($to, 6);
+$idFrom=substr($from, 6); // validated to be numeric value in SqlElement base constructor
+$idTo=substr($to, 6); // validated to be numeric value in SqlElement base constructor
 Sql::beginTransaction();
 $task=new PlanningElement($idFrom);
 $result=$task->moveTo($idTo,$mode);
