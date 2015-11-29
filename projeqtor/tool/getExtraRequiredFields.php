@@ -46,16 +46,16 @@ $obj=new $objectClass($objectId);
 $type=null;
 $typeName='id'.$objectClass.'Type';
 if (isset($_REQUEST[$typeName])) {
-	$type=$_REQUEST[$typeName];
+	$type=$_REQUEST[$typeName]; // Note: validated as numeric in base SqlElement constructor
 }
 $status=null;
 if (isset($_REQUEST['idStatus'])) {
-  $status=$_REQUEST['idStatus'];
+  $status=$_REQUEST['idStatus']; // Note: validated as numeric in base SqlElement constructor
 }
 $planningMode=null;
 $pmName=$objectClass.'PlanningElement_id'.$objectClass.'PlanningMode';
 if (isset($_REQUEST[$pmName])) {
-  $planningMode=$_REQUEST[$pmName];
+  $planningMode=$_REQUEST[$pmName]; // Note: validated as numeric in base SqlElement constructor
 }
 
 $result=$obj->getExtraRequiredFields($type,$status,$planningMode);
