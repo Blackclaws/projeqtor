@@ -81,7 +81,7 @@
         echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
-          <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
+          <button xclass="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
            id="listFavoriteReports" name="listFavoriteReports">
             <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="display:none;"
               href="../tool/refreshFavoriteReportList.php"
@@ -135,8 +135,9 @@
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
       <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
         onChange="menuFilter(this.value);" id="menuSelector" id="menuSelector"
+        onMouseEnter="this.loadAndOpenDropDown();" 
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
-        ><br/><?php foreach ($allMenuClass as $cl=>$clVal) {
+        ><table onMouseOut="dijit.byId('menuSelector').closeDropDwon();"><br/><?php foreach ($allMenuClass as $cl=>$clVal) {
           $selected=($defaultMenu==$cl)?' selected=selected ':'';
           //echo '<option value="'.$cl.'" '.$selected.'>';
           echo '<span style="height:25px" value="'.$cl.'" '.$selected.' class="menuSelectList">';
@@ -144,7 +145,7 @@
           echo i18n('menu'.ucfirst($clVal));
           echo '</span><br/>';
           //echo '</option>';
-      }?></div>
+      }?></p></div>
       <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
       <div style="height:100%" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
