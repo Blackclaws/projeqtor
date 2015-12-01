@@ -2943,6 +2943,7 @@ function menuFilter(filter) {
   /*dojo.query(".menuBarItem").forEach(function(node, index, arr){
       console.debug(node.innerHTML);
   });*/
+  menuListAutoshow=false; // the combo will be closed
   var allCollection=dojo.query(".menuBarItem");
   var newCollection=dojo.query("."+filter);
   allCollection.fadeOut({
