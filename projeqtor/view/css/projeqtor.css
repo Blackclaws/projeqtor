@@ -523,6 +523,34 @@ label, .label, .smallLabel {
   border: 0px;
   cursor: pointer;
   }
+
+#menuSelector.menuSelect .dijitReset.dijitStretch.dijitButtonContents {
+  border-style: none;
+  padding: 0px 5px 0px 5px;
+  font-weight: bold;
+}
+
+.dijitMenuItem, .dijitMenuItemHover, .dijitMenuItemSelected {
+  padding:0px;
+  margin:0px;
+  height:10px;
+}
+#menuSelector_menu tbody tr.dijitMenuItem td {
+	padding: 0;
+}
+#menuSelector_menu tbody tr.dijitMenuItem {
+	 border-bottom:1px solid #dddddd;
+}
+.menuSelectList{
+   margin:0;
+   padding:5px 0px 5px 10px;
+} 
+#menuSelector .menuSelectList{
+ color:#ffffff; padding:2px 2px 1px 5px;
+}
+.menuSelectList:hover{
+	color:#ffffff !important;
+}	
 /* Specific classes =========================================================== */
 
 .title {
@@ -1217,6 +1245,7 @@ label, .label, .smallLabel {
 .blue .dijitMenuItemSelected,
 .blue .loginBackground    {
   background-color: #545281;
+  color:#ffffff;
 }
 
 .blue #mapDiv, .blue #messageDiv, .blue #listDiv, .blue #detailDiv, .blue #formDiv, .blue .display, .blue .background,
@@ -1979,6 +2008,7 @@ label, .label, .smallLabel {
 .ProjeQtOr .dijitMenuItemSelected  {
   background-color: #545281;  color: #EEEEEE; 
 	/* background-color: #d4d5da; color: #545281; */  
+	
 }
 
 .ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,

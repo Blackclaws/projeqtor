@@ -724,6 +724,7 @@ table.dojoDndAvatar {
 	padding: 2px 5px 2px 5px;
 	font-weight: bold;
 }
+
 .menuSelect .dijitReset.dijitStretch.dijitButtonContents:hover {
 	background: #FFFFFF; -moz-opacity: 0.3;  opacity: 0.3; filter: Alpha(Opacity = 30); 
 	background: rgba(255,255,255,0.3);

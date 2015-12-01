@@ -5977,3 +5977,17 @@ function checkEmptyReportFavoriteTooltip() {
 function showTickets(refType, refId) {
   loadDialog('dialogShowTickets', null, true, '&refType='+refType+'&refId='+refId, true);
 }
+
+var closeMenuListTimeout=null;
+var menuListAutoshow=false;
+function showMenuList() {
+  clearTimeout(closeMenuListTimeout);
+  menuListAutoshow=true;
+  dijit.byId('menuSelector').loadAndOpenDropDown();
+  
+}
+function hideMenuList(delay) {
+  if (! menuListAutoshow) return;
+  clearTimeout(closeMenuListTimeout);
+  closeMenuListTimeout=setTimeout("dijit.byId('menuSelector').closeDropDown();",delay);
+}

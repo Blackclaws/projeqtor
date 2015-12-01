@@ -133,19 +133,19 @@
     <td width="287px">
       <div class="titleProject" style="position: absolute; left:0px; top: -1px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
-      <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
+      <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF !important; border:1px solid #FFF;vertical-align:middle;" 
         onChange="menuFilter(this.value);" id="menuSelector" id="menuSelector"
-        onMouseEnter="this.loadAndOpenDropDown();" 
+        onMouseEnter="showMenuList();" onMouseLeave="hideMenuList(300);"
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
-        ><table onMouseOut="dijit.byId('menuSelector').closeDropDwon();"><br/><?php foreach ($allMenuClass as $cl=>$clVal) {
+        ><?php foreach ($allMenuClass as $cl=>$clVal) {
           $selected=($defaultMenu==$cl)?' selected=selected ':'';
-          //echo '<option value="'.$cl.'" '.$selected.'>';
-          echo '<span style="height:25px" value="'.$cl.'" '.$selected.' class="menuSelectList">';
+          echo '<option value="'.$cl.'" '.$selected.' style="color:#fff !important;">';
+          echo '<div style="z-index:9999;height:16px;vertical-align:middle;" value="'.$cl.'" '.$selected.' class="menuSelectList" onMouseOver="clearTimeout(closeMenuListTimeout);" onMouseLeave="hideMenuList(100);">';
           echo '<img style="position:absolute;height:15px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
           echo i18n('menu'.ucfirst($clVal));
-          echo '</span><br/>';
-          //echo '</option>';
-      }?></p></div>
+          echo '</div>';
+          echo '</option>';
+      }?></div>
       <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
       <div style="height:100%" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
