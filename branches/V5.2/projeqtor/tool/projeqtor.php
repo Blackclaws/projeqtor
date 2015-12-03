@@ -499,8 +499,8 @@ function traceHack($msg = "Unidentified source code") {
     }
   }
   errorLog ( " REQUEST_URI = " . $_SERVER ['REQUEST_URI'] );
-  include "../tool/hackMessage.php";
-  // exit;
+  require "../tool/hackMessage.php"; // Will call exit
+  // exit; / exit is called in hackMessage
 }
 
 function securityCheckPage($page) {
