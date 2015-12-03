@@ -4050,10 +4050,12 @@ abstract class SqlElement {
 	} 
 	 
 	public static function checkValidClass($className, $notUsed=null) {
-	  if (!file_exists('../model/'.$className.'.php')) {
+	  if (!file_exists('../model/'.$className.'.php') || // not checking file existence using realpath() due to inconsistent behavior in different versions.
+	  $className != basename(realpath('../model/'.$className.'.php'), '.php')) {
 	    traceHack("Invalid class name '$className'");
 	  }
-	  if (! is_a($className, 'SqlElement', true )) {
+	  if (! is_subclass_of ( $className, 'SqlElement')) {
+	  //if (! is_a($className, 'SqlElement', true )) { // This function can accept $className, as string, only for PHP > 5.3.9
 	    traceHack("Class '$className' does not extend SqlElement");
 	  }
 	  return $className;
