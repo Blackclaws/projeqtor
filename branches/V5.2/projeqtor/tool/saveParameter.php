@@ -30,6 +30,7 @@
  */
 require_once "../tool/projeqtor.php";
 
+// TODO (SECURITY) : enforce security (habilitation to change parameters, lock fixed params, ...)
 $status="NO_CHANGE";
 $errors="";
 $type=$_REQUEST['parameterType'];
@@ -224,7 +225,7 @@ if ($type=='habilitation') {
   }
 } else if ($type=='globalParameter') {
   $parameterList=Parameter::getParamtersList($type);
-  foreach($_REQUEST as $fld => $val) {
+  foreach($_REQUEST as $fld => $val) { // TODO (SECURITY) : forbit writting of db and prefix params
     if (array_key_exists($fld, $parameterList)) {
       $crit['parameterCode']=$fld;
       $crit['idUser']=null;
