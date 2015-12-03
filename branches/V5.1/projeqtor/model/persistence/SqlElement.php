@@ -4002,7 +4002,8 @@ abstract class SqlElement {
 	  if (!file_exists('../model/'.$className.'.php')) {
 	    traceHack("Invalid class name '$className'");
 	  }
-	  if (! is_a($className, 'SqlElement', true )) {
+	  if (! is_subclass_of ( $className, 'SqlElement')) {
+	  //if (! is_a($className, 'SqlElement',true)) {
 	    traceHack("Class '$className' does not extend SqlElement");
 	  }
 	  return $className;
