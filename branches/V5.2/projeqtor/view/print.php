@@ -160,11 +160,14 @@
   if (! substr($page,0,3)=='../') {
     $includeFile.='../view/';
   }
-  if (strpos($includeFile,'?')>0) {
-    $params=substr($includeFile,strpos($includeFile,'?')+1);
-    $includeFile=substr($includeFile,0,strpos($includeFile,'?'));
+  securityCheckPage($includeFile);
+  $pos = strpos($includeFile, '?');
+  if ($pos !== FALSE) {
+    $params=substr($includeFile, $pos + 1);
+    $includeFile=substr($includeFile, 0, $pos);
     $paramArray=explode('&',$params);
-    foreach ($paramArray as $param) {
+    foreach ($paramArray as $param)
+    {
       $par=explode('=',$param);
       $_REQUEST[$par[0]]=$par[1];
     }
@@ -187,6 +190,8 @@
     if ($pdfLib=='html2pdf') {
       /* HTML2PDF way */
       require_once('../external/html2pdf/html2pdf.class.php');
+      include_once('../external/html2pdf/_class/locale.class.php');
+      debugLog("start rendering pdf");
       $html2pdf = new HTML2PDF($orientation,'A4','en');
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');
