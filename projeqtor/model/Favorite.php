@@ -89,7 +89,7 @@ class Favorite extends SqlElement {
       $urlParam="";
       foreach ($params as $paramName=>$paramValue) {
         $urlParam.=($urlParam or strpos($rpt['fileName'],'?')>0)?'&':'?';
-        $urlParam.=$paramName.'='.$paramValue;
+        $urlParam.=htmlEncode($paramName).'='.htmlEncode($paramValue);
       }
       $fileName=$rpt['fileName'];
       $orientation=$rpt['orientation'];
@@ -103,7 +103,7 @@ class Favorite extends SqlElement {
       echo '</td>';
       echo '<td  style="vertical-align:top;">';
       $cmd="dojo.byId('favoriteForm').reportName.value='". htmlEncode(i18n($rpt['name']),'quotes')."';";
-      $cmd.="showPrint('../report/$fileName$urlParam', 'favorite',null,null,'$orientation');";   
+      $cmd.="showPrint('../report/".htmlEncode($fileName).$urlParam."', 'favorite',null,null,'$orientation');";   
       echo '<div class="selectableList" onClick="'.$cmd.'">'.i18n($rpt['name']).'</div>';
       echo '<input type="hidden" style="width:100px"
        id="favoriteReportOrder' . htmlEncode($favorite->id). '" name="favoriteReportOrder' . htmlEncode($favorite->id). '"
