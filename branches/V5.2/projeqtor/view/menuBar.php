@@ -81,7 +81,7 @@
         echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
-          <button xclass="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
+          <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
            id="listFavoriteReports" name="listFavoriteReports">
             <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="display:none;"
               href="../tool/refreshFavoriteReportList.php"
