@@ -503,7 +503,8 @@ function traceHack($msg = "Unidentified source code") {
   // exit; / exit is called in hackMessage
 }
 
-function securityCheckPage($page) {
+/*function securityCheckPage($page) {
+  debugLog("securityCheckPage($page)");
   // Note: this is really a poor way of protecting against directory traversal. 
   // Proper way is to check against a white-list of allowed file paths. 
   // This does not provide protection against various encoding schemes, etc... 
@@ -520,7 +521,38 @@ function securityCheckPage($page) {
       exit ();
     }
   }
+}*/
+function securityCheckPage($page) {
+  $path = $page;
+  $pos = strpos($path, '?');
+  if ($pos !== FALSE) {//there are parameters
+    $path = substr($path, 0, $pos); // path up to parameters
+  }
+  if ((substr($path, -4) !== '.php') || // verify that path ends with '.php'
+  (strpos($path, ":") !== FALSE) || // verify $path does not use a URL wrapper
+  (file_exists($path) === FALSE)) { // verify $path is an actual file
+    traceHack("securityCheckPage($page) - not .php or URL wrapper or not actual file");
+    exit (); // Not required : traceHack already exits script
+  }
+
+  // verify that $path is in allowed folders ('tool', 'view' and 'report')
+  $allowed_folders = array(realpath("../tool/"),
+      realpath("../view/"),
+      realpath("../report/"));
+  /*$allowed = FALSE; // replaced with $allowed=isset($allowed_folders[dirname(realpath($path))]);
+  foreach ($allowed_folders as $allowed_folder) {
+    if (dirname(realpath($path)) === $allowed_folder) {
+      $allowed = TRUE; // parent directory matched an allowed folder
+      break;
+    }
+  }
+  if ($allowed !== TRUE) {*/
+  if (! isset($allowed_folders[dirname(realpath($path))])) {
+    traceHack("securityCheckPage($page) - not in allowed folders");
+    exit (); // Not required : traceHack already exits script
+  }
 }
+
 
 /**
  * ============================================================================

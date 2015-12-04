@@ -4048,7 +4048,18 @@ abstract class SqlElement {
 	  }
 	  return $result;
 	} 
-	 
+	/* Security fonctions to check validity of input values
+	 *  =========
+	 *  ATTENTION : these functions concider that not allowed values are Hack attemps, disconnecting user and exiting script
+	 *  =========  
+	 *  checkValidClass($className) : $className is a valid string corresponding to a valid class extending SqlElement
+	 *  checkValidId($id) : $id is a valid number or possibly '*' or empty string '' (may mean all in some cases)
+	 *  checkValidBoolean($boolean) : $boolean is a boolean, automatically replace similar values to 1 or 0, only allowed values
+	 *  checkValidDateTime($dateTime) : TODO !!! $dateDate is either a date or a time or a datetime
+	 *  checkValidNumeric($numeric) : $nuleric is a numeric value
+	 *  checkValidAlphanumeric($string) : $string alphnumeric only containing a-z, A-Z, 0-9
+	 *  checkValidFilename($file) : $file is a valid file, avoiding cross directory hacks
+	 */
 	public static function checkValidClass($className, $notUsed=null) {
 	  if (!file_exists('../model/'.$className.'.php') || // not checking file existence using realpath() due to inconsistent behavior in different versions.
 	  $className != basename(realpath('../model/'.$className.'.php'), '.php')) {
@@ -4086,6 +4097,16 @@ abstract class SqlElement {
 	    traceHack("Value '$numeric' is not numeric");
 	  }
 	  return $numeric;
+	}
+	public static function checkValidAlphanumeric($string) {
+	  if (preg_match('/[^0-9a-zA-Z]/', $newStatus) == true) {
+		  traceHack("invalid alpanumeric string value - $string");
+	  }
+	  return $string;
+	}
+	public static function checkValidFilename($file) {
+	  // TODO (SECURITY)
+	  return $file;
 	}
 }
 ?>
