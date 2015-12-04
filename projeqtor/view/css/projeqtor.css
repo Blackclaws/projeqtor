@@ -530,11 +530,11 @@ label, .label, .smallLabel {
   font-weight: bold;
 }
 
-.dijitMenuItem, .dijitMenuItemHover, .dijitMenuItemSelected {
+/*.dijitMenuItem, .dijitMenuItemHover, .dijitMenuItemSelected {
   padding:0px;
   margin:0px;
   height:10px;
-}
+}*/
 #menuSelector_menu tbody tr.dijitMenuItem td {
 	padding: 0;
 }
