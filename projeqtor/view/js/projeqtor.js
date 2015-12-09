@@ -1790,7 +1790,11 @@ function disconnect(cleanCookieHash) {
     });
   };
   if ( ! checkFormChangeInProgress() ) {
-    showConfirm(i18n('confirmDisconnection'),disconnectFunction);
+    if (paramConfirmQuit!="NO") {
+      showConfirm(i18n('confirmDisconnection'),disconnectFunction);
+    } else {
+      disconnectFunction();
+    }  
   }
 }
 
@@ -3049,10 +3053,12 @@ function ckEditorReplaceEditor(editorName,numEditor) {
     readOnly: readOnly,
     startupFocus : autofocus
   } );
-  editorArray[numEditor].on( 'change', function( evt ) {
-    //evt.editor.updateElement();
-    formChanged();
-  });
+  if (editorName!='noteNote') { // No formChanged for notes
+    editorArray[numEditor].on( 'change', function( evt ) {
+      //evt.editor.updateElement();
+      formChanged();
+    });
+  }
   editorArray[numEditor].on( 'blur', function( evt ) { // Trigger after paster image : notificationShow, afterCommandExec, dialogShow
     evt.editor.updateElement();
     //formChanged();

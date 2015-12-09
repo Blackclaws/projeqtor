@@ -840,6 +840,8 @@ scriptLog("      => ImputationLine->getParent()-exit");
 						echo ' trim="true" maxlength="4" class="input" ';
 						echo ' id="workValue_' . $nbLine . '_' . $i . '"';
 						echo ' name="workValue_' . $i . '[]"';
+						debugLog($valWork);
+						debugLog(Work::displayImputation($valWork));
 						echo ' value="' .  Work::displayImputation($valWork) . '" ';
 						if ($line->idle or $line->locked) {
 							echo ' readOnly="true" ';

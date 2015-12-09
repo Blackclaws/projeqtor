@@ -29,7 +29,7 @@
  * Almost all other objects are linked to a given project.
  */ 
 require_once('_securityCheck.php');
-class Version extends SqlElement {
+class ProductVersionMain extends Version {
 
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
@@ -49,9 +49,10 @@ class Version extends SqlElement {
   public $realEndDate;
   public $idle;
   public $description;
+  public $_sec_Versionproject_projects;
+  public $_VersionProject=array();
   public $_Attachment=array();
   public $_Note=array();
-  public $scope;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -66,12 +67,14 @@ class Version extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required","scope"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
   
+  private static $_databaseTableName = 'version';
+  private static $_databaseCriteria = array('scope'=>'Product');
   
    /** ==========================================================================
    * Constructor
@@ -115,6 +118,23 @@ class Version extends SqlElement {
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
 // ============================================================================**********
 // GET VALIDATION SCRIPT

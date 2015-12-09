@@ -25,34 +25,45 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
- * Project is the main object of the project managmement.
+ * ProductComponent is common class shared by Product and Component
  * Almost all other objects are linked to a given project.
  */ 
 require_once('_securityCheck.php');
-class VersionProject extends SqlElement {
+class ProductOrComponent extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $idVersion;
-  public $idProject;
-  public $startDate;
-  public $endDate;
+  public $name;
+  public $designation;
+  public $idClient;
+  public $idContact;
+  public $idProduct;
+  public $creationDate;
   public $idle;
+  public $description;
+  public $_Attachment=array();
+  public $_Note=array();
+  public $scope;
 
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="nameProject" width="10%" >${idProject}</th>
+    <th field="name" width="25%" >${productName}</th>
+  	<th field="designation" width="15%" >${designation}</th>
+    <th field="nameProduct" width="25%" >${isSubProductOf}</th>
+    <th field="nameClient" width="15%" >${clientName}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required",
+      "scope"=>"hidden"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
+  private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf'
   );
-  
+
+  private static $_databaseTableName = 'product';
   
    /** ==========================================================================
    * Constructor
@@ -90,12 +101,21 @@ class VersionProject extends SqlElement {
     return self::$_colCaptionTransposition;
   }  
   
-    /** ==========================================================================
+  /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
   }
 // ============================================================================**********
 // GET VALIDATION SCRIPT
@@ -114,97 +134,84 @@ class VersionProject extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
-
   /** =========================================================================
-   * Draw a specific item for the current class.
-   * @param $item the item. Correct values are : 
-   *    - subprojects => presents sub-projects as a tree
-   * @return an html string able to display a specific item
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message 
    *  must be redefined in the inherited class
    */
-  public function drawSpecificItem($item){
-    $result="";
-    if ($item=='projects') {
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        //$result .= $this->drawSubProjects();
-      }
-      $result .="</td></tr></table>";
-      return $result;
-    } 
+
+  
+  public function getSubProducts($limitToActiveProducts=false) {
+    if ($this->id==null or $this->id=='') {
+      return array();
+    }
+    $crit=array();
+  	$crit['idProduct']=$this->id;
+    if ($limitToActiveProducts) {$crit['idle']='0';}
+    $sorted=SqlList::getListWithCrit('Product',$crit,'name');
+  	$subProducts=array();
+    foreach($sorted as $prodId=>$prodName) {
+      $subProducts[$prodId]=new Product($prodId);
+    }
+    return $subProducts;
+  }
+  public function getSubProductsList($limitToActiveProducts=false) {
+    if ($this->id==null or $this->id=='') {
+      return array();
+    }
+    $crit=array();
+    $crit['idProduct']=$this->id;
+    if ($limitToActiveProducts) {$crit['idle']='0';}
+    $sorted=SqlList::getListWithCrit('Product',$crit,'name');
+    return $sorted;
   }
   
-  public function save() {
-    $new=($this->id)?false:true;
-    $old=$this->getOld();
-    $result=parent::save();
-    if ($new) { // On new version, must create VersionProject for components of Product
-      $v=new Version($this->idVersion);
-      if ($v->scope=='Product') {
-        $p=new Product($v->idProduct);
-        $compList=$p->getLinkedComponents(false);
-        foreach ($compList as $compId=>$compName) {
-          $comp=new Component($compId);
-          $comp->updateAllVersionProject();
-        } 
-      }
-    } else if ($this->idProject!=$old->idProject or $this->idVersion!=$old->idVersion) {
-      $v=new Version($this->idVersion);
-      if ($v->scope=='Product') {
-        $p=new Product($v->idProduct);
-        $compList=$p->getLinkedComponents(false);
-        if ($this->idVersion!=$old->idVersion) {
-          $v=new Version($old->idVersion);
-          $p=new Product($v->idProduct);
-          $compList=array_merge_preserve_keys($p->getLinkedComponents(false),$compList);
-        }
-        foreach($compList as $compId=>$compName) {
-          $comp=new Component($compId);
-          $comp->updateAllVersionProject();
-        } 
-      }
+  /** ==========================================================================
+   * Recusively retrieves all the hierarchic sub-products of the current product
+   * @return an array containing id, name, subproducts (recursive array)
+   */
+  public function getRecursiveSubProducts($limitToActiveProducts=false) {
+    $crit=array('idProduct'=>$this->id);
+    if ($limitToActiveProducts) {
+      $crit['idle']='0';
     }
-    return $result;
+    $obj=new Product();
+    $subProducts=$obj->getSqlElementsFromCriteria($crit, false) ;
+    $subProductList=null;
+    foreach ($subProducts as $subProd) {
+      $recursiveList=null;
+      $recursiveList=$subProd->getRecursiveSubProducts($limitToActiveProducts);
+      $arrayProd=array('id'=>$subProd->id, 'name'=>$subProd->name, 'subItems'=>$recursiveList);
+      $subProductList[]=$arrayProd;
+    }
+    return $subProductList;
   }
-  public function delete() {
-    $result=parent::delete();
-    $v=new Version($this->idVersion);
-    $p=new Product($v->idProduct);
-    $compList=$p->getLinkedComponents(false);
-    foreach ($compList as $compId=>$compName) {
-      $comp=new Component($compId);
-      $comp->updateAllVersionProject();
+  
+  /** ==========================================================================
+   * Recusively retrieves all the sub-Products of the current Product
+   * and presents it as a flat array list of id=>name
+   * @return an array containing the list of subProducts as id=>name 
+   */
+  public function getRecursiveSubProductsFlatList($limitToActiveProducts=false, $includeSelf=false) {
+  	$tab=$this->getSubProductsList($limitToActiveProducts);
+    $list=array();
+    if ($includeSelf) {
+      $list[$this->id]=$this->name;
     }
-    return $result;
+    if ($tab) {
+      foreach($tab as $id=>$name) {
+        $list[$id]=$name;
+        $subobj=new Product();
+        $subobj->id=$id;
+        $sublist=$subobj->getRecursiveSubProductsFlatList($limitToActiveProducts);
+        if ($sublist) {
+          $list=array_merge_preserve_keys($list,$sublist);
+        }
+      }
+    }
+    return $list;
   }
 
-  public function control() {
-  	$result="";
-  	if (! $this->id) {
-  	  $crit=array('idProject'=>$this->idProject, 'idVersion'=>$this->idVersion);
-  	  $list=$this->getSqlElementsFromCriteria($crit, false);
-  	  if (count($list)>0) {
-        $result.='<br/>' . i18n('errorDuplicateVersionProject');
-      }     
-  	}
-  	$defaultControl=parent::control();
-    if ($defaultControl!='OK') {
-      $result.=$defaultControl;
-    }
-    if ($result=="") {
-      $result='OK';
-    }
-    return $result;
-  }
-  
-  public static function updateIdle($type,$id) {
-    $vp=new VersionProject();
-    $vps=$vp->getSqlElementsFromCriteria(array("id".$type=>$id, "idle"=>'0'), false);
-    foreach ($vps as $vp) {
-      $vp->idle=1;
-      $vp->save();
-    }
-  }
 }
 ?>

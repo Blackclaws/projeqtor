@@ -189,6 +189,14 @@
 .iconClientType22 { background-image: url(images/iconClientType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconClientType16 { background-image: url(images/iconClientType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconComponent32 { background-image: url(images/iconComponent32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconComponent22 { background-image: url(images/iconComponent22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconComponent16 { background-image: url(images/iconComponent16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconComponentVersion32 { background-image: url(images/iconComponentVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconComponentVersion22 { background-image: url(images/iconComponentVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconComponentVersion16 { background-image: url(images/iconComponentVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconBill32 { background-image: url(images/iconBill32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconBill22 { background-image: url(images/iconBill22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconBill16 { background-image: url(images/iconBill16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -449,6 +457,10 @@
 .iconProduct22 { background-image: url(images/iconProduct22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProduct16 { background-image: url(images/iconProduct16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconProductVersion32 { background-image: url(images/iconProductVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProductVersion22 { background-image: url(images/iconProductVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProductVersion16 { background-image: url(images/iconProductVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconProfile32 { background-image: url(images/iconProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProfile22 { background-image: url(images/iconProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProfile16 { background-image: url(images/iconProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -637,10 +649,6 @@
 .iconUserParameter32 { background-image: url(images/iconUserParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUserParameter22 { background-image: url(images/iconUserParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconUserParameter16 { background-image: url(images/iconUserParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
-
-.iconVersion32 { background-image: url(images/iconVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconVersion22 { background-image: url(images/iconVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconVersion16 { background-image: url(images/iconVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconWork32 { background-image: url(images/iconWork32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconWork22 { background-image: url(images/iconWork22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

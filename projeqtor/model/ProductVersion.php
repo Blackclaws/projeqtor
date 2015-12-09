@@ -27,8 +27,8 @@
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
-require_once('_securityCheck.php'); 
-class Product extends ProductMain {
+require_once('_securityCheck.php');
+class ProductVersion extends ProductVersionMain {
 
 	/** ==========================================================================
 	 * Constructor
@@ -48,5 +48,5 @@ class Product extends ProductMain {
 	}
 	
 	
-}
-?>
+	}
+	?>

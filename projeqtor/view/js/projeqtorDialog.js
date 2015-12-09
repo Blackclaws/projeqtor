@@ -528,7 +528,7 @@ function directDisplayDetail(objClass, objId) {
     + objClass + "&objectId=" + objId + "&detail=true";
 }
 
-function selectDetailItem(selectedValue) {
+function selectDetailItem(selectedValue, lastSavedName) {
   var idFldVal="";
   if (selectedValue) {
     idFldVal=selectedValue;
@@ -582,6 +582,10 @@ function selectDetailItem(selectedValue) {
         refreshLinkList(idFldVal);
         setTimeout("dojo.byId('linkRef2Id').focus()", 1000);
         enableWidget('dialogLinkSubmit');
+      } else if (comboName == 'productStructureListId') {
+        refreshProductStructureList(idFldVal,lastSavedName);
+        setTimeout("dojo.byId('productStructureListId').focus()",500);
+        enableWidget('dialogProductStructureSubmit');
       } else if (comboName == 'otherVersionIdVersion') {
         refreshOtherVersionList(idFldVal);
         setTimeout("dojo.byId('otherVersionIdVersion').focus()", 1000);
@@ -683,7 +687,11 @@ function saveDetailItem() {
             var lastOperation=top.dojo.byId('lastOperationComboDetail');
             var lastSaveId=top.dojo.byId('lastSaveIdComboDetail');
             if (lastOperationStatus.value == "OK") {
-              selectDetailItem(lastSaveId.value);
+              var currentItemName="";
+              if (frames['comboDetailFrame'].dijit.byId("name")) {
+                currentItemName=frames['comboDetailFrame'].dijit.byId("name").get("value");
+              }
+              selectDetailItem(lastSaveId.value,currentItemName);
             }
             hideWait();
           },
@@ -1161,6 +1169,75 @@ function removeLink(linkId, refType, refId, refTypeName) {
   };
   if (!refTypeName) {
     refTypeName=i18n(refType);
+  }
+  msg=i18n('confirmDeleteLink', new Array(refTypeName, refId));
+  showConfirm(msg, actionOK);
+}
+
+//=============================================================================
+//= Product Composition
+//=============================================================================
+
+/**
+* Display a add link Box
+* 
+*/
+function addProductStructure() {
+  noRefreshProductStructure=true;
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  var param="&objectClass="+objectClass+"&objectId="+objectId;
+  loadDialog('dialogProductStructure',null, true, param, true);
+}
+
+function refreshProductStructureList(selected,newName) { // TODO
+  var selectList=dojo.byId('productStructureListId');
+  if (selected && selectList) {
+    if (newName) {
+      var option = document.createElement("option");
+      option.text = newName;
+      option.value=selected;
+      selectList.add(option);
+    }
+    var ids=selected.split('_');
+    for (j=0;j<selectList.options.length;j++) {
+      var sel=selectList.options[j].value;
+      if (ids.indexOf(sel)>=0) { // Found in selected items
+        selectList.options[j].selected='selected';
+      }
+    }
+    selectList.focus()
+    enableWidget('dialogProductStructureSubmit');
+  }
+}
+/**
+* save a link (after addLink)
+* 
+*/
+function saveProductStructure() {
+  if (dojo.byId("productStructureListId").value == "") return;
+  loadContent("../tool/saveProductStructure.php", "resultDiv", "productStructureForm", true, 'ProductStructure');
+  dijit.byId('dialogProductStructure').hide();
+}
+
+/**
+* Display a delete Link Box
+* 
+*/
+function removeProductStructure(ProductStructureId, refType, refId, refTypeName) {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  actionOK=function() {
+   loadContent("../tool/removeProductStructure.php?id="+ProductStructureId, "resultDiv", null, true, 'ProductStructure');
+  };
+  if (!refTypeName) {
+   refTypeName=i18n(refType);
   }
   msg=i18n('confirmDeleteLink', new Array(refTypeName, refId));
   showConfirm(msg, actionOK);

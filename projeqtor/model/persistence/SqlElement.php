@@ -95,6 +95,8 @@ abstract class SqlElement {
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "CommandType" =>        array("Command"=>"controlStrict"),
+    "Component" =>          array("ProductStructure"=>"cascade",
+                                  "ComponentVersion"=>"control"),                              
     "Contact" =>            array("Activity"=>"controlStrict",
                                   "Affectation"=>"control",
                                   "Bill"=>"controlStrict",
@@ -169,10 +171,15 @@ abstract class SqlElement {
                                   "User"=>"controlStrict"),
     "ProjectExpenseType" => array("ProjectExpense" => "controlStrict"),
     "ProjectType" =>        array("Project"=>"controlStrict"), 
-    "Product" =>            array("Requirement"=>"control",
+    "Product" =>            array("Component"=>"cascade",
+                                  "Requirement"=>"control",
                                   "TestCase"=>"control",
                                   "TestSession"=>"control",
-                                  "Version"=>"control"),
+                                  "ProductVersion"=>"control"),
+    "ProductVersion" =>     array("Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control",
+                                  "VersionProject"=>"cascade"),
     "Project" =>            array("Action"=>"control",
                                   "Activity"=>"confirm",
                                   "Affectation"=>"confirm",
@@ -1940,7 +1947,8 @@ abstract class SqlElement {
 							}  else if ($colName=="VersionProject") {
 								if (get_class($this)!='OriginalVersion' and get_class($this)!='TargetVersion') {
 									$vp=new VersionProject();
-									$crit=array('id'.get_class($this)=>$this->id);
+									$idCrit='id'.((get_class($this)=='Project')?'Project':'Version');
+									$crit=array($idCrit=>$this->id);
 									$this->{$col_name}=$vp->getSqlElementsFromCriteria($crit,false);
 								}
 							}  else if ($colName=="DocumentVersion") {
