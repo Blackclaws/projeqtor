@@ -4,9 +4,10 @@
 -- // Version : 5.1.0                                       //
 -- // Date : 2015-07-30                                     //
 -- ///////////////////////////////////////////////////////////
+
 CREATE TABLE `${prefix}paymentdelay` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `name`varchar(100),
+  `name` varchar(100),
   `days` int(3) unsigned DEFAULT NULL,
   `endOfMonth` int(1) DEFAULT 0,
   `sortOrder` int(3) DEFAULT 0,
@@ -26,7 +27,7 @@ INSERT INTO `${prefix}paymentdelay` (`id`, `name`, `days`, `endOfMonth`, `sortOr
 
 CREATE TABLE `${prefix}paymentmode` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `name`varchar(100),
+  `name` varchar(100),
   `sortOrder` int(3) DEFAULT 0,
   `idle` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -41,7 +42,7 @@ INSERT INTO `${prefix}paymentmode` (`id`, `name`, `sortOrder`, `idle`) VALUES
 
 CREATE TABLE `${prefix}payment` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `name`varchar(100),
+  `name` varchar(100),
   `idBill` int(12) unsigned DEFAULT NULL,
   `paymentDate` date,
   `idPaymentMode` int(12) unsigned DEFAULT NULL,
@@ -52,8 +53,9 @@ CREATE TABLE `${prefix}payment` (
 CREATE INDEX paymentBill ON `${prefix}payment` (idBill);
 
 ALTER TABLE `${prefix}client` ADD `numTax` varchar(100) DEFAULT NULL,
-ADD `idPaymentDelay` int(12) unsigned DEFAULT NULL,
-CHANGE `designation` `designation`  varchar (100),
+ADD `idPaymentDelay` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}client` CHANGE `designation` `designation`  varchar (100),
 CHANGE `street` `street`  varchar (100),
 CHANGE `complement` `complement`  varchar (100),
 CHANGE `city` `city`  varchar (100),
@@ -62,7 +64,7 @@ CHANGE `country` `country`  varchar (100);
 
 CREATE TABLE `${prefix}measureunit` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `name`varchar(100),
+  `name` varchar(100),
   `pluralName` varchar(100),
   `sortOrder` int(3) DEFAULT 0,
   `idle` int(1) DEFAULT 0,
@@ -89,24 +91,24 @@ ADD `paymentsCount` int(3) default 0;
 UPDATE `${prefix}bill` b set `idUser` = (select idUser from `${prefix}history` h where h.refType='Bill' and h.refId=b.id order by operationDate LIMIT 1); 
 
 ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
-CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
 ADD `tax` decimal(5,2) DEFAULT NULL,
 ADD `fullAmount` decimal(12,2) DEFAULT NULL,
 ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
+ALTER TABLE `${prefix}quotation` CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED;
 
 ALTER TABLE `${prefix}command` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
-CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
 ADD `tax` decimal(5,2) DEFAULT NULL,
 ADD `fullAmount` decimal(12,2) DEFAULT NULL,
-CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2) UNSIGNED,
 ADD `addFullAmount` decimal(12,2) DEFAULT NULL,
-CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED,
 ADD `totalFullAmount` decimal(12,2) DEFAULT NULL,
 ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
+ALTER TABLE `${prefix}command` CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED;
 
 CREATE TABLE `${prefix}deliverymode` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `name`varchar(100),
+  `name` varchar(100),
   `sortOrder` int(3) DEFAULT 0,
   `idle` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
