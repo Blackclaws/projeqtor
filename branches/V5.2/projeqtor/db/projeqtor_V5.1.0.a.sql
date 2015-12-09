@@ -41,9 +41,9 @@ ADD `contactPhone` varchar (100) DEFAULT null,
 ADD `contactMobile` varchar (100) DEFAULT null,
 ADD `bankNationalAccountNumber` varchar (100) DEFAULT null,
 ADD `bankInternationalAccountNumber` varchar (100) DEFAULT null,
-ADD `bankIdentificationCode` varchar (100) DEFAULT null,
-CHANGE `companyNumber` `companyNumber`  varchar (100),
-CHANGE `bank` `bankName`  varchar (100);
+ADD `bankIdentificationCode` varchar (100) DEFAULT null;
+ALTER TABLE `${prefix}recipient` CHANGE `companyNumber` `companyNumber` varchar (100);
+ALTER TABLE `${prefix}recipient` CHANGE `bank` `bankName`  varchar (100);
 
 UPDATE `${prefix}recipient` set `bankInternationalAccountNumber`=concat(ibanCountry,ibanKey,' ',ibanBban);
 
