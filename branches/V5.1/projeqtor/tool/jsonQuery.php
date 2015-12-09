@@ -669,20 +669,24 @@
             	$numericLength=6;
             } else if ($formatter[$nbFields]=='percentFormatter') {
             	$numericLength=3;
+            	if ($val<0) $numericLength=0;
             } else if ($formatter[$nbFields]=='workFormatter') {
               $numericLength=9;
+              if ($val<0) $numericLength=0;
               if ($idProject and ! $user->getWorkVisibility($idProject,$id)) {
                 $val='-';
                 $numericLength=0;
               }
             } else if ($formatter[$nbFields]=='costFormatter') {
             	$numericLength=9;
+            	if ($val<0) $numericLength=0;
             	if ($idProject and ! $user->getCostVisibility($idProject,$id)) {
             	  $val='-';
             	  $numericLength=0;
             	}
             } else if ($formatter[$nbFields]=='numericFormatter') {
             	$numericLength=9;
+            	if ($val<0) $numericLength=0;
             }
             if ($id=='colorNameRunStatus') {
             	$split=explode('#',$val);
