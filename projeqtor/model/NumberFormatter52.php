@@ -59,6 +59,7 @@ class NumberFormatter52  {
         $this->thouthandSeparator=',';
       }
     }
+    setlocale(LC_NUMERIC, 'C');
     if (array_key_exists('browserLocaleDecimalPoint', $_SESSION)) {
       $this->decimalSeparator=$_SESSION['browserLocaleDecimalPoint'];
     }
