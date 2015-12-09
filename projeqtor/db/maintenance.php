@@ -37,7 +37,7 @@ $versionHistory = array(
   "V2.0.0", "V2.0.1",  "V2.1.0",  "V2.1.1",  "V2.2.0",  "V2.3.0",  "V2.4.0",  "V2.4.1",  "V2.4.2",  "V2.5.0",  "V2.6.0",
   "V3.0.0", "V3.0.1",  "V3.1.0",  "V3.2.0",  "V3.3.0",  "V3.3.1",  "V3.4.0",  "V3.4.1",
   "V4.0.0", "V4.0.1",  "V4.1.-",  "V4.1.0",  "V4.2.0",  "V4.2.1",  "V4.3.0.a","V4.3.0",  "V4.3.2",  "V4.4.0",  "V4.5.0", "V4.5.3", "V4.5.6",
-  "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4");
+  "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -133,13 +133,13 @@ if (! $tst->id) {
 	$nbErrors+=runScript('V1.6.1');
 }
 
-$memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
+//$memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
 // For V1.7.0
-if (! isset($memoryLimitForPDF) ) {
-	writeFile('$memoryLimitForPDF = \'512\';',$parametersLocation);
-  writeFile("\n",$parametersLocation);
-  traceLog('Parameter $paramMemoryLimitForPDF added');
-}
+//if (! isset($memoryLimitForPDF) ) {
+//	writeFile('$memoryLimitForPDF = \'512\';',$parametersLocation);
+//  writeFile("\n",$parametersLocation);
+//  traceLog('Parameter $paramMemoryLimitForPDF added');
+//}
 
 // For V1.9.0
 if (beforeVersion($currVersion,"V1.9.0") and $currVersion!='V0.0.0') {
