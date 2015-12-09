@@ -133,13 +133,13 @@ if (! $tst->id) {
 	$nbErrors+=runScript('V1.6.1');
 }
 
-//$memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
+$memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
 // For V1.7.0
-//if (! isset($memoryLimitForPDF) ) {
-//	writeFile('$memoryLimitForPDF = \'512\';',$parametersLocation);
-//  writeFile("\n",$parametersLocation);
-//  traceLog('Parameter $paramMemoryLimitForPDF added');
-//}
+if (! isset($memoryLimitForPDF) and beforeVersion($currVersion,"V3.0.0")) {
+	writeFile('$paramMemoryLimitForPDF = \'512\';',$parametersLocation);
+  writeFile("\n",$parametersLocation);
+  traceLog('Parameter $paramMemoryLimitForPDF added');
+}
 
 // For V1.9.0
 if (beforeVersion($currVersion,"V1.9.0") and $currVersion!='V0.0.0') {
