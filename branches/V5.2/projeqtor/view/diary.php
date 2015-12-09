@@ -59,15 +59,16 @@
   );
   $projectColorArray=array();
   $projectNameArray=array();
+  $trHeight=100;
   if ($period=="month") {
-  	$trHeight=20;
   	$week=weekNumber($year.'-'.$month.'-01');
-  	$lastWeek=weekNumber($year.'-'.$month.'-'.date('t', mktime(0, 0, 0, $month, 1, $year)));
-  	$trHeight=round(100/($lastWeek-$week+1))-1;
-  } else {
-  	$trHeight=100;
+  	$lastWeek=weekNumber($year.'-'.$month.'-'.intval(date("t",$month)));
+	  if ($lastWeek>$week) {
+		  $trHeight=round(100/($lastWeek-$week+1))-1;
+	  } else {
+		  $trHeight=round(100/($lastWeek+1))-1;
+	  }
   }
-
   if ($period=="month") {
     if ($month=='01' and $week>50) {
       $currentDay=date('Y-m-d',firstDayofWeek($week,$year-1));
@@ -75,8 +76,8 @@
   	  $currentDay=date('Y-m-d',firstDayofWeek($week,$year));
     }
   	$lastDayOfMonth=date('t',strtotime($year.'-'.$month.'-01'));
-  	$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
-  	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, (($lastWeek>$week)?$year:$year+1) ));	
+	$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
+  	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, $year ));
   	$endDay=addDaysToDate($firstDayOfLastWeek, 6);
   	$inScopeDay=false;	
   } else if ($period=="week") {

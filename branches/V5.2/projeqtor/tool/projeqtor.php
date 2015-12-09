@@ -40,8 +40,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.1.3"; // Version of application : Major / Minor / Release
-$build = "0125"; // Build number. To be increased on each release
+$version = "V5.2.0"; // Version of application : Major / Minor / Release
+$build = "0127"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 
 /**
@@ -465,7 +465,7 @@ function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
     return true;
   }
   if ($logLevel >= 3) {
-    throwError ( $errorMessage . "<br/>&nbsp;&nbsp;&nbsp;in " . basename ( $errorFile ) . "<br/>&nbsp;&nbsp;&nbsp;at line " . $errorLine );
+    throwError ( $errorMessage . "<br/>&nbsp;&nbsp;&nbsp;in " . basename ( $errorFile ) . "<br/>&nbsp;&nbsp;&nbsp;at line " . $errorLine, true );
   } else {
     throwError ( i18n ( 'errorMessage', array (
         date ( 'Y-m-d' ),
@@ -503,25 +503,6 @@ function traceHack($msg = "Unidentified source code") {
   // exit; / exit is called in hackMessage
 }
 
-/*function securityCheckPage($page) {
-  debugLog("securityCheckPage($page)");
-  // Note: this is really a poor way of protecting against directory traversal. 
-  // Proper way is to check against a white-list of allowed file paths. 
-  // This does not provide protection against various encoding schemes, etc... 
-  // but as this function is only used in main.php attack surface is not that large, and I have not yet gone over main.php to inspect it. 
-  // TODO (SECURITY) : update this note once view/main.php has been reviewed.
-  if ((preg_match_all('/\.\.\//', $page) > 1) or 
-     (substr ( $page, 0, 6 ) == '../../' or substr ( $page, 1, 1 ) == ':')) { // does not protect against '//././.././../[some file]'
-    traceHack ( "securityCheckPage($page)" );
-    exit ();
-  } else if (substr ( $page, - 4 ) != '.php') {
-    $pos = strpos ( $page, '?' );
-    if ($pos == 0 or substr ( $page, $pos - 4, 4 ) != '.php') {
-      traceHack ( "securityCheckPage($page)" );
-      exit ();
-    }
-  }
-}*/
 function securityCheckPage($page) {
   $path = $page;
   $pos = strpos($path, '?');
@@ -534,21 +515,11 @@ function securityCheckPage($page) {
     traceHack("securityCheckPage($page) - not .php or URL wrapper or not actual file");
     exit (); // Not required : traceHack already exits script
   }
-
-  // verify that $path is in allowed folders ('tool', 'view' and 'report')
   $allowed_folders = array(realpath("../tool/"),
       realpath("../view/"),
       realpath("../report/"));
-  /*$allowed = FALSE; // replaced with $allowed=isset($allowed_folders[dirname(realpath($path))]);
-  foreach ($allowed_folders as $allowed_folder) {
-    if (dirname(realpath($path)) === $allowed_folder) {
-      $allowed = TRUE; // parent directory matched an allowed folder
-      break;
-    }
-  }
-  if ($allowed !== TRUE) {*/
-  if (! isset($allowed_folders[dirname(realpath($path))])) {
-    traceHack("securityCheckPage($page) - not in allowed folders");
+  if (! in_array(dirname(realpath($path)),$allowed_folders) ) {
+    traceHack("securityCheckPage($page) - '".dirname(realpath($path))."' is not in allowed folders list");
     exit (); // Not required : traceHack already exits script
   }
 }
@@ -566,7 +537,7 @@ function securityCheckPage($page) {
  *          used
  * @return void
  */
-function throwError($message, $code = null) {
+function throwError($message, $noEncode=false) {
   global $globalCatchErrors, $globalCronMode;
   if (isset ( $globalCronMode )) {
     traceLog ( "Cron error : " . $message );
@@ -575,7 +546,8 @@ function throwError($message, $code = null) {
       exit ();
     }
   } else {
-    echo '<div class="messageERROR" >ERROR : ' . htmlspecialchars($message,ENT_QUOTES,'UTF-8') . '</div>';
+    $msg=($noEncode)?$message:htmlspecialchars($message,ENT_QUOTES,'UTF-8'); // $noEncode used only on errorHandler : message is PHP error
+    echo '<div class="messageERROR" >ERROR : ' . $msg . '</div>';
     echo '<input type="hidden" id="lastSaveId" value="" />';
     echo '<input type="hidden" id="lastOperation" value="ERROR" />';
     echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';

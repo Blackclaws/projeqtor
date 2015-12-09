@@ -29,12 +29,12 @@
  * Almost all other objects are linked to a given project.
  */ 
 require_once('_securityCheck.php');
-class Version extends SqlElement {
+class ComponentVersionMain extends Version {
 
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $idProduct;
+  public $idComponent;
   public $name;
   public $idContact;
   public $idResource;
@@ -51,13 +51,12 @@ class Version extends SqlElement {
   public $description;
   public $_Attachment=array();
   public $_Note=array();
-  public $scope;
   
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="20%" >${versionName}</th>
-    <th field="nameProduct" width="25%" >${productName}</th>
+    <th field="nameComponent" width="25%" >${componentName}</th>
     <th field="plannedEisDate" width="10%" formatter="dateFormatter">${plannedEis}</th>
     <th field="realEisDate" width="10%" formatter="dateFormatter">${realEis}</th>
     <th field="plannedEndDate" width="10%" formatter="dateFormatter">${plannedEnd}</th>
@@ -66,12 +65,19 @@ class Version extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", 
+      "idComponent"=>"required",
+      "idContact"=>"hidden",
+      "idResource"=>"hidden",
+      "scope"=>"hidden",
+      "idProduct"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
-  
+  private static $_databaseColumnName = array('idComponent'=>'idProduct');
+  private static $_databaseTableName = 'version';
+  private static $_databaseCriteria = array('scope'=>'Component');
   
    /** ==========================================================================
    * Constructor
@@ -115,6 +121,31 @@ class Version extends SqlElement {
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
+  }
+  
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
 // ============================================================================**********
 // GET VALIDATION SCRIPT

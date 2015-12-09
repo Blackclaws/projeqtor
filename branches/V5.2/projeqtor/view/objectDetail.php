@@ -107,6 +107,12 @@ if ($noselect) {
     }
     exit();
   }
+  if (array_key_exists('refreshProductStructure', $_REQUEST)) {
+    if (property_exists($obj, '_ProductStructure')) {
+      drawLinksFromObject($obj->_ProductStructure, $obj, null, true);
+    }
+    exit();
+  }
   if (array_key_exists('refreshHistory', $_REQUEST)) {
     $treatedObjects []=$obj;
     foreach ( $obj as $col => $val ) {
@@ -595,6 +601,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $linkClass=substr($col, 6);
       }
       drawLinksFromObject($val, $obj, $linkClass);
+    } else if ($col == '_ProductStructure') { // Display ProductStructure (structure)
+      drawProductStructureFromObject($val, $obj, false);
     } else if (substr($col, 0, 11) == '_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
     } else if (substr($col, 0, 11) == '_Approver') { // Display Assignments
@@ -1482,7 +1490,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $dispVal=Work::displayWork($val);
           }
         } else {
-          $dispVal=htmlEncode($val);
+          $dispVal=$val; // TODO : protect display ?
         }
         echo ' value="' . $dispVal . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';
@@ -2529,7 +2537,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '</td>';
       }
       if (!$classLink) {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.get_class($linkObj).'16.png" />&nbsp;'.$classLinkName .' #' . $linkObj->id;
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td><img src="css/images/icon'.get_class($linkObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
         echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
@@ -2562,6 +2570,74 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   if (!$refresh) echo '</td></tr>';
   if (! $print) {
     echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
+  }
+}
+
+function drawProductStructureFromObject($list, $obj, $refresh=false) {
+  if ($obj->isAttributeSetToField("_ProductStructure", "hidden")) {
+    return;
+  }
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  if ($obj->idle == 1) {
+    $canUpdate=false;
+  }
+  if (!$refresh) echo '<tr><td colspan="2">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  if (!$print) {
+    echo '<td class="linkHeader" style="width:5%">';
+    if ($obj->id != null and !$print and $canUpdate) {
+     echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductStructure();" title="' . i18n('addProductStructure') . '" class="roundedButtonSmall"/> ';
+    }
+    echo '</td>';
+  }
+  $listClass=(get_class($obj)=='Product')?'Component':'Product';
+  echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+  echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
+  echo '</tr>';
+  foreach ( $list as $comp ) {
+    $compObj=null;
+    if (get_class($obj)=='Product') {
+      $compObj=new Component($comp->idComponent);
+    } else {
+      $compObj=new Product($comp->idProduct);
+    }
+    $userId=$comp->idUser;
+    $userName=SqlList::getNameFromId('User', $userId);
+    $creationDate=$compObj->creationDate;
+    $canGoto=(securityCheckDisplayMenu(null, get_class($compObj)) and securityGetAccessRightYesNo('menu' . get_class($compObj), 'read', $compObj) == "YES")?true:false;
+    echo '<tr>';
+    $classCompName=i18n(get_class($compObj));
+    if (!$print) {
+      echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+      if ($canUpdate) {
+        echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeProductStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" title="' . i18n('removeProductStructure') . '" class="roundedButtonSmall"/> ';
+      }
+      echo '</td>';
+    }
+    //echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.get_class($compObj).'16.png" />&nbsp;'.$classCompName .' #' . $compObj->id;
+    echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr><td><img src="css/images/icon'.get_class($compObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.'#' . $compObj->id.'</td></tr></table>';
+    echo '</td>';
+    $goto="";
+    if (!$print and $canGoto) {
+      $goto=' onClick="gotoElement(' . "'" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "'" . ');" style="cursor: pointer;" ';
+    }
+    echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+    echo htmlEncode($compObj->name);
+    echo formatUserThumb($userId, $userName, 'Creator');
+    echo formatDateThumb($creationDate, null);
+    echo formatCommentThumb($comp->comment);
+    echo '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  if (! $print) {
+    echo '<input id="ProductStructureSectionCount" type="hidden" value="'.count($list).'" />';
   }
 }
 
@@ -2970,7 +3046,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   if (get_class($obj) == 'Project') {
     $idProj=$obj->id;
     $idVers=null;
-  } else if (get_class($obj) == 'Version') {
+  } else if (is_a($obj,'Version') ) {
     $idProj=null;
     $idVers=$obj->id;
   }

@@ -70,7 +70,7 @@ if ($ref2Type=="Project") {
   $wbsLevelArray=array();
 }
 ?>
-<select id="linkRef2Id" size="14"" name="linkRef2Id[]" multiple
+<select id="linkRef2Id" size="14" name="linkRef2Id[]" multiple
 onchange="selectLinkItem();"  ondblclick="saveLink();"
 class="selectList" >
  <?php
