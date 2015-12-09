@@ -1777,7 +1777,11 @@ function disconnect(cleanCookieHash) {
     });
   };
   if ( ! checkFormChangeInProgress() ) {
-    showConfirm(i18n('confirmDisconnection'),disconnectFunction);
+    if (paramConfirmQuit!="NO") {
+      showConfirm(i18n('confirmDisconnection'),disconnectFunction);
+    } else {
+      disconnectFunction();
+    }  
   }
 }
 
