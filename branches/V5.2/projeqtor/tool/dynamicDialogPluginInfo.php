@@ -24,8 +24,8 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+// TODO (SECURITY) : should be disabled until thoroughly fixed from security vulnerabilities (i.e. directory traversal)
 include_once("../tool/projeqtor.php");
-
 $filename=$_REQUEST['filename'];
 $arrayData=Plugin::getMetadata($filename);
 echo "<br/>";
