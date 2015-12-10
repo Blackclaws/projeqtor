@@ -23,7 +23,7 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
+require_once "../tool/projeqtor.php";
 include_once '../tool/formatter.php';
 
 if (! isset ($print) or !$print) {
@@ -47,6 +47,7 @@ if (isset($obj)) {
   	throwError('Parameter objectClass not found in REQUEST');
   }
   $objectClass=$_REQUEST['objectClass'];
+  SqlElement::checkValidClass($objectClass);
   
   if (! array_key_exists('objectId',$_REQUEST)) {
   	throwError('Parameter objectId not found in REQUEST');
@@ -54,7 +55,7 @@ if (isset($obj)) {
   $objectId=$_REQUEST['objectId'];
 }
 $checklistDefinition=null;
-$obj=new $objectClass($objectId);
+$obj=new $objectClass($objectId); // Note: $objectId is checked in base SqlElement constructor to be numeric value
 $type='id'.$objectClass.'Type';
 $checklist=new Checklist();
 $checklistList=$checklist->getSqlElementsFromCriteria(array('refType'=>$objectClass, 'refId'=>$objectId));
@@ -114,8 +115,8 @@ if ($print) $canUpdate=false;
 <?php }?>
 <input type="hidden" name="checklistDefinitionId" value="<?php echo $checklistDefinition->id;?>" />
 <input type="hidden" name="checklistId" value="<?php echo $checklist->id;?>" />
-<input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
-<input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
+<input type="hidden" name="checklistObjectClass" value="<?php echo htmlEncode($objectClass);?>" />
+<input type="hidden" name="checklistObjectId" value="<?php echo htmlEncode($objectId);?>" />
 <?php } else {?>
 <table style="width:<?php echo $printWidthDialog;?>;">
   <tr><td>&nbsp;</td></tr>
@@ -147,7 +148,7 @@ if ($print) $canUpdate=false;
 								$value='value0'.$i;?>
 								<td style="<?php echo (!$print)?'':''?>min-width:100px;width:15%;vertical-align:top;" title="<?php echo ($print)?'':$line->$title;?>" >
 					<?php if ($line->$check) {
-								  $checkName="check_".$line->id."_".$i;
+								  $checkName="check_".htmlEncode($line->id)."_".$i;
 								  if ($print) {
 		                $checkImg="checkedKO.png";
 		                if ($lineVal->$value) {
