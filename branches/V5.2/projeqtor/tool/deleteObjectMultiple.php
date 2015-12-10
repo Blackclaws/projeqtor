@@ -35,6 +35,8 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $className=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($className);
+
 if (! array_key_exists('selection',$_REQUEST)) {
   throwError('selection parameter not found in REQUEST');
 }
@@ -42,7 +44,7 @@ $selection=trim($_REQUEST['selection']);
 $selectList=explode(';',$selection);
 
 if (!$selection or count($selectList)==0) {
-	 $summary='<div class=\'messageWARNING\' >'.i18n('messageNoData',array(i18n($className))).'</div >';
+	 $summary='<div class=\'messageWARNING\' >'.i18n('messageNoData',array(i18n($className)),ENT_QUOTES,'UTF-8').'</div >';
 	 echo '<input type="hidden" id="summaryResult" value="'.$summary.'" />';
 	 exit;
 }
@@ -53,14 +55,21 @@ $cptNoChange=0;
 echo "<table>";
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
+	SqlElement::checkValidId($id);
+	if (preg_match('/[^0-9]/', $id) == True)
+	{
+		traceHack("Invalid id in deleteObjectMultiple.php - [$id]");
+		exit;
+	}
 	Sql::beginTransaction();
 	echo '<tr>';
 	echo '<td valign="top"><b>#'.$id.'&nbsp:&nbsp;</b></td>';
+
 	$item=new $className($id);
 	if (property_exists($item, 'locked') and $item->locked) {
 		Sql::rollbackTransaction();
     $cptWarning++;
-    echo '<td><span class="messageWARNING" >' . i18n($className) . " #" . $item->id . ' '.i18n('colLocked'). '</span></td>';
+    echo '<td><span class="messageWARNING" >' .i18n($className). " #" . htmlEncode($item->id) . ' '.i18n('colLocked'). '</span></td>';
 		continue;
 	}
   $resultSave=$item->delete();
