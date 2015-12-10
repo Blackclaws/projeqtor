@@ -4094,6 +4094,11 @@ abstract class SqlElement {
 	  return $boolean;
 	}
 	public static function checkValidDateTime($dateTime) {
+	  /*if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($endDate)) != true)
+	  {
+	    traceHack("Invalid object id in billLineEndDate = $endDate");
+	    exit;
+	  }*/
 	  // TODO check that $dateTime is a valid dateTime
 	  /*$f = DateTime::createFromFormat($format, $date);
     $valid = DateTime::getLastErrors();         
@@ -4101,6 +4106,7 @@ abstract class SqlElement {
 	  return $dateTime;
 	}
 	public static function checkValidNumeric($numeric) {
+	  if ($numeric===null or $numeric==='' or trim($numeric)==='') return; //allow null or empty value
 	  if (! is_numeric($numeric)) {
 	    traceHack("Value '$numeric' is not numeric");
 	  }
