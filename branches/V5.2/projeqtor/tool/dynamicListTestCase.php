@@ -30,13 +30,16 @@
 
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListTestCase.php');
-$idProject=$_REQUEST['idProject'];
-$idProduct=$_REQUEST['idProduct'];
+$idProject=trim($_REQUEST['idProject']);
+SqlElement::checkValidId($idProject);
+$idProduct=trim($_REQUEST['idProduct']);
+SqlElement::checkValidId($idProduct);
+
 $selected="";
 if (array_key_exists('selected', $_REQUEST)) {
 	$selected=$_REQUEST['selected'];
 }
-$selectedArray=explode('_',$selected);
+$selectedArray=explode('_',$selected); // Note: elements are validated to be numeric in SqlElement base constructor
 $obj=new TestCase();
 
 $crit = array ( 'idle'=>'0');
@@ -62,7 +65,7 @@ foreach ($selectedArray as $selected) {
   ondblclick="saveTestCaseRun();" >
  <?php
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
+   echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
  }
  ?>
 </select>
