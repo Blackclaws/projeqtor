@@ -66,6 +66,8 @@ if (array_key_exists('copyProjectAssignments',$_REQUEST)) {
 Sql::beginTransaction();
 $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
+
+SqlElement::checkValidId($toType);
 $newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false, false, $copyAssignments);
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -123,7 +125,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
         $newSubProject->save();        
       } else {
       	errorLog($subResult);  
-      	$errorFullMessage.='<br/>'.i18n('Project').' #'.$project->id." : ".$subResult;
+      	$errorFullMessage.='<br/>'.i18n('Project').' #'.htmlEncode($project->id)." : ".$subResult;
         $nbErrors++;
       }
     }
@@ -158,7 +160,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  	$tmpRes=$new->_copyResult;
 	  	if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
           errorLog($tmpRes);
-          $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
+          $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.htmlEncode($item->id)." : ".$tmpRes;
           $nbErrors++;
         } else {
   	  	  $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
@@ -181,7 +183,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 			$tmpRes=$new->save();
 			if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 				errorLog($tmpRes);
-				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
+				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.htmlEncode($new->id)." : ".$tmpRes;
 				$nbErrors++;
 			} 
 		}
@@ -247,7 +249,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	    $tmpRes=$dep->save();
 	    if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 	      errorLog($tmpRes);
-        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
+        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.htmlEncode($dep->id)." : ".$tmpRes;
 	      $nbErrors++;
 	    } 
 	  }	
