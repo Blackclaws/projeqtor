@@ -521,7 +521,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         <tr>
           <td width="5%"  >
             <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
-              <table >
+              <table>
                 <tr>
                   <td>
                     <img style="height:24px" src="img/disconnect.png" />
