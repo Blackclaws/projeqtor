@@ -29,23 +29,24 @@
  */
     require_once "../tool/projeqtor.php"; 
     scriptLog('   ->/tool/getSingleData.php');
-    $type=$_REQUEST['dataType'];
+    $type=$_REQUEST['dataType']; // checked against constant values
     if ($type=='resourceCost') {
-      $idRes=$_REQUEST['idResource'];
+      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $idRol=$_REQUEST['idRole'];
+      SqlElement::checkValidId($idRol);
       if (! $idRol) return;
       $r=new Resource($idRes);
       // #303
       //echo htmlDisplayNumeric($r->getActualResourceCost($idRol));
       echo $r->getActualResourceCost($idRol);
     } else if ($type=='resourceRole') {
-      $idRes=$_REQUEST['idResource'];
+      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $r=new Resource($idRes);
       echo $r->idRole;
     } else if ($type=='resourceProfile') {
-      $idRes=$_REQUEST['idResource'];
+      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $r=new Affectable($idRes);
       echo $r->idProfile;
