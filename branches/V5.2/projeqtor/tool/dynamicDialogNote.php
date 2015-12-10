@@ -27,15 +27,18 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('Parameter objectClass not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
+SqlElement::checkValidClass($objectClass);
 
 if (! array_key_exists('objectId',$_REQUEST)) {
   throwError('Parameter objectId not found in REQUEST');
 }
 $objectId=$_REQUEST['objectId'];
+SqlElement::checkValidId($objectId);
 
 $noteId=null;
 if (array_key_exists('noteId',$_REQUEST)) {
   $noteId=$_REQUEST['noteId'];
+  SqlElement::checkValidId($noteId);
 }
 if ($noteId) {
   $note=new Note($noteId);
