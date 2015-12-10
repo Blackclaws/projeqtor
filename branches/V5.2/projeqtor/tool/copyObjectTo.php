@@ -49,7 +49,7 @@ if ($className!=get_class($obj)) {
 if (! array_key_exists('copyToClass',$_REQUEST)) {
   throwError('copyToClass parameter not found in REQUEST');
 }
-$toClassNameObj=new Copyable($_REQUEST['copyToClass']);
+$toClassNameObj=new Copyable($_REQUEST['copyToClass']); // validates copyToClass is numeric inside SqlElement constructor
 $toClassName=$toClassNameObj->name;
 if (! array_key_exists('copyToName',$_REQUEST)) {
   throwError('copyToName parameter not found in REQUEST');
@@ -92,6 +92,7 @@ if (array_key_exists('copyWithAssignments',$_REQUEST)) {
 Sql::beginTransaction();
 $error=false;
 // copy from existing object
+SqlElement::checkValidId($toType); // $toType is an id !
 $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
 $result=$newObj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -163,7 +164,7 @@ if ($status == "OK") {
       $tmpRes=$new->_copyResult;
       if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
         errorLog($tmpRes);
-        $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
+        $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.htmlEncode($item->id)." : ".$tmpRes;
         $nbErrors++;
       } else {
         $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
@@ -181,7 +182,7 @@ if ($status == "OK") {
       $tmpRes=$new->save();
       if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
         errorLog($tmpRes);
-        $errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
+        $errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.htmlEncode($new->id)." : ".$tmpRes;
         $nbErrors++;
       } 
     }
@@ -247,7 +248,7 @@ if ($status == "OK") {
       $tmpRes=$dep->save();
       if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
         errorLog($tmpRes);
-        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
+        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.htmlEncode($dep->id)." : ".$tmpRes;
         $nbErrors++;
       } 
     }
