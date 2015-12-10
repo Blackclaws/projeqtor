@@ -33,10 +33,12 @@ $objectClass="";
 //$obj=new SqlElement();
 if (array_key_exists("objectClass", $_REQUEST)) {
 	$objectClass=$_REQUEST['objectClass'];
+	SqlElement::checkValidClass($objectClass);
+
 	$obj=new $objectClass();
 }
 ?>
-<input type="hidden" name="dialogMailObjectClass" id="dialogMailObjectClass" value="<?php echo $objectClass;?>" />
+<input type="hidden" name="dialogMailObjectClass" id="dialogMailObjectClass" value="<?php echo htmlEncode($objectClass);?>" />
   <table>
     <tr>
       <td>
@@ -47,7 +49,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
           <?php if (property_exists($objectClass, 'idContact')) { ?>
             <tr>
               <td class="dialogLabel">
-                <label for="dialogMailToContact"><?php echo $obj->getColCaption("idContact");?>&nbsp;:&nbsp;</label>
+                <label for="dialogMailToContact"><?php echo htmlEncode($obj->getColCaption("idContact"));?>&nbsp;:&nbsp;</label>
               </td>
               <td>
                 <div id="dialogMailToContact" name="dialogMailToContact" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
@@ -57,7 +59,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
           <?php if (property_exists($objectClass, 'idUser') and $objectClass!='Project') {?>   
             <tr>
               <td class="dialogLabel">
-                <label for="dialogMailToUser"><?php echo $obj->getColCaption("idUser"); ?>&nbsp;:&nbsp;</label>
+                <label for="dialogMailToUser"><?php echo htmlEncode($obj->getColCaption("idUser")); ?>&nbsp;:&nbsp;</label>
               </td>
               <td>
                 <div id="dialogMailToUser" name="dialogMailToUser" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
@@ -67,7 +69,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
           <?php if (property_exists($objectClass, 'idResource') ) {?>   
             <tr>
               <td class="dialogLabel">
-                <label for="dialogMailToResource"><?php echo $obj->getColCaption("idResource"); ?>&nbsp;:&nbsp;</label>
+                <label for="dialogMailToResource"><?php echo htmlEncode($obj->getColCaption("idResource")); ?>&nbsp;:&nbsp;</label>
               </td>
               <td>
                 <div id="dialogMailToResource" name="dialogMailToResource" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
@@ -77,7 +79,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
           <?php if (property_exists($objectClass, 'idSponsor')) { ?>
             <tr>
               <td class="dialogLabel">
-                <label for="dialogMailToSponsor"><?php echo $obj->getColCaption("idSponsor");?>&nbsp;:&nbsp;</label>
+                <label for="dialogMailToSponsor"><?php echo htmlEncode($obj->getColCaption("idSponsor"));?>&nbsp;:&nbsp;</label>
               </td>
               <td>
                 <div id="dialogMailToSponsor" name="dialogMailToSponsor" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
