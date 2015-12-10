@@ -70,9 +70,12 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+SqlElement::checkValidClass($filterObjectClass);
+
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
+  $name=htmlspecialchars($name,ENT_QUOTES,'UTF-8');
 }
 
 $filterName='stockFilter' . $filterObjectClass;
