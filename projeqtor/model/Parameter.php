@@ -514,7 +514,7 @@ class Parameter extends SqlElement {
                                'cronCheckEmails'=>'number',
                                'cronCheckEmailsHost'=>'text',
                                'cronCheckEmailsUser'=>'text',
-                               'cronCheckEmailsPassword'=>'text',
+                               'cronCheckEmailsPassword'=>'password',
                              'sectionMail'=>'section',
       	                       'paramAdminMail'=>'text',
       	                       'paramMailSender'=>'text',
