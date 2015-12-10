@@ -27,8 +27,17 @@
 /** ===========================================================================
  * Acknowledge an operation
  */
+ 
+ if($_SERVER['REQUEST_METHOD'] != 'POST') {
+	require_once '../tool/projeqtor.php';
+	traceHack("ack.php without POST method == XSS hacking attempt" );
+	exit;
+ }
+ 
+// TODO (SECURITY) : Check protection of Result (but not htmlentities as it contains expected divs)
 if (array_key_exists('resultAck',$_REQUEST)) {
   $result=$_REQUEST['resultAck'];
+  //$result=preg_replace('//','',$result); // TODO (SECURITY) : To be checked
   $result=str_replace('\"','"',$result);
   $result=str_replace("\'","'",$result);
   echo $result;
