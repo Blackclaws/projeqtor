@@ -49,24 +49,36 @@ if (! array_key_exists('idFilterAttribute',$_REQUEST)) {
   throwError('idFilterAttribute parameter not found in REQUEST');
 }
 $idFilterAttribute=$_REQUEST['idFilterAttribute'];
+$idFilterAttribute=preg_replace('/[^a-zA-Z0-9_]/','', $idFilterAttribute); // Note: may need to be more permissive.
 
 if (! array_key_exists('idFilterOperator',$_REQUEST)) {
   throwError('idFilterOperator parameter not found in REQUEST');
 }
 $idFilterOperator=$_REQUEST['idFilterOperator'];
+// TODO (SECURITY) : test completness of test
+if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|SORT|[<>]=now\+)$/', $idFilterOperator) != true) {
+	traceHack("bad value for idFilterOperator ($idFilterOperator)");
+	exit;
+}
 
-if (! array_key_exists('filterDataType',$_REQUEST)) {
+if (! array_key_exists('filterDataType',$_REQUEST)){
   throwError('filterDataType parameter not found in REQUEST');
 }
 $filterDataType=$_REQUEST['filterDataType'];
+// TODO (SECURITY) : test completness of test
+if (preg_match('/^(list|decimal|date|bool|refObject|varchar)$/', $filterDataType) != true){
+	traceHack("bad value for filterDataType ($filterDataType)");
+	exit;
+}
+
 
 if (! array_key_exists('filterValue',$_REQUEST)) {
   throwError('filterValue parameter not found in REQUEST');
 }
-$filterValue=$_REQUEST['filterValue'];
+$filterValue=$_REQUEST['filterValue']; // Note: value is checked before use depending on context.
 
 if (array_key_exists('filterValueList',$_REQUEST)) {
-  $filterValueList=$_REQUEST['filterValueList'];
+  $filterValueList=$_REQUEST['filterValueList']; // key => value pairs  - are escaped before use.
 } else {
   $filterValueList=array();
 }
@@ -75,6 +87,12 @@ if (! array_key_exists('filterValueDate',$_REQUEST)) {
   throwError('filterValueDate parameter not found in REQUEST');
 }
 $filterValueDate=$_REQUEST['filterValueDate'];
+
+// TODO (SECURITY) : To fix (fails when entering date)
+/*if (preg_match('/[^0-9]/', $filterValueDate) == true) {
+	traceHack("bad value for filterValueDate - $filterValueDate");
+	exit;
+}*/
 
 if (! array_key_exists('filterValueCheckbox',$_REQUEST)) {
   $filterValueCheckbox=false;
@@ -86,17 +104,23 @@ if (! array_key_exists('filterSortValueList',$_REQUEST)) {
   throwError('filterSortValueList parameter not found in REQUEST');
 }
 $filterSortValue=$_REQUEST['filterSortValueList']; 
+if (preg_match('/[^a-zA-Z]/', $filterSortValue) == true){
+	traceHack("invalid filterSortValue value - $filterSortValue");
+	exit;
+}
 
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+SqlElement::checkValidClass($filterObjectClass);
+
 
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
 }
-trim($name);
+trim($name); // Note: filtered before use using htmlEncode()
 
 // Get existing filter info
 if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {
@@ -152,6 +176,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   			$arrayDisp["operator"]=i18n("contains");
   			$arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
   		}
+		  SqlElement::checkValidClass($idFilterAttribute);
   		$refObj=new $idFilterAttribute();
   		$refObjTable=$refObj->getDatabaseTableName();
   		$table=$obj->getDatabaseTableName();
@@ -163,13 +188,13 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arrayDisp["operator"]=i18n("contains");
       $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
       $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
-      $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
+      $arraySql["value"]="'%" . trim(Sql::str(htmlEncode($filterValue)),"'") . "%'";
   	}
   } else if ($idFilterOperator=="NOT LIKE") {
     $arrayDisp["operator"]=i18n("notContains");
     $arraySql["operator"]=(Sql::isMysql())?'NOT LIKE':'NOT ILIKE';
     $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
-    $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
+    $arraySql["value"]="'%" . trim(Sql::str(htmlEncode($filterValue)),"'") . "%'";
   } else if ($idFilterOperator=="IN" or $idFilterOperator=="NOT IN") {
     $arrayDisp["operator"]=($idFilterOperator=="IN")?i18n("amongst"):i18n("notAmongst");
     $arraySql["operator"]=$idFilterOperator;
@@ -178,7 +203,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     foreach ($filterValueList as $key=>$val) {
       $arrayDisp["value"].=($key==0)?"":", ";
       $arraySql["value"].=($key==0)?"":", ";
-      $arrayDisp["value"].="'" . SqlList::getNameFromId(substr($idFilterAttribute,2),$val) . "'";
+      $arrayDisp["value"].="'" . Sql::fmtStr(SqlList::getNameFromId(Sql::fmtStr(substr($idFilterAttribute,2)),$val)) . "'";
       $arraySql["value"].= $val ;
     }
     //$arrayDisp["value"].=")";
@@ -214,7 +239,12 @@ if ($idFilterAttribute and $idFilterOperator) {
     if (Sql::isPgsql()) {
       $arraySql["value"]= "NOW() + INTERVAL '" . $filterValue . " day'";
     } else {
-      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+		if (preg_match('/[^0-9]/', $filterValue) == true) {
+		  $filterValue="";
+		  // a bit hard to disconnect if isser enters bad value
+		  //traceHack("invalid filterValue - $filterValue");
+		}
+    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
     }
   } else {
      echo htmlGetErrorMessage(i18n('incorrectOperator'));
