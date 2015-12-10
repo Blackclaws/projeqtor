@@ -23,16 +23,18 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
+require_once "../tool/projeqtor.php";
 if (! array_key_exists('refType',$_REQUEST)) {
  throwError('Parameter refType not found in REQUEST');
 }
 $objectClass=$_REQUEST['refType'];
+SqlElement::checkValidClass($objectClass);
+
 if (! array_key_exists('refId',$_REQUEST)) {
  throwError('Parameter refId not found in REQUEST');
 }
-
 $objectId=$_REQUEST['refId'];
-$obj=new $objectClass($objectId);
+$obj=new $objectClass($objectId); // Note: $objectId is checked in base SqlElement constructor to be numeric value.
 $crit=array('refType'=>$objectClass,'refId'=>$objectId);
 $we=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
 $arrayWork=array();
@@ -51,7 +53,7 @@ if (! isset($arrayWork[$key])) {
   $arrayWork[$key]=array('id'=>'', 'date'=>date('Y-m-d'), 'idResource'=>getSessionUser()->id,'work'=>0);
 }
 if (isset($_REQUEST['work'])) {
-  $newWork=Work::convertImputation($_REQUEST['work']);
+  $newWork=Work::convertImputation($_REQUEST['work']); // Note: implicit conversion to numeric value do to arithmetic operation
   if ($newWork>$totalWork) { $arrayWork[$key]['work']=$newWork-$totalWork;}
 }
 $arrayWork[]=array('id'=>'', 'date'=>null, 'idResource'=>null,'work'=>0);
@@ -93,7 +95,7 @@ foreach($arrayWork as $key=>$work) {
      if ($code=="PRO" or $code=="ALL") {
         htmlDrawOptionForReference('idResource', $work['idResource'], $obj, false, 'idProject', $obj->idProject);
      } else {
-       echo '<OPTION value="'.$user->id.'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';    
+       echo '<OPTION value="'.htmlEncode($user->id).'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';    
      }?>
      </select>
  </td>
