@@ -392,6 +392,11 @@ if (beforeVersion($currVersion,"V5.1.0.a") and $currVersion!='V0.0.0' and Sql::i
   $maintenanceDisableEnforceUTF8=true;
   Parameter::regenerateParamFile();
 }
+if (beforeVersion($currVersion,"V5.1.5") and afterVersion($currVersion, "V5.1.0")) {
+  // Fresh installs from 5.1.0 to 5.1.4 left many parameters in file, that were moved to database
+  // must clean parameter file to enforce db value
+  Parameter::regenerateParamFile();
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

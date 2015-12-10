@@ -425,6 +425,10 @@ class PlannedWork extends GeneralWork {
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
+          if ($ass->notPlannedWork>0) {
+            $ass->notPlannedWork=0;
+            $changedAss=true;
+          }
           if ($profile=='GROUP' and $withProjectRepartition) {
           	foreach ($listAss as $asstmp) {
 	            foreach ($listTopProjects as $idProject) {

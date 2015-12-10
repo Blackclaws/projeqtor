@@ -519,7 +519,7 @@ class Parameter extends SqlElement {
                                'cronCheckEmails'=>'number',
                                'cronCheckEmailsHost'=>'text',
                                'cronCheckEmailsUser'=>'text',
-                               'cronCheckEmailsPassword'=>'text',
+                               'cronCheckEmailsPassword'=>'password',
                              'sectionMail'=>'section',
       	                       'paramAdminMail'=>'text',
       	                       'paramMailSender'=>'text',
@@ -747,9 +747,11 @@ class Parameter extends SqlElement {
    *  else : write param to file 
    */
   static public function regenerateParamFile($echoResult=false) {
-  	global $parametersLocation;
-  	// Security : copy file 
-  	copy($parametersLocation, $parametersLocation.'.'.date('YmdHis'));
+  	global $parametersLocation, $currVersion;
+  	// Security : copy file (except for first installation
+  	if (!isset($currVersion) or $currVersion!='V0.0.0') {
+  	  copy($parametersLocation, $parametersLocation.'.'.date('YmdHis'));
+  	}
   	$fileHandler = fopen($parametersLocation,"r");
     if (!$fileHandler) {
     	throwError("Error opening file $parameterLocation");
@@ -799,7 +801,7 @@ class Parameter extends SqlElement {
         $result="moved to database";
         $resultHtml="<span style=\"color:red\">$result</span>";   
         $cptVarDb+=1;     
-      } if ($paramCode=='$enforceUTF8' and $paramValue) {
+      } else if ($paramCode=='$enforceUTF8' and $paramValue) {
         global $maintenanceDisableEnforceUTF8;
         if (isset($maintenanceDisableEnforceUTF8) and $maintenanceDisableEnforceUTF8) {
           fwrite($fileHandler,$paramCode."='0';".$nl);
@@ -825,7 +827,6 @@ class Parameter extends SqlElement {
     traceLog("---> parameters kept in parameter file = $cptVarFile");
     fwrite($fileHandler,'//======= END');
     fclose($fileHandler);
-    
     traceLog("REWRITE PARAMTERS.PHP FILE = END ======================");
   }
   
