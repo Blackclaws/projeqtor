@@ -574,6 +574,7 @@ class Cron {
   		  $note->fromEmail=1;
   		  $note->save();
   		  $mailbox->markMailAsRead($mailId);
+  		  debugTraceLog("Note from '$sender' added on $class #$id");
   		} else {
   		  $mailbox->markMailAsUnread($mailId);
   		}
