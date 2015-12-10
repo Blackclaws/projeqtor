@@ -47,7 +47,7 @@ $today=new Today();
   $crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
   $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
   echo '<input id="todayPeriodDays" name="todayPeriodDays" dojoType="dijit.form.NumberTextBox" type="text"';    
-  echo '         maxlength="4"  style="width:30px; text-align: center;" class="input" value="'.$tp->parameterValue.'"/>';
+  echo '         maxlength="4"  style="width:30px; text-align: center;" class="input" value="'.htmlEncode($tp->parameterValue).'"/>';
   echo '<nobr>&nbsp;'.i18n('nextDays').'</nobr>';
   echo '</td>';
   echo '</tr>';
@@ -70,16 +70,16 @@ $today=new Today();
   echo '<tr><td colspan="4">&nbsp;</td></tr>';
   foreach ($todayList as $todayItem) {
     if ($todayItem->scope!="static" or $todayItem->staticSection!="ProjectsTasks" or $profile=='PL') {
-      echo '<tr id="dialogTodayParametersRow' . $todayItem->id. '"
+      echo '<tr id="dialogTodayParametersRow' . htmlEncode($todayItem->id). '"
                 class="dojoDndItem" dndType="today" style="height:10px;">';
       echo '<td class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;</td>';
       echo '<td style="width:16px;height:10px;">';
       if ($todayItem->scope!='static') {
-        echo '<img class="roundedButtonSmall" src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . $todayItem->id. ');" />';
+        echo '<img class="roundedButtonSmall" src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . htmlEncode($todayItem->id). ');" />';
       }
-      echo '<input type="hidden" name="dialogTodayParametersDelete' . $todayItem->id. '" id="dialogTodayParametersDelete' . $todayItem->id. '" value="0" />';
+      echo '<input type="hidden" name="dialogTodayParametersDelete' . htmlEncode($todayItem->id). '" id="dialogTodayParametersDelete' . htmlEncode($todayItem->id). '" value="0" />';
       echo '</td>';
-      echo '<td style="width:16px;height:10px;"><div name="dialogTodayParametersIdle' . $todayItem->id. '" 
+      echo '<td style="width:16px;height:10px;"><div name="dialogTodayParametersIdle' . htmlEncode($todayItem->id). '" 
                  dojoType="dijit.form.CheckBox" type="checkbox" '.(($todayItem->idle=='0')?' checked="checked"':'').'>
                 </div>'.'</td>';
       echo '<td>';
@@ -97,8 +97,8 @@ $today=new Today();
         echo "unknown today scope";
       }
       echo '<input type="hidden" style="width:100px" 
-       id="dialogTodayParametersOrder' . $todayItem->id. '" name="dialogTodayParametersOrder' . $todayItem->id. '" 
-       value="' . $todayItem->sortOrder. '"/>';
+       id="dialogTodayParametersOrder' . htmlEncode($todayItem->id). '" name="dialogTodayParametersOrder' . htmlEncode($todayItem->id). '" 
+       value="' . htmlEncode($todayItem->sortOrder). '"/>';
       echo '</td>';
       echo '</tr>';
     }
