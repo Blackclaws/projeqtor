@@ -24,6 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+// TODO (SECURITY) : should be disabled until thoroughly fixed from security vulnerabilities (i.e. directory traversal)
 
 if (! array_key_exists('logname',$_REQUEST)) {
 	throwError('Parameter logname not found in REQUEST');
