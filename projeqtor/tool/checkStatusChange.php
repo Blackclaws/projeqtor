@@ -35,6 +35,7 @@ $newLeft=$_REQUEST['newLeft'];
 $idAssignment=$_REQUEST['idAssignment'];
 
 if (! $idAssignment) exit;
+SqlElement::checkValidId($idAssignment);
 
 $ass=new Assignment($idAssignment);
 $resHandled=null;
