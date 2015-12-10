@@ -507,70 +507,77 @@ class Cron {
 		// Get some mail
 		$mailsIds = $mailbox->searchMailBox('UNSEEN UNDELETED');
 		if(!$mailsIds) {
-		  traceLog('Mailbox is empty');
+		  debugTraceLog('Mailbox is empty'); // Will be a debug level trace
 		  return;
 		}
+		include_once '../external/html2text/html2text.php';
 		
-		$mailId = reset($mailsIds);
-		$mail = $mailbox->getMail($mailId);
-		$mailbox->markMailAsUnread($mailId);
-		
-		$body=$mail->textPlain;
-		$bodyHtml=$mail->textHtml;
-		if (! $body and $bodyHtml) {
-			include_once '../external/html2text/html2text.php';
-			$body=convert_html_to_text($bodyHtml);
-		}
-		$class=null;
-		$id=null;
-		$msg=null;
-		$senderId=null;	
-		// Class and Id of object
-		$posClass=strpos($body,'directAccess=true&objectClass=');
-		if ($posClass) { // It is a ProjeQtor mail
-		  $posId=strpos($body,'&objectId=',$posClass);
-		  $posEnd=strpos($body,'>',$posId);
-		  $class=substr($body,$posClass+30,$posId-$posClass-30);
-		  $id=substr($body,$posId+10,$posEnd-$posId-10);
-		} else {		
-			return;
-		}
-		// Message
-		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
-		if ($posEndMsg) {
-		  $msg=substr($body,0,$posEndMsg);
-		}
-		// Sender
-		$sender=$mail->fromAddress;
-		$crit=array('email'=>$sender);
-		$usr=new Affectable();
-		$usrList=$usr->getSqlElementsFromCriteria($crit,false,null,'idle asc, isUser desc, isResource desc');
-		if (count($usrList)) {
-		  $senderId=$usrList[0]->id;
-		}
-		
-		if (! $senderId) {
-			errorLog("Email message received from '$sender', not recognized as resource or user or contact : message not stored as note to avoid spamming");
-		}
-		$arrayFrom=array("\n","\r"," ");
-		$arrayTo=array("","","");
-		$class=str_replace($arrayFrom, $arrayTo, $class);
-		$id=str_replace($arrayFrom, $arrayTo, $id);
-		$obj=new $class($id);
-		if ($obj->id) {
-		  $note=new Note();
-		  $note->refType=$class;
-		  $note->refId=$id;
-		  $note->idPrivacy=1;
-		  $note->note=$msg;
-		  $note->idUser=$senderId;
-		  $note->creationDate=date('Y-m-d H:i:s');
-		  $note->fromEmail=1;
-		  $note->save();
-		  $mailbox->markMailAsRead($mailId);
-		} else {
-		  $mailbox->markMailAsUnread($mailId);
-		}
+	  foreach ($mailsIds as $mailId) {
+  		$mail = $mailbox->getMail($mailId);
+  		$mailbox->markMailAsUnread($mailId);
+  		
+  		$body=$mail->textPlain;
+  		$bodyHtml=$mail->textHtml;
+  		if (! $body and $bodyHtml) {		
+  			$body=str_replace(array("</div>","</p>","<br>","<br/>","<br />"), 
+  			                  array("</div>\n","</p>\n","\n","\n","\n"), $bodyHtml);
+  			$body=strip_tags($bodyHtml);
+  		}
+  		$class=null;
+  		$id=null;
+  		$msg=null;
+  		$senderId=null;	
+  		// Class and Id of object
+  		$posClass=strpos($body,'directAccess=true&objectClass=');
+  		if ($posClass) { // It is a ProjeQtor mail
+  		  $posId=strpos($body,'&objectId=',$posClass);
+  		  $posEnd=strpos($body,'>',$posId);
+  		  $class=substr($body,$posClass+30,$posId-$posClass-30);
+  		  $id=substr($body,$posId+10,$posEnd-$posId-10);
+  		} else {	
+  			continue;
+  		}
+  		// Message
+  		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
+  		if ($posEndMsg) {
+  		  $msg=substr($body,0,$posEndMsg);
+  		}
+  		// Sender
+  		$sender=$mail->fromAddress;
+  		$crit=array('email'=>$sender);
+  		$usr=new Affectable();
+  		$usrList=$usr->getSqlElementsFromCriteria($crit,false,null,'idle asc, isUser desc, isResource desc');
+  		if (count($usrList)) {
+  		  $senderId=$usrList[0]->id;
+  		}
+  		if (! $senderId) {
+  			traceLog("Email message received from '$sender', not recognized as resource or user or contact : message not stored as note to avoid spamming");
+  			$mailbox->markMailAsUnread($mailId);
+  			continue;
+  		}
+  		$arrayFrom=array("\n","\r"," ");
+  		$arrayTo=array("","","");
+  		$class=str_replace($arrayFrom, $arrayTo, $class);
+  		$id=str_replace($arrayFrom, $arrayTo, $id);	
+      $obj=null;
+      if (class_exists($class) and is_numeric($id)) {
+        $obj=new $class($id);
+      }
+  		if ($obj and $obj->id and $senderId) {
+  		  $note=new Note();
+  		  $note->refType=$class;
+  		  $note->refId=$id;
+  		  $note->idPrivacy=1;
+  		  $note->note=nl2br($msg);
+  		  $note->idUser=$senderId;
+  		  $note->creationDate=date('Y-m-d H:i:s');
+  		  $note->fromEmail=1;
+  		  $note->save();
+  		  $mailbox->markMailAsRead($mailId);
+  		} else {
+  		  $mailbox->markMailAsUnread($mailId);
+  		}
+    }
   }
 }
 ?>
