@@ -34,6 +34,7 @@ projeqtor_set_time_limit(300);
 projeqtor_set_memory_limit('512M');
 
 // Security : check that no special car appears in the request
+// Note: This check is not good enough, need to filter values based on context.
 foreach ($_REQUEST as $reqParam=>$reqValue) {
 	if ($reqParam=='reportName') {
     // Report name can have spec car. Will be escaped on display
