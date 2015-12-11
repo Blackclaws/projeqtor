@@ -58,7 +58,7 @@ class ComponentMain extends ProductOrComponent {
     ';
 
    private static $_fieldsAttributes=array("name"=>"required",
-      "scope"=>"hidden", "idClient"=>"hidden", "idContact"=>"hidden", "idProduct"=>"hidden"
+      "scope"=>"hidden", "idClient"=>"hidden", "idContact"=>"hidden", "idProduct"=>"hidden", "idComponent"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor',
@@ -311,7 +311,6 @@ class ComponentMain extends ProductOrComponent {
           $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vc->id));
           if ($vp->id) {
             $res=$vp->delete();
-            debugLog($res);
           }
         }
       }
@@ -321,7 +320,6 @@ class ComponentMain extends ProductOrComponent {
         $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vc->id));
         if (! $vp->id) {
           $res=$vp->save();
-          debugLog($res);
         }
       }
     }

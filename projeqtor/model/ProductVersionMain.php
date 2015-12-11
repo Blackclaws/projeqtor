@@ -251,6 +251,8 @@ class ProductVersionMain extends Version {
   }
   
   public function save() {
+    $old=$this->getOld();
+    $this->scope='Product';
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -258,7 +260,16 @@ class ProductVersionMain extends Version {
   	if ($this->idle) {
   		VersionProject::updateIdle('Version', $this->id);
   	}
-  	
+  	if ($old->idProduct!=$this->idProduct) {
+  	  $p=new Product($this->idProduct);
+  	  $compList=$p->getLinkedComponents(false);
+  	  $pold=new Product($old->idProduct);
+  	  $compList=array_merge_preserve_keys($pold->getLinkedComponents(false),$compList);
+  	}
+  	foreach($compList as $compId=>$compName) {
+  	  $comp=new Component($compId);
+  	  $comp->updateAllVersionProject();
+  	}
   	return $result;
   }
 
