@@ -31,19 +31,22 @@ include_once '../tool/formatter.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
+  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
 };
   
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
   $paramProduct=trim($_REQUEST['idProduct']);
+  $paramProduct=SqlElement::checkValidId($paramProduct); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
+  $paramVersion=SqlElement::checkValidId($paramVersion); // only allow digits
 };
 $paramDetail=false;
 if (array_key_exists('showDetail',$_REQUEST)) {
-  $paramDetail=trim($_REQUEST['showDetail']);
+  $paramDetail=trim($_REQUEST['showDetail']); // no need to filter as only used in comparison.
 }
 
 $user=getSessionUser();
@@ -135,13 +138,13 @@ foreach ($lst as $req) {
   echo '<td class="reportTableData" style="width:8%">' . (($req->idProduct)?$lstProduct[$req->idProduct]:'') . '</td>';
   echo '<td class="reportTableData" style="width:12%">' . (($req->idTargetVersion)?$lstVersion[$req->idTargetVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idRequirementType)?$lstType[$req->idRequirementType]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:5%">#' . $req->id . '</td>';
+  echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($req->id) . '</td>';
   echo '<td class="reportTableData" style="text-align:left;width:35%;">' . htmlEncode($req->name) . '</td>';
-  echo '<td class="reportTableData" style="width:5%">' . $req->countLinked . '</td>';
-  echo '<td class="reportTableData" style="width:5%;">' . $req->countPlanned . '</td>';
-  echo '<td class="reportTableData" style="width:5%;' . (($req->countPassed and $req->countPassed==$req->countPlanned)?'color:green;':'') . '">' . $req->countPassed . '</td>';
-  echo '<td class="reportTableData" style="width:5%;' . (($req->countBlocked)?'color:orange;':'') . '">' . $req->countBlocked . '</td>';
-  echo '<td class="reportTableData" style="width:5%;' . (($req->countFailed)?'color:red;':'') . '">' . $req->countFailed . '</td>';
+  echo '<td class="reportTableData" style="width:5%">' . htmlEncode($req->countLinked) . '</td>';
+  echo '<td class="reportTableData" style="width:5%;">' . htmlEncode($req->countPlanned) . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countPassed and $req->countPassed==$req->countPlanned)?'color:green;':'') . '">' . htmlEncode($req->countPassed) . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countBlocked)?'color:orange;':'') . '">' . htmlEncode($req->countBlocked) . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countFailed)?'color:red;':'') . '">' . htmlEncode($req->countFailed) . '</td>';
   echo '</tr>';
   $sumLinked+=$req->countLinked;
   $sumPlanned+=$req->countPlanned;
@@ -168,7 +171,7 @@ foreach ($lst as $req) {
         $lstTcr=$tcr->getSqlElementsFromCriteria($crit,true, false, 'idTestSession');
         foreach ($lstTcr as $tcr) {
         	echo '<tr>';
-        	echo '<td class="largeReportData" style="width:5%" style="text-align: center;">#' . $tcr->idTestCase . '</td>';
+        	echo '<td class="largeReportData" style="width:5%" style="text-align: center;">#' . htmlEncode($tcr->idTestCase) . '</td>';
         	echo '<td class="largeReportData style="width:40%"">' . SqlList::getNameFromId('TestCase',$tcr->idTestCase) . '</td>';
         	echo '<td class="largeReportData" style="width:5%" style="text-align: center;">' . (($tcr->idTestSession)?'#':'') . $tcr->idTestSession . '</td>';
         	echo '<td class="largeReportData" style="width:35%" >' . (($tcr->idTestSession)?SqlList::getNameFromId('TestSession', $tcr->idTestSession):'') . '</td>';

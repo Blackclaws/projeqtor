@@ -31,24 +31,24 @@ if (! isset($includedReport)) {
   include("../external/pChart/pData.class");  
   include("../external/pChart/pChart.class");  
   
-  $paramProject='';
-  if (array_key_exists('idProject',$_REQUEST)) {
-    $paramProject=trim($_REQUEST['idProject']);
-  }
+	$paramProject='';
+	if (array_key_exists('idProject',$_REQUEST)) {
+	  $paramProject=trim($_REQUEST['idProject']);
+	  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
+	};
+
   
   $paramIssuer='';
   if (array_key_exists('issuer',$_REQUEST)) {
     $paramIssuer=trim($_REQUEST['issuer']);
+	$paramIssuer=SqlElement::checkValidId($paramIssuer); // only allow digits
   }
   
+  // Note: removed redundant duplicate
   $paramResponsible='';
   if (array_key_exists('responsible',$_REQUEST)) {
     $paramResponsible=trim($_REQUEST['responsible']);
-  }
-
-  $paramResponsible='';
-  if (array_key_exists('responsible',$_REQUEST)) {
-    $paramResponsible=trim($_REQUEST['responsible']);
+	  $paramResponsible=SqlElement::checkValidId($paramResponsible); // only allow digits
   }
   
   $showIdle=false;
