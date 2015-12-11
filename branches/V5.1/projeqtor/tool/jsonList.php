@@ -180,7 +180,7 @@ scriptLog('   ->/tool/jsonList.php');
           $name = $sep.$name;
         }
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",htmlEncodeJson($name)) . '"}';
+        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
@@ -215,7 +215,7 @@ scriptLog('   ->/tool/jsonList.php');
         }
 	      foreach ($lstRes as $id=>$name) {
 	        if ($nbRows>0) echo ', ';
-	        echo '{id:"' . $id . '", name:"'. $name . '"}';
+	        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
 	        $nbRows+=1;
 	      }
 	    } else if ($type=='listTermProject') {
