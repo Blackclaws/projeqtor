@@ -31,45 +31,55 @@ if (! isset($includedReport)) {
   include("../external/pChart/pData.class");  
   include("../external/pChart/pChart.class");  
   
-  $paramYear='';
-  if (array_key_exists('yearSpinner',$_REQUEST)) {
-    $paramYear=$_REQUEST['yearSpinner'];
-  };
+  	$paramYear='';
+	if (array_key_exists('yearSpinner',$_REQUEST)) {
+		$paramYear=$_REQUEST['yearSpinner'];
+	  $paramYear=SqlElement::checkValidYear($paramYear);
+	};
   
-  $paramMonth='';
-  if (array_key_exists('monthSpinner',$_REQUEST)) {
-    $paramMonth=$_REQUEST['monthSpinner'];
-  };
+	$paramMonth='';
+	if (array_key_exists('monthSpinner',$_REQUEST)) {
+		$paramMonth=$_REQUEST['monthSpinner'];
+    $paramMonth=SqlElement::checkValidMonth($paramMonth);
+	};
+
   
-  $paramWeek='';
-  if (array_key_exists('weekSpinner',$_REQUEST)) {
-    $paramWeek=$_REQUEST['weekSpinner'];
-  };
+	$paramWeek='';
+	if (array_key_exists('weekSpinner',$_REQUEST)) {
+		$paramWeek=$_REQUEST['weekSpinner'];
+	  $paramWeek=SqlElement::checkValidWeek($paramWeek);
+	};
   
   $paramProject='';
   if (array_key_exists('idProject',$_REQUEST)) {
     $paramProject=trim($_REQUEST['idProject']);
-  };
-  
+	SqlElement::checkValidId($paramProject);
+  }
+    
   $paramTicketType='';
   if (array_key_exists('idTicketType',$_REQUEST)) {
     $paramTicketType=trim($_REQUEST['idTicketType']);
+	  $paramTicketType = SqlElement::checkValidId($paramTicketType); // only allow digits
   };
   
-  $paramIssuer='';
-  if (array_key_exists('issuer',$_REQUEST)) {
-    $paramIssuer=trim($_REQUEST['issuer']);
-  };
-
   $paramRequestor='';
   if (array_key_exists('requestor',$_REQUEST)) {
     $paramRequestor=trim($_REQUEST['requestor']);
+	  $paramRequestor = SqlElement::checkValidId($paramRequestor); // only allow digits
   }
     
+  $paramIssuer='';
+  if (array_key_exists('issuer',$_REQUEST)) {
+    $paramIssuer=trim($_REQUEST['issuer']);
+	  $paramIssuer = SqlElement::checkValidId($paramIssuer); // only allow digits
+  };
+  
   $paramResponsible='';
   if (array_key_exists('responsible',$_REQUEST)) {
     $paramResponsible=trim($_REQUEST['responsible']);
+	  $paramResponsible = SqlElement::checkValidId($paramResponsible); // only allow digits
   };
+  
   
   $user=getSessionUser();
   
