@@ -32,15 +32,15 @@ scriptLog('   ->/tool/planSaveDates.php');
 if (! array_key_exists('idProjectPlanSaveDates',$_REQUEST)) {
   throwError('idProjectPlanSaveDates parameter not found in REQUEST');
 }
-$idProjectPlan=$_REQUEST['idProjectPlanSaveDates'];
+$idProjectPlan=$_REQUEST['idProjectPlanSaveDates']; // validated to be numeric in SqlElement base constructor
 if (! array_key_exists('updateValidatedDates',$_REQUEST)) {
   throwError('updateValidatedDates parameter not found in REQUEST');
 }
-$updateValidatedDates=$_REQUEST['updateValidatedDates'];
+$updateValidatedDates=$_REQUEST['updateValidatedDates']; // only used in comparison with fixed values
 if (! array_key_exists('updateInitialDates',$_REQUEST)) {
 	throwError('updateInitialDates parameter not found in REQUEST');
 }
-$updateInitialDates=$_REQUEST['updateInitialDates'];
+$updateInitialDates=$_REQUEST['updateInitialDates']; // only used in comparison with fixed values
 
 projeqtor_set_time_limit(600);
 Sql::beginTransaction();
