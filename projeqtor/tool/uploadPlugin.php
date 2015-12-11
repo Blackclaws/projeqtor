@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 include_once "../tool/projeqtor.php";
-if (securityGetAccessRightYesNo('menuPlugin','read')!='YES') {
+if ($_SERVER['REQUEST_METHOD'] != "POST" or securityGetAccessRightYesNo('menuPlugin','read')!='YES') {
   traceHack ( "plugin management tried without access right" );
   exit ();
 }
@@ -119,8 +119,10 @@ $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 if (!$error) {
   foreach ($uploadedFileArray as $uploadedFile) {
     $fileName=$uploadedFile['name'];
+	  $fileName=SqlElement::checkValidFileName($fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name
     $mimeType=$uploadedFile['type'];
-    $fileSize=$uploadedFile['size'];   
+    $mimeType=SqlElement::checkValidMimeType($mimeType);
+	  $fileSize=$uploadedFile['size'];   
     $uploaddir = Plugin::getDir();
     /*if (! file_exists($uploaddir)) {
       mkdir($uploaddir,0777,true);
@@ -139,12 +141,15 @@ if (!$error) {
       	      ."<input type='hidden' value='resultOK' />";
   }
 }
+// TODO: need to make sure script tags can't be injected via maliciously crafted mimeType
+$jsonReturn = json_encode(array('file' => $fileName, 'name' => $fileName, 'type' => $mimeType, 'size' => $fileSize, 'message' => $message));
+/*
 $jsonReturn='{"file":"'.$fileName.'",'
     .'"name":"'.$fileName.'",'
         .'"type":"'.$mimeType.'",'
             .'"size":"'.$fileSize.'"  ,'
                 .'"message":"'.$message.'"}';
-
+*/
 if ($isIE and $isIE<=9) {
   echo $message;
   echo '</body>';
