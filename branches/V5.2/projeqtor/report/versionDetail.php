@@ -30,15 +30,18 @@ include_once '../tool/projeqtor.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-};
+  SqlElement::checkValidId($paramProject);
+}
   
 $paramResponsible='';
 if (array_key_exists('responsible',$_REQUEST)) {
-  $paramResponsible=trim($_REQUEST['responsible']);
+	$paramResponsible=trim($_REQUEST['responsible']);
+	$paramResponsible = SqlElement::checkValidId($paramResponsible); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
+  $paramVersion =SqlElement::checkValidId($paramVersion); // only allow digits
 };
 $paramDoneVersion=false;
 if (array_key_exists('showDoneVersions',$_REQUEST)) {
@@ -183,7 +186,7 @@ foreach ($lstVersion as $versId=>$versName) {
         $planned=$real+$left;
       }
       echo '<tr>';
-      echo '<td class="largeReportData" style="text-align: center;width:10%">' . i18n(get_class($item)) . ' #' . $item->id . '</td>';
+      echo '<td class="largeReportData" style="text-align: center;width:10%">' . i18n(get_class($item)) . ' #' . htmlEncode($item->id) . '</td>';
       echo '<td class="largeReportData" style="text-align: center;width:10%">' . SqlList::getNameFromId('Type',$item->$type) . '</td>';
       echo '<td class="largeReportData" style="width:20%;text-align:left;">' . htmlEncode($item->name) . '</td>';
       echo '<td class="largeReportData" style="width:10%">' . (($item->idStatus)?formatColor('Status', $item->idStatus):'') . '</td>';
