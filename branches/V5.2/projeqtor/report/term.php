@@ -30,25 +30,29 @@ include_once '../tool/projeqtor.php';
 $idProject = "";
 if (array_key_exists('idProject', $_REQUEST)){
     $idProject=trim($_REQUEST['idProject']);
+	  $idProject = SqlElement::checkValidId($idProject);
 }
 
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
-    $paramYear=$_REQUEST['yearSpinner'];    
-}
+	$paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=SqlElement::checkValidYear($paramYear);
+};
   
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
-    $paramMonth=$_REQUEST['monthSpinner'];
-}
+	$paramMonth=$_REQUEST['monthSpinner'];
+  $paramMonth=SqlElement::checkValidMonth($paramMonth);
+};
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
-    $paramWeek=$_REQUEST['weekSpinner'];
-}
+	$paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=SqlElement::checkValidWeek($paramWeek);
+};
 
- if (array_key_exists('periodType',$_REQUEST)) {
-    $periodType=$_REQUEST['periodType'];
+if (array_key_exists('periodType',$_REQUEST)) {
+	$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
     //$periodValue=$_REQUEST['periodValue'];
 }
 //On construit la clause where 
@@ -97,12 +101,12 @@ foreach ($termList as $term)
  
     echo '
             <tr>
-                <td class="reportTableData">'.$term->date.'</td>
-                <td class="reportTableData">'.$term->name.'</td>
-                <td class="reportTableData">'.$term->amount.'</td>
-                <td class="reportTableData">'.$project->projectCode.'</td>
-                <td class="reportTableData">'.$project->name.'</td>
-                <td class="reportTableData">'.$bill->name.'</td>';
+                <td class="reportTableData">'.htmlEncode($term->date).'</td>
+                <td class="reportTableData">'.htmlEncode($term->name).'</td>
+                <td class="reportTableData">'.htmlEncode($term->amount).'</td>
+                <td class="reportTableData">'.htmlEncode($project->projectCode).'</td>
+                <td class="reportTableData">'.htmlEncode($project->name).'</td>
+                <td class="reportTableData">'.htmlEncode($bill->name).'</td>';
                 if($bill->id){
                     echo'<td class="reportTableData"><img src="./img/checkedOK.png" width="12" height="12" /></td>';
                 }else{

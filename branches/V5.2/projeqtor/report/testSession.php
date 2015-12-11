@@ -31,23 +31,27 @@ include_once '../tool/formatter.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-};
+  SqlElement::checkValidId($paramProject);
+}
   
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
   $paramProduct=trim($_REQUEST['idProduct']);
+  $paramProduct = SqlElement::checkValidId($paramProduct); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
+  $paramVersion = SqlElement::checkValidId($paramVersion); // only allow digits
 };
 $paramSession='';
 if (array_key_exists('idTestSession',$_REQUEST)) {
   $paramSession=trim($_REQUEST['idTestSession']);
+  $paramSession = SqlElement::checkValidId($paramSession); // only allow digits
 };
 $paramDetail=false;
 if (array_key_exists('showDetail',$_REQUEST)) {
-  $paramDetail=trim($_REQUEST['showDetail']);
+  $paramDetail=true;
 }
 
 $user=getSessionUser();
@@ -141,13 +145,13 @@ foreach ($lst as $ts) {
   echo '<td class="reportTableData" style="width:8%">' . (($ts->idProduct)?$lstProduct[$ts->idProduct]:'') . '</td>';
   echo '<td class="reportTableData" style="width:10%">' . (($ts->idVersion)?$lstVersion[$ts->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($ts->idTestSessionType)?$lstType[$ts->idTestSessionType]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:5%">#' . $ts->id . '</td>';
+  echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($ts->id) . '</td>';
   echo '<td class="reportTableData" style="text-align:left;width:35%;">' . htmlEncode($ts->name) . '</td>';
-  echo '<td class="reportTableData" style="width:5%">' . $ts->countTotal . '</td>';
+  echo '<td class="reportTableData" style="width:5%">' . htmlEncode($ts->countTotal) . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . ($ts->countTotal-$ts->countPassed-$ts->countBlocked-$ts->countFailed) . '</td>';
-  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countPassed and $ts->countPassed==$ts->countTotal)?'color:green;':'') . '">' . $ts->countPassed . '</td>';
-  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countBlocked)?'color:orange;':'') . '">' . $ts->countBlocked . '</td>';
-  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countFailed)?'color:red;':'') . '">' . $ts->countFailed . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countPassed and $ts->countPassed==$ts->countTotal)?'color:green;':'') . '">' . htmlEncode($ts->countPassed) . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countBlocked)?'color:orange;':'') . '">' . htmlEncode($ts->countBlocked) . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countFailed)?'color:red;':'') . '">' . htmlEncode($ts->countFailed) . '</td>';
   echo '</tr>';
   if (count($lstTcr)>0) {
   	echo '<tr><td></td><td colspan="10">';
