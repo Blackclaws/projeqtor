@@ -27,26 +27,34 @@
 include_once '../tool/projeqtor.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
-  $paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=SqlElement::checkValidYear($paramYear);
 };
-
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
-  $paramMonth=$_REQUEST['monthSpinner'];
+	$paramMonth=$_REQUEST['monthSpinner'];
+	$paramMonth=SqlElement::checkValidMonth($paramMonth);
 };
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
-  $paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=SqlElement::checkValidWeek($paramWeek);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
+  SqlElement::checkValidId($paramTeam);
 }
 $user=getSessionUser();
 
-$periodType=$_REQUEST['periodType'];
-$periodValue=$_REQUEST['periodValue'];
+$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
+$periodValue='';
+if (array_key_exists('periodValue',$_REQUEST))
+{
+	$periodValue=$_REQUEST['periodValue'];
+	$periodValue = preg_replace('/[^0-9]/', '', $periodValue); // only allow digits
+}
 
 // Header
 $headerParameters="";
