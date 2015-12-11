@@ -4118,10 +4118,6 @@ abstract class SqlElement {
 	  }
 	  return $string;
 	}
-	public static function checkValidFilename($file) {
-	  // TODO (SECURITY)
-	  return $file;
-	}
 	public static function checkValidYear($year) {
 	  if (preg_match('/^[0-9]{4}$/', $year) != 1) { // only allow 4 digit number as year. Note: may want to limit to range of valid year dates.
 	    $year='';
