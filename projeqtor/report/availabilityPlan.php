@@ -53,7 +53,7 @@ $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {
 	$periodValue=$_REQUEST['periodValue'];
-	$periodValue = preg_replace('/[^0-9]/', '', $periodValue); // only allow digits
+	$periodValue=SqlElement::checkValidPeriod($periodValue);
 }
 
 // Header

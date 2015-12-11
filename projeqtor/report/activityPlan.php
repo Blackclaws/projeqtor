@@ -28,31 +28,41 @@ include_once '../tool/projeqtor.php';
 
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
-  $paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=SqlElement::checkValidYear($paramYear);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
+  SqlElement::checkValidId($paramTeam);
 }
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
-  $paramMonth=$_REQUEST['monthSpinner'];
+	$paramMonth=$_REQUEST['monthSpinner'];
+  $paramMonth=SqlElement::checkValidMonth($paramMonth);
 };
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
-  $paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=SqlElement::checkValidWeek($paramWeek);
 };
 
 $user=getSessionUser();
-
-$periodType=$_REQUEST['periodType'];
-$periodValue=$_REQUEST['periodValue'];
+$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
+$periodValue='';
+if (array_key_exists('periodValue',$_REQUEST))
+{
+	$periodValue=$_REQUEST['periodValue'];
+	$periodValue=SqlElement::checkValidPeriod($periodValue);
+}
 
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
+	$idProject = trim($_REQUEST['idProject']);
+	$idProject = SqlElement::checkValidId($idProject);
+	$headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $idProject)) . '<br/>';
 }
 if ($paramTeam!="") {
   $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
@@ -71,8 +81,10 @@ include "header.php";
 
 $where=getAccesRestrictionClause('Activity',false,false,true,true);
 if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
-  $where.= ($where=='')?'':' and ';
-  $where.=  " idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+	$idProject = trim($_REQUEST['idProject']);
+	$idProject = SqlElement::checkValidId($idProject);
+	$where.= ($where=='')?'':' and ';
+	$where.=  " idProject in " . getVisibleProjectsList(true, $idProject) ;
 }
   
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
