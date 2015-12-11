@@ -52,7 +52,6 @@ if ($objectClass=='Product') {
   echo "Unexpected objectClass";
   exit;
 }
-debugLog($listClass);
 ?>
 <table>
   <tr>

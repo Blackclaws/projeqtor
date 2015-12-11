@@ -40,7 +40,6 @@ require_once "../tool/projeqtor.php";
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
-  debugLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
   if ($col=='planning') {
     $listType='Project';
   } else {
