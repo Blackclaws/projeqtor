@@ -26,10 +26,13 @@
 
 include_once '../tool/projeqtor.php';
 
-$idProject="";
-if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $idProject=1*trim($_REQUEST['idProject']);
-}
+$idProject='';
+if (array_key_exists('idProject',$_REQUEST)) {
+  $idProject=trim($_REQUEST['idProject']);
+  $idProject=SqlElement::checkValidId($idProject); // only allow digits
+  $idProject=1*$idProject; // don't think this is needed, but left it just in case (will convert type to number from string)...
+};
+
 
 $headerParameters="";
 if ($idProject) {

@@ -31,6 +31,7 @@ include_once('../tool/formatter.php');
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
+  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
 }
   // Header
 $headerParameters="";
@@ -78,7 +79,7 @@ echo '</tr>';
 foreach ($lst as $opportunity) {
   echo '<tr>';
   $done=($opportunity->idle)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:2%;">' . '#' . $opportunity->id . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:2%;">' . '#' . htmlEncode($opportunity->id) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%;">' . htmlEncode($opportunity->name); 
   if ($opportunity->description and $opportunity->name!=$opportunity->description) { echo ':<br/><i>' . htmlEncode($opportunity->description).'</i>'; }
   echo '</td>';

@@ -30,12 +30,22 @@ include_once '../tool/projeqtor.php';
 $refType="";
 if (array_key_exists('refType',$_REQUEST) and trim($_REQUEST['refType'])!="") {
   $refType=trim($_REQUEST['refType']);
+  $refType=SqlElement::checkValidClass($refType);
 }
 $refId="";
 if (array_key_exists('refId',$_REQUEST)) {
   $refId=trim($_REQUEST['refId']);
+  $refId=SqlElement::checkValidId($refId); // only allow digits
 }
-$scope=$_REQUEST['scope'];
+$scope='';
+if (array_key_exists('scope',$_REQUEST)) {
+  $scope=$_REQUEST['scope'];
+  if (preg_match('/^[^a-zA-Z0-9]$/', $scope) != True)
+  {
+	  $scope='';
+  }
+}
+
 $headerParameters="";
 
 if ($refType!="") {
@@ -164,8 +174,8 @@ foreach($historyList as $hist) {
   }
   if (! $hide) {
     echo '<tr>';
-    echo '<td class="historyData'. $class .'" width="10%">' . $oper . '</td>';      
-    echo '<td class="historyData" width="14%">' . $colCaption . '</td>';
+    echo '<td class="historyData'. htmlEncode($class) .'" width="10%">' . htmlEncode($oper) . '</td>';      
+    echo '<td class="historyData" width="14%">' . htmlEncode($colCaption) . '</td>';
 	  $oldValue=$hist->oldValue;
 	  $newValue=$hist->newValue;
     if ($dataType=='int' and $dataLength==1) { // boolean
@@ -203,8 +213,8 @@ foreach($historyList as $hist) {
       echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
       echo '<td class="historyData" width="23%">' . $newValue . '</td>';
     }
-    echo '<td class="historyData'. $class .'" width="15%">' . $date . '</td>';
-    echo '<td class="historyData'. $class .'" width="15%">' . $user . '</td>';
+    echo '<td class="historyData'. htmlEncode($class) .'" width="15%">' . htmlEncode($date) . '</td>';
+    echo '<td class="historyData'. htmlEncode($class) .'" width="15%">' . htmlEncode($user) . '</td>';
     echo '</tr>';
     $stockDate=$hist->operationDate;
     $stockUser=$hist->idUser;

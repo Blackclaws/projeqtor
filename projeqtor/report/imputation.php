@@ -28,8 +28,11 @@
 include_once '../tool/projeqtor.php';
 
 $userId=$_REQUEST['userId'];
+$userId=SqlElement::checkValidId($userId); // only allow digits
 $rangeType=$_REQUEST['rangeType'];
+$rangeType=preg_replace('/[^0-9a-zA-Z]/','',$rangeType); // only allow 0-9, a-z, A-Z
 $rangeValue=$_REQUEST['rangeValue'];
+$rangeValue=preg_replace('/[^0-9a-zA-Z]/','',$rangeValue); // only allow 0-9, a-z, A-Z
 $idle=false;
 if (array_key_exists('idle',$_REQUEST)) {
   $idle=true;

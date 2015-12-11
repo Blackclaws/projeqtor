@@ -31,19 +31,22 @@ include_once '../tool/formatter.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
+  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
 };
   
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
   $paramProduct=trim($_REQUEST['idProduct']);
+  $paramProduct=SqlElement::checkValidId($paramProduct); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
+  $paramVersion=SqlElement::checkValidId($paramVersion); // only allow digits
 };
 $paramDetail=false;
 if (array_key_exists('showDetail',$_REQUEST)) {
-  $paramDetail=trim($_REQUEST['showDetail']);
+  $paramDetail=trim($_REQUEST['showDetail']); // no need to filter as value is only used in boolean comparison.
 }
 
 $user=getSessionUser();
@@ -149,7 +152,7 @@ foreach ($lst as $tc) {
   echo '<td class="reportTableData" style="width:8%">' . (($tc->idProduct)?$lstProduct[$tc->idProduct]:'') . '</td>';
   echo '<td class="reportTableData" style="width:10%">' . (($tc->idVersion)?$lstVersion[$tc->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($tc->idTestCaseType)?$lstType[$tc->idTestCaseType]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:5%">#' . $tc->id . '</td>';
+  echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
   echo '<td class="reportTableData" style="text-align:left;width:35%">' . htmlEncode($tc->name) . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $countTotal . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $countPlanned . '</td>';
