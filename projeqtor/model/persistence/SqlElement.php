@@ -4164,5 +4164,9 @@ abstract class SqlElement {
 	  $week=$week.''; // make sure it ends up as a string
 	  return $week;
 	}
+	public static function checkValidPeriod($period) {
+	  $period = preg_replace('/[^0-9]/', '', $period);
+	  return $period;
+	}
 }
 ?>
