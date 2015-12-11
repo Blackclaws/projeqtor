@@ -33,7 +33,7 @@ require_once "../tool/projeqtor.php";
 
 $assignmentId=null;
 if (array_key_exists('assignmentId',$_REQUEST)) {
-  $assignmentId=$_REQUEST['assignmentId'];
+  $assignmentId=$_REQUEST['assignmentId']; // validated to be numeric in SqlElement base constructor
 }
 $assignmentId=trim($assignmentId);
 if ($assignmentId=='') {
@@ -45,59 +45,72 @@ if (! array_key_exists('assignmentRefType',$_REQUEST)) {
   throwError('assignmentRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['assignmentRefType'];
+SqlElement::checkValidClass($refType);
 
 if (! array_key_exists('assignmentRefId',$_REQUEST)) {
   throwError('assignmentRefId parameter not found in REQUEST');
 }
 $refId=$_REQUEST['assignmentRefId'];
+SqlElement::checkValidId($refId);
 
 $idResource=null;
 if (array_key_exists('assignmentIdResource',$_REQUEST)) {
   $idResource=$_REQUEST['assignmentIdResource'];
+	SqlElement::checkValidId($idResource);
 }
 
 $idRole=null;
 if (array_key_exists('assignmentIdRole',$_REQUEST)) {
   $idRole=$_REQUEST['assignmentIdRole'];
+	SqlElement::checkValidId($idRole);
 }
 
 $cost=null;
 if (array_key_exists('assignmentDailyCost',$_REQUEST)) {
   $cost=$_REQUEST['assignmentDailyCost'];
+  SqlElement::checkValidNumeric($cost);
 }
 
 if (! array_key_exists('assignmentRate',$_REQUEST)) {
   throwError('assignmentRate parameter not found in REQUEST');
 }
 $rate=$_REQUEST['assignmentRate'];
+SqlElement::checkValidNumeric($rate);
 
 if (! array_key_exists('assignmentAssignedWork',$_REQUEST)) {
   throwError('assignmentAssignedWork parameter not found in REQUEST');
 }
 $assignedWork=$_REQUEST['assignmentAssignedWork'];
+SqlElement::checkValidNumeric($assignedWork);
 
 if (! array_key_exists('assignmentRealWork',$_REQUEST)) {
   throwError('assignmentRealWork parameter not found in REQUEST');
 }
 $realWork=$_REQUEST['assignmentRealWork'];
+SqlElement::checkValidNumeric($realWork);
 
 if (! array_key_exists('assignmentLeftWork',$_REQUEST)) {
   throwError('assignmentLeftWork parameter not found in REQUEST');
 }
 $leftWork=$_REQUEST['assignmentLeftWork'];
+SqlElement::checkValidNumeric($leftWork);
 
 if (! array_key_exists('assignmentPlannedWork',$_REQUEST)) {
   throwError('assignmentPlannedWork parameter not found in REQUEST');
 }
 $plannedWork=$_REQUEST['assignmentPlannedWork'];
+SqlElement::checkValidNumeric($plannedWork);
+
+
 if (! array_key_exists('assignmentComment',$_REQUEST)) {
   throwError('assignmentComment parameter not found in REQUEST');
 }
-$comment=$_REQUEST['assignmentComment'];
+//$comment=htmlEncode($_REQUEST['assignmentComment']);
+$comment=$_REQUEST['assignmentComment']; // Must not escape : will be done on display
 
 Sql::beginTransaction();
 // get the modifications (from request)
-$assignment=new assignment($assignmentId);
+$assignment=new Assignment($assignmentId);
 $oldCost=$assignment->dailyCost;
 
 $assignment->refId=$refId;
