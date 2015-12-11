@@ -55,16 +55,18 @@
     $showResource=true;
   }
   $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
-  $starDate="";
+  $startDate="";
   $endDate="";
   if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
-    $starDate= trim($_REQUEST['startDatePlanView']);
+    $startDate=trim($_REQUEST['startDatePlanView']);
+  	SqlElement::checkValidDateTime($startDate);
     $endDate= trim($_REQUEST['endDatePlanView']);
+	  SqlElement::checkValidDateTime($endDate);
     $user=getSessionUser();
     $paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
     $paramEnd=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningEndDate'));
     if ($saveDates) {
-      $paramStart->parameterValue=$starDate;
+      $paramStart->parameterValue=$startDate;
       $paramStart->save();
       $paramEnd->parameterValue=$endDate;
       $paramEnd->save();
@@ -81,16 +83,20 @@
   if ( array_key_exists('report',$_REQUEST) ) {
     $headerParameters="";
     if (array_key_exists('startDate',$_REQUEST) and trim($_REQUEST['startDate'])!="") {
+  		SqlElement::checkValidDateTime(trim($_REQUEST['startDate']));
       $headerParameters.= i18n("colStartDate") . ' : ' . dateFormatter($_REQUEST['startDate']) . '<br/>';
     }
     if (array_key_exists('endDate',$_REQUEST) and trim($_REQUEST['endDate'])!="") {
+		  SqlElement::checkValidDateTime(trim($_REQUEST['endDate']));
       $headerParameters.= i18n("colEndDate") . ' : ' . dateFormatter($_REQUEST['endDate']) . '<br/>';
     }
     if (array_key_exists('format',$_REQUEST)) {
+		  SqlElement::checkValidPeriodScale(trim($_REQUEST['format']));
       $headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
     }
     if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-      $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
+      SqlElement::checkValidId(trim($_REQUEST['idProject']));
+      $headerParameters.= i18n("colIdProject") . ' : ' . (SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
     }
     include "../report/header.php";
   }
@@ -244,9 +250,9 @@
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
           echo (++$nbFields>1)?',':'';
-          //echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
+          //echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(($val)) . '"';
           if ($id=='refname' or $id=='resource') {
-          	$val=htmlEncode(htmlEncodeJson($val));
+          	$val=(htmlEncodeJson($val));
           } else {
           	$val=htmlEncodeJson($val);
           }
@@ -332,14 +338,17 @@
     $startDate=date('Y-m-d');
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
+	    SqlElement::checkValidDateTime($startDate);
     }
     $endDate='';
     if (array_key_exists('endDate',$_REQUEST)) {
       $endDate=$_REQUEST['endDate'];
+	    SqlElement::checkValidDateTime($endDate);
     }
     $format='day';
     if (array_key_exists('format',$_REQUEST)) {
       $format=$_REQUEST['format'];
+	    SqlElement::checkValidPeriodScale($format);
     }
     if($format == 'day') {
       $colWidth = 18;
@@ -770,10 +779,12 @@
     $now=date('Y-m-d').'T'.date('H:i:s');
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
+	    SqlElement::checkValidDateTime($startDate);
     }
     $endDate='';
     if (array_key_exists('endDate',$_REQUEST)) {
       $endDate=$_REQUEST['endDate'];
+	    SqlElement::checkValidDateTime($endDate);
     }
     $maxDate = '';
     $minDate = '';
@@ -818,7 +829,7 @@
     echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
     echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
     echo '<Name>' . htmlEncode($name,'xml') . '</Name>' . $nl;
-    echo '<Title>' . htmlencode($paramDbDisplayName,'xml') . '</Title>' . $nl;
+    echo '<Title>' . htmlEncode($paramDbDisplayName,'xml') . '</Title>' . $nl;
     echo '<CreationDate>' . $now . '</CreationDate>' . $nl;
     echo '<LastSaved>' . $now . '</LastSaved>' . $nl;
     echo '<ScheduleFromStart>1</ScheduleFromStart>' . $nl;
@@ -910,7 +921,7 @@
     echo '</Calendar>' . $nl;
     foreach ($resourceList as $resource) {
     	echo "<Calendar>" . $nl;
-      echo "<UID>" . $resource->id . "</UID>" . $nl;
+      echo "<UID>" . htmlEncode($resource->id,'xml') . "</UID>" . $nl;
       echo "<Name>" . htmlEncode($resource->name,'xml') . "</Name>" . $nl;
       echo "<IsBaseCalendar>0</IsBaseCalendar>" . $nl;
       echo "<BaseCalendarUID>0</BaseCalendarUID>" . $nl;
@@ -1009,7 +1020,7 @@
       $depList=$d->getSqlElementsFromCriteria($crit,false);
       foreach ($depList as $dep) {
         echo '<PredecessorLink>' . $nl;
-        echo '<PredecessorUID>' . $dep->predecessorId . '</PredecessorUID>' . $nl;
+        echo '<PredecessorUID>' . htmlEncode($dep->predecessorId) . '</PredecessorUID>' . $nl;
         echo '<Type>1</Type>' . $nl;
         echo '<CrossProject>0</CrossProject>' . $nl;
         echo '<LinkLag>0</LinkLag>' . $nl;
@@ -1024,8 +1035,8 @@
     foreach ($resourceList as $resource) {
     	$arrayResource[$resource->id]=$resource;
       echo "<Resource>" . $nl;
-      echo "<UID>" . $resource->id . "</UID>" . $nl;
-      echo "<ID>" . $resource->id . "</ID>" . $nl;
+      echo "<UID>" . htmlEncode($resource->id) . "</UID>" . $nl;
+      echo "<ID>" . htmlEncode($resource->id) . "</ID>" . $nl;
       echo "<Name>" . htmlEncode($resource->name,'xml') . "</Name>" . $nl;
       echo "<Type>1</Type>" . $nl;
       echo "<IsNull>0</IsNull>" . $nl;
@@ -1033,7 +1044,7 @@
       echo "<Group>" . htmlEncode(SqlList::getNameFromId('Team',$resource->idTeam),'xml') . "</Group>" . $nl;
       echo "<WorkGroup>0</WorkGroup>" . $nl;
       echo "<EmailAddress>" . htmlEncode($resource->email,'xml') . "</EmailAddress>" . $nl;
-      echo "<MaxUnits>" . $resource->capacity . "</MaxUnits>" . $nl;
+      echo "<MaxUnits>" . htmlEncode($resource->capacity) . "</MaxUnits>" . $nl;
       echo "<PeakUnits>0</PeakUnits>" . $nl;
       echo "<OverAllocated>0</OverAllocated>" . $nl;
       echo "<CanLevel>1</CanLevel>" . $nl;
@@ -1070,7 +1081,7 @@
       echo "<SV>0</SV>" . $nl;
       echo "<CV>0</CV>" . $nl;
       echo "<ACWP>0</ACWP>" . $nl;
-      echo "<CalendarUID>" . $resource->id . "</CalendarUID>" . $nl;
+      echo "<CalendarUID>" . htmlEncode($resource->id) . "</CalendarUID>" . $nl;
       echo "<BCWS>0</BCWS>" . $nl;
       echo "<BCWP>0</BCWP>" . $nl;
       echo "<IsGeneric>0</IsGeneric>" . $nl;
@@ -1096,14 +1107,14 @@
     	    $arrayResource[$ass->idResource]=$res;
     	  }
 	      echo "<Assignment>" . $nl;
-	      echo "<UID>" . $ass->id . "</UID>" . $nl;
+	      echo "<UID>" . htmlEncode($ass->id) . "</UID>" . $nl;
 	      echo "<TaskUID>" . $arrayTask[$ass->refType . '#' . $ass->refId] . "</TaskUID>" . $nl;
-	      echo "<ResourceUID>" . $ass->idResource . "</ResourceUID>" . $nl;
+	      echo "<ResourceUID>" . htmlEncode($ass->idResource) . "</ResourceUID>" . $nl;
 	      //echo "<PercentWorkComplete>' (($ass->plannedWork)?round($ass->realWork/$ass->plannedWork*100,0):'0') . '</PercentWorkComplete>" . $nl;
 	      //echo "<ActualCost>0</ActualCost>" . $nl;
 	      //echo "<ActualOvertimeCost>0</ActualOvertimeCost>" . $nl;
 	      //echo "<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>" . $nl;
-	      echo "<ActualStart>" . $ass->plannedStartDate . "T" . $startAM . "</ActualStart>" . $nl;
+	      echo "<ActualStart>" . htmlEncode($ass->plannedStartDate) . "T" . $startAM . "</ActualStart>" . $nl;
 	      //echo "<ActualWork>PT0H0M0S</ActualWork>" . $nl;
 	      //echo "<ACWP>0</ACWP>" . $nl;
 	      //echo "<Confirmed>0</Confirmed>" . $nl;
@@ -1112,7 +1123,7 @@
 	      //echo "<CostVariance>0</CostVariance>" . $nl;
 	      //echo "<CV>0</CV>" . $nl;
 	      //echo "<Delay>0</Delay>" . $nl;
-	      echo "<Finish>" . $ass->plannedEndDate . "T" . $endPM . "</Finish>" . $nl;
+	      echo "<Finish>" . htmlEncode($ass->plannedEndDate) . "T" . $endPM . "</Finish>" . $nl;
 	      //echo "<FinishVariance>0</FinishVariance>" . $nl;
 	      //echo "<WorkVariance>0</WorkVariance>" . $nl;
 	      //echo "<HasFixedRateUnits>1</HasFixedRateUnits>" . $nl;
@@ -1148,8 +1159,8 @@
 	      //echo "<TimephasedData>" . $nl;
 	      //echo "<Type>1</Type>" . $nl;
 	      //echo "<UID>1</UID>" . $nl;
-	      //echo "<Start>" . $ass->plannedStartDate . "T08:00:00</Start>" . $nl;
-	      //echo "<Finish>" . $ass->plannedEndDate . "T08:00:00</Finish>" . $nl;
+	      //echo "<Start>" . htmlEncode($ass->plannedStartDate) . "T08:00:00</Start>" . $nl;
+	      //echo "<Finish>" . htmlEncode($ass->plannedEndDate) . "T08:00:00</Finish>" . $nl;
 	      //echo "<Unit>2</Unit>" . $nl;
 	      //echo "<Value>PT8H0M0S</Value>" . $nl;
 	      //echo "</TimephasedData>" . $nl;
