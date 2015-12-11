@@ -252,7 +252,7 @@
           echo (++$nbFields>1)?',':'';
           //echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(($val)) . '"';
           if ($id=='refname' or $id=='resource') {
-          	$val=(htmlEncodeJson($val));
+          	$val=htmlEncode(htmlEncodeJson($val));
           } else {
           	$val=htmlEncodeJson($val);
           }
