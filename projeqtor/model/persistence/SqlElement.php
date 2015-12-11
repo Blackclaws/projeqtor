@@ -4168,7 +4168,7 @@ abstract class SqlElement {
 	  $period = preg_replace('/[^0-9]/', '', $period);
 	  return $period;
 	}
-	public static function checkPeriodPeriodScale($scale) {
+	public static function checkValidPeriodScale($scale) {
 	  $scale=preg_replace('/[^a-z]/', '', $scale); // only allow a-z. 
 	  if ($scale!='week' and $scale!='month' and$scale!='day' and $scale!='quarter' and $scale!='year') {
 	    traceHack("period scale '$scale' is not an expected period scale");
@@ -4176,5 +4176,16 @@ abstract class SqlElement {
 	  }
 	  return $scale;
 	}
+	public static function checkValidFileName($fileName) {
+	  $fileName=preg_replace('/[^a-zA-Z0-9_-]/', '', $fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name
+	  return $fileName;
+	}
+	public static function checkValidMimeType($mimeType) {
+	  $pattern = '/^a(pplication|udio)|image|m(essage|ultipart)|text|video|[xX]-([!-\x27*+\-0-9AZ^-~])+\/([!-\x27*+\-0-9AZ^-~])+(;([!-\x27*+\-0-9AZ^-~])+=(([!-\x27*+\-0-9AZ^-~])+|\"(([\x00-\x0c\x0e-\x21\x23-\x5b\x5d-\x7f]|((\r\n)?[ \t])+)|\\[\x00-\x7f])*\"))*$/'; // Content-Type according to rfc1341
+	  $mimeType=preg_match($pattern, $mimeType)?$mimeType:'text/html';
+	  return $mimType;
+	}
+	
+	
 }
 ?>
