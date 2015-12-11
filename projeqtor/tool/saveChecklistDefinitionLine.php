@@ -32,11 +32,11 @@ require_once "../tool/projeqtor.php";
 // Get the bill line info
 $lineId=null;
 if (array_key_exists('checklistDefinitionLineId',$_REQUEST)) {
-  $lineId=$_REQUEST['checklistDefinitionLineId'];
+  $lineId=$_REQUEST['checklistDefinitionLineId']; // validated to be numeric value in SqlElement base constructor
 }
 $checklistDefinitionId=null;
 if (array_key_exists('checklistDefinitionId',$_REQUEST)) {
-	$checklistDefinitionId=$_REQUEST['checklistDefinitionId'];
+	$checklistDefinitionId=$_REQUEST['checklistDefinitionId']; // validated to be numeric value in SqlElement base constructor
 }
 $lineName=null;
 if (array_key_exists('dialogChecklistDefinitionLineName',$_REQUEST)) {
@@ -49,6 +49,7 @@ if (array_key_exists('dialogChecklistDefinitionLineTitle',$_REQUEST)) {
 $sortOrder=0;
 if (array_key_exists('dialogChecklistDefinitionLineSortOrder',$_REQUEST)) {
 	$sortOrder=$_REQUEST['dialogChecklistDefinitionLineSortOrder'];
+	SqlElement::checkValidNumeric($sortOrder);
 }
 $checkNames=array();
 $checkTitles=array();
