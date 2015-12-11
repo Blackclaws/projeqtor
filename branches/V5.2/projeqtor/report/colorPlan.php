@@ -30,30 +30,39 @@ include_once '../tool/projeqtor.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
+  SqlElement::checkValidId($paramProject);
 }
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
+  SqlElement::checkValidId($paramTeam);
 }
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
-  $paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=SqlElement::checkValidYear($paramYear);
 };
-
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
-  $paramMonth=$_REQUEST['monthSpinner'];
+	$paramMonth=$_REQUEST['monthSpinner'];
+  $paramMonth=SqlElement::checkValidMonth($paramMonth);
 };
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
-  $paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=$_REQUEST['weekSpinner'];
+	$paramWeek=SqlElement::checkValidWeek($paramWeek);
 };
 
 $user=getSessionUser();
 
-$periodType=$_REQUEST['periodType'];
-$periodValue=$_REQUEST['periodValue'];
+$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
+$periodValue='';
+if (array_key_exists('periodValue',$_REQUEST))
+{
+	$periodValue=$_REQUEST['periodValue'];
+	$periodValue=SqlElement::checkValidPeriod($periodValue);
+}
 
 // Header
 $headerParameters="";
@@ -116,7 +125,7 @@ foreach ($lstWork as $work) {
     $result[$work->idResource][$work->day]['real']=true;
   } 
   $result[$work->idResource][$work->day][$work->idProject]+=$work->work;
-  //echo "work : " . $work->day . " / " . $work->idProject . " / " . $work->idResource . " / " . $work->work . "<br/>";
+  //echo "work : " . htmlEncode($work->day) . " / " . htmlEncode($work->idProject) . " / " . htmlEncode($work->idResource) . " / " . htmlEncode($work->work) . "<br/>";
 }
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);

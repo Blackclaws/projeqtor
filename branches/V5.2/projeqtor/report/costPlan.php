@@ -42,7 +42,9 @@
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
+		$idProject = trim($_REQUEST['idProject']);
+		$idProject = SqlElement::checkValidId($idProject);
+		$headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $idProject)) . '<br/>';
   }
   include "header.php";
 
@@ -59,8 +61,10 @@
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=getAccesRestrictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
+	  $idProject = $_REQUEST['idProject'];
+	  $idProject = SqlElement::checkValidId($idProject);
     $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $idProject) ;
   }
   // Remove Admin Projects : should not appear in Work Plan
   $queryWhere.= " and $table.idProject not in " . Project::getAdminitrativeProjectList() ;
