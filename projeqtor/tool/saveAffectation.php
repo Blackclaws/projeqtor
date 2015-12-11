@@ -34,42 +34,45 @@ scriptLog('   ->/tool/saveAffectation.php');
 if (! array_key_exists('affectationId',$_REQUEST)) {
   throwError('affectationId parameter not found in REQUEST');
 }
-$id=($_REQUEST['affectationId']);
+$id=($_REQUEST['affectationId']); // validated to be numeric value in SqlElement base constructor.
 
 $idTeam=null;
 if (array_key_exists('affectationIdTeam',$_REQUEST)) {
-	$idTeam=$_REQUEST['affectationIdTeam'];
+	$idTeam=$_REQUEST['affectationIdTeam']; // escaped before used in DB queries
 }
 
 if (! array_key_exists('affectationProject',$_REQUEST)) {
   throwError('affectationProject parameter not found in REQUEST');
 }
-$project=($_REQUEST['affectationProject']);
+$project=($_REQUEST['affectationProject']); // escaped before used in DB queries
 
 if (! array_key_exists('affectationResource',$_REQUEST) and !$idTeam) {
   throwError('affectationResource parameter not found in REQUEST');
 }
-$resource=($_REQUEST['affectationResource']);
+$resource=($_REQUEST['affectationResource']); // escaped before used in DB queries
 
 if (! array_key_exists('affectationProfile',$_REQUEST) and !$idTeam) {
   throwError('affectationProfile parameter not found in REQUEST');
 }
-$profile=($_REQUEST['affectationProfile']);
+$profile=($_REQUEST['affectationProfile']); // escaped before used in DB queries
 
 if (! array_key_exists('affectationRate',$_REQUEST)) {
   throwError('affectationRate parameter not found in REQUEST');
 }
 $rate=($_REQUEST['affectationRate']);
+SqlElement::checkValidNumeric($rate);
 
 $startDate="";
 if (array_key_exists('affectationStartDate',$_REQUEST)) {
 	$startDate=($_REQUEST['affectationStartDate']);;
 }
+SqlElement::checkValidDateTime($startDate);
 
 $endDate="";
 if (array_key_exists('affectationEndDate',$_REQUEST)) {
 	$endDate=($_REQUEST['affectationEndDate']);;
 }
+SqlElement::checkValidDateTime($endDate);
 
 $idle=false;
 if (array_key_exists('affectationIdle',$_REQUEST)) {
