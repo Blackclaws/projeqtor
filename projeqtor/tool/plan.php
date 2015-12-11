@@ -32,11 +32,14 @@ scriptLog('   ->/tool/plan.php');
 if (! array_key_exists('idProjectPlan',$_REQUEST)) {
   throwError('idProjectPlan parameter not found in REQUEST');
 }
-$idProjectPlan=$_REQUEST['idProjectPlan'];
+$idProjectPlan=$_REQUEST['idProjectPlan']; // validated to be numeric in SqlElement base constructor
+SqlElement::checkValidId($idProjectPlan);
+
 if (! array_key_exists('startDatePlan',$_REQUEST)) {
   throwError('startDatePlan parameter not found in REQUEST');
 }
-$startDatePlan=$_REQUEST['startDatePlan'];
+$startDatePlan=trim($_REQUEST['startDatePlan']);
+SqlElement::checkValidDateTime($startDatePlan);
 
 projeqtor_set_time_limit(600);
 Sql::beginTransaction();
