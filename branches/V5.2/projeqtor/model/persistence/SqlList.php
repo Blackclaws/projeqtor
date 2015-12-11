@@ -179,7 +179,6 @@ class SqlList {
         }
         $inClause.=')';
         $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
-        debugLog($query);
       } else if (strtolower($listType)=='indicator' and $col=='idIndicatorable' ) {
       	$ii=new IndicatorableIndicator();
       	$i=new Indicator();
