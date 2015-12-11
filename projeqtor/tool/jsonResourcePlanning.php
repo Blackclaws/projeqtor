@@ -42,16 +42,18 @@ $saveDates=false;
 if ( array_key_exists('listSaveDates',$_REQUEST) ) {
 	$saveDates=true;
 }
-$starDate="";
+$startDate="";
 $endDate="";
 if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
-	$starDate= trim($_REQUEST['startDatePlanView']);
+	$startDate= trim($_REQUEST['startDatePlanView']);
+	SqlElement::checkValidDateTime($startDate);
 	$endDate= trim($_REQUEST['endDatePlanView']);
+	SqlElement::checkValidDateTime($endDate);
 	$user=getSessionUser();
 	$paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
 	$paramEnd=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningEndDate'));
 	if ($saveDates) {
-		$paramStart->parameterValue=$starDate;
+		$paramStart->parameterValue=$startDate;
 		$paramStart->save();
 		$paramEnd->parameterValue=$endDate;
 		$paramEnd->save();
@@ -68,12 +70,15 @@ if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDat
 if ( array_key_exists('report',$_REQUEST) ) {
 	$headerParameters="";
 	if (array_key_exists('startDate',$_REQUEST) and trim($_REQUEST['startDate'])!="") {
+		SqlElement::checkValidDateTime(trim($_REQUEST['startDate']));
 		$headerParameters.= i18n("colStartDate") . ' : ' . dateFormatter($_REQUEST['startDate']) . '<br/>';
 	}
 	if (array_key_exists('endDate',$_REQUEST) and trim($_REQUEST['endDate'])!="") {
+		SqlElement::checkValidDateTime(trim($_REQUEST['endDate']));
 		$headerParameters.= i18n("colEndDate") . ' : ' . dateFormatter($_REQUEST['endDate']) . '<br/>';
 	}
 	if (array_key_exists('format',$_REQUEST)) {
+		SqlElement::checkValidDatePeriodScale(trim($_REQUEST['format']));
 		$headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
 	}
 	if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -421,16 +426,16 @@ function displayGantt($list) {
 	// calculations
 	$startDate=date('Y-m-d');
 	if (array_key_exists('startDate',$_REQUEST)) {
-		$startDate=$_REQUEST['startDate'];
+		$startDate=SqlElement::checkValidDateTime($_REQUEST['startDate']);
 	}
 
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
-		$endDate=$_REQUEST['endDate'];
+		$endDate=SqlElement::checkValidDateTime($_REQUEST['endDate']);
 	}
 	$format='day';
 	if (array_key_exists('format',$_REQUEST)) {
-		$format=$_REQUEST['format'];
+		$format=SqlElement::checkValidPeriodScale($_REQUEST['format']);
 	}
 	if($format == 'day') {
 		$colWidth = 18;
@@ -816,11 +821,11 @@ function exportGantt($list) {
 	$name="export_planning_" . date('Ymd_His') . ".xml";
 	$now=date('Y-m-d').'T'.date('H:i:s');
 	if (array_key_exists('startDate',$_REQUEST)) {
-		$startDate=$_REQUEST['startDate'];
+		$startDate=SqlElement::checkValidDateTime($_REQUEST['startDate']);
 	}
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
-		$endDate=$_REQUEST['endDate'];
+		$endDate=SqlElement::checkValidDateTime($_REQUEST['endDate']);
 	}
 	$maxDate = '';
 	$minDate = '';
@@ -954,8 +959,8 @@ function exportGantt($list) {
 	echo '</Calendar>' . $nl;
 	foreach ($resourceList as $resource) {
 		echo "<Calendar>" . $nl;
-		echo "<UID>" . $resource->id . "</UID>" . $nl;
-		echo "<Name>" . $resource->name . "</Name>" . $nl;
+		echo "<UID>" . ($resource->id) . "</UID>" . $nl;
+		echo "<Name>" . ($resource->name) . "</Name>" . $nl;
 		echo "<IsBaseCalendar>0</IsBaseCalendar>" . $nl;
 		echo "<BaseCalendarUID>0</BaseCalendarUID>" . $nl;
 		echo "</Calendar>" . $nl;
@@ -1053,7 +1058,7 @@ function exportGantt($list) {
 		$depList=$d->getSqlElementsFromCriteria($crit,false);
 		foreach ($depList as $dep) {
 			echo '<PredecessorLink>' . $nl;
-			echo '<PredecessorUID>' . $dep->predecessorId . '</PredecessorUID>' . $nl;
+			echo '<PredecessorUID>' . ($dep->predecessorId) . '</PredecessorUID>' . $nl;
 			echo '<Type>1</Type>' . $nl;
 			echo '<CrossProject>0</CrossProject>' . $nl;
 			echo '<LinkLag>0</LinkLag>' . $nl;
@@ -1068,16 +1073,16 @@ function exportGantt($list) {
 	foreach ($resourceList as $resource) {
 		$arrayResource[$resource->id]=$resource;
 		echo "<Resource>" . $nl;
-		echo "<UID>" . $resource->id . "</UID>" . $nl;
-		echo "<ID>" . $resource->id . "</ID>" . $nl;
-		echo "<Name>" . $resource->name . "</Name>" . $nl;
+		echo "<UID>" . ($resource->id) . "</UID>" . $nl;
+		echo "<ID>" . ($resource->id) . "</ID>" . $nl;
+		echo "<Name>" . ($resource->name) . "</Name>" . $nl;
 		echo "<Type>1</Type>" . $nl;
 		echo "<IsNull>0</IsNull>" . $nl;
-		echo "<Initials>" . $resource->initials . "</Initials>" . $nl;
+		echo "<Initials>" . ($resource->initials) . "</Initials>" . $nl;
 		echo "<Group>" . SqlList::getNameFromId('Team',$resource->idTeam) . "</Group>" . $nl;
 		echo "<WorkGroup>0</WorkGroup>" . $nl;
-		echo "<EmailAddress>" . $resource->email . "</EmailAddress>" . $nl;
-		echo "<MaxUnits>" . $resource->capacity . "</MaxUnits>" . $nl;
+		echo "<EmailAddress>" . ($resource->email) . "</EmailAddress>" . $nl;
+		echo "<MaxUnits>" . ($resource->capacity) . "</MaxUnits>" . $nl;
 		echo "<PeakUnits>0</PeakUnits>" . $nl;
 		echo "<OverAllocated>0</OverAllocated>" . $nl;
 		echo "<CanLevel>1</CanLevel>" . $nl;
@@ -1114,7 +1119,7 @@ function exportGantt($list) {
 		echo "<SV>0</SV>" . $nl;
 		echo "<CV>0</CV>" . $nl;
 		echo "<ACWP>0</ACWP>" . $nl;
-		echo "<CalendarUID>" . $resource->id . "</CalendarUID>" . $nl;
+		echo "<CalendarUID>" . ($resource->id) . "</CalendarUID>" . $nl;
 		echo "<BCWS>0</BCWS>" . $nl;
 		echo "<BCWP>0</BCWP>" . $nl;
 		echo "<IsGeneric>0</IsGeneric>" . $nl;
@@ -1135,14 +1140,14 @@ function exportGantt($list) {
 		if (array_key_exists($ass->refType . '#' . $ass->refId, $arrayTask)) {
 			$res=$arrayResource[$ass->idResource];
 			echo "<Assignment>" . $nl;
-			echo "<UID>" . $ass->id . "</UID>" . $nl;
+			echo "<UID>" . ($ass->id) . "</UID>" . $nl;
 			echo "<TaskUID>" . $arrayTask[$ass->refType . '#' . $ass->refId] . "</TaskUID>" . $nl;
-			echo "<ResourceUID>" . $ass->idResource . "</ResourceUID>" . $nl;
+			echo "<ResourceUID>" . ($ass->idResource) . "</ResourceUID>" . $nl;
 			//echo "<PercentWorkComplete>' (($ass->plannedWork)?round($ass->realWork/$ass->plannedWork*100,0):'0') . '</PercentWorkComplete>" . $nl;
 			//echo "<ActualCost>0</ActualCost>" . $nl;
 			//echo "<ActualOvertimeCost>0</ActualOvertimeCost>" . $nl;
 			//echo "<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>" . $nl;
-			echo "<ActualStart>" . $ass->plannedStartDate . "T" . $startAM . "</ActualStart>" . $nl;
+			echo "<ActualStart>" . ($ass->plannedStartDate) . "T" . $startAM . "</ActualStart>" . $nl;
 			//echo "<ActualWork>PT0H0M0S</ActualWork>" . $nl;
 			//echo "<ACWP>0</ACWP>" . $nl;
 			//echo "<Confirmed>0</Confirmed>" . $nl;
@@ -1151,7 +1156,7 @@ function exportGantt($list) {
 			//echo "<CostVariance>0</CostVariance>" . $nl;
 			//echo "<CV>0</CV>" . $nl;
 			//echo "<Delay>0</Delay>" . $nl;
-			echo "<Finish>" . $ass->plannedEndDate . "T" . $endPM . "</Finish>" . $nl;
+			echo "<Finish>" . ($ass->plannedEndDate) . "T" . $endPM . "</Finish>" . $nl;
 			//echo "<FinishVariance>0</FinishVariance>" . $nl;
 			//echo "<WorkVariance>0</WorkVariance>" . $nl;
 			//echo "<HasFixedRateUnits>1</HasFixedRateUnits>" . $nl;
@@ -1187,8 +1192,8 @@ function exportGantt($list) {
 			//echo "<TimephasedData>" . $nl;
 			//echo "<Type>1</Type>" . $nl;
 			//echo "<UID>1</UID>" . $nl;
-			//echo "<Start>" . $ass->plannedStartDate . "T08:00:00</Start>" . $nl;
-			//echo "<Finish>" . $ass->plannedEndDate . "T08:00:00</Finish>" . $nl;
+			//echo "<Start>" . ($ass->plannedStartDate) . "T08:00:00</Start>" . $nl;
+			//echo "<Finish>" . ($ass->plannedEndDate) . "T08:00:00</Finish>" . $nl;
 			//echo "<Unit>2</Unit>" . $nl;
 			//echo "<Value>PT8H0M0S</Value>" . $nl;
 			//echo "</TimephasedData>" . $nl;
