@@ -29,11 +29,13 @@ include_once '../tool/projeqtor.php';
 AuditSummary::updateAuditSummary(date('Ymd'));
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
-  $paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=$_REQUEST['yearSpinner'];
+	$paramYear=SqlElement::checkValidYear($paramYear);
 };
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
-  $paramMonth=$_REQUEST['monthSpinner'];
+	$paramMonth=$_REQUEST['monthSpinner'];
+  $paramMonth=SqlElement::checkValidMonth($paramMonth);
 };
 //$paramWeek='';
 //if (array_key_exists('weekSpinner',$_REQUEST)) {
@@ -43,7 +45,13 @@ if (array_key_exists('monthSpinner',$_REQUEST)) {
 $user=getSessionUser();
 
 $periodType='month';
-$periodValue=$_REQUEST['periodValue'];
+$periodValue='';
+if (array_key_exists('periodValue',$_REQUEST))
+{
+	$periodValue=$_REQUEST['periodValue'];
+	$periodValue=SqlElement::checkValidPeriod($periodValue);
+}
+
 
 // Header
 $headerParameters="";
