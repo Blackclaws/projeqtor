@@ -262,6 +262,8 @@ class ComponentVersionMain extends Version {
   }
   
   public function save() {
+    $old=$this->getOld();
+    $this->scope='Component';
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -269,9 +271,24 @@ class ComponentVersionMain extends Version {
   	if ($this->idle) {
   		VersionProject::updateIdle('Version', $this->id);
   	}
-  	
+  	if ($this->idComponent!=$old->idComponent) {
+  	  $comp=new Component($this->idComponent);
+  	  $comp->updateAllVersionProject();
+  	  if (trim($old->idComponent)) {
+  	    $comp=new Component($old->idComponent);
+  	    $comp->updateAllVersionProject();
+  	  }
+  	}
   	return $result;
   }
-
+  public function delete() {
+    $result=parent::delete();
+    $vp=new VersionProject();
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    foreach ($vpList as $vp) {
+      $vp->delete();
+    }
+    return $result;
+  }
 }
 ?>
