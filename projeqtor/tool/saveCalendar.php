@@ -36,17 +36,34 @@
   $idCalendarDefinition=0;
   if (isset($_REQUEST['year'])) {
     $currentYear=$_REQUEST['year'];
+	if (preg_match('/^\d{4}$/', $currentYear) != True)
+	{
+		traceHack("invalid currentYear value - [$currentYear]");
+		exit;
+	}
   }
   if (isset($_REQUEST['idCalendarDefinition'])) {
   	$idCalendarDefinition=$_REQUEST['idCalendarDefinition'];
+  	SqlElement::checkValidId($idCalendarDefinition);
   }
   if (isset($_REQUEST['copyYearFrom'])) {
   	$from=$_REQUEST['copyYearFrom'];
+	if (preg_match('/[^0-9]/', trim($from)) == True)
+	{
+		traceHack("invalid copyYearFrom value - [$from]");
+		exit;
+	}
   	copyYear($from,$idCalendarDefinition, $currentYear);
   }
   if (isset($_REQUEST['day'])) {
-    switchDay($_REQUEST['day'],$idCalendarDefinition);
-    $currentYear=substr($_REQUEST['day'],0,4);
+	$day = trim($_REQUEST['day']);
+	if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $day) != True)
+	{
+		traceHack("invalid day - [$currentYear]");
+		exit;
+	}
+    switchDay($day,$idCalendarDefinition);
+    $currentYear=substr($day,0,4);
   }
   
   $cal=new Calendar;
