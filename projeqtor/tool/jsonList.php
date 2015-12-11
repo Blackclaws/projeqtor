@@ -28,8 +28,8 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php"; 
-scriptLog('   ->/tool/jsonList.php');
-    $type=$_REQUEST['listType'];
+scriptLog('   ->/tool/jsonList.php');  
+    $type=$_REQUEST['listType']; // Note: checked against constant values.
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
     echo ' "items":[';
@@ -40,7 +40,7 @@ scriptLog('   ->/tool/jsonList.php');
     and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)
     and $_REQUEST['critField']=='idProject') {
     	$type='listResourceProject';
-    	$_REQUEST['idProject']=$_REQUEST['critValue'];
+    	$_REQUEST['idProject']=$_REQUEST['critValue']; // Note: both of these are tainted.
     	$required=array_key_exists('required', $_REQUEST);
     }
     if ($type=='ExpenseDetailType') {
@@ -51,10 +51,12 @@ scriptLog('   ->/tool/jsonList.php');
           
     } else if ($type=='object') {    
       $objectClass=$_REQUEST['objectClass'];
+      SqlElement::checkValidClass($objectClass, 'objectClass');
+
       $obj=new $objectClass();
       $nbRows=listFieldsForFilter ($obj,0);
     } else if ($type=='operator') {    
-      $dataType=$_REQUEST['dataType'];
+      $dataType=$_REQUEST['dataType']; // Note: checked against constant values.
       if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or $dataType=='decimal') {
         echo ' {id:"=", name:"="}';
         echo ',{id:">=", name:">="}';
@@ -93,7 +95,7 @@ scriptLog('   ->/tool/jsonList.php');
       }
       
     } else if ($type=='list') {   
-      $dataType=$_REQUEST['dataType'];
+      $dataType=$_REQUEST['dataType']; // Note: checked against constant values.
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];
@@ -156,7 +158,7 @@ scriptLog('   ->/tool/jsonList.php');
         if (!$sepChar) $sepChar='__';
         $wbsLevelArray=array();
       }
-      foreach ($list as $id=>$name) {
+      foreach ($list as $id=>$name) { // Note: $id and $name could be arbitrary attacker controlled values from $selected
         if ($dataType=="idProject" and $sepChar!='no') {
           if (isset($wbsList[$id])) {
         	  $wbs=$wbsList[$id];
@@ -180,7 +182,7 @@ scriptLog('   ->/tool/jsonList.php');
           $name = $sep.$name;
         }
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
+        echo '{id:"' . htmlEncodeJson($id) . '", name:"'. htmlEncodeJson($name) . '"}';
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
@@ -213,7 +215,7 @@ scriptLog('   ->/tool/jsonList.php');
         }
 	      foreach ($lstRes as $id=>$name) {
 	        if ($nbRows>0) echo ', ';
-	        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
+		    echo '{id:"' . htmlEncodeJson($id) . '", name:"'. htmlEncodeJson($name) . '"}';
 	        $nbRows+=1;
 	      }
 	    } else if ($type=='listTermProject') {
@@ -285,7 +287,7 @@ scriptLog('   ->/tool/jsonList.php');
 	         //$i++;
 	        }
 	      } else {
-	      	echo '{id:'.$_REQUEST['selected'].', name:"' . SqlList::getNameFromId('Term', $_REQUEST['selected']) . '"}';
+			echo '{id:"' . htmlEncodeJson($_REQUEST['selected']) . '", name:"'. htmlEncodeJson(SqlList::getNameFromId('Term', $_REQUEST['selected'])) . '"}';
 	      }           
     } else if ($type=='listRoleResource') {
       $ctrl="";
