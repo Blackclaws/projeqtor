@@ -4168,5 +4168,13 @@ abstract class SqlElement {
 	  $period = preg_replace('/[^0-9]/', '', $period);
 	  return $period;
 	}
+	public static function checkPeriodPeriodScale($scale) {
+	  $scale=preg_replace('/[^a-z]/', '', $scale); // only allow a-z. 
+	  if ($scale!='week' and $scale!='month' and$scale!='day' and $scale!='quarter' and $scale!='year') {
+	    traceHack("period scale '$scale' is not an expected period scale");
+	    $scale=""; // Not reached as traceHack will exit script
+	  }
+	  return $scale;
+	}
 }
 ?>
