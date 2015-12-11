@@ -51,7 +51,7 @@ if (! array_key_exists('attachmentType',$_REQUEST)) {
     //errorLog('attachmentType parameter not found in REQUEST');
     //$error=true;
 } else {
-  $type=$_REQUEST['attachmentType'];
+  $type=$_REQUEST['attachmentType']; // compared against fixed values. (file|link).
 }
 $attachmentMaxSize=Parameter::getGlobalParameter('paramAttachmentMaxSize');
 $uploadedFileArray=array();
@@ -123,11 +123,17 @@ if ($type=='file') {
     //$error=true;
   } else {
     $link=$_REQUEST['attachmentLink'];
+	if (preg_match('/\.\.\/|[<>]/',urldecode($link)) == True) { // TODO: need better filter for only valid filename characters
+		traceHack("invalid attachmentLink value - [$attachmentLink]");
+		exit;
+	}
   }
   $uploadedFileArray[]="link";
 } else {
   $error=htmlGetWarningMessage(i18n('error : unknown type '));
   errorLog(i18n('error : unknown type '.$type));
+  traceHack("invalid type value - [$type]");
+  exit;
   //$error=true;
 }
 $obj=null;
@@ -145,6 +151,7 @@ if (! $error) {
   	} 
   } else {
     $refType=$_REQUEST['attachmentRefType'];
+	SqlElement::checkValidClass($refType);
   }
 }
 if ($refType=='TicketSimple') {
@@ -277,10 +284,10 @@ if (! $error) {
 	$message = $error;
 	$attachment=new Attachment();
 }
-$jsonReturn='{"file":"'.$attachment->fileName.'",'
- .'"name":"'.$attachment->fileName.'",'
+$jsonReturn='{"file":"'.htmlEncodeJson($attachment->fileName).'",'
+ .'"name":"'.htmlEncodeJson($attachment->fileName).'",'
  .'"type":"'.$type.'",'
- .'"size":"'.$attachment->fileSize.'"  ,'
+ .'"size":"'.htmlEncodeJson($attachment->fileSize).'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
 
 if ($isIE and $isIE<=9) {
