@@ -4122,5 +4122,47 @@ abstract class SqlElement {
 	  // TODO (SECURITY)
 	  return $file;
 	}
+	public static function checkValidYear($year) {
+	  if (preg_match('/^[0-9]{4}$/', $year) != 1) { // only allow 4 digit number as year. Note: may want to limit to range of valid year dates.
+	    $year='';
+	  }
+	  return $year;
+	}
+	public static function checkValidMonth($month) {
+	  // only allow from 1 to 2 digits as number as month. Must be between 1 and 12.
+	  if (is_numeric($month)) {
+	    $month = $month+0; // convert it to numeric variable
+	    if (is_int($month)) { // make sure its not a float
+	      if ($month < 1 or $month > 12) {// make sure it is not out of range
+	        $month='';
+	      }
+	    } else {
+	      $month='';
+	    }
+	  } else {
+	    $month='';
+	  }
+	  // here it is either an empty string or a number between 1-12
+	  $month=$month.''; // make sure it ends up as a string
+	  return $month;
+	}
+	public static function checkValidWeek($week) {
+	  // only allow from 1 to 2 digits as number as week. Must be between 1 and 52.
+	  if (is_numeric($week)) {
+	    $week = $week+0; // convert it to numeric variable
+	    if (is_int($week)) { // make sure its not a float
+	      if ($week < 1 or $week > 53) {// make sure it is not out of range
+	        $week='';
+	      }
+	    } else {
+	      $week='';
+	    }
+	  } else {
+	    $week='';
+	  }
+	  // here it is either an empty string or a number between 1-53
+	  $week=$week.''; // make sure it ends up as a string
+	  return $week;
+	}
 }
 ?>
