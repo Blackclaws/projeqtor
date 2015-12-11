@@ -31,7 +31,8 @@ include_once('../tool/formatter.php');
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-}
+  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
+};
   // Header
 $headerParameters="";
 if ($paramProject!="") {
@@ -79,7 +80,7 @@ echo '</tr>';
 foreach ($lst as $risk) {
   echo '<tr>';
   $done=($risk->done)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'R' . $risk->id . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'R' . htmlEncode($risk->id) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('RiskType', $risk->idRiskType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($risk->name); 
   if ($risk->description and $risk->name!=$risk->description) { echo ':<br/>' . ($risk->description); }
@@ -140,7 +141,7 @@ echo '</tr>';
 foreach ($lst as $opportunity) {
   echo '<tr>';
   $done=($opportunity->done)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'O' . $opportunity->id . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'O' . htmlEncode($opportunity->id) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('OpportunityType', $opportunity->idOpportunityType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($opportunity->name); 
   if ($opportunity->description and $opportunity->name!=$opportunity->description) { echo ':<br/>' . ($opportunity->description); }
@@ -197,7 +198,7 @@ echo '</tr>';
 foreach ($lst as $issue) {
   echo '<tr>';
   $done=($issue->done)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'I' . $issue->id . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'I' . htmlEncode($issue->id) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:8%">' . SqlList::getNameFromId('IssueType', $issue->idIssueType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($issue->name); 
   if ($issue->description and $issue->name!=$issue->description) { echo ':<br/>' . ($issue->description); }
@@ -251,7 +252,7 @@ echo '</tr>';
 foreach ($lst as $action) {
   echo '<tr>';
   $done=($action->done)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'A' . $action->id . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'A' . htmlEncode($action->id) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:10%">' . SqlList::getNameFromId('ActionType', $action->idActionType) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($action->name) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:31%">' . ($action->description) . '</td>';
