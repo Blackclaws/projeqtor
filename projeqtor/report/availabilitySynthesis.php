@@ -28,16 +28,21 @@
 
 include_once '../tool/projeqtor.php';
 $paramPeriodValue='';
-if (array_key_exists('periodValue',$_REQUEST)) {
-  $paramPeriodValue=$_REQUEST['periodValue'];
-};
+if (array_key_exists('periodValue',$_REQUEST))
+{
+	$paramPeriodValue=$_REQUEST['periodValue'];
+	$paramPeriodValue = preg_replace('/[^0-9]/', '', $paramPeriodValue); // only allow digits
+}
+
 $paramPeriodScale='';
 if (array_key_exists('periodScale',$_REQUEST)) {
   $paramPeriodScale=$_REQUEST['periodScale'];
+  $paramPeriodScale=SqlElement::checkPeriodPeriodScale($paramPeriodScale);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
+  SqlElement::checkValidId($paramTeam);
 }
 $user=getSessionUser();
 
