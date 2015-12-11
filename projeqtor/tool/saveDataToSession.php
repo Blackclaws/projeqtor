@@ -30,6 +30,11 @@
 require_once "../tool/projeqtor.php";
 
 $id=$_REQUEST['id'];
+$ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu|browserLocale(DateFormat|DecimalPoint|ThousandSeparator)?|currentLocale|defaultProject|disconnect|(switched|multiple)Mode|project(Selector(DisplayMode|ShowIdle)?)?|screen(Width|Height)?|showWorkHistory|theme)';
+if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True)
+{
+	error_log("Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
+}
 if ($id=='disconnect') {
   //$user=getSessionUser();
   //$user->disconnect();
