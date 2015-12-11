@@ -32,19 +32,23 @@ require_once "../tool/projeqtor.php";
 if (! array_key_exists('checklistDefinitionId',$_REQUEST)) {
 	throwError('checklistDefinitionId parameter not found in REQUEST');
 }
-$checklistDefinitionId=trim($_REQUEST['checklistDefinitionId']);
+$checklistDefinitionId=trim($_REQUEST['checklistDefinitionId']); // validated to be numeric value in SqlElement base constructor
 if (! array_key_exists('checklistId',$_REQUEST)) {
 	throwError('checklistId parameter not found in REQUEST');
 }
-$checklistId=trim($_REQUEST['checklistId']);
+$checklistId=trim($_REQUEST['checklistId']); // validated to be numeric value in SqlElement base constructor
 if (! array_key_exists('checklistObjectClass',$_REQUEST)) {
 	throwError('checklistObjectClass parameter not found in REQUEST');
 }
 $checklistObjectClass=$_REQUEST['checklistObjectClass'];
+SqlElement::checkValidClass($checklistObjectClass);
+
 if (! array_key_exists('checklistObjectId',$_REQUEST)) {
 	throwError('checklistObjectId parameter not found in REQUEST');
 }
 $checklistObjectId=trim($_REQUEST['checklistObjectId']);
+SqlElement::CheckValidId($checklistObjectId);
+
 if (! array_key_exists('checklistComment',$_REQUEST)) {
 	throwError('checklistCommentd parameter not found in REQUEST');
 }
