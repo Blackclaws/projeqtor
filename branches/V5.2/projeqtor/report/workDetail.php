@@ -30,69 +30,27 @@ include_once '../tool/projeqtor.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-  $paramProject = preg_replace('/[^0-9]/', '', $paramProject); // only allow digits
+  SqlElement::checkValidId($paramProject);
 }
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
-  if (preg_match('/^[0-9]+$/', $paramTeam) != 1) { // only allow digits as idTeam. Note: may want to limit to range of valid id range.
-	  $paramTeam='';
-	}
+  SqlElement::checkValidId($paramTeam);
 }
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
-	if (preg_match('/^[0-9]{4}$/', $paramYear) != 1) { // only allow 4 digit number as year. Note: may want to limit to range of valid year dates.
-	  $paramYear='';
-	}
+	$paramYear=SqlElement::checkValidYear($paramYear);
 };
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
-	// only allow from 1 to 2 digits as number as month. Must be between 1 and 12.
-	if (is_numeric($paramMonth))
-	{
-		$paramMonth = $paramMonth+0; // convert it to numeric variable
-		if (is_int($paramMonth)) // make sure its not a float
-		{
-			 if ($paramMonth < 1 or $paramMonth > 12) // make sure it is not out of range
-			 {
-				 $paramMonth='';
-			 }
-		}
-		else {
-			$paramMonth='';
-		}
-	}
-	else {
-		$paramMonth='';
-	}
-	// here it is either an empty string or a number between 1-12
-	$paramMonth=$paramMonth.''; // make sure it ends up as a string
+  $paramMonth=SqlElement::checkValidMonth($paramMonth);
 };
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
-	// only allow from 1 to 2 digits as number as week. Must be between 1 and 52.
-	if (is_numeric($paramWeek))
-	{
-		$paramWeek = $paramWeek+0; // convert it to numeric variable
-		if (is_int($paramWeek)) // make sure its not a float
-		{
-			 if ($paramWeek < 1 or $paramWeek > 53) // make sure it is not out of range
-			 {
-				 $paramWeek='';
-			 }
-		}
-		else {
-			$paramWeek='';
-		}
-	}
-	else {
-		$paramWeek='';
-	}
-	// here it is either an empty string or a number between 1-52
-	$paramWeek=$paramWeek.''; // make sure it ends up as a string
+	$paramWeek=SqlElement::checkValidWeek($paramWeek);
 };
 $user=getSessionUser();
 
@@ -101,7 +59,7 @@ $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {
 	$periodValue=$_REQUEST['periodValue'];
-	$periodValue = preg_replace('/[^0-9]/', '', $periodValue); // only allow digits
+	$periodValue=SqlElement::checkValidPeriod($periodValue);
 }
 // Header
 $headerParameters="";

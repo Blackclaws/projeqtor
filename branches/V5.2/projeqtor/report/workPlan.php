@@ -42,7 +42,10 @@
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
+	$paramProject=trim($_REQUEST['idProject']);
+	SqlElement::checkValidId($paramProject);
+
+    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
   }
   include "header.php";
 
@@ -59,8 +62,10 @@
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=getAccesRestrictionClause('Activity',$table,false,true,true);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
+	  $paramProject=trim($_REQUEST['idProject']);
+	  SqlElement::checkValidId($paramProject);
     $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $paramProject) ;
   }
 
   $querySelect .= $table . ".* ";
