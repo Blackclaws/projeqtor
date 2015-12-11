@@ -33,14 +33,18 @@ include_once '../tool/projeqtor.php';
 $idProject = "";
 if (array_key_exists('idProject', $_REQUEST)){
 	$idProject=trim($_REQUEST['idProject']);
+	$idProject = SqlElement::checkValidId($idProject);
 }
+
 $idClient = "";
 if (array_key_exists('idClient', $_REQUEST)){
 	$idClient=trim($_REQUEST['idClient']);
+	$idClient = SqlElement::checkValidId($idClient);
 }
 $idBill = "";
 if (array_key_exists('idBill', $_REQUEST)){
 	$idBill=trim($_REQUEST['idBill']);
+	$idBill = SqlElement::checkValidId($idBill);
 }
 $crit = array();
 $crit['idle']="0";
@@ -78,7 +82,7 @@ foreach ($billList as $bill)
   echo '</div>';
 	// RECIPIENT ADDRESS
 	echo '<div style="position: relative; top: 1em; left: 1em; width: 20em; height: 10em;font-size: 12px">';
-  	echo '<b>' . $recipient->designation .'</b><br/>';
+  	echo '<b>' . htmlEncode($recipient->designation) .'</b><br/>';
 	  echo ($recipient->street)?$recipient->street . '<br/>':'';
 	  echo ($recipient->complement)?$recipient->complement . '<br/>':'';
 	  echo ($recipient->zip)?$recipient->zip . '<br/>':'';
@@ -97,14 +101,14 @@ foreach ($billList as $bill)
     echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId')  . '&nbsp;:&nbsp;</b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $numBill . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->companyNumber . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->companyNumber) . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colNumTax') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->numTax . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->numTax) . '</td></tr>';
     echo '</table>';
 	echo '</div>';
 	// CONTACT
   echo '<div style="position: relative; top: 3em; left: 1em; width: 90%; height: 10em; font-size:14px;">';
-    echo '<b>' . $contact->designation .'</b><br/>';
+    echo '<b>' . htmlEncode($contact->designation) .'</b><br/>';
     echo ($contact->street)?$contact->street . '<br/>':'';
     echo ($contact->complement)?$contact->complement . '<br/>':'';
     echo ($contact->zip)?$contact->zip . '<br/>':'';
@@ -168,7 +172,7 @@ foreach ($billList as $bill)
     echo '<td style="padding-left:5px;text-align: left; vertical-align: top; border-left:solid 2px #7070A0;border-right:solid 2px #7070A0;">' . htmlEncode($line->description,'withBR') . '</td>';
     echo '<td style="padding-left:5px;text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->detail,'withBR') . '</td>';
     echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->price) . '</td>';
-    echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . $line->quantity . '</td>';
+    echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->quantity) . '</td>';
     echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->amount) . '</td>';
     echo '</tr>';
   }
@@ -215,15 +219,15 @@ foreach ($billList as $bill)
     echo '<table style="width:100%">';
     echo '<tr><td colspan="2" style="text-align:center; font-size: 120%; font-weight: bold; color: #7070A0">' . i18n('Payment') . '</td></tr>';
     echo '<tr><td style="text-align:right; width:50%;"><b>' . i18n('colDesignation') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->designation . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->designation) . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanCountry') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanCountry . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->ibanCountry) . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanKey') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanKey . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->ibanKey) . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanBban') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanBban . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($recipient->ibanBban) . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colPaymentDelay') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $client->paymentDelay . ' ' . i18n('days') . '</td></tr>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . htmlEncode($client->paymentDelay) . ' ' . i18n('days') . '</td></tr>';
     echo '</table>';
   echo '</div>';
 	continue;
@@ -233,7 +237,7 @@ foreach ($billList as $bill)
 	$client = new Client($bill->idClient);
 	echo htmlEncode($client->name)."<br/>";
 	echo htmlEncode($client->description)."<br/>";
-	echo "Delai : ".$client->paymentDelay."<br/>";
+	echo "Delai : ".htmlEncode($client->paymentDelay)."<br/>";
 	
 	if ($client->id)
 	{
@@ -284,7 +288,7 @@ foreach ($billList as $bill)
 	echo "<table>";
 	
 	echo "<tr><td width=100px>Total HT : </td><td>".$acc."</td></tr>";
-	echo "<tr><td>TVA : </td><td>".$client->taxPct."</td></tr>";
+	echo "<tr><td>TVA : </td><td>".htmlEncode($client->taxPct)."&nbsp;%</td></tr>";
 	echo "<tr><td>Total TTC : </td><td>".($acc+$acc/100*$client->taxPct)."</td></tr>";
 	
 	echo "</table>";
