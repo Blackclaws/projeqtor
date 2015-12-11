@@ -28,7 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php"; 
-scriptLog('   ->/tool/jsonList.php');  
+scriptLog('   ->/tool/jsonList.php');
     $type=$_REQUEST['listType'];
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
@@ -180,7 +180,7 @@ scriptLog('   ->/tool/jsonList.php');
           $name = $sep.$name;
         }
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",htmlEncodeJson($name)) . '"}';
+        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
@@ -213,7 +213,7 @@ scriptLog('   ->/tool/jsonList.php');
         }
 	      foreach ($lstRes as $id=>$name) {
 	        if ($nbRows>0) echo ', ';
-	        echo '{id:"' . $id . '", name:"'. $name . '"}';
+	        echo '{id:"' . $id . '", name:"'. htmlEncodeJson($name) . '"}';
 	        $nbRows+=1;
 	      }
 	    } else if ($type=='listTermProject') {
