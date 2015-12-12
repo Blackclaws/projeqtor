@@ -39,7 +39,7 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $className=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($className);
+Security::checkValidClass($className);
 
 if (! array_key_exists('selection',$_REQUEST)) {
   throwError('selection parameter not found in REQUEST');

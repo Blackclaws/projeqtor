@@ -49,7 +49,7 @@ if (array_key_exists('dialogChecklistDefinitionLineTitle',$_REQUEST)) {
 $sortOrder=0;
 if (array_key_exists('dialogChecklistDefinitionLineSortOrder',$_REQUEST)) {
 	$sortOrder=$_REQUEST['dialogChecklistDefinitionLineSortOrder'];
-	SqlElement::checkValidNumeric($sortOrder);
+	Security::checkValidNumeric($sortOrder);
 }
 $checkNames=array();
 $checkTitles=array();

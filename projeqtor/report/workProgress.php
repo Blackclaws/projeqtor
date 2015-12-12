@@ -3,7 +3,7 @@ include_once '../tool/projeqtor.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-  $paramProject = SqlElement::checkValidId($paramProject); // only allow digits
+  $paramProject = Security::checkValidId($paramProject); // only allow digits
 }
 $headerParameters="";
 if ($paramProject) {

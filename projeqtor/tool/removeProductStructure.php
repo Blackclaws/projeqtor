@@ -33,7 +33,7 @@ require_once "../tool/projeqtor.php";
 $structureId=null;
 if (array_key_exists('id',$_REQUEST)) {
   $structureId=$_REQUEST['id'];
-  SqlElement::checkValidId($structureId);
+  Security::checkValidId($structureId);
 }
 $structureId=trim($structureId);
 if ($structureId=='') {

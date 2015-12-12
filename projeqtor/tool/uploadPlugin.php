@@ -119,9 +119,9 @@ $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 if (!$error) {
   foreach ($uploadedFileArray as $uploadedFile) {
     $fileName=$uploadedFile['name'];
-	  $fileName=SqlElement::checkValidFileName($fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name
+	  $fileName=Security::checkValidFileName($fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name
     $mimeType=$uploadedFile['type'];
-    $mimeType=SqlElement::checkValidMimeType($mimeType);
+    $mimeType=Security::checkValidMimeType($mimeType);
 	  $fileSize=$uploadedFile['size'];   
     $uploaddir = Plugin::getDir();
     /*if (! file_exists($uploaddir)) {

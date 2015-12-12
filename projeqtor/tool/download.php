@@ -33,14 +33,14 @@
 
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/download.php');
-$id=SqlElement::checkValidId($_REQUEST['id']);
+$id=Security::checkValidId($_REQUEST['id']);
 if ($_REQUEST['class']=='Logfile') { // Specific class that can be downloaded even if not a SqlElement
   $class='Logfile';
   $list=getSessionValue('logFilesList');
   $log=$list[$id];
   $id=$log['name'];
 } else {
-  $class=SqlElement::checkValidClass($_REQUEST['class']);
+  $class=Security::checkValidClass($_REQUEST['class']);
 }
 
 $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');

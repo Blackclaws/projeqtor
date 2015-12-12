@@ -45,61 +45,61 @@ if (! array_key_exists('assignmentRefType',$_REQUEST)) {
   throwError('assignmentRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['assignmentRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 if (! array_key_exists('assignmentRefId',$_REQUEST)) {
   throwError('assignmentRefId parameter not found in REQUEST');
 }
 $refId=$_REQUEST['assignmentRefId'];
-SqlElement::checkValidId($refId);
+Security::checkValidId($refId);
 
 $idResource=null;
 if (array_key_exists('assignmentIdResource',$_REQUEST)) {
   $idResource=$_REQUEST['assignmentIdResource'];
-	SqlElement::checkValidId($idResource);
+	Security::checkValidId($idResource);
 }
 
 $idRole=null;
 if (array_key_exists('assignmentIdRole',$_REQUEST)) {
   $idRole=$_REQUEST['assignmentIdRole'];
-	SqlElement::checkValidId($idRole);
+	Security::checkValidId($idRole);
 }
 
 $cost=null;
 if (array_key_exists('assignmentDailyCost',$_REQUEST)) {
   $cost=$_REQUEST['assignmentDailyCost'];
-  SqlElement::checkValidNumeric($cost);
+  Security::checkValidNumeric($cost);
 }
 
 if (! array_key_exists('assignmentRate',$_REQUEST)) {
   throwError('assignmentRate parameter not found in REQUEST');
 }
 $rate=$_REQUEST['assignmentRate'];
-SqlElement::checkValidNumeric($rate);
+Security::checkValidNumeric($rate);
 
 if (! array_key_exists('assignmentAssignedWork',$_REQUEST)) {
   throwError('assignmentAssignedWork parameter not found in REQUEST');
 }
 $assignedWork=$_REQUEST['assignmentAssignedWork'];
-SqlElement::checkValidNumeric($assignedWork);
+Security::checkValidNumeric($assignedWork);
 
 if (! array_key_exists('assignmentRealWork',$_REQUEST)) {
   throwError('assignmentRealWork parameter not found in REQUEST');
 }
 $realWork=$_REQUEST['assignmentRealWork'];
-SqlElement::checkValidNumeric($realWork);
+Security::checkValidNumeric($realWork);
 
 if (! array_key_exists('assignmentLeftWork',$_REQUEST)) {
   throwError('assignmentLeftWork parameter not found in REQUEST');
 }
 $leftWork=$_REQUEST['assignmentLeftWork'];
-SqlElement::checkValidNumeric($leftWork);
+Security::checkValidNumeric($leftWork);
 
 if (! array_key_exists('assignmentPlannedWork',$_REQUEST)) {
   throwError('assignmentPlannedWork parameter not found in REQUEST');
 }
 $plannedWork=$_REQUEST['assignmentPlannedWork'];
-SqlElement::checkValidNumeric($plannedWork);
+Security::checkValidNumeric($plannedWork);
 
 
 if (! array_key_exists('assignmentComment',$_REQUEST)) {

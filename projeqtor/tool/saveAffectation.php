@@ -60,19 +60,19 @@ if (! array_key_exists('affectationRate',$_REQUEST)) {
   throwError('affectationRate parameter not found in REQUEST');
 }
 $rate=($_REQUEST['affectationRate']);
-SqlElement::checkValidNumeric($rate);
+Security::checkValidNumeric($rate);
 
 $startDate="";
 if (array_key_exists('affectationStartDate',$_REQUEST)) {
 	$startDate=($_REQUEST['affectationStartDate']);;
 }
-SqlElement::checkValidDateTime($startDate);
+Security::checkValidDateTime($startDate);
 
 $endDate="";
 if (array_key_exists('affectationEndDate',$_REQUEST)) {
 	$endDate=($_REQUEST['affectationEndDate']);;
 }
-SqlElement::checkValidDateTime($endDate);
+Security::checkValidDateTime($endDate);
 
 $idle=false;
 if (array_key_exists('affectationIdle',$_REQUEST)) {

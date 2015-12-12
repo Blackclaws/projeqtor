@@ -35,7 +35,7 @@ require_once "../tool/formatter.php";
 scriptLog ( '   ->/tool/getObjectCreationInfo.php' );
 if (! isset($obj)) {
 	$objectClass = $_REQUEST ['objectClass'];
-	SqlElement::checkValidClass($objectClass);
+	Security::checkValidClass($objectClass);
 
 	$objectId = $_REQUEST ['objectId'];
 	$obj = new $objectClass ( $objectId ); // validated to be numeric value in SqlElement base constructor

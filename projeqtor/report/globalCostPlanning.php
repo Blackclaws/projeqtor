@@ -29,38 +29,38 @@ include_once '../tool/projeqtor.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
-  $idProject = SqlElement::checkValidId($idProject);
+  $idProject = Security::checkValidId($idProject);
 }
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
-	$paramYear=SqlElement::checkValidYear($paramYear);
+	$paramYear=Security::checkValidYear($paramYear);
 };
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
-  $paramMonth=SqlElement::checkValidMonth($paramMonth);
+  $paramMonth=Security::checkValidMonth($paramMonth);
 };
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
-	$paramWeek=SqlElement::checkValidWeek($paramWeek);
+	$paramWeek=Security::checkValidWeek($paramWeek);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
-  SqlElement::checkValidId($paramTeam);
+  Security::checkValidId($paramTeam);
 }
 $scale='month';
 if (array_key_exists('scale',$_REQUEST)) {
   $scale=$_REQUEST['scale'];
-  $scale=SqlElement::checkValidPeriodScale($scale);
+  $scale=Security::checkValidPeriodScale($scale);
 }
 $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {
 	$periodValue=$_REQUEST['periodValue'];
-	$periodValue=SqlElement::checkValidPeriod($periodValue);
+	$periodValue=Security::checkValidPeriod($periodValue);
 }
 
 $headerParameters="";

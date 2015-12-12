@@ -31,23 +31,23 @@ include_once '../tool/formatter.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-  SqlElement::checkValidId($paramProject);
+  Security::checkValidId($paramProject);
 }
   
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
   $paramProduct=trim($_REQUEST['idProduct']);
-  $paramProduct = SqlElement::checkValidId($paramProduct); // only allow digits
+  $paramProduct = Security::checkValidId($paramProduct); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
-  $paramVersion = SqlElement::checkValidId($paramVersion); // only allow digits
+  $paramVersion = Security::checkValidId($paramVersion); // only allow digits
 };
 $paramSession='';
 if (array_key_exists('idTestSession',$_REQUEST)) {
   $paramSession=trim($_REQUEST['idTestSession']);
-  $paramSession = SqlElement::checkValidId($paramSession); // only allow digits
+  $paramSession = Security::checkValidId($paramSession); // only allow digits
 };
 $paramDetail=false;
 if (array_key_exists('showDetail',$_REQUEST)) {

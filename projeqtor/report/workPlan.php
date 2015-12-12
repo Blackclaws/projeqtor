@@ -43,7 +43,7 @@
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
 	$paramProject=trim($_REQUEST['idProject']);
-	SqlElement::checkValidId($paramProject);
+	Security::checkValidId($paramProject);
 
     $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
   }
@@ -63,7 +63,7 @@
   $queryWhere.=getAccesRestrictionClause('Activity',$table,false,true,true);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 	  $paramProject=trim($_REQUEST['idProject']);
-	  SqlElement::checkValidId($paramProject);
+	  Security::checkValidId($paramProject);
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $paramProject) ;
   }

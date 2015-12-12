@@ -46,9 +46,9 @@ $startDate="";
 $endDate="";
 if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
 	$startDate= trim($_REQUEST['startDatePlanView']);
-	SqlElement::checkValidDateTime($startDate);
+	Security::checkValidDateTime($startDate);
 	$endDate= trim($_REQUEST['endDatePlanView']);
-	SqlElement::checkValidDateTime($endDate);
+	Security::checkValidDateTime($endDate);
 	$user=getSessionUser();
 	$paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
 	$paramEnd=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningEndDate'));
@@ -70,19 +70,19 @@ if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDat
 if ( array_key_exists('report',$_REQUEST) ) {
 	$headerParameters="";
 	if (array_key_exists('startDate',$_REQUEST) and trim($_REQUEST['startDate'])!="") {
-		SqlElement::checkValidDateTime(trim($_REQUEST['startDate']));
+		Security::checkValidDateTime(trim($_REQUEST['startDate']));
 		$headerParameters.= i18n("colStartDate") . ' : ' . dateFormatter($_REQUEST['startDate']) . '<br/>';
 	}
 	if (array_key_exists('endDate',$_REQUEST) and trim($_REQUEST['endDate'])!="") {
-		SqlElement::checkValidDateTime(trim($_REQUEST['endDate']));
+		Security::checkValidDateTime(trim($_REQUEST['endDate']));
 		$headerParameters.= i18n("colEndDate") . ' : ' . dateFormatter($_REQUEST['endDate']) . '<br/>';
 	}
 	if (array_key_exists('format',$_REQUEST)) {
-	  SqlElement::checkValidPeriodScale(trim($_REQUEST['format']));
+	  Security::checkValidPeriodScale(trim($_REQUEST['format']));
 		$headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
 	}
 	if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-	  SqlElement::checkValidId(trim($idProject['format']));
+	  Security::checkValidId(trim($idProject['format']));
 		$headerParameters.= i18n("colIdProject") . ' : ' . (SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
 	}
 	include "../report/header.php";
@@ -420,18 +420,18 @@ function displayGantt($list) {
 	$startDate=date('Y-m-d');
 	if (array_key_exists('startDate',$_REQUEST)) {
 		$startDate=$_REQUEST['startDate'];
-		SqlElement::checkValidDateTime($startDate);
+		Security::checkValidDateTime($startDate);
 	}
 
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
 		$endDate=$_REQUEST['endDate'];
-    SqlElement::checkValidDateTime($endDate);
+    Security::checkValidDateTime($endDate);
 	}
 	$format='day';
 	if (array_key_exists('format',$_REQUEST)) {
 		$format=$_REQUEST['format'];
-    SqlElement::checkValidPeriodScale($format);
+    Security::checkValidPeriodScale($format);
 	}
 	if($format == 'day') {
 		$colWidth = 18;
@@ -886,11 +886,11 @@ function exportGantt($list) {
 	$name="export_planning_" . date('Ymd_His') . ".xml";
 	$now=date('Y-m-d').'T'.date('H:i:s');
 	if (array_key_exists('startDate',$_REQUEST)) {
-		$startDate=SqlElement::checkValidDateTime($_REQUEST['startDate']);
+		$startDate=Security::checkValidDateTime($_REQUEST['startDate']);
 	}
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
-		$endDate=SqlElement::checkValidDateTime($_REQUEST['endDate']);
+		$endDate=Security::checkValidDateTime($_REQUEST['endDate']);
 	}
 	$maxDate = '';
 	$minDate = '';

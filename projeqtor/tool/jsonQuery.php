@@ -30,7 +30,7 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
-	SqlElement::checkValidClass($objectClass);
+	Security::checkValidClass($objectClass);
 	
     $showThumb=Parameter::getUserParameter('paramShowThumbList');
     if ($showThumb=='NO') {

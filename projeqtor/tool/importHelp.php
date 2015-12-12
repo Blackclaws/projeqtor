@@ -47,10 +47,10 @@ if (! array_key_exists('elementType',$_REQUEST)) {
   throwError('elementType parameter not found in REQUEST');
 }
 $elementType = $_REQUEST['elementType'];
-SqlElement::checkValidId($elementType); // elementType is id in Importable table
+Security::checkValidId($elementType); // elementType is id in Importable table
 
 $class=SqlList::getNameFromId('Importable',$elementType,false);
-SqlElement::checkValidClass($class); 
+Security::checkValidClass($class); 
 
 // Note: $fileType is not used - commenting out.
 /*

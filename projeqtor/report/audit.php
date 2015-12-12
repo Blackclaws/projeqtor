@@ -30,12 +30,12 @@ AuditSummary::updateAuditSummary(date('Ymd'));
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
-	$paramYear=SqlElement::checkValidYear($paramYear);
+	$paramYear=Security::checkValidYear($paramYear);
 };
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
-  $paramMonth=SqlElement::checkValidMonth($paramMonth);
+  $paramMonth=Security::checkValidMonth($paramMonth);
 };
 //$paramWeek='';
 //if (array_key_exists('weekSpinner',$_REQUEST)) {
@@ -49,7 +49,7 @@ $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {
 	$periodValue=$_REQUEST['periodValue'];
-	$periodValue=SqlElement::checkValidPeriod($periodValue);
+	$periodValue=Security::checkValidPeriod($periodValue);
 }
 
 

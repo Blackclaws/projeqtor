@@ -33,18 +33,18 @@ include_once '../tool/projeqtor.php';
 $idProject = "";
 if (array_key_exists('idProject', $_REQUEST)){
 	$idProject=trim($_REQUEST['idProject']);
-	$idProject = SqlElement::checkValidId($idProject);
+	$idProject = Security::checkValidId($idProject);
 }
 
 $idClient = "";
 if (array_key_exists('idClient', $_REQUEST)){
 	$idClient=trim($_REQUEST['idClient']);
-	$idClient = SqlElement::checkValidId($idClient);
+	$idClient = Security::checkValidId($idClient);
 }
 $idBill = "";
 if (array_key_exists('idBill', $_REQUEST)){
 	$idBill=trim($_REQUEST['idBill']);
-	$idBill = SqlElement::checkValidId($idBill);
+	$idBill = Security::checkValidId($idBill);
 }
 $crit = array();
 $crit['idle']="0";

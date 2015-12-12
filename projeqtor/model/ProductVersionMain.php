@@ -236,19 +236,7 @@ class ProductVersionMain extends Version {
     } 
   }
   
-  public function drawVersionsList($critArray) {
-    $result="<table>";
-    $versList=$this->getSqlElementsFromCriteria($critArray);
-    foreach ($versList as $vers) {
-      $result.= '<tr>';
-      $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
-      $result.= '<td>';   
-      $result.=htmlDrawLink($vers);
-      $result.= '</td></tr>';
-    }
-    $result .="</table>";
-    return $result; 
-  }
+
   
   public function save() {
     $old=$this->getOld();
@@ -260,6 +248,7 @@ class ProductVersionMain extends Version {
   	if ($this->idle) {
   		VersionProject::updateIdle('Version', $this->id);
   	}
+  	$compList=array();
   	if ($old->idProduct!=$this->idProduct) {
   	  $p=new Product($this->idProduct);
   	  $compList=$p->getLinkedComponents(false);

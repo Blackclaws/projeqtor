@@ -216,14 +216,32 @@ class Version extends SqlElement {
     } 
   }
   
-  public function drawVersionsList($critArray) {
+  public function drawVersionsList($critArray,$withProjects=false) {
+    debugLog($this);
     $result="<table>";
-    $versList=$this->getSqlElementsFromCriteria($critArray);
+    $versList=$this->getSqlElementsFromCriteria($critArray,false,null,null,false,true);
     foreach ($versList as $vers) {
       $result.= '<tr>';
-      $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
-      $result.= '<td>';   
-      $result.=htmlDrawLink($vers);
+      $result.= '<td valign="top" width="20px" style="padding-left:15px;"><img src="css/images/icon'.$vers->scope.'Version16.png" height="16px" /></td>';
+      $style="";
+      if ($vers->idle) {$style='color#5555;text-decoration: line-through;';}
+      else if ($vers->isEis) {$style='font-weight: bold;';}
+      $result.= '<td style="vertical-align:top;'.$style.'">';   
+      $result.="#$vers->id - ".htmlDrawLink($vers);
+      if ($withProjects) {
+        $result.='<td>';
+        $vp=new VersionProject();
+        $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$vers->id),false,null,null,false,true);
+        $result.= '<table>';
+        foreach ($vpList as $vp) {
+          $result.= '<tr>';
+          $result.= '<td valign="top" width="20px" style="padding-left:10px;"><img src="css/images/iconProject16.png" height="16px" /></td>';
+          $result.= '<td style="vertical-align:top;">'.SqlList::getNameFromId('Project', $vp->idProject).'</td>';
+          $result.= '</tr>';
+        }
+        $result.= '</table>';
+        $result.='</td>';
+      }
       $result.= '</td></tr>';
     }
     $result .="</table>";

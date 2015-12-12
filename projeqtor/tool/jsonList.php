@@ -27,9 +27,25 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
+
     require_once "../tool/projeqtor.php"; 
 scriptLog('   ->/tool/jsonList.php');  
     $type=$_REQUEST['listType']; // Note: checked against constant values.
+    if (isset($_REQUEST['critField'])) {
+      $field=$_REQUEST['critField'];
+      Security::checkValidAlphanumeric($field);
+      if (! isset($_REQUEST['critValue'])) {
+        errorLog("incorrect query jonList : critValue is not set but critField set");
+        return;
+      }
+      if (substr($field,0,2)=='id') {
+        Security::checkValidId($_REQUEST['critValue']);
+      } 
+    } else if (isset($_REQUEST['critValue'])) {
+      errorLog("incorrect query jonList : critValue is set but critField is not set");
+      return;
+    }
+    
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
     echo ' "items":[';
@@ -40,7 +56,7 @@ scriptLog('   ->/tool/jsonList.php');
     and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)
     and $_REQUEST['critField']=='idProject') {
     	$type='listResourceProject';
-    	$_REQUEST['idProject']=$_REQUEST['critValue']; // Note: both of these are tainted.
+    	$_REQUEST['idProject']=$_REQUEST['critValue']; // This is valid : force idProject to critValue as criFiled=idProject (value has been tested as an id)
     	$required=array_key_exists('required', $_REQUEST);
     }
     if ($type=='ExpenseDetailType') {
@@ -51,7 +67,7 @@ scriptLog('   ->/tool/jsonList.php');
           
     } else if ($type=='object') {    
       $objectClass=$_REQUEST['objectClass'];
-      SqlElement::checkValidClass($objectClass, 'objectClass');
+      Security::checkValidClass($objectClass, 'objectClass');
 
       $obj=new $objectClass();
       $nbRows=listFieldsForFilter ($obj,0);
@@ -117,7 +133,8 @@ scriptLog('   ->/tool/jsonList.php');
       	    unset($list[$prj]);
       	  }
       	}
-      } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
+      } else if (($dataType=='idProduct' or $dataType=='idComponent' or $dataType=='idProductOrComponent') 
+        and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
       	if (trim($_REQUEST['critValue'])) {    	
 	        $list=array();
 	      	$listProd=SqlList::getList($class);

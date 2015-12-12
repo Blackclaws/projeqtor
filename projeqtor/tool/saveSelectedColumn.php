@@ -55,7 +55,7 @@ if ($action=='status') {
 	throwError('objectClass parameter not found in REQUEST');
   }
   $objectClass=$_REQUEST['objectClass'];
-  SqlElement::checkValidClass($objectClass);
+  Security::checkValidClass($objectClass);
   $clause="scope='list' and objectClass='$objectClass' and idUser=$user->id ";
   $cs=new ColumnSelector();
   $resPurge=$cs->purge($clause); 

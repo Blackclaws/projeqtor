@@ -35,19 +35,19 @@ if (! array_key_exists('approverRefType',$_REQUEST)) {
   throwError('approverRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['approverRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 if (! array_key_exists('approverRefId',$_REQUEST)) {
   throwError('approverRefId parameter not found in REQUEST');
 }
 $refId=$_REQUEST['approverRefId'];
-SqlElement::checkValidId($refId);
+Security::checkValidId($refId);
 
 if (! array_key_exists('approverId',$_REQUEST)) {
   throwError('approverId parameter not found in REQUEST');
 }
 $approverId=$_REQUEST['approverId'];
-SqlElement::checkValidId($approverId);
+Security::checkValidId($approverId);
 
 $linkId=null;
 

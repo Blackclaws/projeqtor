@@ -34,7 +34,7 @@ if (! array_key_exists('idAlert',$_REQUEST)) {
 }
 $remind=0;
 if (array_key_exists('remind',$_REQUEST)) {
-  $remind=SqlElement::checkValidNumeric($_REQUEST['remind']);
+  $remind=Security::checkValidNumeric($_REQUEST['remind']);
 }
 Sql::beginTransaction();
 $idAlert=trim($_REQUEST['idAlert']);
@@ -48,7 +48,7 @@ if ($idAlert=='*') {
     $result=$alert->save();
   }
 } else {
-  $idAlert=SqlElement::checkValidId($idAlert);
+  $idAlert=Security::checkValidId($idAlert);
   $alert=new Alert($idAlert);
   if ($remind) {
   	$alert->alertDateTime= (addDelayToDatetime(date('Y-m-d H:i'), ($remind/60), 'HH'));

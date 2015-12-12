@@ -113,7 +113,7 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
-SqlElement::checkValidClass($filterObjectClass);
+Security::checkValidClass($filterObjectClass);
 
 
 $name="";
@@ -176,7 +176,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   			$arrayDisp["operator"]=i18n("contains");
   			$arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
   		}
-		  SqlElement::checkValidClass($idFilterAttribute);
+		  Security::checkValidClass($idFilterAttribute);
   		$refObj=new $idFilterAttribute();
   		$refObjTable=$refObj->getDatabaseTableName();
   		$table=$obj->getDatabaseTableName();

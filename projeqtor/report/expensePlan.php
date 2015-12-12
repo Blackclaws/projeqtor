@@ -29,17 +29,17 @@ include_once '../tool/projeqtor.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
-  $idProject = SqlElement::checkValidId($idProject);
+  $idProject = Security::checkValidId($idProject);
 }
 $idResource="";
 if (array_key_exists('idResource',$_REQUEST) and trim($_REQUEST['idResource'])!="") {
   $idResource=trim($_REQUEST['idResource']);
-  $idResource = SqlElement::checkValidId($idResource); // only allow digits
+  $idResource = Security::checkValidId($idResource); // only allow digits
 }
 $scale='month';
 if (array_key_exists('scale',$_REQUEST)) {
   $scale=$_REQUEST['scale'];
-  $scale=SqlElement::checkValidPeriodScale($scale);
+  $scale=Security::checkValidPeriodScale($scale);
 }
 $scope='';
 if (array_key_exists('scope',$_REQUEST)) {
