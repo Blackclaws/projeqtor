@@ -42,7 +42,7 @@ if (array_key_exists('periodScale',$_REQUEST)) {
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
-  SqlElement::checkValidId($paramTeam);
+  Security::checkValidId($paramTeam);
 }
 $user=getSessionUser();
 

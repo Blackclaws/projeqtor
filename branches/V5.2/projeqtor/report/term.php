@@ -30,25 +30,25 @@ include_once '../tool/projeqtor.php';
 $idProject = "";
 if (array_key_exists('idProject', $_REQUEST)){
     $idProject=trim($_REQUEST['idProject']);
-	  $idProject = SqlElement::checkValidId($idProject);
+	  $idProject = Security::checkValidId($idProject);
 }
 
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
-	$paramYear=SqlElement::checkValidYear($paramYear);
+	$paramYear=Security::checkValidYear($paramYear);
 };
   
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
-  $paramMonth=SqlElement::checkValidMonth($paramMonth);
+  $paramMonth=Security::checkValidMonth($paramMonth);
 };
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
-	$paramWeek=SqlElement::checkValidWeek($paramWeek);
+	$paramWeek=Security::checkValidWeek($paramWeek);
 };
 
 if (array_key_exists('periodType',$_REQUEST)) {

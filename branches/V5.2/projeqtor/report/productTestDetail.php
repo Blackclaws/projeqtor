@@ -31,18 +31,18 @@ include_once '../tool/formatter.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
+  $paramProject=Security::checkValidId($paramProject); // only allow digits
 };
   
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
   $paramProduct=trim($_REQUEST['idProduct']);
-  $paramProduct=SqlElement::checkValidId($paramProduct); // only allow digits
+  $paramProduct=Security::checkValidId($paramProduct); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
-  $paramVersion=SqlElement::checkValidId($paramVersion); // only allow digits
+  $paramVersion=Security::checkValidId($paramVersion); // only allow digits
 };
 
 $user=getSessionUser();

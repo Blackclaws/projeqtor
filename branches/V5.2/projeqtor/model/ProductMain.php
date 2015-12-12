@@ -46,6 +46,7 @@ class ProductMain extends ProductOrComponent {
   public $_spe_versions;
   public $_sec_ProductStructure_product;
   public $_ProductStructure=array();
+  public $_spe_structure;
   public $_Attachment=array();
   public $_Note=array();
   public $scope;
@@ -156,17 +157,21 @@ class ProductMain extends ProductOrComponent {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='versions') {
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
+    if ($item=='versions' or $item=='versionsWithProjects') {
+      $result .="<table><tr>";
+      //$result .="<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
+      $result .="<td>";
       if ($this->id) {
         $vers=new ProductVersion();
         $crit=array('idProduct'=>$this->id);
-      	$result .= $vers->drawVersionsList($crit);
+      	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result .="</td></tr></table>";
       return $result;
-    } 
+    } else if ($item=='structure') {
+      $result=parent::drawStructureButton('Product',$this->id);
+      return $result;
+    }
   }
   
   /** =========================================================================
@@ -271,6 +276,15 @@ class ProductMain extends ProductOrComponent {
     return $list;
   }
 
+  public function getParentProducts() {
+    $result=array();
+    if ($this->idProduct) {
+      $parent=new Product($this->idProduct);
+      $result=array_merge_preserve_keys($parent->getParentProducts(),array($parent->id=>$parent->name));
+    } 
+    return $result;
+  } 
+  
   public function getLinkedProject($withName=true) {
     $pv=new ProductVersion();
     $vp=new VersionProject();

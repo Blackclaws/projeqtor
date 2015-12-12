@@ -31,7 +31,7 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListApprover.php');
 $refType=$_REQUEST['approverRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 $refId=$_REQUEST['approverRefId'];
 

@@ -35,7 +35,7 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $className=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($className);
+Security::checkValidClass($className);
 
 if (! array_key_exists('selection',$_REQUEST)) {
   throwError('selection parameter not found in REQUEST');
@@ -55,7 +55,7 @@ $cptNoChange=0;
 echo "<table>";
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
-	SqlElement::checkValidId($id);
+	Security::checkValidId($id);
 	if (preg_match('/[^0-9]/', $id) == True)
 	{
 		traceHack("Invalid id in deleteObjectMultiple.php - [$id]");

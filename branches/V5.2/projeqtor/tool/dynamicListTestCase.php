@@ -31,9 +31,9 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListTestCase.php');
 $idProject=trim($_REQUEST['idProject']);
-SqlElement::checkValidId($idProject);
+Security::checkValidId($idProject);
 $idProduct=trim($_REQUEST['idProduct']);
-SqlElement::checkValidId($idProduct);
+Security::checkValidId($idProduct);
 
 $selected="";
 if (array_key_exists('selected', $_REQUEST)) {

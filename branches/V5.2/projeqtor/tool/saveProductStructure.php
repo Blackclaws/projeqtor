@@ -35,19 +35,19 @@ if (! array_key_exists('productStructureObjectClass',$_REQUEST)) {
   throwError('productStructureObjectClass parameter not found in REQUEST');
 }
 $objectClass=$_REQUEST['productStructureObjectClass'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 
 if (! array_key_exists('productStructureObjectId',$_REQUEST)) {
   throwError('productStructureObjectId parameter not found in REQUEST');
 }
 $objectId=$_REQUEST['productStructureObjectId'];
-SqlElement::checkValidId($objectId);
+Security::checkValidId($objectId);
 
 if (! array_key_exists('productStructureListClass',$_REQUEST)) {
   throwError('productStructureListClass parameter not found in REQUEST');
 }
 $listClass=$_REQUEST['productStructureListClass'];
-SqlElement::checkValidClass($listClass);
+Security::checkValidClass($listClass);
 
 if (! array_key_exists('productStructureListId',$_REQUEST)) {
   throwError('productStructureListId parameter not found in REQUEST');

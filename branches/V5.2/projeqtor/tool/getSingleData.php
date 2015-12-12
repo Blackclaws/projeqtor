@@ -34,7 +34,7 @@
       $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $idRol=$_REQUEST['idRole'];
-      SqlElement::checkValidId($idRol);
+      Security::checkValidId($idRol);
       if (! $idRol) return;
       $r=new Resource($idRes);
       // #303

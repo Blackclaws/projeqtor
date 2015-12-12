@@ -212,6 +212,31 @@ class ProductOrComponent extends SqlElement {
     }
     return $list;
   }
+  static protected function drawStructureButton($class,$id) {
+    global $print;
+    if ($print) return "";
+    $result='<br/><table>';
+    $result.='<tr>';
+    $result.='<td><label for="showVersionsForAll" style="width:250px">'.i18n('showVersionsForAll').'&nbsp;</label>';
+    $result.='<div id="showVersionsForAll" dojoType="dijit.form.CheckBox" type="checkbox" checked ></div></td>';
+    $result.='<td rowspan="2" style="padding-left:10px">';
+    $result.='<button id="showStructureButton" dojoType="dijit.form.Button" showlabel="true"';
+    $result.=' title="'.i18n('showStructure').'" style="vertical-align: middle;">';
+    $result.='<span>' . i18n('showStructure') . '</span>';
+    $result.='<script type="dojo/connect" event="onClick" args="evt">';
+    $page="../report/productStructure.php?objectClass=$class&objectId=$id";
+    $result.="var url='$page';";
+    $result.='url+="&showVersionsForAll="+((dijit.byId("showVersionsForAll").get("checked"))?"1":"0");';
+    $result.='url+="&showProjectsLinked="+((dijit.byId("showProjectsLinked").get("checked"))?"1":"0");';
+    $result.='showPrint(url, null, null, "html", "P");';
+    $result.='</script>';
+    $result.='</button>';
+    $result.='</td></tr>';
+    $result.='<tr><td><label for="showProjectsLinked" style="width:250px">'.i18n('showProjectsLinked').'&nbsp;</label>';
+    $result.='<div id="showProjectsLinked" dojoType="dijit.form.CheckBox" type="checkbox" checked ></div></td>';
+    $result.='</tr></table>';
+    return $result;
+  }
 
 }
 ?>

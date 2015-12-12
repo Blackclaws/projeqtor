@@ -36,7 +36,7 @@ if (! array_key_exists('dispatchWorkObjectClass',$_REQUEST)) {
   throwError('dispatchWorkObjectClass parameter not found in REQUEST');
 }
 $refType=$_REQUEST['dispatchWorkObjectClass'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 if (! array_key_exists('dispatchWorkObjectId',$_REQUEST)) {
   throwError('dispatchWorkObjectId parameter not found in REQUEST');

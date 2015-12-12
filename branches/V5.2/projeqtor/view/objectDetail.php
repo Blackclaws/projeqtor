@@ -50,7 +50,7 @@ $preseveHtmlFormatingForPDF=true;
 
 // fetch information depending on, request
 $objClass=$_REQUEST ['objectClass'];
-SqlElement::checkValidClass($objClass, 'objectClass');
+Security::checkValidClass($objClass, 'objectClass');
 if (isset($_REQUEST ['noselect'])) {
   $noselect=true;
 }

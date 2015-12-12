@@ -28,7 +28,7 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('objectClass parameter not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 
 $obj=new $objectClass();
 

@@ -41,13 +41,13 @@ if (! array_key_exists('checklistObjectClass',$_REQUEST)) {
 	throwError('checklistObjectClass parameter not found in REQUEST');
 }
 $checklistObjectClass=$_REQUEST['checklistObjectClass'];
-SqlElement::checkValidClass($checklistObjectClass);
+Security::checkValidClass($checklistObjectClass);
 
 if (! array_key_exists('checklistObjectId',$_REQUEST)) {
 	throwError('checklistObjectId parameter not found in REQUEST');
 }
 $checklistObjectId=trim($_REQUEST['checklistObjectId']);
-SqlElement::CheckValidId($checklistObjectId);
+Security::checkValidId($checklistObjectId);
 
 if (! array_key_exists('checklistComment',$_REQUEST)) {
 	throwError('checklistCommentd parameter not found in REQUEST');

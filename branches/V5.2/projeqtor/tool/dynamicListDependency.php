@@ -31,7 +31,7 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListDependency.php');
 $refType=$_REQUEST['dependencyRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 $refId=$_REQUEST['dependencyRefId'];
 //$refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);

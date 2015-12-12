@@ -151,7 +151,7 @@ if (! $error) {
   	} 
   } else {
     $refType=$_REQUEST['attachmentRefType'];
-	SqlElement::checkValidClass($refType);
+	Security::checkValidClass($refType);
   }
 }
 if ($refType=='TicketSimple') {

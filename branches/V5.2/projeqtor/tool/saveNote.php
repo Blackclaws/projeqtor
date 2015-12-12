@@ -36,7 +36,7 @@ if (! array_key_exists('noteRefType',$_REQUEST)) {
   throwError('noteRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['noteRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 if ($refType=='TicketSimple') {
   $refType='Ticket';    

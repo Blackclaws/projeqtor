@@ -31,7 +31,7 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListOrigin.php');
 $refType=$_REQUEST['originRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 $refId=$_REQUEST['originRefId'];
 $originTypeObj=new Originable($_REQUEST['originOriginType']); // SqlElement base constructor validates numeric value.

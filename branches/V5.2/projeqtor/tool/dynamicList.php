@@ -31,11 +31,11 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicList.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
-SqlElement::checkValidClass($ref1Type);
+Security::checkValidClass($ref1Type);
 
 $ref1Id=$_REQUEST['linkRef1Id'];
 $ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
-SqlElement::checkValidClass($ref2Type);
+Security::checkValidClass($ref2Type);
 
 //$id=$_REQUEST['id'];
 

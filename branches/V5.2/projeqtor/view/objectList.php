@@ -35,7 +35,7 @@ if (! isset($comboDetail)) {
   $comboDetail=false;
 }
 $objectClass=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 $objectType='';
 if (array_key_exists('objectType',$_REQUEST)) {
   $objectType=$_REQUEST['objectType'];

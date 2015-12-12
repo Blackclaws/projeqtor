@@ -67,7 +67,7 @@ Sql::beginTransaction();
 $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
-SqlElement::checkValidId($toType);
+Security::checkValidId($toType);
 $newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false, false, $copyAssignments);
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {

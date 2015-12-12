@@ -33,13 +33,13 @@ if (! array_key_exists('idProjectPlan',$_REQUEST)) {
   throwError('idProjectPlan parameter not found in REQUEST');
 }
 $idProjectPlan=$_REQUEST['idProjectPlan']; // validated to be numeric in SqlElement base constructor
-SqlElement::checkValidId($idProjectPlan);
+Security::checkValidId($idProjectPlan);
 
 if (! array_key_exists('startDatePlan',$_REQUEST)) {
   throwError('startDatePlan parameter not found in REQUEST');
 }
 $startDatePlan=trim($_REQUEST['startDatePlan']);
-SqlElement::checkValidDateTime($startDatePlan);
+Security::checkValidDateTime($startDatePlan);
 
 projeqtor_set_time_limit(600);
 Sql::beginTransaction();

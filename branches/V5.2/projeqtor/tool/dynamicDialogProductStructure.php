@@ -30,18 +30,18 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('Parameter objectClass not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 
 if (! array_key_exists('objectId',$_REQUEST)) {
   throwError('Parameter objectId not found in REQUEST');
 }
 $objectId=$_REQUEST['objectId'];
-SqlElement::checkValidId($objectId);
+Security::checkValidId($objectId);
 
 $structureId=null;
 if (array_key_exists('structureId',$_REQUEST)) {
   $structureId=$_REQUEST['structureId'];
-  SqlElement::checkValidId($structureId);
+  Security::checkValidId($structureId);
 }
 if ($objectClass=='Product') {
   $listClass='Component';

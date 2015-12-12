@@ -30,7 +30,7 @@
 require_once "../tool/projeqtor.php"; 
 scriptLog('   ->/tool/getColumnsList.php');
 $objectClass=$_REQUEST['objectClass'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 
 $list=ColumnSelector::getColumnsList($objectClass);
 $res="";

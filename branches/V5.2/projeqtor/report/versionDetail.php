@@ -30,18 +30,18 @@ include_once '../tool/projeqtor.php';
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
-  SqlElement::checkValidId($paramProject);
+  Security::checkValidId($paramProject);
 }
   
 $paramResponsible='';
 if (array_key_exists('responsible',$_REQUEST)) {
 	$paramResponsible=trim($_REQUEST['responsible']);
-	$paramResponsible = SqlElement::checkValidId($paramResponsible); // only allow digits
+	$paramResponsible = Security::checkValidId($paramResponsible); // only allow digits
 };
 $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
-  $paramVersion =SqlElement::checkValidId($paramVersion); // only allow digits
+  $paramVersion =Security::checkValidId($paramVersion); // only allow digits
 };
 $paramDoneVersion=false;
 if (array_key_exists('showDoneVersions',$_REQUEST)) {

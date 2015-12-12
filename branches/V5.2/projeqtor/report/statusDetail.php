@@ -33,27 +33,27 @@ if (! isset($includedReport)) {
 	$paramProject='';
 	if (array_key_exists('idProject',$_REQUEST)) {
 	  $paramProject=trim($_REQUEST['idProject']);
-	  $paramProject=SqlElement::checkValidId($paramProject); // only allow digits
+	  $paramProject=Security::checkValidId($paramProject); // only allow digits
 	};
 
   
   $paramIssuer='';
   if (array_key_exists('issuer',$_REQUEST)) {
     $paramIssuer=trim($_REQUEST['issuer']);
-	  $paramIssuer=SqlElement::checkValidId($paramIssuer); // only allow digits
+	  $paramIssuer=Security::checkValidId($paramIssuer); // only allow digits
   }
 
   // Note: removed redundant duplicate
   $paramResponsible='';
   if (array_key_exists('responsible',$_REQUEST)) {
     $paramResponsible=trim($_REQUEST['responsible']);
-	  $paramResponsible=SqlElement::checkValidId($paramResponsible); // only allow digits
+	  $paramResponsible=Security::checkValidId($paramResponsible); // only allow digits
   }
   
   $paramRefType=''; // Note: not used anywhere. No point in filtering. Filtering anyway
   if (array_key_exists('refType',$_REQUEST)) {
     $paramRefType=trim($_REQUEST['refType']);
-	  $paramRefType=SqlElement::checkValidClass($paramRefType); // only allow a-z, A-Z, 0-9
+	  $paramRefType=Security::checkValidClass($paramRefType); // only allow a-z, A-Z, 0-9
   }
   
   $showIdle=false;

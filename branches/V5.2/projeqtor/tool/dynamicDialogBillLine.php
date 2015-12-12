@@ -32,7 +32,7 @@ if (array_key_exists('id',$_REQUEST)) {
 $refType="";
 if (array_key_exists("refType", $_REQUEST)) {
 	$refType=$_REQUEST['refType'];
-	SqlElement::checkValidClass($refType);
+	Security::checkValidClass($refType);
 }
 $refId="";
 if (array_key_exists("refId", $_REQUEST)) {

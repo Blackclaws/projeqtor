@@ -92,7 +92,7 @@ if (array_key_exists('copyWithAssignments',$_REQUEST)) {
 Sql::beginTransaction();
 $error=false;
 // copy from existing object
-SqlElement::checkValidId($toType); // $toType is an id !
+Security::checkValidId($toType); // $toType is an id !
 $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
 $result=$newObj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {

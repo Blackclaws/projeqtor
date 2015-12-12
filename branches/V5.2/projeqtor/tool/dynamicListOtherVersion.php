@@ -31,11 +31,11 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicLisOtherVersion.php');
 $refType=$_REQUEST['otherVersionRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 $refId=$_REQUEST['otherVersionRefId'];
 $versionType=$_REQUEST['otherVersionType'];
-SqlElement::checkValidClass($versionType);
+Security::checkValidClass($versionType);
 
 //otherVersionId
 $selected=null;

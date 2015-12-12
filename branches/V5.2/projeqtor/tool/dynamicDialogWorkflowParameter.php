@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 $id=trim($_REQUEST['idWorkflow']);
-$id=SqlElement::checkValidId($id);
+$id=Security::checkValidId($id);
 
 $statusList=SqlList::getList('Status');
 $statusColorList=SqlList::getList('Status', 'color');

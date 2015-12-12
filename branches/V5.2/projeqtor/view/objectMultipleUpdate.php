@@ -39,7 +39,7 @@
     $fieldWidth=$displayWidth-$labelWidth-15-15;
   } 
   $objectClass=$_REQUEST['objectClass'];
-  SqlElement::checkValidClass($objectClass);
+  Security::checkValidClass($objectClass);
   $obj=new $objectClass();
 ?>
 <div dojoType="dijit.layout.BorderContainer" class="background">

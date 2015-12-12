@@ -33,7 +33,7 @@
   $objectClass="";
   if (isset($_REQUEST['objectClass'])) {
     $objectClass=$_REQUEST['objectClass'];
-    SqlElement::checkValidClass($objectClass);
+    Security::checkValidClass($objectClass);
   	if ($_REQUEST['objectClass']=='CalendarDefinition') {
   		$listHeight='25%';
   	}

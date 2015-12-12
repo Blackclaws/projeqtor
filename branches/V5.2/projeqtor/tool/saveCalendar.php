@@ -44,7 +44,7 @@
   }
   if (isset($_REQUEST['idCalendarDefinition'])) {
   	$idCalendarDefinition=$_REQUEST['idCalendarDefinition'];
-  	SqlElement::checkValidId($idCalendarDefinition);
+  	Security::checkValidId($idCalendarDefinition);
   }
   if (isset($_REQUEST['copyYearFrom'])) {
   	$from=$_REQUEST['copyYearFrom'];

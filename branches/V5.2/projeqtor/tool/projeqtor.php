@@ -2440,7 +2440,7 @@ function getPrintTitle() {
   if (isset ( $_REQUEST ['objectClass'] ) and isset ( $_REQUEST ['page'] ))
   {
 	$objectClass=$_REQUEST['objectClass'];
-	SqlElement::checkValidClass($objectClass, 'objectClass');
+	Security::checkValidClass($objectClass, 'objectClass');
 
     if ($_REQUEST ['page'] == 'objectDetail.php') {
       $result .= ' - ' . i18n ( $objectClass ) . ' #' . ($_REQUEST ['objectId'] + 0);

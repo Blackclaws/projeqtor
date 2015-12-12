@@ -41,55 +41,55 @@ if (! array_key_exists('billLineRefType',$_REQUEST)) {
   throwError('billLineRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['billLineRefType'];
-SqlElement::checkValidClass($refType);
+Security::checkValidClass($refType);
 
 if (! array_key_exists('billLineRefId',$_REQUEST)) {
   throwError('billLineRefId parameter not found in REQUEST');
 }
 $refId=$_REQUEST['billLineRefId'];
-SqlElement::checkValidId($refId);
+Security::checkValidId($refId);
 
 if (! array_key_exists('billLineLine',$_REQUEST)) {
 	throwError('billLineLine parameter not found in REQUEST');
 }
 $lineNum=$_REQUEST['billLineLine'];
-SqlElement::checkValidNumeric($lineNum);
+Security::checkValidNumeric($lineNum);
 
 $quantity=null;
 if (array_key_exists('billLineQuantity',$_REQUEST)) {
   $quantity=$_REQUEST['billLineQuantity'];
-  SqlElement::checkValidNumeric($quantity);
+  Security::checkValidNumeric($quantity);
 }
 
 $idTerm="";
 if (array_key_exists('billLineIdTerm',$_REQUEST)) {
    $idTerm=$_REQUEST['billLineIdTerm'];
-   SqlElement::checkValidId($idTerm);
+   Security::checkValidId($idTerm);
 }
 
 $idResource="";
 if (array_key_exists('billLineIdResource',$_REQUEST)) {
    $idResource=$_REQUEST['billLineIdResource'];
-   SqlElement::checkValidId($idResource);
+   Security::checkValidId($idResource);
 }
 
 $idActivityPrice="";
 if (array_key_exists('billLineIdActivityPrice',$_REQUEST)) {
    $idActivityPrice=$_REQUEST['billLineIdActivityPrice'];
-   SqlElement::checkValidId($idActivityPrice);
+   Security::checkValidId($idActivityPrice);
 }
 
 $startDate="";
 if (array_key_exists('billLineStartDate',$_REQUEST)) {
   $startDate=$_REQUEST['billLineStartDate'];
-  SqlElement::checkValidDateTime($startDate);
+  Security::checkValidDateTime($startDate);
 }
 
 
 $endDate="";
 if (array_key_exists('billLineEndDate',$_REQUEST)) {
   $endDate=$_REQUEST['billLineEndDate'];
-  SqlElement::checkValidDateTime($startDate);
+  Security::checkValidDateTime($startDate);
 }
 
 $description=null;
@@ -105,7 +105,7 @@ if (array_key_exists('billLineDetail',$_REQUEST)) {
 $price=null;
 if (array_key_exists('billLinePrice',$_REQUEST)) {
   $price=$_REQUEST['billLinePrice'];
-  SqlElement::checkValidNumeric($price);
+  Security::checkValidNumeric($price);
 }
 
 $unit=null;

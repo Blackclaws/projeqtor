@@ -44,6 +44,7 @@ class ComponentMain extends ProductOrComponent {
   public $_spe_versions;
   public $_sec_ProductStructure_component;
   public $_ProductStructure=array();
+  //public $_spe_structure; 
   public $_Attachment=array();
   public $_Note=array();
   public $scope;
@@ -164,13 +165,14 @@ class ComponentMain extends ProductOrComponent {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='versions') {
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
+    if ($item=='versions' or $item=='versionsWithProjects') {
+      $result .="<table><tr>";
+      //echo "<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
+      $result .="<td>";
       if ($this->id) {
         $vers=new ComponentVersion();
         $crit=array('idComponent'=>$this->id);
-      	$result .= $vers->drawVersionsList($crit);
+      	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result .="</td></tr></table>";
       return $result;

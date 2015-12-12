@@ -47,7 +47,7 @@ if (isset($obj)) {
   	throwError('Parameter objectClass not found in REQUEST');
   }
   $objectClass=$_REQUEST['objectClass'];
-  SqlElement::checkValidClass($objectClass);
+  Security::checkValidClass($objectClass);
   
   if (! array_key_exists('objectId',$_REQUEST)) {
   	throwError('Parameter objectId not found in REQUEST');

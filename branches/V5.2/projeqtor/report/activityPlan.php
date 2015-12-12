@@ -29,23 +29,23 @@ include_once '../tool/projeqtor.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
-	$paramYear=SqlElement::checkValidYear($paramYear);
+	$paramYear=Security::checkValidYear($paramYear);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
-  SqlElement::checkValidId($paramTeam);
+  Security::checkValidId($paramTeam);
 }
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
-  $paramMonth=SqlElement::checkValidMonth($paramMonth);
+  $paramMonth=Security::checkValidMonth($paramMonth);
 };
 
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
-	$paramWeek=SqlElement::checkValidWeek($paramWeek);
+	$paramWeek=Security::checkValidWeek($paramWeek);
 };
 
 $user=getSessionUser();
@@ -54,14 +54,14 @@ $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {
 	$periodValue=$_REQUEST['periodValue'];
-	$periodValue=SqlElement::checkValidPeriod($periodValue);
+	$periodValue=Security::checkValidPeriod($periodValue);
 }
 
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
 	$idProject = trim($_REQUEST['idProject']);
-	$idProject = SqlElement::checkValidId($idProject);
+	$idProject = Security::checkValidId($idProject);
 	$headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $idProject)) . '<br/>';
 }
 if ($paramTeam!="") {
@@ -82,7 +82,7 @@ include "header.php";
 $where=getAccesRestrictionClause('Activity',false,false,true,true);
 if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 	$idProject = trim($_REQUEST['idProject']);
-	$idProject = SqlElement::checkValidId($idProject);
+	$idProject = Security::checkValidId($idProject);
 	$where.= ($where=='')?'':' and ';
 	$where.=  " idProject in " . getVisibleProjectsList(true, $idProject) ;
 }

@@ -34,19 +34,19 @@ if (! isset($includedReport)) {
 	$paramProject='';
 	if (array_key_exists('idProject',$_REQUEST)) {
 	  $paramProject=trim($_REQUEST['idProject']);
-	  SqlElement::checkValidId($paramProject);
+	  Security::checkValidId($paramProject);
 	}
   
   $paramTicketType='';
   if (array_key_exists('idTicketType',$_REQUEST)) {
     $paramTicketType=trim($_REQUEST['idTicketType']);
-	$paramTicketType = SqlElement::checkValidId($paramTicketType); // only allow digits
+	$paramTicketType = Security::checkValidId($paramTicketType); // only allow digits
   };
   
   $paramResponsible='';
   if (array_key_exists('responsible',$_REQUEST)) {
     $paramResponsible=trim($_REQUEST['responsible']);
-	$paramResponsible = SqlElement::checkValidId($paramResponsible); // only allow digits
+	$paramResponsible = Security::checkValidId($paramResponsible); // only allow digits
   };
   
   $paramDoneVersion=false;

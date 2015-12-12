@@ -28,7 +28,7 @@ if (! array_key_exists('refType',$_REQUEST)) {
  throwError('Parameter refType not found in REQUEST');
 }
 $objectClass=$_REQUEST['refType'];
-SqlElement::checkValidClass($objectClass);
+Security::checkValidClass($objectClass);
 
 if (! array_key_exists('refId',$_REQUEST)) {
  throwError('Parameter refId not found in REQUEST');

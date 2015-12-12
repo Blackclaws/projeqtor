@@ -31,13 +31,13 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListLink.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
-SqlElement::checkValidClass($ref1Type);
+Security::checkValidClass($ref1Type);
 
 $ref1Id=$_REQUEST['linkRef1Id'];
 //$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
 $ref2TypeObj=new Linkable($_REQUEST['linkRef2Type']); // SqlElement base constructor validates numeric argument.
 $ref2Type=$ref2TypeObj->name;
-SqlElement::checkValidClass($ref2Type);
+Security::checkValidClass($ref2Type);
 
 //$id=$_REQUEST['id'];
 $selected=null;

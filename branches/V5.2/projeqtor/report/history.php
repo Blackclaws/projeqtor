@@ -30,12 +30,12 @@ include_once '../tool/projeqtor.php';
 $refType="";
 if (array_key_exists('refType',$_REQUEST) and trim($_REQUEST['refType'])!="") {
   $refType=trim($_REQUEST['refType']);
-  $refType=SqlElement::checkValidClass($refType);
+  $refType=Security::checkValidClass($refType);
 }
 $refId="";
 if (array_key_exists('refId',$_REQUEST)) {
   $refId=trim($_REQUEST['refId']);
-  $refId=SqlElement::checkValidId($refId); // only allow digits
+  $refId=Security::checkValidId($refId); // only allow digits
 }
 $scope='';
 if (array_key_exists('scope',$_REQUEST)) {
