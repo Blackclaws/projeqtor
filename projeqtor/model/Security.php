@@ -98,7 +98,7 @@ class Security
     return $numeric;
   }
   public static function checkValidAlphanumeric($string) {
-    if (preg_match('/[^0-9a-zA-Z]/', $newStatus) == true) {
+    if (preg_match('/[^0-9a-zA-Z]/', $string) == true) {
       traceHack("invalid alpanumeric string value - $string");
     }
     return $string;

@@ -1270,7 +1270,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col == 'idTicket' or $col == 'idUser') {
+        if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' or $col == 'idComponent' or $col == 'idProductOrComponent' or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col == 'idTicket' or $col == 'idUser') {
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
             $critFld='idClient';
             $critVal=$obj->idClient;
@@ -1297,9 +1297,17 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
         }
         // if version and idProduct exists and is set : criteria is product
-        if (isset($obj->idProduct) and ($col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or ($col == 'idRequirement' and $obj->idProduct))) {
-          $critFld='idProduct';
-          $critVal=$obj->idProduct;
+        if ( (isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) and ($col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or ($col == 'idRequirement' and $obj->idProduct))) {
+          if (isset($obj->idProduct)) {
+            $critFld='idProduct';
+            $critVal=$obj->idProduct;
+          } else if (isset($obj->idComponent)) { 
+            $critFld='idComponent';
+            $critVal=$obj->idComponent;
+          } else if (isset($obj->idProductOrComponent)) {
+            $critFld='idProductOrComponent';
+            $critVal=$obj->idProductOrComponent;
+          }
         }
         if (get_class($obj) == 'IndicatorDefinition') {
           if ($col == 'idIndicator') {
