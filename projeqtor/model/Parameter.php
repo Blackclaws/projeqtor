@@ -374,6 +374,10 @@ class Parameter extends SqlElement {
         $list=array('CK'=>i18n('CKEditor'),
                     'Dojo'=>i18n('DojoEditor'),
                     'DojoInline'=>i18n('DojoEditorInline'));
+        break;
+      case 'maxColumns':
+        $list=array('3'=>'3','2'=>'2','1'=>'1');
+        break;
     } 
     return $list;
   }
@@ -402,6 +406,7 @@ class Parameter extends SqlElement {
                            "paramConfirmQuit"=>"list",
                            "startPage"=>"list",
                            "editor"=>'list',
+                           "maxColumns"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
