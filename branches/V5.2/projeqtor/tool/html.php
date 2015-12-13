@@ -76,7 +76,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
     }
     asort($table);
-  } else if ($critFld and ! ($col=='idProduct' and $critFld=='idProject') ) {
+  } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($col=="idProject" or $col=="planning") { 
@@ -164,7 +164,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         	$table[$fisrtKey]=$firstName;
         }
       }
-    } else if ($col=='idProduct' and $critFld=='idProject' and $critVal) {
+    } else if (($col=='idProduct' or $col=='idComponent' or  $col=='idProductOrComponent') and $critFld=='idProject' and $critVal) {
     	$restrictArray=array();
     	$versProj=new VersionProject();
     	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$critVal));

@@ -217,7 +217,6 @@ class Version extends SqlElement {
   }
   
   public function drawVersionsList($critArray,$withProjects=false) {
-    debugLog($this);
     $result="<table>";
     $versList=$this->getSqlElementsFromCriteria($critArray,false,null,null,false,true);
     foreach ($versList as $vers) {
