@@ -238,7 +238,9 @@ class Expense extends SqlElement {
     $this->day=$year . $month . $day;
     $this->month=$year . $month; 
     $this->year=$year;
-    $this->week=$year . weekNumber($workDate);
+    if (weekNumber($workDate)=='01' and $month=='12') {$year+=1;}
+    else if (weekNumber($workDate)>50 and $month=='01') {$year-=1;};
+    $this->week=$year.weekNumber($workDate);
   }
   
 }
