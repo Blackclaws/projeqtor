@@ -140,8 +140,9 @@ class GeneralWork extends SqlElement {
     $this->month=$year . $month; 
     $this->year=$year;
     if (weekNumber($workDate)=='01' and $month=='12') {$year+=1;}
-    $this->week=$year . weekNumber($workDate);
-  }
+    else if (weekNumber($workDate)>50 and $month=='01') {$year-=1;};
+    $this->week=$year.weekNumber($workDate);
+}
   
   public function save() {
     if (! $this->idProject) {

@@ -155,7 +155,9 @@ class Calendar extends SqlElement {
     $this->day=$year . $month . $day;
     $this->month=$year . $month; 
     $this->year=$year;
-    $this->week=$year . weekNumber($calendarDate);
+    if (weekNumber($calendarDate)=='01' and $month=='12') {$year+=1;}
+    else if (weekNumber($calendarDate)>50 and $month=='01') {$year-=1;};
+    $this->week=$year.weekNumber($calendarDate);
   }
   
   public function save() {
