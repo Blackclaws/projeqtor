@@ -169,7 +169,18 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if (($col=='idProduct' or $col=='idComponent' or  $col=='idProductOrComponent') and $critFld=='idProject' and $critVal) {
     	$restrictArray=array();
     	$versProj=new VersionProject();
-    	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$critVal));
+    	$proj=new Project($critVal);
+    	$lst=$proj->getTopProjectList(true);
+    	$inClause='(0';
+    	foreach ($lst as $prj) {
+    	  if ($prj) {
+    	    $inClause.=',';
+    	    $inClause.=$prj;
+    	  }
+    	}
+    	$inClause.=')';
+    	$versProjList=$versProj->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
+    	if (count($versProjList)==0) $table=array();
     	foreach ($versProjList as $versProj) {
     		$vers=new Version($versProj->idVersion);
     		$restrictArray[$vers->idProduct]="OK";

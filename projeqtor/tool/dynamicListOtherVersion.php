@@ -55,12 +55,20 @@ if (property_exists($refType, "idProject")) {
 if (property_exists($refType, "idProject")) {
   $proj=$obj->idProject;
 }
+$varProd='idProduct';
 if (property_exists($refType, "idProduct")) {
   $prod=$obj->idProduct;
+  $varProd='idProduct';
+} else if (property_exists($refType, "idProductOrComponent")) {
+  $prod=$obj->idProductOrComponent;
+  $varProd='idProductOrComponent';
+} else if (property_exists($refType, "idComponent")) {
+  $prod=$obj->idComponent;
+  $varProd='idComponent';
 }
 $crit=array();
 if ($prod) {
-  $crit=array( 'idProduct'=>$prod);
+  $crit=array( $varProd=>$prod);
 } else if ($proj) { 
 	$crit=array( 'idProject'=>$proj);
 }  

@@ -147,7 +147,6 @@ class SqlList {
  
   private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue, $showIdle) {
 //scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
-
     $res=array();
     $obj=new $listType();
     $calculated=false;
@@ -158,6 +157,14 @@ class SqlList {
     }
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
     $query.=(! $showIdle)?' and idle=0 ':'';
+    if (($listType=='Version' or $listType=='TargetVersion' or $listType=='OriginalVersion') and $criteria) {
+      foreach($criteria as $key=>$val) {
+        if ($key=='idComponent' or $key=='idProductOrComponent') {
+          unset($criteria[$key]);
+          $criteria['idProduct']=$val;
+        }
+      }
+    }
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
       if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user') and $col=='idProject') {
