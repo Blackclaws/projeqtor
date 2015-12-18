@@ -3081,6 +3081,13 @@ abstract class SqlElement {
 				}
 			}
 		}
+		// PlugIn Management
+		debugLog("deleteControl");
+		$list=Plugin::getEventScripts('deleteControl',get_class($this));
+		debugLog($list);
+		foreach ($list as $script) {
+		  require $script; // execute code
+		}
 		if ($result=="") {
 			$result='OK';
 		}

@@ -64,3 +64,9 @@ CREATE TABLE `${prefix}plugintriggeredevent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX plugintriggeredeventPlugin ON `${prefix}plugintriggeredevent` (idPlugin);
+
+ALTER TABLE `${prefix}type` ADD `defaultPlanningMode` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}type` set `defaultPlanningMode`=1 where scope='Activity';
+UPDATE `${prefix}type` set `defaultPlanningMode`=16 where scope='Meeting';
+UPDATE `${prefix}type` set `defaultPlanningMode`=5 where scope='Milestone';
+UPDATE `${prefix}type` set `defaultPlanningMode`=9 where scope='TestSession';
