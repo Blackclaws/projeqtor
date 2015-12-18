@@ -1700,12 +1700,12 @@ function i18n(str, vars) {
   	}
   }
   var ret=null;
-  if (i18nMessagesCustom[str]) {
-    ret = i18nMessagesCustom[str];
-  } else if (i18nMessages[str]) {
-    ret = i18nMessages[str];
-  } else if (i18nPluginArray && i18nPluginArray[str]) {
-    ret =  i18nPluginArray[str];
+  if (top.i18nMessagesCustom[str]) {
+    ret = top.i18nMessagesCustom[str];
+  } else if (top.i18nMessages[str]) {
+    ret = top.i18nMessages[str];
+  } else if (top.i18nPluginArray && top.i18nPluginArray[str]) {
+    ret =  top.i18nPluginArray[str];
   }
   if (ret) {
     if (vars) {

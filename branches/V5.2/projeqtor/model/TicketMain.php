@@ -338,7 +338,7 @@ class TicketMain extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
-  	if ($this->idTicket and ! $old->idTicket) {
+  	if (trim($this->idTicket) and ! trim($old->idTicket)) {
       $duplicate=new Ticket($this->idTicket);
       if (! $duplicate->idTicket) {
       	$duplicate->idTicket=$this->id;
