@@ -421,7 +421,7 @@ class BillMain extends SqlElement {
 	      $result.=' style="width:100%;"';
 	      $result.=' readonly="readonly"';
 	      $result .='/>';*/
-        $result .=  i18n('billingType'.$this->billingType) ;
+        if ($this->billingType) $result .=  i18n('billingType'.$this->billingType) ;
       }
 	    $result .= '</td></tr></table>';
       return $result;     
