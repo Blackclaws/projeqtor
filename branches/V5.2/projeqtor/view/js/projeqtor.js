@@ -1782,7 +1782,7 @@ function disconnect(cleanCookieHash) {
     var extUrl="";
     if (cleanCookieHash) {extUrl="&cleanCookieHash=true"}
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=disconnect"+extUrl,
+      url: "../tool/saveDataToSession.php?origin=disconnect&id=disconnect"+extUrl,
       handleAs: "text",
       load: function(data,args) { 
         if (data) showError(data);
@@ -1807,7 +1807,7 @@ function quit() {
   if (! noDisconnect) {
     showWait();
     dojo.xhrGet({
-      url: "../tool/saveDataToSession.php?id=disconnect",
+      url: "../tool/saveDataToSession.php?origin==quit&id=disconnect",
       load: function(data,args) { 
           hideWait();
           }

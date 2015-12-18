@@ -447,6 +447,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
       <script type="dojo/connect" event="resize" args="evt">
+         if (hideShowMenuInProgress) return;
          dojo.xhrPost({
             url : "../tool/saveDataToSession.php?saveUserParam=true"
               +"&id=contentPaneLeftDivWidth"

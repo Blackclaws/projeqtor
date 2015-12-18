@@ -3947,6 +3947,7 @@ var menuHidden=false;
 var menuActualStatus='visible';
 var menuDivSize=0;
 var menuShowMode='CLICK';
+var hideShowMenuInProgress=false;
 /**
  * Hide or show the Menu (left part of the screen
  */
@@ -3954,6 +3955,7 @@ function hideShowMenu(noRefresh) {
   if (!dijit.byId("leftDiv")) {
     return;
   }
+  hideShowMenuInProgress=true;
   duration=300;
   if (menuActualStatus == 'visible' || !menuHidden) {
     menuDivSize=dojo.byId("leftDiv").offsetWidth;
@@ -4039,6 +4041,7 @@ function hideShowMenu(noRefresh) {
     setTimeout('loadContent("objectDetail.php", "detailDiv", "listForm");',
         duration + 50);
   }
+  setTimeout("hideShowMenuInProgress=false;",duration+50);
   // dojo.byId('menuBarShow').style.top='50px';
 }
 function tempShowMenu(mode) {

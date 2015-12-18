@@ -204,7 +204,7 @@ class Audit extends SqlElement {
 		}
 		AuditSummary::updateAuditSummary ( $audit->auditDay );
 		$user = getSessionUser();
-		$user->disconnect ();
+		$user->disconnect();
 		// terminate the session
 		if (ini_get ( "session.use_cookies" )) {
 			$params = session_get_cookie_params ();
