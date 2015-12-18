@@ -2528,10 +2528,13 @@ abstract class SqlElement {
 					}
 				}
 				if ($colName=='idProject' and $versionExists) {
-					if (property_exists($this,'idProduct')) {
-						$colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+					if (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent')) {
+					  $varProd='idProduct';
+					  if (property_exists($this,'idProductOrComponent')) $varProd='idProductOrComponent';
+					  else if (property_exists($this,'idComponent')) $varProd='idComponent';
+						$colScript .="    var idProduct=trim(dijit.byId('".$varProd."').get('value'));";
 						$colScript .= '   if (idProduct) {';
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProduct", idProduct);':'';}
+						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$varProd.'", idProduct);':'';}
 						$colScript .= '   } else {';
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", this.value);':'';}
 						$colScript .= '   }';
@@ -2539,10 +2542,13 @@ abstract class SqlElement {
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", this.value);':'';}
 					}
 				}
-				if ($colName=='idProduct' and $versionExists) {
+				if (($colName=='idProduct' or $colName=='idProductOrComponent' or $colName=='idComponent') and $versionExists) {
+				  $varProd='idProduct';
+				  if ($colName=='idProductOrComponent') $varProd='idProductOrComponent';
+				  else if ($colName=='idComponent') $varProd='idComponent';
 					if (property_exists($this,'idProject')) {
 						$colScript .= '   if (trim(this.value)) {';
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProduct", this.value);':'';}
+						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$colName.'", this.value);':'';}
 						$colScript .= '   } else {';
 						$colScript .="      var idProject=trim(dijit.byId('idProject').get('value'));";
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", idProject);':'';}
@@ -2552,9 +2558,12 @@ abstract class SqlElement {
 					}
 				}
 				if (($colName=='idVersion' or $colName=='idOriginalVersion' or $colName=='idTargetVersion')
-				and property_exists($this,'idProduct')) {
-					$colScript .= 'if (! trim(dijit.byId("idProduct").get("value")) ) {';
-					$colScript .= '   setProductValueFromVersion("idProduct",this.value);';
+				and (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent'))) {
+				  $varProd='idProduct';
+				  if (property_exists($this,'idProductOrComponent')) $varProd='idProductOrComponent';
+				  else if (property_exists($this,'idComponent')) $varProd='idComponent';
+					$colScript .= 'if (! trim(dijit.byId("'.$varProd.'").get("value")) ) {';
+					$colScript .= '   setProductValueFromVersion("'.$varProd.'",this.value);';
 					$colScript .= '}';
 				}
 				if ($colName=='idProject' and property_exists($this,'idContact')) {

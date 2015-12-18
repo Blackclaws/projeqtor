@@ -1302,10 +1302,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $critFld='idProduct';
             $critVal=$obj->idProduct;
           } else if (isset($obj->idComponent)) { 
-            $critFld='idComponent';
+            $critFld='idProduct';
             $critVal=$obj->idComponent;
           } else if (isset($obj->idProductOrComponent)) {
-            $critFld='idProductOrComponent';
+            $critFld='idProduct';
             $critVal=$obj->idProductOrComponent;
           }
         }

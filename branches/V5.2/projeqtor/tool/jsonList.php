@@ -111,7 +111,7 @@ scriptLog('   ->/tool/jsonList.php');
       }
       
     } else if ($type=='list') {   
-      $dataType=$_REQUEST['dataType']; // Note: checked against constant values.
+      $dataType=$_REQUEST['dataType']; // Note: checked against constant values.     
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];
@@ -139,22 +139,36 @@ scriptLog('   ->/tool/jsonList.php');
 	        $list=array();
 	      	$listProd=SqlList::getList($class);
 	      	$versProj=new VersionProject();
-	      	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$_REQUEST['critValue']));
-	      	foreach ($versProjList as $versProj) {
-	      		$vers=new Version($versProj->idVersion);
+	      	$proj=new Project($_REQUEST['critValue']);
+	      	$lst=$proj->getTopProjectList(true);
+	      	$inClause='(0';
+	      	foreach ($lst as $prj) {
+	      	  if ($prj) {
+	      	    $inClause.=',';
+	      	    $inClause.=$prj;
+	      	  }
+	      	}
+	      	$inClause.=')';
+	      	$versProjList=$versProj->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
+	      	foreach ($versProjList as $versProj) {	      	  
+	      		$vers=new Version($versProj->idVersion);	      		
 	      		if (isset($listProd[$vers->idProduct])) {
-	      			$list[$vers->idProduct]=$listProd[$vers->idProduct];
+	      			$list[$vers->idProduct]=$listProd[$vers->idProduct];	      			
 	      		}
 	      	}
       	} else {
       		$list=SqlList::getList($class);
       	}
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
-        $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
+        $critField=$_REQUEST['critField'];
+        if (($dataType=='idVersion' or $dataType=='idOriginalVersion' or $dataType=='idTargetVersion') 
+        and ($critField=='idProductOrComponent' or $critField=='idComponent')) {
+          $critField='idProduct';
+        }
+        $crit=array( $critField => $_REQUEST['critValue']);
         $list=SqlList::getListWithCrit($class, $crit);
-      
       } else {
-        $list=SqlList::getList($class);
+        $list=SqlList::getList($class);        
       }
       if ($selected) {
       	$name=SqlList::getNameFromId($class, $selected);

@@ -358,7 +358,7 @@ class ActivityMain extends SqlElement {
     	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
     	foreach ($ticketList as $ticket) {
     		$ticket->idTargetVersion=$this->idTargetVersion;
-    		if ($idProduct) {$ticket->idProduct=$idProduct;}
+    		if ($idProduct) {$ticket->idProductOrComponent=$idProduct;}
     		$ticket->save();
     	}
     }
