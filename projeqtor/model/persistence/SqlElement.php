@@ -458,18 +458,55 @@ abstract class SqlElement {
 	 */
 	public function save() {
 		if (isset($this->_onlyCallSpecificSaveFunction) and $this->_onlyCallSpecificSaveFunction==true) return;
-		return $this->saveSqlElement();
+		if (!property_exists($this, '_onlyCallSpecificSaveFunction') or !$this->_onlyCallSpecificSaveFunction) {
+  		// PlugIn Management 
+  		$list=Plugin::getEventScripts('beforeSave',get_class($this));
+  		foreach ($list as $script) {
+  		  require $script; // execute code
+  		}
+		}
+		$result=$this->saveSqlElement();
+		if (!property_exists($this, '_onlyCallSpecificSaveFunction') or !$this->_onlyCallSpecificSaveFunction) {
+		  // PlugIn Management
+  		$list=Plugin::getEventScripts('afterSave',get_class($this));
+  		foreach ($list as $script) {
+  		  require $script; // execute code
+  		}
+		}
+		return $result;
 	}
 
 	public function insert() { // Specific function to force insert with a defined id - Reserved to Import fonction
 		$this->_onlyCallSpecificSaveFunction=true;
+		// PlugIn Management
+		$list=Plugin::getEventScripts('beforeSave',get_class($this));
+		foreach ($list as $script) {
+		  require $script; // execute code
+		}
 		$this->save(); // To force the update of fields calculated in the save function ...
 		$this->_onlyCallSpecificSaveFunction=false;
-		return $this->saveSqlElement(false, false, true);
+		$result=$this->saveSqlElement(false, false, true);
+		// PlugIn Management
+		$list=Plugin::getEventScripts('afterSave',get_class($this));
+		foreach ($list as $script) {
+		  require $script; // execute code
+		}
+		return $result;
 	}
 
 	public function saveForced($withoutDependencies=false) {
-		return $this->saveSqlElement(true,$withoutDependencies);
+	  // PlugIn Management
+	  $list=Plugin::getEventScripts('beforeSave',get_class($this));
+	  foreach ($list as $script) {
+	    require $script; // execute code
+	  }
+		$result=$this->saveSqlElement(true,$withoutDependencies);
+		// PlugIn Management
+		$list=Plugin::getEventScripts('afterSave',get_class($this));
+		foreach ($list as $script) {
+		  require $script; // execute code
+		}
+		return $result;
 	}
 
 	/** =========================================================================
@@ -485,7 +522,7 @@ abstract class SqlElement {
 	 * @return message including definition of html hiddenfields to be used
 	 */
 	public function close($clause) {
-		return $this->closeSqlElement($clause);
+    return $this->closeSqlElement($clause);
 	}
 
 	/** =========================================================================
@@ -493,7 +530,18 @@ abstract class SqlElement {
 	 * @return message including definition of html hiddenfields to be used
 	 */
 	public function delete() {
-		return $this->deleteSqlElement();
+		// PlugIn Management
+	  $list=Plugin::getEventScripts('beforeDelete',get_class($this));
+	  foreach ($list as $script) {
+	    require $script; // execute code
+	  }
+		$result=$this->deleteSqlElement();
+		// PlugIn Management
+		$list=Plugin::getEventScripts('afterDelete',get_class($this));
+		foreach ($list as $script) {
+		  require $script; // execute code
+		}
+		return $result;
 	}
 
 	/** =========================================================================
@@ -2747,7 +2795,6 @@ abstract class SqlElement {
 		//traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
 		global $cronnedScript, $loginSave;
 		$result="";
-		//
 		$right="";
 	  // Manage Exceptions
 		if (get_class($this)=='Alert' or get_class($this)=='Mail' 
@@ -2941,6 +2988,11 @@ abstract class SqlElement {
 					$result.="<br/>" . i18n("errorWorflow");
 				}
 			}
+		}
+		// PlugIn Management
+		$list=Plugin::getEventScripts('control',get_class($this));
+		foreach ($list as $script) {
+		  require $script; // execute code
 		}
 		if ($result=="") {
 			$result='OK';

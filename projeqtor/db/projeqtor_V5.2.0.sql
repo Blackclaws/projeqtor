@@ -39,7 +39,7 @@ SELECT `idProfile`, 142, `idAccessProfile` FROM `${prefix}accessright` WHERE `id
 
 UPDATE `${prefix}menu` SET name='menuProductVersion' WHERE name='menuVersion';
 
-CREATE TABLE `${prefix}ProductStructure` (
+CREATE TABLE `${prefix}productstructure` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProduct` int(12) unsigned DEFAULT NULL,
   `idComponent` int(12) unsigned DEFAULT NULL,
@@ -50,5 +50,17 @@ CREATE TABLE `${prefix}ProductStructure` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX ProductStructureProduct ON `${prefix}ProductStructure` (idProduct);
-CREATE INDEX ProductStructureComponent ON `${prefix}ProductStructure` (idComponent);
+CREATE INDEX ProductStructureProduct ON `${prefix}productstructure` (idProduct);
+CREATE INDEX ProductStructureComponent ON `${prefix}productstructure` (idComponent);
+
+CREATE TABLE `${prefix}plugintriggeredevent` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idPlugin` int(12) unsigned DEFAULT NULL,
+  `event` varchar(100),
+  `className` varchar(100),
+  `script` varchar(255),
+  `idle` int(1) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX plugintriggeredeventPlugin ON `${prefix}plugintriggeredevent` (idPlugin);

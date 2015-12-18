@@ -158,13 +158,27 @@ class Security
     return $scale;
   }
   public static function checkValidFileName($fileName) {
-    $fileName=preg_replace('/[^a-zA-Z0-9_-]/', '', $fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name
+    //$fileName=preg_replace('/[^a-zA-Z0-9_-]/', '', $fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name 
+    // PBE : disabled : much too restrictive (accentuated characters can be used, need to allow . for extension a.ext or a.b.c.ext)
+    //^[^/?*:;{}\\]*\.?[^/?*:;{}\\]+$ // => allows host and .htaccess as file name
+    if (basename($fileName)!=$fileName) {
+      traceHack("filename $fileName containts path elements that are not accepted");
+      $fileName=""; // Not reached as traceHack will exit script
+    }
+    if (! preg_match('#^[^/?*:;{}\\<>|"]*\.?[^/?*:;{}\\<>|"]+$#', $fileName)) {
+      traceHack("filename $fileName containts invalid characters \ / : * ? \" ; { } < >");
+      $fileName=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $fileName); // Not reached as traceHack will exit script
+    }
+    if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName)) {
+      traceHack("filename $fileName containts non printable characters");
+      $fileName=""; // Not reached as traceHack will exit script
+    }
     return $fileName;
   }
   public static function checkValidMimeType($mimeType) {
     $pattern = '/^a(pplication|udio)|image|m(essage|ultipart)|text|video|[xX]-([!-\x27*+\-0-9AZ^-~])+\/([!-\x27*+\-0-9AZ^-~])+(;([!-\x27*+\-0-9AZ^-~])+=(([!-\x27*+\-0-9AZ^-~])+|\"(([\x00-\x0c\x0e-\x21\x23-\x5b\x5d-\x7f]|((\r\n)?[ \t])+)|\\[\x00-\x7f])*\"))*$/'; // Content-Type according to rfc1341
     $mimeType=preg_match($pattern, $mimeType)?$mimeType:'text/html';
-    return $mimType;
+    return $mimeType;
   } 
 }
  

@@ -37,6 +37,8 @@ class Plugin extends SqlElement {
     public $uniqueCode;
     public $idle;
     
+    private static $_triggeredEventList;
+    
     function __construct() {
     }
     
@@ -86,6 +88,7 @@ class Plugin extends SqlElement {
     
       $testUnicity=false;
       $testCompatibility=false;
+      $arrayTriggers=array();
       foreach($value as $ind=>$prop) {
         if ($prop['tag']=='PLUGIN') {
           if (isset($prop['attributes']['NAME'])) {
@@ -152,6 +155,28 @@ class Plugin extends SqlElement {
             }
           }
         }
+        if ($prop['tag']=='TRIGGER') {
+          if (isset($prop['attributes']) and is_array($prop['attributes'])) {
+            $attr=$prop['attributes'];
+            $event=(isset($attr['EVENT']))?$attr['EVENT']:null;
+            $className=(isset($attr['CLASS']))?$attr['CLASS']:null;
+            $script=(isset($attr['SCRIPT']))?$attr['SCRIPT']:null;
+            if ($event and $className and $script) {
+              $evt=new PluginTriggeredEvent();
+              $evt->idPlugin=null; // to be defined later
+              $evt->idle=0; // Active by default
+              Security::checkValidClass($className);
+              $evt->className=$className;
+              $evt->script=$script;
+              $evt->event=$event;
+              if (in_array($event,PluginTriggeredEvent::$_allowedEvents)) { // Will store event only if event is valid
+                $arrayTriggers[]=$evt;
+              } else {
+                traceLog("trigger not stored : '$event' is not a valid event");
+              }
+            }
+          }
+        }
       }
       // TODO : check version compatibility
       $globalCatchErrors=false;
@@ -163,6 +188,9 @@ class Plugin extends SqlElement {
       if (isset($pluginUniqueCode)) $this->uniqueCode=$pluginUniqueCode;
       
       $old=self::getFromName($this->name);
+      // Must purge previous events stored in Database
+      $evt=new PluginTriggeredEvent();
+      $evt->purge('idPlugin='.Sql::fmtId($old->id));
       
       traceLog("Plugin descriptor information :");
       traceLog(" => name : $this->name");
@@ -203,6 +231,16 @@ class Plugin extends SqlElement {
       $this->isDeployed=1;
       $this->idle=0;
       $resultSave=$this->save();
+      // Now can save events
+      foreach ($arrayTriggers as $evt) {
+        $evt->idPlugin=$this->id;
+        $evt->script=self::getDir().'/'.$this->name.'/'.$evt->script;
+        $resEvt=$evt->save();
+      }
+      
+      unsetSessionValue('triggeredEventList'); // Reset triggeredEventList (will be refresed on first need)
+      self::$_triggeredEventList=null;
+      
       traceLog("Plugin $plugin V".$this->pluginVersion. " completely deployed");
       if (isset($pluginReload) and $pluginReload) {
         return 'RELOAD';
@@ -256,7 +294,7 @@ class Plugin extends SqlElement {
     public static function getActivePluginList() {
       // Retreive list from database
       $plugin=new Plugin();
-      $pluginList=$plugin->getSqlElementsFromCriteria(array('idle'=>'0'));
+      $pluginList=$plugin->getSqlElementsFromCriteria(array('idle'=>'0'),false,null,null,true);
       return $pluginList;
     }
     
@@ -364,5 +402,40 @@ class Plugin extends SqlElement {
       }
       return $data;
     }
+    
+    public static function getEventScripts($event, $className) {
+      if (!self::$_triggeredEventList) {
+        self::getTriggeredEventList();
+      }
+      if (isset(self::$_triggeredEventList[$event][$className])) {
+        return self::$_triggeredEventList[$event][$className];
+      } else {
+        return array();
+      }
+    }
+    
+    private static function getTriggeredEventList() {
+      $sessionList=getSessionValue('triggeredEventList',null,true);
+      if ($sessionList) {
+        self::$_triggeredEventList=$sessionList;
+        return;
+      }
+      $listActivePlugin=self::getActivePluginList();
+      $evt=new PluginTriggeredEvent();
+      $listEvt=$evt->getSqlElementsFromCriteria(array('idle'=>'0'));
+      self::$_triggeredEventList=array();
+      foreach ($listEvt as $evt) {
+        if (!isset(self::$_triggeredEventList[$evt->event])) {
+          self::$_triggeredEventList[$evt->event]=array();
+        }
+        if (!isset(self::$_triggeredEventList[$evt->event][$evt->className])) {
+          self::$_triggeredEventList[$evt->event][$evt->className]=array();
+        }
+        self::$_triggeredEventList[$evt->event][$evt->className][]=$evt->script;
+      }
+      setSessionValue('triggeredEventList', self::$_triggeredEventList); // save to session for quick access
+    }
+    
+    
 }
  

@@ -35,16 +35,13 @@ if (securityGetAccessRightYesNo('menuPlugin','read')!='YES') {
 $oneFile=null;
 if (isset($_REQUEST['pluginFile']) ) {
   $oneFile=urldecode($_REQUEST['pluginFile']);
-  if (preg_match('/[^a-zA-Z0-9_-\.]/', $oneFile) == True){
-	  error_log("invalid chars found in oneFile - [$oneFile]");
-	  $oneFile=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $oneFile); // only allow [a-z, A-Z, 0-9, _, -] in file name
-  }
+  $oneFile=Security::checkValidFileName($oneFile);
 }
 $user=getSessionUser();
 $profile=new Profile($user->idProfile);
 if ($profile->profileCode!='ADM') {
-  traceHack('Call to loadPlugin.php for non Admin user');
   echo 'Call to loadPlugin.php for non Admin user.<br/>This action and your IP has been traced.';
+  traceHack('Call to loadPlugin.php for non Admin user');
 	exit;
 }
 

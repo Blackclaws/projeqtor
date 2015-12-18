@@ -133,7 +133,8 @@ class ProjectMain extends SqlElement {
   private static $_colCaptionTransposition = array('idResource'=>'manager',
    'idProject'=> 'isSubProject',
    'idProjectType'=>'type',
-   'idContact'=>'billContact');
+   'idContact'=>'billContact',
+   'idUser'=>'issuer');
 
   private static $_subProjectList=array();
   private static $_subProjectFlatList=array();

@@ -50,7 +50,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
-  
+  if ($col=='idVersion' and ($critFld=='idProductOrComponent' or $critFld=='idComponent')) {
+    $critFld='idProduct';
+  }
   if ($col=='idResource' and $critFld=='idProject') {
   	$prj=new Project($critVal);
     $lstTopPrj=$prj->getTopProjectList(true);
