@@ -36,15 +36,12 @@ if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True)
 	error_log("Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
 }
 if ($id=='disconnect') {
-  //$user=getSessionUser();
-  //$user->disconnect();
-  //session_destroy();
-	if (isset($_REQUEST['cleanCookieHash']) and $_REQUEST['cleanCookieHash']=='true' and getSessionUser()->id ) {
+  // can retreive (for debigging purpose) in $_REQUEST['origin'] the source of disconnection : disconnect or quit
+  if (isset($_REQUEST['cleanCookieHash']) and $_REQUEST['cleanCookieHash']=='true' and getSessionUser()->id ) {
 		 $user=new User(getSessionUser()->id);
 		 $user->cleanCookieHash();
 	}
-	Audit::finishSession();
-
+	if (getSessionUser()->id) Audit::finishSession();
   exit;
 }
 
