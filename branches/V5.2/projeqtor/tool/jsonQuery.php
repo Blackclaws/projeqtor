@@ -431,14 +431,15 @@
       if ($crit['sql']['operator']!='SORT') { // Sorting already applied above
       	$split=explode('_', $crit['sql']['attribute']);
       	$critSqlValue=$crit['sql']['value'];
-      	if ($crit['sql']['operator']=='IN' and $crit['sql']['attribute']=='idProduct') {
+      	if ($crit['sql']['operator']=='IN' 
+      	and ($crit['sql']['attribute']=='idProduct' or $crit['sql']['attribute']=='idProductOrComponent' or $crit['sql']['attribute']=='idComponent')) {
           $critSqlValue=str_replace(array(' ','(',')'), '', $critSqlValue);
       		$splitVal=explode(',',$critSqlValue);
       		$critSqlValue='(0';
       		foreach ($splitVal as $idP) {
       			$prod=new Product($idP);
       			$critSqlValue.=', '.$idP;
-      	    $list=$prod->getRecursiveSubProductsFlatList(false, false);
+      	    $list=$prod->getRecursiveSubProductsFlatList(false, false); // Will work only if selected is Product, not for Component 
       	    foreach ($list as $idPrd=>$namePrd) {
       	    	$critSqlValue.=', '.$idPrd;
       	    }

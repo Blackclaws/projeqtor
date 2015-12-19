@@ -149,7 +149,7 @@ foreach ($lst as $tc) {
   }
   echo '<tr>';
   echo '<td class="reportTableData" style="width:8%">' . (($tc->idProject)?$lstProject[$tc->idProject]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:8%">' . (($tc->idProduct)?$lstProduct[$tc->idProduct]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($tc->idProductOrComponent)?$lstProduct[$tc->idProductOrComponent]:'') . '</td>';
   echo '<td class="reportTableData" style="width:10%">' . (($tc->idVersion)?$lstVersion[$tc->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($tc->idTestCaseType)?$lstType[$tc->idTestCaseType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($tc->id) . '</td>';

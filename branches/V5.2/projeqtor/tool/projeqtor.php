@@ -787,11 +787,6 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
   if ($objectClass == 'Document') {
     $v = new Version ();
     $vp = new VersionProject ();
-    //$clausePRO="(".$tableAlias."idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
-    //  ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
-    //  ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
-    //  ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
-    //  .")))";
     $clauseALLPRO="(".$tableAlias."idProject in ".$listALLPRO
     ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
         ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "

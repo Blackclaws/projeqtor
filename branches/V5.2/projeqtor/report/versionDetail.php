@@ -83,7 +83,8 @@ if ($paramVersion) {
 	if ($paramProject) {
 		$lstVersion=array();
 		$vp=new VersionProject();
-		$tmpList=$vp->getSqlElementsFromCriteria(array('idProject'=>$paramProject));
+		$tmpList=$vp->getSqlElementsFromCriteria(null,false,"idProject in " .  getVisibleProjectsList(false, $paramProject));
+		echo "idProject in " .  getVisibleProjectsList(false, $paramProject);
 		foreach ($tmpList as $vp) {
 			$vers=new Version($vp->idVersion);
 			if (! $vers->idle) {

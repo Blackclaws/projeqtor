@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
  			      if ($crit->sqlOperator!='SORT') {			
 			      	$split=explode('_', $crit->sqlAttribute);        
 			        $critSqlValue=$crit->sqlValue;
-			        if ($crit->sqlOperator=='IN' and $crit->sqlAttribute=='idProduct') {
+			        if ($crit->sqlOperator=='IN' and ($crit->sqlAttribute=='idProduct' or $crit->sqlAttribute=='idProductOrComponent' or $crit->sqlAttribute=='idComponent')) {
 			          $critSqlValue=str_replace(array(' ','(',')'), '', $critSqlValue);
 			          $splitVal=explode(',',$critSqlValue);
 			          $critSqlValue='(0';

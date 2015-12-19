@@ -109,8 +109,8 @@ $product="";
 $project="";
 $version="";
 foreach ($lst as $tc) {
-	if ($tc->idProject!=$project or $tc->idProduct!=$product or $tc->idVersion!=$version) {
-		$product=$tc->idProduct;
+	if ($tc->idProject!=$project or $tc->idProductOrComponent!=$product or $tc->idVersion!=$version) {
+		$product=$tc->idProductOrComponent;
 		$project=$tc->idProject;
 		$version=$tc->idVersion;
 		echo '<tr>';
@@ -118,7 +118,7 @@ foreach ($lst as $tc) {
 		echo '<table width="100%"><tr>';
 		if ($tc->idProject) echo '<td width="34%">'.i18n('Project').' : '.$lstProject[$tc->idProject].'</td>'; 
 		else echo '<td width="34%">&nbsp;</td>';
-		if ($tc->idProduct) echo '<td width="33%">'.i18n('Product').' : '.$lstProduct[$tc->idProduct].'</td>';
+		if ($tc->idProductOrComponent) echo '<td width="33%">'.i18n('Product').' : '.$lstProduct[$tc->idProductOrComponent].'</td>';
 		else echo '<td width="33%">&nbsp;</td>';
 		if ($tc->idVersion) echo '<td width="33%">'.i18n('Version').' : '.$lstVersion[$tc->idVersion].'</td>';
 		else echo '<td width="33%">&nbsp;</td>';

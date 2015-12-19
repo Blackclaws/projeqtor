@@ -3516,9 +3516,11 @@ function addTestCaseRun() {
 }
 function refreshTestCaseRunList(selected) {
   disableWidget('dialogTestCaseRunSubmit');
-  var url='../tool/dynamicListTestCase.php' + '?idProject='
-      + dijit.byId('idProject').get('value') + '&idProduct='
-      + dijit.byId('idProduct').get('value');
+  var url='../tool/dynamicListTestCase.php';
+  url+='?idProject='+dijit.byId('idProject').get('value');
+  if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
+  else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
+  else if (dijit.byId('idComponent')) url+='&idProduct='+dijit.byId('idComponent').get('value');
   if (selected) {
     url+='&selected=' + selected;
   }

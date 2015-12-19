@@ -135,7 +135,7 @@ foreach ($lst as $req) {
   }
   echo '<tr>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idProject)?$lstProject[$req->idProject]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:8%">' . (($req->idProduct)?$lstProduct[$req->idProduct]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($req->idProductOrComponent)?$lstProduct[$req->idProductOrComponent]:'') . '</td>';
   echo '<td class="reportTableData" style="width:12%">' . (($req->idTargetVersion)?$lstVersion[$req->idTargetVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idRequirementType)?$lstType[$req->idRequirementType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($req->id) . '</td>';
