@@ -269,6 +269,9 @@ foreach ($listParam as $param) {
               }
             }
           } 
+          if (dijit.byId('idProduct')) {
+            refreshList("idProduct","idProject", this.value);
+          }
        </script>
      </select>    
     </td>

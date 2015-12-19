@@ -47,7 +47,9 @@ if (trim($idProject)) {
 	$crit['idProject']=$idProject;
 }
 if (trim($idProduct)) {
-  $crit['idProduct']=$idProduct;
+  if (property_exists($obj,'idProduct')) $crit['idProduct']=$idProduct;
+  else if (property_exists($obj,'idProductOrComponent')) $crit['idProductOrComponent']=$idProduct;
+  else if (property_exists($obj,'idComponent')) $crit['idComponent']=$idProduct;
 }
 
 $list=$obj->getSqlElementsFromCriteria($crit,false,null, null,true);

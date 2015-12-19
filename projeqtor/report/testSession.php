@@ -142,7 +142,7 @@ foreach ($lst as $ts) {
 	echo '</tr>';
   echo '<tr>';
   echo '<td class="reportTableData" style="width:8%">' . (($ts->idProject)?$lstProject[$ts->idProject]:'') . '</td>';
-  echo '<td class="reportTableData" style="width:8%">' . (($ts->idProduct)?$lstProduct[$ts->idProduct]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($ts->idProductOrComponent)?$lstProduct[$ts->idProductOrComponent]:'') . '</td>';
   echo '<td class="reportTableData" style="width:10%">' . (($ts->idVersion)?$lstVersion[$ts->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($ts->idTestSessionType)?$lstType[$ts->idTestSessionType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . htmlEncode($ts->id) . '</td>';

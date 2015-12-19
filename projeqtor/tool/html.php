@@ -198,7 +198,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if ($col=="planning") {
       $user=getSessionUser();
       $restrictArray=$user->getListOfPlannableProjects();
-    } else if ($col=="idProduct" and $critFld=='idProject') {
+    } else if (($col=="idProduct" or $col=="idProductOrComponent" or $col=="idComponent") and $critFld=='idProject') {
    		echo '<OPTION value=" " ></OPTION>';
     	return ;
     }

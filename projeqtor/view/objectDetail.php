@@ -1297,7 +1297,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
         }
         // if version and idProduct exists and is set : criteria is product
-        if ( (isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) and ($col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or ($col == 'idRequirement' and $obj->idProduct))) {
+        if ((isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) 
+        and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion' or $col=='idTestCase' or ($col=='idRequirement' and $obj->idProductOrComponent))) {
           if (isset($obj->idProduct)) {
             $critFld='idProduct';
             $critVal=$obj->idProduct;
