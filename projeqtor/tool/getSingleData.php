@@ -50,6 +50,14 @@
       if (! $idRes) return;
       $r=new Affectable($idRes);
       echo $r->idProfile;
+    } else if ($type=='defaultPlanningMode') {
+      $idType=$_REQUEST['idType'];
+      $className=$_REQUEST['objectClass'];
+      Security::checkValidClass($className);
+      $typeClass=$className.'Type';
+      $type=new $typeClass($idType);
+      $planningModeName='id'.$className.'PlanningMode';
+      echo $type->$planningModeName;
     } else {    
       echo '';
     } 

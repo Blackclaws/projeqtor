@@ -31,20 +31,50 @@ require_once('_securityCheck.php');
 class MilestoneType extends Type {
 
   // Define the layout that will be used for lists
-    
+  public $_sec_Description;
+  public $id;    // redefine $id to specify its visible place
+  public $name;
+  public $code;
+  public $idWorkflow;
+  public $idMilestonePlanningMode;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_sec_Behavior;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
+  public $mandatoryResourceOnHandled;
+  public $_lib_mandatoryOnHandledStatus;
+  public $mandatoryResultOnDone;
+  public $_lib_mandatoryOnDoneStatus;
+  public $lockHandled;
+  public $_lib_statusMustChangeHandled;
+  public $lockDone;
+  public $_lib_statusMustChangeDone;
+  public $lockIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
+  public $showInFlash;
+  public $internalData;
+  
+  private static $_fieldsAttributes=array("name"=>"required",
+      "idWorkflow"=>"required",
+      "mandatoryDescription"=>"nobr",
+      "mandatoryResourceOnHandled"=>"nobr",
+      "mandatoryResultOnDone"=>"nobr",
+      "lockHandled"=>"nobr",
+      "lockDone"=>"nobr",
+      "lockIdle"=>"nobr",
+      "lockCancelled"=>"nobr",
+      "internalData"=>"hidden",
+      "showInFlash"=>"hidden",
+      "idPlanningMode"=>"hidden",
+      "idMilestonePlanningMode"=>"required");
+  private static $_colCaptionTransposition = array('idMilestonePlanningMode'=>'defaultPlanningMode');
+  private static $_databaseColumnName = array('idMilestonePlanningMode'=>'idPlanningMode');
   private static $_databaseCriteria = array('scope'=>'Milestone');
   
-  private static $_fieldsAttributes=array("name"=>"required", 
-                                          "idWorkflow"=>"required",
-                                          "mandatoryDescription"=>"nobr",
-                                          "mandatoryResourceOnHandled"=>"nobr",
-                                          "mandatoryResultOnDone"=>"nobr",
-                                          "lockHandled"=>"nobr",
-                                          "lockDone"=>"nobr",
-                                          "lockIdle"=>"nobr",
-                                          "lockCancelled"=>"nobr",
-                                          "internalData"=>"hidden",
-                                          "showInFlash"=>"hidden");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -72,7 +102,21 @@ class MilestoneType extends Type {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
-
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
   /** ========================================================================
    * Return the specific database criteria
    * @return the databaseTableName
@@ -80,13 +124,12 @@ class MilestoneType extends Type {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
-  
-    /** ==========================================================================
-   * Return the specific fieldsAttributes
-   * @return the fieldsAttributes
+  /** ========================================================================
+   * Return the specific databaseColumnName
+   * @return the databaseTableName
    */
-  protected function getStaticFieldsAttributes() {
-    return self::$_fieldsAttributes;
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
   }
 }
 ?>

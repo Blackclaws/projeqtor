@@ -65,8 +65,8 @@ CREATE TABLE `${prefix}plugintriggeredevent` (
 
 CREATE INDEX plugintriggeredeventPlugin ON `${prefix}plugintriggeredevent` (idPlugin);
 
-ALTER TABLE `${prefix}type` ADD `defaultPlanningMode` int(12) unsigned DEFAULT NULL;
-UPDATE `${prefix}type` set `defaultPlanningMode`=1 where scope='Activity';
-UPDATE `${prefix}type` set `defaultPlanningMode`=16 where scope='Meeting';
-UPDATE `${prefix}type` set `defaultPlanningMode`=5 where scope='Milestone';
-UPDATE `${prefix}type` set `defaultPlanningMode`=9 where scope='TestSession';
+ALTER TABLE `${prefix}type` ADD `idPlanningMode` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}type` set `idPlanningMode`=1 where scope='Activity';
+UPDATE `${prefix}type` set `idPlanningMode`=16 where scope='Meeting';
+UPDATE `${prefix}type` set `idPlanningMode`=5 where scope='Milestone';
+UPDATE `${prefix}type` set `idPlanningMode`=9 where scope='TestSession';

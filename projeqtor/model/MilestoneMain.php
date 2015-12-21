@@ -179,6 +179,10 @@ class MilestoneMain extends SqlElement {
       $colScript .= '  dojo.byId("MilestonePlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    } else if ($colName=="idMilestoneType") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  setDefaultPlanningMode(this.value);';
+      $colScript .= '</script>';
     } 
     return $colScript;
   }

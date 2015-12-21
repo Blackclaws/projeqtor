@@ -612,7 +612,7 @@ label, .label, .smallLabel {
   height: 1px;
   margin:0px; padding:0px; 
 }
- .idleClass {
+ .affectationIdleClass {
   background-color: #EEEEEE !important; 
   /*text-decoration: line-through;*/
 }
