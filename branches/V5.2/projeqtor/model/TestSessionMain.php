@@ -235,6 +235,10 @@ class TestSessionMain extends SqlElement {
       $colScript .= '  if (trim(this.value)) dijit.byId("idActivity").set("value",null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    } else if ($colName=="idTestSessionType") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  setDefaultPlanningMode(this.value);';
+      $colScript .= '</script>';
     } 
     return $colScript;
   }

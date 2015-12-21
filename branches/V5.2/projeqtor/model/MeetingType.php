@@ -30,8 +30,21 @@
 require_once('_securityCheck.php');
 class MeetingType extends Type {
 
+  public $idPlanningMode;
   // Define the layout that will be used for lists
     
+    private static $_fieldsAttributes=array("name"=>"required", 
+                                          "idWorkflow"=>"required",
+                                          "mandatoryDescription"=>"nobr",
+                                          "mandatoryResourceOnHandled"=>"nobr",
+                                          "mandatoryResultOnDone"=>"nobr",
+                                          "lockHandled"=>"nobr",
+                                          "lockDone"=>"nobr",
+                                          "lockIdle"=>"nobr",
+                                          "lockCancelled"=>"nobr",
+  										                    "internalData"=>"hidden",
+                                          "showInFlash"=>"hidden",
+                                          "idPlanningMode"=>"hidden");
   private static $_databaseCriteria = array('scope'=>'Meeting');
   
    /** ==========================================================================
@@ -41,6 +54,7 @@ class MeetingType extends Type {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    $this->idPlanningMode=16;
   }
 
   
@@ -56,6 +70,14 @@ class MeetingType extends Type {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+  
+    return self::$_fieldsAttributes;
+  }
 
   /** ========================================================================
    * Return the specific database criteria

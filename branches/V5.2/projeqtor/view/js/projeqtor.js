@@ -3019,6 +3019,28 @@ function getExtraRequiredFields() {
     }
   }); 
 }
+function getExtraHiddenFields(idType) {
+  
+  dojo.xhrGet({
+    url: "../tool/getExtraHiddenFields.php"
+      +"?type="+idType
+      +"&objectClass="+dojo.byId("objectClass").value,
+    handleAs: "text",
+    load: function(data) { 
+      console.log(data);
+      var obj = JSON.parse(data);
+      console.log(obj);
+      dojo.query(".generalRowClass").style("display","table-row");
+      dojo.query(".generalColClass").style("display","inline-block");
+      dojo.query(".idResourceClass").style("display","none");
+      for (key in obj) {
+        console.log("hide "+obj[key]);
+        dojo.query("."+obj[key]+"Class").style("display","none");
+      }
+    }
+  }); 
+}
+
 
 function intercepPointKey(obj,event){ 
   event.preventDefault();
@@ -3072,4 +3094,18 @@ function ckEditorReplaceEditor(editorName,numEditor) {
     }
   });
   
+}
+
+// Default Planning Mode
+function setDefaultPlanningMode(typeValue) {
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=defaultPlanningMode&idType='+typeValue
+      +"&objectClass="+dojo.byId('objectClass').value,
+    handleAs : "text",
+    load : function(data) {
+      var objClass=dojo.byId('objectClass').value;
+      var planningMode=objClass+"PlanningElement_id"+objClass+"PlanningMode";
+      dijit.byId(planningMode).set('value', data);
+    }
+  });
 }

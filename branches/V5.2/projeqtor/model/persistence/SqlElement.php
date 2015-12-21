@@ -56,6 +56,9 @@ abstract class SqlElement {
 	// Management of cache for queries : cache is only valid during current script
 	public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array());
 
+	// Management of extraHiddenFileds per type
+	private static $_extraHiddenFields=null;
+	
 	// All dependencies between objects :
 	//    control => sub-object must not exist to allow deletion
 	//    cascade => sub-objects are automaticaly deleted
@@ -2575,11 +2578,13 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'idUser')) {
 					$colScript .= '   refreshList("idUser","idProject", this.value);';
 				}
-				if ($colName=='idStatus' or $colName=='id'.get_class($this).'Type' or substr($colName,-12)=='PlanningMode') {
-				  $colScript .= '   getExtraRequiredFields();';
-				}
-				
 			}
+			if ($colName=='idStatus' or $colName=='id'.get_class($this).'Type' or substr($colName,-12)=='PlanningMode') {
+			  $colScript .= '   getExtraRequiredFields();';
+			}	
+		  if ($colName=='id'.get_class($this).'Type') {
+		    $colScript .= '   getExtraHiddenFields(this.value);';
+		  }
 			$colScript .= '</script>';
 		}
 		if (substr($colName,$posDate,4)=='Date') {  // Date => onChange
@@ -4125,6 +4130,38 @@ abstract class SqlElement {
 	    }
 	  }
 	  return $result;
+	}
+	public function getExtraHiddenFields($newType="") {
+	  $class=get_class($this);
+	  $typeFld='id'.$class."Type";
+	  if (! property_exists($this,$typeFld) and !$newType) { return array(); } // No type for this item, so no extra field
+	  $list=self::getExtraHiddenFieldsFullList();
+	  $type=($newType)?$newType:$this->$typeFld;
+	  if (!isset($list[$class])) { return array(); }
+	  if (!isset($list[$class][$type])) { return array(); }
+debugLog("getExtraHiddenFields($type) for $class");
+debugLog($list[$class][$type]);
+	  return $list[$class][$type];
+	}
+	private static function getExtraHiddenFieldsFullList() {
+	  if (self::$_extraHiddenFields!=null) {
+	    return self::$_extraHiddenFields;
+	  }
+	  $sessionList=getSessionValue('extraHiddenFieldsArray');
+	  if ($sessionList) {
+	    self::$_extraHiddenFields=$sessionList;
+	    return self::$_extraHiddenFields;
+	  }
+	  // TODO : get from dynamic data 
+	  // This is just for testing purpose
+	  $array=array('Activity'=>array('19'=>array('externalReference'),
+	                                 //'22'=>array('idTargetVersion','result','ActivityPlanningElement_priority','ActivityPlanningElement_realWork')),
+	                                 '22'=>array('idTargetVersion','result','description')),
+	               'Ticket'=>array('17'=>array('idTicket')),
+	               'ActivityPlanningElement'=>array('22'=>array('priority','realWork','realCost'))) ;
+	  self::$_extraHiddenFields=$array;
+	  setSessionValue('extraHiddenFieldsArray', $array);
+	  return $array;
 	}
 	
 }

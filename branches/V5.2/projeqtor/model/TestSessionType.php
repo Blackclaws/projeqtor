@@ -30,8 +30,49 @@
 require_once('_securityCheck.php');
 class TestSessionType extends Type {
 
+  public $_sec_Description;
+  public $id;    // redefine $id to specify its visible place
+  public $name;
+  public $code;
+  public $idWorkflow;
+  public $idTestSessionPlanningMode;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_sec_Behavior;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
+  public $mandatoryResourceOnHandled;
+  public $_lib_mandatoryOnHandledStatus;
+  public $mandatoryResultOnDone;
+  public $_lib_mandatoryOnDoneStatus;
+  public $lockHandled;
+  public $_lib_statusMustChangeHandled;
+  public $lockDone;
+  public $_lib_statusMustChangeDone;
+  public $lockIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
+  public $showInFlash;
+  public $internalData;
   // Define the layout that will be used for lists
     
+  private static $_fieldsAttributes=array("name"=>"required",
+      "idWorkflow"=>"required",
+      "mandatoryDescription"=>"nobr",
+      "mandatoryResourceOnHandled"=>"nobr",
+      "mandatoryResultOnDone"=>"nobr",
+      "lockHandled"=>"nobr",
+      "lockDone"=>"nobr",
+      "lockIdle"=>"nobr",
+      "lockCancelled"=>"nobr",
+      "internalData"=>"hidden",
+      "showInFlash"=>"hidden",
+      "idPlanningMode"=>"hidden",
+      "idTestSessionPlanningMode"=>"required");
+  private static $_colCaptionTransposition = array('idTestSessionPlanningMode'=>'defaultPlanningMode');
+  private static $_databaseColumnName = array('idTestSessionPlanningMode'=>'idPlanningMode');
   private static $_databaseCriteria = array('scope'=>'TestSession');
   
    /** ==========================================================================
@@ -57,12 +98,34 @@ class TestSessionType extends Type {
 // ============================================================================**********
   
 
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
   /** ========================================================================
    * Return the specific database criteria
    * @return the databaseTableName
    */
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
+  }
+  /** ========================================================================
+   * Return the specific databaseColumnName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
   }
   
 }

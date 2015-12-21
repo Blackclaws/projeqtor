@@ -424,7 +424,21 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $objType=null;
   if (property_exists($obj, $idType)) {
     $objType=new $type($obj->$idType);
+  } else if ($included) {
+    $type=$obj->refType . 'Type';
+    $idType='id' . $type;
+    if (!$obj->id) {
+      $listType=SqlList::getList($type);
+      $first_value = reset($listType);
+      $first_key = key($listType);
+      $objType=new $type($first_key);
+    } else {
+      $orig=new $obj->refType($obj->refId);
+      $objType=new $type($orig->$idType);
+    }
   }
+  $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
+  
   $section='';
   $nbLineSection=0;
   
@@ -675,6 +689,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       }
       if (strpos($obj->getFieldAttributes($col), 'hidden') !== false) {
         $hide=true;
+      } else if (in_array($col,$extraHiddenFields)) {
+        $specificStyle.=' display:none';
+        if ($print) $hide=true;
       }
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime') and !$print) {
         $hide=true;
@@ -700,7 +717,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       }
       if ($internalTable == 0) {
         if (!is_object($val) and !is_array($val) and !$hide and !$nobr_before) {
-          echo '<tr class="detail">';
+          echo '<tr class="detail'.((!$nobr)?' generalRowClass '.$col.'Class':'').'" style="'.((!$nobr)?$specificStyle:'').'">';
           if ($dataLength > 4000) {
             // Will have to add label
             echo '<td colspan="2">';
@@ -716,7 +733,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             }
             // $thumbIcon=SqlElement::isIconableField($col);
             $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
-            echo '<label for="' . $col . '" ' . (($thumb)?'class="labelWithThumb"':'') . '>';
+            echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.'">';
             if ($outMode == 'pdf') { 
               echo str_replace(' ', '&nbsp;',htmlEncode($obj->getColCaption($col)));
             } else {
@@ -972,7 +989,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
       } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
         // Display full HTML ================================================== Simple Display html field
-        echo '<div class="displayHtml">';
+        echo '<div class="displayHtml generalColClass '.$col.'Class" style="'.$specificStyle.'">';
         echo $val;
         echo '</div>';
       } else if ($col == 'id') {
@@ -1016,14 +1033,15 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         // id is only visible
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
-        echo ' class="display" ';
-        echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth - 40) . 'px;" ';
+        echo ' class="display generalColClass '.$col.'Class" ';
+        echo ' readonly tabindex="-1" style="'.$specificStyle.';width: ' . ($largeWidth - $smallWidth - 40) . 'px;" ';
         echo ' value="' . htmlEncode($val) . '" ></span>';
       } else if ($col == 'password') {
         $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
         // Password specificity ============================================= PASSWORD
         if ($canUpdate) {
           echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
+          echo ' class="generalColClass '.$col.'Class" style="'.$specificStyle.'"';
           echo $attributes;
           $salt=hash('sha256', "projeqtor" . date('YmdHis'));
           echo ' title="' . i18n('helpResetPassword') . '" >';
@@ -1040,12 +1058,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         // password not visible
         echo '<input type="password"  ';
         echo $name;
-        echo ' class="display" style="width:150px;position:relative; left: 3px;"';
+        echo ' class="display generalColClass '.$col.'Class" style="width:150px;position:relative; left: 3px;'.$specificStyle.'"';
         echo ' readonly tabindex="-1" ';
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col == 'color' and $dataLength == 7) {
         // Draw a color selector ============================================== COLOR
-        echo "<table><tr><td class='detail'>";
+        echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyle.'"><tr><td class="detail">';
         echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly tabindex="-1" ';
         echo $name;
         echo $attributes;
@@ -1094,11 +1112,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '</td></tr></table>';
       } else if ($col == 'durationSla') {
         // Draw a color selector ============================================== SLA as a duration
-        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay" type="text"  ';
+        echo '<div class="generalColClass '.$col.'Class" style="width: 30px;'.$specificStyle.'">';
+        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$col.'Class" type="text"  ';
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
-        echo '  style="width: 30px; "';
+        echo '  style="width: 30px;'.$specificStyle.'"';
         echo ' >';
         echo '</div>';
         echo i18n("shortDay") . "  ";
@@ -1116,6 +1135,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' >';
         echo '</div>';
         echo i18n("shortMinute") . "  ";
+        echo "</div>";
       } else if ($dataType == 'date') {
         // Draw a date ======================================================== DATE
         if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
@@ -1124,7 +1144,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $negative='';
         if (property_exists($obj, 'validatedEndDate')) {
           $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
-        }        echo '<div dojoType="dijit.form.DateTextBox" ';
+        }        
+        echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
@@ -1132,7 +1153,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
-        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
+        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1159,7 +1180,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . $valDate . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1190,7 +1211,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1201,7 +1222,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         // Draw a boolean (as a checkbox ====================================== BOOLEAN
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;
-        echo ' class="greyCheck"';
+        echo ' class="greyCheck generalColClass '.$col.'Class"';
         echo $attributes;
         echo ' style="' . $specificStyle . '" ';
         // echo ' value="' . $col . '" ' ;
@@ -1342,6 +1363,15 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $critVal=SqlList::getNameFromId('Checklistable', $obj->idChecklistable, false);
           }
         }
+        if (is_a($obj,'PlanningElement')) {
+          $planningModeName='id'.$obj->refType.'PlanningMode';    
+          if ($col==$planningModeName and !$obj->id and $objType) {      
+            if (property_exists($objType,$planningModeName)) {
+              $obj->$planningModeName=$objType->$planningModeName;
+              $val=$obj->$planningModeName;
+            }
+          }
+        }
         if ($displayComboButtonCol) {
           $fieldWidth-=50;
         } else if ($displayDirectAccessButton) {
@@ -1369,7 +1399,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $fieldWidth=round($fieldWidth / 2) - 5;
           }
         }
-        echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').'" xlabelType="html" ';
+        echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -1380,8 +1410,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '</select>';
         if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonGoto" ';
-          echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;"';
-          echo ' class="roundedButton">';
+          echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
+          echo ' class="roundedButton  generalColClass '.$col.'Class">';
           echo '<div class="iconGoto" ';
           $jsFunction="var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . substr($col, 2) . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
           echo ' onclick="' . $jsFunction . '"';
@@ -1390,8 +1420,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         if ($displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonDetail" ';
-          echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;"';
-          echo ' class="roundedButton">';
+          echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
+          echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo '<div class="iconView" ';
           echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol)?1:0) . ')"';
           echo '></div>';
@@ -1399,7 +1429,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
-            echo '<div class="roundedButton" style="float:right;margin-right:3px;" ';
+            echo '<div class="roundedButton generalColClass '.$col.'Class" style="float:right;margin-right:3px;'.$specificStyle.'" ';
             echo ' title="' . i18n('otherVersionAdd') . '" class="roundedButtonSmall">';
             echo '<div class="iconAdd"';
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
@@ -1411,18 +1441,18 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
         }
         if ($col == 'idStatus' and $next and $showExtraButton) {
-          echo '<div class="roundedVisibleButton roundedButton"';
+          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$col.'Class"';
           echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
-          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
+          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
           echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $next . ');setTimeout(\'saveObject()\',100);">';
           echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
           echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . SqlList::getNameFromId('Status', $next) . '<div>';
           echo '</div>';
         }
         if ($col == 'idResource' and $next and $showExtraButton) {
-          echo '<div class="roundedVisibleButton roundedButton"';
+          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$col.'Class"';
           echo ' title="' . i18n("assignToMe") . '"';
-          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
+          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
           echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . htmlEncode($user->id) . ');setTimeout(\'saveObject()\',100);"';
           echo '>';
           echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
@@ -1431,7 +1461,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display') !== false) {
         echo '<div ';
-        echo ' class="display" ';
+        echo ' class="display generalColClass '.$col.'Class" style="'.$specificStyle.'"';
         echo ' >';
         if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
           echo $val;
@@ -1479,7 +1509,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $ent=$spl [0] - $dec;
         $max=substr('99999999999999999999', 0, $ent);
         if ($isCost and $currencyPosition == 'before') {
-          echo $currency;
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
         }
         $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':''; 
         echo '<div dojoType="dijit.form.NumberTextBox" ';
@@ -1490,7 +1520,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($max) {
           echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         }
-        echo ' class="input '.(($isRequired)?'required':'').'" ';
+        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         // echo ' layoutAlign ="right" ';
         if ($isWork) {
           if ($classObj=='WorkElement') {
@@ -1507,7 +1537,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $colScript;
         echo '</div>';
         if ($isCost and $currencyPosition == 'after') {
-          echo $currency;
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
+        }
+        if ($isWork or $isDuration or $isPercent) {
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">';
         }
         if ($isWork) {
           if ($classObj=='WorkElement') {
@@ -1522,7 +1555,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($isPercent) {
           echo '%';
         }
-      } else if ($dataLength > 100 and $dataLength <= 4000 and !array_key_exists('testingMode', $_REQUEST)) {
+        if ($isWork or $isDuration or $isPercent) {
+          echo '</span>';
+        }
+      } else if ($dataLength > 100 and $dataLength <= 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
         echo ' onKeyPress="if (dojo.isFF || isEditingKey(event)) {formChanged();}" '; // hard coding default event
@@ -1534,12 +1570,14 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         // echo ' maxSize="4" ';
-        echo ' class="input '.(($isRequired)?'required':'').'" ' . '>';
+        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
         echo htmlEncode($val);
         // echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
+        // No real need to hide and apply class : long fields will be hidden while hiding row
+        //class="generalColClass '.$col.'Class" style="'.$specificStyle.'"
         if (getEditorType()=="CK") {
           //if (isIE() and ! $val) $val='<div></div>';
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
@@ -1640,7 +1678,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '</div>';
         }
       } else if ($col == 'icon') {
-        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').'" ';
+        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -1669,7 +1707,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $name;
         echo $attributes;
         echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . ';" ';
-        echo ' trim="true" maxlength="' . $dataLength . '" class="input '.(($isRequired)?'required':'').'" ';
+        echo ' trim="true" maxlength="' . $dataLength . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
         if ($obj->isFieldTranslatable($col)) {
           echo ' title="' . i18n("msgTranslatable") . '" ';
@@ -3169,7 +3207,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
       $canCreate=false;
       $canDelete=false;
     }
-    $idleClass=($aff->idle)?' idleClass':'';
+    $idleClass=($aff->idle)?' affectationIdleClass':'';
     $isResource=true;
     if ($type == 'Project') {
       $name=SqlList::getNameFromId($type, $aff->idProject);
