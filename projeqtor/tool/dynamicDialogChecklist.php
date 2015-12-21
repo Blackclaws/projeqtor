@@ -153,14 +153,14 @@ if ($print) $canUpdate=false;
 		                if ($lineVal->$value) {
 			               $checkImg= 'checkedOK.png';
 		                }
-		                echo '<img src="img/' . $checkImg . '" />&nbsp;'.$line->$check.'&nbsp;&nbsp;';
+		                echo '<img src="img/' . $checkImg . '" />&nbsp;'.htmlEncode($line->$check).'&nbsp;&nbsp;';
 							    } else {?>
 								  <div dojoType="dijit.form.CheckBox" type="checkbox"
 						        <?php if ($line->exclusive and ! $print) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
 						        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
 						        <?php if (! $canUpdate) echo 'readonly';?>
 				            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
-								  <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
+								  <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo htmlEncode($line->$check);?>&nbsp;&nbsp;</span>
 					  <?php } 
 		            }?>
 		            </td>
