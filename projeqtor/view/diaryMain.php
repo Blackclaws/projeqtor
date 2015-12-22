@@ -138,7 +138,8 @@
    	</tr>
    </table>
   </div>
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+  <?php $destinationHeight=$_REQUEST['destinationHeight']-58;?>
+  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:<?php echo $destinationHeight;?>px">
    <?php include 'diary.php'; ?>
   </div>
 </div>

@@ -29,6 +29,12 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diary.php');   
+
+  if (! isset($destinationHeight)) {
+    $destinationHeight=$_REQUEST['destinationHeight'];
+  }
+  debugLog("destinationHeight=$destinationHeight");
+  
   $cpt=0;
   $arrayActivities=array(); // Array of activities to display
   $idRessource=getSessionUser()->id;
@@ -59,15 +65,20 @@
   );
   $projectColorArray=array();
   $projectNameArray=array();
-  $trHeight=100;
+  $totalHeight=$destinationHeight;
+  $trHeight=$totalHeight;
   if ($period=="month") {
   	$week=weekNumber($year.'-'.$month.'-01');
   	$lastWeek=weekNumber($year.'-'.$month.'-'.intval(date("t",$month)));
 	  if ($lastWeek>$week) {
-		  $trHeight=round(100/($lastWeek-$week+1))-1;
+		  $trHeight=floor(($totalHeight-10)/($lastWeek-$week+1))-1;
 	  } else {
-		  $trHeight=round(100/($lastWeek+1))-1;
+		  $trHeight=floor(($totalHeight-10)/($lastWeek+1))-1;
 	  }
+  } else if ($period=="week") {
+    $trHeight=$totalHeight-10;
+  } else if ($period=="day") {
+    $trHeight=$totalHeight;
   }
   if ($period=="month") {
     if ($month=='01' and $week>50) {
@@ -89,7 +100,9 @@
   	$endDay=$currentDay;
   	$inScopeDay=true;
   }
-  echo '<TABLE style="width:100%; height: 100%;">';
+  debugLog("totalHeight=$totalHeight, trHeight=$trHeight");
+  
+  echo '<TABLE style="width:100%;height:'.$totalHeight.'px">';
   
   if ($period!='day') {
     echo '<tr height="10px"><td></td>';
@@ -98,6 +111,7 @@
     }
   } else {
   	echo '<tr height="0px"><td></td>';
+  	$trHeight=$totalHeight+10;
   }
   $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource,$showDone,$showIdle);
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
@@ -119,13 +133,11 @@
   echo '</tr></TABLE>';
   
 function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
-	global $cpt;
-	$dayHeight="100%";
-	if (isset($_REQUEST['destinationHeight']) and $period=='month') {
-	  $destHeight=$_REQUEST['destinationHeight'];
-	  $dayHeight=(round(($destHeight-24)/5,0)-15).'px';
+	global $cpt, $trHeight;
+	$dayHeight=$trHeight;
+	if ($period=='month') {
+	  $dayHeight-=15;
 	}
-	
 	echo '<table style="width:100%; height: 100%;'.(($date==date('Y-m-d'))?'border:0px solid #555555;':'').'">';
 	if ($period!='day') {
 		echo '<tr style="height:10px">';
@@ -145,8 +157,8 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	}
 	
 	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';
-	echo '<div style="overflow-y: auto; overflow-x:hidden; height:'.$dayHeight.';">';
-	echo '<table style="width:100%">';
+	echo '<div style="overflow-y: auto; overflow-x:hidden; height:'.$dayHeight.'px;max-height:">';
+	echo '<table style="width:100%;">';
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
 		$cpt++;
@@ -341,7 +353,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 
 function drawDiaryLineHeader($currentDay, $trHeight,$period) {
 	echo '</tr>';
-	echo '<tr height="'.$trHeight.'%"><td class="buttonDiary" ';
+	echo '<tr height="'.$trHeight.'px"><td class="buttonDiary" ';
 	if ($period=="month") {
 	  echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
 	} else if ($period=="week") {

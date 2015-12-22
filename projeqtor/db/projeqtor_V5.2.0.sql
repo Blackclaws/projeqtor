@@ -78,3 +78,11 @@ CREATE TABLE `${prefix}extrahiddenfield` (
   `field` varchar(100),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+UPDATE `${prefix}importable` set name='ProductVersion' where name='Version';
+INSERT INTO `${prefix}importable` (`name`, `idle`) VALUES ('Component', '0'),
+('ComponentVersion', '0'),
+('ProductStructure', '0'),
+('Bill', '0'),
+('Payment', '0'),
+('ResourceCost', '0');

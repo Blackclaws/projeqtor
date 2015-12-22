@@ -98,7 +98,7 @@ function getFields($obj, $included=false) {
                             //or $threeCars=='wbs'
                             )) {
       // don't display
-    } else if ( strpos($obj->getFieldAttributes($fld),'hidden')!==false or strpos($obj->getFieldAttributes($fld),'calculated')!==false) {
+    } else if ( strpos($obj->getFieldAttributes($fld),'hidden')!==false or strpos($obj->getFieldAttributes($fld),'calculated')!==false or strpos($obj->getFieldAttributes($fld),'noImport')!==false) {
       // don't display
     } else if ($firstCar==ucfirst($firstCar)) {
       //echo $fld . '<br/>';
