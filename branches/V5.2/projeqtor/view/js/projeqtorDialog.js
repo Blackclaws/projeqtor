@@ -837,8 +837,7 @@ function addAttachment(attachmentType) {
   content=dijit.byId('dialogAttachment').get('content');
   if (content == "") {
     callBack=function() {
-      dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(
-          dataArray) {
+      dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(dataArray) {
         saveAttachmentAck(dataArray);
       });
       dojo.connect(dijit.byId("attachmentFile"), "onProgress", function(data) {
@@ -849,6 +848,9 @@ function addAttachment(attachmentType) {
         showError(i18n("uploadUncomplete"));
       });
       addAttachment(attachmentType);
+      if (isHtml5()) {
+        dijit.byId('attachmentFile').addDropTarget(dojo.byId('attachmentFileDropArea'));
+      }
     };
     loadDialog('dialogAttachment', callBack);
     return;
@@ -915,7 +917,9 @@ function changeAttachment(list) {
 function saveAttachment(direct) {
   // disableWidget('dialogAttachmentSubmit');
   if (!isHtml5()) {
-    // dojo.byId('attachmentForm').submit();
+    if (dojo.isIE && dojo.isIE<=8) {
+      dojo.byId('attachmentForm').submit();
+    }
     showWait();
     dijit.byId('dialogAttachment').hide();
     return true;

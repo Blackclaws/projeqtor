@@ -138,6 +138,7 @@ if ($type=='file') {
 }
 $obj=null;
 $refType="";
+$refId="";
 
 $obj=SqlElement::getCurrentObject(null,null,false,false);
 
@@ -151,7 +152,7 @@ if (! $error) {
   	} 
   } else {
     $refType=$_REQUEST['attachmentRefType'];
-	Security::checkValidClass($refType);
+	  Security::checkValidClass($refType);
   }
 }
 if ($refType=='TicketSimple') {
@@ -160,18 +161,21 @@ if ($refType=='TicketSimple') {
 if ($refType=='User' or $refType=='Contact') {
 	$refType='Resource';
 }
-if (! $error) {  
-  if (! array_key_exists('attachmentRefId',$_REQUEST)) {
+
+if (! $error) {
+  if (array_key_exists('attachmentRefId',$_REQUEST)) { // Retrieve from request
+    $refId=$_REQUEST['attachmentRefId'];
+  }
+  if (! $refId) { // Not set from request, retreive from current object
   	if (!$obj) {
       $error=htmlGetErrorMessage('attachmentRefId parameter not found in REQUEST');
       errorLog('attachmentRefId parameter not found in REQUEST');
   	} else {
   		$refId=$obj->id;
   	} 
-  } else {
-    $refId=$_REQUEST['attachmentRefId'];
   }
 }
+
 if (! $error) {    
   if (! array_key_exists('attachmentDescription',$_REQUEST)) {
     $attachmentDescription="";

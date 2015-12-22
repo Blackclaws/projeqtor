@@ -2459,6 +2459,14 @@ function traceExecutionTime($step = '', $reset = false) {
 }
 
 function isHtml5() {
+  if (isset($_REQUEST['isIE'])) {
+    $isIE=$_REQUEST['isIE'];
+    if ($isIE and $isIE<=9) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   $browser = Audit::getBrowser ();
   if ($browser ['browser'] == 'Internet Explorer') {
     if ($browser ['version'] < '10') {

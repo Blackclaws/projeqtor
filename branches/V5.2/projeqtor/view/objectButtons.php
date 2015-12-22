@@ -30,6 +30,7 @@
  */ 
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/objectButton.php'); 
+
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
@@ -292,6 +293,7 @@
     		} 
        if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
 			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
+		  <?php if (isHtml5()) {?>	
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
 			url="../tool/saveAttachment.php?attachmentRefType=<?php echo get_class($obj);?>&attachmentRefId=<?php echo $obj->id;?>"
@@ -310,6 +312,7 @@
           saveAttachmentProgress(data);
 	      </script>
 			</div>
+			<?php }?>
 			</span>
   </div>
      

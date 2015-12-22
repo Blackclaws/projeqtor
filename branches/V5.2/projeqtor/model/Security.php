@@ -65,6 +65,11 @@ class Security
     return $className;
   }
   public static function checkValidId($id) {
+    if (is_array($id)) {
+      foreach ($id as $val);
+      Security::checkValidId($val);
+      return $id;
+    }
     if (! is_numeric($id) and $id!='*' and trim($id)!='') {
       traceHack("Id '$id' is not numeric");
     }

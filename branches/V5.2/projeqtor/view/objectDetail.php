@@ -2749,7 +2749,7 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
       echo i18n("approved") . $compMsg . $date;
     } else {
       echo i18n("notApproved") . $compMsg;
-      if ($user->id == $app->idAffectable) {
+      if ($user->id == $app->idAffectable and !$print) {
         echo '&nbsp;&nbsp;<button dojoType="dijit.form.Button" showlabel="true" >';
         echo i18n('approveNow');
         echo '  <script type="dojo/connect" event="onClick" args="evt">';
