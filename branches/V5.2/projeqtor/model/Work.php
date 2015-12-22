@@ -33,7 +33,17 @@ class Work extends GeneralWork {
 	 public $idBill;
 	 public $idWorkElement;
 	 
-  
+	 private static $_colCaptionTransposition = array(
+	     'workDate'=>'date'
+	 );
+	 private static $_fieldsAttributes=array(
+	     "day"=>"noImport",
+	     "week"=>"noImport",
+	     "month"=>"noImport",
+	     "year"=>"noImport",
+	     "dailyCost"=>"noImport",
+	     "idWorkElement"=>"noImport"
+	 );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -50,6 +60,24 @@ class Work extends GeneralWork {
   function __destruct() {
     parent::__destruct();
   }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+  // ================================================================================================
+  //
+  // ================================================================================================
   
   function save() {
     // On saving remove corresponding planned work if exists

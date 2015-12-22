@@ -63,7 +63,24 @@ class Assignment extends SqlElement {
     "idResource"=>"required", 
     "refType"=>"required", 
   	"notPlannedWork"=>"hidden",
-    "refId"=>"required");
+    "refId"=>"required",
+      "realWork"=>"noImport",
+      "plannedWork"=>"readonly,noImport",
+      "notPlannedWork"=>"readonly,noImport",
+      "plannedStartDate"=>"readonly,noImport",
+      "plannedStartFraction"=>"hidden,noImport",
+      "plannedEndDate"=>"readonly,noImport",
+      "plannedEndFraction"=>"hidden,noImport",
+      "realStartDate"=>"readonly,noImport",
+      "realEndDate"=>"readonly,noImport",
+      "assignedCost"=>"readonly,noImport",
+      "realCost"=>"readonly,noImport",
+      "leftCost"=>"readonly,noImport",
+      "plannedCost"=>"readonly,noImport",
+      "billedWork"=>"readonly,noImport",
+      "dailyCost"=>"readonly,noImport",
+      "newDailyCost"=>"readonly,noImport"
+  );
   
    /** ==========================================================================
    * Constructor
@@ -108,7 +125,6 @@ class Assignment extends SqlElement {
     
     $this->plannedWork = $this->realWork + $this->leftWork;
     
-    $this->assignedCost=$this->assignedWork*$this->dailyCost;    
     $r=new Resource($this->idResource);
     // If idRole not set, set to default for resource
     if (! $this->idRole) {
@@ -132,6 +148,7 @@ class Assignment extends SqlElement {
         }
       }      
     }
+    $this->assignedCost=$this->assignedWork*$this->dailyCost;
     
     if ($this->refType=='PeriodicMeeting') {
     	$this->idle=1;

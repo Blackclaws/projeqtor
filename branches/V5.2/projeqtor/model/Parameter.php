@@ -379,6 +379,10 @@ class Parameter extends SqlElement {
       case 'maxColumns':
         $list=array('3'=>'3','2'=>'2','1'=>'1');
         break;
+      case 'fontForPDF':
+        $list=array('freesans'=>i18n('fontForPdfFreesans'),
+            'helvetica'=>i18n('fontForPdfHelvetica'));
+        break;
     } 
     return $list;
   }
@@ -481,6 +485,7 @@ class Parameter extends SqlElement {
       	                       'preserveUploadedFileName'=>'list',
       	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
+      	                   'newColumn'=>'newColumn',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',
       	                       'paramDefaultTimezone'=>'text',
@@ -492,8 +497,9 @@ class Parameter extends SqlElement {
       	                       'csvSeparator'=>'list',
       	                       'csvExportUTF8'=>'list',
       	                       'paramMemoryLimitForPDF'=>'number',
+      	                       'fontForPDF'=>'list',
       	                       "editor"=>'list',
-      	                   'newColumn'=>'newColumn',
+      	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  
       	                       'paramFadeLoadingMode'=>'list',
