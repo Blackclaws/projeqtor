@@ -33,7 +33,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
   <form id='attachmentForm' name='attachmentForm' 
   ENCTYPE="multipart/form-data" method="POST"
 <?php if ($isIE and $isIE<=9) {?>
-  action="../tool/saveAttachment.php?isIE=<?php echo ($isIE?1:0);?>"
+  action="../tool/saveAttachment.php?isIE=<?php echo ($isIE?$isIE:'');?>"
   target="resultPost"
   onSubmit="return saveAttachment();"
 <?php }?> 
@@ -50,14 +50,15 @@ if (array_key_exists('isIE',$_REQUEST)) {
           </td>
           <td style="position:relative">
            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />
-          <?php  if ($isIE and $isIE<=9) {?>
+          <?php  if (! isHtml5()) {?>
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
             dojoType="dojox.form.FileInput" type="file"
             name="attachmentFile" id="attachmentFile"
             cancelText="<?php echo i18n("buttonReset");?>"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>" />
-          <?php } else {?>  
+          <?php } else {?>
+          <span id="attachmentFileDropArea" >  
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
             dojoType="dojox.form.Uploader" type="file" 
             url="../tool/saveAttachment.php"
@@ -75,10 +76,9 @@ if (array_key_exists('isIE',$_REQUEST)) {
             onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>"  />
-          <?php }?>        
-          <?php if (! $isIE) {?>
-          <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 120px; color: #AAAAAA; width:230px"><?php echo i18n("dragAndDrop");?></span>
+            <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 120px; color: #AAAAAA; width:230px"><?php echo i18n("dragAndDrop");?></span>
           <?php }?>
+          </span>
           <div style="font-style:italic;position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachmentFileName" id="attachmentFileName"></div>     
           </td>
         </tr>

@@ -525,12 +525,12 @@
 	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
 	    					$colId=$arrayFields[$id];
 	    				}
-	    				$val=utf8_decode($obj->getColCaption($colId));
+	    				$val=encodeCSV($obj->getColCaption($colId));
 	    				if (substr($id,0,9)=='idContext' and strlen($id)==10) {
                 $ctx=new ContextType(substr($id,-1));
-                $val=utf8_decode($ctx->name);
+                $val=encodeCSV($ctx->name);
               } 
-	    				//$val=utf8_decode($id);
+	    				//$val=encodeCSV($id);
 	    				$val=str_replace($csvSep,' ',$val);
 	            //if ($id!='id') { echo $csvSep ;}
 	    				echo $val.$csvSep;
@@ -550,7 +550,7 @@
     						}
     					}
     				}
-    				$val=utf8_decode($val);
+    				$val=encodeCSV($val);
     				if ($csvQuotedText) {
     				  $val=str_replace('"','""',$val);	
     				}
@@ -568,7 +568,7 @@
     			echo "\r\n";
     		}
     		if ($first) {
-    			echo utf8_decode(i18n("reportNoData")); 
+    			echo encodeCSV(i18n("reportNoData")); 
     		}
     	} else { // NON CSV mode : includes pure print and 'pdf' ($outMode=='pdf') mode
         echo '<br/>';
@@ -732,5 +732,18 @@
        echo ']';
       //echo ', "numberOfRow":"' . $nbRows . '"' ;
       echo ' }';
+    }
+    
+    function encodeCSV($val) {
+      $csvExportUTF8=Parameter::getGlobalParameter('csvExportUTF8');
+      //ini_set('mbstring.substitute_character', "none");
+      //$val= mb_convert_encoding($val, 'UTF-8', 'UTF-8'); // This removes invalid UTF8 characters.
+      if ($csvExportUTF8=='YES') {
+        return $val;
+      } else {
+        return iconv("UTF-8", 'CP1252//TRANSLIT//IGNORE',$val);
+      }
+      // Was previous format, encoding to ISO-8859-1 : not including some characters (Euro)
+      return utf8_decode($val);
     }
 ?>

@@ -529,7 +529,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   var contentWidget = dijit.byId(destination);
   var fadingMode=top.fadeLoading;
   
-  if (top.dojo.isIE >= 8) { fadingMode=false;}
+  if (dojo.isIE && dojo.isIE <= 8) { fadingMode=false;}
   if (dojo.byId('formDiv')) {
     formDivPosition=dojo.byId('formDiv').scrollTop;
   }
@@ -569,6 +569,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	   page+="?directAccessIndex="+directAccessIndex;
     }	   
   } 
+  page+=((page.indexOf("?")>0)?"&":"?")+"isIE="+((dojo.isIE)?dojo.isIE : '');
   if (! silent) showWait();
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
@@ -609,6 +610,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       // Create instances of CKEDITOR
       if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
         ckEditorReplaceAll();
+      }
+      if (page.substr(0,16)=='objectDetail.php' && destination=='detailDiv') {
+        if (dojo.byId('attachmentFileDirectDiv') && dijit.byId('attachmentFileDirect')) {
+          dijit.byId('attachmentFileDirect').addDropTarget(dojo.byId('attachmentFileDirectDiv'));
+        }
       }
       if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
         var section=destination.substr(dojo.byId('objectClass').value.length+1);
@@ -3027,14 +3033,11 @@ function getExtraHiddenFields(idType) {
       +"&objectClass="+dojo.byId("objectClass").value,
     handleAs: "text",
     load: function(data) { 
-      console.log(data);
       var obj = JSON.parse(data);
-      console.log(obj);
       dojo.query(".generalRowClass").style("display","table-row");
       dojo.query(".generalColClass").style("display","inline-block");
       dojo.query(".idResourceClass").style("display","none");
       for (key in obj) {
-        console.log("hide "+obj[key]);
         dojo.query("."+obj[key]+"Class").style("display","none");
       }
     }

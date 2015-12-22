@@ -97,7 +97,7 @@
       var changePassword=false;
       hideWait();
       showMessage(1, <?php echo count($msgList);?>);
-      if (dojo.isIE<=7) {
+      if (dojo.isIE && dojo.isIE<=7) {
         $varsParam=new Array();
         $varsParam[0]=dojo.isIE;
         dojo.byId('loginResultDiv').innerHTML=

@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -24,31 +24,38 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/** ============================================================================
- * 
- */
-require_once "../tool/projeqtor.php";
+/* ============================================================================
+ * List of orginable items
+ */ 
+require_once('_securityCheck.php');
+class ExtraHiddenField extends SqlElement {
 
-$objectClass=null;
-if (isset($_REQUEST['objectClass'])) {
-  $objectClass=$_REQUEST['objectClass'];
+  // extends SqlElement, so has $id
+  public $id;    // redefine $id to specify its visible place 
+  public $scope;
+  public $idType;
+  public $field;
+   /** ==========================================================================
+   * Constructor
+   * @param $id the id of the object in the database (null if not stored yet)
+   * @return void
+   */ 
+  function __construct($id = NULL, $withoutDependentObjects=false) {
+    parent::__construct($id,$withoutDependentObjects);
+  }
+
+  
+   /** ==========================================================================
+   * Destructor
+   * @return void
+   */ 
+  function __destruct() {
+    parent::__destruct();
+  }
+
+// ============================================================================**********
+// MISCELLANOUS FUNCTIONS
+// ============================================================================**********
+  
 }
-Security::checkValidClass($objectClass);
-$type=null;
-if (isset($_REQUEST['type'])) {
-  $type=$_REQUEST['type'];
-}
-Security::checkValidId($type);
-
-$peName=$objectClass.'PlanningElement';
-
-$obj=new $objectClass();
-$result=$obj->getExtraHiddenFields($type);
-
-$peName=$objectClass.'PlanningElement';
-if (property_exists($obj, $peName)) {
-  $pe=$obj->$peName;
-  $resultPe=$pe->getExtraHiddenFields($type);
-  $result=array_merge($result,$resultPe);
-}
-echo json_encode($result);
+?>

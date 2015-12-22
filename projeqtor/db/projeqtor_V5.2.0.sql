@@ -70,3 +70,11 @@ UPDATE `${prefix}type` set `idPlanningMode`=1 where scope='Activity';
 UPDATE `${prefix}type` set `idPlanningMode`=16 where scope='Meeting';
 UPDATE `${prefix}type` set `idPlanningMode`=5 where scope='Milestone';
 UPDATE `${prefix}type` set `idPlanningMode`=9 where scope='TestSession';
+
+CREATE TABLE `${prefix}extrahiddenfield` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `scope` varchar(100),
+  `idType` int(12) unsigned DEFAULT NULL,
+  `field` varchar(100),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

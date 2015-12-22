@@ -242,7 +242,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           showHelp();
         }
       };
-      if (dojo.isIE<=8) {
+      if (dojo.isIE && dojo.isIE<=8) {
         dojo.connect(document, "onkeypress", this, onKeyPressFunc);
       } else {
         dojo.connect(document, "onkeydown", this, onKeyDownFunc);

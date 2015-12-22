@@ -198,7 +198,8 @@ class Parameter extends SqlElement {
                     'fa'=>i18n('langFa'),
                     'ja'=>i18n('langJa'),
                     'el'=>i18n('langEl'),
-                    'ua'=>i18n('langUa'));
+                    'ua'=>i18n('langUa'),
+                    'hr'=>i18n('langHr'));
         //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;
       case 'browserLocaleDateFormat':
@@ -229,7 +230,7 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
             'REQ'=>i18n('displayOnRequest'));
         break;
-      case 'printHistory':
+      case 'printHistory': case 'csvExportUTF8':
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -489,6 +490,7 @@ class Parameter extends SqlElement {
       	                     'sectionMiscellaneous'=>'section',
       	                       'getVersion'=>'list',
       	                       'csvSeparator'=>'list',
+      	                       'csvExportUTF8'=>'list',
       	                       'paramMemoryLimitForPDF'=>'number',
       	                       "editor"=>'list',
       	                   'newColumn'=>'newColumn',

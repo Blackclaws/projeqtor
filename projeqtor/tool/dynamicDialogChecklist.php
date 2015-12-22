@@ -137,7 +137,7 @@ if ($print) $canUpdate=false;
 		    <tr >
 <?php   if ($line->check01) {?>
 			    <td class="noteData" style="<?php echo ($print)?'width:'.$nameWidth:'';?>border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
-				  <?php echo htmlEncode( $line->name);?> :   
+				  <?php echo htmlEncode($line->name);?> :   
 		      </td>
 			    <td class="noteData" style="border-left:0;">
 			      <table style="width:<?php echo $internalWidth;?>;">
@@ -154,14 +154,14 @@ if ($print) $canUpdate=false;
 		                if ($lineVal->$value) {
 			               $checkImg= 'checkedOK.png';
 		                }
-		                echo '<img src="img/' . $checkImg . '" />&nbsp;'.$line->$check.'&nbsp;&nbsp;';
+		                echo '<img src="img/' . $checkImg . '" />&nbsp;'.htmlEncode($line->$check).'&nbsp;&nbsp;';
 							    } else {?>
 								  <div dojoType="dijit.form.CheckBox" type="checkbox"
 						        <?php if ($line->exclusive and ! $print) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
 						        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
 						        <?php if (! $canUpdate) echo 'readonly';?>
 				            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
-								  <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
+								  <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo htmlEncode($line->$check);?>&nbsp;&nbsp;</span>
 					  <?php } 
 		            }?>
 		            </td>

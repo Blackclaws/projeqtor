@@ -4139,8 +4139,6 @@ abstract class SqlElement {
 	  $type=($newType)?$newType:$this->$typeFld;
 	  if (!isset($list[$class])) { return array(); }
 	  if (!isset($list[$class][$type])) { return array(); }
-debugLog("getExtraHiddenFields($type) for $class");
-debugLog($list[$class][$type]);
 	  return $list[$class][$type];
 	}
 	private static function getExtraHiddenFieldsFullList() {
@@ -4154,14 +4152,17 @@ debugLog($list[$class][$type]);
 	  }
 	  // TODO : get from dynamic data 
 	  // This is just for testing purpose
-	  $array=array('Activity'=>array('19'=>array('externalReference'),
-	                                 //'22'=>array('idTargetVersion','result','ActivityPlanningElement_priority','ActivityPlanningElement_realWork')),
-	                                 '22'=>array('idTargetVersion','result','description')),
-	               'Ticket'=>array('17'=>array('idTicket')),
-	               'ActivityPlanningElement'=>array('22'=>array('priority','realWork','realCost'))) ;
-	  self::$_extraHiddenFields=$array;
-	  setSessionValue('extraHiddenFieldsArray', $array);
-	  return $array;
+	  $extra=new ExtraHiddenField();
+	  $extraList=$extra->getSqlElementsFromCriteria(null); // Get all fields
+	  $result=array();
+	  foreach ($extraList as $extra) {
+	    if (! isset($result[$extra->scope])) $result[$extra->scope]=array();
+	    if (! isset($result[$extra->scope][$extra->idType])) $result[$extra->scope][$extra->idType]=array();
+	    $result[$extra->scope][$extra->idType][]=$extra->field;
+	  }
+	  self::$_extraHiddenFields=$result;
+	  setSessionValue('extraHiddenFieldsArray', $result);
+	  return $result;
 	}
 	
 }
