@@ -910,7 +910,6 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   }
   
   private static function insertWaiting(&$result,&$wait,$id) {
-//traceLog("insertWaiting($id)");
     foreach($wait as $wId=>$wPe) {
       if (isset($wPe->_tmpPrec) and array_key_exists($id, $wPe->_tmpPrec)) {
         // ok, prec has been inserted, not waiting for it anymore

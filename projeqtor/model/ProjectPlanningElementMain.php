@@ -208,7 +208,9 @@ class ProjectPlanningElementMain extends PlanningElement {
   	parent::updateSynthesisObj(true); // Will update work and resource cost, but not save yet ;)
   	$this->updateExpense(true); // Will retrieve expense directly on the project
   	$this->updateReserve(true); // Will retrieve reserve for risk directly on the project
+  	$this->addTicketWork(true); // Will add ticket work that is not linked to Activity
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
+  	$hasSubProjects=false;
   	$this->_noHistory=true;
   	// Add expense data from other planningElements
   	$validatedExpense=0;
@@ -221,7 +223,8 @@ class ProjectPlanningElementMain extends PlanningElement {
   		$planningElement=new ProjectPlanningElement();
   		$plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
   		// Add data from other planningElements dependant from this one
-  		foreach ($plaList as $pla) {  			
+  		foreach ($plaList as $pla) { 
+  		  if ($pla->refType=='Project') $hasSubProjects=true; 			
   			if (!$pla->cancelled and $pla->expenseValidatedAmount) $validatedExpense+=$pla->expenseValidatedAmount;
   			if (!$pla->cancelled and $pla->expenseAssignedAmount) $assignedExpense+=$pla->expenseAssignedAmount;
   			if (!$pla->cancelled and $pla->expensePlannedAmount) $plannedExpense+=$pla->expensePlannedAmount;
@@ -237,9 +240,11 @@ class ProjectPlanningElementMain extends PlanningElement {
   	$this->expenseLeftAmount+=$leftExpense;
   	if ($consolidateValidated=="ALWAYS") {
   		$this->expenseValidatedAmount=$validatedExpense;
+  		if ($hasSubProjects) $this->validatedExpenseCalculated=true;
   	} else if ($consolidateValidated=="IFSET") {
   		if ($validatedExpense) {
   			$this->expenseValidatedAmount=$validatedExpense;
+  			if ($hasSubProjects) $this->validatedExpenseCalculated=true;
   		}
   	}
   	$this->save();
@@ -304,6 +309,23 @@ class ProjectPlanningElementMain extends PlanningElement {
     		if ($this->topId) {
     		  self::updateSynthesis($this->topRefType, $this->topRefId);
     		}
+    }
+  }
+  public function addTicketWork($doNotSave=false) {
+    //$crit=array('idProject'=>$this->refId,'idActivity'=>null);
+    $where='idProject='.$this->refId.' and idActivity is null'; $crit=null;
+    $tkt=new WorkElement();
+    $sum=$tkt->sumSqlElementsFromCriteria(array('realWork', 'leftWork','realCost','leftCost'), $crit, $where);
+    $this->realWork+=$sum['sumRealWork'];
+    $this->leftWork+=$sum['sumLeftWork'];
+    $this->realCost+=$sum['sumRealCost'];
+    $this->leftCost+=$sum['sumLeftCost'];
+    //$this->realCost+=$sumCost;
+    if (! $doNotSave) {
+      $this->simpleSave();
+      if ($this->topId) {
+        self::updateSynthesis($this->topRefType, $this->topRefId);
+      }
     }
   }
   /** ==========================================================================

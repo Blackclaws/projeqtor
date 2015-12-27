@@ -79,6 +79,7 @@ class PlanningElement extends SqlElement {
   public $_costVisibility;
   public $idBill;
   public $validatedCalculated;
+  public $validatedExpenseCalculated;
   public $notPlannedWork;
   
   private static $_fieldsAttributes=array(
@@ -114,16 +115,17 @@ class PlanningElement extends SqlElement {
                                   "assignedCost"=>"readonly,noImport",
                                   "realCost"=>"readonly,noImport",
                                   "leftCost"=>"readonly,noImport",
-      "validatedCost"=>"",
+                                  "validatedCost"=>"",
                                   "plannedCost"=>"readonly,noImport",
                                   "elementary"=>"hidden",
                                   "idPlanningMode"=>"hidden",
   								                "idBill"=>"hidden",
   		                            "validatedCalculated"=>"hidden",
-    "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden",
-    "validatedStartFraction"=>"hidden",
-    "validatedEndFraction"=>"hidden"
+                                  "validatedExpenseCalculated"=>"hidden",
+                                  "plannedStartFraction"=>"hidden",
+                                  "plannedEndFraction"=>"hidden",
+                                  "validatedStartFraction"=>"hidden",
+                                  "validatedEndFraction"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();
@@ -349,6 +351,7 @@ class PlanningElement extends SqlElement {
     } else {
       $this->elementary=1;
       $this->validatedCalculated=0;
+      $this->validatedExpenseCalculated=0;
     }
 
     if (! $this->priority or $this->priority==0) {
@@ -374,6 +377,7 @@ class PlanningElement extends SqlElement {
     $consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
     if ($consolidateValidated=='NO' or ! $consolidateValidated) {
     	$this->validatedCalculated=0;
+    	$this->validatedExpenseCalculated=0;
     } else if ($consolidateValidated=='ALWAYS' and ! $this->elementary) {
     	$this->validatedCalculated=1;
     } 
@@ -587,6 +591,7 @@ class PlanningElement extends SqlElement {
   protected function updateSynthesisObj ($doNotSave=false) {
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->validatedCalculated=0;
+  	$this->validatedExpenseCalculated=0;
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
@@ -723,7 +728,7 @@ class PlanningElement extends SqlElement {
    * @param $col the nale of the property
    * @return a boolean 
    */
-  public static function updateSynthesis ($refType, $refId) {
+  public static function updateSynthesis ($refType, $refId) { 
     $crit=array("refType"=>$refType, "refId"=>$refId);
     $obj=SqlElement::getSingleSqlElementFromCriteria($refType.'PlanningElement', $crit);
     if (! $obj or ! $obj->id) {
@@ -1182,10 +1187,14 @@ class PlanningElement extends SqlElement {
       }
     }
     if ($this->id and $this->validatedCalculated) {
-    	if ($fieldName=='validatedWork' or $fieldName=='validatedCost'
-        or ($fieldName=='expenseValidatedAmount' and $this->$fieldName>0)) {
+    	if ($fieldName=='validatedWork' or $fieldName=='validatedCost') {
     	  return "readonly";
     	}
+    }
+    if ($this->id and $this->validatedExpenseCalculated) {
+      if ($fieldName=='expenseValidatedAmount' and $this->$fieldName>0) {
+        return "readonly";
+      }
     }
     return parent::getFieldAttributes($fieldName);
   }  

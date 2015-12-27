@@ -155,10 +155,16 @@ class GeneralWork extends SqlElement {
     }
     if (!$this->dailyCost) {
       $ass=new Assignment($this->idAssignment);
-      $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($ass->idRole) . "'"
+      $idRole=$ass->idRole;
+      if (!$idRole) {
+        $r=new Resource($this->idResource);
+        $idRole=$r->idRole;
+      }
+      $where="idResource=" . Sql::fmtId($this->idResource) 
+       . " and ". (($idRole)?"idRole=".Sql::fmtId($idRole):"1=1")
        . " and (startDate is null or startDate<='" . $this->workDate . "')"
        . " and (endDate is null or endDate>='" . $this->workDate . "')";
-      $order="startDate asc";
+      $order="startDate asc, id asc"; // Take oldest in date, or oldest inserted in db (id)
       $rc=new ResourceCost();
       $rcList=$rc->getSqlElementsFromCriteria(null, false, $where, $order);
       $this->dailyCost=((count($rcList)>0)?$rcList[0]->cost:$ass->dailyCost);

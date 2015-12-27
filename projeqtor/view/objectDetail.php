@@ -1498,8 +1498,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           $fieldWidth-=12;
         }
         if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
-          $isPercent=true;
-          
+          $isPercent=true; 
         }
         $spl=explode(',', $dataLength);
         $dec=0;
@@ -1512,6 +1511,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
         }
         $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':''; 
+        if ($col=='workElementEstimatedWork' and property_exists($obj, 'assignedWork')) {
+          $negative=($obj->workElementEstimatedWork>$obj->assignedWork)?'background-color: #FFAAAA !important;':'';
+        }
+        if ($col=='workElementLeftWork' and property_exists($obj, 'leftWork')) {
+          $negative=($obj->workElementLeftWork>$obj->leftWork)?'background-color: #FFAAAA !important;':'';
+        }
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
@@ -1529,7 +1534,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $dispVal=Work::displayWork($val);
           }
         } else {
-          $dispVal=$val; // TODO : protect display ?
+          $dispVal=$val; // TODO (SECURITY) : protect display ?
         }
         echo ' value="' . $dispVal . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';

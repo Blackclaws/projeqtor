@@ -56,7 +56,7 @@ if (! array_key_exists('idFilterOperator',$_REQUEST)) {
 }
 $idFilterOperator=$_REQUEST['idFilterOperator'];
 // TODO (SECURITY) : test completness of test
-if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|SORT|[<>]=now\+)$/', $idFilterOperator) != true) {
+if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|<>|SORT|[<>]=now\+)$/', $idFilterOperator) != true) {
 	traceHack("bad value for idFilterOperator ($idFilterOperator)");
 	exit;
 }
