@@ -26,7 +26,7 @@
 require_once('_securityCheck.php');
 class Security
 {
-  private static $continueOnError=false; // TODO (SECURITY) : give possibility to continue
+  private static $continueOnError=false;
   // Must be disabled after each test to be forced before required test
   
   function __construct($name = NULL) {
@@ -39,7 +39,7 @@ class Security
   *  checkValidClass($className) : $className is a valid string corresponding to a valid class extending SqlElement
   *  checkValidId($id) : $id is a valid number or possibly '*' or empty string '' (may mean all in some cases)
   *  checkValidBoolean($boolean) : $boolean is a boolean, automatically replace similar values to 1 or 0, only allowed values
-  *  checkValidDateTime($dateTime) : TODO !!! $date is either a date or a time or a datetime
+  *  checkValidDateTime($dateTime) : $date is either a date or a time or a datetime
   *  checkValidNumeric($numeric) : $nuleric is a numeric value
   *  checkValidAlphanumeric($string) : $string is alphnumeric only containing a-z, A-Z, 0-9
   *  checkValidFilename($file) : $file is a valid file, avoiding cross directory hacks
@@ -84,15 +84,41 @@ class Security
     return $boolean;
   }
   public static function checkValidDateTime($dateTime) {
-    /*if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($endDate)) != true)
-     {
-    traceHack("Invalid object id in billLineEndDate = $endDate");
-    exit;
-    }*/
-    // TODO check that $dateTime is a valid dateTime
-    /*$f = DateTime::createFromFormat($format, $date);
-     $valid = DateTime::getLastErrors();
-    return ($valid['warning_count']==0 and $valid['error_count']==0);*/
+    if (trim($dateTime)=='') return '';
+    $len=strlen($dateTime);
+    if ($len<5 or $len>19) {
+      traceHack("Invalid dateTime format for '$dateTime' : only 5 to 19 characters length possible");
+    }
+    $date=""; $time="";
+    if ($len<10) {
+      $time=$dateTime;
+    }
+    if ($len==10) {
+      $date=$dateTime;
+    } else { // $len > 10
+      $split=explode(' ',$dateTime);
+      if (count($split)!=2) {
+        $split=explode('T',$dateTime);
+      }
+      if (count($split)!=2) {
+        traceHack("Invalid dateTime format for '$dateTime' : date / time not separated by space");
+      }
+      $date=$split[0];
+      $time=$split[1];
+    }
+    if ($date) {
+      if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date)) != true) {
+        traceHack("Invalid dateTime format for '$dateTime' : date expected format is YYYY-MM-DD");
+        exit; // Not reached, traceHack exits script
+      }
+    }
+    if ($time) {
+      if (preg_match('/^\d{2}:\d{2}:\d{2}$/', trim($time)) != true 
+      and preg_match('/^\d{:}:\d{2}$/', trim($time)) != true) {
+        traceHack("Invalid dateTime format for '$dateTime' : time expected format is HH:MN or HH:MN:SS");
+        exit; // Not reached, traceHack exits script
+      }
+    }
     return $dateTime;
   }
   public static function checkValidNumeric($numeric) {
@@ -185,5 +211,27 @@ class Security
     $mimeType=preg_match($pattern, $mimeType)?$mimeType:'text/html';
     return $mimeType;
   } 
+  
+  public static function checkValidHtmlText($string) {
+    if (preg_match('/<script/', strtolower($string)) == true) {
+      traceHack("invalid sequence in html text - $string");
+    }
+    return $string;
+  }
+  
+  public static function checkValidUrl($string) {
+    if (preg_match('/\.\.\/|[<>]/',urldecode($string)) == True) {
+      traceHack("invalid url value - [$string]");
+      exit;
+    }
+  }
+  
+  public static function checkValidLocale($string) {
+    if (!$string) return;
+    if (preg_match('/[^a-zA-Z]\-[^a-zA-Z]/', $string) == true) {
+      traceHack("invalid locale string value - $string");
+    }
+    return $string;
+  }
 }
  

@@ -161,7 +161,6 @@ function saveWork(refType, refId, day) {
 	});
 }
 function saveDetail() {
-	//TODO : saveWork planned for item
 	showWait();
 	saveInProgress=true;
 	clearMessages();

@@ -1980,9 +1980,6 @@ abstract class SqlElement {
 					} else if ($dataType=='date') {
 					  $test=Security::checkValidDateTime($_REQUEST[$formField]);
 					  $this->$key=$_REQUEST[$formField];
-					// TODO : check validity for other formats
-					// done : boolean, date, time, datetime
-					// todo : varchar <=4000, vachar >4000, numeric, and verify other possible formats
 					} else {
 						if (array_key_exists($formField,$_REQUEST)) {
 							$this->$key = $_REQUEST[$formField];
@@ -2906,7 +2903,6 @@ abstract class SqlElement {
 					}
 				}
 			}
-			/** TODO impement format control */
 			if ($val and $col!='colRefName') {
 				if ($dataType=='varchar') {
 					if (strlen($val)>$dataLength) {
@@ -2918,7 +2914,6 @@ abstract class SqlElement {
 					}
 				}
 			}
-			// TODO Check HTML validity for Long Texts
 			if ($dataLength>4000) {
 			  // Remove "\n" that have no use here
 			  $this->$col=str_replace( array("\n",'<div></div>'),
@@ -4192,8 +4187,6 @@ abstract class SqlElement {
 	    self::$_extraHiddenFields=$sessionList;
 	    return self::$_extraHiddenFields;
 	  }
-	  // TODO : get from dynamic data 
-	  // This is just for testing purpose
 	  $extra=new ExtraHiddenField();
 	  $extraList=$extra->getSqlElementsFromCriteria(null); // Get all fields
 	  $result=array();

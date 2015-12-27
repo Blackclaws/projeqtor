@@ -652,7 +652,6 @@ class User extends SqlElement {
         return $this->_allAccessRights[$class];
       }
     }
-    // TODO take into account default for ALL (for admin)
     $result=array();
     $accessProfile=array();    
     $listAffectedProfiles=$this->getSpecificAffectedProfiles();

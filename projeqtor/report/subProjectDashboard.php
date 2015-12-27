@@ -144,7 +144,7 @@ projeqtor_set_memory_limit('512M');
 			$idActType=$actType->id;
 		
 			if (array_key_exists($idActType,$tabPrj['charge'])) {
-				$wValidated=0; // TODO	
+				$wValidated=0;
 				$wAssign=$tabPrj['charge'][$idActType]['assigned'];
 				$wLeft=$tabPrj['charge'][$idActType]['left'];
 				$wReal=$tabPrj['charge'][$idActType]['real'];

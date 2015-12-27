@@ -160,7 +160,6 @@ class ColumnSelector extends SqlElement {
 	}
 
 	private static function addAllFields($result, $obj, $included=false, $sourceClass=null) {
-		// TODO : fiabilize this function
 		$fieldsArray=$obj->getFieldsArray();
 		$user=getSessionUser();
 		$cpt=count($result);

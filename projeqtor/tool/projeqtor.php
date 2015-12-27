@@ -261,12 +261,7 @@ function setupLocale() {
   } else if (isset ( $_REQUEST ['currentLocale'] )) {
     // Second fetch from request (for screens before user id identified)
     $currentLocale = trim($_REQUEST ['currentLocale']);
-    // TODO (SECURITY) : filter locale (list is not valid as local comes from browser
-/*	if (preg_match('/^(de|el|en|es|fa|fr(-ca)?|ja|nl|pt|pt-br|ru|ua|zh)$/', $currentLocale) != true)
-	{
-		traceHack("Invalid value in currentLocale = [$currentLocale]");
-		exit;
-	}*/
+    Security::checkValidLocale($currentLocale);
     $_SESSION ['currentLocale'] = $currentLocale;
     $i18nMessages = null; // Should be null at this moment, just to be sure
   } else {

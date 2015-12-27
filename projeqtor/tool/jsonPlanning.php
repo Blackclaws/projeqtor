@@ -947,7 +947,7 @@
       echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
       echo '<Start>' . $line['pstart'] . 'T' . $startAM . '</Start>' . $nl;
       echo '<Finish>' . $line['pend'] . 'T' . $endPM . '</Finish>' . $nl;
-      echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
+      echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl;
       echo '<DurationFormat>7</DurationFormat>' . $nl;
       echo '<Work>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
       //echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;

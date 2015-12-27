@@ -123,10 +123,7 @@ if ($type=='file') {
     //$error=true;
   } else {
     $link=$_REQUEST['attachmentLink'];
-	if (preg_match('/\.\.\/|[<>]/',urldecode($link)) == True) { // TODO: need better filter for only valid filename characters
-		traceHack("invalid attachmentLink value - [$attachmentLink]");
-		exit;
-	}
+	  $link=Security::checkValidUrl($link);
   }
   $uploadedFileArray[]="link";
 } else {
