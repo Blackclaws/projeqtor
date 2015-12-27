@@ -214,7 +214,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       }     
       ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
-      addMessage("<?php echo i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name);?>");
+      addMessage("<?php echo htmlEncode(i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name),'qotes');?>");
       //dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();

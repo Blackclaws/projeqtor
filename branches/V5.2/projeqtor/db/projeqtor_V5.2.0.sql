@@ -86,3 +86,11 @@ INSERT INTO `${prefix}importable` (`name`, `idle`) VALUES ('Component', '0'),
 ('Bill', '0'),
 ('Payment', '0'),
 ('ResourceCost', '0');
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `validatedExpenseCalculated` int(1) unsigned DEFAULT 0;
+
+ALTER TABLE `${prefix}workelement` ADD COLUMN `idProject`  int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}workelement` SET idProject=(SELECT `idProject` from `${prefix}ticket` where `${prefix}ticket`.`id`=`${prefix}workelement`.refId);
+
+ALTER TABLE `${prefix}workelement` ADD `realCost` NUMERIC(11,2) DEFAULT null,
+ADD `leftCost` NUMERIC(11,2) DEFAULT null;

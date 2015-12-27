@@ -92,7 +92,6 @@ class Sql {
       if (isset($debugQuery) and $debugQuery) {
         debugTraceLog(round((microtime(true) - $startMicroTime)*1000000)/1000000 . ";" . $sqlRequest);
       }
-      //traceLog($sqlRequest);
       if (! $result) {
         self::$lastQueryErrorMessage=i18n('sqlError'). ' : ' .$cnx->errorCode() . "<br/><br/>" . $sqlRequest;
         self::$lastQueryErrorCode=$cnx->errorInfo(); 

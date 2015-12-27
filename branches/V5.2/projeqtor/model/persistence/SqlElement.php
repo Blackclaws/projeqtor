@@ -1796,6 +1796,48 @@ abstract class SqlElement {
 		}
 		return 0;
 	}
+	public function sumSqlElementsFromCriteria($field, $critArray, $clauseWhere=null) {
+	  // Build where clause from criteria
+	  $fields=array();
+	  if (is_array($field)) {
+	    $fields=$field;
+	  } else {
+	    $fields=array($field);
+	  }
+	  $whereClause='';
+	  $objects=array();
+	  $className=get_class($this);
+	  $defaultObj = new $className();
+	  if ($critArray) {
+	    foreach ($critArray as $colCrit => $valCrit) {
+	      $whereClause.=($whereClause=='')?' where ':' and ';
+	      if ($valCrit==null) {
+	        $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
+	      } else {
+	        $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . '= ' . Sql::str($valCrit);
+	      }
+	      $defaultObj->$colCrit=$valCrit;
+	    }
+	  } else if ($clauseWhere) {
+	    $whereClause = ' where ' . $clauseWhere;
+	  }
+	  // If $whereClause is set, get the element from Database
+	  $selectFields="";
+	  foreach ($fields as $fld) {
+	    if ($selectFields) $selectFields.=', ';
+	    $fldName=$defaultObj->getDatabaseColumnName($fld);
+	    $selectFields.=" sum($fldName) as sum".ucfirst($fld);
+	  }
+	  
+	  $query = "select ". $selectFields . ' from ' . $this->getDatabaseTableName() . $whereClause;
+	  $result = Sql::query($query);
+	  if (Sql::$lastQueryNbRows > 0) {
+	    $line = Sql::fetchLine($result);
+	    if (is_array($field)) return $line;
+	    else return $line["sum".ucfirst($field)];
+	  }
+	  return null;
+	}
 
 	public function countGroupedSqlElementsFromCriteria($critArray, $critGroup, $critwhere) {
 		// Build where clause from criteria

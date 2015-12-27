@@ -79,8 +79,6 @@ function runScript($vers,$pluginSqlFile=null) {
               traceLog( "Error # $nbError => SQL error while executing Plugin query in file $pluginSqlFile (see above message)");
             }
             traceLog("");
-            //traceLog(Sql::$lastQueryErrorMessage);
-            //traceLog("");
             traceLog("*************************************************");
             traceLog("");
             $query="";

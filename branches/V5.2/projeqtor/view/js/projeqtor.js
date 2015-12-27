@@ -1031,14 +1031,6 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId('attachmentFileDirectDiv')) {
           dojo.byId('attachmentFileDirectDiv').style.visibility='visible';
         }
-        // TODO : after insert select the current line in the grid
-        // selectRowById("objectGrid", lastSaveId.value); // does not work
-        // because grid is refreshing...
-      }
-      if (lastOperation.value=="copy") {
-        // TODO : after copy select the current line in the grid
-        // selectRowById("objectGrid", lastSaveId.value); // does not work
-      // because grid is refreshing...
       }
       if (lastOperation.value=="delete") {
         zone=dijit.byId("formDiv");
@@ -1378,7 +1370,6 @@ function formChanged() {
   formChangeInProgress=true;
   grid=dijit.byId("objectGrid");
   if (grid) {
-    // TODO : lock grid selection
     // saveSelection=grid.selection;
     grid.selectionMode="none";
     

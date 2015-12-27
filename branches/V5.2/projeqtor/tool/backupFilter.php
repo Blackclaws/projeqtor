@@ -32,7 +32,6 @@
  */
 
 require_once "../tool/projeqtor.php";
-//traceLog("backupFilter.php");
 
 $user=getSessionUser();
 

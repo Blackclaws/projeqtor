@@ -2185,7 +2185,6 @@ $bankHolidays = array ();
 $bankWorkdays = array ();
 
 function isOpenDay($dateValue, $idCalendarDefinition = '1') {
-  // traceLog("isOpenDay ($dateValue)");
   global $bankHolidays, $bankWorkdays;
   $paramDefaultLocale = Parameter::getGlobalParameter ( 'paramDefaultLocale' );
   $iDate = strtotime ( $dateValue );

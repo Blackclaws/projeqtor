@@ -34,11 +34,14 @@ class WorkElement extends SqlElement {
 	public $refType;
 	public $refId;
 	public $idActivity;
+	public $idProject;
 	public $refName;
 	public $_tab_3_1 = array('estimated', 'real','left','work');
 	public $plannedWork;
 	public $realWork;
 	public $leftWork;
+	public $realCost;
+	public $leftCost;
 	public $_spe_run;
 	public $_spe_dispatch;
 	public $idUser;
@@ -54,10 +57,13 @@ class WorkElement extends SqlElement {
 			"refId" => "hidden",
 			"refName" => "hidden",
 			"realWork" => "",
+	    "realCost" => "hidden",
+	    "leftCost" => "hidden",
 			"ongoing" => "hidden",
 			"ongoingStartDateTime" => "hidden",
 			"idUser" => "hidden",
 			"idActivity" => "hidden",
+	    "idProject" => "hidden",
 			"leftWork" => "readonly",
 			"done" => "hidden",
 			"idle" => "hidden"
@@ -116,8 +122,10 @@ class WorkElement extends SqlElement {
 	protected function getStaticColCaptionTransposition($fld) {
 		return self::$_colCaptionTransposition;
 	}
+	
 	public function save($noDispatch=false) {
-		$old = $this->getOld ();
+    $old = $this->getOld ();
+		$ass=null;
 		if (! sessionUserExists()) return parent::save ();
 		$user = getSessionUser();
 		// Update left work
@@ -128,26 +136,32 @@ class WorkElement extends SqlElement {
 		
 		// Retrive informations from Ticket and possibly Parent Activity (from Ticket)
 		$top = null;
+		$topProject=null;
 		if ($this->refType) {
 			$top = new $this->refType ( $this->refId ); // retrieve Ticket
 			$this->refName=$top->name;
+			$this->idProject=$top->idProject;
 			$topProject = $top->idProject; // Retrive project from Ticket
 			if (isset ( $top->idActivity )) { // Retrive Activity from Ticket
 				$this->idActivity = $top->idActivity;
 			}
 		} else { // Should never come here; workElement is always sub-item of Ticket
 			// $top = new Project();
-			$topProject = $this->idProject;
+			//$topProject = $this->idProject;
 		}
 		
 		// Set done if Ticket is done
 		if ($top and isset ( $top->done ) and $top->done == 1) {
 			$this->leftWork = 0;
 			$this->done = 1;
-		}
-		
+		}		
+    
 		if ($top and property_exists ( $top, 'idActivity' ) and ! $noDispatch) {
 			$this->idActivity = $top->idActivity;
+		}
+		$result = parent::save ();
+		
+		if ($top and property_exists ( $top, 'idActivity' ) and ! $noDispatch) {
 			// Check if changed Planning Activity
 			if (! trim ( $old->idActivity ) and $old->idActivity != $this->idActivity) {
 			  // If Activity changed, retrieve existing work
@@ -161,13 +175,15 @@ class WorkElement extends SqlElement {
 				foreach ( $workList as $work ) {
 					$work->refType = 'Activity';
 					$work->refId = $this->idActivity;
-					$work->idAssignment = self::updateAssignment ( $work, $work->work );
+					$ass=self::updateAssignment ( $work, $work->work, true );
+					$work->idAssignment=($ass)?$ass->id:null;
 					$work->idWorkElement=$this->id;
 					$work->save ();
+          if ($ass) $ass->saveWithRefresh();
 				}
 			}
 		}
-		$result = parent::save ();
+
 		if ($noDispatch) {
 		  return $result;
 	  }
@@ -196,7 +212,7 @@ class WorkElement extends SqlElement {
 				$work->refId = $this->refId;
 				$work->idResource = $user->id;
 				$work->idProject = $topProject;
-				$work->dailyCost = 0;
+				$work->dailyCost = null;
 				$work->idWorkElement=$this->id;
 				$work->cost = 0;
 			}
@@ -214,9 +230,11 @@ class WorkElement extends SqlElement {
 					$work->refId = $this->refId;
 				}
 				$work->idProject = $topProject;
-				$work->idAssignment = self::updateAssignment ( $work, $diff );
+				$ass=self::updateAssignment ( $work, $diff );
+				$work->idAssignment=($ass)?$ass->id:null;
 				$work->idWorkElement=$this->id;
 				$work->save();
+				if ($ass) $ass->saveWithRefresh();
 			} else {
 			  // Remove work : so need to remove from existing (reverse loop on date) 
 				while ( $diff < 0 and $idx >= 0 ) {
@@ -230,7 +248,8 @@ class WorkElement extends SqlElement {
 						$diff += $work->work;
 						$work->work = 0;
 					}
-					$work->idAssignment = self::updateAssignment ( $work, $valDiff );
+					$ass=self::updateAssignment ( $work, $valDiff );
+					$work->idAssignment=($ass)?$ass->id:null;
 					$work->idWorkElement=$this->id;
 					if ($work->work == 0) {
 						if ($work->id) {
@@ -239,6 +258,7 @@ class WorkElement extends SqlElement {
 					} else {
 						$work->save ();
 					}
+					if ($ass) $ass->saveWithRefresh();
 					$idx --;
 					if ($idx >= 0) { // Retrieve previous work element
 						$work = $workList [$idx];
@@ -250,7 +270,21 @@ class WorkElement extends SqlElement {
 				}
 			}
 		}
-		if ($top and property_exists ( $top, 'idActivity' ) and $top->idActivity) {
+		
+		// UPDATE COSTS
+		$wk=new Work();
+		$costs=$wk->sumSqlElementsFromCriteria(array('cost'), array('idWorkElement'=>$this->id));
+		if ($costs) {
+		  $this->realCost=$costs['sumCost'];
+		  if ($this->realWork!=0) {
+		    $this->leftCost=round($this->leftWork*$this->realCost/$this->realWork,0);
+		  }
+		  $this->save(true);
+		}
+		
+		// UPDATE PARENTS
+		if ($top and property_exists ( $top, 'idActivity' ) and $top->idActivity) { 
+		  // Update Activity
 			$ape = SqlElement::getSingleSqlElementFromCriteria ( 'ActivityPlanningElement', array (
 					'refType' => 'Activity',
 					'refId' => $top->idActivity 
@@ -259,6 +293,25 @@ class WorkElement extends SqlElement {
 				$ape->updateWorkElementSummary ();
 			}
 		}
+		if ($old->id and $top and property_exists($top,'idActivity') and $old->idActivity and $old->idActivity!=$this->idActivity) {
+		  // Update Old Activity (if changed)
+		  $ape = SqlElement::getSingleSqlElementFromCriteria ( 'ActivityPlanningElement', array (
+		      'refType' => 'Activity',
+		      'refId' => $old->idActivity
+		  ) );
+		  if ($ape and $ape->id) {
+		    $ape->updateWorkElementSummary ();
+		  }
+		}
+		if (!trim($this->idActivity)) { 
+		  // Work not counted on activity => update project
+		  ProjectPlanningElement::updateSynthesis('Project',$this->idProject);
+		}
+		if (!$old->idActivity and $old->id and $old->idProject!=$this->idProject) {
+		  // Take into acocunt project change
+		  ProjectPlanningElement::updateSynthesis('Project',$old->idProject);
+		}
+		
 		return $result;
 	}
 	
@@ -289,8 +342,8 @@ class WorkElement extends SqlElement {
 		if ($ass->realWork < 0) {
 			$ass->realWork = 0;
 		}
-		$ass->save ();
-		return $ass->id;
+		$ass->save();
+		return $ass;
 	}
 	
 	public function start() {

@@ -397,6 +397,15 @@ if (beforeVersion($currVersion,"V5.1.5") and afterVersion($currVersion, "V5.1.0"
   // must clean parameter file to enforce db value
   Parameter::regenerateParamFile();
 }
+if (beforeVersion($currVersion,"V5.2.0") and $currVersion!='V0.0.0') {
+  setSessionUser(new User());
+  $we=new WorkElement();
+  $weList=$we->getSqlElementsFromCriteria(null,false, "realWork>0");
+  foreach($weList as $we) {
+    $res=$we->save();
+  }
+  traceLog(count($weList). " Work Elements updated");
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

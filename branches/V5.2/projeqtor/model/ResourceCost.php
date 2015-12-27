@@ -110,13 +110,31 @@ class ResourceCost extends SqlElement {
         $where.= " and workDate>='" . $this->startDate . "'";
       }
       $wkList=$wk->getSqlElementsFromCriteria(null, false, $where);
+      $arrayAss=array();
+      $arrayWE=array();
       foreach ($wkList as $wk) {
-        $ass=new Assignment($wk->idAssignment);
-        if ($ass->idRole==$this->idRole) {
+        if ($wk->idAssignment) {
+          if (array_key_exists($wk->idAssignment,$arrayAss)) {
+            $ass=$arrayAss[$wk->idAssignment];
+          } else {
+            $ass=new Assignment($wk->idAssignment);
+          }
+          
+          if ($ass->idRole==$this->idRole) {
+            $wk->dailyCost=$this->cost;
+            $wk->save();
+            $arrayAss[$ass->id]=$ass;
+          }
+        } else {
           $wk->dailyCost=$this->cost;
           $wk->save();
+          if ($wk->idWorkElement) {
+            if (!isset($arrayWE[$wk->idWorkElement])) {
+              $arrayWE[$wk->idWorkElement]=new WorkElement($wk->idWorkElement);
+            }
+          }
         }
-      }     
+      }           
       $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" .Sql::fmtId($this->idRole) . "' and leftWork>0";
       $ass=new Assignment();
       $assList=$ass->getSqlElementsFromCriteria(null, false, $where);
@@ -126,7 +144,14 @@ class ResourceCost extends SqlElement {
           $ass->dailyCost=$this->cost;
         }
         $ass->saveWithRefresh();
+        if (isset($arrayAss[$ass->id])) unset($arrayAss[$ass->id]);
       }
+      foreach ($arrayAss as $ass) {
+        $ass->saveWithRefresh();
+      }
+      foreach ($arrayWE as $wk) {
+        $wk->save();
+      } 
     }
     return $result; 
   }

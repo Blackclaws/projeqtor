@@ -108,13 +108,12 @@ foreach ($dateList as $idx=>$date) {
         $work->refId=$refId;
       }
     }
-
     $newWork=Work::convertImputation($valueList[$idx]);   
     $diff=$newWork-$work->work;
     $work->work=$newWork;
     $work->idWorkElement=$weId;
-    $work->dailyCost=0;//TODO
-    $work->cost=0;//TODO
+    $work->dailyCost=null; // set to null to force refresh 
+    $work->cost=null;
     $work->idAssignment=WorkElement::updateAssignment($work, $diff);
     $resWork="";
     if ($work->work==0) {
@@ -135,6 +134,7 @@ foreach ($dateList as $idx=>$date) {
     }
   }
 }
+ProjectPlanningElement::updateSynthesis('Project',$we->idProject);
 // Message of correct saving
 displayLastOperationStatus($result);
 

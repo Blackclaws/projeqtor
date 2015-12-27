@@ -33,7 +33,6 @@
   if (! isset($destinationHeight)) {
     $destinationHeight=$_REQUEST['destinationHeight'];
   }
-  debugLog("destinationHeight=$destinationHeight");
   
   $cpt=0;
   $arrayActivities=array(); // Array of activities to display
@@ -100,7 +99,6 @@
   	$endDay=$currentDay;
   	$inScopeDay=true;
   }
-  debugLog("totalHeight=$totalHeight, trHeight=$trHeight");
   
   echo '<TABLE style="width:100%;height:'.$totalHeight.'px">';
   
