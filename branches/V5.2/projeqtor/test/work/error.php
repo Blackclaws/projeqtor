@@ -1,7 +1,6 @@
 <?php
 /* ============================================================================
  * Error page.
- * TODO : implement this page and redirect ot it on any error
  */
 require_once "../tool/projeqtor.php";
 ?>

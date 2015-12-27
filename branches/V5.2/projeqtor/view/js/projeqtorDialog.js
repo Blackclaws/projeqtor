@@ -570,7 +570,6 @@ function selectDetailItem(selectedValue, lastSavedName) {
     }
   }
   if (comboName != 'idStatus' && comboName != 'idProject') {
-    // TODO : study if such restriction should be applied to idActivity
     if (combo) {
       refreshList('id' + comboClass, crit, critVal, idFldVal, comboName);
     } else {
@@ -1198,7 +1197,7 @@ function addProductStructure() {
   loadDialog('dialogProductStructure',null, true, param, true);
 }
 
-function refreshProductStructureList(selected,newName) { // TODO
+function refreshProductStructureList(selected,newName) {
   var selectList=dojo.byId('productStructureListId');
   if (selected && selectList) {
     if (newName) {

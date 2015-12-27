@@ -121,7 +121,6 @@ class PlannedWork extends GeneralWork {
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	
-  	// TODO : set strict dependency or not as parameter
   	// Strict dependency means when B follows A (A->B), B cannot start same date as A ends, but only day after
   	$strictDependency=(Parameter::getGlobalParameter('dependencyStrictMode')=='NO')?false:true;
   	

@@ -66,7 +66,7 @@ if (! array_key_exists('filterDataType',$_REQUEST)){
 }
 $filterDataType=$_REQUEST['filterDataType'];
 // TODO (SECURITY) : test completness of test
-if (preg_match('/^(list|decimal|date|bool|refObject|varchar)$/', $filterDataType) != true){
+if (preg_match('/^(list|decimal|int|date|bool|refObject|varchar)$/', $filterDataType) != true){
 	traceHack("bad value for filterDataType ($filterDataType)");
 	exit;
 }
@@ -163,7 +163,7 @@ if ($idFilterAttribute and $idFilterOperator) {
         $arraySql["value"]=($filterValueCheckbox)?1:0;
     } else {
       $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
-      $arraySql["value"]="'" . htmlEncode($filterValue) . "'";
+      $arraySql["value"]="'" . trim(Sql::str(htmlEncode($filterValue)),"'") . "'";
     }
   } else if ($idFilterOperator=="LIKE" or $idFilterOperator=="hasSome") {
   	if ($filterDataType=='refObject' or $idFilterOperator=="hasSome") {
@@ -174,7 +174,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   			$arrayDisp["operator"]=i18n("isNotEmpty");
   		} else {
   			$arrayDisp["operator"]=i18n("contains");
-  			$arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+  			$arrayDisp["value"]="'" . trim(Sql::str(htmlEncode($filterValue)),"'") . "'";
   		}
 		  Security::checkValidClass($idFilterAttribute);
   		$refObj=new $idFilterAttribute();
@@ -183,7 +183,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   		$arraySql["value"]=" ( select 'x' from $refObjTable "
   		. " where $refObjTable.refType=".Sql::str($filterObjectClass)." "
   		. " and $refObjTable.refId=$table.id "
-  		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . trim(Sql::str($filterValue),"'") . "%' ) ";
+  		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . trim(Sql::str(htmlEncode($filterValue)),"'") . "%' ) ";
   	} else {
       $arrayDisp["operator"]=i18n("contains");
       $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
@@ -204,7 +204,7 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arrayDisp["value"].=($key==0)?"":", ";
       $arraySql["value"].=($key==0)?"":", ";
       $arrayDisp["value"].="'" . Sql::fmtStr(SqlList::getNameFromId(Sql::fmtStr(substr($idFilterAttribute,2)),$val)) . "'";
-      $arraySql["value"].= $val ;
+      $arraySql["value"].=Security::checkValidId($val);
     }
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
@@ -221,30 +221,31 @@ if ($idFilterAttribute and $idFilterOperator) {
   } else if ($idFilterOperator=="SORT") {  
     $arrayDisp["operator"]=i18n("sortFilter");
     $arraySql["operator"]=$idFilterOperator;
+    Security::checkValidAlphanumeric($filterSortValue);
     $arrayDisp["value"]=htmlEncode(i18n('sort' . ucfirst($filterSortValue) ));
     $arraySql["value"]=$filterSortValue;
   } else if ($idFilterOperator=="<=now+") {  
     $arrayDisp["operator"]="<= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]="<=";
-    $arrayDisp["value"]=htmlEncode($filterValue) . ' ' . i18n('days');
+    $arrayDisp["value"]=htmlEncode(intval($filterValue)) . ' ' . i18n('days');
     if (Sql::isPgsql()) {
-      $arraySql["value"]= "NOW() + INTERVAL '" . $filterValue . " day'";
+      $arraySql["value"]= "NOW() + INTERVAL '" . intval($filterValue) . " day'";
     } else {
-      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . intval($filterValue) . ") DAY)";
     }
   } else if ($idFilterOperator==">=now+") {  
     $arrayDisp["operator"]=">= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]=">=";
-    $arrayDisp["value"]=htmlEncode($filterValue) . ' ' . i18n('days');
+    $arrayDisp["value"]=htmlEncode(intval($filterValue)) . ' ' . i18n('days');
     if (Sql::isPgsql()) {
-      $arraySql["value"]= "NOW() + INTERVAL '" . $filterValue . " day'";
+      $arraySql["value"]= "NOW() + INTERVAL '" . intval($filterValue) . " day'";
     } else {
 		if (preg_match('/[^0-9]/', $filterValue) == true) {
 		  $filterValue="";
 		  // a bit hard to disconnect if isser enters bad value
 		  //traceHack("invalid filterValue - $filterValue");
 		}
-    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . $filterValue . ") DAY)";
+    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . intval($filterValue) . ") DAY)";
     }
   } else {
      echo htmlGetErrorMessage(i18n('incorrectOperator'));

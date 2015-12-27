@@ -397,7 +397,6 @@ class PlanningElement extends SqlElement {
         if ($elt->refType) { // just security for unit testing 
           $elt->wbsSave();
         }
-        // TODO : check result to return error message in case of error
       }
     }
     

@@ -141,15 +141,8 @@ if (!$error) {
       	      ."<input type='hidden' value='resultOK' />";
   }
 }
-// TODO: need to make sure script tags can't be injected via maliciously crafted mimeType
 $jsonReturn = json_encode(array('file' => $fileName, 'name' => $fileName, 'type' => $mimeType, 'size' => $fileSize, 'message' => $message));
-/*
-$jsonReturn='{"file":"'.$fileName.'",'
-    .'"name":"'.$fileName.'",'
-        .'"type":"'.$mimeType.'",'
-            .'"size":"'.$fileSize.'"  ,'
-                .'"message":"'.$message.'"}';
-*/
+
 if ($isIE and $isIE<=9) {
   echo $message;
   echo '</body>';

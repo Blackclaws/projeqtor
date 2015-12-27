@@ -77,8 +77,8 @@ if (!$user->id) {
 traceLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
 setSessionUser($user);
 
-// TODO : filter fields coming from REQUEST
 if ($_SERVER['REQUEST_METHOD']=='GET') {
+  // GET method : security => class is checked, id is numerically filtered, access right is applied
   if (isset($_REQUEST['uri'])) { 
     $uri=htmlEncode($_REQUEST['uri']);
     $split=explode('/',$uri);
@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     	$class=ucfirst($split[0]);
     	$where="1=0";
     	if (class_exists($class)) {
+    	  Security::checkValidClass($class);
     		$obj=new $class();
     		$table=$obj->getDatabaseTableName();
     		if (count($split)==2 and is_numeric($split[1]) ) {      // =============== uri = {OblectClass}/{ObjectId}
@@ -178,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
         	returnError($invalidQuery, $querySyntax);
         }
         // Add access restrictions
-        $where.=' and '.getAccesRestrictionClause($class,null,true);
+        $where.=' and '.getAccesRestrictionClause($class,null,true); // GOOD : access limit is applied !!!
     		echo '{"identifier":"id",' ;
         echo ' "items":[';        
         $list=$obj->getSqlElementsFromCriteria(null,null,$where);
@@ -201,6 +202,10 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     returnError($invalidQuery, $querySyntax);
   }
 } else IF ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST' or $_SERVER['REQUEST_METHOD']=='DELETE') {
+  // PUT, POST or DELETE : security => data is encoded with API Key (AES 256)
+  // So caller needs correct User/Password and API Key.
+  // We can trust data.
+  // NB : access rights will be controlled on insert/update/delete (!)
 	if (isset($_REQUEST['data']) ) {
 		$dataEncoded=$_REQUEST['data'];
 		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);

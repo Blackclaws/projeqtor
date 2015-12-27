@@ -178,7 +178,6 @@ class Plugin extends SqlElement {
           }
         }
       }
-      // TODO : check version compatibility
       $globalCatchErrors=false;
       
       if (isset($pluginName)) $this->name=$pluginName;
@@ -210,7 +209,6 @@ class Plugin extends SqlElement {
         // !IMPORTANT! to be able to call runScrip, the calling script must include "../db/maintenanceFunctions.php"
         $nbErrors=runScript(null,$sqlfile);
         traceLog("Plugin updated database with $nbErrors errors from script $sqlfile");
-        // TODO : display error and decide action (stop / continue)
         deleteDuplicate(); // Avoid dupplicate for habilitation, ....
       }
       

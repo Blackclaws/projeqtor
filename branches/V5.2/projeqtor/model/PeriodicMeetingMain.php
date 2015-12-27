@@ -606,7 +606,6 @@ class PeriodicMeetingMain extends SqlElement {
     if ($old->location!=$this->idResource) $meeting->idResource=$this->idResource;
     if ($old->MeetingPlanningElement->priority!=$this->MeetingPlanningElement->priority) 
         $meeting->MeetingPlanningElement->priority=$this->MeetingPlanningElement->priority;
-    // Assignments => dispatch ========================== TODO
     $resultMeetingSave=$meeting->save();
   }
   

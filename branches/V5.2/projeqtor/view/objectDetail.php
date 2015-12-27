@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /*
- * ============================================================================ Presents the detail of an object, for viewing or editing purpose. TODO : modify visibility depending on profile
+ * ============================================================================ Presents the detail of an object, for viewing or editing purpose.
  */
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
@@ -844,8 +844,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
       } else if (is_array($val)) {
         // Draw an array ====================================================== Type Array
-        // TODO : impement array fields
-        // echo $col . ' is an array' . $cr;
+        traceLog("Error : array fileds management not implemented for fiels $col");
       } else if (substr($col, 0, 6) == '_void_') {
         // Empty field for tabular presentation
         // echo $col . ' is an array' . $cr;
@@ -1533,8 +1532,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           } else {
             $dispVal=Work::displayWork($val);
           }
+        } else if ($dataLength>4000) {
+          $dispVal=htmlEncode($val,'formatted');  
         } else {
-          $dispVal=$val; // TODO (SECURITY) : protect display ?
+          $dispVal=htmlEncode($val);
         }
         echo ' value="' . $dispVal . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';

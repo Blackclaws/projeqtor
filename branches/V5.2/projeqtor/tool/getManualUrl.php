@@ -118,7 +118,7 @@ if (isset($_REQUEST['section'])) {
   $section=$_REQUEST['section']; // Note: can only be a valid index in $userLink. Value is not echo'ed in HTML.
 }
 
-$userRoot='../docs/user/html_en/'; // TODO : take locale into account
+$userRoot='../docs/user/html_en/';
 $url=$userRoot.$userLink['Welcome'];
 if ($section and isset($userLink[$section])) {
   $url=$userRoot.$userLink[$section];
