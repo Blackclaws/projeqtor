@@ -46,7 +46,7 @@ if (is_dir($classDir)) {
         and substr($class,-4)!='Main' and $class!='_securityCheck'
         //and $class>='Ti' // and $class<'B' 
         ){
-          debugLog("Test for class $class");
+          debugTraceLog("Test for class $class");
           $obj=new $class();
           if (is_subclass_of($obj, "SqlElement")) {
         	 testObject($obj);

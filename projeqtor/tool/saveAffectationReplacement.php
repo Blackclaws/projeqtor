@@ -134,7 +134,6 @@ foreach ($assList as $ass) {
       $needNew=false;
     }
   }
-debugLog("startDate=$startDate, left=$left, real=$ass->realWork, needNew=$needNew");
   if ($left>0) {
     if ($needNew) {
       $newAss=new Assignment();
