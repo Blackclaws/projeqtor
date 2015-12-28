@@ -90,7 +90,6 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $marginCostPct;
   public $_void_7_5;
   public $priority;
-  
   public $wbsSortable;
   public $topId;
   public $topRefType;

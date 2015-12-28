@@ -3185,18 +3185,18 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   }
   
   if (!$print) {
-    echo '<td class="assignHeader" style="width:10%">';
+    echo '<td class="assignHeader" style="width:15%">';
     if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
       echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
-  echo '<td class="assignHeader" style="width:' . (($print)?'35':'25') . '%">' . i18n('colId' . $type) . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n('colIdProfile') . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate') . '</td>';
-  echo '<td class="assignHeader" style="width:10%">' . i18n('colRate') . '</td>';
+  echo '<td class="assignHeader" style="width:8%">' . i18n('colId') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'35':'20') . '%">' . i18n('colId' . $type) . '</td>';
+  echo '<td class="assignHeader" style="width:18%">' . i18n('colIdProfile') . '</td>';
+  echo '<td class="assignHeader" style="width:13%">' . i18n('colStartDate') . '</td>';
+  echo '<td class="assignHeader" style="width:13%">' . i18n('colEndDate') . '</td>';
+  echo '<td class="assignHeader" style="width:12%">' . i18n('colRate') . '</td>';
   // echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
   echo '</tr>';
@@ -3214,7 +3214,8 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
       $canDelete=false;
     }
     $idleClass=($aff->idle)?' affectationIdleClass':'';
-    $isResource=true;
+    $res=new Resource($aff->idResource);
+    $isResource=($res->id)?true:false;
     if ($type == 'Project') {
       $name=SqlList::getNameFromId($type, $aff->idProject);
     } else {
@@ -3236,6 +3237,10 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
         }
         if ($canDelete and !$print) {
           echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . htmlEncode($aff->id) . "'" . ');" ' . 'title="' . i18n('removeAffectation') . '" class="roundedButtonSmall"/> ';
+        }
+        if ($canUpdate and !$print and $isResource) {
+          echo '  <img src="css/images/smallButtonSwitch.png" ' . 'onClick="replaceAffectation(' . "'" . htmlEncode($aff->id) . "'" . ",'" . get_class($obj) . "'" . ",'" . $type . "'" . ",'" . htmlEncode($aff->idResource) . "'" . ",'" . htmlEncode($aff->idProject) . "'" . ",'" . htmlEncode($aff->rate) . "'" . ",'" . htmlEncode($aff->idle) . "'" . ",'" .
+              $aff->startDate . "'" . ",'" . htmlEncode($aff->endDate) . "'" . ',' . htmlEncode($aff->idProfile) . ');" ' . 'title="' . i18n('replaceAffectation') . '" class="roundedButtonSmall"/> ';
         }
         if ($aff->idle) {
           echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="roundedButtonSmall"/> ';

@@ -268,7 +268,7 @@
         if ($line['reftype']!='Project' and $line['reftype']!='Fixed') {
           $arrayResource=array();
           // if ($showResource) { //
-          if (1) { // Miust always retreive resource to display value in column, even if not displayed 
+          if (1) { // Must always retreive resource to display value in column, even if not displayed 
           	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
             $ass=new Assignment();
             $assList=$ass->getSqlElementsFromCriteria($crit,false); 
@@ -292,7 +292,7 @@
     	        	if ($displayResource=='initials' and ! $display) {
     	        	  //$encoding=mb_detect_encoding($res->name, 'ISO-8859-1, UTF-8');
     	        	  //$display=$encoding;
-    	        	  $words=mb_split(' ',$res->name);
+    	        	  $words=mb_split(' ',str_replace(array('"',"'"), ' ', $res->name));
     	        	  $display='';
     	        	  foreach ($words as $word) {
     	        	    $display.=(mb_substr($word,0,1,'UTF-8'));
@@ -308,7 +308,7 @@
   	        }
           }
 	        //$res=new Resource($ass->idResource);
-	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';
+	        echo ',"resource":"' . htmlEncode(htmlEncodeJson(implode(', ',$arrayResource))) . '"';
         }
         $crit=array('successorId'=>$idPe);
         $listPred="";

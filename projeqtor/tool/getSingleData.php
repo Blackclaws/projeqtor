@@ -50,6 +50,11 @@
       if (! $idRes) return;
       $r=new Affectable($idRes);
       echo $r->idProfile;
+    } else if ($type=='resourceCapacity') {
+      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
+      if (! $idRes) return;
+      $r=new Resource($idRes);
+      echo $r->capacity;
     } else if ($type=='defaultPlanningMode') {
       $idType=$_REQUEST['idType'];
       $className=$_REQUEST['objectClass'];

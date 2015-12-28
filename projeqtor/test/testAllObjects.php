@@ -42,10 +42,11 @@ if (is_dir($classDir)) {
         $split=explode('.',$file);
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
-        and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType'
+        and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType' and $class!='Security'
         and substr($class,-4)!='Main' and $class!='_securityCheck'
         //and $class>='Ti' // and $class<'B' 
         ){
+          debugLog("Test for class $class");
           $obj=new $class();
           if (is_subclass_of($obj, "SqlElement")) {
         	 testObject($obj);
