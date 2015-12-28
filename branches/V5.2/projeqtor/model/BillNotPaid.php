@@ -36,7 +36,16 @@ class BillNotPaid extends BillMain {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
-  private static $_fieldsAttributes=array("name"=>"calculated", "shortName"=>"readonly");
+  private static $_fieldsAttributes=array("name"=>"calculated", "shortName"=>"readonly",
+      'taxAmount'=>'calculated,readonly',
+      'taxPct'=>'calculated,readonly',
+      'untaxedAmount'=>'readonly',
+      'paymentDueDate'=>'readonly',
+      'paymentsCount'=>'hidden'
+  );
+  
+  
+  
   private static $_databaseTableName = 'Bill';
   private static $_databaseColumnName = array('shortName'=>'name');
   private static $_databaseCriteria = array('paymentDone'=>'0', 'done'=>'1');

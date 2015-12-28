@@ -3093,7 +3093,17 @@ abstract class SqlElement {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
-					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+					if (is_a($this,'Version')) {
+					  $crit=null;
+					  $where="(1=1";
+					  $arrayVersion=array('idVersion', 'idTargetVersion', 'idOriginalVersion');
+					  foreach ($arrayVersion as $vers) {
+  					  if (property_exists($obj, $vers)) {
+  					    $where.=" or ".$obj->getDatabaseColumnName($vers)."=".$this->id;
+  					  }
+					  }
+					  $where.=")";
+					} else if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
 						if (property_exists($obj,'id' . get_class($this))) {
 						  $crit=null;
 						  $where="id".get_class($this)."=".$this->id." or (refType='".get_class($this)."' and refId=".$this->id.")";

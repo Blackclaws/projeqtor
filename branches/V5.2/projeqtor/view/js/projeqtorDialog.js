@@ -3807,6 +3807,56 @@ function affectationChangeResource() {
     }
   });
 }
+
+function replaceAffectation (id, objectClass, type, idResource, idProject, rate,
+    idle, startDate, endDate, idProfile) {
+  var callback=function() {};
+  var param="&idAffectation="+id;
+  loadDialog("dialogReplaceAffectation", callback, true, param);
+}
+function replaceAffectationSave() {
+  var formVar=dijit.byId('replaceAffectationForm');
+  if (dijit.byId('replaceAffectationStartDate') && dijit.byId('replaceAffectationEndDate')) {
+    var start=dijit.byId('replaceAffectationStartDate').value;
+    var end=dijit.byId('replaceAffectationEndDate').value;
+    if (start && end && dayDiffDates(start, end) <= 0) {
+      showAlert(i18n("errorStartEndDates", new Array(i18n("colStartDate"),i18n("colEndDate"))));
+      return;
+    }
+  }
+  if (dijit.byId('replaceAffectationResource').get("value")==dojo.byId("replaceAffectationExistingResource").value) {
+    showAlert(i18n("errorReplaceResourceNotChanged"));
+    return;
+  }
+  if (formVar.validate()) {
+    loadContent("../tool/saveAffectationReplacement.php", "resultDiv", "replaceAffectationForm",
+        true, 'affectation');
+    dijit.byId('dialogReplaceAffectation').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+function replaceAffectationChangeResource() {
+  var idResource=dijit.byId("replaceAffectationResource").get("value");
+  if (!idResource)
+    return;
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=resourceProfile&idResource='
+        + idResource,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('replaceAffectationProfile').set('value', data);
+    }
+  });
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=resourceCapacity&idResource='
+        + idResource,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('replaceAffectationCapacity').set('value', parseFloat(data));
+    }
+  });
+}
 // =============================================================================
 // = Misceallanous
 // =============================================================================
