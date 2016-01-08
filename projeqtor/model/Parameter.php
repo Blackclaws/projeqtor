@@ -230,7 +230,7 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
             'REQ'=>i18n('displayOnRequest'));
         break;
-      case 'printHistory': case 'csvExportUTF8':
+      case 'printHistory': case 'csvExportUTF8': case 'allowTypeRestrictionOnProject' :
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -499,6 +499,7 @@ class Parameter extends SqlElement {
       	                       'paramMemoryLimitForPDF'=>'number',
       	                       'fontForPDF'=>'list',
       	                       "editor"=>'list',
+      	                       'allowTypeRestrictionOnProject'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  

@@ -129,6 +129,7 @@ class Security
     return $numeric;
   }
   public static function checkValidAlphanumeric($string) {
+    // TODO (SECURITY) : use ctype_alnum()
     if (preg_match('/[^0-9a-zA-Z]/', $string) == true) {
       traceHack("invalid alpanumeric string value - $string");
     }
@@ -192,6 +193,8 @@ class Security
     //$fileName=preg_replace('/[^a-zA-Z0-9_-]/', '', $fileName); // only allow [a-z, A-Z, 0-9, _, -] in file name 
     // PBE : disabled : much too restrictive (accentuated characters can be used, need to allow . for extension a.ext or a.b.c.ext)
     //^[^/?*:;{}\\]*\.?[^/?*:;{}\\]+$ // => allows host and .htaccess as file name
+    //
+    // TODO (SECURITY) : use ctype_print()
     if (basename($fileName)!=$fileName) {
       traceHack("filename $fileName containts path elements that are not accepted");
       $fileName=""; // Not reached as traceHack will exit script
@@ -213,6 +216,7 @@ class Security
   } 
   
   public static function checkValidHtmlText($string) {
+    // TODO (SECURITY) : use ctype_print()
     if (preg_match('/<script/', strtolower($string)) == true) {
       traceHack("invalid sequence in html text - $string");
     }
@@ -220,6 +224,7 @@ class Security
   }
   
   public static function checkValidUrl($string) {
+    // TODO (SECURITY) : use ctype_print()
     if (preg_match('/\.\.\/|[<>]/',urldecode($string)) == True) {
       traceHack("invalid url value - [$string]");
       exit;

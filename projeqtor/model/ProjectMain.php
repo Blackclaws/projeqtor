@@ -81,6 +81,9 @@ class ProjectMain extends SqlElement {
   public $_sec_Subprojects;
   public $_spe_subprojects;
   
+  public $_sec_restrictTypes;
+  public $_spe_restrictTypes;
+  
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   
@@ -147,6 +150,10 @@ class ProjectMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     if ($id=='*') {$id='';}
+    if (Parameter::getGlobalParameter('allowTypeRestrictionOnProject')!='YES') {
+      unset($this->_sec_restrictTypes);
+      unset($this->_spe_restrictTypes);
+    }
   	parent::__construct($id,$withoutDependentObjects);
   }
 
@@ -457,6 +464,32 @@ class ProjectMain extends SqlElement {
     		}
         return $result;
     	}
+    } else if ($item=='restrictTypes') {
+      global $print;
+      if (!$this->id) return '';
+      if (!$print) {
+        $result.= '<button id="buttonRestrictTypes" dojoType="dijit.form.Button" showlabel="true"'
+          . ' title="'.i18n('helpRestrictTypes').'" iconClass="iconType16" >'
+          . '<span>'.i18n('restrictTypes').'</span>'
+          . ' <script type="dojo/connect" event="onClick" args="evt">'
+          . '  var params="&idProject='.$this->id.'";'
+          . '  params+="&idProjectType="+dijit.byId("idProjectType").get("value");'    
+          . '  loadDialog("dialogRestrictTypes", null, true, params);'
+          . ' </script>'
+          . '</button>';
+        $result.= '<span style="font-size:80%">&nbsp;&nbsp;&nbsp;('.i18n('helpRestrictTypesInline').')</span>';
+      }
+      $result.='<table style="witdh:100%"><tr><td class="label">'.i18n('existingRestrictions').'&nbsp;:&nbsp;</td><td>';
+      $result.='<div id="resctrictedTypeClassList">';
+      $list=Type::getRestrcitecTypesClass($this->id,null);
+      $cpt=0;
+      foreach ($list as $cl) {
+        $cpt++;
+        $result.=(($cpt>1)?', ':'').$cl;
+      }
+      $result.='</div>';
+      $result.='</td></tr></table>';
+      return $result;
     }
   }
   
