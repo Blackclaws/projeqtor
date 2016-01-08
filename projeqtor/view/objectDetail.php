@@ -230,6 +230,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
       }
     }
   }
+  
   if (get_class($obj)=='Project' and isset($obj->codeType) and $obj->codeType=='TMP') {
     $canRead=true;
   }  
@@ -1290,7 +1291,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' or $col == 'idComponent' or $col == 'idProductOrComponent' or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col == 'idTicket' or $col == 'idUser') {
+        if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' 
+            or $col == 'idComponent' or $col == 'idProductOrComponent' 
+            or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
+            or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' 
+            or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
             $critFld='idClient';
             $critVal=$obj->idClient;
@@ -1403,7 +1408,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $name;
         echo $attributes;
         echo $valStore;
-        echo ' >';
+        echo ' >';      
         $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
         echo $colScript;
         echo '</select>';
@@ -3339,7 +3344,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       echo '</td>';
     }
     $goto="";
-    if (!$print and securityCheckDisplayMenu(null, 'TestCase') and securityGetAccessRightYesNo('menuTestCase', 'read', '') == "YES") {
+    if (!$print and securityCheckDisplayMenu(null, 'TestCase') and securityGetAccessRightYesNo('menuTestCase', 'read', $tc) == "YES") {
       $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . htmlEncode($tc->id) . '\');" style="cursor: pointer;" ';
     }
     $typeClass='id' . $otherClass . 'Type';
