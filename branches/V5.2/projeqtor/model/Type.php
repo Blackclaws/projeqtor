@@ -136,6 +136,81 @@ class Type extends SqlElement {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
+  /** =========================================================================
+   * 
+   * @return 
+   */
+  public static function getClassList() {
+    global $hideAutoloadError;
+    $hideAutoloadError=true;
+    $dir='../model/';
+    $handle = opendir($dir);
+    $result=array();
+    while ( ($file = readdir($handle)) !== false) {
+      if ($file == '.' || $file == '..' || $file=='index.php' // exclude ., .. and index.php
+      || substr($file,-4)!='.php'                             // exclude non php files
+      || substr($file,-8)!='Type.php' || strlen($file)<=8) {  // exclude non *Type.php
+        continue;
+      }
+      $class=pathinfo($file,PATHINFO_FILENAME);
+      $ext=pathinfo($file,PATHINFO_EXTENSION);
+      $classObj=substr($class,0,strlen($class)-4);
+      if (is_subclass_of ( $class, 'Type') and class_exists($classObj)) {
+        $result[$class]=i18n($class);
+      }
+    }
+    closedir($handle);
+    asort($result);
+    return $result;
+  }
+  public static function getRestrictedTypes($idProject,$idProjectType) {
+    if ($idProject) {
+      $crit['idProject']=$idProject;
+    } else {
+      $crit['idProjectType']=$idProjectType;
+    }
+    $rtList=SqlList::getListWithCrit('RestrictType', $crit, 'idType');
+    return $rtList;
+  }
+  public static function getRestrcitecTypesClass($idProject,$idProjectType) {
+    $listClass=SqlList::getList('Type','scope');    
+    $result=array();
+    $list=self::getRestrictedTypes($idProject,$idProjectType);
+    foreach ($list as $id=>$val) {
+      if (isset($listClass[$val]) and ! isset($result[$listClass[$val]])) {
+        $result[$listClass[$val]]=i18n($listClass[$val]);
+      }
+    }
+    asort($result);
+    return $result;
+  }
+  public static function listRestritedTypesForClass($class,$idProject,$idProjectType) {
+    if (!$idProjectType) {
+      $lst=SqlList::getListWithCrit('RestrictType', array('idProject'=>$idProject, 'className'=>$class),'idType');
+      if (count($lst)) { // If restrictions exist for the project, get them
+        return $lst;
+      }
+      $proj=new Project($idProject,true);
+      $idProjectType=$proj->idProjectType;
+    } // else will retreive from project type
+    
+    return SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+  }
   
+  public static function getSpecificRestrictTypeValue($idType,$idProject,$idProjectType) {
+    $crit=array('idType'=>$idType);
+    if ($idProject) {
+      $crit['idProject']=$idProject;
+    } else {
+      $crit['idProjectType']=$idProjectType;
+    }
+    $rt=SqlElement::getSingleSqlElementFromCriteria('RestrictType', $crit);
+    if ($rt->id) return true;
+    else return false;
+  }
+  
+  public static function clearRestrictTypeCache() {
+    
+  }
 }
 ?>
