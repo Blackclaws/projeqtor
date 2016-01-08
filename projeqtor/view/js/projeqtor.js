@@ -598,7 +598,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         }
       }
       // Must destroy existing instances of CKEDITOR before refreshing the page.
-      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
+      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv' || destination=="formDiv")) { 
         editorArray=new Array();
         for(name in CKEDITOR.instances) {
           CKEDITOR.instances[name].removeAllListeners();
@@ -608,7 +608,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       contentWidget.set('content',data);
       checkDestination(destination);
       // Create instances of CKEDITOR
-      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv')) { 
+      if (page.substr(0,16)=='objectDetail.php' && (destination=='detailDiv' || destination=='detailFormDiv' || destination=="formDiv")) { 
         ckEditorReplaceAll();
       }
       if (page.substr(0,16)=='objectDetail.php' && destination=='detailDiv') {

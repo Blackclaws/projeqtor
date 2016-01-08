@@ -6126,3 +6126,19 @@ function hideMenuList(delay) {
   clearTimeout(closeMenuListTimeout);
   closeMenuListTimeout=setTimeout("dijit.byId('menuSelector').closeDropDown();",delay);
 }
+
+function saveRestrictTypes() {
+  $callback=function() {
+    dojo.xhrGet({
+      url : '../tool/getSingleData.php?dataType=restrictedTypeClass'
+        +'&idProject='+dojo.byId('idProjectParam').value
+        +'&idProjectType='+dojo.byId('idProjectTypeParam').value ,
+      handleAs : "text",
+      load : function(data) {
+        dojo.byId('resctrictedTypeClassList').innerHTML=data;
+      }
+    });
+  }
+  loadContent("../tool/saveRestrictTypes.php" , "resultDiv", "restrictTypesForm", true, 'report',false,false, $callback);
+  dijit.byId('dialogRestrictTypes').hide();
+}
