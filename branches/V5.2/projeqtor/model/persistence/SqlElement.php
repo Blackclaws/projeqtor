@@ -2562,6 +2562,9 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'idProductOrComponent')) {
 				  $colScript .= '   refreshList("idProductOrComponent","idProject", this.value, dijit.byId("idProductOrComponent").get("value"));';
 				}
+				if ($colName=='idProject' and property_exists($this,'id'.get_class($this).'Type')) {
+				  $colScript .= '   refreshList("id'.get_class($this).'Type","idProject", this.value, dijit.byId("id'.get_class($this).'Type").get("value"),null,true);';
+				}
 				$arrVers=array('idVersion','idOriginalVersion','idTargetVersion','idTestCase','idRequirement');
 				$versionExists=false;
 				foreach ($arrVers as $vers) {

@@ -63,7 +63,17 @@
       $type=new $typeClass($idType);
       $planningModeName='id'.$className.'PlanningMode';
       echo $type->$planningModeName;
-    } else {    
+    } else if ($type=='restrictedTypeClass') {
+      $idProjectType=$_REQUEST['idProjectType'];
+      $idProject=$_REQUEST['idProject'];
+      $list=Type::getRestrcitecTypesClass($idProject,$idProjectType);
+      $cpt=0;
+      foreach ($list as $cl) {
+        $cpt++;
+        echo (($cpt>1)?', ':'').$cl;
+      }
+    } else {   
+       
       echo '';
     } 
 ?>

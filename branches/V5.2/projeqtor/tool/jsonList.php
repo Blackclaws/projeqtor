@@ -159,6 +159,24 @@ scriptLog('   ->/tool/jsonList.php');
       	} else {
       		$list=SqlList::getList($class);
       	}
+      	
+      } else if (substr($dataType,0,2)=='id' and substr($dataType,-4)=='Type') {
+        $list=SqlList::getList($class);
+        if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
+          $critField=$_REQUEST['critField'];
+          $critVal=$_REQUEST['critValue'];
+          if ($critField=='idProject') {
+            $rtListProjectType=Type::listRestritedTypesForClass($class,$critVal,null);
+            if (count($rtListProjectType)) {
+              foreach($list as $id=>$val) {
+                if ($id!=$selected and !in_array($id, $rtListProjectType)) {
+                  unset($list[$id]);
+                }
+              }
+            }
+          }
+          //$_REQUEST['required']='true';
+        }
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $critField=$_REQUEST['critField'];
         if (($dataType=='idVersion' or $dataType=='idOriginalVersion' or $dataType=='idTargetVersion') 

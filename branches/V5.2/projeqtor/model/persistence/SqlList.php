@@ -156,7 +156,7 @@ class SqlList {
     	$calculated=true;
     }
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
-    $query.=(! $showIdle)?' and idle=0 ':'';
+    $query.=(! $showIdle and property_exists($obj, 'idle'))?' and idle=0 ':'';
     if (($listType=='Version' or $listType=='TargetVersion' or $listType=='OriginalVersion') and $criteria) {
       foreach($criteria as $key=>$val) {
         if ($key=='idComponent' or $key=='idProductOrComponent') {
