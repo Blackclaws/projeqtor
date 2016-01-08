@@ -45,6 +45,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else {
     $listType=substr($col,2);
   }
+  if ($obj and $col=='id'.get_class($obj).'Type') {
+    if ($critFld and $critVal) {
+      $$critFld=$critVal;
+    }
+    $critFld=null;$critVal=null;
+  }
 	$column='name';
 	$user=getSessionUser();
 	if ($listType=='DocumentDirectory') {
@@ -185,6 +191,22 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$vers=new Version($versProj->idVersion);
     		$restrictArray[$vers->idProduct]="OK";
     	}
+    } else if ($col=='id'.$class.'Type' and $class!='Project' and property_exists($obj, 'idProject')) {
+      if (! isset($idProject)) {
+        if ($obj->idProject) {
+          $idProject=$obj->idProject;
+        } else {
+          $idProject=0;
+        }
+      }
+      $critFld=null;$critVal=null;
+      $rtListProjectType=Type::listRestritedTypesForClass($class.'Type',$idProject, null);
+      if (count($rtListProjectType)) {
+        foreach($rtListProjectType as $id=>$idType) {
+          $restrictArray[$idType]="OK";
+        }
+        if ($selection) $restrictArray[$selection]="OK";
+      }
     }
   } else { // (! $obj)
   	if ($col=="idProject") {

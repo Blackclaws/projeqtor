@@ -94,3 +94,17 @@ UPDATE `${prefix}workelement` SET idProject=(SELECT `idProject` from `${prefix}t
 
 ALTER TABLE `${prefix}workelement` ADD `realCost` NUMERIC(11,2) DEFAULT null,
 ADD `leftCost` NUMERIC(11,2) DEFAULT null;
+
+CREATE TABLE `${prefix}restricttype` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProjectType` int(12) unsigned DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `className` varchar(100) DEFAULT NULL,
+  `idType` int(12) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX restricttypeProjectType ON `${prefix}restricttype` (idProjectType,className,idType);
+CREATE INDEX restricttypeProject ON `${prefix}restricttype` (idProject,className,idType);
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `needReplan` int(1) unsigned DEFAULT 0;
