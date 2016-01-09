@@ -477,11 +477,20 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
           <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
-            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" style="overflow: hidden !important;" selected="true">
+          <?php $selectedAccordionTop=Parameter::getUserParameter('accordionPaneTop');
+                if (! $selectedAccordionTop) $selectedAccordionTop='menuTree';?>
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" 
+              style="overflow: hidden !important;" <?php if ($selectedAccordionTop=='menuTree') echo 'selected="true"';?>>
               <?php include "menuTree.php"; ?>
+              <script type="dojo/connect" event="onShow" args="evt">
+                dojo.xhrPost({
+                  url : "../tool/saveDataToSession.php?saveUserParam=true"
+                    +"&id=accordionPaneTop&value=messageDiv"
+                });;
+              </script>
             </div>
             <?php if (securityCheckDisplayMenu(null,'Document')) {?>
-            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>">
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>" <?php if ($selectedAccordionTop=='document') echo 'selected="true"';?>>
               <div dojoType="dojo.data.ItemFileReadStore" id="directoryStore" jsId="directoryStore" url="../tool/jsonDirectory.php">
               <div style="position: absolute; float:right; right: 5px; cursor:pointer;"
                 title="<?php echo i18n("menuDocumentDirectory");?>"
@@ -499,6 +508,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   loadContent("objectMain.php?objectClass=Document&Directory="+directoryStore.getValue(item, "id"),"centerDiv");
                 </script>
               </div>
+              <script type="dojo/connect" event="onShow" args="evt">
+                dojo.xhrPost({
+                  url : "../tool/saveDataToSession.php?saveUserParam=true"
+                    +"&id=accordionPaneTop&value=document"
+                });;
+              </script>
             </div>
             <?php }?>
           </div>
@@ -513,11 +528,25 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   +"&value="+dojo.byId("leftBottomDiv").offsetHeight
              });;
           </script>
-          <div dojoType="dijit.layout.AccordionContainer">
-            <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" selected="true" title="<?php echo i18n('ExternalShortcuts');?>">
+          <div dojoType="dijit.layout.AccordionContainer" persists="true">
+            <?php $selectedAccordionBottom=Parameter::getUserParameter('accordionPaneBottom');
+                if (! $selectedAccordionBottom) $selectedAccordionBottom='projectLinkDiv';?>
+            <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" <?php if ($selectedAccordionBottom=='projectLinkDiv') echo 'selected="true"';?> title="<?php echo i18n('ExternalShortcuts');?>">
               <?php include "../view/shortcut.php"?>
+              <script type="dojo/connect" event="onShow" args="evt">
+                dojo.xhrPost({
+                  url : "../tool/saveDataToSession.php?saveUserParam=true"
+                    +"&id=accordionPaneBottom&value=projectLinkDiv"
+                });;
+              </script>
             </div>
-            <div id="messageDiv" dojoType="dijit.layout.ContentPane" title="<?php echo i18n('Console');?>" >
+            <div id="messageDiv" dojoType="dijit.layout.ContentPane" title="<?php echo i18n('Console');?>" <?php if ($selectedAccordionBottom=='messageDiv') echo 'selected="true"';?>>
+              <script type="dojo/connect" event="onShow" args="evt">
+                dojo.xhrPost({
+                  url : "../tool/saveDataToSession.php?saveUserParam=true"
+                    +"&id=accordionPaneBottom&value=messageDiv"
+                });;
+              </script>
             </div>
           </div>
         </div>

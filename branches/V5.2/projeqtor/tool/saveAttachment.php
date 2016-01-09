@@ -123,7 +123,10 @@ if ($type=='file') {
     //$error=true;
   } else {
     $link=$_REQUEST['attachmentLink'];
-	  $link=Security::checkValidUrl($link);
+    $link=Security::checkValidUrl($link);
+	  if($link===false) {
+	    $error=htmlGetWarningMessage(i18n('errorInvalidUrl'));
+	  }
   }
   $uploadedFileArray[]="link";
 } else {

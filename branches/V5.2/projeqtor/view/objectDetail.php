@@ -2454,7 +2454,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
           echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img class="roundedButtonSmall" src="css/images/smallButtonDownload.png" /></a>';
         }
         if ($attachment->link and !$print) {
-          echo '<a href="' . htmlEncode($attachment->link) . '"';
+          echo '<a href="' . htmlEncode(urldecode($attachment->link)) . '"';
           echo ' target="#" title="' . urldecode($attachment->link) . '"><img class="roundedButtonSmall" src="css/images/smallButtonLink.png" /></a>';
         }
         if ($attachment->idUser == $user->id and !$print and $canUpdate) {
@@ -2467,7 +2467,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       if ($attachment->isThumbable()) {
         echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . htmlEncode($attachment->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . htmlEncode($attachment->id) . '\',\'' . htmlEncode($attachment->fileName) . '\');" />';
       } else if ($attachment->link and !$print) {
-        echo '<div style="float:left;cursor:pointer" onClick="showLink(\'' . urldecode($attachment->link) . '\');">';
+        echo '<div style="float:left;cursor:pointer" onClick="showLink(\'' . htmlEncode(urldecode($attachment->link)) . '\');">';
         echo '<img src="../view/img/mime/html.png" title="' . htmlEncode($attachment->link) . '" />';
         echo '</div>';
       } else {

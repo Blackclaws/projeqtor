@@ -224,11 +224,18 @@ class Security
   }
   
   public static function checkValidUrl($string) {
-    // TODO (SECURITY) : use ctype_print()
-    if (preg_match('/\.\.\/|[<>]/',urldecode($string)) == True) {
-      traceHack("invalid url value - [$string]");
-      exit;
+    if ($string=='') return false;
+    if (! ctype_print($string) ) {
+      traceHack("invalid url (contains non printable characters) value - [$string]");
+      return false; // Not reached, trackHack exits scrips
     }
+    //$string=filter_var($string, FILTER_VALIDATE_URL); // Not filtered yet : direct file acces
+    if (preg_match('/\.\.\/|[<>]/',urldecode($string)) == True) {
+      //traceHack("invalid url value - [$string]"); // Maybe just an erroneous input, not always an hack attempt
+      return false;
+    }
+    
+    return $string;
   }
   
   public static function checkValidLocale($string) {
