@@ -37,7 +37,7 @@ if (array_key_exists('periodValue',$_REQUEST))
 $paramPeriodScale='';
 if (array_key_exists('periodScale',$_REQUEST)) {
   $paramPeriodScale=$_REQUEST['periodScale'];
-  $paramPeriodScale=SqlElement::checkPeriodPeriodScale($paramPeriodScale);
+  $paramPeriodScale=Security::checkValidPeriodScale($paramPeriodScale);
 };
 $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
