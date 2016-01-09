@@ -1295,7 +1295,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                  <script type="dojo/connect" event="onChange" args="evt" >
                    var objclass=copyableArray[this.value];
                    dijit.byId('copyToType').reset();
-                   refreshList("idType","scope", objclass, null,'copyToType',true);
+                   var idProject=(dijit.byId('idProject'))?dijit.byId('idProject').get('value'):null;
+                   refreshList("id"+objclass+"Type","idProject", idProject, null,'copyToType',true);
                    if (dojo.byId('copyClass').value==objclass) {
                      var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objclass+"Type').get('value'))";
                      setTimeout(runModif,1);

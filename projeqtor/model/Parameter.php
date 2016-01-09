@@ -425,7 +425,7 @@ class Parameter extends SqlElement {
                            'image'=>'photo'
         );
         $lockPassword=Parameter::getGlobalParameter('lockPassword');
-        if (! getBooleanValue($lockPassword)) {
+        if (! getBooleanValue($lockPassword) and !getSessionUser()->isLdap) {
           $parameterList['sectionPassword']='section';
           $parameterList['password']='specific';
         }
