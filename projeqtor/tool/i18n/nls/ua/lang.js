@@ -1000,6 +1000,7 @@ errorHierarchicLoop: "Неможливо створити ієрархічний
 errorIdleWithLeftWork: "Неможливо закрити елемент з доробками(реша роботи)",
 errorImportFormat: "<b>ПОМИЛКА - Підготовлений тип файлу та обраний формат файлу не збігаються</b><br/>Імпорт скасовано",
 errorIncompatibleFields: "Поля '${1}' не сумісні з '${2}'",
+errorInvalidUrl: "[invalid hyperlink]",
 errorLoadContent: "Помилка завантаження вмісту(loadContent) ('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}')<br/>Нема пункту призначення '${5}' або вузла&#44; або об'єкту widget",
 errorLockedBill: "Рахунок (bill) заблоковано",
 errorMagicQuotesGpc: "'magic_quotes_gpc' має бути вимкнутий (встановити на FALSE). <br/>Оновіть файл Php.ini.",

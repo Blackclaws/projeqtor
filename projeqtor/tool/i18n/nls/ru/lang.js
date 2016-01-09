@@ -1000,6 +1000,7 @@ errorHierarchicLoop: "Невозможно создать иерархическ
 errorIdleWithLeftWork: "Невозможно закрыть элемент с остальными работами",
 errorImportFormat: "<b>ОШИБКА — Предоставленный тип файла и выбранный формат файла не совпадают<br/><br/>Импорт прерван",
 errorIncompatibleFields: "поле '${1}' не совместимо с '${2}'",
+errorInvalidUrl: "[invalid hyperlink]",
 errorLoadContent: "Ошибка в loadContent('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}')<br/>Назначение '${5}' не является узлом или не имеет виджетов",
 errorLockedBill: "Биллинг заблокирован",
 errorMagicQuotesGpc: "magic_quotes_gpc должен быть отключен (значение false). <br/>Обновите ваш Php.ini file.",

@@ -3565,7 +3565,7 @@ abstract class SqlElement {
 		$tableEnd='</table>';
 		$msg=$tableStart;
 		$ref=$this->getReferenceUrl();
-		$msg.='<tr><td colspan="3" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.htmlEncode($this->id).'</a></td></tr>';
+		$msg.='<tr><td colspan="3" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '" target="#">'.i18n(get_class($this)).' #'.htmlEncode($this->id).'</a></td></tr>';
 		$nobr=false;
 		foreach ($this as $col => $val) {
 			$hide=false;

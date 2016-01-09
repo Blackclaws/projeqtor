@@ -30,7 +30,9 @@ if (array_key_exists('project',$_SESSION)) {
   $proj=$_SESSION['project'];
 }
 $prj=new Project($proj);
-$lstProj=$prj->getRecursiveSubProjectsFlatList(true,true);
+$lstProjSelect=$prj->getRecursiveSubProjectsFlatList(true,true);
+$lstProjVisible=getSessionUser()->getVisibleProjects(); 
+$lstProj=array_intersect_assoc($lstProjSelect,$lstProjVisible);
 echo '<table style="width: 100%;">';
 foreach ($lstProj as $prjId=>$prjName) {
   $att=new Attachment();

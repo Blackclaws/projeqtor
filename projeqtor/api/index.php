@@ -97,20 +97,26 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     		} else if (count($split)==4 and $split[1]=='updated') {  // =============== uri = {OblectClass}/update/{YYYYMMDDHHMNSS}/{YYYYMMDDHHMNSS}
     			$beg=$split[2];
     			$end=$split[3];
-    			$begDate=substr($beg,0,4).'-'.substr($beg,4,2).'-'.substr($beg,6,2).' '.substr($beg,8,2).':'.substr($beg,10,2).':'.substr($beg,12,2);
-    			$endDate=substr($end,0,4).'-'.substr($end,4,2).'-'.substr($end,6,2).' '.substr($end,8,2).':'.substr($end,10,2).':'.substr($end,12,2);
-    			$hist=new History();
-    			$crit="refType='$class' and operationDate>='$begDate' and operationDate<'$endDate'";
-    			$histList=$hist->getSqlElementsFromCriteria(null, null, $crit);
-    			$hAr=array();
-    			foreach ($histList as $hist) {
-    				$hAr[$hist->refId]=$hist->refId;
-    			}
-    			if (count($hAr)==0) {
-    				$where="id=0";
-    			} else {
-    				$where="id in (".implode(',',$hAr).")";
-    			}
+    			if ($class=='Work') {
+    			  $begDate=substr($beg,0,8);
+    			  $endDate=substr($end,0,8);
+    			  $where="day>=".Sql::str($begDate). " and day<=".Sql::str($endDate);
+    			} else {  
+      			$begDate=substr($beg,0,4).'-'.substr($beg,4,2).'-'.substr($beg,6,2).' '.substr($beg,8,2).':'.substr($beg,10,2).':'.substr($beg,12,2);
+      			$endDate=substr($end,0,4).'-'.substr($end,4,2).'-'.substr($end,6,2).' '.substr($end,8,2).':'.substr($end,10,2).':'.substr($end,12,2);
+      			$hist=new History();
+      			$crit="refType='$class' and operationDate>='$begDate' and operationDate<'$endDate'";
+      			$histList=$hist->getSqlElementsFromCriteria(null, null, $crit);
+      			$hAr=array();
+      			foreach ($histList as $hist) {
+      				$hAr[$hist->refId]=$hist->refId;
+      			}
+      			if (count($hAr)==0) {
+      				$where="id=0";
+      			} else {
+      				$where="id in (".implode(',',$hAr).")";
+      			}
+    		  }
     		} else if (count($split)==3 and $split[1]=='filter') {  // =============== uri = {OblectClass}/filter/{filterId}
  					$filterId=$split[2];
  					$crit=new FilterCriteria();

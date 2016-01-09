@@ -108,3 +108,5 @@ CREATE INDEX restricttypeProjectType ON `${prefix}restricttype` (idProjectType,c
 CREATE INDEX restricttypeProject ON `${prefix}restricttype` (idProject,className,idType);
 
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `needReplan` int(1) unsigned DEFAULT 0;
+
+ALTER TABLE `${prefix}attachment` CHANGE `fileName` `fileName` varchar(256);

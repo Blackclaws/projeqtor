@@ -29,11 +29,23 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/planningMain.php');  
+  
+  $listHeight='60%';
+  $topDetailDivHeight=Parameter::getUserParameter('contentPaneTopResourcePlanningDivHeight');
+  $listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="ResourcePlanning" />
 <input type="hidden" name="resourcePlanning" id="resourcePlanning" value="true" />
 <div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:60%;">
+  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
+    <script type="dojo/connect" event="resize" args="evt">
+         if (switchedMode) return;
+             dojo.xhrPost({
+               url : "../tool/saveDataToSession.php?saveUserParam=true"
+                  +"&id=contentPaneTopResourcePlanningDivHeight"
+                  +"&value="+dojo.byId("listDiv").offsetHeight
+             });;
+    </script>
    <?php include 'resourcePlanningList.php'?>
   </div>
   <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
