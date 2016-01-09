@@ -2035,6 +2035,46 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                  <?php //htmlDrawOptionForReference('idProject', null, null, true);
                        // no use : will be updated on dialog opening;?>
                </select>
+               <button id="versionProjectProjectDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    var canCreate=0;
+                    if (canCreateArray['Project'] == "YES") {
+                      canCreate=1;
+                    }
+                    //showDetail('versionProjectProject', canCreate, 'Project', false);
+                    showDetail('versionProjectProject', 0, 'Project', false); // should not create project here 
+                 </script>
+               </button>
+             </td>
+           </tr>
+            <tr>
+             <td class="dialogLabel"  >
+               <label for="versionProjectProduct" ><?php echo i18n("colIdProduct") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="versionProjectProduct" name="versionProjectProduct" 
+                class="input" value="" required="required">
+                <script type="dojo/connect" event="onChange" args="evt">
+                    refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true);
+                </script>
+                 <?php //htmlDrawOptionForReference('idProject', null, null, true);
+                       // no use : will be updated on dialog opening;?>
+               </select>
+               <button id="versionProjectProductDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    var canCreate=0;
+                    if (canCreateArray['Product'] == "YES") {
+                      canCreate=1;
+                    }
+                    //showDetail('versionProjectProduct', canCreate, 'Product', false);
+                    showDetail('versionProjectProduct', 0, 'Product', false); // should not create product here 
+                 </script>
+               </button>
              </td>
            </tr>
            <tr>
@@ -2048,6 +2088,17 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                  <?php //htmlDrawOptionForReference('idVersion', null, null, true);
                        // no use : will be updated on dialog opening;?>
                </select>
+               <button id="versionProjectVersionDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    var canCreate=0;
+                    if (canCreateArray['ProductVersion'] == "YES") {
+                      canCreate=1;
+                    }
+                    showDetail('versionProjectVersion', canCreate, 'ProductVersion', false);
+                 </script>
+               </button>
              </td>
            </tr>
            <tr>

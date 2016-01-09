@@ -3407,21 +3407,32 @@ function addVersionProject(idVersion, idProject) {
     return;
   }
   refreshList('idProject', null, null, null, 'versionProjectProject', true);
-  refreshList('idVersion', null, null, null, 'versionProjectVersion', true);
+  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
+  refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+  dijit.byId("versionProjectProduct").set('value', null);
+  dijit.byId("versionProjectProduct").set('readOnly', true);
   dojo.byId("versionProjectId").value="";
   if (idVersion) {
     dijit.byId("versionProjectVersion").set('readOnly', true);
+    dijit.byId("versionProjectProduct").set('readOnly', true);
     dijit.byId("versionProjectVersion").set('value', idVersion);
+    disableWidget("versionProjectProductDetailButton");
+    disableWidget("versionProjectVersionDetailButton");
   } else {
     dijit.byId("versionProjectVersion").set('readOnly', false);
+    dijit.byId("versionProjectProduct").set('readOnly', false);
     dijit.byId("versionProjectVersion").reset();
+    enableWidget("versionProjectProductDetailButton");
+    enableWidget("versionProjectVersionDetailButton");
   }
   if (idProject) {
     dijit.byId("versionProjectProject").set('readOnly', true);
     dijit.byId("versionProjectProject").set('value', idProject);
+    disableWidget("versionProjectProjectDetailButton");
   } else {
     dijit.byId("versionProjectProject").set('readOnly', false);
     dijit.byId("versionProjectProject").reset();
+    enableWidget("versionProjectProjectDetailButton");
   }
 
   dijit.byId("versionProjectIdle").reset();
@@ -3452,20 +3463,31 @@ function editVersionProject(id, idVersion, idProject, startDate, endDate, idle) 
   }
   dojo.byId("versionProjectId").value=id;
   refreshList('idProject', null, null, null, 'versionProjectProject', true);
-  refreshList('idVersion', null, null, null, 'versionProjectVersion', true);
+  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
+  refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+  dijit.byId("versionProjectProduct").set('value', null);
+  dijit.byId("versionProjectProduct").set('readOnly', true);
   if (idVersion) {
     dijit.byId("versionProjectVersion").set('readOnly', true);
     dijit.byId("versionProjectVersion").set('value', idVersion);
+    dijit.byId("versionProjectProduct").set('readOnly', true);
+    disableWidget("versionProjectProductDetailButton");
+    disableWidget("versionProjectVersionDetailButton");
   } else {
     dijit.byId("versionProjectVersion").set('readOnly', false);
+    dijit.byId("versionProjectProduct").set('readOnly', false);
     dijit.byId("versionProjectVersion").reset();
+    enableWidget("versionProjectProductDetailButton");
+    enableWidget("versionProjectVersionDetailButton");
   }
   if (idProject) {
     dijit.byId("versionProjectProject").set('readOnly', true);
     dijit.byId("versionProjectProject").set('value', idProject);
+    disableWidget("versionProjectProjectDetailButton");
   } else {
     dijit.byId("versionProjectProject").set('readOnly', false);
     dijit.byId("versionProjectProject").reset();
+    enableWidget("versionProjectProjectDetailButton");
   }
   if (startDate) {
     dijit.byId("versionProjectStartDate").set('value', startDate);

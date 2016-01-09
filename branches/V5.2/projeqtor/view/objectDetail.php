@@ -2472,7 +2472,6 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '</div>';
       } else {
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
-        debugLog(htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id));
       }
       echo '</td><td class="attachmentData" style="border-left:none;width:' . (($print)?'90':'80') . '%" >';
       echo formatUserThumb($userId, $userName, 'Creator');
@@ -3127,6 +3126,8 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   
   echo '</tr>';
   foreach ( $list as $vp ) {
+    $vers=new Version($vp->idVersion);
+    if ($vers->scope!='Product') continue;
     echo '<tr>';
     if (!$print) {
       echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
