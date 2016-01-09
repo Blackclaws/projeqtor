@@ -682,7 +682,7 @@ function htmlGetMimeType($mimeType,$fileName, $id=null) {
   }
   $image='<img src="' . $img . '" title="' . $mimeType . '" ';
   if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf")) {
-  	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.$fileName.'\')" ';
+  	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.htmlEncode($fileName,'quotes').'\')" ';
   }
   $image.='/>&nbsp;';
   return $image;
