@@ -2472,6 +2472,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '</div>';
       } else {
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
+        debugLog(htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id));
       }
       echo '</td><td class="attachmentData" style="border-left:none;width:' . (($print)?'90':'80') . '%" >';
       echo formatUserThumb($userId, $userName, 'Creator');
