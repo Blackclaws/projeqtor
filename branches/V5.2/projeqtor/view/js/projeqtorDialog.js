@@ -3694,6 +3694,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
   dijit.byId("affectationIdle").reset();
   dijit.byId("affectationStartDate").reset();
   dijit.byId("affectationEndDate").reset();
+  dijit.byId("affectationDescription").reset();
   dijit.byId("dialogAffectation").show();
   setTimeout("affectationLoad=false", 500);
 }
@@ -3721,6 +3722,15 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  disableWidget("affectationDescription");
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=affectationDescription&idAffectation='+id,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('affectationDescription').set('value', data);
+      enableWidget("affectationDescription");
+    }
+  });
   if (idProfile) {
     dijit.byId("affectationProfile").set('value', idProfile);
   } else {
@@ -3810,6 +3820,7 @@ function affectTeamMembers(idTeam) {
   dijit.byId("affectationProject").reset();
   dijit.byId("affectationRate").set('value', '100');
   dijit.byId("affectationIdle").reset();
+  dijit.byId("affectationDescription").reset();
   dijit.byId("affectationIdle").set('readOnly', true);
   dijit.byId("dialogAffectation").show();
 }

@@ -1174,7 +1174,22 @@ JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
   var i        = 0;
   var vNumKid  = 0;
   var vCompSum = 0;
-  var vVisible = pOpen;   
+  var vVisible = pOpen;
+  if (pRow==0) {
+    for(i=pList.length-1; i>0; i--) {
+      parentId=null;
+      if (pList[i].getParent()) {
+        for (j=0;j<pList.length;j++) {
+          if (pList[j].getID()==pList[i].getParent()) {
+            parentId=j;
+            break;
+          }
+        }
+        if (pList[parentId].getStart()>pList[i].getStart()) { pList[parentId].setStart(pList[i].getStart());}
+        if (pList[parentId].getEnd()<pList[i].getEnd()) { pList[parentId].setEnd(pList[i].getEnd());}
+      }
+    }
+  }
   for(i = 0; i < pList.length; i++) {
     if(pList[i].getParent() == pID || (pID==0 && i==0) ) {
       vVisible = pOpen;

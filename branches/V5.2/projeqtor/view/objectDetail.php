@@ -3259,11 +3259,17 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
         $goto=' onClick="gotoElement(\'Affectation\',\'' . htmlEncode($aff->id) . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData' . $idleClass . '" align="center">' . htmlEncode($aff->id) . '</td>';
-      if ($idProj) {
+      /*if ($idProj) {
         echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';
       } else {
         echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';
+      }*/
+      echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>';
+      if ($aff->description and !$print) {
+        echo formatCommentThumb(htmlTransformRichtextToPlaintext($aff->description));
       }
+      echo htmlEncode($name);
+      echo '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" >' . SqlList::getNameFromId('Profile', $aff->idProfile, true) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->startDate) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->endDate) . '</td>';

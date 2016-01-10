@@ -62,6 +62,12 @@ if (! array_key_exists('affectationRate',$_REQUEST)) {
 $rate=($_REQUEST['affectationRate']);
 Security::checkValidNumeric($rate);
 
+$description=null;
+if (array_key_exists('affectationDescription',$_REQUEST)) {
+  $description=($_REQUEST['affectationDescription']);
+}
+
+
 $startDate="";
 if (array_key_exists('affectationStartDate',$_REQUEST)) {
 	$startDate=($_REQUEST['affectationStartDate']);;
@@ -90,6 +96,9 @@ if (! $idTeam) {
 	$affectation->startDate=$startDate;
 	$affectation->endDate=$endDate;
 	$affectation->idProfile=$profile;
+	if (! $affectation->id or $description!=htmlTransformRichtextToPlaintext($affectation->description)) {
+	  $affectation->description=nl2br($description);
+	}
 	$result=$affectation->save();
 } else {
 	$crit=array('idTeam'=>$idTeam);

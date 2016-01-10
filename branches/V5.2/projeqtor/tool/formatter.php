@@ -365,8 +365,8 @@ function diffReplaceEOL($valIn) {
   $val=preg_replace('/<td(.)*?>/', "\n", $val);
   $val=preg_replace('/<tr(.)*?>/', "\n", $val);
   $val=preg_replace('/<table(.)*?>/', "\n", $val);
-  $val=str_replace(array('&nbsp;','<br/>','<div>','</div>','</p>','</td>','</tr>','</table>','<tbody>','</tbody>','color:white'),
-                   array(' '     ,"\n"   ,"\n"   ,''      ,''    ,''     ,''     ,''        ,''       ,''        ,'color:grey'),
+  $val=str_replace(array('&nbsp;','<br />','<br/>','<div>','</div>','</p>','</td>','</tr>','</table>','<tbody>','</tbody>','color:white'),
+                   array(' '     ,"\n"    ,"\n"   ,"\n"   ,''      ,''    ,''     ,''     ,''        ,''       ,''        ,'color:grey'),
                    $val);
   if (substr_count($val,'<o:p> </o:p>')>0 or substr_count($val,'<o:p></o:p>')>0) {
     $val=strip_tags($val);

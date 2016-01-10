@@ -258,8 +258,10 @@ $canPlan=(count($plannableProjectsList)>0)?true:false;
                             foreach($arrayItems as $item) {?>
                             <div style="vertical-align:top;cursor:pointer;" 
                              onClick="addNewItem('<?php echo $item;?>');" >
-                              <img src="../view/css/images/icon<?php echo $item;?>22.png" />&nbsp;&nbsp;    
-                             <?php echo i18n($item)?>   
+                              <table><tr style="height:22px">
+                              <td style="vertical-align:top;"><img src="../view/css/images/icon<?php echo $item;?>22.png" />&nbsp;&nbsp;</td>    
+                              <td style="vertical-align:top;padding-top:2px"><?php echo i18n($item)?></td>
+                              </tr></table>   
                             </div>
                             <div style="height:5px;"></div>
                             <?php }?>
