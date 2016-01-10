@@ -958,7 +958,14 @@ function htmlFixLengthNumeric($val, $numericLength=0) {
   return $val;
 }
 
-function htmlDisplayCurrentWork() {
-	
+function htmlTransformRichtextToPlaintext($string) {
+  $string=str_replace(array('</div>  <div>'),
+                      array('</div><div>'),
+                      $string);
+  $string=str_replace(array('&nbsp;','<br /> ','<br>','<br/>'  ,'</div>'  ,'</p>'  ,'</tr>'),
+                      array(' '     ,"\n"    ,"\n"  ,"\n","</div>\n","</p>\n","</tr>\n"),
+                      $string);
+  $string=strip_tags(html_entity_decode($string));
+  return $string;
 }
 ?>

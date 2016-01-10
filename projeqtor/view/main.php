@@ -2381,6 +2381,18 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            </tr>
            <tr>
              <td class="dialogLabel" >
+               <label for="affectationDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td> 
+               <textarea dojoType="dijit.form.Textarea" 
+                id="affectationDescription" name="affectationDescription"
+                style="width:400px;"
+                maxlength="4000"
+                class="input"></textarea>   
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
                <label for="affectationIdle" ><?php echo i18n("colIdle");?>&nbsp;:&nbsp;</label>
              </td>
              <td>

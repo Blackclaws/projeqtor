@@ -72,6 +72,10 @@
         $cpt++;
         echo (($cpt>1)?', ':'').$cl;
       }
+    } else if ($type=='affectationDescription') {
+      $idAffectation=$_REQUEST['idAffectation'];
+      $aff=new Affectation($idAffectation);
+      echo htmlTransformRichtextToPlaintext($aff->description);
     } else {   
        
       echo '';
