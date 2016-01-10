@@ -66,7 +66,7 @@
     } else if ($type=='restrictedTypeClass') {
       $idProjectType=$_REQUEST['idProjectType'];
       $idProject=$_REQUEST['idProject'];
-      $list=Type::getRestrcitecTypesClass($idProject,$idProjectType);
+      $list=Type::getRestrictedTypesClass($idProject,$idProjectType);
       $cpt=0;
       foreach ($list as $cl) {
         $cpt++;

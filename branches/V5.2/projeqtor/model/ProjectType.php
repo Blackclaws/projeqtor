@@ -197,7 +197,7 @@ class ProjectType extends SqlElement {
       }
       $result.='<table style="witdh:100%"><tr><td class="label">'.i18n('existingRestrictions').'&nbsp;:&nbsp;</td><td>';
       $result.='<div id="resctrictedTypeClassList">';
-      $list=Type::getRestrcitecTypesClass(null,$this->id);
+      $list=Type::getRestrictedTypesClass(null,$this->id);
       $cpt=0;
       foreach ($list as $cl) {
         $cpt++;

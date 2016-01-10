@@ -57,6 +57,10 @@ class Type extends SqlElement {
   public $showInFlash;
   public $internalData;
   
+  public static $_cacheClassList;
+  public static $_cacheRestrictedTypesClass;
+  public static $_cacheListRestritedTypesForClass;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -142,6 +146,12 @@ class Type extends SqlElement {
    */
   public static function getClassList() {
     global $hideAutoloadError;
+    if (self::$_cacheClassList) {
+      return self::$_cacheClassList;
+    } else if (getSessionValue('typeClassList')) {
+      self::$_cacheClassList=getSessionValue('typeClassList');
+      return self::$_cacheClassList;
+    }
     $hideAutoloadError=true;
     $dir='../model/';
     $handle = opendir($dir);
@@ -161,6 +171,8 @@ class Type extends SqlElement {
     }
     closedir($handle);
     asort($result);
+    setSessionValue('typeClassList',$result);
+    self::$_cacheClassList=$result;
     return $result;
   }
   public static function getRestrictedTypes($idProject,$idProjectType) {
@@ -172,7 +184,20 @@ class Type extends SqlElement {
     $rtList=SqlList::getListWithCrit('RestrictType', $crit, 'idType');
     return $rtList;
   }
-  public static function getRestrcitecTypesClass($idProject,$idProjectType) {
+  public static function getRestrictedTypesClass($idProject,$idProjectType) {
+    $key="$idProject#$idProjectType";
+    if (self::$_cacheRestrictedTypesClass and isset(self::$_cacheRestrictedTypesClass[$key])) {
+      return self::$_cacheRestrictedTypesClass[$key];
+    } else {
+      $sessionValue=getSessionValue('restrictedTypesClass',array());
+      if ($sessionValue and isset($sessionValue[$key])) {
+        if (!self::$_cacheRestrictedTypesClass) self::$_cacheRestrictedTypesClass=array();
+        self::$_cacheRestrictedTypesClass[$key]=$sessionValue[$key];
+        return self::$_cacheRestrictedTypesClass[$key];
+      }
+    }
+    if (!$sessionValue) $sessionValue=array();
+    if (!self::$_cacheRestrictedTypesClass) self::$_cacheRestrictedTypesClass=array();
     $listClass=SqlList::getList('Type','scope');    
     $result=array();
     $list=self::getRestrictedTypes($idProject,$idProjectType);
@@ -182,9 +207,25 @@ class Type extends SqlElement {
       }
     }
     asort($result);
+    self::$_cacheRestrictedTypesClass[$key]=$result;
+    $sessionValue[$key]=$result;
+    setSessionValue('restrictedTypesClass', $sessionValue);
     return $result;
   }
   public static function listRestritedTypesForClass($class,$idProject,$idProjectType) {
+    $key="$class#$idProject#$idProjectType";
+    if (self::$_cacheListRestritedTypesForClass and isset(self::$_cacheListRestritedTypesForClass[$key])) {
+      return self::$_cacheListRestritedTypesForClass[$key];
+    } else {
+      $sessionValue=getSessionValue('listRestritedTypesForClass',array());
+      if ($sessionValue and isset($sessionValue[$key])) {
+        if (!self::$_cacheListRestritedTypesForClass) self::$_cacheListRestritedTypesForClass=array();
+        self::$_cacheListRestritedTypesForClass[$key]=$sessionValue[$key];
+        return self::$_cacheListRestritedTypesForClass[$key];
+      }
+    }
+    if (!$sessionValue) $sessionValue=array();
+    if (!self::$_cacheListRestritedTypesForClass) self::$_cacheRestrictedTypesClass=array();
     if (!$idProjectType) {
       $lst=SqlList::getListWithCrit('RestrictType', array('idProject'=>$idProject, 'className'=>$class),'idType');
       if (count($lst)) { // If restrictions exist for the project, get them
@@ -193,8 +234,11 @@ class Type extends SqlElement {
       $proj=new Project($idProject,true);
       $idProjectType=$proj->idProjectType;
     } // else will retreive from project type
-    
-    return SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+    $result=SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+    self::$_cacheListRestritedTypesForClass[$key]=$result;
+    $sessionValue[$key]=$result;
+    setSessionValue('listRestritedTypesForClass', $sessionValue);
+    return $result;
   }
   
   public static function getSpecificRestrictTypeValue($idType,$idProject,$idProjectType) {
@@ -210,7 +254,10 @@ class Type extends SqlElement {
   }
   
   public static function clearRestrictTypeCache() {
-    
+    self::$_cacheRestrictedTypesClass=null;
+    unsetSessionValue('restrictedTypesClass');
+    self::$_cacheListRestritedTypesForClass=null;
+    unsetSessionValue('listRestritedTypesForClass');
   }
 }
 ?>
