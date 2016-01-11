@@ -68,6 +68,9 @@
      <copy todir="${deploy.dir}/external/diff">
        <fileset dir="${src.dir}/external/diff"/>
      </copy>
+  	 <copy todir="${deploy.dir}/external/ckeditor">
+  	   <fileset dir="${src.dir}/external/ckeditor"/>
+  	 </copy>
   </target>
   
   <target name="copyFiles">
