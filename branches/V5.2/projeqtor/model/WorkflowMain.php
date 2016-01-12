@@ -482,14 +482,13 @@ class WorkflowMain extends SqlElement {
     $firstStatusName=current($statusList);
     $firstStatusFound=false;
     $search = 'val_' . $firstStatus . '_';
-    foreach ($_REQUEST as $field=>$value) { // Note: this control() function does not seem to be called at all. Not on instances of this class, or of other classes.
-	  error_log("DEBUG: WorkflowMain.php - [field]=>[value]: [$field]=>[$value]");
+    foreach ($_REQUEST as $field=>$value) { // The first status (default=recorded) is seached in the workflow definition 
       if (substr($field,0,strlen($search))==$search) {
         $firstStatusFound=true;
         break;
       }
     }    
-    if (!$firstStatusFound) {
+    if (!$firstStatusFound) { // First status is not found : so it will never be possible to quit this workflow ...
         $result.='<br/>' . i18n('msgFirstStatusMandatoryInWorkflow',array($firstStatusName)); 
     }
     

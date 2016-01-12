@@ -5300,7 +5300,7 @@ function startMultipleUpdateMode(objectClass) {
   }
   multiSelection=true;
   // dojo.xhrPost({url:
-  // "../tool/saveDataToSession.php?id=multipleMode&value=true"});
+  // "../tool/saveDataToSession.php?idData=multipleMode&value=true"});
   formChangeInProgress=true;
   switchedModeBeforeMultiSelection=switchedMode;
   if (switchedModeBeforeMultiSelection) {
@@ -5338,7 +5338,7 @@ function endMultipleUpdateMode(objectClass) {
   }
   multiSelection=false;
   // dojo.xhrPost({url:
-  // "../tool/saveDataToSession.php?id=multipleMode&value=false"});
+  // "../tool/saveDataToSession.php?idData=multipleMode&value=false"});
   formChangeInProgress=false;
   if (switchedModeBeforeMultiSelection) {
     switchMode();
@@ -5628,7 +5628,7 @@ function checkExportColumns(scope) {
 // ==================================================================
 function changeProjectSelectorType(displayMode) {
   dojo.xhrPost({
-        url : "../tool/saveDataToSession.php?saveUserParam=true&id=projectSelectorDisplayMode&value="
+        url : "../tool/saveDataToSession.php?saveUserParam=true&idData=projectSelectorDisplayMode&value="
             + displayMode,
         load : function() {
           loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
@@ -5993,7 +5993,7 @@ function historyShowHideWork() {
     dijit.byId('dialogHistory').hide();
   } 
   dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?saveUserParam=false&id=showWorkHistory&value="+historyShowHideWorkStatus,
+    url : "../tool/saveDataToSession.php?saveUserParam=false&idData=showWorkHistory&value="+historyShowHideWorkStatus,
     load : function() {
       showHistory(dojo.byId('objectClass').value);  
     }

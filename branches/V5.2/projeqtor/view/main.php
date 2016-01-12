@@ -450,7 +450,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          if (hideShowMenuInProgress) return;
          dojo.xhrPost({
             url : "../tool/saveDataToSession.php?saveUserParam=true"
-              +"&id=contentPaneLeftDivWidth"
+              +"&idData=contentPaneLeftDivWidth"
               +"&value="+dojo.byId("leftDiv").offsetWidth
          });;
       </script>
@@ -485,7 +485,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <script type="dojo/connect" event="onShow" args="evt">
                 dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
-                    +"&id=accordionPaneTop&value=messageDiv"
+                    +"&idData=accordionPaneTop&value=messageDiv"
                 });;
               </script>
             </div>
@@ -511,7 +511,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <script type="dojo/connect" event="onShow" args="evt">
                 dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
-                    +"&id=accordionPaneTop&value=document"
+                    +"&idData=accordionPaneTop&value=document"
                 });;
               </script>
             </div>
@@ -524,7 +524,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           <script type="dojo/connect" event="resize" args="evt">
              dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&id=contentPaneLeftBottomDivHeight"
+                  +"&idData=contentPaneLeftBottomDivHeight"
                   +"&value="+dojo.byId("leftBottomDiv").offsetHeight
              });;
           </script>
@@ -536,7 +536,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <script type="dojo/connect" event="onShow" args="evt">
                 dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
-                    +"&id=accordionPaneBottom&value=projectLinkDiv"
+                    +"&idData=accordionPaneBottom&value=projectLinkDiv"
                 });;
               </script>
             </div>
@@ -544,7 +544,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <script type="dojo/connect" event="onShow" args="evt">
                 dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
-                    +"&id=accordionPaneBottom&value=messageDiv"
+                    +"&idData=accordionPaneBottom&value=messageDiv"
                 });;
               </script>
             </div>

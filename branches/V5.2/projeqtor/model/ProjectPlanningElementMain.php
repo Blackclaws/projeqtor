@@ -315,10 +315,10 @@ class ProjectPlanningElementMain extends PlanningElement {
     $where='idProject='.$this->refId.' and idActivity is null'; $crit=null;
     $tkt=new WorkElement();
     $sum=$tkt->sumSqlElementsFromCriteria(array('realWork', 'leftWork','realCost','leftCost'), $crit, $where);
-    $this->realWork+=$sum['sumRealWork'];
-    $this->leftWork+=$sum['sumLeftWork'];
-    $this->realCost+=$sum['sumRealCost'];
-    $this->leftCost+=$sum['sumLeftCost'];
+    $this->realWork+=$sum['sumrealwork'];
+    $this->leftWork+=$sum['sumleftwork'];
+    $this->realCost+=$sum['sumrealcost'];
+    $this->leftCost+=$sum['sumleftcost'];
     //$this->realCost+=$sumCost;
     if (! $doNotSave) {
       $this->simpleSave();

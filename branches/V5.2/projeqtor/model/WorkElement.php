@@ -275,7 +275,7 @@ class WorkElement extends SqlElement {
 		$wk=new Work();
 		$costs=$wk->sumSqlElementsFromCriteria(array('cost'), array('idWorkElement'=>$this->id));
 		if ($costs) {
-		  $this->realCost=$costs['sumCost'];
+		  $this->realCost=$costs['sumcost'];
 		  if ($this->realWork!=0) {
 		    $this->leftCost=round($this->leftWork*$this->realCost/$this->realWork,0);
 		  }

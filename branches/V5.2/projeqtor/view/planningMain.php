@@ -41,7 +41,7 @@
          if (switchedMode) return;
              dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&id=contentPaneTopPlanningDivHeight"
+                  +"&idData=contentPaneTopPlanningDivHeight"
                   +"&value="+dojo.byId("listDiv").offsetHeight
              });;
     </script>

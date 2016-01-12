@@ -151,7 +151,7 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;" id="bodyPrint" class="white" onload="top.hideWait();">
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="white" onload="top.hideWait();">
   <?php 
   }
   $page=$_REQUEST['page'];
@@ -191,6 +191,7 @@
       /* HTML2PDF way */
       require_once('../external/html2pdf/html2pdf.class.php');
       include_once('../external/html2pdf/_class/locale.class.php');
+debugLog($orientation);
       $html2pdf = new HTML2PDF($orientation,'A4','en');
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');

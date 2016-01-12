@@ -284,7 +284,7 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='   value="'.(($this->periodicityMonthlyDayDay)?$this->periodicityMonthlyDayDay:1).'" class="input"></div>';
       $result.='&nbsp;'.i18n('periodicEvery');
       $result.='&nbsp;<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
-      $result.='   constraints="{min:0,max:9}" name="periodicityMonthlyDayFrequency" ';
+      $result.='   constraints="{min:0,max:12}" name="periodicityMonthlyDayFrequency" ';
       $result.='   value="'.(($this->periodicityMonthlyDayFrequency)?$this->periodicityMonthlyDayFrequency:1).'" class="input"></div>';
       $result.='&nbsp;'.i18n('periodicMonths');
       $result.='</td></tr></table>';
@@ -303,7 +303,7 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='</select>';
       $result.='&nbsp;'.i18n('periodicEvery');
       $result.='&nbsp;<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
-      $result.='   constraints="{min:0,max:9}" name="periodicityMonthlyWeekFrequency" ';
+      $result.='   constraints="{min:0,max:12}" name="periodicityMonthlyWeekFrequency" ';
       $result.='   value="'.(($this->periodicityMonthlyWeekFrequency)?$this->periodicityMonthlyWeekFrequency:1).'" class="input"></div>';
       $result.='&nbsp;'.i18n('periodicMonths');
       $result.='</td></tr></table>';

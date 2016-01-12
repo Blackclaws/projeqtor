@@ -223,7 +223,7 @@ if( isset($_FILES[$fieldName]) || isset($_FILES['uploadedfileFlash'])){
 			try{
 			  list($width, $height) = getimagesize($file);
 			} catch(Exception $e){
-			  error_log("NO EL MOVEO: " . $name);
+			  errorLog("error on move: " . $name);
 			  $width=0;
 			  $height=0;
 			  $_post['filesInError'] = $name;

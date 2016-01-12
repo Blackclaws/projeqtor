@@ -41,7 +41,7 @@ function disconnect() {
   disconnectFunction = function() {
     var extUrl="&cleanCookieHash=true";
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=disconnect"+extUrl,
+      url: "../tool/saveDataToSession.php?idData=disconnect"+extUrl,
       handleAs: "text",
       load: function(data,args) { window.location="."; }
     });
