@@ -123,7 +123,7 @@ class Dependency extends SqlElement {
     }
     // Must have write access to successor to create link
     $succClass=$this->successorRefType;
-    if ($succClass and class_exists($succClass)) {  	
+    if ($succClass and SqlElement::class_exists($succClass)) {  	
 	    $succ=new $succClass($this->successorRefId);
 	    $canUpdateSucc=(securityGetAccessRightYesNo('menu' . $succClass, 'update', $succ)=='YES');
 	    if (! $canUpdateSucc) {

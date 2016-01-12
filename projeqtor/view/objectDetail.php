@@ -424,26 +424,29 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $idType='id' . $type;
   $objType=null;
   if (property_exists($obj, $idType)) {
-    $objType=new $type($obj->$idType);
+    if (SqlElement::class_exists($type)) $objType=new $type($obj->$idType);
   } else if ($included) {
     $type=$obj->refType . 'Type';
     $idType='id' . $type;
     if (!$obj->id) {
-      $listType=SqlList::getList($type);
-      $first_value = reset($listType);
-      $first_key = key($listType);
-      $objType=new $type($first_key);
+      if (SqlElement::class_exists($type)) {
+        $listType=SqlList::getList($type);
+        $first_value = reset($listType);
+        $first_key = key($listType);
+        $objType=new $type($first_key);
+      }
     } else {
-      $orig=new $obj->refType($obj->refId);
-      $objType=new $type($orig->$idType);
+      if (SqlElement::class_exists($obj->refType)) {
+        $orig=new $obj->refType($obj->refId);
+        if (SqlElement::class_exists($type)) $objType=new $type($orig->$idType);
+      }
     }
   }
   $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
-  
   $section='';
   $nbLineSection=0;
   
-  if (is_subclass_of($obj, 'PlanningElement')) {
+  if (SqlElement::is_subclass_of($obj, 'PlanningElement')) {
     $obj->setVisibility();
     $workVisibility=$obj->_workVisibility;
     $costVisibility=$obj->_costVisibility;
@@ -492,7 +495,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth=($detailWidth) / $nbCol;
-      if (is_subclass_of($obj, 'PlanningElement') and $internalTableRows >= 3) {
+      if (SqlElement::is_subclass_of($obj, 'PlanningElement') and $internalTableRows >= 3) {
         for ($i=0; $i < $internalTableRows; $i++) {
           $testRowCaption=strtolower($internalTableRowsCaptions [$i]);
           if ($workVisibility == 'NO' and substr($testRowCaption, -4) == 'work') {
@@ -1367,7 +1370,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $critVal=SqlList::getNameFromId('Checklistable', $obj->idChecklistable, false);
           }
         }
-        if (is_a($obj,'PlanningElement')) {
+        if (SqlElement::is_a($obj,'PlanningElement')) {
           $planningModeName='id'.$obj->refType.'PlanningMode';    
           if ($col==$planningModeName and !$obj->id and $objType) {      
             if (property_exists($objType,$planningModeName)) {
@@ -3104,7 +3107,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   if (get_class($obj) == 'Project') {
     $idProj=$obj->id;
     $idVers=null;
-  } else if (is_a($obj,'Version') ) {
+  } else if (SqlElement::is_a($obj,'Version') ) {
     $idProj=null;
     $idVers=$obj->id;
   }

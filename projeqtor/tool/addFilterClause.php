@@ -87,12 +87,7 @@ if (! array_key_exists('filterValueDate',$_REQUEST)) {
   throwError('filterValueDate parameter not found in REQUEST');
 }
 $filterValueDate=$_REQUEST['filterValueDate'];
-
-// TODO (SECURITY) : To fix (fails when entering date)
-/*if (preg_match('/[^0-9]/', $filterValueDate) == true) {
-	traceHack("bad value for filterValueDate - $filterValueDate");
-	exit;
-}*/
+Security::checkValidDateTime($filterValueDate);
 
 if (! array_key_exists('filterValueCheckbox',$_REQUEST)) {
   $filterValueCheckbox=false;
@@ -104,17 +99,13 @@ if (! array_key_exists('filterSortValueList',$_REQUEST)) {
   throwError('filterSortValueList parameter not found in REQUEST');
 }
 $filterSortValue=$_REQUEST['filterSortValueList']; 
-if (preg_match('/[^a-zA-Z]/', $filterSortValue) == true){
-	traceHack("invalid filterSortValue value - $filterSortValue");
-	exit;
-}
+Security::checkValidAlphanumeric($filterSortValue);
 
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
 Security::checkValidClass($filterObjectClass);
-
 
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {

@@ -53,7 +53,7 @@ if ($refType) {
   }
 }
 
-if (class_exists ($refTypeDep) ) {
+if (SqlElement::class_exists ($refTypeDep) ) {
   $objList=new $refTypeDep();
   
   $list=$objList->getSqlElementsFromCriteria($crit,false,null);

@@ -560,7 +560,7 @@ class Cron {
   		$class=str_replace($arrayFrom, $arrayTo, $class);
   		$id=str_replace($arrayFrom, $arrayTo, $id);	
       $obj=null;
-      if (class_exists($class) and is_numeric($id)) {
+      if (SqlElement::class_exists($class) and is_numeric($id)) {
         $obj=new $class($id);
       }
   		if ($obj and $obj->id and $senderId) {

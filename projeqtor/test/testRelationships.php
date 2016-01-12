@@ -79,7 +79,7 @@ if (is_dir($classDir)) {
                     //and $class>='Ti' // and $class<'B'
         ) {
           $obj=new $class();
-          if (is_subclass_of($obj, "SqlElement")) {
+          if (SqlElement::is_subclass_of($obj, "SqlElement")) {
             if (substr($class,-4)=='Type'){
           	  testType($obj);
             } else {

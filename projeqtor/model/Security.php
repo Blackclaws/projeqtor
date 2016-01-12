@@ -40,7 +40,8 @@ class Security
   *  checkValidId($id) : $id is a valid number or possibly '*' or empty string '' (may mean all in some cases)
   *  checkValidBoolean($boolean) : $boolean is a boolean, automatically replace similar values to 1 or 0, only allowed values
   *  checkValidDateTime($dateTime) : $date is either a date or a time or a datetime
-  *  checkValidNumeric($numeric) : $nuleric is a numeric value
+  *  checkValidNumeric($numeric) : $numeric is a numeric value
+  *  checkValidInteger($integer) : $integer is an integer value
   *  checkValidAlphanumeric($string) : $string is alphnumeric only containing a-z, A-Z, 0-9
   *  checkValidFilename($file) : $file is a valid file, avoiding cross directory hacks
   *  checkValidMimeType($mimeType) : $mimeType is a valid mime type corresponding to RFC1341
@@ -58,8 +59,8 @@ class Security
     $className != basename(realpath('../model/'.$className.'.php'), '.php')) {
       traceHack("Invalid class name '$className'");
     }
-    if (! is_subclass_of ( $className, 'SqlElement')) {
-      //if (! is_a($className, 'SqlElement', true )) { // This function can accept $className, as string, only for PHP > 5.3.9
+    if (! SqlElement::is_subclass_of( $className, 'SqlElement')) {
+      //if (! SqlElement::is_a($className, 'SqlElement', true )) { // This function can accept $className, as string, only for PHP > 5.3.9
       traceHack("Class '$className' does not extend SqlElement");
     }
     return $className;
@@ -122,11 +123,18 @@ class Security
     return $dateTime;
   }
   public static function checkValidNumeric($numeric) {
-    if ($numeric===null or $numeric==='' or trim($numeric)==='') return; //allow null or empty value
+    if ($numeric===null or $numeric==='' or trim($numeric)==='' or $numeric=='NaN') return null; //allow null or empty value
     if (! is_numeric($numeric)) {
       traceHack("Value '$numeric' is not numeric");
     }
     return $numeric;
+  }
+  public static function checkValidInteger($integer) {
+    if ($integer===null or $integer==='' or trim($integer)==='' or $integer=='NaN') return; //allow null or empty value
+    if (! is_numeric($integer)) {
+      traceHack("Value '$integer' is not a numeric integer");
+    }
+    return intval($integer);
   }
   public static function checkValidAlphanumeric($string) {
     // TODO (SECURITY) : use ctype_alnum()
@@ -203,7 +211,7 @@ class Security
       traceHack("filename $fileName containts invalid characters \ / : * ? \" ; { } < >");
       $fileName=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $fileName); // Not reached as traceHack will exit script
     }
-    if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) or ctype_print($fileName)) {
+    if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) or ! ctype_print($fileName)) {
       traceHack("filename $fileName containts non printable characters");
       $fileName=""; // Not reached as traceHack will exit script
     }

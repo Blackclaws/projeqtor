@@ -145,7 +145,7 @@ class ImputationLine {
 		// Hide some lines depending on user criteria selected on page
 		if ($hideNotHandled or $hideDone or $displayOnlyCurrentWeekMeetings) {
 			foreach ($assList as $id=>$ass) {
-				if ($ass->refType and class_exists($ass->refType))
+				if ($ass->refType and SqlElement::class_exists($ass->refType))
 				$refObj=new $ass->refType($ass->refId, true);
 				if ($hideNotHandled and property_exists($refObj,'handled') and ! $refObj->handled) {
 					unset ($assList[$id]);

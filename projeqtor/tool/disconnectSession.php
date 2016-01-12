@@ -30,11 +30,7 @@ if (! array_key_exists('idAudit',$_REQUEST)) {
 	throwError('idAudit parameter not found in SESSION');
 }
 $idAudit=$_REQUEST['idAudit'];
-if (preg_match('/[^0-9]/', $idAudit) == True)
-{
-	traceHack("Invalid idAudit in disconnectSession.php - $idAudit");
-	exit;
-}
+Security::checkValidId($idAudit)
 
 $audit=new Audit($idAudit);
 

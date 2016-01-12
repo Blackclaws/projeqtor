@@ -68,7 +68,7 @@ class ReportParameter extends SqlElement {
       $stCol=$col;
       if (substr($col,0,2)=='id' and strlen($col)>2) {
         $class=substr($col,2);
-        if (class_exists($class)) {
+        if (SqlElement::class_exists($class)) {
           $col=i18n($class);
           $val=SqlList::getNameFromId($class, $val);
         }

@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     if (count($split>1)) {
     	$class=ucfirst($split[0]);
     	$where="1=0";
-    	if (class_exists($class)) {
+    	if (SqlElement::class_exists($class)) {
     	  Security::checkValidClass($class);
     		$obj=new $class();
     		$table=$obj->getDatabaseTableName();
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 	if (count($split>1)) {
 		$class=ucfirst($split[0]);
 	}
-	if (! class_exists($class)) {
+	if (! SqlElement::class_exists($class)) {
 		returnError($invalidQuery, "'$class' is not a known object class");
 	}
   $dataArray=@json_decode($data,true);
