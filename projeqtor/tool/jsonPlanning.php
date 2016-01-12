@@ -299,16 +299,16 @@
     	        	  }
     	        	}
     	        	if ($display)	{
-    	        	  $arrayResource[$res->id]=$display;
+    	        	  $arrayResource[$res->id]=htmlEncode($display);
     	        	  if ($resp and $resp==$res->id ) {
-    	        		  $arrayResource[$res->id]='<b>'.$display.'</b>';
+    	        		  $arrayResource[$res->id]='<b>'.htmlEncode($display).'</b>';
     	        	  }
     	        	}
   	        	}
   	        }
           }
 	        //$res=new Resource($ass->idResource);
-	        echo ',"resource":"' . htmlEncode(htmlEncodeJson(implode(', ',$arrayResource))) . '"';
+	        echo ',"resource":"' . htmlEncodeJson(implode(', ',$arrayResource)) . '"';
         }
         $crit=array('successorId'=>$idPe);
         $listPred="";

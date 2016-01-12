@@ -37,7 +37,7 @@ class Message extends SqlElement {
   public $idMessageType;
   public $idProfile;
   public $idProject;
-  public $idUser;
+  public $idAffectable;
   public $showOnLogin;
   public $idle;
   public $_sec_Message;
@@ -49,16 +49,16 @@ class Message extends SqlElement {
     <th field="colorNameMessageType" width="10%" formatter="colorNameFormatter">${idMessageType}</th>
     <th field="nameProfile" width="10%" formatter="translateFormatter">${idProfile}</th>
     <th field="nameProject" width="10%">${idProject}</th>
-    <th field="nameUser" formatter="thumbName22" width="15%">${idUser}</th>
+    <th field="nameAffectable" formatter="thumbName22" width="15%">${idUser}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_colCaptionTransposition = array('name'=> 'title', 'description'=>'message');
+  private static $_colCaptionTransposition = array('name'=> 'title', 'description'=>'message','idAffectable'=>'idUser');
   
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "idMessageType"=>"required"
   );  
-  
+  private static $_databaseColumnName = array('idAffectable'=>'idUser');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -103,6 +103,9 @@ class Message extends SqlElement {
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
   }
   
 }

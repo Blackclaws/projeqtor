@@ -34,10 +34,9 @@
   $dest="";
   $typeSendMail="";
   
-  if (array_key_exists('objectClassName',$_REQUEST)) {
-    $typeSendMail=$_REQUEST['objectClassName'];
+  if (array_key_exists('className',$_REQUEST)) {
+    $typeSendMail=$_REQUEST['className'];
   }
-
   $result="";
   if ($typeSendMail=="User") {
     $login=$_REQUEST['name'];

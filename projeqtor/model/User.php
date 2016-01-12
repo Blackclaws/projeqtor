@@ -1160,7 +1160,7 @@ class User extends SqlElement {
        Compatibility with PHP 5.2 must be preserved
     $cookieHash = openssl_random_pseudo_bytes(32, $crypto_strong); // but this is better...
 	  if (!$crypto_strong){
-		  error_log("DEBUG: openssl_random_pseudo_bytes() uses not cryptographiclly secure algorithm for login cookie");
+		  errorLog("DEBUG: openssl_random_pseudo_bytes() uses not cryptographiclly secure algorithm for login cookie");
 	  }*/
   	$this->cookieHash=$cookieHash;
   	$domain=$_SERVER['SERVER_NAME'];

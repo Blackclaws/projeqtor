@@ -302,7 +302,7 @@ function changeTheme(newTheme) {
   if (newTheme!="") {
     dojo.byId('body').className='tundra '+newTheme;
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=theme&value=" + newTheme,
+      url: "../tool/saveDataToSession.php?idData=theme&value=" + newTheme,
       handleAs: "text"
       // , load: function(data,args) { addMessage("Theme=" + newTheme ); }
     });
@@ -327,7 +327,7 @@ function saveUserParameter(parameter, value) {
 function saveBrowserLocaleToSession() {  
   browserLocale=dojo.locale;
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=browserLocale&value=" + browserLocale,
+    url: "../tool/saveDataToSession.php?idData=browserLocale&value=" + browserLocale,
     handleAs: "text",
     load: function(data,args) {}
   });
@@ -348,14 +348,14 @@ function saveBrowserLocaleToSession() {
 	  browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
   }
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + encodeURI(format),
+    url: "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value=" + encodeURI(format),
     handleAs: "text",
     load: function(data,args) { }
   });
   var fmt=""+dojo.number.format(1.1)+" ";
   var decPoint=fmt.substr(1,1);
   dojo.xhrPost({
-	url: "../tool/saveDataToSession.php?id=browserLocaleDecimalPoint&value=" + decPoint,
+	url: "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value=" + decPoint,
 	handleAs: "text",
 	load: function(data,args) { }
   });
@@ -365,7 +365,7 @@ function saveBrowserLocaleToSession() {
 	  thousandSep='';
   }
   dojo.xhrPost({
-	url: "../tool/saveDataToSession.php?id=browserLocaleThousandSeparator&value=" + thousandSep,
+	url: "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value=" + thousandSep,
 	handleAs: "text",
 	load: function(data,args) { }
   });
@@ -385,7 +385,7 @@ function changeLocale(locale) {
   if (locale!="") {
     currentLocale=locale;
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=currentLocale&value=" + locale,
+      url: "../tool/saveDataToSession.php?idData=currentLocale&value=" + locale,
       handleAs: "text",
       load: function(data,args) {
         // action = function() {
@@ -409,7 +409,7 @@ function changeLocale(locale) {
 function changeBrowserLocaleForDates(newFormat) {
 	saveUserParameter('browserLocaleDateFormat', newFormat);
 	dojo.xhrPost({
-	    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + newFormat,
+	    url: "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value=" + newFormat,
 	    handleAs: "text",
 	    load: function(data,args) {
     	  showWait();
@@ -444,12 +444,12 @@ function saveResolutionToSession() {
   var height=screen.height;
   var width=screen.width;
   dojo.xhrPost({
-	    url: "../tool/saveDataToSession.php?id=screenWidth&value=" + width,
+	    url: "../tool/saveDataToSession.php?idData=screenWidth&value=" + width,
 	    handleAs: "text",
 	    load: function(data,args) {}
 	  });
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=screenHeight&value=" + height,
+    url: "../tool/saveDataToSession.php?idData=screenHeight&value=" + height,
     handleAs: "text",
     load: function(data,args) { }
   });
@@ -1739,7 +1739,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   }
   if (idProject!="") {
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
+      url: "../tool/saveDataToSession.php?idData=project&value=" + idProject,
       handleAs: "text",
       load: function(data,args) { 
         addMessage(i18n("Project")+ "=" + nameProject );
@@ -1779,7 +1779,7 @@ function disconnect(cleanCookieHash) {
     var extUrl="";
     if (cleanCookieHash) {extUrl="&cleanCookieHash=true"}
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?origin=disconnect&id=disconnect"+extUrl,
+      url: "../tool/saveDataToSession.php?origin=disconnect&idData=disconnect"+extUrl,
       handleAs: "text",
       load: function(data,args) { 
         if (data) showError(data);
@@ -1804,7 +1804,7 @@ function quit() {
   if (! noDisconnect) {
     showWait();
     dojo.xhrGet({
-      url: "../tool/saveDataToSession.php?origin==quit&id=disconnect",
+      url: "../tool/saveDataToSession.php?origin==quit&idData=disconnect",
       load: function(data,args) { 
           hideWait();
           }
@@ -2365,9 +2365,9 @@ function globalSave() {
   if (! button) {
 	  button=dijit.byId('saveButtonMultiple');
   }
-  for(name in CKEDITOR.instances) {
-    CKEDITOR.instances[name].updateElement();
-  }
+  //for(name in CKEDITOR.instances) { // Moved to saveObject() function 
+  //  CKEDITOR.instances[name].updateElement();
+  //}
   if ( button && button.isFocusable() ) {
     if (dojo.byId('formDiv')) formDivPosition=dojo.byId('formDiv').scrollPosition;
     button.focus(); //V5.1 : attention, may loose scroll position on formDiv (see above and below lines)
@@ -2854,6 +2854,9 @@ function saveObject() {
     return true;
   }
   if (editorInFullScreen()) return;
+  for(name in CKEDITOR.instances) { // Necessary to update CKEditor field whith focus, otherwise changes are not detected
+    CKEDITOR.instances[name].updateElement();
+  }
   dojo.byId("saveButton").blur();
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
 }

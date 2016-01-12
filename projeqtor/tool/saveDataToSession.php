@@ -29,11 +29,31 @@
  */
 require_once "../tool/projeqtor.php";
 
-$id=$_REQUEST['id'];
-$ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu|browserLocale(DateFormat|DecimalPoint|ThousandSeparator)?|currentLocale|defaultProject|disconnect|(switched|multiple)Mode|project(Selector(DisplayMode|ShowIdle)?)?|screen(Width|Height)?|showWorkHistory|theme)';
-if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True)
-{
-	error_log("Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
+if (isset($_REQUEST['idData'])) {
+  $id=$_REQUEST['idData'];
+} else if (isset($_REQUEST['id'])) {
+  $id=$_REQUEST['id'];
+} else {
+  $id=null;
+  errorLog("Invalid id : value not set".(($_SERVER['REQUEST_URI'])?' for query='.$_SERVER['REQUEST_URI']:'')); 
+}
+
+$ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
+    .'|browserLocale(DateFormat|DecimalPoint|ThousandSeparator)?|currentLocale'
+    .'|defaultProject|disconnect|(switched|multiple)Mode|project(Selector(DisplayMode|ShowIdle)?)?'
+    .'|screen(Width|Height)?|showWorkHistory|theme'
+    .'|defaultProject|(print|pdf)InNewWindow|accordionPane(Top|Bottom)'
+    .'|contentPane(Left(DivWidth|BottomDivHeight)|Top(DetailDivHeight(.*)?|(Portfolio|Resource)?PlanningDivHeight))'
+    .')';
+if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True){
+  if (in_array($id, getParamtersList('userParameter'))) {
+    // OK, it is a user parameter
+  } else if (in_array($id, getParamtersList('globalParameter'))) {
+    // OK, it is a global parameter
+  } else {
+    errorLog("Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
+  	// TODO (security) : when list is complete and no more error logged, change to traceHack 
+  }
 }
 if ($id=='disconnect') {
   // can retreive (for debigging purpose) in $_REQUEST['origin'] the source of disconnection : disconnect or quit

@@ -1826,7 +1826,7 @@ abstract class SqlElement {
 	  foreach ($fields as $fld) {
 	    if ($selectFields) $selectFields.=', ';
 	    $fldName=$defaultObj->getDatabaseColumnName($fld);
-	    $selectFields.=" sum($fldName) as sum".ucfirst($fld);
+	    $selectFields.=" sum($fldName) as sum".strtolower($fld);
 	  }
 	  
 	  $query = "select ". $selectFields . ' from ' . $this->getDatabaseTableName() . $whereClause;

@@ -40,7 +40,7 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
            dojo.xhrPost({
-             url: "../tool/saveDataToSession.php?id=projectSelectorShowIdle&value="+((this.checked)?1:0),
+             url: "../tool/saveDataToSession.php?idData=projectSelectorShowIdle&value="+((this.checked)?1:0),
              load: function() {loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');}
            });
            dijit.byId('dialogProjectSelectorParameters').hide();

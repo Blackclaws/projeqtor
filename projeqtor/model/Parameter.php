@@ -66,7 +66,7 @@ class Parameter extends SqlElement {
     } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  newValue=this.value;';
-    	$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue,';
+    	$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
       $colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
       $colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
       $colScript .= '     dojo.byId("menuActualStatus").value=menuActualStatus;';
@@ -77,10 +77,10 @@ class Parameter extends SqlElement {
       $colScript .= '     }  });';
     	$colScript .= '</script>';
     } else if ($colName=="defaultProject") {
-      //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?id=defaultProject&value=" + this.value;});';
+      //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';             
     } else if ($colName=="hideMenu") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -92,7 +92,7 @@ class Parameter extends SqlElement {
       $colScript .= '    menuShowMode=this.value; hideShowMenu()';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else if ($colName=="switchedMode") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -105,7 +105,7 @@ class Parameter extends SqlElement {
       $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonStandardMode"));';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';    
     } else  if ($colName=="printInNewWindow"){
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -115,7 +115,7 @@ class Parameter extends SqlElement {
       $colScript .= '  } else {';
       $colScript .= '    printInNewWindow=false;';
       $colScript .= '  }';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else  if ($colName=="pdfInNewWindow"){
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -125,7 +125,7 @@ class Parameter extends SqlElement {
       $colScript .= '  } else {';
       $colScript .= '    pdfInNewWindow=false;';
       $colScript .= '  }';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -133,7 +133,7 @@ class Parameter extends SqlElement {
       //  $colScript .= '  formChanged();';
       //}
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     }
     return $colScript;

@@ -330,7 +330,7 @@ class TicketMain extends SqlElement {
   			$this->idTargetVersion=$act->idTargetVersion;
   			$vers=new Version($act->idTargetVersion);
   			if ($vers->idProduct) {
-  				$this->$idProductOrComponent=$vers->idProduct;
+  				$this->idProductOrComponent=$vers->idProduct;
   			}
   		}
   	}
