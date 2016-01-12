@@ -40,12 +40,7 @@ if (! isset($adminFunctionality)) {
 
 Sql::beginTransaction();
 $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
-if (preg_match('/[^0-9]/', $nbDays) == true)
-{
-	Sql::rollbackTransaction();
-	traceHack("invalid nbDays value - $nbDays");
-	exit;
-}
+$nbDays=Security::checkValidInteger(intval($nbDays));
 
 if ($adminFunctionality=='sendAlert') {
 	$result=sendAlert();
@@ -60,16 +55,11 @@ if ($adminFunctionality=='sendAlert') {
 		$element=null;
 	}
 	else {
-		if (preg_match('/[^0-9]/', $element) == true)
-		{
-			traceHack("invalid element value - $element");
-			Sql::rollbackTransaction();
-			exit;
-		}
 		if (intval($element)>0) {
 			$elt=new Referencable($element);
 			$element=$elt->name;
 		}
+		$element=Security::checkValidClass($element);
 	}
 	$result=updateReference($element);
 } else if ($adminFunctionality=='disconnectAll') {
@@ -88,12 +78,7 @@ if ($adminFunctionality=='sendAlert') {
   }
 } else if ($adminFunctionality=='setApplicationStatusTo') { 
 	$newStatus=$_REQUEST['newStatus'];
-	if (preg_match('/[^0-9a-zA-Z]/', $newStatus) == true)
-	{
-		traceHack("invalid newStatus value - $newStatus");
-		Sql::rollbackTransaction();
-		exit;
-	}
+	$newStatus=Security::checkValidAlphanumeric($newStatus);
 	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'applicationStatus');
   $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
   $obj->parameterValue=$newStatus;
@@ -101,12 +86,7 @@ if ($adminFunctionality=='sendAlert') {
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'msgClosedApplication'));
   
   $msgClosedApplication=$_REQUEST['msgClosedApplication'];
-  if (preg_match('/[^0-9a-zA-Z]/', $msgClosedApplication) == true)
-  {
-	traceHack("invalid msgClosedApplication value - $msgClosedApplication");
-	Sql::rollbackTransaction();
-	exit;
-  }
+  $msgClosedApplication=strip_tags($msgClosedApplication);
   $param->parameterValue=$msgClosedApplication;
   $param->save();
   Parameter::clearGlobalParameters();
@@ -119,24 +99,13 @@ displayLastOperationStatus($result);
 
 function sendAlert(){
   $alertSendTo=(array_key_exists('alertSendTo', $_REQUEST))?$_REQUEST['alertSendTo']:'';
-  if (preg_match('/[^0-9a-zA-Z*]/', $alertSendTo) == true) {
-	  traceHack("invalid alertSendTo value - $alertSendTo");
-	  Sql::rollbackTransaction();
-	  exit;
+  if ($alertSendTo!='*') {
+    $alertSendTo=Security::checkValidAlphanumeric($alertSendTo);
   }
   $alertSendDate=(array_key_exists('alertSendDate', $_REQUEST))?$_REQUEST['alertSendDate']:'';
-  if (preg_match('/[^0-9-]/', $alertSendDate) == true) {
-	  traceHack("invalid alertSendDate value - $alertSendDate");
-	  Sql::rollbackTransaction();
-	  exit;
-  }
+  $alertSendDate=Security::checkValidDateTime($alertSendDate);
   $alertSendTime=(array_key_exists('alertSendTime', $_REQUEST))?$_REQUEST['alertSendTime']:'';
-  if (preg_match('/[^0-9:]/', $alertSendTime) == true) {
-	  traceHack("invalid alertSendTime value - $alertSendTime");
-	  Sql::rollbackTransaction();
-	  exit;
-  }
-
+  $alertSendTime=Security::checkValidDateTime($alertSendTime);
   $alertSendType=(array_key_exists('alertSendType', $_REQUEST))?$_REQUEST['alertSendType']:''; // Note: escaped before use using htmlspecialchars().
   $alertSendTitle=(array_key_exists('alertSendTitle', $_REQUEST))?$_REQUEST['alertSendTitle']:''; // Note: escaped before use using htmlspecialchars().
   $alertSendMessage=(array_key_exists('alertSendMessage', $_REQUEST))?$_REQUEST['alertSendMessage']:''; // Note: escaped before use using htmlspecialchars().
@@ -190,14 +159,14 @@ function maintenance() {
 	$ctrl="";
   if (! trim($operation) or ($operation!='delete' and $operation!='close' and $operation!='read')) {
     $ctrl.='ERROR<br/>';
-	traceHack("invalid operation value - $operation");
-	Sql::rollbackTransaction();
-	exit;
+	  traceHack("invalid operation value - $operation");
+	  Sql::rollbackTransaction();
+	  exit;
   }
   if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit' and $item!="Logfile")) {
     $ctrl.='ERROR<br/>';
-	traceHack("invalid item value - $item");
-	Sql::rollbackTransaction();
+	  traceHack("invalid item value - $item");
+	  Sql::rollbackTransaction();
 	exit;
   }
   if ( trim($nbDays)=='' or (intval($nbDays)=='0' and $nbDays!='0')) {

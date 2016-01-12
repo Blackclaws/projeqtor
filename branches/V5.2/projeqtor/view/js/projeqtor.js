@@ -2356,6 +2356,8 @@ function globalSave() {
     var button=dijit.byId('dialogDispatchWorkSubmit');  
   } else if (dijit.byId('dialogExport') && dijit.byId('dialogExport').open) {
     var button=dijit.byId('dialogPrintSubmit');  
+  } else if (dijit.byId('dialogRestrictTypes') && dijit.byId('dialogRestrictTypes').open) {
+    var button=dijit.byId('dialogRestrictTypesSubmit');  
   } else {
     var button=dijit.byId('saveButton');
   }
@@ -3030,7 +3032,6 @@ function getExtraHiddenFields(idType) {
       var obj = JSON.parse(data);
       dojo.query(".generalRowClass").style("display","table-row");
       dojo.query(".generalColClass").style("display","inline-block");
-      dojo.query(".idResourceClass").style("display","none");
       for (key in obj) {
         dojo.query("."+obj[key]+"Class").style("display","none");
       }

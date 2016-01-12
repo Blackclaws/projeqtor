@@ -44,10 +44,7 @@ if (array_key_exists('scale',$_REQUEST)) {
 $scope='';
 if (array_key_exists('scope',$_REQUEST)) {
   $scope=$_REQUEST['scope'];
-  if (preg_match('/^[^a-zA-Z0-9]$/', $scope) != True)
-  {
-	  $scope='';
-  }
+  $scope=Security::checkValidAlphanumeric($scope);
 }
 
 $headerParameters="";

@@ -24,7 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-if (! class_exists('SqlElement') ){
+if (!class_exists('SqlElement') ){
 	if (file_exists('../tool/projeqtor.php')) {
 	  include_once('../tool/projeqtor.php');
 	} else if (file_exists('../../tool/projeqtor.php')) {

@@ -48,7 +48,7 @@ if (is_dir($classDir)) {
         ){
           debugTraceLog("Test for class $class");
           $obj=new $class();
-          if (is_subclass_of($obj, "SqlElement")) {
+          if (SqlElement::is_subclass_of($obj, "SqlElement")) {
         	 testObject($obj);
           }
         }   

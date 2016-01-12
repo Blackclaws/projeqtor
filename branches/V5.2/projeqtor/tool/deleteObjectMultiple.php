@@ -56,11 +56,6 @@ echo "<table>";
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
 	Security::checkValidId($id);
-	if (preg_match('/[^0-9]/', $id) == True)
-	{
-		traceHack("Invalid id in deleteObjectMultiple.php - [$id]");
-		exit;
-	}
 	Sql::beginTransaction();
 	echo '<tr>';
 	echo '<td valign="top"><b>#'.$id.'&nbsp:&nbsp;</b></td>';

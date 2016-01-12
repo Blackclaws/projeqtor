@@ -58,7 +58,7 @@
    } else {
      $total++;
      $hideAutoloadError=true; // Avoid error message is autoload
-     $is_object=class_exists($item,true);
+     $is_object=SqlElement::class_exists($item,true);
      $hideAutoloadError=false;
      $canRead=(securityGetAccessRightYesNo('menuUser', 'read') == "YES");
      echo '<tr VALIGN="top" style="padding:0;margin:0;white-space:nowrap">';

@@ -1589,7 +1589,7 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
   // ATTENTION, NOT FOR READ ACCESS : result may be unexpected
   if (substr ( $menuName, 4 )=='Admin') return 'YES';
-  if (! class_exists ( substr ( $menuName, 4 ) )) {
+  if (! SqlElement::class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
   }
   if (property_exists ( substr ( $menuName, 4 ), '_no' . ucfirst ( $accessType ) )) {

@@ -239,7 +239,7 @@ class ColumnSelector extends SqlElement {
 				$cs->formatter="booleanFormatter";
 			} else if (substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 and substr($col,2,1)==strtoupper(substr($col,2,1)) ) {
 				$idClass=substr($col,2);
-				if (class_exists($idClass)) {
+				if (SqlElement::class_exists($idClass)) {
 					//$idObj=new $IdClass;
 					if (Affectable::isAffectable($idClass)) {
 					  $cs->formatter="thumbName22";

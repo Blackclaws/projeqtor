@@ -237,7 +237,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 
 function formatColorThumb($col,$val, $size=20, $float='right') {
   $class=substr($col,2);
-  if (! class_exists($class)) return ''; 
+  if (! SqlElement::class_exists($class)) return ''; 
   $color=SqlList::getFieldFromId($class, $val, 'color');
   if (! $color) return '';
   $radius=round($size/2,0);

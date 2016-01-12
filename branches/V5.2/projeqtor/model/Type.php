@@ -165,7 +165,7 @@ class Type extends SqlElement {
       $class=pathinfo($file,PATHINFO_FILENAME);
       $ext=pathinfo($file,PATHINFO_EXTENSION);
       $classObj=substr($class,0,strlen($class)-4);
-      if (is_subclass_of ( $class, 'Type') and class_exists($classObj)) {
+      if (SqlElement::is_subclass_of ( $class, 'Type') and class_exists($classObj)) {
         $result[$class]=i18n($class);
       }
     }

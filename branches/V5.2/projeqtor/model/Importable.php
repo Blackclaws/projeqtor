@@ -124,7 +124,7 @@ class Importable extends SqlElement {
 		self::$cptError=0;
 		self::$cptOK=0;
 		self::$cptWarning=0;
-		if (! class_exists($class)) {
+		if (! SqlElement::class_exists($class)) {
 			self::$importResult="Cron error : class '$class' is unknown";
 			self::$cptError=1;
 			self::$cptRejected=1;
@@ -241,7 +241,7 @@ class Importable extends SqlElement {
 						}
 					}
 
-					if (isset($titleObject[$idx]) and class_exists($titleObject[$idx]) ) {
+					if (isset($titleObject[$idx]) and SqlElement::class_exists($titleObject[$idx]) ) {
 						$subObj=new $titleObject[$idx];
 						if ($subObj->isAttributeSetToField($title[$idx], 'noImport')) {
 							$color=$colorNoImport;

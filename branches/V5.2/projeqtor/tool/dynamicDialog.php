@@ -31,10 +31,7 @@ if (! array_key_exists('dialog', $_REQUEST)) {
 $dialog=$_REQUEST['dialog'];
 //echo "<br/>".$dialog."<br/>";
 
-if (preg_match('/[^a-zA-Z0-9]/', $dialog) == true) {
-	traceHack("invalid dialog value - [$dialog]");
-	exit; // Never reached traceHack systematically exits script
-}
+$dialog=Security::checkValidAlphanumeric($dialog);
 if (strtolower(substr($dialog,0,6))!='dialog' and strtolower(substr($dialog,0,4))!='list') {
   traceHack("dynamicDialog called with not allowed dialog parameter '$dialog'");
 }

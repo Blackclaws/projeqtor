@@ -564,7 +564,7 @@ abstract class SqlElement {
 	 */
 	private function saveSqlElement($force=false,$withoutDependencies=false,$forceInsert=false) {
 		//traceLog("saveSqlElement(" . get_class($this) . "#$this->id)" 
-		//  . ((is_subclass_of($this,'PlanningElement'))?"  => $this->refType #$this->refId":''));
+		//  . ((SqlElement::is_subclass_of($this,'PlanningElement'))?"  => $this->refType #$this->refId":''));
 		// if (get_class($this)=='History')  traceLog("    => $this->colName : '$this->oldValue'->'$this->newValue'");
 		// #305
 		$this->recalculateCheckboxes();
@@ -1932,18 +1932,22 @@ abstract class SqlElement {
 					if ($included) { // if included, then object is called recursively, name is prefixed by className
 						$formField = get_class($this) . '_' . $key . $ext;
 					}
-					if ($dataType=='int' and $dataLength==1) {
-						if (array_key_exists($formField,$_REQUEST)) {
-							//if field is hidden, must check value, otherwise just check existence
-							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
-								$this->$key = Security::checkValidBoolean($_REQUEST[$formField]);
-							} else {
-								$this->$key = 1;
-							}
-						} else {
-							//echo "val=False<br/>";
-							$this->$key = 0;
-						}
+					if ($dataType=='int') {
+					  if ($dataLength==1 and substr($key,0,11)!='periodicity') {
+  						if (array_key_exists($formField,$_REQUEST)) {
+  							//if field is hidden, must check value, otherwise just check existence
+  							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
+  								$this->$key = Security::checkValidBoolean($_REQUEST[$formField]);
+  							} else {
+  								$this->$key = 1;
+  							}
+  						} else {
+  							//echo "val=False<br/>";
+  							$this->$key = 0;
+  						}
+					  } else if (array_key_exists($formField,$_REQUEST)) {
+					    $this->$key = Security::checkValidInteger($_REQUEST[$formField]);
+					  }				  
 					} else if ($dataType=='datetime') {
 						$formFieldBis = $key . "Bis" . $ext;
 						if ($included) {
@@ -1978,8 +1982,10 @@ abstract class SqlElement {
 							$this->$key=substr($_REQUEST[$formField],1);
 						}
 					} else if ($dataType=='date') {
-					  $test=Security::checkValidDateTime($_REQUEST[$formField]);
-					  $this->$key=$_REQUEST[$formField];
+					  if (array_key_exists($formField,$_REQUEST)) {
+					    $test=Security::checkValidDateTime($_REQUEST[$formField]);
+					    $this->$key=$_REQUEST[$formField];
+					  }
 					} else {
 						if (array_key_exists($formField,$_REQUEST)) {
 							$this->$key = $_REQUEST[$formField];
@@ -3096,7 +3102,7 @@ abstract class SqlElement {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
-					if (is_a($this,'Version')) {
+					if (self::is_a($this,'Version')) {
 					  $crit=null;
 					  $where="(1=1";
 					  $arrayVersion=array('idVersion', 'idTargetVersion', 'idOriginalVersion');
@@ -3854,7 +3860,7 @@ abstract class SqlElement {
 		$table=$this->getDatabaseTableName();
 		$select="";
 		$from="";
-		if (is_subclass_of($this,'PlanningElement')) {
+		if (self::is_subclass_of($this,'PlanningElement')) {
 			$this->setVisibility();
 		}
 		foreach ($this as $col=>$val) {		
@@ -4126,7 +4132,7 @@ abstract class SqlElement {
 	  } else {
 	    $typeName='id'.get_class($this).'Type';
 	    $typeClassName=get_class($this).'Type';
-	    if (property_exists($this,$typeName) and class_exists($typeClassName)) {
+	    if (property_exists($this,$typeName) and self::class_exists($typeClassName)) {
   	    $table=SqlList::getList($typeClassName, 'name', null);
   	    if (count($table) > 0) {
   	      foreach ( $table as $idTable => $valTable ) {
@@ -4213,5 +4219,31 @@ abstract class SqlElement {
 	  return $result;
 	}
 	
+	// ============================================================
+	// Redefines standard class test function 
+	// to avoid error logging when not necessary
+	// ============================================================ 
+	public static function is_a($object,$class) {
+	   global $hideAutoloadError;
+	   $hideAutoloadError=true; // Avoid error message in autoload
+	   $result=is_a($object,$class);
+	   $hideAutoloadError=true;
+	   return $result;
+  }
+  public static function class_exists($item){
+    global $hideAutoloadError;
+    $hideAutoloadError=true; // Avoid error message in autoload
+    $result=class_exists($item,true);
+    $hideAutoloadError=false;
+    return $result;
+  }
+  public static function is_subclass_of ( $className, $parentClass) {
+    global $hideAutoloadError;
+    $hideAutoloadError=true; // Avoid error message in autoload
+    $result=is_subclass_of( $className, $parentClass);
+    $hideAutoloadError=false;
+    return $result;
+  }
+  
 }
 ?>
