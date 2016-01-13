@@ -198,6 +198,8 @@ class ProjectPlanningElementMain extends PlanningElement {
   	  $this->marginCost=null;
   	  $this->marginCostPct=null;
   	}
+  	$this->plannedWork=$this->realWork+$this->leftWork; // Need to be done here to refrehed
+  	$this->plannedCost=$this->realCost+$this->leftCost;
   }
   
   protected function updateSynthesisObj ($doNotSave=false) {
@@ -319,6 +321,8 @@ class ProjectPlanningElementMain extends PlanningElement {
     $this->leftWork+=$sum['sumleftwork'];
     $this->realCost+=$sum['sumrealcost'];
     $this->leftCost+=$sum['sumleftcost'];
+    $this->plannedWork=$this->realWork+$this->leftWork; // Need to be done here to refrehed
+    $this->plannedCost=$this->realCost+$this->leftCost;
     //$this->realCost+=$sumCost;
     if (! $doNotSave) {
       $this->simpleSave();
