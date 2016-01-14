@@ -49,7 +49,7 @@ class Message extends SqlElement {
     <th field="colorNameMessageType" width="10%" formatter="colorNameFormatter">${idMessageType}</th>
     <th field="nameProfile" width="10%" formatter="translateFormatter">${idProfile}</th>
     <th field="nameProject" width="10%">${idProject}</th>
-    <th field="nameAffectable" formatter="thumbName22" width="15%">${idUser}</th>
+    
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
