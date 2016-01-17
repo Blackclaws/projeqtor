@@ -109,7 +109,13 @@ if ($noselect) {
   }
   if (array_key_exists('refreshProductStructure', $_REQUEST)) {
     if (property_exists($obj, '_ProductStructure')) {
-      drawLinksFromObject($obj->_ProductStructure, $obj, null, true);
+      drawProductStructureFromObject($obj->_ProductStructure, $obj, null, true);
+    }
+    exit();
+  }
+  if (array_key_exists('refreshProductVersionStructure', $_REQUEST)) {
+    if (property_exists($obj, '_ProductVersionStructure')) {
+      drawProductVersionStructureFromObject($obj->_ProductVersionStructure, $obj, null, true);
     }
     exit();
   }
@@ -621,6 +627,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       drawLinksFromObject($val, $obj, $linkClass);
     } else if ($col == '_ProductStructure') { // Display ProductStructure (structure)
       drawProductStructureFromObject($val, $obj, false);
+    } else if ($col == '_ProductVersionStructure') { // Display ProductVersionStructure (structure)
+      drawProductVersionStructureFromObject($val, $obj, false);
     } else if (substr($col, 0, 11) == '_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
     } else if (substr($col, 0, 11) == '_Approver') { // Display Assignments
@@ -2699,6 +2707,74 @@ function drawProductStructureFromObject($list, $obj, $refresh=false) {
   if (!$refresh) echo '</td></tr>';
   if (! $print) {
     echo '<input id="ProductStructureSectionCount" type="hidden" value="'.count($list).'" />';
+  }
+}
+
+function drawProductVersionStructureFromObject($list, $obj, $refresh=false) {
+  if ($obj->isAttributeSetToField("_ProductVersionStructure", "hidden")) {
+    return;
+  }
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  if ($obj->idle == 1) {
+    $canUpdate=false;
+  }
+  if (!$refresh) echo '<tr><td colspan="2">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  if (!$print) {
+    echo '<td class="linkHeader" style="width:5%">';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductVersionStructure();" title="' . i18n('addProductVersionStructure') . '" class="roundedButtonSmall"/> ';
+    }
+    echo '</td>';
+  }
+  $listClass=(get_class($obj)=='ProductVersion')?'ComponentVersion':'ProductVersion';
+  echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+  echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
+  echo '</tr>';
+  foreach ( $list as $comp ) {
+    $compObj=null;
+    if (get_class($obj)=='ProductVersion') {
+      $compObj=new ComponentVersion($comp->idComponentVersion);
+    } else {
+      $compObj=new ProductVersion($comp->idProductVersion);
+    }
+    $userId=$comp->idUser;
+    $userName=SqlList::getNameFromId('User', $userId);
+    $creationDate=$compObj->creationDate;
+    $canGoto=(securityCheckDisplayMenu(null, get_class($compObj)) and securityGetAccessRightYesNo('menu' . get_class($compObj), 'read', $compObj) == "YES")?true:false;
+    echo '<tr>';
+    $classCompName=i18n(get_class($compObj));
+    if (!$print) {
+      echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+      if ($canUpdate) {
+        echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeProductVersionStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" title="' . i18n('removeProductStructure') . '" class="roundedButtonSmall"/> ';
+      }
+      echo '</td>';
+    }
+    //echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.get_class($compObj).'16.png" />&nbsp;'.$classCompName .' #' . $compObj->id;
+    echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr><td><img src="css/images/icon'.get_class($compObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.'#' . $compObj->id.'</td></tr></table>';
+    echo '</td>';
+    $goto="";
+    if (!$print and $canGoto) {
+      $goto=' onClick="gotoElement(' . "'" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "'" . ');" style="cursor: pointer;" ';
+    }
+    echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+    echo htmlEncode($compObj->name);
+    echo formatUserThumb($userId, $userName, 'Creator');
+    echo formatDateThumb($creationDate, null);
+    echo formatCommentThumb($comp->comment);
+    echo '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  if (! $print) {
+    echo '<input id="ProductVersionStructureSectionCount" type="hidden" value="'.count($list).'" />';
   }
 }
 
