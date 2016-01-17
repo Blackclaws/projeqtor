@@ -31,32 +31,32 @@
 require_once "../tool/projeqtor.php";
 
 // Get the link info
-if (! array_key_exists('productStructureObjectClass',$_REQUEST)) {
-  throwError('productStructureObjectClass parameter not found in REQUEST');
+if (! array_key_exists('productVersionStructureObjectClass',$_REQUEST)) {
+  throwError('productVersionStructureObjectClass parameter not found in REQUEST');
 }
-$objectClass=$_REQUEST['productStructureObjectClass'];
+$objectClass=$_REQUEST['productVersionStructureObjectClass'];
 Security::checkValidClass($objectClass);
 
-if (! array_key_exists('productStructureObjectId',$_REQUEST)) {
-  throwError('productStructureObjectId parameter not found in REQUEST');
+if (! array_key_exists('productVersionStructureObjectId',$_REQUEST)) {
+  throwError('productVersionStructureObjectId parameter not found in REQUEST');
 }
-$objectId=$_REQUEST['productStructureObjectId'];
+$objectId=$_REQUEST['productVersionStructureObjectId'];
 Security::checkValidId($objectId);
 
-if (! array_key_exists('productStructureListClass',$_REQUEST)) {
-  throwError('productStructureListClass parameter not found in REQUEST');
+if (! array_key_exists('productVersionStructureListClass',$_REQUEST)) {
+  throwError('productVersionStructureListClass parameter not found in REQUEST');
 }
-$listClass=$_REQUEST['productStructureListClass'];
+$listClass=$_REQUEST['productVersionStructureListClass'];
 Security::checkValidClass($listClass);
 
-if (! array_key_exists('productStructureListId',$_REQUEST)) {
-  throwError('productStructureListId parameter not found in REQUEST');
+if (! array_key_exists('productVersionStructureListId',$_REQUEST)) {
+  throwError('productVersionStructureListId parameter not found in REQUEST');
 }
-$listId=$_REQUEST['productStructureListId'];
+$listId=$_REQUEST['productVersionStructureListId'];
 
 $comment="";
-if (array_key_exists('productStructureComment',$_REQUEST)) {
-    $comment=$_REQUEST['productStructureComment'];
+if (array_key_exists('productVersionStructureComment',$_REQUEST)) {
+    $comment=$_REQUEST['productVersionStructureComment'];
 }
 
 $arrayId=array();
@@ -69,13 +69,13 @@ Sql::beginTransaction();
 $result="";
 // get the modifications (from request)
 foreach ($arrayId as $id) {
-	$str=new ProductStructure();
-	if ($objectClass=='Product') {
-	  $str->idProduct=$objectId;
-	  $str->idComponent=$id;
-	} else if ($objectClass=='Component') {
-	  $str->idProduct=$id;
-	  $str->idComponent=$objectId;
+	$str=new ProductVersionStructure();
+	if ($objectClass=='ProductVersion') {
+	  $str->idProductVersion=$objectId;
+	  $str->idComponentVersion=$id;
+	} else if ($objectClass=='ComponentVersion') {
+	  $str->idProductVersion=$id;
+	  $str->idComponentVersion=$objectId;
 	} else {
 	  throwError("class $objectClass is not an expected class for ProductStructure object");
 	}
@@ -98,7 +98,6 @@ foreach ($arrayId as $id) {
   	} 
   }
 }
-
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

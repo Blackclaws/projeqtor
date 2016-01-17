@@ -51,6 +51,8 @@ class ProductVersionMain extends Version {
   public $description;
   public $_sec_Versionproject_projects;
   public $_VersionProject=array();
+  public $_sec_ProductVersionStructure_product;
+  public $_ProductVersionStructure=array();
   public $_Attachment=array();
   public $_Note=array();
   

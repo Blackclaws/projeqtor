@@ -84,12 +84,24 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
     }
     asort($table);
+  } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
+    $critClass=substr($critFld,2);
+    $versionField=str_replace('Version', '', $critFld);
+    $version=new $critClass($critVal);
+    $critArray=array($versionField=>$version->$versionField);
+    $list=SqlList::getListWithCrit('ProductStructure',$critArray,str_replace('Version', '',$col),$selection);
+    $table=array();
+    foreach ($list as $id) {
+      $crit=array('idProduct'=>$id);
+      $list=SqlList::getListWithCrit('Version',$crit);
+      $table=array_merge_preserve_keys($table,$list);
+    }  
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
-    }  
+    }      
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);

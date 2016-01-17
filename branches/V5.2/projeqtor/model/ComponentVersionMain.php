@@ -49,6 +49,8 @@ class ComponentVersionMain extends Version {
   public $realEndDate;
   public $idle;
   public $description;
+  public $_sec_ProductVersionStructure_product;
+  public $_ProductVersionStructure=array();
   public $_Attachment=array();
   public $_Note=array();
   
