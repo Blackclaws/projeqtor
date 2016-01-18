@@ -350,7 +350,7 @@
 	            $numField+=1;
 	            $formatter[$numField]='';
 	            $arrayWidth[$numField]='';
-	            $querySelect .= ', '.$table.'.id'.substr($fld,4);
+	            $querySelect .= ', '.$table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . ' as id' . $externalClass;
 	          }
 	          //if (! stripos($queryFrom,$externalTable)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
@@ -426,11 +426,19 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
+    
     // --- Check for an advanced filter (stored in User)
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']!='SORT') { // Sorting already applied above
       	$split=explode('_', $crit['sql']['attribute']);
       	$critSqlValue=$crit['sql']['value'];
+      	if (substr($crit['sql']['attribute'], -4, 4) == 'Work') {
+      	  if ($objClass=='Ticket') {
+      	    $critSqlValue=Work::convertImputation(trim($critSqlValue,"'"));
+      	  } else {
+      	    $critSqlValue=Work::convertWork(trim($critSqlValue,"'"));
+      	  }
+      	}
       	if ($crit['sql']['operator']=='IN' 
       	and ($crit['sql']['attribute']=='idProduct' or $crit['sql']['attribute']=='idProductOrComponent' or $crit['sql']['attribute']=='idComponent')) {
           $critSqlValue=str_replace(array(' ','(',')'), '', $critSqlValue);
