@@ -114,7 +114,8 @@ foreach ($dateList as $idx=>$date) {
     $work->idWorkElement=$weId;
     $work->dailyCost=null; // set to null to force refresh 
     $work->cost=null;
-    $work->idAssignment=WorkElement::updateAssignment($work, $diff);
+    $ass=WorkElement::updateAssignment($work, $diff);
+    $work->idAssignment=($ass)?$ass->id:null;
     $resWork="";
     if ($work->work==0) {
       if ($work->id) {

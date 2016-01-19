@@ -37,7 +37,6 @@ if (isset($_REQUEST['idData'])) {
   $id=null;
   errorLog("Invalid id : value not set".(($_SERVER['REQUEST_URI'])?' for query='.$_SERVER['REQUEST_URI']:'')); 
 }
-
 $ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
     .'|browserLocale(DateFormat|DecimalPoint|ThousandSeparator)?|currentLocale'
     .'|defaultProject|disconnect|(switched|multiple)Mode|project(Selector(DisplayMode|ShowIdle)?)?'
@@ -46,12 +45,12 @@ $ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
     .'|contentPane(Left(DivWidth|BottomDivHeight)|Top(DetailDivHeight(.*)?|(Portfolio|Resource)?PlanningDivHeight))'
     .')';
 if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True){
-  if (in_array($id, getParamtersList('userParameter'))) {
+  if (array_key_exists($id, Parameter::getParamtersList('userParameter'))) {
     // OK, it is a user parameter
-  } else if (in_array($id, getParamtersList('globalParameter'))) {
+  } else if (array_key_exists($id, Parameter::getParamtersList('globalParameter'))) {
     // OK, it is a global parameter
   } else {
-    errorLog("Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
+    errorLog("save Data to session : Invalid id value - [$id]"); // all column names are valid session id values - need to make a full list
   	// TODO (security) : when list is complete and no more error logged, change to traceHack 
   }
 }
@@ -66,7 +65,6 @@ if ($id=='disconnect') {
 }
 
 $value=$_REQUEST['value'];
-
 setSessionValue($id, $value);
 $_SESSION[$id]=$value;
 if ($id=='browserLocaleDateFormat') {

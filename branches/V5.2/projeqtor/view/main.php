@@ -470,7 +470,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           ?>
           <div id="logoTitleDiv" 
                style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhiteSmall.png';?>); 
-                      background-repeat: no-repeat; height: 50px;" 
+                      background-repeat: no-repeat; height: 50px; width:100%;max-width:300px" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
           <div style="position:absolute; right:0; bottom:0px" id="helpbutton" style="text-align:right;" onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>

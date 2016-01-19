@@ -120,6 +120,7 @@ function refreshJsonList(className, keepUrl) {
     store.close();
     store.fetch({onComplete: function(){
     	grid._refresh();
+    	hideBigImage(); // Will avoid resident pop-up always displayed
     	var objectId=dojo.byId('objectId');
     	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
         setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
@@ -605,6 +606,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           CKEDITOR.instances[name].destroy(false);
         }
       }
+      hideBigImage(); // Will avoid resident pop-up always displayed
       contentWidget.set('content',data);
       checkDestination(destination);
       // Create instances of CKEDITOR
