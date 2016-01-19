@@ -935,6 +935,7 @@ function htmlDisplayNumericWithoutTrailingZeros($val) {
   if (substr($res, -1)=='.') {
     $res=trim($res,'.');
   }
+  if ($res<1 and substr($res,0,1)=='.') $res='0'.$res;
   if ($fmt->decimalSeparator!='.') {
     $res=str_replace('.', $fmt->decimalSeparator, $res);
   }
