@@ -27,6 +27,9 @@
 /** ===========================================================================
  * Acknowledge an operation
  */
+if (!isset($user)) {
+  $user=getSessionUser();
+}
 if ( ! isset($specific) or ! $specific) {
   errorLog("drawResourceListForSpecificAccess.php : specific variable not set");
   $specific="null"; // Avoid error
@@ -48,6 +51,9 @@ if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'NO')) {
   foreach ($user->getAllSpecificRightsForProfiles($specific) as $right=>$profList) {
     if ( ($right=='OWN' or $right=='RES') and $user->isResource) {
       $table[$user->id]=SqlList::getNameFromId('Resource', $user->id);
+    } else if ($right=='ALL' and in_array($user->idProfile, $profList)) {
+      $table=$fullTable;
+      break;
     } else if ($right=='ALL' or $right=='PRO') {
       $inClause='(0';
       foreach ($user->getSpecificAffectedProfiles() as $prj=>$prf) {
@@ -70,6 +76,7 @@ if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'NO')) {
 if (count($table)==0) {
   $table[$user->id]=' ';
 }
+asort($table);
 foreach($table as $key => $val) {
   echo '<OPTION value="' . $key . '"';
   if ( $key==$user->id ) { echo ' SELECTED '; }
