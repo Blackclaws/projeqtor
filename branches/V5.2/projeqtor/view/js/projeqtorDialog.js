@@ -4377,26 +4377,16 @@ function listClick() {
 }
 
 function stockHistory(curClass, curId) {
-  // var len=historyTable.length;
-  /*
-   * var lastClass=""; var lastId=0; if (len>0) {
-   * lastClass=historyTable[len-1][0]; lastId=historyTable[len-1][1]; }
-   */
-  /*
-   * if (len==0 || curClass!=lastClass || curId!=lastId) { historyTable[len]=new
-   * Array(curClass, curId); historyPosition=len; if (historyPosition>=1) {
-   * enableWidget('menuBarUndoButton'); } disableWidget('menuBarRedoButton'); }
-   */
-  if (historyPosition>=0) {
-    current=historyTable[historyPosition];
-    if (current[0]==curClass && current[1]==curId) return; // do not re-stock current item
-  }
-  historyPosition+=1;
   currentScreen="object";
   if (dojo.byId("GanttChartDIV")) {
     currentScreen="planning";
   }
-  historyTable[historyPosition]=new Array(curClass, curId);
+  if (historyPosition>=0) {
+    current=historyTable[historyPosition];
+    if (current[0]==curClass && current[1]==curId && current[2]==currentScreen) return; // do not re-stock current item
+  }
+  historyPosition+=1;
+  historyTable[historyPosition]=new Array(curClass, curId,currentScreen);
   // Purge next history (not valid any more)
   for (i=historyPosition+1;i<historyTable.length;i++) {
     historyTable.splice(i,1);
@@ -4419,7 +4409,7 @@ function undoItemButton() {
   }
   historyPosition-=1;
   gotoElement(historyTable[historyPosition][0],
-  historyTable[historyPosition][1], true);
+  historyTable[historyPosition][1], true, false, historyTable[historyPosition][2]);
   enableWidget('menuBarRedoButton');
   if (historyPosition == 0) {
     disableWidget('menuBarUndoButton');
@@ -4436,7 +4426,7 @@ function redoItemButton() {
   }
   historyPosition+=1;
   gotoElement(historyTable[historyPosition][0],
-      historyTable[historyPosition][1], true);
+      historyTable[historyPosition][1], true, false, historyTable[historyPosition][2]);
   enableWidget('menuBarUndoButton');
   if (historyPosition == (len - 1)) {
     disableWidget('menuBarRedoButton');
