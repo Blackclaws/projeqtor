@@ -2262,15 +2262,25 @@ function refreshTodayProjectsList(value) {
   loadContent("../view/today.php?refreshProjects=true", "Today_project", "todayProjectsForm", false);  
 }
 
-function gotoElement(eltClass, eltId, noHistory, forceListRefresh) {
+function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
   selectTreeNodeById(dijit.byId('menuTree'), eltClass);
   formChangeInProgress=false;
-  if ( dojo.byId("GanttChartDIV") 
-      && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' 
-        || eltClass=='TestSession' || eltClass=='Meeting' || eltClass=='PeriodicMeeting') ) {
+  //if ( dojo.byId("GanttChartDIV")
+  //    && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' 
+  //      || eltClass=='TestSession' || eltClass=='Meeting' || eltClass=='PeriodicMeeting') ) {
+  if ( target=='planning' ) {
+    if (! dojo.byId("GanttChartDIV")) {
+      vGanttCurrentLine=-1;
+      cleanContent("centerDiv");
+      var callback=function() {
+        gotoElement(eltClass, eltId, noHistory, forceListRefresh, target);
+      }
+      loadContent("planningMain.php", "centerDiv",null,null,null,null,null,callback);
+      return;
+    }
     if (forceListRefresh) {
       refreshGrid();
       //refreshJsonPlanning();
