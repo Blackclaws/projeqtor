@@ -79,6 +79,8 @@ class Security
   public static function checkValidBoolean($boolean) {
     if (!$boolean or $boolean===false) $boolean=0;
     if ($boolean==-1 or $boolean===true) $boolean=1;
+    if ($boolean=='on') return 1;
+    if ($boolean=='off') return 0;
     if ($boolean!=0 and $boolean!=1) {
       traceHack("the value '$boolean' is not a boolean");
     }
@@ -131,6 +133,8 @@ class Security
   }
   public static function checkValidInteger($integer) {
     if ($integer===null or $integer==='' or trim($integer)==='' or $integer=='NaN') return; //allow null or empty value
+    if ($integer=='on') return 1;
+    if ($integer=='off') return 0;
     if (! is_numeric($integer)) {
       traceHack("Value '$integer' is not a numeric integer");
     }
