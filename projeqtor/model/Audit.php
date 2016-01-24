@@ -182,7 +182,7 @@ class Audit extends SqlElement {
 		if ($tz) date_default_timezone_set($tz); else date_default_timezone_set('Europe/Paris');;
 		// $duration=date_diff(date_create($audit->connectionDateTime), date_create($audit->lastAccessDateTime)) ;
 		// $audit->duration=$duration->format('%H%I%S');
-		$audit->requestDisconnection = 0;
+		//$audit->requestDisconnection = 0;
 		$audit->idle = 0;
 		$audit->auditDay = date ( 'Ymd' );
 		$result = $audit->save ();

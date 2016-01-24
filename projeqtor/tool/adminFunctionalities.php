@@ -65,16 +65,13 @@ if ($adminFunctionality=='sendAlert') {
 } else if ($adminFunctionality=='disconnectAll') {
   $audit=new Audit();
   $list=$audit->getSqlElementsFromCriteria(array("idle"=>"0"));
-  $result="";
+  $result=i18n('colRequestDisconnection').'<input type="hidden" id="lastSaveId" value="" /><input type="hidden" id="lastOperation" value="update" /><input type="hidden" id="lastOperationStatus" value="NO_CHANGE" />';
   foreach($list as $audit) {
   	if ($audit->sessionId!=session_id()) {
-      $audit->requestDisconnection=1;     
-  	} 
-  	$res=$audit->save();
-  	if ($result=="" or stripos($res,'id="lastOperationStatus" value="OK"')>0) {
-  		$msgEnd=strpos($res,'<');
-      $result=i18n('colRequestDisconnection').substr($res,$msgEnd);
-  	}
+      $audit->requestDisconnection=2;
+      $res=$audit->save();
+      $result=i18n('colRequestDisconnection').'<input type="hidden" id="lastSaveId" value="" /><input type="hidden" id="lastOperation" value="update" /><input type="hidden" id="lastOperationStatus" value="OK" />';      
+  	}   	
   }
 } else if ($adminFunctionality=='setApplicationStatusTo') { 
 	$newStatus=$_REQUEST['newStatus'];
