@@ -30,7 +30,7 @@ if (! array_key_exists('idAudit',$_REQUEST)) {
 	throwError('idAudit parameter not found in SESSION');
 }
 $idAudit=$_REQUEST['idAudit'];
-Security::checkValidId($idAudit)
+Security::checkValidId($idAudit);
 
 $audit=new Audit($idAudit);
 
