@@ -203,9 +203,9 @@ $label['crlf04']='crlf';
 // === i18n (internationalization)
 $param['DefaultLocale'] = 'en';                              
 $label['DefaultLocale'] = "Default locale to be used on i18n";
-$value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'fr-ca' for French Canada, 'de' for German, 'es' for Spanish, 'pt' for Portuguese, 'pt-br' for Portuguese Brazil, 'ru' for Russian, 'zh' for Chinese, 'nl' for Dutch, 'fa' for Farsi (Persian), 'ja' for Japanese, 'el' for Greek, 'ua' for Ukrainian";
+$value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'fr-ca' for French Canada, 'de' for German, 'es' for Spanish, 'pt' for Portuguese, 'pt-br' for Portuguese Brazil, 'ru' for Russian, 'zh' for Chinese, 'nl' for Dutch, 'fa' for Farsi (Persian), 'ja' for Japanese, 'el' for Greek, 'ua' for Ukrainian, 'hr' for croatian";
 $pname['DefaultLocale'] = 'paramDefaultLocale';
-$ctrls['DefaultLocale'] = '=en=fr=fr-ca=de=es=pt=pt-br=ru=zh=nl=fa=ja=el=ua=';
+$ctrls['DefaultLocale'] = '=en=fr=fr-ca=de=es=pt=pt-br=ru=zh=nl=fa=ja=el=ua=hr=';
 $requi['DefaultLocale'] = true;
 
 $param['DefaultTimezone'] = 'Europe/Paris';                              

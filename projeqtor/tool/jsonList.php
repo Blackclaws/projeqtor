@@ -207,6 +207,11 @@ scriptLog('   ->/tool/jsonList.php');
         if (!$sepChar) $sepChar='__';
         $wbsLevelArray=array();
       }
+      if ($dataType=='idLinkable' or $dataType=='idCopyable' or $dataType=='idImportable' or $dataType=='idMailable'
+          or $dataType=='idIndicatorable' or $dataType=='idChecklistable' or $dataType=='idDependable' 
+          or $dataType=='idOriginable' or $dataType=='idReferencable') {
+        asort($list);
+      }
       foreach ($list as $id=>$name) { // Note: $id and $name could be arbitrary attacker controlled values from $selected
         if ($dataType=="idProject" and $sepChar!='no') {
           if (isset($wbsList[$id])) {

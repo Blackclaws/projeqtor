@@ -3950,7 +3950,10 @@ abstract class SqlElement {
 		}
 		$year=date('Y');
 		$month=date('m');
-		if (property_exists($this,'creationDate')) {
+		if (get_class($this)=='Bill') {
+		  $year=substr($this->date,0,4);
+			$month=substr($this->date,5,2);
+		} else if (property_exists($this,'creationDate')) {
 			$year=substr($this->creationDate,0,4);
 			$month=substr($this->creationDate,5,2);
 		} else if (property_exists($this,'creationDateTime')) {
@@ -4226,7 +4229,11 @@ abstract class SqlElement {
 	public static function is_a($object,$class) {
 	   global $hideAutoloadError;
 	   $hideAutoloadError=true; // Avoid error message in autoload
-	   $result=is_a($object,$class);
+	   if (is_object($object)) {
+	     $result=($object instanceof $class);
+	   } else {
+	     $result=@is_a($object,$class);
+	   }
 	   $hideAutoloadError=true;
 	   return $result;
   }

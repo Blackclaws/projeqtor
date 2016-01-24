@@ -60,7 +60,6 @@ class Security
       traceHack("Invalid class name '$className'");
     }
     if (! SqlElement::is_subclass_of( $className, 'SqlElement')) {
-      //if (! SqlElement::is_a($className, 'SqlElement', true )) { // This function can accept $className, as string, only for PHP > 5.3.9
       traceHack("Class '$className' does not extend SqlElement");
     }
     return $className;
