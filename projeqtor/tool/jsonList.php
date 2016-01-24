@@ -160,7 +160,7 @@ scriptLog('   ->/tool/jsonList.php');
       		$list=SqlList::getList($class);
       	}
       	
-      } else if (substr($dataType,0,2)=='id' and substr($dataType,-4)=='Type') {
+      } else if (substr($dataType,0,2)=='id' and substr($dataType,-4)=='Type' and $dataType!='idType') {
         $list=SqlList::getList($class);
         if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
           $critField=$_REQUEST['critField'];

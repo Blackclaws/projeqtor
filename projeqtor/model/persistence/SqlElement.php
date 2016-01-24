@@ -1834,7 +1834,7 @@ abstract class SqlElement {
 	  if (Sql::$lastQueryNbRows > 0) {
 	    $line = Sql::fetchLine($result);
 	    if (is_array($field)) return $line;
-	    else return $line["sum".ucfirst($field)];
+	    else return $line["sum".strtolower($field)];
 	  }
 	  return null;
 	}
