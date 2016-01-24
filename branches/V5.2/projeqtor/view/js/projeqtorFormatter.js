@@ -269,13 +269,17 @@ function workFormatter(value) {
   if (value == null) return null;
   if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
-  if (top.paramWorkUnit != 'days') {
-    value = value * top.paramHoursPerDay;
-  }
+  var paramUnit=top.paramWorkUnit;
+  if (dojo.byId('objectClass') && (dojo.byId('objectClass').value=='Ticket' || dojo.byId('objectClass').value=='TicketSimple')) {
+    paramUnit=top.paramImputationUnit;
+  } 
+  if (paramUnit != 'days') {
+       value = value * top.paramHoursPerDay;
+    }
   roundedValue = dojo.number.format(Math.round(value * 100) / 100);
   // var result = roundedValue.replace(/^0+/g,'');
   // result = value.replace(/^0+/g,'');
-  var unit = (top.paramWorkUnit == 'days') ? i18n('shortDay')
+  var unit = (paramUnit == 'days') ? i18n('shortDay')
       : i18n('shortHour');
   return roundedValue + '&nbsp;' + unit;
 }

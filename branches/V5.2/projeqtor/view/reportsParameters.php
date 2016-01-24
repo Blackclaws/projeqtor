@@ -90,13 +90,22 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n("week");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:55px; text-align: center; color: #000000;" 
        dojoType="dijit.form.NumberSpinner" 
-       constraints="{min:1,max:55,places:0,pattern:'00'}"
+       constraints="{min:0,max:55,places:0,pattern:'00'}"
        intermediateChanges="true"
        maxlength="2"
        value="<?php echo $defaultWeek;?>" smallDelta="1"
        id="weekSpinner" name="weekSpinner" >
        <script type="dojo/method" event="onChange" >
          var year=dijit.byId('yearSpinner').get('value');
+         if (this.value>getWeek(31, 12, year)) {
+          dijit.byId('weekSpinner').set('value',1);
+          year=parseInt(year)+1;
+          dijit.byId('yearSpinner').set('value',year);
+         } else if (this.value==0) {
+          year=parseInt(year)-1;          
+          dijit.byId('weekSpinner').set('value',getWeek(31, 12, year));
+          dijit.byId('yearSpinner').set('value',year);
+         }
          var week=dijit.byId('weekSpinner').get('value') + '';
          week=(week.length==1)?'0'+week:week;
          dojo.byId('periodValue').value='' + year + week;
@@ -137,14 +146,23 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n("month");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:55px; text-align: center; color: #000000;" 
        dojoType="dijit.form.NumberSpinner" 
-       constraints="{min:1,max:12,places:0,pattern:'00'}"
+       constraints="{min:0,max:13,places:0,pattern:'00'}"
        intermediateChanges="true"
        maxlength="2"
        value="<?php echo $defaultMonth;?>" smallDelta="1"
        id="monthSpinner" name="monthSpinner" >
        <script type="dojo/method" event="onChange" >
         var year=dijit.byId('yearSpinner').get('value');
-        var month=dijit.byId('monthSpinner').get('value') + '';
+        if (this.value==13) {
+          dijit.byId('monthSpinner').set('value',1);
+          year=parseInt(year)+1;
+          dijit.byId('yearSpinner').set('value',year);
+        } else if (this.value==0) {
+          dijit.byId('monthSpinner').set('value',12);
+          year=parseInt(year)-1;
+          dijit.byId('yearSpinner').set('value',year);
+        }
+        var month=dijit.byId('yearSpinner').get('value');
         month=(month.length==1)?'0'+month:month;
         dojo.byId('periodValue').value='' + year + month;
        </script>

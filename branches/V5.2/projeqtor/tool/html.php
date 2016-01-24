@@ -240,7 +240,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (! $required) {
     echo '<OPTION value=" " ></OPTION>';
   }
-  if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' ) {
+  if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' or $listType=='Mailable'
+   or $listType=='Indicatorable' or $listType=='Checklistable' or $listType=='Dependable' or $listType=='Originable'
+   or $listType=='Referencable') {
     asort($table);
   }
   if ($col=="idProject") {
