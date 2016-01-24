@@ -140,7 +140,7 @@
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
         //if ($objectClass=='Project') {
-          $queryWhere.= " or codeType='TMP' "; // Templates projects are always visible in projects list
+          $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         //}
         $queryWhere.= ')';
     }  
@@ -167,7 +167,7 @@
         $queryWhere.= ($queryWhere=='')?'(':' and (';
         $queryWhere.= $clause;
         if ($objectClass=='Project') {
-          $queryWhere.= " or codeType='TMP' "; // Templates projects are always visible in projects list
+          $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         }
         $queryWhere.= ')';
       }
