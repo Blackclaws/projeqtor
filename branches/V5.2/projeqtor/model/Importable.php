@@ -352,7 +352,18 @@ class Importable extends SqlElement {
 					$field = str_replace('""', '"', $field);
 					if (property_exists($obj, $title[$idx])) {
 						if (substr($title[$idx], 0, 2) == 'id' and substr($title[$idx], 0, 4) != 'idle' and strlen($title[$idx]) > 2 and !is_numeric($field)) {
-							$obj->$title[$idx] = SqlList::getIdFromName(substr($title[$idx], 2), $field);
+							if ($title[$idx]=='idProject' or $title[$idx]=='idActivity') {
+							  $crit=array('name'=>$field);
+							  if ($title[$idx]=='idActivity' and property_exists($obj, 'idProject') and $obj->idProject) {
+							    $crit['idProject']=$obj->idProject; // if project know, restrict to same project
+							  }
+							  $parentObj=SqlElement::getSingleSqlElementFromCriteria(substr($title[$idx], 2), $crit);
+							  if ($parentObj->id) { // Found and no dupplicate
+							    $obj->$title[$idx]= $parentObj->id;
+							  }
+							} else {
+						    $obj->$title[$idx] = SqlList::getIdFromName(substr($title[$idx], 2), $field);
+							}
 						} else {
 							$obj->$title[$idx] = $field;
 						}
