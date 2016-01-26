@@ -50,7 +50,7 @@ class BillNotPaid extends BillMain {
   private static $_databaseColumnName = array('shortName'=>'name');
   private static $_databaseCriteria = array('paymentDone'=>'0', 'done'=>'1');
   private static $_colCaptionTransposition = array('name'=>'fullName', 'shortName'=>'name');
-  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''), ' - ', name, ' (',coalesce(fullAmount,''),')')");
+  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''), ' - ', name, ' (',coalesce(fullAmount,0),')')");
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
     $this->name=$this->reference." ".$this->shortName;

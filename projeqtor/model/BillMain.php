@@ -119,7 +119,7 @@ class BillMain extends SqlElement {
                                                    'idResource'=>'responsible');
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
-  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''),' - ',name,' (',coalesce(fullAmount,''),')')");
+  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''),' - ',name,' (',coalesce(fullAmount,0),')')");
     
    /** ==========================================================================
    * Constructor
