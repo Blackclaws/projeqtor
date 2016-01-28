@@ -5254,7 +5254,7 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
   if (clearOnHide) {
     hideCallback=function() {
       dijit.byId(dialogDiv).set('content', null);
-    }
+    };
   }
   extraClass="";
   if (dialogDiv=="dialogLogfile") {
@@ -5275,7 +5275,6 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
   if (!params) {
     params="";
   }
-  ;
   showWait();
   dojo.xhrGet({
     url : '../tool/dynamicDialog.php?dialog=' + dialogDiv + '&isIE='
