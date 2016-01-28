@@ -28,7 +28,7 @@
  * Stauts defines list stauts an activity or action can get in (lifecylce).
  */ 
 require_once('_securityCheck.php');
-class DocumentVersionMain extends DocumentVersion {
+class DocumentVersionMain extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_Description;
