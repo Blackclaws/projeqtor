@@ -383,7 +383,11 @@ class WorkElementMain extends SqlElement {
 	public function drawSpecificItem($item, $included=false) {
 		global $print, $comboDetail, $nbColMax;
 		$result = "";
-		$refObj = new $this->refType ( $this->refId );
+		if ($this->refType) {
+		  $refObj = new $this->refType ( $this->refId );
+		} else {
+		  $refObj = new Ticket();
+		}
 		if ($item == 'run' and ! $comboDetail and ! $this->idle) {
 			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
