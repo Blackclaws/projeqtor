@@ -5,8 +5,8 @@
 -- // Date : 2015-12-04                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}projecthistory` CHANGE `realWork` `realWork` DECIMAL(14,5) UNSIGNED,
- CHANGE `leftWork` `leftWork` DECIMAL(14,5) UNSIGNED;
+ALTER TABLE `${prefix}projecthistory` CHANGE `realWork` `realWork` decimal(14,5) unsigned,
+ CHANGE `leftWork` `leftWork` decimal(14,5) unsigned;
 
 DELETE FROM `${prefix}indicatorableindicator` WHERE `idIndicatorable`=11;
 DELETE FROM `${prefix}indicatorable` WHERE id=11;

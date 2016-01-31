@@ -47,6 +47,5 @@ class Action extends ActionMain {
 		parent::__destruct();
 	}
 	
-	
-	}
-	?>
+}
+?>
