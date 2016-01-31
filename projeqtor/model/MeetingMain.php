@@ -98,7 +98,6 @@ class MeetingMain extends SqlElement {
                                   "_lib_to"=>'nobr',
                                   "meetingStartTime"=>'nobr',
                                   "idUser"=>"hidden",
-                                  //"idResource"=>"idden",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
