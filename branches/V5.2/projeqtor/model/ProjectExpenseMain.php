@@ -75,8 +75,7 @@ class ProjectExpenseMain extends Expense {
                                   "plannedAmount"=>"",
                                   "idStatus"=>"required",
                                   "idResource"=>"hidden",
-  								                "idUser"=>"hidden",
-                                  
+  								                "idUser"=>"hidden",              
                                   "day"=>"hidden",
                                   "week"=>"hidden",
                                   "month"=>"hidden",
