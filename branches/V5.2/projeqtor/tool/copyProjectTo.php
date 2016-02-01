@@ -89,9 +89,13 @@ if (!$error and $copyAffectations) {
   $crit=array('idProject'=>$proj->id);
   $lstAff=$aff->getSqlElementsFromCriteria($crit);
   foreach ($lstAff as $aff) {
+    $critExists=array('idProject'=>$newProj->id, 'idResource'=>$aff->idResource);
+    $affExists=SqlElement::getSingleSqlElementFromCriteria('Affectation', $critExists);
+    if (!$affExists or !$affExists->id) {
   		$aff->id=null;
   		$aff->idProject=$newProj->id;
   		$aff->save();
+    }
   }
 }
 // Message of correct saving

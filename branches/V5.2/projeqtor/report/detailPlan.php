@@ -57,7 +57,6 @@ if (array_key_exists('periodValue',$_REQUEST))
 	$periodValue=$_REQUEST['periodValue'];
 	$periodValue=Security::checkValidPeriod($periodValue);
 }
-
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {

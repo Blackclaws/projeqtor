@@ -154,16 +154,17 @@ foreach ($listParam as $param) {
        <script type="dojo/method" event="onChange" >
         var year=dijit.byId('yearSpinner').get('value');
         if (this.value==13) {
-          dijit.byId('monthSpinner').set('value',1);
+          dijit.byId('monthSpinner').set('value','01');
           year=parseInt(year)+1;
           dijit.byId('yearSpinner').set('value',year);
         } else if (this.value==0) {
-          dijit.byId('monthSpinner').set('value',12);
+          dijit.byId('monthSpinner').set('value','12');
           year=parseInt(year)-1;
           dijit.byId('yearSpinner').set('value',year);
         }
-        var month=dijit.byId('yearSpinner').get('value');
+        var month=dijit.byId('monthSpinner').get('value')+'';
         month=(month.length==1)?'0'+month:month;
+        //dijit.byId('monthSpinner').set('value',month);
         dojo.byId('periodValue').value='' + year + month;
        </script>
      </div></td>

@@ -57,7 +57,10 @@ class Security
     // not checking file existence using realpath() due to inconsistent behavior in different versions.
     if (!file_exists('../model/'.$className.'.php') || 
     $className != basename(realpath('../model/'.$className.'.php'), '.php')) {
-      traceHack("Invalid class name '$className'");
+      if (!file_exists('../model/custom/'.$className.'.php') ||
+      $className != basename(realpath('../model/custom/'.$className.'.php'), '.php')) {
+        traceHack("Invalid class name '$className'");
+      }
     }
     if (! SqlElement::is_subclass_of( $className, 'SqlElement')) {
       traceHack("Class '$className' does not extend SqlElement");
