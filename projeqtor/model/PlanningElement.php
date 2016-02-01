@@ -1361,9 +1361,13 @@ class PlanningElement extends SqlElement {
         $crit=array('idProject'=>$item->id);
         $lstAff=$aff->getSqlElementsFromCriteria($crit);
         foreach ($lstAff as $aff) {
+          $critExists=array('idProject'=>$aff->idProject, 'idResource'=>$aff->idResource);
+          $affExists=SqlElement::getSingleSqlElementFromCriteria('Affectation', $critExists);
+          if (!$affExists or !$affExists->id) {
         		$aff->id=null;
         		$aff->idProject=$newItem->id;
         		$aff->save();
+          }
         }
       }
       // recursively call copy structure
