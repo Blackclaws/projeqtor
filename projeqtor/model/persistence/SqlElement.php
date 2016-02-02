@@ -1936,8 +1936,8 @@ abstract class SqlElement {
 					  if ($dataLength==1 and substr($key,0,11)!='periodicity') {
   						if (array_key_exists($formField,$_REQUEST)) {
   							//if field is hidden, must check value, otherwise just check existence
-  							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
-  								$this->$key = Security::checkValidBoolean($_REQUEST[$formField]);
+  							if ($this->isAttributeSetToField($key, 'hidden')) {
+  							  $this->$key = Security::checkValidBoolean($_REQUEST[$formField]);
   							} else {
   								$this->$key = 1;
   							}
@@ -3819,6 +3819,7 @@ abstract class SqlElement {
 			// If save confirmed, must not override idle status that is cascaded
 				if ($status->setIdleStatus) {
 					$this->idle=1;
+					debugLog("XXX");
 					if (property_exists($this,'idleDate') and !$this->idleDate) $this->idleDate=date("Y-m-d");
 					if (property_exists($this,'idleDateTime') and !$this->idleDateTime) $this->idleDateTime=date("Y-m-d H:i:s");
 				} else {
