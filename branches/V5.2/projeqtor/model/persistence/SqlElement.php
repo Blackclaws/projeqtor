@@ -3819,7 +3819,6 @@ abstract class SqlElement {
 			// If save confirmed, must not override idle status that is cascaded
 				if ($status->setIdleStatus) {
 					$this->idle=1;
-					debugLog("XXX");
 					if (property_exists($this,'idleDate') and !$this->idleDate) $this->idleDate=date("Y-m-d");
 					if (property_exists($this,'idleDateTime') and !$this->idleDateTime) $this->idleDateTime=date("Y-m-d H:i:s");
 				} else {
