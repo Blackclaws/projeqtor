@@ -141,7 +141,7 @@ class DocumentVersionMain extends SqlElement {
     if ( ($doc->version==null) 
     or ( $this->version>$doc->version ) 
     or ( $this->version==$doc->version and $this->revision>$doc->revision) 
-    or ( $this->version==$doc->version and $this->revision==$doc->revision and $this->draft>$doc->draft) ) {
+    or ( $this->version==$doc->version and $this->revision==$doc->revision and ($this->draft>$doc->draft or (!$this->draft and $doc->draft))) ) {
       $doc->version=$this->version;
       $doc->revision=$this->revision;
       $doc->draft=$this->draft;
