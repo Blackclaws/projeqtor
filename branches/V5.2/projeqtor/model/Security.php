@@ -79,8 +79,8 @@ class Security
     return $id;
   }
   public static function checkValidBoolean($boolean) {
-    if (!$boolean or $boolean===false) $boolean=0;
-    if ($boolean==-1 or $boolean===true) $boolean=1;
+    if (! $boolean or $boolean==false or trim($boolean)=='') return 0;
+    if ($boolean==-1 or $boolean===true) return 1;
     if ($boolean=='on') return 1;
     if ($boolean=='off') return 0;
     if ($boolean!=0 and $boolean!=1) {

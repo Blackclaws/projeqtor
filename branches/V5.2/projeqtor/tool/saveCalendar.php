@@ -30,6 +30,7 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/calendar.php');
+
   $user=getSessionUser();
   $collapsedList=Collapsed::getCollaspedList();
   $currentYear=strftime("%Y") ;
@@ -44,7 +45,7 @@
   }
   if (isset($_REQUEST['copyYearFrom'])) {
   	$from=$_REQUEST['copyYearFrom'];
-    $from=Security::checkValidYear($from);
+    $from=Security::checkValidId($from);
   	copyYear($from,$idCalendarDefinition, $currentYear);
   }
   if (isset($_REQUEST['day'])) {
@@ -81,6 +82,7 @@ function switchDay ($day,$idCalendarDefinition) {
 }
 
 function copyYear($from, $to, $currentYear) {
+  debugLog("copyYear($from, $to, $currentYear)");
 	if ($from==$to) return;
 	$cal=new Calendar();
 	$calList=$cal->getSqlElementsFromCriteria(array('idCalendarDefinition'=>$from, 'year'=>$currentYear));

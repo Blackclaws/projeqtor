@@ -49,8 +49,7 @@ class CalendarDefinition extends SqlElement {
     <th field="name" width="60%">${name}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
-  private static $_fieldsAttributes=array("sortOrder"=>"hidden",
-  		"idle"=>"hidden");
+  private static $_fieldsAttributes=array("sortOrder"=>"hidden");
   
    /** ==========================================================================
    * Constructor
