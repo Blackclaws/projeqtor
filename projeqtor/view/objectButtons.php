@@ -58,7 +58,7 @@
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
   <td  style="z-index:-1;width:30%;position:relative;white-space:nowrap;">
-    <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
+    <img style="position:relative; left:10px;" src="css/images/icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32.png" width="32" height="32" />
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>
