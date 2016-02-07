@@ -1233,6 +1233,7 @@ function addCloseBoxToMessage(destination) {
   var closeBox='<div class="closeBoxIcon" onClick="clickCloseBoxOnMessage('+"'"+destination+"'"+');">&nbsp;</div>';
   contentWidget.set("content",closeBox+contentWidget.get("content"));
 }
+var clickCloseBoxOnMessageAction=null;
 function clickCloseBoxOnMessage(destination) {
   contentWidget=dijit.byId(destination);
   contentNode=dojo.byId(destination);
@@ -1241,7 +1242,11 @@ function clickCloseBoxOnMessage(destination) {
     duration: 500,
     onEnd: function(){
       //contentWidget.set("content","");
-      contentNode.style.display="none"; 
+      contentNode.style.display="none";
+      if (clickCloseBoxOnMessageAction!=null) {
+        clickCloseBoxOnMessageAction();
+      }
+      clickCloseBoxOnMessageAction=null;
     }  
   }).play(
       );
