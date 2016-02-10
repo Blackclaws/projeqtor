@@ -303,7 +303,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           $firstPage="";
         }
       } else if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
-        echo 'hideShowMenu();';
+        echo 'setTimeout("hideShowMenu();",500);';
       }
       
       if ($firstPage) {

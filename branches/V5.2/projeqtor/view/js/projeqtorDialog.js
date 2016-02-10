@@ -4048,8 +4048,7 @@ function refreshList(field, param, paramVal, selected, destination, required) {
   }
   mySelect.set('store', store);
 }
-function refreshListSpecific(listType, destination, param, paramVal, selected,
-    required) {
+function refreshListSpecific(listType, destination, param, paramVal, selected, required) {
   var urlList='../tool/jsonList.php?listType=' + listType;
   if (param) {
     urlList+='&' + param + '=' + paramVal;
@@ -4107,6 +4106,7 @@ var menuActualStatus='visible';
 var menuDivSize=0;
 var menuShowMode='CLICK';
 var hideShowMenuInProgress=false;
+var hideShowTries=0;
 /**
  * Hide or show the Menu (left part of the screen
  */
@@ -4114,6 +4114,12 @@ function hideShowMenu(noRefresh) {
   if (!dijit.byId("leftDiv")) {
     return;
   }
+  if (!dijit.byId("leftDiv") || !dijit.byId("centerDiv") || !dijit.byId("leftDiv_splitter")) {
+    hideShowTries++;
+    if (hideShowTries<10) setTimeout("hideShowMenu();",100);
+    return;
+  }
+  hideShowTries=0;
   hideShowMenuInProgress=true;
   duration=300;
   if (menuActualStatus == 'visible' || !menuHidden) {
