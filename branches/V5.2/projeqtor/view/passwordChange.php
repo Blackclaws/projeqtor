@@ -110,19 +110,19 @@
               loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               return false;       
             </script><br/><br/>     
-            <div dojoType="dojox.form.PasswordValidator" id="password" class="rounded">
+            <div dojoType="dojox.form.PasswordValidator" id="password" class="input rounded" style="color:#000000;padding:10px">
               <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
-              <input type="password" pwType="new" class="rounded" /><br/>
+              <input type="password" pwType="new" class="input rounded" /><br/>
               <br/>
               <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
-              <input type="password" pwType="verify" class="rounded" /><br/>
+              <input type="password" pwType="verify" class="input rounded" style="color:#000000"/><br/>
             </div>            
             <input type="hidden" id="hashString" name="password" value=""/>
             <input type="hidden" id="userSalt" name="userSalt" value=""/>
             <input type="hidden" id="passwordLength" name="passwordLength" value=""/>
             <br/>
             <label class="label" style="width:200px;">&nbsp;</label>
-            <button type="submit" style="width:200px" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK
+            <button type="submit" style="width:200px;color:#555555;" class="largeTextButton" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK
               <script type="dojo/connect" event="onClick" args="evt">
                 //loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               </script>
@@ -130,7 +130,7 @@
             <br/>
             <?php if ( $user->password != md5(Parameter::getGlobalParameter('paramDefaultPassword')) ) {?>
             <label class="label" style="width:200px;">&nbsp;</label>
-            <button type="button" style="width:200px" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
+            <button class="largeTextButton" type="button" style="width:200px;color:#555555;" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
               <script type="dojo/connect" event="onClick" args="evt">
               showWait(); 
               window.location=".";
