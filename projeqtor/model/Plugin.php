@@ -103,7 +103,21 @@ class Plugin extends SqlElement {
         if ($prop['tag']=='PROPERTY') {
           $name='plugin'.ucfirst($prop['attributes']['NAME']);
           $value=$prop['attributes']['VALUE'];
-          $$name=$value;
+          if (isset($prop['attributes']['VERSION'])) {
+            $version=$prop['attributes']['VERSION'];
+            if (!isset($$name) or !is_array($$name)) {
+              if (isset($$name)) {
+                $$name=array('1.0'=>$value);
+              } else {
+                $$name=array();
+              }
+            }
+            $tempArray=$$name;
+            $tempArray[$version]=$value;
+            $$name=$tempArray;
+          } else {
+            $$name=$value;
+          }
         }
         if (isset($pluginName) and isset($pluginUniqueCode) and ! $testUnicity) {
           $testUnicity=true;
@@ -198,17 +212,25 @@ class Plugin extends SqlElement {
       traceLog(" => compatibility : $this->compatibilityVersion");
       
       // Update database for plugIn
+      $crit=array('uniqueCode'=>$this->uniqueCode, 'idle'=>'0', 'isDeployed'=>'1');
+      $existingPlugin=SqlElement::getSingleSqlElementFromCriteria('Plugin', $crit);
+      $currentVersion=($existingPlugin and $existingPlugin->id)?$existingPlugin->pluginVersion:'0.0';
       if (isset($pluginSql) and $pluginSql) {
-        $sqlfile=self::getDir()."/$plugin/$pluginSql";
-        if (! is_file($sqlfile)) {
-          $result=i18n("pluginSqlFileError",array($sqlfile, $plugin));
-          errorLog("Plugin::load() : $result");
-          return $result;
+        if (!is_array($pluginSql)) $pluginSql=array('1.0'=>$pluginSql); // First plugins did not take into account upgrades of SQL
+        foreach ($pluginSql as $pluginSqlVersion=>$pluginSqlValue) {
+          if ($pluginSqlVersion>$currentVersion) {
+            $sqlfile=self::getDir()."/$plugin/$pluginSqlValue";
+            if (! is_file($sqlfile)) {
+              $result=i18n("pluginSqlFileError",array($sqlfile, $plugin));
+              errorLog("Plugin::load() : $result");
+              return $result;
+            }
+            // Run Sql defined in Descriptor
+            // !IMPORTANT! to be able to call runScrip, the calling script must include "../db/maintenanceFunctions.php"
+            $nbErrors=runScript(null,$sqlfile);
+            traceLog("Plugin updated database with $nbErrors errors from script $sqlfile");
+          }
         }
-        // Run Sql defined in Descriptor
-        // !IMPORTANT! to be able to call runScrip, the calling script must include "../db/maintenanceFunctions.php"
-        $nbErrors=runScript(null,$sqlfile);
-        traceLog("Plugin updated database with $nbErrors errors from script $sqlfile");
         deleteDuplicate(); // Avoid dupplicate for habilitation, ....
       }
       

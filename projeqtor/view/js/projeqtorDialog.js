@@ -4650,7 +4650,7 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("parameter.php?type=accessRightNoProject", "centerDiv");
   } else if (item == 'Admin') {
     loadContent("admin.php", "centerDiv");
-  } else if (item == 'Plugin') {
+  } else if (item == 'Plugin' || item == 'PluginManagement') {
     loadContent("pluginManagement.php", "centerDiv");
   } else if (item == 'Calendar') {
     // loadContent("calendar.php","centerDiv");
