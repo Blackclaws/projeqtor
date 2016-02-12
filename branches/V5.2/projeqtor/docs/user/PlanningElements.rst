@@ -370,7 +370,7 @@ It can for instance be used to add extra work without modifying initial assignme
  
    * Click on the resource name will directly move to the resource.
 
-.. rubric:: Project affectaion
+.. rubric:: Project affectation
 
 * Only resources affected to the project of the activity can be assigned.
 * Affectations may have start and end dates.
@@ -458,17 +458,27 @@ The progress allows to follow up planning element.
 
 This section cover progress to planning element : project, activity and test session.
 
+Milestones and meetings also have progress section, but but much less fields. 
+
 .. topic:: Reassessed metrics
 
    * Reassessed is the sum of real and left metrics.
+   * [reassessed work] = [real work] + [left work]
+   * [reassessed cost] = [real cost] + [left cost]
 
 .. topic:: Expense reassessed metrics
 
-   * Assigned minus real metrics.
+   * Reassessed expense is sum of real expense and left expense.
+   * Real expense is sum of real amount for expenses where real amount is defined
+   * Left expense is sum of planned amount for expenses where real amount is **not** defined
 
 .. topic:: Consolidating metrics
   
-   * fdfdf
+   * All metrics are consolidated on upper lever up to to project
+   * Validated work and validated cost have specific consolidation method selected on global parameters amongst 3 possible values
+      * Always : validated cost is always consolidated, so if you ommit this value on elementary tasks (lowest level of activities) their zero value will be consolidated up to top, possibly overwriting entered values
+      * Never : no consolidation is applied, so you can face inconsistency between sub-tasks values and the value of their parent
+      * Only if set : consolidation is done only if sub-tasks have none zero value, so that you can choose level to enter validated metrics without needing to enter value for lowest level tasks
 
 .. topic:: Real metrics
 
@@ -476,15 +486,8 @@ This section cover progress to planning element : project, activity and test ses
 
 .. rubric:: Duration metrics
 
-*  Allow to determine planning elements duration for project, activity and test session.
-
-.. topic:: Calculating duration
-
-   * Duration is the **work days** numbers between end and start dates.
-
-.. topic:: End date
-
-   * If not set, end date is the start date + duration.
+* Allow to determine planning elements duration for project, activity and test session.
+* Duration is calculated in open days, from start date to end date, so it is the is the **work days** numbers between end and start dates
 
 .. tabularcolumns:: |l|l|
 
@@ -495,11 +498,11 @@ This section cover progress to planning element : project, activity and test ses
    * - Field
      - Description
    * - Validated start date
-     - Planning element should not start later.
+     - Baseline for start of task. Planning element should not start later.
    * - Validated end date
-     - Planning element should not end later.
+     - Baseline for end of task.Planning element should not end later. If planned end date is over validated end date, planned end date is highlighted in red.
    * - Validated duration
-     - Planning element should not last longer.
+     - Baseline for task duration. Planning element should not last longer. This value is required for "fixed duration" planning mode.
    * - Planned start date
      - Calculated start date, taking into account all the constraints.
    * - Planned end date
@@ -509,19 +512,22 @@ This section cover progress to planning element : project, activity and test ses
    * - Real start date
      - Date of the first real work input.
    * - Real end date
-     - Date of the last real work input.
+     - Date of the last real work input when task in completed.
    * - Real duration
      - Calculated duration.
    * - Requested start date
-     - Wished start date.
+     - Wished start date (informative only).
    * - Requested end date
-     - Wished end date.
+     - Wished end date (informative only).
    * - Requested duration
-     - Wished duration.
+     - Wished duration (informative only).
 
 .. topic:: Field: Real end date
 
    * The real end date appearing only when planning element status is "done".
+   
+.. topic:: Field: Validated end date
+   * If not set, end date is calculated as start date + duration (in work days).
 
 .. rubric:: Work metrics
 
@@ -536,32 +542,43 @@ This section cover progress to planning element : project, activity and test ses
    * - Field
      - Description
    * - Validated work
-     - Work of the planning element should not be more.
+     - Work baseline. The total work of the planning element should not be more.
    * - Assigned work
      - Sum of all the work for the assignments on the planning element.
    * - Real work
      - Sum of all the work really spent on the planning element. 
    * - Left work
-     - Left work to complete. 
+     - Left work to complete the task. 
    * - Reassessed work
-     - Work needed to complete.
+     - Total work needed to complete.
    * - Progress
-     - Actual progress of the work, in percent real under planned.
+     - Actual progress of the work, in percent real under reassessed.
    * - Expected
      - Expected progress of work, in percent real under validated.
-   * - Margin
-     - Margin between validated and planned work.
+   * - Margin (in work days)
+     - Margin between validated and reassessed work.
+   * - Margin (in currency)
+     - Margin between validated and reassessed cost.
+   * - Margin (in %)
+     - Margin in % between validated and reassessed.
 
 .. topic:: Field: Margin
 
    * Metrics available only in project progress section.
 
+.. topic:: Work metrics calculation
 
+   * [Reassessed work] = [Real work] + [Left work]
+   * [Progress (%)] = [real work] / [reassessed work] = [real work] / ( [real work + left work] )
+   * [Expected progress (%)] = [real work] / [validated work]
+   * [Work margin] = [validated work] - [reassessed work]
+   * [Margin (%)] = ([validated] - [reassessed]) / [validated]
+   
 .. rubric:: Cost metrics
 
 .. topic:: Planning elements cost
 
-   * Planning elements cost is the sum of tasks like activity, test session and meeting.
+   * Planning elements cost is the sum of work on tasks like activity, test session and meeting converted into cost through resource cost data.
 
 .. topic:: Expense cost
 
@@ -577,7 +594,7 @@ This section cover progress to planning element : project, activity and test ses
    * - Field
      - Description
    * - Validated cost
-     - Cost of the planning element should not be more.
+     - Baseline for budget. Cost of the planning element should not be more.
    * - Assigned cost
      - Sum of all the cost for the assignments on the planning element.
    * - Real cost
@@ -585,19 +602,19 @@ This section cover progress to planning element : project, activity and test ses
    * - Left cost
      - Left cost to complete. 
    * - Reassessed cost
-     - Cost needed to complete.
+     - Total cost needed to complete.
    * - Validated expense
-     - Expense of the project should not be more.
+     - Baseline for budget. Expense of the project should not be more.
    * - Assigned expense
      - Sum of all the expense on project for the planned amount.
    * - Real expense
-     - Sum of all the expense on project for the real amount. 
+     - Sum of all the expense on project for the real amount, when set. 
    * - Left expense
-     - Alaways zero for expense. 
+     - Sum of all the expense on project for the planned amount when real amont is **not** set. 
    * - Reassessed expense
-     - Sum of all the expense on project for reassessed amount.
+     - Sum of the real expense and left expense.
    * - Margin
-     - Margin between total validated and total planned cost.
+     - Margin between total validated and total reassessed cost.
 
 
 .. topic:: Field: Margin
@@ -609,9 +626,15 @@ This section cover progress to planning element : project, activity and test ses
    * Sum of planning elements and expense cost.
    * Metrics available only in project progress section.
 
+.. topic:: Cost metrics calculation
+
+   * [Reassessed cost] = [Real cost] + [Left cost]
+   * [Cost margin] = [validated cost] - [reassessed cost]
+   * [Margin (%)] = ([validated] - [reassessed]) / [validated]
+   
 .. rubric:: Ticket metrics
 
-* Allows to display global work for tickets linked with the activity. 
+* Allows to display global work for tickets linked with the activity throught the "planning activity" field. 
 * Metrics available only in activity progress section. 
 
 .. tabularcolumns:: |l|l|
@@ -623,13 +646,13 @@ This section cover progress to planning element : project, activity and test ses
    * - Field
      - Description
    * - Number
-     - Numbers of ticket linked with the activity.
+     - Numbers of tickets linked with the activity.
    * - Estimated
-     - Sum of all planned work of ticket linked with the activity.
+     - Sum of all planned work of tickets linked with the activity.
    * - Real
-     - Sum of all real work of ticket linked with the activity. 
+     - Sum of all real work of tickets linked with the activity. 
    * - Left
-     - Sum of all left work of ticket linked with the activity. 
+     - Sum of all left work of tickets linked with the activity. 
  
 .. rubric:: Others metrics
 
@@ -641,9 +664,18 @@ This section cover progress to planning element : project, activity and test ses
 
    * :term:`Planning priority` of the planning element.
 
-.. topic:: List of values: Planning
+.. topic:: List of values: Planning mode
 
-   * ddfd
+   * Method applied to the task to calculate the planning
+   * "as soon as possible" : task must end as soon as possible. it is the default planning mode.
+   * "must not start before validated date" : idem as previous but with additional constraint for start
+   * "work together" : like "as soon as possible" but several resource assigned must work on same periods
+   * "regular between dates" : work is regularly dispatch over the period, from start to end
+   * "regular in full days" : like "regular", but only full days will be planned, not part days
+   * "regular in half days" : like "regular", but only half days will be planned, not less
+   * "regular in quarter days" : like "regular", but only quarter days will be planned, not less
+   * "as late as possible" : planned backward from the defined end date
+   * "fixed duration" : planning mode that does not need work to be defined, will just long exactely as defined
  
 .. raw:: latex
 

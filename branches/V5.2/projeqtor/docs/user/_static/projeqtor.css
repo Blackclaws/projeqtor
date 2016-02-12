@@ -2,3 +2,14 @@
 .toc-backref {
 	color: #ffffff !important;
 }
+div.topic {
+    border: 1px solid #ccc;
+    padding: 7px 7px 0 7px;
+    margin: 10px 0 10px 3em;
+    font-size:80%;
+}
+table.docutils {
+    border: 0;
+    border-collapse: collapse;
+    margin-left: 2em;
+}
