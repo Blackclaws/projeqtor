@@ -24,52 +24,12 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/* ============================================================================
- * Client is the owner of a project.
+/** ============================================================================
+ * Client
  */  
-require_once('_securityCheck.php'); 
-class Client extends SqlElement {
+require_once('_securityCheck.php');
+class Client extends ClientMain {
 
-  // extends SqlElement, so has $id
-  public $_sec_Description;
-  public $id;    // redefine $id to specify its visiblez place 
-  public $name;
-  public $idClientType;
-  public $clientCode;
-  public $idPaymentDelay;
-  public $taxPct;
-  public $numTax;
-  public $idle;
-  public $description;
-  public $_sec_Address;
-  public $designation;
-  public $street;
-  public $complement;
-  public $zip;
-  public $city;
-  public $state;
-  public $country;
-  public $_sec_Projects;
-  public $_spe_projects;
-  public $_sec_Contacts;
-  public $_spe_contacts;
-  public $_Attachment=array();
-  public $_Note=array();
-  
-  private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="30%">${clientName}</th>
-  	<th field="nameClientType" width="15%">${idClientType}</th> 
-    <th field="clientCode" width="15%">${clientCode}</th> 
-    <th field="namePaymentDelay" width="15%">${paymentDelay}</th>
-    <th field="taxPct" width="5%" formatter="percentSimpleFormatter">${tax}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
-    ';
-  
-  private static $_colCaptionTransposition = array('name'=> 'clientName', 'idPaymentDelay'=>'paymentDelay');
-  private static $_fieldsAttributes=array();
-  private static $_databaseColumnName = array('taxPct'=>'tax');
-  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -79,7 +39,6 @@ class Client extends SqlElement {
     parent::__construct($id,$withoutDependentObjects);
   }
 
-  
    /** ==========================================================================
    * Destructor
    * @return void
@@ -88,70 +47,6 @@ class Client extends SqlElement {
     parent::__destruct();
   }
 
-// ============================================================================**********
-// GET STATIC DATA FUNCTIONS
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
-   */
-  protected function getStaticLayout() {
-    return self::$_layout;
-  }
-  
-  /** ==========================================================================
-   * Return the specific fieldsAttributes
-   * @return the fieldsAttributes
-   */
-  protected function getStaticFieldsAttributes() {
-    return self::$_fieldsAttributes;
-  }
-  
-  /** ============================================================================
-   * Return the specific colCaptionTransposition
-   * @return the colCaptionTransposition
-   */
-  protected function getStaticColCaptionTransposition($fld) {
-    return self::$_colCaptionTransposition;
-  }
-  
-  /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseColumnName() {
-    return self::$_databaseColumnName;
-  }
-  
-  /** =========================================================================
-   * Draw a specific item for the current class.
-   * @param $item the item. Correct values are : 
-   *    - subprojects => presents sub-projects as a tree
-   * @return an html string able to display a specific item
-   *  must be redefined in the inherited class
-   */
-  public function drawSpecificItem($item){
-    $result="";
-    if ($item=='projects') {
-      $prj=new Project();
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
-      }
-      $result .="</td></tr></table>";
-      return $result;
-    } else if ($item=='contacts') {
-      $con=new Contact();
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('contacts') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= $con->drawContactsList(array('idClient'=>$this->id,'idle'=>'0'));
-      }
-      $result .="</td></tr></table>";
-      return $result;
-    }
-  }
+
 }
 ?>
