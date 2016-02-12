@@ -17,3 +17,5 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) selec
 UPDATE `${prefix}menu` set sortOrder=9010, idMenu=143, name='menuPluginManagement' where id=136;
 UPDATE `${prefix}menu` set sortOrder=9101, idMenu=143 where id=100001001;
 UPDATE `${prefix}menu` set sortOrder=9104, idMenu=143 where id=100004001;
+
+UPDATE `${prefix}status` set isCopyStatus=0 where id!=14;
