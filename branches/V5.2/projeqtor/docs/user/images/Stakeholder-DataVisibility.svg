@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="765"
-   height="990"
+   width="446.25467"
+   height="271.46106"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -79,8 +79,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="179.03041"
-     inkscape:cy="621.2963"
+     inkscape:cx="75.523502"
+     inkscape:cy="88.678975"
      inkscape:document-units="px"
      inkscape:current-layer="g5443"
      showgrid="false"
@@ -89,7 +89,11 @@
      inkscape:window-x="49"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     units="cm" />
+     units="cm"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -98,7 +102,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -106,7 +110,7 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-62.360835)">
+     transform="translate(-103.50691,-248.28244)">
     <g
        id="g5443"
        transform="matrix(1.0907891,0,0,1,57.228646,-5.8252384)"
@@ -128,7 +132,7 @@
          id="text5439"
          y="389.70389"
          x="87.88327"
-         style="font-size:11.4897572px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         style="font-size:11.48975754px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
          xml:space="preserve"
          inkscape:export-filename="/home/parri04/git/projeqtorquebec/projeqtor/docs/user/images/Stakeholder-DataVisibility.png"
          inkscape:export-xdpi="90"
@@ -410,7 +414,7 @@
          id="text3778-9"
          y="272.63641"
          x="363.77444"
-         style="font-size:11.33702778px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         style="font-size:11.33702755px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
          xml:space="preserve"
          inkscape:export-filename="/home/parri04/git/projeqtorquebec/projeqtor/docs/user/images/Stakeholder-DataVisibility.png"
          inkscape:export-xdpi="90"
@@ -422,7 +426,7 @@
            sodipodi:role="line"
            id="tspan7630"
            x="363.77444"
-           y="287.63641">functionalities</tspan></text>
+           y="286.80771">functionalities</tspan></text>
     </g>
     <path
        inkscape:connector-curvature="0"
@@ -462,7 +466,7 @@
            sodipodi:role="line">User</tspan></text>
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 260,215.71428 38.57143,31.42858"
        id="path9275"
        inkscape:connector-curvature="0"
