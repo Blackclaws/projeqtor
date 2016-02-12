@@ -36,10 +36,11 @@ $userLink['PeriodicMeeting']='ReviewLogs.html#periodic-meeting';
 $userLink['Decision']='ReviewLogs.html#decision';
 $userLink['Question']='ReviewLogs.html#question';
 $userLink['Product']='ProductVersion.html#product';
-$userLink['Version']='ProductVersion.html#version';
+$userLink['ProductVersion']='ProductVersion.html#product-version';
+$userLink['Component']='ProductVersion.html#component';
+$userLink['ComponentVersion']='ProductVersion.html#component-version';
 $userLink['Resource']='Resource.html#resource';
 $userLink['User']='User.html#user';
-$userLink['User']='Resource.html#user';
 $userLink['Team']='Resource.html#team';
 $userLink['CalendarDefinition']='Resource.html#calendar';
 $userLink['Client']='Customer.html#customer';
@@ -116,6 +117,21 @@ $userLink['GlobalParameter']='Administration.html#global-parameters';
 $section=null;
 if (isset($_REQUEST['section'])) {
   $section=$_REQUEST['section']; // Note: can only be a valid index in $userLink. Value is not echo'ed in HTML.
+}
+if (substr($section,0,7)=='Plugin_') {
+  $plugin=substr($section,7);
+  $pluginRoot="../plugin/$plugin/docs";
+  if (file_exists("$pluginRoot/$plugin.html")) {
+    $url="$pluginRoot/$plugin.html";
+    echo $url;
+    exit;
+  } else if (file_exists("$pluginRoot/$plugin.pdf")) {
+    $url="$pluginRoot/$plugin.pdf";
+    echo $url;
+    exit;
+  } else {
+    $section="Plugin";
+  }
 }
 
 $userRoot='../docs/user/html_en/';
