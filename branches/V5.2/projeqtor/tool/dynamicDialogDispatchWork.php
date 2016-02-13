@@ -44,7 +44,15 @@ $list=$w->getSqlElementsFromCriteria($crit);
 $totalWork=0;
 foreach ($list as $w) {
   $key=$w->day.'#'.$w->idResource;
-  if (! isset($arrayWork[$key])) $arrayWork[$key]=array('id'=>$w->id, 'date'=>$w->workDate, 'idResource'=>$w->idResource,'work'=>0);
+  if (! isset($arrayWork[$key])) {
+    $arrayWork[$key]=array('id'=>$w->id, 'date'=>$w->workDate, 'idResource'=>$w->idResource,'work'=>0);
+  } else {
+    // duplicate exist : fix = merge the two work items
+    $merged=new Work($arrayWork[$key]['id']);
+    $merged->work+=$w->work;
+    $merged->save();
+    $w->delete();
+  }
   $arrayWork[$key]['work']+=$w->work;
   $totalWork+=$w->work;
 }

@@ -1,5 +1,6 @@
 .. include:: ImageReplacement.txt
 
+.. title:: Concepts
 
 .. raw:: latex
 
@@ -8,7 +9,7 @@
 .. _projeqtor-roles:
 
 ProjeQtOr roles
----------------
+===============
 
 A stakeholder can play many roles in ProjeQtOr.
 
@@ -117,6 +118,7 @@ Specific roles are defined to allow:
 
 
 
+
 .. raw:: latex
 
     \newpage
@@ -127,7 +129,7 @@ Specific roles are defined to allow:
 .. _profiles-definition:
 
 Profiles definition 
--------------------
+===================
 
 The profile is a group used to define application authorization and access rights to the data.
 
@@ -207,7 +209,7 @@ A user linked to a profile belongs to this group who share same application beha
 .. _user-ress-contact-demystify:
 
 Stakeholder definition 
-----------------------
+======================
 
 ProjeQtOr allows to define roles of stakeholders.
 
@@ -313,7 +315,7 @@ The next matrix shows the different possibilities.
 
  .. compound:: **Material resource**
 
-    * Material resources availability can be defined on projects
+    * Material resources availability can be defined on projects.
     * But,  material resource must not  be  connected to the application.
     
 
@@ -337,7 +339,7 @@ The next matrix shows the different possibilities.
     \newpage
 
 Shared data
-"""""""""""
+-----------
 
 For a stakeholder, data on user, resource and contact are shared.
 
@@ -347,6 +349,92 @@ Project affection and user profile are also shared.
 
    * For a stakeholder, you can define and redefine the combination without losing data.
 
+
+.. raw:: latex
+
+    \newpage
+
+.. _product-concept:
+
+Product and component
+=====================
+
+A product is a material object or for IT/IS projects is a software application.
+
+A product can have a complex structure that can be composed of sub-product and components. (See:  :ref:`product-structure`)
+
+The purpose is identifying the work on a version of a product or one of its components.
+
+Detail about management of product and component. (See: :ref:`product-component-management`)
+
+.. rubric:: Versions of product and component
+
+* A product can have several versions that represent each declination of product.
+* A component can have several versions that represent each declination of the component.
+* When a component is linked to a product. It's possible to define which version of the component linked to a version of the product.
+* The goal is to follow the evolution of the product and its components.
+
+.. figure:: /images/LinkProductComponentVersion.png
+   :alt: Link between versions of product and component
+   :align: center
+
+   Link between versions of product and component
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Linked to a Project
+
+* A product or component is an element delivered by a project.
+* The link to the project have no impact on project planning.
+* Indicates only that project is devoted to a specific version.
+* The link management is done in :ref:`project` and :ref:`product-version` screens.
+
+.. figure:: /images/LinkProductToProject.png
+   :alt: Link with projects
+   :align: center
+
+   Link with projects
+
+
+.. rubric:: Identifying the version affected by the work.
+
+* For elements :ref:`activity`, :ref:`milestone`, :ref:`requirement`, :ref:`test-case`, :ref:`test-session` and :ref:`ticket`, it's possible to identifying the origin and target version affected by the work.
+
+.. rubric:: Product document
+
+* Documents can be identified to products. (See: :ref:`document`)
+
+.. raw:: latex
+
+    \newpage
+
+.. _product-structure:
+
+Product structure
+-----------------
+
+* The product structure allows to define the product components.
+* Components can be grouped under sub-product.
+
+.. figure:: /images/ProductStructure.png
+   :alt: Product structure
+   :align: center
+
+   Product structure
+
+* A component can be shared between products.
+
+.. figure:: /images/LinkProductComponent.png
+   :alt: Component shared
+   :align: center
+
+   Component shared
+
+
+
+
 .. raw:: latex
 
     \newpage
@@ -355,7 +443,7 @@ Project affection and user profile are also shared.
 .. _project-affectation:
 
 Project affectation
--------------------
+===================
 
 Project affectation is used to:
 
@@ -370,7 +458,7 @@ Project affectation is used to:
 The following sections describe project affectation, performed for user, resource or contact.
 
 User affectation
-""""""""""""""""
+----------------
 
 Project affectation gives data visibility on a project.
 
@@ -399,12 +487,14 @@ Project affectation can be defined in the :ref:`user` screen.
      * Can be used to limit access period, according to services agreement.
 
 
+
+
 .. raw:: latex
 
     \newpage
 
 Resource affectation
-""""""""""""""""""""
+--------------------
 
 Project affectation allows to define the resource availability on project.
 
@@ -429,8 +519,15 @@ It is also possible to affect a team to a project in :ref:`team` screens.
 
 .. attention::
 
-   * Activities planning process trying to plan the assigned work to the resource within the specified period.
-   * If a incompletely planned tasks happen a brown bar appear in the Gantt view.	
+    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
+    * If remaining work on the task can't be planned, a purple bar appears in the Gantt view.
+
+.. rubric:: Replace resource on an affectation
+
+* A resource can be replaced on project affectation.
+* All tasks assigned to old resource will be transferred to the new resource with planned work and remaining work.
+* Work done on tasks belongs to always the old resource.
+
 
 Multi-project affectation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -448,7 +545,7 @@ In the section **Affectations** in :ref:`resource` screen, a tool allows to disp
 
 
 Contact affectation
-"""""""""""""""""""
+-------------------
 
 A contact affected to a project can be defined as :term:`requestor`.
 
@@ -461,7 +558,7 @@ Project affectation can be defined in :ref:`project` and :ref:`contact` screens.
     \newpage
 
 Activity assignment
--------------------
+===================
 
 * Activity assignment is used to assign resource to project activities.
 * Project activities are activity, meeting and test session. 
@@ -482,7 +579,7 @@ Activity assignment
 .. _resource-function-cost:
 
 Resource function and cost
---------------------------
+==========================
 
 .. rubric:: Function
 
@@ -535,7 +632,7 @@ Resource function and cost
 .. _resource-calendar:
 
 Resource calendar
------------------
+=================
 
 A calendar defines the working days in a the year.
 
@@ -609,7 +706,7 @@ A calendar is defined for each resource.
 .. _photo:
 
 Photo
------
+=====
 
 A photo can be defined for a user, a resource and a contact.
 

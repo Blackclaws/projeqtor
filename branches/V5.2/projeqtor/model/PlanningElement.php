@@ -938,6 +938,20 @@ class PlanningElement extends SqlElement {
     $result="";
     $returnValue="";
     $task=null;
+    
+    $checkClass=get_class($this);
+    if (SqlElement::is_a($this, 'PlanningElement')) {
+      $checkClass=$this->refType;
+    }
+    $right=securityGetAccessRightYesNo('menu' . $checkClass, 'update', $this);
+    if ($right!='YES') {
+      $returnValue=i18n('errorUpdateRights');
+      $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
+      $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+      $returnValue .= '<input type="hidden" id="lastPlanStatus" value="INVALID" />';
+      return $returnValue;
+    }
+    
     $dest=new PlanningElement($destId);
     if ($dest->topRefType!=$this->topRefType
     or $dest->topRefId!=$this->topRefId) {

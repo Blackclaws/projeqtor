@@ -937,6 +937,13 @@ class UserMain extends SqlElement {
         traceLog("authenticate - LDAP Bind Error : not identified error" );
 			  return "ldap";
 			}
+			if (strpos($this->name,'*')!==false or strpos($this->name,'*')!==false 
+			or strpos($this->name,'[')!==false or strpos($this->name,']')!==false
+      or strpos($this->name,'\\')!==false) {
+			  // Control : must not contain * or %
+			  traceLog("authenticate - LDAP conection using for user '".$this->name."' : * or % or [ or ] or \ " );
+			  return "login";
+			}
 			$filter_r = html_entity_decode(str_replace(array('%USERNAME%','%username%'), array($this->name,$this->name), $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {

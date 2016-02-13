@@ -72,22 +72,32 @@ but once you'll get familiar to the structure of the interface you'll discover t
 as all screens have the same frames and sections always have simular structure and position.
 
 .. toctree::
-   :maxdepth: 1
+   :titlesonly:
 
    Gui
    CommonSections
    UserParameter
 
-Planning elements
-=================
+
+
+Planning and Follow-up
+======================
 
 ProjeQtOr provides all the elements needed to build a planning from workload, 
 constraints between tasks and resources availability.
 
+The main activity of Project Leader is to measure progress, analyse situation and take decisions.
+In order to ease his work, ProjeQtOr provides several reporting tools, from the well know Gantt chart, to many reports.
+
 .. toctree::
    :maxdepth: 1
 
-   PlanningElements
+   PlanningElements 
+   Gantt
+   Today 
+   Diary
+   Report
+
 
 Real work allocation
 ====================
@@ -99,23 +109,9 @@ and re-estimate left work for all ongoing tasks.
 ProjeQtOr provides a dedicate screen for this feature, to ease this input so that entering real work is as quick as possible.
  
 .. toctree::
-   :maxdepth: 1
+   :titlesonly:
 
    RealWorkAllocation
-
-Follow-up
-=========
-
-The main activity of Project Leader is to measure progress, analyse situation and take decisions.
-In order to ease his work, ProjeQtOr provides several reporting tools, from the well know Gantt chart, to many reports.
-
-.. toctree::
-   :maxdepth: 1
-
-   Today  
-   Gantt
-   Diary
-   Report
 
 Document management
 ===================
@@ -136,8 +132,8 @@ Ticket management
    Ticket
 
   
-Requirements et Tests
-=====================
+Requirements & Tests
+====================
 
 .. toctree::
    :maxdepth: 1

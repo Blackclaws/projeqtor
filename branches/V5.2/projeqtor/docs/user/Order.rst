@@ -152,10 +152,11 @@ An order (also called command) is the trigger to start work.
 
 On the order form, you can record all the information of the received order.
 
-.. rubric:: Work on the activity
+.. rubric:: Scheduled work and budgeted cost of project
 
-* An order can be linked to an activity. It then represents the command of the work on the activity.
-* In that case, validated work of the activity is the sum of the orders linked to the activity.
+* The scheduled work (field: "validated work") of the project will be initialized with the sum of total work from all orders.
+* The budgeted cost (field: "validated cost") of the project will be initialized with the sum of the total amount before taxes for all orders. 
+* See: :ref:`progress-section-resource`
 
 .. rubric:: Bill lines section
 
@@ -255,7 +256,7 @@ On the order form, you can record all the information of the received order.
 
    Columns:
 
-   * **Ex VAT**: Amount without taxes.
+   * **Ex VAT**: Amount before taxes.
 
      * The column value is automatically updated with the sum of bill line amounts.
 

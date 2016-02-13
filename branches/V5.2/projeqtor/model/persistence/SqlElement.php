@@ -2126,7 +2126,7 @@ abstract class SqlElement {
 	private function getDependantSqlElement($objClass) {		
 		$curId=$this->id;
 		if (! trim($curId)) {$curId=null;}
-		$obj = new $objClass;
+		$obj = new $objClass();
 		$obj->refId=$this->id;
 		$obj->refType=get_class($this);
 		// If id is set, get the elements from Database

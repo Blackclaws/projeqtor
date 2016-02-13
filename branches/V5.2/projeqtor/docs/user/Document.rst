@@ -13,9 +13,11 @@
 Documents
 ---------
 
-A document is a referential element that gives a description of a product or a project.
+.. sidebar:: Concepts 
 
-A document must be linked either to a project (for project documentation), to a product (for product document) or both.
+   * :ref:`product-concept`
+
+A document is a reference element that gives a description of a project, a product or a component.
 
 Document item describes general information about the document.
 
@@ -89,7 +91,7 @@ The file document will be stored in the tool as versions.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
@@ -103,8 +105,8 @@ The file document will be stored in the tool as versions.
      - Type of document.
    * - Project
      - The project concerned by the document.
-   * - Product
-     - The product concerned by the document.
+   * - Product or component
+     - The product or component concerned by the document.
    * - **Directory**
      - Place where the document is stored  to organize document structure. 
    * - Document reference
@@ -119,6 +121,12 @@ The file document will be stored in the tool as versions.
      - Flag to indicate that document is cancelled.
 
 **\* Required field**
+
+.. topic:: Fields: Project and Product or component
+
+   * Must be concerned either by a project, a product or one these components or both.
+   * If the project is specified, the list of values for field “Product or component” contains the products and components linked the selected project.
+   * If the project is not specified, the list of values for field "Product or component" contains all products and components defined.
 
 .. topic:: Field: Document reference
 

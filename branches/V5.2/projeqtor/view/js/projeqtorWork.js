@@ -424,6 +424,21 @@ function updateDispatchWorkTotal() {
 }
 
 function dispatchWorkSave() {
+  var listArray=new Array();
+  var cpt=1;
+  while (dijit.byId('dispatchWorkValue_'+cpt)) {
+    res=dijit.byId('dispatchWorkResource_'+cpt).get('value');
+    dat=dijit.byId('dispatchWorkDate_'+cpt).get('value');
+    if ( res && dat) {
+      var key=res+"#"+dat;
+      if (key in listArray) {
+        showAlert(i18n('duplicateEntry'));
+        return;
+      }
+      listArray[res+"#"+dat]='OK';
+    }
+    cpt++;
+  }
   updateDispatchWorkTotal();
   sum=dijit.byId('dispatchWorkTotal').get('value');
   if (dijit.byId('WorkElement_realWork')) {

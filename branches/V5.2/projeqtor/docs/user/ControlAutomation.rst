@@ -1,10 +1,5 @@
 .. include:: ImageReplacement.txt
 
-.. contents::
-   :depth: 1
-   :backlinks: top
-
-
 .. title:: Controls & Automation
 
 .. index:: ! Workflow
@@ -45,6 +40,10 @@ Once defined, a workflow can be linked to any type of any item.
 
 **\* Required field**
 
+.. raw:: latex
+
+    \newpage
+
 .. rubric:: Button: Select status to show or hide
 
 * This button |buttonIconParameter|  can be used to hide some unnecessary status.
@@ -54,6 +53,7 @@ Once defined, a workflow can be linked to any type of any item.
    :align: center
 
    Select status to show or hide dialog box
+
 
 .. rubric:: Section: Workflow Diagram
 
@@ -70,7 +70,6 @@ Once defined, a workflow can be linked to any type of any item.
 
     \newpage
 
-
 .. rubric:: Section: Habilitation to change from a status to another
 
 * The habilitation table helps defining who can move from one status to another one.
@@ -80,16 +79,17 @@ Once defined, a workflow can be linked to any type of any item.
 * Just check the profile (or “all”) who is allowed to pass from one status to the other.
 
 
-.. figure:: /images/GUI/SEC_HabilitationTable.png
-   :alt: Habilitation table
-   :align: center
+  .. figure:: /images/GUI/SEC_HabilitationTable.png
+     :alt: Habilitation table
+     :align: center
 
-   Habilitation table
+     Habilitation table
 
-   In the upper example:
-  
-   * Anyone can move an item from “recorded” to “assigned” and from “recorded” to “cancelled”.
-   * No one can move an item from “qualified” status to any other status. In this case, pay attention that it must never be possible to move an item to “qualified” status, because it will not be possible to leave this status.
+
+ .. compound:: **In the upper example:**
+
+    * Anyone can move an item from “recorded” to “assigned” and from “recorded” to “cancelled”.
+    * No one can move an item from “qualified” status to any other status. In this case, pay attention that it must never be possible to move an item to “qualified” status, because it will not be possible to leave this status.
 
 .. raw:: latex
 
@@ -206,7 +206,7 @@ It is possible to define a default delay for tickets, for each ticket type and e
 
 .. index:: ! Indicator (Definition)
 .. index:: ! Email (Indicator)
-.. index:: ! Alert (Indicator)
+.. index:: ! Internal alert (Indicator)
 
 .. _indicator:
 
@@ -395,7 +395,7 @@ A checklist is built from checklist lines.
     \newpage
 
 .. index:: ! Email (Receivers)
-.. index:: ! Alert (Receivers)
+.. index:: ! Internal alert (Receivers)
 
 .. _receivers-list:
 

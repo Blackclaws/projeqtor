@@ -4,32 +4,32 @@
 
     \newpage
 
-
-.. contents::
-   :depth: 2
-   :backlinks: top
-
-.. title:: Today
+.. title:: Today (Dashboard)
 
 
 .. index:: ! Today
+.. index:: ! Dashboard
 
-Today
------
+Today (Dashboard)
+=================
 
 This screen allows user to have a global view of its projects and tasks.
 
-.. note::
-  
-   * This screen is the first to be displayed on each connection.
-   * You can define other screen will be displayed in :ref:`Users parameters<graphic-interface-behavior-section>` screen. 
+.. contents:: Sections
+   :local: 
+   :backlinks: top
+
+.. note:: User parameter “First page”
+
+   * This parameter defines the screen that will be displayed first on each connection.
+   * By default, this screen is selected.
 
 .. index:: ! Message (Section)
 
 .. _messages-section:
 
-Section: Messages
-^^^^^^^^^^^^^^^^^
+Messages
+--------
 
 .. figure:: /images/GUI/SEC_TodayMessages.png
    :alt: Today messages section
@@ -56,35 +56,30 @@ Section: Messages
 
 * Click on |buttonIconParameter| to access screen parameters.
 
+ .. compound:: **Period for task selection**
+
+    * Allows to define the period for tasks will be displayed.
+
+      .. compound:: **Field: Due date**
+
+         * Select only items with due date less than today plus this selected period.
+
+      .. compound:: **Field: Or not set**
+ 
+         * Select also items with due date not set. 
+
+ 
+ .. compound:: **Items to be displayed**
+
+    * Allows to define sections displayed on the screen.
+    * Allows to reorder sections displayed with drag & drop feature.
+    * Using the selector area button icon drag |buttonIconDrag|. 
+
 .. figure:: /images/GUI/BOX_TodayParameters.png
    :alt: Today parameters dialog box
    :align: center
 
    Today parameters dialog box
-
-.. compound:: **Period for task selection**
-
-   * Allows to define the period for tasks will be displayed.
-
-    .. compound:: **Field: Due date**
-
-       * Select only items with due date less than today plus this selected period.
-
-    .. compound:: **Field: Or not set**
- 
-       * Select also items with due date not set. 
-
-
-.. compound:: **Items to be displayed**
-
-   * Allows to define sections displayed on the screen.
-
-   .. note::
-
-      * Allows to reorder sections displayed with drag & drop feature.
-      * Using the selector area button icon drag |buttonIconDrag|. 
-
-
 
 
 
@@ -96,12 +91,12 @@ Section: Messages
 .. index:: ! Start guide
 
 
-Section: Start guide
-^^^^^^^^^^^^^^^^^^^^
+Start guide
+-----------
 
 * Start page for new installations to assist the administrator in the first configuration steps.
 * A progress display |one| allows to determine the percent of complete installation.
-* You can hide this section on startup, just unchecked |two|.
+* You can hide this section on startup, just unchecked. |two|
 
   * This section will not be displayed anymore.
   * To show it again, select it as the start page in :ref:`Users parameters<graphic-interface-behavior-section>` screen. 
@@ -120,8 +115,8 @@ Section: Start guide
 
     \newpage
 
-Section: Projects
-^^^^^^^^^^^^^^^^^
+Projects
+--------
 
 A quick overview of projects status.
 
@@ -135,9 +130,9 @@ The projects list is limited to the project visibility scope of the connected us
 
 
 
-.. rubric:: Scope of the numbers counted
+.. rubric:: 1 - Scope of the numbers counted
 
-* Checkboxes allow to filter displayed projects: |one|
+* Checkboxes allow to filter displayed projects:
 
   * To do: Projects to do.
   * Not closed : Projects to do and done.
@@ -152,11 +147,11 @@ The projects list is limited to the project visibility scope of the connected us
 * Manuel indicator can be set on project.
 * Trend and health status indicators are displayed.
 
- .. compound:: **Icon: Trend** |two|
+ .. compound:: **2 - Icon: Trend**
 
     * This icon allows to display the trend of the project.
 
- .. compound:: **Icon: Health status** |three|
+ .. compound:: **3 - Icon: Health status**
 
     * This icon allows to display the health status of the project.  
 
@@ -168,7 +163,7 @@ The projects list is limited to the project visibility scope of the connected us
 
 * Calculated progress and overall progress are displayed.
 
- .. compound:: **Calculated progress** |four|
+ .. compound:: **4 - Calculated progress**
 
     * Actual progress of the work of project.
 
@@ -176,46 +171,32 @@ The projects list is limited to the project visibility scope of the connected us
 
        * On each project shows part of “to do” (red) compared to “done and closed” (green).
 
- .. compound:: **Overall progress** |five|
+ .. compound:: **5 - Overall progress**
 
     * Additional progress manually selected for the project.
 
-.. rubric:: Project metrics
+.. rubric:: 6 - Other measure of progress
 
-* Some metrics are displayed on each project. |six|
+* **Left:** Left work for the project.
+* **Margin:** Work margin.
+* **End date:** Planified end date of the project.
+* **Late:** Number of late days in project.
+ 
+.. rubric:: 7 - Numbers of elements concerned to project
 
-.. tabularcolumns:: |l|l|
+* Numbers of elements concerned to a project are displayed.
 
-.. list-table:: Fields of project metrics
-   :widths: 20, 80
-   :header-rows: 1
+ .. note:: On mouse over the bar
 
-   * - Field
-     - Description
-   * - Left
-     - Left work for the project.
-   * - Margin
-     - Work margin.
-   * - End date
-     - Planified end date of the project.
-   * - Late
-     - Number of late days in project.
-
-.. rubric:: Numbers of elements concerned to project
-
-* Numbers of elements concerned to a project are displayed. |seven|
-
-.. note:: On mouse over the bar
-
-   * On each element shows part of “to do” (red) compared to “done and closed” (green).
+    * On each element shows part of “to do” (red) compared to “done and closed” (green).
 
 
 .. raw:: latex
 
     \newpage
 
-Sections: Tasks
-^^^^^^^^^^^^^^^
+Tasks
+-----
 
 Here are listed, as a “To do list” all the items for which the connected user is either “assigned to”, “:term:`responsible` of” or “:term:`issuer` or :term:`requestor` of”.
 
@@ -261,8 +242,8 @@ Click on an item will directly move to it.
 
     \newpage    
 
-Extending section
-^^^^^^^^^^^^^^^^^
+Extending
+---------
 
 You can select any report to be displayed on the Today screen.
 

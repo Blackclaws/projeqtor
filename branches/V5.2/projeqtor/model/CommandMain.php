@@ -262,6 +262,7 @@ class CommandMain extends SqlElement {
   	
   	$oldIdProject=0;
   	$oldTotalUntaxedAmount=0;
+  	$oldValidatedWork=0;
   	//Check if we are in CREATION
 
     if (trim($this->id)=='') {
@@ -271,6 +272,7 @@ class CommandMain extends SqlElement {
   		$old=$this->getOld();
   		$oldIdProject=$old->idProject;
   		$oldTotalUntaxedAmount=$old->totalUntaxedAmount;
+  		$oldValidatedWork=$old->validatedWork;
   	}
   
   	$billLine=new BillLine();
@@ -317,7 +319,7 @@ class CommandMain extends SqlElement {
     
     /* dispatch of command to validated may be weird */
     if ($oldTotalUntaxedAmount!=$this->totalUntaxedAmount || 
-    	$oldIdProject!=$this->idProject) {
+    	$oldIdProject!=$this->idProject || $this->validatedWork!=$oldValidatedWork) {
     	if (trim($oldIdProject)!='') {
 	    	$prj=new Project($oldIdProject);
 	    	$prj->updateValidatedWork();

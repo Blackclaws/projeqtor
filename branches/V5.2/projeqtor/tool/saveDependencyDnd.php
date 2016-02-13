@@ -35,6 +35,7 @@ if (! array_key_exists('ref1Type',$_REQUEST)) {
   throwError('ref1Type parameter not found in REQUEST');
 }
 $ref1Type=$_REQUEST['ref1Type'];
+if ($ref1Type=='Fixed') $ref1Type='Project';
 
 if (! array_key_exists('ref1Id',$_REQUEST)) {
   throwError('ref1Id parameter not found in REQUEST');
@@ -45,6 +46,7 @@ if (! array_key_exists('ref2Type',$_REQUEST)) {
   throwError('ref2Type parameter not found in REQUEST');
 }
 $ref2Type=$_REQUEST['ref2Type'];
+if ($ref2Type=='Fixed') $ref2Type='Project';
 
 if (! array_key_exists('ref2Id',$_REQUEST)) {
   throwError('ref2Id parameter not found in REQUEST');

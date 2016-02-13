@@ -1,16 +1,16 @@
-.. |iconNotPlanned| image:: images/iconNotPlanned32.png
+.. |iconNotPlanned| image:: images/iconNotPlanned.png
    :alt: Icon not planned
 
-.. |iconPlanned| image:: images/iconPlanned32.png
+.. |iconPlanned| image:: images/iconPlanned.png
    :alt: Icon planned
 
-.. |iconPassed| image:: images/iconPassed32.png
+.. |iconPassed| image:: images/iconPassed.png
    :alt: Icon passed
 
-.. |iconFailed| image:: images/iconFailed32.png
+.. |iconFailed| image:: images/iconFailed.png
    :alt: Icon failed
 
-.. |iconBlocked| image:: images/iconBlocked32.png
+.. |iconBlocked| image:: images/iconBlocked.png
    :alt: Icon blocked
 
 .. |buttonAdd| image:: images/smallButtonAdd.png
@@ -58,7 +58,7 @@
 .. |buttonIconDocDir| image:: images/iconDocumentDirectory.png
    :alt: Button icon document directory
 
-.. |buttonIconToday| image:: images/iconToday32.png
+.. |buttonIconToday| image:: images/iconToday.png
    :alt: Button icon Today
 
 .. |buttonIconReportFavorite| image:: images/iconReportsFavorite.png
@@ -86,10 +86,10 @@
    :alt: Button icon column
 
 .. |buttonIconPrint| image:: images/buttonIconPrint.png
-   :alt: Button icon print
+   :alt: icon print button
 
 .. |buttonIconPdf| image:: images/buttonIconPdf.png
-   :alt: Button icon PDF
+   :alt: icon PDF button
 
 .. |buttonIconCsv| image:: images/buttonIconCSV.png
    :alt: Button icon CSV
@@ -160,6 +160,31 @@
 .. |buttonQuitMultiMode| image:: images/buttonQuitMultipleUpdateMode.png
    :alt: button quit multiple update mode
 
+.. |closeIcon| image:: images/close.png
+   :alt: close icon
+
+.. |minusButton| image:: images/minusButton.png
+   :alt: minus button
+
+.. |plusButton| image:: images/plusButton.png
+   :alt: plus button
+
+
+.. |calculatePlanning| image:: images/plan.png
+   :alt: calculate planning button
+
+
+.. |storePlannedDates| image:: images/buttonStorePlannedDates.png
+   :alt: store planned dates button
+
+.. |msProject| image:: images/mpp.png
+   :alt: MS Project button
+
+.. |createNewItem| image:: images/createNewItem.png
+   :alt: create new item button
+
+.. |dndLink| image:: images/dndLink.png
+   :alt: DND link
 
 .. |one| image:: images/one.png
    :alt: One
@@ -197,19 +222,19 @@
    :alt: Nine
    :scale: 30
 
-
-.. |alpha| image:: images/alpha.png
-   :alt: Alpha
+.. |A| image:: images/A.png
+   :alt: A letter
    :scale: 30
 
-.. |beta| image:: images/beta.png
-   :alt: Beta
+.. |B| image:: images/B.png
+   :alt: B letter
    :scale: 30
 
-.. |gamma| image:: images/gamma.png
-   :alt: Gamma
+.. |C| image:: images/C.png
+   :alt: C letter
    :scale: 30
 
-.. |delta| image:: images/delta.png
-   :alt: Delta
+.. |D| image:: images/D.png
+   :alt: D letter
    :scale: 30
+

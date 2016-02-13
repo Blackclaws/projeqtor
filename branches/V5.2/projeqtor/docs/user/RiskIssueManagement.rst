@@ -1,7 +1,3 @@
-.. contents::
-   :depth: 1
-   :backlinks: top
-
 .. title:: Risk & Issue Management
 
 .. index:: ! Risk 
@@ -21,10 +17,19 @@ The risk management plan is a key point to project management :
  - Follow-up actions.
  - Identify risks that finally occur (becoming an issue).
 
-.. rubric:: Initial and planned end dates
+.. index:: ! Risk (Contingency reserve)
+
+.. rubric:: Contingency reserve
+
+* Contingency reserve is defined according to monetary impact and likelihood of occurrence.
+* Contingency reserve for risks and potential gain for opportunities allow to define the project reserve. (See: :ref:`Project reserve<project-reserve>`)
+
+.. rubric:: Monitoring indicator
 
 * Possibility to define indicators to follow the respect of dates values.
-* See: :ref:`indicator` screen. 
+
+ .. describe:: Respect of initial due date
+ .. describe:: Respect of planned due date
 
 .. sidebar:: Other sections
 
@@ -73,12 +78,12 @@ The risk management plan is a key point to project management :
 
 .. topic:: Field: Criticality
 
-   * Automatically calculated from Severity and Likelihood values. See: :ref:`criticality-calculation`.
+   * Automatically calculated from Severity and Likelihood values. (See: :ref:`criticality-calculation`)
    * Value can be changed. 
 
 .. topic:: Field: Project reserved cost
 
-   * Automatically calculated from the percentage defined to the likelihood.
+   * Automatically calculated from the percentage defined for the selected likelihood. (See: :ref:`likelihood`)
 
 
 .. rubric:: Section: Treatment
@@ -130,13 +135,12 @@ Opportunities
 
 An opportunity can be seen as a positive risk. It is not a threat but the opportunity to have a positive impact to the project.
 
-The risk management plan is a key point to project management :
+.. index:: ! Opportunity (Potential gain) 
 
- - Identify risks and estimate their severity and likelihood.
- - Identify mitigating actions.
- - Identify opportunities.
- - Follow-up actions.
- - Identify risks that finally occur (becoming an issue).
+.. rubric:: Potential gain
+
+* The potential gain is defined according to the expected amount and likelihood of occurrence.
+* Contingency reserve for risks and potential gain for opportunities allow to define the project reserve. (See: :ref:`Project reserve<project-reserve>`)
 
 .. sidebar:: Other sections
 
@@ -185,12 +189,12 @@ The risk management plan is a key point to project management :
 
 .. topic:: Field: Criticality
 
-   * Automatically calculated from Significance and Likelihood values. See: :ref:`criticality-calculation`.
+   * Automatically calculated from Significance and Likelihood values. (See: :ref:`criticality-calculation`)
    * Value can be changed. 
 
 .. topic:: Field: Project reserved gain
 
-   * Automatically calculated from the percentage defined to the likelihood.
+   * Automatically calculated from the percentage defined for the selected likelihood. (See: :ref:`likelihood`)
 
 .. rubric:: Section: Treatment
 
@@ -274,11 +278,13 @@ If the risk Management plan has been correctly managed, issues should always be 
 
 Actions must be defined to solve the issue.
 
-
-.. rubric:: Initial and planned end dates
+.. rubric:: Monitoring indicator
 
 * Possibility to define indicators to follow the respect of dates values.
-* See: :ref:`indicator` screen. 
+
+ .. describe:: Respect of initial due date
+ .. describe:: Respect of planned due date
+
 
 .. sidebar:: Other sections
 
@@ -374,10 +380,12 @@ The actions are the main activities of the risk management plan.
 
 They must be regularly followed-up.
 
-.. rubric:: Initial and planned due dates
+.. rubric:: Monitoring indicator
 
 * Possibility to define indicators to follow the respect of dates values.
-* See: :ref:`indicator` screen. 
+
+ .. describe:: Respect of initial due date
+ .. describe:: Respect of planned due date
 
 .. sidebar:: Other sections
 
@@ -424,9 +432,9 @@ They must be regularly followed-up.
      - Actual :term:`status` of the action.
    * - :term:`Responsible`
      - Resource who is responsible for the action.
-   * - Initial end date
+   * - Initial due date
      - Initially expected end date of the action.
-   * - Planned end date
+   * - Planned due date
      - Updated end date of the action.
    * - :term:`Handled`
      - Flag to indicate that action is taken into account.

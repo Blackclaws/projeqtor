@@ -41,32 +41,32 @@ Just click on any task to access directly.
 
 |
 
- .. compound:: **Period** |one| 
+ .. compound:: **1 - Period** 
 
     * Display the month, week, or day.
 
- .. compound:: **1st day** |two| 
+ .. compound:: **2 - 1st day** 
 
     * Allows to select the displayed calendar.
     * The first day of mouth or the week is displayed.
 
- .. compound:: **Resource** |three| 
+ .. compound:: **3 - Resource** 
 
     * Allows to select the resource calendar.
 
- .. compound:: **Show done items & Show closed items** |four| 
+ .. compound:: **4 - Show done items & Show closed items** 
 
     * Allows to display or not the done and closed items.
 
- .. compound:: **Top buttons** |five| 
+ .. compound:: **5 - Top buttons** 
 
     * Allows to change current month, week, or day.
 
- .. compound:: **Left side buttons** |six| 
+ .. compound:: **6 - Left side buttons** 
 
     * Click on |arrowRight| to go to week display mode.
     * Click on |arrowLeft| to return to the last display mode.
 
- .. compound:: **Day number button** |seven| 
+ .. compound:: **7 - Day number button** 
 
     * Click on the day number button to go day display mode.

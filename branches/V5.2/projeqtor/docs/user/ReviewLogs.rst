@@ -1,9 +1,5 @@
 .. include:: ImageReplacement.txt
 
-.. contents::
-   :depth: 2
-   :backlinks: top
-
 .. title:: Review logs
 
 .. index:: ! Meeting 
@@ -11,19 +7,21 @@
 .. _meeting:
 
 Meetings
---------
+========
 
 Meeting items are stored to keep track of important meetings during the project lifecycle :
 
 * Progress Meetings
-
 * Steering committees
-
 * Functional workshops
 
 In fact, you should keep track of every meeting where decisions are taken, or questions answered.
 
 This will provide an easy way to find back when, where and why a decision has been taken.
+
+.. contents:: Meeting features
+   :local: 
+   :backlinks: top
 
 .. rubric:: Project activity
 
@@ -34,9 +32,9 @@ This will provide an easy way to find back when, where and why a decision has be
 .. sidebar:: Other sections
 
 
-   * :ref:`Attendees <attendees-section>`
-   * :ref:`Progress <progress-meeting-section>`
-   * :ref:`pe-predSuces-element-section-label`
+   * :ref:`Attendees<attendees-section>`
+   * :ref:`Progress<progress-section-meeting>`
+   * :ref:`Predecessor and Sucessor element<predSuces-element-section>`
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
@@ -45,7 +43,7 @@ This will provide an easy way to find back when, where and why a decision has be
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -89,7 +87,7 @@ This will provide an easy way to find back when, where and why a decision has be
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Treatment section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -144,13 +142,13 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
 
 .. note::
 
-   * Most fields fit meeting fields, but some information for the meeting is not present for periodic meetings, such as Minutes or Status. 
+   * Most fields fit, but some information is not present for periodic meetings, such as Minutes or Status. 
    * It is because these fields won’t be set through periodic meeting definition, but must be set directly on the meetings.
 
 .. rubric:: Periodic meeting process
 
 * When saving periodic meeting, elementary meetings are automatically created.
-* Changes can then be done in elementary meetings. In most cases, these changes won’t be erased by periodic meeting updates.
+* Changes can be done in elementary meetings. In most cases, these changes won't be erased by periodic meeting updates.
 
 .. topic:: Update on a periodic meeting
 
@@ -167,16 +165,20 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
 
 .. sidebar:: Other sections
 
-   * :ref:`Attendees <attendees-section>`
-   * :ref:`Progress <progress-meeting-section>`
-   * :ref:`pe-predSuces-element-section-label`
+   * :ref:`Attendees<attendees-section>`
+   * :ref:`Progress<progress-section-meeting>`
+   * :ref:`Predecessor and Sucessor element<predSuces-element-section>`
    * :ref:`Notes<note-section>`   
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -193,19 +195,15 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
    * - Location
      - Place (room or else) when meeting will stand.
    * - :term:`Description`
-     - Description of the meeting. Can be used to store Agenda.
+     - Description of the meeting.
  
 **\* Required field**
-
-.. topic:: Field: Name
-
-   * If not set, will automatically be set to meeting type completed with meeting date.
 
 .. rubric:: Section: Treatment
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Treatment section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -218,16 +216,11 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
    * - :term:`Closed`
      - Flag to indicate that periodic meeting is archived.
 
-.. topic:: Field: Parent activity
-
-   * In the WBS structure, under which the meeting will be displayed in the Gantt planning.
-
-
 .. rubric:: Section: Periodicity
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Periodicity section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -271,7 +264,7 @@ This section allows to define the list of attendees to the meeting.
 
 * Meeting is an activity you can assign project resources.
 * A possibility to assign work to some attendees (project resources). So meeting works of these attendees are booked in the project. 
-* More detail about how assigned project resources, see: :ref:`pe-assignment-section-label` section.
+* More detail about how assigned project resources, see: :ref:`assignment-section` section.
    
 .. rubric:: Other attendees
 
@@ -288,37 +281,6 @@ This section allows to define the list of attendees to the meeting.
 
 
 
-
-.. _progress-meeting-section:
-
-Progress section
-----------------
-
-This section is common to meeting and periodic meeting.
-
-It allows to follow-up the progress of a meeting.
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Progress section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - Validated work/cost
-     - Committed work/cost, work/cost of the meeting should not be more. 
-   * - Assigned work/cost
-     - Work/cost for the assignments on the meeting.
-   * - Real work/cost
-     - Work/cost really spent on the meeting. 
-   * - Left work/cost
-     - Work/cost needed to complete the meeting.
- 
-.. topic:: Priority
-
-   * :term:`Planning priority` of the meeting.
-
 .. raw:: latex
 
     \newpage
@@ -329,7 +291,7 @@ It allows to follow-up the progress of a meeting.
 .. _decision: 
 
 Decisions
----------
+=========
 
 Decisions are stored to keep track of important decisions, when, where and why the decision was taken.
 
@@ -345,7 +307,7 @@ You can link a decision to a meeting to rapidly find the minutes where the decis
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -368,7 +330,7 @@ You can link a decision to a meeting to rapidly find the minutes where the decis
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Validation section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -406,7 +368,7 @@ You can link a decision to a meeting to rapidly find the minutes where the decis
 .. _question:
 
 Questions
----------
+=========
 
 Question are stored to keep track of important questions and answers.
 
@@ -420,10 +382,12 @@ Also keep in mind that some people will (consciously or not) be able to change t
 
 You can link a question to a meeting to rapidly find the minutes where the question was raised or answered.
 
-.. rubric:: Initial and planned due dates
+.. rubric:: Monitoring indicator
 
 * Possibility to define indicators to follow the respect of dates values.
-* See: :ref:`indicator` screen. 
+
+ .. describe:: Respect of initial due date
+ .. describe:: Respect of planned due date
 
 .. sidebar:: Other sections
 
@@ -435,7 +399,7 @@ You can link a question to a meeting to rapidly find the minutes where the quest
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Description section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
@@ -458,7 +422,7 @@ You can link a question to a meeting to rapidly find the minutes where the quest
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Answer section fields
+.. list-table::
    :widths: 20, 80
    :header-rows: 1
 
