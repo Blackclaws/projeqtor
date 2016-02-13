@@ -1,16 +1,18 @@
 .. include:: ImageReplacement.txt
 
+.. title:: Expenses
+
 .. index:: ! Expense
+.. index:: ! Project (Expense)
+
+Expenses
+========
+
+The expenses incurred for the project are monitored.
 
 .. contents:: Expense
-   :depth: 2
    :backlinks: top
    :local:
-
-
-.. title:: Expense
-
-
 
 .. index:: ! Expense (Individual)
 
@@ -109,7 +111,6 @@ Planned amount will help to have an overview of project total costs, even before
 
 
 .. index:: ! Expense (Project)
-.. index:: ! Project (Expense)
 
 .. _project-expense:
 

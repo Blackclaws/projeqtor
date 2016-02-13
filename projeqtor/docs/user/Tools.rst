@@ -1,11 +1,5 @@
 .. include:: ImageReplacement.txt
 
-
-.. contents::
-   :depth: 2
-   :backlinks: top
-
-
 .. title:: Tools
 
 .. index:: ! Email (Sent)
@@ -24,7 +18,7 @@ All the information about the email, including the status showing whether the em
     \newpage
 
 
-.. index:: ! Alert (Sent)
+.. index:: ! Internal alert (Sent)
 
 .. _alerts:
 

@@ -2,10 +2,6 @@
 
     \newpage
 
-.. contents::
-   :depth: 1
-   :backlinks: top
-
 .. title:: Lists of types
 
 .. raw:: latex
@@ -51,6 +47,7 @@ Project type is a way to define common behavior on group of projects.
 .. sidebar:: Other sections
 
    * :ref:`Behavior <behavior-section>`
+   * :ref:`Types restrictions<type-restriction-section>`
 
 .. rubric:: Section: Description
 
@@ -80,6 +77,47 @@ Project type is a way to define common behavior on group of projects.
      - Description of the type.
 
 **\* Required field**
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Project (Types restrictions)
+
+.. _type-restriction-section:
+
+Types restrictions section
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section allows choice of values displayed in the list of values for each element type.
+
+The purpose is to filter the lists of values of element types according to the project type.
+
+.. note:: Types restrictions set directly on the project
+
+   * Possibility to set types restrictions directly on the project screen.
+   * The global parameter "allow type restriction on project" must be set to "Yes".
+   * Ability to add more restrictions for the project.
+
+
+.. rubric:: Type restriction management
+
+#. Click on "Restrict types" button to display the dialog box.
+#. For each element type, select values that will be in the list of values.
+
+.. figure:: /images/GUI/BOX_RestrictTypeForProject.png
+   :alt: Restrict types for the project dialog box
+   :align: center
+
+   Restrict types for the project dialog box
+
+.. rubric:: Displays element type names where a restriction is applied
+
+.. figure:: /images/GUI/ZONE_TypeRestrictionSection.png
+   :alt: Restrict types section
+   :align: center
+
+   Restrict types section
 
 
 .. raw:: latex
@@ -160,6 +198,8 @@ Activity type is a way to define common behavior on group of activities.
      - Code of the type.
    * - **Workflow**
      - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - **Default planning mode**
+     - Default planning mode for type. 
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -205,6 +245,8 @@ Milestone type is a way to define common behavior on group of milestones.
      - Code of the type.
    * - **Workflow**
      - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - **Default planning mode**
+     - Default planning mode for type. 
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
@@ -1089,6 +1131,8 @@ Test session type is a way to define common behavior on group of test sessions.
      - Code of the type.
    * - **Workflow**
      - Defined the workflow ruling status change for items of this type (see: :ref:`workflow`).
+   * - **Default planning mode**
+     - Default planning mode for type. 
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`

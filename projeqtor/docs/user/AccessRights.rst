@@ -2,11 +2,6 @@
 
 .. index:: ! Access rights
 
-.. contents::
-   :depth: 1
-   :backlinks: top
-
-
 .. title:: Access rights
 
 .. index:: ! Access rights (Profile)

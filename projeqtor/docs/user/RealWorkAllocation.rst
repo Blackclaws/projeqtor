@@ -4,9 +4,6 @@
 
     \newpage
 
-.. contents::
-   :depth: 3
-   :backlinks: top
 
 
 .. title:: Real work allocation
@@ -32,18 +29,14 @@ The input is for one resource, on a weekly basis.
 
    Timesheet zone screen
 
-.. rubric:: Selection timesheet
+.. rubric:: 1- Selection timesheet
 
-* Allows to select a timesheet for a resource and for a period. |one|
+* Allows to select a timesheet for a resource and for a period.
 * More detail about selection timesheet, see : :ref:`selectionTimesheet-section`.
 
-.. raw:: latex
+.. rubric:: 2 - Show planned work
 
-    \newpage
-
-.. rubric:: Show planned work
-
-* Flag selected allows to display planned work. |two|
+* Flag selected allows to display planned work.
 * Planned work is indicated over each input cell, on top right corner, in light blue color.
 * Allow to display the planned work of each task each day.
 
@@ -57,9 +50,9 @@ The input is for one resource, on a weekly basis.
 
    * The planned work will be deleted when the real work is entered (to avoid duplication of work in reports).
 
-.. rubric:: Filters
+.. rubric:: 3 - Filters
 
-* Filters allow to show or hide task in the task list. |three|
+* Filters allow to show or hide task in the task list.
 
  .. compound:: **Show only current week meeting**
 
@@ -77,18 +70,18 @@ The input is for one resource, on a weekly basis.
 
     * Flag allows to show closed task.
 
-.. rubric:: Buttons
+.. rubric:: 4 - Buttons
 
-Buttons of the timesheet: |four|
+Buttons of the timesheet:
 
 * Click on |buttonIconSave| to save timesheet data.
 * Click on |buttonIconPrint| to print timesheet.
 * Click on |buttonIconPdf| to export timesheet in PDF format.
 * Click on |buttonIconUndo| to undo modification on the timesheet.
 
-.. rubric:: Data entry validation
+.. rubric:: 5 - Data entry validation
 
-Buttons allow to send and validate real work. |five|
+Buttons allow to send and validate real work.
 
  .. compound:: **Button: Submit work**
 
@@ -99,15 +92,15 @@ Buttons allow to send and validate real work. |five|
     * Project leaders can validate works.
 
 
-.. rubric:: Scroll bar
+.. rubric:: 6 - Scroll bar
 
-* |six| Scroll bar allows the scrolling on imputation lines.
+* Scroll bar allows the scrolling on imputation lines.
 * The header of table stays visible.
 * The footer of the table (with the sum of inputs) remains visible, fixed, as soon as the number of lines is greater than 20.
 
-.. rubric:: Input fields
+.. rubric:: 7 - Input fields
 
-* Input fields in timesheet. |seven|
+* Input fields in timesheet.
 * More detail about, see : :ref:`inputFields-section`
 
 
@@ -115,9 +108,9 @@ Buttons allow to send and validate real work. |five|
 
     \newpage
 
-.. rubric:: Tasks list
+.. rubric:: 8 - Tasks list
 
-Task list allows to display each resource affectation task. |eight|
+Task list allows to display each resource affectation task.
 
 .. figure:: /images/GUI/ZONE_TaskList.png
    :alt: Task list zone
@@ -127,36 +120,42 @@ Task list allows to display each resource affectation task. |eight|
 
 |
 
- .. compound:: **Tasks** |alpha|
+ .. compound:: **A - Tasks**
 
-    * Tasks are regrouped by project. 
+    * Tasks are regrouped by project in hierarchical form. 
     * Tasks displayed in the list depends on :
    
       * Assigned tasks planified during this period.
       * Selected filter flags.
       * Behavior defined in :ref:`Global parameters<realWorkAllocation-section>` screen.
 
-    * Click on the name of the activity to access it.
+     .. note::
+
+        * Tasks with real work are always displayed, even if closed.
+        * The goal is to show all lines of the sum for each column, to be able to check that the week is completely entered.
+
+    * Click on the name of the activity to access it.  
+    * Click on |minusButton| or |plusButton| on the line will expand-shrink the group.
     * Click on the icon of the activity to display it detail without leaving the current screen.  
  
 
- .. compound:: **Function of the assignement** |beta|
+ .. compound:: **B - Function of the assignement**
 
     * The function on the assignment is displayed in blue after the name of the task.  
     * A resource assigned to the same task with many functions, several input line is displayed.
 
- .. compound:: **Comment on the assignment** |gamma|
+ .. compound:: **C - Comment on the assignment**
 
     * The icon |Note| indicates there is a comment on the assignment. 
     * Just move the mouse over the activity to see the comment.
 
- .. compound:: **Task metrics** |delta|
+ .. compound:: **D - Progress data**
 
-    * **Planned dates**: Planned start and end dates for the task.
-    * **Assigned**: Assigned work for the task.
-    * **Real**: Sum of real work for the task.
-    * **Left**: Left work for the task. 
-    * **Reassessed**: Reassessed work for the task  
+    * **Planned dates**: Planned start and end dates.
+    * **Assigned**: Planned work assigned to the resource.
+    * **Real**: Sum of work done by the resource.
+    * **Left**: The remaining planned work. 
+    * **Reassessed**: The work needed to complete the task.  
 
 
 
@@ -176,13 +175,13 @@ Selection timesheet
 
    Timesheet selector zone
 
-.. rubric:: Selection of the resource 
+.. rubric:: 1 - Selection of the resource 
 
-* Users can only select themselves as a resource. |one|
+* Users can only select themselves as a resource.
 
-.. topic:: Access to other resources timesheet
+ .. note:: Access to other resources timesheet
 
-   * Depending on access rights, user can select other resource timesheet. 
+    * Depending on access rights, user can select other resource timesheet. 
 
 .. rubric:: Selection period
 
@@ -216,34 +215,34 @@ Input fields
 
    Input timesheet zone
 
-.. rubric:: Comments
+.. rubric:: 1 - Comments
 
-* A global comment can be added on the weekly follow-up. |one|
+* A global comment can be added on the weekly follow-up.
 
-.. rubric:: Real work entry
+.. rubric:: 2 - Real work entry
 
-* Area allows to entry real work. |two|
+* Area allows to entry real work.
 * Week is displayed from monday to sunday.
 * It possible put real work in off days.
 
-.. topic:: Current day
+ .. compound:: **Current day**
 
-   * Columns of current day is displayed in yellow.
+    * Columns of current day is displayed in yellow.
 
-.. Topic:: Days off
+ .. compound:: **Days off**
 
-   * Columns of days off is displayed in grey.
-   * Days off is determine in resource calendar definition, see: :ref:`calendar` screen.
+    * Columns of days off is displayed in grey.
+    * Days off is determine in resource calendar definition, see: :ref:`calendar` screen.
 
-.. rubric:: Left work
+.. rubric:: 3 - Left work
 
 * Left work is automatically decreased on input of real work.
-* Resources can update this data to reflect the real estimated left work. |three|
+* Resources can update this data to reflect the real estimated left work.
 
-.. rubric:: Unit for real work
+.. rubric:: 4 - Unit for real work
 
 * Unit for real work allocation is set :ref:`Global parameters<unitForWork-section>` screen.
-* Selected unit is displayed on left at bottom window |four|.   
+* Selected unit is displayed on left at bottom window.   
 
 .. raw:: latex
 

@@ -2,7 +2,7 @@
 .toc-backref {
 	color: #ffffff !important;
 }
-div.topic {
+div.topic, .admonition .note {
     border: 1px solid #ccc;
     padding: 7px 7px 0 7px;
     margin: 10px 0 10px 3em;

@@ -5,9 +5,6 @@
 .. title:: Affectations
 
 .. index:: ! Affectation
-.. index:: ! Project (Affectation)
-
-
 
 .. _affectation:
 

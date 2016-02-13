@@ -6,6 +6,8 @@
 
     \newpage
 
+
+
 Global view
 ===========
 
@@ -41,6 +43,10 @@ Those areas are :
 * The red splitter allows to resize the areas left and right.
 * The orange splitter allows to resize the areas **«List window» and «Detail window»**.
 
+.. note::
+
+   * The  position of splitters is saved and retrieved on each connection.
+
 .. figure:: /images/GUI/SCR_WindowsSplitters.png
    :alt: Windows splitters
    :align: center
@@ -57,40 +63,16 @@ Those areas are :
 Top bar
 -------
 
-.. figure:: /images/GUI/SCR_TopBar.png
+.. figure:: /images/GUI/ZONE_TopBar.png
    :alt: Top bar
    :align: center
 
    Top bar
 
-.. rubric:: Menu buttons
-
-.. figure:: /images/GUI/ZONE_MenuButtons.png
-   :alt: Menu buttons zone
-   :align: center
-
-   Menu buttons zone
-
-* The menu buttons |two| give rapid access to main elements.
-* The arrows |three| allow to scroll buttons list.
-
- .. compound:: **Contextual menu buttons** |one|
-
-    * Allows to select a work context to limit the displayed buttons.
-
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Project (Selector)
 
-.. rubric:: Project selector
-
-.. figure:: /images/GUI/ZONE_ProjectSelector.png
-   :alt: Project selector zone
-   :align: center
-
-   Project selector zone
+.. rubric:: 1 - Project selector
 
 * Allows restricting the visibility of all objects of the dedicated project, including sub-projects if any.
 * The selection will also define the “default” project for new items.
@@ -113,27 +95,39 @@ Top bar
 
    \newpage
 
-.. _navigation-buttons:
+.. rubric:: 2 - Menu on top bar
 
-.. rubric:: Navigation buttons
+Menu on top bar allows a rapid access to elements.
 
-.. figure:: /images/GUI/ZONE_NavigationButtons.png
-   :alt: Navigation buttons zone
+.. figure:: /images/GUI/ZONE_TopBarMenu.png
+   :alt: Menu on top bar
    :align: center
 
-   Navigation buttons zone
+   Menu on top bar
+
+.. compound:: **Menu selector** |A|
+   
+   * The menu selector allows to reduce buttons list displayed |B| in the top bar.
+   * The arrows |C| allow to scroll buttons list.
+   * Move cursor over the menu selector to display menus list. Click on menu to select it.
+
+.. note:: Predefined menus
+
+   * Predefined menus are available and regroup buttons according to the work context.
+
+
+
+
+.. _navigation-buttons:
+
+.. rubric:: 3 - Navigation buttons
 
 * The navigation buttons |buttonIconBackNavigation| |buttonIconForwardNavigation| give access to previous and next items in the history.
 
-.. rubric:: Button «New tab» 
+.. rubric:: 4 - Button «New tab» 
 
 * Allows to open a new tab within the same session.
 
-.. figure:: /images/GUI/ZONE_NewTabButton.png
-   :alt: New tab button zone
-   :align: center
-
-   Button «New tab» zone
 
 .. raw:: latex
 
@@ -180,7 +174,7 @@ Logo area
 «Menu» and «Documents» windows
 ------------------------------
 
-.. figure:: /images/GUI/SCR_MenuAndDocumentsWindows.png
+.. figure:: /images/GUI/ZONE_MenuDocument.png
    :alt: «Menu» and «Documents» windows 
    :align: center
 
@@ -190,47 +184,27 @@ Logo area
 
    * To toggling between windows, just click on window header.  
 
-.. raw:: latex
-
-   \newpage
-
-
-.. rubric:: Menu window
+.. rubric:: 1 - Menu window
 
 * The menu is proposed as a tree view of reachable items. 
 * The items presented will depend on the access rights of user to the screens.
 * Click on a grouping line will expand-shrink the group.
 * Click on an item will display the corresponding screen in the main area (right side of the screen).
 
-.. figure:: /images/GUI/ZONE_MenuWindow.png
-   :alt: Menu window
-   :align: center
-   
-   Menu window
+
 
 .. note:: User parameter “Icon size in menu”
 
    * This parameter defines the size of icons in the menu.
 
 
-.. raw:: latex
-
-   \newpage
-
-.. rubric:: Documents window
+.. rubric:: 2 - Documents window
 
 * Document directories give direct access to documents contained in the directory.
 
-.. figure:: /images/GUI/ZONE_DocumentsWindow.png
-   :alt: Documents window
-   :align: center
+ .. compound:: **3 - Document directories**
 
-   Documents window
-
-
-.. topic:: Document directories
-
-   This icon |buttonIconDocDir| gives direct access to the :ref:`document-directory` screen.
+    * This icon |buttonIconDocDir| gives direct access to the :ref:`document-directory` screen.
 
 .. raw:: latex
 
@@ -241,49 +215,33 @@ Logo area
 «External shortcuts» and «Console messages» windows
 ---------------------------------------------------
 
-.. figure:: /images/GUI/SCR_MessageAndLinkWindows.png
+.. figure:: /images/GUI/ZONE_ShortcutMessage.png
    :alt: External shortcuts and Console messages windows
    :align: center
 
    «External shortcuts» and «Console messages» windows
 
+
 .. note:: Toggling between windows
 
    * To toggling between windows, just click on window header.   
 
-.. raw:: latex
-
-    \newpage
-
-.. rubric:: External shortcuts window
+.. rubric:: 1 - External shortcuts window
 
 * Display hyperlinks to remote web pages.
 * These links are defined as hyperlink attachments on projects.
 * Links displayed here depend on the selected project.
 
 
-.. figure:: /images/GUI/ZONE_ExternalShortcuts.png
-   :alt: External shortcuts
-   :align: center
-
-   External shortcuts window
-
-
-
-.. rubric:: Console messages window
+.. rubric:: 2 - Console messages window
 
 * Displays information about main actions: insert, update, delete. 
 * The timestamp indicates when the action was done.
 
-.. figure:: /images/GUI/ZONE_ConsoleMessages.png
-   :alt: Console messages
-   :align: center
 
-   Console messages window
+ .. note::
 
-.. note::
-
-   * Messages displayed here are not stored and will be flushed when user logout.
+    * Messages displayed here are not stored and will be flushed when user logout.
 
 .. raw:: latex
 
@@ -295,19 +253,16 @@ Logo area
 List window
 -----------
 
-.. figure:: /images/GUI/SCR_ListWindow.png
+.. contents:: List window features
+   :depth: 1
+   :local: 
+   :backlinks: top
+
+.. figure:: /images/GUI/ZONE_ListWindow.png
    :alt: List window
    :align: center
 
    List window
-
-
-
-.. figure:: /images/GUI/ZONE_ListWindowPart.png
-   :alt: List window zone
-   :align: center
-
-   List window zone
 
 
 .. rubric:: 1 - Element identifier
@@ -316,26 +271,24 @@ List window
 * Each element is identified with a distinctive icon.
 
 
-
-
-.. raw:: latex
-
-    \newpage
-
 .. _rapid-filter:
 
 .. rubric:: 2 - Rapid filter
 
 * Rapid filtering fields are proposed : «Id», «Name» and «Type».
 
-.. topic:: Any change on «Id» and «Name»
+ .. compound:: **Any change on «Id» and «Name»**
 
-   * Will instantly filter data.  
-   * Search is considered as «contains», so typing «1» in «Id» will select «1», «10», «11», «21», «31» and so on.
+    * Will instantly filter data.  
+    * Search is considered as «contains», so typing «1» in «Id» will select «1», «10», «11», «21», «31» and so on.
 
-.. topic:: Selecting a «Type»
+ .. compound:: **Selecting a «Type»**
   
-   * Will restrict the list to the corresponding type.
+    * Will restrict the list to the corresponding type.
+
+.. raw:: latex
+
+    \newpage
 
 
 .. rubric:: 3 - Buttons 
@@ -589,16 +542,17 @@ The fields are regrouped and presented in the order as they appear in the item d
 Detail window
 -------------
 
-.. figure:: /images/GUI/SCR_DetailWindow.png
+.. contents:: Detail window features
+   :depth: 1
+   :local: 
+   :backlinks: top
+
+
+.. figure:: /images/GUI/ZONE_DetailWindow.png
    :alt: Detail window
    :align: center
 
    Detail window
-
-
-.. figure:: /images/GUI/ZONE_DetailWindowPart.png
-   :alt: GUI detail window Part
-   :align: center
 
 .. rubric:: 1 - Item identifier
 
@@ -659,11 +613,15 @@ Detail window
 
 * The fields are regrouped under a section.
 * All sections can be folded or unfolded, clicking on the section title. 
-* The sections are organized in columns.
 
-  * Maximum three columns can be displayed.
+ .. compound:: **Columns**
 
-* Some sections are displayed on almost all screens. (See : :ref:`common-sections`)  
+    * The sections are organized in columns.
+    * Number of displayed columns can be defined in user parameters.
+
+ .. compound:: **Common sections**
+
+    * Some sections are displayed on almost all screens. (See : :ref:`common-sections`)  
 
  .. compound:: **Item count in the list**
 
@@ -920,6 +878,57 @@ They are stored and displayed on each item.
 * This button allows to show or hide work changes done in “Real Work Allocation”.
 * For section «Change history»  the display of work is defined in  user parameter «Display history».
  
+.. raw:: latex
+
+    \newpage
+
+Text editor
+^^^^^^^^^^^
+
+Text editors are available for editing of long text fields like description, results, notes, ...
+
+
+.. note:: Parameter “Editor for rich text”
+
+   * Selection of text editor can be done in User and Global parameters screens.
+
+.. rubric:: CK Editor
+
+* The most advanced web editor.
+
+.. figure:: /images/GUI/ZONE_CKEditor.png
+   :alt: CK Editor
+   :align: center
+
+   CK Editor
+
+
+.. rubric:: Dojo Editor
+
+* Historically first used on ProjeQtOr.
+
+.. figure:: /images/GUI/ZONE_DojoEditor.png
+   :alt: Dojo Editor
+   :align: center
+
+   Dojo Editor
+
+
+
+.. rubric:: Inline editor
+
+* Activated only when needed.
+* Text zone is extendable.
+
+.. figure:: /images/GUI/ZONE_LongTextFields.png
+   :alt: Inline editor
+   :align: center
+
+   Inline editor
+
+
+
+
 
 .. raw:: latex
 
@@ -929,6 +938,11 @@ Special fields
 ^^^^^^^^^^^^^^
 
 This section describes the ProjeQtOr special fields.
+
+.. contents:: Special fields
+   :depth: 1
+   :local: 
+   :backlinks: top
 
 
 Accelerator buttons
@@ -1041,32 +1055,6 @@ Combo list field
 
     \newpage
 
-
-Long text field
-"""""""""""""""
-
-* Long text fields allow to write description, results, notes, ...
-* A mini editor is provided.
-* Text zone is extendable.
-
-.. figure:: /images/GUI/ZONE_LongTextFields.png
-   :alt: Long text field
-   :align: center
-
-   Long text field
-
-
-
-.. note:: User parameter “Editor mode always on”
-
-   * This parameter defines that the editor is always activated on long text fields.
-
-
-
-.. raw:: latex
-
-    \newpage
-
 .. _origin-field:
 
 Origin field
@@ -1136,17 +1124,11 @@ Set color field
 Info bar
 --------
 
-.. figure:: /images/GUI/SCR_Infobar.png
-   :alt: Info bar
-   :align: center
-
-   Info bar
-
 .. figure:: /images/GUI/ZONE_Infobar.png
    :alt: Info bar zone
    :align: center
 
-   Info bar zone
+   Info bar
 
 .. rubric:: 1 - Log out button
 
@@ -1189,92 +1171,99 @@ Info bar
 * Click on button to access to ProjeQtOr site.
 
 
+.. raw:: latex
 
+    \newpage
 
+.. index:: ! Internal alert (Display)
+.. index:: ! Indicator (Internal alert)
 
+Internal alert
+==============
 
+Internal alerts can be sent to users.
 
+An internal alert can be sent by the administrator or by monitoring indicators.
 
+ .. compound:: **By the administrator**
 
+    * The administrator can send internal alert by administration console. (See: :ref:`admin-console`)
+    * The message will be received by user via message pop-up.
 
+ .. compound:: **Monitoring indicators**   
 
+    * Monitoring indicators send only warning and alert message.
+    * The message contains information that explains the alert:
 
+      * Item id and type.  
+      * Indicator description. 
+      * Target value.
+      * Alert or warning value.
 
-
- 
- 
-
-
+    * The indicators are defined in :ref:`indicator` screen.    
 
 .. raw:: latex
 
     \newpage
 
-.. index:: ! Alert (Display)
-.. index:: ! Indicator (Display)
+.. rubric:: Message pop-up
 
-Alerts
-======
+Users may receive messages pop-up, displayed on the bottom right corner of the screen.
 
-Users may receive some information displayed as pop-up on the bottom right corner of the screen.
-
-Three kinds of information may be displayed:
+Three kinds of message may be displayed:
 
 * Information
 * Warning
 * Alert
 
 .. figure:: /images/GUI/BOX_Alert.png
-   :alt: Information pop-up
+   :alt: message pop-up
    :align: center
 
-   Information pop-up
+   message pop-up
 
-.. rubric:: Alert response
+.. rubric:: Action on message pop-up
 
-Two possible actions:
+Three possible actions:
 
 * Select to remind you in a given number of minutes (message will close and appear  again in the given number of minutes).
-* Mark it as read to definitively hide it.   
+* Mark it as read to definitively hide it. 
+* Mark as read all remaining alerts (the number appears on the button).  
 
 .. note::
 
-   * Possibility to mark the alert as read in :ref:`alerts` screen.
+   * On :ref:`alerts` screen, the user can read the alert messages marked as read.
 
-.. rubric:: Send alert
+.. raw:: latex
 
-An alert can be sent by the administrator or indicator calculation.
-
-
- .. compound:: **By the administrator**
-
-    * The administrator can send alert by administration console. (See: :ref:`admin-console`)
-
- .. compound:: **Indicator calculation**   
-
-    * Indicator calculation sends only warning and alert message.
-
-    * Alert coming from indicator calculation message contains more information:
-
-     * Item id and type.  
-     * Indicator description. 
-     * Target value.
-     * Alert or warning value.
-
-    * The indicators are defined in :ref:`indicator` screen.    
+    \newpage
 
 
-.. rubric:: Alert icon
+
+
+
+.. rubric:: Alert on detail window
 
 On indicatorable items, you may see a small icon on top left of the detail of the item.
 
 Just move the mouse over the icon to display, which indicator has been raised.
 
 .. figure:: /images/GUI/ZONE_Alert.png
-   :alt: Alert icon
+   :alt: Alert on detail window
    :align: center
 
-   Alert icon
+   Alert on detail window
+
+
+.. rubric:: Alert on Today screen
+
+Just move the mouse over the red line to display, which indicator has been raised.
+
+.. figure:: /images/GUI/ZONE_AlertToday.png
+   :alt: Alert on Today screen
+   :align: center
+
+   Alert on Today screen
 
 
 .. raw:: latex

@@ -1,12 +1,3 @@
-.. raw:: latex
-
-    \newpage
-
-
-.. contents::
-   :depth: 2
-   :backlinks: top
-
 .. title:: Lists of values
 
 .. index:: ! Function - Lists of values

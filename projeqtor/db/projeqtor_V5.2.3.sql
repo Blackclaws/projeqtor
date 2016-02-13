@@ -19,3 +19,5 @@ UPDATE `${prefix}menu` set sortOrder=9101, idMenu=143 where id=100001001;
 UPDATE `${prefix}menu` set sortOrder=9104, idMenu=143 where id=100004001;
 
 UPDATE `${prefix}status` set isCopyStatus=0 where id!=14;
+
+UPDATE `${prefix}workelement` set ongoing=0;

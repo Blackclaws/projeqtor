@@ -1,8 +1,3 @@
-
-.. contents::
-   :depth: 2
-   :backlinks: top
-
 .. title:: Administration
 
 .. note::
@@ -20,7 +15,7 @@ Administration console
 
 Administration console allows to execute administration tasks on application.
 
-.. index:: ! Alert (Background tasks)
+.. index:: ! Internal alert (Background tasks)
 .. index:: ! Email (Background tasks)
 .. index:: ! Import data (Background tasks)
 
@@ -29,7 +24,7 @@ Administration console allows to execute administration tasks on application.
 * Allows to start and stop background task is a specific threaded treatment that regularly checks for indicators to generate corresponding alerts, warnings and automatic import when needed.
 
 
-.. index:: ! Alert (Send)
+.. index:: ! Internal alert (Send)
 
 .. rubric:: Section: Send an internal alert
 
@@ -58,7 +53,7 @@ Administration console allows to execute administration tasks on application.
 
 
 .. index:: ! Email (Maintenance of Data)
-.. index:: ! Alert (Maintenance of Data)
+.. index:: ! Internal alert (Maintenance of Data)
 .. index:: ! Connection (Maintenance of Data)
 
 .. rubric:: Section: Maintenance of Data

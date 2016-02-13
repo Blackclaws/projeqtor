@@ -36,8 +36,8 @@ Document directories management allows to define a structure for document storag
      - Folder where files will be stored.
    * - Project
      - Directory is dedicated to this project.
-   * - Product
-     - Directory is dedicated to this product.
+   * - Product or component
+     - Directory is dedicated to this product or component.
    * - Default type
      - Type of document the directory is dedicated to.
    * - :term:`Closed`
@@ -57,9 +57,11 @@ Document directories management allows to define a structure for document storag
 
    * This project will be the default to new stored documents in this directory.
 
-.. topic:: Field: Product
+.. topic:: Field: Product or component
 
-   * This product will be the default to new stored documents in this directory.
+   * This product or component will be the default to new stored documents in this directory.
+   * If the project is specified, the list of values contains the products and components linked the selected project.
+   * If the project is not specified, the list of values contains all products and components defined.
 
 .. topic:: Field: Default type
 

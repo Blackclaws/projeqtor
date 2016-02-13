@@ -32,7 +32,7 @@ class ResourceMain extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place 
+  public $id;
   public $_spe_image;
   public $name;
   public $userName;
@@ -371,6 +371,16 @@ class ResourceMain extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
+    // Control that user is not duplicate
+    $crit=array("name"=>$this->userName);
+    $usr=new User();
+    $lst=$usr->getSqlElementsFromCriteria($crit,false);
+    if (count($lst)>0) {
+      if (! $this->id or count($lst)>1 or $lst[0]->id!=$this->id) {
+        $result.='<br/>' . i18n('errorDuplicateUser');
+      }
+    }
+    
     $old=$this->getOld();
     // if uncheck isUser must check user for deletion
     if ($old->isUser and ! $this->isUser and $this->id) {

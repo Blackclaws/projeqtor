@@ -41,7 +41,6 @@ class ProjectMain extends SqlElement {
   public $codeType;
   public $idClient;
   public $idContact;
-  //public $idRecipient;
   public $projectCode;
   public $contractCode;
   public $clientCode;
@@ -51,7 +50,6 @@ class ProjectMain extends SqlElement {
   public $idUser;
   public $creationDate;
   public $color;
-  //public $paymentDelay;
   public $idStatus;
   public $idHealth;
   public $idQuality;

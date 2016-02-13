@@ -12,7 +12,7 @@
 
 .. title:: Resource
 
-.. index:: ! Resource (Screen) 
+.. index:: ! Resource (Definition) 
 
 .. _resource:
 

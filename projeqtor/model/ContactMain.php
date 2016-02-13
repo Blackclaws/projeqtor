@@ -47,7 +47,6 @@ class ContactMain extends SqlElement {
   public $isResource;
   public $isUser;
   public $idle;
-  //public $idRecipient;
   public $description;
   public $_sec_Address;
   public $designation;
@@ -237,6 +236,15 @@ class ContactMain extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
+    // Control that user is not duplicate
+    $crit=array("name"=>$this->userName);
+    $usr=new User();
+    $lst=$usr->getSqlElementsFromCriteria($crit,false);
+    if (count($lst)>0) {
+      if (! $this->id or count($lst)>1 or $lst[0]->id!=$this->id) {
+        $result.='<br/>' . i18n('errorDuplicateUser');
+      }
+    }
     $old=$this->getOld();
     // if uncheck isResource must check resource for deletion
     if ($old->isResource and ! $this->isResource and $this->id) {

@@ -76,6 +76,11 @@ Billing will depend on billing type defined for the project.
 
 ---------------
 
+.. note:: Billing report
+
+   * Only bill with at least status "done" will be available for reporting.
+   * Before this status, they are considered as a draft.
+
 .. raw:: latex
 
     \newpage

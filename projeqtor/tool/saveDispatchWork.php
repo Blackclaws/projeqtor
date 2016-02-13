@@ -91,6 +91,7 @@ if ($we->realWork!=$total) {
   }
   $result=cleanResult($resultWe);
 }
+$arrayResourceDate=array();
 foreach ($dateList as $idx=>$date) {
   if ($error) break;
   if ( ($date and $resourceList[$idx]) or $workIdList[$idx]) {
@@ -123,6 +124,7 @@ foreach ($dateList as $idx=>$date) {
       }
     } else {
       $resWork=$work->save();
+      $arrayResourceDate[$work->idResource.'#'.$work->workDate]=$work->id;
     }
     if ($resWork) {
       $status = getLastOperationStatus ( $resWork );

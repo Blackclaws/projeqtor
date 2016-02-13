@@ -1,18 +1,18 @@
 .. include:: ImageReplacement.txt
 
-
-.. contents::
-   :depth: 1
-   :backlinks: top
-
 .. title:: Tickets
 
 .. index:: ! Ticket 
 
 .. _ticket:
+.. _simple-ticket:
 
 Tickets
 -------
+
+.. sidebar:: Concepts 
+
+   * :ref:`product-concept`
 
 A ticket is a kind of task that can not be unitarily planned. 
 
@@ -25,6 +25,14 @@ For instance, bugs should be managed through tickets :
 * You can not plan bugs before they are registered.
 * You must be able to give a feedback on each bug.
 * You can (or at least should) globally plan bug fixing activity. 
+
+.. index:: ! Ticket (Simple) 
+
+.. topic:: Tickets (simple) 
+
+   * This screen is a limited version of screen "Tickets".
+   * It's dedicated to users who want to create and follow their own tickets without be involved in their treatment.
+   * When fields and features are available, the description is similar.
 
 .. rubric:: Planning activity
 
@@ -59,24 +67,26 @@ For instance, bugs should be managed through tickets :
     * Is used to define a target date after evaluation.
     * Automatically initialized to the initial due date.
 
- .. compound:: **Indicators**
+ .. compound:: **Monitoring indicator**
 
     * Possibility to define indicators to follow the respect of dates values.
-    * See: :ref:`indicator` screen.
+
+    .. describe:: Respect of initial due date/time
+    .. describe:: Respect of planned due date/time
+
+   
 
 -----------
 
-.. rubric:: Version of product
+.. rubric:: Versions selection
 
-* Is used to determine **original version** where the ticket has been identified and **target version** that will deliver the object of the ticket.
-* Only versions of product linked with the project are available. 
+* The fields “original version” and “target version” are used to determine for which version of a product or component has been identified and for which version the object of the ticket will be delivered.
+* A ticket can identify all versions affected.
 
-.. topic:: Multi-version selection
+ .. compound:: **Main version**
 
-   * Allows to select multi-version of orginal and target version.
-   * Is used to specify versions of product referenced to this ticket. 
-   * See: :ref:`multi-version-selection`.
-  
+    * For field "original version", the main version is used to determine origin of ticket.
+    * For field "target version", the main version is used to determine the planned version to deliver the object of the ticket.
 
 .. raw:: latex
 
@@ -93,7 +103,7 @@ For instance, bugs should be managed through tickets :
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Tickets description section fields
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
@@ -119,10 +129,10 @@ For instance, bugs should be managed through tickets :
      - Link to another ticket, to link duplicate tickets.
    * - Context
      - List of 3 items describing the context of the ticket.
-   * - Product
-     - The product where ticket has been identified.
+   * - Product or component
+     - The product or component for which this ticket has been identified.
    * - Original version
-     - Version of product where ticket has been identified. 
+     - Versions of product or one these components for which this ticket has been identified. 
    * - :term:`Description`
      - Complete description of the ticket.
 
@@ -133,8 +143,13 @@ For instance, bugs should be managed through tickets :
    * Contexts are initialized for IT Projects as “Environment”, “OS” and “Browser”. 
    * This can be easily changed values in :ref:`context` screen.  
 
+.. topic:: Product or component
+
+   * List of values contains the products and components linked the selected project.
+
 .. topic:: Field: Original version
 
+   * The list of values will be filtered depends on the selected value in field "Product or component".
    * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
 
 
@@ -142,7 +157,7 @@ For instance, bugs should be managed through tickets :
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Tickets treatment section fields
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
@@ -177,7 +192,7 @@ For instance, bugs should be managed through tickets :
    * - Cancelled
      - Flag to indicate that ticket is cancelled.
    * - Target version
-     - The target version of the product that will deliver the object of the ticket.
+     - Versions of a product or one these components for which the object will be delivered.
    * - :term:`Result`
      - Complete description of the resolution of the ticket. 
  
@@ -196,6 +211,7 @@ For instance, bugs should be managed through tickets :
 
 .. topic:: Field: Target version
 
+   * The list of values will be filtered depends on the selected value in field "Product or component".
    * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
 
 
@@ -231,7 +247,7 @@ This button allows to dispatch ticket.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Dispatch work dialog box fields
+.. list-table:: Fields of dispatch work dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -244,11 +260,34 @@ This button allows to dispatch ticket.
    * - Work
      - Planned work to this resource. 
 
-
-
 .. raw:: latex
 
     \newpage
+
+.. _multi-version-selection:
+
+Multi-version selection
+"""""""""""""""""""""""
+
+In the version fields, it's possible to set several versions.
+
+.. topic:: Main and other version
+
+   * The version with smaller id will appear in the select list and is considered as the main version.
+   * Other versions are listed above. 
+   * It is possible to set an ‘other’ version as the main version using the button |iconSwitch|.
+
+
+* Click on |buttonAdd| to add a other version. 
+* Click on |buttonIconDelete| to delete a version.
+
+.. figure:: /images/GUI/BOX_AddOtherVersion.png
+   :alt: Add other version dialog box
+   :align: center
+
+   Add other version dialog box
+
+
 
 .. _priority-calculation:
 
@@ -276,128 +315,6 @@ Priority numeric value is determined by a simple equation as follows:
 * You can change its values while respecting the equation defined above. 
 
 
-
-
-.. raw:: latex
-
-    \newpage
-
-
-.. index:: ! Ticket (Simple) 
-
-.. _simple-ticket:
-
-	
-Tickets (simple)
-----------------
-
-Simple ticket is just a restricted view of Ticket, with limited write access to “Description” section, and limited view on “treatment” section.
-
-This view is dedicated to provide access to Ticket to users who should not be able to change treatment of Tickets, such an External Team members, but can possibly create new ones. 
-
-.. sidebar:: Other sections
-
-   * :ref:`Attachments<attachment-section>`
-   * :ref:`Notes<note-section>`
-   
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Simple ticket description section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the ticket.
-   * - **Name**
-     - Short description of the ticket.
-   * - **Project**
-     - The project concerned by the ticket.
-   * - Urgency
-     - Urgency for treatment of the ticket, as requested by the issuer.
-   * - Context
-     - List of 3 items describing the context of the ticket.
-   * - Version
-     - Version of product where ticket has been identified.
-   * - :term:`Description`
-     - Complete description of the ticket.
-
-**\* Required field**
-
-.. topic :: Field: Context
-
-   * Contexts are initialized for IT Projects as “Environment”, “OS” and “Browser”. 
-   * This can be easily changed values in :ref:`context` screen.  
-
-.. topic:: Field: Version
-
-   * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
-
-
-
-.. rubric:: Section: Treatment
-
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Simple ticket treatment section fields
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - **Status**
-     - Actual :term:`status` of the ticket.
-   * - :term:`Responsible`
-     - Resource who is responsible for the ticket.
-   * - Due date
-     - Actual target date for solving the ticket.
-   * - :term:`Handled`
-     - Flag to indicate that ticket is taken into account.
-   * - :term:`Done`
-     - Flag to indicate that ticket has been treated.
-   * - :term:`Closed`
-     - Flag to indicate that ticket is archived.
-   * - Cancelled
-     - Flag to indicate that ticket is cancelled.
-   * - Target version
-     - The target version of the product that will deliver the object of the ticket.	
-   * - :term:`Result`
-     - Complete description of the resolution of the ticket. 
- 
-**\* Required field**
-
-.. note::
-
-   * Except for status, all these fields are “readonly” and can only be updated through the Ticket view.
-
-
-
-.. _multi-version-selection:
-
-Multi-version selection
------------------------
-
-For version fields, it possible to set multi version of product.
-
-.. topic:: Main and other version
-
-   * The version with smaller id will appear in the select list and is considered as the main version.
-   * Other versions are listed above. 
-   * It is possible to set an ‘other’ version as the main version using the button |iconSwitch|.
-
-
-* Click on |buttonAdd| to add a other version. 
-* Click on |buttonIconDelete| to delete a version.
-
-.. figure:: /images/GUI/BOX_AddOtherVersion.png
-   :alt: Add other version dialog box
-   :align: center
-
-   Add other version dialog box
 
 
 
