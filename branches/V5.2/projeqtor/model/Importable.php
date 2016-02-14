@@ -312,8 +312,10 @@ class Importable extends SqlElement {
 					// 4.1.0 : Adaptation of date formats
 					else if ($dataType == 'date') {
 						if (!$field == '') {
-							if ($extension=="xlsx") {								
-							  $field=date('Y-m-d',XLSXReader::toUnixTimeStamp($field));
+							if ($extension=="xlsx") {
+							  if(is_numeric($field)) {
+							    $field=date('Y-m-d',XLSXReader::toUnixTimeStamp($field));
+							  }
 							} else {
 							  $field=formatBrowserDateToDate($field); // Detect if format is correct
 							}

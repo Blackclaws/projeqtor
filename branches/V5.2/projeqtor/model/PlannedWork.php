@@ -603,17 +603,17 @@ class PlannedWork extends GeneralWork {
                   } else {
                   	$value=round($value/$halfHour,0)*$halfHour;
                   }
-                  if ($profile=="FULL" and $toPlan<1 and $interval<$delai) {
+                  if ($profile=="FULL" and $toPlan<1 and $interval<$delaiTh) {
                     $value=0;
                   }
-                  if ($profile=="HALF" and $interval<$delai) {
+                  if ($profile=="HALF" and $interval<$delaiTh) {
                     if ($toPlan<0.5) {
                       $value=0;
                     } else {
                       $value=0.5;
                     }
                   }
-                  if ($profile=="QUART" and $interval<$delai) {
+                  if ($profile=="QUART" and $interval<$delaiTh) {
                     if ($toPlan<0.25) {
                       $value=0;
                     } else {
