@@ -517,7 +517,7 @@ public $_noCopy;
   			.'border-radius:5px; box-shadow:2px 2px 2px #888888; overflow:hidden;">';
   	foreach ($periods as $p) {
   		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
-  		$width=($len/$duration*100);
+  		$width=($duration)?($len/$duration*100):0;
   		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
   		$title='['.$p['rate'].'%] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
   		foreach ($p['projects'] as $idP=>$affP) {
