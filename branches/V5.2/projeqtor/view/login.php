@@ -116,6 +116,12 @@
         disableWidget('passwordButton');
         disableWidget('passwordButton');
         disableWidget('rememberMe');
+      } else if (dojo.isIE && dojo.isIE<=8) {
+        $varsParam=new Array();
+        $varsParam[0]=dojo.isIE;
+        dojo.byId('loginResultDiv').innerHTML=
+          '<input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />'
+          +'<div class="messageWARNING" style="width:100%">'+i18n("warningIE", $varsParam )+'</div>';
       }
     });
 
