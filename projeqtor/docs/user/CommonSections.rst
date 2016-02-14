@@ -471,7 +471,7 @@ Columns definition
 .. rubric:: Column "Reassessed"
 
 * This column displays the resources work reassess and the spending projection.
-* Always calculated as : Reassessed = Real + Left 
+* Always calculated as : [Reassessed] = [Real] + [Left] 
 
 .. raw:: latex
 
@@ -504,9 +504,9 @@ Allows to follow-up progress on grouped tasks like phase, delivery, test group, 
 
     * Zero values at lower levels do not overwrite values on upper level, but non-zero values on lower level are consolidated up to project level.
  
- .. note:: Selection of consolidation method
+.. note:: Selection of consolidation method
 
-   * The parameter "Consolidated validated cost & work" in global parameters screen allows to select consolidation method.
+  * The parameter "Consolidated validated cost & work" in global parameters screen allows to select consolidation method.
 
 
 
@@ -536,27 +536,27 @@ The indicators can be defined on the progress data.
 
      .. describe:: Reassessed cost compared to validated cost
 
-        * The reassessed cost compared to budgeted cost.
+        * The reassessed cost compared to budgeted (validated) cost.
 
      .. describe:: Reassessed cost compared to assigned cost
 
-        * The reassessed cost compared to planned cost.
+        * The reassessed cost compared to cost calculated from assigned work for resources.
 
      .. describe:: Reassessed work compared to validated work
 
-        * The reassessed work compared to scheduled work.
+        * The reassessed work compared to scheduled (validated) work.
 
      .. describe:: Reassessed work compared to assigned work
 
-        * The reassessed work compared to planned work.
+        * The reassessed work compared to work assigned to resources.
 
      .. describe:: Real work compared to validated work
 
-        * The work done by resources compared to scheduled work.
+        * The work really done by resources compared to scheduled (validated) work.
 
      .. describe:: Real work compared to assigned work
 
-        * The work done by resources compared to planned work.
+        * The work really done by resources compared to work assigned to resources.
 
 .. rubric:: Milestone
 
@@ -627,7 +627,7 @@ Dates and duration
 Validated dates are used to:
 
 * Define entry parameters according to selected planning mode.
-* Define initial planned dates.
+* Define initial planned dates, as a baseline.
 * Fix a due date at which the work must be completed.
 
 .. raw:: latex
@@ -668,7 +668,7 @@ Planned dates can be defined with:
 
 .. topic:: Real dates of parent element 
 
-   * The real start date will be propagated to parent elements until project.
+   * The real start date will be propagated to parent elements up to project.
    * The real end date for parent element will be initialized, when all sub-element have been completed.
 
 .. raw:: latex
@@ -718,15 +718,18 @@ Work of resources are calculated by the work assigned to each resource for tasks
 
 .. rubric:: Left
 
-* Sum of planned work and cost remaining.
+* Sum of estimated remaining work to complete tasks and ensuing cost.
+* Left work should be re-avaluated by resource while entering real work on real work allocation screen
+* Left work can also be change on assignment, at project management level
 
 .. rubric:: Reassessed
 
-* Sum of resource work needed to complete the work and the cost.
+* Sum of resource total work that will be needed from start end and the ensuing cost.
+* [Reassessed] = [Real] + [Left]
 
 .. topic:: Work on tickets
 
-   * Sum of work done on tickets and costs is included in work of activity linked.
+   * Sum of work done on tickets and costs is included in work of activity linked throught the "planning activity" of tickets.
    * Sum of work done on tickets that don't link to any activity will be integrated in the work of the project.
 
 .. raw:: latex
@@ -757,18 +760,22 @@ Expense, Reserve and Total
 .. rubric:: Assigned (Expense)
 
 * Project expenses planned.
+* Sum of "planned amount" for all expenses on project.
 
 .. rubric:: Real (Expense)
 
 * Project expenses committed.
+* Sum of "real amount" for all expenses on project.
 
 .. rubric:: Left (Expense)
 
 * Project expenses not committed yet.
+* Sum of "planned amount" for expenses where "real amount" is not defined yet.
 
 .. rubric:: Reassessed (Expense)
 
 * Spending projections.
+* Sum of Real + Left
 
 .. rubric:: Left (Reserve)
 
@@ -792,11 +799,13 @@ Progress, Expected, WBS & Priority
 
 * Percentage of actual progress.
 * Calculated by the sum of the work done divided by sum of work reassessed.
+* [Progress %] = [real work] / [reassessed work] = [real work] / ( [real work] + [left work] )
 
 .. rubric:: Expected
 
 * Percentage of expected progress.
 * Calculated by the sum of the work done divided by scheduled work.
+* [Expected %] = [real work] / [validated work]
 
 .. rubric:: WBS
 
@@ -805,6 +814,7 @@ Progress, Expected, WBS & Priority
 .. rubric:: Priority
 
 * Allows to define priority in the planning.
+* Possible values : from 1 (highest priority) to 999 (lowest priority)
 * By default, the value is set to "500" (medium priority).
 * See: :term:`Planning priority`.
 
@@ -826,6 +836,9 @@ Planning mode
 .. rubric:: Work together
 
 * When two or more resources are assigned to the same task, planning tries to find periods where all resources are available to work together.
+* Periods are searched "as soon as possible"
+* If only one resource is assigned, this planning mode is exactly the same as "As soon as possible"
+* If one resource is assigne more work than the other, the extra work is planned after working together periods
 
 .. rubric:: Constraint by date
 
@@ -837,7 +850,8 @@ Planning mode
 
   .. compound:: **As late as possible**
 
-     * The task is planned from end to start. 
+     * The task is planned backwark from end to start.
+     * "floating" backward planning is not possible, validated end date must be defined. 
 
 .. raw:: latex
 
@@ -962,7 +976,8 @@ Planning mode
 * The task is planned by duration.
 * The task is “floating” depending on predecessors.
 * The validated duration field must be set.
-* Has the same behavior as "As soon as possible". Except it is not necessary to assign resources to the task.
+* It is not necessary to assign resources to the task.
+* If work is assigned to the task, planning behavior is the same as "Regular between dates" but with floating task. 
 
  .. note::
 
@@ -988,10 +1003,14 @@ Displays remaining margin.
 .. rubric:: Margin (work)
  
 * Calculated by the scheduled work minus the sum of work reassessed.
+* [Margin] = [Validated work] - [Reassessed work]
+* [Margin (%)] = ([Validated work] - [Reassessed work]) / [Validated work] 
 
 .. rubric:: Margin (cost)
 
 * Calculated by the budgeted cost (resource & expense) minus the total of reassessed cost.
+* [Margin] = [Validated cost] - [Reassessed cost]
+* [Margin (%)] = ([Validated cost] - [Reassessed cost]) / [Validated cost] 
 
 
 .. _progress-section-ticket:
@@ -1001,7 +1020,7 @@ Ticket
 
 .. rubric:: > Used by: Activity
 
-Allows tracking of tickets attached to the activity. 
+Allows tracking of tickets attached to the activity throught the "planning activity" field of tickets. 
 
 .. tabularcolumns:: |l|l|
 
@@ -1061,6 +1080,7 @@ Progress section (Milestone)
 
 This section allows to define planning and follow progress on a milestone.
 
+
 .. rubric:: Requested
 
 * Allows to define the initial due date for the milestone.
@@ -1077,10 +1097,12 @@ This section allows to define planning and follow progress on a milestone.
  .. compound:: **Fixed milestone**
 
     * Planned due date is the value from validated due date field.
+    * The milestone will not move, and may have successors.
 
  .. compound:: **Floating milestone**
 
     * Calculation of planned due date takes into account dependencies with tasks.
+    * The milestone will move depending on predecessors.
 
 .. rubric:: Real
 
@@ -1096,6 +1118,10 @@ This section allows to define planning and follow progress on a milestone.
 * Fixed milestone
 * Floating milestone
 
+.. note::
+   
+   * A milestone has no duration, so there are no start and end dates for a milestone, just a single date.
+   
 .. raw:: latex
 
     \newpage
