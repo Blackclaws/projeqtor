@@ -877,14 +877,15 @@ scriptLog('refreshParameters()');
     $handle = opendir($dir);
     $result=array();
     while ( ($file = readdir($handle)) !== false) {
+      
       if ($file == '.' || $file == '..' || $file=='index.php' // exclude ., .. and index.php
-      || ! is_dir($file) || substr($file,0,1)=='.' ) {        // non directories or directories starting with . (.svn)
+      || ! is_dir($dir.'/'.$file) || substr($file,0,1)=='.' ) {        // non directories or directories starting with . (.svn)
         continue;
       }
       $nls=$file;
       $lang=str_replace('-',' ', $file);
       $lang=ucwords($lang);
-      $lang=str_replace(' ','', $file);
+      $lang=str_replace(' ','', $lang);
       $result[$nls]=i18n('lang'.$lang);
     }
     closedir($handle);
