@@ -1,0 +1,1609 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../PlanningElements.rst:0
+msgid "Planning elements"
+msgstr ""
+
+#: ../../PlanningElements.rst:17
+msgid ""
+"Planning elements are : :ref:`pe-project-label`, :ref:`pe-activity-label`, "
+":ref:`pe-milestone-label`, :ref:`reqTest-test-session-label`, :ref"
+":`reviewLogs-meeting-label` and :ref:`reviewLogs-periodic-meeting-label`."
+msgstr ""
+
+#: ../../PlanningElements.rst:19
+msgid "All previous elements can be planning, following with Gantt chart."
+msgstr ""
+
+#: ../../PlanningElements.rst:23
+msgid "All planning elements have own progress data."
+msgstr ""
+
+#: ../../PlanningElements.rst:24
+msgid "Some metrics are consolidate on top activities and project."
+msgstr ""
+
+#: ../../PlanningElements.rst:35 ../../PlanningElements.rst:403
+msgid "Project"
+msgstr ""
+
+#: ../../PlanningElements.rst:0 ../../PlanningElements.rst:0
+#: ../../PlanningElements.rst:0 ../../PlanningElements.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../PlanningElements.rst:39 ../../PlanningElements.rst:166
+msgid ":ref:`pe-progress-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:41
+msgid ":ref:`pe-affectations-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:43 ../../PlanningElements.rst:168
+#: ../../PlanningElements.rst:268
+msgid ":ref:`pe-predSuces-element-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:45 ../../PlanningElements.rst:170
+#: ../../PlanningElements.rst:270
+msgid ":ref:`gui-LinkElement-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:47 ../../PlanningElements.rst:172
+#: ../../PlanningElements.rst:272
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:49 ../../PlanningElements.rst:174
+#: ../../PlanningElements.rst:274
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:51 ../../PlanningElements.rst:176
+#: ../../PlanningElements.rst:276 ../../PlanningElements.rst:385
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:54 ../../PlanningElements.rst:179
+#: ../../PlanningElements.rst:279 ../../PlanningElements.rst:388
+msgid "Section: Description"
+msgstr ""
+
+#: ../../PlanningElements.rst:61 ../../PlanningElements.rst:186
+#: ../../PlanningElements.rst:215 ../../PlanningElements.rst:286
+#: ../../PlanningElements.rst:312 ../../PlanningElements.rst:344
+#: ../../PlanningElements.rst:395 ../../PlanningElements.rst:505
+#: ../../PlanningElements.rst:596 ../../PlanningElements.rst:637
+#: ../../PlanningElements.rst:678 ../../PlanningElements.rst:724
+#: ../../PlanningElements.rst:809
+msgid "Field"
+msgstr ""
+
+#: ../../PlanningElements.rst:62 ../../PlanningElements.rst:105
+#: ../../PlanningElements.rst:187 ../../PlanningElements.rst:202
+#: ../../PlanningElements.rst:216 ../../PlanningElements.rst:287
+#: ../../PlanningElements.rst:298 ../../PlanningElements.rst:313
+#: ../../PlanningElements.rst:345 ../../PlanningElements.rst:396
+#: ../../PlanningElements.rst:413 ../../PlanningElements.rst:506
+#: ../../PlanningElements.rst:597 ../../PlanningElements.rst:638
+#: ../../PlanningElements.rst:679 ../../PlanningElements.rst:725
+#: ../../PlanningElements.rst:810
+msgid "Description"
+msgstr ""
+
+#: ../../PlanningElements.rst:63 ../../PlanningElements.rst:188
+#: ../../PlanningElements.rst:288 ../../PlanningElements.rst:397
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../PlanningElements.rst:64
+msgid "Unique Id for the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:65 ../../PlanningElements.rst:190
+#: ../../PlanningElements.rst:290
+msgid "**Name**"
+msgstr ""
+
+#: ../../PlanningElements.rst:66
+msgid "Short name of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:67
+msgid "**Type**"
+msgstr ""
+
+#: ../../PlanningElements.rst:68
+msgid "Type of project."
+msgstr ""
+
+#: ../../PlanningElements.rst:69
+msgid "Customer"
+msgstr ""
+
+#: ../../PlanningElements.rst:70
+msgid "The customer of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:71
+msgid "Bill contact"
+msgstr ""
+
+#: ../../PlanningElements.rst:72
+msgid "Billing contact."
+msgstr ""
+
+#: ../../PlanningElements.rst:73
+msgid "Project code"
+msgstr ""
+
+#: ../../PlanningElements.rst:74
+msgid "Code of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:75
+msgid "Contract code"
+msgstr ""
+
+#: ../../PlanningElements.rst:76
+msgid "Code of the contract of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:77
+msgid "Customer code"
+msgstr ""
+
+#: ../../PlanningElements.rst:78
+msgid "Code of the customer of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:79
+msgid "Is sub-project of"
+msgstr ""
+
+#: ../../PlanningElements.rst:80
+msgid "Name of the top project if this project is a sub-project."
+msgstr ""
+
+#: ../../PlanningElements.rst:81
+msgid "Sponsor"
+msgstr ""
+
+#: ../../PlanningElements.rst:82
+msgid "Name of the sponsor of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:85
+msgid "Color"
+msgstr ""
+
+#: ../../PlanningElements.rst:86
+msgid "Color of the project, to be displayed in some reports."
+msgstr ""
+
+#: ../../PlanningElements.rst:87 ../../PlanningElements.rst:219
+#: ../../PlanningElements.rst:316
+msgid "**Status**"
+msgstr ""
+
+#: ../../PlanningElements.rst:88
+msgid "Actual :term:`status` of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:89
+msgid "Health status"
+msgstr ""
+
+#: ../../PlanningElements.rst:90
+msgid "Global health status of the project, displayed on today screen."
+msgstr ""
+
+#: ../../PlanningElements.rst:91
+msgid "Quality level"
+msgstr ""
+
+#: ../../PlanningElements.rst:92
+msgid "Estimation of quality level of project (result of audits)."
+msgstr ""
+
+#: ../../PlanningElements.rst:93
+msgid "Trend"
+msgstr ""
+
+#: ../../PlanningElements.rst:94
+msgid "Trend of global project health."
+msgstr ""
+
+#: ../../PlanningElements.rst:95
+msgid "Overall progress"
+msgstr ""
+
+#: ../../PlanningElements.rst:96
+msgid "Overall progress to be selected in a defined list."
+msgstr ""
+
+#: ../../PlanningElements.rst:97
+msgid "Fix planning"
+msgstr ""
+
+#: ../../PlanningElements.rst:98
+msgid "Selector to fix the planning of the project, and its sub-projects."
+msgstr ""
+
+#: ../../PlanningElements.rst:99 ../../PlanningElements.rst:225
+#: ../../PlanningElements.rst:322
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../PlanningElements.rst:100
+msgid "Flag to indicate that project is been finished."
+msgstr ""
+
+#: ../../PlanningElements.rst:101 ../../PlanningElements.rst:227
+#: ../../PlanningElements.rst:324 ../../PlanningElements.rst:411
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../PlanningElements.rst:102
+msgid "Flag to indicate that project is archived."
+msgstr ""
+
+#: ../../PlanningElements.rst:103 ../../PlanningElements.rst:229
+#: ../../PlanningElements.rst:326
+msgid "Cancelled"
+msgstr ""
+
+#: ../../PlanningElements.rst:104
+msgid "Flag to indicate that project is cancelled."
+msgstr ""
+
+#: ../../PlanningElements.rst:106
+msgid "Complete description of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:107
+msgid "Objectives"
+msgstr ""
+
+#: ../../PlanningElements.rst:108
+msgid "Objectives of the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:110 ../../PlanningElements.rst:205
+#: ../../PlanningElements.rst:236 ../../PlanningElements.rst:301
+#: ../../PlanningElements.rst:333
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../PlanningElements.rst:114
+msgid "Section: Version linked to this project"
+msgstr ""
+
+#: ../../PlanningElements.rst:119
+msgid "Section: Sub projects"
+msgstr ""
+
+#: ../../PlanningElements.rst:129
+msgid "Activity"
+msgstr ""
+
+#: ../../PlanningElements.rst:131
+msgid ""
+"An activity is a kind of task that must be planned, or that regroups other "
+"activities."
+msgstr ""
+
+#: ../../PlanningElements.rst:133
+msgid ""
+"It is generally a long time activity, that will be assigned to one or more "
+"resources."
+msgstr ""
+
+#: ../../PlanningElements.rst:135
+msgid "Activities will appear on Gantt planning view."
+msgstr ""
+
+#: ../../PlanningElements.rst:137
+msgid "For instance, you can manage as activities :"
+msgstr ""
+
+#: ../../PlanningElements.rst:139
+msgid "Planned tasks."
+msgstr ""
+
+#: ../../PlanningElements.rst:140
+msgid "Change requests."
+msgstr ""
+
+#: ../../PlanningElements.rst:141
+msgid "Phases."
+msgstr ""
+
+#: ../../PlanningElements.rst:142
+msgid "Versions or releases."
+msgstr ""
+
+#: ../../PlanningElements.rst:145
+msgid "Activities regroupment"
+msgstr ""
+
+#: ../../PlanningElements.rst:146
+msgid "Activities can have parents to regroup activities."
+msgstr ""
+
+#: ../../PlanningElements.rst:148
+msgid ""
+"So a WBS (work breakdown structure number) is calculated for the activities."
+msgstr ""
+
+#: ../../PlanningElements.rst:150
+msgid ""
+"Activities can be sorted inside their parent activity, on the Gantt planning"
+" view, using drag and drop."
+msgstr ""
+
+#: ../../PlanningElements.rst:152
+msgid "Parent activity must belong to the same project."
+msgstr ""
+
+#: ../../PlanningElements.rst:155
+msgid "Assigned ressources"
+msgstr ""
+
+#: ../../PlanningElements.rst:156
+msgid "Resources are can be assigned to activities."
+msgstr ""
+
+#: ../../PlanningElements.rst:158
+msgid ""
+"This means that some work is planned on this activity for the resources."
+msgstr ""
+
+#: ../../PlanningElements.rst:160
+msgid "See : :ref:`pe-assignment-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:164
+msgid ":ref:`pe-assignment-section-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:189
+msgid "Unique Id for the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:191
+msgid "Short description of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:192
+msgid "**Activity type**"
+msgstr ""
+
+#: ../../PlanningElements.rst:193
+msgid "Type of activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:194 ../../PlanningElements.rst:294
+msgid "**Project**"
+msgstr ""
+
+#: ../../PlanningElements.rst:195
+msgid "The project concerned by the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:196
+msgid ":term:`External reference`"
+msgstr ""
+
+#: ../../PlanningElements.rst:197
+msgid "External reference of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:198
+msgid "Requestor"
+msgstr ""
+
+#: ../../PlanningElements.rst:199
+msgid "Contact at the origin of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:200 ../../PlanningElements.rst:296
+msgid ":term:`Origin`"
+msgstr ""
+
+#: ../../PlanningElements.rst:201
+msgid "Element which is the origin of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:203
+msgid "Complete description of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:208 ../../PlanningElements.rst:305
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../PlanningElements.rst:217 ../../PlanningElements.rst:314
+msgid "Parent activity"
+msgstr ""
+
+#: ../../PlanningElements.rst:218 ../../PlanningElements.rst:315
+msgid "Parent activity for grouping purpose."
+msgstr ""
+
+#: ../../PlanningElements.rst:220
+msgid "Actual :term:`status` of the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:221 ../../PlanningElements.rst:318
+msgid "Responsible"
+msgstr ""
+
+#: ../../PlanningElements.rst:222
+msgid "Resource who is responsible for the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:223 ../../PlanningElements.rst:320
+msgid ":term:`Handled`"
+msgstr ""
+
+#: ../../PlanningElements.rst:224
+msgid "Flag to indicate that activity is taken into account."
+msgstr ""
+
+#: ../../PlanningElements.rst:226
+msgid "Flag to indicate that activity has been treated."
+msgstr ""
+
+#: ../../PlanningElements.rst:228
+msgid "Flag to indicate that activity is archived."
+msgstr ""
+
+#: ../../PlanningElements.rst:230
+msgid "Flag to indicate that activity is cancelled."
+msgstr ""
+
+#: ../../PlanningElements.rst:231 ../../PlanningElements.rst:328
+msgid "Target version"
+msgstr ""
+
+#: ../../PlanningElements.rst:232
+msgid ""
+"The target version of the product that will deliver the object of the "
+"activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:233 ../../PlanningElements.rst:330
+msgid "Result"
+msgstr ""
+
+#: ../../PlanningElements.rst:234
+msgid "Complete description of the treatment done on the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:247
+msgid "Milestone"
+msgstr ""
+
+#: ../../PlanningElements.rst:249
+msgid "A Milestone is a flag in the planning, to point out key dates."
+msgstr ""
+
+#: ../../PlanningElements.rst:251
+msgid "Milestones are commonly used tom check delivery dates."
+msgstr ""
+
+#: ../../PlanningElements.rst:253
+msgid ""
+"They can also by used to highlight transition from one phase to the "
+"following one."
+msgstr ""
+
+#: ../../PlanningElements.rst:255
+msgid "Opposite to Activities, Milestones have no duration and no work."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Floating milestone"
+msgstr ""
+
+#: ../../PlanningElements.rst:259
+msgid ""
+"This milestone will automatically move to take into account dependencies."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Fixed milestone"
+msgstr ""
+
+#: ../../PlanningElements.rst:263
+msgid ""
+"This milestone is fixed in the planning, not taking into account predecessor"
+" dependencies."
+msgstr ""
+
+#: ../../PlanningElements.rst:264
+msgid ""
+"This kind of milestone is interesting for instance to set-up start date for "
+"some tasks."
+msgstr ""
+
+#: ../../PlanningElements.rst:289
+msgid "Unique Id for the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:291
+msgid "Short description of the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:292
+msgid "**Milestone type**"
+msgstr ""
+
+#: ../../PlanningElements.rst:293
+msgid "Type of milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:295
+msgid "The project concerned by the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:297
+msgid "Element which is the origin of the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:299
+msgid "Long description of the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:317
+msgid "Actual :term:`status` of the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:319
+msgid "Resource who is responsible for the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:321
+msgid "Flag to indicate that milestone is taken into account."
+msgstr ""
+
+#: ../../PlanningElements.rst:323
+msgid "Flag to indicate that milestone has been treated."
+msgstr ""
+
+#: ../../PlanningElements.rst:325
+msgid "Flag to indicate that milestone is archived."
+msgstr ""
+
+#: ../../PlanningElements.rst:327
+msgid "Flag to indicate that milestone is cancelled."
+msgstr ""
+
+#: ../../PlanningElements.rst:329
+msgid ""
+"The target version of the product that will deliver the object of the "
+"milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:331
+msgid "Complete description of the treatment done on the milestone."
+msgstr ""
+
+#: ../../PlanningElements.rst:337 ../../PlanningElements.rst:556
+msgid "Section: Progress"
+msgstr ""
+
+#: ../../PlanningElements.rst:346
+msgid "Validated due date"
+msgstr ""
+
+#: ../../PlanningElements.rst:347
+msgid "Committed end date : milestone should not end later."
+msgstr ""
+
+#: ../../PlanningElements.rst:348
+msgid "Planned due date"
+msgstr ""
+
+#: ../../PlanningElements.rst:349 ../../PlanningElements.rst:607
+msgid "Calculated end date, taking into account all the constraints."
+msgstr ""
+
+#: ../../PlanningElements.rst:350
+msgid "Real due date"
+msgstr ""
+
+#: ../../PlanningElements.rst:351
+msgid "Real end date, when milestone is set to “done”."
+msgstr ""
+
+#: ../../PlanningElements.rst:352
+msgid "Requested due date"
+msgstr ""
+
+#: ../../PlanningElements.rst:353 ../../PlanningElements.rst:619
+msgid "Wished end date."
+msgstr ""
+
+#: ../../PlanningElements.rst:0 ../../PlanningElements.rst:0
+msgid "Field: :term:`WBS`"
+msgstr ""
+
+#: ../../PlanningElements.rst:357
+msgid "Hierarchical position of the milestone in the global planning."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "List of value: Planning mode"
+msgstr ""
+
+#: ../../PlanningElements.rst:361
+msgid "Planning mode for the milestone (floating or fixed)."
+msgstr ""
+
+#: ../../PlanningElements.rst:368
+msgid "Common sections"
+msgstr ""
+
+#: ../../PlanningElements.rst:373
+msgid "Section: Affectations"
+msgstr ""
+
+#: ../../PlanningElements.rst:375
+msgid ""
+"The affectation defines that a Resource, or Contact or User works on a given"
+" project, and so has visibility to the given elements of the project "
+"(depending on habilitation)."
+msgstr ""
+
+#: ../../PlanningElements.rst:379
+msgid ""
+"Affectation to a project will be inherited by sub-projects of that project."
+msgstr ""
+
+#: ../../PlanningElements.rst:381
+msgid ""
+"This means that resources affected to a project will also have access to the"
+" elements of the sub-projects of that project."
+msgstr ""
+
+#: ../../PlanningElements.rst:398
+msgid "Unique Id for the affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:399
+msgid "Resource Or Contact Or User"
+msgstr ""
+
+#: ../../PlanningElements.rst:400
+msgid "Affected Resource, or contact or User."
+msgstr ""
+
+#: ../../PlanningElements.rst:401
+msgid "**profile**"
+msgstr ""
+
+#: ../../PlanningElements.rst:402
+msgid "[profile]."
+msgstr ""
+
+#: ../../PlanningElements.rst:404
+msgid "Project to affect to."
+msgstr ""
+
+#: ../../PlanningElements.rst:405 ../../PlanningElements.rst:513
+msgid "Rate"
+msgstr ""
+
+#: ../../PlanningElements.rst:406
+msgid "Affectation rate, in percent."
+msgstr ""
+
+#: ../../PlanningElements.rst:407
+msgid "Start date"
+msgstr ""
+
+#: ../../PlanningElements.rst:408
+msgid "Start date of affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:409 ../../PlanningElements.rst:0
+msgid "End date"
+msgstr ""
+
+#: ../../PlanningElements.rst:410
+msgid "End date of affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:412
+msgid "Flag to indicate that affectation is archived."
+msgstr ""
+
+#: ../../PlanningElements.rst:414
+msgid "Complete description of the affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Details of fields"
+msgstr ""
+
+#: ../../PlanningElements.rst:418
+msgid "**Resource Or Contact Or User**"
+msgstr ""
+
+#: ../../PlanningElements.rst:420
+msgid ""
+"When selecting one of the three, if the selected item is also of another "
+"king, then corresponding list is automatically selected."
+msgstr ""
+
+#: ../../PlanningElements.rst:422
+msgid ""
+"For instance, if you select Resource R1 and that this resource is also a "
+"User U1, then U1 will automatically be selected in User list."
+msgstr ""
+
+#: ../../PlanningElements.rst:424
+msgid "**Rate**"
+msgstr ""
+
+#: ../../PlanningElements.rst:426
+msgid "100% means a full time affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:429
+msgid "Affectations of user can be directly created from this screen."
+msgstr ""
+
+#: ../../PlanningElements.rst:431
+msgid ""
+"Click |buttonAdd| on to create a new affectation. A “add affectation” pop up"
+" will be displayed."
+msgstr ""
+
+#: ../../PlanningElements.rst:433
+msgid "Click on |buttonEdit| to update an existing affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:435
+msgid "Click on |buttonRemove| to delete the corresponding affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Pop up \"Affectation”"
+msgstr ""
+
+#: ../../PlanningElements.rst:439
+msgid "Project - Project the resource is affected to."
+msgstr ""
+
+#: ../../PlanningElements.rst:441
+msgid "Resource - Name of the resource."
+msgstr ""
+
+#: ../../PlanningElements.rst:443
+msgid "Rate - Rate (in %) of the affectation to the project."
+msgstr ""
+
+#: ../../PlanningElements.rst:445
+msgid "Start date - Start date of affectation"
+msgstr ""
+
+#: ../../PlanningElements.rst:447
+msgid "End date - End date of affectation"
+msgstr ""
+
+#: ../../PlanningElements.rst:449
+msgid ""
+"Closed - Flag to indicate that affectation in not active any more, without "
+"deleting it."
+msgstr ""
+
+#: ../../PlanningElements.rst:459
+msgid "Section: Assignment"
+msgstr ""
+
+#: ../../PlanningElements.rst:461
+msgid "Resources can be assigned to activities."
+msgstr ""
+
+#: ../../PlanningElements.rst:463
+msgid ""
+"It is possible to assign several times the same resource to an activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:465
+msgid ""
+"It can for instance be used to add extra work without modifying initial "
+"assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:0 ../../PlanningElements.rst:0
+msgid "Go to"
+msgstr ""
+
+#: ../../PlanningElements.rst:469
+msgid "Click on the resource name will directly move to the resource."
+msgstr ""
+
+#: ../../PlanningElements.rst:472
+msgid "Project affectaion"
+msgstr ""
+
+#: ../../PlanningElements.rst:473
+msgid ""
+"Only resources affected to the project of the activity can be assigned."
+msgstr ""
+
+#: ../../PlanningElements.rst:474
+msgid "Affectations may have start and end dates."
+msgstr ""
+
+#: ../../PlanningElements.rst:475
+msgid ""
+"So, for a given assignment planned work will not start before affectation "
+"start date on project of the activity and will stop on affectation end date."
+msgstr ""
+
+#: ../../PlanningElements.rst:476
+msgid ""
+"This can lead to incompletely planned tasks. These would appear as brown "
+"bars in the Gantt view."
+msgstr ""
+
+#: ../../PlanningElements.rst:479 ../../PlanningElements.rst:495
+msgid "Assignment Popup"
+msgstr ""
+
+#: ../../PlanningElements.rst:480
+msgid ""
+"Click on |buttonAdd| to assign a new resource. An \"Assignment\" pop up will"
+" be displayed."
+msgstr ""
+
+#: ../../PlanningElements.rst:482
+msgid "Click on |buttonEdit| to modify the assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:484
+msgid "Click on |buttonRemove| to delete the assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:488
+msgid "If real work exists for an assignment, it can not be deleted."
+msgstr ""
+
+#: ../../PlanningElements.rst:498
+msgid "Assignment Popup information"
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Fields Assignment Popup"
+msgstr ""
+
+#: ../../PlanningElements.rst:507
+msgid "Resource"
+msgstr ""
+
+#: ../../PlanningElements.rst:508
+msgid "Name of the resource assigned to the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:509
+msgid "Function"
+msgstr ""
+
+#: ../../PlanningElements.rst:510
+msgid "The function of the resource on this assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:511
+msgid "Cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:512
+msgid "The daily cost of the assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:514
+msgid "The max rate (in %) to plan the resource on the activity by day."
+msgstr ""
+
+#: ../../PlanningElements.rst:515 ../../PlanningElements.rst:641
+msgid "Assigned work"
+msgstr ""
+
+#: ../../PlanningElements.rst:516
+msgid "Work initially planned to complete the task."
+msgstr ""
+
+#: ../../PlanningElements.rst:517 ../../PlanningElements.rst:643
+msgid "Real work"
+msgstr ""
+
+#: ../../PlanningElements.rst:518
+msgid ""
+"Real work entered by the resource on his weekly report, on the “real work "
+"allocation” screen."
+msgstr ""
+
+#: ../../PlanningElements.rst:519 ../../PlanningElements.rst:645
+msgid "Left work"
+msgstr ""
+
+#: ../../PlanningElements.rst:520
+msgid "Work left to complete the task."
+msgstr ""
+
+#: ../../PlanningElements.rst:521
+msgid "Planned work"
+msgstr ""
+
+#: ../../PlanningElements.rst:522
+msgid "The new total work planned to complete the task."
+msgstr ""
+
+#: ../../PlanningElements.rst:523
+msgid "Comments"
+msgstr ""
+
+#: ../../PlanningElements.rst:524
+msgid "Any comment on the affectation."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Fields: Function and Cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:528
+msgid "Function determine the daily cost of the assignment."
+msgstr ""
+
+#: ../../PlanningElements.rst:529
+msgid "Cost is automatically updated from the function of the resource."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Rate"
+msgstr ""
+
+#: ../../PlanningElements.rst:533
+msgid ""
+"For instance, if rate is 50%, the resource will not be planned more than "
+"half days on the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Left work"
+msgstr ""
+
+#: ../../PlanningElements.rst:537
+msgid "Calculated as “Assigned Work” – “Real Work”."
+msgstr ""
+
+#: ../../PlanningElements.rst:538
+msgid ""
+"Must be updated by the resource on the “real work allocation” screen to "
+"reflect the really estimated work needed to complete the task."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Planned work"
+msgstr ""
+
+#: ../../PlanningElements.rst:542
+msgid "“planned work” = “real work” + “left work”"
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Comments"
+msgstr ""
+
+#: ../../PlanningElements.rst:546
+msgid ""
+"When a comment exists, the |Note| icon will appear on the  Assignment "
+"section, and on the description of the activity on the “real work "
+"allocation” screen."
+msgstr ""
+
+#: ../../PlanningElements.rst:547
+msgid "Moving the mouse over the description will display the comment."
+msgstr ""
+
+#: ../../PlanningElements.rst:558
+msgid "The progress allows to follow up planning element."
+msgstr ""
+
+#: ../../PlanningElements.rst:560
+msgid ""
+"This section cover progress to planning element : project, activity and test"
+" session."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Reassessed metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:564
+msgid "Reassessed is the sum of real and left metrics."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Expense reassessed metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:568
+msgid "Assigned minus real metrics."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Consolidating metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:572
+msgid "fdfdf"
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Real metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:576
+msgid ""
+"Real metrics input entered by an resource on the “Real work allocation” "
+"screen."
+msgstr ""
+
+#: ../../PlanningElements.rst:579
+msgid "Duration metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:580
+msgid ""
+"Allow to determine planning elements duration for project, activity and test"
+" session."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Calculating duration"
+msgstr ""
+
+#: ../../PlanningElements.rst:584
+msgid "Duration is the **work days** numbers between end and start dates."
+msgstr ""
+
+#: ../../PlanningElements.rst:588
+msgid "If not set, end date is the start date + duration."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Duration metrics fields"
+msgstr ""
+
+#: ../../PlanningElements.rst:598
+msgid "Validated start date"
+msgstr ""
+
+#: ../../PlanningElements.rst:599
+msgid "Planning element should not start later."
+msgstr ""
+
+#: ../../PlanningElements.rst:600
+msgid "Validated end date"
+msgstr ""
+
+#: ../../PlanningElements.rst:601
+msgid "Planning element should not end later."
+msgstr ""
+
+#: ../../PlanningElements.rst:602
+msgid "Validated duration"
+msgstr ""
+
+#: ../../PlanningElements.rst:603
+msgid "Planning element should not last longer."
+msgstr ""
+
+#: ../../PlanningElements.rst:604
+msgid "Planned start date"
+msgstr ""
+
+#: ../../PlanningElements.rst:605
+msgid "Calculated start date, taking into account all the constraints."
+msgstr ""
+
+#: ../../PlanningElements.rst:606
+msgid "Planned end date"
+msgstr ""
+
+#: ../../PlanningElements.rst:608
+msgid "Planned duration"
+msgstr ""
+
+#: ../../PlanningElements.rst:609 ../../PlanningElements.rst:615
+msgid "Calculated duration."
+msgstr ""
+
+#: ../../PlanningElements.rst:610
+msgid "Real start date"
+msgstr ""
+
+#: ../../PlanningElements.rst:611
+msgid "Date of the first real work input."
+msgstr ""
+
+#: ../../PlanningElements.rst:612
+msgid "Real end date"
+msgstr ""
+
+#: ../../PlanningElements.rst:613
+msgid "Date of the last real work input."
+msgstr ""
+
+#: ../../PlanningElements.rst:614
+msgid "Real duration"
+msgstr ""
+
+#: ../../PlanningElements.rst:616
+msgid "Requested start date"
+msgstr ""
+
+#: ../../PlanningElements.rst:617
+msgid "Wished start date."
+msgstr ""
+
+#: ../../PlanningElements.rst:618
+msgid "Requested end date"
+msgstr ""
+
+#: ../../PlanningElements.rst:620
+msgid "Requested duration"
+msgstr ""
+
+#: ../../PlanningElements.rst:621
+msgid "Wished duration."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Real end date"
+msgstr ""
+
+#: ../../PlanningElements.rst:625
+msgid "The real end date appearing only when planning element status is \"done\"."
+msgstr ""
+
+#: ../../PlanningElements.rst:628
+msgid "Work metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:629
+msgid ""
+"Planning elements work is the sum of tasks like activity, test session and "
+"meeting."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Work metrics fields"
+msgstr ""
+
+#: ../../PlanningElements.rst:639
+msgid "Validated work"
+msgstr ""
+
+#: ../../PlanningElements.rst:640
+msgid "Work of the planning element should not be more."
+msgstr ""
+
+#: ../../PlanningElements.rst:642
+msgid "Sum of all the work for the assignments on the planning element."
+msgstr ""
+
+#: ../../PlanningElements.rst:644
+msgid "Sum of all the work really spent on the planning element."
+msgstr ""
+
+#: ../../PlanningElements.rst:646
+msgid "Left work to complete."
+msgstr ""
+
+#: ../../PlanningElements.rst:647
+msgid "Reassessed work"
+msgstr ""
+
+#: ../../PlanningElements.rst:648
+msgid "Work needed to complete."
+msgstr ""
+
+#: ../../PlanningElements.rst:649
+msgid "Progress"
+msgstr ""
+
+#: ../../PlanningElements.rst:650
+msgid "Actual progress of the work, in percent real under planned."
+msgstr ""
+
+#: ../../PlanningElements.rst:651
+msgid "Expected"
+msgstr ""
+
+#: ../../PlanningElements.rst:652
+msgid "Expected progress of work, in percent real under validated."
+msgstr ""
+
+#: ../../PlanningElements.rst:653 ../../PlanningElements.rst:700
+msgid "Margin"
+msgstr ""
+
+#: ../../PlanningElements.rst:654
+msgid "Margin between validated and planned work."
+msgstr ""
+
+#: ../../PlanningElements.rst:0 ../../PlanningElements.rst:0
+msgid "Field: Margin"
+msgstr ""
+
+#: ../../PlanningElements.rst:658 ../../PlanningElements.rst:670
+#: ../../PlanningElements.rst:706 ../../PlanningElements.rst:711
+msgid "Metrics available only in project progress section."
+msgstr ""
+
+#: ../../PlanningElements.rst:662
+msgid "Cost metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Planning elements cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:665
+msgid ""
+"Planning elements cost is the sum of tasks like activity, test session and "
+"meeting."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Expense cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:669
+msgid "Expense cost is the sum of individual and project expense."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Cost metrics fields"
+msgstr ""
+
+#: ../../PlanningElements.rst:680
+msgid "Validated cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:681
+msgid "Cost of the planning element should not be more."
+msgstr ""
+
+#: ../../PlanningElements.rst:682
+msgid "Assigned cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:683
+msgid "Sum of all the cost for the assignments on the planning element."
+msgstr ""
+
+#: ../../PlanningElements.rst:684
+msgid "Real cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:685
+msgid "Sum of all the cost really spent on the planning."
+msgstr ""
+
+#: ../../PlanningElements.rst:686
+msgid "Left cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:687
+msgid "Left cost to complete."
+msgstr ""
+
+#: ../../PlanningElements.rst:688
+msgid "Reassessed cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:689
+msgid "Cost needed to complete."
+msgstr ""
+
+#: ../../PlanningElements.rst:690
+msgid "Validated expense"
+msgstr ""
+
+#: ../../PlanningElements.rst:691
+msgid "Expense of the project should not be more."
+msgstr ""
+
+#: ../../PlanningElements.rst:692
+msgid "Assigned expense"
+msgstr ""
+
+#: ../../PlanningElements.rst:693
+msgid "Sum of all the expense on project for the planned amount."
+msgstr ""
+
+#: ../../PlanningElements.rst:694
+msgid "Real expense"
+msgstr ""
+
+#: ../../PlanningElements.rst:695
+msgid "Sum of all the expense on project for the real amount."
+msgstr ""
+
+#: ../../PlanningElements.rst:696
+msgid "Left expense"
+msgstr ""
+
+#: ../../PlanningElements.rst:697
+msgid "Alaways zero for expense."
+msgstr ""
+
+#: ../../PlanningElements.rst:698
+msgid "Reassessed expense"
+msgstr ""
+
+#: ../../PlanningElements.rst:699
+msgid "Sum of all the expense on project for reassessed amount."
+msgstr ""
+
+#: ../../PlanningElements.rst:701
+msgid "Margin between total validated and total planned cost."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Total cost"
+msgstr ""
+
+#: ../../PlanningElements.rst:710
+msgid "Sum of planning elements and expense cost."
+msgstr ""
+
+#: ../../PlanningElements.rst:714
+msgid "Ticket metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:715
+msgid "Allows to display global work for tickets linked with the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:716
+msgid "Metrics available only in activity progress section."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Ticket metrics fields"
+msgstr ""
+
+#: ../../PlanningElements.rst:726
+msgid "Number"
+msgstr ""
+
+#: ../../PlanningElements.rst:727
+msgid "Numbers of ticket linked with the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:728
+msgid "Estimated"
+msgstr ""
+
+#: ../../PlanningElements.rst:729
+msgid "Sum of all planned work of ticket linked with the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:730
+msgid "Real"
+msgstr ""
+
+#: ../../PlanningElements.rst:731
+msgid "Sum of all real work of ticket linked with the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:732
+msgid "Left"
+msgstr ""
+
+#: ../../PlanningElements.rst:733
+msgid "Sum of all left work of ticket linked with the activity."
+msgstr ""
+
+#: ../../PlanningElements.rst:736
+msgid "Others metrics"
+msgstr ""
+
+#: ../../PlanningElements.rst:739
+msgid "Hierarchical position of the planning element in the global planning."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Field: Priority"
+msgstr ""
+
+#: ../../PlanningElements.rst:743
+msgid ":term:`Planning priority` of the planning element."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "List of values: Planning"
+msgstr ""
+
+#: ../../PlanningElements.rst:747
+msgid "ddfd"
+msgstr ""
+
+#: ../../PlanningElements.rst:756
+msgid "Sections: Predecessor and Sucessor element"
+msgstr ""
+
+#: ../../PlanningElements.rst:758
+msgid ""
+"Planning element can have predecessors and successors, to generate "
+"dependencies."
+msgstr ""
+
+#: ../../PlanningElements.rst:761
+msgid ""
+"Click |buttonAdd| on the corresponding section to add a predecessor or "
+"successor. An “add predecessor” or “add successor” pop up will be displayed."
+msgstr ""
+
+#: ../../PlanningElements.rst:763
+msgid "Select the type of element to add as predecessor or successor."
+msgstr ""
+
+#: ../../PlanningElements.rst:765
+msgid "The list of items below will then be automatically updated."
+msgstr ""
+
+#: ../../PlanningElements.rst:767
+msgid "Click on |buttonEdit| to edit the dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:769
+msgid "Click on |buttonRemove| to delete the corresponding dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:776
+msgid "Add predecessor element Popup"
+msgstr ""
+
+#: ../../PlanningElements.rst:780
+msgid "Recursive loops are controlled on saving."
+msgstr ""
+
+#: ../../PlanningElements.rst:781
+msgid ""
+"Predecessors and successors must belong to the same project or be a project."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Linked element"
+msgstr ""
+
+#: ../../PlanningElements.rst:785
+msgid "Click on |buttonIconSearch| to show element detail."
+msgstr ""
+
+#: ../../PlanningElements.rst:786
+msgid ""
+"Depends on whether the element is selected or not a pop up is displayed."
+msgstr ""
+
+#: ../../PlanningElements.rst:787
+msgid "Detail about pop up, see :ref:`gui-combo-list-fields-label`"
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Multi-value selection"
+msgstr ""
+
+#: ../../PlanningElements.rst:791
+msgid ""
+"Multi-line selection is possible using :kbd:`Control` key while clicking."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Delay (late)"
+msgstr ""
+
+#: ../../PlanningElements.rst:795
+msgid "Days between predecessor end and successor start."
+msgstr ""
+
+#: ../../PlanningElements.rst:0
+msgid "Reciprocally interrelated"
+msgstr ""
+
+#: ../../PlanningElements.rst:799
+msgid ""
+"If element A is a predecessor of element B, element B is automatically "
+"successor of element A."
+msgstr ""
+
+#: ../../PlanningElements.rst:802
+msgid "Dependency information"
+msgstr ""
+
+#: ../../PlanningElements.rst:811
+msgid "Element"
+msgstr ""
+
+#: ../../PlanningElements.rst:812
+msgid "Type and id of the predecessor or successor."
+msgstr ""
+
+#: ../../PlanningElements.rst:813
+msgid "Name"
+msgstr ""
+
+#: ../../PlanningElements.rst:814
+msgid "Name of the dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:815
+msgid "Date"
+msgstr ""
+
+#: ../../PlanningElements.rst:816
+msgid "Date of creation of the dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:817
+msgid "User"
+msgstr ""
+
+#: ../../PlanningElements.rst:818
+msgid "User who created the dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:819
+msgid "Status"
+msgstr ""
+
+#: ../../PlanningElements.rst:820
+msgid "Actual status of the dependency."
+msgstr ""
+
+#: ../../PlanningElements.rst:824
+msgid ""
+"Click on the name of a predecessor or successor will directly move to it."
+msgstr ""
+
+#: ../../PlanningElements.rst:30
+msgid "project"
+msgstr ""
+
+#: ../../PlanningElements.rst:124
+msgid "activity"
+msgstr ""
+
+#: ../../PlanningElements.rst:242
+msgid "milestone"
+msgstr ""
+
+#: ../../PlanningElements.rst:83
+msgid "Manager"
+msgstr ""
+
+#: ../../PlanningElements.rst:84
+msgid "Name of the resource who manages the project (Project Leader)."
+msgstr ""

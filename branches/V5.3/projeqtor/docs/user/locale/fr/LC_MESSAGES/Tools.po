@@ -1,0 +1,334 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Tools.rst:0
+msgid "Tools"
+msgstr ""
+
+#: ../../Tools.rst:19 ../../Tools.rst:16
+msgid "Emails sent"
+msgstr ""
+
+#: ../../Tools.rst:21
+msgid ""
+"You can have a look at the list of the automatic emails sent (see related "
+"topic)."
+msgstr ""
+
+#: ../../Tools.rst:23
+msgid ""
+"You will have all the information about the email, including the status "
+"showing whether the email was correctly sent or not."
+msgstr ""
+
+#: ../../Tools.rst:25
+msgid "The information in the screen is read-only."
+msgstr ""
+
+#: ../../Tools.rst:30 ../../Tools.rst:27
+msgid "Alerts"
+msgstr ""
+
+#: ../../Tools.rst:32
+msgid "You can have a look at the alerts sent."
+msgstr ""
+
+#: ../../Tools.rst:34
+msgid ""
+"By default, administrators can see all the alerts sent, and other users only"
+" see their own alerts."
+msgstr ""
+
+#: ../../Tools.rst:36
+msgid "This screen is read only."
+msgstr ""
+
+#: ../../Tools.rst:38
+msgid ""
+"If you are the receiver of the alert, and the alert is not tagged “read” yet"
+" (for instance you clicked “remind me” when alert was displayed), you will "
+"have a button to “mark as read” the alert."
+msgstr ""
+
+#: ../../Tools.rst:51 ../../Tools.rst:45
+msgid "Message"
+msgstr ""
+
+#: ../../Tools.rst:53
+msgid ""
+"You can define some message that will be displayed on the “today” screen of "
+"users."
+msgstr ""
+
+#: ../../Tools.rst:55
+msgid "Optionnaly, the message can be showed on login screen."
+msgstr ""
+
+#: ../../Tools.rst:57
+msgid "You can limit the display to some profile and project."
+msgstr ""
+
+#: ../../Tools.rst:59
+msgid ""
+"The message will be displayed in a color depending on the Message type."
+msgstr ""
+
+#: ../../Tools.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Tools.rst:63
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Tools.rst:73
+msgid "Field"
+msgstr ""
+
+#: ../../Tools.rst:74
+msgid "Description"
+msgstr ""
+
+#: ../../Tools.rst:75
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Tools.rst:76
+msgid "Unique Id for the message."
+msgstr ""
+
+#: ../../Tools.rst:77
+msgid "**title**"
+msgstr ""
+
+#: ../../Tools.rst:78
+msgid "Header of the message."
+msgstr ""
+
+#: ../../Tools.rst:79
+msgid "**Message type**"
+msgstr ""
+
+#: ../../Tools.rst:80
+msgid "Type of message."
+msgstr ""
+
+#: ../../Tools.rst:81
+msgid "Profile"
+msgstr ""
+
+#: ../../Tools.rst:82
+msgid "The profile of users who will see the message."
+msgstr ""
+
+#: ../../Tools.rst:83
+msgid "Project"
+msgstr ""
+
+#: ../../Tools.rst:84
+msgid "The project to limit display."
+msgstr ""
+
+#: ../../Tools.rst:85
+msgid "Show on login screen"
+msgstr ""
+
+#: ../../Tools.rst:86
+msgid "Show this message on login screen."
+msgstr ""
+
+#: ../../Tools.rst:87
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Tools.rst:88
+msgid "Flag to indicate that resource is archived."
+msgstr ""
+
+#: ../../Tools.rst:90
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Tools.rst:94
+msgid "Only resources affected to the project will see the message."
+msgstr ""
+
+#: ../../Tools.rst:98
+msgid "Complete text of the message."
+msgstr ""
+
+#: ../../Tools.rst:108 ../../Tools.rst:105
+msgid "Import data"
+msgstr ""
+
+#: ../../Tools.rst:110
+msgid "Imports work from CSV or XLSX files."
+msgstr ""
+
+#: ../../Tools.rst:112
+msgid ""
+"The first line of the file must contain de name of the fields : look into "
+"the Model class : the names are the same."
+msgstr ""
+
+#: ../../Tools.rst:114
+msgid ""
+"Just click on specific help button |buttonIconHelp| to have help on fields."
+msgstr ""
+
+#: ../../Tools.rst:116
+msgid "You may or may not add an \"id\" column to the file :"
+msgstr ""
+
+#: ../../Tools.rst:118
+msgid ""
+"if column \"id\" exists and \"id\" is set for a line, the import will try to"
+" update the corresponding element, and will fail if it does not exist"
+msgstr ""
+
+#: ../../Tools.rst:120
+msgid ""
+"if column \"id\" does not exists or if \"id\" is not set for a line, the "
+"import will create a new element from the data."
+msgstr ""
+
+#: ../../Tools.rst:122
+msgid ""
+"In any case, columns with no data will not be updated : then you can update "
+"only one field on an element. To clear a data, enter the value \"NULL\" (not"
+" case sensitive)."
+msgstr ""
+
+#: ../../Tools.rst:124
+msgid ""
+"For columns corresponding to linked tables (\"idXxxx\"), you can indicate as"
+" the column name  either \"idXxxx“ or “Xxxx\" (without \"id\") or the "
+"caption of the column (as displayed on screens)."
+msgstr ""
+
+#: ../../Tools.rst:126
+msgid ""
+"If the value of the column is numeric, it is considered as the code of the "
+"item."
+msgstr ""
+
+#: ../../Tools.rst:128
+msgid ""
+"If the value of the column contains non numeric value, it is considered as "
+"name of the item, and the code will be searched from the name."
+msgstr ""
+
+#: ../../Tools.rst:130
+msgid ""
+"Names of columns can contain spaces (to have better readability) : the "
+"spaces will be removed to get the name of the column."
+msgstr ""
+
+#: ../../Tools.rst:132
+msgid "Dates are expected in format “YYYY-MM-DD”."
+msgstr ""
+
+#: ../../Tools.rst:134
+msgid ""
+"Insertion into \"Planning\" elements (activity, project), automatically "
+"inserts an element in the table “PlanningElement” : the data of this table "
+"can be inserted into the import file (working from version V1.3.0)."
+msgstr ""
+
+#: ../../Tools.rst:138
+msgid "Pay attention if you intend to import users :"
+msgstr ""
+
+#: ../../Tools.rst:140
+msgid ""
+"If you want to create new users don't put any id because if id already "
+"exists it will be overridden by the new (with possibility to erase admin "
+"user…)"
+msgstr ""
+
+#: ../../Tools.rst:142
+msgid ""
+"The password field must be cut and pasted from the database because it is "
+"encrypted, then if you enter some readable password, the users will not be "
+"able to connect."
+msgstr ""
+
+#: ../../Tools.rst:144
+msgid ""
+"Always keep in mind that your import may have some impact on administrator "
+"user. So be sure to keep an operational admin access."
+msgstr ""
+
+#: ../../Tools.rst:148
+msgid "How to do"
+msgstr ""
+
+#: ../../Tools.rst:149
+msgid "Select the element type from the list."
+msgstr ""
+
+#: ../../Tools.rst:151
+msgid ""
+"The content of the imported file must fit the element type description."
+msgstr ""
+
+#: ../../Tools.rst:153
+msgid ""
+"To know the data that may be imported, click on the |buttonIconHelp| button."
+msgstr ""
+
+#: ../../Tools.rst:155
+msgid ""
+"After selecting file format (CSV or XLSX) and file to import, you can Import"
+" Data."
+msgstr ""
+
+#: ../../Tools.rst:157
+msgid "You will then have a full report of the import :"
+msgstr ""
+
+#: ../../Tools.rst:159
+msgid ""
+"Data that is not imported because not recognized as a field appear in grey "
+"text in the result table."
+msgstr ""
+
+#: ../../Tools.rst:160
+msgid ""
+"Data that are voluntarily not imported (because must be calculated) appear "
+"in blue text in the result table."
+msgstr ""
+
+#: ../../Tools.rst:66
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Tools.rst:0
+msgid "Field: Project"
+msgstr ""
+
+#: ../../Tools.rst:97
+msgid "Section: Message"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Project**"
+#~ msgstr ""
+
+#~ msgid "Message section"
+#~ msgstr ""

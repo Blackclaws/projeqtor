@@ -1,0 +1,687 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-03 10:03-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Bill.rst:0 ../../Bill.rst:18 ../../Bill.rst:266 ../../Bill.rst:15
+msgid "Bill"
+msgstr "Facture"
+
+#: ../../Bill.rst:20
+msgid "A bill is a request for payment for delivered work."
+msgstr ""
+
+#: ../../Bill.rst:22
+msgid "Billing will depend on billing type defined for the bill."
+msgstr ""
+
+#: ../../Bill.rst:64 ../../Bill.rst:193 ../../Bill.rst:188
+msgid "Billing type"
+msgstr "Type de facturation"
+
+#: ../../Bill.rst:128
+msgid "Bill lines"
+msgstr "Lignes de facture"
+
+#: ../../Bill.rst:132
+msgid "Input for each bill line depends on billing type."
+msgstr ""
+
+#: ../../Bill.rst:24
+msgid ""
+"Each bill is linked to project, a project has a project type, and a project "
+"type is linked to a billing type."
+msgstr ""
+
+#: ../../Bill.rst:26
+msgid "So billing type is automatically defined from selected project."
+msgstr ""
+
+#: ../../Bill.rst:0 ../../Bill.rst:0 ../../Bill.rst:0
+msgid "Other sections"
+msgstr "Autres section"
+
+#: ../../Bill.rst:30
+msgid ":ref:`gui-LinkElement-section-label`"
+msgstr ":ref:`gui-LinkElement-section-label`"
+
+#: ../../Bill.rst:32
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ":ref:`gui-attachment-section-label`"
+
+#: ../../Bill.rst:34 ../../Bill.rst:246
+msgid ":ref:`gui-note-section-label`"
+msgstr ":ref:`gui-note-section-label`"
+
+#: ../../Bill.rst:36 ../../Bill.rst:248 ../../Bill.rst:325
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ":ref:`gui-chg-history-section-label`"
+
+#: ../../Bill.rst:46 ../../Bill.rst:94 ../../Bill.rst:148 ../../Bill.rst:258
+#: ../../Bill.rst:281 ../../Bill.rst:335
+msgid "Field"
+msgstr "Champ"
+
+#: ../../Bill.rst:47 ../../Bill.rst:95 ../../Bill.rst:149 ../../Bill.rst:154
+#: ../../Bill.rst:259 ../../Bill.rst:282 ../../Bill.rst:336
+msgid "Description"
+msgstr ""
+
+#: ../../Bill.rst:48 ../../Bill.rst:260 ../../Bill.rst:337
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Bill.rst:49
+msgid "Unique Id for the bill."
+msgstr "Identifiant unique de la facture."
+
+#: ../../Bill.rst:50 ../../Bill.rst:262
+msgid "**Name**"
+msgstr "**Nom**"
+
+#: ../../Bill.rst:51
+msgid "Short description of the bill."
+msgstr "Court description de la facture."
+
+#: ../../Bill.rst:52
+msgid "**Bill type**"
+msgstr "**Type de facture**"
+
+#: ../../Bill.rst:53
+msgid "Type of bill."
+msgstr "Type de facture"
+
+#: ../../Bill.rst:54 ../../Bill.rst:264 ../../Bill.rst:341
+msgid "**Project**"
+msgstr "**Projet**"
+
+#: ../../Bill.rst:55
+msgid "The project concerned by the bill."
+msgstr ""
+
+#: ../../Bill.rst:56
+msgid "Customer"
+msgstr "Client"
+
+#: ../../Bill.rst:57
+msgid "Customer who will pay for the bill."
+msgstr "Client qui paie la facture."
+
+#: ../../Bill.rst:58
+msgid "Bill contact"
+msgstr "Contact facturation"
+
+#: ../../Bill.rst:59
+msgid "Contact who will receive the bill."
+msgstr "Contact qui recoit la facture."
+
+#: ../../Bill.rst:60
+msgid "Recipient"
+msgstr "Bénéficiaire"
+
+#: ../../Bill.rst:61
+msgid "Recipient who will receive the payment for the bill."
+msgstr "Bénéficiaire qui recoit le paiement de la facture."
+
+#: ../../Bill.rst:62
+msgid ":term:`Origin`"
+msgstr ":term:`Origine`"
+
+#: ../../Bill.rst:63
+msgid "Element which is the origin of the bill."
+msgstr "Element d'orgine de la facture."
+
+#: ../../Bill.rst:65
+msgid "Type of billing **(Read only)**."
+msgstr "Type de facturation  **(Lecture seul)**."
+
+#: ../../Bill.rst:67 ../../Bill.rst:115 ../../Bill.rst:121 ../../Bill.rst:271
+#: ../../Bill.rst:352
+msgid "**\\* Required field**"
+msgstr "**\\* Champ obligatoire**"
+
+#: ../../Bill.rst:71
+msgid "Default types of bill are :"
+msgstr "Les types de facture par défaut sont:"
+
+#: ../../Bill.rst:73
+msgid "Partial"
+msgstr "Partiel"
+
+#: ../../Bill.rst:74
+msgid "Final"
+msgstr "Final"
+
+#: ../../Bill.rst:75
+msgid "Complete"
+msgstr "Compète"
+
+#: ../../Bill.rst:79
+msgid "Automatically updated from project customer."
+msgstr "Mis à jour automatiquement avec le client du projet."
+
+#: ../../Bill.rst:83
+msgid "Calculated from project, project type, billing type."
+msgstr "Calculé à partir du projet, du type de projet et du type de facturation."
+
+#: ../../Bill.rst:84
+msgid "Will influence bill lines format."
+msgstr "Influence le format des lignes de facture."
+
+#: ../../Bill.rst:96
+msgid "Bill id"
+msgstr "Identifiant de la facture"
+
+#: ../../Bill.rst:97
+msgid "Id of bill."
+msgstr "Identifiant de la facture."
+
+#: ../../Bill.rst:98
+msgid "**Status**"
+msgstr "**Etat**"
+
+#: ../../Bill.rst:99
+msgid "Actual :term:`status` of the bill."
+msgstr ":term:`Etat` actuel de la facture."
+
+#: ../../Bill.rst:100
+msgid ":term:`Done`"
+msgstr ":term:`Fait`"
+
+#: ../../Bill.rst:101
+msgid "Flag to indicate that bill has been treated."
+msgstr "Indique que la facture a été traitée."
+
+#: ../../Bill.rst:102 ../../Bill.rst:268 ../../Bill.rst:349
+msgid ":term:`Closed`"
+msgstr ":term:`Clos`"
+
+#: ../../Bill.rst:103
+msgid "Flag to indicate that bill is archived."
+msgstr "Indique que la facture est archivée."
+
+#: ../../Bill.rst:104
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: ../../Bill.rst:105
+msgid "Flag to indicate that bill is cancelled."
+msgstr "Indique que la facture est annulée."
+
+#: ../../Bill.rst:106
+msgid "Untaxed amount"
+msgstr "Montant HT"
+
+#: ../../Bill.rst:107
+msgid "Amount for the bill, without taxes."
+msgstr "Montant de la facture sans taxes."
+
+#: ../../Bill.rst:108
+msgid "Tax"
+msgstr "TVA (%)"
+
+#: ../../Bill.rst:109
+msgid "Tax rate."
+msgstr "Taux de taxation."
+
+#: ../../Bill.rst:110
+msgid "Full amount"
+msgstr "Montant TTC"
+
+#: ../../Bill.rst:111
+msgid "Amount for the bill, including taxes."
+msgstr "Montant de la facture incluant taxes."
+
+#: ../../Bill.rst:112
+msgid "Comments"
+msgstr "Commentaires"
+
+#: ../../Bill.rst:113
+msgid "Comments for the bill."
+msgstr "Commentaires sur la facture."
+
+#: ../../Bill.rst:119
+msgid ""
+"Calculated when status of bill is “done”, taking into account “start number "
+"for bill” defined in :ref:`administration-global-parameters-label`."
+msgstr ""
+"Calculé quand l'état de la facture est à “fait”, Prendre en compte le numéro de départ des factures"
+"définie dans :ref:`administration-global-parameters-label`."
+
+
+#: ../../Bill.rst:134
+msgid ""
+"Click on |buttonAdd| the corresponding section to add a bill line. A “Bill "
+"line” pop up will be displayed depends on billing type."
+msgstr ""
+"Cliquer sur |buttonAdd| dans la section correspondante pour ajouter une ligne de facture."
+"Le Popup \"Ligne de facture\" selon le type de facturation."
+
+
+#: ../../Bill.rst:136
+msgid "Click on |buttonEdit| to modify an existing bill line."
+msgstr "Cliquer sur |buttonEdit| pour modifié la ligne de facturation existante."
+
+#: ../../Bill.rst:138
+msgid "Click on |buttonRemove| to delete the bill line."
+msgstr "Cliquer sur |buttonRemove| pour détruire la ligne de facturation."
+
+#: ../../Bill.rst:141
+msgid "Fields of bill line"
+msgstr "Champs de la ligne de facturation"
+
+#: ../../Bill.rst:150
+msgid "N°"
+msgstr ""
+
+#: ../../Bill.rst:151
+msgid "Number of the line for the bill."
+msgstr "Nombre de ligne à la facture."
+
+#: ../../Bill.rst:152
+msgid "Quantity"
+msgstr "Quantité"
+
+#: ../../Bill.rst:153
+msgid "Quantity of billed element."
+msgstr "Quantité d'élément facturable."
+
+#: ../../Bill.rst:155
+msgid "Description of the line."
+msgstr "Description de la ligne."
+
+#: ../../Bill.rst:156
+msgid "Detail"
+msgstr "Détail"
+
+#: ../../Bill.rst:157
+msgid "Detail of the line."
+msgstr "Détail de la ligne."
+
+#: ../../Bill.rst:158
+msgid "Price"
+msgstr "Prix"
+
+#: ../../Bill.rst:159
+msgid "Unitary price of billed element."
+msgstr "Prix unitaire de l'élément facturé."
+
+#: ../../Bill.rst:160
+msgid "Sum"
+msgstr "Somme"
+
+#: ../../Bill.rst:161
+msgid "Total price for the line = Price x Quantity."
+msgstr "Prix total pour la ligne = Prix x Quantité."
+
+#: ../../Bill.rst:162 ../../Bill.rst:228 ../../Bill.rst:225
+msgid "Term"
+msgstr "Échéancier"
+
+#: ../../Bill.rst:163
+msgid "Billed term for “At terms” bill."
+msgstr ""
+
+#: ../../Bill.rst:164
+msgid "Resource"
+msgstr "Ressource"
+
+#: ../../Bill.rst:165
+msgid "Resource whose work is billed."
+msgstr "Ressource dont le travail est facturé."
+
+#: ../../Bill.rst:166
+msgid "Activity price"
+msgstr "Prix des activités"
+
+#: ../../Bill.rst:167
+msgid "Activity price defining the billed activity type."
+msgstr "Prix de l'activité définie le type d'activité facturé."
+
+#: ../../Bill.rst:168
+msgid "Start date"
+msgstr "Date de début"
+
+#: ../../Bill.rst:169
+msgid "Start date of the period to take into account work to be billed."
+msgstr "Date de début de la période qui prend en compte le travail à facturer."
+
+#: ../../Bill.rst:170
+msgid "End date"
+msgstr "Date de fin"
+
+#: ../../Bill.rst:171
+msgid "End date of the period to take into account work to be billed."
+msgstr "Date de fin de la période qui prend en compte le travail à facturer."
+
+#: ../../Bill.rst:175
+msgid "Automatically created depending on billing type."
+msgstr "Créé automatiquement selon le type de facturation."
+
+#: ../../Bill.rst:176
+msgid "Can be modified on update."
+msgstr "Peut être modifié en mise à jour."
+
+#: ../../Bill.rst:180
+msgid "Available only on produced work and capped produced work bill."
+msgstr "Disponible seulement à la livraison and forfaitaire."
+
+#: ../../Bill.rst:196
+msgid "At terms"
+msgstr ""
+
+#: ../../Bill.rst:197
+msgid ""
+"A term must be defined to generate the bill, generally following a billing "
+"calendar."
+msgstr ""
+
+#: ../../Bill.rst:198
+msgid "Used for instance for: **Fixed price projects**."
+msgstr ""
+
+#: ../../Bill.rst:201
+msgid "On produced work"
+msgstr "À la livraison"
+
+#: ../../Bill.rst:202
+msgid ""
+"No term is needed, the billing will be calculated based on produced work for"
+" resources on selected activities, on a selected period."
+msgstr ""
+
+#: ../../Bill.rst:203
+msgid "Used for instance for: **Time & Materials projects**."
+msgstr ""
+
+#: ../../Bill.rst:206
+msgid "On capped produced work"
+msgstr "Forfaitaire"
+
+#: ../../Bill.rst:207
+msgid ""
+"No term is needed, the billing will be calculated based on produced work for"
+" resources on selected activities, on a selected period, taking into account"
+" validated work so that total billing cannot be more than validated work."
+msgstr ""
+
+#: ../../Bill.rst:208
+msgid "Used for instance for: **Capped Time & Materials projects**."
+msgstr ""
+
+#: ../../Bill.rst:211
+msgid "Manual billing"
+msgstr "Facturation manuelle"
+
+#: ../../Bill.rst:212
+msgid "Billing is defined manually, with no link to the project activity."
+msgstr "La facturation est définie manuellement avec aucun lien avec l'activité projet."
+
+#: ../../Bill.rst:213
+msgid ""
+"Used for instance for: **Any kind of project where no link to activity is "
+"needed**."
+msgstr ""
+
+#: ../../Bill.rst:216
+msgid "Not billed"
+msgstr "Non facturable"
+
+#: ../../Bill.rst:217
+msgid "No billing is possible for these kinds of projects."
+msgstr ""
+
+#: ../../Bill.rst:218
+msgid "Used for instance for: **internal projects, administrative projects**"
+msgstr ""
+
+#: ../../Bill.rst:230
+msgid "A term is a planned trigger for billing."
+msgstr ""
+
+#: ../../Bill.rst:232
+msgid ""
+"You can define as many terms as you wish, to define the billing calendar."
+msgstr ""
+
+#: ../../Bill.rst:235
+msgid "Activities as triggers"
+msgstr ""
+
+#: ../../Bill.rst:236
+msgid "You may insert activities as triggers."
+msgstr ""
+
+#: ../../Bill.rst:237
+msgid "the activities that should be billed at this term."
+msgstr ""
+
+#: ../../Bill.rst:238
+msgid ""
+"This is a help (as a reminder) as the summary for activities is displayed "
+"for validated and planned amount and end date. You can then define the term "
+"amount and date corresponding to these data."
+msgstr ""
+
+#: ../../Bill.rst:242
+msgid "Terms are mandatory to bill “Fixed price” project."
+msgstr ""
+
+#: ../../Bill.rst:261
+msgid "Unique Id for the term."
+msgstr ""
+
+#: ../../Bill.rst:263
+msgid "Short description of the term."
+msgstr ""
+
+#: ../../Bill.rst:265
+msgid "The project concerned by the term."
+msgstr ""
+
+#: ../../Bill.rst:267
+msgid "Bill name that uses these term."
+msgstr ""
+
+#: ../../Bill.rst:269
+msgid "Flag to indicate that term is archived"
+msgstr ""
+
+#: ../../Bill.rst:283
+msgid "Real amount"
+msgstr ""
+
+#: ../../Bill.rst:284
+msgid "Defined amount for term."
+msgstr ""
+
+#: ../../Bill.rst:285
+msgid "Real date"
+msgstr ""
+
+#: ../../Bill.rst:286
+msgid "Defined date for term."
+msgstr ""
+
+#: ../../Bill.rst:287
+msgid "Validated amount"
+msgstr ""
+
+#: ../../Bill.rst:288
+msgid ""
+"Sum of validated amounts of activities defined as triggers **(Read only)**."
+msgstr ""
+
+#: ../../Bill.rst:289
+msgid "Validated date"
+msgstr ""
+
+#: ../../Bill.rst:290 ../../Bill.rst:294
+msgid ""
+"Max of validated end dates of activities defined as triggers **(Read "
+"only)**."
+msgstr ""
+
+#: ../../Bill.rst:291
+msgid "Planned amount"
+msgstr ""
+
+#: ../../Bill.rst:292
+msgid ""
+"Sum of planned amounts of activities defined as triggers **(Read only)**."
+msgstr ""
+
+#: ../../Bill.rst:293
+msgid "Planned date"
+msgstr ""
+
+#: ../../Bill.rst:298
+msgid ""
+"When a trigger is entered, planned and validated values are automatically "
+"updated to sum and max of triggers amount."
+msgstr ""
+
+#: ../../Bill.rst:302
+msgid ""
+"Click on |buttonAdd| the corresponding section to add a trigger. A pop up "
+"will be displayed."
+msgstr ""
+
+#: ../../Bill.rst:304
+msgid "Click on |buttonRemove| to delete the trigger."
+msgstr ""
+
+#: ../../Bill.rst:0
+msgid "Pop up “Add an Predecessor to element”"
+msgstr ""
+
+#: ../../Bill.rst:308
+msgid "Linked element type  - Type of element to be selected."
+msgstr ""
+
+#: ../../Bill.rst:310
+msgid "Linked element - item selected"
+msgstr ""
+
+#: ../../Bill.rst:312
+msgid "Click on |buttonIconView| to search a item of element."
+msgstr ""
+
+#: ../../Bill.rst:317 ../../Bill.rst:314
+msgid "Activity Price"
+msgstr ""
+
+#: ../../Bill.rst:319
+msgid ""
+"Activity price defines daily price for activities of a given **activity "
+"type** and a given **project**."
+msgstr ""
+
+#: ../../Bill.rst:321
+msgid ""
+"This is used to calculate bill amount for billing type **produced work** and"
+" **capped produced work**."
+msgstr ""
+
+#: ../../Bill.rst:338
+msgid "Unique Id for the activity price."
+msgstr "Identifiant unique du prix de l'activité"
+
+#: ../../Bill.rst:339
+msgid "Name"
+msgstr "Nom"
+
+#: ../../Bill.rst:340
+msgid "Short description of the activity price."
+msgstr "Courte description du prix de l'activité"
+
+#: ../../Bill.rst:342
+msgid "The project concerned by the activity price."
+msgstr "Projet en lien avec le prix de l'activité"
+
+#: ../../Bill.rst:343
+msgid "**Activity type**"
+msgstr "Type d'activité"
+
+#: ../../Bill.rst:344
+msgid "Type of activities concerned by the activity price."
+msgstr "Type d'activité en lien avec le prix de l'activité."
+
+#: ../../Bill.rst:345
+msgid "Price of the activity"
+msgstr "Prix de l'activité"
+
+#: ../../Bill.rst:346
+msgid ""
+"Daily price of the activities of the given activity type and the given "
+"project."
+msgstr "Prix journalier des activités pour un type d'activité et un projet donnés."
+
+#: ../../Bill.rst:347
+msgid "Sort order"
+msgstr "Ordre de tri"
+
+#: ../../Bill.rst:348
+msgid "Number to define order of display in lists."
+msgstr "Nombre qui défini l'ordre d'affichage dans la liste."
+
+#: ../../Bill.rst:350
+msgid "Flag to indicate that activity price is archived"
+msgstr "Indique que le prix de l'activité est archivé."
+
+#: ../../Bill.rst:39 ../../Bill.rst:251 ../../Bill.rst:328
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Bill.rst:0
+msgid "Field: Bill type"
+msgstr "Champ: Type de facture"
+
+#: ../../Bill.rst:0
+msgid "Field: Customer"
+msgstr "Champ: Client"
+
+#: ../../Bill.rst:0
+msgid "Field: Billing type"
+msgstr "Champ: Type de facturation"
+
+#: ../../Bill.rst:87
+msgid "Section: Treatment"
+msgstr "Section: Traitement"
+
+#: ../../Bill.rst:0
+msgid "Field: Bill id"
+msgstr "Champ: "
+
+#: ../../Bill.rst:131
+msgid "Section: Bill lines"
+msgstr "Section: Lignes de facture"
+
+#: ../../Bill.rst:0
+msgid "Fields: Description & Detail"
+msgstr "Champs: Description et Détail"
+
+#: ../../Bill.rst:0
+msgid "Fields: Resource, Activity price, Start date et End date"
+msgstr "Champs: Ressource, Prix de l'activité, Date de début et Date de fin"
+
+#: ../../Bill.rst:274
+msgid "Section: Fixed price for term"
+msgstr "Section: Forfait pour l'échéance"
+
+#: ../../Bill.rst:0
+msgid "Fields: Amount and Date (Planned & Validated)"
+msgstr "Champs: Montant et Date (planifié & validé)"
+
+#: ../../Bill.rst:301
+msgid "Section: Trigger element for the term"
+msgstr "Section: Éléments déclencheurs de l'échéance"
+
