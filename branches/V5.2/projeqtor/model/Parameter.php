@@ -200,6 +200,7 @@ class Parameter extends SqlElement {
                     'el'=>i18n('langEl'),
                     'ua'=>i18n('langUa'),
                     'hr'=>i18n('langHr'));
+        $list=self::getLangList();
         //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;
       case 'browserLocaleDateFormat':
@@ -870,6 +871,26 @@ scriptLog('refreshParameters()');
   	// This function is call when refresh of parameters is requested
   	unset($_SESSION['globalParamatersArray']);
   }
+  
+  static public function getLangList() {
+    $dir='../tool/i18n/nls';
+    $handle = opendir($dir);
+    $result=array();
+    while ( ($file = readdir($handle)) !== false) {
+      if ($file == '.' || $file == '..' || $file=='index.php' // exclude ., .. and index.php
+      || ! is_dir($file) || substr($file,0,1)=='.' ) {        // non directories or directories starting with . (.svn)
+        continue;
+      }
+      $nls=$file;
+      $lang=str_replace('-',' ', $file);
+      $lang=ucwords($lang);
+      $lang=str_replace(' ','', $file);
+      $result[$nls]=i18n('lang'.$lang);
+    }
+    closedir($handle);
+    asort($result);
+    return $result;
+  } 
   
 }
 ?>
