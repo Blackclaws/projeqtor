@@ -111,7 +111,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     }  
   }
-  
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {

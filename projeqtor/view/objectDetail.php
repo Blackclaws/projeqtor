@@ -1249,7 +1249,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         echo '</div>';
       } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
-        // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
+        // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox (as a FilteringSelect)
         $displayComboButtonCol=$displayComboButton;
         $displayDirectAccessButton=true;
         $canCreateCol=false;
@@ -1320,10 +1320,19 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
                 $critVal=$_SESSION ['project'];
               } else {
                 $table=SqlList::getList('Project', 'name', null);
+                $restrictArray=array();
+                if (! $user->_accessControlVisibility) {
+                  $user->getAccessControlRights(); // Force setup of accessControlVisibility
+                }
+                if ($user->_accessControlVisibility != 'ALL') {
+                  $restrictArray=$user->getVisibleProjects(true);
+                }
                 if (count($table) > 0) {
                   foreach ( $table as $idTable => $valTable ) {
-                    $firstId=$idTable;
-                    break;
+                    if (count($restrictArray)==0 or isset($restrictArray[$idTable])) {
+                      $firstId=$idTable;
+                      break;
+                    }
                   }
                   $critFld='idProject';
                   $critVal=$firstId;
