@@ -139,7 +139,6 @@ class CommandMain extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
   													'idActivity'=>'linkActivity',
-  													'creationDate'=>'receptionDateTime',
   'idDeliveryMode'=>'receiveMode');
   private static $_databaseColumnName = array('taxPct'=>'tax');
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
