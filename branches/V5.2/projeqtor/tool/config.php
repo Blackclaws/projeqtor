@@ -203,11 +203,16 @@ $label['crlf04']='crlf';
 // === i18n (internationalization)
 $param['DefaultLocale'] = 'en';                              
 $label['DefaultLocale'] = "Default locale to be used on i18n";
-$value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'fr-ca' for French Canada, 'de' for German, 'es' for Spanish, 'pt' for Portuguese, 'pt-br' for Portuguese Brazil, 'ru' for Russian, 'zh' for Chinese, 'nl' for Dutch, 'fa' for Farsi (Persian), 'ja' for Japanese, 'el' for Greek, 'ua' for Ukrainian, 'hr' for croatian";
+$value['DefaultLocale'] = "default language";
 $pname['DefaultLocale'] = 'paramDefaultLocale';
-$ctrls['DefaultLocale'] = '=en=fr=fr-ca=de=es=pt=pt-br=ru=zh=nl=fa=ja=el=ua=hr=';
+$ctrls['DefaultLocale'] = '=';
 $requi['DefaultLocale'] = true;
-
+$list=Parameter::getLangList();
+foreach ($list as $nls=>$lang) {
+  $value['DefaultLocale'].=", '$nls' for $lang";
+  $ctrls['DefaultLocale'].=$nls."=";
+}
+    
 $param['DefaultTimezone'] = 'Europe/Paris';                              
 $label['DefaultTimezone'] = "Default time zone";
 $value['DefaultTimezone'] = "default time zone, list can be found at <a href='http://us3.php.net/manual/en/timezones.php' target='#'>http://us3.php.net/manual/en/timezones.php</a>";
