@@ -55,7 +55,7 @@ public $_noCopy;
     <th field="nameResourceSelect" formatter="thumbName22" width="15%" >${resourceName}</th>
     <th field="nameContact" formatter="thumbName22" width="15%" >${contactName}</th>
     <th field="nameUser" formatter="thumbName22" width="15%" >${userName}</th>
-    <th field="nameProfile" width="15%" >${idProfile}</th>  
+    <th field="nameProfile" formatter="translateFormatter" width="15%" >${idProfile}</th>  
     <th field="nameProject" width="20%" >${projectName}</th>
     <th field="rate" width="10%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
