@@ -3195,16 +3195,16 @@ abstract class SqlElement {
 				return false; // exit if not mailable object
 			}
 			
-			if (! property_exists($this, 'idStatus')) {
-				return false; // exit if object has not idStatus
-			}
+			//if (! property_exists($this, 'idStatus')) { #1977 : item can be mailable even if no status
+				//return false; // exit if object has not idStatus
+			//}
 			//if (! $this->idStatus) { Not valid any more : for instance note add available for document even without status
 			//	return false; // exit if status not set
 			//}
-			$crit=array();
-			$crit['idStatus']=$this->idStatus;
+			//$crit=array();
+			//$crit['idStatus']=$this->idStatus;
 			$crit="idle='0' and idMailable='" . $mailable->id . "' and ( false ";
-			if ($statusChange and trim($this->idStatus)) {
+			if ($statusChange and property_exists($this,'idStatus') and trim($this->idStatus)) {
 				$crit.="  or idStatus='" . $this->idStatus . "' ";
 			}
 			if ($responsibleChange) {
