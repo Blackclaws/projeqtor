@@ -176,7 +176,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }
       	$split=explode('#',$sharpName);
       	$wbs=$split[0];
-      	$name=$split[1];
+      	$name=str_replace('&sharp;','#',$split[1]);
         $id=substr($sharpid,1);
         $nbActions=countFrom($cptAction,$id,'',$countScope);        
         $nbActionsAll=countFrom($cptAction,$id,'All',$countScope);  
