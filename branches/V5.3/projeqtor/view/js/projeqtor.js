@@ -1650,10 +1650,12 @@ function selectRowById(gridName, id) {
     function(item, i){ 
       //itemId=item.id;
       if (item && item.id==id) {
-        grid.selection.setSelected(i,true);
+        var j=grid.getItemIndex(item);
+        if (j==-1) j=grid.rowCount-1;
+        grid.selection.setSelected(j,true);
         first=grid.scroller.firstVisibleRow;
         last=grid.scroller.lastVisibleRow;
-        if (i<first || i>last) grid.scrollToRow(i);
+        if (j<first || j>last) grid.scrollToRow(j);
         gridReposition=false;
         return;
       }

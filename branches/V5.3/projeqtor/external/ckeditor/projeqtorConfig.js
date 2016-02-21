@@ -8,7 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', '-', 'RemoveFormat'] },
     { name: 'paragraph', items: [ 'Indent', 'Outdent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','-','NumberedList', 'BulletedList'] },
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-    { name: 'tools', items: [ 'Print','Maximize' ] },
+    { name: 'tools', items: [ 'Print','Maximize'] },
     { name: 'styles', items: [ 'Font', 'FontSize' ] },
     { name: 'links', items: [ 'Link', 'Unlink', 'Image','Table','SpecialChar','PasteFromWord'] }
   ];
@@ -22,8 +22,8 @@ CKEDITOR.editorConfig = function( config ) {
   config.imageUploadUrl = '../tool/uploadImage.php';
   config.image_previewText = CKEDITOR.tools.repeat( 'Image', 1 );
   config.magicline_color = '#aaaaaa';
-  config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};style;';
-  config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};style';
+  config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style;';
+  config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style';
   config.pasteFromWordRemoveStyles = false;
   config.pasteFromWordRemoveFontStyles = false;
   

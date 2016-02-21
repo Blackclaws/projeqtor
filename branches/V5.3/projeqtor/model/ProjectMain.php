@@ -522,7 +522,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     	foreach($visibleProjectsList as $idP=>$nameP) {
     		$split=explode('#',$nameP);
     		if (strpos($split[0],'.')==0) {
-    			$subList[substr($idP,1)]=$split[1];
+    			$subList[substr($idP,1)]=str_replace('&sharp;','#',$split[1]);
     		}
     	}
     } else {
