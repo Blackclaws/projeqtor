@@ -583,7 +583,7 @@ class UserMain extends SqlElement {
     		$wbsArray[$wbsParent]['cpt']+=1;
     		$wbsArray[$projPe->wbsSortable]['wbs']=$wbsArray[$wbsParent]['wbs'].'.'.$wbsArray[$wbsParent]['cpt'];
     	}
-    	$result['#'.$projPe->refId]=$wbsArray[$projPe->wbsSortable]['wbs'].'#'.$projPe->refName;
+    	$result['#'.$projPe->refId]=$wbsArray[$projPe->wbsSortable]['wbs'].'#'.str_replace('#','&sharp;',$projPe->refName);
     }
     if (! $hideClosed) {
       $this->_hierarchicalViewOfVisibleProjects=$result;
