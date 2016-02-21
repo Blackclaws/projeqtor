@@ -2925,9 +2925,10 @@ abstract class SqlElement {
 			}
 			if ($dataLength>4000) {
 			  // Remove "\n" that have no use here
-			  $this->$col=str_replace( array("\n",'<div></div>'),
-			                           array(' ', ''           ),
-			      $val );
+			  //$this->$col=str_replace( array("\n",'<div></div>'),
+			  //                         array(' ', ''           ),
+			  //    $val );
+			  if ($val=='<div></div>') $val=null;
 			  try {
 			    $test=strip_tags($val);
 			  } catch (Exception $e) {
