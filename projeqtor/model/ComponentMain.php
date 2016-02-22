@@ -35,6 +35,7 @@ class ComponentMain extends ProductOrComponent {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $idComponentType;
   public $designation;
   public $idComponent;
   public $creationDate;
