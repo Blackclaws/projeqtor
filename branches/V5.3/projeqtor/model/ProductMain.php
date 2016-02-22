@@ -35,6 +35,7 @@ class ProductMain extends ProductOrComponent {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $idProductType;
   public $designation;
   public $idClient;
   public $idContact;
