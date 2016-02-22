@@ -4122,7 +4122,7 @@ abstract class SqlElement {
 	  $status=$newStatus;
 	  $planningMode=$newPlanningMode;
 	  if ($this->id) {
-	    $typeName='id'.get_class($this).'Type';
+	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
 	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
 	    if (!$type and property_exists($this,$typeName)) {
 	      $type=$this->$typeName;
@@ -4134,8 +4134,8 @@ abstract class SqlElement {
 	      $planningMode=$this->$planningModeName;
 	    }
 	  } else {
-	    $typeName='id'.get_class($this).'Type';
-	    $typeClassName=get_class($this).'Type';
+	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
+	    $typeClassName=str_replace('PlanningElement', '',get_class($this)).'Type';
 	    if (property_exists($this,$typeName) and self::class_exists($typeClassName)) {
   	    $table=SqlList::getList($typeClassName, 'name', null);
   	    if (count($table) > 0) {
@@ -4146,6 +4146,19 @@ abstract class SqlElement {
   	    }
 	    }
 	    $status=1; // first status always 1 (recorded)
+	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
+	    $typeElt=null;
+	    debugLog("type=$type");
+	    if (!$type) {
+	      $typeList=SqlList::getList($typeClassName);
+	      $typeElt=reset($typeList);
+	      $type=($typeElt)?key($typeList):null;
+	      debugLog($type);
+	    }
+	    if (! $planningMode and $type and property_exists($typeClassName,$planningModeName)) {
+	      $typeObj=new $typeClassName($type);
+	      $planningMode=$typeObj->$planningModeName;
+	    }
 	  } 
 	  if ($planningMode) {
 	    $planningModeObj=new PlanningMode($planningMode);

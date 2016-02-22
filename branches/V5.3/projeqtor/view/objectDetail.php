@@ -467,6 +467,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
+  debugLog("Required");
   $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
