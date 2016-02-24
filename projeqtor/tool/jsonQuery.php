@@ -433,7 +433,7 @@
       	$split=explode('_', $crit['sql']['attribute']);
       	$critSqlValue=$crit['sql']['value'];
       	if (substr($crit['sql']['attribute'], -4, 4) == 'Work') {
-      	  if ($objClass=='Ticket') {
+      	  if ($objectClass=='Ticket') {
       	    $critSqlValue=Work::convertImputation(trim($critSqlValue,"'"));
       	  } else {
       	    $critSqlValue=Work::convertWork(trim($critSqlValue,"'"));

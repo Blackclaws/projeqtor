@@ -82,16 +82,41 @@ class Dependency extends SqlElement {
     if (count($list)>0) {
     	$result.='<br/>' . i18n('errorDuplicateDependency');
     }
-    if ($this->predecessorId) { // Case PlanningElement Dependency
+    $prec=new PlanningElement();
+    $precList=array();
+    $precParentList=array();
+    if ($this->predecessorId) {
       $prec=new PlanningElement($this->predecessorId);
-      $precList=$prec->getPredecessorItemsArray();
+      $precList=$prec->getPredecessorItemsArrayIncludingParents();
       $precParentList=$prec->getParentItemsArray();
+      $precSonList=$prec->getSonItemsArray();
+    }
+    $succ=new PlanningElement();
+    $succList=array();
+    $succParentList=array();
+    if ($this->successorId) {
+      $succ=new PlanningElement($this->successorId);
+      $succList=$succ->getSuccessorItemsArrayIncludingParents();
+      $succParentList=$succ->getParentItemsArray();
+      $succSonList=$succ->getSonItemsArray();
+    }
+    if ($this->predecessorId) { // Case PlanningElement Dependency
       if (array_key_exists('#' . $this->successorId,$precList)) {
         $result.='<br/>' . i18n('errorDependencyLoop');
       }
       // cannot create dependency into parent hierarchy
 	    if (array_key_exists('#' . $this->successorId,$precParentList)) {
 	      $result.='<br/>' . i18n('errorDependencyHierarchy');
+	    }
+	    foreach ($succParentList as $idSuccParent=>$succParent) {
+  	    if (array_key_exists($idSuccParent,$precList)) {
+          $result.='<br/>' . i18n('errorDependencyLoop');
+        }
+	    }
+	    foreach ($succSonList as $idSuccSon=>$succSon) {
+	      if (array_key_exists($idSuccSon,$precList)) {
+	        $result.='<br/>' . i18n('errorDependencyLoop');
+	      }
 	    }
     } else {
     	$precList=$this->getPredecessorList();
@@ -102,7 +127,7 @@ class Dependency extends SqlElement {
     }
     if ($this->successorId) { // Case PlanningElement Dependency
       $succ=new PlanningElement($this->successorId);    
-      $succList=$succ->getSuccessorItemsArray();
+      $succList=$succ->getSuccessorItemsArrayIncludingParents();
       $succParentList=$succ->getParentItemsArray();
       if (array_key_exists('#' .$this->predecessorId,$succList)) {
         $result.='<br/>' . i18n('errorDependencyLoop');
@@ -110,6 +135,16 @@ class Dependency extends SqlElement {
       // cannot create dependency into parent hierarchy
 	    if (array_key_exists('#' .$this->predecessorId,$succParentList)) {
 	      $result.='<br/>' . i18n('errorDependencyHierarchy');
+	    }
+	    foreach ($precParentList as $idPrecParent=>$precParent) {
+	      if (array_key_exists($idPrecParent,$succList)) {
+	        $result.='<br/>' . i18n('errorDependencyLoop');
+	      }
+	    }
+	    foreach ($precSonList as $idPrecSon=>$precSon) {
+	      if (array_key_exists($idPrecSon,$succList)) {
+	        $result.='<br/>' . i18n('errorDependencyLoop');
+	      }
 	    }
     } else {
     	$succList=array();

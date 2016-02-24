@@ -686,7 +686,7 @@ function htmlGetWarningMessage($message) {
  * @param $mimeType the textual mimeType
  * @return formated html mimeType, as an image
  */
-function htmlGetMimeType($mimeType,$fileName, $id=null) {
+function htmlGetMimeType($mimeType,$fileName, $id=null, $type='Attachment') {
   $ext = pathinfo($fileName, PATHINFO_EXTENSION);
   if (file_exists("../view/img/mime/$ext.png")) {
     $img="../view/img/mime/$ext.png";
@@ -695,7 +695,7 @@ function htmlGetMimeType($mimeType,$fileName, $id=null) {
   }
   $image='<img src="' . $img . '" title="' . $mimeType . '" ';
   if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf")) {
-  	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.htmlEncode($fileName,'quotes').'\')" ';
+  	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.htmlEncode($fileName,'quotes').'\',\''.$type.'\')" ';
   }
   $image.='/>&nbsp;';
   return $image;

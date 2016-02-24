@@ -260,5 +260,9 @@ class DocumentVersionMain extends SqlElement {
     $this->approved=$approved;
     $this->save();
   }
+  
+  public function isThumbable() {
+    return isThumbable($this->fileName);
+  }
 }
 ?>

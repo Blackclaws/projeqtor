@@ -4148,12 +4148,10 @@ abstract class SqlElement {
 	    $status=1; // first status always 1 (recorded)
 	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
 	    $typeElt=null;
-	    debugLog("type=$type");
 	    if (!$type) {
 	      $typeList=SqlList::getList($typeClassName);
 	      $typeElt=reset($typeList);
 	      $type=($typeElt)?key($typeList):null;
-	      debugLog($type);
 	    }
 	    if (! $planningMode and $type and property_exists($typeClassName,$planningModeName)) {
 	      $typeObj=new $typeClassName($type);
