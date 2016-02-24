@@ -2,7 +2,7 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
- * Contributors : -
+ * Contributors : Matthias Nowak : fix to avoid infinite loop in getRecursivePredecessor()
  *
  * This file is part of ProjeQtOr.
  * 
@@ -861,6 +861,18 @@ class PlanningElement extends SqlElement {
     return $result;
   }
   
+  public function getSonItemsArray() {
+    // V2.1 refactoring of function
+    $result=array();
+    $crit=array('topId'=>$this->id);
+    $listSons=$this->getSqlElementsFromCriteria($crit);
+    foreach ($listSons as $son) {
+      $result['#'.$son->id]=$son;
+      $result=array_merge($result,$son->getSonItemsArray());
+    }
+    return $result;
+  }
+  
   /** ==============================================================
    * Retrieve the list of all Predecessors, recursively
    */
@@ -913,7 +925,15 @@ class PlanningElement extends SqlElement {
   	}
     return $result;
   }
-  
+  public function getSuccessorItemsArrayIncludingParents() {
+    $result=$this->getSuccessorItemsArray();
+    $parents=$this->getParentItemsArray();
+    foreach ($parents as $parent) {
+    		$resParent=$parent->getSuccessorItemsArray();
+    		array_merge($result,$resParent);
+    }
+    return $result;
+  }
    /** ==============================================================
    * Retrieve the list of all Successors, recursively
    */
@@ -1307,10 +1327,12 @@ class PlanningElement extends SqlElement {
       } else {
         $pe->_directPredecessorList=array();
       } 
-      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result,'main');
+      $visited=array();
+      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result,'main', $visited);
       $pe->_predecessorListWithParent=$pe->_predecessorList;
       foreach ($pe->_parentList as $idParent=>$parent) {
-        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result,'parent'));
+      	$visited=array();
+        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result,'parent', $visited));
       }
       if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
         $pe->plannedStartDate=null;
@@ -1325,14 +1347,16 @@ class PlanningElement extends SqlElement {
   }
   
   
-  private static function getRecursivePredecessor($directFullList, $id, $result,$scope) {
+  private static function getRecursivePredecessor($directFullList, $id, $result,$scope,$visited) {
   	if (isset($result[$id]->_predecessorList)) {
   		return $result[$id]->_predecessorList;
   	}
   	if (array_key_exists($id, $directFullList)) {
       $result=$directFullList[$id];
   	  foreach ($directFullList[$id] as $idPrec=>$prec) {
-        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result,$scope));
+  	  	if(array_key_exists($idPrec,$visited)) continue;
+  	  	$visited[$idPrec]=1;
+        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result,$scope,$visited));
       }
     } else {
       $result=array();

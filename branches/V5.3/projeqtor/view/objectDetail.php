@@ -467,7 +467,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
-  debugLog("Required");
   $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
@@ -1935,16 +1934,24 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     $objStatus=new Status($version->idStatus);
     echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '<td class="assignData" title="' . htmlencode($version->description) . '">';
-    //echo '  <table><tr >';
-    //echo '   <td>';
+    echo '<table style="width:100%"><tr><td style="width:20px">';
+    if ($version->isThumbable()) {
+      $ext = pathinfo($version->fileName, PATHINFO_EXTENSION);
+      if (file_exists("../view/img/mime/$ext.png")) {
+        $img="../view/img/mime/$ext.png";
+      } else {
+        $img= "../view/img/mime/unknown.png";
+      }
+      echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName) . '\');" />';
+    } else { 
+      echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
+    }
+    echo '</td><td>';
     echo htmlEncode($version->fileName, 'print');
     if ($version->description and !$print) {
-      //echo '<td>';
       echo formatCommentThumb($version->description);
-      //echo '</td>';
     }
-    //echo '   </td>';
-    //echo '</tr></table>';
+    echo '</td></tr></table>';
     echo '</td></tr>';
   }
   echo '</table></td></tr>';

@@ -1915,7 +1915,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	               <label for="dependencyDelay" ><?php echo i18n("colDependencyDelay");?>&nbsp;:&nbsp;</label>
 	             </td>
 	             <td><nobr>
-	               <?php echo ($currencyPosition=='before')?$currency:''; ?>
 	               <input id="dependencyDelay" name="dependencyDelay" value="0" 
 	                 dojoType="dijit.form.NumberTextBox" 
                    constraints="{min:-999, max:999}" 

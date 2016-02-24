@@ -3351,6 +3351,7 @@ function removeStoredFilter(idFilter, nameFilter) {
 // =============================================================================
 
 function reportSelectCategory(idCateg) {
+  if (isNaN(idCateg)) return;
   loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv",
       null, false);
   var tmpStore=new dojo.data.ItemFileReadStore(
@@ -3379,6 +3380,7 @@ function reportSelectCategory(idCateg) {
 }
 
 function reportSelectReport(idReport) {
+  if (isNaN(idReport)) return;
   loadContent("../view/reportsParameters.php?idReport=" + idReport,
       "reportParametersDiv", null, false);
 }
@@ -5536,9 +5538,9 @@ function showLink(link) {
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
 }
-function showHtml(id, file) {
+function showHtml(id, file, className) {
   dijit.byId("dialogShowHtml").title=file;
-  window.frames['showHtmlFrame'].location.href='../tool/download.php?class=Attachment&id='
+  window.frames['showHtmlFrame'].location.href='../tool/download.php?class='+className+'&id='
       + id + '&showHtml=true';
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
