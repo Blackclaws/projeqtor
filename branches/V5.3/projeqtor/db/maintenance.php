@@ -129,7 +129,7 @@ if ($currVersion=='V0.0.0') {
 //echo "for V1.6.1<br/>";
 // For V1.6.1
 $tst=new ExpenseDetailType('1');
-if (! $tst->id) {
+if (! $tst->id and beforeVersion($currVersion,"V1.6.1")) {
 	$nbErrors+=runScript('V1.6.1');
 }
 

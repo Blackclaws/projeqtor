@@ -127,6 +127,17 @@ class Parameter extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
+    } else if ($colName=='versionNameAutoformat') {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  newValue=this.value;';
+      $colScript .= '  var separator=dijit.byId("versionNameAutoformatSeparator");';
+      $colScript .= '  if (newValue=="YES") {';
+      $colScript .= '    if (! separator.get("value")) separator.set("value"," V");';
+      $colScript .= '  } else {';
+      $colScript .= '    separator.set("value",null);';
+      $colScript .= '  }';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
+      $colScript .= '</script>';
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       //if (! $this->idUser and ! $this->idProject) {
@@ -232,6 +243,7 @@ class Parameter extends SqlElement {
             'REQ'=>i18n('displayOnRequest'));
         break;
       case 'printHistory': case 'csvExportUTF8': case 'allowTypeRestrictionOnProject' :
+      case 'versionNameAutoformat' :
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -486,6 +498,9 @@ class Parameter extends SqlElement {
       	                       'preserveUploadedFileName'=>'list',
       	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
+      	                     'sectionVersionNameFormat'=>'section',
+      	                       'versionNameAutoformat'=>'list',
+      	                       'versionNameAutoformatSeparator'=>'text',
       	                   'newColumn'=>'newColumn',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',

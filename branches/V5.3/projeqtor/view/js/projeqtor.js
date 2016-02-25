@@ -3126,3 +3126,15 @@ function setDefaultPlanningMode(typeValue) {
     }
   });
 }
+
+function updateVersionName(sep) {
+  var prd='';
+  if (dijit.byId("idComponent")) {
+    prd=dijit.byId("idComponent").get("displayedValue");
+  } else if (dijit.byId("idProduct")) {
+    prd=dijit.byId("idProduct").get("displayedValue");
+  }
+  var num=dijit.byId("versionNumber").get("value");
+  var result=prd+sep+num;
+  dijit.byId("name").set("value",result);
+}
