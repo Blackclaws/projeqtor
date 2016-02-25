@@ -35,6 +35,7 @@ class ProductVersionMain extends Version {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idProduct;
+  public $versionNumber;
   public $name;
   public $idContact;
   public $idResource;
@@ -84,6 +85,13 @@ class ProductVersionMain extends Version {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      self::$_fieldsAttributes['name']='readonly';
+      self::$_fieldsAttributes['versionNumber']='required';
+    } else {
+      self::$_fieldsAttributes['versionNumber']='hidden';
+    }
     parent::__construct($id,$withoutDependentObjects);
   }
 
@@ -210,6 +218,18 @@ class ProductVersionMain extends Version {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
+    if ($colName=="versionNumber") {
+      $colScript .= '<script type="dojo/method" event="onKeyPress" >';
+      $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    if ($colName=="versionNumber" or $colName=="idProduct") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
     return $colScript;
   }
   
@@ -243,6 +263,11 @@ class ProductVersionMain extends Version {
   public function save() {
     $old=$this->getOld();
     $this->scope='Product';
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      $separator=Parameter::getGlobalParameter('versionNameAutoformatSeparator');
+      $this->name=SqlList::getNameFromId('Product', $this->idProduct).$separator.$this->versionNumber;
+    }
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     

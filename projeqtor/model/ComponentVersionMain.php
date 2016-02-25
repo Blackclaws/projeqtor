@@ -35,6 +35,7 @@ class ComponentVersionMain extends Version {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idComponent;
+  public $versionNumber;
   public $name;
   public $idContact;
   public $idResource;
@@ -87,6 +88,13 @@ class ComponentVersionMain extends Version {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      self::$_fieldsAttributes['name']='readonly';
+      self::$_fieldsAttributes['versionNumber']='required';
+    } else {
+      self::$_fieldsAttributes['versionNumber']='hidden';
+    }
     parent::__construct($id,$withoutDependentObjects);
   }
 
@@ -221,6 +229,18 @@ class ComponentVersionMain extends Version {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
+    if ($colName=="versionNumber") {
+      $colScript .= '<script type="dojo/method" event="onKeyPress" >';
+      $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    if ($colName=="versionNumber" or $colName=="idComponent") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
     return $colScript;
   }
   
@@ -253,6 +273,11 @@ class ComponentVersionMain extends Version {
   public function save() {
     $old=$this->getOld();
     $this->scope='Component';
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      $separator=Parameter::getGlobalParameter('versionNameAutoformatSeparator');
+      $this->name=SqlList::getNameFromId('Component', $this->idComponent).$separator.$this->versionNumber;
+    }
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     

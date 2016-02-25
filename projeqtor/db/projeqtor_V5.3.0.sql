@@ -33,3 +33,4 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`,
 ALTER TABLE `${prefix}product` ADD `idProductType` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}product` ADD `idComponentType` int(12) unsigned DEFAULT NULL;
 
+ALTER TABLE `${prefix}version` ADD `versionNumber` varchar(100) DEFAULT NULL;

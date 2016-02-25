@@ -949,7 +949,9 @@ abstract class SqlElement {
 				$col_old_value=$oldObject->$col_name;
 				// special null treatment (new value)
 				//$col_new_value=Sql::str(trim($col_new_value));
-				$col_new_value=trim($col_new_value);
+				if (get_class($this)!='Parameter') { // Do not trim parameters
+				  $col_new_value=trim($col_new_value);
+				}
 				if ($dataType=='decimal') {
 				  $col_new_value=str_replace(',', '.', $col_new_value);
 				}
@@ -4148,7 +4150,7 @@ abstract class SqlElement {
 	    $status=1; // first status always 1 (recorded)
 	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
 	    $typeElt=null;
-	    if (!$type) {
+	    if (!$type and SqlElement::class_exists($typeClassName)) {
 	      $typeList=SqlList::getList($typeClassName);
 	      $typeElt=reset($typeList);
 	      $type=($typeElt)?key($typeList):null;

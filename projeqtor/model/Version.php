@@ -35,6 +35,7 @@ class Version extends SqlElement {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idProduct;
+  public $versionNumber;
   public $name;
   public $idContact;
   public $idResource;
