@@ -45,8 +45,8 @@ class ProductMain extends ProductOrComponent {
   public $description;
   public $_sec_ProductVersions;
   public $_spe_versions;
-  public $_sec_ProductStructure_product;
-  public $_ProductStructure=array();
+  public $_sec_ProductComposition;
+  public $_productComposition;
   public $_spe_structure;
   public $_Attachment=array();
   public $_Note=array();

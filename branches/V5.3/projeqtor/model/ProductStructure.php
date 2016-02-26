@@ -60,7 +60,7 @@ class ProductStructure extends SqlElement {
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  
+ 
   /**
    * Save object (permuts objects ref if needed)
    * @see persistence/SqlElement#save()
@@ -98,6 +98,8 @@ class ProductStructure extends SqlElement {
    */
   public function control(){
     $result="";
+    
+    // Duplicate
     $checkCrit=array('idProduct'=>$this->idProduct,
                      'idComponent'=>$this->idComponent);
     $comp=new ProductStructure();
@@ -105,11 +107,60 @@ class ProductStructure extends SqlElement {
     if (count($check)>0) {
       $result.='<br/>' . i18n('errorDuplicateLink');
     } 
+      
+    // Infinite loops
+    if ($this->idProduct==$this->idComponent) {
+      $result='<br/>' . i18n('errorHierarchicLoop');
+    }   
+    $productStructure=self::getStruture($this->idProduct);
+    foreach ($productStructure as $prd=>$prdId) {
+      if ($prdId==$this->idComponent) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        break;
+      }
+    }    
+    $componentComposition=self::getComposition($this->idComponent);
+    foreach ($componentComposition as $comp=>$compId) {
+      if ($compId==$this->idProduct) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        break;
+      }
+    }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
     }if ($result=="") {
       $result='OK';
+    }
+    return $result;
+  }
+  
+  public static function getComposition($id,$level='all') {
+    $result=array();
+    $crit=array('idProduct'=>$id);
+    $ps=new ProductStructure();
+    $psList=$ps->getSqlElementsFromCriteria($crit);
+    if (is_numeric($level)) $level--;
+    foreach ($psList as $ps) {
+      $result['#'.$ps->idComponent]=$ps->idComponent;
+      if ($level=='all' or $level>0) {
+        $result=array_merge($result,self::getComposition($ps->idComponent));
+      }
+    }
+    return $result;
+  }
+  public static function getStruture($id, $level='all') {
+    $result=array();
+    $crit=array('idComponent'=>$id);
+    $ps=new ProductStructure();
+    $psList=$ps->getSqlElementsFromCriteria($crit);
+    if (is_numeric($level)) $level--;
+    foreach ($psList as $ps) {
+      $result['#'.$ps->idProduct]=$ps->idProduct;
+      if ($level=='all' or $level>0) {
+        $result=array_merge($result,self::getComposition($ps->idProduct));
+      }
     }
     return $result;
   }

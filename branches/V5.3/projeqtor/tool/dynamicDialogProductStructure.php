@@ -38,15 +38,21 @@ if (! array_key_exists('objectId',$_REQUEST)) {
 $objectId=$_REQUEST['objectId'];
 Security::checkValidId($objectId);
 
-$structureId=null;
-if (array_key_exists('structureId',$_REQUEST)) {
-  $structureId=$_REQUEST['structureId'];
-  Security::checkValidId($structureId);
+$way=null;
+if (array_key_exists('way',$_REQUEST)) {
+  $way=$_REQUEST['way'];
+}
+if ($way!='structure' and $way!='composition') {
+  throwError("Incorrect value for parameter way='$way'");
 }
 if ($objectClass=='Product') {
   $listClass='Component';
 } else if ($objectClass=='Component') {
-  $listClass='Product';
+  if ($way=='structure') {
+    $listClass='ProductOrComponent';
+  } else {
+    $listClass='Component';
+  }
 } else {
   errorLog("Unexpected objectClass $objectClass");
   echo "Unexpected objectClass";
@@ -60,7 +66,11 @@ if ($objectClass=='Product') {
         <input id="productStructureObjectClass" name="productStructureObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productStructureObjectId" name="productStructureObjectId" type="hidden" value="<?php echo $objectId;?>" />
         <input id="productStructureListClass" name="productStructureListClass" type="hidden" value="<?php echo $listClass;?>" />
+        <input id="productStructureWay" name="productStructureWay" type="hidden" value="<?php echo $way;?>" />
         <table>
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td colspan="2" class="section"><?php echo i18n('section'.ucfirst($way),array($objectClass,intval($objectId)));?></td></tr>  
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>  
           <tr>
             <td class="dialogLabel"  >
               <label for="productStructureListId" ><?php echo i18n($listClass) ?>&nbsp;:&nbsp;</label>
@@ -72,14 +82,28 @@ if ($objectClass=='Product') {
               </select>
             </td>
             <td style="vertical-align: top">
-              <button id="productStructureDetailButton" dojoType="dijit.form.Button" showlabel="false"
-                title="<?php echo i18n('showDetail')?>"
+              <div style="position:relative">
+              <button id="productStructureDetailButtonProduct" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('showDetail') . ' '. i18n('Product');?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
-                <?php $canCreate=securityGetAccessRightYesNo('menu'.$listClass, 'create') == "YES"; ?>
-                showDetail('productStructureListId', <?php echo $canCreate;?>, '<?php echo $listClass;?>', true);
+                <?php $canCreate=securityGetAccessRightYesNo('menuProduct', 'create') == "YES"; ?>
+                showDetail('productStructureListId', <?php echo $canCreate;?>, 'Product', true);
                 </script>
               </button>
+              <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconProduct16.png" />
+              </div>
+              <div style="position:relative">
+              <button id="productStructureDetailButtonComponent" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('showDetail'). ' '. i18n('Component')?>"
+                iconClass="iconView">
+                <script type="dojo/connect" event="onClick" args="evt">
+                <?php $canCreate=securityGetAccessRightYesNo('menuComponent', 'create') == "YES"; ?>
+                showDetail('productStructureListId', <?php echo $canCreate;?>, 'Component', true);
+                </script>
+              </button>
+              <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconComponent16.png" />
+              </div>
             </td>
           </tr>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>  

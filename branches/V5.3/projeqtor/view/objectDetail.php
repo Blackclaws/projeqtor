@@ -107,18 +107,24 @@ if ($noselect) {
     }
     exit();
   }
-  if (array_key_exists('refreshProductStructure', $_REQUEST)) {
+  /*if (array_key_exists('refreshProductStructure', $_REQUEST)) {
     if (property_exists($obj, '_ProductStructure')) {
       drawProductStructureFromObject($obj->_ProductStructure, $obj, null, true);
     }
+    if (property_exists($obj, '_ComponentStructure')) {
+      drawProductStructureFromObject(null, $obj, null, true);
+    }
     exit();
-  }
-  if (array_key_exists('refreshProductVersionStructure', $_REQUEST)) {
+  }*/
+  /*if (array_key_exists('refreshProductVersionStructure', $_REQUEST)) {
     if (property_exists($obj, '_ProductVersionStructure')) {
       drawProductVersionStructureFromObject($obj->_ProductVersionStructure, $obj, null, true);
     }
+    if (property_exists($obj, '_ComponentVersionStructure')) {
+      drawProductVersionStructureFromObject(null, $obj, null, true);
+    }
     exit();
-  }
+  }*/
   if (array_key_exists('refreshHistory', $_REQUEST)) {
     $treatedObjects []=$obj;
     foreach ( $obj as $col => $val ) {
@@ -625,10 +631,16 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $linkClass=substr($col, 6);
       }
       drawLinksFromObject($val, $obj, $linkClass);
-    } else if ($col == '_ProductStructure') { // Display ProductStructure (structure)
-      drawProductStructureFromObject($val, $obj, false);
+    } else if ($col == '_productComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of Product (structure)
+      drawStructureFromObject($obj, false,'composition', 'Product');
+    } else if ($col == '_componentComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of component (structure)
+      drawStructureFromObject($obj, false,'composition', 'Component');
+    } else if ($col == '_componentStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Structure of component (structure)
+      drawStructureFromObject($obj, false,'structure', 'Component');
     } else if ($col == '_ProductVersionStructure') { // Display ProductVersionStructure (structure)
       drawProductVersionStructureFromObject($val, $obj, false);
+    } else if ($col == '_ComponentVersionStructure') { // Display ProductVersionStructure (structure)
+      drawProductVersionStructureFromObject(null, $obj, false);
     } else if (substr($col, 0, 11) == '_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
     } else if (substr($col, 0, 11) == '_Approver') { // Display Assignments
@@ -2659,10 +2671,17 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   }
 }
 
-function drawProductStructureFromObject($list, $obj, $refresh=false) {
-  if ($obj->isAttributeSetToField("_ProductStructure", "hidden")) {
-    return;
+function drawStructureFromObject($obj, $refresh=false,$way,$item) {
+  $crit=array();
+  if ($way=='composition') {
+    $crit['idProduct']=$obj->id;
+  } else if ($way=='structure') {
+    $crit['idComponent']=$obj->id;
+  } else {
+    errorLog("unknown way=$way in drawProducttureFromObject()");
   }
+  $pcs=new ProductStructure();
+  $list=$pcs->getSqlElementsFromCriteria($crit);
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
@@ -2677,24 +2696,26 @@ function drawProductStructureFromObject($list, $obj, $refresh=false) {
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id != null and !$print and $canUpdate) {
-     echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductStructure();" title="' . i18n('addProductStructure') . '" class="roundedButtonSmall"/> ';
+     echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductStructure(\''.$way.'\');" title="' . i18n('addProductStructure') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
-  $listClass=(get_class($obj)=='Product')?'Component':'Product';
+  $listClass=($item=='Product')?'Component':($way=='structure')?'ProductOrComponent':'Component';
   echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
   echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
   echo '</tr>';
   foreach ( $list as $comp ) {
     $compObj=null;
-    if (get_class($obj)=='Product') {
-      $compObj=new Component($comp->idComponent);
+    if ($way=='structure') {
+      $compObj=new ProductOrComponent($comp->idProduct);
     } else {
-      $compObj=new Product($comp->idProduct);
+      $compObj=new ProductOrComponent($comp->idComponent);
     }
+    if ($compObj->scope=='Product') $compObj=new Product($compObj->id);
+    else $compObj=new Component($compObj->id);
     $userId=$comp->idUser;
     $userName=SqlList::getNameFromId('User', $userId);
-    $creationDate=$compObj->creationDate;
+    $creationDate=$comp->creationDate;
     $canGoto=(securityCheckDisplayMenu(null, get_class($compObj)) and securityGetAccessRightYesNo('menu' . get_class($compObj), 'read', $compObj) == "YES")?true:false;
     echo '<tr>';
     $classCompName=i18n(get_class($compObj));
@@ -2706,7 +2727,8 @@ function drawProductStructureFromObject($list, $obj, $refresh=false) {
       echo '</td>';
     }
     //echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.get_class($compObj).'16.png" />&nbsp;'.$classCompName .' #' . $compObj->id;
-    echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr><td><img src="css/images/icon'.get_class($compObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.'#' . $compObj->id.'</td></tr></table>';
+    echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr>';
+    echo '<td><img src="css/images/icon'.get_class($compObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.'#' . $compObj->id.'</td></tr></table>';
     echo '</td>';
     $goto="";
     if (!$print and $canGoto) {

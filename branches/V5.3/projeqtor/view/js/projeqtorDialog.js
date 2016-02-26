@@ -1189,14 +1189,14 @@ function removeLink(linkId, refType, refId, refTypeName) {
 * Display a add link Box
 * 
 */
-function addProductStructure() {
+function addProductStructure(way) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
    return;
   }
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
-  var param="&objectClass="+objectClass+"&objectId="+objectId;
+  var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
   loadDialog('dialogProductStructure',null, true, param, true);
 }
 
