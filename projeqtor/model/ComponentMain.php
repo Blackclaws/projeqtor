@@ -43,9 +43,10 @@ class ComponentMain extends ProductOrComponent {
   public $description;
   public $_sec_ComponentVersions;
   public $_spe_versions;
-  public $_sec_ProductStructure_component;
-  public $_ProductStructure=array();
-  //public $_spe_structure; 
+  public $_sec_ComponentStructure;
+  public $_componentStructure=array();
+  public $_sec_ComponentComposition;
+  public $_componentComposition=array(); 
   public $_Attachment=array();
   public $_Note=array();
   public $scope;

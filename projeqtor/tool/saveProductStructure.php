@@ -46,8 +46,15 @@ Security::checkValidId($objectId);
 if (! array_key_exists('productStructureListClass',$_REQUEST)) {
   throwError('productStructureListClass parameter not found in REQUEST');
 }
+
 $listClass=$_REQUEST['productStructureListClass'];
 Security::checkValidClass($listClass);
+
+if (! array_key_exists('productStructureWay',$_REQUEST)) {
+  throwError('productStructureWay parameter not found in REQUEST');
+}
+$way=$_REQUEST['productStructureWay'];
+Security::checkValidAlphanumeric($way);
 
 if (! array_key_exists('productStructureListId',$_REQUEST)) {
   throwError('productStructureListId parameter not found in REQUEST');
@@ -70,14 +77,14 @@ $result="";
 // get the modifications (from request)
 foreach ($arrayId as $id) {
 	$str=new ProductStructure();
-	if ($objectClass=='Product') {
+	if ($way=='composition') {
 	  $str->idProduct=$objectId;
 	  $str->idComponent=$id;
-	} else if ($objectClass=='Component') {
+	} else if ($way=='structure') {
 	  $str->idProduct=$id;
 	  $str->idComponent=$objectId;
 	} else {
-	  throwError("class $objectClass is not an expected class for ProductStructure object");
+	  throwError("way '$way' is not an expected value");
 	}
   $str->comment=$comment;
   $str->idUser=$user->id;
