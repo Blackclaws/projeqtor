@@ -148,6 +148,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dojox.form.FileInput");
     dojo.require("dojox.form.Uploader");
     dojo.require("dojox.form.uploader.FileList");
+    dojo.require("dojox.fx.scroll");
     dojo.require("dojox.fx");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.image.Lightbox");

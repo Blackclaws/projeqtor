@@ -69,6 +69,17 @@ if (isset($_REQUEST['todayPeriodNotSet'])) {
 }
 $tp->save();
 
+if (isset($_REQUEST['todayRefreshDelay'])) {
+  $delay=$_REQUEST['todayRefreshDelay'];
+  if (!$delay or !is_numeric($delay)) $delay=5;
+  Parameter::storeUserParameter('todayRefreshDelay',$delay);
+}
+if (isset($_REQUEST['todayScrollDelay'])) {
+  $delay=$_REQUEST['todayScrollDelay'];
+  if (!$delay or !is_numeric($delay)) $delay=10;
+  Parameter::storeUserParameter('todayScrollDelay',$delay);
+}
+
 Sql::commitTransaction();
 
 include "../view/today.php";

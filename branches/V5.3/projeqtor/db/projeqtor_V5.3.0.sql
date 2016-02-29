@@ -34,3 +34,13 @@ ALTER TABLE `${prefix}product` ADD `idProductType` int(12) unsigned DEFAULT NULL
 ALTER TABLE `${prefix}product` ADD `idComponentType` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}version` ADD `versionNumber` varchar(100) DEFAULT NULL;
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `menuClass`) VALUES (146,'menuGallery', 74, 'item', 285, 'Financial');
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 146, 1),
+(2, 146, 1),
+(3, 146, 1),
+(4, 146, 0),
+(5, 146, 0),
+(6, 146, 0),
+(7, 146, 0);
