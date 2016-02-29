@@ -353,8 +353,10 @@ class PlannedWork extends GeneralWork {
         }
         if ($profile=="FDUR") {
           if (! $plan->realStartDate) {
-            $plan->plannedStartDate=$startPlan;
-            $endPlan=addWorkDaysToDate($startPlan,$plan->validatedDuration);
+            if ($plan->elementary) {
+              $plan->plannedStartDate=$startPlan;
+              $endPlan=addWorkDaysToDate($startPlan,$plan->validatedDuration);
+            }
           } else {
             $endPlan=addWorkDaysToDate($plan->realStartDate,$plan->validatedDuration);
           }
