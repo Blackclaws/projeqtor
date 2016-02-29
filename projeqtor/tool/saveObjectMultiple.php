@@ -57,6 +57,10 @@ $description="";
 if (array_key_exists('description',$_REQUEST)) {
 	$description=trim($_REQUEST['description']);
 }
+$idActivity="";
+if (array_key_exists('idActivity',$_REQUEST)) {
+  $idActivity=trim($_REQUEST['idActivity']);
+}
 $idStatus="";
 if (array_key_exists('idStatus',$_REQUEST)) {
   $idStatus=trim($_REQUEST['idStatus']);
@@ -159,6 +163,9 @@ foreach ($selectList as $id) {
 	}
 	if ($description and property_exists($item,'description')) {
 		$item->description.=(($item->description)?"\n":"").$description;
+	}
+	if ($idActivity and property_exists($item,'idActivity')) {
+	  $item->idActivity=$idActivity;
 	}
   if ($idStatus and property_exists($item,'idStatus')) {
   	//$oldStatus=new Status($item->idStatus);
