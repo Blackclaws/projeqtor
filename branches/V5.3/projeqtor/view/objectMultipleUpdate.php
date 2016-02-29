@@ -229,7 +229,24 @@
           <table>
             <?php 
       // Status      
-             if (isDisplayable($obj,'idStatus')) {?>
+            if (isDisplayable($obj,'idActivity')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo (SqlElement::is_a($obj,'Ticket'))?i18n('colChangePlanningActivity'):i18n('colChangeParentActivity');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idActivity" name="idActivity">
+                 <?php htmlDrawOptionForReference('idActivity', null, null, false);?>
+                </select>
+                <button id="activityButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                                showDetail("idActivity",0); 
+                              </script>
+                </button>
+              </td>
+            </tr>
+            <?php } 
+            if (isDisplayable($obj,'idStatus')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeStatus');?>&nbsp;:&nbsp;</td>
               <td>

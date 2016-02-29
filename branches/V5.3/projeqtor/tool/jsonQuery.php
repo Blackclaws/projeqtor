@@ -376,7 +376,7 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();          
 	          $externalTableAlias = strtolower($externalClass);
-	          if (! stripos($queryFrom,$externalTableAlias)) {
+	          if (! stripos($queryFrom,'left join ' . $externalTable . ' as ' . $externalTableAlias)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
 	              ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
