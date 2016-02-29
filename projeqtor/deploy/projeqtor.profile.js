@@ -55,11 +55,12 @@ dependencies = {
 			    "dijit.Tooltip",		    
 			    "dijit.Tree", 
 			    "dojox.form.FileInput",
-				"dojox.form.Uploader",
-				"dojox.form.uploader.plugins.IFrame",
-				"dojox.form.uploader.plugins.Flash",
-				"dojox.form.uploader.FileList",
-				"dojox.fx",
+  				"dojox.form.Uploader",
+  				"dojox.form.uploader.plugins.IFrame",
+  				"dojox.form.uploader.plugins.Flash",
+  				"dojox.form.uploader.FileList",
+  				"dojox.fx.scroll",
+  				"dojox.fx",
 			    "dojox.grid.DataGrid",
 			    "dojox.image.Lightbox",
 			    "dojox.form.PasswordValidator"
@@ -68,7 +69,7 @@ dependencies = {
 	],
 
 	prefixes: [
-	    [ "dojo",  "../../dojo" ],
+	  [ "dojo",  "../../dojo" ],
 		[ "dijit", "../dijit" ],
 		[ "dojox", "../dojox" ]
 	]

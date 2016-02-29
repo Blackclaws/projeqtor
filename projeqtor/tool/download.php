@@ -80,7 +80,10 @@ if ($class=='Attachment') {
   $type=$obj->type;
   $file=$obj->filePath;
 }
-$contentType="application/force-download";
+$contentType="";
+if(!isset($_REQUEST['nodl'])) {
+  $contentType="application/force-download";
+}
 if ($type) {$contentType=$type;}
 //if (array_key_exists('display',$_REQUEST)) {
 //  $contentType=$type;
@@ -91,11 +94,13 @@ if (substr($name, -10)=='.projeqtor') {
 
 if (($file != "") && (file_exists($file))) { 
 	header("Pragma: public"); 
+	
   header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 
   if (!array_key_exists('showHtml', $_REQUEST)) {
-    header("Content-Disposition: attachment; filename=\"" .$name . "\"");
+    //header("Content-Disposition: attachment; filename=\"" .$name . "\"");
+    header("Content-Disposition: ".(!isset($_REQUEST['nodl'])?"attachment":"inline")."; filename=\"" .$name . "\"");
   }
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");

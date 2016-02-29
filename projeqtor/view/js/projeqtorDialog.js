@@ -4657,6 +4657,8 @@ function loadMenuBarItem(item, itemName, from) {
   } else if (item == 'Calendar') {
     // loadContent("calendar.php","centerDiv");
     loadContent("objectMain.php?objectClass=CalendarDefinition", "centerDiv");
+  } else if (item == 'Gallery') {
+    loadContent("galleryMain.php", "centerDiv");
   } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
     loadMenuBarPlugin(item, itemName, from);
   } else {  

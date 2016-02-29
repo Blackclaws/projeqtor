@@ -585,6 +585,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   if (isset($_REQUEST['print'])) {
   	$print=true;
   }
+  $paramRefreshDelay=Parameter::getUserParameter('todayRefreshDelay');
+  if (!$paramRefreshDelay) $paramRefreshDelay=5;
+  $paramScrollDelay=Parameter::getUserParameter('todayScrollDelay');
+  if (!$paramScrollDelay) $paramScrollDelay=10;
 ?>      
 
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
@@ -592,6 +596,101 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <div style="overflow: <?php echo(!$print)?'auto':'hidden';?>;padding:10px" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
     <?php if (!$print) {?>
     <div class="parametersButton">
+    <?php if(1 or $user->idProfile == 9) { ?>
+    <button id="todayRefreshButton" dojoType="dijit.form.Button" showlabel="false"
+      title="<?php echo i18n('enableRefresh');?>"
+      iconClass="dijitButtonIcon dijitButtonIconRefresh" >
+      <script type="dojo/connect" event="onClick" args="evt">
+        if(typeof refreshEnabled === 'undefined') {
+          if (menuActualStatus == 'visible' || !menuHidden) {
+            hideShowMenu(false);
+          }
+          dijit.byId("toolBarDiv").resize({h :0});
+          dijit.byId("statusBarDiv").resize({h :0});
+          showInfo(i18n("enableRefreshDone"));
+          formChanged();
+          // Check if old animation is not still running
+          var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+          if(typeof myReq !== 'undefined') {
+            window.cancelAnimationFrame(myReq);
+          }
+          function animateScrollReport() {
+            function scrollToAnchor(myNode) {
+              if(typeof myNode !== 'undefined') {
+                dojox.fx.smoothScroll({
+                  node: myNode,
+                  win: dojo.byId('detailDiv')
+                }).play();
+              }
+            }
+            window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+            var start = null;
+            var reportNodes = dojo.query('#detailDiv .dijitTitlePane');
+            var nbReports = reportNodes.length;
+            var nbTimes = 1;
+            var i = 0;
+            function step(timestamp) {
+              var progress;
+              if(nbReports == 0) { // When refreshing
+                reportNodes = dojo.query('#detailDiv .dijitTitlePane');
+                nbReports = reportNodes.length;
+                requestAnimationFrame(step);
+              } else {
+              if (start === null) start = timestamp;
+              progress = timestamp - start;
+              var scrollDelay=<?php echo $paramScrollDelay;?>;
+              if (progress > (scrollDelay * 1000 * nbTimes)) {
+                if(i >= reportNodes.length) {
+                  i = 0;
+                  ++nbTimes;
+                }
+                scrollToAnchor(reportNodes[i]);
+                if(i < reportNodes.length) {
+                  ++i;
+                  ++nbTimes;
+                }
+                myReq = requestAnimationFrame(step);
+              } else {
+                myReq = requestAnimationFrame(step);
+              }
+            }
+          }
+          requestAnimationFrame(step);
+        }
+        animateScrollReport();
+        var refreshDelay=<?php echo $paramRefreshDelay;?>;
+        refreshEnabled = setInterval(function() {
+          var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+          if(typeof myReq !== 'undefined') {
+            window.cancelAnimationFrame(myReq);
+          }
+          loadMenuBarItem('Today', 'Today', 'tree');
+          animateScrollReport();
+        }, refreshDelay * 60 * 1000);
+      } else {
+        formChangeInProgress=false;
+          hideShowMenu(false);
+          dijit.byId("toolBarDiv").resize({h :52});
+          dijit.byId("statusBarDiv").resize({h :31});
+        showInfo(i18n("disableRefreshDone"));
+        clearTimeout(refreshEnabled);
+        var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+        if(typeof myReq !== 'undefined') {
+          window.cancelAnimationFrame(myReq);
+        }
+        delete refreshEnabled;
+      }
+    </script>
+<?php
+}
+?>
+    
+    
+    
+    
+    
+    
 	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
 	       title="<?php echo i18n('menuParameter');?>"
 	       iconClass="iconParameter16" >

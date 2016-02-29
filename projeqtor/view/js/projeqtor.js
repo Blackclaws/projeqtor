@@ -3138,3 +3138,10 @@ function updateVersionName(sep) {
   var result=prd+sep+num;
   dijit.byId("name").set("value",result);
 }
+// GALLERY
+function runGallery() {
+  loadContent("galleryShow.php", "detailGalleryDiv", "galleryForm", false);
+}
+function changeGalleryEntity() {
+  loadContent("galleryParameters.php", "listGalleryDiv", "galleryForm", false);
+}
