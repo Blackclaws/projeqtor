@@ -27,14 +27,14 @@ $projeqtor = 'loaded';
 spl_autoload_register ( 'projeqtorAutoload', true );
 include_once ('../model/User.php');
 // Example
-if ( is_session_started() === FALSE ) {
+if (is_session_started () === FALSE) {
   session_start ();
 } else {
   echo "ProjeQtOr is not compatible with session auto start.<br/>";
   echo "session.auto_start must be disabled (set to Off or 0). <br/>";
   echo "Update your php.ini file : session.auto_start = 0<br/>";
   echo "or create .htaccess at projeqtor root with : php_flag session.auto_start Off";
-  exit;
+  exit ();
 }
 // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
@@ -54,9 +54,9 @@ $aboutMessage .= '<div>' . i18n ( "aboutMessageWebsite" ) . ' : <a target=\'#\' 
  * $Date$
  */
 // some servers provide empty PHP_SELF, fill it
-if (! isset($_SERVER ['PHP_SELF']) or ! $_SERVER ['PHP_SELF']) { // PHP_SELF do not exist or is empty
-  $_SERVER ['PHP_SELF']=$_SERVER ['SCRIPT_NAME'];
-} 
+if (! isset ( $_SERVER ['PHP_SELF'] ) or ! $_SERVER ['PHP_SELF']) { // PHP_SELF do not exist or is empty
+  $_SERVER ['PHP_SELF'] = $_SERVER ['SCRIPT_NAME'];
+}
 date_default_timezone_set ( 'Europe/Paris' );
 $globalCatchErrors = false;
 set_exception_handler ( 'exceptionHandler' );
@@ -84,8 +84,8 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   }
   include_once $parametersLocation;
 } else {
-  setSessionValue('setup', true, true);
-  if (is_file ( "../tool/config.php" )  and !(isset ( $indexPhp ) and $indexPhp)) {
+  setSessionValue ( 'setup', true, true );
+  if (is_file ( "../tool/config.php" ) and ! (isset ( $indexPhp ) and $indexPhp)) {
     include_once "../tool/config.php";
     exit ();
   }
@@ -111,16 +111,17 @@ if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Paramete
   $isAttachmentEnabled = false;
 }
 
-if (isset($debugReport) and $debugReport) {
-  $pos=strpos($_SERVER ["SCRIPT_NAME"], '/report/');
-  if ($pos!==false) {
-    echo substr($_SERVER ["SCRIPT_NAME"],$pos);
+if (isset ( $debugReport ) and $debugReport) {
+  $pos = strpos ( $_SERVER ["SCRIPT_NAME"], '/report/' );
+  if ($pos !== false) {
+    echo substr ( $_SERVER ["SCRIPT_NAME"], $pos );
   }
 }
-if (false === function_exists('lcfirst')) {
-  function lcfirst( $str ) {
-    $str[0] = strtolower($str[0]);
-    return (string)$str;
+if (false === function_exists ( 'lcfirst' )) {
+
+  function lcfirst($str) {
+    $str [0] = strtolower ( $str [0] );
+    return ( string ) $str;
   }
 }
 /*
@@ -142,8 +143,8 @@ if (ini_get ( 'register_globals' )) {
 $page = $_SERVER ['PHP_SELF'];
 if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and $batchMode) and ! (isset ( $indexPhp ) and $indexPhp)) {
   // Get the user from session. If not exists, request connection ===============
-  if (getSessionUser() and getSessionUser()->id) {
-    $user = getSessionUser();
+  if (getSessionUser () and getSessionUser ()->id) {
+    $user = getSessionUser ();
     // user must be a User object. Otherwise, it may be hacking attempt.
     if (get_class ( $user ) != "User") {
       // Hacking detected
@@ -182,7 +183,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
         $loginSave = true;
         $user->setCookieHash ();
         $user->save ();
-        setSessionUser($user);
+        setSessionUser ( $user );
       }
     }
     if (! $user) {
@@ -196,7 +197,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
       exit ();
     }
   }
-
+  
   if (isset ( $user )) {
     if ($user->isLdap == 0) {
       if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
@@ -300,11 +301,11 @@ function setupLocale() {
  */
 function i18n($str, $vars = null) {
   global $i18nMessages, $currentLocale;
-  $i18nSessionValue='i18nMessages'.((isset($currentLocale))?$currentLocale:'');
+  $i18nSessionValue = 'i18nMessages' . ((isset ( $currentLocale )) ? $currentLocale : '');
   // on first use, initialize $i18nMessages
-  //if (! $i18nMessages) { // Try and retrieve from session : not activated as not performance increased
-  //  $i18nMessages=getSessionValue($i18nSessionValue,null,true); 
-  //}
+  // if (! $i18nMessages) { // Try and retrieve from session : not activated as not performance increased
+  // $i18nMessages=getSessionValue($i18nSessionValue,null,true);
+  // }
   if (! $i18nMessages) {
     $filename = "../tool/i18n/nls/lang.js";
     $i18nMessages = array ();
@@ -328,7 +329,7 @@ function i18n($str, $vars = null) {
     fclose ( $file );
     
     // Retrieve personalized translations (if exist)
-    if (isset ( $currentLocale )) { 
+    if (isset ( $currentLocale )) {
       $testFile = "../plugin/personalizedTranslations/" . $currentLocale . "/lang.js";
       if (file_exists ( $testFile )) {
         $filename = $testFile;
@@ -346,7 +347,7 @@ function i18n($str, $vars = null) {
         fclose ( $file );
       }
     }
-    //setSessionValue($i18nSessionValue,$i18nMessages);
+    // setSessionValue($i18nSessionValue,$i18nMessages);
   }
   // fetch the message in the array
   if (array_key_exists ( $str, $i18nMessages )) {
@@ -521,7 +522,8 @@ function throwError($message, $code = null) {
  *          the name of the class
  * @return void
  */
-$hideAutoloadError=false;
+$hideAutoloadError = false;
+
 function projeqtorAutoload($className) {
   global $hideAutoloadError;
   $localfile = ucfirst ( $className ) . '.php'; // locally
@@ -550,11 +552,11 @@ function projeqtorAutoload($className) {
  * @return the current user id or raises an error
  */
 function getCurrentUserId() {
-  if (! sessionUserExists()) {
+  if (! sessionUserExists ()) {
     throw new Exception ( "ERROR user does not exist" );
     exit ();
   }
-  $user = getSessionUser();
+  $user = getSessionUser ();
   if (get_class ( $user ) != 'User') {
     throw new Exception ( "ERROR user is not a User object" );
     exit ();
@@ -610,8 +612,8 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
   if (! $idMenu and $class) {
     $menu = SqlList::getIdFromName ( 'MenuList', 'menu' . $class );
   }
-  if (sessionUserExists()) {
-    $user = getSessionUser();
+  if (sessionUserExists ()) {
+    $user = getSessionUser ();
   }
   if (! $user) {
     return false;
@@ -656,7 +658,7 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
     return $_SESSION ['visibleProjectsList'] [$keyVPL];
   }
   if ($project == "*" or $project == '') {
-    $user = getSessionUser();
+    $user = getSessionUser ();
     $_SESSION ['visibleProjectsList'] [$keyVPL] = transformListIntoInClause ( $user->getVisibleProjects ( $limitToActiveProjects ) );
     return $_SESSION ['visibleProjectsList'] [$keyVPL];
   }
@@ -674,108 +676,113 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
   return $result;
 }
 
-function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause=false, $excludeResourceClause=false) {
+function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause = false, $excludeResourceClause = false) {
   global $reportContext;
-  if (! property_exists($objectClass,'idProject')) return '(1=1)'; // If not project depedant, no extra clause
+  if (! property_exists ( $objectClass, 'idProject' ))
+    return '(1=1)'; // If not project depedant, no extra clause
   
   $obj = new $objectClass ();
-  $user=getSessionUser();
+  $user = getSessionUser ();
   if ($alias) {
-    $tableAlias = $alias.'.';
+    $tableAlias = $alias . '.';
   } else if ($alias === false) {
     $tableAlias = ''; // No alias for table
   } else {
     $tableAlias = $obj->getDatabaseTableName () . '.';
   }
   // Retrieve acces right for default profile
-  if (isset($reportContext) and $reportContext==true) {
+  if (isset ( $reportContext ) and $reportContext == true) {
     $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'report' );
   } else {
     $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'read' );
   }
-  $listNO=transformListIntoInClause($user->getAccessRights($objectClass,'NO'));
-  $listOWN=(property_exists($obj,"idUser"))?transformListIntoInClause($user->getAccessRights($objectClass,'OWN')):null;
-  $listRES=(property_exists($obj,"idResource"))?transformListIntoInClause($user->getAccessRights($objectClass,'RES')):null;
-  $listPRO=transformListIntoInClause($user->getAccessRights($objectClass,'PRO'));
-  $listALL=transformListIntoInClause($user->getAccessRights($objectClass,'ALL'));
-  $listALLPRO=transformListIntoInClause($user->getAccessRights($objectClass,'ALL')+$user->getAccessRights($objectClass,'PRO'));
+  $listNO = transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'NO' ) );
+  $listOWN = (property_exists ( $obj, "idUser" )) ? transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'OWN' ) ) : null;
+  $listRES = (property_exists ( $obj, "idResource" )) ? transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'RES' ) ) : null;
+  $listPRO = transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'PRO' ) );
+  $listALL = transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'ALL' ) );
+  $listALLPRO = transformListIntoInClause ( $user->getAccessRights ( $objectClass, 'ALL' ) + $user->getAccessRights ( $objectClass, 'PRO' ) );
   
-  $clauseNO='(1=2)'; // Will dintinct the NO
+  $clauseNO = '(1=2)'; // Will dintinct the NO
   
-  $clauseOWN='';
-  if (! $excludeUserClause and property_exists ( $obj, "idUser" ) and substr($alias,-15)!='planningelement') {
-    $clauseOWN="(".$tableAlias."idUser='".Sql::fmtId(getSessionUser()->id)."')";
+  $clauseOWN = '';
+  if (! $excludeUserClause and property_exists ( $obj, "idUser" ) and substr ( $alias, - 15 ) != 'planningelement') {
+    $clauseOWN = "(" . $tableAlias . "idUser='" . Sql::fmtId ( getSessionUser ()->id ) . "')";
   } else {
-    $clauseOWN="(1=3)"; // Will distinct the OWN
+    $clauseOWN = "(1=3)"; // Will distinct the OWN
   }
   
-  $clauseRES='';
-  if (! $excludeResourceClause and property_exists ( $obj, "idResource" ) and substr($alias,-15)!='planningelement') {
-    $clauseRES="(".$tableAlias."idResource='".Sql::fmtId(getSessionUser()->id )."')";   
+  $clauseRES = '';
+  if (! $excludeResourceClause and property_exists ( $obj, "idResource" ) and substr ( $alias, - 15 ) != 'planningelement') {
+    $clauseRES = "(" . $tableAlias . "idResource='" . Sql::fmtId ( getSessionUser ()->id ) . "')";
   } else {
-    $clauseRES="(1=4)"; // Will distinct the RES
+    $clauseRES = "(1=4)"; // Will distinct the RES
   }
-    
-  //$clausePRO='';
-  $clauseAffPRO='';
-  $fieldProj='idProject';
-  $extraFieldCriteria='';
-  $extraFieldCriteriaReverse='';
+  
+  // $clausePRO='';
+  $clauseAffPRO = '';
+  $fieldProj = 'idProject';
+  $extraFieldCriteria = '';
+  $extraFieldCriteriaReverse = '';
   if ($objectClass == 'Project') {
-    if ($alias=='planningelement') {
-      $fieldProj='refId';
-      $extraFieldCriteria=" and refType='Project'";
-      $extraFieldCriteriaReverse=" or refType!='Project'";
-    } else { 
-      $fieldProj='id';
+    if ($alias == 'planningelement') {
+      $fieldProj = 'refId';
+      $extraFieldCriteria = " and refType='Project'";
+      $extraFieldCriteriaReverse = " or refType!='Project'";
+    } else {
+      $fieldProj = 'id';
     }
   }
   if ($objectClass == 'Document') {
     $v = new Version ();
     $vp = new VersionProject ();
-    //$clausePRO="(".$tableAlias."idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
-    //  ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
-    //  ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
-    //  ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
-    //  .")))";
-    $clauseALLPRO="(".$tableAlias."idProject in ".$listALLPRO
-    ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
-        ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
-            ."where existV.id=existVP.idVersion and existVP.idProject in ".$listALLPRO
-            .")))";
+    // $clausePRO="(".$tableAlias."idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
+    // ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
+    // ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
+    // ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
+    // .")))";
+    $clauseALLPRO = "(" . $tableAlias . "idProject in " . $listALLPRO . " or (" . $tableAlias . "idProject is null and " . $tableAlias . "idProduct in " . "(select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP " . "where existV.id=existVP.idVersion and existVP.idProject in " . $listALLPRO . ")))";
   } else {
-    //$clausePRO= "(".$tableAlias.$fieldProj." in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle)).")";
-    $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO." $extraFieldCriteria)";
+    // $clausePRO= "(".$tableAlias.$fieldProj." in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle)).")";
+    $clauseALLPRO = "(" . $tableAlias . $fieldProj . " in " . $listALLPRO . " $extraFieldCriteria)";
   }
   
-  $clauseALL='(1=1)'; // Will distinct the ALL
-  
-  // Build where clause depending 
-  if ($accessRightRead=='NO') { // Default profile is No Access
-    $queryWhere=$clauseNO;
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
-    $queryWhere.=" or ($clauseALLPRO)";
-  } else if ($accessRightRead=='OWN') {
-    $queryWhere="($clauseOWN";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
-    $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-  } else if ($accessRightRead=='RES') {
-    $queryWhere="($clauseRES";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-  } else if ($accessRightRead=='PRO') {
-    $queryWhere="($clauseALLPRO";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    //$queryWhere.=" or (".$clauseALLPRO.")";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-  } else if ($accessRightRead=='ALL') {
-    $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES $extraFieldCriteriaReverse)";
-    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
+  $clauseALL = '(1=1)'; // Will distinct the ALL
+                      
+  // Build where clause depending
+  if ($accessRightRead == 'NO') { // Default profile is No Access
+    $queryWhere = $clauseNO;
+    if ($listOWN)
+      $queryWhere .= " or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+    if ($listRES)
+      $queryWhere .= " or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+    $queryWhere .= " or ($clauseALLPRO)";
+  } else if ($accessRightRead == 'OWN') {
+    $queryWhere = "($clauseOWN";
+    if ($listRES)
+      $queryWhere .= " or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+    $queryWhere .= " or ($clauseALLPRO)";
+    $queryWhere .= ") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+  } else if ($accessRightRead == 'RES') {
+    $queryWhere = "($clauseRES";
+    if ($listOWN)
+      $queryWhere .= " or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+    $queryWhere .= " or ($clauseALLPRO)";
+    $queryWhere .= ") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+  } else if ($accessRightRead == 'PRO') {
+    $queryWhere = "($clauseALLPRO";
+    if ($listRES)
+      $queryWhere .= " or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+    if ($listOWN)
+      $queryWhere .= " or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+      // $queryWhere.=" or (".$clauseALLPRO.")";
+    $queryWhere .= ") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+  } else if ($accessRightRead == 'ALL') {
+    $queryWhere = "($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+    if ($listRES)
+      $queryWhere .= " and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES $extraFieldCriteriaReverse)";
+    if ($listOWN)
+      $queryWhere .= " and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
   }
   return " " . $queryWhere . " ";
 }
@@ -785,8 +792,9 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
  * Return the name of the theme : defaut of selected by user
  */
 function getTheme() {
-  global  $indexPhp;
-  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup', null, true)) return "ProjeQtOr"; // On first configuration, use default
+  global $indexPhp;
+  if (isset ( $indexPhp ) and $indexPhp and getSessionValue ( 'setup', null, true ))
+    return "ProjeQtOr"; // On first configuration, use default
   $defaultTheme = Parameter::getGlobalParameter ( 'defaultTheme' );
   if (substr ( $defaultTheme, 0, 12 ) == "ProjectOrRia") {
     $defaultTheme = "ProjeQtOr" . substr ( $defaultTheme, 12 );
@@ -862,8 +870,8 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   }
   // Save data of the mail ===========================================================
   $mail = new Mail ();
-  if (sessionUserExists()) {
-    $mail->idUser = getSessionUser()->id;
+  if (sessionUserExists ()) {
+    $mail->idUser = getSessionUser ()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -1036,8 +1044,8 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
   $smtpServers ['default'] ['smtpPort'] = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );
   // Save data of the mail
   $mail = new Mail ();
-  if (sessionUserExists()) {
-    $mail->idUser = getSessionUser()->id;
+  if (sessionUserExists ()) {
+    $mail->idUser = getSessionUser ()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -1234,8 +1242,8 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
   }
   // Save data of the mail
   $mail = new Mail ();
-  if (sessionUserExists()) {
-    $mail->idUser = getSessionUser()->id;
+  if (sessionUserExists ()) {
+    $mail->idUser = getSessionUser ()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -1319,21 +1327,24 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
  *          of trace : 1=error, 2=trace, 3=debug, 4=script
  * @return void
  */
-$previousTraceTimestamp=0;
+$previousTraceTimestamp = 0;
+
 function logTracing($message, $level = 9, $increment = 0) {
   global $debugPerf, $previousTraceTimestamp;
-  $execTime="";
-  if (isset($debugPerf) and $debugPerf==true) {
+  $execTime = "";
+  if (isset ( $debugPerf ) and $debugPerf == true) {
     if ($previousTraceTimestamp) {
-      $execTime=(round(microtime(true)-$previousTraceTimestamp,3));
-      $pos=strpos($execTime,'.');
-      if ($pos==0) $execTime=$execTime.'.000';
-      else $execTime=substr($execTime.'000',0,($pos+4));
-      $execTime=" => ".$execTime;
+      $execTime = (round ( microtime ( true ) - $previousTraceTimestamp, 3 ));
+      $pos = strpos ( $execTime, '.' );
+      if ($pos == 0)
+        $execTime = $execTime . '.000';
+      else
+        $execTime = substr ( $execTime . '000', 0, ($pos + 4) );
+      $execTime = " => " . $execTime;
     } else {
-      $execTime=' => 0.000';
+      $execTime = ' => 0.000';
     }
-    $previousTraceTimestamp=microtime(true);
+    $previousTraceTimestamp = microtime ( true );
   }
   $logLevel = Parameter::getGlobalParameter ( 'logLevel' );
   $tabcar = '                        ';
@@ -1371,16 +1382,16 @@ function logTracing($message, $level = 9, $increment = 0) {
     }
     switch ($level) {
       case 1 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ***** ERROR ***** " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr ( microtime (), 1, 4 ) . $execTime . " ***** ERROR ***** " . $msg;
         break;
       case 2 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ===== TRACE ===== " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr ( microtime (), 1, 4 ) . $execTime . " ===== TRACE ===== " . $msg;
         break;
       case 3 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ----- DEBUG ----- " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr ( microtime (), 1, 4 ) . $execTime . " ----- DEBUG ----- " . $msg;
         break;
       case 4 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ..... SCRIPT .... " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr ( microtime (), 1, 4 ) . $execTime . " ..... SCRIPT .... " . $msg;
         break;
       default :
         break;
@@ -1405,21 +1416,23 @@ function logTracing($message, $level = 9, $increment = 0) {
  * Log tracing for debug
  *
  * @param $message message
- *          to store on log 
+ *          to store on log
  * @return void
  */
 function debugLog($message) {
   logTracing ( $message, 3 );
 }
+
 /**
  * ===========================================================================
  * Log tracing for debug to keep in the code
  * Will be used for debugQuery mode of for performance tracing
  * so can be considered as Trace log, but will generate a Debug message in log
  * Will be activated, depending on location, with :
- *  $debugTrace=true
- *  $debugQuery=true
- *  or directly calling traceExecutionTime() function
+ * $debugTrace=true
+ * $debugQuery=true
+ * or directly calling traceExecutionTime() function
+ * 
  * @param $message message
  *          to store on log
  * @return void
@@ -1449,7 +1462,8 @@ function traceLog($message) {
  * @return void
  */
 function errorLog($message) {
-  if (getSessionValue('setup', null, true)) return;
+  if (getSessionValue ( 'setup', null, true ))
+    return;
   logTracing ( $message, 1 );
 }
 
@@ -1515,9 +1529,9 @@ function getIP() {
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
   if (! $user) {
-    $user = getSessionUser();
+    $user = getSessionUser ();
   }
-  $accessRightList = $user->getAccessControlRights ($obj);
+  $accessRightList = $user->getAccessControlRights ( $obj );
   $accessRight = 'ALL';
   if ($accessType == 'update' and $obj and $obj->id == null) {
     return securityGetAccessRight ( $menuName, 'create' );
@@ -1553,22 +1567,22 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     return 'NO';
   }
   if (! $user) {
-    if (! sessionUserExists()) {
+    if (! sessionUserExists ()) {
       global $maintenance;
       if ($maintenance) {
         return 'YES';
       }
     } else {
-      $user = getSessionUser();
+      $user = getSessionUser ();
     }
   }
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
-    if ($accessRight == 'NO' or $accessRight=='READ') {
+    if ($accessRight == 'NO' or $accessRight == 'READ') {
       // will return no
-    } else if ($accessRight == 'ALL' or $accessRight=='WRITE') {
+    } else if ($accessRight == 'ALL' or $accessRight == 'WRITE') {
       $accessRight = 'YES';
     } else if ($accessRight == 'PRO') {
       $accessRight = 'NO';
@@ -1873,9 +1887,9 @@ function addWeeksToDate($date, $weeks) {
 }
 
 function workTimeDiffDateTime($start, $end) {
-  $hoursPerDay=Parameter::getGlobalParameter ( 'dayTime' );
-  $startDay=substr($start,0,10);
-  $endDay=substr($end,0,10);
+  $hoursPerDay = Parameter::getGlobalParameter ( 'dayTime' );
+  $startDay = substr ( $start, 0, 10 );
+  $endDay = substr ( $end, 0, 10 );
   $time = substr ( $start, 11, 5 );
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
@@ -1884,18 +1898,18 @@ function workTimeDiffDateTime($start, $end) {
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
   $mnStop = $hh * 60 + $mn;
-  $mnFullDay=60*24;
-  if ($startDay==$endDay) {
-    $days=0;
+  $mnFullDay = 60 * 24;
+  if ($startDay == $endDay) {
+    $days = 0;
     $delay = ($mnStop - $mnStart) / (60 * $hoursPerDay);
   } else {
-    $days = dayDiffDates ( $startDay, $endDay )-1;
-    $delay=0;
-    if ($days>0) {
-      $delay=($days*$mnFullDay)/ (60 * $hoursPerDay);
+    $days = dayDiffDates ( $startDay, $endDay ) - 1;
+    $delay = 0;
+    if ($days > 0) {
+      $delay = ($days * $mnFullDay) / (60 * $hoursPerDay);
     }
-    $delay+=($mnFullDay - $mnStart) / (60 * $hoursPerDay);
-    $delay+=($mnStop) / (60 * $hoursPerDay);
+    $delay += ($mnFullDay - $mnStart) / (60 * $hoursPerDay);
+    $delay += ($mnStop) / (60 * $hoursPerDay);
   }
   return $delay;
 }
@@ -2315,7 +2329,7 @@ function getPrintInNewWindow($mode = 'print') {
 
 function checkVersion() {
   global $version, $website;
-  $user = getSessionUser();
+  $user = getSessionUser ();
   $profile = new Profile ( $user->idProfile );
   if ($profile->profileCode != 'ADM') {
     return;
@@ -2421,7 +2435,7 @@ function traceExecutionTime($step = '', $reset = false) {
     $startMicroTime = microtime ( true );
     return;
   }
-  debugTraceLog( round ( (microtime ( true ) - $startMicroTime) * 1000 ) / 1000 . (($step) ? " s for step " . $step : '') );
+  debugTraceLog ( round ( (microtime ( true ) - $startMicroTime) * 1000 ) / 1000 . (($step) ? " s for step " . $step : '') );
   $startMicroTime = microtime ( true );
 }
 
@@ -2458,9 +2472,9 @@ function formatBrowserDateToDate($dateTime) {
     $date = $dateTime;
     $time = "";
   }
-  if ($browserLocaleDateFormat == 'DD/MM/YYYY' and substr_count ( $date, '/' ) == 2 ) {
+  if ($browserLocaleDateFormat == 'DD/MM/YYYY' and substr_count ( $date, '/' ) == 2) {
     list ( $day, $month, $year ) = explode ( '/', $date );
-  } else if ($browserLocaleDateFormat == 'MM/DD/YYYY' and substr_count ( $date, '/' ) == 2 ) {
+  } else if ($browserLocaleDateFormat == 'MM/DD/YYYY' and substr_count ( $date, '/' ) == 2) {
     list ( $month, $day, $year ) = explode ( '/', $date );
   } else {
     return $dateTime;
@@ -2525,7 +2539,7 @@ function projeqtor_set_memory_limit($memory) {
 }
 
 // Functions to set and retrieve data from SESSION : do not use direct $_SESSION
-function setSessionValue($code, $value, $global=false) {
+function setSessionValue($code, $value, $global = false) {
   global $paramDbName, $paramDbPrefix;
   if ($global) {
     $projeqtorSession = 'ProjeQtOr';
@@ -2537,7 +2551,8 @@ function setSessionValue($code, $value, $global=false) {
   }
   $_SESSION [$projeqtorSession] [$code] = $value;
 }
-function unsetSessionValue($code, $global=false) {
+
+function unsetSessionValue($code, $global = false) {
   global $paramDbName, $paramDbPrefix;
   if ($global) {
     $projeqtorSession = 'ProjeQtOr';
@@ -2545,12 +2560,13 @@ function unsetSessionValue($code, $global=false) {
     $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
   }
   if (isset ( $_SESSION [$projeqtorSession] [$code] )) {
-    unset($_SESSION [$projeqtorSession] [$code]);
+    unset ( $_SESSION [$projeqtorSession] [$code] );
   }
 }
-function getSessionValue($code, $default = null, $global=false) {
+
+function getSessionValue($code, $default = null, $global = false) {
   // Global parameter is forced when "whatever the databse" is required
-  // it is mostly used to cases "also when database is not set yet" ;) 
+  // it is mostly used to cases "also when database is not set yet" ;)
   global $paramDbName, $paramDbPrefix;
   if ($global) {
     $projeqtorSession = 'ProjeQtOr';
@@ -2567,24 +2583,26 @@ function getSessionValue($code, $default = null, $global=false) {
 }
 // Functions to get and set current user value from session
 function getSessionUser() {
-  $user=getSessionValue('user');
-  if ($user===null) {
-    return new User();
+  $user = getSessionValue ( 'user' );
+  if ($user === null) {
+    return new User ();
   } else {
-    $user->_isRetreivedFromSession=true;
-    return $user;  
+    $user->_isRetreivedFromSession = true;
+    return $user;
   }
 }
+
 function setSessionUser($user) {
-  if ($user and is_object($user)) {
-    setSessionValue('user',$user);
+  if ($user and is_object ( $user )) {
+    setSessionValue ( 'user', $user );
   } else {
-    unsetSessionValue('user');
+    unsetSessionValue ( 'user' );
   }
 }
+
 function sessionUserExists() {
-  $user=getSessionValue('user');
-  if ($user===null) {
+  $user = getSessionValue ( 'user' );
+  if ($user === null) {
     return false;
   } else {
     return true;
@@ -2614,9 +2632,10 @@ function formatNumericInput($val) {
 }
 
 function getLastOperationStatus($result) {
-  if (!$result) return 'OK';
+  if (! $result)
+    return 'OK';
   $search = 'id="lastOperationStatus" value="';
-  if (!stripos ( $result, $search )) {
+  if (! stripos ( $result, $search )) {
     $search = 'id="lastPlanStatus" value="';
   }
   $start = stripos ( $result, $search ) + strlen ( $search );
@@ -2628,20 +2647,21 @@ function getLastOperationStatus($result) {
     case "ERROR" :
     case "NO_CHANGE" :
     case "INCOMPLETE" :
-    case "WARNING" : 
+    case "WARNING" :
       break; // OK, valid status
     default :
       errorLog ( "'$status' is not an expected status in result \n$result" );
   }
   return $status;
 }
+
 function getLastOperationMessage($result) {
-  return substr($result,0,strpos($result,'<input type="hidden" id="lastSaveId" value="'));
+  return substr ( $result, 0, strpos ( $result, '<input type="hidden" id="lastSaveId" value="' ) );
 }
 
 function displayLastOperationStatus($result) {
   $status = getLastOperationStatus ( $result );
-  if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+  if ($status == "OK" or $status == "NO_CHANGE" or $status == "INCOMPLETE") {
     Sql::commitTransaction ();
   } else {
     Sql::rollbackTransaction ();
@@ -2650,38 +2670,40 @@ function displayLastOperationStatus($result) {
   return $status;
 }
 
-function calculateFractionFromTime($time,$subtractMidDay=true) {
-  $paramHoursPerDay=Parameter::getGlobalParameter('dayTime');
-  $paramStartAm=Parameter::getGlobalParameter('startAM');
-  $paramEndAm=Parameter::getGlobalParameter('endAM');
-  $paramStartPm=Parameter::getGlobalParameter('startPM');
-  $paramEndPm=Parameter::getGlobalParameter('endPM');
-  $minutesPerDay=60*$paramHoursPerDay;
-  if (! $minutesPerDay) return 0;
-  $minutesTime = round(strtotime("1970-01-01 $time UTC")/60,0);
-  $minutesStartAM=round(strtotime("1970-01-01 $paramStartAm UTC")/60,0);
-  $minutesEndAM=round(strtotime("1970-01-01 $paramEndAm UTC")/60,0);
-  $minutesStartPM=round(strtotime("1970-01-01 $paramStartPm UTC")/60,0);
-  $minutes=$minutesTime-$minutesStartAM;
-  if ($subtractMidDay and $minutesTime>$minutesStartPM) {
-    $minutes-=$minutesStartPM-$minutesEndAM;
+function calculateFractionFromTime($time, $subtractMidDay = true) {
+  $paramHoursPerDay = Parameter::getGlobalParameter ( 'dayTime' );
+  $paramStartAm = Parameter::getGlobalParameter ( 'startAM' );
+  $paramEndAm = Parameter::getGlobalParameter ( 'endAM' );
+  $paramStartPm = Parameter::getGlobalParameter ( 'startPM' );
+  $paramEndPm = Parameter::getGlobalParameter ( 'endPM' );
+  $minutesPerDay = 60 * $paramHoursPerDay;
+  if (! $minutesPerDay)
+    return 0;
+  $minutesTime = round ( strtotime ( "1970-01-01 $time UTC" ) / 60, 0 );
+  $minutesStartAM = round ( strtotime ( "1970-01-01 $paramStartAm UTC" ) / 60, 0 );
+  $minutesEndAM = round ( strtotime ( "1970-01-01 $paramEndAm UTC" ) / 60, 0 );
+  $minutesStartPM = round ( strtotime ( "1970-01-01 $paramStartPm UTC" ) / 60, 0 );
+  $minutes = $minutesTime - $minutesStartAM;
+  if ($subtractMidDay and $minutesTime > $minutesStartPM) {
+    $minutes -= $minutesStartPM - $minutesEndAM;
   }
-  return round($minutes/$minutesPerDay,2);
+  return round ( $minutes / $minutesPerDay, 2 );
 }
-function calculateFractionBeetweenTimes($startTime,$endTime) {
-  $start=calculateFractionFromTime($startTime,false);
-  $end=calculateFractionFromTime($endTime,false);
-  return($end-$start);
+
+function calculateFractionBeetweenTimes($startTime, $endTime) {
+  $start = calculateFractionFromTime ( $startTime, false );
+  $end = calculateFractionFromTime ( $endTime, false );
+  return ($end - $start);
 }
 
 function is_session_started() {
-  if ( version_compare(phpversion(), '5.4.0', '>=') ) {
-    return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+  if (version_compare ( phpversion (), '5.4.0', '>=' )) {
+    return session_status () === PHP_SESSION_ACTIVE ? TRUE : FALSE;
   } else {
-    return session_id() === '' ? FALSE : TRUE;
+    return session_id () === '' ? FALSE : TRUE;
   }
   return FALSE;
 }
- 
+
 //
 ?>
