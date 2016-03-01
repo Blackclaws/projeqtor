@@ -141,8 +141,16 @@ function protectDblClick(widget){
  */
 function showError(msg) {
   top.hideWait();
-  top.dojo.byId("dialogErrorMessage").innerHTML=msg;
-  top.dijit.byId("dialogError").show();
+  if (top.dojo.byId("dialogErrorMessage")) {
+    top.dojo.byId("dialogErrorMessage").innerHTML=msg;
+    top.dijit.byId("dialogError").show();
+  } else if (dojo.byId('loginResultDiv')) {
+    dojo.byId('loginResultDiv').innerHTML=
+      '<input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />'
+      +'<div class="messageERROR" style="width:100%">'+msg+'</div>';
+  } else {
+    alert(msg);
+  }
 }
 
 /**
