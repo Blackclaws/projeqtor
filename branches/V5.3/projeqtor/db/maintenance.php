@@ -37,7 +37,7 @@ $versionHistory = array(
   "V2.0.0", "V2.0.1",  "V2.1.0",  "V2.1.1",  "V2.2.0",  "V2.3.0",  "V2.4.0",  "V2.4.1",  "V2.4.2",  "V2.5.0",  "V2.6.0",
   "V3.0.0", "V3.0.1",  "V3.1.0",  "V3.2.0",  "V3.3.0",  "V3.3.1",  "V3.4.0",  "V3.4.1",
   "V4.0.0", "V4.0.1",  "V4.1.-",  "V4.1.0",  "V4.2.0",  "V4.2.1",  "V4.3.0.a","V4.3.0",  "V4.3.2",  "V4.4.0",  "V4.5.0", "V4.5.3", "V4.5.6",
-  "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.3.0");
+  "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.2.5", "V5.3.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -143,6 +143,7 @@ if (! isset($memoryLimitForPDF) and beforeVersion($currVersion,"V3.0.0")) {
 
 // For V1.9.0
 if (beforeVersion($currVersion,"V1.9.0") and $currVersion!='V0.0.0') {
+  traceLog("update Reference [V1.9.0]");
 	$adminFunctionality='updateReference';
 	include('../tool/adminFunctionalities.php');
 	echo "<br/>";
@@ -150,6 +151,7 @@ if (beforeVersion($currVersion,"V1.9.0") and $currVersion!='V0.0.0') {
 
 // For V1.9.1
 if (beforeVersion($currVersion,"V1.9.1")) {
+  traceLog("update affectations [V1.9.1]");
   // update affectations
   $aff=new Affectation();
   $affList=$aff->getSqlElementsFromCriteria(null, false);
@@ -160,6 +162,7 @@ if (beforeVersion($currVersion,"V1.9.1")) {
 
 // For V2.1.0
 if (beforeVersion($currVersion,"V2.1.0")) {
+  traceLog("update planning elements [2.1.0]");
   // update PlanningElements (progress)
   $pe=new PlanningElement();
   $peList=$pe->getSqlElementsFromCriteria(null, false);
@@ -169,6 +172,7 @@ if (beforeVersion($currVersion,"V2.1.0")) {
 }
 // For V2.1.1
 if (beforeVersion($currVersion,"V2.1.1")) {
+  traceLog("update assignments [V2.1.1]");
   // update PlanningElements (progress)
   $ass=new Assignment();
   $assList=$ass->getSqlElementsFromCriteria(null, false);
@@ -179,6 +183,7 @@ if (beforeVersion($currVersion,"V2.1.1")) {
 
 // For V2.4.1 & V2.4.2
 if (beforeVersion($currVersion,"V2.4.2")) {
+  traceLog("update dependencies for requirements [V2.4.2]");
   $req=new Requirement();
   $reqList=$req->getSqlElementsFromCriteria(null, false);
   foreach ($reqList as $req) {
@@ -221,6 +226,7 @@ if (beforeVersion($currVersion,"V3.0.0")) {
 }
 if (afterVersion($currVersion,"V3.0.0") and beforeVersion($version,"V3.1.3") 
 and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') { 
+  traceLog("rename table workPeriod to workperiod [V3.1.3");
 	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
 	$query="RENAME TABLE `".$paramDbPrefix."workPeriod` TO `".$paramDbPrefix."workperiod`;";
 	$query=trim(formatForDbType($query));
@@ -230,6 +236,7 @@ and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') {
 }
 
 if (beforeVersion($currVersion,"V3.3.0") and $currVersion!='V0.0.0') {
+  traceLog("update test sessions dates [V3.3.0]");
   $ses=new TestSession();
   $sesList=$ses->getSqlElementsFromCriteria(null, false);
   foreach ($sesList as $ses) {
@@ -247,6 +254,7 @@ if (! $tst or count($tst)==0) {
 }
 
 if (beforeVersion($currVersion,"V3.4.0")) {
+  traceLog("set default profile [V3.4.0]");
 	$defProf=Parameter::getGlobalParameter('defaultProfile');
 	if (! $defProf) {
 		$prf=new Profile('5');
@@ -262,6 +270,7 @@ if (beforeVersion($currVersion,"V3.4.0")) {
 }
 
 if (beforeVersion($currVersion,"V4.0.0")) {
+  traceLog("delete old references to projectorria [V4.0.0]");
 	// Deleting old files referencing projector or projectorria : these files have been renamed
   $root=$_SERVER['SCRIPT_FILENAME'];
 	$root=substr($root,0,strpos($root, '/tool/'));
@@ -321,6 +330,7 @@ if (beforeVersion($currVersion,"V4.1.-")) {
 }
 
 if (beforeVersion($currVersion,"V4.2.0")) {
+  traceLog("update user password changed date [4.2.0]");
 	$user=new User();
 	$userList=$user->getSqlElementsFromCriteria(null);
 	foreach ($userList as $user) {
@@ -332,46 +342,67 @@ if (beforeVersion($currVersion,"V4.2.0")) {
 	
 }
 if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
+  traceLog("update attachment on drive [5.0.1]");
   // Attachments : directory name changed from attachement_x to attachment_x
   $error=false;
   $attDir=Parameter::getGlobalParameter('paramAttachmentDirectory');
-  $handle = opendir($attDir);
-  if (! $handle) $error=true;
-  $globalCatchErrors=true;
-  while (!$error and ($file = readdir($handle)) !== false) {
-    if ($file == '.' || $file == '..' || $file=='index.php') {
-      continue;
-    }
-    $filepath = ($attDir == '.') ? $file : $attDir . '/' . $file;
-    if (is_link($filepath)) {
-      continue;
-    }
-    
-    if (is_dir($filepath) and substr($file,0,12)=='attachement_') { 
-      $newfilepath=str_replace('attachement_', 'attachment_', $filepath);
-      $res=rename($filepath,$newfilepath);
-      if (!$res) {
-        traceLog("Error rename $filepath into $newfilepath");
-        //$error=true;
+  if (file_exists($attDir)) {
+    $handle = opendir($attDir);
+    if (! $handle) $error=true;
+    $globalCatchErrors=true;
+    while (!$error and ($file = readdir($handle)) !== false) {
+      if ($file == '.' || $file == '..' || $file=='index.php') {
+        continue;
+      }
+      $filepath = ($attDir == '.') ? $file : $attDir . '/' . $file;
+      if (is_link($filepath)) {
+        continue;
+      }
+      
+      if (is_dir($filepath) and substr($file,0,12)=='attachement_') { 
+        $newfilepath=str_replace('attachement_', 'attachment_', $filepath);
+        $res=rename($filepath,$newfilepath);
+        if (!$res) {
+          traceLog("Error rename $filepath into $newfilepath");
+          //$error=true;
+        }
       }
     }
+  } else {
+    traceLog("WARNING : attachment directory '$attDir' not found");
   }
+  traceLog("update attachment in table [5.0.1]");
   $globalCatchErrors=false;
   $att=new Attachment();
-  $lstAtt=$att->getSqlElementsFromCriteria(array()); // All attachments sotres in DB
+  $lstAtt=$att->getSqlElementsFromCriteria(array()); // All attachments stored in DB
+  $cpt=0;
+  $cptCommit=1000;
+  Sql::beginTransaction();
+  traceLog("   => ".count($lstAtt)." attachments to read (may not all be updated)");
   foreach ($lstAtt as $att) {
     if ($att->subDirectory) {
       $arrayFrom=array('${attachementDirectory}','attachement_');
       $arrayTo=array('${attachmentDirectory}','attachment_');
       $att->subDirectory=str_replace($arrayFrom, $arrayTo, $att->subDirectory);
       $att->save();
+      $cpt++;
+      if ( ($cpt % $cptCommit) == 0) {
+        Sql::commitTransaction();
+        traceLog("   => $cpt attachments done...");
+        projeqtor_set_time_limit(1500);
+        Sql::beginTransaction();
+      }
     }
   } 
+  Sql::commitTransaction();
+  traceLog("   => $cpt attachments updated");
 }
 if (beforeVersion($currVersion,"V5.0.2") and $currVersion!='V0.0.0') {
+  traceLog("generate thumbs for resources [5.0.2]");
   Affectable::generateAllThumbs();
 }
 if (beforeVersion($currVersion,"V5.1.0.a")) {
+  traceLog("update bill reference [5.1.0.a]");
   include_once("../tool/formatter.php");
   // Take into account of BillId and prefix/suffix to define new Reference format
   $prefix=Parameter::getGlobalParameter('billPrefix');
@@ -398,13 +429,31 @@ if (beforeVersion($currVersion,"V5.1.5") and afterVersion($currVersion, "V5.1.0"
   Parameter::regenerateParamFile();
 }
 if (beforeVersion($currVersion,"V5.2.0") and $currVersion!='V0.0.0') {
+  traceLog("update work elements [5.2.0]");
   setSessionUser(new User());
   $we=new WorkElement();
   $weList=$we->getSqlElementsFromCriteria(null,false, "realWork>0");
+  $cpt=0;
+  $cptCommit=100;
+  Sql::beginTransaction();
+  traceLog("   => ".count($weList)." to update");
+  if (count($weList)<1000) {
+    projeqtor_set_time_limit(1500);
+  } else {
+    traceLog("   => setting unlimited execution time for script (more than 1000 work elements to update)");
+    projeqtor_set_time_limit(0);
+  }
   foreach($weList as $we) {
     $res=$we->save();
+    $cpt++;
+    if ( ($cpt % $cptCommit) == 0) {
+      Sql::commitTransaction();
+      traceLog("   => $cpt work elements done...");      
+      Sql::beginTransaction();
+    } 
   }
-  traceLog(count($weList). " Work Elements updated");
+  Sql::commitTransaction();
+  traceLog("   => $cpt work elements updated");
 }
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
