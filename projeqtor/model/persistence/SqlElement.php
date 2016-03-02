@@ -2884,6 +2884,13 @@ abstract class SqlElement {
 			$result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');
 			return $result;
 		}
+		$isCopy=false;
+		if (property_exists($this,'idStatus') and $this->idStatus) {
+  		$status=new Status($this->idStatus);
+  		if ($status->isCopyStatus) {
+  		  $isCopy=true;
+  		}
+		}
 		foreach ($this as $col => $val) {
 			$dataType=$this->getDataType($col);
 			$dataLength=$this->getDataLength($col);
@@ -2895,7 +2902,7 @@ abstract class SqlElement {
 					}
 				} else {
 					// check if required
-					if (strpos($this->getFieldAttributes($col), 'required')!==false) {
+					if (strpos($this->getFieldAttributes($col), 'required')!==false and !$isCopy) {
 						if (!$val) {
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
 						} else if (trim($val)==''){

@@ -228,11 +228,6 @@ class CommandMain extends SqlElement {
   public function control(){
     $result="";
 
-    $status=new Status($this->idStatus);
-    if ($status->isCopyStatus) {
-      self::$_fieldsAttributes["externalReference"]="";
-    }
-    
    	$defaultControl=parent::control();
    	
    	if ($defaultControl!='OK') {
