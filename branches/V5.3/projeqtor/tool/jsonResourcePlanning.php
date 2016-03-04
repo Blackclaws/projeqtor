@@ -686,7 +686,7 @@ function displayGantt($list) {
 			echo '<TR style="height:18px;' ;
 			echo '">';
 			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
+			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><span class="nobr">' . $tab ;
 		  echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
 			if ($pGroup) {
         if ($collapsed) {
@@ -698,7 +698,7 @@ function displayGantt($list) {
         echo '<img style="width:12px" src="../view/css/images/none.gif" />';
       }
       echo '</span>&nbsp;';
-      echo $pName . '</NOBR></TD>';
+      echo $pName . '</span></TD>';
 		  foreach ($sortArray as $col) {
           //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;

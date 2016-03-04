@@ -539,7 +539,7 @@
         echo '">';
         echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
 		<img style="height:80%" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(19*$left_size).'%;"><NOBR>' . $tab ;
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(19*$left_size).'%;"><span class="nobr">' . $tab ;
         echo '<span style="height:100%;vertical-align:middle;">';
         if ($pGroup) {
           if ($collapsed) {
@@ -556,7 +556,7 @@
         }
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
-        echo $pName . '</NOBR></TD>';
+        echo $pName . '</span></TD>';
         foreach ($sortArray as $col) {
           if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;

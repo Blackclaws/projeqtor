@@ -740,7 +740,7 @@ function displayGantt($list) {
 			echo '">';
 			echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
 			<img style="height:80%" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(20*$left_size).'%;"><NOBR>' . $tab ;
+			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(20*$left_size).'%;"><span class="nobr">' . $tab ;
 		  echo '<span style="height:100%;vertical-align:middle;">';
 			if ($pGroup) {
         if ($collapsed) {
@@ -752,7 +752,7 @@ function displayGantt($list) {
         echo '<img style="height:50%" src="../view/css/images/none.gif" />';
       }
       echo '</span>&nbsp;';
-      echo $pName . '</NOBR></TD>';
+      echo $pName . '</span></TD>';
 		  foreach ($sortArray as $col) {
           //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(7*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;

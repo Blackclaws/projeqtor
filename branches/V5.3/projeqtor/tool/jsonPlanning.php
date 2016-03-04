@@ -635,7 +635,7 @@
 
         echo '">';
         echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><span class="nobr">' . $tab ;
         echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
         if ($pGroup) {
           if ($collapsed) {
@@ -652,7 +652,7 @@
         }
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
-        echo $pName . '</NOBR></TD>';
+        echo $pName . '</span></TD>';
         foreach ($sortArray as $col) {
           if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;
@@ -665,7 +665,7 @@
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
           if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:center;' . $compStyle . '" >' . $line["priority"]  . '</TD>' ;
-          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" ><NOBR>' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '<NOBR></TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" ><span class="nobr">' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '<span class="nobr"></TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';
