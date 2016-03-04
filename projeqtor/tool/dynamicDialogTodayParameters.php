@@ -48,7 +48,7 @@ $today=new Today();
   $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
   echo '<input id="todayPeriodDays" name="todayPeriodDays" dojoType="dijit.form.NumberTextBox" type="text"';    
   echo '         maxlength="4"  style="width:30px; text-align: center;" class="input" value="'.htmlEncode($tp->parameterValue).'"/>';
-  echo '<nobr>&nbsp;'.i18n('nextDays').'</nobr>';
+  echo '<span class="nobr">&nbsp;'.i18n('nextDays').'</span>';
   echo '</td>';
   echo '</tr>';
   echo '<tr style="height:10px;">';
@@ -109,11 +109,11 @@ $today=new Today();
                 </div>'.'</td>';
       echo '<td>';
       if ($todayItem->scope=="static") {
-        echo "<nobr>".i18n('today'.$todayItem->staticSection)."</nobr>";
+        echo "<span class="nobr">".i18n('today'.$todayItem->staticSection)."</span>";
       } else if ($todayItem->scope=="report"){
         $rpt=new Report($todayItem->idReport);
         echo "<table><tr><td>";
-        echo "<nobr>".i18n('colReport').' "'.i18n($rpt->name).'"</nobr>';
+        echo "<span class="nobr">".i18n('colReport').' "'.i18n($rpt->name).'"</span>';
         echo "</td><td>&nbsp;&nbsp;&nbsp;</td><td style='font-size:80%'>";
         $params=TodayParameter::returnTodayReportParameters($todayItem);
         ReportParameter::displayParameters($params);
