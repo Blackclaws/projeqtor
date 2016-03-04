@@ -141,7 +141,7 @@
       <td valign="top" align="left" width="800px">
         <table width="100%">
           <tr height="40px">
-            <td width="120px" align="left" valign="middle"><nobr>
+            <td width="120px" align="left" valign="middle"><span class="nobr">
              <img/ src="img/home.png" onclick="loadPage(0)" /> 
              <?php if ($prev!=='') {?>
                 <img src="img/left.png" onClick="loadPage(<?php echo $prev;?>)" />
@@ -152,14 +152,14 @@
                 <img src="img/right.png" onClick="loadPage(<?php echo $next;?>)" />
               <?php } else {?>
                 <img src="img/right-inactive.png" />
-              <?php }?></nobr>           
+              <?php }?></span>           
             </td>
             <td valign="top">
               <div style="overflow: auto; width: 100%; height: 40px; text-shadow: 0px 0px;">
                 <?php displayTopics($page);?>
               </div>
             </td>
-            <td width="80px" align="right" valign="middle"><nobr>
+            <td width="80px" align="right" valign="middle"><span class="nobr">
               <?php if ($prevSec!='') {?>
                 <img src="img/first.png" onClick="loadPage(<?php echo $prevSec;?>)" />
               <?php } else {?>
@@ -169,7 +169,7 @@
                 <img src="img/last.png" onClick="loadPage(<?php echo $nextSec;?>)" />
               <?php } else {?>
                 <img src="img/last-inactive.png" />
-              <?php }?> </nobr>
+              <?php }?> </span>
             </td>
           </tr>
           <tr>
@@ -249,7 +249,7 @@ function displayTopics($numPage) {
         $topName=$slideName[$topPage];
         //if (! $empty) {echo ' ';}
         echo '<a class="menuTree tabLabel" style="line-height:150%; border: 1px solid grey;"' 
-         . ' onclick="loadPage(' . $topPage . ');" title="go to related topic"><nobr>' . $topName . '</nobr></a> ';
+         . ' onclick="loadPage(' . $topPage . ');" title="go to related topic"><span class="nobr">' . $topName . '</span></a> ';
         //$empty=false;
       }
     }
