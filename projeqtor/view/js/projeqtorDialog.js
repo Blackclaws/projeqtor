@@ -4700,7 +4700,7 @@ function checkAlert() {
       checkAlertRetour(data);
     },
     error : function() {
-      checkAlert();
+      setTimeout('checkAlert();', alertCheckTime * 1000);
     }
   });
 }
