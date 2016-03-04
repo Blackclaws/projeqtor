@@ -35,6 +35,10 @@
  */
 $mobile=false;
 require_once "../tool/projeqtor.php";
+if (isset($locked) and $locked) {
+  include_once "../view/locked.php";
+  exit;
+}
 header ('Content-Type: text/html; charset=UTF-8');
 scriptLog('   ->/view/main.php');
 if (Sql::getDbVersion()!=$version) {

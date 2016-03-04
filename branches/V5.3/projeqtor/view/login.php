@@ -28,6 +28,10 @@
  * Connnexion page of application.
  */
    require_once "../tool/projeqtor.php";
+   if (isset($locked) and $locked) {
+     include_once "../view/locked.php";
+     exit;
+   }
    header ('Content-Type: text/html; charset=UTF-8');
    scriptLog('   ->/view/login.php');
    $_SESSION['application']="PROJEQTOR";
