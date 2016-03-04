@@ -55,7 +55,7 @@
             </td>
             <td valign="middle"><span class="title"><?php echo i18n('labelMultipleMode');?></span></td>
             <td width="15px">&nbsp;</td>
-            <td><nobr>
+            <td><span class="nobr">
              <button id="selectAllButton" dojoType="dijit.form.Button" showlabel="false" 
                title="<?php echo i18n('buttonSelectAll');?>"
                iconClass="iconSelectAll" class="detailButton" >
@@ -94,7 +94,7 @@
                   endMultipleUpdateMode("<?php echo $objectClass;?>");
                 </script>
               </button>    
-            </nobr></td>
+            </span></td>
             <td>&nbsp;&nbsp;&nbsp;</td>
             <td>
               <?php echo i18n("selectedItemsCount");?> :

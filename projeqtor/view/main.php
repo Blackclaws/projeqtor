@@ -1915,7 +1915,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	             <td class="dialogLabel" >
 	               <label for="dependencyDelay" ><?php echo i18n("colDependencyDelay");?>&nbsp;:&nbsp;</label>
 	             </td>
-	             <td><nobr>
+	             <td><span class="nobr">
 	               <input id="dependencyDelay" name="dependencyDelay" value="0" 
 	                 dojoType="dijit.form.NumberTextBox" 
                    constraints="{min:-999, max:999}" 
@@ -1923,7 +1923,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colDependencyDelay')));?>" 
 	                 required="true" />&nbsp;
 	               <?php echo i18n('colDependencyDelayComment'); ?>
-	               </nobr>
+	               </span>
 	             </td>
 	           </tr>
 	           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1973,7 +1973,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td class="dialogLabel" >
                <label for="resourceCostValue" ><?php echo i18n("colCost");?>&nbsp;:&nbsp;</label>
              </td>
-             <td><nobr>
+             <td><span class="nobr">
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
                <div id="resourceCostValue" name="resourceCostValue" value="" 
                  dojoType="dijit.form.NumberTextBox" 
@@ -1986,7 +1986,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <?php echo ($currencyPosition=='after')?$currency:'';
                      echo " / ";
                      echo i18n('shortDay'); ?>
-               </nobr>
+               </span>
              </td>
            </tr>
            <tr>
