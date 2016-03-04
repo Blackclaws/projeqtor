@@ -189,8 +189,14 @@
     $content = ob_get_clean();   
     if ($pdfLib=='html2pdf') {
       /* HTML2PDF way */
+      include_once('../external/html2pdf/_class/tcpdfConfig.php');
       require_once('../external/html2pdf/html2pdf.class.php');
+      include_once('../external/html2pdf/vendor/tecnickcom/tcpdf/tcpdf.php');
       include_once('../external/html2pdf/_class/locale.class.php');
+      include_once('../external/html2pdf/_class/myPdf.class.php');
+      include_once('../external/html2pdf/_class/exception.class.php');
+      include_once('../external/html2pdf/_class/parsingCss.class.php');
+      include_once('../external/html2pdf/_class/parsingHtml.class.php');
       $html2pdf = new HTML2PDF($orientation,'A4','en');
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');
@@ -201,10 +207,10 @@
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
       $content=str_replace("à","&agrave;",$content);
-//traceExecutionTime($includeFile,true);
+traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();;
-//traceExecutionTime($includeFile);
+traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
       require_once("../external/dompdf/dompdf_config.inc.php");
