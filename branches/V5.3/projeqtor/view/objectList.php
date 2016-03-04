@@ -74,9 +74,9 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
         </td>
         <td><span class="title" ><?php echo i18n("menu" . $objectClass);?></span></td>
         <td style="text-align:right;" width="200px">
-                <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("quickSearch");?>
-                &nbsp;</NOBR> 
+                &nbsp;</span> 
         </td>
         <td style="vertical-align: middle;">
           <div title="<?php echo i18n('quickSearch')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
@@ -125,9 +125,9 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             <td style="text-align:right;" width="5px">
               <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
               <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo htmlEncode($_REQUEST['objectId']);}?>" />
-              <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;
               <?php echo i18n("colId");?>
-              &nbsp;</NOBR> 
+              &nbsp;</span> 
             </td>
             <td width="5px">
               <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField rounded" dojoType="dijit.form.TextBox" 
@@ -139,9 +139,9 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             </td>
               <?php if ( property_exists($obj,'name')) { ?>
               <td style="text-align:right;" width="5px">
-                <NOBR>&nbsp;&nbsp;&nbsp;
+                <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colName");?>
-                &nbsp;</NOBR> 
+                &nbsp;</span> 
               </td>
               <td width="5px">
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
@@ -154,9 +154,9 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               <?php }?>              
               <?php if ( property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
-                 <NOBR>&nbsp;&nbsp;&nbsp;
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colType");?>
-                &nbsp;</NOBR>
+                &nbsp;</span>
               </td>
               <td width="5px">
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
@@ -184,7 +184,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                  }
                  ?>
             <td >&nbsp;</td>
-            <td width="5px"><NOBR>&nbsp;</NOBR></td>
+            <td width="5px"><span class="nobr">&nbsp;</span></td>
 <?php if (! $comboDetail or 1) {?>            
             <td width="36px">
               <button title="<?php echo i18n('quickSearch')?>"  

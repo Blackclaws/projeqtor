@@ -113,7 +113,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
       echo '<table align="center" style="width:95%">'; 
       echo '<tr><td style="text-align:left;width:10%" class="tabLabel" >';
-      echo '<nobr>'. i18n('titleCountScope') . ' : </nobr>';
+      echo '<span class="nobr">'. i18n('titleCountScope') . ' : </span>';
       echo '</td>';
       if ($print) {
       	echo '<td style="text-align:left;" class="tabLabel">';
