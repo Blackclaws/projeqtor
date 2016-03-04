@@ -228,7 +228,7 @@ class WorkflowMain extends SqlElement {
               if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==1) { $result .=  'checked'; }
               $result .= ' />';
               $result .= ' </td> ';
-              $result .= '  <td><div style="width:60px;overflow: hidden; white-space: nowrap; overflow: hidden; "><nobr>' . $profileValue . '</nobr></div></td></tr>';  
+              $result .= '  <td><div style="width:60px;overflow: hidden; white-space: nowrap; overflow: hidden; "><span class="nobr">' . $profileValue . '</span></div></td></tr>';  
             }
             $result .= '</table>';
           }

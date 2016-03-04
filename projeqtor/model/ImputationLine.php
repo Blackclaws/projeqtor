@@ -537,7 +537,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
 		echo '</td>';
 		if ($period->submitted) {		
-			$msg='<div class="imputationSubmitted"><nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr></div>';	
+			$msg='<div class="imputationSubmitted"><span class="nobr">'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</span></div>';	
 			if (!$print and ! $period->validated and ($resourceId==$user->id or $canValidate)) {
 				echo '<td style="width:1%">'.$msg.'</td>'; 
 				echo '<td style="width:1%">';
@@ -562,7 +562,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if ($period->validated) {
 			$locked=true;
 			$res=SqlList::getNameFromId('User', $period->idLocker);
-			$msg='<div class="imputationValidated"><nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</nobr></div>';
+			$msg='<div class="imputationValidated"><span class="nobr">'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</span></div>';
 		  if (!$print and $canValidate) {
 		  	echo '<td style="width:1%">'.$msg.'</td>';
 		  	//echo '<div xdojoType="dijit.Tooltip" xconnectId="unvalidateButton" xposition="above" >'.$msg.'</div>';
@@ -925,9 +925,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '<TR class="ganttDetail" >';
 		echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
 		echo '  <TD class="ganttLeftTopLine" colspan="5" style="text-align: left; '
-		. 'border-left:0px;" nowrap><NOBR>';
+		. 'border-left:0px;" nowrap><span class="nobr">';
 		echo  Work::displayImputationUnit();
-		echo '</NOBR></TD>';
+		echo '</span></TD>';
 
 		$curDate=$startDate;
 		$nbFutureDays=Parameter::getGlobalParameter('maxDaysToBookWork');
@@ -939,7 +939,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if ($today==$curDate) {
 				//echo ' background-color:#' . $currentdayColor . ';';
 			}
-			echo '"><NOBR>';
+			echo '"><span class="nobr">';
 			if (!$print) {
 				echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
 				//echo ' constraints="{pattern:\'###0.0#\'}"';
@@ -960,13 +960,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			} else {
 				echo $colSum[$i];
 			}
-			echo '</NOBR></TD>';
+			echo '</span></TD>';
 			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 		}
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><NOBR>'
-		.  '</NOBR></TD>';
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><NOBR>'
-		.  '</NOBR></TD>';
+		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><span class="nobr">'
+		.  '</span></TD>';
+		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><span class="nobr">'
+		.  '</span></TD>';
 		echo '</TR>';
 		echo '</table>';
 		if (!$print) {
