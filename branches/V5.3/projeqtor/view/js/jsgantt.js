@@ -523,9 +523,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
         +'<TR class="ganttHeight" style="height:24px">'
-        +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><NOBR>';
+        +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><span class="nobr">';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
-      vLeftTable+= '</NOBR></TD>'; 
+      vLeftTable+= '</span></TD>'; 
       sortArray=this.getSortArray();
       for (iSort=0;iSort<sortArray.length;iSort++) {
 	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
@@ -681,72 +681,72 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable +='</td><td>';
         var nameLeftWidth= vNameWidth - 16 - levlWidth - 18 ;
         vLeftTable += '<div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
-        	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
+        	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
         for (iSort=0;iSort<sortArray.length;iSort++) {
           if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getValidatedWork() 
-              +'</span></NOBR></TD>' ;
+              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getValidatedWork() 
+              +'</span></TD>' ;
           }
           if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getAssignedWork() 
-              +'</span></NOBR></TD>' ;
+              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getAssignedWork() 
+              +'</span></TD>' ;
           }
           if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getRealWork() 
-              +'</span></NOBR></TD>' ;
+              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getRealWork() 
+              +'</span></TD>' ;
           }
           if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getLeftWork() 
-              +'</span></NOBR></TD>' ;
+              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getLeftWork() 
+              +'</span></TD>' ;
           }
           if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getPlannedWork() 
-              +'</span></NOBR></TD>' ;
+              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getPlannedWork() 
+              +'</span></TD>' ;
           }
           if(vShowDur ==1 && sortArray[iSort]=='Duration') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vDurationWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vDurationWidth + 'px;">' + vTaskList[i].getDuration(vFormat) 
-            +'</span></NOBR></TD>' ;
+            +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vDurationWidth + 'px;">' + vTaskList[i].getDuration(vFormat) 
+            +'</span></TD>' ;
           }
           if(vShowComp==1 && sortArray[iSort]=='Progress') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vProgressWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vProgressWidth + 'px;">' + vTaskList[i].getCompStr()  
-            +'</span></NOBR></TD>' ;
+            +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vProgressWidth + 'px;">' + vTaskList[i].getCompStr()  
+            +'</span></TD>' ;
           }
           if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vDateWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '">' 
+            +'<span class="nobr hideLeftPart' + vRowType + '">' 
             + JSGantt.formatDateStr( vTaskList[i].getStart(), vDateDisplayFormat) 
-            + '</span></NOBR></TD>' ;
+            + '</span></TD>' ;
           }
           if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
           vDispEnd=(vTaskList[i].getEnd())?vTaskList[i].getEnd():vTaskList[i].getRealEnd();
           vLeftTable += '  <TD class="ganttDetail" style="width: ' + vDateWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '">' 
+            +'<span class="nobr hideLeftPart' + vRowType + '">' 
             + JSGantt.formatDateStr( vDispEnd, vDateDisplayFormat) 
-            + '</span></NOBR></TD>' ;
+            + '</span></TD>' ;
           }
           if(vShowRes==1 && sortArray[iSort]=='Resource') {
             vLeftTable += '<TD class="ganttDetail" style="text-align:left;width: ' + vResourceWidth + 'px">' 
-              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;text-overflow:ellipsis;">' 
-              + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
+              +'<span class="nobr namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;text-overflow:ellipsis;">' 
+              + vTaskList[i].getResource() + '</span></TD>' ;
           }
           if(vShowPriority==1 && sortArray[iSort]=='Priority') {
             vLeftTable += '<TD class="ganttDetail" style="text-align:center;">' 
-              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vPriorityWidth + 'px;">' 
-              + vTaskList[i].getPriority() + '</span></NOBR></TD>' ;
+              +'<span class="nobr namePart' + vRowType + '" style="width: ' + vPriorityWidth + 'px;">' 
+              + vTaskList[i].getPriority() + '</span></TD>' ;
           }
           if(vShowPlanningMode==1 && sortArray[iSort]=='IdPlanningMode') {
             vLeftTable += '<TD class="ganttDetail" style="text-align:left;">' 
-              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vPlanningModeWidth + 'px;">' 
-              + vTaskList[i].getPlanningMode() + '</span></NOBR></TD>' ;
+              +'<span class="nobr namePart' + vRowType + '" style="width: ' + vPlanningModeWidth + 'px;">' 
+              + vTaskList[i].getPlanningMode() + '</span></TD>' ;
           }
         }
         vLeftTable += '</TR>';
