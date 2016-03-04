@@ -382,6 +382,9 @@ html, body {
       border: 1px solid #555555;
       margin: 0px; padding: 0px;
 }
+.nobr {
+  white-space: nowrap;
+}
 
 #wait, #waitLogin {
   position: absolute;
