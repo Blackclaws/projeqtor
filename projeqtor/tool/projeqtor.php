@@ -944,8 +944,9 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
     $phpmailer->SMTPSecure = 'tls'; // default (for ports 25 and 587
     if ($paramMailSmtpPort == '465')
       $phpmailer->SMTPSecure = 'ssl'; // 465 is default for ssl
-    if (strpos ( $phpmailer->Host, '://' )) {
+    if (strpos ( $phpmailer->Host, '://' )!==false) {
       $phpmailer->SMTPSecure = substr ( $phpmailer->Host, 0, strpos ( $phpmailer->Host, '://' ) );
+      if ($phpmailer->SMTPSecure=="smtp") $phpmailer->SMTPSecure="";
       $phpmailer->Host = substr ( $phpmailer->Host, strpos ( $phpmailer->Host, '://' ) + 3 );
     }
   }
