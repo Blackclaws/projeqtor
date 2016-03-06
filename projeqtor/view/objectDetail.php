@@ -639,10 +639,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       drawStructureFromObject($obj, false,'composition', 'Component');
     } else if ($col == '_componentStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Structure of component (structure)
       drawStructureFromObject($obj, false,'structure', 'Component');
-    } else if ($col == '_ProductVersionStructure') { // Display ProductVersionStructure (structure)
-      drawProductVersionStructureFromObject($val, $obj, false);
-    } else if ($col == '_ComponentVersionStructure') { // Display ProductVersionStructure (structure)
-      drawProductVersionStructureFromObject(null, $obj, false);
+    } else if ($col == '_productVersionComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display ProductVersionStructure (structure)
+      drawVersionStructureFromObject($obj, false, 'composition', 'ProductVersion');
+    } else if ($col == '_componentVersionStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display ProductVersionStructure (structure)
+      drawVersionStructureFromObject($obj, false, 'structure', 'ComponentVersion');
+    } else if ($col == '_componentVersionComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display ProductVersionStructure (structure)
+      drawVersionStructureFromObject($obj, false, 'composition', 'ComponentVersion');
     } else if (substr($col, 0, 11) == '_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
     } else if (substr($col, 0, 11) == '_Approver') { // Display Assignments
@@ -672,13 +674,27 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if ($isAttachmentEnabled and !$comboDetail) {
         $prevSection=$section;
         $section="Attachment";
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,count($val));
+        $ress=new Resource(getCurrentUserId());
+        $cpt=0;
+        foreach($obj->_Attachment as $cptObjTmp) {
+          if ($user->id == $cptObjTmp->idUser or $cptObjTmp->idPrivacy == 1 or ($cptObjTmp->idPrivacy == 2 and $ress->idTeam == $cptObjTmp->idTeam)) {
+            $cpt++;
+          }
+        }
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt);
         drawAttachmentsFromObject($obj, false);
       }
     } else if (substr($col, 0, 5) == '_Note') {
       $prevSection=$section;
       $section="Note";
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
+      $ress=new Resource(getCurrentUserId());
+      $cpt=0;
+      foreach($obj->_Note as $cptObjTmp) {
+        if ($user->id == $cptObjTmp->idUser or $cptObjTmp->idPrivacy == 1 or ($cptObjTmp->idPrivacy == 2 and $ress->idTeam == $cptObjTmp->idTeam)) {
+          $cpt++;
+        }
+      }
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
       drawNotesFromObject($obj, false);
     } else if ($col== '_BillLine') {
       $prevSection=$section;
@@ -1318,6 +1334,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $valStore='';
         if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' 
             or $col == 'idComponent' or $col == 'idProductOrComponent' 
+            or $col == 'idProductVersion' or $col == 'idComponentVersion'
             or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
             or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' 
             or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
@@ -1357,7 +1374,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         // if version and idProduct exists and is set : criteria is product
         if ((isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) 
-        and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion' or $col=='idTestCase' or ($col=='idRequirement' and $obj->idProductOrComponent))) {
+        and ($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion' or $col=='idTestCase' or ($col=='idRequirement' and $obj->idProductOrComponent))) {
           if (isset($obj->idProduct)) {
             $critFld='idProduct';
             $critVal=$obj->idProduct;
@@ -2230,9 +2247,11 @@ function drawNotesFromObject($obj, $refresh=false) {
   // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
   // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
   echo '</tr>';
+  $nbNotes=0;
+  $ress=new Resource($user->id);
   foreach ( $notes as $note ) {
-    $ress=new Resource($user->id);
     if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
+      $nbNotes++;
       $userId=$note->idUser;
       $userName=SqlList::getNameFromId('User', $userId);
       $creationDate=$note->creationDate;
@@ -2290,7 +2309,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   }
   if (!$refresh and !$print) echo '</td></tr>'; 
   if (!$print) {
-    echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
+    echo '<input id="NoteSectionCount" type="hidden" value="'.count($nbNotes++).'" />';
   }
 }
 
@@ -2680,7 +2699,7 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
   } else if ($way=='structure') {
     $crit['idComponent']=$obj->id;
   } else {
-    errorLog("unknown way=$way in drawProducttureFromObject()");
+    errorLog("unknown way=$way in drawStructureFromObject()");
   }
   $pcs=new ProductStructure();
   $list=$pcs->getSqlElementsFromCriteria($crit);
@@ -2702,7 +2721,7 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
     }
     echo '</td>';
   }
-  $listClass=($item=='Product')?'Component':($way=='structure')?'ProductOrComponent':'Component';
+  $listClass=($item=='Product')?'Component':(($way=='structure')?'ProductOrComponent':'Component');
   echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
   echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
   echo '</tr>';
@@ -2751,10 +2770,17 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
   }
 }
 
-function drawProductVersionStructureFromObject($list, $obj, $refresh=false) {
-  if ($obj->isAttributeSetToField("_ProductVersionStructure", "hidden")) {
-    return;
+function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
+  $crit=array();
+  if ($way=='composition') {
+    $crit['idProductVersion']=$obj->id;
+  } else if ($way=='structure') {
+    $crit['idComponentVersion']=$obj->id;
+  } else {
+    errorLog("unknown way=$way in drawVersionStructureFromObject()");
   }
+  $pcs=new ProductVersionStructure();
+  $list=$pcs->getSqlElementsFromCriteria($crit);
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
@@ -2769,21 +2795,23 @@ function drawProductVersionStructureFromObject($list, $obj, $refresh=false) {
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductVersionStructure();" title="' . i18n('addProductVersionStructure') . '" class="roundedButtonSmall"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductVersionStructure(\''.$way.'\');" title="' . i18n('addProductVersionStructure') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
-  $listClass=(get_class($obj)=='ProductVersion')?'ComponentVersion':'ProductVersion';
+  $listClass=($item=='ProductVersion')?'ComponentVersion':(($way=='structure')?'Version':'ComponentVersion');
   echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
   echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
   echo '</tr>';
   foreach ( $list as $comp ) {
     $compObj=null;
-    if (get_class($obj)=='ProductVersion') {
-      $compObj=new ComponentVersion($comp->idComponentVersion);
+    if ($way=='structure') {
+      $compObj=new Version($comp->idProductVersion);
     } else {
-      $compObj=new ProductVersion($comp->idProductVersion);
-    }
+      $compObj=new Version($comp->idComponentVersion);
+    }   
+    if ($compObj->scope=='Product') $compObj=new ProductVersion($compObj->id);
+    else $compObj=new ComponentVersion($compObj->id);
     $userId=$comp->idUser;
     $userName=SqlList::getNameFromId('User', $userId);
     $creationDate=$compObj->creationDate;

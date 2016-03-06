@@ -58,6 +58,7 @@ if ($objectClass=='Product') {
   echo "Unexpected objectClass";
   exit;
 }
+$object=new $objectClass($objectId);
 ?>
 <table>
   <tr>
@@ -69,7 +70,7 @@ if ($objectClass=='Product') {
         <input id="productStructureWay" name="productStructureWay" type="hidden" value="<?php echo $way;?>" />
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-          <tr><td colspan="2" class="section"><?php echo i18n('section'.ucfirst($way),array($objectClass,intval($objectId)));?></td></tr>  
+          <tr><td colspan="2" class="section"><?php echo i18n('section'.ucfirst($way),array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>  
           <tr>
             <td class="dialogLabel"  >
@@ -82,6 +83,7 @@ if ($objectClass=='Product') {
               </select>
             </td>
             <td style="vertical-align: top">
+              <?php if ($way=='structure') {?>
               <div style="position:relative">
               <button id="productStructureDetailButtonProduct" dojoType="dijit.form.Button" showlabel="false"
                 title="<?php echo i18n('showDetail') . ' '. i18n('Product');?>"
@@ -93,6 +95,7 @@ if ($objectClass=='Product') {
               </button>
               <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconProduct16.png" />
               </div>
+              <?php }?>
               <div style="position:relative">
               <button id="productStructureDetailButtonComponent" dojoType="dijit.form.Button" showlabel="false"
                 title="<?php echo i18n('showDetail'). ' '. i18n('Component')?>"

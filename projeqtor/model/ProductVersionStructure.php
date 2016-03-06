@@ -90,11 +90,60 @@ class ProductVersionStructure extends SqlElement {
     if (count($check)>0) {
       $result.='<br/>' . i18n('errorDuplicateLink');
     } 
+    
+    // Infinite loops
+    if ($this->idProductVersion==$this->idComponentVersion) {
+      $result='<br/>' . i18n('errorHierarchicLoop');
+    }
+    $productVersionStructure=self::getStructure($this->idProductVersion);
+    foreach ($productVersionStructure as $prd=>$prdId) {
+      if ($prdId==$this->idComponentVersion) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        break;
+      }
+    }
+    $componentVersionComposition=self::getComposition($this->idComponentVersion);
+    foreach ($componentVersionComposition as $comp=>$compId) {
+      if ($compId==$this->idProductVersion) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        break;
+      }
+    }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
     }if ($result=="") {
       $result='OK';
+    }
+    return $result;
+  }
+  
+  public static function getComposition($id,$level='all') {
+    $result=array();
+    $crit=array('idProductVersion'=>$id);
+    $ps=new ProductVersionStructure();
+    $psList=$ps->getSqlElementsFromCriteria($crit);
+    if (is_numeric($level)) $level--;
+    foreach ($psList as $ps) {
+      $result['#'.$ps->idComponentVersion]=$ps->idComponentVersion;
+      if ($level=='all' or $level>0) {
+        $result=array_merge($result,self::getComposition($ps->idComponentVersion));
+      }
+    }
+    return $result;
+  }
+  public static function getStructure($id, $level='all') {
+    $result=array();
+    $crit=array('idComponentVersion'=>$id);
+    $ps=new ProductVersionStructure();
+    $psList=$ps->getSqlElementsFromCriteria($crit);
+    if (is_numeric($level)) $level--;
+    foreach ($psList as $ps) {
+      $result['#'.$ps->idProductVersion]=$ps->idProductVersion;
+      if ($level=='all' or $level>0) {
+        $result=array_merge($result,self::getStructure($ps->idProductVersion));
+      }
     }
     return $result;
   }

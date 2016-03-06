@@ -45,3 +45,13 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 146, 0),
 (6, 146, 0),
 (7, 146, 0);
+
+ALTER TABLE `${prefix}ticket` ADD `idComponent` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}activity` ADD `idComponent` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}activity` ADD `idProduct` int(12) unsigned DEFAULT NULL;
+
+UPDATE `${prefix}ticket` SET `idComponent`=`idProduct`, `idProduct`=null
+WHERE `idProduct` in (SELECT id from `${prefix}product` WHERE `scope`='Component');
+UPDATE `${prefix}activity` SET `idComponent`=`idProduct`, `idProduct`=null
+WHERE `idProduct` in (SELECT id from `${prefix}product` WHERE `scope`='Component');
+

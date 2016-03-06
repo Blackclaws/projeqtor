@@ -43,14 +43,32 @@ if (array_key_exists('structureId',$_REQUEST)) {
   $structureId=$_REQUEST['structureId'];
   Security::checkValidId($structureId);
 }
+$way=null;
+if (array_key_exists('way',$_REQUEST)) {
+  $way=$_REQUEST['way'];
+}
+if ($way!='structure' and $way!='composition') {
+  throwError("Incorrect value for parameter way='$way'");
+}
+
 if ($objectClass=='ProductVersion') {
   $listClass='ComponentVersion';
 } else if ($objectClass=='ComponentVersion') {
-  $listClass='ProductVersion';
+  if ($way=='structure') {
+    $listClass='ProductVersion';
+  } else {
+    $listClass='ComponentVersion';
+  }
 } else {
   errorLog("Unexpected objectClass $objectClass");
   echo "Unexpected objectClass";
   exit;
+}
+$object=new $objectClass($objectId);
+if ($way=='structure') {
+  $critClass='ComponentVersion';
+} else {
+  $critClass='ProductVersion';
 }
 ?>
 <table>
@@ -60,7 +78,11 @@ if ($objectClass=='ProductVersion') {
         <input id="productVersionStructureObjectClass" name="productVersionStructureObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productVersionStructureObjectId" name="productVersionStructureObjectId" type="hidden" value="<?php echo $objectId;?>" />
         <input id="productVersionStructureListClass" name="productVersionStructureListClass" type="hidden" value="<?php echo $listClass;?>" />
+        <input id="productVersionStructureWay" name="productVersionStructureWay" type="hidden" value="<?php echo $way;?>" />
         <table>
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td colspan="2" class="section"><?php echo i18n('sectionVersion'.ucfirst($way),array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>  
           <tr>
             <td class="dialogLabel"  >
               <label for="productVersionStructureListId" ><?php echo i18n($listClass) ?>&nbsp;:&nbsp;</label>
@@ -68,18 +90,34 @@ if ($objectClass=='ProductVersion') {
             <td>
               <select size="14" id="productVersionStructureListId" name="productVersionStructureListId[]""
                 multiple class="selectList" onchange="enableWidget('dialogProductVersionStructureSubmit');"  ondblclick="saveProductVersionStructure();" value="">
-                  <?php htmlDrawOptionForReference('id'.$listClass, null, null, true, 'id'.$objectClass, $objectId);?>
+                  <?php htmlDrawOptionForReference('id'.$listClass, null, null, true, 'id'.$critClass, $objectId);?>
               </select>
             </td>
             <td style="vertical-align: top">
-              <button id="productVersionStructureDetailButton" dojoType="dijit.form.Button" showlabel="false"
-                title="<?php echo i18n('showDetail')?>"
+              <?php if ($way=='structure') {?>
+              <div style="position:relative">
+              <button id="productVersionStructureDetailButtonProduct" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('showDetail') . ' '. i18n('ProductVersion');?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
-                <?php $canCreate=securityGetAccessRightYesNo('menu'.$listClass, 'create') == "YES"; ?>
-                showDetail('productVersionStructureListId', <?php echo $canCreate;?>, '<?php echo $listClass;?>', true);
+                <?php $canCreate=securityGetAccessRightYesNo('menuProductVersion', 'create') == "YES"; ?>
+                showDetail('productVersionStructureListId', <?php echo $canCreate;?>, 'ProductVersion', true);
                 </script>
               </button>
+              <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconProductVersion16.png" />
+              </div>
+              <?php }?>
+              <div style="position:relative">
+              <button id="productVersionStructureDetailButtonComponent" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('showDetail'). ' '. i18n('Component')?>"
+                iconClass="iconView">
+                <script type="dojo/connect" event="onClick" args="evt">
+                <?php $canCreate=securityGetAccessRightYesNo('menuComponentVersion', 'create') == "YES"; ?>
+                showDetail('productVersionStructureListId', <?php echo $canCreate;?>, 'ComponentVersion', true);
+                </script>
+              </button>
+              <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconComponentVersion16.png" />
+              </div>
             </td>
           </tr>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>  

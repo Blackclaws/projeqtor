@@ -37,7 +37,7 @@ class DocumentMain extends SqlElement {
   public $name;
   public $idDocumentType;
   public $idProject;
-  public $idProductOrComponent;
+  public $idProduct;
   //public $idProduct;
   public $idDocumentDirectory;
   public $documentReference;
@@ -78,7 +78,7 @@ class DocumentMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="nameProject" width="10%">${idProject}</th>
-    <th field="nameProductOrComponent" width="10%">${idProductOrComponent}</th>
+    <th field="nameProduct" width="10%">${idProduct}</th>
     <th field="nameDocumentType" width="10%">${type}</th>
     <th field="name" width="25%">${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
@@ -112,7 +112,7 @@ class DocumentMain extends SqlElement {
    
    private static $_colCaptionTransposition = array('idDocumentType' => 'type',
    'idDocumentVersion' => 'currentDocumentVersion');
-   private static $_databaseColumnName = array('idProductOrComponent'=>'idProduct');
+   private static $_databaseColumnName = array();
    
    /** ==========================================================================
    * Constructor
@@ -126,7 +126,7 @@ class DocumentMain extends SqlElement {
     	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
     	$dir=new DocumentDirectory($this->idDocumentDirectory);
     	$this->idDocumentType=$dir->idDocumentType;
-    	$this->idProductOrComponent=$dir->idProductOrComponent;
+    	$this->idProduct=$dir->idProduct;
     	$this->idProject=$dir->idProject;
     } 
     if ($this->id and $this->idDocumentVersion) {
@@ -246,7 +246,7 @@ class DocumentMain extends SqlElement {
   public function control() {
   	$result="";
 
-  	if (!trim($this->idProject) and !trim($this->idProductOrComponent)) {
+  	if (!trim($this->idProject) and !trim($this->idProduct)) {
   		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
   	}
   	

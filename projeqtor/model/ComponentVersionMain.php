@@ -34,6 +34,7 @@ class ComponentVersionMain extends Version {
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $scope;
   public $idComponent;
   public $versionNumber;
   public $name;
@@ -50,8 +51,10 @@ class ComponentVersionMain extends Version {
   public $realEndDate;
   public $idle;
   public $description;
-  public $_sec_ProductVersionStructure_product;
-  public $_ProductVersionStructure=array();
+  public $_sec_ComponentVersionStructure;
+  public $_componentVersionStructure=array();
+  public $_sec_ComponentVersionComposition;
+  public $_componentVersionComposition=array();
   public $_Attachment=array();
   public $_Note=array();
   

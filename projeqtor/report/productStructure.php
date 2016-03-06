@@ -20,7 +20,7 @@
 *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 //
-// THIS IS THE INDIVIDUAL EXPENSE REPORT
+// THIS IS THE PRODUCT STRUCTURE REPORT
 //
 include_once '../tool/projeqtor.php';
 include_once '../tool/formatter.php';
@@ -98,7 +98,7 @@ function showProduct($class,$id,$name,$level,$position) {
   }
   echo'</tr>';
   echo'</table></div>';
-  if ($position!='top' and $class=='Product') {
+  if ($position!='top') {
     $compList=$item->getLinkedComponents(true);
     foreach ($compList as $compId=>$compName) {
       //echo '<tr><td></td><td>';

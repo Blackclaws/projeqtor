@@ -56,7 +56,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
-  if ($col=='idVersion' and ($critFld=='idProductOrComponent' or $critFld=='idComponent')) {
+  if (($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idProductOrComponent')) {
     $critFld='idProduct';
   }
   if ($col=='idResource' and $critFld=='idProject') {
@@ -84,12 +84,15 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
     }
     asort($table);
-  } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
+  } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idVersion' or $critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
     $critClass=substr($critFld,2);
     $versionField=str_replace('Version', '', $critFld);
-    $version=new $critClass($critVal);
-    $critArray=array($versionField=>$version->$versionField);
+    $version=new Version($critVal);
+    $critArray=array($versionField=>$version->idProduct);
+debugLog("col=$col, critFld=$critFld, critVal=$critVal");
+debugLog($critArray);
     $list=SqlList::getListWithCrit('ProductStructure',$critArray,str_replace('Version', '',$col),$selection);
+//debugLog($critArray);    
     $table=array();
     foreach ($list as $id) {
       $crit=array('idProduct'=>$id);

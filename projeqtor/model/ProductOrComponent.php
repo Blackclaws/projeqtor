@@ -214,11 +214,17 @@ class ProductOrComponent extends SqlElement {
   }
   static protected function drawStructureButton($class,$id) {
     global $print;
+    $showVersionsForAll=(Parameter::getUserParameter('strucutreShowVersionsForAll')!='0')?true:false;
+    $showProjectsLinked=(Parameter::getUserParameter('strucutreShowProjectsLinked')!='0')?true:false;
     if ($print) return "";
     $result='<br/><table>';
     $result.='<tr>';
     $result.='<td><label for="showVersionsForAll" style="width:250px">'.i18n('showVersionsForAll').'&nbsp;</label>';
-    $result.='<div id="showVersionsForAll" dojoType="dijit.form.CheckBox" type="checkbox" checked ></div></td>';
+    $result.='<div id="showVersionsForAll" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showVersionsForAll)?'checked':'').' >';
+    $result.='<script type="dojo/connect" event="onChange" args="evt">';
+    $result.=' saveUserParameter("strucutreShowVersionsForAll",((this.checked)?"1":"0"));';
+    $result.='</script>';
+    $result.='</div></td>';
     $result.='<td rowspan="2" style="padding-left:10px">';
     $result.='<button id="showStructureButton" dojoType="dijit.form.Button" showlabel="true"';
     $result.=' title="'.i18n('showStructure').'" style="vertical-align: middle;">';
@@ -233,7 +239,11 @@ class ProductOrComponent extends SqlElement {
     $result.='</button>';
     $result.='</td></tr>';
     $result.='<tr><td><label for="showProjectsLinked" style="width:250px">'.i18n('showProjectsLinked').'&nbsp;</label>';
-    $result.='<div id="showProjectsLinked" dojoType="dijit.form.CheckBox" type="checkbox" checked ></div></td>';
+    $result.='<div id="showProjectsLinked" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showProjectsLinked)?'checked':'').' >';
+    $result.='<script type="dojo/connect" event="onChange" args="evt">';
+    $result.=' saveUserParameter("strucutreShowProjectsLinked",((this.checked)?"1":"0"));';
+    $result.='</script>';
+    $result.='</div></td>';
     $result.='</tr></table>';
     return $result;
   }

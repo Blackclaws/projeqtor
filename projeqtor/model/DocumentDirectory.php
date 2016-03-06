@@ -37,7 +37,7 @@ class DocumentDirectory extends SqlElement {
   public $idDocumentDirectory;
   public $location;
   public $idProject;
-  public $idProductOrComponent;
+  public $idProduct;
   //public $idProduct;
   public $idDocumentType;
   //public $sortOrder=0;
@@ -52,7 +52,7 @@ class DocumentDirectory extends SqlElement {
     <th field="location" width="45%">${location}</th>
     <th field="name" width="15%">${name}</th>
     <th field="nameProject" width="15%">${idProject}</th>
-    <th field="nameProductOrComponent" width="15%">${idProductOrComponent}</th>
+    <th field="nameProduct" width="15%">${idProduct}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
@@ -64,7 +64,7 @@ class DocumentDirectory extends SqlElement {
                                            "location"=>"readonly",
                                            "idDocumentDirectory"=>"noList");  
    
-   private static $_databaseColumnName = array('idProductOrComponent'=>'idProduct');
+   private static $_databaseColumnName = array();
   
    /** ==========================================================================
    * Constructor
