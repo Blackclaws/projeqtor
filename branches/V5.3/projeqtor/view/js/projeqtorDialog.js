@@ -1265,14 +1265,14 @@ function removeProductStructure(ProductStructureId, refType, refId, refTypeName)
 * Display a add link Box
 * 
 */
-function addProductVersionStructure() {
+function addProductVersionStructure(way) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
    return;
   }
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
-  var param="&objectClass="+objectClass+"&objectId="+objectId;
+  var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
   loadDialog('dialogProductVersionStructure',null, true, param, true);
 }
 
@@ -3626,7 +3626,7 @@ function refreshTestCaseRunList(selected) {
   url+='?idProject='+dijit.byId('idProject').get('value');
   if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
   else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
-  else if (dijit.byId('idComponent')) url+='&idProduct='+dijit.byId('idComponent').get('value');
+  else if (dijit.byId('idComponent')) url+='&idComponent='+dijit.byId('idComponent').get('value');
   if (selected) {
     url+='&selected=' + selected;
   }

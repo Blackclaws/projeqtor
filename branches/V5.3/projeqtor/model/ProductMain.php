@@ -34,6 +34,7 @@ class ProductMain extends ProductOrComponent {
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $scope;
   public $name;
   public $idProductType;
   public $designation;
@@ -45,12 +46,14 @@ class ProductMain extends ProductOrComponent {
   public $description;
   public $_sec_ProductVersions;
   public $_spe_versions;
+  public $_sec_SubProducts;
+  public $_spe_subproducts;
   public $_sec_ProductComposition;
   public $_productComposition;
   public $_spe_structure;
   public $_Attachment=array();
   public $_Note=array();
-  public $scope;
+
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -62,8 +65,7 @@ class ProductMain extends ProductOrComponent {
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-   private static $_fieldsAttributes=array("name"=>"required",
-      "scope"=>"hidden"
+   private static $_fieldsAttributes=array("name"=>"required", "scope"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf'
@@ -157,6 +159,7 @@ class ProductMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
+    global $print;
     $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
       $result .="<table><tr>";
@@ -169,7 +172,17 @@ class ProductMain extends ProductOrComponent {
       }
       $result .="</td></tr></table>";
       return $result;
-    } else if ($item=='structure') {
+    } elseif ($item=='subproducts') {
+      $result .="<table><tr>";
+      //$result .="<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
+      $result .="<td>";
+      if ($this->id) {
+        $result .= $this->drawSubProductsList();
+        
+      }
+      $result .="</td></tr></table>";
+      return $result;
+    } else if ($item=='structure' and !$print and $this->id) {
       $result=parent::drawStructureButton('Product',$this->id);
       return $result;
     }
@@ -307,6 +320,22 @@ class ProductMain extends ProductOrComponent {
     foreach ($psList as $ps) {
       $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
     }
+    return $result;
+  }
+  
+  public function drawSubProductsList() {
+    $result="<table>";
+    $list=$this->getSubProducts();
+    foreach ($list as $prod) {
+      $result.= '<tr>';
+      $result.= '<td valign="top" width="20px" style="padding-left:15px;"><img src="css/images/iconProduct16.png" height="16px" /></td>';
+      $style="";
+      if ($prod->idle) {$style='color#5555;text-decoration: line-through;';}
+      $result.= '<td style="vertical-align:top;'.$style.'">';
+      $result.="#$prod->id - ".htmlDrawLink($prod);
+      $result.= '</td></tr>';
+    }
+    $result .="</table>";
     return $result;
   }
 }

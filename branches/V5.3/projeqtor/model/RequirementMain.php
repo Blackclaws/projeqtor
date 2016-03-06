@@ -37,7 +37,7 @@ class RequirementMain extends SqlElement {
   public $name;
   public $idRequirementType;
   public $idProject;
-  public $idProductOrComponent;
+  public $idProduct;
   //public $idProduct;
   //public $idVersion;
   public $externalReference;
@@ -105,7 +105,7 @@ class RequirementMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="8%" >${idProject}</th>
-    <th field="nameProductOrComponent" width="8%" >${idProductOrComponent}</th>
+    <th field="nameProduct" width="8%" >${idProduct}</th>
     <th field="nameRequirementType" width="8%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameRunStatus" width="6%" formatter="colorNameFormatter">${testSummary}</th>
@@ -160,7 +160,7 @@ class RequirementMain extends SqlElement {
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   //private static $_databaseColumnName = array();
-  private static $_databaseColumnName = array('idProductOrComponent'=>'idProduct');
+  private static $_databaseColumnName = array();
     
    /** ==========================================================================
    * Constructor
@@ -256,7 +256,7 @@ class RequirementMain extends SqlElement {
   public function control(){
     $result="";
     
-    if (!trim($this->idProject) and !trim($this->idProductOrComponent)) {
+    if (!trim($this->idProject) and !trim($this->idProduct)) {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
     
@@ -275,8 +275,8 @@ class RequirementMain extends SqlElement {
     }
     if (trim($this->idRequirement)) {
       $parentRequirement=new Requirement($this->idRequirement);
-      if ( trim($this->idProductOrComponent)) {
-        if (trim($parentRequirement->idProductOrComponent)!=trim($this->idProductOrComponent)) {
+      if ( trim($this->idProduct)) {
+        if (trim($parentRequirement->idProduct)!=trim($this->idProduct)) {
           $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
         }
       } else {

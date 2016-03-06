@@ -34,6 +34,7 @@ class ComponentMain extends ProductOrComponent {
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $scope;
   public $name;
   public $idComponentType;
   public $designation;
@@ -49,7 +50,6 @@ class ComponentMain extends ProductOrComponent {
   public $_componentComposition=array(); 
   public $_Attachment=array();
   public $_Note=array();
-  public $scope;
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -327,6 +327,16 @@ class ComponentMain extends ProductOrComponent {
         }
       }
     }
+  }
+  
+  public function getLinkedComponents($withName=true) {
+    $ps=new ProductStructure();
+    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    $result=array();
+    foreach ($psList as $ps) {
+      $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
+    }
+    return $result;
   }
 
 }

@@ -48,10 +48,11 @@ class TicketMain extends SqlElement {
   public $idContext1;
   public $idContext2;
   public $idContext3;
-  public $idProductOrComponent;
+  public $idProduct;
   //public $idProduct;
   public $idOriginalVersion;
   public $_OtherOriginalVersion=array();
+  public $idComponent;
   public $description;
   public $_sec_treatment;
   public $idActivity;
@@ -124,7 +125,7 @@ class TicketMain extends SqlElement {
                                                    'idContext1'=>'idContext');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion', 'idProductOrComponent'=>'idProduct');
+  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
   //private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
     
    /** ==========================================================================

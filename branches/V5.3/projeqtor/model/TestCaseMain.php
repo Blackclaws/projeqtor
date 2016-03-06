@@ -37,8 +37,7 @@ class TestCaseMain extends SqlElement {
   public $name;
   public $idTestCaseType;
   public $idProject;
-  public $idProductOrComponent;
-  //public $idProduct;
+  public $idProduct;
   public $idVersion;
   public $externalReference;
   public $creationDateTime;
@@ -79,7 +78,7 @@ class TestCaseMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="8%" >${idProject}</th>
-    <th field="nameProductOrComponent" width="8%" >${idProductOrComponent}</th>
+    <th field="nameProduct" width="8%" >${idProduct}</th>
     <th field="nameVersion" width="8%" >${idVersion}</th>
     <th field="nameTestCaseType" width="10%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
@@ -117,7 +116,7 @@ class TestCaseMain extends SqlElement {
                                                    );
   
   //private static $_databaseColumnName = array();
-  private static $_databaseColumnName = array('idProductOrComponent'=>'idProduct');
+  private static $_databaseColumnName = array();
     
    /** ==========================================================================
    * Constructor
@@ -195,7 +194,7 @@ class TestCaseMain extends SqlElement {
   public function control(){
     $result="";
     
-    if (!trim($this->idProject) and !trim($this->idProductOrComponent)) {
+    if (!trim($this->idProject) and !trim($this->idProduct)) {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
     
@@ -214,8 +213,8 @@ class TestCaseMain extends SqlElement {
     }
     if (trim($this->idTestCase)) {
       $parent=new TestCase($this->idTestCase);
-      if ( trim($this->idProductOrComponent)) {
-        if (trim($parent->idProductOrComponent)!=trim($this->idProductOrComponent)) {
+      if ( trim($this->idProduct)) {
+        if (trim($parent->idProduct)!=trim($this->idProduct)) {
       	  $result.='<br/>' . i18n('msgParentTestCaseInSameProjectProduct');
         }
       } else {

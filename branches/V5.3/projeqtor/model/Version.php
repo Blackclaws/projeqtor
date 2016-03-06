@@ -34,6 +34,7 @@ class Version extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $scope;
   public $idProduct;
   public $versionNumber;
   public $name;
@@ -52,7 +53,6 @@ class Version extends SqlElement {
   public $description;
   public $_Attachment=array();
   public $_Note=array();
-  public $scope;
   
   // Define the layout that will be used for lists
   private static $_layout='

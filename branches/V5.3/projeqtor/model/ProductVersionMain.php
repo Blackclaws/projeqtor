@@ -34,6 +34,7 @@ class ProductVersionMain extends Version {
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $scope;
   public $idProduct;
   public $versionNumber;
   public $name;
@@ -52,8 +53,8 @@ class ProductVersionMain extends Version {
   public $description;
   public $_sec_Versionproject_projects;
   public $_VersionProject=array();
-  public $_sec_ProductVersionStructure_product;
-  public $_ProductVersionStructure=array();
+  public $_sec_ProductVersionComposition;
+  public $_productVersionComposition=array();
   public $_Attachment=array();
   public $_Note=array();
   
