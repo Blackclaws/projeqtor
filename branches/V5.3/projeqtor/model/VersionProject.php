@@ -143,7 +143,7 @@ class VersionProject extends SqlElement {
       $v=new Version($this->idVersion);
       if ($v->scope=='Product') {
         $p=new Product($v->idProduct);
-        $compList=$p->getLinkedComponents(false);
+        $compList=$p->getComposition(false,true);
         foreach ($compList as $compId=>$compName) {
           $comp=new Component($compId);
           $comp->updateAllVersionProject();
@@ -153,11 +153,11 @@ class VersionProject extends SqlElement {
       $v=new Version($this->idVersion);
       if ($v->scope=='Product') {
         $p=new Product($v->idProduct);
-        $compList=$p->getLinkedComponents(false);
+        $compList=$p->getComposition(false,true);
         if ($this->idVersion!=$old->idVersion) {
           $v=new Version($old->idVersion);
           $p=new Product($v->idProduct);
-          $compList=array_merge_preserve_keys($p->getLinkedComponents(false),$compList);
+          $compList=array_merge_preserve_keys($p->getComposition(false,true),$compList);
         }
         foreach($compList as $compId=>$compName) {
           $comp=new Component($compId);
@@ -171,7 +171,7 @@ class VersionProject extends SqlElement {
     $result=parent::delete();
     $v=new Version($this->idVersion);
     $p=new Product($v->idProduct);
-    $compList=$p->getLinkedComponents(false);
+    $compList=$p->getComposition(false,true);
     foreach ($compList as $compId=>$compName) {
       $comp=new Component($compId);
       $comp->updateAllVersionProject();

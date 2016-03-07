@@ -299,26 +299,17 @@ class ProductMain extends ProductOrComponent {
     return $result;
   } 
   
-  public function getLinkedProject($withName=true) {
-    $pv=new ProductVersion();
-    $vp=new VersionProject();
-    $pvList=$pv->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
-    $result=array();
-    foreach ($pvList as $pv) {
-      $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$pv->id));
-      foreach ($vpList as $vp) {
-        $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Poject', $vp->idProject):$vp->idProject;
-      }
-    }
-    return $result;
-  }
-  
-  public function getLinkedComponents($withName=true) {
+  // Retrive composition in terms of components (will not retreive products in the composition of the product
+  public function getComposition($withName=true,$reculsively=false) {
     $ps=new ProductStructure();
     $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
     $result=array();
     foreach ($psList as $ps) {
       $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
+      if ($reculsively) {
+        $comp=new Component($ps->idComponent);
+        $result=array_merge_preserve_keys($comp->getComposition($withName,true),$result);
+      }
     }
     return $result;
   }

@@ -455,6 +455,33 @@ if (beforeVersion($currVersion,"V5.2.0") and $currVersion!='V0.0.0') {
   Sql::commitTransaction();
   traceLog("   => $cpt work elements updated");
 }
+
+if (beforeVersion($currVersion,"V5.3.0") and $currVersion!='V0.0.0') {
+  traceLog("update version project for versions of all components [5.3.0]");
+  $comp=new Component();
+  $compList=$comp->getSqlElementsFromCriteria(null,false,null,null,false,true); // List all components
+  $cpt=0;
+  $cptCommit=100;
+  Sql::beginTransaction();
+  traceLog("   => ".count($compList)." components to update");
+  if (count($compList)<1000) {
+    projeqtor_set_time_limit(1500);
+  } else {
+    traceLog("   => setting unlimited execution time for script (more than 1000 work elements to update)");
+    projeqtor_set_time_limit(0);
+  }
+  foreach($compList as $comp) {
+    $comp->updateAllVersionProject();
+    $cpt++;
+    if ( ($cpt % $cptCommit) == 0) {
+      Sql::commitTransaction();
+      traceLog("   => $cpt components done...");
+      Sql::beginTransaction();
+    }
+  }
+  Sql::commitTransaction();
+  traceLog("   => $cpt components updated");
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
