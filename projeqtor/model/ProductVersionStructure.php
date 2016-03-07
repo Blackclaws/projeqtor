@@ -73,11 +73,21 @@ class ProductVersionStructure extends SqlElement {
         $vers=new ComponentVersion($this->idComponentVersion);
         $comp=new Component($vers->idComponent);
         $comp->updateAllVersionProject();
+        $list=$comp->getComposition(false,true);
+        foreach ($list as $cptId) {
+          $comp=new Component($cptId);
+          $comp->updateAllVersionProject();
+        }
       }
       if ($old->idComponentVersion and $old->idComponentVersion!=$this->idComponentVersion) {
         $vers=new ComponentVersion($old->idComponentVersion);
         $comp=new Component($vers->idComponent);
         $comp->updateAllVersionProject();
+        $list=$comp->getComposition(false,true);
+        foreach ($list as $cptId) {
+          $comp=new Component($cptId);
+          $comp->updateAllVersionProject();
+        }
       }
       if ($this->idProductVersion) {
         $vers=new ComponentVersion($this->idProductVersion);
@@ -85,6 +95,11 @@ class ProductVersionStructure extends SqlElement {
           $comp=new Component($vers->idComponent); // V5.3.0 : idProduct can refer to Component
           if ($comp->id) {
             $comp->updateAllVersionProject();
+            $list=$comp->getComposition(false,true);
+            foreach ($list as $cptId) {
+              $comp=new Component($cptId);
+              $comp->updateAllVersionProject();
+            }
           }
         }
       }
@@ -94,6 +109,11 @@ class ProductVersionStructure extends SqlElement {
           $comp=new Component($vers->idComponent); // V5.3.0 : idProduct can refer to Component
           if ($comp->id) {
             $comp->updateAllVersionProject();
+            $list=$comp->getComposition(false,true);
+            foreach ($list as $cptId) {
+              $comp=new Component($cptId);
+              $comp->updateAllVersionProject();
+            }
           }
         }
       }
@@ -107,6 +127,11 @@ class ProductVersionStructure extends SqlElement {
   	  $vers=new ComponentVersion($this->idComponentVersion);
   	  $comp=new Component($vers->idComponent);
   	  $comp->updateAllVersionProject();
+  	  $list=$comp->getComposition(false,true);
+  	  foreach ($list as $cptId) {
+  	    $comp=new Component($cptId);
+  	    $comp->updateAllVersionProject();
+  	  }
   	}
     return $result;
   }

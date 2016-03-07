@@ -89,10 +89,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $versionField=str_replace('Version', '', $critFld);
     $version=new Version($critVal);
     $critArray=array($versionField=>$version->idProduct);
-debugLog("col=$col, critFld=$critFld, critVal=$critVal");
-debugLog($critArray);
     $list=SqlList::getListWithCrit('ProductStructure',$critArray,str_replace('Version', '',$col),$selection);
-//debugLog($critArray);    
     $table=array();
     foreach ($list as $id) {
       $crit=array('idProduct'=>$id);

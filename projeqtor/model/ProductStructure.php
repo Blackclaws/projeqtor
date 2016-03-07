@@ -98,6 +98,11 @@ class ProductStructure extends SqlElement {
   	if ($this->idComponent) {
   	  $comp=new Component($this->idComponent);
   	  $comp->updateAllVersionProject();
+  	  $list=$comp->getComposition(false,true);
+  	  foreach ($list as $cptId) {
+  	    $comp=new Component($cptId);
+  	    $comp->updateAllVersionProject();
+  	  }
   	}
     return $result;
   }
@@ -125,8 +130,6 @@ class ProductStructure extends SqlElement {
       $result='<br/>' . i18n('errorHierarchicLoop');
     }   
     $productStructure=self::getStructure($this->idProduct);
-    debugLog("Structure $this->idProduct => $this->idComponent");
-    debugLog($productStructure);
     foreach ($productStructure as $prd=>$prdId) {
       if ($prdId==$this->idComponent) {
         $result='<br/>' . i18n('errorHierarchicLoop');
@@ -169,8 +172,6 @@ class ProductStructure extends SqlElement {
     $crit=array('idComponent'=>$id);
     $ps=new ProductStructure();
     $psList=$ps->getSqlElementsFromCriteria($crit);
-    debugLog("=> Strucutre of # $id");
-    debugLog($psList);
     if (is_numeric($level)) $level--;
     foreach ($psList as $ps) {
       $result['#'.$ps->idProduct]=$ps->idProduct;
