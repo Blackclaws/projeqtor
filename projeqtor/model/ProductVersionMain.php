@@ -279,15 +279,24 @@ class ProductVersionMain extends Version {
   	$compList=array();
   	if ($old->idProduct!=$this->idProduct) {
   	  $p=new Product($this->idProduct);
-  	  $compList=$p->getLinkedComponents(false);
+  	  $compList=$p->getComposition(false,true);
   	  $pold=new Product($old->idProduct);
-  	  $compList=array_merge_preserve_keys($pold->getLinkedComponents(false),$compList);
+  	  $compList=array_merge_preserve_keys($pold->getComposition(false,true),$compList);
   	}
   	foreach($compList as $compId=>$compName) {
   	  $comp=new Component($compId);
   	  $comp->updateAllVersionProject();
   	}
   	return $result;
+  }
+  public function getLinkedProjects($withName=true) {
+    $vp=new VersionProject();
+    $result=array();
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    foreach ($vpList as $vp) {
+      $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Project', $vp->idProject):$vp->idProject;
+    }
+    return $result;
   }
 
 }

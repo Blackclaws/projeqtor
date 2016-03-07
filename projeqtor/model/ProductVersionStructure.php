@@ -66,12 +66,48 @@ class ProductVersionStructure extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function save() {
+    $old=$this->getOld();
     $result=parent::save();
+    if ($old->idProductVersion!=$this->idProductVersion or $old->idComponentVersion!=$this->idComponentVersion) {
+      if ($this->idComponentVersion) {
+        $vers=new ComponentVersion($this->idComponentVersion);
+        $comp=new Component($vers->idComponent);
+        $comp->updateAllVersionProject();
+      }
+      if ($old->idComponentVersion and $old->idComponentVersion!=$this->idComponentVersion) {
+        $vers=new ComponentVersion($old->idComponentVersion);
+        $comp=new Component($vers->idComponent);
+        $comp->updateAllVersionProject();
+      }
+      if ($this->idProductVersion) {
+        $vers=new ComponentVersion($this->idProductVersion);
+        if ($vers->id) {
+          $comp=new Component($vers->idComponent); // V5.3.0 : idProduct can refer to Component
+          if ($comp->id) {
+            $comp->updateAllVersionProject();
+          }
+        }
+      }
+      if ($old->idProductVersion and $old->idProductVersion!=$this->idProductVersion) {
+        $vers=new ComponentVersion($old->idProductVersion);
+        if ($vers->id) {
+          $comp=new Component($vers->idComponent); // V5.3.0 : idProduct can refer to Component
+          if ($comp->id) {
+            $comp->updateAllVersionProject();
+          }
+        }
+      }
+    }
     return $result;
   }
   
   public function delete() {	
   	$result=parent::delete();    
+  	if ($this->idComponentVersion) {
+  	  $vers=new ComponentVersion($this->idComponentVersion);
+  	  $comp=new Component($vers->idComponent);
+  	  $comp->updateAllVersionProject();
+  	}
     return $result;
   }
 

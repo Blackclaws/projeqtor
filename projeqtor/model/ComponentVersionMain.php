@@ -307,5 +307,25 @@ class ComponentVersionMain extends Version {
     }
     return $result;
   }
+  public function getLinkedProjects($withName=true) {
+    $vp=new VersionProject();
+    $result=array();
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    foreach ($vpList as $vp) {
+      $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Project', $vp->idProject):$vp->idProject;
+    }
+    return $result;
+  }
+  public function getLinkedProductVersions($withName=true) {
+    $result=array();
+    $vpList=ProductVersionStructure::getStructure($this->id);
+    foreach ($vpList as $idVers) {
+      $vers=new Version($idVers);
+      if ($vers->scope=='Product') {
+        $result[$idVers]=($withName)?$vers->name:$vers->id;
+      }
+    }
+    return $result;
+  }
 }
 ?>

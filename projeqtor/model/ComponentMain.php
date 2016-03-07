@@ -283,45 +283,28 @@ class ComponentMain extends ProductOrComponent {
     return $list;
   }
   
-  public function getLinkedProject($withName=true) {
-    $cv=new ComponentVersion();
-    $vp=new VersionProject();
-    $cvList=$cv->getSqlElementsFromCriteria(array('idComponent'=>$this->id));
-    $result=array();
-    foreach ($cvList as $cv) {
-      $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$cv->id));
-      foreach ($vpList as $vp) {
-        $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Poject', $vp->idProject):$vp->idProject;
-      }
-    }
-    return $result;
-  }
-  
   public function updateAllVersionProject() {
-    $existing=$this->getLinkedProject(false); // List of projects linked
-    $target=array(); // List of project that should be linked
-    $ps=new ProductStructure();
-    $psList=$ps->getSqlElementsFromCriteria(array('idComponent'=>$this->id));
-    foreach ($psList as $ps) {
-      $product=new Product($ps->idProduct,true);
-      $arr=$product->getLinkedProject(false);
-      $target=array_merge_preserve_keys($target,$arr);
-    }
-    $vc=new ComponentVersion();
-    $vcList=$vc->getSqlElementsFromCriteria(array('idComponent'=>$this->id));
-    foreach ($existing as $projId) {
-      if (! in_array($projId,$target)) { // Existing not in target => delete VersionProject for all versions
-        foreach($vcList as $vc) {
-          $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vc->id));
+    $vers=new ComponentVersion();
+    $versList=$vers->getSqlElementsFromCriteria(array('idComponent'=>$this->id));
+    foreach ($versList as $vers) {
+      $existing=$vers->getLinkedProjects(false); // List of projects linked
+      $target=array(); // List of project that should be linked
+      $productVersions=$vers->getLinkedProductVersions(false);
+      foreach ($productVersions as $pvId) {
+        $pv=new ProductVersion($pvId);
+        $arr=$pv->getLinkedProjects(false);
+        $target=array_merge_preserve_keys($target,$arr);
+      }
+      foreach ($existing as $projId) {
+        if (! in_array($projId,$target)) { // Existing not in target => delete VersionProject for all versions
+          $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id));
           if ($vp->id) {
             $res=$vp->delete();
           }
         }
       }
-    }
-    foreach ($target as $projId) {
-      foreach($vcList as $vc) {
-        $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vc->id));
+      foreach ($target as $projId) {
+        $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id));
         if (! $vp->id) {
           $res=$vp->save();
         }
@@ -329,12 +312,16 @@ class ComponentMain extends ProductOrComponent {
     }
   }
   
-  public function getLinkedComponents($withName=true) {
+  public function getComposition($withName=true,$reculsively=false) {
     $ps=new ProductStructure();
     $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
     $result=array();
     foreach ($psList as $ps) {
       $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
+      if ($reculsively) {
+        $comp=new Component($ps->idComponent);
+        $result=array_merge_preserve_keys($comp->getComposition($withName,true),$result);
+      }
     }
     return $result;
   }

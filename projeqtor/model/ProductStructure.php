@@ -77,6 +77,18 @@ class ProductStructure extends SqlElement {
         $comp=new Component($old->idComponent);
         $comp->updateAllVersionProject();
       }
+      if ($this->idProduct) {
+        $comp=new Component($this->idProduct); // V5.3.0 : idProduct can refer to Component
+        if ($comp->id) {
+          $comp->updateAllVersionProject();
+        }
+      }
+      if ($old->idProduct and $old->idProduct!=$this->idProduct) {
+        $comp=new Component($old->idProduct); // V5.3.0 : idProduct can refer to Component
+        if ($comp->id) {
+          $comp->updateAllVersionProject();
+        }
+      }
     }
     return $result;
   }

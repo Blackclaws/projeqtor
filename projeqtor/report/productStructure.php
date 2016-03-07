@@ -99,7 +99,7 @@ function showProduct($class,$id,$name,$level,$position) {
   echo'</tr>';
   echo'</table></div>';
   if ($position!='top') {
-    $compList=$item->getLinkedComponents(true);
+    $compList=$item->getComposition(true,false);
     foreach ($compList as $compId=>$compName) {
       //echo '<tr><td></td><td>';
       showProduct('Component',$compId,$compName,$level+1,'sub');
