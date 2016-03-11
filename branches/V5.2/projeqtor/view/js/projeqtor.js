@@ -1642,20 +1642,24 @@ function selectRowById(gridName, id) {
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
   if (dojo.isIE && parseInt(dojo.isIE,10)<='8') { 
-	  return;
+    return;
   }
   var nbRow=grid.rowCount;
   gridReposition=true;
+  var j=-1;
   dojo.forEach(grid.store._getItemsArray(), 
     function(item, i){ 
-      //itemId=item.id;
       if (item && item.id==id) {
-        var j=grid.getItemIndex(item);
-        if (j==-1) j=grid.rowCount-1;
-        grid.selection.setSelected(j,true);
-        first=grid.scroller.firstVisibleRow;
-        last=grid.scroller.lastVisibleRow;
-        if (j<first || j>last) grid.scrollToRow(j);
+        var j=grid.getItemIndex(item); // if item is in the page, will find quickly
+        if (j==-1) { // not found : must search      
+          if (grid.getSortIndex()==-1) { // No sort so order in grid is same as order in store
+            grid.selection.setSelected(i,true);
+          } else {
+            // cannot reposition
+          }
+        } else {
+          grid.selection.setSelected(j,true);
+        }
         gridReposition=false;
         return;
       }
