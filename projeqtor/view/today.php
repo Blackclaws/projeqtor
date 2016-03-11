@@ -39,6 +39,8 @@ SqlElement::$_cachedQuery['Project']=array();
 SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
 SqlElement::$_cachedQuery['PlanningElement']=array();
 
+  $templateProjectList=Project::getTemplateList();
+
   $collapsedList=Collapsed::getCollaspedList();
   
   if (array_key_exists('refreshProjects',$_REQUEST)) {
@@ -82,7 +84,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showProjects() {
-  	global $cptMax, $print, $workVisibility;
+  	global $cptMax, $print, $workVisibility,$templateProjectList;
     $user=getSessionUser();
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
@@ -252,6 +254,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         if (array_key_exists($id, $prjVisLst)) {
           $show=true;
         }
+        if (array_key_exists($id,$templateProjectList)) {
+          $show=false;
+        }
         $cptSubPrj=(isset($cptsubProject[$id]))?$cptsubProject[$id]:0;
         if ($show or $cptSubPrj>0) {
         	$goto="";
@@ -415,7 +420,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   	// $whereActivity :  YES     YES     YES     YES     Activity
   	// $whereTicket :    NO      YES     YES     YES     Ticket
   	// $whereMeeting :   YES     YES     YES     NO      Meeting, TestSession
-  	global $cptMax, $print, $cptDisplayId, $collapsedList;
+  	global $cptMax, $print, $cptDisplayId, $collapsedList, $templateProjectList;
   	$user=getSessionUser();
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
     $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
@@ -494,6 +499,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $listEcheance=array();
     foreach($list as $elt) {
     	$echeance="";
+    	if (property_exists($elt,'idProject') and array_key_exists($elt->idProject,$templateProjectList)) continue;
     	$class=get_class($elt);  	
     	if ($class=='Ticket') {
     		$echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;

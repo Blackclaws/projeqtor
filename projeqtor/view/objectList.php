@@ -373,11 +373,13 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"
   query="{ id: '*' }" store="objectStore"
-  queryOptions="{ignoreCase:true}" 
+  queryOptions="{ignoreCase:true}"
   rowPerPage="<?php echo Parameter::getGlobalParameter('paramRowPerPage');?>"
   columnReordering="false"
   rowSelector="false"
-  onHeaderClick="selectGridRow();"
+  loadingMessage="loading..."
+  fastScroll="false"
+  onHeaderClick="unselectAllRows('objectGrid');selectGridRow();"
   onHeaderCellContextMenu="dijit.byId('listColumnSelector').toggleDropDown();"
   selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>
