@@ -325,6 +325,10 @@ class ComponentMain extends ProductOrComponent {
     }
     return $result;
   }
+  
+  public static function canViewComponentList() {
+    return securityGetAccessRightYesNo('menuComponent', 'read', null, null);
+  }
 
 }
 ?>

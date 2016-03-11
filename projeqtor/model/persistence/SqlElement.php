@@ -911,7 +911,9 @@ abstract class SqlElement {
 		// Get old values (stored) to : 1) build the smallest query 2) save change history
 		$oldObject = self::getCurrentObject (get_class($this),$this->id,false,$force);
 		// Specific treatment for other versions
-		$versionTypes=array('Version', 'OriginalVersion', 'TargetVersion');
+		$versionTypes=array('Version', 
+		    'OriginalVersion', 'OriginalProductVersion', 'OriginalComponentVersion', 
+		    'TargetVersion',   'TargetProductVersion',   'TargetComponentVersion');
 		foreach ($versionTypes as $versType) {
 			$otherFld='_Other'.$versType;
 			$versFld='id'.$versType;
@@ -2043,7 +2045,9 @@ abstract class SqlElement {
 							} else if ($colName=="ResourceCost") {
 								$this->{$col_name}=$this->getResourceCost();
 							}  else if ($colName=="VersionProject") {
-								if (get_class($this)!='OriginalVersion' and get_class($this)!='TargetVersion') {
+								if (get_class($this)!='OriginalVersion' and get_class($this)!='TargetVersion'
+		              and get_class($this)!='OriginalProductVersion' and get_class($this)!='TargetProductVersion'
+		              and get_class($this)!='OriginalComponentVersion' and get_class($this)!='TargetComponentVersion') {
 									$vp=new VersionProject();
 									$idCrit='id'.((get_class($this)=='Project')?'Project':'Version');
 									$crit=array($idCrit=>$this->id);
@@ -2573,7 +2577,10 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'id'.get_class($this).'Type')) {
 				  $colScript .= '   refreshList("id'.get_class($this).'Type","idProject", this.value, dijit.byId("id'.get_class($this).'Type").get("value"),null,true);';
 				}
-				$arrVers=array('idVersion','idOriginalVersion','idTargetVersion','idTestCase','idRequirement');
+				$arrVers=array('idVersion',
+				    'idOriginalVersion','idOriginalProductVersion','idOriginalComponentVersion',
+				    'idTargetVersion','idTargetProductVersion','idTargetComponentVersion',
+				    'idTestCase','idRequirement');
 				$versionExists=false;
 				foreach ($arrVers as $vers) {
 					if (property_exists($this,$vers)) {
@@ -2610,11 +2617,17 @@ abstract class SqlElement {
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", idProject);':'';}
 					}
 				}
-				if (($colName=='idVersion' or $colName=='idOriginalVersion' or $colName=='idTargetVersion')
+				if (($colName=='idVersion' 
+				    or $colName=='idOriginalVersion' or $colName=='idOriginalProductVersion' or $colName=='idOriginalComponentVersion' 
+				    or $colName=='idTargetVersion' or $colName=='idTargetProductVersion' or $colName=='idTargetComponentVersion')
 				and (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent'))) {
 				  $varProd='idProduct';
-				  if (property_exists($this,'idProductOrComponent')) $varProd='idProductOrComponent';
-				  else if (property_exists($this,'idComponent')) $varProd='idComponent';
+				  if (property_exists($this,'idProductOrComponent')) {
+				    $varProd='idProductOrComponent';
+				  } else if (property_exists($this,'idComponent') 
+				   and ($colName=='idComponentVersion' or $colName=='idOriginalComponentVersion' or $colName=='idTargetComponentVersion')) {
+				    $varProd='idComponent';
+				  }
 					$colScript .= 'if (! trim(dijit.byId("'.$varProd.'").get("value")) ) {';
 					$colScript .= '   setProductValueFromVersion("'.$varProd.'",this.value);';
 					$colScript .= '}';
@@ -3115,7 +3128,9 @@ abstract class SqlElement {
 					if (self::is_a($this,'Version')) {
 					  $crit=null;
 					  $where="(1=1";
-					  $arrayVersion=array('idVersion', 'idTargetVersion', 'idOriginalVersion');
+					  $arrayVersion=array('idVersion', 
+					      'idTargetVersion','idTargetProductVersion','idTargetComponentVersion', 
+					      'idOriginalVersion','idOriginalProductVersion','idOriginalComponentVersion');
 					  foreach ($arrayVersion as $vers) {
   					  if (property_exists($obj, $vers)) {
   					    $where.=" or ".$obj->getDatabaseColumnName($vers)."=".$this->id;

@@ -747,7 +747,17 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if (strpos($obj->getFieldAttributes($col), 'title') !== false) {
         $attributes.=' title="' . $obj->getTitle($col) . '"';
       }
-      
+      if ($col=='idComponent' or $col=='idComponentVersion' or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion') {
+        if (Component::canViewComponentList()!='YES') {
+          $hide=true;
+        }
+      }
+      /*if ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion') {
+        if (Component::canViewComponentList()!='YES' and $val) {
+          $vers=new Version($val);
+          if ($vers->scope=='Component') $hide=true;
+        }
+      }*/
       if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
         $attributes.=' readonly tabindex="-1"';
         $readOnly=true;
@@ -1336,6 +1346,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             or $col == 'idComponent' or $col == 'idProductOrComponent' 
             or $col == 'idProductVersion' or $col == 'idComponentVersion'
             or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
+            or $col == 'idOriginalProductVersion' or $col == 'idTargetProductVersion'
+            or $col == 'idOriginalComponentVersion' or $col == 'idTargetComponentVersion' 
             or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' 
             or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
@@ -1374,11 +1386,17 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         // if version and idProduct exists and is set : criteria is product
         if ((isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) 
-        and ($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion' or $col=='idTestCase' or ($col=='idRequirement' and $obj->idProductOrComponent))) {
-          if (isset($obj->idProduct)) {
+        and ($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion' 
+            or $col=='idOriginalVersion' or $col=='idTargetVersion'
+            or $col=='idOriginalProductVersion' or $col=='idTargetProductVersion'
+            or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion' 
+            or $col=='idTestCase' or ($col=='idRequirement' and (isset($obj->idProductOrComponent) or isset($obj->idProduct) )))) {
+          if (isset($obj->idProduct) and ($col=='idVersion' or $col=='idTargetVersion' or $col=='idProductVersion'
+                                       or $col=='idOriginalProductVersion' or $col=='idTargetProductVersion' or $col=='idRequirement')) {
             $critFld='idProduct';
             $critVal=$obj->idProduct;
-          } else if (isset($obj->idComponent)) { 
+          } else if (isset($obj->idComponent) and ($col=='idComponentVersion'
+                                       or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion' )) { 
             $critFld='idProduct';
             $critVal=$obj->idComponent;
           } else if (isset($obj->idProductOrComponent)) {
@@ -1438,7 +1456,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $hasOtherVersion=false;
         $versionType='';
         $otherVersion='';
-        if (substr($col, 7) == 'Version' or ($col == 'idOriginalVersion' and isset($obj->_OtherOriginalVersion)) or ($col == 'idTargetVersion' and isset($obj->_OtherTargetVersion))) {
+        if (substr($col, 7) == 'Version' 
+            or (($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalTargetVersion') and isset($obj->_OtherOriginalVersion) ) 
+            or (($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion') and isset($obj->_OtherTargetVersion) ) ) {
           $versionType=substr($col, 2);
           $otherVersion='_Other' . $versionType;
           if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {

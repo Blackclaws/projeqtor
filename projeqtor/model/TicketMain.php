@@ -49,10 +49,10 @@ class TicketMain extends SqlElement {
   public $idContext2;
   public $idContext3;
   public $idProduct;
-  //public $idProduct;
   public $idComponent;
-  public $idOriginalVersion;
+  public $idOriginalProductVersion;
   public $_OtherOriginalVersion=array();
+  public $idOriginalComponentVersion;
   public $description;
   public $_sec_treatment;
   public $idActivity;
@@ -72,8 +72,9 @@ class TicketMain extends SqlElement {
   public $idleDateTime;
   public $cancelled;
   public $_lib_cancelled;
-  public $idTargetVersion;
+  public $idTargetProductVersion;
   public $_OtherTargetVersion=array();
+  public $idTargetComponentVersion;
   public $result;
   public $_sec_Link;
   public $_Link=array();
@@ -92,7 +93,7 @@ class TicketMain extends SqlElement {
     <th field="colorNamePriority" width="7%" formatter="colorNameFormatter">${idPriority}</th>
     <th field="colorNameStatus" width="7%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="actualDueDateTime" width="7%" formatter="dateTimeFormatter">${actualDueDateTime}</th>
-    <th field="nameTargetVersion" width="7%" >${targetVersion}</th>
+    <th field="nameTargetProductVersion" width="7%" >${idTargetProductVersion}</th>
     <th field="nameResource" formatter="thumbName22" width="10%">${responsible}</th>
     <th field="handled" width="3%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="3%" formatter="booleanFormatter" >${done}</th>

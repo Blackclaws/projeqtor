@@ -552,7 +552,8 @@
     					$class=substr($arrayFields[strtolower($id)], 2);
     					if (ucfirst($class)==$class) {
     						$foreign=true;
-    						if ($class=="TargetVersion" or $class=="OriginalVersion") $class='Version';
+    						if ($class=="TargetVersion" or $class=="TargetProductVersion" or $class=="TargetComponentVersion"
+    						 or $class=="OriginalVersion" or $class=="OriginalProductVersion" or $class=="OriginalComponentVersion") $class='Version';
     						if ($exportReferencesAs=='name') {
     					    $val=SqlList::getNameFromId($class, $val);
     						}

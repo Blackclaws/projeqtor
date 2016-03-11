@@ -299,7 +299,25 @@
               </td>
             </tr>
             <?php }
-      // Initial Due Date
+         // Product Target Version
+             if (isDisplayable($obj,'idTargetProductVersion')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetVersion');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idTargetProductVersion" name="idTargetProductVersion">
+                 <?php htmlDrawOptionForReference('idTargetProductVersion', null, null, false);?>
+                </select>
+                <button id="targetProductVersionButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idTargetProductVersion",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <?php }
+       // Initial Due Date
             if (isDisplayable($obj,'initialDueDate')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDate');?>&nbsp;:&nbsp;</td>
