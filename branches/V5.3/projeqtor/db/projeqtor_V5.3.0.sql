@@ -47,11 +47,18 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 146, 0);
 
 ALTER TABLE `${prefix}ticket` ADD `idComponent` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}ticket` SET `idComponent`=`idProduct`, `idProduct`=null
+WHERE `idProduct` in (SELECT id from `${prefix}product` WHERE `scope`='Component');
+
 ALTER TABLE `${prefix}activity` ADD `idComponent` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}activity` ADD `idProduct` int(12) unsigned DEFAULT NULL;
 
-UPDATE `${prefix}ticket` SET `idComponent`=`idProduct`, `idProduct`=null
-WHERE `idProduct` in (SELECT id from `${prefix}product` WHERE `scope`='Component');
-UPDATE `${prefix}activity` SET `idComponent`=`idProduct`, `idProduct`=null
-WHERE `idProduct` in (SELECT id from `${prefix}product` WHERE `scope`='Component');
+ALTER TABLE `${prefix}ticket` CHANGE `idOriginalVersion` `idOriginalProductVersion` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}ticket` CHANGE `idVersion` `idTargetProductVersion` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}ticket` ADD `idOriginalComponentVersion` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}ticket` ADD `idTargetComponentVersion` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}ticket` SET `idOriginalComponentVersion`=`idOriginalProductVersion`, `idOriginalProductVersion`=null
+WHERE `idOriginalProductVersion` in (SELECT id from `${prefix}version` WHERE `scope`='Component');
+UPDATE `${prefix}ticket` SET `idTargetComponentVersion`=`idTargetProductVersion`, `idTargetProductVersion`=null
+WHERE `idTargetProductVersion` in (SELECT id from `${prefix}version` WHERE `scope`='Component');
 

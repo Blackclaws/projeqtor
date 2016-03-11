@@ -77,6 +77,7 @@ class TicketSimpleMain extends Ticket {
     "result"=>"readonly",
     "idTargetVersion"=>"readonly",
 	"idOriginalVersion"=>"",
+  "idComponent"=>"hidden",
     "WorkElement"=>"hidden", "_Link"=>"hidden"
   );  
     

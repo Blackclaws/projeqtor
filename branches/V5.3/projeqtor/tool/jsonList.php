@@ -179,7 +179,9 @@ scriptLog('   ->/tool/jsonList.php');
         }
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $critField=$_REQUEST['critField'];
-        if (($dataType=='idVersion' or $dataType=='idOriginalVersion' or $dataType=='idTargetVersion') 
+        if (($dataType=='idVersion' or $dataType=='idProductVersion' or $dataType=='idComponentVersion' 
+          or $dataType=='idOriginalVersion' or $dataType=='idOriginalProductVersion' or $dataType=='idOriginalComponentVersion'
+          or $dataType=='idTargetVersion' or $dataType=='idTargetProductVersion' or $dataType=='idTargetComponentVersion') 
         and ($critField=='idProductOrComponent' or $critField=='idComponent')) {
           $critField='idProduct';
         }

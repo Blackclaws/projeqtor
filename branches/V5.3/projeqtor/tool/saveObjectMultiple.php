@@ -93,6 +93,11 @@ $idTargetVersion="";
 if (array_key_exists('idTargetVersion',$_REQUEST)) {
   $idTargetVersion=trim($_REQUEST['idTargetVersion']);
 }
+$idTargetProductVersion="";
+if (array_key_exists('idTargetProductVersion',$_REQUEST)) {
+  $idTargetProductVersion=trim($_REQUEST['idTargetProductVersion']);
+}
+
 $initialDueDate="";
 if (array_key_exists('initialDueDate',$_REQUEST)) {
 	$initialDueDate=trim($_REQUEST['initialDueDate']);
@@ -190,6 +195,9 @@ foreach ($selectList as $id) {
   if ($idTargetVersion and property_exists($item,'idTargetVersion')) {
     $item->idTargetVersion=$idTargetVersion;
   } 
+  if ($idTargetProductVersion and property_exists($item,'idTargetProductVersion')) {
+    $item->idTargetProdutctVersion=$idTargetProductVersion;
+  }
   if ($initialDueDate and property_exists($item,'initialDueDate')) {
   	$item->initialDueDate=$initialDueDate;
   }

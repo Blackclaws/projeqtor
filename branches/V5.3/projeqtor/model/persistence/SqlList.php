@@ -157,7 +157,9 @@ class SqlList {
     }
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
     $query.=(! $showIdle and property_exists($obj, 'idle'))?' and idle=0 ':'';
-    if (($listType=='Version' or $listType=='TargetVersion' or $listType=='OriginalVersion') and $criteria) {
+    if (($listType=='Version' 
+        or $listType=='TargetVersion' or $listType=='TargetProductVersion' or $listType=='TargetComponentVersion'
+        or $listType=='OriginalVersion' or $listType=='OriginalProductVersion' or $listType=='OriginalComponentVersion') and $criteria) {
       foreach($criteria as $key=>$val) {
         if ($key=='idComponent' or $key=='idProductOrComponent') {
           unset($criteria[$key]);
@@ -172,7 +174,9 @@ class SqlList {
         $user=new Resource();
         if ($val=='*' or ! $val) {$val=0;}
         $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject=" . Sql::fmtId($val) . " and a.idResource=" . $user->getDatabaseTableName() . ".id)";
-      } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion' or strtolower($listType)=='targetversion') and $col=='idProject') {
+      } else if ((strtolower($listType)=='version' 
+          or strtolower($listType)=='originalversion' or strtolower($listType)=='originalproductversion' or strtolower($listType)=='originalcomponentversion' 
+          or strtolower($listType)=='targetversion' or strtolower($listType)=='targetproductversion' or strtolower($listType)=='targetcomponentversion') and $col=='idProject') {
       	$vp=new VersionProject();
         $ver=new Version();
         $proj=new Project($val);
@@ -233,6 +237,8 @@ class SqlList {
         }
         if ($displayCol=='name' and property_exists($obj,'_constructForName') and !$calculated ) {
         	if ($listType=='TargetVersion') $listType='OriginalVersion';
+        	if ($listType=='TargetProductVersion') $listType='OriginalProductVersion';
+        	if ($listType=='TargetComponentVersion') $listType='OriginalComponentVersion';
           $nameObj=new $listType($line['id']);
           if ($nameObj->id) {
             $name=$nameObj->name;
