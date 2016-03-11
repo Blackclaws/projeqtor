@@ -50,9 +50,9 @@ class TicketMain extends SqlElement {
   public $idContext3;
   public $idProduct;
   //public $idProduct;
+  public $idComponent;
   public $idOriginalVersion;
   public $_OtherOriginalVersion=array();
-  public $idComponent;
   public $description;
   public $_sec_treatment;
   public $idActivity;

@@ -801,6 +801,25 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
     return $color;
   }
+  
+  public static function getTemplateList() {
+    $result=array();
+    $types=SqlList::getListWithCrit('ProjectType',array('code'=>'TMP'));
+    foreach($types as $typId=>$typName) {
+      $projects=SqlList::getListWithCrit('Project', array('idProjectType'=>$typId));
+      $result=array_merge_preserve_keys($result,$projects);
+    }
+    return $result;
+  }
+  public static function getTemplateInClauseList() {
+    $list=self::getTemplateList();
+    $in='(0';
+    foreach ($list as $id=>$name) {
+      $in.=','.$id;
+    }
+    $in.=')';
+    return $in;
+  }
 
   
 }

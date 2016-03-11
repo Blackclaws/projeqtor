@@ -1634,9 +1634,10 @@ function countSelectedItem(gridName) {
  * @return void
  */
 var gridReposition=false;
-function selectRowById(gridName, id) {
+function selectRowById(gridName, id, tryCount) {
+  if (!tryCount) tryCount=0;
   var grid = dijit.byId(gridName); // if the element is not a widget, exit.
-  if ( ! grid) { 
+  if ( ! grid || ! id) { 
     return;
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
@@ -1646,16 +1647,44 @@ function selectRowById(gridName, id) {
   }
   var nbRow=grid.rowCount;
   gridReposition=true;
+  var j=-1;
   dojo.forEach(grid.store._getItemsArray(), 
     function(item, i){ 
-      //itemId=item.id;
       if (item && item.id==id) {
-        var j=grid.getItemIndex(item);
-        if (j==-1) j=grid.rowCount-1;
-        grid.selection.setSelected(j,true);
-        first=grid.scroller.firstVisibleRow;
-        last=grid.scroller.lastVisibleRow;
-        if (j<first || j>last) grid.scrollToRow(j);
+        var j=grid.getItemIndex(item); // if item is in the page, will find quickly
+        if (j==-1) { // not found : must search      
+          if (grid.getSortIndex()==-1) { // No sort so order in grid is same as order in store
+            grid.selection.setSelected(i,true);
+          } else {
+            tryCount++;
+            if (tryCount<=3) {
+              setTimeout("selectRowById('"+gridName+"', "+id+","+tryCount+");",100);
+            } else {
+              var indexLength = grid._by_idx.length; 
+              var element = null; 
+              for (var x = 0; x< indexLength; x++) { 
+                element = grid._by_idx[x]; 
+                if (parseInt(element.item.id) == id) { 
+                  grid.selection.setSelected(x,true);
+                  break;          
+                } 
+              }
+            }
+            /*if (1 || j==-1) {
+              for (var i=0;i<nbRow;i++) {
+                var item=grid.getItem(i);
+                if (parseInt(item.id)==id) {
+                  grid.selection.setSelected(i,true);
+                }
+              }
+            }*/
+          }
+        } else {
+          grid.selection.setSelected(j,true);
+        }
+        //first=grid.scroller.firstVisibleRow;  // Remove the scroll : will be a mess when dealing with many items and order of item changes
+        //last=grid.scroller.lastVisibleRow;
+        //if (j<first || j>last) //grid.scrollToRow(j); 
         gridReposition=false;
         return;
       }
@@ -1667,7 +1696,7 @@ function selectPlanningRow() {
 	setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
 }
 function selectGridRow() {
-  setTimeout("selectRowById('objectGrid',dojo.byId('objectId').value);",50);
+  setTimeout("selectRowById('objectGrid',dojo.byId('objectId').value);",100);
 }
 
 /**
@@ -2784,12 +2813,10 @@ function connect(resetPassword) {
       url: '../tool/getHash.php?username='+encodeURIComponent(crypted),
       handleAs: "text",
       load: function (data) {
-        console.log(data);
         if (data.substr(0,5)=="ERROR") {
           showError(data.substr(5));
         } else if (data.substr(0,7)=="SESSION") {         
           getHashTry++;
-          console.log(getHashTry);
           if (getHashTry>1) {
             showError(i18n('errorSessionHash'));
             getHashTry=0;

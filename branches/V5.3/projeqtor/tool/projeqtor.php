@@ -933,7 +933,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   require_once '../external/PHPMailer/class.smtp.php';
   $phpmailer = new PHPMailer ();
   ob_start ();
-  // $phpmailer->SMTPDebug=1;
+  if ($logLevel>='3') $phpmailer->SMTPDebug=1;
   $phpmailer->isSMTP (); // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer; // Specify main smtp server
   $phpmailer->Port = $paramMailSmtpPort;
