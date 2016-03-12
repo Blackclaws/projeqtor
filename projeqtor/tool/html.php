@@ -96,18 +96,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $list=SqlList::getListWithCrit('Version',$crit);
       $table=array_merge_preserve_keys($table,$list);
     }  
-    if ($selection) {
-      $table[$selection]=SqlList::getNameFromId('Version', $selection);
-    }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }
-    if ($selection) {
-      $table[$selection]=SqlList::getNameFromId('ProductOrComponent', $selection);
-    }      
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
@@ -273,8 +267,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
         $wbsLevelArray[$wbs]=$level;
         $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
-        //$levelWidth = ($level-1) * 2;
-        //$sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
         $val = $sep.$val;
       }
       if ($col=='idResource') {
@@ -293,7 +285,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       echo '><span >'. htmlEncode($val) . '</span></OPTION>';
     }
   }
-  // This function is not ecpected to return value, but is used to return next value (for status)
+  // This function is not expected to return value, but is used to return next value (for status)
   return $next;
 }
 
