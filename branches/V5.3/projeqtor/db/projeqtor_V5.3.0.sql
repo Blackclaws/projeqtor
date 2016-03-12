@@ -62,3 +62,13 @@ WHERE `idOriginalProductVersion` in (SELECT id from `${prefix}version` WHERE `sc
 UPDATE `${prefix}ticket` SET `idTargetComponentVersion`=`idTargetProductVersion`, `idTargetProductVersion`=null
 WHERE `idTargetProductVersion` in (SELECT id from `${prefix}version` WHERE `scope`='Component');
 
+DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('Ticket');
+
+UPDATE `${prefix}otherversion` SET `scope`='OriginalProductVersion'
+WHERE `scope` in ('OriginalVersion', 'Version') and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Product');
+UPDATE `${prefix}otherversion` SET `scope`='TargetProductVersion'
+WHERE `scope`='TargetVersion' and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Product');
+UPDATE `${prefix}otherversion` SET `scope`='OriginalComponentVersion'
+WHERE `scope` in ('OriginalVersion', 'Version') and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Component');
+UPDATE `${prefix}otherversion` SET `scope`='TargetComponentVersion'
+WHERE `scope`='TargetVersion' and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Component');

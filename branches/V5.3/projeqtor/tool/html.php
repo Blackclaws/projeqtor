@@ -96,11 +96,17 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $list=SqlList::getListWithCrit('Version',$crit);
       $table=array_merge_preserve_keys($table,$list);
     }  
+    if ($selection) {
+      $table[$selection]=SqlList::getNameFromId('Version', $selection);
+    }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
+    }
+    if ($selection) {
+      $table[$selection]=SqlList::getNameFromId('ProductOrComponent', $selection);
     }      
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
@@ -253,7 +259,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   $selectedFound=false;
   $next="";
   foreach($table as $key => $val) {
-    if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
+    if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) or $key==$selection) ) {
       if ($col=="idProject" and $sepChar!='no') {
         $wbs=$wbsList[$key];
         $wbsTest=$wbs;
