@@ -1338,7 +1338,7 @@ function addOtherVersion(versionType) {
   dojo.byId("otherVersionRefType").value=objectClass;
   dojo.byId("otherVersionRefId").value=objectId;
   dojo.byId("otherVersionType").value=versionType;
-  refreshOtherVersionList();
+  refreshOtherVersionList(null);
   dijit.byId("dialogOtherVersion").show();
   disableWidget('dialogOtherVersionSubmit');
 }
@@ -1416,7 +1416,13 @@ function showDetailOtherVersion() {
   if (canCreateArray['Version'] == "YES") {
     canCreate=1;
   }
-  showDetail('otherVersionIdVersion', canCreate, 'Version', true);
+  var versionType='Version';
+  if (dojo.byId("otherVersionType")) {
+    var typeValue=dojo.byId("otherVersionType").value;
+    if (typeValue.substr(-16)=='ComponentVersion') versionType='ComponentVersion';
+    else if (typeValue.substr(-14)=='ProductVersion') versionType='ProductVersion';
+  }
+  showDetail('otherVersionIdVersion', canCreate, versionType, true);
 }
 // =============================================================================
 // = Approvers

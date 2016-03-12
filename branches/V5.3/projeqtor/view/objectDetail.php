@@ -1456,8 +1456,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $versionType='';
         $otherVersion='';
         if (substr($col, 7) == 'Version' 
-            or (($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion') and isset($obj->_OtherOriginalVersion) ) 
-            or (($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion') and isset($obj->_OtherTargetVersion) ) ) {
+            or ($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion' ) 
+            or ($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion' )  ) {
           $versionType=substr($col, 2);
           $otherVersion='_Other' . $versionType;
           if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {

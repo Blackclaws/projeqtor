@@ -37,6 +37,7 @@ $refId=$_REQUEST['otherVersionRefId'];
 $versionType=$_REQUEST['otherVersionType'];
 Security::checkValidClass($versionType);
 
+
 //otherVersionId
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
@@ -55,24 +56,30 @@ if (property_exists($refType, "idProject")) {
 if (property_exists($refType, "idProject")) {
   $proj=$obj->idProject;
 }
+
+$versionObjet='Version';
+if (substr($versionType,-16)=='ComponentVersion') $versionObjet='ComponentVersion';
+else if (substr($versionType,-14)=='ProductVersion') $versionObjet='ProductVersion';
+
 $varProd='idProduct';
-if (property_exists($refType, "idProduct")) {
+if (property_exists($refType, "idProduct") and $versionObjet=='ProductVersion') {
   $prod=$obj->idProduct;
   $varProd='idProduct';
+} else if (property_exists($refType, "idComponent") and $versionObjet=='ComponentVersion') {
+  $prod=$obj->idComponent;
+  $varProd='idComponent';
 } else if (property_exists($refType, "idProductOrComponent")) {
   $prod=$obj->idProductOrComponent;
   $varProd='idProductOrComponent';
-} else if (property_exists($refType, "idComponent")) {
-  $prod=$obj->idComponent;
-  $varProd='idComponent';
 }
 $crit=array();
 if ($prod) {
   $crit=array( $varProd=>$prod);
 } else if ($proj) { 
 	$crit=array( 'idProject'=>$proj);
-}  
-$list=SqlList::getListWithCrit('Version', $crit);
+}
+
+$list=SqlList::getListWithCrit($versionObjet, $crit);
 ?>
 <select id="otherVersionIdVersion" size="14"" name="otherVersionIdVersion[]" multiple
 onchange="selectOtherVersionItem();"  ondblclick="saveOtherVersion();"
