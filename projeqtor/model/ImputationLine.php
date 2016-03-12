@@ -516,12 +516,12 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		  echo '<div dojoType="dijit.layout.ContentPane" region="top" style="overflow-y: scroll; height: auto;">';
 		}
 		echo '<table class="imputationTable" style="width:100%">';
-		echo '<TR class="ganttHeight">';
-		echo '<td class="label" ><label for="imputationComment" >'.i18n("colComment").'&nbsp;:&nbsp;</label></td>';
+				echo '<TR class="ganttHeight">';
+		echo '<td class="label" style="width:10%"><label for="imputationComment" >'.i18n("colComment").'&nbsp;:&nbsp;</label></td>';
 		if (! $print) {
-		echo '<td><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
+		echo '<td style="width:90%"><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
 		           .' onChange="formChanged();"'
-               .' style="width: '.$width.'px;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.htmlEncode($period->comment).'</textarea></td>';
+               .' style="width: 99%;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.htmlEncode($period->comment).'</textarea></td>';
 		} else {
 			echo htmlEncode($period->comment,'print');
 		}

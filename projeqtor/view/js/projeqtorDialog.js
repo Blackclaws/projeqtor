@@ -1629,7 +1629,7 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
       if (rawUnit == 'hours') {
         // OK
       } else {
-        delay=Math.round(delay / hoursPerDay * 100) / 100;
+        delay=Math.round(delay / hoursPerDay * 1000) / 1000;
       }
       dijit.byId("assignmentAssignedWork").set('value', delay);
       dijit.byId("assignmentPlannedWork").set('value', delay);
