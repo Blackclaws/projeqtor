@@ -86,24 +86,33 @@ $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $
 $scope=new AccessScope($habilitation->rightAccess);
 $code=$scope->accessCode;
 foreach($arrayWork as $key=>$work) {
-  $cpt++;?>
-  
+  $cpt++;
+  $readOnly=false;
+  if ($code!='PRO' and $code!='ALL' and $work['idResource'] and $work['idResource']!=$user->id) {
+    $readOnly=true;
+  }?>
 <tr>
  <td>
  <input type="hidden" name="dispatchWorkId[]" value="<?php echo $work['id'];?>" />
  <div id="dispatchWorkDate_<?php echo $cpt;?>" name="dispatchWorkDate[]"
            dojoType="dijit.form.DateTextBox" invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
+           <?php if ($readOnly) echo 'readonly';?>
            type="text" maxlength="10" style="width:100px; text-align: center;" class="input"
            hasDownArrow="true" constraints="{datePattern:'<?php echo $_SESSION['browserLocaleDateFormatJs'];?>'}"
            value="<?php echo $work['date']?>"></div></td>
  <td>&nbsp;</td>
  <td><select dojoType="dijit.form.FilteringSelect" class="input" style="width:150px;"
+      <?php if ($readOnly) echo 'readonly';?>
       id="dispatchWorkResource_<?php echo $cpt;?>" name="dispatchWorkResource[]">
      <?php 
      if ($code=="PRO" or $code=="ALL") {
         htmlDrawOptionForReference('idResource', $work['idResource'], $obj, false, 'idProject', $obj->idProject);
      } else {
-       echo '<OPTION value="'.htmlEncode($user->id).'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';    
+       if ($readOnly) {
+         echo '<OPTION value="'.htmlEncode($work['idResource']).'">'.SqlList::getNameFromId('User', $work['idResource']).'</OPTION>';
+       } else {
+         echo '<OPTION value="'.htmlEncode($user->id).'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';
+       }    
      }?>
      </select>
  </td>
@@ -111,6 +120,7 @@ foreach($arrayWork as $key=>$work) {
  <td style="word-space:nowrap;width:52px">
    <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayImputation($work['work'])?>"
     onchange="updateDispatchWorkTotal();" name="dispatchWorkValue[]" 
+    <?php if ($readOnly) echo 'readonly';?>
     id="dispatchWorkValue_<?php echo $cpt;?>">
     <?php echo $keyDownEventScript;?>  
      </div></td>
