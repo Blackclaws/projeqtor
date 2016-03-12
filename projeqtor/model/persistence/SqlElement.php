@@ -2591,7 +2591,7 @@ abstract class SqlElement {
 					if (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent')) {
 					  $varProd='idProduct';
 					  if (property_exists($this,'idProductOrComponent')) $varProd='idProductOrComponent';
-					  else if (property_exists($this,'idComponent')) $varProd='idComponent';
+					  else if (property_exists($this,'idComponent') and $this->idComponent) $varProd='idComponent';
 						$colScript .="    var idProduct=trim(dijit.byId('".$varProd."').get('value'));";
 						$colScript .= '   if (idProduct) {';
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$varProd.'", idProduct);':'';}
@@ -2606,6 +2606,16 @@ abstract class SqlElement {
 				  $varProd='idProduct';
 				  if ($colName=='idProductOrComponent') $varProd='idProductOrComponent';
 				  else if ($colName=='idComponent') $varProd='idComponent';
+				  if ($colName=='idProduct') {
+				    $arrVers=array('idVersion', 'idProductVersion',
+				        'idOriginalVersion','idOriginalProductVersion',
+				        'idTargetVersion','idTargetProductVersion',
+				        'idTestCase','idRequirement');
+				  } else if ($colName=='idComponent') {
+				    $arrVers=array('idComponentVersion',
+				        'idOriginalComponentVersion',
+				        'idTargetComponentVersion');
+				  }
 					if (property_exists($this,'idProject')) {
 						$colScript .= '   if (trim(this.value)) {';
 						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$colName.'", this.value);':'';}

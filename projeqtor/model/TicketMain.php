@@ -51,8 +51,9 @@ class TicketMain extends SqlElement {
   public $idProduct;
   public $idComponent;
   public $idOriginalProductVersion;
-  public $_OtherOriginalVersion=array();
+  public $_OtherOriginalProductVersion=array();
   public $idOriginalComponentVersion;
+  public $_OtherOriginalComponentVersion=array();
   public $description;
   public $_sec_treatment;
   public $idActivity;
@@ -73,8 +74,9 @@ class TicketMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   public $idTargetProductVersion;
-  public $_OtherTargetVersion=array();
+  public $_OtherTargetProductVersion=array();
   public $idTargetComponentVersion;
+  public $_OtherTargetComponentVersion=array();
   public $result;
   public $_sec_Link;
   public $_Link=array();

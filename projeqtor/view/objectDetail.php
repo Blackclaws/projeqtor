@@ -89,8 +89,7 @@ if ($noselect) {
     exit();
   }
   if (array_key_exists('refreshVersionProject', $_REQUEST)) {
-
-    FromObjectFromObject($obj->$_VersionProject, $obj, true);
+    drawVersionProjectsFromObject($obj->$_VersionProject, $obj, true);
     exit();
   }
   if (array_key_exists('refreshDocumentVersion', $_REQUEST)) {
@@ -1457,7 +1456,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $versionType='';
         $otherVersion='';
         if (substr($col, 7) == 'Version' 
-            or (($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalTargetVersion') and isset($obj->_OtherOriginalVersion) ) 
+            or (($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion') and isset($obj->_OtherOriginalVersion) ) 
             or (($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion') and isset($obj->_OtherTargetVersion) ) ) {
           $versionType=substr($col, 2);
           $otherVersion='_Other' . $versionType;
@@ -1480,6 +1479,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $attributes;
         echo $valStore;
         echo ' >';      
+        debugLog("htmlDrawOptionForReference($col, $val, object, $isRequired, $critFld, $critVal)");
         $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
         echo $colScript;
         echo '</select>';
