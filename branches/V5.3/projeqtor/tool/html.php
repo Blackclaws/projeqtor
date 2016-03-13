@@ -40,6 +40,20 @@ require_once "../tool/projeqtor.php";
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
+	if (is_array($critFld)) {
+	  foreach ($critFld as $tempId=>$tempCrt) {
+	    $crtName='critFld'.$tempId;
+	    $$crtName=$tempCrt;
+	  }
+	  $critFld=$critFld[0];
+	}
+	if (is_array($critVal)) {
+	  foreach ($critVal as $tempId=>$tempVal) {
+	    $valName='critVal'.$tempId;
+	    $$valName=$tempVal;
+	  }
+	  $critVal=$critVal[0];
+	}
   if ($col=='planning') {
     $listType='Project';
   } else {
@@ -211,6 +225,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if (substr($col,-16)=='ComponentVersion' and $critFld=='idProductVersion' and $critVal) {
       $prodVers=new ProductVersion($critVal);
       $table=$prodVers->getComposition(true,true);
+      if (isset($critFld1) and isset($critVal1) and $critFld1=='idComponent') {
+        $listVers=SqlList::getListWithCrit('ComponentVersion', array('idComponent'=>$critVal1));
+        $table=array_intersect_assoc($table,$listVers);
+      }
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId('ComponentVersion', $selection);
       }
