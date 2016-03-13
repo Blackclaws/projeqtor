@@ -62,7 +62,7 @@ WHERE `idOriginalProductVersion` in (SELECT id from `${prefix}version` WHERE `sc
 UPDATE `${prefix}ticket` SET `idTargetComponentVersion`=`idTargetProductVersion`, `idTargetProductVersion`=null
 WHERE `idTargetProductVersion` in (SELECT id from `${prefix}version` WHERE `scope`='Component');
 
-DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('Ticket');
+DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('Ticket','Activity','Milestone','Requirement');
 
 UPDATE `${prefix}otherversion` SET `scope`='OriginalProductVersion'
 WHERE `scope` in ('OriginalVersion', 'Version') and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Product');
@@ -72,3 +72,12 @@ UPDATE `${prefix}otherversion` SET `scope`='OriginalComponentVersion'
 WHERE `scope` in ('OriginalVersion', 'Version') and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Component');
 UPDATE `${prefix}otherversion` SET `scope`='TargetComponentVersion'
 WHERE `scope`='TargetVersion' and idVersion in (SELECT id from `${prefix}version` WHERE `scope`='Component');
+
+INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES 
+(1,'viewComponents','1'),
+(2,'viewComponents','1'),
+(3,'viewComponents','1'),
+(4,'viewComponents','1'),
+(6,'viewComponents','2'),
+(7,'viewComponents','2'),
+(5,'viewComponents','2');

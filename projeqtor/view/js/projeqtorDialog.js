@@ -32,7 +32,13 @@
 // =============================================================================
 var filterType="";
 var closeFilterListTimeout;
+var openFilterListTimeout;
 var closeFavoriteReportsTimeout;
+var openFavoriteReportsTimeout=null;
+var popupOpenDelay=200;
+var closeMenuListTimeout=null;
+var openMenuListTimeout=null;
+var menuListAutoshow=false;
 // =============================================================================
 // = Wait spinner
 // =============================================================================
@@ -1643,7 +1649,7 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
       if (rawUnit == 'hours') {
         // OK
       } else {
-        delay=Math.round(delay / hoursPerDay * 100) / 100;
+        delay=Math.round(delay / hoursPerDay * 1000) / 1000;
       }
       dijit.byId("assignmentAssignedWork").set('value', delay);
       dijit.byId("assignmentPlannedWork").set('value', delay);
@@ -6175,12 +6181,14 @@ function showReportFavoriteTooltip() {
     return;
   }
   clearTimeout(closeFavoriteReportsTimeout);
-  dijit.byId('listFavoriteReports').openDropDown(); 
+  clearTimeout(openFavoriteReportsTimeout);
+  openFavoriteReportsTimeout=setTimeout("dijit.byId('listFavoriteReports').openDropDown();",popupOpenDelay);
 }
 
 function hideReportFavoriteTooltip(delay) {
   if (!dijit.byId("listFavoriteReports")) return;
   clearTimeout(closeFavoriteReportsTimeout);
+  clearTimeout(openFavoriteReportsTimeout);
   closeFavoriteReportsTimeout=setTimeout('dijit.byId("listFavoriteReports").closeDropDown();',delay);
 }
 
@@ -6230,17 +6238,17 @@ function showTickets(refType, refId) {
   loadDialog('dialogShowTickets', null, true, '&refType='+refType+'&refId='+refId, true);
 }
 
-var closeMenuListTimeout=null;
-var menuListAutoshow=false;
 function showMenuList() {
   clearTimeout(closeMenuListTimeout);
   menuListAutoshow=true;
-  dijit.byId('menuSelector').loadAndOpenDropDown();
+  clearTimeout(openMenuListTimeout);
+  openMenuListTimeout=setTimeout("dijit.byId('menuSelector').loadAndOpenDropDown();",popupOpenDelay);
   
 }
 function hideMenuList(delay) {
   if (! menuListAutoshow) return;
   clearTimeout(closeMenuListTimeout);
+  clearTimeout(openMenuListTimeout);
   closeMenuListTimeout=setTimeout("dijit.byId('menuSelector').closeDropDown();",delay);
 }
 

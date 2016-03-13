@@ -122,7 +122,8 @@ if ($type=='habilitation') {
                                      'requirement'=>i18n('requirementUnlockRight'),
                                      'reportResourceAll'=>i18n('reportResourceAll'),
                                      'canForceDelete'=>i18n('canForceDelete'),
-                                     'canUpdateCreation'=>i18n('canUpdateCreationInfo')), 
+                                     'canUpdateCreation'=>i18n('canUpdateCreationInfo'), 
+                                     'viewComponents'=>i18n('viewComponents')),
                                'profile', 
                                'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {

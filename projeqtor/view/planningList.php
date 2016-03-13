@@ -62,8 +62,19 @@ if ($saveShowClosed) {
 }
 $automaticRunPlanning=Parameter::getUserParameter('automaticRunPlanning');
 
+$canPlan=false;
+$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
+if ($right) {
+  $list=new ListYesNo($right->rightAccess);
+  if ($list->code=='YES') {
+    $canPlan=true;
+  }
+}
 $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
-$canPlan=(count($plannableProjectsList)>0)?true:false;
+if ($canPlan) {
+  $canPlan=(count($plannableProjectsList)>0)?true:false;
+}
+
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>

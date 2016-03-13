@@ -326,8 +326,15 @@ class ComponentMain extends ProductOrComponent {
     return $result;
   }
   
-  public static function canViewComponentList() {
-    return securityGetAccessRightYesNo('menuComponent', 'read', null, null);
+  public static function canViewComponentList($obj=null) {
+    //return securityGetAccessRightYesNo('menuComponent', 'read', null, null);
+    $user=getSessionUser();
+    $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->getProfile($obj),'scope' => 'viewComponents'));
+    if ($habil) {
+      $list=new ListYesNo($habil->rightAccess);
+      return $list->code;
+    }
+    return 'NO';
   }
 
 }

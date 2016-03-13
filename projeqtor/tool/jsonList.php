@@ -135,7 +135,7 @@ scriptLog('   ->/tool/jsonList.php');
       	}
       } else if (($dataType=='idProduct' or $dataType=='idComponent' or $dataType=='idProductOrComponent') 
         and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
-      	if (trim($_REQUEST['critValue'])) {    	
+      	if (trim($_REQUEST['critValue']) and $_REQUEST['critField']=='idProject') {    	
 	        $list=array();
 	      	$listProd=SqlList::getList($class);
 	      	$versProj=new VersionProject();
@@ -156,6 +156,12 @@ scriptLog('   ->/tool/jsonList.php');
 	      			$list[$vers->idProduct]=$listProd[$vers->idProduct];	      			
 	      		}
 	      	}
+      	} else if (trim($_REQUEST['critValue']) and $_REQUEST['critField']=='idProduct') {
+      	    $prod=new Product($_REQUEST['critValue']);
+      	    $list=$prod->getComposition(true,true);
+      	    if ($selected) {
+      	      $list[$selected]=SqlList::getNameFromId('Component', $selected);
+      	    }
       	} else {
       		$list=SqlList::getList($class);
       	}
