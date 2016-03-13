@@ -2648,8 +2648,12 @@ abstract class SqlElement {
 				  foreach ($arrVersComp as $vers) {
 				    if (property_exists($this,$vers)) {
 				      $versProd=str_replace('Component', 'Product', $vers);
-				      $colScript.="if (dijit.byId('$versProd') && trim(dijit.byId('$versProd').get('value')) ) {";
-				      // Nothing
+				      $colScript.="if (dijit.byId('$versProd') && trim(dijit.byId('$versProd').get('value'))) {";
+				      $colScript.="  if (trim(this.value)) {";
+				      $colScript.="  refreshList('$vers','idProductVersion', dijit.byId('$versProd').get('value'), null, null,null,'idComponent',this.value);";
+				      $colScript.="  } else {";
+				      $colScript.="  refreshList('$vers','idProductVersion', dijit.byId('$versProd').get('value'));";
+				      $colScript.="  }";
 				      $colScript.="} else if (trim(this.value)) {";
 				      $colScript.="refreshList('$vers','idComponent', this.value);";
 				      $colScript.="} else {";
@@ -2664,7 +2668,13 @@ abstract class SqlElement {
 				  $versComp=str_replace('Product', 'Component', $colName);
 				  if (property_exists($this,$versComp)) {
 				    $colScript.="if (trim(this.value)) {";
-				    $colScript.="refreshList('$versComp','idProductVersion', this.value);";
+				    if (property_exists($this,'idComponent')) {
+				      $colScript.="  if (dijit.byId('idComponent') && trim(dijit.byId('idComponent').get('value')) ) {";
+				      $colScript.="refreshList('$versComp','idProductVersion', this.value, null, null, null,'idComponent', dijit.byId('idComponent').get('value'));";
+				      $colScript.=" } else {";
+				      $colScript.="refreshList('$versComp','idProductVersion', this.value);";
+				      $colScript.=" }";
+				    }
 				    if (property_exists($this,'idComponent')) {
 				      $colScript.="} else if (dijit.byId('idComponent') && trim(dijit.byId('idComponent').get('value')) ) {";
 				      $colScript.="refreshList('$versComp','idComponent', dijit.byId('idComponent').get('value'));";

@@ -29,7 +29,7 @@
  */
 
     require_once "../tool/projeqtor.php"; 
-scriptLog('   ->/tool/jsonList.php');  
+//scriptLog('   ->/tool/jsonList.php');  
     $type=$_REQUEST['listType']; // Note: checked against constant values.
     if (isset($_REQUEST['critField'])) {
       $field=$_REQUEST['critField'];
@@ -192,7 +192,11 @@ scriptLog('   ->/tool/jsonList.php');
           $critField='idProduct';
         }
         $crit=array( $critField => $_REQUEST['critValue']);
+        if (substr($dataType,-16)=='ComponentVersion' and isset($_REQUEST['critField1']) and isset($_REQUEST['critValue1'])) {
+          $crit[$_REQUEST['critField1']]=$_REQUEST['critValue1'];
+        }
         $list=SqlList::getListWithCrit($class, $crit);
+        
       } else {
         $list=SqlList::getList($class);        
       }
