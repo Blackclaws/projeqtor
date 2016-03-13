@@ -298,6 +298,16 @@ class ProductVersionMain extends Version {
     }
     return $result;
   }
+  
+  // Retrive composition in terms of component versions (will not retreive product versionss in the composition of the product version)
+  public function getComposition($withName=true,$reculsively=false) {
+    $result=array();
+    $list=ProductVersionStructure::getComposition($this->id,(($reculsively)?'all':1));
+    foreach ($list as $pvsSharp=>$pvs) {
+      $result[$pvs]=($withName)?SqlList::getNameFromId('ComponentVersion', $pvs):$pvs;
+    }
+    return $result;
+  }
 
 }
 ?>

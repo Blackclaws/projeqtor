@@ -1421,6 +1421,13 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $critVal=$obj->idProductOrComponent;
           }
         }
+        if (substr($col,-16)=='ComponentVersion') {
+          $prodVers=str_replace('Component','Product',$col);
+          if (property_exists($obj, $prodVers) and $obj->$prodVers) {
+            $critFld='idProductVersion';
+            $critVal=$obj->$prodVers;
+          }
+        }
         if (get_class($obj) == 'IndicatorDefinition') {
           if ($col == 'idIndicator') {
             $critFld='idIndicatorable';
