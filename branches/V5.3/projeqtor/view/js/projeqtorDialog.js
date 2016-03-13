@@ -4042,11 +4042,15 @@ function showHelp() {
 /**
  * Refresh a list (after update)
  */
-function refreshList(field, param, paramVal, selected, destination, required) {
+function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1) {
   var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
   if (param) {
     urlList+='&critField=' + param;
     urlList+='&critValue=' + paramVal;
+  }
+  if (param1) {
+    urlList+='&critField1=' + param1;
+    urlList+='&critValue1=' + paramVal1;
   }
   if (selected) {
     urlList+='&selected=' + selected;
