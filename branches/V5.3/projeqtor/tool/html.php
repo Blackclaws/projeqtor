@@ -208,6 +208,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId('Component', $selection);
       }
+    } else if (substr($col,-16)=='ComponentVersion' and $critFld=='idProductVersion' and $critVal) {
+      $prodVers=new ProductVersion($critVal);
+      $table=$prodVers->getComposition(true,true);
+      if ($selection) {
+        $table[$selection]=SqlList::getNameFromId('ComponentVersion', $selection);
+      }
     } else if ($col=='id'.$class.'Type' and $class!='Project' and property_exists($obj, 'idProject')) {
       if (! isset($idProject)) {
         if ($obj->idProject) {
