@@ -2569,7 +2569,11 @@ abstract class SqlElement {
 					$colScript .= '   refreshList("idProduct","idProject", this.value, dijit.byId("idProduct").get("value"));';
 				}
 				if ($colName=='idProject' and property_exists($this,'idComponent')) {
-				  $colScript .= '   refreshList("idComponent","idProject", this.value, dijit.byId("idComponent").get("value"));';
+				  $colScript .= '   if (dijit.byId("idProduct") && trim(dijit.byId("idProduct").get("value"))) {';
+				  //$colScript .= '     refreshList("idComponent","idProduct", dijit.byId("idProduct").get("value"), dijit.byId("idComponent").get("value"));';
+				  $colScript .= '   } else {';
+				  $colScript .= '     refreshList("idComponent","idProject", this.value, dijit.byId("idComponent").get("value"));';
+				  $colScript .= '   }';
 				}
 				if ($colName=='idProject' and property_exists($this,'idProductOrComponent')) {
 				  $colScript .= '   refreshList("idProductOrComponent","idProject", this.value, dijit.byId("idProductOrComponent").get("value"));';
@@ -2577,10 +2581,18 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'id'.get_class($this).'Type')) {
 				  $colScript .= '   refreshList("id'.get_class($this).'Type","idProject", this.value, dijit.byId("id'.get_class($this).'Type").get("value"),null,true);';
 				}
-				$arrVers=array('idVersion',
+				$arrVers=array('idVersion','idProductVersion',
 				    'idOriginalVersion','idOriginalProductVersion','idOriginalComponentVersion',
 				    'idTargetVersion','idTargetProductVersion','idTargetComponentVersion',
 				    'idTestCase','idRequirement');
+				$arrVersProd=array('idVersion','idProductVersion',
+				    'idOriginalVersion','idOriginalProductVersion',
+				    'idTargetVersion','idTargetProductVersion',
+				    'idTestCase','idRequirement');
+				$arrVersComp=array('idVersion','idComponentVersion',
+				    'idOriginalComponentVersion',
+				    'idTargetComponentVersion',
+				    );
 				$versionExists=false;
 				foreach ($arrVers as $vers) {
 					if (property_exists($this,$vers)) {
@@ -2588,59 +2600,89 @@ abstract class SqlElement {
 					}
 				}
 				if ($colName=='idProject' and $versionExists) {
-					if (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent')) {
-					  $varProd='idProduct';
-					  if (property_exists($this,'idProductOrComponent')) $varProd='idProductOrComponent';
-					  else if (property_exists($this,'idComponent') and $this->idComponent) $varProd='idComponent';
-						$colScript .="    var idProduct=trim(dijit.byId('".$varProd."').get('value'));";
-						$colScript .= '   if (idProduct) {';
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$varProd.'", idProduct);':'';}
-						$colScript .= '   } else {';
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", this.value);':'';}
-						$colScript .= '   }';
-					} else {
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", this.value);':'';}
-					}
-				}
-				if (($colName=='idProduct' or $colName=='idProductOrComponent' or $colName=='idComponent') and $versionExists) {
-				  $varProd='idProduct';
-				  if ($colName=='idProductOrComponent') $varProd='idProductOrComponent';
-				  else if ($colName=='idComponent') $varProd='idComponent';
-				  if ($colName=='idProduct') {
-				    $arrVers=array('idVersion', 'idProductVersion',
-				        'idOriginalVersion','idOriginalProductVersion',
-				        'idTargetVersion','idTargetProductVersion',
-				        'idTestCase','idRequirement');
-				  } else if ($colName=='idComponent') {
-				    $arrVers=array('idComponentVersion',
-				        'idOriginalComponentVersion',
-				        'idTargetComponentVersion');
+				  foreach ($arrVersComp as $vers) {
+				    if (property_exists($this,$vers)) {
+				      $versProd=str_replace('Component', 'Product', $vers);
+				      $colScript.="if (dijit.byId('$versProd') && trim(dijit.byId('$versProd').get('value')) ) {";
+				      //$colScript.="refreshList('$vers','$versProd', dijit.byId('$versProd').get('value'));";
+				      $colScript.=" } else if (dijit.byId('idComponent') && trim(dijit.byId('idComponent').get('value'))) {";
+				      //$colScript.="refreshList('$vers','idComponent', trim(dijit.byId('idComponent').get('value')));";
+				      $colScript.=" } else {";
+				      $colScript.="refreshList('$vers','idProject', this.value);";
+				      $colScript.=" }";
+				    }
 				  }
-					if (property_exists($this,'idProject')) {
-						$colScript .= '   if (trim(this.value)) {';
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","'.$colName.'", this.value);':'';}
-						$colScript .= '   } else {';
-						$colScript .="      var idProject=trim(dijit.byId('idProject').get('value'));";
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", idProject);':'';}
-						$colScript .= '   }';
-					} else {
-						foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", idProject);':'';}
-					}
-				}
-				if (($colName=='idVersion' 
-				    or $colName=='idOriginalVersion' or $colName=='idOriginalProductVersion' or $colName=='idOriginalComponentVersion' 
-				    or $colName=='idTargetVersion' or $colName=='idTargetProductVersion' or $colName=='idTargetComponentVersion')
-				and (property_exists($this,'idProduct') or property_exists($this,'idProductOrComponent') or property_exists($this,'idComponent'))) {
-				  $varProd='idProduct';
-				  if (property_exists($this,'idProductOrComponent')) {
-				    $varProd='idProductOrComponent';
-				  } else if (property_exists($this,'idComponent') 
-				   and ($colName=='idComponentVersion' or $colName=='idOriginalComponentVersion' or $colName=='idTargetComponentVersion')) {
-				    $varProd='idComponent';
+				  foreach ($arrVersProd as $vers) {
+				    if (property_exists($this,$vers)) {
+				      $colScript.=" if (dijit.byId('idProduct') && trim(dijit.byId('idProduct').get('value'))) {";
+				      //$colScript.="refreshList('$vers','idProduct', trim(dijit.byId('idProduct').get('value')));";
+				      $colScript.=" } else {";
+				      $colScript.="refreshList('$vers','idProject', this.value);";
+				      $colScript.=" }";
+				    }
 				  }
-					$colScript .= 'if (! trim(dijit.byId("'.$varProd.'").get("value")) ) {';
-					$colScript .= '   setProductValueFromVersion("'.$varProd.'",this.value);';
+				}
+				if ($colName=='idProduct' and property_exists($this,'idComponent') ) {
+				  $colScript.="if (trim(this.value)) {";
+				  $colScript.="refreshList('idComponent','idProduct', this.value);";
+				  $colScript.="} else {";
+				  if (property_exists($this,'idProject')) {
+				    $colScript.="refreshList('idComponent','idProject', dijit.byId('idProject').get('value'));";
+				  }
+				  $colScript.="}";
+				}
+				if ($colName=='idProduct' and $versionExists) {
+				  foreach ($arrVersProd as $vers) {
+				    if (property_exists($this,$vers)) {
+				      $colScript.="if (trim(dijit.byId('idProduct').get('value'))) {";
+				      $colScript.="refreshList('$vers','idProduct', this.value);";
+				      $colScript.="} else {";
+				      if (property_exists($this,'idProject')) {
+				      $colScript.="refreshList('$vers','idProject', dijit.byId('idProject').get('value'));";
+				      }
+				      $colScript.="}";
+				    }
+				  }
+				}
+				if ($colName=='idComponent' and $versionExists) {
+				  foreach ($arrVersComp as $vers) {
+				    if (property_exists($this,$vers)) {
+				      $versProd=str_replace('Component', 'Product', $vers);
+				      $colScript.="if (dijit.byId('$versProd') && trim(dijit.byId('$versProd').get('value')) ) {";
+				      // Nothing
+				      $colScript.="} else if (trim(this.value)) {";
+				      $colScript.="refreshList('$vers','idComponent', this.value);";
+				      $colScript.="} else {";
+				      if (property_exists($this,'idProject')) {
+				        $colScript.="refreshList('$vers','idProject', dijit.byId('idProject').get('value'));";
+				      }
+				      $colScript.="}";
+				    }
+				  }
+				}
+				if (substr($colName,-14)=='ProductVersion') {
+				  $versComp=str_replace('Product', 'Component', $colName);
+				  if (property_exists($this,$versComp)) {
+				    $colScript.="if (trim(this.value)) {";
+				    $colScript.="refreshList('$versComp','idProductVersion', this.value);";
+				    if (property_exists($this,'idComponent')) {
+				      $colScript.="} else if (dijit.byId('idComponent') && trim(dijit.byId('idComponent').get('value')) ) {";
+				      $colScript.="refreshList('$versComp','idComponent', dijit.byId('idComponent').get('value'));";
+				    }
+				    $colScript.="} else {";
+				    if (property_exists($this,'idProject')) {
+				      $colScript.="refreshList('$versComp','idProject', dijit.byId('idProject').get('value'));";
+				    }
+				    $colScript.="}";
+				  }				 
+					$colScript .= 'if (! trim(dijit.byId("idProduct").get("value")) ) {';
+					$colScript .= '   setProductValueFromVersion("idProduct",this.value);';
 					$colScript .= '}';
+				}
+				if (substr($colName,-16)=='ComponentVersion') {
+				  $colScript .= 'if (! trim(dijit.byId("idComponent").get("value")) ) {';
+				  $colScript .= '   setProductValueFromVersion("idComponent",this.value);';
+				  $colScript .= '}';
 				}
 				if ($colName=='idProject' and property_exists($this,'idContact')) {
 					$colScript .= '   refreshList("idContact","idProject", this.value);';

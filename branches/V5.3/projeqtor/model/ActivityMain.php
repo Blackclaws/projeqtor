@@ -56,7 +56,7 @@ class ActivityMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $idTargetVersion;
+  public $idTargetProductVersion;
   public $result;
   public $_sec_Assignment;
   public $_Assignment=array();
@@ -85,7 +85,7 @@ class ActivityMain extends SqlElement {
     <th field="plannedEndDate" from="ActivityPlanningElement" width="8%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="progress" from="ActivityPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
-    <th field="nameTargetVersion" width="8%" >${targetVersion}</th>
+    <th field="nameTargetProductVersion" width="8%" >${targetVersion}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
@@ -109,10 +109,10 @@ class ActivityMain extends SqlElement {
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
                                                    'idContact' => 'requestor',
-                                                   'idTargetVersion'=>'targetVersion');
+                                                   'idTargetProductVersion'=>'targetVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
+  private static $_databaseColumnName = array('idTargetProductVersion'=>'idVersion');
     
    /** ==========================================================================
    * Constructor
@@ -252,14 +252,14 @@ class ActivityMain extends SqlElement {
     $oldIdle=null;
     $oldIdProject=null;
     $oldIdActivity=null;
-    $oldTargetVersion=null;
+    $oldTargetProductVersion=null;
     if ($this->id) {
       $old=$this->getOld();
       $oldResource=$old->idResource;
       $oldIdle=$old->idle;
       $oldIdProject=$old->idProject;
       $oldIdActivity=$old->idActivity;
-      $oldTargetVersion=$old->idTargetVersion;
+      $oldTargetProductVersion=$old->idTargetProductVersion;
     }
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
@@ -355,13 +355,13 @@ class ActivityMain extends SqlElement {
     		}
     	}
     }
-    if ($oldTargetVersion!=$this->idTargetVersion) {
-    	$vers=new Version($this->idTargetVersion);
+    if ($oldTargetProductVersion!=$this->idTargetProductVersion) {
+    	$vers=new Version($this->idTargetProductVersion);
     	$idProduct=($vers->idProduct)?$vers->idProduct:null;
     	$ticket=new Ticket();
     	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
     	foreach ($ticketList as $ticket) {
-    		$ticket->idTargetVersion=$this->idTargetVersion;
+    		$ticket->idTargetProductVersion=$this->idTargetProductVersion;
     		if ($idProduct) {$ticket->idProductOrComponent=$idProduct;}
     		$ticket->save();
     	}

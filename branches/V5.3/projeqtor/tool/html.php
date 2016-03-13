@@ -202,6 +202,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$vers=new Version($versProj->idVersion);
     		$restrictArray[$vers->idProduct]="OK";
     	}
+    } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
+      $prod=new Product($critVal);
+      $table=$prod->getComposition(true,true);
+      if ($selection) {
+        $table[$selection]=SqlList::getNameFromId('Component', $selection);
+      }
     } else if ($col=='id'.$class.'Type' and $class!='Project' and property_exists($obj, 'idProject')) {
       if (! isset($idProject)) {
         if ($obj->idProject) {

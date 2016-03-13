@@ -435,7 +435,16 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   $idType='id' . $type;
   $objType=null;
   if (property_exists($obj, $idType)) {
-    if (SqlElement::class_exists($type)) $objType=new $type($obj->$idType);
+    if (!$obj->id) {
+      if (SqlElement::class_exists($type)) {
+        $listType=SqlList::getList($type);
+        $first_value = reset($listType);
+        $first_key = key($listType);
+        $objType=new $type($first_key);
+      }
+    } else {
+      if (SqlElement::class_exists($type)) $objType=new $type($obj->$idType);
+    }
   } else if ($included) {
     $type=$obj->refType . 'Type';
     $idType='id' . $type;
@@ -747,16 +756,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $attributes.=' title="' . $obj->getTitle($col) . '"';
       }
       if ($col=='idComponent' or $col=='idComponentVersion' or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion') {
-        if (Component::canViewComponentList()!='YES') {
+        if (Component::canViewComponentList($obj)!='YES') {
           $hide=true;
         }
       }
-      /*if ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion') {
-        if (Component::canViewComponentList()!='YES' and $val) {
-          $vers=new Version($val);
-          if ($vers->scope=='Component') $hide=true;
-        }
-      }*/
       if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
         $attributes.=' readonly tabindex="-1"';
         $readOnly=true;
@@ -1300,7 +1303,18 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           $displayDirectAccessButton=false;
         }
         if ($displayComboButtonCol or $displayDirectAccessButton) {
-          $idMenu=($col == "idResourceSelect")?'menuResource':'menu' . substr($col, 2);
+          $idMenu='menu' . substr($col, 2);
+          $comboClass=substr($col, 2);
+          if ($col == "idResourceSelect") {
+            $idMenu='menuResource';
+            $comboClass='Resource';
+          } else if (substr($col,-14)=="ProductVersion") {
+            $idMenu='menuProductVersion';
+            $comboClass='ProductVersion';
+          } else if (substr($col,-16)=="ComponentVersion") {
+            $idMenu='menuComponentVersion';
+            $comboClass='ComponentVersion';
+          } 
           $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name' => $idMenu));
           $crit=array();
           $crit ['idProfile']=$profile;
@@ -1382,6 +1396,10 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
               }
             }
           }
+        }     
+        if ($col=='idComponent' and isset($obj->idProduct)) {
+          $critFld='idProduct';
+          $critVal=$obj->idProduct;
         }
         // if version and idProduct exists and is set : criteria is product
         if ((isset($obj->idProduct) or isset($obj->idComponent) or isset($obj->idProductOrComponent)) 
@@ -1479,7 +1497,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $attributes;
         echo $valStore;
         echo ' >';      
-        debugLog("htmlDrawOptionForReference($col, $val, object, $isRequired, $critFld, $critVal)");
         $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
         echo $colScript;
         echo '</select>';
@@ -1488,7 +1505,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
           echo ' class="roundedButton  generalColClass '.$col.'Class">';
           echo '<div class="iconGoto" ';
-          $jsFunction="var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . substr($col, 2) . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
+          $jsFunction="var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . $comboClass . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
           echo ' onclick="' . $jsFunction . '"';
           echo '></div>';
           echo '</div>';
@@ -1498,7 +1515,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
           echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo '<div class="iconView" ';
-          echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol)?1:0) . ')"';
+          echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol)?1:0) . ',\''.$comboClass.'\')"';
           echo '></div>';
           echo '</div>';
         }

@@ -214,9 +214,11 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 </script>
                 <script type="dojo/method" event="onMouseEnter" args="evt">
                   clearTimeout(closeFilterListTimeout);
-                  this.openDropDown();
+                  clearTimeout(openFilterListTimeout);
+                  openFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').openDropDown();",popupOpenDelay);
                 </script>
                 <script type="dojo/method" event="onMouseLeave" args="evt">
+                  clearTimeout(openFilterListTimeout);
                   closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
                 </script>
                 <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;display:none; position: absolute;">
@@ -227,6 +229,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                      include "../tool/displayFilterList.php";?>
                  <script type="dojo/method" event="onMouseEnter" args="evt">
                     clearTimeout(closeFilterListTimeout);
+                    clearTimeout(openFilterListTimeout);
                 </script>
                 <script type="dojo/method" event="onMouseLeave" args="evt">
                   dijit.byId('listFilterFilter').closeDropDown();

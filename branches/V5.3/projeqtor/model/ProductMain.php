@@ -299,7 +299,7 @@ class ProductMain extends ProductOrComponent {
     return $result;
   } 
   
-  // Retrive composition in terms of components (will not retreive products in the composition of the product
+  // Retrive composition in terms of components (will not retreive products in the composition of the product)
   public function getComposition($withName=true,$reculsively=false) {
     $ps=new ProductStructure();
     $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));

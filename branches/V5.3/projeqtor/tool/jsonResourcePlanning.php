@@ -33,6 +33,16 @@ $objectClass='PlanningElement';
 $obj=new $objectClass();
 $table=$obj->getDatabaseTableName();
 $displayResource=Parameter::getGlobalParameter('displayResourcePlan');
+
+$seeAllResource=false;
+$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'resourcePlanning'));
+if ($right) { 
+  $list=new ListYesNo($right->rightAccess);
+  if ($list->code=='YES') {
+    $seeAllResource=true;
+  }
+}
+
 $print=false;
 if ( array_key_exists('print',$_REQUEST) ) {
 	$print=true;
@@ -118,7 +128,10 @@ if ( array_key_exists('showProject',$_REQUEST) ) {
 
 $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=' ass.plannedWork>0 ';
-
+if (!$seeAllResource) {
+  $queryWhere.= ($queryWhere=='')?'':' and ';
+  $queryWhere.=' ass.idResource='.$user->id;
+}
 $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
 if ( array_key_exists('report',$_REQUEST) ) {

@@ -190,6 +190,20 @@ class SqlList {
         }
         $inClause.=')';
         $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
+      } else if ( ( strtolower($listType)=='componentversion'  
+            or strtolower($listType)=='originalcomponentversion'
+            or strtolower($listType)=='targetcomponentversion') and $col=='idProductVersion') {
+          $psv=new ProductVersionStructure();
+          $ver=new Version();
+          $lstVers=ProductVersionStructure::getComposition($val);
+          $inClause='(0';
+          foreach ($lstVers as $idsharp=>$idv) {
+            $inClause.=','.$idv;
+          }
+          $inClause.=')';
+          //$query .= " and exists (select 'x' from " . $psv->getDatabaseTableName() . " pvs where pvs.idProductVersion=".$val." and pvs.idComponentVersion=" . $ver->getDatabaseTableName() . ".id)";
+          $query .= " and ".$ver->getDatabaseTableName().".id in ".$inClause;
+        
       } else if (strtolower($listType)=='indicator' and $col=='idIndicatorable' ) {
       	$ii=new IndicatorableIndicator();
       	$i=new Indicator();
