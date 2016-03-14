@@ -191,11 +191,13 @@ function displayPluginList($location) {
     foreach ($files as $file) {
       echo '<tr>';
       echo '<td></td>';
-      echo '<td class="noteData" style="text-align:center"  >';
+      echo '<td class="noteData" style="text-align:center;white-space:nowrap"  >';
       echo ' <img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" '
         .' onClick="installPlugin(\''.$file['name'].'\');" title="' . i18n('installPlugin') . '" /> ';
       echo ' <img class="roundedButtonSmall" src="css/images/display.png" title="'.i18n('dialogPluginInfo').'"'
           .' onClick="loadDialog(\'dialogPluginInfo\', null, true, \'&filename='.$file['name'].'\', true);" /> ';
+      echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" title="'.i18n('buttonDeletePluginFile').'"'
+          .' onClick="deletePlugin(\''.$file['name'].'\');" /> ';
        
       echo '</td>';
       echo '<td class="noteData">'.$file['name'].'</td>';

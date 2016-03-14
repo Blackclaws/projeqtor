@@ -6079,6 +6079,33 @@ function installPlugin(fileName,confirmed) {
     });
   }
 }
+function deletePlugin(fileName,confirmed) {
+  if (! confirmed) {
+    actionOK=function() {
+      deletePlugin(fileName, true);
+    };
+    msg=i18n('confirmDeletePluginFile', new Array(fileName));
+    showConfirm(msg,actionOK);
+  } else {
+    showWait();
+    dojo.xhrGet({
+      url : "../plugin/deletePlugin.php?pluginFile="
+          + encodeURIComponent(fileName),
+      load : function(data) {
+        if (data=="OK") {
+          loadContent("pluginManagement.php", "centerDiv");
+        } else {
+          hideWait();
+          showError(data+'<br/>');
+        }
+      },
+      error : function(data) {
+        hideWait();
+        showError(data);
+      }
+    });
+  }
+}
 var historyShowHideWorkStatus=0;
 function historyShowHideWork() {
   if (! dojo.byId('objectClass')) {return;}
