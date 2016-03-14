@@ -2407,6 +2407,22 @@ function globalSave() {
   } else if (dijit.byId('dialogRestrictTypes') && dijit.byId('dialogRestrictTypes').open) {
     var button=dijit.byId('dialogRestrictTypesSubmit');  
   } else {
+    dojo.query(".projeqtorDialogClass").forEach(function(node, index, nodelist){
+      var widgetName=node.id;
+      if (node.widgetid) widgetName=node.widgetid;
+      widget=dijit.byId(widgetName);
+      if (widget && widget.open) {
+        btName1="dialog"+widgetName.charAt(0).toUpperCase() + widgetName.substr(1)+"Submit";
+        btName2=widgetName+"Submit";
+        if (dijit.byId(btName1)) {
+          button=dijit.byId(btName1);
+        } else if (dijit.byId(btName2)){
+          button=dijit.byId(btName2);
+        }
+      }
+    });
+  }
+  if (! button) {
     var button=dijit.byId('saveButton');
   }
   if (! button) {

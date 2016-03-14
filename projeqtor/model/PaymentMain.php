@@ -133,7 +133,7 @@ class PaymentMain extends SqlElement {
    * Return the specific colCaptionTransposition
    * @return the colCaptionTransposition
    */
-  protected function getStaticColCaptionTransposition($fld) {
+  protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
   }
   

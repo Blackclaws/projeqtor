@@ -119,7 +119,7 @@ class WorkElementMain extends SqlElement {
 	 * 
 	 * @return the colCaptionTransposition
 	 */
-	protected function getStaticColCaptionTransposition($fld) {
+	protected function getStaticColCaptionTransposition($fld=null) {
 		return self::$_colCaptionTransposition;
 	}
 	
