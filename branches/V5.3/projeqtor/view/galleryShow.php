@@ -32,6 +32,11 @@ require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/galleryShow.php');
 
 $allowedEntities = array('Quotation', 'Command', 'Contract', 'Bill');
+foreach ($allowedEntities as $index=>$ent) {
+  if (!SqlElement::class_exists($ent)) {
+    unset($allowedEntities[$index]);
+  }
+}
 $entityDateField = array('Quotation' => 'signatureDate',
     'Command' => 'validatedStartDate',
     'Contract' => 'validatedStartDate',

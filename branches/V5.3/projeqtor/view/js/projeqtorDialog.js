@@ -5290,7 +5290,7 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
       dijit.byId(dialogDiv).set('content', null);
     };
   }
-  extraClass="";
+  extraClass="projeqtorDialogClass";
   if (dialogDiv=="dialogLogfile") {
     extraClass="logFile";
   }

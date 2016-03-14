@@ -108,7 +108,6 @@ abstract class SqlElement {
                                   "Ticket"=>"controlStrict",
                                   "Version"=>"controlStrict"),
     "ContextType" =>        array("Context" => "controlStrict"),
-    //"ContractType" =>       array("Contract" => "controlStrict"),
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Issue"=> "controlStrict",
                                   "Opportunity"=> "controlStrict",
@@ -338,7 +337,6 @@ abstract class SqlElement {
                                   "ClientType"=>"controlStrict",
                                   "CommandType"=>"controlStrict",
                                   //"ContextType"=>"controlStrict",
-                                  "ContractType"=>"controlStrict",
                                   "DecisionType"=>"controlStrict",
                                   "DocumentType"=>"controlStrict",
                                   //"ExpenseDetailType"=>"controlStrict",
@@ -2536,7 +2534,7 @@ abstract class SqlElement {
 	 * Return the specific colCaptionTransposition
 	 * @return the colCaptionTransposition
 	 */
-	protected function getStaticColCaptionTransposition($fld) {
+	protected function getStaticColCaptionTransposition($fld=null) {
 		return array();
 	}
 
