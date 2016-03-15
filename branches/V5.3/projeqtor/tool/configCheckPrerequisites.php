@@ -58,8 +58,8 @@ function checkPrerequisites($showOK=false,$dbType=null) {
     if ($showOK) showMessage("Module PDO for '" . strtoupper($dbType)."' is available : OK");
     $checkOK++;
   }
-  if ($dbType=='mysql') {
-    if ( ! extension_loaded('mysql') ) {
+  /*if ($dbType=='mysql') { // Not mandatory as ProjeQtOr uses PDO
+    if ( ! extension_loaded('mysql') ) { // Obsolete extension since PHP7
       showError("Module MYSQL is not available - check your php configuration (php.ini)");
       $checkErrors++;
     } else {
@@ -73,8 +73,8 @@ function checkPrerequisites($showOK=false,$dbType=null) {
       if ($showOK) showMessage("Module MYSQLi is available : OK");
       $checkOK++;
     }    
-  }
-  if ($dbType=='pgsql') {
+  }*/
+  /*if ($dbType=='pgsql') { // Not mandatory as ProjeQtOr uses PDO
     if ( ! extension_loaded('pgsql') ) {
       showError("Module PGSQL is not available - check your php configuration (php.ini)");
       $checkError++;
@@ -82,7 +82,7 @@ function checkPrerequisites($showOK=false,$dbType=null) {
       if ($showOK) showMessage("Module PGSQL is available : OK");
       $checkOK++;
     }
-  }
+  }*/
   
   // MBSTRING is required (for utf-8 compatibility)
   if (! function_exists('mb_check_encoding')) {

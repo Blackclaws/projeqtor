@@ -493,6 +493,11 @@
       }
     }
     
+    $list=Plugin::getEventScripts('query',$objectClass);
+    foreach ($list as $script) {
+      require $script; // execute code
+    }
+    
     // ==================== Constitute query and execute ============================================================
     // --- Buimd where from "Select", "From", "Where" and "Order by" clauses built above
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;

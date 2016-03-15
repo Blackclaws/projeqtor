@@ -279,6 +279,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if (!$sepChar) $sepChar='__';
     $wbsLevelArray=array();
   }
+  $pluginObjectClass=substr($col,2);
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
   if (! $obj) $sepChar='no';
   $selectedFound=false;
   $next="";
