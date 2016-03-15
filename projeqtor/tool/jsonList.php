@@ -224,7 +224,13 @@
           or $dataType=='idOriginable' or $dataType=='idReferencable') {
         asort($list);
       }
-      foreach ($list as $id=>$name) { // Note: $id and $name could be arbitrary attacker controlled values from $selected
+      $pluginObjectClass=substr($dataType,2);
+      $table=$list;
+      $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+      foreach ($lstPluginEvt as $script) {
+        require $script; // execute code
+      }
+      foreach ($table as $id=>$name) {
         if ($dataType=="idProject" and $sepChar!='no') {
           if (isset($wbsList[$id])) {
         	  $wbs=$wbsList[$id];

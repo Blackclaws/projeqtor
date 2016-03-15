@@ -38,7 +38,12 @@ class PluginTriggeredEvent extends SqlElement {
   public $script;
   public $idle;
   
-  public static $_allowedEvents=array('beforeSave','afterSave','beforeDelete','afterDelete','control','deleteControl'); 
+  public static $_allowedEvents=array(
+      'beforeSave','afterSave',
+      'beforeDelete','afterDelete',
+      'control','deleteControl',
+      'connect',
+      'query','list'); 
   
    /** ==========================================================================
    * Constructor

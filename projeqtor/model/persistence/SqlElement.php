@@ -461,16 +461,16 @@ abstract class SqlElement {
 		if (isset($this->_onlyCallSpecificSaveFunction) and $this->_onlyCallSpecificSaveFunction==true) return;
 		if (!property_exists($this, '_onlyCallSpecificSaveFunction') or !$this->_onlyCallSpecificSaveFunction) {
   		// PlugIn Management 
-  		$list=Plugin::getEventScripts('beforeSave',get_class($this));
-  		foreach ($list as $script) {
+  		$lstPluginEvt=Plugin::getEventScripts('beforeSave',get_class($this));
+  		foreach ($lstPluginEvt as $script) {
   		  require $script; // execute code
   		}
 		}
 		$result=$this->saveSqlElement();
 		if (!property_exists($this, '_onlyCallSpecificSaveFunction') or !$this->_onlyCallSpecificSaveFunction) {
 		  // PlugIn Management
-  		$list=Plugin::getEventScripts('afterSave',get_class($this));
-  		foreach ($list as $script) {
+  		$lstPluginEvt=Plugin::getEventScripts('afterSave',get_class($this));
+  		foreach ($lstPluginEvt as $script) {
   		  require $script; // execute code
   		}
 		}
@@ -480,16 +480,16 @@ abstract class SqlElement {
 	public function insert() { // Specific function to force insert with a defined id - Reserved to Import fonction
 		$this->_onlyCallSpecificSaveFunction=true;
 		// PlugIn Management
-		$list=Plugin::getEventScripts('beforeSave',get_class($this));
-		foreach ($list as $script) {
+		$lstPluginEvt=Plugin::getEventScripts('beforeSave',get_class($this));
+		foreach ($lstPluginEvt as $script) {
 		  require $script; // execute code
 		}
 		$this->save(); // To force the update of fields calculated in the save function ...
 		$this->_onlyCallSpecificSaveFunction=false;
 		$result=$this->saveSqlElement(false, false, true);
 		// PlugIn Management
-		$list=Plugin::getEventScripts('afterSave',get_class($this));
-		foreach ($list as $script) {
+		$lstPluginEvt=Plugin::getEventScripts('afterSave',get_class($this));
+		foreach ($lstPluginEvt as $script) {
 		  require $script; // execute code
 		}
 		return $result;
@@ -497,14 +497,14 @@ abstract class SqlElement {
 
 	public function saveForced($withoutDependencies=false) {
 	  // PlugIn Management
-	  $list=Plugin::getEventScripts('beforeSave',get_class($this));
-	  foreach ($list as $script) {
+	  $lstPluginEvt=Plugin::getEventScripts('beforeSave',get_class($this));
+	  foreach ($lstPluginEvt as $script) {
 	    require $script; // execute code
 	  }
 		$result=$this->saveSqlElement(true,$withoutDependencies);
 		// PlugIn Management
-		$list=Plugin::getEventScripts('afterSave',get_class($this));
-		foreach ($list as $script) {
+		$lstPluginEvt=Plugin::getEventScripts('afterSave',get_class($this));
+		foreach ($lstPluginEvt as $script) {
 		  require $script; // execute code
 		}
 		return $result;
