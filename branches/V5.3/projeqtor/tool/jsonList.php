@@ -112,6 +112,7 @@
       
     } else if ($type=='list') {   
       $dataType=$_REQUEST['dataType']; // Note: checked against constant values.     
+debugLog("=>jsonList($dataType)");      
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];
@@ -279,13 +280,19 @@
 	        	}
 	        }
 	      }
-	      asort($lstRes);
+	      $pluginObjectClass='Affectable';
+	      $table=$lstRes;
+	      $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+	      foreach ($lstPluginEvt as $script) {
+	        require $script; // execute code
+	      }
+	      asort($table);
 	      // return result in json format
         if (! $required) {
           echo '{id:" ", name:""}';
           $nbRows+=1;
         }
-	      foreach ($lstRes as $id=>$name) {
+	      foreach ($table as $id=>$name) {
 	        if ($nbRows>0) echo ', ';
 		    echo '{id:"' . htmlEncodeJson($id) . '", name:"'. htmlEncodeJson($name) . '"}';
 	        $nbRows+=1;
