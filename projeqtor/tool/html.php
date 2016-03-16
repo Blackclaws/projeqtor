@@ -413,6 +413,14 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   }
   
   $columnList=SqlList::getList($columnObj);
+  debugLog("htmlDrawCrossTable($columnObj)");
+  $pluginObjectClass=ucfirst($columnObj);
+  $table=$columnList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $columnList=$table;
   echo '<div style="width:98%; overflow-x:auto;  overflow-y:hidden;">';
   if ( ! ($break and ! is_array($lineObj)) ) {
 	  echo '<table class="crossTable" >';

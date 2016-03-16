@@ -97,6 +97,7 @@ $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 $attachmentDirectory=Parameter::getGlobalParameter('paramAttachmentDirectory');
 $uploaddir = $attachmentDirectory . $pathSeparator . "import" . $pathSeparator;
 if (! file_exists($uploaddir)) {
+  traceLog("must create import folder : ".$uploaddir);
   mkdir($uploaddir,0777,true);
 }
 $uploadfile = $uploaddir . basename($uploadedFile['name']);

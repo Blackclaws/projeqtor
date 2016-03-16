@@ -75,6 +75,7 @@
   
   <target name="copyFiles">
     <mkdir dir="${deploy.dir}/files/attach"/>
+  	<mkdir dir="${deploy.dir}/files/attach/import"/>
     <mkdir dir="${deploy.dir}/files/thumbs"/>
     <mkdir dir="${deploy.dir}/files/config"/>
   	<mkdir dir="${deploy.dir}/files/images"/>
@@ -85,6 +86,7 @@
     <mkdir dir="${deploy.dir}/files/import"/>
     <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
+  	<copy todir="${deploy.dir}/files/attach/import" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/logs" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/report" file="${src.dir}/files/index.php" />

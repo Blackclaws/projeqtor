@@ -494,6 +494,8 @@
     }
     
     $list=Plugin::getEventScripts('query',$objectClass);
+    debugLog($objectClass);
+    debugLog($list);
     foreach ($list as $script) {
       require $script; // execute code
     }

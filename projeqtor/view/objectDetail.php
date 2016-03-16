@@ -3062,6 +3062,13 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   if ($comboDetail) {
     return;
   }
+  $pluginObjectClass='Assignment';
+  $tableObject=$list;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $list=$tableObject;
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
   if ($habil and $habil->rightAccess != 1) {
     return;
@@ -3359,6 +3366,13 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
 
 function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
+  $pluginObjectClass='Affectation';
+  $tableObject=$list;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $list=$tableObject;
   if ($comboDetail) {
     return;
   }
