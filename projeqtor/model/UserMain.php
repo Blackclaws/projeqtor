@@ -357,13 +357,17 @@ class UserMain extends SqlElement {
       if (! $menuName or ! array_key_exists($menuName, $accessControlRights)) {
         $accessControlRights[$menuName]=$noAccessArray;	
       } else {
+        $scopeArray=$noAccessArray;
+        $accessProfile=new AccessProfile($arObj->idAccessProfile);
         if ($arObj->idAccessProfile<1000000) {
-          $accessProfile=new AccessProfile($arObj->idAccessProfile);
           $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
                              'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
                              'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
                              'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete],
                              'report' =>  $accessScopeList[$accessProfile->idAccessScopeRead], );
+          if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {
+            $this->_accessControlVisibility='ALL';
+          }
         } else {     
           if (isset($noAccessAllowed[$menuName]) and $noAccessAllowed[$menuName]) {
           	// Nothing
@@ -377,9 +381,6 @@ class UserMain extends SqlElement {
           }
         }
         $accessControlRights[$menuName]=$scopeArray;
-        if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {
-          $this->_accessControlVisibility='ALL';
-        }
       }
     }
     foreach ($menuList as $menuId=>$menuName) {
