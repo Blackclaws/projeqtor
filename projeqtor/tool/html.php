@@ -411,9 +411,16 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   } else {
     $lineList=SqlList::getList($lineObj);
   }
-  
+  // Filter on line (for menu)
+  $pluginObjectClass=ucfirst($lineObj);
+  $table=$lineList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $lineList=$table;
+  // Filter on columns (for profile)
   $columnList=SqlList::getList($columnObj);
-  debugLog("htmlDrawCrossTable($columnObj)");
   $pluginObjectClass=ucfirst($columnObj);
   $table=$columnList;
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
@@ -526,7 +533,24 @@ function htmlGetCrossTable($lineObj, $columnObj, $pivotObj) {
   } else {
     $lineList=SqlList::getList($lineObj);
   }
+  // Filter on line (for menu)
+  $pluginObjectClass=ucfirst($lineObj);
+  $table=$lineList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $lineList=$table;
+  
   $columnList=SqlList::getList($columnObj);
+  // Filter on columns (for profile)
+  $pluginObjectClass=ucfirst($columnObj);
+  $table=$columnList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $columnList=$table;
   $result=array();
   foreach($lineList as $lineId => $lineName) {
     foreach ($columnList as $colId => $colName) {

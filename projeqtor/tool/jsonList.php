@@ -112,7 +112,6 @@
       
     } else if ($type=='list') {   
       $dataType=$_REQUEST['dataType']; // Note: checked against constant values.     
-debugLog("=>jsonList($dataType)");      
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];
