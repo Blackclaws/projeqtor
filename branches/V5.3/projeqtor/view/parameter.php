@@ -260,8 +260,8 @@ function drawTableFromObjectList($objectList) {
 </div>
 <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"
   style="overflow-y: auto; overflow-x: hidden;">
-<form dojoType="dijit.form.Form" id="parameterForm" jsId="objectForm"
-  name="objectForm" encType="multipart/form-data" action="" method=""><input
+<form dojoType="dijit.form.Form" id="parameterForm" jsId="parameterForm"
+  name="parameterForm" encType="multipart/form-data" action="" method=""><input
   type="hidden" name="parameterType" value="<?php echo $type;?>" /> <?php 
   if ($type=='habilitation') {
   	htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check', null,'idMenu') ;

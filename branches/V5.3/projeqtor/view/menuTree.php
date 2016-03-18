@@ -113,6 +113,13 @@ var menuData = {
 <?php  
   $obj=new Menu();
   $menuList=$obj->getSqlElementsFromCriteria(null, false);
+  $pluginObjectClass='Menu';
+  $tableObject=$menuList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $menuList=$tableObject;
   $idMenu=null;
   $prioMenuType=null;
   foreach ($menuList as $menu) {

@@ -39,6 +39,13 @@
   $cptAllMenu=0;
   $obj=new Menu();
   $menuList=$obj->getSqlElementsFromCriteria(null, false);
+  $pluginObjectClass='Menu';
+  $tableObject=$menuList;
+  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $menuList=$tableObject;
   $defaultMenu=Parameter::getUserParameter('defaultMenu');
   if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
@@ -119,6 +126,13 @@
     //echo '<td>&nbsp;</td>';
     $obj=new Menu();
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
+    $pluginObjectClass='Menu';
+    $tableObject=$menuList;
+    $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+    foreach ($lstPluginEvt as $script) {
+      require $script; // execute code
+    }
+    $menuList=$tableObject;
     $lastType='';
     foreach ($menuList as $menu) { 
     	if (securityCheckDisplayMenu($menu->id,$menu) ) {
