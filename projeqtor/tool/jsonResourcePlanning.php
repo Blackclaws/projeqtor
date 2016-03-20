@@ -157,10 +157,8 @@ $queryOrderBy .= ' name, pe.wbsSortable ';
 $list=Plugin::getEventScripts('query','ResourcePlanning');
 $objectClass='ResourcePlanning';
 foreach ($list as $script) {
-  debugLog("RUN - $script");
   require $script; // execute code
 }
-debugLog($queryWhere);
 // constitute query and execute
 $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
 $query='select ' . $querySelect
