@@ -142,6 +142,11 @@ $queryFrom .= $table . ' pe, ' . $ass->getDatabaseTableName() . ' ass, ' . $res-
 $queryWhere= ' pe.refType=ass.refType and pe.RefId=ass.refId and usr.id=ass.idResource and ' . str_replace($table, 'pe', $queryWhere);
 $queryOrderBy .= ' name, pe.wbsSortable ';
 
+$list=Plugin::getEventScripts('query','ResourcePlanning');
+$objectClass='ResourcePlanning';
+foreach ($list as $script) {
+  require $script; // execute code
+}
 // constitute query and execute
 $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
 $query='select ' . $querySelect
