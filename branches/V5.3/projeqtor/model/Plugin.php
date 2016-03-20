@@ -276,14 +276,14 @@ class Plugin extends SqlElement {
       $error='';
       $dir=self::getDir();
       if (! is_dir($dir)) {
-        traceLog ("Plugin->getList() - directory '$dir' does not exist");
-        $error="Plugin->getList() - directory '$dir' does not exist";
+        traceLog ("Plugin->getZipList() - directory '$dir' does not exist");
+        $error="Plugin->getZipList() - directory '$dir' does not exist";
       }
       if (! $error) {
         $handle = opendir($dir);
         if (! is_resource($handle)) {
-          traceLog ("Plugin->getList() - Unable to open directory '$dir' ");
-          $error="Plugin->getList() - Unable to open directory '$dir' ";
+          traceLog ("Plugin->getZipList() - Unable to open directory '$dir' ");
+          $error="Plugin->getZipList() - Unable to open directory '$dir' ";
         }
       } 
       $files=array();

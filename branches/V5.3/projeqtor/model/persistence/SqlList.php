@@ -137,6 +137,20 @@ class SqlList {
         $res[($line['id'])]=$name;
       }
     }
+    // Plugin - start - Management for event "list"
+    global $pluginAvoidRecursiveCall;
+    if (! $pluginAvoidRecursiveCall) {
+      $pluginAvoidRecursiveCall=true;
+      $pluginObjectClass=$listType;
+      $table=$res;
+      $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+      foreach ($lstPluginEvt as $script) {
+        require $script; // execute code
+      }
+      $res=$table;
+      $pluginAvoidRecursiveCall=false;
+    }
+    // Plugin - end
     if ($translate) {
       self::$list[$listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
     } else {
@@ -261,6 +275,20 @@ class SqlList {
         $res[($line['id'])]=$name;
       }
     }
+    // Plugin - start - Management for event "list"
+    global $pluginAvoidRecursiveCall;
+    if (! $pluginAvoidRecursiveCall) {
+      $pluginAvoidRecursiveCall=true;
+      $pluginObjectClass=$listType;
+      $table=$res;
+      $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+      foreach ($lstPluginEvt as $script) {
+        require $script; // execute code
+      }
+      $res=$table;
+      $pluginAvoidRecursiveCall=false;
+    }
+    // Plugin - end
     // In fetchListWithCrit, never store the list : results may always depend on criteria => must fetch every time.
     //self::$list[$listType . "_" . $displayCol]=$res;
     return $res;
