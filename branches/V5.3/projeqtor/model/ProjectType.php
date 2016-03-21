@@ -158,7 +158,7 @@ class ProjectType extends SqlElement {
   	return parent::save();
   }
   
-    public function drawSpecificItem($item){
+  public function drawSpecificItem($item){
       global $print;
     $result="";
     if ($item=='billingType') {

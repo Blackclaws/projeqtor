@@ -36,8 +36,13 @@ if (isset($_REQUEST['idProject'])) {
   $idProject=$_REQUEST['idProject'];
   Security::checkValidId($idProject);
 }
-if (!$idProjectType && !$idProject) {
-  $error="idProjectType or idProject is mandatory in request";
+$idProfile=null;
+if (isset($_REQUEST['idProfile'])) {
+  $idProfile=$_REQUEST['idProfile'];
+  Security::checkValidId($idProfile);
+}
+if (!$idProjectType && !$idProject && !$idProfile) {
+  $error="idProjectType or idProject or idProfile is mandatory in request";
   errorLog($error);
   echo $error;
   exit;

@@ -38,7 +38,8 @@ class ProfileMain extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $description;
-  public $_sec_void;
+  public $_sec_restrictTypes;
+  public $_spe_restrictTypes;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
@@ -113,6 +114,36 @@ class ProfileMain extends SqlElement {
     }
     Sql::$lastQueryNewid=$new;
     return $result;
+  }
+  
+  public function drawSpecificItem($item){
+    global $print;
+    $result="";
+    if ($item=='restrictTypes') {
+      if (!$this->id) return '';
+      if (! $print) {
+        $result.= '<button id="buttonRestrictTypes" dojoType="dijit.form.Button" showlabel="true"'
+            . ' title="'.i18n('helpRestrictTypesProfile').'" iconClass="iconType16" >'
+                . '<span>'.i18n('restrictTypes').'</span>'
+                    . ' <script type="dojo/connect" event="onClick" args="evt">'
+                        . '  var params="&idProfile='.$this->id.'";'
+                            . '  loadDialog("dialogRestrictTypes", null, true, params);'
+                                . ' </script>'
+                                    . '</button>';
+        $result.= '<span style="font-size:80%">&nbsp;&nbsp;&nbsp;('.i18n('helpRestrictTypesProfileInline').')</span>';
+      }
+      $result.='<table style="witdh:100%"><tr><td class="label">'.i18n('existingRestrictions').'&nbsp;:&nbsp;</td><td>';
+      $result.='<div id="resctrictedTypeClassList">';
+      $list=Type::getRestrictedTypesClass(null,null,$this->id);
+      $cpt=0;
+      foreach ($list as $cl) {
+        $cpt++;
+        $result.=(($cpt>1)?', ':'').$cl;
+      }
+      $result.='</div>';
+      $result.='</td></tr></table>';
+      return $result;
+    }
   }
 }
 ?>
