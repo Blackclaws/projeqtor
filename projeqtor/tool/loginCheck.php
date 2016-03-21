@@ -83,17 +83,21 @@
   enableCatchErrors();
   $authResult=$user->authenticate($login, $password);
   disableCatchErrors();    
+  
 // possible returns are 
 // "OK"        login OK
 // "login"     unknown login
 // "password"  wrong password
 // "ldap"      error connecting to Ldap  
+// "plugin"    error triggered by plugin on Connect event
   
   if ( $authResult!="OK") {
   	if ($user->locked!=0) {
       loginErrorLocked();
   	} else if ($authResult=="ldap") {
     	loginLdapError();
+    } else if ($authResult=="plugin") {
+      loginErrorPlugin(); // Message is expected in the plugin
     } else {
   	  loginError();
     }
@@ -137,6 +141,12 @@
     echo '</div>';
     setSessionUser(null);
     traceLog("Login error for user '" . $login . "'");
+    exit;
+  }
+  function loginErrorPlugin() {
+    global $login;
+    setSessionUser(null);
+    traceLog("Login refused for user '" . $login . "'");
     exit;
   }
   

@@ -715,6 +715,10 @@ class Parameter extends SqlElement {
     }
     $param->parameterValue=$value;
     $param->save();
+    if (!array_key_exists('globalParamatersArray',$_SESSION)) {
+      $_SESSION['globalParamatersArray']=array();
+    }
+    $_SESSION['globalParamatersArray'][$code]=$value;
   }
   
   static public function getPlanningColumnOrder($all=false) {
