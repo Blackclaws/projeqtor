@@ -34,6 +34,7 @@ class RestrictType extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idProjectType;
   public $idProject;
+  public $idProfile;
   public $idType;
   
    /** ==========================================================================

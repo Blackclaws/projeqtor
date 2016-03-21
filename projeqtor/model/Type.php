@@ -175,17 +175,19 @@ class Type extends SqlElement {
     self::$_cacheClassList=$result;
     return $result;
   }
-  public static function getRestrictedTypes($idProject,$idProjectType) {
+  public static function getRestrictedTypes($idProject,$idProjectType,$idProfile) {
     if ($idProject) {
       $crit['idProject']=$idProject;
-    } else {
+    } else if ($idProjectType) {
       $crit['idProjectType']=$idProjectType;
+    } else if ($idProfile) {
+      $crit['idProfile']=$idProfile;
     }
     $rtList=SqlList::getListWithCrit('RestrictType', $crit, 'idType');
     return $rtList;
   }
-  public static function getRestrictedTypesClass($idProject,$idProjectType) {
-    $key="$idProject#$idProjectType";
+  public static function getRestrictedTypesClass($idProject,$idProjectType,$idProfile) {
+    $key="$idProject#$idProjectType#$idProfile";
     if (self::$_cacheRestrictedTypesClass and isset(self::$_cacheRestrictedTypesClass[$key])) {
       return self::$_cacheRestrictedTypesClass[$key];
     } else {
@@ -200,7 +202,7 @@ class Type extends SqlElement {
     if (!self::$_cacheRestrictedTypesClass) self::$_cacheRestrictedTypesClass=array();
     $listClass=SqlList::getList('Type','scope');    
     $result=array();
-    $list=self::getRestrictedTypes($idProject,$idProjectType);
+    $list=self::getRestrictedTypes($idProject,$idProjectType,$idProfile);
     foreach ($list as $id=>$val) {
       if (isset($listClass[$val]) and ! isset($result[$listClass[$val]])) {
         $result[$listClass[$val]]=i18n($listClass[$val]);

@@ -1590,7 +1590,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <div id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:9999.99}" 
+                 constraints="{min:0,max:9999999.99}" 
                  style="width:97px"
                  onchange="assignmentUpdateLeftWork('assignment');"
                  onblur="assignmentUpdateLeftWork('assignment');" >
@@ -1610,7 +1610,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <div id="assignmentRealWork" name="assignmentRealWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:9999.99}" 
+                 constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly >
                  <?php echo $keyDownEventScript;?>
                  </div>
@@ -1626,7 +1626,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <div id="assignmentLeftWork" name="assignmentLeftWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:9999.99}" 
+                 constraints="{min:0,max:9999999.99}" 
                  onchange="assignmentUpdatePlannedWork('assignment');"
                  onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" >
@@ -1646,7 +1646,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <div id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:9999.99}" 
+                 constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly > 
                  <?php echo $keyDownEventScript;?>
                  </div>

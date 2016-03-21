@@ -411,8 +411,13 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   } else {
     $lineList=SqlList::getList($lineObj);
   }
+  debugLog($lineObj);
   // Filter on line (for instance will filter menu)
-  $pluginObjectClass=ucfirst($lineObj);
+  if (is_array($lineObj)) {
+    $pluginObjectClass='';
+  } else {
+    $pluginObjectClass=ucfirst($lineObj);
+  }
   $table=$lineList;
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
   foreach ($lstPluginEvt as $script) {
