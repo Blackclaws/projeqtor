@@ -883,6 +883,12 @@ class UserMain extends SqlElement {
 	 	$lstPluginEvt=Plugin::getEventScripts('connect','User');
 	 	foreach ($lstPluginEvt as $script) {
 	 	  require $script; // execute code
+	 	  if (isset($plgErrorLogin)) {
+	 	    break;
+	 	  }
+	 	}
+	 	if (isset($plgErrorLogin)) {
+	 	  return $plgErrorLogin;
 	 	}
 		if ($this->isLdap == 0) {
 			if ($this->crypto=='sha256') {
