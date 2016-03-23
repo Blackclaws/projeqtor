@@ -214,8 +214,8 @@ class Type extends SqlElement {
     setSessionValue('restrictedTypesClass', $sessionValue);
     return $result;
   }
-  public static function listRestritedTypesForClass($class,$idProject,$idProjectType) {
-    $key="$class#$idProject#$idProjectType";
+  public static function listRestritedTypesForClass($class,$idProject,$idProjectType,$idProfile,$exclusive=false) {
+    $key="$class#$idProject#$idProjectType#$idProfile";
     if (self::$_cacheListRestritedTypesForClass and isset(self::$_cacheListRestritedTypesForClass[$key])) {
       return self::$_cacheListRestritedTypesForClass[$key];
     } else {
@@ -228,27 +228,52 @@ class Type extends SqlElement {
     }
     if (!$sessionValue) $sessionValue=array();
     if (!self::$_cacheListRestritedTypesForClass) self::$_cacheRestrictedTypesClass=array();
-    if (!$idProjectType) {
-      $lst=SqlList::getListWithCrit('RestrictType', array('idProject'=>$idProject, 'className'=>$class),'idType');
-      if (count($lst)) { // If restrictions exist for the project, get them
-        return $lst;
-      }
+    $result=array();
+    if ($idProject ) {
+      $result=SqlList::getListWithCrit('RestrictType', array('idProject'=>$idProject, 'className'=>$class),'idType');
       $proj=new Project($idProject,true);
       $idProjectType=$proj->idProjectType;
     } // else will retreive from project type
-    $result=SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+    if (!count($result) and $idProjectType) { // If no restrictions exist for the project, get restriction for type
+      $result=SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+    }
+    if (!$idProfile and $idProject and !$exclusive) { // If $exclusive is set, we are in definition (dialogRestrictType) so do not look for profile
+      $idProfile=getSessionUser()->getProfile($idProject);
+    }
+    if ($idProfile) { // Apply restriction for Profile
+      $lst=SqlList::getListWithCrit('RestrictType', array('idProfile'=>$idProfile, 'className'=>$class),'idType');
+      if (!count($result)) { // Not restriction, for project or for project type
+        $result=$lst;
+      } else {
+        if (count($lst)>0) {
+          foreach ($result as $id=>$val) {
+            if (!in_array($val,$lst)) {
+              unset ($result[$id]);
+            }
+          }
+          if (count($result)==0) {
+            $result[0]=0;
+          }
+        }
+      }
+    }
     self::$_cacheListRestritedTypesForClass[$key]=$result;
     $sessionValue[$key]=$result;
     setSessionValue('listRestritedTypesForClass', $sessionValue);
     return $result;
   }
   
-  public static function getSpecificRestrictTypeValue($idType,$idProject,$idProjectType) {
+  public static function getSpecificRestrictTypeValue($idType,$idProject,$idProjectType,$idProfile) {
     $crit=array('idType'=>$idType);
     if ($idProject) {
       $crit['idProject']=$idProject;
-    } else {
+    } else if ($idProjectType) {
       $crit['idProjectType']=$idProjectType;
+    } else if ($idProfile) {
+      $crit['idProfile']=$idProfile;
+    } else {
+      errorLog(" invalid call parameter for getSpecificRestrictTypeValue($idType,$idProject,$idProjectType,$idProfile)");
+      $crit['id']='0'; // Error : Will return no value
     }
     $rt=SqlElement::getSingleSqlElementFromCriteria('RestrictType', $crit);
     if ($rt->id) return true;

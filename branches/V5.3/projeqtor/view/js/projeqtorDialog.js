@@ -6288,7 +6288,8 @@ function saveRestrictTypes() {
     dojo.xhrGet({
       url : '../tool/getSingleData.php?dataType=restrictedTypeClass'
         +'&idProject='+dojo.byId('idProjectParam').value
-        +'&idProjectType='+dojo.byId('idProjectTypeParam').value ,
+        +'&idProjectType='+dojo.byId('idProjectTypeParam').value
+        +'&idProfile='+dojo.byId('idProfile').value,
       handleAs : "text",
       load : function(data) {
         dojo.byId('resctrictedTypeClassList').innerHTML=data;

@@ -47,24 +47,40 @@ if (!$idProjectType && !$idProject && !$idProfile) {
   echo $error;
   exit;
 }
-echo '<span style="white-space:nowrap">'.i18n('helpRestrictTypesInline').'</span><br/><br/>';?>
+if ($idProject) {
+  $help=i18n('helpRestrictTypesProjectInline');
+} else if ($idProjectType) {
+  $help=i18n('helpRestrictTypesProjectTypeInline');
+} else if ($idProfile) {
+  $help=i18n('helpRestrictTypesProfileInline');
+} else {
+  $help=i18n('helpRestrictTypesInline');
+}
+echo '<span style="white-space:nowrap">'.$help.'</span><br/><br/>';?>
 <form dojoType="dijit.form.Form" id="restrictTypesForm" jsId="restrictTypesForm" name="restrictTypesForm" encType="multipart/form-data" action="" method="" >
 <?php
 echo '<input type="hidden" name="idProjectType" id="idProjectTypeParam" value="'.(($idProject)?'':$idProjectType).'" />';
 echo '<input type="hidden" name="idProject" id="idProjectParam" value="'.$idProject.'" />';
+echo '<input type="hidden" name="idProfile" id="idProfile" value="'.$idProfile.'" />';
 $lstCustom=Type::getClassList();
 if ($idProject) {
   $canUpdate=(securityGetAccessRightYesNo('menuProject', 'update', new Project($idProject,true)) == 'YES');
-} else {
+} else if ($idProjectType) {
   $canUpdate=(securityGetAccessRightYesNo('menuProjectType', 'update', new ProjectType($idProjectType)) == 'YES');
+} else if ($idProfile) {
+  $canUpdate=(securityGetAccessRightYesNo('menuProfile', 'update', new Profile($idProfile)) == 'YES');
+} else {
+  errorLog(" dynamicDialogRestrictTypes : no parameter set idType=$idType, idProject=$idProject, idProjectType=$idProjectType, idProfile=$idProfile)");
+  $canUpdate="NO";
 }
+  
 echo "<table style='width:100%'>";
 foreach ($lstCustom as $class=>$nameClass) {
   echo "<tr style='padding-bottom:20px'><td class='dialogLabel' valign='top'><label>$nameClass&nbsp;:&nbsp;</label></td>";
   echo "<td>";
   $list=SqlList::getList($class);
   if ($idProject and $idProjectType) {
-    $restrict=Type::listRestritedTypesForClass($class,$idProject,$idProjectType);
+    $restrict=Type::listRestritedTypesForClass($class,null,$idProjectType,null,true);
     if (count($restrict)) {
       foreach($list as $id=>$val) {
         if (!in_array($id, $restrict)) {
@@ -78,14 +94,7 @@ foreach ($lstCustom as $class=>$nameClass) {
   echo "<table><tr style='height:20px'>";
   foreach ($list as $id=>$val) {
     $name="checkType_$id";
-    /*$crit=array('idType'=>$id);
-    if ($idProject) {
-      $crit['idProject']=$idProject;
-    } else {
-      $crit['idProjectType']=$idProjectType;
-    }
-    $rt=SqlElement::getSingleSqlElementFromCriteria('RestrictType', $crit);*/
-    $rt=Type::getSpecificRestrictTypeValue($id,$idProject,$idProjectType);
+    $rt=Type::getSpecificRestrictTypeValue($id,$idProject,$idProjectType,$idProfile);
     if ($cpt % $cols ==0 and $cpt!=0) echo "</tr><tr style='height:20px'>";
     echo "<td style='vertical-align:top;'><table style='vertical-align:top;min-width:150px;width:150px;padding:2px 5px;'><tr>";
     echo "<td style='width:20px;vertical-align:top;'><div dojoType='dijit.form.CheckBox' type='checkbox' name='$name' id='$name' ";

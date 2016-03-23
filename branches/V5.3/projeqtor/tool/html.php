@@ -241,7 +241,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
       }
       $critFld=null;$critVal=null;
-      $rtListProjectType=Type::listRestritedTypesForClass($class.'Type',$idProject, null);
+      $rtListProjectType=Type::listRestritedTypesForClass($class.'Type',$idProject, null,null);
       if (count($rtListProjectType)) {
         foreach($rtListProjectType as $id=>$idType) {
           $restrictArray[$idType]="OK";
@@ -411,7 +411,6 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   } else {
     $lineList=SqlList::getList($lineObj);
   }
-  debugLog($lineObj);
   // Filter on line (for instance will filter menu)
   if (is_array($lineObj)) {
     $pluginObjectClass='';

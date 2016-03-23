@@ -41,6 +41,11 @@ if (isset($_REQUEST['idProject'])) {
   $idProject=$_REQUEST['idProject'];
   Security::checkValidId($idProject);
 }
+$idProfile=null;
+if (isset($_REQUEST['idProfile'])) {
+  $idProfile=$_REQUEST['idProfile'];
+  Security::checkValidId($idProfile);
+}
 $lstCustom=Type::getClassList();
 Sql::beginTransaction();
 $result="";
@@ -53,8 +58,10 @@ foreach ($lstCustom as $class=>$name) {
     $crit=array('idType'=>$id);
     if ($idProject) {
       $crit['idProject']=$idProject;
-    } else {
+    } else if ($idProjectType) {
       $crit['idProjectType']=$idProjectType;
+    } else if ($idProfile) {
+      $crit['idProfile']=$idProfile;
     }
     $result="";
     if (isset($_REQUEST['class_'.$name])) {
