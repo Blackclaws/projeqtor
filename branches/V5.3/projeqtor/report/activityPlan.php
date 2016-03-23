@@ -80,6 +80,8 @@ if ( $periodType=='week') {
 include "header.php";
 
 $where=getAccesRestrictionClause('Activity',false,false,true,true);
+$where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
+
 if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 	$idProject = trim($_REQUEST['idProject']);
 	$idProject = Security::checkValidId($idProject);

@@ -74,6 +74,7 @@ if ($paramTeam!="") {
 include "header.php";
 
 $where=getAccesRestrictionClause('Affectation',false,false,true,true);
+$where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
 
 $resources=array();
 $resourceCalendar=array();
