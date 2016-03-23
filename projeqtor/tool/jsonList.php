@@ -172,7 +172,7 @@
           $critField=$_REQUEST['critField'];
           $critVal=$_REQUEST['critValue'];
           if ($critField=='idProject') {
-            $rtListProjectType=Type::listRestritedTypesForClass($class,$critVal,null);
+            $rtListProjectType=Type::listRestritedTypesForClass($class,$critVal,null,null);
             if (count($rtListProjectType)) {
               foreach($list as $id=>$val) {
                 if ($id!=$selected and !in_array($id, $rtListProjectType)) {

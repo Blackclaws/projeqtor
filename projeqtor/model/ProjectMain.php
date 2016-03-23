@@ -467,7 +467,7 @@ class ProjectMain extends SqlElement {
       if (!$this->id) return '';
       if (!$print) {
         $result.= '<button id="buttonRestrictTypes" dojoType="dijit.form.Button" showlabel="true"'
-          . ' title="'.i18n('helpRestrictTypes').'" iconClass="iconType16" >'
+          . ' title="'.i18n('helpRestrictTypesProject').'" iconClass="iconType16" >'
           . '<span>'.i18n('restrictTypes').'</span>'
           . ' <script type="dojo/connect" event="onClick" args="evt">'
           . '  var params="&idProject='.$this->id.'";'
@@ -475,11 +475,11 @@ class ProjectMain extends SqlElement {
           . '  loadDialog("dialogRestrictTypes", null, true, params);'
           . ' </script>'
           . '</button>';
-        $result.= '<span style="font-size:80%">&nbsp;&nbsp;&nbsp;('.i18n('helpRestrictTypesInline').')</span>';
+        $result.= '<span style="font-size:80%">&nbsp;&nbsp;&nbsp;('.i18n('helpRestrictTypesProjectInline').')</span>';
       }
       $result.='<table style="witdh:100%"><tr><td class="label">'.i18n('existingRestrictions').'&nbsp;:&nbsp;</td><td>';
       $result.='<div id="resctrictedTypeClassList">';
-      $list=Type::getRestrictedTypesClass($this->id,null);
+      $list=Type::getRestrictedTypesClass($this->id,null,null);
       $cpt=0;
       foreach ($list as $cl) {
         $cpt++;

@@ -99,7 +99,11 @@ abstract class SqlElement {
                                   "Note"=>"cascade"),
     "CommandType" =>        array("Command"=>"controlStrict"),
     "Component" =>          array("ProductStructure"=>"cascade",
-                                  "ComponentVersion"=>"control"),                              
+                                  "ComponentVersion"=>"control"),   
+    "ComponentVersion" =>   array("Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control",
+                                  "Ticket"=>"control"),
     "Contact" =>            array("Activity"=>"controlStrict",
                                   "Affectation"=>"control",
                                   "Bill"=>"controlStrict",
@@ -181,7 +185,9 @@ abstract class SqlElement {
     "ProductVersion" =>     array("Requirement"=>"control",
                                   "TestCase"=>"control",
                                   "TestSession"=>"control",
-                                  "VersionProject"=>"cascade"),
+                                  "VersionProject"=>"cascade",
+                                  "Ticket"=>"control",
+                                  "Activity"=>"control"),
     "Project" =>            array("Action"=>"control",
                                   "Activity"=>"confirm",
                                   "Affectation"=>"confirm",
@@ -1156,15 +1162,18 @@ abstract class SqlElement {
 				if ($mode=="cascade" or ($mode=="confirm" and self::isDeleteConfirmed())) {
 					$where=null;
 					$obj=new $object();
-					$crit=array('id' . $class => $this->id);
+					$crit=array($obj->getDatabaseColumnName('id' . $class) => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
 					  if (property_exists($obj,'id' . $class)) {
 					    $crit=null;
-					    $where="id".$class."=".$this->id." or (refType='".$class."' and refId=".$this->id.")";
+					    $where=$obj->getDatabaseColumnName("id".$class)."=".$this->id." or (refType='".$class."' and refId=".$this->id.")";
 					  } else {
 					    $crit=array("refType"=>$class, "refId"=>$this->id);
 					  }
-					}					
+					}
+					if ($object=='VersionProject' and ($class=='ProductVersion' or $class=='ComponentVersion')) {
+					  $crit=array('idVersion' => $this->id);
+					} 
 					if ($object=="Dependency") {
 						$crit=null;
 						$where="(predecessorRefType='" . $class . "' and predecessorRefId=" . Sql::fmtId($this->id) .")"
@@ -3187,7 +3196,7 @@ abstract class SqlElement {
 					$crit=array('id' . get_class($this) => $this->id);
 					if (self::is_a($this,'Version')) {
 					  $crit=null;
-					  $where="(1=1";
+					  $where="(1=0";
 					  $arrayVersion=array('idVersion', 
 					      'idTargetVersion','idTargetProductVersion','idTargetComponentVersion', 
 					      'idOriginalVersion','idOriginalProductVersion','idOriginalComponentVersion');
