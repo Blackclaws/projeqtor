@@ -85,6 +85,7 @@ if ( $periodType=='week') {
 include "header.php";
 
 $where=getAccesRestrictionClause('Activity',false,false,true,true);
+$where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
