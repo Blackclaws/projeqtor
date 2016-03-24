@@ -3834,10 +3834,14 @@ abstract class SqlElement {
 					}
 					$msg.=$labelEnd.$fieldStart;
 					//$msg.=htmlEncode($note->note,'print');
-					if (mb_strlen($note->note)>4000) {
-					  $msg.="...";
+					if (mb_strlen($note->note)>4000) { // Should not send too long email
+					  $noteTruncated=$note->note;
+					  $noteTruncated=str_replace(array('</div>','</p>','</tr>'),array('</div><br/>','</p><br/>','<br/></tr>'),$noteTruncated);
+					  $noteTruncated=strip_tags($noteTruncated,'<br><br/><br />');
+					  $noteTruncated=mb_substr($noteTruncated, 0,4000);
+					  $msg.=$noteTruncated;
 					} else {
-					  $msg.=  nl2br($note->note); // nl2br for backward compatibility (before V5.0)
+					  $msg.= $note->note; 
 					}
 					$msg.=$fieldEnd.$rowEnd;
 				}

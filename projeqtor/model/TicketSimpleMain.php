@@ -106,6 +106,9 @@ class TicketSimpleMain extends Ticket {
     unset($this->WorkElement);
     unset($this->_sec_Link);
     unset($this->_tab_2_1);
+    if (!$this->id and getSessionUser()->isContact) {
+      $this->idContact=getSessionUser()->id;
+    }
   }
 
    /** ==========================================================================

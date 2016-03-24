@@ -4702,6 +4702,53 @@ function loadMenuBarPlugin(item, itemName, from) {
   loadContent(pluginMenuPage['menu'+item], "centerDiv");
 }
 
+var customMenuAddRemoveTimeout=null;
+var customMenuAddRemoveTimeoutDelay=3000;
+var customMenuAddRemoveClass=null;
+function customMenuManagement(menuClass) {
+  var button=dojo.byId(menuClass);
+  offsetbutton=button.offsetLeft+dojo.byId('menuBarVisibleDiv').offsetLeft+dojo.byId('menubarContainer').offsetLeft;
+  if ( dojo.hasClass(button,'menuBarCustom') ) {
+    clearTimeout(customMenuAddRemoveTimeout);
+    dojo.byId('customMenuAdd').style.display='none';
+    customMenuAddRemoveClass=menuClass;
+    dojo.byId('customMenuRemove').style.left=offsetbutton+'px';
+    dojo.byId('customMenuRemove').style.display='block';
+    customMenuAddRemoveTimeout=setTimeout("dojo.byId('customMenuRemove').style.display='none';",customMenuAddRemoveTimeoutDelay);
+  } else {
+    clearTimeout(customMenuAddRemoveTimeout);
+    dojo.byId('customMenuRemove').style.display='none';
+    customMenuAddRemoveClass=menuClass;
+    dojo.byId('customMenuAdd').style.left=offsetbutton+'px';
+    dojo.byId('customMenuAdd').style.display='block';
+    customMenuAddRemoveTimeout=setTimeout("dojo.byId('customMenuAdd').style.display='none';",customMenuAddRemoveTimeoutDelay);
+  }
+}
+function customMenuAddItem() {
+  var param="?operation=add&class="+customMenuAddRemoveClass;
+  dojo.xhrGet({
+    url : "../tool/saveCustomMenu.php"+param,
+    handleAs : "text",
+    load : function(data, args) {
+    },
+  });
+  dojo.addClass(customMenuAddRemoveClass,'menuBarCustom');
+  dojo.byId('customMenuAdd').style.display='none';
+}
+function customMenuRemoveItem() {
+  var param="?operation=remove&class="+customMenuAddRemoveClass;
+  dojo.xhrGet({
+    url : "../tool/saveCustomMenu.php"+param,
+    handleAs : "text",
+    load : function(data, args) {
+      if (data=='menuBarCustom') {
+        dojo.byId(customMenuAddRemoveClass).style.display="none";
+      }
+    },
+  });
+  dojo.removeClass(customMenuAddRemoveClass,'menuBarCustom');
+  dojo.byId('customMenuRemove').style.display='none';
+}
 // ====================================================================================
 // ALERTS
 // ====================================================================================
