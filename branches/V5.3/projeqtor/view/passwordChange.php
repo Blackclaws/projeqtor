@@ -96,7 +96,7 @@
           </tr>
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
-              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;position: relative;">
+              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:visible;position: relative;">
              <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('goButton').focus();
@@ -128,6 +128,7 @@
               </script>
             </button>
             <br/>
+            <div style="height:5px">&nbsp;</div>
             <?php if ( $user->password != md5(Parameter::getGlobalParameter('paramDefaultPassword')) ) {?>
             <label class="label" style="width:200px;">&nbsp;</label>
             <button class="largeTextButton" type="button" style="width:200px;color:#555555;" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
@@ -138,12 +139,12 @@
             </button>  
             <?php }?>  
             <br/><br/>
-            
             <label class="label" style="width:200px" >&nbsp;</label>
-            <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="none" style="top:150px;">
+            <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="none" style="overflow:visible;top:180px;">
             </div>
             </form>
-              </div>
+            </div>
+     
             </td>
           </tr>
         </table>

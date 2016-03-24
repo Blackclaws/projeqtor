@@ -215,6 +215,9 @@ html, body {
     .dojoxGridScrollbox, .ganttDiv {
       overflow: auto;
     }
+    .dojoxGridView .dojoxGridScrollbox {
+      overflow:hidden;
+    }
     #gridContainerDiv, #reportParametersDiv {
       overflow: hidden;
     }
@@ -554,6 +557,27 @@ label, .label, .smallLabel {
 .menuSelectList:hover{
 	color:#ffffff !important;
 }	
+.menuBarCustom {
+	background-image: url(images/smallIconFavorite.png);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+.customMenuAddRemove {
+	display:none;
+	position:absolute;
+	top:10px;
+	color:#000000;
+	background:#F5F6CE; 
+	border:2px solid #E6E6E6;
+	padding:3px 5px;
+	z-index:99999;
+	cursor:pointer;
+}
+.menuBarCustom:hover {
+  background-image: url(images/smallIconFavorite.png);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
 /* Specific classes =========================================================== */
 
 .title {

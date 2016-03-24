@@ -146,6 +146,9 @@ class TicketMain extends SqlElement {
         WorkElement::lockRealWork();
       }
     }
+    if (!$this->id and getSessionUser()->isContact) {
+      $this->idContact=getSessionUser()->id;
+    }
   }
 
    /** ==========================================================================

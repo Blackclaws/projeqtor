@@ -35,7 +35,10 @@
   $showMenuBar='YES';
   //$showMenuBar='NO';
   if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
-  $allMenuClass=array('menuBarItem'=>'all');
+  $allMenuClass=array('menuBarItem'=>'all','menuBarCustom'=>'custom');
+  
+  $customMenuArray=SqlList::getListWithCrit("MenuCustom",array('idUser'=>getSessionUser()->id));
+  
   $cptAllMenu=0;
   $obj=new Menu();
   $menuList=$obj->getSqlElementsFromCriteria(null, false);
@@ -50,7 +53,9 @@
   if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
     if (securityCheckDisplayMenu($menu->id,$menu)) {
-      if ($menu->type!='menu' and (strpos(' menuBarItem '.$menu->menuClass, $defaultMenu)>0)) {
+      $menuClass=$menu->menuClass;
+      if (in_array($menu->name,$customMenuArray)) $menuClass.=" menuBarCustom";
+      if ($menu->type!='menu' and (strpos(' menuBarItem '.$menuClass, $defaultMenu)>0)) {
         $cptAllMenu+=1;
       }
       if ($menu->type=='menu' or $menu->name=='menuAlert' or $menu->name=='menuToday' or $menu->name=='menuReports' or $menu->name=='menuParameter' or $menu->name=='menuUserParameter') {
@@ -66,20 +71,22 @@
   }
   
   function drawMenu($menu) {
-  	global $iconSize, $defaultMenu;
+  	global $iconSize, $defaultMenu,$customMenuArray;
   	$menuName=$menu->name;
   	$menuClass=' menuBarItem '.$menu->menuClass;
-    $idMenu=$menu->id;
-    $style=(strpos($menuClass, $defaultMenu)===false)?'display:none;':'display:block;';
-    if ($menu->type=='menu') {
+  	if (in_array($menu->name,$customMenuArray)) $menuClass.=' menuBarCustom';
+  	$idMenu=$menu->id;
+    $style=(strpos($menuClass, $defaultMenu)===false)?'display: none;':'display: block; opacity: 1;';
+  	if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
     		//echo '<td class="menuBarSeparator" style="width:5px;"></td>';
     	}
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
         echo '<td  title="' .(($menuName=='menuReports')?'':i18n($menu->name)) . '" >';
-        echo '<div class="'.$menuClass.'" style="position:relative;'.$style.'" ';
-        echo 'onClick="hideReportFavoriteTooltip(0);loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');"';
+        echo '<div class="'.$menuClass.'" style="position:relative;'.$style.'" id="'.$class.'" ';
+        echo 'onClick="hideReportFavoriteTooltip(0);loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" ';
+        echo 'oncontextmenu="event.preventDefault();customMenuManagement(\''.$class.'\');" ';
         if ($menuName=='menuReports' and isHtml5() ) {
           echo ' onMouseEnter="showReportFavoriteTooltip();"';
           echo ' onMouseLeave="hideReportFavoriteTooltip(2000);"';
@@ -104,7 +111,9 @@
     } else if ($menu->type=='plugin') {
       $class=substr($menuName,4);
       echo '<td  title="' .i18n($menu->name) . '" >';
-      echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarPlugin(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
+      echo '<div class="'.$menuClass.'" style="'.$style.'" id="'.$class.'"';
+      echo 'oncontextmenu="event.preventDefault();customMenuManagement(\''.$class.'\');" ';
+      echo 'onClick="loadMenuBarPlugin(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
       echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';
       echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
       echo '</div>';
@@ -113,7 +122,9 @@
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td title="' .i18n('menu'.$class) . '" >';
-      	echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
+      	echo '<div class="'.$menuClass.'" style="'.$style.'" id="'.$class.'" ';
+      	echo 'oncontextmenu="event.preventDefault();customMenuManagement(\''.$class.'\');" ';
+      	echo 'onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
       	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" />';
       	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
       	echo '</div>';
@@ -272,3 +283,6 @@
       </table>    
     </td>
   </tr></table>
+  <div class="customMenuAddRemove"  id="customMenuAdd" onClick="customMenuAddItem();"><?php echo i18n('customMenuAdd');?></div>
+  <div class="customMenuAddRemove"  id="customMenuRemove" onClick="customMenuRemoveItem();"><?php echo i18n('customMenuRemove');?></div>
+      
