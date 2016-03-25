@@ -82,6 +82,9 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
 if ($paramTeam!="") {
   $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
+if ( trim($paramResource)) {
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$paramResource)) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
 }
@@ -91,9 +94,7 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
-if ( $paramResource=='') {
-  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$paramResource)) . '<br/>';
-}
+
 include "header.php";
 
 $where=getAccesRestrictionClause('Activity',false,false,true,true);

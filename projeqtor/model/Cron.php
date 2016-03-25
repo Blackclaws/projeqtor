@@ -510,7 +510,6 @@ class Cron {
 		  debugTraceLog('Mailbox is empty'); // Will be a debug level trace
 		  return;
 		}
-		include_once '../external/html2text/html2text.php';
 		
 	  foreach ($mailsIds as $mailId) {
   		$mail = $mailbox->getMail($mailId);
@@ -519,8 +518,8 @@ class Cron {
   		$body=$mail->textPlain;
   		$bodyHtml=$mail->textHtml;
   		if (! $body and $bodyHtml) {		
-  			$body=str_replace(array("</div>","</p>","<br>","<br/>","<br />"), 
-  			                  array("</div>\n","</p>\n","\n","\n","\n"), $bodyHtml);
+  		  $toText=new Html2Text($bodyHtml);
+  			$body=$toText->getText();
   			$body=strip_tags($bodyHtml);
   		}
   		$class=null;
