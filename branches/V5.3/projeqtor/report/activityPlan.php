@@ -49,6 +49,22 @@ if (array_key_exists('weekSpinner',$_REQUEST)) {
 };
 
 $user=getSessionUser();
+
+$paramResource='';
+if (array_key_exists('idResource',$_REQUEST)) {
+  $paramResource=Security::checkValidId(trim($_REQUEST['idResource']));
+  $canChangeResource=false;
+  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'reportResourceAll');
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+  if ($habil and $habil->id and $habil->rightAccess=='1') {
+    $canChangeResource=true;
+  }
+  if (!$canChangeResource and $paramResource!=$user->id) {
+    echo i18n('messageNoAccess',array(i18n('colReport')));
+    exit;
+  }
+}
+
 $periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
 $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
@@ -66,6 +82,9 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
 }
 if ($paramTeam!="") {
   $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
+}
+if ( trim($paramResource)) {
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$paramResource)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -92,6 +111,7 @@ if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
+$where.=($paramResource!='')?" and idResource='" . $paramResource . "'":'';
 $order="";
 //echo $where;
 $work=new Work();

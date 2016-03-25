@@ -388,19 +388,17 @@ foreach ($listParam as $param) {
   </tr>  
 <?php
   } else if ($param->paramType=='resourceList') {
-    $defaultValue='';
-    if ($param->defaultValue=='currentResource') {
-      if (array_key_exists('project',$_SESSION)) {
-        $defaultValue=$user->id;
-      }
-    } else if ($param->defaultValue) {
-      $defaultValue=$param->defaultValue; 
-    }
     $canChangeResource=false;
     $crit=array('idProfile'=>$user->idProfile, 'scope'=>'reportResourceAll');
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
     if ($habil and $habil->id and $habil->rightAccess=='1') {
       $canChangeResource=true;
+    }
+    $defaultValue='';
+    if ($param->defaultValue=='currentResource' or (!$param->defaultValue and !$canChangeResource) ) {
+      $defaultValue=$user->id;
+    } else if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
     }
 ?>
     <tr>

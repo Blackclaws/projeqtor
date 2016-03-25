@@ -216,7 +216,8 @@ html, body {
       overflow: auto;
     }
     .dojoxGridView .dojoxGridScrollbox {
-      overflow:hidden;
+      overflow-x:hidden;
+      overflow-y:auto;
     }
     #gridContainerDiv, #reportParametersDiv {
       overflow: hidden;
