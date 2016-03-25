@@ -69,9 +69,15 @@ if (array_key_exists('screenHeight',$_SESSION)) {
          <input id="noteId" name="noteId" type="hidden" value="<?php echo $note->id;?>" />
          <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $note->refType;?>" />
          <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $note->refId;?>" />
+         <input id="noteEditorType" name="noteEditorType" type="hidden" value="<?php echo getEditorType();?>" />
          <?php if (getEditorType()=="CK") {?> 
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
           name="noteNote" id="noteNote"><?php echo htmlspecialchars($note->note);?></textarea>
+        <?php } else if (getEditorType()=="text"){
+          $text=new Html2Text($note->note);
+          $val=$text->getText();?>
+          <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
+          name="noteNote" id="noteNote"><?php echo $val;?></textarea>
         <?php } else {?>
           <textarea dojoType="dijit.form.Textarea" type="hidden"
            id="noteNote" name="noteNote"

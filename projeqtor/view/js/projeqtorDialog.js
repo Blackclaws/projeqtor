@@ -746,9 +746,11 @@ function addNote() {
     dijit.byId("noteNote").set("class", "");
   }
   var callBack=function() {
+    var editorType=dojo.byId("noteEditorType").value;
     if (dijit.byId("noteNoteEditor")) { // Dojo type editor
       dijit.byId("noteNoteEditor").set("class", "input");
-    } else { // CKeditor type
+    } 
+    if (editorType=="CK") { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
     }
   };
