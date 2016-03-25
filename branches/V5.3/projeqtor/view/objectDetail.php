@@ -772,7 +772,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if ($internalTable == 0) {
         if (!is_object($val) and !is_array($val) and !$hide and !$nobr_before) {
           echo '<tr class="detail'.((!$nobr)?' generalRowClass '.$col.'Class':'').'" style="'.((!$nobr)?$specificStyle:'').'">';
-          if ($dataLength > 4000) {
+          if ($dataLength > 4000 and getEditorType()!='text') {
             // Will have to add label
             echo '<td colspan="2">';
           } else {
@@ -1668,7 +1668,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($isWork or $isDuration or $isPercent) {
           echo '</span>';
         }
-      } else if ($dataLength > 100 and $dataLength <= 4000) {
+      } else if ($dataLength > 100 and ($dataLength <= 4000 or getEditorType()=='text')) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
         echo ' onKeyPress="if (dojo.isFF || isEditingKey(event)) {formChanged();}" '; // hard coding default event
@@ -1681,6 +1681,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' maxlength="' . $dataLength . '" ';
         // echo ' maxSize="4" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
+        $text=new Html2Text($val);
+        $val=$text->getText();
         echo htmlEncode($val);
         // echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';

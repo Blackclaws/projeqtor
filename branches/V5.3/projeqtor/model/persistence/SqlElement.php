@@ -796,6 +796,9 @@ abstract class SqlElement {
 							$col_value='0';
 						}
 					}
+					if ($dataLength>4000 and getEditorType()=='text') {
+					  $col_value=nl2br($col_value);
+					}
 					if ($col_value != NULL and $col_value != '' and $col_value != ' '
 					and ($col_name != 'id' or $forceInsert)
 					and strpos($queryColumns, ' '. $this->getDatabaseColumnName($col_name) . ' ')===false ) {
@@ -967,6 +970,14 @@ abstract class SqlElement {
 				if ($col_old_value=='') {$col_old_value=NULL;};
 				// if changed
 				$isText=($dataType=='varchar' or substr($dataType,-4)=='text')?true:false;
+				if ($isText and $dataLength>4000 and getEditorType()=='text') {
+				  $text=new Html2Text($col_old_value);
+				  if ($text->getText()==$col_new_value) {
+				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
+				  } else {
+				    $col_new_value=nl2br($col_new_value);
+				  }
+				}
 				if ( $col_new_value != $col_old_value or ($isText and ('x'.$col_new_value != 'x'.$col_old_value) )) {
 					if ($col_name=='idle') {$idleChange=true;}
 					$insertableColName= $this->getDatabaseColumnName($col_name);
