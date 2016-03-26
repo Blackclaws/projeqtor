@@ -747,11 +747,13 @@ function addNote() {
   }
   var callBack=function() {
     var editorType=dojo.byId("noteEditorType").value;
-    if (dijit.byId("noteNoteEditor")) { // Dojo type editor
-      dijit.byId("noteNoteEditor").set("class", "input");
-    } 
     if (editorType=="CK") { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
+    } else if (editorType=="text") {
+      dijit.byId("noteNote").focus();
+    } else if (dijit.byId("noteNoteEditor")) { // Dojo type editor
+      dijit.byId("noteNoteEditor").set("class", "input");
+      dijit.byId("noteNoteEditor").focus();
     }
   };
   var params="&objectClass="+dojo.byId("objectClass").value;
@@ -766,14 +768,17 @@ function noteSelectPredefinedText(idPrefefinedText) {
     url : '../tool/getPredefinedText.php?id=' + idPrefefinedText,
     handleAs : "text",
     load : function(data) {
-      if (dijit.byId('noteNoteEditor')) {
+      var editorType=dojo.byId("noteEditorType").value;
+      if (editorType=="CK") { // CKeditor type
+        CKEDITOR.instances['noteNote'].setData(data);
+      } else if (editorType=="text") { 
+        dijit.byId('noteNote').set('value', data);
+        dijit.byId('noteNote').focus();
+      } else if (dijit.byId('noteNoteEditor')) {
         dijit.byId('noteNote').set('value', data);
         dijit.byId('noteNoteEditor').set('value', data);
         dijit.byId("noteNoteEditor").focus();
-        //setTimeout("iframes['noteNoteEditor_iframe'].focus();",1000);
-      } else {
-        CKEDITOR.instances['noteNote'].setData(data);
-      }
+      } 
     }
   });
 }
@@ -788,12 +793,15 @@ function editNote(noteId, privacy) {
   }
   var callBack=function() {
     //dijit.byId('notePrivacyPublic').set('checked', 'true');
-    if (dijit.byId("noteNoteEditor")) { // Dojo type editor
+    var editorType=dojo.byId("noteEditorType").value;
+    if (editorType=="CK") { // CKeditor type
+      ckEditorReplaceEditor("noteNote",999);
+    } else if (editorType=="text") { 
+      dijit.byId("noteNote").focus();
+    } else if (dijit.byId("noteNoteEditor")) { // Dojo type editor
       dijit.byId("noteNoteEditor").set("class", "input");
       dijit.byId("noteNoteEditor").focus();
-    } else { // CKeditor type
-      ckEditorReplaceEditor("noteNote",999);
-    }
+    } 
   };
   var params="&objectClass="+dojo.byId("objectClass").value;
   params+="&objectId="+dojo.byId("objectId").value;
@@ -806,16 +814,8 @@ function editNote(noteId, privacy) {
  * 
  */
 function saveNote() {
-  if (dijit.byId("noteNoteEditor")) {
-    if (dijit.byId("noteNote").getValue() == '') {
-      dijit.byId("noteNoteEditor").set("class", "input required");
-      var msg=i18n('messageMandatory', new Array(i18n('Note')));
-      dijit.byId("noteNoteEditor").focus();
-      dojo.byId("noteNoteEditor").focus();
-      showAlert(msg);
-      return;
-    }
-  } else {
+  var editorType=dojo.byId("noteEditorType").value;
+  if (editorType=="CK") {
     noteEditor=CKEDITOR.instances['noteNote'];
     noteEditor.updateElement();
     if (noteEditor.getData()=="") {
@@ -824,7 +824,24 @@ function saveNote() {
       showAlert(msg);
       return;
     }
-  }
+  } else if (editorType=="CK") {
+    if (dijit.byId("noteNote").getValue() == '') {
+      dijit.byId("noteNote").set("class", "input required");
+      var msg=i18n('messageMandatory', new Array(i18n('Note')));
+      dijit.byId("noteNote").focus();
+      showAlert(msg);
+      return;
+    }
+  } else if (dijit.byId("noteNoteEditor")) {
+    if (dijit.byId("noteNote").getValue() == '') {
+      dijit.byId("noteNoteEditor").set("class", "input required");
+      var msg=i18n('messageMandatory', new Array(i18n('Note')));
+      dijit.byId("noteNoteEditor").focus();
+      dojo.byId("noteNoteEditor").focus();
+      showAlert(msg);
+      return;
+    }
+  } 
   loadContent("../tool/saveNote.php", "resultDiv", "noteForm", true, 'note');
   dijit.byId('dialogNote').hide();
 }

@@ -76,8 +76,12 @@ if (array_key_exists('screenHeight',$_SESSION)) {
         <?php } else if (getEditorType()=="text"){
           $text=new Html2Text($note->note);
           $val=$text->getText();?>
-          <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
-          name="noteNote" id="noteNote"><?php echo $val;?></textarea>
+          <textarea dojoType="dijit.form.Textarea" 
+          id="noteNote" name="noteNote"
+          style="width: 500px;"
+          maxlength="4000"
+          class="input"
+          onClick="dijit.byId('noteNote').setAttribute('class','');"><?php echo $val;?></textarea>
         <?php } else {?>
           <textarea dojoType="dijit.form.Textarea" type="hidden"
            id="noteNote" name="noteNote"
@@ -91,7 +95,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
               ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
               style="color:#606060 !important; background:none; 
                 padding:3px 0px 3px 3px;margin-right:2px;height:<?php echo $detailHeight;?>px;width:<?php echo $detailWidth;?>px;min-height:16px;overflow:auto;"
-              class="input"><?php echo str_replace( "\n", '<br/>', $note->note);?></div>
+              class="input"><?php echo $note->note;?></div>
         <?php }?>
           <table width="100%"><tr height="25px">
             <td width="33%" class="smallTabLabel" >
