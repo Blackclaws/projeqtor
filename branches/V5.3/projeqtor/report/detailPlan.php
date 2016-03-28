@@ -72,6 +72,7 @@ if (array_key_exists('periodValue',$_REQUEST))
 	$periodValue=$_REQUEST['periodValue'];
 	$periodValue=Security::checkValidPeriod($periodValue);
 }
+  
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -94,9 +95,24 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
+$nbMonths=1;
+if ($periodType=='month' and isset($_REQUEST['includeNextMonth'])) {
+  $nbMonths=2;
+  $headerParameters.= i18n("colIncludeNextMonth").'<br/>';
+}
 
 include "header.php";
 
+$initParamMonth=$paramMonth;
+// LOOP FOR SEVERAL MONTHS
+for ($cptMonth=0;$cptMonth<$nbMonths;$cptMonth++) {
+  if ($periodType=='month') {
+    $paramMonth=intval($initParamMonth)+$cptMonth;
+    if ($paramMonth>12) $paramMonth=1;
+    if ($paramMonth<10) $paramMonth='0'.$paramMonth;
+    $periodValue=$paramYear.$paramMonth;
+  }
+  
 $where=getAccesRestrictionClause('Activity',false,false,true,true);
 $where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
 
@@ -328,3 +344,7 @@ echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</td></tr></table>';
+
+echo '<br/><br/>';
+// END OF LOOP ON MONTH
+}

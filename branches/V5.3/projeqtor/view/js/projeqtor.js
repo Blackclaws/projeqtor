@@ -99,7 +99,16 @@ function refreshJsonList(className, keepUrl) {
     if ( dijit.byId('listTypeFilter') ) {
       if (dijit.byId('listTypeFilter').get("value")!='') {
         url = url + "&objectType=" + dijit.byId('listTypeFilter').get("value"); 
-        //url = url + "&objectType=" + encodeURIComponent(dijit.byId('listTypeFilter').get("value"));
+      }
+    }
+    if ( dijit.byId('listClientFilter') ) {
+      if (dijit.byId('listClientFilter').get("value")!='') {
+        url = url + "&objectClient=" + dijit.byId('listClientFilter').get("value"); 
+      }
+    }
+    if ( dijit.byId('listElementableFilter') ) {
+      if (dijit.byId('listElementableFilter').get("value")!='') {
+        url = url + "&objectElementable=" + dijit.byId('listElementableFilter').get("value"); 
       }
     }
     if ( dijit.byId('quickSearchValue') ) {
@@ -752,6 +761,7 @@ function loadDiv(page, destinationDiv, formName, callback) {
 function checkDestination(destination){
   if (dojo.byId("isLoginPage") && destination!="loginResultDiv") {
     //if (dojo.isFF) {
+      consoleTraceLog("errorConnection: isLoginPage but destination is not loginResultDiv");
       quitConfirmed=true;
       noDisconnect=true;
       window.location="main.php?lostConnection=true";
@@ -2815,10 +2825,11 @@ function connect(resetPassword) {
     dojo.byId('login').focus();
     dojo.byId('password').focus();
     changePassword=resetPassword;
-    var urlCompl='';
+    var urlCompl="";
     if (resetPassword) {
       urlCompl='?resetPassword=true';
     }
+    //urlCompl=((urlCompl=="")?'?':'&')+'isLoginPage=true'; // Patch (try) for looping connections
     quitConfirmed=true;
     noDisconnect=true;
     var login=dijit.byId('login').get('value');  

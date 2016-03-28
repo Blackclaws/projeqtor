@@ -40,6 +40,14 @@ $objectType='';
 if (array_key_exists('objectType',$_REQUEST)) {
   $objectType=$_REQUEST['objectType'];
 }
+$objectClient='';
+if (array_key_exists('objectClient',$_REQUEST)) {
+  $objectClient=$_REQUEST['objectClient'];
+}
+$objectElementable='';
+if (array_key_exists('objectElementable',$_REQUEST)) {
+  $objectElementable=$_REQUEST['objectElementable'];
+}
 $obj=new $objectClass;
 
 if (array_key_exists('Directory', $_REQUEST)) {
@@ -130,7 +138,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               &nbsp;</span> 
             </td>
             <td width="5px">
-              <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField rounded" dojoType="dijit.form.TextBox" 
+              <div title="<?php echo i18n('filterOnId')?>" style="width:40px" class="filterField rounded" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
 				          setTimeout("filterJsonList()",10);
@@ -145,7 +153,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               </td>
               <td width="5px">
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
-                id="listNameFilter" name="listNameFilter" style="width:140px">
+                id="listNameFilter" name="listNameFilter" style="width:120px">
                   <script type="dojo/method" event="onKeyUp" >
                   setTimeout("filterJsonList()",10);
                 </script>
@@ -167,7 +175,46 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                   </script>
                 </select>
               </td>
-              <?php }?>              
+              <?php }?>   
+              <?php if ( property_exists($obj,'idClient') ) { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("colClient");?>
+                &nbsp;</span>
+              </td>
+              <td width="5px">
+                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                id="listClientFilter" name="listClientFilter" style="width:140px">
+                  <?php htmlDrawOptionForReference('idClient', $objectClient, $obj, false); ?>
+                  <script type="dojo/method" event="onChange" >
+                    refreshJsonList('<?php echo $objectClass;?>');
+                  </script>
+                </select>
+              </td>
+              <?php }?> 
+              <?php 
+                 $elementable=null;
+                 if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
+                 else if (property_exists($obj,'idIndicatorable')) $elementable='idIndicatorable';
+                 else if (property_exists($obj,'idTextable')) $elementable='idTextable';
+                 else if ( property_exists($obj,'idChecklistable')) $elementable='idChecklistable';
+                 //$elementable=null;
+                 if ($elementable) { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("colElement");?>
+                &nbsp;</span>
+              </td>
+              <td width="5px">
+                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                id="listElementableFilter" name="listElementableFilter" style="width:140px">
+                  <?php htmlDrawOptionForReference($elementable, $objectElementable, $obj, false); ?>
+                  <script type="dojo/method" event="onChange" >
+                    refreshJsonList('<?php echo $objectClass;?>');
+                  </script>
+                </select>
+              </td>
+              <?php }?>                     
               <?php $activeFilter=false;
                  if (! $comboDetail and is_array(getSessionUser()->_arrayFilters)) {
                    if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {

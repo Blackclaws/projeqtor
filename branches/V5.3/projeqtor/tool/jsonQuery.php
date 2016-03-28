@@ -126,11 +126,32 @@
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=$table.".".$obj->getDatabaseColumnName('name')." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$param."%'";
     }
-    // --- Direct filter on type (only used for printing, as direct filter is done on client side)
+    // --- Direct filter on type 
     if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "=" . Sql::str($_REQUEST['objectType']);
+      }
+    }
+    // --- Direct filter on client
+    if ( array_key_exists('objectClient',$_REQUEST)  and ! $quickSearch) {
+      if (trim($_REQUEST['objectClient'])!='' and property_exists($obj, 'idClient')) {
+        $queryWhere.= ($queryWhere=='')?'':' and ';
+        $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idClient') . "=" . Sql::str($_REQUEST['objectClient']);
+      }
+    }
+    // --- Direct filter on elementable
+    if ( array_key_exists('objectElementable',$_REQUEST)  and ! $quickSearch) {
+      if (trim($_REQUEST['objectElementable'])!='') {
+        $elementable=null;
+        if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
+        else if (property_exists($obj,'idIndicatorable')) $elementable='idIndicatorable';
+        else if (property_exists($obj,'idTextable')) $elementable='idTextable';
+        else if ( property_exists($obj,'idChecklistable')) $elementable='idChecklistable';
+        if ($elementable) {
+          $queryWhere.= ($queryWhere=='')?'':' and ';
+          $queryWhere.= $table . "." . $obj->getDatabaseColumnName($elementable) . "=" . Sql::str($_REQUEST['objectElementable']);
+        }
       }
     }
     
