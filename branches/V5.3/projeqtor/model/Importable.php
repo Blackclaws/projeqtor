@@ -49,6 +49,7 @@ class Importable extends SqlElement {
 	public static $cptOK;
 	public static $cptWarning;
 
+	private static $_importInProgress=false; 
 	/** ==========================================================================
 	 * Constructor
 	 * @param $id the id of the object in the database (null if not stored yet)
@@ -70,7 +71,23 @@ class Importable extends SqlElement {
 	// ============================================================================**********
 	// MISCELLANOUS FUNCTIONS
 	// ============================================================================**********
+	public static function startImport() {
+	  self::$_importInProgress=true;
+	}
+	public static function stopImport() {
+	  self::$_importInProgress=false;
+	}
+	public static function importInProgress() {
+	  if (self::$_importInProgress===true) {
+	    return true;
+	  } else {
+	    return false;
+	  }
+	}
+	
+	
 	public static function import($fileName, $class){
+	  self::startImport();
 		require_once '../external/XLSXReader/XLSXReader.php';
 		$extension=pathinfo($fileName, PATHINFO_EXTENSION); // get the real file extension
 		if (isset($_REQUEST['fileType'])) {
@@ -86,6 +103,7 @@ class Importable extends SqlElement {
 			errorLog("Type Selected : ".$fileType);
 			$msg=i18n('errorImportFormat');
 			self::$importResult=$msg;
+			self::stopImport();
 			return $msg;
 		}
 		switch($extension){
@@ -102,6 +120,7 @@ class Importable extends SqlElement {
 				errorLog("File Name : ".$fileName);
 				$msg='<b>ERROR - File Type not recognized</b><br/>Import aborted<br/>Contact your administrator';
 				self::$importResult=$msg;
+				self::stopImport();
 				return $msg;
 				break;
 		}
@@ -110,6 +129,7 @@ class Importable extends SqlElement {
 			errorLog("ERROR - mbstring not enabled - Import cancelled");
 			$msg='<b>Error - mbstring is not enabled</b><br/>Import aborted<br/>Contact your administrator';
 			self::$importResult=$msg;
+			self::stopImport();
 			return $msg;
 		}
 		SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never stopped, Static Lists must be freshened
@@ -128,6 +148,7 @@ class Importable extends SqlElement {
 			self::$importResult="Cron error : class '$class' is unknown";
 			self::$cptError=1;
 			self::$cptRejected=1;
+			self::stopImport();
 			return "ERROR";
 		}
 		$obj=new $class();
@@ -171,6 +192,7 @@ class Importable extends SqlElement {
 				errorLog("File Name : ".$fileName);
 				$msg='<b>ERROR - File Type not recognized</b><br/>Import aborted<br/>Contact your administrator';
 				self::$importResult=$msg;
+				self::stopImport();
 				return $msg;
 				break;
 		}
@@ -469,6 +491,7 @@ class Importable extends SqlElement {
 		$log->importRejectedInvalid=self::$cptInvalid;
 		$log->importRejectedError=self::$cptError;
 		$log->save();
+		self::stopImport();
 		return $globalResult;
 	}
 

@@ -116,12 +116,16 @@ $htmlresult.="<br/>";
     </td>
   </tr>
   <tr>
-    <td style="width:100%;text-align:right" class="label"><?php echo i18n("exportReferencesAs")?> :&nbsp;</td>
+    <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportReferencesAs")?> :&nbsp;</td>
     <td > <select dojoType="dijit.form.FilteringSelect" class="input" 
 				   style="width: 150px;" name="exportReferencesAs" id="exportReferencesAs">         
            <OPTION value="name"><?php echo i18n("colName");?></OPTION>                            
            <OPTION value="id"><?php echo i18n("colId");?></OPTION>
 			   </select></td>
+  </tr>
+  <tr>
+    <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportHtml")?> :&nbsp;</td>
+    <td > <div type="checkbox" dojoType="dijit.form.CheckBox" id="exportHtml" name="exportHtml" ></div></td>
   </tr>
   <tr><td colspan="2" >&nbsp;</td></tr>
 </table>

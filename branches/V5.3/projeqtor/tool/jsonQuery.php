@@ -522,6 +522,11 @@
     		if (isset($_REQUEST['exportReferencesAs'])) {
     		  $exportReferencesAs=$_REQUEST['exportReferencesAs'];
     		}
+    		$exportHtml=false;
+    		if (isset($_REQUEST['exportHtml']) and $_REQUEST['exportHtml']=='1') {
+    		  $exportHtml=true;
+    		}
+    		debugLog($_REQUEST);
     		$csvSep=Parameter::getGlobalParameter('csvSeparator');
     		$csvQuotedText=true;
     		$obj=new $objectClass();
@@ -548,6 +553,7 @@
 	            //if ($id!='id') { echo $csvSep ;}
 	    				echo $val.$csvSep;
 	            $dataType[$id]=$obj->getDataType($id);
+	            $dataLength[$id]=$obj->getDataLength($id);
 	          }
 	          echo "\r\n";
     			}
@@ -564,17 +570,21 @@
     						}
     					}
     				}
+    				if ($dataLength[$id]>4000 and !$exportHtml) {
+    				  $text=new Html2Text($val);
+    				  $val=$text->getText();
+    				}
     				$val=encodeCSV($val);
     				if ($csvQuotedText) {
     				  $val=str_replace('"','""',$val);	
     				}
-            $val=str_replace($csvSep,' ',$val);
             //if ($id!='id') { echo $csvSep ;}
-            if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) {
+            if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) { 
               echo '"' . $val . '"'.$csvSep;
             } else if ( ($dataType[$id]=='decimal')) {
             	echo formatNumericOutput($val).$csvSep;
             } else {
+              $val=str_replace($csvSep,' ',$val);
             	echo $val.$csvSep;
             }
     			}
@@ -748,16 +758,4 @@
       echo ' }';
     }
     
-    function encodeCSV($val) {
-      $csvExportUTF8=Parameter::getGlobalParameter('csvExportUTF8');
-      //ini_set('mbstring.substitute_character', "none");
-      //$val= mb_convert_encoding($val, 'UTF-8', 'UTF-8'); // This removes invalid UTF8 characters.
-      if ($csvExportUTF8=='YES') {
-        return $val;
-      } else {
-        return iconv("UTF-8", 'CP1252//TRANSLIT//IGNORE',$val);
-      }
-      // Was previous format, encoding to ISO-8859-1 : not including some characters (Euro)
-      return utf8_decode($val);
-    }
 ?>

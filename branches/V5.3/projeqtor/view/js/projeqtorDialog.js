@@ -5713,6 +5713,7 @@ function executeExport(obj, idUser) {
   var verif=0;
   var val=dojo.byId('column0').value;
   var exportReferencesAs=dijit.byId('exportReferencesAs').get('value');
+  var exportHtml=(dijit.byId('exportHtml').get('checked'))?'1':'0';
   val=eval(val);
   var toExport="";
   for (i=1; i <= val; i++) {
@@ -5728,8 +5729,8 @@ function executeExport(obj, idUser) {
   }
   if (verif == 1) {
     if (ExportType == 'csv') {
-      showPrint("../tool/jsonQuery.php?exportReferencesAs="
-          + exportReferencesAs + "&hiddenFields=" + toExport, 'list', null,
+      showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml+
+      		"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport, 'list', null,
           'csv');
     }
     saveCheckboxExport(obj, idUser);

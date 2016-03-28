@@ -970,9 +970,20 @@ abstract class SqlElement {
 				if ($col_old_value=='') {$col_old_value=NULL;};
 				// if changed
 				$isText=($dataType=='varchar' or substr($dataType,-4)=='text')?true:false;
-				if ($isText and $dataLength>4000 and getEditorType()=='text') {
-				  $text=new Html2Text($col_old_value);
-				  if ($text->getText()==$col_new_value) {
+				if ($isText and $dataLength>4000 and (getEditorType()=='text' or Importable::importInProgress() )) {
+				  $textObj=new Html2Text($col_old_value);
+				  $oldText=$textObj->getText();
+				  if (Importable::importInProgress()) {
+				    $oldText=str_replace("\n\n","\n",$oldText); // Remove double LF as they were removed during export
+				    $col_new_value=str_replace("\r","",$col_new_value); // Replace CRLF with LF
+				  }
+				  //
+				  debugLog("***** OLD *****");
+				  debugLog($oldText);
+				  debugLog("***** NEW *****");
+				  debugLog($col_new_value);
+				  //
+				  if (trim($oldText)==trim($col_new_value)) {
 				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
 				  } else {
 				    $col_new_value=nl2br($col_new_value);
@@ -3758,8 +3769,10 @@ abstract class SqlElement {
 				} else if ($hide) {
 					// Nothing
 				} else if ($dataLength>4000) {
-				  if (mb_strlen($val)>4000) {
-				    $msg.="...";
+				  $text=new Html2Text($val);
+				  $plainText=$text->getText();
+				  if (mb_strlen($plainText)>4000) {
+				    $msg.=nl2br(mb_substr($plainText, 0,4000));
 				  } else {
 				    $msg.=  $val;
 				  }
@@ -3768,7 +3781,7 @@ abstract class SqlElement {
 				} else if ($col=='id') { // id
 					$msg.= '<span style="color:grey;">#</span>' . $val;
 				} else if ($col=='password') {
-					$msg.=  "..."; // nothing
+					$msg.=  "*****"; // nothing
 				} else if ($dataType=='date' and $val!=null and $val != '') {
 					$msg.= htmlFormatDate($val);
 				} else if ($dataType=='datetime' and $val!=null and $val != '') {
@@ -3845,11 +3858,10 @@ abstract class SqlElement {
 					}
 					$msg.=$labelEnd.$fieldStart;
 					//$msg.=htmlEncode($note->note,'print');
-					if (mb_strlen($note->note)>4000) { // Should not send too long email
-					  $noteTruncated=$note->note;
-					  $noteTruncated=str_replace(array('</div>','</p>','</tr>'),array('</div><br/>','</p><br/>','<br/></tr>'),$noteTruncated);
-					  $noteTruncated=strip_tags($noteTruncated,'<br><br/><br />');
-					  $noteTruncated=mb_substr($noteTruncated, 0,4000);
+					$text=new Html2Text($note->note);
+					$plainText=$text->getText();
+					if (mb_strlen($plainText)>4000) { // Should not send too long email
+					  $noteTruncated=nl2br(mb_substr($plainText, 0,4000));
 					  $msg.=$noteTruncated;
 					} else {
 					  $msg.= $note->note; 

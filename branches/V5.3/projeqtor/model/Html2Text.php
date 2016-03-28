@@ -47,6 +47,7 @@ class Html2Text
      * @see $replace
      */
     protected $search = array(
+        "/&#39;/",
         "/\r/",                                           // Non-legal carriage return
         "/[\n\t]+/",                                      // Newlines and tabs
         '/<head\b[^>]*>.*?<\/head>/i',                    // <head>
@@ -77,6 +78,7 @@ class Html2Text
      * @see $search
      */
     protected $replace = array(
+        "'",
         '',                              // Non-legal carriage return
         ' ',                             // Newlines and tabs
         '',                              // <head>
@@ -166,8 +168,8 @@ class Html2Text
      */
     protected $preReplace = array(
         '<br>',
-        '&nbsp;&nbsp;&nbsp;&nbsp;',
-        '&nbsp;',
+        '    ',
+        ' ',
         '',
         '',
     );
@@ -583,6 +585,8 @@ class Html2Text
      */
     protected function toupper($str)
     {
+        
+        return $str; // PROEQTOR - PBE : do not 
         // string can contain HTML tags
         $chunks = preg_split('/(<[^>]*>)/', $str, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 

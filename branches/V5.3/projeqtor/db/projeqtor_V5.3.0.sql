@@ -45,3 +45,5 @@ CREATE TABLE `${prefix}menucustom` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX menucustomUser ON `${prefix}menucustom` (idUser);
+
+ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` decimal(9,2) DEFAULT NULL;
