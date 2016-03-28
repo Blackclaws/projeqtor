@@ -1008,6 +1008,16 @@ class UserMain extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
+				  $createAction=Parameter::getGlobalParameter('ldapCreationAction');
+				  if ($createAction=='createResource' or $createAction=='createResourceAndContact') {
+				    $this->isResource=1;
+				  }
+				  if ($createAction=='createContact' or $createAction=='createResourceAndContact') {
+				    $this->isContact=1;
+				  }
+  				if (! $this->resourceName and ($this->isResource or $this->isContact)) {
+  				  $this->resourceName=$this->name;
+				  }
 				  setSessionUser($this);
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');

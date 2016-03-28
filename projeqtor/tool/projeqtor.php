@@ -2729,5 +2729,29 @@ function getEditorType() {
     return "CK";
   }
 }
+function encodeCSV($val) {
+  $csvExportUTF8=Parameter::getGlobalParameter('csvExportUTF8');
+  //ini_set('mbstring.substitute_character', "none");
+  //$val= mb_convert_encoding($val, 'UTF-8', 'UTF-8'); // This removes invalid UTF8 characters.
+  if ($csvExportUTF8=='YES') {
+    return $val;
+  } else {
+    return iconv("UTF-8", 'CP1252//TRANSLIT//IGNORE',$val);
+  }
+  // Was previous format, encoding to ISO-8859-1 : not including some characters (Euro)
+  return utf8_decode($val);
+}
+function decodeCSV($val) {
+  $csvExportUTF8=Parameter::getGlobalParameter('csvExportUTF8');
+  //ini_set('mbstring.substitute_character', "none");
+  //$val= mb_convert_encoding($val, 'UTF-8', 'UTF-8'); // This removes invalid UTF8 characters.
+  if ($csvExportUTF8=='YES') {
+    return $val;
+  } else {
+    return iconv('CP1252//TRANSLIT//IGNORE',"UTF-8",$val);
+  }
+  // Was previous format, encoding to ISO-8859-1 : not including some characters (Euro)
+  return utf8_encode($val);
+}
 //
 ?>

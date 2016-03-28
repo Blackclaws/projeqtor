@@ -397,6 +397,12 @@ class Parameter extends SqlElement {
         $list=array('freesans'=>i18n('fontForPdfFreesans'),
             'helvetica'=>i18n('fontForPdfHelvetica'));
         break;
+      case 'ldapCreationAction';
+        $list=array('createNothing'=>i18n('createNothingFromLdapUser'),
+          'createResource'=>i18n('createResourceFromLdapUser'),
+          'createContact'=>i18n('createContactFromLdapUser'),
+          'createResourceAndContact'=>i18n('createResourceAndContactFromLdapUser'));
+      break;
     } 
     return $list;
   }
@@ -490,6 +496,7 @@ class Parameter extends SqlElement {
 											         'paramLdap_user_filter'=>'text',
       	                       'ldapDefaultProfile'=>'list',
       	                       'ldapMsgOnUserCreation'=>'list',
+      	                       'ldapCreationAction'=>'list',
       	                     'sectionReferenceFormat'=>'section',
       	                       'referenceFormatPrefix'=>'text',
       	                       'referenceFormatNumber'=>'number',
