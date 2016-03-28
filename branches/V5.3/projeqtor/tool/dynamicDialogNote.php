@@ -104,7 +104,10 @@ if (array_key_exists('screenHeight',$_SESSION)) {
             </td>
             <td width="34%" class="smallTabLabel" >
               <label class="smallTabLabelRight" for="notePrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyTeam" value="2" <?php if ($note->idPrivacy==2) echo "checked";?> />
+              <?php $res=new Resource(getSessionUser()->id);
+                    $hasTeam=($res->id and $res->idTeam)?true:false;
+              ?>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyTeam" value="2" <?php if ($note->idPrivacy==2) echo "checked"; if (!$hasTeam) echo ' disabled ';?> />
             </td>
             <td width="33%" class="smallTabLabel" >
               <label class="smallTabLabelRight" for="notePrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
