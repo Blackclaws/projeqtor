@@ -47,3 +47,12 @@ CREATE TABLE `${prefix}menucustom` (
 CREATE INDEX menucustomUser ON `${prefix}menucustom` (idUser);
 
 ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` decimal(9,2) DEFAULT NULL;
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(176, 31, 'includeNextMonth', 'boolean', 50, null),
+(177, 57, 'includeNextMonth', 'boolean', 50, null),
+(178, 4, 'includeNextMonth', 'boolean', 50, null),
+(179, 5, 'includeNextMonth', 'boolean', 50, null),
+(180, 6, 'includeNextMonth', 'boolean', 50, null),
+(181, 42, 'includeNextMonth', 'boolean', 50, null),
+(182, 58, 'includeNextMonth', 'boolean', 50, null);

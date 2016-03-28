@@ -315,6 +315,18 @@ function showPrint(page, context, comboName, outMode, orientation) {
             + encodeURIComponent(dijit.byId("listTypeFilter").get('value'));
       }
     }
+    if (dijit.byId("listClientFilter")) {
+      if (trim(dijit.byId("listClientFilter").get('value'))) {
+        params+="&objectClient="
+            + encodeURIComponent(dijit.byId("listClientFilter").get('value'));
+      }
+    }
+    if (dijit.byId("listElementableFilter")) {
+      if (trim(dijit.byId("listElementableFilter").get('value'))) {
+        params+="&objectElementable="
+            + encodeURIComponent(dijit.byId("listElementableFilter").get('value'));
+      }
+    }
   } else if (context == 'planning') {
     if (dijit.byId("startDatePlanView").get('value')) {
       params+="&startDate="
@@ -4496,6 +4508,12 @@ function quickSearchOpen() {
   if (dijit.byId("listTypeFilter")) {
     dojo.style("listTypeFilter", "display", "none");
   }
+  if (dijit.byId("listClientFilter")) {
+    dojo.style("listClientFilter", "display", "none");
+  }
+  if (dijit.byId("listElementableFilter")) {
+    dojo.style("listElementableFilter", "display", "none");
+  }
   quickSearchStockId=dijit.byId('listIdFilter').get("value");
   if (dijit.byId('listNameFilter')) {
     quickSearchStockName=dijit.byId('listNameFilter').get("value");
@@ -4514,6 +4532,12 @@ function quickSearchClose() {
   dojo.style("quickSearchDiv", "display", "none");
   if (dijit.byId("listTypeFilter")) {
     dojo.style("listTypeFilter", "display", "block");
+  }
+  if (dijit.byId("listClientFilter")) {
+    dojo.style("listClientFilter", "display", "block");
+  }
+  if (dijit.byId("listElementableFilter")) {
+    dojo.style("listElementableFilter", "display", "block");
   }
   dojo.style("listIdFilter", "display", "block");
   if (dijit.byId('listNameFilter')) {
