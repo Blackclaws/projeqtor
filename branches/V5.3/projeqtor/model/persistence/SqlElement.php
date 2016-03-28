@@ -977,12 +977,6 @@ abstract class SqlElement {
 				    $oldText=str_replace("\n\n","\n",$oldText); // Remove double LF as they were removed during export
 				    $col_new_value=str_replace("\r","",$col_new_value); // Replace CRLF with LF
 				  }
-				  //
-				  debugLog("***** OLD *****");
-				  debugLog($oldText);
-				  debugLog("***** NEW *****");
-				  debugLog($col_new_value);
-				  //
 				  if (trim($oldText)==trim($col_new_value)) {
 				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
 				  } else {
