@@ -120,8 +120,11 @@ if (array_key_exists('isIE',$_REQUEST)) {
               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyPublic" value="1" />
             </td>
             <td width="34%" class="smallTabLabel" >
+             <?php $res=new Resource(getSessionUser()->id);
+                    $hasTeam=($res->id and $res->idTeam)?true:false;
+              ?>
               <label class="smallTabLabelRight" for="attachmentPrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyTeam" value="2" />
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyTeam" <?php if (!$hasTeam) echo ' disabled ';?>value="2" />
             </td>
             <td width="33%" class="smallTabLabel" >
               <label class="smallTabLabelRight" for="attachmentPrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
