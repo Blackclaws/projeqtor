@@ -394,9 +394,11 @@ foreach ($listParam as $param) {
     if ($habil and $habil->id and $habil->rightAccess=='1') {
       $canChangeResource=true;
     }
-    $defaultValue='';
+    $defaultValue=null;
     if ($param->defaultValue=='currentResource' or (!$param->defaultValue and !$canChangeResource) ) {
-      $defaultValue=$user->id;
+      if ($user->isResource) {
+        $defaultValue=$user->id;
+      }
     } else if ($param->defaultValue) {
       $defaultValue=$param->defaultValue; 
     }
