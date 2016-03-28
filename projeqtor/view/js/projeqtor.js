@@ -857,6 +857,7 @@ function finalizeMessageDisplay(destination, validationType) {
   var contentWidget = dijit.byId(destination);
   var lastOperationStatus = dojo.byId('lastOperationStatus');
   var lastOperation = dojo.byId('lastOperation');
+  var needProjectListRefresh=false;
   // scpecific Plan return
   if (destination=="planResultDiv" && (! validationType || validationType=='dependency')) {  
     if (dojo.byId('lastPlanStatus')) {
@@ -1028,7 +1029,7 @@ function finalizeMessageDisplay(destination, validationType) {
       if (lastOperation.value=="insert" || forceRefreshCreationInfo) {       
         dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
-          refreshProjectSelectorList();
+          needProjectListRefresh=true;
         }
         if (dojo.byId("buttonDivObjectId") && (dojo.byId("buttonDivObjectId").innerHTML=="" || forceRefreshCreationInfo) && lastSaveId.value ) {
           dojo.byId("buttonDivObjectId").innerHTML="&nbsp;#"+lastSaveId.value;
@@ -1051,7 +1052,7 @@ function finalizeMessageDisplay(destination, validationType) {
           zone.set('content',msg.value);
         }
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
-          refreshProjectSelectorList();
+          needProjectListRefresh=true;
         }
         if (dojo.byId("buttonDivObjectId") ) {
           dojo.byId("buttonDivObjectId").innerHTML="";
@@ -1236,6 +1237,9 @@ function finalizeMessageDisplay(destination, validationType) {
       }
     }
     hideWait();
+  }
+  if (needProjectListRefresh) {
+    refreshProjectSelectorList();
   }
 }
 function addCloseBoxToMessage(destination) {
