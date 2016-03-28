@@ -547,7 +547,6 @@
     		if (isset($_REQUEST['exportHtml']) and $_REQUEST['exportHtml']=='1') {
     		  $exportHtml=true;
     		}
-    		debugLog($_REQUEST);
     		$csvSep=Parameter::getGlobalParameter('csvSeparator');
     		$csvQuotedText=true;
     		$obj=new $objectClass();
