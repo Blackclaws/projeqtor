@@ -56,3 +56,6 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (180, 6, 'includeNextMonth', 'boolean', 50, null),
 (181, 42, 'includeNextMonth', 'boolean', 50, null),
 (182, 58, 'includeNextMonth', 'boolean', 50, null);
+
+UPDATE `${prefix}filtercriteria` SET `sqlAttribute`='idTargetProductVersion'
+WHERE `sqlAttribute`='idVersion' and `idFilter` IN (SELECT id FROM `${prefix}filter` WHERE refType='Ticket');

@@ -109,11 +109,11 @@ $today=new Today();
                 </div>'.'</td>';
       echo '<td>';
       if ($todayItem->scope=="static") {
-        echo "<span class="nobr">".i18n('today'.$todayItem->staticSection)."</span>";
+        echo "<span class='nobr'>".i18n('today'.$todayItem->staticSection)."</span>";
       } else if ($todayItem->scope=="report"){
         $rpt=new Report($todayItem->idReport);
         echo "<table><tr><td>";
-        echo "<span class="nobr">".i18n('colReport').' "'.i18n($rpt->name).'"</span>';
+        echo "<span class='nobr'>".i18n('colReport').' "'.i18n($rpt->name).'"</span>';
         echo "</td><td>&nbsp;&nbsp;&nbsp;</td><td style='font-size:80%'>";
         $params=TodayParameter::returnTodayReportParameters($todayItem);
         ReportParameter::displayParameters($params);

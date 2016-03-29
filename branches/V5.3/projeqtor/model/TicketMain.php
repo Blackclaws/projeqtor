@@ -333,11 +333,11 @@ class TicketMain extends SqlElement {
   	}
   	if ($old->idActivity!=$this->idActivity and $this->idActivity) {
   		$act=new Activity($this->idActivity);
-  		if ($act->idTargetVersion) {
-  			$this->idTargetVersion=$act->idTargetVersion;
-  			$vers=new Version($act->idTargetVersion);
+  		if ($act->idTargetProductVersion) {
+  			$this->idTargetProductVersion=$act->idTargetProductVersion;
+  			$vers=new Version($act->idTargetProductVersion);
   			if ($vers->idProduct) {
-  				$this->idProductOrComponent=$vers->idProduct;
+  				$this->idProduct=$vers->idProduct;
   			}
   		}
   	}

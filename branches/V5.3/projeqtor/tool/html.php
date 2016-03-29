@@ -538,14 +538,15 @@ function htmlGetCrossTable($lineObj, $columnObj, $pivotObj) {
     $lineList=SqlList::getList($lineObj);
   }
   // Filter on line (for menu)
-  $pluginObjectClass=ucfirst($lineObj);
-  $table=$lineList;
-  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
-  foreach ($lstPluginEvt as $script) {
-    require $script; // execute code
+  if (! is_array($lineObj)) {
+    $pluginObjectClass=ucfirst($lineObj);
+    $table=$lineList;
+    $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
+    foreach ($lstPluginEvt as $script) {
+      require $script; // execute code
+    }
+    $lineList=$table;
   }
-  $lineList=$table;
-  
   $columnList=SqlList::getList($columnObj);
   // Filter on columns (for profile)
   $pluginObjectClass=ucfirst($columnObj);
