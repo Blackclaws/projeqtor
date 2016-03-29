@@ -402,7 +402,7 @@
     	$idDocumentVersion=$_REQUEST['idDocumentVersion'];
       $docVers=new documentVersion($idDocumentVersion);
     	$table=SqlList::getList('Status','name',$docVers->idStatus);
-    	if ($docVers->idStatus) {      
+    	if ($doc and $docVers->idStatus) {      
 	      $profile=getSessionUser()->getProfile($doc);
 	      $type=new DocumentType($doc->idDocumentType);
 	      $ws=new WorkflowStatus();
