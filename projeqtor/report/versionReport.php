@@ -148,7 +148,7 @@ if (count($lstType)) {
 
 foreach ($lstTicket as $t) {
 	$ticket=new Ticket($t->id);
-	$vers=($t->idTargetVersion)?$t->idTargetVersion:'0';
+	$vers=($t->idTargetProductVersion)?$t->idTargetProductVersion:'0';
   if (isset($version[$vers][$t->idTicketType])) {
 	  $version[$vers][$t->idTicketType]['count']+=1;
     $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
@@ -159,7 +159,7 @@ foreach ($lstTicket as $t) {
   	//$ot=new OtherVersion();
   	//$crit=array('refType'=>'Ticket', 'refId'=>$t->id, 'scope'=>'TargetVersion');
   	//$otList=$ot->getSqlElementsFromCriteria($crit);
-  	foreach ($ticket->_OtherTargetVersion as $ot) {
+  	foreach ($ticket->_OtherTargetProductVersion as $ot) {
   		$vers=($ot->idVersion)?$ot->idVersion:'0';
   	  if (isset($version[$vers][$t->idTicketType])) {
 		    $version[$vers][$t->idTicketType]['count']+=1;

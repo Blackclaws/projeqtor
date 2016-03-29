@@ -140,14 +140,18 @@ foreach ($lstVersion as $versId=>$versName) {
   $sumDone='';
   $cpt=0;
 	foreach ($lstObj as $obj) {
-		if (property_exists($obj, 'idTargetVersion')) {
-			$crit="(".$obj->getDatabaseColumnName('idTargetVersion')."=$versId";
-			$scope='TargetVersion';
+		if (property_exists($obj, 'idTargetProductVersion')) {
+			$crit="(".$obj->getDatabaseColumnName('idTargetProductVersion')."=$versId";
+			$scope='TargetProductVersion';
+		} else if (property_exists($obj, 'idTargetVersion')) {
+      $crit="(".$obj->getDatabaseColumnName('idTargetVersion')."=$versId";
+      $scope='TargetVersion';
+			
 		} else if (property_exists($obj, 'idVersion')) {
       $crit="(".$obj->getDatabaseColumnName('idVersion')."=$versId";
       $scope='Version';
-			
 		}
+		
 		if ($paramOtherVersion) {
 			
       $vers=new OtherVersion();
