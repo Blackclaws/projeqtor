@@ -2833,7 +2833,9 @@ function connect(resetPassword) {
     if (resetPassword) {
       urlCompl='?resetPassword=true';
     }
-    //urlCompl=((urlCompl=="")?'?':'&')+'isLoginPage=true'; // Patch (try) for looping connections
+    if (! dojo.byId('isLoginPage')) {
+      urlCompl=((urlCompl=="")?'?':'&')+'isLoginPage=true'; // Patch (try) for looping connections
+    }
     quitConfirmed=true;
     noDisconnect=true;
     var login=dijit.byId('login').get('value');  
