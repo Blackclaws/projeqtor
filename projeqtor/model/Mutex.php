@@ -32,7 +32,7 @@ class Mutex
     var $timeout;
     var $locked;
  
-    function Mutex($name, $timeout = 10)
+    function __construct($name, $timeout = 10)
     {
         $this->lockname = $name;
         $this->timeout = $timeout;

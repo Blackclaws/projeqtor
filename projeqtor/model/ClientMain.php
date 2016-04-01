@@ -67,7 +67,7 @@ class ClientMain extends SqlElement {
     ';
   
   private static $_colCaptionTransposition = array('name'=> 'clientName', 'idPaymentDelay'=>'paymentDelay');
-  private static $_fieldsAttributes=array( );
+  private static $_fieldsAttributes=array('name'=>'required', 'idClientType'=>'required');
   private static $_databaseColumnName = array('taxPct'=>'tax');
   
    /** ==========================================================================
