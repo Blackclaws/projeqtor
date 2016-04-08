@@ -443,9 +443,9 @@ foreach ($listParam as $param) {
     <select dojoType="dijit.form.FilteringSelect" class="input" 
       style="width: 150px;"
       name="<?php echo $param->name;?>" id="<?php echo $param->name;?>">
-      <OPTION value=" " <?php echo (! $defaultValue)?'SELECTED':'';?>><?php echo i18n("paramNone");?></OPTION>                            
+      <option value=" " <?php echo (! $defaultValue)?'SELECTED':'';?>><?php echo i18n("paramNone");?></option>                            
       <?php htmlDrawOptionForReference('idMilestoneType', $defaultValue,null, true);?>
-      <OPTION value="all" <?php echo ($defaultValue=='all')?'SELECTED':'';?>><?php echo i18n("all");?></OPTION>
+      <option value="all" <?php echo ($defaultValue=='all')?'SELECTED':'';?>><?php echo i18n("all");?></option>
     </select>
     </td></tr>
 <?php 

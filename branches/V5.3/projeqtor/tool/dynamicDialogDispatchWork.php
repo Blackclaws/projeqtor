@@ -109,9 +109,9 @@ foreach($arrayWork as $key=>$work) {
         htmlDrawOptionForReference('idResource', $work['idResource'], $obj, false, 'idProject', $obj->idProject);
      } else {
        if ($readOnly) {
-         echo '<OPTION value="'.htmlEncode($work['idResource']).'">'.SqlList::getNameFromId('User', $work['idResource']).'</OPTION>';
+         echo '<option value="'.htmlEncode($work['idResource']).'">'.SqlList::getNameFromId('User', $work['idResource']).'</option>';
        } else {
-         echo '<OPTION value="'.htmlEncode($user->id).'">'.SqlList::getNameFromId('User', $user->id).'</OPTION>';
+         echo '<option value="'.htmlEncode($user->id).'">'.SqlList::getNameFromId('User', $user->id).'</option>';
        }    
      }?>
      </select>

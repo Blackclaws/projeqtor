@@ -69,7 +69,6 @@ class Favorite extends SqlElement {
   static function drawReportList() {
     $list=self::getReportList();
     if (count($list)==0) {
-      echo '</div>';
       return;
     }
     echo '<form dojoType="dijit.form.Form" id="favoriteReportsForm" name="todayParametersForm" onSubmit="return false;">';
@@ -116,7 +115,6 @@ class Favorite extends SqlElement {
     }
     echo '</table>';
     echo '</form>';
-    //echo '</div>';
   }
   
   static function getReportList() {

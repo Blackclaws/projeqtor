@@ -78,8 +78,8 @@ if (count($table)==0) {
 }
 asort($table);
 foreach($table as $key => $val) {
-  echo '<OPTION value="' . $key . '"';
+  echo '<option value="' . $key . '"';
   if ( $key==$user->id ) { echo ' SELECTED '; }
-  echo '>' . $val . '</OPTION>';
+  echo '>' . $val . '</option>';
 }
 ?>
