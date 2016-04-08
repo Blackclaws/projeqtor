@@ -262,9 +262,9 @@ if ($saveShowClosed) {
                             saveUserParameter('planningShowMilestone',this.value);
                             refreshJsonPlanning();
                           </script>
-                            <OPTION value=" " <?php echo (! $saveShowMilestone)?'SELECTED':'';?>><?php echo i18n("paramNone");?></OPTION>                            
+                            <option value=" " <?php echo (! $saveShowMilestone)?'SELECTED':'';?>><?php echo i18n("paramNone");?></option>                            
                             <?php htmlDrawOptionForReference('idMilestoneType', $saveShowMilestone,null, true);?>
-                            <OPTION value="all" <?php echo ($saveShowMilestone=='all')?'SELECTED':'';?>><?php echo i18n("all");?></OPTION>
+                            <option value="all" <?php echo ($saveShowMilestone=='all')?'SELECTED':'';?>><?php echo i18n("all");?></option>
 			                  </select>
                       </td>
                     </tr>

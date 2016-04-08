@@ -262,12 +262,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $user=getSessionUser();
       $restrictArray=$user->getListOfPlannableProjects();
     } else if (($col=="idProduct" or $col=="idProductOrComponent" or $col=="idComponent") and $critFld=='idProject') {
-   		echo '<OPTION value=" " ></OPTION>';
+   		echo '<option value=" " ></option>';
     	return ;
     }
   }
   if (! $required) {
-    echo '<OPTION value=" " ></OPTION>';
+    echo '<option value=" " ></option>';
   }
   if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' or $listType=='Mailable'
    or $listType=='Indicatorable' or $listType=='Checklistable' or $listType=='Dependable' or $listType=='Originable'
@@ -312,12 +312,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       	$selectedFound=false;
       	$next=$key;
       }
-      echo '<OPTION value="' . $key . '"';
+      echo '<option value="' . $key . '"';
       if ( $selection and $key==$selection ) { 
       	echo ' SELECTED ';
       	$selectedFound=true; 
       } 
-      echo '><span >'. htmlEncode($val) . '</span></OPTION>';
+      echo '><span >'. htmlEncode($val) . '</span></option>';
     }
   }
   // This function is not expected to return value, but is used to return next value (for status)
@@ -329,12 +329,12 @@ function htmlReturnOptionForWeekdays($selection, $required=false) {
 	                    '5'=>'Friday', '6'=>'Saturday', '7'=>'Sunday');
   $result="";
 	if (! $required) {
-    $result.='<OPTION value=" " ></OPTION>';
+    $result.='<option value=" " ></option>';
   }
   for ($key=1; $key<=7; $key++) {
-    $result.= '<OPTION value="' . $key . '"';
+    $result.= '<option value="' . $key . '"';
     if ( $selection and $key==$selection ) { $result.= ' SELECTED '; } 
-    $result.= '>'. i18n($arrayWeekDay[$key]) . '</OPTION>';
+    $result.= '>'. i18n($arrayWeekDay[$key]) . '</option>';
   }
   return $result;
 }
@@ -345,12 +345,12 @@ function htmlReturnOptionForMonths($selection, $required=false) {
                       '9'=>'September', '10'=>'October', '11'=>'November','12'=>'December');
   $result="";
   if (! $required) {
-    $result.='<OPTION value=" " ></OPTION>';
+    $result.='<option value=" " ></option>';
   }
   for ($key=1; $key<=12; $key++) {
-    $result.= '<OPTION value="' . $key . '"';
+    $result.= '<option value="' . $key . '"';
     if ( $selection and $key==$selection ) { $result.= ' SELECTED '; } 
-    $result.= '>'. i18n($arrayMonth[$key]) . '</OPTION>';
+    $result.= '>'. i18n($arrayMonth[$key]) . '</option>';
   }
   return $result;
 }

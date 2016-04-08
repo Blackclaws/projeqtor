@@ -119,8 +119,8 @@ $htmlresult.="<br/>";
     <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportReferencesAs")?> :&nbsp;</td>
     <td > <select dojoType="dijit.form.FilteringSelect" class="input" 
 				   style="width: 150px;" name="exportReferencesAs" id="exportReferencesAs">         
-           <OPTION value="name"><?php echo i18n("colName");?></OPTION>                            
-           <OPTION value="id"><?php echo i18n("colId");?></OPTION>
+           <option value="name"><?php echo i18n("colName");?></option>                            
+           <option value="id"><?php echo i18n("colId");?></option>
 			   </select></td>
   </tr>
   <tr>

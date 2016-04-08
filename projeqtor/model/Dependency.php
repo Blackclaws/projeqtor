@@ -94,6 +94,7 @@ class Dependency extends SqlElement {
     $succ=new PlanningElement();
     $succList=array();
     $succParentList=array();
+    $succSonList=array();
     if ($this->successorId) {
       $succ=new PlanningElement($this->successorId);
       $succList=$succ->getSuccessorItemsArrayIncludingParents();
