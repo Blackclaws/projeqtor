@@ -232,13 +232,17 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId('ComponentVersion', $selection);
       }
-    } else if ($col=='id'.$class.'Type' and $class!='Project' and property_exists($obj, 'idProject')) {
+    } else if ($col=='id'.$class.'Type' and property_exists($obj, 'idProject')) {
       if (! isset($idProject)) {
-        if ($obj->idProject) {
+        if ($obj->idProject and $class!='Project' ) {
           $idProject=$obj->idProject;
         } else {
           $idProject=0;
         }
+      }
+      if ($class=='Project') {
+        if ($obj and $obj->id) $idProject=$obj->id;
+        else $idProject=null;
       }
       $critFld=null;$critVal=null;
       $rtListProjectType=Type::listRestritedTypesForClass($class.'Type',$idProject, null,null);

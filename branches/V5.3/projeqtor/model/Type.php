@@ -57,7 +57,7 @@ class Type extends SqlElement {
   public $showInFlash;
   public $internalData;
   
-  public static $_cacheClassList;
+  public static $_cacheClassList=array();
   public static $_cacheRestrictedTypesClass;
   public static $_cacheListRestritedTypesForClass;
   
@@ -144,18 +144,19 @@ class Type extends SqlElement {
    * 
    * @return 
    */
-  public static function getClassList() {
+  public static function getClassList($includeProjectType=false) {
     global $hideAutoloadError;
-    if (self::$_cacheClassList) {
-      return self::$_cacheClassList;
-    } else if (getSessionValue('typeClassList')) {
-      self::$_cacheClassList=getSessionValue('typeClassList');
-      return self::$_cacheClassList;
+    if (self::$_cacheClassList and isset(self::$_cacheClassList[$includeProjectType])) {
+      return self::$_cacheClassList[$includeProjectType];
+    } else if (getSessionValue('typeClassList_'.$includeProjectType)) {
+      self::$_cacheClassList[$includeProjectType]=getSessionValue('typeClassList_'.$includeProjectType);
+      return self::$_cacheClassList[$includeProjectType];
     }
     $hideAutoloadError=true;
     $dir='../model/';
     $handle = opendir($dir);
     $result=array();
+    if ($includeProjectType) $result['ProjectType']=i18n('ProjectType');
     while ( ($file = readdir($handle)) !== false) {
       if ($file == '.' || $file == '..' || $file=='index.php' // exclude ., .. and index.php
       || substr($file,-4)!='.php'                             // exclude non php files
@@ -165,14 +166,14 @@ class Type extends SqlElement {
       $class=pathinfo($file,PATHINFO_FILENAME);
       $ext=pathinfo($file,PATHINFO_EXTENSION);
       $classObj=substr($class,0,strlen($class)-4);
-      if (SqlElement::is_subclass_of ( $class, 'Type') and class_exists($classObj)) {
+      if (SqlElement::is_subclass_of ( $class, 'Type') and SqlElement::class_exists($classObj)) {
         $result[$class]=i18n($class);
       }
     }
     closedir($handle);
     asort($result);
-    setSessionValue('typeClassList',$result);
-    self::$_cacheClassList=$result;
+    setSessionValue('typeClassList_'.$includeProjectType,$result);
+    self::$_cacheClassList[$includeProjectType]=$result;
     return $result;
   }
   public static function getRestrictedTypes($idProject,$idProjectType,$idProfile) {
@@ -216,7 +217,7 @@ class Type extends SqlElement {
   }
   public static function listRestritedTypesForClass($class,$idProject,$idProjectType,$idProfile,$exclusive=false) {
     $key="$class#$idProject#$idProjectType#$idProfile";
-    if (self::$_cacheListRestritedTypesForClass and isset(self::$_cacheListRestritedTypesForClass[$key])) {
+    /*if (self::$_cacheListRestritedTypesForClass and isset(self::$_cacheListRestritedTypesForClass[$key])) {
       return self::$_cacheListRestritedTypesForClass[$key];
     } else {
       $sessionValue=getSessionValue('listRestritedTypesForClass',array());
@@ -225,8 +226,8 @@ class Type extends SqlElement {
         self::$_cacheListRestritedTypesForClass[$key]=$sessionValue[$key];
         return self::$_cacheListRestritedTypesForClass[$key];
       }
-    }
-    if (!$sessionValue) $sessionValue=array();
+    }*/
+    if (!isset($sessionValue) or !$sessionValue) $sessionValue=array();
     if (!self::$_cacheListRestritedTypesForClass) self::$_cacheRestrictedTypesClass=array();
     $result=array();
     if ($idProject ) {
@@ -236,6 +237,9 @@ class Type extends SqlElement {
     } // else will retreive from project type
     if (!count($result) and $idProjectType) { // If no restrictions exist for the project, get restriction for type
       $result=SqlList::getListWithCrit('RestrictType', array('idProjectType'=>$idProjectType, 'className'=>$class),'idType');
+    }
+    if ($class=='ProjectType') {
+      $idProfile=getSessionUser()->getProfile($idProject);
     }
     if (!$idProfile and $idProject and !$exclusive) { // If $exclusive is set, we are in definition (dialogRestrictType) so do not look for profile
       $idProfile=getSessionUser()->getProfile($idProject);

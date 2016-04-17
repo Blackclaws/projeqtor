@@ -46,7 +46,7 @@ if (isset($_REQUEST['idProfile'])) {
   $idProfile=$_REQUEST['idProfile'];
   Security::checkValidId($idProfile);
 }
-$lstCustom=Type::getClassList();
+$lstCustom=Type::getClassList(($idProfile)?true:false);
 Sql::beginTransaction();
 $result="";
 $rt=new RestrictType();
