@@ -38,7 +38,6 @@ class DocumentMain extends SqlElement {
   public $idDocumentType;
   public $idProject;
   public $idProduct;
-  //public $idProduct;
   public $idDocumentDirectory;
   public $documentReference;
   public $externalReference;
