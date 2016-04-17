@@ -37,7 +37,7 @@ foreach ($allowedEntities as $index=>$ent) {
     unset($allowedEntities[$index]);
   }
 }
-$entityDateField = array('Quotation' => 'signatureDate',
+$entityDateField = array('Quotation' => 'doneDate',
     'Command' => 'validatedStartDate',
     'Contract' => 'validatedStartDate',
     'Bill' => 'date'
@@ -64,16 +64,16 @@ if (array_key_exists('id' . $paramEntity . 'Type', $_REQUEST)) {
 }
 
 $where = getAccesRestrictionClause($paramEntity, false);
-if ($paramStartDate != '') {
-    $where.= " and " . $entityDateField[$paramEntity] . " >= " . htmlEncode($paramStartDate);
+if (trim($paramStartDate) != '') {
+    $where.= " and " . $entityDateField[$paramEntity] . " >= '" . htmlEncode($paramStartDate)."'";
 }
-if ($paramEndDate != '') {
-    $where.= " and " . $entityDateField[$paramEntity] . " <= " . htmlEncode($paramEndDate);
+if (trim($paramEndDate) != '') {
+    $where.= " and " . $entityDateField[$paramEntity] . " <= '" . htmlEncode($paramEndDate)."'";
 }
-if ($paramClient != '') {
+if (trim($paramClient) != '') {
     $where.= " and idClient = " . htmlEncode($paramClient);
 }
-if ($paramType != '') {
+if (trim($paramType) != '') {
     $where.= " and id" . $paramEntity . "Type = " . htmlEncode($paramType);
 }
 $order = " " . $entityDateField[$paramEntity] . " DESC";
