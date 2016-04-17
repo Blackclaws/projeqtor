@@ -62,7 +62,7 @@ echo '<span style="white-space:nowrap">'.$help.'</span><br/><br/>';?>
 echo '<input type="hidden" name="idProjectType" id="idProjectTypeParam" value="'.(($idProject)?'':$idProjectType).'" />';
 echo '<input type="hidden" name="idProject" id="idProjectParam" value="'.$idProject.'" />';
 echo '<input type="hidden" name="idProfile" id="idProfile" value="'.$idProfile.'" />';
-$lstCustom=Type::getClassList();
+$lstCustom=Type::getClassList(($idProfile)?true:false);
 if ($idProject) {
   $canUpdate=(securityGetAccessRightYesNo('menuProject', 'update', new Project($idProject,true)) == 'YES');
 } else if ($idProjectType) {
