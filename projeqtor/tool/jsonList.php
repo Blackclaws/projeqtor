@@ -59,6 +59,7 @@
     	$_REQUEST['idProject']=$_REQUEST['critValue']; // This is valid : force idProject to critValue as criFiled=idProject (value has been tested as an id)
     	$required=array_key_exists('required', $_REQUEST);
     }
+    
     if ($type=='ExpenseDetailType') {
       $type='list';
     }
@@ -166,7 +167,7 @@
       		$list=SqlList::getList($class);
       	}
       	
-      } else if (substr($dataType,0,2)=='id' and substr($dataType,-4)=='Type' and $dataType!='idType') {
+      } else if (substr($dataType,0,2)=='id' and substr($dataType,-4)=='Type' and $dataType!='idType' and $dataType!="idExpenseDetailType") {
         $list=SqlList::getList($class);
         if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
           $critField=$_REQUEST['critField'];
