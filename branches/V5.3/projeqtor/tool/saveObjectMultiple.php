@@ -196,7 +196,7 @@ foreach ($selectList as $id) {
     $item->idTargetVersion=$idTargetVersion;
   } 
   if ($idTargetProductVersion and property_exists($item,'idTargetProductVersion')) {
-    $item->idTargetProdutctVersion=$idTargetProductVersion;
+    $item->idTargetProductVersion=$idTargetProductVersion;
   }
   if ($initialDueDate and property_exists($item,'initialDueDate')) {
   	$item->initialDueDate=$initialDueDate;
