@@ -101,7 +101,7 @@ class ProfileMain extends SqlElement {
   public function copy() {
     $result=parent::copy();
     $new=$result->id;
-    $toCopy=array('AccessRight', 'Habilitation', 'HabilitationOther', 'HabilitationReport');
+    $toCopy=array('AccessRight', 'Habilitation', 'HabilitationOther', 'HabilitationReport', 'WorkflowStatus');
     foreach ($toCopy as $objectClass) {
       $obj=new $objectClass();
       $crit=array('idProfile'=>$this->id);
