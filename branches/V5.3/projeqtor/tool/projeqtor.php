@@ -742,12 +742,12 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
   } else {
     $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'read' );
   }
-  $listNO=transformListIntoInClause($user->getAccessRights($objectClass,'NO'));
-  $listOWN=(property_exists($obj,"idUser"))?transformListIntoInClause($user->getAccessRights($objectClass,'OWN')):null;
-  $listRES=(property_exists($obj,"idResource"))?transformListIntoInClause($user->getAccessRights($objectClass,'RES')):null;
-  $listPRO=transformListIntoInClause($user->getAccessRights($objectClass,'PRO'));
-  $listALL=transformListIntoInClause($user->getAccessRights($objectClass,'ALL'));
-  $listALLPRO=transformListIntoInClause($user->getAccessRights($objectClass,'ALL')+$user->getAccessRights($objectClass,'PRO'));
+  $listNO=transformListIntoInClause($user->getAccessRights($objectClass,'NO',$showIdle));
+  $listOWN=(property_exists($obj,"idUser"))?transformListIntoInClause($user->getAccessRights($objectClass,'OWN',$showIdle)):null;
+  $listRES=(property_exists($obj,"idResource"))?transformListIntoInClause($user->getAccessRights($objectClass,'RES',$showIdle)):null;
+  $listPRO=transformListIntoInClause($user->getAccessRights($objectClass,'PRO',$showIdle));
+  $listALL=transformListIntoInClause($user->getAccessRights($objectClass,'ALL',$showIdle));
+  $listALLPRO=transformListIntoInClause($user->getAccessRights($objectClass,'ALL',$showIdle)+$user->getAccessRights($objectClass,'PRO',$showIdle));
   
   $clauseNO='(1=2)'; // Will dintinct the NO
   
