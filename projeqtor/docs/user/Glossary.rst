@@ -75,13 +75,7 @@ Glossary
        * This button allows to skip to the next status.
        * More detail, see: :ref:`Move to next status button<moveToNextStatus-button>`.    
    
-   Planning priority
-
-    * This priority allows to define planned order among planning element.
-    * The smaller priority element is planned first.
-    * The default priority is 500 (medium). 
-    * If projects have different priorities, all elements of project with smaller value priority are planned first.
-
+ 
 
  
 

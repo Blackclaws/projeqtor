@@ -8,6 +8,45 @@
 
     \newpage
 
+.. _type-restriction-section:
+
+Types restrictions
+------------------
+
+Allows to limit values displayed in the list of values for each element type.
+
+Restrictions can be defined for a project, a project type or a profile.
+
+.. note:: Types restrictions section on Project screen.
+
+   * To display types restrictions section, the global parameter "allow type restriction on project" must be set to "Yes".
+   * Possibility to define more restrictions to a project against restrictions defined at the project type level.
+
+
+.. rubric:: Type restriction management
+
+#. Click on "Restrict types" button to display the dialog box.
+#. For each element type, select values that will be in the list of values.
+
+.. figure:: /images/GUI/BOX_RestrictTypeForProject.png
+   :alt: Restrict types for the project dialog box
+   :align: center
+
+   Restrict types for the project dialog box
+
+.. rubric:: Displays element type names where a restriction is applied
+
+.. figure:: /images/GUI/ZONE_TypeRestrictionSection.png
+   :alt: Restrict types section
+   :align: center
+
+   Restrict types section
+
+
+.. raw:: latex
+
+    \newpage
+
 .. index:: ! Project (Type)
 
 .. _project-type:
@@ -78,46 +117,6 @@ Project type is a way to define common behavior on group of projects.
 
 **\* Required field**
 
-.. raw:: latex
-
-    \newpage
-
-.. index:: ! Project (Types restrictions)
-
-.. _type-restriction-section:
-
-Types restrictions section
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This section allows choice of values displayed in the list of values for each element type.
-
-The purpose is to filter the lists of values of element types according to the project type.
-
-.. note:: Types restrictions set directly on the project
-
-   * Possibility to set types restrictions directly on the project screen.
-   * The global parameter "allow type restriction on project" must be set to "Yes".
-   * Ability to add more restrictions for the project.
-
-
-.. rubric:: Type restriction management
-
-#. Click on "Restrict types" button to display the dialog box.
-#. For each element type, select values that will be in the list of values.
-
-.. figure:: /images/GUI/BOX_RestrictTypeForProject.png
-   :alt: Restrict types for the project dialog box
-   :align: center
-
-   Restrict types for the project dialog box
-
-.. rubric:: Displays element type names where a restriction is applied
-
-.. figure:: /images/GUI/ZONE_TypeRestrictionSection.png
-   :alt: Restrict types section
-   :align: center
-
-   Restrict types section
 
 
 .. raw:: latex
@@ -1171,6 +1170,90 @@ Customer type is a way to define different status of customers  (prospects or cl
      - Unique Id for the type.
    * - **Name**
      - Name of the type.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
+
+
+.. index:: ! Product (Type)
+
+.. _product-type:
+
+Products types
+--------------
+
+Product type is a way to define common behavior to group of product.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate that type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
+
+
+.. index:: ! Component (Type)
+
+.. _component-type:
+
+Components types
+----------------
+
+Component type is a way to define common behavior to group of component.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Code
+     - Code of the type.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`

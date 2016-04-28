@@ -2,6 +2,524 @@
 
 .. title:: Concepts
 
+
+.. raw:: latex
+
+    \newpage
+
+
+Project
+=======
+
+A project is the main entity of ProjeQtOr.
+
+Project element is more than a :ref:`planning-element`, it is also used to:
+
+.. rubric:: Gather all project data
+
+* Allows to gather all data depend on project:
+
+  * Planning elements
+  * Risk assessment, Risk mitigation, Reserve
+  * Ticket, Issue, Bug tracking, Change request, Support
+  * Review logs, Meeting, Decision, Action plan
+  * Requirement & Test 
+  * Project expense
+  * Quotation, Order, Bill, Payment
+  * Document
+
+.. rubric:: Restrict data visibility
+
+* Allows restricting data visibility to users by project.
+* The project data visibility is granted according to the user profile.
+* See: :ref:`profiles-definition`
+* See: :ref:`project-affectation`
+
+
+ .. compound:: **Project selector**
+
+    * It is a filter that allows restricting the data visible to a dedicated project.
+    * See: :ref:`top-bar`
+
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Define the project type
+
+Three project types can be defined:
+
+ .. compound:: **Operational project**
+
+    * Most common project to follow activity.
+
+ .. compound:: **Administrative project**
+
+    * Allows to follow the non productive work as holidays, sickness, training, …
+
+    .. note::
+       
+       * All resource will be able to enter some real work on such project, without having to be affected to the project, nor assigned to project activities.
+
+ .. compound:: **Template project**
+
+    * Designed to define templates, to be copied as operational project. (See: :ref:`copy-item`)
+    * Any project leaders can copy such projects, without having to be affected to them.
+
+.. note:: 
+
+   * The project type is defined in a project type (See: :ref:`project-type` screen).
+   * Which is associated to a project (See: :ref:`project` screen).	
+
+.. rubric:: Define billable project
+
+A project can be billable or not.
+
+ .. compound:: **Non billable project**
+
+    * The non billable project is used for internal or administrative project.
+
+ .. compound:: **Billable project**
+
+    * For billable projects the billing types available are: at terms, on producing work, on capping produced work and manual.
+
+.. note:: 
+
+   * The project billing type is defined in a project type (See: :ref:`project-type` screen).
+   * Which is associated to a project (See: :ref:`project` screen). 
+
+
+.. raw:: latex
+
+    \newpage
+
+.. _product-concept:
+
+Product
+=======
+
+A product is a material object or for IT/IS projects is a software application.
+
+.. rubric:: Composition of product
+
+* A product can have a complex structure that can be composed of sub-product and components.
+* A product and its components can have several versions that represent each declination.
+* See: :ref:`product-structure`
+
+.. rubric:: Linked to a project
+
+* A product is an element delivered by a project.
+* The link with the project have no impact on project planning.
+* Indicates only that project is devoted to a specific product versions.
+* The link management is done in :ref:`project` and :ref:`product-version` screens.
+
+.. figure:: /images/LinkProductToProject.png
+   :alt: Link with projects
+   :align: center
+
+   Link with projects
+
+.. rubric:: Identifying the version that is the subject of treatment
+
+* Product (component) versions can be identified in these elements: :ref:`activity`, :ref:`milestone`, :ref:`requirement`, :ref:`test-case`, :ref:`test-session` and :ref:`ticket`.
+* The purpose is to identify which product (component) and its version that is the subject of the treatment.
+* Depending on the element, it has the possibility identifying version of  origin, target version or both.
+
+.. rubric:: Document management
+
+* Documents can be identified to products.
+* See: :ref:`document`
+
+.. rubric:: Management of product and component elements 
+
+* See: :ref:`product-component-management`, for detail about management of product and component elements.
+
+.. _product-structure:
+
+Product structure
+-----------------
+
+The product structure is defined depending on the relationships defined between product and component elements.
+
+The rules defining a product structure are:
+
+ .. compound:: **Relationships between product elements**
+
+    * A product can have several sub-products.
+    * A sub-product can be in the composition only one product.
+
+    .. figure:: /images/LinkProductSubProduct.png
+       :alt: Relationships between product elements
+       :align: center
+
+       Relationships between product elements
+
+ .. compound:: **Relationships between product and component elements**
+
+    * A product can be composed of several components.
+    * A component can be in the composition of several products.
+
+    .. figure:: /images/LinkProductComponent.png
+       :alt: Relationships between product and component elements
+       :align: center
+
+       Relationships between product and component elements
+
+ .. compound:: **Relationships between component elements**
+
+    * Components can be linked between them (N to N relationships).
+
+    .. figure:: /images/LinkBetweenComponent.png
+       :alt: Relationships between component elements
+       :align: center
+
+       Relationships between component elements
+
+.. rubric:: Versions of product and component elements
+
+* A product can have several versions that represent each declination of product.
+* A component can have several versions that represent each declination of the component.
+* Links can be defined between versions of products and components, but only with the elements defined in the product structure.
+
+
+.. figure:: /images/LinkProductComponentVersion.png
+   :alt: Link between versions of product and component
+   :align: center
+
+   Link between versions of product and component
+
+
+.. raw:: latex
+
+    \newpage
+
+
+Planning 
+========
+
+ProjeQtOr implements work-driven planning method.
+
+Based upon on resource availability and their capacity.
+
+.. rubric:: Resource availability
+
+* Resource availability is defined by calendars and project affectation period.
+
+ .. compound:: **Resource calendar**
+
+    * A calendar is set for each resource to define its working days.
+    * Tasks assigned to the resource will be planned according to its working days.
+    * More detail, see: :ref:`resource-calendar`
+
+ .. compound:: **Project affectation period**
+
+    * The resource can be affected to several projects.
+    * Possibility to define affectation period.
+    * More detail, see: :ref:`resource-affectation`
+
+.. rubric:: Resource capacity
+
+* Resource capacity is defined on daily base.
+* The scheduling tool does not exceed the daily resource capacity.
+
+.. topic:: Full Time Equivalent (FTE)
+ 
+   * This indicator is defined for each resource.   
+   * It allows to define the daily capacity.
+   * More detail, see: :ref:`resource`
+
+.. rubric:: Project affectation rate
+
+* The project affectation rate is used to resolve affectation conflicts between projects.
+* It allows to define resource availability for a project during a period.
+* Use with the resource capacity, it allows to define the project affectation capacity on a weekly base.
+
+
+.. rubric:: Task assignation rate
+
+* The task assignation rate is used to keep some scheduling time for other tasks.
+* Use with the resource capacity, it allows to define the assignation capacity on a daily base.
+
+.. _planning-element:
+
+Planning elements
+-----------------
+
+ProjeQtOr offers standard planning elements like Project, Activity and Milestone.
+
+But also, it offers two more planning element: Test session and Meeting.
+
+.. rubric:: Project
+
+This planning element defines the project.
+
+* It allows to specify information on the project sheet like the customer, bill contact, sponsor, manager and objectives.
+* Documents, notes and attachments can be annexed.
+* More detail, see: :ref:`project` screen.
+
+
+ .. compound:: **Sub-project**
+
+    * Sub-project is used to split the project.
+    * The project can be split to correspond the organizational breakdown or something else.
+
+     .. admonition:: Separation of duties
+
+        * A project can be split into multiple sub projects.
+        * A project leader and team can be affected to each sub-project. 
+        * Project affectation allows to define data visibility and isolate sub-projects. (See: :ref:`project-affectation`)
+        * A supervisor can follow-up the project in its totality. 
+
+        .. figure:: /images/SeparationDuties.png
+           :alt: Separation of duties
+           :align: center
+
+           Separation of duties
+
+.. raw:: latex
+
+    \newpage
+
+
+.. rubric:: Activity
+
+This planning element can be a phase, a delivery, a task or any other activity.
+
+An activity can grouped other activities or be a task.
+
+ .. compound:: **Grouping of activities**
+
+    * An activity can be the parent of activities.
+    * This allows to define the structure of phases and deliveries.
+    * Dates, works and costs of activities (child) are summarized in the activity (parent).
+
+ .. compound:: **Task**
+
+    * An activity is a task when it's not a parent of activities.
+    * A task is assigned to resources for to be performed.
+
+More detail, see: :ref:`activity` screen.
+
+
+.. rubric:: Test session
+
+This planning element is a specialized activity aimed for tests.
+
+A test session allows to define a set of test case that must be run.
+
+A test session can grouped other test sessions or be a task.
+
+ .. compound:: **Grouping of test sessions**
+
+    * A test session can be the parent of test sessions.
+    * This allows to define the structure of test sessions.
+    * Dates, works and costs of test sessions (child) are summarized in the test session (parent).
+
+ .. compound:: **Task**
+
+    * A test session is a task when it's not a parent of test sessions.
+    * A task is assigned to resources for to be performed.
+
+More detail, see: :ref:`test-session` screen.
+
+.. raw:: latex
+
+    \newpage
+
+.. rubric:: Milestone
+
+This planning element is a flag in the planning, to point out key dates.
+
+May be a transition point between phases, deliveries.
+
+ProjeQtOr offers two types of milestone floating and fixed.
+
+More detail, see: :ref:`milestone` screen.
+
+.. rubric:: Meeting
+
+This planning element acts like a fixed milestone, but it's a task.
+
+Like a milestone, a meeting can be a transition point. 
+
+But also, like a task because it's possible to assign resources and planned work.
+
+More detail, see: :ref:`meeting` screen.
+
+.. raw:: latex
+
+    \newpage
+
+.. _dependencies:
+
+Dependencies
+------------
+
+Dependencies allow to define the execution of tasks (sequential or concurrent).
+
+All planning elements can be linked to others.
+
+Dependencies can be managed in the Gantt chart and in screen of planning element.
+
+More detail, see: :ref:`project-planning`, :ref:`predSuces-element-section`.
+
+.. note:: Global parameter "Apply strict mode for dependencies"
+
+   * If the value is set to “Yes”, the planning element (successor) can't start the same day that the end date of planning element (predecessor). 
+
+.. rubric:: Delay (days)
+
+* A delay can be defined between predecessor and successor (start).
+
+
+.. topic:: Dependency types
+
+   * ProjeQtOr offers only the dependency (Finish to Start).
+   * This section explains what are they dependency types can be reproduced or not.
+
+    .. compound:: **Start to Start**
+
+       * To reproduce this dependency type, it's possible to add a milestone as prior of both tasks.
+
+    .. compound:: **Start to Finish** 
+
+       * This dependency type can't be reproduced in ProjeQtOr.
+       * This is a very rare scenario used.
+
+    .. compound:: **Finish to Finish**
+
+       * This dependency type can't be reproduced in ProjeQtOr.
+       * This involves reverse planning and may introduce overloading of resources, what is not possible in ProjeQtOr.
+
+
+.. raw:: latex
+
+    \newpage
+
+Planning mode
+-------------
+
+Planning mode allows to define constraints on planning elements: activity, test session and milestone.
+
+Planning modes are grouped under two types (Floating and Fixed).
+
+.. rubric:: Floating
+
+* These planning modes have no constraint date.
+* Planning element is floating depending on its predecessors.
+* Planning modes: As soon as possible, Work together, Fixed duration and floating milestone.
+
+
+.. rubric:: Fixed
+
+* These planning modes have constraint date.
+* Planning modes: Must not start before validated date, As late as possible, Regular and fixed milestone.
+
+More detail, see: :ref:`Activity and Test session  planning modes<progress-section-planning-mode>` and :ref:`Milestone planning modes<planning-mode-milestone>`.
+
+.. note:: 
+
+   * Because ProjeQtOr does not backward planning, the planning mode "As late as possible" with no constraint date  (Floating) is not available.
+
+.. note:: Default planning mode
+
+   * Possibility to define the default planning mode according to element type.
+   * See: :ref:`activity-type`, :ref:`milestone-type` and :ref:`test-session-type` screens. 
+
+
+
+.. raw:: latex
+
+    \newpage
+
+
+Prioritized planning elements
+-----------------------------
+
+Planning elements are scheduled in this order of priority:
+
+#. Fixed date (Fixed milestone, Meeting)
+#. Recurrent activities - Planning modes "Regular..." (Activity, Test session)
+#. Fixed duration (Activity, Test session)
+#. Others
+
+
+.. _scheduling-priority:
+
+Scheduling priority
+-------------------
+
+The scheduling priority allows to define scheduled order among planning elements.
+
+Possible values: from 1 (highest priority) to 999 (lowest priority).
+
+Scheduling priority value is set in progress section of planning element.
+
+.. note::
+
+   * If projects have different priorities, all elements of project with highest priority are scheduled first.
+
+
+Project structure
+-----------------
+
+Work breakdown structure (WBS) is used to define project structure.
+
+Breakdown can be done with sub-projects, activities and test sessions.
+
+.. rubric:: Structure management
+
+* As seen previously, the project can be split in subprojects.
+* All other planning elements concerned by the project or subproject are put under them without structure.
+* Planning elements can be grouped and orderly in hierarchical form.
+* Structure management can be done in the Gantt chart or in planning elements screen.
+
+.. rubric:: WBS element numbering
+
+* The project is numbered by its id number.
+* All other elements are numbered depending on their level and sequence.
+* WBS numbering is automatically adjusted.
+
+.. raw:: latex
+
+    \newpage
+
+Project scheduling
+------------------ 
+
+The project scheduling is done on a full project plan that includes parents and predecessor elements (dependencies). 
+
+.. rubric:: Scheduling
+
+The calculation is executed task by task in the following order:
+
+ #. Dependencies (Predecessor tasks are calculated first)
+ #. Prioritized planning elements 
+ #. Project priority
+ #. Task priority
+ #. Project structure (WBS)
+
+
+.. rubric:: Constraints
+
+The remaining work (left) on tasks will be distributed on the following days from starting planning date, taking into account several constraints:
+
+* Resource availability
+* Resource capacity
+    
+  * Project affectation capacity (Project affectation rate)
+  * Assignation capacity (Task assignation rate)
+
+* Planning mode
+
+
+.. rubric:: Resource overloads
+
+* This is not possible to overloading the resources. 
+* The planning calculation process respects availability and capacity of the resource. 
+* If it is not possible to distribute remaining work, on already planned days, the calculation process uses new available time slot.
+
 .. raw:: latex
 
     \newpage
@@ -350,89 +868,6 @@ Project affection and user profile are also shared.
    * For a stakeholder, you can define and redefine the combination without losing data.
 
 
-.. raw:: latex
-
-    \newpage
-
-.. _product-concept:
-
-Product and component
-=====================
-
-A product is a material object or for IT/IS projects is a software application.
-
-A product can have a complex structure that can be composed of sub-product and components. (See:  :ref:`product-structure`)
-
-The purpose is identifying the work on a version of a product or one of its components.
-
-Detail about management of product and component. (See: :ref:`product-component-management`)
-
-.. rubric:: Versions of product and component
-
-* A product can have several versions that represent each declination of product.
-* A component can have several versions that represent each declination of the component.
-* When a component is linked to a product. It's possible to define which version of the component linked to a version of the product.
-* The goal is to follow the evolution of the product and its components.
-
-.. figure:: /images/LinkProductComponentVersion.png
-   :alt: Link between versions of product and component
-   :align: center
-
-   Link between versions of product and component
-
-.. raw:: latex
-
-    \newpage
-
-.. rubric:: Linked to a Project
-
-* A product or component is an element delivered by a project.
-* The link to the project have no impact on project planning.
-* Indicates only that project is devoted to a specific version.
-* The link management is done in :ref:`project` and :ref:`product-version` screens.
-
-.. figure:: /images/LinkProductToProject.png
-   :alt: Link with projects
-   :align: center
-
-   Link with projects
-
-
-.. rubric:: Identifying the version affected by the work.
-
-* For elements :ref:`activity`, :ref:`milestone`, :ref:`requirement`, :ref:`test-case`, :ref:`test-session` and :ref:`ticket`, it's possible to identifying the origin and target version affected by the work.
-
-.. rubric:: Product document
-
-* Documents can be identified to products. (See: :ref:`document`)
-
-.. raw:: latex
-
-    \newpage
-
-.. _product-structure:
-
-Product structure
------------------
-
-* The product structure allows to define the product components.
-* Components can be grouped under sub-product.
-
-.. figure:: /images/ProductStructure.png
-   :alt: Product structure
-   :align: center
-
-   Product structure
-
-* A component can be shared between products.
-
-.. figure:: /images/LinkProductComponent.png
-   :alt: Component shared
-   :align: center
-
-   Component shared
-
-
 
 
 .. raw:: latex
@@ -493,6 +928,8 @@ Project affectation can be defined in the :ref:`user` screen.
 
     \newpage
 
+.. _resource-affectation:
+
 Resource affectation
 --------------------
 
@@ -522,9 +959,9 @@ It is also possible to affect a team to a project in :ref:`team` screens.
     * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
     * If remaining work on the task can't be planned, a purple bar appears in the Gantt view.
 
-.. rubric:: Replace resource on an affectation
+.. rubric:: Change resource on a project affectation
 
-* A resource can be replaced on project affectation.
+* A resource can be changed on project affectation.
 * All tasks assigned to old resource will be transferred to the new resource with planned work and remaining work.
 * Work done on tasks belongs to always the old resource.
 
@@ -584,32 +1021,16 @@ Resource function and cost
 .. rubric:: Function
 
 * The function defines the generic competency of a resource.
-* It is used to define the role play by the resource on specific activity.
-* In real work allocation screen, the function name will be displayed in the real work entry in this activity.
-* You can specify a function in field **main function** or in resource cost definition.
-* You can manage function list in :ref:`function` screen.
-
-.. rubric:: Main function
-
-* A main function can be defined in a resource.
-* Allows to define a default function to a resource.
-
---------------------------
+* It is used to define the role play by the resource on tasks.
+* In real work allocation screen, the function name will be displayed in the real work entry.
+* A main function must be defined to resource and it is used as default function.
+* A daily cost can be defined for each function of the resource.
+* The :ref:`function` screen allows to manage function list.
 
 .. rubric:: Resource cost definition
 
-* Allows to define for a resource the **daily cost** for a **specific period of time**, for a **specific function**.
-* Allows to define distinct cost for different resource function.
-
- .. admonition:: Example
-
-    * A resource can work in a different function in a different department from the same company. 
-
-* Allows to define distinct cost to the same function but for different period of time.
-
- .. admonition:: Example
-
-    * You can set the salary increase of the resource (cost) for the next period. 
+* Allows to define the daily cost, according to the functions of the resource. 
+* The daily cost is defined for a specific period.
 
 .. rubric:: Real cost calculation
 
@@ -618,14 +1039,15 @@ Resource function and cost
 .. rubric:: Planned cost calculation
 
 * When the project planning is calculated, resource cost is used to calculate planned cost.
-* Planned cost is calculated with planned work of the day and daily cost for this period. 
-
-------------------
+* Planned cost is calculated with planned work of the day and current daily cost. 
 
 .. note::
  
    * Function and cost are defined in :ref:`resource` screen.
 
+.. raw:: latex
+
+    \newpage
 
 .. index:: ! Resource (Calendar) 
 
@@ -672,7 +1094,7 @@ A calendar is defined for each resource.
 .. note::
 
    * A calendar is set in :ref:`resource` screen. 
-   * The calendar can be defined in :ref:`calendar` screen.
+   * The calendar is defined in :ref:`calendar` screen.
 
 
 ------------------------

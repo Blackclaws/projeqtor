@@ -149,6 +149,7 @@ Financial
    Expense
    Order   
    Bill
+   FinancialGallery
 
 Risk & Issue Management
 =======================

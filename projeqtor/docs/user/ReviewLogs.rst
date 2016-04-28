@@ -23,9 +23,9 @@ This will provide an easy way to find back when, where and why a decision has be
    :local: 
    :backlinks: top
 
-.. rubric:: Project activity
+.. rubric:: Project task
 
-* Meeting is a project activity.
+* Meeting is a task.
 * You can assign project resources (named attendees).
 * You have progress section that allows for followed resources work and cost. 
 
@@ -260,9 +260,9 @@ Attendees section
 
 This section allows to define the list of attendees to the meeting.
 
-.. rubric:: Attendee	 list
+.. rubric:: Attendee list
 
-* Meeting is an activity you can assign project resources.
+* Meeting is a task you can assign project resources.
 * A possibility to assign work to some attendees (project resources). So meeting works of these attendees are booked in the project. 
 * More detail about how assigned project resources, see: :ref:`assignment-section` section.
    
@@ -417,6 +417,10 @@ You can link a question to a meeting to rapidly find the minutes where the quest
      - Complete description of the question.
  
 **\* Required field**
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Section: Answer
 

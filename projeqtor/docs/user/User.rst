@@ -34,19 +34,22 @@ The user is a person that will be able to connect to the application.
  .. compound:: **ProjeQtOr users**
 
     * Users' information is kept in the application database.
-    * Password policy and login behavior are managed by the application (Defined in :ref:`Global parameters<user-password-section>` screen).
-    * The users "admin" and "guest" are created during installation.
+    * Password policy and login behavior are managed by the application.
+
+    .. note::
+       
+       * The users "admin" and "guest" are created during installation.
+
 
  .. compound:: **LDAP users**
 
     * Allows users defined in an external directory to login at ProjeQtOr by the LDAP protocol.
     * Users' information and password policy are managed in the external directory.
-    * LDAP protocol parameters are set in :ref:`Global parameters<ldap-management-section>` screen.
 
 .. rubric:: Default user profile
 
-* A general user profile can be set during user creation.
-* A different default profile can be set for ProjeQtOr and LDAP users.
+* A default user profile is set during creation of the user.
+* A different default profile can be set according to mode of authentication.
 
 .. rubric:: Web Service
 
@@ -135,9 +138,9 @@ The user is a person that will be able to connect to the application.
    * - Field
      - Description
    * - Don't receive team mails
-     - Flag to indicate that the user don't want to receive team mails.
+     - Box checked indicating that the resource doesn't want to receive mails sent to the team.
    * - Comes from LDAP
-     - Flag to indicate that the user come from LDAP.
+     - Box checked indicating that the user information come from LDAP.
    * - API key
      - Key string used by web service consumer.
 

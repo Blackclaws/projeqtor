@@ -24,8 +24,10 @@ Resources
    * :ref:`projeqtor-roles`
    * :ref:`profiles-definition`
    * :ref:`user-ress-contact-demystify`
-   * :ref:`photo`
+   * :ref:`resource-function-cost`
    * :ref:`resource-calendar`
+   * :ref:`photo`
+
 
 Human and material resource are involved in the project.
 
@@ -49,7 +51,7 @@ Project affectation defines its availability.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Resources description section fields
+.. list-table:: 
    :widths: 20, 80
    :header-rows: 1
 
@@ -119,11 +121,16 @@ Project affectation defines its availability.
 
 .. rubric:: Section: Function and cost
 
-.. sidebar:: Concepts 
-
-   * :ref:`resource-function-cost`
-
 This section allows to define functions and cost of the resource.
+
+ .. compound:: **Main function**
+
+    * Main function allows to define the default function.
+
+ .. compound:: **Resource cost definition**
+
+    * Allows to define the daily cost, according to the functions of the resource. 
+    * The daily cost is defined for a specific period.
 
 .. list-table:: Function and cost section fields
    :widths: 20, 80
@@ -145,6 +152,10 @@ This section allows to define functions and cost of the resource.
    * The end date is set when a new resource cost is defined in the same function.
    * The end date is the day before the start date in the new resource cost entry. 
 
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Resource cost management
 
@@ -173,7 +184,7 @@ This section allows to define functions and cost of the resource.
 
 .. topic:: Field: Function
 
-   * The resource main function will be displayed first. 
+   * The default value will be the main function. 
 
 .. topic:: Field: Start date
 
@@ -189,7 +200,7 @@ This section allows to define functions and cost of the resource.
    * - Field
      - Description
    * - Don't receive team mails
-     - Flag to indicate that resource don't want to receive team mails.
+     - Box checked indicating that the resource doesn't want to receive mails sent to the team.
  
 
 

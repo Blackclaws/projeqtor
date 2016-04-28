@@ -10,10 +10,6 @@
 Tickets
 -------
 
-.. sidebar:: Concepts 
-
-   * :ref:`product-concept`
-
 A ticket is a kind of task that can not be unitarily planned. 
 
 It is generally a short time activity for a single ticket, that is interesting to follow unitarily to give a feedback to the issuer or to keep trace of result. 
@@ -44,6 +40,10 @@ For instance, bugs should be managed through tickets :
     * When a resource has entered the real work on the ticket and the ticket is linked to a planning activity.
     * The resource is automatically assigned to this activity.
     * Real work set on tickets is automatically set in resource timesheet.
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Restrict the entry of real work in the ticket.
 
@@ -78,15 +78,19 @@ For instance, bugs should be managed through tickets :
 
 -----------
 
-.. rubric:: Versions selection
+.. rubric:: Product, component and versions fields
 
-* The fields “original version” and “target version” are used to determine for which version of a product or component has been identified and for which version the object of the ticket will be delivered.
-* A ticket can identify all versions affected.
+* Allows to identify the product or component that is the subject of the ticket.
+* Allows to identify from what version (origin) and to which version (target).
 
- .. compound:: **Main version**
+ .. compound:: **Versions identified**
 
-    * For field "original version", the main version is used to determine origin of ticket.
-    * For field "target version", the main version is used to determine the planned version to deliver the object of the ticket.
+    * A ticket can identify all versions affected.
+    * Possibility to define a main version and the other versions affected.
+
+.. note:: 
+
+   * More detail, see: :ref:`Product concept<product-concept>`.
 
 .. raw:: latex
 
@@ -129,10 +133,14 @@ For instance, bugs should be managed through tickets :
      - Link to another ticket, to link duplicate tickets.
    * - Context
      - List of 3 items describing the context of the ticket.
-   * - Product or component
-     - The product or component for which this ticket has been identified.
-   * - Original version
-     - Versions of product or one these components for which this ticket has been identified. 
+   * - Product
+     - The product for which this ticket has been identified.
+   * - Component
+     - The component for which this ticket has been identified.
+   * - Original product version
+     - Versions of product for which this ticket has been identified.
+   * - Original comp. version 
+     - Versions of component for which this ticket has been identified.
    * - :term:`Description`
      - Complete description of the ticket.
 
@@ -147,9 +155,9 @@ For instance, bugs should be managed through tickets :
 
    * List of values contains the products and components linked the selected project.
 
-.. topic:: Field: Original version
+.. topic:: Fields: Original product version & Original comp. version
 
-   * The list of values will be filtered depends on the selected value in field "Product or component".
+   * The list of values will be filtered depends on the selected value in fields "Product and component".
    * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
 
 
@@ -191,8 +199,10 @@ For instance, bugs should be managed through tickets :
      - Flag to indicate that ticket is archived.
    * - Cancelled
      - Flag to indicate that ticket is cancelled.
-   * - Target version
-     - Versions of a product or one these components for which the object will be delivered.
+   * - Target product version 
+     - Versions of a product for which the object will be delivered.
+   * - Target comp. version 
+     - Versions of a component for which the object will be delivered.
    * - :term:`Result`
      - Complete description of the resolution of the ticket. 
  
@@ -209,9 +219,9 @@ For instance, bugs should be managed through tickets :
    * Automatically calculated as Estimated – Real.
    * Set to zero when ticket is done.
 
-.. topic:: Field: Target version
+.. topic:: Fields: Target product version & Target comp. version
 
-   * The list of values will be filtered depends on the selected value in field "Product or component".
+   * The list of values will be filtered depends on the selected value in fields "Product and component".
    * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
 
 

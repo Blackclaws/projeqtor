@@ -17,7 +17,7 @@ This screen is devoted to input of real work.
 
 Resource enters work day by day, on each assigned task.
 
-The input is for one resource, on a weekly basis.
+Data entry for one resource, on a weekly base.
 
 .. note::
 
@@ -36,9 +36,9 @@ The input is for one resource, on a weekly basis.
 
 .. rubric:: 2 - Show planned work
 
-* Flag selected allows to display planned work.
+* Check this box to display the planned work.
 * Planned work is indicated over each input cell, on top right corner, in light blue color.
-* Allow to display the planned work of each task each day.
+* Allows to display the planned working time by day, for the resource assigned to the task.
 
 .. figure:: /images/GUI/ZONE_RealWorkAllocationWithPlannedWork.png
    :alt: Planned work displayed zone
@@ -52,23 +52,28 @@ The input is for one resource, on a weekly basis.
 
 .. rubric:: 3 - Filters
 
-* Filters allow to show or hide task in the task list.
+* Filters allow to define the list of assigned tasks displayed.
 
  .. compound:: **Show only current week meeting**
 
-    * Flag allows to show only the week meeting task.
+    * Check this box  to show only the tasks on meetings of the week.
 
  .. compound:: **Hide not handled items**
 
-    * Flag allows to hide task not take over.
+    * Check this box to hide tasks not taken over.
 
  .. compound:: **Hide done items**
 
-    * Flag allows to hide done task.
+    * Check this box to hide completed tasks.
 
  .. compound:: **Show closed items**
 
-    * Flag allows to show closed task.
+    * Check this box to show closed tasks.
+
+.. note:: Global parameter "Display only handled tasks"
+
+   * If the value of the parameter is set to "Yes", only tasks taken over (status "handled") will be displayed.
+   * The checkbox "Hide not handled items" will be hidden.
 
 .. rubric:: 4 - Buttons
 
@@ -110,44 +115,41 @@ Buttons allow to send and validate real work.
 
 .. rubric:: 8 - Tasks list
 
-Task list allows to display each resource affectation task.
-
 .. figure:: /images/GUI/ZONE_TaskList.png
    :alt: Task list zone
    :align: center
 
    Task list zone
 
-|
+The list displays the assigned tasks for the resource.
+
+* Only assigned tasks that meet the next criteria will be displayed.
+   
+  * Assigned tasks planned during this period.
+  * Assigned tasks that meet the criteria of selected filters.
+
+  .. note::
+
+     * Assigned tasks with real work are always displayed, even if closed.
+     * The goal is to show all lines of the sum for each column, to be able to check that the week is completely entered.
+
 
  .. compound:: **A - Tasks**
 
-    * Tasks are regrouped by project in hierarchical form. 
-    * Tasks displayed in the list depends on :
-   
-      * Assigned tasks planified during this period.
-      * Selected filter flags.
-      * Behavior defined in :ref:`Global parameters<realWorkAllocation-section>` screen.
-
-     .. note::
-
-        * Tasks with real work are always displayed, even if closed.
-        * The goal is to show all lines of the sum for each column, to be able to check that the week is completely entered.
-
+    * Assigned tasks are grouped by project and displayed according the project structure.  
     * Click on the name of the activity to access it.  
     * Click on |minusButton| or |plusButton| on the line will expand-shrink the group.
     * Click on the icon of the activity to display it detail without leaving the current screen.  
  
 
- .. compound:: **B - Function of the assignement**
+ .. compound:: **B - Assigned task function**
 
-    * The function on the assignment is displayed in blue after the name of the task.  
-    * A resource assigned to the same task with many functions, several input line is displayed.
+    * The assigned task function is displayed in blue after the name of the activity.  
 
- .. compound:: **C - Comment on the assignment**
+ .. compound:: **C - Assigned task comments**
 
-    * The icon |Note| indicates there is a comment on the assignment. 
-    * Just move the mouse over the activity to see the comment.
+    * The icon |Note| indicates there is a comment on assigned task. 
+    * Just move the mouse over the icon to see comments.
 
  .. compound:: **D - Progress data**
 
@@ -225,6 +227,12 @@ Input fields
 * Week is displayed from monday to sunday.
 * It possible put real work in off days.
 
+ .. compound:: **Unit time of real work data entry**
+
+    * The global parameter "Unit for real work allocation" allows to set the unit time.
+    * Unit time available are in "Days" or "Hours".
+    * Selected unit time is displayed on left at bottom window. |four|      
+
  .. compound:: **Current day**
 
     * Columns of current day is displayed in yellow.
@@ -237,12 +245,9 @@ Input fields
 .. rubric:: 3 - Left work
 
 * Left work is automatically decreased on input of real work.
-* Resources can update this data to reflect the real estimated left work.
+* Resources can adjust this value to estimate the work needed to complete the task.
 
-.. rubric:: 4 - Unit for real work
 
-* Unit for real work allocation is set :ref:`Global parameters<unitForWork-section>` screen.
-* Selected unit is displayed on left at bottom window.   
 
 .. raw:: latex
 
@@ -251,6 +256,10 @@ Input fields
 
 Input entry validation
 ^^^^^^^^^^^^^^^^^^^^^^
+
+This section explains controls done on data entries.
+
+These controls are not blocking.
 
 .. rubric:: Resource capacity validation
 
@@ -272,23 +281,40 @@ Input entry validation
    Columns validation zone
 
 
-.. note::
+.. rubric:: Entering real work is in excess of the number of days specified 
 
-   * This control is not blocking.
+* This alert box appears when the real work to a resource is entering  ahead of time.
+* The number of days in advance, resource can enter his real work is defined in "max days to book work" parameter in :ref:`Global parameters<unitForWork-section>` screen.
+
+.. figure:: /images/GUI/ALERT_RealWorkOverExpectedDays.png
+   :alt: Real work over expected days alert
+   :align: center
+
+   Real work over expected days alert
+
 
 .. raw:: latex
 
     \newpage
 
-.. rubric:: Automatic status change
+Automatically changing the status of tasks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Status can change automatically depending on whether real work is entered or no more left work.
+The task status can be changed automatically according to data entries on real work and left work.
 
-Automatic status change is defined  in :ref:`Global parameters<realWorkAllocation-section>` screen.
+.. rubric:: Global parameter "Set to first 'handled' status"
 
- .. compound:: **Display of icons**
+* If the parameter value is set to "Yes", when real work is entered on a task, its status will be changed automatically to the first status "handled".
 
-    * An icon will be displayed on the task if a status change is applicable.
+.. rubric:: Global parameter "Set to first 'done' status"
+
+* If the parameter value is set to "Yes", when left work is set to zero on a task, its status will be changed automatically to the first status "done".
+
+.. rubric:: Change status validation
+
+* An icon will be displayed on the task if a status change is applicable.
+
+ .. compound:: **Icons**
 
     * |statusStart| Due to real work is entered, the task status will be changed to the first 'handled' status.
     * |statusStartKO| The real work is entered, but the task status will not change because at issue is occurring. 
@@ -304,15 +330,5 @@ Automatic status change is defined  in :ref:`Global parameters<realWorkAllocatio
     * If a :term:`responsible` or a :term:`result` are set as mandatory in element type definition for the task. It's impossible to set those values by real work allocation screen.
     * The change status must be done in treatment section on the task definition screen.
 
-.. rubric:: Entering real work is in excess of the number of days specified 
-
-* This alert box appears when the real work to a resource is entering  ahead of time.
-* The number of days in advance, resource can enter his real work is defined in "max days to book work" parameter in :ref:`Global parameters<unitForWork-section>` screen.
-
-.. figure:: /images/GUI/ALERT_RealWorkOverExpectedDays.png
-   :alt: Real work over expected days alert
-   :align: center
-
-   Real work over expected days alert
 
 
