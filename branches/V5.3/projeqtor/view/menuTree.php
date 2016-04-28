@@ -145,7 +145,18 @@ var menuData = {
   ?>
 ]
 };
-
+function recursiveCleanParent(list){ //permet de supprimer les menu qui n'ont aucun enfant
+  for (var i in list){
+    if(typeof list[i]['children'] != 'undefined'){
+      if(list[i]['children'].length==0){
+        list.splice(i, 1);
+      }else{
+        recursiveCleanParent(list[i]['children']);
+      }
+    }
+  }
+}
+for(var i = 0;i<10;i++)recursiveCleanParent(menuData.items); //i<10 correspond a 10 niveaux de menu, il y en a 3 au 04/16 pour le moment
 <?php if ( ! $testMode) {?>
 var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 </script>
