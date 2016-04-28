@@ -667,6 +667,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         animateScrollReport();
         var refreshDelay=<?php echo $paramRefreshDelay;?>;
         refreshEnabled = setInterval(function() {
+          formChangeInProgress=false;
           var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
           if(typeof myReq !== 'undefined') {
             window.cancelAnimationFrame(myReq);
