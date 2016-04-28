@@ -641,7 +641,7 @@ class UserMain extends SqlElement {
   }
   
   // Return a list of project with specific access rights depending on profile (only read access taken into account) for a given class
-  public function getAccessRights($class,$right=null) {
+  public function getAccessRights($class,$right=null,$showIdle=false) {
     if ($this->_allAccessRights and isset($this->_allAccessRights[$class])) {
       if ($right) { // Retrieve only for specific right (NO, OWN, RES, PRO, ALL)
         if (isset($this->_allAccessRights[$class][$right])) {
@@ -655,7 +655,7 @@ class UserMain extends SqlElement {
     }
     $result=array();
     $accessProfile=array();    
-    $listAffectedProfiles=$this->getSpecificAffectedProfiles();
+    $listAffectedProfiles=$this->getSpecificAffectedProfiles(!$showIdle);
     $obj=new $class();
     $menu=$obj->getMenuClass ();
     foreach($listAffectedProfiles as $prj=>$prf) {
