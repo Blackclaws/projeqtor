@@ -6,8 +6,6 @@
 
     \newpage
 
-
-
 Global view
 ===========
 
@@ -34,7 +32,6 @@ Those areas are :
 .. raw:: latex
 
     \newpage
-
 
 .. rubric:: Area separation
 
@@ -115,6 +112,32 @@ Menu on top bar allows a rapid access to elements.
 
    * Predefined menus are available and regroup buttons according to the work context.
 
+.. rubric:: Custom menu
+
+* A user can define its custom menu in the top bar.
+* Move cursor over the menu selector and click on "Custom menu" to select it. 
+
+ .. compound:: **Added an item** 
+
+    #. Select a predefined menu (for example: "All menus").
+    #. Move the cursor over icon wanted.
+    #. Click on the right button, a message appear.
+    #. Click on the left button and the icon will be added to the custom menu.
+
+ .. note::
+
+    * A star is added on selected icons.
+
+ .. compound:: **Remove an item** 
+
+    #. Move the cursor over icon (icon with star).
+    #. Click on the right button, a message appear.
+    #. Click on the left button and the icon will be removed from the custom menu.
+
+
+.. raw:: latex
+
+   \newpage
 
 
 
@@ -168,6 +191,7 @@ Logo area
 .. raw:: latex
 
     \newpage
+
 
 .. _menu-document-window:
 
@@ -529,6 +553,10 @@ The fields are regrouped and presented in the order as they appear in the item d
 
 * For fields that reference another item, you can select to export either the id or the clear name for the referenced item.
 
+.. rubric:: Preserve html format for long texts
+
+* Box checked indicating that HTML tags in a long text field will be kept during export.
+
 
 
 
@@ -561,7 +589,9 @@ Detail window
 
 .. rubric:: 2 - Creation information
 
-* Information on the item (issuer and creation date).
+* Information on the item (issuer and creation date) in thumbnail format.
+* See: :ref:`thumbnails`.
+
 
  .. note::
 
@@ -609,7 +639,7 @@ Detail window
     \newpage
 
 
-.. rubric:: 5 -Sections
+.. rubric:: 5 - Sections
 
 * The fields are regrouped under a section.
 * All sections can be folded or unfolded, clicking on the section title. 
@@ -632,6 +662,16 @@ Detail window
        :align: center
 
        Header section dialog box
+
+ .. compound:: **Thumbnails on items in the list**
+
+    * Thumbnails are displayed on item row to present field values in graphical format.
+    * See: :ref:`thumbnails`.
+
+ .. compound:: **Go to selected item**
+
+    * In a list, possibility to go directly to an item by clicking on its fields.
+    * Cursor change to |pointingHandCursor| on clickable fields.
 
 
 
@@ -913,10 +953,13 @@ Text editors are available for editing of long text fields like description, res
 
    Dojo Editor
 
+.. raw:: latex
 
+    \newpage
 
 .. rubric:: Inline editor
 
+* As Dojo Editor. 
 * Activated only when needed.
 * Text zone is extendable.
 
@@ -925,6 +968,19 @@ Text editors are available for editing of long text fields like description, res
    :align: center
 
    Inline editor
+
+
+.. rubric:: Plain text editor
+
+* Conventional text input.
+* Text zone is extendable.
+
+.. figure:: /images/GUI/ZONE_PlainTextEditor.png
+   :alt: Plain text editor
+   :align: center
+
+   Plain text editor
+
 
 
 
@@ -1110,6 +1166,53 @@ Set color field
    :align: center
 
    Set color field zone
+
+.. _thumbnails:
+
+Thumbnails
+""""""""""
+
+Thumbnails are a graphical representation of the field value.
+
+.. rubric:: Date
+
+* Displays the date of creation or update of the item.
+* Move cursor over thumbnail to display the date.
+
+
+ .. compound:: |calendarRed| The Item have been created or updated today.
+
+ .. compound:: |calendarYellow| The Item have been created or updated recently. 
+
+ .. compound:: |calendarWhite| Default view.
+
+.. rubric:: User
+
+* Displays the user who created or updated the item.
+* Move cursor over thumbnail to display the name and a large photo of the user.
+
+ .. compound:: |defaultUserThumb| The user doesn't have a photo.
+
+
+.. rubric:: Comment
+
+* |Note| Indicates a comment or description is defined.
+* Move cursor over thumbnail to display text.
+
+.. rubric:: Privacy
+
+Indicates the visibility level defined in a note or attachment.
+
+ .. compound:: |privateThumb| Private contents.
+
+ .. compound:: |teamThumb| Visible to team.
+
+
+.. rubric:: Color
+
+* Displays a colored circle for field colorable.
+* Some list of values has a field to define a color. 
+* A color is defined for each value.
 
 
 

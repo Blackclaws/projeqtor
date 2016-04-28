@@ -13,7 +13,7 @@ Requirements
 
    * :ref:`product-concept`
 
-Requirement is a rule that must be defined for a project, a product or one these components.
+Requirement is a rule defined for a project or a product.
 
 In most IT projects, requirement can be a functional rule for a software.
 
@@ -35,6 +35,10 @@ It can be linked to test cases, it's used to describe how you will test that a g
 
 * When test case run status is set to **failed**, the reference to a ticket must be defined (reference to the incident).
 * When the requirement is linked to a test case with this run status, ticket is automatically linked to the requirement. 
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Predecessor and successor elements
 
@@ -81,8 +85,8 @@ It can be linked to test cases, it's used to describe how you will test that a g
      - Type of requirement.
    * - Project
      - The project concerned by the requirement.
-   * - Product or component
-     - The product or component concerned by the requirement.
+   * - Product
+     - The product concerned by the requirement.
    * - :term:`External reference`
      - External reference for the requirement.
    * - :term:`Requestor`
@@ -100,11 +104,11 @@ It can be linked to test cases, it's used to describe how you will test that a g
 
 **\* Required field**
 
-.. topic:: Fields: Project and Product or component
+.. topic:: Fields: Project and Product
 
-   * Must be concerned either by a project, a product or one these components or both.
-   * If the project is specified, the list of values for field “Product or component” contains the products and components linked the selected project.
-   * If the project is not specified, the list of values for field "Product or component" contains all products and components defined.
+   * Must be concerned either with a project, a product or both.
+   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
+   * If the project is not specified, the list of values for the field "Product" contains all products defined.
 
 .. rubric:: Section: Treatment
 
@@ -139,7 +143,7 @@ It can be linked to test cases, it's used to describe how you will test that a g
    * - Cancelled
      - Flag to indicate that requirement is cancelled.
    * - Target version
-     - Version of the product  or one these components for which this requirement will be active.
+     - Version of the product for which this requirement will be active.
    * - :term:`Result`
      - Description of the implementation of the requirement. 
  
@@ -147,7 +151,7 @@ It can be linked to test cases, it's used to describe how you will test that a g
 
 .. topic:: Field: Target version
 
-   * The list of values will be filtered depends on selected values in fields "Project" and "Product or component".
+   * Contains the list of product versions available according to the project and product selected.
 
 .. rubric:: Section: Lock
 
@@ -202,7 +206,7 @@ Test cases are elementary actions executed to test a requirement.
 
 You may define several tests to check a requirement, or check several requirements with one test.
 
-The test case is defined for a project, a product or one these components.
+The test case is defined  for a project, a product or one these components.
 
 .. index:: ! Test case (Run status)
 
@@ -255,10 +259,10 @@ The test case is defined for a project, a product or one these components.
      - Type of test case.
    * - Project
      - The project concerned by the test case.
-   * - Product or component
-     - The product or component concerned by the test case.
+   * - Product
+     - The product concerned by the test case.
    * - Version
-     - Version of the product or on these components for which this test case will be valid.
+     - Version of the product or component concerned by the test case.
    * - :term:`External reference`
      - External reference for the test case.
    * - Environment
@@ -268,15 +272,15 @@ The test case is defined for a project, a product or one these components.
 
 **\* Required field**
 
-.. topic:: Fields: Project and Product or component
+.. topic:: Fields: Project and Product
 
-   * Must be concerned either by a project, a product or one these components or both.
-   * If the project is specified, the list of values for field “Product or component” contains the products and components linked the selected project.
-   * If the project is not specified, the list of values for field "Product or component" contains all products and components defined.
+   * Must be concerned either with a project, a product or both.
+   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
+   * If the project is not specified, the list of values for the field "Product" contains all products defined.
 
 .. topic:: Field: Version
 
-   * The list of values will be filtered depends on selected values in fields "Project" and "Product or component".
+   * Contains the list of product and component versions available according to the project and product selected.
 
 
 .. topic:: Field: Environment (Context)
@@ -379,7 +383,7 @@ Define in the test case runs all test cases will be running to this test session
 
 For each test case run sets the status of test results. (See: :ref:`Test case run status<test-case-run-status>`)
 
-Test session must be defined for a project, a product or one these components.
+The test session is defined for a project, a product or one these components.
 
 .. rubric:: Rights management
 
@@ -433,10 +437,10 @@ Test session must be defined for a project, a product or one these components.
      - Type of test session.
    * - Project
      - The project concerned by the test session.
-   * - Product or component
-     - The product or component concerned by the test session.
+   * - Product
+     - The product concerned by the test session.
    * - Version
-     - Version of the product or on these components for which this test session will be valid.
+     - Version of the product or component concerned by the test session.
    * - :term:`External reference`
      - External reference for the test session.
    * - :term:`Description`
@@ -444,15 +448,16 @@ Test session must be defined for a project, a product or one these components.
 
 **\* Required field**
 
-.. topic:: Fields: Project and Product or component
+.. topic:: Fields: Project and Product
 
-   * Must be concerned either by a project, a product or one these components or both.
-   * If the project is specified, the list of values for field “Product or component” contains the products and components linked the selected project.
-   * If the project is not specified, the list of values for field "Product or component" contains all products and components defined.
+   * Must be concerned either with a project, a product or both.
+   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
+   * If the project is not specified, the list of values for the field "Product" contains all products defined.
 
 .. topic:: Field: Version
 
-   * The list of values will be filtered depends on selected values in fields "Project" and "Product or component".
+   * Contains the list of product and component versions available according to the project and product selected.
+
 .. rubric:: Section: Treatment
 
 .. tabularcolumns:: |l|l|

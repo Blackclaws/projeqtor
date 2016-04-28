@@ -31,17 +31,7 @@ The project is the primary entity of ProjeQtOr.
 It is also the top-level of visibility, depending on profiles.
 
 
-.. _project-reserve:
 
-.. index:: ! Project (Reserve)
-
-.. rubric:: Project reserve
-
-* Project reserve is an amount reserved based on identifying risks and opportunities.
-* Calculated from contingency reserve of risks minus potential gain of opportunities.
-* ProjeQtOr uses a technique as "Expected monetary value (EMV)" to convert risks and opportunities into an amount.
-* The amount of project reserve will be added to remaining amount.
-* See: :ref:`risk` and :ref:`opportunity`
 
 .. rubric:: Sub-projects 
 
@@ -51,7 +41,7 @@ It is also the top-level of visibility, depending on profiles.
 
 .. rubric:: Fix planning 
 
-* Check box "fix planning"  to indicate that planning calculation won't be executed on this project and sub-projects.
+* Box checked "fix planning" indicates that project scheduling won't be remade.
 * This will avoid change on planned values.
 
 .. rubric:: Manual indicators
@@ -69,6 +59,18 @@ It is also the top-level of visibility, depending on profiles.
 
 * The indicators can be defined on the progress data.
 * See: :ref:`progress-section-monitor-indicator`
+
+.. _project-reserve:
+
+.. index:: ! Project (Reserve)
+
+.. rubric:: Project reserve
+
+* Project reserve is an amount reserved based on identifying risks and opportunities.
+* Calculated from contingency reserve of risks minus potential gain of opportunities.
+* ProjeQtOr uses a technique as "Expected monetary value (EMV)" to convert risks and opportunities into an amount.
+* The amount of project reserve will be added to remaining amount.
+* See: :ref:`risk` and :ref:`opportunity`
 
 
 .. sidebar:: Other sections
@@ -193,6 +195,19 @@ An activity can be:
 * Activities can be sorted inside their parent activity, on the Gantt planning view, using drag and drop.
 * Parent activity must belong to the same project.
 
+.. rubric:: **Work on tickets**
+
+* Tickets can be linked to an activity (task).
+* Work on tickets will be included in the activity.
+* More detail, see: :ref:`ticket` screen.
+
+ .. compound:: **Assignment of resources to task**
+
+    * Resources who will work on the ticket doesn't need to be assigned to linked activity before.
+    * The assignment will be automatically created once that resource has entered the working time (real work) in the ticket.
+    * The assigned task and the sum of working time entries by resource in tickets will be available in its timesheet.
+
+
 .. rubric:: Monitoring indicator
 
 * The indicators can be defined on the progress data.
@@ -261,7 +276,7 @@ An activity can be:
    * - Cancelled
      - Flag to indicate that activity is cancelled.
    * - Target version
-     - The target version of the product or component affected in delivery of the activity.	
+     - The target version of the product affected in delivery of the activity.	
    * - :term:`Result`
      - Complete description of the treatment done on the activity. 
  
@@ -269,8 +284,8 @@ An activity can be:
 
 .. topic:: Field: Target version
 
-   * List of values contains versions available depending on links defined between the project and products or components.
-   * See: :ref:`product-concept`
+   * Contains the list of product versions linked to the project.
+   * More detail, see: :ref:`Product concept<product-concept>`
 
 .. raw:: latex
 
@@ -299,6 +314,7 @@ ProjeQtOr offers two types of milestone:
 
     * This milestone is fixed in the planning, not taking into account predecessor dependencies.
     * This kind of milestone is interesting, for instance to set-up start date for some tasks.
+    * Fixed date is set by validated date.
 
 .. rubric:: Monitoring indicator
 
@@ -364,7 +380,7 @@ ProjeQtOr offers two types of milestone:
    * - Cancelled
      - Flag to indicate that milestone is cancelled.
    * - Target version
-     - The target version of the product or component affected in delivery of the milestone.	
+     - The target version of the product affected in delivery of the milestone.	
    * - :term:`Result`
      - Complete description of the treatment done on the milestone. 
  
@@ -372,6 +388,6 @@ ProjeQtOr offers two types of milestone:
 
 .. topic:: Field: Target version
 
-   * List of values contains versions available depending on links defined between the project and products or components.
-   * See: :ref:`product-concept`
+   * Contains the list of product versions linked to the project.
+   * More detail, see: :ref:`Product concept<product-concept>`
 

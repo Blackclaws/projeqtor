@@ -64,7 +64,7 @@ You can define some message that will be displayed on the :ref:`Today<messages-s
 
 Optionally, the message can be shown on login screen.
 
-You can limit the display to some profile and project.
+You can limit the display by profile, project and user.
 
 The message will be displayed in a color depending on the message type.
 
@@ -86,19 +86,17 @@ The message will be displayed in a color depending on the message type.
    * - **Message type**
      - Type of message. 
    * - Profile
-     - The profile of users who will see the message.
+     - The message is limited to users with this profile.
    * - Project
-     - The project to limit display.
+     - The message is limited to resources affected to the project.
+   * - User
+     - The message is limited to this user.
    * - Show on login screen
      - Show this message on login screen. 
    * - :term:`Closed`
      - Flag to indicate that the message is archived.
  
 **\* Required field**
-
-.. topic:: Field: Project
-
-   * Only resources affected to the project will see the message.
 
 .. rubric:: Section: Message
 

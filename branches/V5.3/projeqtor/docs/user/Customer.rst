@@ -45,7 +45,7 @@ The customer defined here is not a person. Real persons into a customer entity a
      - Unique Id for the customer.
    * - **Customer name**
      - Short name of the customer.
-   * - Type of customer
+   * - **Type of customer**
      - Type of customer.
    * - Customer code
      - Code of the customer.
@@ -181,6 +181,6 @@ Full address of the contact.
    * - Field
      - Description
    * - Don't receive team mails
-     - Flag to indicate that resource don't want to receive team mails.
+     - Box checked indicating that the resource doesn't want to receive mails sent to the team.
 
 

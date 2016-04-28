@@ -39,9 +39,17 @@ Messages
 
 .. rubric:: Messages
 
-* Messages are displayed depends on affected project or user profile. 
+* Messages are displayed  depends on some criteria. 
 * Every message is component by title |one| and message |two|.
 * Messages are defined in :ref:`message` screen.
+
+
+.. rubric:: Automatic refresh
+
+* Allows to refresh data according defined delay. 
+* Also the screen will be scrolling from top to bottom according defined delay.
+* Click on |buttonIconRefresh| to enable/disable automatic refresh. 
+
 
 .. rubric:: Print
 
@@ -67,6 +75,18 @@ Messages
       .. compound:: **Field: Or not set**
  
          * Select also items with due date not set. 
+
+ .. compound:: **Refresh parameters**
+
+    * Allows to define parameters for automatic refresh.
+
+      .. compound:: **Field: Refresh delay**
+         
+         * Selects the delay between two screen refresh.
+
+      .. compound:: **Field: Scroll delay**
+         
+         * Selects the delay between two scrolling.
 
  
  .. compound:: **Items to be displayed**

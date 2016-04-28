@@ -238,58 +238,74 @@ Assignment section
 
    * :ref:`resource-function-cost`
 
-This section allows to manage resource assignation to activities.
-
-.. list-table:: Fields of resource assignment list
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - Resource
-     - Name of the resource assigned to the activity.
-   * - Rate (%)
-     - Rate planned for this resource to the activity.
-   * - Assigned
-     - The work initially planned for this resource to the activity.
-   * - Real
-     - Sum of real work entered by this resource to the activity.
-   * - Left
-     - Remaining work to this resource to complete the activity.
+This section allows to manage assignment of resources to tasks.
 
 .. note::
- 
-   * Click on the resource name will directly move to resource detail.
+
+   * Only resources affected to a project can be assigned to its tasks.
+
+.. rubric:: Assignment function
+
+* The assignment function allows to define the resource function to task and the daily cost if defined. 
+
+.. rubric:: Assignment rate
+
+* Assignment rate is used to keep some scheduling time for other tasks.
+* For instance, if rate is 50%, the resource will not be planned more than half days on the task.
+
+.. rubric:: Multiple assignment to a task
+
+* A resource can be assigned more than once to a task.
+* Allows to assign the resource to the same task, but with a different function (different daily cost).
+* Allows to add extra work without modifying initial assignment.
+
+.. rubric:: Incomplete planned work
+
+* The scheduling process tries to schedule, the remaining work on the assigned task within the project affection period.
+* The remaining work that can't be planned is displayed on the right of the resource name.
+
+.. figure:: /images/GUI/ZONE_AssignmentSectionWithNotPlannedWork.png
+   :alt: Assignment section with incomplete planned work
+   :align: center
+
+   Assignment section with incomplete planned work
 
 
-.. rubric:: Multiple assignment
-
-* It is possible to assign several times the same resource to an activity.
-* It can for instance be used to add extra work without modifying initial assignment. 
 
 
-.. rubric:: Project affectaion
 
-* Only resources affected to the project can be assigned to project activity.
-* Project affectation may have start and end date.
 
- .. note:: Incomplete planned work
 
-    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
-    * If remaining work on the task can't be planned, the work not planned is displayed on the right of the resource name.
-
-    .. figure:: /images/GUI/ZONE_AssignmentSectionWithNotPlannedWork.png
-       :alt: Assignment section with incomplete planned work
-       :align: center
-
-       Assignment section with incomplete planned work
 
 .. raw:: latex
 
     \newpage
 
 
-.. rubric:: Assignment list management
+.. rubric:: Assignment list
+
+.. list-table:: Fields of assignment list
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Resource
+     - Name of the resource assigned to the task.
+   * - Rate (%)
+     - Rate planned for this resource to the task.
+   * - Assigned
+     - The work initially planned for this resource to the task.
+   * - Real
+     - Sum of work done by this resource to the task.
+   * - Left
+     - Remaining work to this resource to complete the task.
+
+.. note::
+ 
+   * Click on the resource name to directly move to resource detail.
+
+.. rubric:: **Assignment list buttons**
 
 * Click on |buttonAdd| to assign a new resource.
 * Click on |buttonEdit| to modify the assignment.
@@ -323,35 +339,35 @@ This section allows to manage resource assignation to activities.
    * - Cost
      -  Daily cost defined for the resource and its function.
    * - Rate
-     - The max rate (in %) to plan the resource on the activity by day.
+     - The max rate (%) to schedule the resource on the task by day.
    * - Assigned work
-     - Work initially planned to complete the task.
+     - The work initially planned for this resource to the task.
    * - Real work
-     - Sum of real work entered by this resource to the activity.
+     - Sum of work done by this resource to the task.
    * - Left work
-     - Work left to complete the task.
+     - Remaining work to this resource to complete the task.
    * - Reassessed work
      - The new total work planned to complete the task.
    * - Comments
      - Any comment on the affectation.
 
-.. topic:: Field: Rate
+.. topic:: Field: Function
 
-   * For instance, if rate is 50%, the resource will not be planned more than half days on the activity.
+   * The main function defined for the resource is the default function selected.
 
 .. topic:: Field: Left work
 
-   * Calculated as “Assigned Work” – “Real Work”.
-   * Must be updated by the resource on the “real work allocation” screen to reflect the really estimated work needed to complete the task.
+   * [Left work] = [Assigned Work] – [Real Work]
+   * Project leaders can adjust this value to estimate the work needed to complete the task by the resource.
 
 .. topic:: Field: Reassessed work
 
-   * Calculated as “real work” + “left work”
+   * [Reassessed work] = [Real Work] + [Left Work]
 
 .. topic:: Field: Comments
 
-   * When a comment exists, the |Note| icon will appear on the  Assignment section, and on the description of the activity on the “real work allocation” screen.
-   * Moving the mouse over the description will display the comment. 
+   * When a comment exists, |note| will appear on the assignment list, and on the description of the activity on the “real work allocation” screen.
+   * Moving the mouse over the icon will display the comment.  
 
 
 .. raw:: latex
@@ -457,7 +473,7 @@ Columns definition
 
 * This column displays the remaining of planned work and planned amount.
 * By default : Left = Assigned - Real
-* Left work should be re-esitmated by the resource
+* Left work should be re-estimated by the resource.
 
  .. compound:: **Work and cost remaining of resources**
 
@@ -490,7 +506,7 @@ Allows to follow-up progress on grouped tasks like phase, delivery, test group, 
 
 * Consolidation can be done on validated work and cost.
 * Allows to calculate the scheduled work and budgeted cost from lower planning elements.
-* The calculation depends on consolidation method selected and on which level the validated values are entered
+* The calculation depends on consolidation method selected and on which level the validated values are entered.
 
  .. compound:: **Consolidation method "Never"**
 
@@ -502,7 +518,7 @@ Allows to follow-up progress on grouped tasks like phase, delivery, test group, 
 
  .. compound:: **Consolidation method "Only if set"**
 
-    * Zero values at lower levels do not overwrite values on upper level, but non-zero values on lower level are consolidated up to project level.
+    * Zero values at lower levels do not overwrite values on upper level, but non-zero values on the lower level are consolidated up to project level.
  
 .. note:: Selection of consolidation method
 
@@ -718,18 +734,18 @@ Work of resources are calculated by the work assigned to each resource for tasks
 
 .. rubric:: Left
 
-* Sum of estimated remaining work to complete tasks and ensuing cost.
-* Left work should be re-avaluated by resource while entering real work on real work allocation screen
-* Left work can also be change on assignment, at project management level
+* Sum of estimated remaining work to complete tasks and ensuing costs.
+* Left work should be re-evaluated by resource while entering the real work on real work allocation screen.
+* Left work can also be changed on assignment, at project management level.
 
 .. rubric:: Reassessed
 
-* Sum of resource total work that will be needed from start end and the ensuing cost.
+* Sum of resource total work that will be needed from start to end and the ensuing costs.
 * [Reassessed] = [Real] + [Left]
 
 .. topic:: Work on tickets
 
-   * Sum of work done on tickets and costs is included in work of activity linked throught the "planning activity" of tickets.
+   * Sum of work done on tickets and costs is included in work of activity linked through the “planning activity” of tickets.
    * Sum of work done on tickets that don't link to any activity will be integrated in the work of the project.
 
 .. raw:: latex
@@ -770,7 +786,7 @@ Expense, Reserve and Total
 .. rubric:: Left (Expense)
 
 * Project expenses not committed yet.
-* Sum of "planned amount" for expenses where "real amount" is not defined yet.
+* Sum of "planned amount" for expenses  for which "real amount" is not defined yet.
 
 .. rubric:: Reassessed (Expense)
 
@@ -813,10 +829,9 @@ Progress, Expected, WBS & Priority
 
 .. rubric:: Priority
 
-* Allows to define priority in the planning.
-* Possible values : from 1 (highest priority) to 999 (lowest priority)
+* Allows to define priority.
 * By default, the value is set to "500" (medium priority).
-* See: :term:`Planning priority`.
+* See: :ref:`Scheduling priority<scheduling-priority>`.
 
 .. raw:: latex
 
@@ -836,9 +851,9 @@ Planning mode
 .. rubric:: Work together
 
 * When two or more resources are assigned to the same task, planning tries to find periods where all resources are available to work together.
-* Periods are searched "as soon as possible"
-* If only one resource is assigned, this planning mode is exactly the same as "As soon as possible"
-* If one resource is assigne more work than the other, the extra work is planned after working together periods
+* Periods are searched "as soon as possible".
+* If only one resource is assigned, this planning mode is exactly the same as "As soon as possible".
+* If one resource is assigned more work than the other, the extra work is planned after working together periods.
 
 .. rubric:: Constraint by date
 
@@ -850,8 +865,8 @@ Planning mode
 
   .. compound:: **As late as possible**
 
-     * The task is planned backwark from end to start.
-     * "floating" backward planning is not possible, validated end date must be defined. 
+     * The task is planned backward from end to start.
+     * "Floating" backward planning is not possible, validated end date must be defined. 
 
 .. raw:: latex
 
@@ -1090,6 +1105,8 @@ This section allows to define planning and follow progress on a milestone.
 
 * Allows to define the due date at which the milestone must be completed.
 
+.. _planning-mode-milestone:
+
 .. rubric:: Planned
 
 * Defined according to the selected planning mode.
@@ -1160,9 +1177,9 @@ This section allows to define priority and follow progress on a meeting.
 
 .. rubric:: Priority
 
-* Allows to define meeting priority in the planning.
+* Allows to define meeting priority.
 * By default, the value is set to "1" (highest priority).
-* See: :term:`Planning priority`.
+* See: :ref:`Scheduling priority<scheduling-priority>`.
 
 
  
@@ -1174,6 +1191,10 @@ This section allows to define priority and follow progress on a meeting.
 
 Predecessor and Sucessor element sections
 -----------------------------------------
+
+.. sidebar:: Concepts 
+
+   * :ref:`dependencies`
 
 This section allows to manage dependency links between planning elements.
 
@@ -1245,26 +1266,6 @@ Linked Elements section
 
 This section allows to manage link between items of elements.
 
-.. tabularcolumns:: |l|l|
-
-.. list-table:: Fields of linked elements list
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - Element
-     - Type and id of the linked element.
-   * - Name
-     - Name of the linked element.
-   * - Date
-     - Date of creation of the link.
-   * - User
-     - User who created the link.
-   * - Status
-     - Actual status of the linked element.
-
-
 .. rubric:: Used for
 
 * Allows to associate items on different elements in the same project.
@@ -1284,12 +1285,30 @@ This section allows to manage link between items of elements.
 .. note::
 
    * A link between items has no impact on them treatment.
+	
 
-.. raw:: latex
+.. rubric:: Linked elements list
 
-    \newpage
+.. tabularcolumns:: |l|l|
 
-.. rubric:: Linked elements management
+.. list-table:: Fields of linked elements list
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Element
+     - Type and id of the linked element.
+   * - Name
+     - Name of the linked element.
+   * - Date
+     - Date of creation of the link.
+   * - User
+     - User who created the link.
+   * - Status
+     - Actual status of the linked element.
+
+.. rubric:: Linked elements list buttons
 
 * Click |buttonAdd| to create a new link.
 * Click on |buttonIconDelete| to delete the corresponding link.
@@ -1300,6 +1319,11 @@ This section allows to manage link between items of elements.
 
    Add a link with element dialog box
 
+
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Link with Document
 
@@ -1436,6 +1460,20 @@ This section allows to add notes on items of elements.
 
 Notes are comments, that can be shared to track some information or progress.
 
+.. rubric:: Predefined note
+
+* The list of values appears whether a predefined note exists for an element or an element type.
+* Selecting a predefined note  will automatically fill in the note text field.
+* Predefined notes are defined in :ref:`predefined-notes` screen.
+
+.. rubric:: Note visibility
+
+* Public: Visible to anyone.
+* Team: Visible to every member of the creator’s team.
+* Private:  Visible only to the creator.
+
+.. rubric:: Notes list
+
 .. tabularcolumns:: |l|l|
 
 .. list-table:: Fields of notes list
@@ -1453,19 +1491,11 @@ Notes are comments, that can be shared to track some information or progress.
    * - User
      - Name of the user who created the note.
 
-.. rubric:: Predefined note
+.. raw:: latex
 
-* The list of values appears whether a predefined note exists for an element or an element type.
-* Selecting a predefined note  will automatically fill in the note text field.
-* Predefined notes are defined in :ref:`predefined-notes` screen.
+    \newpage
 
-.. rubric:: Note visibility
-
-* Public: Visible to anyone.
-* Team: Visible to every member of the creator’s team.
-* Private:  Visible only to the creator.
-
-.. rubric:: Notes list management
+.. rubric:: Notes list buttons
 
 * Click on |buttonAdd| to add a note to an item. 
 * Click on |buttonEdit| to edit the note.

@@ -44,13 +44,13 @@
    :alt: Note
 
 .. |Description| image:: images/description.png
-   :alt: Icon description 
+   :alt: Icon description
 
 .. |Prerequisite| image:: images/prerequisite.png
-   :alt: Icon prerequisite 
-
+   :alt: Icon prerequisite
+ 
 .. |Result| image:: images/result.png
-   :alt: Icon result 
+   :alt: Icon result
 
 .. |buttonIconParameter| image:: images/iconParameter.png
    :alt: Button icon parameter 
@@ -185,6 +185,27 @@
 
 .. |dndLink| image:: images/dndLink.png
    :alt: DND link
+
+.. |calendarRed| image:: images/calendarRed.png
+   :alt: red calendar
+
+.. |calendarWhite| image:: images/calendarWhite.png
+   :alt: white calendar
+
+.. |calendarYellow| image:: images/calendarYellow.png
+   :alt: yellow calendar
+
+.. |defaultUserThumb| image:: images/thumb.png
+   :alt: Default user thumbnail
+
+.. |privateThumb| image:: images/private.png
+   :alt: private thumbnail
+
+.. |teamThumb| image:: images/team.png
+   :alt: team thumbnail
+
+.. |pointingHandCursor| image:: images/pointingHandCursor.png
+   :alt: pointing hand cursor
 
 .. |one| image:: images/one.png
    :alt: One

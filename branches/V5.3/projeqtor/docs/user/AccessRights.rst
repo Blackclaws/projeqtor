@@ -47,6 +47,10 @@ Each user is linked to a profile to define the data he can see and possibly mana
 
     \newpage
 
+.. sidebar:: Other sections
+
+   * :ref:`Types restrictions<type-restriction-section>`
+
 
 .. rubric:: Section: Description
 

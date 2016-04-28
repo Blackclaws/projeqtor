@@ -56,6 +56,8 @@ Allows to link components to product.
      - Unique Id for the product.
    * - **Name**
      - Name of the product.
+   * - Product type
+     - Type of product.
    * - Designation
      - Trade name of the product known outside the company.
    * - Customer
@@ -76,15 +78,102 @@ Allows to link components to product.
 * List of versions defined for the product.
 * Product versions are defined in :ref:`product-version` screen.
 
-.. rubric:: Section: List of components for this product
+.. rubric:: Section: Composition - List of sub-products used by this product
 
-* More detail on component list management, see: :ref:`product-structure-management`.
+* List of sub-products for the product.
+
+.. rubric:: Section: Composition - List of components used by this product
+
+* See: :ref:`relationship-product-component`.
 
 .. topic:: Button: Display structure
 
    * Displays the structure of the product.
-   * Check the box "Show versions for all structure" to display versions of sub-products and components.
-   * Check the box "Show projects linked to versions" to display projects linked.
+   * Box checked "Show versions for all structure" allows to display versions of sub-products and components.
+   * Box checked "Show projects linked to versions" allows to display projects linked.
+
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Product (Version)
+
+.. _product-version:
+
+Product Versions
+^^^^^^^^^^^^^^^^
+
+Allows to define versions of a product.
+
+Allows to link a component version to product version.
+
+Allows to link the product version to a project.
+
+.. rubric:: Automatic formatting of version name
+
+* Possibility to define if the version name is automatically produced from the product name and version number.
+* Set global parameters to activate this feature.
+* Else, the version name will entered manually.
+
+.. sidebar:: Other sections
+
+
+   * :ref:`Projects linked to this version<Link-version-project-section>`
+   * :ref:`Composition - List of component versions used this version<version-product-component>`  
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`   
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the version.
+   * - **Product**
+     - The product on which the version applies.
+   * - **Version number**
+     - Version number of the product.
+   * - **Name**
+     - Name of the version.
+   * - Prime contractor
+     - The contact, into customer organization, who will be responsible for the version delivery.
+   * - Responsible
+     - Resource responsible of the version.
+   * - Entry into service
+     - Initial, planned and real entry into service date of the version. 
+   * - End date
+     - Initial, planned and real end dates of the version.  
+   * - Description
+     - Complete description of the version.
+
+**\* Required field**
+
+
+.. topic:: Fields: Version number & Name
+
+   * The field "Version number" appears only if the global parameter "Automatic format of version name" is set to Yes.
+   * The field "Name" will be read only.
+
+.. topic:: Field: Prime contractor
+     
+   * Can be different from product prime contractor.
+
+.. topic:: Field: Entry into service (Real)
+
+   * Specify the date of entry into service.
+   * The box "Done" is checked when the real date field is set.
+
+.. topic:: Field: End date (Real)
+
+   * Specify the date end-of-service.
+   * The box "Done" is checked when the real date field is set.
 
 
 .. raw:: latex
@@ -104,6 +193,8 @@ Allows to define products using the component.
 
 .. sidebar:: Other sections
    
+   * :ref:`Structure - List of products or components using this component<relationship-product-component>`   
+   * :ref:`Composition - List of components used by this component<relationship-product-component>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
 
@@ -121,6 +212,8 @@ Allows to define products using the component.
      - Unique Id for the component.
    * - **Name**
      - Name of the component.
+   * - Component type
+     - Type of component
    * - Identifier
      - Another name to identify the component.
    * - :term:`Closed`
@@ -135,80 +228,6 @@ Allows to define products using the component.
 * List of versions defined for the component.
 * Component versions are defined in :ref:`component-version` screen.
 
-.. rubric:: Section: List of products using this component
-
-* More detail on product list management, see: :ref:`product-structure-management`.
-
-.. raw:: latex
-
-    \newpage
-
-.. index:: ! Product (Version)
-
-.. _product-version:
-
-Product Versions
-^^^^^^^^^^^^^^^^
-
-Allows to define versions of a product.
-
-Allows to link a component version to product version.
-
-Allows to link the product version to a project.
-
-.. sidebar:: Other sections
-
-
-   * :ref:`Projects linked to this version<Link-version-project-section>`  
-   * :ref:`Attachments<attachment-section>`   
-   * :ref:`Notes<note-section>`   
-
-.. rubric:: Section: Description
-
-.. tabularcolumns:: |l|l|
-
-.. list-table::
-   :widths: 20, 80
-   :header-rows: 1
-
-   * - Field
-     - Description
-   * - :term:`Id`
-     - Unique Id for the version.
-   * - **Product**
-     - The product on which the version applies.
-   * - **Name**
-     - Name of the version.
-   * - Prime contractor
-     - The contact, into customer organization, who will be responsible for the version delivery.
-   * - Responsible
-     - Resource responsible of the version.
-   * - Entry into service
-     - Initial, planned and real entry into service date of the version. 
-   * - End date
-     - Initial, planned and real end dates of the version.  
-   * - Description
-     - Complete description of the version.
-
-**\* Required field**
-
-.. topic:: Field: Prime contractor
-     
-   * Can be different from product prime contractor.
-
-.. topic:: Field: Entry into service (Real)
-
-   * Specify the date of entry into service.
-   * The box "Done" is checked when the real date field is set.
-
-.. topic:: Field: End date (Real)
-
-   * Specify the date end-of-service.
-   * The box "Done" is checked when the real date field is set.
-
-.. rubric:: Section: List of product versions using this component version
-
-* More detail on management of version list of component, see:  :ref:`product-structure-management`.
 
 .. raw:: latex
 
@@ -225,8 +244,17 @@ Allows to define versions of a component.
 
 Allows to link a product version to component version.
 
+.. rubric:: Automatic formatting of version name
+
+* Possibility to define if the version name is automatically produced from the component name and version number.
+* Set global parameters to activate this feature.
+* Else, the version name will entered manually.
+
+
 .. sidebar:: Other sections
 
+   * :ref:`Structure - List of product or component versions using this component version<version-product-component>`  
+   * :ref:`Composition - List of component versions used by this version<version-product-component>`  
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
 
@@ -244,6 +272,8 @@ Allows to link a product version to component version.
      - Unique Id for the version.
    * - **Component**
      - The component on which the version applies.
+   * - **Version number**
+     - Version number of the component.
    * - **Name**
      - Name of the version.
    * - Entry into service
@@ -255,6 +285,12 @@ Allows to link a product version to component version.
 
 **\* Required field**
 
+.. topic:: Fields: Version number & Name
+
+   * The field "Version number" appears only if the global parameter "Automatic format of version name" is set to Yes.
+   * The field "Name" will be read only.
+
+
 .. topic:: Field: Entry into service (Real)
 
    * Specify the date of entry into service.
@@ -265,36 +301,60 @@ Allows to link a product version to component version.
    * Specify the date end-of-service.
    * The box "Done" is checked when the real date field is set.
 
-.. rubric:: Section: List of product versions using this component version
-
-* More detail on management of version list of product, see:  :ref:`product-structure-management`.
 
 .. raw:: latex
 
     \newpage
 
-.. _product-structure-management:
+.. _relationship-product-component:
 
-Links between products and components
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Relationships between product and component elements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Allows to manage links between products and components.
+Allows to manage relationships between products and components to define product structure.
 
-Allows to manage links between product versions and component versions.
+See possible relationships:  :ref:`product-structure`   
 
-.. note::
+.. rubric:: Relationships management
 
-   * A component can be linked with more one product.
-   * The component must be linked to the product, before linking their versions.
+* Click on |buttonAdd| to create a new relationship. The dialog box "Structure" appear. 
+* Click on |buttonIconDelete| to delete the corresponding relationship.
+
+.. figure:: /images/GUI/BOX_ProductStructure.png
+   :alt: Structure dialog box
+   :align: center
+
+   Structure dialog box
+
+
+.. raw:: latex
+
+    \newpage
+
+.. _version-product-component:
+
+Link between versions of products and components
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Allows to define links between versions of products and components.
+
+.. note:: 
+
+   * Only with the elements defined in the product structure.
 
 .. rubric:: Link management
 
-* Click on |buttonAdd| to create a new link. The dialog box "Product Structure" appear. 
+* Click on |buttonAdd| to create a new link. The dialog box "Version Structure" appear. 
 * Click on |buttonIconDelete| to delete the corresponding link.
 
-.. rubric:: Dialog box “Product Structure”
+.. figure:: /images/GUI/BOX_VersionStructure.png
+   :alt: Version structure dialog box
+   :align: center
 
-* The contents of the dialog box changes depending on kind of link.
+   Version structure dialog box
+
+
+
 
 .. raw:: latex
 
@@ -305,7 +365,7 @@ Allows to manage links between product versions and component versions.
 Link version to projects
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-This section allows to manage links between projects and versions of product or its components.
+This section allows to manage links between projects and versions of products.
 
 .. rubric:: Link version to projects management
 
@@ -328,17 +388,17 @@ This section allows to manage links between projects and versions of product or 
    * - Field
      - Description
    * - Project
-     - The project linked to version or the project list.
+     - The project linked to product version or the project list.
    * - Product
-     - Product or component linked to the project or the list of  product and component.
+     - Product linked to the project or the list of products.
    * - Version
-     - Version linked to the project or list of versions.
+     - Product version linked to the project or list of product versions.
    * - Start date
      - Start date for validity of the link.
    * - End date
      - End date for validity of the link.
    * - Closed
-     - Flag to indicate that link is not active any more, without deleting it.
+     - Box checked indicate that the link is not active anymore, without deleting it.
 
 .. topic:: Fields: Project, Product and Version
  
