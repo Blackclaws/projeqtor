@@ -208,8 +208,8 @@ Based upon on resource availability and their capacity.
 
  .. compound:: **Resource calendar**
 
-    * A calendar is set for each resource to define its working days.
-    * Tasks assigned to the resource will be planned according to its working days.
+    * Each resource is attached to a calendar to define its working days.
+    * Tasks assigned to the resource will be planned according to working days defined in the calendar.
     * More detail, see: :ref:`resource-calendar`
 
  .. compound:: **Project affectation period**
@@ -1058,7 +1058,7 @@ Resource calendar
 
 A calendar defines the working days in a the year.
 
-A calendar is defined for each resource.
+A calendar is defined a type of resources and each resource is attached to a calendar.
 
 .. rubric:: Used for
 
@@ -1066,7 +1066,7 @@ A calendar is defined for each resource.
 
  .. compound:: **Planning process**
 
-    * Calendars ares used in planning process whose dispatches work on every working day. 
+    * Calendars are used in planning process whose dispatches work on every working day. 
     * During the planning process, the assigned work to a resource is planned in its working days.
 
     .. note:: 
@@ -1086,7 +1086,7 @@ A calendar is defined for each resource.
 
 .. rubric:: Specific calendar
 
-* A specific calendar can be created to define days off and work to a resource.
+* A specific calendar can be created to define days off and work to a type of resource.
 
 
 ------------------
@@ -1111,13 +1111,14 @@ A calendar is defined for each resource.
 
 .. topic:: Personal calendar
 
-   * You can create a calendar to a resource.
-   * This calendar will indicate the personal days off and vacations.
+   * Even if you can create a specific calendar to each resource, this is not the advised way to manage personal days off and vacations.
+   * You'd better use Administrative projects (enter real work in advance) to manager personal days off and vacations
 
 .. topic:: Work schedule
 
    * You can define a different work schedule to some resources.
    * This calendar defined exceptions to normal working days.
+   * For instance, you can define a calendar for resources not working on wednesdays. 
 
 
 .. raw:: latex
