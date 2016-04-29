@@ -23,6 +23,7 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
+require_once "../tool/projeqtor.php";
 if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('Parameter objectClass not found in REQUEST');
 }
