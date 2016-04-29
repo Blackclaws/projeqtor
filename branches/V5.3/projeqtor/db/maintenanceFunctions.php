@@ -100,7 +100,7 @@ function runScript($vers,$pluginSqlFile=null) {
               $action="DELETE FROM";
             } else if (substr($query,0,14)=='TRUNCATE TABLE') {
               $action="TRUNCATE TABLE";
-            } else if (substr($query,0,12)=='CREATE INDEX') {
+            } else if (substr($query,0,12)=='CREATE INDEX' or substr($query,0,19)=='CREATE UNIQUE INDEX') {
               $action="CREATE INDEX";
             }
             $deb=strlen($action);
