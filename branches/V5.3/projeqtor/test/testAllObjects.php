@@ -109,7 +109,7 @@ function fillObj($obj) {
 			  $obj->$fld='Project';
 			}
 		} else if ($fld=='refId') {
-			$obj->$fld='9999999999';
+			$obj->$fld='3999999999';
 		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
 			// Nothing
 		} else if (substr($fld,0,1)==strtoupper(substr($fld,0,1))) {
@@ -136,7 +136,7 @@ function fillObj($obj) {
       $obj->$fld=($dbLength=='1')?$bool:$num;
     } else if (($dbType=='date' )) {
       $obj->$fld=date('Y-m-d');
-    } else if (($dbType=='datetime' )) {
+    } else if (($dbType=='datetime' ) || ($dbType=='timestamp' )) {
       $obj->$fld=date('Y-m-d H:i:s');
 		}
 	}
