@@ -1058,24 +1058,20 @@ Resource calendar
 
 A calendar defines the working days in a the year.
 
-A calendar is defined a type of resources and each resource is attached to a calendar.
+A calendar is defined for a type of resources and each resource is attached to a calendar.
 
-.. rubric:: Used for
+.. rubric:: Planning process
 
-|
+* Calendars are used in the planning process which dispatches work on every working day. 
+* During the planning process, the assigned work to a resource is planned in its working days.
 
- .. compound:: **Planning process**
+ .. note:: 
 
-    * Calendars are used in planning process whose dispatches work on every working day. 
-    * During the planning process, the assigned work to a resource is planned in its working days.
+    * You must re-calculate an existing planning to take into account changes on the calendar.
 
-    .. note:: 
+.. rubric:: Shows the availability of resources
 
-       * You must re-calculate an existing planning to take into account changes on the calendar.
-
- .. compound:: **Shows the availability of resources**
-
-    * Working days defined in a calendar allows to show availability of resources.
+* Working days defined in a calendar allows to show availability of resources.
 
 ---------------
 
@@ -1086,7 +1082,7 @@ A calendar is defined a type of resources and each resource is attached to a cal
 
 .. rubric:: Specific calendar
 
-* A specific calendar can be created to define days off and work to a type of resource.
+* A specific calendar can be created to define working days for a type of resource.
 
 
 ------------------
@@ -1109,16 +1105,16 @@ A calendar is defined a type of resources and each resource is attached to a cal
 
    * You can use the default calendar to set public holidays.
 
-.. topic:: Personal calendar
-
-   * Even if you can create a specific calendar to each resource, this is not the advised way to manage personal days off and vacations.
-   * You'd better use Administrative projects (enter real work in advance) to manager personal days off and vacations
-
 .. topic:: Work schedule
 
    * You can define a different work schedule to some resources.
    * This calendar defined exceptions to normal working days.
-   * For instance, you can define a calendar for resources not working on wednesdays. 
+   * For instance, you can define a calendar for resources on leave on Wednesdays.
+
+.. important:: Personal calendar
+
+   * Even if you can create a specific calendar to each resource, this is not the advised way to manage personal days off and vacations.
+   * You’d better use Administrative projects (enter real work in advance).
 
 
 .. raw:: latex
