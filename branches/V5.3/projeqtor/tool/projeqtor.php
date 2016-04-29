@@ -40,8 +40,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.3.2"; // Version of application : Major / Minor / Release
-$build = "0135"; // Build number. To be increased on each release
+$version = "V5.3.3"; // Version of application : Major / Minor / Release
+$build = "0137"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 
 /**
@@ -892,6 +892,7 @@ function sendMail($to, $subject, $messageBody, $object = null, $headers = null, 
 
 function sendMail_phpmailer($to, $title, $message, $object = null, $headers = null, $sender = null, $attachmentsArray = null) {
   scriptLog ( 'sendMail_phpmailer' );
+  global $logLevel;
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   $paramMailSmtpServer = Parameter::getGlobalParameter ( 'paramMailSmtpServer' );
