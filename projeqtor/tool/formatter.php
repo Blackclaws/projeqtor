@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 $monthArray=array();
 function colorNameFormatter($value) {
-  global $print;
+  global $print,$outMode;
   if ($value) {
     $tab=explode("#split#",$value);
     if (count($tab)>1) {
@@ -48,7 +48,7 @@ function colorNameFormatter($value) {
         $light=(0.3)*base_convert($red,16,10)+(0.6)*base_convert($green,16,10)+(0.1)*base_convert($blue,16,10);
         if ($light<128) { $foreColor='#FFFFFF'; }
       }
-      return '<div style="vertical-align:middle;padding: 5px;border-radius:10px;min-height:18px;text-align: center;width:' . (($print)?'95':'100') . '%;background-color: ' . $color . '; color:' . $foreColor . ';">' 
+      return '<div style="vertical-align:middle;padding: 5px;border-radius:10px;text-align: center;'.(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'') . 'background-color: ' . $color . '; color:' . $foreColor . ';">' 
           .$val.'</div>';
 
     } else {
