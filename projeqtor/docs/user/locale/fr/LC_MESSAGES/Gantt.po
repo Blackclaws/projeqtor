@@ -1,0 +1,340 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Gantt.rst:0
+msgid "Gantt"
+msgstr ""
+
+#: ../../Gantt.rst:15 ../../Gantt.rst:12
+msgid "Gantt chart"
+msgstr ""
+
+#: ../../Gantt.rst:18
+msgid "Scale"
+msgstr ""
+
+#: ../../Gantt.rst:19
+msgid "Scale available : daily, weekly, monthly or quater"
+msgstr ""
+
+#: ../../Gantt.rst:22
+msgid "chart detail"
+msgstr ""
+
+#: ../../Gantt.rst:23
+msgid "Overdue tasks appear in red."
+msgstr ""
+
+#: ../../Gantt.rst:28
+msgid "Calculate planning"
+msgstr ""
+
+#: ../../Gantt.rst:32 ../../Gantt.rst:29
+msgid "Planning"
+msgstr ""
+
+#: ../../Gantt.rst:34
+msgid ""
+"Planning is displayed as a Gantt chart, showing dependencies between tasks."
+msgstr ""
+
+#: ../../Gantt.rst:36
+msgid "Overdue tasks appear in red, others in green."
+msgstr ""
+
+#: ../../Gantt.rst:38
+msgid "Milestones appear as squares, filled if completed, empty if not."
+msgstr ""
+
+#: ../../Gantt.rst:40
+msgid ""
+"You can change the scale to have a daily, weekly or monthly view of the "
+"chart."
+msgstr ""
+
+#: ../../Gantt.rst:42
+msgid "You can select to show tasks’ WBS before the names."
+msgstr ""
+
+#: ../../Gantt.rst:44
+msgid ""
+"You can select to show resource name or initials (depending on parameter) on"
+" right on tasks."
+msgstr ""
+
+#: ../../Gantt.rst:46
+msgid ""
+"You can change the starting                                   or ending"
+"                                  date to display the chart."
+msgstr ""
+
+#: ../../Gantt.rst:48
+msgid ""
+"You can also choose to save these dates                      to retrieve the"
+" same display on every connection."
+msgstr ""
+
+#: ../../Gantt.rst:50
+msgid ""
+"You can select the columns displayed on the left part of the chart, except "
+"for the name of tasks (always displayed)."
+msgstr ""
+
+#: ../../Gantt.rst:52
+msgid ""
+"You can reorder columns with drag & drop on the handle in the selection "
+"list."
+msgstr ""
+
+#: ../../Gantt.rst:54
+msgid ""
+"You can directly create a Project or an Activity or a Milestone using the"
+"           create button."
+msgstr ""
+
+#: ../../Gantt.rst:56
+msgid "The result can be printed        or exported to MS-Project XML format."
+msgstr ""
+
+#: ../../Gantt.rst:59
+msgid "Recalculate"
+msgstr ""
+
+#: ../../Gantt.rst:60
+msgid "To recalculate the planning, click on         ."
+msgstr ""
+
+#: ../../Gantt.rst:62
+msgid "Calculation is not automatic."
+msgstr ""
+
+#: ../../Gantt.rst:64
+msgid ""
+"You then have to select the project to re-calculate, and the start date for "
+"the new planning."
+msgstr ""
+
+#: ../../Gantt.rst:66
+msgid ""
+"As WBS is taken into account for planning priority, you may wish to change "
+"tasks order."
+msgstr ""
+
+#: ../../Gantt.rst:68
+msgid ""
+"This can simply be done with a drag & drop method on tasks, using the handle"
+" on leftmost part of the task line."
+msgstr ""
+
+#: ../../Gantt.rst:70
+msgid ""
+"You can also increase or decrease indent of task using corresponding buttons"
+msgstr ""
+
+#: ../../Gantt.rst:74
+msgid ""
+"If a resource is assigned to several projects, re-calculation for one will "
+"not impact the planning for the others, so new calculation will only use "
+"available time slots."
+msgstr ""
+
+#: ../../Gantt.rst:76
+msgid ""
+"Use correct resource affectation rate to manage multi-projects affectations."
+msgstr ""
+
+#: ../../Gantt.rst:80
+msgid ""
+"If the planning of one project must not be impacted by new calculation, you "
+"can use the “fix planning” flag on this project."
+msgstr ""
+
+#: ../../Gantt.rst:82
+msgid ""
+"This will avoid to change planned values for this project and its "
+"subprojects."
+msgstr ""
+
+#: ../../Gantt.rst:84
+msgid "Planning is calculated “as simply as possible”."
+msgstr ""
+
+#: ../../Gantt.rst:86
+msgid ""
+"This means that no complex algorithm, with high level mathematic formula, is"
+" involved."
+msgstr ""
+
+#: ../../Gantt.rst:88
+msgid ""
+"The principle is simply to reproduce what you could do on your own, with a "
+"simple Excel sheet, but automatically."
+msgstr ""
+
+#: ../../Gantt.rst:90
+msgid "Planning is Cross-Project, through affectation rate on the projects."
+msgstr ""
+
+#: ../../Gantt.rst:92
+msgid ""
+"All the left work is planned, from starting date, to the max date to be able"
+" to plan the work."
+msgstr ""
+
+#: ../../Gantt.rst:94
+msgid "Calculation is executed task by task, ordering thanks to :"
+msgstr ""
+
+#: ../../Gantt.rst:96
+msgid ""
+"dependencies (if an activity has a predecessor, the predecessor is "
+"calculated first),"
+msgstr ""
+
+#: ../../Gantt.rst:98
+msgid "planning mode : regular between dates are planned first"
+msgstr ""
+
+#: ../../Gantt.rst:100
+msgid "priority : the smaller values are calculated first"
+msgstr ""
+
+#: ../../Gantt.rst:102
+msgid ""
+"if projects have different priorities, all tasks of project with smaller "
+"value priority are planned first."
+msgstr ""
+
+#: ../../Gantt.rst:104
+msgid ""
+"WBS : smaller WBS are planned first, so that planning is done from top to "
+"bottom of Gantt"
+msgstr ""
+
+#: ../../Gantt.rst:107
+msgid ""
+"Planning will distribute left work on future days, taking into account "
+"several constraints :"
+msgstr ""
+
+#: ../../Gantt.rst:109
+msgid "A resource has a capacity"
+msgstr ""
+
+#: ../../Gantt.rst:111
+msgid ""
+"Most of the time Capacity = 1 FTE (1 full time equivalent), but it may be "
+"more (if the resource is not a person but a team) or less (if the person "
+"work only partial time)."
+msgstr ""
+
+#: ../../Gantt.rst:113
+msgid ""
+"A resource is affected to a project, at a certain rate, possibly with start "
+"and end dates"
+msgstr ""
+
+#: ../../Gantt.rst:115
+msgid ""
+"If resources are not shared between projects, so rate will probably always "
+"be 100%."
+msgstr ""
+
+#: ../../Gantt.rst:117
+msgid ""
+"But if resources are shared, then rate could be less than 100%. If a "
+"resource is equally shared between two projects, then each project should "
+"enter a rate of 50%. This will lead to control that planning"
+msgstr ""
+
+#: ../../Gantt.rst:119
+msgid ""
+"for each project will not overtake rate capacity, so that first project "
+"planning its activity will not take all the availability of the resource."
+msgstr ""
+
+#: ../../Gantt.rst:121
+msgid ""
+"Project affectation capacity is controlled on a weekly basis. This means "
+"that planning for a project (including sub-projects) will not be more than "
+"(Resource Capacity) x (Resource affectation rate) x 5 for a given week."
+msgstr ""
+
+#: ../../Gantt.rst:127 ../../Gantt.rst:124
+msgid "Projects portfolio"
+msgstr ""
+
+#: ../../Gantt.rst:129
+msgid "Planning can be displayed on a projects portfolio point of view."
+msgstr ""
+
+#: ../../Gantt.rst:131
+msgid "Only projects and milestones are displayed."
+msgstr ""
+
+#: ../../Gantt.rst:133
+msgid ""
+"This is a good way to display projects synthesis and projects dependencies, "
+"without messing with projects activities.."
+msgstr ""
+
+#: ../../Gantt.rst:135
+msgid ""
+"It is possible to select milestones to be displayed, from none to all, or "
+"select one milestones type to display only milestones of this type"
+msgstr ""
+
+#: ../../Gantt.rst:140 ../../Gantt.rst:137
+msgid "Resource Planning"
+msgstr ""
+
+#: ../../Gantt.rst:142
+msgid "Planning can be displayed on a resource basis."
+msgstr ""
+
+#: ../../Gantt.rst:144
+msgid "One group line is displayed for each resource."
+msgstr ""
+
+#: ../../Gantt.rst:146
+msgid ""
+"One group line can be display for projects level, depending on selection"
+"                            ."
+msgstr ""
+
+#: ../../Gantt.rst:148
+msgid ""
+"One line is displayed per activity. The Gantt bars for activities are hare "
+"split in two : real work in grey, planned work in green. This makes appear "
+"some planning gap between started work and planned work."
+msgstr ""
+
+#: ../../Gantt.rst:150
+msgid ""
+"Links between activities are displayed only into the resource group. Links "
+"existing between tasks on different resources are not displayed."
+msgstr ""
+
+#: ../../Gantt.rst:152
+msgid ""
+"Left work can be displayed on the right of task bars, using corresponding "
+"selection                          ."
+msgstr ""
+
+#: ../../Gantt.rst:155
+msgid "All others behaviors are similar to the task planning screen."
+msgstr ""
+
+#: ../../Gantt.rst:155
+msgid "."
+msgstr ""
