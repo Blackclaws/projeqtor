@@ -24,33 +24,38 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-projeqtor_set_time_limit(3600);
-
 // PREPARE TESTS
 // => remove mail sending, to avoid spamming
 //Sql::query('UPDATE statusmail set idle=1');
 
-$dir="..";
-
+$dir="D:\\ProjeQtOr\\temp\\projeqtor\\";
+$res=sizeOfDir($dir);
+//var_dump($res);
+echo "<table>";
+echo '<tr><td><b>Name</b></td><td><b>Size</b></td><td><b>Files</b></td></tr>';
+foreach ($res as $rep) {
+  echo '<tr><td>'.$rep['name'].'</td><td>'.$rep['size'].'</td><td>'.$rep['files'].'</td></tr>';
+}
+echo "</table>";
 function sizeOfDir($dir) {
   $res=array($dir=>array('name'=>$dir,'size'=>0,'files'=>0));
   if (is_dir($dir)) {
     if ($dirHandler = opendir($dir)) {
       while (($file = readdir($dirHandler)) !== false) {
-        if ($file!="." and $file!="..") {
+        if ($file!="." and $file!=".." and substr($file,0,1)!='.') {
           $fileName=$dir . '/' .$file;
           if (is_file($fileName)) {
-            $res[$dir][size]+=filesize($fileName);
-            $res[$dir][files]++;
+            $res[$dir]['size']+=filesize($fileName);
+            $res[$dir]['files']++;
           } else if (is_dir($fileName)) {
             $sub=sizeOfDir($fileName);
-            $res[$dir][size]=  
-            $res[$dir][files]++;
+            $res[$dir]['size']=  
+            $res[$dir]['files']++;
             $res=array_merge($res,$sub);
           }
         }
       }
     }
   }
+  return $res;
 }
-var_dump($res);
