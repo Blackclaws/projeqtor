@@ -1,0 +1,747 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ControlAutomation.rst:0
+msgid "Controls & Automation"
+msgstr ""
+
+#: ../../ControlAutomation.rst:21 ../../ControlAutomation.rst:16
+msgid "Workflow"
+msgstr ""
+
+#: ../../ControlAutomation.rst:23
+msgid ""
+"A workflow defines the possibility to go from one status to another one, and"
+" who (depending on profile) can do this operation for each status."
+msgstr ""
+
+#: ../../ControlAutomation.rst:25
+msgid "Once defined, a workflow can be linked to any type of any item."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0 ../../ControlAutomation.rst:0
+#: ../../ControlAutomation.rst:0 ../../ControlAutomation.rst:0
+#: ../../ControlAutomation.rst:0 ../../ControlAutomation.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../ControlAutomation.rst:29 ../../ControlAutomation.rst:92
+#: ../../ControlAutomation.rst:139 ../../ControlAutomation.rst:192
+#: ../../ControlAutomation.rst:249 ../../ControlAutomation.rst:302
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:39 ../../ControlAutomation.rst:102
+#: ../../ControlAutomation.rst:149 ../../ControlAutomation.rst:202
+#: ../../ControlAutomation.rst:259 ../../ControlAutomation.rst:312
+#: ../../ControlAutomation.rst:346
+msgid "Field"
+msgstr ""
+
+#: ../../ControlAutomation.rst:40 ../../ControlAutomation.rst:49
+#: ../../ControlAutomation.rst:103 ../../ControlAutomation.rst:150
+#: ../../ControlAutomation.rst:203 ../../ControlAutomation.rst:260
+#: ../../ControlAutomation.rst:313 ../../ControlAutomation.rst:347
+msgid "Description"
+msgstr ""
+
+#: ../../ControlAutomation.rst:41 ../../ControlAutomation.rst:104
+#: ../../ControlAutomation.rst:151 ../../ControlAutomation.rst:204
+#: ../../ControlAutomation.rst:261 ../../ControlAutomation.rst:314
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:42
+msgid "Unique Id for the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:43 ../../ControlAutomation.rst:263
+msgid "**Name**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:44
+msgid "Name of the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:45 ../../ControlAutomation.rst:350
+msgid "Sort order"
+msgstr ""
+
+#: ../../ControlAutomation.rst:46
+msgid "Number to define order of display in lists"
+msgstr ""
+
+#: ../../ControlAutomation.rst:47 ../../ControlAutomation.rst:112
+#: ../../ControlAutomation.rst:159 ../../ControlAutomation.rst:214
+#: ../../ControlAutomation.rst:269 ../../ControlAutomation.rst:320
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:48
+msgid "Flag to indicate that workflow is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:50
+msgid "Complete description of the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:52 ../../ControlAutomation.rst:162
+#: ../../ControlAutomation.rst:274
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:61
+msgid ""
+"The workflow diagram presents a visual representation of the workflow "
+"displaying all possible transitions (independently to profile rights)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:65
+msgid ""
+"The habilitation table helps defining who can move from one status to "
+"another one."
+msgstr ""
+
+#: ../../ControlAutomation.rst:66
+msgid ""
+"Each line correspond to the status from which you want to be able to move."
+msgstr ""
+
+#: ../../ControlAutomation.rst:67
+msgid ""
+"Each column correspond to the status to which you want to be able to go."
+msgstr ""
+
+#: ../../ControlAutomation.rst:68
+msgid ""
+"It is not possible to go from one status to itself (these cells are blank)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:69
+msgid ""
+"Just check the profile (or “all”) who is allowed to pass from one status to "
+"the other."
+msgstr ""
+
+#: ../../ControlAutomation.rst:78 ../../ControlAutomation.rst:75
+msgid "Mail on event"
+msgstr ""
+
+#: ../../ControlAutomation.rst:80
+msgid ""
+"The application is able to automatically send mails on event such as status "
+"change or responsible change."
+msgstr ""
+
+#: ../../ControlAutomation.rst:82
+msgid ""
+"This must be defined for each type of element, and each new status or other "
+"event."
+msgstr ""
+
+#: ../../ControlAutomation.rst:86
+msgid ""
+"The message of the mails is formatted to display information on the item."
+msgstr ""
+
+#: ../../ControlAutomation.rst:88
+msgid ""
+"Title of the mail is defined under \"Mail titles\" section in :ref"
+":`administration-global-parameters-label`."
+msgstr ""
+
+#: ../../ControlAutomation.rst:105
+msgid "Unique Id for the status mail."
+msgstr ""
+
+#: ../../ControlAutomation.rst:106
+msgid "Element updated"
+msgstr ""
+
+#: ../../ControlAutomation.rst:107
+msgid "Type of elements that will be concerned by automatic emailing."
+msgstr ""
+
+#: ../../ControlAutomation.rst:108
+msgid "New status"
+msgstr ""
+
+#: ../../ControlAutomation.rst:110
+msgid "Or other event"
+msgstr ""
+
+#: ../../ControlAutomation.rst:111
+msgid "Other event that will possibly generate email."
+msgstr ""
+
+#: ../../ControlAutomation.rst:113
+msgid "Flag to indicate that status mail is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:117 ../../ControlAutomation.rst:219
+msgid "List of addressees of the mails."
+msgstr ""
+
+#: ../../ControlAutomation.rst:118 ../../ControlAutomation.rst:220
+#: ../../ControlAutomation.rst:227
+msgid "The list is not nominative but defined as roles on the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:129 ../../ControlAutomation.rst:126
+msgid "Delay for Ticket"
+msgstr ""
+
+#: ../../ControlAutomation.rst:131
+msgid ""
+"It is possible to define default delay for tickets, for each ticket type and"
+" each urgency of ticket."
+msgstr ""
+
+#: ../../ControlAutomation.rst:135
+msgid ""
+"On creation, due date will automatically be calculated as creation date + "
+"delay."
+msgstr ""
+
+#: ../../ControlAutomation.rst:152
+msgid "Unique Id for the delay definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:153
+msgid "**Ticket type**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:154
+msgid "Ticket type the delay applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:155
+msgid "**Urgency**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:156
+msgid "Urgency of ticket the delay applied to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:157
+msgid "**Value**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:158
+msgid "Value of delay."
+msgstr ""
+
+#: ../../ControlAutomation.rst:160 ../../ControlAutomation.rst:215
+#: ../../ControlAutomation.rst:270
+msgid "Flag to indicate that delay definition is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:166
+msgid "Unit for the value can be :"
+msgstr ""
+
+#: ../../ControlAutomation.rst:180 ../../ControlAutomation.rst:177
+msgid "Indicator"
+msgstr ""
+
+#: ../../ControlAutomation.rst:182
+msgid "It is possible to define indicators on each type of element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:184
+msgid ""
+"Depending on type of elements the type of indicators that can be selected in"
+" list differs."
+msgstr ""
+
+#: ../../ControlAutomation.rst:186
+msgid ""
+"Some indicators are based on delay (due date), some on work, some on cost."
+msgstr ""
+
+#: ../../ControlAutomation.rst:188
+msgid "For each indicator a warning value and an alert value can be defined."
+msgstr ""
+
+#: ../../ControlAutomation.rst:205
+msgid "Unique Id for the indicator definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:206 ../../ControlAutomation.rst:265
+#: ../../ControlAutomation.rst:316
+msgid "Element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:207
+msgid "The elements the indicator applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:208 ../../ControlAutomation.rst:267
+#: ../../ControlAutomation.rst:318
+msgid "Type"
+msgstr ""
+
+#: ../../ControlAutomation.rst:209
+msgid "Type of the elements the indicator applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:210
+msgid "Reminder"
+msgstr ""
+
+#: ../../ControlAutomation.rst:211
+msgid "Delay before due date or % of work or % or cost to send a warning."
+msgstr ""
+
+#: ../../ControlAutomation.rst:212
+msgid "Alert"
+msgstr ""
+
+#: ../../ControlAutomation.rst:213
+msgid "Delay before due date or % of work or % or cost to send an alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:226
+msgid "List of addressees of the internal alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:239 ../../ControlAutomation.rst:234
+msgid "Predefined notes"
+msgstr ""
+
+#: ../../ControlAutomation.rst:241
+msgid ""
+"The predefined note set the possibility to define some predefined texts for "
+"notes."
+msgstr ""
+
+#: ../../ControlAutomation.rst:243
+msgid ""
+"When some predefined notes are defined for an element and / or type a list "
+"will appear on note creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:245
+msgid ""
+"Selecting an item in the list will automatically fill in the note text "
+"field."
+msgstr ""
+
+#: ../../ControlAutomation.rst:262
+msgid "Unique Id for the predefined note."
+msgstr ""
+
+#: ../../ControlAutomation.rst:264
+msgid "Name of the predefined note."
+msgstr ""
+
+#: ../../ControlAutomation.rst:266
+msgid ""
+"Kind of item (Ticket, Activity, …) for which this predefined note will be "
+"proposed on note creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:268
+msgid ""
+"Type of element for witch this predefined note will be proposed on note "
+"creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:271
+msgid "Text"
+msgstr ""
+
+#: ../../ControlAutomation.rst:272
+msgid "Predefined text for notes."
+msgstr ""
+
+#: ../../ControlAutomation.rst:278
+msgid "If not set, predefined note is valid for every find of item."
+msgstr ""
+
+#: ../../ControlAutomation.rst:282
+msgid "If not set, predefined note is valid for every type of the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:293
+msgid "Checklist definition"
+msgstr ""
+
+#: ../../ControlAutomation.rst:295
+msgid "It is possible to define checklists on each type of element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:297
+msgid ""
+"When a checklist definition exists for a given element, a checklist section "
+"will appear on the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:315
+msgid "Unique Id for the checklist definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:317
+msgid "The elements the checklist applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:319
+msgid "Type of the elements the checklist applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:321
+msgid "Flag to indicate that checklist definition is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:325
+msgid "A checklist is built from checklist lines."
+msgstr ""
+
+#: ../../ControlAutomation.rst:327
+msgid ""
+"Click |buttonAdd| on to create a new checklist line. A “Choice for the "
+"checklist line” pop up will be displayed."
+msgstr ""
+
+#: ../../ControlAutomation.rst:329
+msgid "Click on |buttonEdit| to update an existing checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:331
+msgid "Click on |buttonRemove| to delete the corresponding checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Details of Pop up"
+msgstr ""
+
+#: ../../ControlAutomation.rst:359
+msgid "Each line has a name, an order and up to 5 check choices."
+msgstr ""
+
+#: ../../ControlAutomation.rst:361
+msgid "A line with no check choice will be displayed as **section title**."
+msgstr ""
+
+#: ../../ControlAutomation.rst:363
+msgid "Name and Choices have 2 fields :"
+msgstr ""
+
+#: ../../ControlAutomation.rst:365
+msgid "first is the displayed caption,"
+msgstr ""
+
+#: ../../ControlAutomation.rst:366
+msgid "second is help text that will be displayed as tooltip."
+msgstr ""
+
+#: ../../ControlAutomation.rst:368
+msgid ""
+"Checks can be exclusive (select one will unselect others) or not (multi "
+"selection is then possible)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:288
+msgid "Checklist Definition"
+msgstr ""
+
+#: ../../ControlAutomation.rst:32 ../../ControlAutomation.rst:95
+#: ../../ControlAutomation.rst:142 ../../ControlAutomation.rst:195
+#: ../../ControlAutomation.rst:252 ../../ControlAutomation.rst:305
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ControlAutomation.rst:56
+msgid ""
+"The parameter button |buttonIconParameter| can be used to show or hide "
+"needed status."
+msgstr ""
+
+#: ../../ControlAutomation.rst:60
+msgid "Section: Workflow Diagram"
+msgstr ""
+
+#: ../../ControlAutomation.rst:64
+msgid "Section: Habilitation to change from a status to another"
+msgstr ""
+
+#: ../../ControlAutomation.rst:109
+msgid "Positioning the elements to this status will generate emails."
+msgstr ""
+
+#: ../../ControlAutomation.rst:116 ../../ControlAutomation.rst:218
+msgid "Section: Mail receivers"
+msgstr ""
+
+#: ../../ControlAutomation.rst:119
+msgid ""
+"Each addressee will receive mail only once, even if a person has several "
+"“checked” roles on the element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:120 ../../ControlAutomation.rst:222
+#: ../../ControlAutomation.rst:228
+msgid "see : :ref:`ctrlAuto-msg-receivers` for receivers detail."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Field: Value"
+msgstr ""
+
+#: ../../ControlAutomation.rst:168
+msgid "Days : simple calculation as days."
+msgstr ""
+
+#: ../../ControlAutomation.rst:169
+msgid "Hours : simple calculation as hours."
+msgstr ""
+
+#: ../../ControlAutomation.rst:170
+msgid ""
+"Open days : calculation excluding off days (week-ends and off days defined "
+"on “calendar”)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:171
+msgid ""
+"Open hours : calculation only on the “standard open hours” defined on the "
+"global parameters."
+msgstr ""
+
+#: ../../ControlAutomation.rst:221
+msgid ""
+"Each addressee will receive mail only once, even if a person has several "
+"“checked” roles on the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:225
+msgid "Section: Internal alert receivers"
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Field: Element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Field: Type"
+msgstr ""
+
+#: ../../ControlAutomation.rst:324
+msgid "Section: Checklist lines"
+msgstr ""
+
+#: ../../ControlAutomation.rst:338
+msgid "Choices for the checklist line"
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Choices for the checklist line fields"
+msgstr ""
+
+#: ../../ControlAutomation.rst:348
+msgid "Name"
+msgstr ""
+
+#: ../../ControlAutomation.rst:349
+msgid "Name of the subject of the checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:351
+msgid "Order of the line in the list."
+msgstr ""
+
+#: ../../ControlAutomation.rst:352
+msgid "Choice #n"
+msgstr ""
+
+#: ../../ControlAutomation.rst:353
+msgid "Possible choices (checks) for the list (up to 5 choices)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:354
+msgid "Exclusive"
+msgstr ""
+
+#: ../../ControlAutomation.rst:355
+msgid "Are the choices exclusive (select one will unselect others)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:383
+msgid "Receivers list"
+msgstr ""
+
+#: ../../ControlAutomation.rst:385
+msgid "Receivers can receive email and alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:387
+msgid "A description of receivers below."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Requestor"
+msgstr ""
+
+#: ../../ControlAutomation.rst:391
+msgid ""
+"The Contact defined as “requestor” on current item; sometimes appears as "
+"“contact” (on Quotation and Order for instance) and sometimes have no "
+"meaning (for instance for Milestone)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Issuer"
+msgstr ""
+
+#: ../../ControlAutomation.rst:395
+msgid "The User defined as “Issuer”."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Responsible"
+msgstr ""
+
+#: ../../ControlAutomation.rst:400
+msgid "The Resource defined as “responsible”."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Project team"
+msgstr ""
+
+#: ../../ControlAutomation.rst:404
+msgid "All Resources affected to the Project."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Project leader"
+msgstr ""
+
+#: ../../ControlAutomation.rst:408
+msgid ""
+"The Resource(s) affected to the Project with a “Project Leader” profile."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Project manager"
+msgstr ""
+
+#: ../../ControlAutomation.rst:412
+msgid "The User defined as “manager” on the Project."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Assigned resource"
+msgstr ""
+
+#: ../../ControlAutomation.rst:416
+msgid "All Resources assigned."
+msgstr ""
+
+#: ../../ControlAutomation.rst:0
+msgid "Other"
+msgstr ""
+
+#: ../../ControlAutomation.rst:420
+msgid "Provides an extra field to manually enter email addresses."
+msgstr ""
+
+#: ../../ControlAutomation.rst:422
+msgid ""
+"If “other” is checked, an input box is displayed to enter a static mail "
+"address list."
+msgstr ""
+
+#: ../../ControlAutomation.rst:424
+msgid "Several addresses can be entered, separated by semicolon."
+msgstr ""
+
+#: ../../ControlAutomation.rst:378
+msgid "Mail receivers"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The parameter button |buttonIconParameter| can be used to hide some "
+#~ "unnecessary status."
+#~ msgstr ""
+
+#~ msgid "Workflow Diagram section"
+#~ msgstr ""
+
+#~ msgid "Habilitation to change from a status to another section"
+#~ msgstr ""
+
+#~ msgid "Positioningthe elements to this status will generate emails."
+#~ msgstr ""
+
+#~ msgid "Mail receivers section"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Each addressee will receive mail only once, even if a person has several "
+#~ "“checked” roles on the element (for instance member of the “project team” "
+#~ "and “responsible”)."
+#~ msgstr ""
+
+#~ msgid "see : :ref:`reference-receivers-label` for receivers detail."
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "days : simple calculation as days"
+#~ msgstr ""
+
+#~ msgid "hours : simple calculation as hours"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "open days : calculation excluding off days (week-ends and off days defined "
+#~ "on “calendar”)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "open hours : calculation only on the “standard open hours” defined on the "
+#~ "global parameters."
+#~ msgstr ""
+
+#~ msgid "Internal alert receivers section"
+#~ msgstr ""
+
+#~ msgid "**Element**"
+#~ msgstr ""
+
+#~ msgid "**Type**"
+#~ msgstr ""
+
+#~ msgid "Checklist lines section"
+#~ msgstr ""
+
+#~ msgid "Pop up \"Choice for the checklist line”"
+#~ msgstr ""
+
+#~ msgid "Name - Name of the subject of the checklist line."
+#~ msgstr ""
+
+#~ msgid "Sort order - Order of the line in the list."
+#~ msgstr ""
+
+#~ msgid "Choice #n - Possible choices (checks) for the list (up to 5 choices)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Exclusive - Are the choices exclusive (select one will unselect others)."
+#~ msgstr ""

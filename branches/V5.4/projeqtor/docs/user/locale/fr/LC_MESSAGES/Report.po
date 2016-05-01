@@ -1,0 +1,62 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-15 13:02-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Report.rst:11 ../../Report.rst:8
+msgid "Report"
+msgstr "Rapports"
+
+#: ../../Report.rst:13
+msgid "A list of report are available in different catagory."
+msgstr "La liste des rapports sont disponibles par catégorie."
+
+#: ../../Report.rst:15
+msgid "Select a category |one|, report list |two| will update."
+msgstr "Sélectionnez une catégorie |one|, la liste des rapports sera mise à jour. |two|"
+
+#: ../../Report.rst:16
+msgid ""
+"Select a report in the list, this will display specific parameters |three| "
+"for the report."
+msgstr "Sélectionnez un rapport dans la liste et ses parameters seront affichés. |three|"
+
+#: ../../Report.rst:17
+msgid "Update the parameters to get the information you need."
+msgstr "Modifiez les paramètres pour obtenir l'information désirée."
+
+#: ../../Report.rst:18
+msgid "Click on a buttons to produce report. |four|"
+msgstr "Cliquer sur un des bouttons pour produire le rapport. |four|"
+
+#: ../../Report.rst:25
+msgid "Reports"
+msgstr "Rapports"
+
+#: ../../Report.rst:29
+msgid "Buttons"
+msgstr "Boutons"
+
+#: ../../Report.rst:30
+msgid "Click on |buttonIconDisplay| to display the report."
+msgstr "Cliquer sur |buttonIconDisplay| pour afficher le rapport."
+
+#: ../../Report.rst:31
+msgid "Click on |buttonIconPrint| to get a printable version of the report."
+msgstr "Cliquer sur |buttonIconPrint| pour obtenir une version imprimable du rapport."
+
+#: ../../Report.rst:32
+msgid "Click on |buttonIconPdf| to export the report as PDF format."
+msgstr "Cliquer sur |buttonIconPdf| pour exporter le rapport dans en format PDF."
+
+#: ../../Report.rst:33
+msgid "Click on |buttonIconToday| to display this report on the Today screen."
+msgstr "Cliquer sur |buttonIconToday| pour l'ajouter dans l'écran \"Aujourd'hui\"."
