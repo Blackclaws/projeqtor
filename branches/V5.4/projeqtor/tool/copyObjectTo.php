@@ -79,6 +79,12 @@ $copyToWithLinks=false;
 if (array_key_exists('copyToWithLinks',$_REQUEST)) {
   $copyToWithLinks=true;
 }
+
+$copyToWithResult=false;
+if (array_key_exists('copyToWithResult',$_REQUEST)) {
+  $copyToWithResult=true;
+}
+
 $copyWithStructure=false;
 if (array_key_exists('copyWithStructure',$_REQUEST)) {
 	if ($className=='Activity' && $toClassName=='Activity') {
@@ -93,7 +99,7 @@ Sql::beginTransaction();
 $error=false;
 // copy from existing object
 Security::checkValidId($toType); // $toType is an id !
-$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
+$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments,false,null,null,$copyToWithResult);
 $result=$newObj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $error=true;
