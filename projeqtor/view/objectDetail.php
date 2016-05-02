@@ -1709,6 +1709,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
           }
         } else {
+          $val=str_replace("\n","",$val);
           echo '<textarea style="display:none; visibility:hidden;" ';
           echo ' maxlength="' . $dataLength . '" ';
           echo $name;
