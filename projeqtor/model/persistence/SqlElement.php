@@ -559,8 +559,8 @@ abstract class SqlElement {
 		return $this->copySqlElement();
 	}
 
-	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null) {
-		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments, $withAffectations, $toProject, $toActivity);
+	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false) {
+		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments, $withAffectations, $toProject, $toActivity, $copyToWithResult);
 	}
 	/** =========================================================================
 	 * Save an object to the database
@@ -1437,7 +1437,7 @@ abstract class SqlElement {
 		return $newObj;
 	}
 
-	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks,$withAssignments=false,$withAffectations=false, $toProject=null, $toActivity=null) {
+	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks,$withAssignments=false,$withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false) {
 		$newObj=new $newClass();
 		$newObj->id=null;
 		$typeName='id' . $newClass . 'Type';
@@ -1551,6 +1551,9 @@ abstract class SqlElement {
 				}
 			}
 		}
+		if(!$copyToWithResult and property_exists($newObj,"result")){
+		  $newObj->result=null;
+		}
 		$result=$newObj->save();
 		if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 			$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
@@ -1560,7 +1563,7 @@ abstract class SqlElement {
 		} else {
 			$returnValue=$result;
 		}
-		if ($withNotes) {
+		if ($withNotes and property_exists($this,"_Note") and property_exists($newObj,"_Note")) {
 			$crit=array('refType'=>get_class($this),'refId'=>$this->id);
 			$note=new Note();
 			$notes=$note->getSqlElementsFromCriteria($crit);
@@ -1571,6 +1574,7 @@ abstract class SqlElement {
 				$note->save();
 			}
 		}
+		
 		if ($withLinks) {
 			$crit=array('ref1Type'=>get_class($this),'ref1Id'=>$this->id);
 			$link=new Link();
@@ -1663,6 +1667,7 @@ abstract class SqlElement {
 		  }
 		}
 		$newObj->_copyResult=$returnValue;
+		debugLog('$newObj->result: '.$newObj->result);
 		return $newObj;
 	}
 

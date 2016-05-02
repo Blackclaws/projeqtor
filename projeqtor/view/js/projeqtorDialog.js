@@ -423,6 +423,18 @@ function showPrint(page, context, comboName, outMode, orientation) {
     if (outMode == 'pdf') {
       hideWait();
     }
+    window.setTimeout(function() {
+      console.log(document.getElementById('printFrame'));
+      console.log(document.getElementById('printFrame').contentWindow.document);
+      html2canvas(document.getElementById('printFrame').contentWindow.document.getElementById('leftGanttChartDIV_print')).then(function(canvas) {
+        var jpegUrl = canvas.toDataURL("image/png");
+        console.log(jpegUrl);
+      });
+      html2canvas(document.getElementById('printFrame').contentWindow.document.getElementById('GanttChartDIV_print')).then(function(canvas) {
+        var jpegUrl = canvas.toDataURL("image/png");
+        console.log(jpegUrl);
+      });
+    }, 3000);
   }
   quitConfirmed=false;
   noDisconnect=false;
@@ -744,6 +756,53 @@ function hideDetail() {
   dijit.byId("dialogDetail").hide();
 }
 
+//=============================================================================
+//= Copy Object
+//=============================================================================
+
+/**
+ * Display a copy object Box
+ * 
+ */
+function copyObjectBox(copyType) {
+  var callBack=function() {
+
+  };
+  if(copyType=="copyObjectTo"){
+    callBack=function() {
+      dojo.byId('copyClass').value=dojo.byId("objectClass").value;
+      dojo.byId('copyId').value=dojo.byId("objectId").value;
+      for ( var i in copyableArray) {
+        if (copyableArray[i] == objectClass) {
+          dijit.byId('copyToClass').set('value', i);
+        }
+      }
+      copyObjectToShowStructure();
+    };
+  }else if(copyType=="copyProject"){
+    callBack=function() {
+      dojo.byId('copyProjectId').value=dojo.byId("objectId").value;
+      dijit.byId('copyProjectToName').set('value', dijit.byId('name').get('value'));
+      // dijit.byId('copyToOrigin').set('checked','checked');
+      dijit.byId('copyProjectToType').reset();
+      if (dijit.byId('idProjectType') && dojo.byId('codeType')
+          && dojo.byId('codeType').value != 'TMP') {
+        var runModif="dijit.byId('copyProjectToType').set('value',dijit.byId('idProjectType').get('value'))";
+        setTimeout(runModif, 1);
+      }
+    };
+  }
+  console.log(copyType);
+  var params="&objectClass="+dojo.byId("objectClass").value;
+  params+="&objectId="+dojo.byId("objectId").value;   
+  params+="&copyType="+copyType;   
+  loadDialog('dialogCopy', callBack, true, params, false);
+}
+
+function copyObjectSave() {
+  
+}
+
 // =============================================================================
 // = Notes
 // =============================================================================
@@ -857,6 +916,7 @@ function saveNote() {
   loadContent("../tool/saveNote.php", "resultDiv", "noteForm", true, 'note');
   dijit.byId('dialogNote').hide();
 }
+
 
 /**
  * Display a delete note Box
@@ -4575,27 +4635,6 @@ function copyObject(objectClass) {
       dojo.byId('id').value)), action);
 }
 
-function copyObjectTo(objectClass) {
-  dojo.byId('copyClass').value=dojo.byId("objectClass").value;
-  dojo.byId('copyId').value=dojo.byId("objectId").value;
-  // dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
-  for ( var i in copyableArray) {
-    if (copyableArray[i] == objectClass) {
-      dijit.byId('copyToClass').set('value', i);
-    }
-  }
-  dijit.byId('copyToName').set('value', dijit.byId('name').get('value'));
-  dijit.byId('copyToOrigin').set('checked', 'checked');
-  copyObjectToShowStructure();
-  dijit.byId('copyToType').reset();
-  // if (dojo.byId('copyClass').value==class) {
-  var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"
-      + objectClass + "Type').get('value'))";
-  setTimeout(runModif, 1);
-  // }
-
-  dijit.byId('dialogCopy').show();
-}
 function copyObjectToShowStructure() {
   if (dojo.byId('copyClass').value == 'Activity'
       && copyableArray[dijit.byId('copyToClass').get('value')] == 'Activity') {
@@ -4603,21 +4642,6 @@ function copyObjectToShowStructure() {
   } else {
     dojo.byId('copyWithStructureDiv').style.display='none';
   }
-}
-
-function copyProject() {
-  var objectClass="Project";
-  dojo.byId('copyProjectId').value=dojo.byId("objectId").value;
-  dijit.byId('copyProjectToName').set('value', dijit.byId('name').get('value'));
-  // dijit.byId('copyToOrigin').set('checked','checked');
-  dijit.byId('copyProjectToType').reset();
-  if (dijit.byId('idProjectType') && dojo.byId('codeType')
-      && dojo.byId('codeType').value != 'TMP') {
-    var runModif="dijit.byId('copyProjectToType').set('value',dijit.byId('idProjectType').get('value'))";
-    setTimeout(runModif, 1);
-  }
-
-  dijit.byId('dialogCopyProject').show();
 }
 
 function copyObjectToSubmit(objectClass) {
@@ -4641,7 +4665,7 @@ function copyProjectToSubmit(objectClass) {
   unselectAllRows('objectGrid');
   loadContent("../tool/copyProjectTo.php", "resultDiv", 'copyProjectForm',
       true, 'copyProject');
-  dijit.byId('dialogCopyProject').hide();
+  dijit.byId('dialogCopy').hide();
   // dojo.byId('objectClass').value='Project';
 }
 
