@@ -825,7 +825,7 @@ CREATE TABLE `${prefix}message` (
 -- Contenu de la TABLE `${prefix}message`
 --
 INSERT INTO `${prefix}message` (`idProject`, `name`, `idMessageType`, `description`, `idProfile`, `idUser`, `idle`) VALUES 
-(null, 'Welcome', '15', 'Welcome to ProjectOr web application', null, null, 0);
+(null, 'Welcome', '15', 'Welcome to ProjeQtOr web application', null, null, 0);
 
 
 -- --------------------------------------------------------
