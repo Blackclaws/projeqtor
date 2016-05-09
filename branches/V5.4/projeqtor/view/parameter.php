@@ -73,6 +73,15 @@ function drawTableFromObjectList($objectList) {
 	global $criteriaRoot, $type, $collapsedList;
 	$displayWidth='98%';
 	$longTextWidth="500px";
+	$arrayReadOnly=array();
+	if ($type=='globalParameter' and (Parameter::getGlobalParameter('imputationUnit')=='hours' or Parameter::getGlobalParameter('workUnit')=='hours') ) {
+	  $work=new Work();
+	  $cpt=$work->countSqlElementsFromCriteria(array());
+	  echo "Work count=$cpt";
+	  if ($cpt>0) {
+	    $arrayReadOnly['dayTime']=true;
+	  }
+	}
 	if (array_key_exists('destinationWidth',$_REQUEST)) {
 	  $width=$_REQUEST['destinationWidth'];
 	  $width-=30;
@@ -161,6 +170,7 @@ function drawTableFromObjectList($objectList) {
 				echo ($format=='longnumber')?' style="width: 100px;" ':' style="width: 50px;" ';
 				//echo ' constraints="{places:\'0\'}" ';
 				echo ' class="input" ';
+				if (isset($arrayReadOnly[$code])) echo " readonly ";
 				echo ' value="' .  htmlEncode($obj->parameterValue)  . '" ';
 				echo ' >';
 				echo NumberFormatter52::completeKeyDownEvent($obj->getValidationScript($code));
