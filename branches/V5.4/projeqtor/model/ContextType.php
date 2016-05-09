@@ -40,11 +40,18 @@ class ContextType extends SqlElement {
   public $_noCreate=true;
   public $_sec_void;
   //public $_isNameTranslatable = true;
+  
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
+    <th field="name" width="30%" >${componentName}</th>
+    ';
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
+  private static $_fieldsAttributes=array("idle"=>"hidden");
+  
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
   }
@@ -61,6 +68,20 @@ class ContextType extends SqlElement {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
- 
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
+  
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
 }
 ?>
