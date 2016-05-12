@@ -73,6 +73,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
+  
+  <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <script type="text/javascript" src="../external/pdfmake/pdfmake.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <script type="text/javascript" src="../external/pdfmake/vfs_fonts.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
@@ -2333,6 +2337,5 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <input type="hidden" id="outMode" name="outMode" value='html' />
   <input type="hidden" id="reportName" name="reportName" value="test" />
 </form>
-<script type="text/javascript" src="../external/html2canvas/html2canvas.js"></script>
 </body>
 </html>

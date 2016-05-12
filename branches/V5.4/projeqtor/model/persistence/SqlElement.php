@@ -1667,7 +1667,6 @@ abstract class SqlElement {
 		  }
 		}
 		$newObj->_copyResult=$returnValue;
-		debugLog('$newObj->result: '.$newObj->result);
 		return $newObj;
 	}
 

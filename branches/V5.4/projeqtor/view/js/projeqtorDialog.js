@@ -422,19 +422,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
         + "&objectClass=" + cl + "&objectId=" + id + params;
     if (outMode == 'pdf') {
       hideWait();
-    }
-    window.setTimeout(function() {
-      console.log(document.getElementById('printFrame'));
-      console.log(document.getElementById('printFrame').contentWindow.document);
-      html2canvas(document.getElementById('printFrame').contentWindow.document.getElementById('leftGanttChartDIV_print')).then(function(canvas) {
-        var jpegUrl = canvas.toDataURL("image/png");
-        console.log(jpegUrl);
-      });
-      html2canvas(document.getElementById('printFrame').contentWindow.document.getElementById('GanttChartDIV_print')).then(function(canvas) {
-        var jpegUrl = canvas.toDataURL("image/png");
-        console.log(jpegUrl);
-      });
-    }, 3000);
+    } 
   }
   quitConfirmed=false;
   noDisconnect=false;
@@ -799,8 +787,16 @@ function copyObjectBox(copyType) {
   loadDialog('dialogCopy', callBack, true, params, false);
 }
 
-function copyObjectSave() {
-  
+//=============================================================================
+//= Planning PDF
+//=============================================================================
+
+/**
+* Display a planning PDF Box
+* 
+*/
+function planningPDFBox(copyType) { 
+  loadDialog('dialogPlanningPdf', null, true, "", false);
 }
 
 // =============================================================================
@@ -6413,4 +6409,412 @@ function saveRestrictTypes() {
   }
   loadContent("../tool/saveRestrictTypes.php" , "resultDiv", "restrictTypesForm", true, 'report',false,false, $callback);
   dijit.byId('dialogRestrictTypes').hide();
+}
+
+function getMaxWidth(document){
+  return Math.max( document.scrollWidth, document.offsetWidth, 
+      document.clientWidth);
+}
+
+function getMaxHeight(document){
+  return Math.max( document.scrollHeight, document.offsetHeight, 
+      document.clientHeight);
+}
+
+function planningToCanvasToPDF(){
+
+  var iframe = document.createElement('iframe');
+  
+  //this onload is for firefox but also work on others browsers
+  iframe.onload = function() {
+  var orientation="landscape";  // "portrait" ou "landscape"
+  if(!document.getElementById("printLandscape").checked)orientation="portrait";
+  var ratio=parseInt(document.getElementById("printZoom").value)/100;
+  var repeatIconTask=document.getElementById("printRepeat").checked; // If true this will repeat on each page the icon
+  loadContent("../tool/submitPlanningPdf.php", "planResultDiv", 'planningPdfForm', false,null,null,null,function(){showWait();});
+  var sizeElements=[];
+  var marge=0;
+  var widthIconTask=0; // the width that icon+task represent
+  var heightColumn=parseInt(document.getElementById('leftsideTop').offsetHeight)*ratio;
+  var heightRow=21*ratio;
+  var widthRow=(parseInt(dojo.query('.ganttRightTitle')[0].offsetWidth)-1)*ratio;
+  var nbRowTotal=0;
+  var nbColTotal=0;
+  // init max width/height by orientation
+  var maxWidth=(511-marge)*1.25;
+  var maxHeight=(737-marge)*1.25;
+  if(orientation=="landscape"){
+    inter=maxWidth;
+    maxWidth=maxHeight;
+    maxHeight=inter;
+  }
+  
+  //We create an iframe will which contain the planning to transform it in image
+  var frameContent=document.getElementById("iframeTmpPlanning");
+  
+  var cssLink2 = document.createElement("link");
+  cssLink2.href = "css/projeqtor.css"; 
+  cssLink2 .rel = "stylesheet"; 
+  cssLink2 .type = "text/css"; 
+  frameContent.contentWindow.document.head.appendChild(cssLink2);
+  
+  var cssLink = document.createElement("link");
+  cssLink.href = "css/jsgantt.css"; 
+  cssLink .rel = "stylesheet"; 
+  cssLink .type = "text/css";
+  frameContent.contentWindow.document.head.appendChild(cssLink);
+  
+  /*var css = document.createElement("style");
+  css .type = "text/css";
+  frameContent.contentWindow.document.head.appendChild(css);
+  styles = '.rightTableLine{ height:22px; }';
+  
+  if (css.styleSheet) css.styleSheet.cssText = styles;
+  else css.appendChild(document.createTextNode(styles));*/
+  var heightV=(heightColumn+getMaxHeight(document.getElementById('leftside'))+(getMaxHeight(document.getElementById('leftside'))/21))+'px';
+  
+  frameContent.style.position='absolute';
+  frameContent.style.width=(4+parseInt(document.getElementById('leftGanttChartDIV').style.width)+getMaxWidth(document.getElementById('rightTableContainer')))+'px';
+  frameContent.style.height=heightV;
+  frameContent.style.border='0';
+  //frameContent.style.top='0';
+  //frameContent.style.left='0';
+  frameContent.contentWindow.document.body.innerHTML='<div style="float:left;width:'+document.getElementById('leftGanttChartDIV').style.width+';overflow:hidden;height:'+heightV+';">'+document.getElementById('leftGanttChartDIV').innerHTML+'</div><div style="float:left;width:'+getMaxWidth(document.getElementById('rightTableContainer'))+'px;height:'+heightV+';">'+document.getElementById('GanttChartDIV').innerHTML+"</div>";
+
+  frameContent.contentWindow.document.getElementById('ganttScale').style.display='none';
+  frameContent.contentWindow.document.getElementById('topGanttChartDIV').style.width=getMaxWidth(document.getElementById('rightTableContainer'))+'px';
+  frameContent.contentWindow.document.getElementById('topGanttChartDIV').style.overflow='visible';
+  frameContent.contentWindow.document.getElementById('mainRightPlanningDivContainer').style.overflow='visible';
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.overflow='visible';
+  frameContent.contentWindow.document.getElementById('mainRightPlanningDivContainer').style.height=(getMaxHeight(document.getElementById('leftside')))+'px';
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.height=(getMaxHeight(document.getElementById('leftside')))+'px';
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.height=(getMaxHeight(document.getElementById('leftside')))+'px';
+  frameContent.contentWindow.document.getElementById('dndSourceTable').style.height=(getMaxHeight(document.getElementById('leftside')))+'px';
+  frameContent.contentWindow.document.getElementById('vScpecificDay_1').style.height=(getMaxHeight(document.getElementById('leftside')))+'px';
+  frameContent.contentWindow.document.getElementById('leftside').style.top="0";
+  frameContent.contentWindow.document.getElementById('leftsideTop').style.width=document.getElementById('leftGanttChartDIV').style.width;
+  frameContent.contentWindow.document.getElementById('leftside').style.width=document.getElementById('leftGanttChartDIV').style.width;
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.overflowX="visible";
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.overflowY="visible";
+  //Calculate each width column in left top side
+  for(var i=0; i<dojo.query("[id^='topSourceTable'] tr")[1].childNodes.length;i++){
+    sizeElements.push((dojo.query("[id^='topSourceTable'] tr")[1].childNodes[i].offsetWidth)*ratio);
+  }
+  for(var i=0; i<dojo.query("[class^='rightTableLine']").length;i++){
+    dojo.query("[class^='rightTableLine']")[i].style.width=(parseInt(dojo.query("[class^='rightTableLine']")[i].style.width)-1)+"px";
+  }
+  for(var i=0; i<dojo.query("[class^='ganttDetail weekBackground']").length;i++){
+    dojo.query("[class^='ganttDetail weekBackground']")[i].style.width=(parseInt(dojo.query("[class^='ganttDetail weekBackground']")[i].style.width)-1)+"px";
+  }
+  
+  widthIconTask=sizeElements[0]+sizeElements[1];
+  
+  sizeColumn=parseInt(dojo.query(".ganttRightTitle")[0].style.width)*ratio;
+  
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
+  frameContent.contentWindow.document.getElementById('topGanttChartDIV').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
+  frameContent.contentWindow.document.getElementById('mainRightPlanningDivContainer').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
+  //add border into final print
+  frameContent.contentWindow.document.getElementById('leftsideTop').innerHTML ='<div id="separatorLeftGanttChartDIV2" style="position:absolute;height:100%;z-index:10000;width:4px;background-color:#C0C0C0;"></div>'+frameContent.contentWindow.document.getElementById('leftsideTop').innerHTML;
+  frameContent.contentWindow.document.getElementById('leftside').innerHTML ='<div id="separatorLeftGanttChartDIV" style="position:absolute;height:100%;z-index:10000;width:4px;background-color:#C0C0C0;"></div>'+frameContent.contentWindow.document.getElementById('leftside').innerHTML;
+  frameContent.contentWindow.document.getElementById('leftside').style.width=(parseInt(frameContent.contentWindow.document.getElementById('leftside').style.width)+parseInt(frameContent.contentWindow.document.getElementById('separatorLeftGanttChartDIV').style.width))+'px';
+  frameContent.contentWindow.document.getElementById('leftsideTop').style.width=frameContent.contentWindow.document.getElementById('leftside').style.width;
+  frameContent.contentWindow.document.getElementById('separatorLeftGanttChartDIV').style.left=(parseInt(frameContent.contentWindow.document.getElementById('leftside').style.width)-4)+'px';
+  frameContent.contentWindow.document.getElementById('separatorLeftGanttChartDIV2').style.left=(parseInt(frameContent.contentWindow.document.getElementById('leftsideTop').style.width)-4)+'px';
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.width=frameContent.contentWindow.document.getElementById('rightTableContainer').style.width;
+  frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.height=frameContent.contentWindow.document.getElementById('rightTableContainer').style.height;
+
+  var tabImage=[]; //Contain pictures 
+  var mapImage={}; //Contain pictures like key->value, cle=namePicture, value=base64(picture)
+  
+  //Start the 4 prints function
+  //Print image activities and projects
+  html2canvas(frameContent.contentWindow.document.getElementById('leftside')).then(function(leftElement) {
+    
+    //Print image column left side
+    html2canvas(frameContent.contentWindow.document.getElementById('leftsideTop')).then(function(leftColumn) { 
+      
+      //Print right Line
+      html2canvas(frameContent.contentWindow.document.getElementById('rightGanttChartDIV')).then(function(rightElement) {
+        
+        //Print right column
+        html2canvas(frameContent.contentWindow.document.getElementById('rightside')).then(function(rightColumn) {
+          if(ratio!=1){
+            leftElement=cropCanvas(leftElement,0,0,leftElement.width,leftElement.height,ratio);
+            leftColumn=cropCanvas(leftColumn,0,0,leftColumn.width,leftColumn.height,ratio);
+            rightElement=cropCanvas(rightElement,0,0,rightElement.width,rightElement.height,ratio);
+            rightColumn=cropCanvas(rightColumn,0,0,rightColumn.width,rightColumn.height,ratio);
+          }
+          //Init number of total rows
+          nbRowTotal=Math.round(leftElement.height/heightRow); 
+          //frameContent.parentNode.removeChild(frameContent);
+          
+          //Start pictures's calcul
+          firstEnterHeight=true;
+          var EHeightValue=0; //Height pointer cursor
+          var EHeight=leftElement.height; //total height
+          while((Math.ceil(EHeight/maxHeight)>=1 || firstEnterHeight) && EHeight>heightRow){
+            var calculHeight=maxHeight;
+            var ELeftWidth=leftElement.width; //total width
+            var ERightWidth=rightElement.width; //total width
+            var addHeighColumn=0;
+            if(firstEnterHeight || (!firstEnterHeight && repeatIconTask)){
+              addHeighColumn=heightColumn;
+            }
+            var heightElement=0;
+            while(calculHeight-addHeighColumn>=heightRow && nbRowTotal!=0){
+              calculHeight-=heightRow;
+              heightElement+=heightRow;
+              nbRowTotal--;
+            }
+            var iterateurColumnLeft=0;
+            firstEnterWidth=true;
+            var widthElement=0;
+            var imageRepeat=null;
+            if(repeatIconTask){
+              imageRepeat=combineCanvasIntoOne(
+                              cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
+                              cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                              true);
+            }
+            var canvasList=[];
+            while(ELeftWidth/maxWidth>=1 || (!firstEnterWidth && ELeftWidth>0)){
+              firstEnterWidth2=true;
+              oldWidthElement=widthElement;
+              while(iterateurColumnLeft<sizeElements.length && ELeftWidth>=sizeElements[iterateurColumnLeft]){
+                ELeftWidth-=sizeElements[iterateurColumnLeft];
+                widthElement+=sizeElements[iterateurColumnLeft];
+                if(repeatIconTask && !firstEnterWidth && firstEnterWidth2)ELeftWidth+=widthIconTask;
+                iterateurColumnLeft++;
+                firstEnterWidth2=false;
+              }
+              if(oldWidthElement==widthElement){
+                widthElement+=ELeftWidth;
+                ELeftWidth=0;
+              }
+              if(!firstEnterWidth){
+                if(repeatIconTask){
+                  canvasList.push(combineCanvasIntoOne(imageRepeat,
+                                  combineCanvasIntoOne(
+                                      cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                                      cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                                      true),
+                                      false));
+                  console.log(combineCanvasIntoOne(imageRepeat,
+                      combineCanvasIntoOne(
+                          cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                          cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                          true),
+                          false).toDataURL());
+                }else{
+                  if(firstEnterHeight){
+                    canvasList.push(combineCanvasIntoOne(
+                                        cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                                        cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                                        true));
+                    console.log(combineCanvasIntoOne(
+                        cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                        cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                        true).toDataURL());
+                  }else{
+                    canvasList.push(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement));
+                    console.log(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement).toDataURL());
+                  } 
+                }
+              }else{
+                if(firstEnterHeight || repeatIconTask){
+                  canvasList.push(combineCanvasIntoOne(
+                                        cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                                        cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                                        true));
+                  console.log(combineCanvasIntoOne(
+                      cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
+                      cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
+                      true).toDataURL());
+                }else{
+                  canvasList.push(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement));
+                  console.log(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement).toDataURL());
+                  
+                }
+              }
+              firstEnterWidth=false;
+            }
+            if(canvasList.length==0){
+              if(firstEnterHeight || repeatIconTask){
+                canvasList.push(combineCanvasIntoOne(
+                                        cropCanvas(leftColumn,0,0,leftColumn.width,heightColumn),
+                                        cropCanvas(leftElement,0,EHeightValue,leftElement.width,heightElement),
+                                        true));
+              }else{
+                canvasList.push(cropCanvas(leftElement,0,EHeightValue,leftElement.width,heightElement));
+              }
+            }
+            firstEnterWidth=true;
+            if(repeatIconTask && leftColumn.width>widthIconTask){
+              imageRepeat=combineCanvasIntoOne(combineCanvasIntoOne(
+                                                    cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
+                                                    cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                                                    true),
+                                               combineCanvasIntoOne(
+                                                    cropCanvas(leftColumn,leftColumn.width-4,0,4,heightColumn),
+                                                    cropCanvas(leftElement,leftElement.width-4,EHeightValue,4,heightElement),
+                                                    true),
+                                               false);
+            }
+            widthElement=0;
+            firstEnterWidth=true;
+            var canvasList2=[];
+            //Init number of total cols
+            nbColTotal=Math.round(rightElement.width/widthRow); 
+            while((Math.ceil(ERightWidth/maxWidth)>=1 || (!firstEnterWidth && ERightWidth>0)) && nbColTotal>0){
+              firstEnterWidth2=true;
+              oldWidthElement=widthElement;
+              limit=0;
+              if(firstEnterWidth)limit=canvasList[canvasList.length-1].width;
+              if(!firstEnterWidth && repeatIconTask)limit=widthIconTask;
+              var currentWidthElm=0;
+              while(ERightWidth>widthRow && currentWidthElm+widthRow<maxWidth-limit && nbColTotal>0){
+                ERightWidth-=widthRow;
+                widthElement+=widthRow;
+                currentWidthElm+=widthRow;
+                firstEnterWidth2=false;
+                nbColTotal--;
+              }
+              if(!firstEnterWidth){
+                if(currentWidthElm!=0 && widthElement!=oldWidthElement)if(repeatIconTask){
+                  canvasList2.push(combineCanvasIntoOne(imageRepeat,
+                                       combineCanvasIntoOne(
+                                           cropCanvas(rightColumn,oldWidthElement+1,0,currentWidthElm,heightColumn),
+                                           cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
+                                           true),
+                                       false));
+                }else{
+                  if(firstEnterHeight){
+                    canvasList2.push(combineCanvasIntoOne(
+                                          cropCanvas(rightColumn,oldWidthElement+1,0,currentWidthElm,heightColumn),
+                                          cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
+                                          true));
+                  }else{
+                    canvasList2.push(cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement));
+                  }
+                }
+              }else{
+                if(widthElement==0){
+                  canvasList2.push(canvasList[canvasList.length-1]);
+                }else if(firstEnterHeight || repeatIconTask){
+                  canvasList2.push(combineCanvasIntoOne(canvasList[canvasList.length-1],
+                                        combineCanvasIntoOne(
+                                            cropCanvas(rightColumn,oldWidthElement+1,0,currentWidthElm,heightColumn),
+                                            cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
+                                            true),
+                                        false));
+                }else{
+                  canvasList2.push(combineCanvasIntoOne(canvasList[canvasList.length-1],
+                                        cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
+                                        false));
+                }
+              }
+              if(nbColTotal==0){
+                ERightWidth=0;
+              }
+              firstEnterWidth=false;
+            }
+            var baseIterateur=tabImage.length;
+            for(var i=0;i<canvasList.length-1;i++){
+              
+              //Add image to mapImage in base64 format
+              mapImage["image"+(i+baseIterateur)]=canvasList[i].toDataURL();
+              
+              //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
+              ArrayToPut={image: "image"+(i+baseIterateur),width: canvasList[i].width*0.75,height:canvasList[i].height*0.75};
+              if(!(canvasList2.length==0 && i==canvasList.length-1)){
+                ArrayToPut['pageBreak']='after';
+              }
+              tabImage.push(ArrayToPut);
+            }
+            for(var i=0;i<canvasList2.length;i++){
+              if(canvasList2[i].width-widthIconTask>4){
+                //Add image to mapImage in base64 format
+                mapImage["image"+(i+canvasList.length+baseIterateur)]=canvasList2[i].toDataURL();
+                
+                //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
+                ArrayToPut={image: "image"+(i+canvasList.length+baseIterateur),width: canvasList2[i].width*0.75,height:canvasList2[i].height*0.75};
+                if(i!=canvasList2.length-1){
+                  ArrayToPut['pageBreak']='after';
+                }
+                tabImage.push(ArrayToPut);
+              }
+            }
+            EHeight-=maxHeight-calculHeight;
+            EHeightValue+=maxHeight-calculHeight;
+            console.log("EHeight: "+EHeight);
+            firstEnterHeight=false;
+          }
+          var dd = {
+             pageOrientation: orientation,
+             content: tabImage,
+             images: mapImage
+          };
+          if( !dojo.isIE ) {
+
+            var userAgent = navigator.userAgent.toLowerCase(); var IEReg = /(msie\s|trident.*rv:)([\w.]+)/; var match = IEReg.exec(userAgent); if( match )
+
+            dojo.isIE = match[2] - 0;
+
+            else
+
+            dojo.isIE = undefined;
+
+          }
+          if((dojo.isIE && dojo.isIE>0) || window.navigator.userAgent.indexOf("Edge") > -1) {
+            pdfMake.createPdf(dd).download('planning.pdf');
+          }else{
+            pdfMake.createPdf(dd).open();
+          }
+          hideWait();
+          // open the PDF in a new window
+          //pdfMake.createPdf(dd).open();
+          // print the PDF (temporarily Chrome-only)
+         // pdfMake.createPdf(dd).print();
+          // download the PDF (temporarily Chrome-only)
+
+          dijit.byId('dialogPlanningPdf').hide();
+        });
+      });
+    });
+  });
+  };
+  iframe.id="iframeTmpPlanning";
+  document.body.appendChild(iframe);
+}
+function cropCanvas(canvasToCrop,x,y,w,h,r){
+  if(typeof r=='undefined')r=1;
+    var tempCanvas = document.createElement("canvas"),
+    tCtx = tempCanvas.getContext("2d");
+    tempCanvas.width = w*r;
+    tempCanvas.height = h*r;
+    if(w!=0 && h!=0)tCtx.drawImage(canvasToCrop,x,y,w,h,0,0,w*r,h*r);
+    return tempCanvas;
+}
+
+//addBottom=true : we add the canvas2 at the bottom of canvas1, addBottom=false : we add the canvas2 at the right of canvas1
+function combineCanvasIntoOne(canvas1,canvas2,addBottom){
+  var tempCanvas = document.createElement("canvas");
+  var tCtx = tempCanvas.getContext("2d");
+  var ajoutWidth=0;
+  var ajoutHeight=0;
+  var x=0;
+  var y=0;
+  if(addBottom){
+    ajoutHeight=canvas2.height;
+    y=canvas1.height;
+  }else{
+    ajoutWidth=canvas2.width;
+    x=canvas1.width;
+  }
+  tempCanvas.width = canvas1.width+ajoutWidth;
+  tempCanvas.height = canvas1.height+ajoutHeight;
+  if(canvas1.width!=0 && canvas1.height!=0)tCtx.drawImage(canvas1,0,0,canvas1.width,canvas1.height);
+  if(canvas1.width!=0 && canvas1.height!=0)if(canvas2.width!=0 && canvas2.height!=0)tCtx.drawImage(canvas2,0,0,canvas2.width,canvas2.height,x,y,canvas2.width,canvas2.height);
+  return tempCanvas;
 }

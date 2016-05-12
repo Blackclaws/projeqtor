@@ -197,8 +197,7 @@ if ($canPlan) {
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          //showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
-                           showPrint("../tool/jsonPlanning_pdf.php", 'planning', null, 'pdf');
+                          planningPDFBox();
                           </script>
                         </button>
                       </td>
