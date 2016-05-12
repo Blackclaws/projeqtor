@@ -33,7 +33,7 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
 }
 $url=$_SERVER['REQUEST_URI'];
-$srv=$_SERVER['SERVER_ADDR'];
+$srv=$_SERVER['SERVER_NAME'];
 $pos=strpos($url,'/test/');
 $urlRoot=substr($url,0,$pos);
 $service_url = 'http://'.$srv.$urlRoot.'/api';
