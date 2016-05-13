@@ -974,13 +974,15 @@ abstract class SqlElement {
 				  $textObj=new Html2Text($col_old_value);
 				  $oldText=$textObj->getText();
 				  if (Importable::importInProgress()) {
+				    //$oldText=encodeCSV($oldText);
 				    $oldText=str_replace("\n\n","\n",$oldText); // Remove double LF as they were removed during export
+				    $oldText=str_replace("\r","",$oldText);
 				    $col_new_value=str_replace("\r","",$col_new_value); // Replace CRLF with LF
 				  }
 				  if (trim($oldText)==trim($col_new_value)) {
 				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
 				  } else {
-				    $col_new_value=nl2br($col_new_value);
+				    if (substr($col_new_value,0,4)!='<div') $col_new_value=nl2br($col_new_value);
 				  }
 				}
 				if ( $col_new_value != $col_old_value or ($isText and ('x'.$col_new_value != 'x'.$col_old_value) )) {
