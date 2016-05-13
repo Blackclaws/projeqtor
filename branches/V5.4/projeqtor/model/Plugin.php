@@ -170,6 +170,14 @@ class Plugin extends SqlElement {
                 }
               }
             }
+            if ($fileName and $fileTarget and $fileAction=='delete') {
+              $res=kill("$fileTarget/$fileName");
+              if (! $res) {
+                $result=i18n('pluginErrorDelete',array("$fileTarget/$fileName"));
+                errorLog("Plugin::load() : $result");
+                return $result;
+              }
+            }
           }
         }
         if ($prop['tag']=='TRIGGER') {
