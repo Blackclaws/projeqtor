@@ -566,6 +566,13 @@ table.dojoDndAvatar {
 .dijitInputInner {
 	padding: 2px 0px 2px 3px !important; /* New GUI */
 }
+.dijitNumberTextBox input.dijitInputInner, 
+.dijitCurrencyTextBox input.dijitInputInner, 
+.dijitSpinner input.dijitInputInner {
+    text-align: right;
+    float: right;
+    padding: 2px 3px 2px 0px !important
+}
 .dijitTextArea {
   padding: 1px;
 }
