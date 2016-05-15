@@ -1882,6 +1882,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
 }
 
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null) {
+  global $currentColumn;
+  if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
   //if ($prevSection and !$print) {
@@ -1893,8 +1895,8 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       echo '<br/>';
     }
   }
-  
   if (!$print) {
+    ob_end_flush();
     $arrayPosition=array(
          'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
          'progress'=>      array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')),
@@ -1932,6 +1934,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       $clear='right';
     }
     $titlePane=$classObj . "_" . $section;
+    ob_start();
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
