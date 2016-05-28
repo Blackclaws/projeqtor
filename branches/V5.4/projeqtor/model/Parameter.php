@@ -654,19 +654,19 @@ class Parameter extends SqlElement {
       }
       return $nl;
     }
-  	if (!array_key_exists('globalParamatersArray',$_SESSION)) {
+  	if (!isset($_SESSION['globalParamatersArray'])) {
       $_SESSION['globalParamatersArray']=array();
+      $p=new Parameter();
+      $crit=" (idUser is null and idProject is null)";
+      $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
+      foreach ($lst as $param) {
+        $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
+      }
   	}
   	if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
   		return $_SESSION['globalParamatersArray'][$code];
   	} else {
-  		$p=new Parameter();
-  		$crit=" (idUser is null and idProject is null)";
-  	  $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
-  	  foreach ($lst as $param) {
-  	    $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
-  	  }
-      if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+  		if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
   	    return $_SESSION['globalParamatersArray'][$code];
       } else {
       	return '';
