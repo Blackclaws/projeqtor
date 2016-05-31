@@ -75,6 +75,7 @@ if (! $name) {
     $filter->refType=$filterObjectClass;
     $filter->name=$name;
     $filter->idUser=$user->id;
+    $filter->isShared=0;
   }
   $filter->save();
   $criteria=new FilterCriteria();
