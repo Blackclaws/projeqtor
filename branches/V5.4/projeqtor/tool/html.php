@@ -896,6 +896,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   if ($context!='directFilterList') {
   	echo "<td class='filterHeader' style='width:730px;'>" . i18n("storedFilters") . "</td>";
     echo "<td class='filterHeader' style='width:25px;'>";
+    echo "<td class='filterHeader' style='width:25px;'>";
   } else {
   	echo "<td class='filterHeader' style='font-size:8pt;width:300px;'>" . i18n("storedFilters") . "</td>";
   }
@@ -927,16 +928,63 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
         echo "<td class='filterData' style='text-align: center;'>";      
         echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removeStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
         echo "</td>";
+        echo "<td class='filterData' style='text-align: center;'>";
+        if($filter->isShared==0)echo ' <img src="css/images/share.png" class="roundedButtonSmall" onClick="shareStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('shareStoredFilter') . '" class="smallButton"/> ';
+        if($filter->isShared==1)echo ' <img src="css/images/share.png" class="roundedButtonSmall" onClick="shareStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('unshareStoredFilter') . '" class="smallButton"/> ';
+        echo "</td>";
       }
+      
       echo "</tr>";
     }
   } else {
   	if ($context!='directFilterList') {
-      echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noStoredFilter") . "</i></td></tr>";
+      echo "<tr><td class='filterData' colspan='3'><i>" . i18n("noStoredFilter") . "</i></td></tr>";
   	}
   }
   echo "</table>";
 
+}
+
+function htmlDisplaySharedFilter($filterArray,$filterObjectClass,$currentFilter="", $context="") {
+  if (count($filterArray)>0) {  
+    echo i18n("selectSharedFilter");
+    $nFilterArray=array();
+    foreach ($filterArray as $filter) {
+      $user=SqlElement::getSingleSqlElementFromCriteria("User", array("id"=>$filter->idUser));
+      $cle=$user->name.'|'.$user->id;
+      if(!isset($nFilterArray[$cle]))$nFilterArray[$cle]=array();
+      $nFilterArray[$cle][$filter->name]=$filter;
+      asort($nFilterArray[$cle]);
+    }
+    asort($nFilterArray);
+    // Display Result
+    $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',
+        array('idUser'=>getSessionUser()->id, 'parameterCode'=>'Filter'.$filterObjectClass));
+    $defaultFilter=($param)?$param->parameterValue:'';
+    echo '<select dojoType="dijit.form.FilteringSelect" class="input" 
+                              style="width: 400px;"
+                              onChange="if(this.value!=-1 && this.value!=-2)selectStoredFilter(this.value,\'' . htmlEncode($context) . '\');"
+                              id="filterSharedSelect" name="entity">';
+    echo '<option value="-1" '
+        . ' title="' . i18n("selectStoredFilter") . '" ></option>';
+    $iterateur=0;
+      foreach ($nFilterArray as $userName=>$filters) {
+        $nameExplode=explode('|',$userName);
+        echo '<option disabled="disabled" value="-2" '
+            . ' title="' . i18n("selectStoredFilter") . '" >'.$nameExplode[0].'</option>';
+        foreach ($filters as $filterName=>$filter) {
+          echo '<option value="'.htmlEncode($filter->id).'" '
+              . ' style="padding-left:15px;" >'
+                  . htmlEncode($filter->name)
+                  . ( ($defaultFilter==$filter->id and $context!='directFilterList')?' (' . i18n('defaultValue') . ')':'')
+                  . "</option>";
+        }
+        $iterateur++;
+        if(sizeof($nFilterArray)>$iterateur)echo '<option value="-1" '
+        . ' title="' . i18n("selectStoredFilter") . '" ></option>';
+      }
+    echo "</select>";
+  }
 }
 
 function htmlDisplayCheckbox ($value) {

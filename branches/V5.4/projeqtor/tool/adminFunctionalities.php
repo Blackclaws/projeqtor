@@ -81,7 +81,6 @@ if ($adminFunctionality=='sendAlert') {
   $obj->parameterValue=$newStatus;
   $result=$obj->save();
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'msgClosedApplication'));
-  
   $msgClosedApplication=$_REQUEST['msgClosedApplication'];
   $msgClosedApplication=strip_tags($msgClosedApplication);
   $param->parameterValue=$msgClosedApplication;

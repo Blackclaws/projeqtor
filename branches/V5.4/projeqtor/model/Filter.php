@@ -36,6 +36,7 @@ class Filter extends SqlElement {
   public $name;
   public $refType;
   public $idUser;
+  public $isShared;
   public $_FilterCriteriaArray;
     
    /** ==========================================================================
