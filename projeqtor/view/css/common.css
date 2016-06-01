@@ -1487,11 +1487,18 @@ table.dijitCalendarContainer {
 	font-size: 0.9em;
 	font-weight: normal;
 	text-align: center;
-	padding: 0.3em 0.3em 0.05em 0.3em;
+	padding: 0.3em 0.4em 0.05em 0.4em !important;
 	letter-spacing: 0px;
 }
 .dj_ie .dijitCalendarDateTemplate {
-	padding: 0.1em .33em 0.02em .33em;
+	padding: 0.1em .33em 0.02em .33em !important;
+}
+.dijitCalendarArrow .dijitA11ySideArrow {
+	display:none;
+}
+.dijitCalendarPopup {
+	border: 1px solid rgb(211, 211, 211);
+	background-color: #ffffff;
 }
 .dijitCalendarPreviousMonth,
 .dijitCalendarNextMonth 		{
