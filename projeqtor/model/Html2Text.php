@@ -262,7 +262,7 @@ class Html2Text
     public function set_html($html, $from_file = false)
     {
         if ($from_file) {
-            throw new \InvalidArgumentException("Argument from_file no longer supported");
+            // throw new \InvalidArgumentException("Argument from_file no longer supported");
         }
 
         return $this->setHtml($html);
