@@ -37,6 +37,20 @@ $objectId=$_REQUEST['refId'];
 $obj=new $objectClass($objectId); // Note: $objectId is checked in base SqlElement constructor to be numeric value.
 $crit=array('refType'=>$objectClass,'refId'=>$objectId);
 $we=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
+if (!$we->id) {
+  // This is possible only if some duplicate WorkElement exists : delete one and keep only the other
+  $lstWe=$we->getSqlElementsFromCriteria($crit,false,null,'id asc');
+  $we=null;
+  foreach ($lstWe as $weTmp) {
+    if (!$we) {
+      $we=$weTmp;
+      continue;
+    } else {
+      traceLog("WARNING : purge duplicate workelement #".$weTmp->id." for ".$objectClass." #".$objectId);
+      $weTmp->delete();
+    }
+  }
+}
 $arrayWork=array();
 $crit=array('idWorkElement'=>$we->id);
 $w=new Work();
