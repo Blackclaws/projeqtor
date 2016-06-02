@@ -53,9 +53,12 @@ $dependencyRefTypeDepObj=New Dependable($_REQUEST['dependencyRefTypeDep']);
 $dependencyRefTypeDep=$dependencyRefTypeDepObj->name;
 
 if (! array_key_exists('dependencyRefIdDep',$_REQUEST)) {
-  throwError('dependencyRefIdDep parameter not found in REQUEST');
+  //if (! array_key_exists('dependencyId',$_REQUEST)) {
+    throwError('dependencyRefIdDep parameter not found in REQUEST');
+  //}
+} else {
+  $dependencyRefIdDep=$_REQUEST['dependencyRefIdDep'];
 }
-$dependencyRefIdDep=$_REQUEST['dependencyRefIdDep'];
 
 $dependencyDelay=0;
 if (array_key_exists('dependencyDelay',$_REQUEST)) {
