@@ -46,7 +46,7 @@ CREATE TABLE `${prefix}menucustom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX menucustomUser ON `${prefix}menucustom` (idUser);
 
-ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` decimal(9,2) DEFAULT NULL;
+ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (176, 31, 'includeNextMonth', 'boolean', 50, null),
