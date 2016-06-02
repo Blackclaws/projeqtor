@@ -7,6 +7,10 @@
 
 ALTER TABLE `${prefix}assignment` CHANGE `dailyCost` `dailyCost` DECIMAL(9,2) UNSIGNED,
 CHANGE `newDailyCost` `newDailyCost` DECIMAL(9,2) UNSIGNED;
+
 ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
+
 ALTER TABLE `${prefix}expense` ADD `idDocument` int(12) unsigned;
 ALTER TABLE `${prefix}filter` ADD `isShared` int(1) unsigned;
+
+ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
