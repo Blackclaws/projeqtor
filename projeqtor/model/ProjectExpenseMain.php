@@ -38,16 +38,34 @@ class ProjectExpenseMain extends Expense {
   public $idProjectExpenseType;
   public $idProject;
   public $idUser;
+  public $idProvider;
+  public $externalReference;
+  public $idResource;
+  public $idResponsible;
+  public $paymentCondition;
   public $description;
   public $_sec_treatment;
   public $idStatus;  
-  public $expensePlannedDate;
-  public $plannedAmount;
-  public $expenseRealDate;
-  public $realAmount;
+  public $sendDate;
+  public $idDeliveryMode;
+  public $deliveryDelay;
+  public $deliveryDate;
+  public $receptionDate;
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
+  public $_tab_5_2_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','paymentDateShort', 'planned', 'real');
+  public $plannedAmount;
+  public $taxPct;
+  public $plannedTaxAmount;
+  public $plannedFullAmount;
+  public $expensePlannedDate;
+  public $realAmount;
+  public $_void_1;
+  public $realTaxAmount;
+  public $realFullAmount;
+  public $expenseRealDate;
+  public $result;
   public $_sec_ExpenseDetail;
   public $_ExpenseDetail=array();
   public $_expenseDetail_colSpan="2";
@@ -74,19 +92,23 @@ class ProjectExpenseMain extends Expense {
                                   "expensePlannedDate"=>"",
                                   "plannedAmount"=>"",
                                   "idStatus"=>"required",
-                                  "idResource"=>"hidden",
   								                "idUser"=>"hidden",              
                                   "day"=>"hidden",
                                   "week"=>"hidden",
                                   "month"=>"hidden",
                                   "year"=>"hidden",
                                   "idle"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "plannedTaxAmount"=>"calculated,readonly",
+                                  "realTaxAmount"=>"calculated,readonly"
   );  
   
   private static $_colCaptionTransposition = array('idProjectExpenseType'=>'type',
   'expensePlannedDate'=>'plannedDate',
-  'expenseRealDate'=>'realDate'
+  'expenseRealDate'=>'realDate',
+  'idResource'=>'businessResponsible',
+  'idResponsible'=>'financialResponsible',
+  'sendDate'=>'orderDate'
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -106,6 +128,13 @@ class ProjectExpenseMain extends Expense {
     parent::__construct($id,$withoutDependentObjects);
     if (count($this->getExpenseDetail())>0) {
       self::$_fieldsAttributes['realAmount']="readonly";
+      self::$_fieldsAttributes['realFullAmount']="readonly";
+    }
+    if ($this->realFullAmount>0) {
+      $this->realTaxAmount=$this->realFullAmount-$this->realAmount;
+    }
+    if ($this->plannedFullAmount>0) {
+      $this->plannedTaxAmount=$this->plannedFullAmount-$this->plannedAmount;
     }
   }
 
@@ -171,6 +200,16 @@ class ProjectExpenseMain extends Expense {
     return self::$_databaseCriteria; 
   }
   
+  /**=========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
+   */
+  public function save() {
+    $this->realFullAmount=$this->realAmount*(1+$this->taxPct/100);
+    $this->plannedFullAmount=$this->plannedAmount*(1+$this->taxPct/100);
+    return parent::save(); 
+  }
 
 }
 ?>
