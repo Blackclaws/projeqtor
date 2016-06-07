@@ -82,6 +82,7 @@ class IndividualExpenseMain extends Expense {
                                   "week"=>"hidden",
                                   "month"=>"hidden",
                                   "year"=>"hidden",
+                                  "idle"=>"nobr",
                                   "cancelled"=>"nobr"
   );  
   
