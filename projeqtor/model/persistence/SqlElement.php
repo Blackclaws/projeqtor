@@ -220,6 +220,7 @@ abstract class SqlElement {
                                   "Ticket"=>"control",
                                   "VersionProject"=>"cascade",
                                   "Work"=>"control"),
+    "Provider" =>           array("ProjectExpense"=>"controlStrict"),
     "Quality" =>            array("Project"=> "controlStrict"),
     "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"controlStrict"),
@@ -234,6 +235,7 @@ abstract class SqlElement {
                                   "Link"=>"cascade",
                                   "Note"=>"cascade",
                                   "Requirement"=>"control"),
+    "Resolution" =>         array("Ticket"=>"controlStrict"),
     "Resource" =>           array("Action"=>"controlStrict", 
                                   "Activity"=>"controlStrict",
                                   "Affectation"=>"control",
@@ -777,6 +779,9 @@ abstract class SqlElement {
 			}
 		}
 		if (Sql::isPgsql()) {$queryColumns=strtolower($queryColumns);}
+		if (property_exists($this, 'lastUpdateDateTime')) { // Initialize lastUpdateDateTime (for tickets)
+		  $this->lastUpdateDateTime=date('Y-m-d H:i:s');
+		}
 		// get all data
 		foreach($this as $col_name => $col_value) {
 			$attribute= $this->getFieldAttributes($col_name);
@@ -1009,6 +1014,11 @@ abstract class SqlElement {
 					}
 				}
 			}
+		}
+		if ($nbChanged>0 and property_exists($this, 'lastUpdateDateTime')) {
+		  $insertableColName= $this->getDatabaseColumnName('lastUpdateDateTime');
+		  if (Sql::isPgsql()) {$insertableColName=strtolower($insertableColName);}
+		  $query .= ', '.$insertableColName. '=' . Sql::str(date('Y-m-d H:i:s')) .' ';
 		}
 		$query .= ' where id=' . $this->id;
 		// If changed, execute the query

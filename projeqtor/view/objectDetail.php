@@ -958,7 +958,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($val != '0' and !$val == null) {
             $checkImg='checkedOK.png';
           }
-          if ($col=='cancelled') echo "&nbsp;&nbsp;&nbsp;";
+          if ($col=='cancelled' or $col=='solved') echo "&nbsp;&nbsp;&nbsp;";
           echo '<img src="img/' . $checkImg . '" />';
         } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) { // Idxxx
           echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));
@@ -1271,7 +1271,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $colScript;
         echo '</div>';
       } else if ($dataType == 'int' and $dataLength == 1) {
-        if ($col=='cancelled') echo "&nbsp;&nbsp;&nbsp;";
+        if ($col=='cancelled' or $col=='solved') echo "&nbsp;&nbsp;&nbsp;";
         // Draw a boolean (as a checkbox ====================================== BOOLEAN
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;

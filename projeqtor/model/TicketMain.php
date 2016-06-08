@@ -41,6 +41,7 @@ class TicketMain extends SqlElement {
   public $externalReference;
   public $idUrgency;
   public $creationDateTime;
+  public $lastUpdateDateTime;
   public $idUser;
   public $idContact;
   public $Origin;
@@ -58,6 +59,7 @@ class TicketMain extends SqlElement {
   public $_sec_treatment;
   public $idActivity;
   public $idStatus;
+  public $idResolution;
   public $idResource;
   public $idCriticality;
   public $idPriority;
@@ -69,6 +71,8 @@ class TicketMain extends SqlElement {
   public $handledDateTime;
   public $done;
   public $doneDateTime;
+  public $solved;
+  public $_lib_colSolved;
   public $idle;
   public $idleDateTime;
   public $cancelled;
@@ -108,6 +112,7 @@ class TicketMain extends SqlElement {
                                   "idTicketType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
+                                  "lastUpdateDateTime"=>"hidden",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
@@ -115,7 +120,9 @@ class TicketMain extends SqlElement {
                                   "cancelled"=>"nobr",
                                   "idContext1"=>"nobr,size1/3,title",
                                   "idContext2"=>"nobr,title", 
-                                  "idContext3"=>"title"
+                                  "idContext3"=>"title",
+                                  "doneDateTime"=>"nobr",
+                                  "solved"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 

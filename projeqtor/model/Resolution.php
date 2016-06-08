@@ -25,54 +25,32 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * RiskType defines the type of a risk.
+ * Resolution defines how solution is provided to a Ticket.
  */ 
 require_once('_securityCheck.php');
-class TicketType extends Type {
+class Resolution extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place
+  public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $code;
-  public $idWorkflow;
+  public $solved;
+  public $color;
   public $sortOrder=0;
   public $idle;
-  public $description;
-  public $_sec_Behavior;
-  public $mandatoryDescription;
-  public $_lib_mandatoryField;
-  public $mandatoryResourceOnHandled;
-  public $_lib_mandatoryOnHandledStatus;
-  public $mandatoryResultOnDone;
-  public $_lib_mandatoryOnDoneStatus;
-  public $mandatoryResolutionOnDone;
-  public $_lib_mandatoryResolutionOnDoneStatus;
-  public $lockHandled;
-  public $_lib_statusMustChangeHandled;
-  public $lockDone;
-  public $_lib_statusMustChangeDone;
-  public $lockIdle;
-  public $_lib_statusMustChangeIdle;
-  public $lockCancelled;
-  public $_lib_statusMustChangeCancelled;
-  public $showInFlash;
-  public $internalData;
-  // Define the layout that will be used for lists
-  private static $_fieldsAttributes=array("name"=>"required",
-      "idWorkflow"=>"required",
-      "mandatoryDescription"=>"nobr",
-      "mandatoryResourceOnHandled"=>"nobr",
-      "mandatoryResultOnDone"=>"nobr",
-      "mandatoryResolutionOnDone"=>"nobr",
-      "lockHandled"=>"nobr",
-      "lockDone"=>"nobr",
-      "lockIdle"=>"nobr",
-      "lockCancelled"=>"nobr",
-      "internalData"=>"hidden",
-      "showInFlash"=>"hidden");
-  private static $_databaseCriteria = array('scope'=>'Ticket');
+  public $_sec_void;
   
+  // Define the layout that will be used for lists
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
+    <th field="name" width="50%">${name}</th>
+    <th field="solved" width="10%" formatter="booleanFormatter">${solved}</th>
+    <th field="color" width="15%" formatter="colorFormatter">${color}</th>
+    <th field="sortOrder" width="10%">${sortOrderShort}</th>  
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
+
+  private static $_fieldsAttributes=array("name"=>"required");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -94,15 +72,6 @@ class TicketType extends Type {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
-  
-
-  /** ========================================================================
-   * Return the specific database criteria
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseCriteria() {
-    return self::$_databaseCriteria;
-  }
   /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
@@ -110,5 +79,13 @@ class TicketType extends Type {
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
+  
 }
 ?>
