@@ -69,6 +69,12 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
         id="displayModeCkeckboxSelect" value="select" onClick="changeProjectSelectorType('select');" />
         </td><td>
         <label class="display" style="background-color: white" for="displayModeCkeckboxSelect"><?php echo i18n("displayModeSelect")?></label>
+        </td></tr><tr><td>
+	    <input type="radio" data-dojo-type="dijit/form/RadioButton" name="displayModeCkeckbox" 
+	     <?php echo ($displayMode=='search')?'checked':'';?> 
+        id="displayModeCkeckboxSearch" value="select" onClick="changeProjectSelectorType('search');" />
+        </td><td>
+        <label class="display" style="background-color: white" for="displayModeCkeckboxSearch"><?php echo i18n("displayModeSearch")?></label>
         </td></tr></table>
     </td>
   </tr>
