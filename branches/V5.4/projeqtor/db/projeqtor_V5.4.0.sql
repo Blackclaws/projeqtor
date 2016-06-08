@@ -10,6 +10,9 @@ CHANGE `newDailyCost` `newDailyCost` DECIMAL(9,2) UNSIGNED;
 
 ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
 
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(147,'menuDashboardTicket', 0, 'item', 15, NULL, 0, 'Work Risk RequirementTest Financial Meeting ');
+
 ALTER TABLE `${prefix}expense` ADD `idDocument` int(12) unsigned;
 ALTER TABLE `${prefix}filter` ADD `isShared` int(1) unsigned;
 
