@@ -124,6 +124,17 @@ class WorkElementMain extends SqlElement {
 	}
 	
 	public function save($noDispatch=false) {
+	  if (!$this->id) { // No WorkElement retreived
+	    $topObject=new $this->refType($this->refId,true);
+	    $profile=getSessionUser()->getProfile($topObject);
+	    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'work'));
+	    if ($hWork and $hWork->id) {
+	      $visibility=SqlList::getFieldFromId('VisibilityScope', $hWork->rightAccess, 'accessCode', false);
+	      if ($visibility != 'ALL') {
+	        return "OK";
+	      }
+	    }
+	  }
     $old = $this->getOld ();
 		$ass=null;
 		if (! sessionUserExists()) return parent::save ();
