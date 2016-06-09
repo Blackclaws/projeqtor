@@ -919,7 +919,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $mail->mailDateTime = date ( 'Y-m-d H:i' );
   $mail->mailTo = $to;
   $mail->mailTitle = $title;
-  $mail->mailBody = $message;
+  //$mail->mailBody = $message;
   $mail->mailStatus = 'WAIT';
   $mail->idle = '0';
   $resMail = $mail->save ();
@@ -974,46 +974,13 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer->WordWrap = 70; // Set word wrap to 70 characters
   $phpmailer->isHTML ( true ); // Set email format to HTML
   $phpmailer->Subject = $title; //
-  $phpmailer->Body = $message; //
                                // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
   if ($headers) {
+    $phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+    $phpmailer->Body = " "; //
     $heads = explode ( "\r\n", $headers );
-    foreach ( $heads as $head ) {
-      if (strtolower ( substr ( $head, 0, 13 ) ) == 'content-type:') {
-        $ct = substr ( $head, 13 );
-        $ct = str_replace ( array (
-            ' ',
-            ':' 
-        ), array (
-            '',
-            '' 
-        ), $ct );
-        $phpmailer->ContentType = $ct;
-      } else if (strtolower ( substr ( $head, 0, 5 ) ) == 'from:' or strtolower ( substr ( $head, 0, 9 ) ) == 'reply-to:') {
-        // From & Reply-To
-      } else if (strtolower ( substr ( $head, 0, 26 ) ) == 'content-transfer-encoding:') {
-        $cte = substr ( $head, 26 );
-        $cte = str_replace ( array (
-            ' ',
-            ';',
-            ':' 
-        ), array (
-            '',
-            '',
-            '' 
-        ), $cte );
-        $phpmailer->Encoding = $cte;
-      } else if (strtolower ( substr ( $head, 0, 9 ) ) == 'x-mailer:') {
-        // X-Mailee
-      } else if (strtolower ( substr ( $head, 0, 13 ) ) == 'mime-version:') {
-        // MIME-Version
-      } else {
-        $phpmailer->addCustomHeader ( $head );
-      }
-    }
-    $phpmailer->isHTML ( false ); // Header is used only for vCalendar mails
-    $phpmailer->ContentType = "text/Calendar";
-    // $phpmailer->Encoding="7bit";
+  }else{
+  $phpmailer->Body = $message; //
   }
   $phpmailer->CharSet = "UTF-8";
   if ($attachmentsArray) { // attachments
@@ -2755,4 +2722,7 @@ function decodeCSV($val) {
   return utf8_encode($val);
 }
 //
+
+
+
 ?>
