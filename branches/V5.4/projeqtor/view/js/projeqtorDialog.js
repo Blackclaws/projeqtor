@@ -4762,6 +4762,8 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("objectMain.php?objectClass=CalendarDefinition", "centerDiv");
   } else if (item == 'Gallery') {
     loadContent("galleryMain.php", "centerDiv");
+  } else if (item == 'DashboardTicket') {
+    loadContent("dashboardTicketMain.php", "centerDiv");
   } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
     loadMenuBarPlugin(item, itemName, from);
   } else {  
@@ -5584,8 +5586,15 @@ function deleteMultipleUpdateMode(objectClass) {
     });
   }
   actionOK=function() {
-    loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
-        'resultDivMultiple', 'objectFormMultiple');
+    actionOK2=function() {
+      console.log(dijit.byId('deleteMultipleResultDiv').get('content'));
+      showConfirm(dijit.byId('deleteMultipleResultDiv').get('content'), function(){loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
+          'resultDivMultiple', 'objectFormMultiple');});
+    };
+    setTimeout(function(){
+      loadContent('../tool/deleteObjectMultipleControl.php?objectClass=' + objectClass,
+          'deleteMultipleResultDiv', 'objectFormMultiple',null,null,null,null,actionOK2);
+    },200);
   };
   msg=i18n('confirmDeleteMultiple', new Array(i18n('menu' + objectClass),
       items.length));
@@ -6457,12 +6466,12 @@ function planningToCanvasToPDF(){
   var nbRowTotal=0;
   var nbColTotal=0;
   // init max width/height by orientation
-  var maxWidth=(511-marge)*1.25;
+  var maxWidth=(540-marge)*1.25;
   var maxHeight=(737-marge)*1.25;
   if(orientation=="landscape"){
     inter=maxWidth;
-    maxWidth=maxHeight;
-    maxHeight=inter;
+    maxWidth=(747-marge)*1.25;
+    maxHeight=(450-marge)*1.25;
   }
   
   //We create an iframe will which contain the planning to transform it in image
@@ -6561,6 +6570,7 @@ function planningToCanvasToPDF(){
             rightElement=cropCanvas(rightElement,0,0,rightElement.width,rightElement.height,ratio);
             rightColumn=cropCanvas(rightColumn,0,0,rightColumn.width,rightColumn.height,ratio);
           }
+          console.log(rightElement.toDataURL());
           //Init number of total rows
           nbRowTotal=Math.round(leftElement.height/heightRow); 
           //frameContent.parentNode.removeChild(frameContent);
@@ -6834,4 +6844,77 @@ function combineCanvasIntoOne(canvas1,canvas2,addBottom){
   if(canvas1.width!=0 && canvas1.height!=0)tCtx.drawImage(canvas1,0,0,canvas1.width,canvas1.height);
   if(canvas1.width!=0 && canvas1.height!=0)if(canvas2.width!=0 && canvas2.height!=0)tCtx.drawImage(canvas2,0,0,canvas2.width,canvas2.height,x,y,canvas2.width,canvas2.height);
   return tempCanvas;
+}
+
+function changeParamDashboardTicket(paramToSend){
+  loadContent('dashboardTicketMain.php?'+paramToSend, 'centerDiv', 'dashboardTicketMainForm');
+}
+
+function changeDashboardTicketMainTabPos(){
+  var listChild=dojo.byId('dndDashboardLeftParameters').childNodes[1].childNodes;
+  addLeft="";
+  iddleList=',"iddleList":[';
+  if(listChild.length>1){
+    addLeft="[";
+    for(var i=1;i<listChild.length;i++){
+      getId="";
+      if(listChild[i].id.includes('dialogDashboardLeftParametersRow')){
+        getId=listChild[i].id.split('dialogDashboardLeftParametersRow')[1];
+      }
+      if(listChild[i].id.includes('dialogDashboardRightParametersRow')){
+        getId=listChild[i].id.split('dialogDashboardRightParametersRow')[1];
+      }
+      //iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
+      if(getId!=""){
+        addLeft+='"'+getId+'"';
+        iddleList+='{"name":"'+getId+'","idle":'+dijit.byId('tableauBordTabIdle'+getId).get('checked')+'}';
+        if(i+1!=listChild.length){
+          addLeft+=',';
+          iddleList+=',';
+        } 
+      }
+    }
+    addLeft+="]";
+    if(dojo.byId('dndDashboardRightParameters').childNodes[0].childNodes.length>1){
+      iddleList+=',';
+    }
+  }
+  
+  var listChild=dojo.byId('dndDashboardRightParameters').childNodes[0].childNodes;
+  addRight="";
+  if(listChild.length>1){
+    addRight="[";
+    for(var i=1;i<listChild.length;i++){
+      getId="";
+        if(listChild[i].id.includes('dialogDashboardLeftParametersRow')){
+          getId=listChild[i].id.split('dialogDashboardLeftParametersRow')[1];
+        }
+        if(listChild[i].id.includes('dialogDashboardRightParametersRow')){
+          getId=listChild[i].id.split('dialogDashboardRightParametersRow')[1];
+        }
+        //iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
+        if(getId!=""){
+          addRight+='"'+getId+'"';
+          iddleList+='{"name":"'+getId+'","idle":'+dijit.byId('tableauBordTabIdle'+getId).get('checked')+'}';
+          if(i+1!=listChild.length){
+            addRight+=',';
+            iddleList+=',';
+          }
+        }
+      }
+    addRight+="]";
+  }
+  toSend='{"addLeft":';
+  if(addLeft==""){
+    addLeft="[]";
+  }
+  toSend+=addLeft;
+  
+  toSend+=',"addRight":';
+  if(addRight==""){
+    addRight="[]";
+  }
+  iddleList+="]";
+  toSend+=addRight+iddleList+"}";
+  loadContent('dashboardTicketMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardTicketMainForm');
 }
