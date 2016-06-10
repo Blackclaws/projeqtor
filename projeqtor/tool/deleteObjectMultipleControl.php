@@ -52,54 +52,44 @@ $cptOk=0;
 $cptError=0;
 $cptWarning=0;
 $cptNoChange=0;
-echo "<table>";
-SqlElement::setDeleteConfirmed();
+$first=true;
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
 	Security::checkValidId($id);
-	Sql::beginTransaction();
-	echo '<tr>';
-	echo '<td valign="top"><b>#'.$id.'&nbsp:&nbsp;</b></td>';
 
 	$item=new $className($id);
 	if (property_exists($item, 'locked') and $item->locked) {
 		Sql::rollbackTransaction();
     $cptWarning++;
-    echo '<td><span class="messageWARNING" >' .i18n($className). " #" . htmlEncode($item->id) . ' '.i18n('colLocked'). '</span></td>';
+    echo '<span class="messageWARNING" >' .i18n($className). " #" . htmlEncode($item->id) . ' '.i18n('colLocked'). '</span>';
 		continue;
 	}
-  $resultSave=$item->delete();
-	$resultSave=str_replace('<br/><br/>','<br/>',$resultSave);
-	$statusSave = getLastOperationStatus ( $resultSave );
-	if ($statusSave=="ERROR" ) {
-	  Sql::rollbackTransaction();
-	  $cptError++;
-	} else if ($statusSave=="OK") {
-	  Sql::commitTransaction();
-	  $cptOk++;
-	} else if ($statusSave=="NO_CHANGE") {
-	  Sql::commitTransaction();
-	  $cptNoChange++;
-	} else { 
-	  Sql::rollbackTransaction();
-	  $cptWarning++;
-  }
-  echo '<td><div style="padding: 0px 5px;" class="message'.$statusSave.'" >' . $resultSave . '</div></td>';
-  echo '</tr>';
+  $control=$item->deleteControl();
+	if ( ($control=='OK' or strpos($control,'id="confirmControl" value="delete"')>0 )
+	and property_exists($className, $className.'PlanningElement')) {
+	  $pe=$className.'PlanningElement';
+	  $controlPe=$item->$pe->deleteControl();
+	  if ($controlPe!='OK') {
+	    $control=$controlPe;
+	  }
+	}
+	
+	if ($control!="OK") {
+	  // errors on control => don't save, display error message
+	  if ( strpos($control,'id="confirmControl" value="delete"')>0 ) {
+	    $returnValue='<b>' . i18n('messageConfirmationNeeded') . '</b><br/>' . $control;
+	    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="CONFIRM" />';
+	    if($first){
+	      echo '<div style="height:250px;overflow:auto;border:1px solid #999;background-color:#f0f0f0;">';
+	      echo str_replace(i18n("confirmControlDelete"), i18n("confirmControlDelete").":<br><b>".$item->name."</b>",$returnValue); 
+	    }else{
+	      echo str_replace(i18n("confirmControlDelete"), "<b>".$item->name."</b>", str_replace("<b>".i18n("messageConfirmationNeeded")."</b>", "", $returnValue));
+	    }
+	    $first=false;
+	  }
+	}
+}	    
+if($first){
+  echo '</div>';
 }
-echo "</table>";
-$summary="";
-if ($cptError) {
-  $summary.='<div class=\'messageERROR\' >' . $cptError." ".i18n('resultError') . '</div>';
-}
-if ($cptOk) {
-  $summary.='<div class=\'messageOK\' >' . $cptOk." ".i18n('resultOk') . '</div>';
-}
-if ($cptWarning) {
-  $summary.='<div class=\'messageWARNING\' >' . $cptWarning." ".i18n('resultWarning') . '</div>';
-}
-if ($cptNoChange) {
-  $summary.='<div class=\'messageNO_CHANGE\' >' . $cptNoChange." ".i18n('resultNoChange') . '</div>';
-}
-echo '<input type="hidden" id="summaryResult" value="'.$summary.'" />';
 ?>
