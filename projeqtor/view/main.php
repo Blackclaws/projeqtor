@@ -2229,5 +2229,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <input type="hidden" id="outMode" name="outMode" value='html' />
   <input type="hidden" id="reportName" name="reportName" value="test" />
 </form>
+<div id="deleteMultipleResultDiv" dojoType="dijit.layout.ContentPane" region="none" >
+</div>
 </body>
 </html>
