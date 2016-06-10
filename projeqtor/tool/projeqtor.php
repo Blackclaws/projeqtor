@@ -2635,6 +2635,7 @@ function getLastOperationStatus($result) {
     case "NO_CHANGE" :
     case "INCOMPLETE" :
     case "WARNING" : 
+    case "CONFIRM" : 
       break; // OK, valid status
     default :
       errorLog ( "'$status' is not an expected status in result \n$result" );
