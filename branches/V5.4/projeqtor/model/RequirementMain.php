@@ -70,10 +70,6 @@ class RequirementMain extends SqlElement {
   public $locked;
   public $idLocker;
   public $lockedDate;
-  public $_sec_predecessor;
-  public $_Dependency_Predecessor=array();
-  public $_sec_successor;
-  public $_Dependency_Successor=array();
   public $_sec_testCaseSummary;
   public $_tab_5_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'workElementCount','');
   public $countTotal;
@@ -94,6 +90,10 @@ class RequirementMain extends SqlElement {
   public $_void_6;
   public $countIssues;
   public $countLinked;
+  public $_sec_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_sec_successor;
+  public $_Dependency_Successor=array();
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();

@@ -309,6 +309,29 @@ public $_noCopy;
     return $result;
   }
   
+  /** =========================================================================
+   * Overrides SqlElement::deleteControl() function to add specific treatments
+   * @see persistence/SqlElement#deleteControl()
+   * @return the return message of persistence/SqlElement#deleteControl() method
+   */
+  
+  public function deleteControl()
+  {
+    $result="";
+     
+    // If try to delete own affectation (for project leader for instance), require confirmation
+    if ($this->idResource==getSessionUser()->id and ! isset($_REQUEST['confirmed']) ) {
+      $result.='<br/>' . i18n('confirmDeleteOwnAffectation');
+      $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="delete" />';
+    } 
+
+     
+    if (! $result) {
+      $result=parent::deleteControl();
+    }
+    return $result;
+  }
+  
   public function delete() {
     $result = parent::delete();
     User::resetAllVisibleProjects(null,$this->idUser);

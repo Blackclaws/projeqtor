@@ -813,6 +813,7 @@ confirmDeleteLink: "Удалить ссылку с элемента ${1} #${2} ?
 confirmDeleteMultiple: "Удалить ${2} выбранные ${1}",
 confirmDeleteOrigin: "Удалить источник ${1} #${2} ?",
 confirmDeleteOtherVersion: "Удалить ${2} '${1}' ?",
+confirmDeleteOwnAffectation: "[You are about to delete your own affectation to the project.<br>You may loose visibility to the project and its item.<br>Please confirm it is what you want to do.]",
 confirmDeletePluginFile: "[confirm delete plugin file '${1}']",
 confirmDeleteResourceCost: "Удалить стоимость ресурсов для функции ${1} ?",
 confirmDeleteTestCaseRun: "Удалить тест #${1} для сессии ?",
