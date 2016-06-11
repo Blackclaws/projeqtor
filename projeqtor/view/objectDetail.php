@@ -3459,7 +3459,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
                $aff->startDate . "'" . ",'" . htmlEncode($aff->endDate) . "'" . ',' . htmlEncode($aff->idProfile) . ');" ' . 'title="' . i18n('editAffectation') . '" class="roundedButtonSmall"/> ';
         }
         if ($canDelete and !$print) {
-          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . htmlEncode($aff->id) . "'" . ');" ' . 'title="' . i18n('removeAffectation') . '" class="roundedButtonSmall"/> ';
+          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . htmlEncode($aff->id) . "'" . ','.(($aff->idResource==getSessionUser()->id)?'1':'0').');" ' . 'title="' . i18n('removeAffectation') . '" class="roundedButtonSmall"/> ';
         }
         if ($canUpdate and !$print and $isResource) {
           echo '  <img src="css/images/smallButtonSwitch.png" ' . 'onClick="replaceAffectation(' . "'" . htmlEncode($aff->id) . "'" . ",'" . get_class($obj) . "'" . ",'" . $type . "'" . ",'" . htmlEncode($aff->idResource) . "'" . ",'" . htmlEncode($aff->idProject) . "'" . ",'" . htmlEncode($aff->rate) . "'" . ",'" . htmlEncode($aff->idle) . "'" . ",'" .

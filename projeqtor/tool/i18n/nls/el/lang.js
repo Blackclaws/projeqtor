@@ -813,6 +813,7 @@ confirmDeleteLink: "Διαγραφή του συνδέσμου με το στο�
 confirmDeleteMultiple: "Διαγραφή της επιλογής ${2} ${1} ?",
 confirmDeleteOrigin: "Διαγραφή της προέλευσης ${1} #${2} ?",
 confirmDeleteOtherVersion: "Αφαίρεση ${2} '${1}' ?",
+confirmDeleteOwnAffectation: "[You are about to delete your own affectation to the project.<br>You may loose visibility to the project and its item.<br>Please confirm it is what you want to do.]",
 confirmDeletePluginFile: "[confirm delete plugin file '${1}']",
 confirmDeleteResourceCost: "Delete the Resource cost for function ${1} ?",
 confirmDeleteTestCaseRun: "Remove the test case #${1} from session ?",

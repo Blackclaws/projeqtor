@@ -3895,7 +3895,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
   setTimeout("affectationLoad=false", 500);
 }
 
-function removeAffectation(id) {
+function removeAffectation(id,own) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
@@ -3903,10 +3903,14 @@ function removeAffectation(id) {
   dojo.byId("affectationId").value=id;
   dojo.byId("affectationIdTeam").value="";
   actionOK=function() {
-    loadContent("../tool/removeAffectation.php", "resultDiv",
+    loadContent("../tool/removeAffectation.php?confirmed=true", "resultDiv",
         "affectationForm", true, 'affectation');
   };
-  msg=i18n('confirmDeleteAffectation', new Array(id));
+  if (own) {
+    msg=i18n('confirmDeleteOwnAffectation', new Array(id));
+  } else {
+    msg=i18n('confirmDeleteAffectation', new Array(id));
+  }
   showConfirm(msg, actionOK);
 }
 

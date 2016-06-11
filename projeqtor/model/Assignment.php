@@ -243,6 +243,11 @@ class Assignment extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
+    // Delete planned work for the assignment
+    $pw=new PlannedWork();
+    $pwList=$pw->purge('idAssignment='.Sql::fmtId($this->id));
+    
+    // Update planning elements
     PlanningElement::updateSynthesis($this->refType, $this->refId);
     
     // Dispatch value

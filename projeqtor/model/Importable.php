@@ -518,7 +518,7 @@ class Importable extends SqlElement {
 			//$line = str_replace(chr(146) , "'", $line); // replace Word special quote
 			if (! mb_detect_encoding($line, 'UTF-8', true) ) {
 				//$line=utf8_encode($line);
-			  $line=iconv('windows-1252','UTF-8//TRANSLIT',$line);
+			  $line=iconv('CP1252','UTF-8//TRANSLIT',$line);
 			}
 			if(!$title){
 				if (function_exists('str_getcsv')) {
