@@ -286,21 +286,21 @@ foreach($arrDates as $date){
 }
 $dataSet->AddPoint($arrLabel,"dates");  
 $dataSet->SetAbsciseLabelSerie("dates");   
-$width=700;
-$graph = new pChart($width,260);  
+$width=900;
+$graph = new pChart($width,360);  
 for ($i=0;$i<=$nbItem;$i++) {
   $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
 }
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawRoundedRectangle(5,5,$width-5,258,5,230,230,230);  
-$graph->setGraphArea(40,30,$width-200,200);  
+$graph->drawRoundedRectangle(5,5,$width-5,358,5,230,230,230);  
+$graph->setGraphArea(40,30,$width-300,300);  
 $graph->drawGraphArea(252,252,252);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
 $graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(), SCALE_ADDALLSTART0 ,0,0,0,TRUE,90,1, true);  
 $graph->drawGrid(5,TRUE,230,230,230,255);  
 $graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),TRUE);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-$graph->drawLegend($width-150,35,$dataSet->GetDataDescription(),240,240,240);  
+$graph->drawLegend($width-250,15,$dataSet->GetDataDescription(),240,240,240);  
 
 $graph->clearScale();
 $serie=0;  
