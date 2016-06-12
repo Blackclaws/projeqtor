@@ -264,6 +264,10 @@ function numericFormatter(value) {
   return result;
 }
 
+function durationFormatter(value) {
+  return value+' '+i18n('shortDay');
+}
+
 var hiddenField='<span style="color:#AAAAAA">(...)</span>';
 function workFormatter(value) {
   if (value == null) return null;

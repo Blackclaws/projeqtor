@@ -260,7 +260,9 @@ class ColumnSelector extends SqlElement {
 				} else if (strtolower(substr($col,-4))=='work') {
 					 $cs->formatter="workFormatter";
 				} else if (strtolower(substr($col,-4))=='cost' or strtolower(substr($col,-6))=='amount') {
-           $cs->formatter="costFormatter";	 
+           $cs->formatter="costFormatter";	
+				} else if (strtolower(substr($col,-8))=='duration') {
+				  $cs->formatter="durationFormatter";
 				} else {
 				  $cs->formatter="numericFormatter";
 				}

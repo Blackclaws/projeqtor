@@ -1504,6 +1504,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
+        echo ' selectOnClick="true" scrollOnFocus="true"';
         echo $name;
         echo $attributes;
         echo $valStore;
