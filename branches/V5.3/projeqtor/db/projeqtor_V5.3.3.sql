@@ -5,8 +5,8 @@
 -- // Date : 2016-04-26                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}attachment` CHANGE `fileName` `fileName` VARCHAR(1024) DEFAULT NULL, 
-CHANGE `link` `link` VARCHAR(1024) DEFAULT NULL;
+ALTER TABLE `${prefix}attachment` CHANGE `fileName` `fileName` VARCHAR(1024), 
+CHANGE `link` `link` VARCHAR(1024);
 
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
 
