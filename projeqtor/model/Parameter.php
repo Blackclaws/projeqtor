@@ -683,7 +683,11 @@ class Parameter extends SqlElement {
     } 
     $p=new Parameter();
     $user=getSessionUser();
-    $crit=" idUser ='" . $user->id . "' and idProject is null and parameterCode='" . $code . "'";
+    if ($user->id) {
+      $crit=" idUser =" . Sql::fmtId($user->id) . " and idProject is null and parameterCode='" . $code . "'";
+    } else {
+      $crit=" idUser is null and idProject is null and parameterCode='" . $code . "'";
+    }  
     $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
     $val='';
     if (count($lst)==1) {

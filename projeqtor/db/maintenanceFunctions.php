@@ -92,6 +92,8 @@ function runScript($vers,$pluginSqlFile=null) {
               $action="INSERT INTO";
             } else if (substr($query,0,6)=='UPDATE') {
               $action="UPDATE";
+            } else if (substr($query,0,10)=='DROP INDEX' or (substr($query,0,11)=='ALTER TABLE' and stripos($query, 'DROP INDEX')>0)) {
+              $action="DROP INDEX";
             } else if (substr($query,0,11)=='ALTER TABLE') {
               $action="ALTER TABLE";
             } else if (substr($query,0,10)=='DROP TABLE') {
@@ -103,7 +105,7 @@ function runScript($vers,$pluginSqlFile=null) {
             } else if (substr($query,0,12)=='CREATE INDEX' or substr($query,0,19)=='CREATE UNIQUE INDEX') {
               $action="CREATE INDEX";
             }
-            $deb=strlen($action);
+            $deb=strlen($action)+stripos($query, $action);            
             $end=strpos($query,' ', $deb+1);
             $len=$end-$deb;
             $tableName=substr($query, $deb, $len );
@@ -167,6 +169,9 @@ function runScript($vers,$pluginSqlFile=null) {
                 break;              
               case "CREATE INDEX" :
                 traceLog(" Index \"" . $tableName . "\" created."); 
+                break;
+              case "DROP INDEX" :
+                traceLog(" Index \"" . $tableName . "\" dropped."); 
                 break;
               default:
                 traceLog("ACTION '$action' NOT EXPECTED FOR QUERY : " . $query);
@@ -302,9 +307,13 @@ function formatForDbType($query) {
   }
   $from=array();
   $to=array();
+  if (stripos($query,'ADD INDEX')) {
+    errorLog("'ADD INDEX' on an 'ALTER TABLE' instruction should not be used as it is non ANSI standard. Use 'CREATE INDEX' instead");
+    return '';
+  }
   if ($dbType=='pgsql') {
-    if (stripos($query,'ADD INDEX')) {
-      return '';
+    if (stripos($query,'DROP INDEX')) {
+      return substr($query,stripos($query,'DROP INDEX'));
     }
     $from[]='  ';                                         $to[]=' ';
     $from[]='`';                                          $to[]='';
