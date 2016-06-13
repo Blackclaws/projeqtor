@@ -1807,6 +1807,8 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           refreshJsonList(dojo.byId('objectClass').value);
         } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Today') {
           loadContent("../view/today.php", "centerDiv");  
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='DashboardTicket') {
+          loadContent("../view/dashboardTicketMain.php", "centerDiv");  
         }
       }
     });
