@@ -2901,3 +2901,54 @@ table.dijitCalendarContainer {
 .loginButton {
 	width: 200px;
 }
+
+.dashboardTicketMain{
+	margin-top:10px;
+}
+
+.dashboardTicketMain td{
+	text-decoration: none;
+	font-size: 14px;
+	line-height: 20px;
+	cursor: auto;
+}
+
+.dashboardTicketMain a{
+  color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+}
+
+.tabDashboardTicketMain a{
+  color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+}
+
+.tabDashboardTicketMain tr{
+	border-bottom:1px solid #CCC;
+}
+
+.tabDashboardTicketMain td{
+	padding:7px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.titleTabTicket{
+	font-weight: bold;
+	color:#333333;
+}
+
+.styleADashboard{
+	color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+  font-weight: bold;
+}
