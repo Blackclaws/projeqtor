@@ -3255,8 +3255,7 @@ function filterSelectOperator(operator) {
 function addfilterClause(silent) {
   filterStartInput=false;
   if (top.dijit.byId('filterNameDisplay')) {
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
-        'value');
+    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
   }
   if (filterType == "") {
     if (!silent)
@@ -3283,6 +3282,11 @@ function addfilterClause(silent) {
     if (!silent)
       showAlert(i18n('valueNotSelected'));
     return;
+  }
+  if (top.dijit.byId('idFilterAttribute').get('value')=='idle' 
+    && top.dijit.byId('idFilterOperator').get('value')=='='
+    && top.dijit.byId('filterValueCheckbox').get('checked')) {
+    top.dijit.byId('listShowIdle').set('checked',true);
   }
   // Add controls on operator and value
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';

@@ -243,6 +243,16 @@ if ($idFilterAttribute and $idFilterOperator) {
      exit;
   } 
   $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+  debugLog($idFilterAttribute." ".$filterValueCheckbox);
+  if ($idFilterAttribute=='idle' and $filterValueCheckbox) {
+    $arrayDisp["attribute"]=i18n('labelShowIdle');
+    $arrayDisp["operator"]="";
+    $arrayDisp["value"]="";
+    $arraySql["attribute"]='idle';
+    $arraySql["operator"]='>=';
+    $arraySql["value"]='0';
+    $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+  }
   if (! $comboDetail) {
     $user->_arrayFilters[$filterObjectClass]=$filterArray;
   } else {
