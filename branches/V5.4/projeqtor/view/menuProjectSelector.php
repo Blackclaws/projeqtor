@@ -86,7 +86,8 @@ if ($proj=='*') {
    <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
 </select>
 <?php } else if($displayMode=="search") {?>
-<select id="projectSelectorFiletering" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  name="projectSelectorFiletering" data-dojo-type="dijit/form/ComboBox"
+<select id="projectSelectorFiletering" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  
+name="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect"
     data-dojo-props="
         queryExpr: '*${0}*',
         autoComplete:false">
@@ -100,17 +101,6 @@ if ($proj=='*') {
 </select>
 
 <?php } else  {
-  /*<select dojoType="dijit.form.FilteringSelect" class="input"
-   style="position: absolute; left:75px; top:25px; width: 165px;"
-  name="projectSelectorFiletering" id="projectSelectorFiletering" data-dojo-props="autoComplete:false" >
-  <script type="dojo/connect" event="onChange" args="evt">
-  if (this.isValid()) {
-  setSelectedProject(this.value, this.displayedValue, null);
-  }
-  </script>
-  <option value="*"><i><?php echo i18n("allProjects");?></i></option>
-  <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
-  </select>*/
   ?>
 
 ERROR : Unknown display mode
