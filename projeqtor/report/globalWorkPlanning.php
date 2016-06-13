@@ -84,15 +84,15 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=getSessionUser();
-$queryWhere=getAccesRestrictionClause('Activity',false,false,true,true);
+$queryWhere=getAccesRestrictionClause('Activity','t1',false,true,true);
 
 if ($idProject!='') {
-  $queryWhere.=  " and idProject in " . getVisibleProjectsList(true, $idProject) ;
+  $queryWhere.=  " and t1.idProject in " . getVisibleProjectsList(true, $idProject) ;
 } else {
   //
 }
 // Remove Admin Projects : should not appear in Work Plan
-$queryWhere.= " and idProject not in " . Project::getAdminitrativeProjectList() ;
+$queryWhere.= " and t1.idProject not in " . Project::getAdminitrativeProjectList() ;
 
 if ($paramYear) {
 	$queryWhere.=  " and year=".Sql::str($paramYear);
@@ -114,8 +114,8 @@ if ($paramTeam) {
 	$queryWhere.= " and idResource in ".$inClause;
 }
 
-$querySelect= 'select sum(work) as sumWork, ' . $scale . ' as scale , idProject'; 
-$queryGroupBy = $scale . ', idProject';
+$querySelect= 'select sum(work) as sumWork, ' . $scale . ' as scale , t2.id as idproject '; 
+$queryGroupBy = $scale . ', t1.idProject';
 // constitute query and execute
 
 $tab=array();
@@ -126,9 +126,10 @@ for ($i=1;$i<=2;$i++) {
   $var=($i==1)?'real':'plan';
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName()
-     . ' where ' . $queryWhere
-     . ' group by ' . $queryGroupBy; 
+     . ' from ' . $obj->getDatabaseTableName().' t1, Project t2 '
+     . ' where ' . $queryWhere." and t1.idProject=t2.id "
+     . ' group by ' . $queryGroupBy
+     . ' order by t2.sortOrder asc '; 
   $result=Sql::query($query);
   while ($line = Sql::fetchLine($result)) {
   	$line=array_change_key_case($line,CASE_LOWER);
@@ -205,7 +206,6 @@ foreach ($arrDates as $date) {
   $arrSum[$date]=0;
 } 
 echo '</tr>';
-asort($tab);
 $sumProj=array();
 $sumProjUnit=array();
 foreach($tab as $proj=>$lists) {

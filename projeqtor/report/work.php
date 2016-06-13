@@ -147,7 +147,15 @@ echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('Reso
 echo '<td style="width:80%" colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
 echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
 echo '</tr><tr>';
+$newProject=array();
 foreach ($projects as $id=>$name) {
+  $newProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'-'.$id]=$name;
+}
+$projects=$newProject;
+ksort($projects);
+foreach ($projects as $id=>$name) {
+  $idExplo=explode('-',$id);
+  $id=$idExplo[1];
   echo '<td style="width:'.$colWidth.'%" class="reportTableColumnHeader">' . htmlEncode($name) . '</td>';
   $sumProj[$id]=0;  
 }
@@ -164,6 +172,8 @@ foreach ($resources as $idR=>$nameR) {
 		$sumRes=0;
 	  echo '<tr><td style="width:10%" class="reportTableLineHeader">' . htmlEncode($nameR) . '</td>';
 	  foreach ($projects as $idP=>$nameP) {
+      $idExplo=explode('-',$idP);
+      $idP=$idExplo[1];
 	    echo '<td style="width:' . $colWidth . '%" class="reportTableData">';
 	    if (array_key_exists($idR, $result)) {
 	      if (array_key_exists($idP, $result[$idR])) {
@@ -182,6 +192,8 @@ foreach ($resources as $idR=>$nameR) {
 }
 echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';
 foreach ($projects as $id=>$name) {
+  $idExplo=explode('-',$id);
+  $id=$idExplo[1];
   echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumProj[$id]) . '</td>';
 }
 echo '<td class="reportTableHeader">' . Work::displayWorkWithUnit($sum) . '</td></tr>';

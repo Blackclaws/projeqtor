@@ -113,6 +113,7 @@ foreach ($lstWork as $work) {
   	} else {
   		$obj=new Ticket();
   	}
+    $key=SqlList::getFieldFromId('Project', $obj->idProject, 'sortOrder').'-'.$refType . "#" . $refId;
     $activities[$key]=$obj->name;
     $description[$key]=$obj->description;
     if ($refType=='Project') {
@@ -134,7 +135,7 @@ foreach ($lstWork as $work) {
   } 
   $result[$work->idResource][$key]+=$work->work;
 }
-
+ksort($activities);
 if (checkNoData($result)) exit;
 
 // title
