@@ -64,11 +64,10 @@ class ContactMain extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="20%">${realName}</th>
+    <th field="name" width="30%">${realName}</th>
     <th field="photo" formatter="thumb32" width="5%">${photo}</th>
     <th field="initials" width="5%">${initials}</th>  
     <th field="nameClient" width="15%">${client}</th>
-    <th field="nameRecipient" width="10%">${recipient}</th> 
     <th field="nameProfile" width="10%" formatter="translateFormatter">${idProfile}</th>
     <th field="userName" width="15%">${userName}</th>
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>

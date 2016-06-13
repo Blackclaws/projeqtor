@@ -62,6 +62,16 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 	}
 }
 $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
+  if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
+    $arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
+    foreach ($arrayFilter as $filter) {
+      if ($filter['sql']['attribute']=='idle' and $filter['sql']['operator']=='>=' and $filter['sql']['value']=='0') {
+        $showIdle=1;
+      }
+    }
+  }
+} 
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
