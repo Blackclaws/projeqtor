@@ -20,13 +20,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (4, 150, 1),
 (5, 150, 0),
 (6, 150, 0),
-(7, 150, 0),
-(1, 150, 1),
-(2, 150, 1),
-(3, 150, 1),
-(4, 150, 1),
-(5, 150, 0),
-(6, 150, 0),
 (7, 150, 0);
 
 ALTER TABLE `${prefix}expense` ADD COLUMN `idDocument` int(12) unsigned;
