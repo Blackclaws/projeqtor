@@ -11,7 +11,23 @@ CHANGE `newDailyCost` `newDailyCost` DECIMAL(9,2) UNSIGNED;
 ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
 
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
-(147,'menuDashboardTicket', 0, 'item', 15, NULL, 0, 'Work Risk RequirementTest Financial Meeting ');
+(150,'menuDashboardTicket', 0, 'item', 15, NULL, 0, 'Work Risk RequirementTest Financial Meeting ');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 150, 1),
+(2, 150, 1),
+(3, 150, 1),
+(4, 150, 1),
+(5, 150, 0),
+(6, 150, 0),
+(7, 150, 0),
+(1, 150, 1),
+(2, 150, 1),
+(3, 150, 1),
+(4, 150, 1),
+(5, 150, 0),
+(6, 150, 0),
+(7, 150, 0);
 
 ALTER TABLE `${prefix}expense` ADD COLUMN `idDocument` int(12) unsigned;
 ALTER TABLE `${prefix}filter` ADD COLUMN `isShared` int(1) unsigned;
