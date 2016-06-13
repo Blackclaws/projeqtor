@@ -41,8 +41,8 @@ require_once "../tool/projeqtor.php";
       </td>
     </tr>
     <tr><td>&nbsp;</td></tr>
-  </table>
-  <table xstyle="border: 1px solid grey;">
+</table>
+<table xstyle="border: 1px solid grey;">
     <tr>
      <td class="section"><?php echo i18n("sectionActiveFilter");?></td>
     </tr>
