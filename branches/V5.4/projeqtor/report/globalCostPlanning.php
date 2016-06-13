@@ -137,9 +137,10 @@ for ($i=1;$i<=2;$i++) {
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName().' w '.(($i==2)?', '.$ass->getDatabaseTableName() . ' a':'') 
-     . ' where ' . $queryWhere
-     . ' group by ' . $queryGroupBy; 
+     . ' from ' . $obj->getDatabaseTableName().' w '.(($i==2)?', '.$ass->getDatabaseTableName() . ' a':'') .', Project t2  '
+     . ' where ' . $queryWhere.' AND t2.id=w.idProject ' 
+     . ' group by ' . $queryGroupBy
+     . ' order by t2.sortOrder asc ';
   $result=Sql::query($query);
   while ($line = Sql::fetchLine($result)) {
   	$line=array_change_key_case($line,CASE_LOWER);
@@ -214,7 +215,6 @@ foreach ($arrDates as $date) {
   $arrSum[$date]=0;
 } 
 echo '</tr>';
-asort($tab);
 $sumProj=array();
 foreach($tab as $proj=>$lists) {
   $sumProj[$proj]=array();

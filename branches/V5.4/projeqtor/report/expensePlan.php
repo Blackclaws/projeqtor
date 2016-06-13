@@ -103,9 +103,10 @@ for ($i=1;$i<=2;$i++) {
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName().' exp ' 
-     . ' where ' . $queryWhere
-     . ' group by ' . $queryGroupBy; 
+     . ' from ' . $obj->getDatabaseTableName().' exp, Project t2 ' 
+     . ' where ' . $queryWhere.' AND t2.id=exp.idProject '
+     . ' group by ' . $queryGroupBy
+     . ' order by t2.sortOrder asc '; 
   $result=Sql::query($query);
 //echo $query . '<br/><br/>';
   
@@ -185,7 +186,6 @@ foreach ($arrDates as $date) {
   $arrSum[$date]=0;
 } 
 echo '</tr>';
-asort($tab);
 $sumProj=array();
 foreach($tab as $proj=>$lists) {
   $sumProj[$proj]=array();
