@@ -45,14 +45,16 @@ $idFilter=$_REQUEST['idFilter']; // validated to be numeric value in SqlElement 
 Sql::beginTransaction();
 $filter=new Filter($idFilter);
 $name=$filter->name;
+$message=i18n("resultShared");
 if($filter->isShared==1){
+  $message=i18n("resultNoShared");
   $filter->isShared=0;
 }else{
   $filter->isShared=1;
 }
 $filter->save();
 echo '<table width="100%"><tr><td align="center" >';
-echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultShared') . ' (#'.htmlEncode($filter->id).')</span>';
+echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . $message . ' (#'.htmlEncode($filter->id).')</span>';
 echo '</td></tr></table>';
 
 $flt=new Filter();
