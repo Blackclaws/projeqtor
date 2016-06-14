@@ -506,6 +506,7 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
         case 'list':
           //echo '<input dojoType="dijit.form.TextBox id="' . $name . '" name="' . $name . '" type="text" class="input" style="width: 100px;" value="' . $val . '" />';
           echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
+          echo autoOpenFilteringSelect();
           echo ' style="width: 100px; font-size: 80%;"';
           echo ' id="' . $name . '" name="' . $name . '" ';
           echo ' >';

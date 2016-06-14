@@ -990,6 +990,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" id="linkRef2Type" name="linkRef2Type" onchange="refreshLinkList();"
+               <?php echo autoOpenFilteringSelect();?>
                 class="input" value="">
                  <?php htmlDrawOptionForReference('idLinkable', null, null, true);?>
                </select>
@@ -1026,6 +1027,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                </td>
                <td>
                   <select dojoType="dijit.form.FilteringSelect" 
+                  <?php echo autoOpenFilteringSelect();?>
                     id="linkDocumentVersion" name="linkDocumentVersion" 
                     onchange=""
                     class="input" value="" >
@@ -1183,6 +1185,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="originOriginType" name="originOriginType" 
                 onchange="refreshOriginList();"
                 class="input" value="" >
@@ -1240,7 +1243,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <label for="dialogCreationInfoCreator" ><?php echo i18n("colIssuer") ?>&nbsp;:&nbsp;</label>
             </td>
             <td>
-              <select dojoType="dijit.form.FilteringSelect" id="dialogCreationInfoCreator" class="input" value="" >
+              <select dojoType="dijit.form.FilteringSelect" id="dialogCreationInfoCreator" 
+              <?php echo autoOpenFilteringSelect();?>
+              class="input" value="" >
                 <?php htmlDrawOptionForReference('idUser', null, null, true);?>
               </select>
             </td>
@@ -1311,6 +1316,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
               <select dojoType="dijit.form.FilteringSelect"
+              <?php echo autoOpenFilteringSelect();?>
                 id="assignmentIdResource" name="assignmentIdResource"
                 class="input" value="" 
                 onChange="assignmentChangeResource();"
@@ -1326,6 +1332,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
               <select dojoType="dijit.form.FilteringSelect" 
+              <?php echo autoOpenFilteringSelect();?>
                 id="assignmentIdRole" name="assignmentIdRole"
                 class="input" value="" 
                 onChange="assignmentChangeRole();" >                
@@ -1516,6 +1523,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
               <select dojoType="dijit.form.FilteringSelect" 
+              <?php echo autoOpenFilteringSelect();?>
                 id="expenseDetailType" name="expenseDetailType"
                 style="width:200px" 
                 class="input" value="" 
@@ -1577,6 +1585,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="idProjectPlan" name="idProjectPlan" 
                 class="input" value=" " >
                  <?php 
@@ -1647,6 +1656,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="dependencyRefTypeDep" name="dependencyRefTypeDep" 
                 onchange="refreshDependencyList();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('linkType')));?>"
@@ -1690,6 +1700,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                </td>
                <td>
                  <select dojoType="dijit.form.FilteringSelect" 
+                 <?php echo autoOpenFilteringSelect();?>
                   id="dependencyRefIdDepEdit" name="dependencyRefIdDepEdit" 
                   class="input" value="" size="10">
                  </select>
@@ -1750,6 +1761,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
               <select dojoType="dijit.form.FilteringSelect" 
+              <?php echo autoOpenFilteringSelect();?>
                 id="resourceCostIdRole" name="resourceCostIdRole"
                 class="input" value=""
                 onChange="resourceCostUpdateRole();"
@@ -1824,6 +1836,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="versionProjectProject" name="versionProjectProject" 
                 class="input" value="" required="required">
                  <?php //htmlDrawOptionForReference('idProject', null, null, true);
@@ -1849,6 +1862,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="versionProjectProduct" name="versionProjectProduct" 
                 class="input" value="" required="required">
                 <script type="dojo/connect" event="onChange" args="evt">
@@ -1877,6 +1891,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="versionProjectVersion" name="versionProjectVersion" 
                 class="input" value="" required="required">
                  <?php //htmlDrawOptionForReference('idVersion', null, null, true);
@@ -2005,6 +2020,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	             </td>
 	             <td>
 	               <select dojoType="dijit.form.FilteringSelect" 
+	               <?php echo autoOpenFilteringSelect();?>
 	                id="testCaseRunTestCase" name="testCaseRunTestCase" 
 	                class="input" value="" size="10">
 	               </select>
@@ -2016,6 +2032,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	             </td>
 	             <td>
 	               <select dojoType="dijit.form.FilteringSelect" 
+	               <?php echo autoOpenFilteringSelect();?>
 	                id="testCaseRunStatus" name="testCaseRunStatus" 
                   onchange="testCaseRunChangeStatus();"
 	                class="input" value="" required="required">
@@ -2032,6 +2049,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 		             </td>
 		             <td>
 		               <select dojoType="dijit.form.FilteringSelect" 
+		               <?php echo autoOpenFilteringSelect();?>
 		                id="testCaseRunTicket" name="testCaseRunTicket" 
 		                class="input" value="" >
 		               </select>
@@ -2099,6 +2117,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="affectationProject" name="affectationProject" 
                 class="input" value="" required="required">
                  <?php //htmlDrawOptionForReference('idProject', null, null, true);
@@ -2112,6 +2131,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
                 class="input" value="" required="required">
@@ -2126,6 +2146,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="affectationProfile" name="affectationProfile" 
                 class="input" value="" required="required">
                  <?php htmlDrawOptionForReference('idProfile', null, null, true);?>

@@ -177,7 +177,8 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 &nbsp;</span>
               </td>
               <td width="5px">
-                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
                 id="listTypeFilter" name="listTypeFilter" style="width:140px">
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
@@ -193,7 +194,8 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 &nbsp;</span>
               </td>
               <td width="5px">
-                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                <select title="<?php echo i18n('filterOnClient')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
                 id="listClientFilter" name="listClientFilter" style="width:140px">
                   <?php htmlDrawOptionForReference('idClient', $objectClient, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
@@ -216,7 +218,8 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 &nbsp;</span>
               </td>
               <td width="5px">
-                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                <select title="<?php echo i18n('filterOnElement')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
                 id="listElementableFilter" name="listElementableFilter" style="width:140px">
                   <?php htmlDrawOptionForReference($elementable, $objectElementable, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >

@@ -265,6 +265,7 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='<table><tr><td class="label"></td><td>';
       $result.=i18n('periodicOn');
       $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.=autoOpenFilteringSelect();
       $result.='   name="periodicityWeeklyDay" id="periodicityWeeklyDayId" class="input" labelType="html">';
       $result.=htmlReturnOptionForWeekdays($this->periodicityWeeklyDay, true);
       $result.='</select>';
@@ -298,6 +299,7 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='   value="'.(($this->periodicityMonthlyWeekNumber)?$this->periodicityMonthlyWeekNumber:1).'" class="input"></div>';
       $result.=i18n('periodicTh');
       $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.=autoOpenFilteringSelect();
       $result.='   name="periodicityMonthlyWeekDay" id="periodicityMonthlyWeekDayId" class="input" labelType="html">';
       $result.=htmlReturnOptionForWeekdays($this->periodicityMonthlyWeekDay, true);
       $result.='</select>';
@@ -317,6 +319,7 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='   value="'.(($this->periodicityYearlyDay)?$this->periodicityYearlyDay:1).'" class="input"></div>';
       //$result.=i18n('periodicTh');
       $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.=autoOpenFilteringSelect();
       $result.='   name="periodicityYearlyMonth" id="periodicityYearlyMonthId" class="input" labelType="html">';
       $result.=htmlReturnOptionForMonths($this->periodicityYearlyMonth, true);
       $result.='</select>';

@@ -36,6 +36,7 @@
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="idProjectPlanSaveDates" name="idProjectPlanSaveDates" 
                 class="input" value="" >
                  <?php 

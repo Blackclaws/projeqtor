@@ -76,6 +76,7 @@ if ($proj=='*') {
 <?php } else if ($displayMode=='select') {?>
 <select dojoType="dijit.form.FilteringSelect" class="input" 
    style="position: absolute; left:75px; top:25px; width: 165px;" 
+   <?php echo autoOpenFilteringSelect();?>
    name="projectSelectorFiletering" id="projectSelectorFiletering" >
    <script type="dojo/connect" event="onChange" args="evt">
     if (this.isValid()) {
@@ -87,6 +88,7 @@ if ($proj=='*') {
 </select>
 <?php } else if($displayMode=="search") {?>
 <select id="projectSelectorFiletering" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  
+<?php echo autoOpenFilteringSelect();?>
 name="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect"
     data-dojo-props="
         queryExpr: '*${0}*',

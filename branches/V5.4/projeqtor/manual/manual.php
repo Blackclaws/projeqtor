@@ -121,6 +121,7 @@
           &nbsp;&nbsp;search tag : 
           <select dojoType="dijit.form.FilteringSelect" class="input" 
            style="width:110px;font-size:10px"
+           <?php echo autoOpenFilteringSelect();?>
            name='manualTag' id='manualTag' value="<?php echo $tag;?>" onchange="searchTag(this.value);">
             <?php foreach ($tags as $id=>$list) {
               if ($list) {

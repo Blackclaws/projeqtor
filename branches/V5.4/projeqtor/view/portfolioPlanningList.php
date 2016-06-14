@@ -257,6 +257,7 @@ if ($saveShowClosed) {
                       <?php echo i18n("colListShowMilestone");?>                  
 				                <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
 				                  style="width: 150px;"
+				                  <?php echo autoOpenFilteringSelect();?>
 				                  name="listShowMilestone" id="listShowMilestone">
 				                  <script type="dojo/method" event="onChange" >
                             saveUserParameter('planningShowMilestone',this.value);

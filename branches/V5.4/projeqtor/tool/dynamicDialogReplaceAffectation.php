@@ -55,6 +55,7 @@
       <td><input dojoType="dijit.form.TextBox" class="input" readonly style="width:200px;" value="<?php echo htmlEncode($res->name);?>"/></td>
       <td>&nbsp;&nbsp;</td>
       <td><select dojoType="dijit.form.FilteringSelect" id="replaceAffectationResource" name="replaceAffectationResource" 
+                <?php echo autoOpenFilteringSelect();?>
                 onChange="replaceAffectationChangeResource();" 
                 class="input required" value="" required="required" style="width:200px;">
            <?php htmlDrawOptionForReference('idResource', null, null, true);?>
@@ -73,7 +74,8 @@
       <td class="dialogLabel"><label><?php echo i18n('colIdProfile');?>&nbsp;:&nbsp;</label></td>
       <td><input dojoType="dijit.form.TextBox" class="input" readonly style="width:200px;" value="<?php echo htmlEncode(SqlList::getNameFromId('Profile',$aff->idProfile));?>"/></td>
       <td>&nbsp;&nbsp;</td>
-      <td><select dojoType="dijit.form.FilteringSelect" id="replaceAffectationProfile" name="replaceAffectationProfile" 
+      <td><select dojoType="dijit.form.FilteringSelect" id="replaceAffectationProfile" name="replaceAffectationProfile"
+                <?php echo autoOpenFilteringSelect();?> 
                 class="input required" value="<?php echo $aff->idProfile?>" required="required" style="width:200px;">
            <?php htmlDrawOptionForReference('idProfile', $aff->idProfile, null, true);?>
           </select></td>

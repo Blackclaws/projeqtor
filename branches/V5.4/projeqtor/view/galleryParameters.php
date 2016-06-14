@@ -60,6 +60,7 @@ $defaultIdTypeValue = '';
             <tr>
                 <td class="reportTableData">
                     <select dojoType="dijit.form.FilteringSelect" class="input" 
+                    <?php echo autoOpenFilteringSelect();?>
                             style="width: 200px;"
                             id="entity" name="entity"
                             onchange="changeGalleryEntity();
@@ -101,6 +102,7 @@ $defaultIdTypeValue = '';
                 </td>
                 <td class="reportTableData">
                     <select dojoType="dijit.form.FilteringSelect" class="input" 
+                    <?php echo autoOpenFilteringSelect();?>
                             style="width: 200px;"
                             id="idClient" name="idClient">
                                 <?php htmlDrawOptionForReference("idClient", $defaultSupplierValue, null, false); ?>
@@ -108,6 +110,7 @@ $defaultIdTypeValue = '';
                 </td>
                 <td class="reportTableData">
                     <select dojoType="dijit.form.FilteringSelect" class="input" 
+                    <?php echo autoOpenFilteringSelect();?>
                             style="width: 200px;"
                             id="id<?= $defaultEntity ?>Type" name="id<?= $defaultEntity ?>Type">
                                 <?php htmlDrawOptionForReference("id".$defaultEntity."Type", $defaultIdTypeValue, null, false); ?>

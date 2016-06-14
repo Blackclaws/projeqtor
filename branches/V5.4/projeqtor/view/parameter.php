@@ -142,6 +142,7 @@ function drawTableFromObjectList($objectList) {
 			if ($format=='list') {
 				$listValues=Parameter::getList($code);
 				echo '<select dojoType="dijit.form.FilteringSelect" class="input" name="' . $code . '" id="' . $code . '" ';
+				echo autoOpenFilteringSelect();
 				echo ' title="' . i18n('help' . ucfirst($code)) . '" style="width:200px">';
 				if ($type=='userParameter' or $code=='versionNameAutoformat') {
 					echo $obj->getValidationScript($code);

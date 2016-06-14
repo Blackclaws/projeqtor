@@ -223,6 +223,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -263,6 +264,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -306,6 +308,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -349,6 +352,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -364,6 +368,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
       <select dojoType="dijit.form.FilteringSelect" class="input"
+      <?php echo autoOpenFilteringSelect();?>
               style="width: 200px;"
               id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
         >
@@ -379,6 +384,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
       <select dojoType="dijit.form.FilteringSelect" class="input"
+      <?php echo autoOpenFilteringSelect();?>
               style="width: 200px;"
               id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
         >
@@ -407,6 +413,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        <?php if (! $canChangeResource) echo ' readonly ';?>
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
@@ -423,6 +430,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -441,6 +449,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
       style="width: 150px;"
       name="<?php echo $param->name;?>" id="<?php echo $param->name;?>">
       <option value=" " <?php echo (! $defaultValue)?'SELECTED':'';?>><?php echo i18n("paramNone");?></option>                            
@@ -469,6 +478,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -488,6 +498,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
@@ -564,6 +575,7 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >

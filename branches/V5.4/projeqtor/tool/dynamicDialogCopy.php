@@ -59,6 +59,7 @@ if($copyType=="copyObjectTo"){
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="copyToClass" name="copyToClass" required
                 class="input" value="<?php echo $idClass;?>" >
                  <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
@@ -83,6 +84,7 @@ if($copyType=="copyObjectTo"){
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="copyToType" name="copyToType" required
                 class="input">
                 <?php htmlDrawOptionForReference('id'.$objectClass.'Type', null, null, true);?>
@@ -199,6 +201,7 @@ if($copyType=="copyObjectTo"){
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="copyProjectToType" name="copyProjectToType" required
                 class="input" value="" >
                 <?php htmlDrawOptionForReference('idProjectType', null, null, true);?>

@@ -139,6 +139,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProject',array($obj->getColCaption('idProject')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idProject" name="idProject">
                  <?php htmlDrawOptionForReference('idProject', null, null, false);?>
                 </select>
@@ -158,6 +159,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeType');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idType" name="idType">
                  <?php htmlDrawOptionForReference($type, null, null, false);?>
                 </select>
@@ -176,6 +178,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeIssuer',array($obj->getColCaption('idUser')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idUser" name="idUser">
                  <?php htmlDrawOptionForReference('idUser', null, null, false);?>
                 </select>
@@ -194,6 +197,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeRequestor',array($obj->getColCaption('idContact')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idContact" name="idContact">
                  <?php htmlDrawOptionForReference('idContact', null, null, false);?>
                 </select>
@@ -234,6 +238,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo (SqlElement::is_a($obj,'Ticket'))?i18n('colChangePlanningActivity'):i18n('colChangeParentActivity');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idActivity" name="idActivity">
                  <?php htmlDrawOptionForReference('idActivity', null, null, false);?>
                 </select>
@@ -251,6 +256,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeStatus');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idStatus" name="idStatus">
                  <?php htmlDrawOptionForReference('idStatus', null, null, false);?>
                 </select>
@@ -269,6 +275,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResponsible',array($obj->getColCaption('idResource')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idResource" name="idResource">
                  <?php htmlDrawOptionForReference('idResource', null, null, false);?>
                 </select>
@@ -287,6 +294,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetVersion');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idTargetVersion" name="idTargetVersion">
                  <?php htmlDrawOptionForReference('idTargetVersion', null, null, false);?>
                 </select>
@@ -305,6 +313,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetVersion');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="idTargetProductVersion" name="idTargetProductVersion">
                  <?php htmlDrawOptionForReference('idTargetProductVersion', null, null, false);?>
                 </select>
@@ -435,6 +444,7 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changePlanningMode');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
                  id="<?php echo $pe.'_'.$pm;?>" name="<?php echo $pe.'_'.$pm;?>">
                  <?php htmlDrawOptionForReference($pm, null, null, false);?>
                 </select>

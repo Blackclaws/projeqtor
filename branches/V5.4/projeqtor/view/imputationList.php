@@ -72,6 +72,7 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
                 <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
                   style="width: 150px;"
                   name="userName" id="userName"
+                  <?php echo autoOpenFilteringSelect();?>
                   value="<?php echo ($user->isResource)?$user->id:'0';?>" 
                   >
                   <script type="dojo/method" event="onChange" >
