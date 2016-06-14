@@ -354,6 +354,7 @@ class Parameter extends SqlElement {
       case 'startPage':
       	$list=array();
       	if (securityCheckDisplayMenu(null,'Today')) {$list['today.php']=i18n('menuToday');}
+      	if (securityCheckDisplayMenu(null,'DashboardTicket')) {$list['dashboardTicketMain.php']=i18n('menuDashboardTicket');}
       	if (securityCheckDisplayMenu(null,'Diary')) {$list['diaryMain.php']=i18n('menuDiary');}
       	if (securityCheckDisplayMenu(null,'Imputation')) {$list['imputationMain.php']=i18n('menuImputation');}
       	if (securityCheckDisplayMenu(null,'Planning')) {$list['planningMain.php']=i18n('menuPlanning');}
