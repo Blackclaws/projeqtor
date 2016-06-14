@@ -433,6 +433,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']["attribute"]='idle';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']["operator"]='>=';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']["value"]='0';
+      $iterateur++;
     }
     if($allTicket=="1"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='done';
@@ -441,6 +442,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('done');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']='=';
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=i18n('no');
+      $iterateur++;
     }
     if($allTicket=="2"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='idle';
@@ -497,6 +499,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idRessource');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']="=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=$user->name;
+      $iterateur++;
     }
     if($toMe=="2"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='idUser';
@@ -505,6 +508,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idUser');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']="=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=$user->name;
+      $iterateur++;
     }
     
     $unresolved=Parameter::getUserParameter("dashboardTicketMainUnresolved");
@@ -515,6 +519,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idTargetProductVersion');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=i18n('isEmpty');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']='';
+      $iterateur++;
     }
   }else{
     $user->_arrayFilters['Ticket'][$iterateur]['disp']["attribute"]=i18n('labelShowIdle');
@@ -523,6 +528,7 @@ function addParamToUser($user){
     $user->_arrayFilters['Ticket'][$iterateur]['sql']["attribute"]='idle';
     $user->_arrayFilters['Ticket'][$iterateur]['sql']["operator"]='>=';
     $user->_arrayFilters['Ticket'][$iterateur]['sql']["value"]='0';
+    $iterateur++;
   }
   setSessionUser($user);
   $_REQUEST['objectClass']='Ticket';
