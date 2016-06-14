@@ -451,6 +451,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('id'.$objectClass);
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=i18n("isNotEmpty");
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']='';
+      $iterateur++;
     }
   }
   $iterateur++;
