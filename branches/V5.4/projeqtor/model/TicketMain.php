@@ -348,6 +348,17 @@ class TicketMain extends SqlElement {
   			}
   		}
   	}
+  	if (1=0 or ! trim($this->idResource)) { // debugLog : TODO replace 1=0 with global parameter
+  	  $comp=new Component($this->idComponent,true);
+  	  if ($comp->idResource) {
+  	    $this->idResource=$comp->idResource;
+  	  } else {
+  	    $prod=new Product($this->idProduct,true);
+  	    if ($prod->idResource) {
+  	      $this->idResource=$prod->idResource;
+  	    }
+  	  }
+  	}
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
