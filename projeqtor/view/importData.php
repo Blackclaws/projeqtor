@@ -54,6 +54,7 @@
         <td width="10%" >
           <select dojoType="dijit.form.FilteringSelect" 
             id="elementType" name="elementType" 
+            <?php echo autoOpenFilteringSelect();?>
             class="input" value="" style="width: 200px;">
             <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
            </select> 
@@ -77,6 +78,7 @@
         <td width="10px" >
           <select dojoType="dijit.form.FilteringSelect" 
             id="fileType" name="fileType" 
+            <?php echo autoOpenFilteringSelect();?>
             class="input" value="csv" style="width: 200px;">
               <option value="csv"><?php echo i18n('csvFile')?></option>
               <option value="xlsx"><?php echo i18n('xlsxFile')?></option>

@@ -126,6 +126,7 @@
                 <td width="200px;" class="label"><?php echo i18n("colMailTo"). "&nbsp;:&nbsp;";?></td>
                 <td width="90%">
                   <select dojoType="dijit.form.FilteringSelect" class="input" required="true"
+                    <?php echo autoOpenFilteringSelect();?>
                     style="width: 98%;" name="alertSendTo" id="alertSendTo">
                     <option value="*"><?php echo i18n('allUsers')?></option>
                     <option value="connect"><?php echo i18n('allConnectedUsers')?></option>
@@ -159,6 +160,7 @@
                 <td class="label"><?php echo i18n("colType"). "&nbsp;:&nbsp;";?></td>
                 <td>
                   <select dojoType="dijit.form.FilteringSelect" class="input" 
+                    <?php echo autoOpenFilteringSelect();?>
                     style="width: 98%;" name="alertSendType" id="alertSendType" required="true">
                     <option value="INFO"><?php echo i18n('INFO')?></option>
                     <option value="WARNING"><?php echo i18n('WARNING')?></option>
@@ -415,6 +417,7 @@
                 </td>
                 <td class="display">
                   <select dojoType="dijit.form.FilteringSelect" class="input" style="width:200px;"
+                    <?php echo autoOpenFilteringSelect();?>
                     name="updateReferenceItem" id="updateReferenceItem" required="true">
                       <option value="*"><?php echo i18n('all')?></option>
                       <?php htmlDrawOptionForReference('idReferencable', null, null, true);?> 

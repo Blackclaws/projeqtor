@@ -116,6 +116,7 @@ foreach($arrayWork as $key=>$work) {
            value="<?php echo $work['date']?>"></div></td>
  <td>&nbsp;</td>
  <td><select dojoType="dijit.form.FilteringSelect" class="input" style="width:150px;"
+      <?php echo autoOpenFilteringSelect();?>
       <?php if ($readOnly) echo 'readonly';?>
       id="dispatchWorkResource_<?php echo $cpt;?>" name="dispatchWorkResource[]">
      <?php 

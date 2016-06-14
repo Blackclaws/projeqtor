@@ -156,6 +156,7 @@ if ($line->line) {
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="billLineIdTerm" name="billLineIdTerm"
                 <?php if (isset($readOnly['term'])) echo " readonly ";?>
                 missingMessage="<?php echo i18n('mandatory');?>"
@@ -177,6 +178,7 @@ if ($line->line) {
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="billLineIdResource" name="billLineIdResource"
                 <?php if (isset($readOnly['resource'])) echo " readonly ";?>
                 missingMessage="<?php echo i18n('mandatory');?>"
@@ -193,6 +195,7 @@ if ($line->line) {
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="billLineIdActivityPrice" name="billLineIdActivityPrice"
                 missingMessage="<?php echo i18n('mandatory');?>"
                 class="input" value="<?php echo $line->idActivityPrice;?>" >
@@ -285,6 +288,7 @@ if ($line->line) {
 	          </td>
 	          <td><div style="display:inline;<?php echo $divUnitStyle;?>">&nbsp;/&nbsp;
                     <select dojoType="dijit.form.FilteringSelect" 
+                    <?php echo autoOpenFilteringSelect();?>
                     id="billLineUnit" name="billLineUnit" 
                     style="width: 100px;"
                     <?php if (isset($readOnly['unit'])) echo " readonly ";?>

@@ -189,6 +189,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
         </td>
         <td>
           <select dojoType="dijit.form.FilteringSelect" 
+          <?php echo autoOpenFilteringSelect();?>
                 id="documentVersionIdStatus" name="documentVersionIdStatus"
                 class="input" value="" 
                 onChange=""

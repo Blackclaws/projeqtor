@@ -415,6 +415,7 @@ $requi['logLevel'] = true;
                 <?php if (substr($ctrls[$par],0,1)=='=') {?>
                 <select id="param[<?php echo $par;?>]" class="input <?php echo $requiredClass;?>" name="param[<?php echo $par;?>]" 
                    style="width:300px" dojoType="dijit.form.FilteringSelect" 
+                   <?php echo autoOpenFilteringSelect();?>
                    value="<?php echo $val;?>">
                  <?php $split=explode('=',$ctrls[$par]);
                  foreach($split as $val) {

@@ -59,6 +59,7 @@ if (count($list)==0) {
 ?>
 <label for="dialogNotePredefinedNote" ><?php echo i18n("colPredefinedNote");?>&nbsp;:&nbsp;</label>
 <select id="dialogNotePredefinedNote" name="dialogNotePredefinedNote" 
+<?php echo autoOpenFilteringSelect();?>
 onchange="noteSelectPredefinedText(this.value);" dojoType="dijit.form.FilteringSelect"  
 class="input" style="width:345px">
  <option value=""></option>

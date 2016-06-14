@@ -90,6 +90,7 @@ if($printRepeat=="repeat" || $printRepeat==""){
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="printZoom" name="printZoom" style="width:65px;" required class="input">
                 <option <?php echo $select100;?> value="100">100%</option>
                 <option <?php echo $select90;?> value="90">90%</option>

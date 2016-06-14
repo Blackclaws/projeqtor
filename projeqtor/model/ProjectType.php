@@ -166,6 +166,7 @@ class ProjectType extends SqlElement {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
+      $result .=autoOpenFilteringSelect();
       if ($this->code=="ADM" or $this->code=="TMP") {
       	$result.=' readonly="readonlyy"';
       } 

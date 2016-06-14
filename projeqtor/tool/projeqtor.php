@@ -2724,6 +2724,9 @@ function decodeCSV($val) {
 }
 //
 
+function autoOpenFilteringSelect() {
+  return ' onMouseDown="dijit.byId(this.name).toggleDropDown();"  selectOnClick="true"';
+}
 
 
 ?>

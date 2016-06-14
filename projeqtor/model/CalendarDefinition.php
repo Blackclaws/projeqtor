@@ -117,7 +117,7 @@ class CalendarDefinition extends SqlElement {
   			. ' </script>'
   			. '</div>&nbsp;&nbsp;';
   		  $result.='<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" '
-				. '  style="width:150px;" name="calendarCopyFrom" id="calendarCopyFrom" >';
+				. '  style="width:150px;" name="calendarCopyFrom" id="calendarCopyFrom" '.autoOpenFilteringSelect().'>';
   		  ob_start();
 				htmlDrawOptionForReference('idCalendarDefinition', 1, null, true);
 				$result.=ob_get_clean();

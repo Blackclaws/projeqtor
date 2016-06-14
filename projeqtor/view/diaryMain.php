@@ -93,6 +93,7 @@
 		   <?php echo i18n("colIdResource");?> 
 		   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" style="width: 150px;"
         name="diaryResource" id="diaryResource"
+        <?php echo autoOpenFilteringSelect();?>
         value="<?php echo ($user->isResource)?$user->id:'0';?>" >
          <script type="dojo/method" event="onChange" >
            loadContent("../view/diary.php","detailDiv","diaryForm");

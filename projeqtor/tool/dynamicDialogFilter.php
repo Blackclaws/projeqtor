@@ -63,6 +63,7 @@ require_once "../tool/projeqtor.php";
                <div dojoType="dojo.data.ItemFileReadStore" jsId="attributeStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
                </div>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="idFilterAttribute" name="idFilterAttribute" 
                 missingMessage="<?php echo i18n('attributeNotSelected');?>"
                 class="input" value="" style="width: 200px;" store="attributeStore">
@@ -75,6 +76,7 @@ require_once "../tool/projeqtor.php";
                <div dojoType="dojo.data.ItemFileReadStore" jsId="operatorStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
                </div>
                <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
                 id="idFilterOperator" name="idFilterOperator" 
                 missingMessage="<?php echo i18n('valueNotSelected');?>"
                 class="input" value="" style="width: 100px;" store="operatorStore">
@@ -99,6 +101,7 @@ require_once "../tool/projeqtor.php";
                  style="width:100px" />
                  <select id="filterSortValueList" name="filterSortValueList" value="asc"  
                  dojoType="dijit.form.FilteringSelect"
+                 <?php echo autoOpenFilteringSelect();?>
                  missingMessage="<?php echo i18n('valueNotSelected');?>" 
                  style="width:400px" size="10" class="input">
                   <option value="asc" SELECTED><?php echo i18n('sortAsc');?></option>
