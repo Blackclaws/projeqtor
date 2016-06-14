@@ -864,7 +864,6 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo "</tr>";
   if (count($filterArray)>0) { 
     foreach ($filterArray as $id=>$filter) {
-      debugLog($filter);
       echo "<tr>";
       echo "<td class='filterData'>" . 
            $filter['disp']['attribute'] . " " .

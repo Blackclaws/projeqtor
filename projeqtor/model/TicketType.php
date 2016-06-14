@@ -52,6 +52,8 @@ class TicketType extends Type {
   public $_lib_statusMustChangeHandled;
   public $lockDone;
   public $_lib_statusMustChangeDone;
+  public $lockSolved;
+  public $_lib_resolutionMustChangeSolved;
   public $lockIdle;
   public $_lib_statusMustChangeIdle;
   public $lockCancelled;
@@ -67,6 +69,7 @@ class TicketType extends Type {
       "mandatoryResolutionOnDone"=>"nobr",
       "lockHandled"=>"nobr",
       "lockDone"=>"nobr",
+      "lockSolved"=>"nobr",
       "lockIdle"=>"nobr",
       "lockCancelled"=>"nobr",
       "internalData"=>"hidden",

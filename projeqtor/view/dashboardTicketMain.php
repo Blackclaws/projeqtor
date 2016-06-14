@@ -68,7 +68,6 @@
   }
   $tabPosition=json_decode($tabPosition,true);
   if(isset($_REQUEST['updatePosTab'])){
-    debugLog($_REQUEST['updatePosTab']);
     $decodeRequest=json_decode($_REQUEST['updatePosTab'],true);
     $tabPosition['orderListLeft']=$decodeRequest['addLeft'];
     $tabPosition['orderListRight']=$decodeRequest['addRight'];

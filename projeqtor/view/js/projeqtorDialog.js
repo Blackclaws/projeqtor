@@ -780,7 +780,6 @@ function copyObjectBox(copyType) {
       }
     };
   }
-  console.log(copyType);
   var params="&objectClass="+dojo.byId("objectClass").value;
   params+="&objectId="+dojo.byId("objectId").value;   
   params+="&copyType="+copyType;   
@@ -5597,7 +5596,6 @@ function deleteMultipleUpdateMode(objectClass) {
   }
   actionOK=function() {
     actionOK2=function() {
-      console.log(dijit.byId('deleteMultipleResultDiv').get('content'));
       showConfirm(dijit.byId('deleteMultipleResultDiv').get('content'), function(){loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
           'resultDivMultiple', 'objectFormMultiple');});
     };
@@ -6580,7 +6578,6 @@ function planningToCanvasToPDF(){
             rightElement=cropCanvas(rightElement,0,0,rightElement.width,rightElement.height,ratio);
             rightColumn=cropCanvas(rightColumn,0,0,rightColumn.width,rightColumn.height,ratio);
           }
-          console.log(rightElement.toDataURL());
           //Init number of total rows
           nbRowTotal=Math.round(leftElement.height/heightRow); 
           //frameContent.parentNode.removeChild(frameContent);
@@ -6636,25 +6633,14 @@ function planningToCanvasToPDF(){
                                       cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
                                       true),
                                       false));
-                  console.log(combineCanvasIntoOne(imageRepeat,
-                      combineCanvasIntoOne(
-                          cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
-                          cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
-                          true),
-                          false).toDataURL());
                 }else{
                   if(firstEnterHeight){
                     canvasList.push(combineCanvasIntoOne(
                                         cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
                                         cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
                                         true));
-                    console.log(combineCanvasIntoOne(
-                        cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
-                        cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
-                        true).toDataURL());
                   }else{
                     canvasList.push(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement));
-                    console.log(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement).toDataURL());
                   } 
                 }
               }else{
@@ -6663,14 +6649,8 @@ function planningToCanvasToPDF(){
                                         cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
                                         cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
                                         true));
-                  console.log(combineCanvasIntoOne(
-                      cropCanvas(leftColumn,oldWidthElement,0,widthElement-oldWidthElement,heightColumn),
-                      cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement),
-                      true).toDataURL());
                 }else{
-                  canvasList.push(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement));
-                  console.log(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement).toDataURL());
-                  
+                  canvasList.push(cropCanvas(leftElement,oldWidthElement,EHeightValue,widthElement-oldWidthElement,heightElement));                  
                 }
               }
               firstEnterWidth=false;
@@ -6783,7 +6763,6 @@ function planningToCanvasToPDF(){
             }
             EHeight-=maxHeight-calculHeight;
             EHeightValue+=maxHeight-calculHeight;
-            console.log("EHeight: "+EHeight);
             firstEnterHeight=false;
           }
           var dd = {
