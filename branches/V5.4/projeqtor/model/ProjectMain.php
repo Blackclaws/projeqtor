@@ -56,6 +56,7 @@ class ProjectMain extends SqlElement {
   public $idTrend;
   public $idOverallProgress;
   public $fixPlanning;
+  public $isUnderConstruction;
   public $done;
   public $doneDate;
   public $idle;
@@ -153,6 +154,7 @@ class ProjectMain extends SqlElement {
       unset($this->_spe_restrictTypes);
     }
   	parent::__construct($id,$withoutDependentObjects);
+  	if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)self::$_fieldsAttributes["isUnderConstruction"]="readonly";
   }
 
    /** ==========================================================================
@@ -677,7 +679,8 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     	 	 }
     	 }
     }
-
+    if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)$this->isUnderConstruction=0;
+    parent::save();
     return $result; 
 
   }

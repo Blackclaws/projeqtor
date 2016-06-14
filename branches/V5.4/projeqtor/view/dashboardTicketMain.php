@@ -92,7 +92,7 @@
 		<table width="100%">
 			<tr height="100%" style="vertical-align: middle;">
 				<td width="50px" align="center"><img
-					src="css/images/iconUpdateLimitation32.png" width="32" height="32" /></td>
+					src="css/images/iconDashboardTicket32.png" width="32" height="32" /></td>
 				<td><span class="title"><?php echo i18n('dashboardTicketMainTitle');?>&nbsp;</span>
 				</td>
 			</tr>
@@ -414,7 +414,6 @@ function addParamToUser($user){
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('id'.$objectClass);
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']='=';
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=SqlList::getNameFromId($objectClass, $_REQUEST['val']);
-    debugLog($user->_arrayFilters);
   }else{
     $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='id'.$objectClass;
     $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='SORT';
@@ -428,6 +427,14 @@ function addParamToUser($user){
   $tabPosition=json_decode($tabPosition,true);
   if($tabPosition[$objectClass]["withParam"]){
     $allTicket=Parameter::getUserParameter("dashboardTicketMainAllTicket");
+    if($allTicket=="0"){
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']["attribute"]=i18n('labelShowIdle');
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']["operator"]="";
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']["value"]="";
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']["attribute"]='idle';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']["operator"]='>=';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']["value"]='0';
+    }
     if($allTicket=="1"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='done';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='=';
@@ -510,6 +517,13 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=i18n('isEmpty');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']='';
     }
+  }else{
+    $user->_arrayFilters['Ticket'][$iterateur]['disp']["attribute"]=i18n('labelShowIdle');
+    $user->_arrayFilters['Ticket'][$iterateur]['disp']["operator"]="";
+    $user->_arrayFilters['Ticket'][$iterateur]['disp']["value"]="";
+    $user->_arrayFilters['Ticket'][$iterateur]['sql']["attribute"]='idle';
+    $user->_arrayFilters['Ticket'][$iterateur]['sql']["operator"]='>=';
+    $user->_arrayFilters['Ticket'][$iterateur]['sql']["value"]='0';
   }
   setSessionUser($user);
   $_REQUEST['objectClass']='Ticket';

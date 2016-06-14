@@ -3313,9 +3313,14 @@ abstract class SqlElement {
 		if ($objectClass=='History' or $objectClass=='Audit') {
 			return false; // exit : not for History
 		}
+		$canBeSend=true;
+		if($idProject){
+		  $canBeSend=!SqlList::getFieldFromId("Project", $idProject, "isUnderConstruction");
+		}
+		$statusMailList=null;
 		if ($directStatusMail) { // Direct Send Mail
 			$statusMailList=array($directStatusMail->id => $directStatusMail);
-		} else {
+		} else if($canBeSend)  {
 			
 			$mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>$objectClass));
 			if (! $mailable or ! $mailable->id) {
@@ -3365,7 +3370,7 @@ abstract class SqlElement {
 			$statusMail=new StatusMail();
 			$statusMailList=$statusMail->getSqlElementsFromCriteria(null,false, $crit);
 		}
-		if (count($statusMailList)==0) {
+		if (count($statusMailList)==0 || (!$directStatusMail && !$canBeSend)) {
 			return false; // exit not a status for mail sending (or disabled)
 		}
 		$dest="";

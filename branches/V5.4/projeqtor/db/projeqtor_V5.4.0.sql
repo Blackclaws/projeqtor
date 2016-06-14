@@ -139,3 +139,5 @@ ADD COLUMN `idTeam` int(12) unsigned default 1;
 
 ALTER TABLE `${prefix}type` ADD COLUMN `mandatoryResolutionOnDone` int(1) unsigned DEFAULT '0',
 ADD COLUMN `lockSolved` int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}project` ADD COLUMN `isUnderConstruction` int(1) unsigned DEFAULT '0';
