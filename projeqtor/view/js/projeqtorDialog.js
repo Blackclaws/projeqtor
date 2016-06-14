@@ -3434,10 +3434,12 @@ function saveFilter() {
 function selectStoredFilter(idFilter, context) {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   if (context == 'directFilterList') {
-    if (idFilter == '0') {
-      top.dojo.byId('noFilterSelected').value='true';
-    } else {
-      top.dojo.byId('noFilterSelected').value='false';
+    if (top.dojo.byId('noFilterSelected')) {
+      if (idFilter == '0') {
+        top.dojo.byId('noFilterSelected').value='true';
+      } else {
+        top.dojo.byId('noFilterSelected').value='false';
+      }
     }
     loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
         + "&context=" + context + "&filterObjectClass="
