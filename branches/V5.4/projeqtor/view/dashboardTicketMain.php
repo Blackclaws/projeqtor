@@ -41,20 +41,21 @@
   }else{
     Parameter::storeUserParameter("dashboardTicketMainNumberDay", $nbDay);
   }
+    Parameter::storeUserParameter("dashboardTicketMainTabPosition", null);
   if(Parameter::getUserParameter("dashboardTicketMainTabPosition")!=null){
     $tabPosition=Parameter::getUserParameter("dashboardTicketMainTabPosition");
   }else{
     $tabPosition='
     {
     "orderListLeft":["TicketType","Priority","Product","Component"],
-    "orderListRight":["OriginalComponentVersion","TargetComponentVersion","User","Resource","Status"],
+    "orderListRight":["OriginalProductVersion","TargetProductVersion","Contact","Resource","Status"],
     "TicketType":{"title":"dashboardTicketMainTitleType","withParam":true,"idle":true},
     "Priority":{"title":"dashboardTicketMainTitlePriority","withParam":true,"idle":true},
     "Product":{"title":"dashboardTicketMainTitleProduct","withParam":true,"idle":true},
     "Component":{"title":"dashboardTicketMainTitleCompoment","withParam":true,"idle":true},
-    "OriginalComponentVersion":{"title":"dashboardTicketMainTitleOriginVersion","withParam":true,"idle":true},
-    "TargetComponentVersion":{"title":"dashboardTicketMainTitleTargetVersion","withParam":true,"idle":true},
-    "User":{"title":"dashboardTicketMainTitleUser","withParam":true,"idle":true},
+    "OriginalProductVersion":{"title":"dashboardTicketMainTitleOriginVersion","withParam":true,"idle":true},
+    "TargetProductVersion":{"title":"dashboardTicketMainTitleTargetVersion","withParam":true,"idle":true},
+    "Contact":{"title":"dashboardTicketMainTitleUser","withParam":true,"idle":true},
     "Resource":{"title":"dashboardTicketMainTitleResponsible","withParam":true,"idle":true},
     "Status":{"title":"dashboardTicketMainTitleStatus","withParam":false,"idle":true}
     }
@@ -193,7 +194,7 @@
       foreach ($tabPosition["orderListLeft"] as $key){
         $nAddP="";
         if($tabPosition[$key]['withParam'])$nAddP=$addParam;
-        if($tabPosition[$key]['idle'])echo addTab('{"groupBy":"'.$key.'","title":"'.$tabPosition[$key]['title'].'"'.$nAddP.'}');
+        if($tabPosition[$key]['idle'])echo addTab('{"groupBy":"'.$key.'","withParam":"'.$tabPosition[$key]['withParam'].'","title":"'.$tabPosition[$key]['title'].'"'.$nAddP.'}');
       }
       ?>
     </div>
@@ -202,7 +203,7 @@
       foreach ($tabPosition["orderListRight"] as $key){
         $nAddP="";
         if($tabPosition[$key]['withParam'])$nAddP=$addParam;
-        if($tabPosition[$key]['idle'])echo addTab('{"groupBy":"'.$key.'","title":"'.$tabPosition[$key]['title'].'"'.$nAddP.'}');
+        if($tabPosition[$key]['idle'])echo addTab('{"groupBy":"'.$key.'","withParam":"'.$tabPosition[$key]['withParam'].'","title":"'.$tabPosition[$key]['title'].'"'.$nAddP.'}');
       }
       ?>
       </div>
@@ -237,8 +238,10 @@ function addTab($param){
       if(isset($object->color))$res[$idU]["color"]=$object->color;
       $total+=$line['nbLine'];
     }
+    $addIfNoParam="";
+    if(!$param['withParam'])$addIfNoParam='<span style="font-style:italic;color:#999999;">&nbsp;('.i18n('noFilterClause').')</span>';
     ksort($res);
-    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($param["title"]))."</h2>";
+    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($param["title"])).$addIfNoParam."</h2>";
     echo "<table width=\"95%\" class=\"tabDashboardTicketMain\">";
     echo '<tr><td class="titleTabTicket">'.i18n($param["title"]).'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnCount").'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnPourcent")."</td></tr>";
     foreach ($res as $idSort=>$nbLine){
