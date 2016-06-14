@@ -215,16 +215,26 @@
 </div>
 <?php 
   }
+  global $total;
+  $total=null;
 function addTab($param){
+  global $total;
   $param=json_decode($param,true);
   $ajoutGroupBy="t.id".$param["groupBy"];
   $ajoutWhere=" $ajoutGroupBy=a.id ";
   $paramAdd="";
   if(isset($param['paramAdd']))$paramAdd=$param['paramAdd'];
+  if($total==null){
+    $result=Sql::query("SELECT COUNT(*) as nbLine FROM ticket t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
+    if (Sql::$lastQueryNbRows > 0) {
+      $line = Sql::fetchLine($result);
+      $total=$line['nbLine'];
+    }
+  }
   $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM ticket t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
   if (Sql::$lastQueryNbRows > 0) {
-    $total=0;
     $res=array();
+    $totT=0;
     while ($line = Sql::fetchLine($result)) {
       $object= new $param["groupBy"]($line['idNeed'],true);
       $idU=$object->name;
@@ -235,7 +245,7 @@ function addTab($param){
       $res[$idU]["nb"]=$line['nbLine'];
       $res[$idU]["id"]=$object->id;
       if(isset($object->color))$res[$idU]["color"]=$object->color;
-      $total+=$line['nbLine'];
+      $totT+=$line['nbLine'];
     }
     $addIfNoParam="";
     if(!$param['withParam'])$addIfNoParam='<span style="font-style:italic;color:#999999;">&nbsp;('.i18n('noFilterClause').')</span>';
@@ -259,6 +269,18 @@ function addTab($param){
       echo "    </td>";
       echo "    <td width=\"40%\">";
       echo '<div style="background-color:#3c78b5;margin-top: 3px;position:relative;height:13px;width:'.round(100*($nbLine["nb"]/$total)).'px;float:left;">&nbsp;</div><div style="position:relative;margin-left:10px;width:50px; float: left;">'.round(100*($nbLine["nb"]/$total))." %</div>";
+      echo "    </td>";
+      echo "  </tr>";
+    }
+    if($total-$totT>0){
+      echo "  <tr>";
+      echo "    <td width=\"50%\">";
+      echo '<a class="styleUDashboard" href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&undefined=true\', \'centerDiv\', \'dashboardTicketMainForm\');">'.i18n("undefinedValue").'</a>';
+      echo "    </td>";
+      echo "    <td width=\"10%\">";
+      echo '<span>'.($total-$totT).'</span>';
+      echo "    </td>";
+      echo "    <td width=\"40%\">&nbsp;";
       echo "    </td>";
       echo "  </tr>";
     }
@@ -422,6 +444,14 @@ function addParamToUser($user){
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('id'.$objectClass);
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=i18n('sortFilter');
     $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=i18n('sortAsc');
+    if(isset($_REQUEST['undefined'])){
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='id'.$objectClass;
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='is null';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']='';
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('id'.$objectClass);
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=i18n("isNotEmpty");
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']='';
+    }
   }
   $iterateur++;
   $tabPosition=Parameter::getUserParameter("dashboardTicketMainTabPosition");
