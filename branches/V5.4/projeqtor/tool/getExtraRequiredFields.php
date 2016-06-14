@@ -70,7 +70,7 @@ if (property_exists($obj, $peName)) {
 }
 
 
-$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional',
+$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional', 'idResolution'=>'optional',
    $peName.'_validatedStartDate'=>'optional', $peName.'_validatedEndDate'=>'optional', $peName.'_validatedDuration'=>'optional');
 foreach ($arrayDefault as $key=>$val) {
   if (property_exists($obj,$key) and $obj->isAttributeSetToField($key,'required')) {

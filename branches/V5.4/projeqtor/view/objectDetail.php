@@ -722,7 +722,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       $isRequired=false;
       $readOnly=false;
       $specificStyle='';
-      if (($col == "idle" or $col == "done" or $col == "handled" or $col == "cancelled") and $objType) {
+      if (($col == "idle" or $col == "done" or $col == "handled" or $col == "cancelled" or $col == "solved") and $objType) {
         $lock='lock' . ucfirst($col);
         if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
           $attributes.=' readonly tabindex="-1"';

@@ -107,7 +107,7 @@ class Plugin extends SqlElement {
             $version=$prop['attributes']['VERSION'];
             if (!isset($$name) or !is_array($$name)) {
               if (isset($$name)) {
-                $$name=array('1.0'=>$value);
+                $$name=array('1.0'=>$$name);
               } else {
                 $$name=array();
               }
@@ -231,7 +231,7 @@ class Plugin extends SqlElement {
       if (isset($pluginSql) and $pluginSql) {
         if (!is_array($pluginSql)) $pluginSql=array('1.0'=>$pluginSql); // First plugins did not take into account upgrades of SQL
         foreach ($pluginSql as $pluginSqlVersion=>$pluginSqlValue) {
-          if ($pluginSqlVersion>$currentVersion) {
+          if ($pluginSqlVersion>$currentVersion or $pluginSqlVersion=='all' or $pluginSqlVersion=='*') {
             $sqlfile=self::getDir()."/$plugin/$pluginSqlValue";
             if (! is_file($sqlfile)) {
               $result=i18n("pluginSqlFileError",array($sqlfile, $plugin));

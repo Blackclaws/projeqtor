@@ -243,7 +243,6 @@ if ($idFilterAttribute and $idFilterOperator) {
      exit;
   } 
   $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
-  debugLog($idFilterAttribute." ".$filterValueCheckbox);
   if ($idFilterAttribute=='idle' and $filterValueCheckbox) {
     $arrayDisp["attribute"]=i18n('labelShowIdle');
     $arrayDisp["operator"]="";

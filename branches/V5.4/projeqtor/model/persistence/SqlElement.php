@@ -2814,7 +2814,22 @@ abstract class SqlElement {
       }
 			$colScript .= '  formChanged();';
 			$colScript .= '</script>';
-		} else if ($colName=="idle") {
+		} else if ($colName=="idResolution") {
+		  $colScript .= '<script type="dojo/connect" event="onChange" >';
+		  if (property_exists($this, 'solved')) {
+  		  $colScript .= htmlGetJsTable('Resolution', 'solved', 'tabResolutionSolved');
+  		  $colScript .= '  var solved=0;';
+  		  $colScript .= '  var filterResolutionSolved=dojo.filter(tabResolutionSolved, function(item){return item.id==dijit.byId("idResolution").value;});';
+  		  $colScript .= '  dojo.forEach(filterResolutionSolved, function(item, i) {solved=item.solved;});';
+  		  $colScript .= '  if (solved==1) {';
+  		  $colScript .= '    dijit.byId("solved").set("checked", true);';
+  		  $colScript .= '  } else {';
+  		  $colScript .= '    dijit.byId("solved").set("checked", false);';
+  		  $colScript .= '  }';
+  		}
+  		$colScript .= '  formChanged();';
+  		$colScript .= '</script>';
+	  } else if ($colName=="idle") {
 			$colScript .= '<script type="dojo/connect" event="onChange" >';
 			$colScript .= '  if (this.checked) { ';
 			if (property_exists($this, 'idleDateTime')) {
@@ -3950,6 +3965,15 @@ abstract class SqlElement {
 				$this->done=0;
 			}
 		}
+		if ( ( (property_exists($type,'lockSolved') and $type->lockSolved) or $force)
+    and property_exists($this,'solved') and property_exists($this,'idResolution') ) {
+      $resolution=new Resolution($this->idResolution);
+      if ($resolution->solved) {
+        $this->solved=1;
+      } else {
+        $this->solved=0;
+      }
+    }
 		if ( ( (property_exists($type,'lockIdle') and $type->lockIdle) or $force)
 		and property_exists($this,'idle') ) {
 			if (! self::isSaveConfirmed()) {
@@ -4334,6 +4358,19 @@ abstract class SqlElement {
 	          $result['result']='required';
 	        }
 	      }
+	    }
+	    if (property_exists($typeObj, 'mandatoryResolutionOnDone') and $typeObj->mandatoryResolutionOnDone) {
+	      if ($newStatus) {
+	        $statusObj=new Status($newStatus);
+	        if ($statusObj->setDoneStatus) {
+	          $result['idResolution']='required';
+	        }
+	      } else {
+	        if (property_exists($this,'done') and $this->done) {
+	          $result['idResolution']='required';
+	        }
+	      }
+	      
 	    }
 	  }
 	  return $result;

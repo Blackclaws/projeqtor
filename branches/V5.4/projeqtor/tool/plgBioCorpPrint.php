@@ -158,10 +158,8 @@
       //$html2pdf->setModeDebug(); 
       $content=str_replace("à","&agrave;",$content);
 traceExecutionTime($includeFile,true);
-      debugLog("startWrite");
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output($idDocumentDirectory->name.$idDocumentDirectory->location.'testFile.pdf','F');;
-      debugLog("write finish");
 traceExecutionTime($includeFile);
     }
   }

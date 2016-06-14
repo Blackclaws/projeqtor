@@ -46,6 +46,8 @@ class Type extends SqlElement {
   public $_lib_mandatoryOnHandledStatus;
   public $mandatoryResultOnDone;
   public $_lib_mandatoryOnDoneStatus;
+  public $mandatoryResolutionOnDone;
+  public $_lib_mandatoryResolutionOnDoneStatus;
   public $lockHandled;
   public $_lib_statusMustChangeHandled;
   public $lockDone;
@@ -76,6 +78,8 @@ class Type extends SqlElement {
                                           "mandatoryDescription"=>"nobr",
                                           "mandatoryResourceOnHandled"=>"nobr",
                                           "mandatoryResultOnDone"=>"nobr",
+                                          "mandatoryResolutionOnDone"=>"hidden",
+                                          "_lib_mandatoryResolutionOnDoneStatus"=>"hidden",             
                                           "lockHandled"=>"nobr",
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
