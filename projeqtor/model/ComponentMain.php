@@ -38,6 +38,7 @@ class ComponentMain extends ProductOrComponent {
   public $name;
   public $idComponentType;
   public $designation;
+  public $idResource;
   public $idComponent;
   public $creationDate;
   public $idle;
@@ -66,7 +67,8 @@ class ComponentMain extends ProductOrComponent {
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor',
       'idComponent'=>'isSubComponentOf',
-      "designation"=>"identifier"
+      "designation"=>"identifier",
+      'idResource'=>'responsible'
   );
   private static $_databaseColumnName = array('idComponent'=>'idProduct');
   

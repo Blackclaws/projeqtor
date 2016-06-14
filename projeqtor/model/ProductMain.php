@@ -40,6 +40,7 @@ class ProductMain extends ProductOrComponent {
   public $designation;
   public $idClient;
   public $idContact;
+  public $idResource;
   public $idProduct;
   public $creationDate;
   public $idle;
@@ -68,7 +69,8 @@ class ProductMain extends ProductOrComponent {
    private static $_fieldsAttributes=array("name"=>"required", "scope"=>"hidden"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf'
+  private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf',
+      'idResource'=>'responsible'
   );
   
   private static $_databaseTableName = 'product';
