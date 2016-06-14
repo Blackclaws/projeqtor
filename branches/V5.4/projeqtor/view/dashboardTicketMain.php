@@ -215,22 +215,39 @@
 </div>
 <?php 
   }
-  global $total;
-  $total=null;
+  global $total1;
+  global $total2;
+  $total1=null;
+  $total2=null;
 function addTab($param){
-  global $total;
+  global $total1;
+  global $total2;
   $param=json_decode($param,true);
   $ajoutGroupBy="t.id".$param["groupBy"];
   $ajoutWhere=" $ajoutGroupBy=a.id ";
   $paramAdd="";
-  if(isset($param['paramAdd']))$paramAdd=$param['paramAdd'];
-  if($total==null){
-    $result=Sql::query("SELECT COUNT(*) as nbLine FROM ticket t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
-    if (Sql::$lastQueryNbRows > 0) {
-      $line = Sql::fetchLine($result);
-      $total=$line['nbLine'];
+  $total=0;
+  if(isset($param['paramAdd'])){
+    $paramAdd=$param['paramAdd'];
+    if($total1==null){
+      $result=Sql::query("SELECT COUNT(*) as nbLine FROM ticket t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
+      if (Sql::$lastQueryNbRows > 0) {
+        $line = Sql::fetchLine($result);
+        $total1=$line['nbLine'];
+      }
     }
+    $total=$total1;
+  }else{
+    if($total2==null){
+      $result=Sql::query("SELECT COUNT(*) as nbLine FROM ticket t WHERE t.idProject in ".getVisibleProjectsList(false));
+      if (Sql::$lastQueryNbRows > 0) {
+        $line = Sql::fetchLine($result);
+        $total2=$line['nbLine'];
+      }
+    }
+    $total=$total2;
   }
+  
   $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM ticket t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
   if (Sql::$lastQueryNbRows > 0) {
     $res=array();
