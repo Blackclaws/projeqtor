@@ -41,7 +41,6 @@
   }else{
     Parameter::storeUserParameter("dashboardTicketMainNumberDay", $nbDay);
   }
-    Parameter::storeUserParameter("dashboardTicketMainTabPosition", null);
   if(Parameter::getUserParameter("dashboardTicketMainTabPosition")!=null){
     $tabPosition=Parameter::getUserParameter("dashboardTicketMainTabPosition");
   }else{
