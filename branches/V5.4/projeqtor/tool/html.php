@@ -982,7 +982,7 @@ function htmlDisplaySharedFilter($filterArray,$filterObjectClass,$currentFilter=
         . ' title="' . i18n("selectStoredFilter") . '" ></span><br>';
       }
     echo "</div></div>";
-    echo "&nbsp;&nbsp;&nbsp;".i18n("tipsSharedFilter");
+    echo "<span style='position:relative;left:20px;font-size:90%;color:#a0a0a0;'>".i18n("tipsSharedFilter").'</span>';
   }
 }
 

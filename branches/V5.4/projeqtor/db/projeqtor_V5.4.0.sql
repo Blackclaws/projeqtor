@@ -5,8 +5,10 @@
 -- // Date : 2016-05-12                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}assignment` CHANGE `dailyCost` `dailyCost` DECIMAL(9,2) UNSIGNED,
-CHANGE `newDailyCost` `newDailyCost` DECIMAL(9,2) UNSIGNED;
+ALTER TABLE `${prefix}assignment` CHANGE `dailyCost` `dailyCost` DECIMAL(11,2) UNSIGNED,
+CHANGE `newDailyCost` `newDailyCost` DECIMAL(11,2) UNSIGNED;
+
+ALTER TABLE `${prefix}work` CHANGE `dailyCost` `dailyCost` DECIMAL(11,2) UNSIGNED;
 
 ALTER TABLE `${prefix}billline` CHANGE `quantity` `quantity` DECIMAL(9,2) UNSIGNED;
 
