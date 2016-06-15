@@ -3443,7 +3443,11 @@ abstract class SqlElement {
 						$resource=new Resource($aff->idResource);
 						if ($statusMail->mailToProject) {
 							// Change on V4.4.0 oly send mail if user has read access to item
-							$usr=new User($aff->idResource);
+							if ($aff->idResource==getSessionUser()->id) {
+							  $usr=getSessionUser();
+							} else {
+							  $usr=new User($aff->idResource);
+							}
 							$canRead=false;
 							if ($usr and $usr->id) {
 								$canRead=(securityGetAccessRightYesNo('menu' . get_class($this), 'read', $this, $usr)=='YES');

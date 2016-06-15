@@ -2728,5 +2728,10 @@ function autoOpenFilteringSelect() {
   return ' onMouseDown="dijit.byId(this.name).toggleDropDown();"  selectOnClick="true"';
 }
 
-
+function debugPrintTraceStack() {
+  $stack=debug_backtrace();
+  foreach ($stack as $stackLine) {
+    debugLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
+  }
+}
 ?>
