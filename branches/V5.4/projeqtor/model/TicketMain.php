@@ -348,7 +348,9 @@ class TicketMain extends SqlElement {
   			}
   		}
   	}
-  	if (1=0 or ! trim($this->idResource)) { // debugLog : TODO replace 1=0 with global parameter
+  	$responsibleFromProduct=Parameter::getGlobalParameter('responsibleFromProduct');
+  	if (!$responsibleFromProduct) $responsibleFromProduct='always';
+  	if ($responsibleFromProduct=='always' or ($responsibleFromProduct=='ifempty' and !trim($this->idResource))) { 
   	  $comp=new Component($this->idComponent,true);
   	  if ($comp->idResource) {
   	    $this->idResource=$comp->idResource;
