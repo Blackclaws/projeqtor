@@ -460,11 +460,15 @@ class MeetingMain extends SqlElement {
     $dtEnd=strtotime($this->meetingDate.' '.$this->meetingEndTime);
     $vcal .= "DTSTART:".gmdate('Ymd',$dtStart).'T'.gmdate('Hi',$dtStart)."00Z\r\n";
     $vcal .= "DTEND:".gmdate('Ymd',$dtEnd).'T'.gmdate('Hi',$dtEnd)."00Z\r\n";
+    $vcal .= "DTSTAMP:".gmdate('Ymd',$dtStart).'T'.gmdate('Hi',$dtStart)."00Z\r\n";
     if (trim($this->location) != "") $vcal .= "LOCATION:$this->location\r\n";
     $vcal .= "CATEGORIES:ProjeQtOr\r\n"; 
     $vcal .= "SUMMARY:$this->name\r\n";
     $vcal .= "PRIORITY:5\r\n";
-    if (trim($this->description) != "") $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$this->description)."\r\n";
+    if (trim($this->description) != ""){
+    $html2text=new Html2Text($this->description);
+      $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$html2text->gettext())."\r\n";
+    }
     /*$vcal .= "BEGIN:VALARM\r\n";
     $vcal .= "TRIGGER:-PT15M\r\n";
     $vcal .= "ACTION:DISPLAY\r\n";
