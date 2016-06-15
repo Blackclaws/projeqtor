@@ -403,7 +403,12 @@ class Parameter extends SqlElement {
           'createResource'=>i18n('createResourceFromLdapUser'),
           'createContact'=>i18n('createContactFromLdapUser'),
           'createResourceAndContact'=>i18n('createResourceAndContactFromLdapUser'));
-      break;
+        break;
+      case 'responsibleFromProduct':
+        $list=array('always'=>i18n('always'),
+                    'ifempty'=>i18n('ifEmpty'),
+                    'never'=>i18n('never'));
+        break;
     } 
     return $list;
   }
@@ -477,6 +482,7 @@ class Parameter extends SqlElement {
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
       	                       'realWorkOnlyForResponsible'=>'list',
+      	                       'responsibleFromProduct'=>'list',
       	                     'sectionUserAndPassword'=>'section',
       	                       'defaultProfile'=>'list', 
       	                     //'sectionPassword'=>'section',
