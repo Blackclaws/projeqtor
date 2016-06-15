@@ -1298,7 +1298,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 <form id='attachmentAckForm' name='attachmentAckForm'> 
    <input type='hidden' id="resultAck" name="resultAck" />
 </form>   
-    
+	   
 <div id="dialogDocumentVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDocumentVersion");?>"></div>
   
 <div id="dialogAssignment" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAssignment");?>">
