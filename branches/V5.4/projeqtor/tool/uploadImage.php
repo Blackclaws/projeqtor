@@ -34,7 +34,7 @@ header ('Content-Type: text/html; charset=UTF-8');
 ob_start();
 $error=false;
 $uploadedFile=false;
-$targetDir='../files/images/';
+$targetDir=$targetDirImageUpload;
 projeqtor_set_time_limit(3600); // 60mn
 $attachmentMaxSize=Parameter::getGlobalParameter('paramAttachmentMaxSize');
 
