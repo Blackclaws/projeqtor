@@ -63,7 +63,7 @@ class BillMain extends SqlElement {
   public $taxAmount;
   public $fullAmount;
   public $commandAmountPct;
-  public $_tab_4_1_smallLabel = array('date', 'amount', 'paymentDone', '', 'payment');
+  public $_tab_4_1_smallLabel = array('date', 'amount', 'paymentComplete', '', 'payment');
   public $paymentDate;
   public $paymentAmount;
   public $paymentDone;
@@ -116,7 +116,9 @@ class BillMain extends SqlElement {
                                                    'idPaymentDelay'=>'paymentDelay',
                                                    'idDeliveryMode'=>'sendMode',
                                                    "idUser"=>"issuer",
-                                                   'idResource'=>'responsible');
+                                                   'idResource'=>'responsible',
+                                                   'paymentDone'=>'paymentComplete'
+  );
   
   private static $_databaseColumnName = array('taxPct'=>'tax');
   public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''),' - ',name,' (',coalesce(fullAmount,0),')')");

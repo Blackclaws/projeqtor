@@ -143,3 +143,5 @@ ADD COLUMN `lockSolved` int(1) unsigned DEFAULT '0';
 ALTER TABLE `${prefix}project` ADD COLUMN `isUnderConstruction` int(1) unsigned DEFAULT '0';
 
 ALTER TABLE `${prefix}product` ADD COLUMN `idResource` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned;
