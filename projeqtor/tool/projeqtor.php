@@ -26,6 +26,8 @@
 $projeqtor = 'loaded';
 spl_autoload_register ( 'projeqtorAutoload', true );
 include_once ('../model/User.php');
+global $targetDirImageUpload;
+$targetDirImageUpload='../files/images/';
 // Example
 if ( is_session_started() === FALSE ) {
   session_start ();
@@ -871,6 +873,8 @@ function sendMail($to, $subject, $messageBody, $object = null, $headers = null, 
   // + Meeting::sendMail() : sendMail($destList, $this->name, $vcal, $this, $headers,$sender) !!! VCAL Meeting Invite
   // + User::authenticate : sendMail($paramAdminMail, $title, $message)
   // + /tool/sendMail.php : sendMail($dest,$title,$msg)
+  global $targetDirImageUpload;
+  $messageBody=str_replace($targetDirImageUpload, SqlElement::getBaseUrl().substr(str_replace("..", "", $targetDirImageUpload), 0, strlen(str_replace("..", "", $targetDirImageUpload))-1), $messageBody);
   $paramMailSendmailPath = Parameter::getGlobalParameter ( 'paramMailSendmailPath' );
   $paramMailSmtpUsername = Parameter::getGlobalParameter ( 'paramMailSmtpUsername' );
   $paramMailSmtpPassword = Parameter::getGlobalParameter ( 'paramMailSmtpPassword' );

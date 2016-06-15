@@ -3582,6 +3582,27 @@ abstract class SqlElement {
 		return $resultMail;
 	}
 
+	public static function getBaseUrl(){
+	  		// FIX FOR IIS
+		if (!isset($_SERVER['REQUEST_URI'])) {
+			$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+			if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+		}
+		$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
+    .$_SERVER['SERVER_NAME']
+    .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
+    .$_SERVER['REQUEST_URI'];
+	  $ref="";
+	  if (strpos($url,'/tool/')) {
+	    $ref.=substr($url,0,strpos($url,'/tool/'));
+	  } else if (strpos($url,'/view/')) {
+	    $ref.=substr($url,0,strpos($url,'/view/'));
+	  } else if (strpos($url,'/report/')) {
+	    $ref.=substr($url,0,strpos($url,'/report/'));
+	  }
+	  return $ref;
+	}
+	
 	public function parseMailMessage($message) {
 		$arrayFrom=array();
 		$arrayTo=array();
@@ -3673,15 +3694,7 @@ abstract class SqlElement {
 		$arrayFrom[]='${url}';
 		if ($objectClass=='User') {
 			// FIX FOR IIS
-			if (!isset($_SERVER['REQUEST_URI'])) {
-				$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
-				if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
-			}
-			$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
-			.$_SERVER['SERVER_NAME']
-			.(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
-			.$_SERVER['REQUEST_URI'];
-			$arrayTo[]=substr($url,0,strpos($url,'/tool/'));
+			$arrayTo[]=self::getBaseUrl();
 		} else {
 			$arrayTo[]=$this->getReferenceUrl();
 		}
@@ -3910,23 +3923,7 @@ abstract class SqlElement {
 	}
 	
 	public function getReferenceUrl() {
-		// FIX FOR IIS
-		if (!isset($_SERVER['REQUEST_URI'])) {
-			$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
-			if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
-		}
-		$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
-    .$_SERVER['SERVER_NAME']
-    .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
-    .$_SERVER['REQUEST_URI'];
-    $ref="";
-    if (strpos($url,'/tool/')) {
-       $ref.=substr($url,0,strpos($url,'/tool/'));
-    } else if (strpos($url,'/view/')) {
-    	$ref.=substr($url,0,strpos($url,'/view/'));
-    } else if (strpos($url,'/report/')) {
-      $ref.=substr($url,0,strpos($url,'/report/'));
-    }   
+    $ref=self::getBaseUrl();
     $ref.='/view/main.php?directAccess=true&objectClass='.get_class($this).'&objectId='.$this->id;
     return $ref;
 	}
