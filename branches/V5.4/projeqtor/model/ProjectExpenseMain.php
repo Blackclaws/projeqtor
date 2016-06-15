@@ -65,6 +65,7 @@ class ProjectExpenseMain extends Expense {
   public $realTaxAmount;
   public $realFullAmount;
   public $expenseRealDate;
+  public $paymentDone;
   public $result;
   public $_sec_ExpenseDetail;
   public $_ExpenseDetail=array();
@@ -211,5 +212,34 @@ class ProjectExpenseMain extends Expense {
     return parent::save(); 
   }
 
+  // ============================================================================**********
+  // GET VALIDATION SCRIPT
+  // ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo framework)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+    if ($colName=="expenseRealDate") {
+      //$colScript .= '<script type="dojo/connect" event="onChange" >';
+      //$colScript .= '  if (this.value) {';
+      //$colScript .= '    dijit.byId("paymentDone").set("checked",true);';
+      //$colScript .= '  }';
+      //$colScript .= '  formChanged();';
+      //$colScript .= '</script>';
+    } else if ($colName=="paymentDone") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.checked && !dijit.byId("expenseRealDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("expenseRealDate").set("value",curDate);';
+      $colScript .= '  }';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    return $colScript;
+  }
+  
 }
 ?>

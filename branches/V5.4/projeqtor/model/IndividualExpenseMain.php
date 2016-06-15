@@ -36,16 +36,19 @@ class IndividualExpenseMain extends Expense {
   public $reference; 
   public $name;
   public $idIndividualExpenseType;
-  public $idResource;
   public $idProject;
+  public $idResource;
   public $idUser;
   public $description;
   public $_sec_treatment;
   public $idStatus;  
-  public $expensePlannedDate;
+  public $idResponsible;
+  public $_tab_2_2_smallLabel = array('fullAmountShort','paymentDateShort', 'planned', 'real');
   public $plannedAmount;
-  public $expenseRealDate;
+  public $expensePlannedDate;
   public $realAmount;
+  public $expenseRealDate;
+  public $paymentDone;
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
@@ -88,7 +91,8 @@ class IndividualExpenseMain extends Expense {
   
   private static $_colCaptionTransposition = array('idIndividualExpenseType'=>'type',
   'expensePlannedDate'=>'plannedDate',
-  'expenseRealDate'=>'realDate'
+  'expenseRealDate'=>'realDate',
+  'idResponsible'=>'responsible'
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -171,6 +175,35 @@ class IndividualExpenseMain extends Expense {
    */
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria; 
+  }
+  
+  // ============================================================================**********
+  // GET VALIDATION SCRIPT
+  // ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo framework)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+    if ($colName=="expenseRealDate") {
+      //$colScript .= '<script type="dojo/connect" event="onChange" >';
+      //$colScript .= '  if (this.value) {';
+      //$colScript .= '    dijit.byId("paymentDone").set("checked",true);';
+      //$colScript .= '  }';
+      //$colScript .= '  formChanged();';
+      //$colScript .= '</script>';
+    } else if ($colName=="paymentDone") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.checked && !dijit.byId("expenseRealDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("expenseRealDate").set("value",curDate);';
+      $colScript .= '  }';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    return $colScript;
   }
 }
 ?>
