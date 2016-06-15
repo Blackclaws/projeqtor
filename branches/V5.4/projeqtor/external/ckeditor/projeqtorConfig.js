@@ -26,6 +26,8 @@ CKEDITOR.editorConfig = function( config ) {
   config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style';
   config.pasteFromWordRemoveStyles = false;
   config.pasteFromWordRemoveFontStyles = false;
+  config.scayt_sLang = getLocalLocation();
+  config.scayt_autoStartup = true;
   
 };
 /*

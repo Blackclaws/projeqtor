@@ -6907,3 +6907,11 @@ function changeDashboardTicketMainTabPos(){
   toSend+=addRight+iddleList+"}";
   loadContent('dashboardTicketMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardTicketMainForm');
 }
+
+function getLocalLocation(){
+  if(dojo.locale.length==2){
+    return dojo.locale+"_"+dojo.locale.toUpperCase();
+  }else{
+    return dojo.locale.split('-')[0]+"_"+dojo.locale.split('-')[1].toUpperCase();
+  }
+}
