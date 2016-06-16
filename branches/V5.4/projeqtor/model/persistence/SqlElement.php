@@ -1739,6 +1739,9 @@ abstract class SqlElement {
 				$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = " . Sql::str($valCrit) . " ";
 			}
 		}
+		if (property_exists($this, 'isPrivate')) {
+		  $whereClause.=' and '.SqlElement::getPrivacyClause($this);
+		}
 		if (array_key_exists($className,self::$_cachedQuery)) {
 			if (array_key_exists($whereClause,self::$_cachedQuery[$className])) {
 				return self::$_cachedQuery[$className][$whereClause];
@@ -4436,6 +4439,18 @@ abstract class SqlElement {
     $result=is_subclass_of( $className, $parentClass);
     $hideAutoloadError=false;
     return $result;
+  }
+  public static function getPrivacyClause ($obj=null) {
+    $isPrivate='isPrivate';
+    $idUser='idUser';
+    if ($obj) {
+      if (!is_object($obj)) {
+        $obj=new $obj();
+      }
+      $isPrivate=$obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('isPrivate');
+      $idUser=$obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idUser');
+    }
+    return "($isPrivate=0 or $idUser=".Sql::fmtId(getSessionUser()->id).")";
   }
   
 }

@@ -70,5 +70,13 @@ if ($obj->id and property_exists ( $obj, 'idUser' )) {
     echo formatDateThumb($creationDate,null,'right',32);
   }
       
-}?>
+}
+if (property_exists ( $obj, 'isPrivate' )) {
+  echo '<div style="position:absolute;top:0px;">';
+  if ($obj->isPrivate) {
+    echo '<img style="position:relative;left:60px;height:16px" src="../view/img/private.png" />';
+  }
+  echo '</div>';
+}
+?>
 </div>

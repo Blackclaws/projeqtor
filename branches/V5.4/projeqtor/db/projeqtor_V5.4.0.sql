@@ -134,8 +134,7 @@ ADD COLUMN `solved` int(1) unsigned DEFAULT '0',
 ADD COLUMN `lastUpdateDateTime` datetime DEFAULT NULL;
 UPDATE `${prefix}ticket` set `lastUpdateDateTime`=(select max(operationDate) from `${prefix}history` h WHERE h.refType='Ticket' and h.refId=`${prefix}ticket`.id);
 
-ALTER TABLE `${prefix}action` ADD COLUMN `idPrivacy` int(12) unsigned default 1,
-ADD COLUMN `idTeam` int(12) unsigned default 1;
+ALTER TABLE `${prefix}action` ADD COLUMN `isPrivate` int(1) unsigned default 1;
 
 ALTER TABLE `${prefix}type` ADD COLUMN `mandatoryResolutionOnDone` int(1) unsigned DEFAULT '0',
 ADD COLUMN `lockSolved` int(1) unsigned DEFAULT '0';

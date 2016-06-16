@@ -40,6 +40,7 @@ class ActionMain extends SqlElement {
   public $creationDate;
   public $idUser;
   public $idPriority;
+  public $isPrivate;
   public $description;
   public $_sec_treatment;
   public $idStatus;
@@ -71,11 +72,11 @@ class ActionMain extends SqlElement {
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="name" width="30" >${name}</th>
-    <th field="colorNamePriority" width="5%" formatter="colorNameFormatter">${idPriority}</th>
-    <th field="actualDueDate" width="10%" formatter="dateFormatter">${actualDueDate}</th>
+    <th field="colorNamePriority" width="10%" formatter="colorNameFormatter">${idPriority}</th>
+    <th field="actualDueDate" width="8%" formatter="dateFormatter">${actualDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="colorNameEfficiency" width="10%" formatter="colorNameFormatter">${idEfficiency}</th>
-    <th field="nameResource" formatter="thumbName22" width="9%" >${responsible}</th>
+    <th field="nameResource" formatter="thumbName22" width="12%" >${responsible}</th>
+    <th field="isPrivate" formatter="privateFormatter" width="4%" >${isPrivate}</th>  
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
@@ -107,6 +108,9 @@ class ActionMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($this->id and $this->idUser!=getSessionUser()->id) {
+      self::$_fieldsAttributes['isPrivate']='hidden';
+    }
   }
 
    /** ==========================================================================
@@ -179,8 +183,29 @@ class ActionMain extends SqlElement {
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';           
+    } else if ($colName=="isPrivate") {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+        $colScript .= '  if (this.checked && dijit.byId("idUser") && dijit.byId("idResource")) { ';
+        $colScript .= '    dijit.byId("idResource").set("value", dijit.byId("idUser").get("value")); ';
+        $colScript .= '  } ';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';  
     }
     return $colScript;
+  }
+  
+  /**=========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
+   */
+  public function save() {
+    if ($this->isPrivate) {
+      $this->idResource=$this->idUser;
+    }
+    $result = parent::save();
+    return $result;
+    
   }
     
 }

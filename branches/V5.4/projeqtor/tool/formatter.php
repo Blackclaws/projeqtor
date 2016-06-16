@@ -374,3 +374,10 @@ function diffReplaceEOL($valIn) {
   }
   return $val;
 }
+function privateFormatter($value) {
+  if ($value==0) {
+    return "";
+  } else {
+    return '<div style="width:100%;text-align:center"><img style="height:16px" src="img/private.png" /></div>';
+  }
+}
