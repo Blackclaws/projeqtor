@@ -201,6 +201,12 @@
       $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "=" . Sql::str($val) . " ";
     }
 
+    // --- If isPrivate existe, take into account privacy 
+    if (property_exists($obj,'isPrivate')) {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.= "(" .$obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('isPrivate') . "=0"  
+        . " or ". $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idUser') . "=" . Sql::fmtId(getSessionUser()->id) .")";
+    }
     // --- When browsing Docments throught directory view, limit list of Documents to currently selected Directory
     if ($objectClass=='Document') {
     	if (array_key_exists('Directory',$_SESSION) and ! $quickSearch) {
@@ -686,6 +692,8 @@
                 }
               } else if (substr($formatter[$numField],0,5)=='thumb') {
 	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
+	            } else if ($formatter[$numField]=="privateFormatter") {
+	              $disp=privateFormatter($val);
 	            } else {
 	              $disp=htmlEncode($val);
 	            }

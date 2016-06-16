@@ -1565,6 +1565,9 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   if (! SqlElement::class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
   }
+  if ($obj and property_exists($obj, 'isPrivate') and $obj->isPrivate and $obj->idUser!=getSessionUser()->id) {
+    return 'NO';
+  }
   if (property_exists ( substr ( $menuName, 4 ), '_no' . ucfirst ( $accessType ) )) {
     return 'NO';
   }

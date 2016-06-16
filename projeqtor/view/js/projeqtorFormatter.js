@@ -498,6 +498,14 @@ function iconFormatter(value) {
   return '<img style="height:22px" src="icons/' + value + '" />';
 }
 
+function privateFormatter(value) {
+  if (value==0) { 
+    return "";
+  } else { 
+    return '<div style="width:100%;text-align:center"><img style="height:16px" src="img/private.png" /></div>';
+  }
+}
+
 var cryptFrom = "A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;; ;?;';(;)1;2;3;4;5;6;7;8;9;0"
     .split(';');
 var cryptTo = "2;3;4;5;6;7;8;9;0;A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;1; ;?;';(;)"
