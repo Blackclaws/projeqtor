@@ -511,6 +511,26 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if (count($decomp) > 4) {
         $internalTableSpecial=$decomp [4];
       }
+      // Determine how many items to be displayed per line and column
+      $arrTab=array('rows'=>array(),'cols'=>array()); $arrStart=-99; $arrStop=$internalTableCols*$internalTableRows;
+      for ($ii=0;$ii<$internalTableCols;$ii++) { $arrTab['cols'][$ii]=0; }
+      for ($ii=0;$ii<$internalTableRows;$ii++) { $arrTab['rows'][$ii]=0; }
+      debugLog("\n\n => $internalTableCols, $internalTableRows");
+      foreach ($obj as $arrCol=>$arrVal) {
+        if ($arrCol==$col) { $arrStart=-1; continue; }
+        if ($arrStart<-1) continue;
+        $arrStart++;
+        if ($arrStart>=$arrStop) break;
+        if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_') { continue; }
+        if ($obj->isAttributeSetToField($arrCol, "hidden")) continue;
+        $indCol=$arrStart%$internalTableCols;
+        $indLin=floor($arrStart/$internalTableCols);
+        //debugLog("$indLin $indCol $arrCol");
+        $arrTab['rows'][$indLin]++;
+        $arrTab['cols'][$indCol]++;
+      }
+      debugLog($arrTab);
+      // 
       $internalTable=$internalTableCols * $internalTableRows;
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
@@ -536,7 +556,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       $internalTableBorderTitle=($print)?'border:1px solid #A0A0A0;':'';
       for ($i=0; $i < $internalTableCols; $i++) { // draw table headers
         echo '<td class="detail" style="min-width:75px;'.$internalTableBorderTitle.'">';
-        if ($val [$i]) {
+        if ($arrTab['cols'][$i]==0) {
+          echo '<div class=""></div>';
+        } else if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">&nbsp;</div>';
