@@ -249,7 +249,7 @@ function addTab($param){
   }
   
   $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM ticket t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
-  if (Sql::$lastQueryNbRows > 0) {
+  if ($total > 0) {
     $res=array();
     $totT=0;
     while ($line = Sql::fetchLine($result)) {
@@ -298,6 +298,7 @@ function addTab($param){
       echo '<span>'.($total-$totT).'</span>';
       echo "    </td>";
       echo "    <td width=\"40%\">&nbsp;";
+      echo '<div style="background-color:#3c78b5;margin-top: 3px;position:relative;height:13px;width:'.round(100*(($total-$totT)/$total)).'px;float:left;">&nbsp;</div><div style="position:relative;margin-left:10px;width:50px; float: left;">'.round(100*(($total-$totT)/$total))." %</div>";
       echo "    </td>";
       echo "  </tr>";
     }
