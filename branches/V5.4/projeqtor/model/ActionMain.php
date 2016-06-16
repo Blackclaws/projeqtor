@@ -200,7 +200,7 @@ class ActionMain extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-    if ($this->isPrivate) {
+    if ($this->isPrivate==1) {
       $this->idResource=$this->idUser;
     }
     $result = parent::save();
