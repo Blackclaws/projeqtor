@@ -1740,7 +1740,8 @@ abstract class SqlElement {
 			}
 		}
 		if (property_exists($this, 'isPrivate')) {
-		  $whereClause.=' and '.SqlElement::getPrivacyClause($this);
+		  $whereClause.=($whereClause=='')?' where ':' and ';
+		  $whereClause.=SqlElement::getPrivacyClause($this);
 		}
 		if (array_key_exists($className,self::$_cachedQuery)) {
 			if (array_key_exists($whereClause,self::$_cachedQuery[$className])) {
@@ -1983,8 +1984,10 @@ abstract class SqlElement {
 					  if ($dataLength==1 and substr($key,0,11)!='periodicity') {
   						if (array_key_exists($formField,$_REQUEST)) {
   							//if field is hidden, must check value, otherwise just check existence
-  							if ($this->isAttributeSetToField($key, 'hidden')) {
-  							  $this->$key = Security::checkValidBoolean($_REQUEST[$formField]);
+  							// if ($this->isAttributeSetToField($key, 'hidden')) {
+  							// V5.4 : for action isPrivate can be dynamically hidden, was not detected with prior test
+  							if ($_REQUEST[$formField]==='0' or $_REQUEST[$formField]==='1') {  
+  							  $this->$key = $_REQUEST[$formField];
   							} else {
   								$this->$key = 1;
   							}

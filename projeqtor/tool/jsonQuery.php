@@ -204,8 +204,7 @@
     // --- If isPrivate existe, take into account privacy 
     if (property_exists($obj,'isPrivate')) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.= "(" .$obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('isPrivate') . "=0"  
-        . " or ". $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idUser') . "=" . Sql::fmtId(getSessionUser()->id) .")";
+      $queryWhere.= SqlElement::getPrivacyClause($obj);
     }
     // --- When browsing Docments throught directory view, limit list of Documents to currently selected Directory
     if ($objectClass=='Document') {
