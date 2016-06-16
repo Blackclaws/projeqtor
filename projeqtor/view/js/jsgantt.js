@@ -652,7 +652,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
         	+ ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>&nbsp;</div>';
-        vLeftTable += '<div style="position:relative;z-index:1000;width: ' + vNameWidth + 'px;">';
+        vLeftTable += '<div onclick= JSGantt.taskLink("' + vTaskList[i].getLink() + '")' + 
+        ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
+        + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")'+
+        ' style="position:relative;z-index:1000;width: ' + vNameWidth + 'px;">';
         var levl=vTaskList[i].getLevel();
         var levlWidth = (levl-1) * 16;
         vLeftTable +='<table><tr><td>';
