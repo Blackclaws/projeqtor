@@ -561,7 +561,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         } else if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
-          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">&nbsp;</div>';
+          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;"></div>';
         }
         if ($i < $internalTableCols - 1) {
           echo '</td>';
