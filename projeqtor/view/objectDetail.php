@@ -834,7 +834,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
           echo '<td class="' . $internalTableSpecial . '" style="text-align:right;width:' . $labelStyleWidth . ';">';
-          if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
+          if ($internalTableRowsCaptions [$internalTableCurrentRow] and $arrTab['rows'][$internalTableCurrentRow]>0) {
             echo '<label class="label ' . $internalTableSpecial . '">' . htmlEncode($obj->getColCaption($internalTableRowsCaptions [$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%;white-space:nowrap;'.$internalTableBorder.'">';
