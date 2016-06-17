@@ -130,6 +130,12 @@ class ActivityPlanningElementMain extends PlanningElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($this->isAttributeSetToField('workElementCount', 'hidden') 
+        and $this->isAttributeSetToField('workElementEstimatedWork', 'hidden')
+        and $this->isAttributeSetToField('workElementRealWork', 'hidden')
+        and $this->isAttributeSetToField('workElementLeftWork', 'hidden')) {
+      self::$_fieldsAttributes['_button_showTickets']='hidden';   
+    }
   }
   
   
