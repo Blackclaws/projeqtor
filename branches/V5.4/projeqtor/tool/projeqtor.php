@@ -426,7 +426,9 @@ function exceptionHandler($exception) {
   errorLog ( "cause = " . $exception->getMessage () );
   $trace = $exception->getTrace ();
   foreach ( $trace as $indTrc => $trc ) {
-    errorLog ( "   => #" . $indTrc . " " . $trc ['file'] . " (" . $trc ['line'] . ")" . " -> " . $trc ['function'] . "()" );
+    if (isset($trc ['file']) and isset($trc ['line']) and isset($trc ['function'])) {
+      errorLog ( "   => #" . $indTrc . " " . $trc ['file'] . " (" . $trc ['line'] . ")" . " -> " . $trc ['function'] . "()" );
+    }
   }
   // echo "<span class='messageERROR'>" . i18n("messageError") . " : " . $exception->getMessage() . "</span> ";
   // echo "(" . i18n("contactAdministrator") . ")";
