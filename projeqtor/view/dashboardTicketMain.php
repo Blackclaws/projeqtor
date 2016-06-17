@@ -425,7 +425,6 @@ function addParametersDashboardTicketMain($prefix="t"){
   }
   if($toMe=="1")$result.=" AND $prefix.idResource=".$user->id." ";
   if($toMe=="2")$result.=" AND $prefix.idUser=".$user->id." ";
-  debugLog($result);
   $unresolved="";
 
   if(isset($_REQUEST['dashboardTicketMainUnresolved'])){
