@@ -423,9 +423,9 @@ function addParametersDashboardTicketMain($prefix="t"){
   if(Parameter::getUserParameter("dashboardTicketMainToMe")!=null){
     $toMe=Parameter::getUserParameter("dashboardTicketMainToMe");
   }
-  if($toMe=="1")$result.=" AND $prefix.idRessource=".$user->id." ";
+  if($toMe=="1")$result.=" AND $prefix.idResource=".$user->id." ";
   if($toMe=="2")$result.=" AND $prefix.idUser=".$user->id." ";
-
+  debugLog($result);
   $unresolved="";
 
   if(isset($_REQUEST['dashboardTicketMainUnresolved'])){
@@ -544,10 +544,10 @@ function addParamToUser($user){
     
     $toMe=Parameter::getUserParameter("dashboardTicketMainToMe");
     if($toMe=="1"){
-      $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='idRessource';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='idResource';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='=';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=$user->id;
-      $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idRessource');
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idResource');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']="=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=$user->name;
       $iterateur++;
