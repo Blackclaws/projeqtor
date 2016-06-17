@@ -53,7 +53,7 @@ class TestSessionPlanningElementMain extends PlanningElement {
   public $_void_34;  
   public $initialDuration;
   
-  public $_tab_5_4_smallLabel = array('validated', 'assigned', 'real', 'left', 'reassessed',  'work', 'cost', 'progress','priority');
+  public $_tab_5_2_smallLabel_1 = array('validated', 'assigned', 'real', 'left', 'reassessed',  'work', 'cost');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
@@ -64,6 +64,7 @@ class TestSessionPlanningElementMain extends PlanningElement {
   public $realCost;
   public $leftCost;
   public $plannedCost;
+  public $_tab_5_2_smallLabel_2 = array('', '', '', '', '', 'progress','priority');
   public $progress;
   public $_label_expected;
   public $expectedProgress;

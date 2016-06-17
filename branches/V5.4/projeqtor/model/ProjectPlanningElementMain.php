@@ -52,8 +52,8 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $realDuration;
   public $_void_34;
   public $initialDuration;
-  public $_tab_5_8_smallLabel = array('validated','assigned','real','left','reassessed',
-      'work','cost','expense','reserveAmountShort','totalCost','progress','margin','priority');
+  public $_tab_5_5_smallLabel = array('validated','assigned','real','left','reassessed',
+      'work','cost','expense','reserveAmountShort','totalCost');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
@@ -79,16 +79,22 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $totalRealCost;
   public $totalLeftCost;
   public $totalPlannedCost;
+  public $_tab_5_1_smallLabel_1 = array('','','','','',
+      'progress');
   public $progress;
   public $_label_expected;
   public $expectedProgress;
   public $_label_wbs;
   public $wbs;
+  public $_tab_5_1_smallLabel_2 = array('','','','','',
+      'margin');
   public $marginWork;
   public $marginWorkPct;
   public $marginCost;
   public $marginCostPct;
   public $_void_7_5;
+  public $_tab_1_1_smallLabel_3 = array('',
+      'priority');
   public $priority;
   public $wbsSortable;
   public $topId;
