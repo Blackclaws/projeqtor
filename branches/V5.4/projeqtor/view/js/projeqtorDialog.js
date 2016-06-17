@@ -6477,8 +6477,7 @@ function planningToCanvasToPDF(){
   var maxWidth=(540-marge)*1.25;
   var maxHeight=(737-marge)*1.25;
   if(orientation=="landscape"){
-    inter=maxWidth;
-    maxWidth=(747-marge)*1.25;
+    maxWidth=(850-marge)*1.25;
     maxHeight=(450-marge)*1.25;
   }
   
@@ -6784,7 +6783,7 @@ function planningToCanvasToPDF(){
           if((dojo.isIE && dojo.isIE>0) || window.navigator.userAgent.indexOf("Edge") > -1) {
             pdfMake.createPdf(dd).download('planning.pdf');
           }else{
-            pdfMake.createPdf(dd).open();
+            pdfMake.createPdf(dd).download('planning.pdf');
           }
           hideWait();
           // open the PDF in a new window
