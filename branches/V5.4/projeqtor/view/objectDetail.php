@@ -515,7 +515,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       $arrTab=array('rows'=>array(),'cols'=>array()); $arrStart=-99; $arrStop=$internalTableCols*$internalTableRows;
       for ($ii=0;$ii<$internalTableCols;$ii++) { $arrTab['cols'][$ii]=0; }
       for ($ii=0;$ii<$internalTableRows;$ii++) { $arrTab['rows'][$ii]=0; }
-      debugLog("\n\n => $internalTableCols, $internalTableRows");
       foreach ($obj as $arrCol=>$arrVal) {
         if ($arrCol==$col) { $arrStart=-1; continue; }
         if ($arrStart<-1) continue;
@@ -525,11 +524,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($obj->isAttributeSetToField($arrCol, "hidden")) continue;
         $indCol=$arrStart%$internalTableCols;
         $indLin=floor($arrStart/$internalTableCols);
-        //debugLog("$indLin $indCol $arrCol");
         $arrTab['rows'][$indLin]++;
         $arrTab['cols'][$indCol]++;
       }
-      debugLog($arrTab);
       // 
       $internalTable=$internalTableCols * $internalTableRows;
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
@@ -2733,7 +2730,26 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '</td>';
       }
       if (!$classLink) {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td><img src="css/images/icon'.get_class($linkObj).'16.png" /></td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
+        
+        if (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') {
+          if (get_class($linkObj) == 'DocumentVersion') $version=$linkObj;
+          else $version=new DocumentVersion($linkObj->idDocumentVersion);
+          if ($version->isThumbable()) {
+            $ext = pathinfo($version->fileName, PATHINFO_EXTENSION);
+            if (file_exists("../view/img/mime/$ext.png")) {
+              $img="../view/img/mime/$ext.png";
+            } else {
+              $img= "../view/img/mime/unknown.png";
+            }
+            echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName) . '\');" />';
+          } else {
+            echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
+          }
+        } else {
+          echo '<img src="css/images/icon'.get_class($linkObj).'16.png" />';
+        }
+        echo '</td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
         echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
@@ -2743,6 +2759,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
       }
       echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%">';
+     
       echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
       
       echo formatUserThumb($userId, $userName, 'Creator');
