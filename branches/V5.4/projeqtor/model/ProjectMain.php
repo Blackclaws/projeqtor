@@ -599,6 +599,12 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     // #305 : need to recalculate before dispatching to PE
     $old=$this->getOld();
     $this->recalculateCheckboxes();
+    if (!$this->id) {
+      $this->isUnderConstruction=1;
+    }
+    if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) {
+      $this->isUnderConstruction=0;
+    }
     //$old=$this->getOld();
     //$oldtype=new ProjectType($old->idProjectType);
     $type=new ProjectType($this->idProjectType);
@@ -679,7 +685,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     	 	 }
     	 }
     }
-    if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)$this->isUnderConstruction=0;
     parent::save();
     return $result; 
 
