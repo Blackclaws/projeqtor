@@ -2740,7 +2740,7 @@ function autoOpenFilteringSelect() {
 function debugPrintTraceStack() {
   $stack=debug_backtrace();
   foreach ($stack as $stackLine) {
-    debugLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
+    debugTraceLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
   }
 }
 ?>
