@@ -197,7 +197,7 @@ if ($canPlan) {
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          if(dojo.isChrome)planningPDFBox();
+                          if(dojo.isChrome || '<?php Parameter::getGlobalParameter("pdfPlanningBeta");?>'=='true')planningPDFBox();
                           else showPrint("../tool/jsonPlanning_pdf.php", 'planning', null, 'pdf');
                           </script>
                         </button>
