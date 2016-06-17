@@ -521,7 +521,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($arrStart<-1) continue;
         $arrStart++;
         if ($arrStart>=$arrStop) break;
-        if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_') { continue; }
+        if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_' or substr($arrCol,0,8)=='_button_') { continue; }
         if ($obj->isAttributeSetToField($arrCol, "hidden")) continue;
         $indCol=$arrStart%$internalTableCols;
         $indLin=floor($arrStart/$internalTableCols);
@@ -930,7 +930,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
        
       } else if (substr($col, 0, 8) == '_button_') {
-        if (! $print and !$comboDetail) {
+        if (! $print and !$comboDetail and !$obj->isAttributeSetToField($col,'hidden')) {
           $item=substr($col, 8);
           echo $obj->drawSpecificItem($item);
         }
