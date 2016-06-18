@@ -1961,12 +1961,13 @@ function addExpenseDetail(expenseType) {
   dojo.byId("expenseDetailId").value="";
   dojo.byId("idExpense").value=dojo.byId("objectId").value;
   dijit.byId("expenseDetailName").reset();
+  dijit.byId("expenseDetailReference").reset();
   dijit.byId("expenseDetailDate").set('value', null);
   dijit.byId("expenseDetailType").reset();
   dojo.byId("expenseDetailDiv").innerHtml="";
   dijit.byId("expenseDetailAmount").reset();
   refreshList('idExpenseDetailType', expenseType, '1', null,
-      'expenseDetailType', true);
+      'expenseDetailType', false);
   // dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
   dijit.byId("dialogExpenseDetail").show();
 }
@@ -1984,11 +1985,13 @@ function editExpenseDetail(expenseType, id, idExpense, type, expenseDate,
     return;
   }
   refreshList('idExpenseDetailType', expenseType, '1', null,
-      'expenseDetailType', true);
+      'expenseDetailType', false);
   dojo.byId("expenseDetailId").value=id;
   dojo.byId("idExpense").value=idExpense;
   dijit.byId("expenseDetailName").set("value",
       dojo.byId('expenseDetail_' + id).value);
+  dijit.byId("expenseDetailReference").set("value",
+      dojo.byId('expenseDetailRef_' + id).value);
   dijit.byId("expenseDetailDate").set("value", getDate(expenseDate));
   dijit.byId("expenseDetailAmount").set("value", dojo.number.parse(amount));
   dijit.byId("dialogExpenseDetail").set('title',
@@ -2011,14 +2014,14 @@ function saveExpenseDetail() {
     showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
     return;
   }
-  if (!dijit.byId('expenseDetailDate').get('value')) {
+  /*if (!dijit.byId('expenseDetailDate').get('value')) {
     showAlert(i18n('messageMandatory', new Array(i18n('colDate'))));
     return;
-  }
-  if (!dijit.byId('expenseDetailType').get('value')) {
+  }*/
+  /*if (!dijit.byId('expenseDetailType').get('value')) {
     showAlert(i18n('messageMandatory', new Array(i18n('colType'))));
     return;
-  }
+  }*/
   if (!dijit.byId('expenseDetailAmount').get('value')) {
     showAlert(i18n('messageMandatory', new Array(i18n('colAmount'))));
     return;

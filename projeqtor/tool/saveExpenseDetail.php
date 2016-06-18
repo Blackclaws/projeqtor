@@ -51,6 +51,10 @@ $expenseDetailName=null;
 if (array_key_exists('expenseDetailName',$_REQUEST)) {
   $expenseDetailName=$_REQUEST['expenseDetailName'];
 }
+$expenseDetailReference=null;
+if (array_key_exists('expenseDetailReference',$_REQUEST)) {
+  $expenseDetailReference=$_REQUEST['expenseDetailReference'];
+}
 
 $expenseDetailDate=null;
 if (array_key_exists('expenseDetailDate',$_REQUEST)) {
@@ -99,6 +103,7 @@ $expenseDetail=new ExpenseDetail($expenseDetailId);
 $expenseDetail->idExpense=$idExpense; 
 $expenseDetail->idExpenseDetailType=$expenseDetailType; 
 $expenseDetail->name=$expenseDetailName;
+$expenseDetail->externalReference=$expenseDetailReference;
 //$expenseDetail->description;
 $expenseDetail->expenseDate=$expenseDetailDate; 
 $expenseDetail->amount=$expenseDetailAmount;

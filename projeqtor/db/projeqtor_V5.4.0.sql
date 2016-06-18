@@ -144,3 +144,5 @@ ALTER TABLE `${prefix}project` ADD COLUMN `isUnderConstruction` int(1) unsigned 
 ALTER TABLE `${prefix}product` ADD COLUMN `idResource` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned;
+
+ALTER TABLE `${prefix}expensedetail` ADD COLUMN `externalReference` varchar(100) DEFAULT NULL;

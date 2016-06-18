@@ -37,6 +37,7 @@ class ExpenseDetail extends SqlElement {
   public $idExpenseDetailType; 
   public $name;
   public $description;
+  public $externalReference;
   public $expenseDate; 
   public $amount; 
   public $value01;
