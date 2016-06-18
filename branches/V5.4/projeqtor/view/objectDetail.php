@@ -3234,9 +3234,10 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print)?'15':'10') . '%">' . i18n('colDate') . '</td>';
-  echo '<td class="assignHeader" style="width:35%">' . i18n('colName') . '</td>';
-  echo '<td class="assignHeader" style="width:15%" >' . i18n('colType') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'13':'8') . '%">' . i18n('colDate') . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colReference') . '</td>';
+  echo '<td class="assignHeader" style="width:30%">' . i18n('colName') . '</td>';
+  echo '<td class="assignHeader" style="width:12%" >' . i18n('colType') . '</td>';
   echo '<td class="assignHeader" style="width:25%">' . i18n('colDetail') . '</td>';
   // if ($workVisible) {
   echo '<td class="assignHeader" style="width:10%">' . i18n('colAmount') . '</td>';
@@ -3258,16 +3259,18 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData" style="width:' . (($print)?'15':'10') . '%">' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
-    echo '<td class="assignData" style="width:35%"';
+    echo '<td class="assignData" style="width:' . (($print)?'13':'8') . '%">' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
+    echo '<td class="assignData" style="width:10%">' . $expenseDetail->externalReference. '</td>';
+    echo '<td class="assignData" style="width:30%"';
     echo '>' . $expenseDetail->name;
     if ($expenseDetail->description and !$print) {
       echo formatCommentThumb($expenseDetail->description);
     }
     echo '<input type="hidden" id="expenseDetail_' . htmlEncode($expenseDetail->id) . '" value="' . htmlEncode($expenseDetail->name, 'none') . '"/>';
+    echo '<input type="hidden" id="expenseDetailRef_' . htmlEncode($expenseDetail->id) . '" value="' . htmlEncode($expenseDetail->externalReference, 'none') . '"/>';
     
     echo '</td>';
-    echo '<td class="assignData" style="width:15%">' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) . '</td>';
+    echo '<td class="assignData" style="width:12%">' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) . '</td>';
     echo '<td class="assignData" style="width:25%">';
     echo $expenseDetail->getFormatedDetail();
     echo '</td>';

@@ -1485,20 +1485,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          <table>
            <tr>
              <td class="dialogLabel" >
-               <label for="expenseDetailName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
-             </td>
-             <td>
-               <input id="expenseDetailName" name="expenseDetailName" value="" 
-                 dojoType="dijit.form.TextBox" 
-                 style="width:400px" 
-                 required="true" 
-                 missingMessage="<?php echo i18n('messageMandatory',array('colName'));?>" 
-                 invalidMessage="<?php echo i18n('messageMandatory',array('colName'));?>"              
-               />
-             </td>
-           </tr>
-           <tr>
-             <td class="dialogLabel" >
                <label for="expenseDetailDate" ><?php echo i18n("colDate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -1508,12 +1494,38 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                  invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
                  type="text" maxlength="10" 
                  style="width:100px; text-align: center;" class="input"
-                 required="true"
-                 hasDownArrow="true" 
+                 required="false"
+                 hasDownArrow="true"
                  missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                  invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                  >
              </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailReference" ><?php echo i18n("colReference");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="expenseDetailReference" name="expenseDetailReference" value="" 
+                 dojoType="dijit.form.TextBox" class="input"
+                 style="width:200px" 
+                 required="false"             
+               />
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="expenseDetailName" name="expenseDetailName" value="" 
+                 dojoType="dijit.form.TextBox" class="input required"
+                 style="width:400px" 
+                 required="true" 
+                 missingMessage="<?php echo i18n('messageMandatory',array('colName'));?>" 
+                 invalidMessage="<?php echo i18n('messageMandatory',array('colName'));?>"              
+               />
              </td>
            </tr>
  
@@ -1528,7 +1540,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 style="width:200px" 
                 class="input" value="" 
                 onChange="expenseDetailTypeChange();" >                
-                 <?php htmlDrawOptionForReference('idExpenseDetailType', null, null, true);?>            
+                 <?php htmlDrawOptionForReference('idExpenseDetailType', null, null, false);?>            
                </select>  
              </td>
            </tr>
@@ -1546,10 +1558,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td>
                <?php echo ($currencyPosition=='before')?$currency:''; ?>
                <div id="expenseDetailAmount" name="expenseDetailAmount" value="" 
-                 dojoType="dijit.form.NumberTextBox" 
+                 dojoType="dijit.form.NumberTextBox" class="input required"
                  constraints="{min:0}" 
                  style="width:97px"
-                 readonly="readonly" >
+                  >
                  <?php echo $keyDownEventScript;?>
                  </div>
                <?php echo ($currencyPosition=='after')?$currency:'';?>

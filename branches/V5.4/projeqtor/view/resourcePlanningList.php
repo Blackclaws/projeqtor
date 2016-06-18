@@ -71,7 +71,8 @@ if ($saveShowClosed) {
 ?>
    
 <div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
-	<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
+	<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px"
+	style="z-index: 3; position: relative; overflow: visible !important;">
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
 		    <td width="50px" align="center">
