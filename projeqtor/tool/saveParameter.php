@@ -110,6 +110,7 @@ if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess'),
                                      'workValid'=>i18n('workValidate'),
   		                               'diary'=>i18n('diaryAccess'),
+                                     'expense'=>i18n('resourceExpenseAccess')
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
   		                               'assignmentView'=>i18n('assignmentViewRight'),

@@ -1527,8 +1527,14 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $attributes;
         echo $valStore;
         echo autoOpenFilteringSelect();
-        echo ' >';      
-        $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
+        echo ' >';
+        if ($classObj=='IndividualExpense' and $col=='idResource') {
+          $specific='expense';
+          $next=null;
+          include '../tool/drawResourceListForSpecificAccess.php';
+        } else {
+          $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
+        }
         echo $colScript;
         echo '</select>';
         if ($displayDirectAccessButton or $displayComboButtonCol) {

@@ -80,7 +80,7 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
                   </script>
                   <?php 
                    $specific='imputation';
-                   include '../tool/drawResourceListForSpecificAccess.php'?>  
+                   include '../tool/drawResourceListForSpecificAccess.php';?>  
                 </select>
                 &nbsp;&nbsp;<?php echo i18n("year");?>
                 <div style="width:70px; text-align: center; color: #000000;" 
