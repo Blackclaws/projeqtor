@@ -6783,20 +6783,23 @@ function planningToCanvasToPDF(){
             dojo.isIE = undefined;
 
           }
+          var pdfFileName='ProjeQtOr_Planning';
+          var now = new Date();
+          pdfFileName+='_'+formatDate(now).replace(/-/g,'')+'_'+formatTime(now).replace(/:/g,'');
+          pdfFileName+='.pdf';
           if((dojo.isIE && dojo.isIE>0) || window.navigator.userAgent.indexOf("Edge") > -1) {
-            pdfMake.createPdf(dd).download('planning.pdf');
+            pdfMake.createPdf(dd).download(pdfFileName);
           }else{
-            pdfMake.createPdf(dd).download('planning.pdf');
+            pdfMake.createPdf(dd).download(pdfFileName);
           }
-          hideWait();
           // open the PDF in a new window
           //pdfMake.createPdf(dd).open();
           // print the PDF (temporarily Chrome-only)
          // pdfMake.createPdf(dd).print();
           // download the PDF (temporarily Chrome-only)
-
           dijit.byId('dialogPlanningPdf').hide();
           iframe.parentNode.removeChild(iframe);
+          setTimeout('hideWait();',100);
         });
       });
     });
