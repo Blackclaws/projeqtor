@@ -316,7 +316,11 @@ function drawTableFromObjectList($objectList) {
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
   	echo ' title="' . i18n('sectionImputationDiary') . '">';
-  	htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess'), 'workValid'=>i18n('workValidate'),'diary'=>i18n('diaryAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
+  	htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess'), 
+  	                         'workValid'=>i18n('workValidate'),
+  	                         'diary'=>i18n('diaryAccess'),
+  	                         'expense'=>i18n('resourceExpenseAccess')), 
+  	    'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
   	echo '</div><br/>';
   	$titlePane="habilitationOther_WorkCost";
   	echo '<div dojoType="dijit.TitlePane"';
