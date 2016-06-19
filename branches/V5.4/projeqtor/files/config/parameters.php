@@ -17,4 +17,5 @@ $i18nNocache=true;
 $memoryLimitForPDF='512';
 $debugIEcompatibility=false;
 $paramSupportEmail="support@projeqtor.org";
+$pdfPlanningBeta='true';
 //======= END
