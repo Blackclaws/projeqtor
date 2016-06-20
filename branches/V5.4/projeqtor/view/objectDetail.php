@@ -541,6 +541,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($costVisibility == 'NO' and (substr($testRowCaption, -4) == 'cost' or substr($testRowCaption, -7) == 'expense')) {
             $internalTableRowsCaptions [$i]='';
           }
+          if ($costVisibility != 'ALL' and substr($testRowCaption, 0,13) == 'reserveamount' ) {
+            $internalTableRowsCaptions [$i]='';
+          }
         }
         if ($workVisibility != 'ALL' and $costVisibility != 'ALL') {
           $val [2]='';

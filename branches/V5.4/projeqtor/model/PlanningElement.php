@@ -1200,13 +1200,15 @@ class PlanningElement extends SqlElement {
     if ($this->_costVisibility =='NO') {
       if (substr($fieldName,-4)=='Cost'
        or substr($fieldName,0,7)=='expense'
-       or substr($fieldName,0,5)=='total') {
+       or substr($fieldName,0,5)=='total'
+       or substr($fieldName, 0,13) == 'reserveAmount') {
          return 'hidden';
       }
     } else if ($this->_costVisibility =='VAL') {
       if ( (substr($fieldName,-4)=='Cost' and $fieldName!='validatedCost')
        or (substr($fieldName,0,7)=='expense' and $fieldName!='expenseValidatedAmount')
-       or (substr($fieldName,0,5)=='total' and $fieldName!='totalValidatedCost')) {
+       or (substr($fieldName,0,5)=='total' and $fieldName!='totalValidatedCost')
+       or substr($fieldName, 0,13) == 'reserveAmount') {
          return 'hidden';
       }
     }
