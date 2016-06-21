@@ -2609,7 +2609,9 @@ abstract class SqlElement {
 					$colScript .= '   refreshList("idActivity","idProject", this.value);';
 				}
 				if ($colName=='idProject' and property_exists($this,'idResource')) {
-					$colScript .= '   refreshList("idResource","idProject", this.value, "' . htmlEncode($this->idResource). '");';
+				  $required=false;
+				  if ($this->isAttributeSetToField('idResource', 'required')) $required='true';
+					$colScript .= '   refreshList("idResource","idProject", this.value, "' . htmlEncode($this->idResource). '",null,'.$required.',null,null,"'.get_class($this).'");';
 				}
 				if ($colName=='idProject' and property_exists($this,'idProduct')) {
 					$colScript .= '   refreshList("idProduct","idProject", this.value, dijit.byId("idProduct").get("value"));';

@@ -264,6 +264,11 @@
 	      $lstTopPrj=$prj->getTopProjectList(true);
 	      $in=transformValueListIntoInClause($lstTopPrj);
 	      $where="idle=0 and idProject in " . $in; 
+	      if (isset($_REQUEST['objectClass']) and $_REQUEST['objectClass']=='IndividualExpense') {
+	        if (securityGetAccessRight('menuIndividualExpense', 'read', null, getSessionUser() )=='OWN') {
+	          $where.=" and idResource=".Sql::fmtId(getSessionUser()->id);
+	        }
+	      }
 	      $aff=new Affectation();
 	      $list=$aff->getSqlElementsFromCriteria(null,null, $where);
 	      $nbRows=0;
