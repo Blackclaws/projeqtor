@@ -4157,7 +4157,7 @@ function showHelp() {
 /**
  * Refresh a list (after update)
  */
-function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1) {
+function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1,objectClass) {
   var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
   if (param) {
     urlList+='&critField=' + param;
@@ -4173,6 +4173,7 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
   if (required) {
     urlList+='&required=true';
   }
+  if (objectClass) urlList+='&objectClass='+objectClass;
   var datastore=new dojo.data.ItemFileReadStore({
     url : urlList
   });

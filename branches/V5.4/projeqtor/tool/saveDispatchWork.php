@@ -94,7 +94,7 @@ if ($we->realWork!=$total) {
 $arrayResourceDate=array();
 foreach ($dateList as $idx=>$date) {
   if ($error) break;
-  if ( ($date and $resourceList[$idx]) or $workIdList[$idx]) {
+  if ( ($date and isset($resourceList[$idx]) and $resourceList[$idx]) or (isset($workIdList[$idx]) and $workIdList[$idx]) ) {
     $id=(isset($workIdList[$idx]))?$workIdList[$idx]:null;
     $work=new Work($id);
     $work->setDates($date);

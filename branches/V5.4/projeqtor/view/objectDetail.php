@@ -1531,10 +1531,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo $valStore;
         echo autoOpenFilteringSelect();
         echo ' >';
-        if ($classObj=='IndividualExpense' and $col=='idResource') {
-          $specific='expense';
-          $next=null;
-          include '../tool/drawResourceListForSpecificAccess.php';
+        if ($classObj=='IndividualExpense' and $col=='idResource' and securityGetAccessRight('menuIndividualExpense', 'read', $obj, $user )=='OWN') {
+          $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, 'id', $user->id);
         } else {
           $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
         }

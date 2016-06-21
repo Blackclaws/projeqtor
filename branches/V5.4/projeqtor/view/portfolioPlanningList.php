@@ -169,8 +169,9 @@ if ($saveShowClosed) {
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton"  showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          //showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
-                           showPrint("../tool/jsonPlanning_pdf.php?portfolio=true", 'planning', null, 'pdf');
+                          var paramPdf='<?php echo Parameter::getGlobalParameter("pdfPlanningBeta");?>';
+                          if(paramPdf!='false' && (dojo.isChrome || paramPdf=='true') ) planningPDFBox();
+                          else showPrint("../tool/jsonPlanning_pdf.php?portfolio=true", 'planning', null, 'pdf');
                           </script>
                         </button>
                       </td>
