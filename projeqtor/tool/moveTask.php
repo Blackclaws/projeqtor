@@ -53,5 +53,8 @@ Sql::beginTransaction();
 $task=new PlanningElement($idFrom);
 $result=$task->moveTo($idTo,$mode);
 //$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
+if ($task->refType=='Project') {
+  echo '<input type="hidden" id="needProjectListRefresh" value="true" />';
+}
 displayLastOperationStatus($result);
 ?>

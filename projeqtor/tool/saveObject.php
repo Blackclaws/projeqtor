@@ -72,6 +72,7 @@ if ($newObj->id == '0') {
 if ($newObj->id and $obj->id and $newObj->id != $obj->id) {
   throwError ( 'last save object (' . get_class ( $obj ) . ' #' . $obj->id . ') is not the expected object (' . $className . ' #' . $newObj->id . ').' );
 }
+
 // save to database
 $result = $newObj->save ();
 
@@ -102,6 +103,11 @@ if ($status == "OK") {
   Sql::rollbackTransaction ();
 }
 
+if ($status == "OK" and $className=='Project') {
+  if ($newObj->name!=$obj->name or $newObj->idProject!=$obj->idProject) {
+    echo '<input type="hidden" id="needProjectListRefresh" value="true" />';
+  }
+}
 if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
     /*if (isset ( $_REQUEST ['directAccessIndex'] )) {

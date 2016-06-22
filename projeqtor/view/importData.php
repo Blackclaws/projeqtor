@@ -116,6 +116,6 @@
     </form>
   </div>
   <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
-   <iframe width="100%" height="100%" name="resultImportData" id="resultImportData"></iframe>
+   <iframe width="100%" height="100%" name="resultImportData" id="resultImportData" onload="importFinished();"></iframe>
   </div>
 </div>  

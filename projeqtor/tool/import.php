@@ -109,6 +109,7 @@ if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
 
 //// V2.6 : extracted the import function to Importable class to use it from Cron
 $result=Importable::import($uploadfile, $class);
+
 echo Importable::$importResult;
 //echo $result;
 ?>

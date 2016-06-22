@@ -2853,6 +2853,11 @@ function controlImportData() {
   }
   return true;
 }
+function importFinished() {
+  if (dijit.byId('elementType') && dijit.byId('elementType').get('displayedValue')==i18n('Project') ) {
+    refreshProjectSelectorList();
+  }
+}
 // =============================================================================
 // = Plan
 // =============================================================================
