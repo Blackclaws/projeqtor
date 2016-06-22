@@ -374,22 +374,23 @@ class Importable extends SqlElement {
 						$field = trim($field, "\r\n");
 					}
 					$field = str_replace('""', '"', $field);
+					$fldName=$title[$idx];
 					if (property_exists($obj, $title[$idx])) {
-						if (substr($title[$idx], 0, 2) == 'id' and substr($title[$idx], 0, 4) != 'idle' and strlen($title[$idx]) > 2 and !is_numeric($field)) {
-							if ($title[$idx]=='idProject' or $title[$idx]=='idActivity') {
+						if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
+							if ($fldName=='idProject' or $fldName=='idActivity') {
 							  $crit=array('name'=>$field);
-							  if ($title[$idx]=='idActivity' and property_exists($obj, 'idProject') and $obj->idProject) {
+							  if ($fldName=='idActivity' and property_exists($obj, 'idProject') and $obj->idProject) {
 							    $crit['idProject']=$obj->idProject; // if project know, restrict to same project
 							  }
-							  $parentObj=SqlElement::getSingleSqlElementFromCriteria(substr($title[$idx], 2), $crit);
+							  $parentObj=SqlElement::getSingleSqlElementFromCriteria(substr($fldName, 2), $crit);
 							  if ($parentObj->id) { // Found and no dupplicate
-							    $obj->$title[$idx]= $parentObj->id;
+							    $obj->$fldName= $parentObj->id;
 							  }
 							} else {
-						    $obj->$title[$idx] = SqlList::getIdFromName(substr($title[$idx], 2), $field);
+						    $obj->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
 							}
 						} else {
-							$obj->$title[$idx] = $field;
+							$obj->$fldName = $field;
 						}
 						$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 						continue;
@@ -400,11 +401,11 @@ class Importable extends SqlElement {
 							$obj->$subClass = new $subClass();
 						}
 						$sub = $obj->$subClass;
-						if (property_exists($subClass, $title[$idx])) {
-							if (substr($title[$idx], 0, 2) == 'id' and substr($title[$idx], 0, 4) != 'idle' and strlen($title[$idx]) > 2 and !is_numeric($field)) {
-								$obj->$subClass->$title[$idx] = SqlList::getIdFromName(substr($title[$idx], 2), $field);
+						if (property_exists($subClass, $fldName)) {
+							if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
+								$obj->$subClass->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
 							} else {
-								$obj->$subClass->$title[$idx] = $field;
+								$obj->$subClass->$fldName = $field;
 							}
 							$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 							continue;
