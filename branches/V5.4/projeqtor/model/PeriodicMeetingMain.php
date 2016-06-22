@@ -587,6 +587,7 @@ class PeriodicMeetingMain extends SqlElement {
   private function saveMeeting($currentDate, $nb, $old) {
   	$critArray=array("idPeriodicMeeting"=>$this->id, "isPeriodic"=>'1',"periodicOccurence"=>$nb);
   	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray);
+  	$isNew=($meeting->id)?false:true;
   	$meeting->idProject=$this->idProject;
     $meeting->idMeetingType=$this->idMeetingType;
     $meeting->idPeriodicMeeting=$this->id;
@@ -610,6 +611,31 @@ class PeriodicMeetingMain extends SqlElement {
     if ($old->MeetingPlanningElement->priority!=$this->MeetingPlanningElement->priority) 
         $meeting->MeetingPlanningElement->priority=$this->MeetingPlanningElement->priority;
     $resultMeetingSave=$meeting->save();
+    if ($isNew) {
+      $ass=new Assignment();
+      $assList=$ass->getSqlElementsFromCriteria(array('refType'=>'PeriodicMeeting','refId'=>$this->id));
+      foreach ($assList as $assPeriodic) {
+        $ass=new Assignment();
+        $ass->refType='Meeting';
+        $ass->refId=$meeting->id;
+        $ass->idResource=$assPeriodic->idResource;
+        $ass->idRole=$assPeriodic->idRole;
+        $ass->idProject=$assPeriodic->idProject;
+        $ass->comment=$assPeriodic->comment;
+        $ass->assignedWork=$assPeriodic->assignedWork;
+        $ass->leftWork=$assPeriodic->assignedWork;
+        $ass->plannedWork=$assPeriodic->assignedWork;
+        $ass->realWork=0;
+        $ass->rate=$assPeriodic->rate;
+        $ass->dailyCost=$assPeriodic->dailyCost;
+        $ass->assignedCost=$assPeriodic->assignedCost;
+        $ass->leftCost=$assPeriodic->assignedCost;
+        $ass->realCost=0;
+        $ass->plannedCost=$ass->assignedCost;
+        $ass->idle=0;
+        $resAss=$ass->save();
+      }
+    }
   }
   
   public function setAttributes() { 
