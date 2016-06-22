@@ -2318,6 +2318,12 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
+  if (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone' || eltClass=='Meeting' || eltClass=='TestSession') {
+    if (dojo.byId("GanttChartDIV")) {
+      target='planning';
+      forceListRefresh=true;
+    }
+  }
   selectTreeNodeById(dijit.byId('menuTree'), eltClass);
   formChangeInProgress=false;
   //if ( dojo.byId("GanttChartDIV")

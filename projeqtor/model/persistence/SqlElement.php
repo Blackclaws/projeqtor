@@ -2609,7 +2609,7 @@ abstract class SqlElement {
 					$colScript .= '   refreshList("idActivity","idProject", this.value);';
 				}
 				if ($colName=='idProject' and property_exists($this,'idResource')) {
-				  $required=false;
+				  $required='false';
 				  if ($this->isAttributeSetToField('idResource', 'required')) $required='true';
 					$colScript .= '   refreshList("idResource","idProject", this.value, "' . htmlEncode($this->idResource). '",null,'.$required.',null,null,"'.get_class($this).'");';
 				}
