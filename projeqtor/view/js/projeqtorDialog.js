@@ -5600,8 +5600,13 @@ function deleteMultipleUpdateMode(objectClass) {
   }
   actionOK=function() {
     actionOK2=function() {
-      showConfirm(dijit.byId('deleteMultipleResultDiv').get('content'), function(){loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
+      if (dijit.byId('deleteMultipleResultDiv').get('content')!='') {
+        showConfirm(dijit.byId('deleteMultipleResultDiv').get('content'), function(){loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
           'resultDivMultiple', 'objectFormMultiple');});
+      } else {
+        loadContent('../tool/deleteObjectMultiple.php?objectClass=' + objectClass,
+            'resultDivMultiple', 'objectFormMultiple');
+      } 
     };
     setTimeout(function(){
       loadContent('../tool/deleteObjectMultipleControl.php?objectClass=' + objectClass,
