@@ -907,6 +907,8 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>',posdeb)-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
+  console.log("lastOperationStatus"+lastOperationStatus.value);
+  console.log("validationType"+validationType);
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
@@ -949,6 +951,7 @@ function finalizeMessageDisplay(destination, validationType) {
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
     	  if (validationType=='copyProject') {
+    	    needProjectListRefresh=true;
     		  dojo.byId('objectClass').value="Project";
     	  } else {
     		  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
@@ -987,6 +990,7 @@ function finalizeMessageDisplay(destination, validationType) {
     	  //hideWait();
       }
     } else {
+      console.log("no validationType");
       formInitialize();
       // refresh the grid to reflect changes
       var lastSaveId=dojo.byId('lastSaveId');
@@ -1026,7 +1030,7 @@ function finalizeMessageDisplay(destination, validationType) {
       }
       // last operations depending on the executed operatoin (insert, delete,
     // ...)
-      console.log(lastOperation.value);
+      console.log("lastOperation="+lastOperation.value);
       if (lastOperation.value=="insert" || forceRefreshCreationInfo) {       
         dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
@@ -1238,6 +1242,9 @@ function finalizeMessageDisplay(destination, validationType) {
       }
     }
     hideWait();
+  }
+  if (dojo.byId('needProjectListRefresh') && dojo.byId('needProjectListRefresh').value=='true') {
+    needProjectListRefresh=true;
   }
   if (needProjectListRefresh) {
     refreshProjectSelectorList();
