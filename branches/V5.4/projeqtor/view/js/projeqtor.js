@@ -1026,6 +1026,7 @@ function finalizeMessageDisplay(destination, validationType) {
       }
       // last operations depending on the executed operatoin (insert, delete,
     // ...)
+      console.log(lastOperation.value);
       if (lastOperation.value=="insert" || forceRefreshCreationInfo) {       
         dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {

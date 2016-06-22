@@ -54,7 +54,17 @@ $cptWarning=0;
 $cptNoChange=0;
 echo "<table>";
 SqlElement::setDeleteConfirmed();
+$selectListSorted=array();
 foreach ($selectList as $id) {
+  $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$className,'refId'=>$id));
+  if ($pe->id) {
+    $selectListSorted[$pe->wbsSortable]=$id;
+  } else {
+    $selectListSorted[$id]=$id;
+  }
+}
+krsort($selectListSorted);
+foreach ($selectListSorted as $id) {
 	if (!trim($id)) { continue;}
 	Security::checkValidId($id);
 	Sql::beginTransaction();
