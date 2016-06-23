@@ -167,6 +167,7 @@ foreach ($lstVersion as $versId=>$versName) {
 	  if ($paramProject) {
 	    $crit.=" and ".$obj->getDatabaseColumnName('idProject')."=$paramProject";
 	  }
+	  $crit.=' and '.$where;
     $lst=$obj->getSqlElementsFromCriteria(null,null,$crit);
     $type='id'.get_class($obj).'Type';
     foreach ($lst as $item) {

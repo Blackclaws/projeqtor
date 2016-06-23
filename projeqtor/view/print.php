@@ -185,7 +185,6 @@
   global $outMode, $includeFile, $orientation;
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
-  debugLog($_REQUEST);
   $outputFileName=null;
   if (isset($_REQUEST['page']) and $_REQUEST['page']=='objectDetail.php' and isset($_REQUEST['objectClass']) and isset($_REQUEST['objectId'])) {
     $objectClass=$_REQUEST['objectClass'];

@@ -247,6 +247,16 @@ $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {
   $globalSum[$startDate+$i-1]='';
 }
+$sortProject=array();
+foreach ($projects as $id=>$name) {
+  $sortProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'#'.$id]=$name;
+}
+ksort($sortProject);
+$projects=array();
+foreach ($sortProject as $sortId=>$name) {
+  $split=explode('#', $sortId);
+  $projects[$split[1]]=$name;
+}
 foreach ($projects as $idP=>$nameP) {
   $sum=array();
   for ($i=1; $i<=$nbDays;$i++) {

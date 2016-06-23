@@ -206,6 +206,16 @@ echo '<td>&nbsp;</td>';
 echo "</tr></table>";
 //echo "<br/>";
 echo '<table width="100%" align="left"><tr>';
+$sortProject=array();
+foreach ($projects as $id=>$name) {
+  $sortProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'#'.$id]=$name;
+}
+ksort($sortProject);
+$projects=array();
+foreach ($sortProject as $sortId=>$name) {
+  $split=explode('#', $sortId);
+  $projects[$split[1]]=$name;
+}
 $cptProj=0;
 foreach($projects as $idP=>$nameP) {
 	if ((($cptProj) % 8)==0) { echo '</tr><tr>';}
