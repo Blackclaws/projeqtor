@@ -5428,7 +5428,8 @@ function unlockRequirement() {
   return true;
 }
 
-function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
+function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable) {
+  if(typeof closable =='undefined')closable=true;
   var hideCallback=function() {
   };
   if (clearOnHide) {
@@ -5447,7 +5448,8 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
       width : '500px',
       onHide : hideCallback,
       content : i18n("loading"),
-      'class' : extraClass
+      'class' : extraClass,
+      closable : closable
     });
   } else {
     dialog=dijit.byId(dialogDiv);
@@ -5462,10 +5464,10 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide) {
     handleAs : "text",
     load : function(data) {
       var contentWidget=dijit.byId(dialogDiv);
-      if (!contentWidget) {
-        return;
-      }
       contentWidget.set('content', data);
+      if(closable){
+        contentWidget.set('content', data);
+      }
       if (autoShow) {
         setTimeout("dijit.byId('" + dialogDiv + "').show();", 100);
       }
