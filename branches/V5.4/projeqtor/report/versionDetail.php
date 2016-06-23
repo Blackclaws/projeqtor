@@ -140,6 +140,7 @@ foreach ($lstVersion as $versId=>$versName) {
   $sumDone='';
   $cpt=0;
 	foreach ($lstObj as $obj) {
+	  $crit=$where.' and ';
 		if (property_exists($obj, 'idTargetProductVersion')) {
 			$crit="(".$obj->getDatabaseColumnName('idTargetProductVersion')."=$versId";
 			$scope='TargetProductVersion';
@@ -167,7 +168,6 @@ foreach ($lstVersion as $versId=>$versName) {
 	  if ($paramProject) {
 	    $crit.=" and ".$obj->getDatabaseColumnName('idProject')."=$paramProject";
 	  }
-	  $crit.=' and '.$where;
     $lst=$obj->getSqlElementsFromCriteria(null,null,$crit);
     $type='id'.get_class($obj).'Type';
     foreach ($lst as $item) {
