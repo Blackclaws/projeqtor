@@ -537,7 +537,7 @@ class ResourceMain extends SqlElement {
     if ($image->id and $image->isThumbable()) {
   	  $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
              . ' style="cursor:pointer;border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
-             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" />';
+             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName,'protectQuotes').'\');" />';
     } else {
     	//$result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
       $result.='<img src="../view/img/Affectable/thumb'.$size.'.png" '

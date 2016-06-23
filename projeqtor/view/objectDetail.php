@@ -2054,7 +2054,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       } else {
         $img= "../view/img/mime/unknown.png";
       }
-      echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName) . '\');" />';
+      echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName,'protectQuotes') . '\');" />';
     } else { 
       echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
     }
@@ -2607,7 +2607,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       echo '<td class="attachmentData" style="width:5%;">#' . htmlEncode($attachment->id) . '</td>';
       echo '<td class="attachmentData" style="width:5%;border-right:none;text-align:center;">';
       if ($attachment->isThumbable()) {
-        echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . htmlEncode($attachment->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . htmlEncode($attachment->id) . '\',\'' . htmlEncode($attachment->fileName) . '\');" />';
+        echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . htmlEncode($attachment->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . htmlEncode($attachment->id) . '\',\'' . htmlEncode($attachment->fileName,'protectQuotes') . '\');" />';
       } else if ($attachment->link and !$print) {
         echo '<div style="float:left;cursor:pointer" onClick="showLink(\'' . htmlEncode(urldecode($attachment->link)) . '\');">';
         echo '<img src="../view/img/mime/html.png" title="' . htmlEncode($attachment->link) . '" />';
@@ -2749,7 +2749,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
             } else {
               $img= "../view/img/mime/unknown.png";
             }
-            echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName) . '\');" />';
+            echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName,'protectQuotes') . '\');" />';
           } else {
             echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
           }

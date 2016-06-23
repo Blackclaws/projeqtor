@@ -93,10 +93,19 @@ function purgeFiles($dir, $pattern) {
  * $param boolean $square if thumb target to be rendered as a square (crop borders)
  */
 function createThumb($imageFile,$size,$thumb=null, $square=false) {
+  $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+  if ($paramFilenameCharset) {
+    $thumb = iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$thumb);
+  }
   if (!$size) {
     copy($imageFile, $thumb);
     return;
   }
+  $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+  if ($paramFilenameCharset) {
+    $imageFile = iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$imageFile);
+  }
+  debugLog($imageFile);
   if (!$imageFile or ! is_file($imageFile)) {
     return false;
   }
