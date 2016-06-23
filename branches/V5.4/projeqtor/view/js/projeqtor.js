@@ -907,8 +907,6 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>',posdeb)-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-  console.log("lastOperationStatus"+lastOperationStatus.value);
-  console.log("validationType"+validationType);
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
@@ -984,7 +982,6 @@ function finalizeMessageDisplay(destination, validationType) {
           } else if (validationType=='dependency' && 
         		  (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
               noHideWait=true;
-              //refreshJsonPlanning();
               refreshGrid(); // Will call refreshJsonPlanning() if needed and plan() if required
           }
     	  //hideWait();
@@ -1017,9 +1014,12 @@ function finalizeMessageDisplay(destination, validationType) {
       // Refresh the planning Gantt (if visible)
       if (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV") ) {
         noHideWait=true;
+        console.log("destination="+dijit.byId(destination).get('content'));
         if (destination=="planResultDiv") {
           if (dojo.byId("saveDependencySuccess") && dojo.byId("saveDependencySuccess").value=='true') {
             refreshGrid(); // It is a dependency add throught D&D => must replan is needed
+          } else if (dojo.byId('lastOperation') && dojo.byId('lastOperation').value=='move') {
+            refreshGrid();
           } else {
             refreshJsonPlanning(); // Must not call refreshGrid() to avoid never ending loop
           }
@@ -2349,7 +2349,6 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     }
     if (forceListRefresh) {
       refreshGrid();
-      //refreshJsonPlanning();
     }
 	  dojo.byId('objectClass').value=eltClass;
 	  dojo.byId('objectId').value=eltId;
