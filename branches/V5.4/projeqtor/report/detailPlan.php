@@ -276,7 +276,17 @@ foreach ($resources as $idR=>$nameR) {
 	  }
 	  $cpt+=1;
 	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . htmlEncode($nameR) . '</td>';
-	  foreach ($result[$idR] as $idP=>$proj) {
+	  $sortProject=array();
+	  foreach ($result[$idR] as $id=>$name) {
+	    $sortProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'#'.$id]=$name;
+	  }
+	  ksort($sortProject);
+	  $tmpprojects=array();
+	  foreach ($sortProject as $sortId=>$name) {
+	    $split=explode('#', $sortId);
+	    $tmpprojects[$split[1]]=$name;
+	  }
+	  foreach ($tmpprojects as $idP=>$proj) {
 	    foreach ($result[$idR][$idP] as $idA=>$acti) { 
 		    if (array_key_exists($idP, $projects)) {
 		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($projects[$idP]) . '</td>';

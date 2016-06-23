@@ -115,7 +115,7 @@ if (! isset($includedReport)) {
   }
   include "header.php";
 }
-
+$reportContext=false;
 $where=getAccesRestrictionClause('Ticket',false);
 
 $where.=" and ( (    creationDateTime>= '" . $paramYear . "-01-01'";

@@ -256,6 +256,17 @@ for($i=1; $i<=$nbDays;$i++) {
 echo '<td class="reportTableHeader" >' . i18n('sum'). '</td>';
 echo '</tr>';
 
+$sortProject=array();
+foreach ($projects as $id=>$name) {
+  $sortProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'#'.$id]=$name;
+}
+ksort($sortProject);
+$projects=array();
+foreach ($sortProject as $sortId=>$name) {
+  $split=explode('#', $sortId);
+  $projects[$split[1]]=$name;
+}
+
 asort($resources);
 if ($paramTeam) {
   foreach ($resources as $idR=>$ress) {
