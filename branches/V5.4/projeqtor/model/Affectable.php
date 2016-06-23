@@ -200,7 +200,7 @@ class Affectable extends SqlElement {
     $result='<div style="position: absolute;'.$extraStylePosition.'; border-radius:40px;width:80px;height:80px;border: 1px solid grey;">'
       . '<img style="border-radius:40px;" src="'. Affectable::getThumbUrl('Resource', $affId, 80).'" '
       . ' title="'.$filename.'" style="cursor:pointer"'
-      . ' onClick="showImage(\'Attachment\',\''.$attachmentId.'\',\''.$filename.'\');" /></div>';
+      . ' onClick="showImage(\'Attachment\',\''.$attachmentId.'\',\''.htmlEncode($filename,'protectQuotes').'\');" /></div>';
     return $result;
   }
   public static function drawSpecificImage($class,$id, $print, $outMode, $largeWidth) {

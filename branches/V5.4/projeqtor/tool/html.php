@@ -703,6 +703,9 @@ function htmlEncode($val,$context="default") {
     $str=str_replace(array('</div>','</p>'),array('</div><br/>','</p><br/>'), $val);
     $str=strip_tags($str,'<br><br/><font><b>');
     return $str;
+  } else if ($context=='protectQuotes') {
+    $str=str_replace(array("'",'"'), array('\\'."'",'\\'.'"'), $val);
+    return htmlspecialchars($str,ENT_QUOTES,'UTF-8');    
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }

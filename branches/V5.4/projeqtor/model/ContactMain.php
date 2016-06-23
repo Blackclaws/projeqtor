@@ -367,7 +367,7 @@ class ContactMain extends SqlElement {
     if ($image->id and $image->isThumbable()) {
       $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
              . ' title="'.htmlEncode($image->fileName).'" style="cursor:pointer"'
-             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName).'\');" />';
+             . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName,'protectQuotes').'\');" />';
     } else {
       $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
     }
