@@ -215,7 +215,7 @@ class Security
     }
     if (! preg_match('#^[^/?*:;{}\\<>|"]*\.?[^/?*:;{}\\<>|"]+$#', $fileName)) {
       if($activeTraceHack)traceHack("filename $fileName containts invalid characters \ / : * ? \" ; { } < >");
-      $fileName=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $fileName); // Not reached as traceHack will exit script
+      $fileName=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $fileName); // reached only if $activeTraceHack==false
     }
     if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) or ! ctype_print($fileName)) {
       if($activeTraceHack)traceHack("filename $fileName containts non printable characters");

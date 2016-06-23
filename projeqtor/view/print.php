@@ -185,6 +185,32 @@
   global $outMode, $includeFile, $orientation;
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
+  debugLog($_REQUEST);
+  $outputFileName=null;
+  if (isset($_REQUEST['page']) and $_REQUEST['page']=='objectDetail.php' and isset($_REQUEST['objectClass']) and isset($_REQUEST['objectId'])) {
+    $objectClass=$_REQUEST['objectClass'];
+    $objectId=$_REQUEST['objectId'];
+    $obj=new $objectClass($objectId);
+    $outputFileName=i18n($objectClass).' ';
+    if (property_exists($obj, 'reference')) {
+      $outputFileName.=$obj->reference;
+    } else {
+      $outputFileName.=$obj->id;
+      if (property_exists($obj, 'name')) {
+        //$outputFileName.=' ('.$obj->name.')';
+      }
+    }
+    $outputFileName.=".pdf";
+    $outputFileName=Security::checkValidFileName($outputFileName,false);
+  } else if (isset($_REQUEST['page']) and $_REQUEST['page']=='../tool/jsonQuery.php' and isset($_REQUEST['objectClass']) ) {
+    $objectClass=$_REQUEST['objectClass'];
+    $outputFileName=i18n('menu'.$objectClass).'_'.date('Ymd_His');
+    $outputFileName.=".pdf";
+    $outputFileName=Security::checkValidFileName($outputFileName,false);
+  } else if (isset($_REQUEST['reportName'])) {
+    $outputFileName=$_REQUEST['reportName'].'_'.date('Ymd_His');
+    $outputFileName.=".pdf";
+  }
   if ($outMode=='pdf') {
     $content = ob_get_clean();   
     if ($pdfLib=='html2pdf') {
@@ -207,10 +233,10 @@
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
       $content=str_replace("à","&agrave;",$content);
-traceExecutionTime($includeFile,true);
+//traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
-      $html2pdf->Output();;
-traceExecutionTime($includeFile);
+      $html2pdf->Output($outputFileName);
+//traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
       require_once("../external/dompdf/dompdf_config.inc.php");
