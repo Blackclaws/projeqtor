@@ -151,11 +151,3 @@ ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned;
 
 ALTER TABLE `${prefix}expensedetail` ADD COLUMN `externalReference` varchar(100) DEFAULT NULL;
 
-INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES 
-(1,'expense','4'),
-(2,'expense','2'),
-(3,'expense','3'),
-(4,'expense','2'),
-(6,'expense','1'),
-(7,'expense','1'),
-(5,'expense','1');
