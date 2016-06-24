@@ -1817,6 +1817,10 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           loadContent("../view/today.php", "centerDiv");  
         } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='DashboardTicket') {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");  
+        } else if (dojo.byId('currentPhpPage') && dojo.byId('currentPhpPage').value) {
+          loadContent("../view/dashboardTicketMain.php", "centerDiv");  
+        } else if (currentPluginPage) {
+          loadContent(currentPluginPage, "centerDiv");  
         }
       }
     });
