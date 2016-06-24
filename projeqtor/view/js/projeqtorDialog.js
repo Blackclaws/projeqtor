@@ -4715,6 +4715,7 @@ function loadMenuBarObject(menuClass, itemName, from) {
   if (checkFormChangeInProgress()) {
     return false;
   }
+  currentPluginPage=null;
   if (from == 'bar') {
     selectTreeNodeById(dijit.byId('menuTree'), menuClass);
   }
@@ -4728,6 +4729,7 @@ function loadMenuBarItem(item, itemName, from) {
   if (checkFormChangeInProgress()) {
     return false;
   }
+  currentPluginPage=null;
   if (from == 'bar') {
     selectTreeNodeById(dijit.byId('menuTree'), item);
   }
@@ -4790,6 +4792,7 @@ function loadMenuBarItem(item, itemName, from) {
   return true;
 }
 
+var currentPluginPage=null;
 function loadMenuBarPlugin(item, itemName, from) {
   if (checkFormChangeInProgress()) {
     return false;
@@ -4798,6 +4801,7 @@ function loadMenuBarPlugin(item, itemName, from) {
     showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
     return;
   }
+  currentPluginPage=pluginMenuPage['menu'+item];
   loadContent(pluginMenuPage['menu'+item], "centerDiv");
 }
 
