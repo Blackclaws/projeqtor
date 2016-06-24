@@ -77,7 +77,6 @@ function drawTableFromObjectList($objectList) {
 	if ($type=='globalParameter' and (Parameter::getGlobalParameter('imputationUnit')=='hours' or Parameter::getGlobalParameter('workUnit')=='hours') ) {
 	  $work=new Work();
 	  $cpt=$work->countSqlElementsFromCriteria(array());
-	  echo "Work count=$cpt";
 	  if ($cpt>0) {
 	    $arrayReadOnly['dayTime']=true;
 	  }
