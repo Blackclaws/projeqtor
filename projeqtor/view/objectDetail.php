@@ -3489,15 +3489,24 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     $idleClass=($aff->idle)?' affectationIdleClass':'';
     $res=new Resource($aff->idResource);
     $isResource=($res->id)?true:false;
+    $goto="";
     if ($type == 'Project') {
       $name=SqlList::getNameFromId($type, $aff->idProject);
+      if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Project\',\'' . htmlEncode($aff->idProject) . '\');" style="cursor: pointer;" ';
+      }
     } else {
       $name=SqlList::getNameFromId($type, $aff->idResource);
+      $typeAffectable=$type;
       if ($aff->idResource == $name and $type == 'Resource') {
         $name=SqlList::getNameFromId('User', $aff->idResource);
+        $typeAffectable='User';
         if ($aff->idResource != $name and trim($name)) {
           $name.=" (" . i18n('User') . ")";
         }
+      }
+      if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\'' . htmlEncode($aff->idResource) . '\');" style="cursor: pointer;" ';
       }
     }
     if ($aff->idResource != $name and trim($name)) {
@@ -3519,10 +3528,6 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
           echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="roundedButtonSmall"/> ';
         }
         echo '</td>';
-      }
-      $goto="";
-      if (!$print and securityCheckDisplayMenu(null, 'Affectation') and securityGetAccessRightYesNo('menuAffectation', 'read', '') == "YES") {
-        $goto=' onClick="gotoElement(\'Affectation\',\'' . htmlEncode($aff->id) . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData' . $idleClass . '" align="center">' . htmlEncode($aff->id) . '</td>';
       /*if ($idProj) {
