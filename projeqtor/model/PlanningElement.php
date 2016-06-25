@@ -413,7 +413,7 @@ class PlanningElement extends SqlElement {
       }
     }
     
-    if ($this->topId!=$old->topId)
+    //if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId and ! self::$_noDispatch) {
