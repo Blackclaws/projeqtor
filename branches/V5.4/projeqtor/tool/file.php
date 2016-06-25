@@ -105,7 +105,6 @@ function createThumb($imageFile,$size,$thumb=null, $square=false) {
   if ($paramFilenameCharset) {
     $imageFile = iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$imageFile);
   }
-  debugLog($imageFile);
   if (!$imageFile or ! is_file($imageFile)) {
     return false;
   }

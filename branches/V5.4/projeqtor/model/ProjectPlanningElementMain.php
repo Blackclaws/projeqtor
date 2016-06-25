@@ -247,14 +247,14 @@ class ProjectPlanningElementMain extends PlanningElement {
   	$this->expenseLeftAmount+=$leftExpense;
   	if ($consolidateValidated=="ALWAYS") {
   		$this->expenseValidatedAmount=$validatedExpense;
-  		if ($hasSubProjects) $this->validatedExpenseCalculated=true;
+  		if ($hasSubProjects) $this->validatedExpenseCalculated=1;
   	} else if ($consolidateValidated=="IFSET") {
   		if ($validatedExpense) {
   			$this->expenseValidatedAmount=$validatedExpense;
-  			if ($hasSubProjects) $this->validatedExpenseCalculated=true;
+  			if ($hasSubProjects) $this->validatedExpenseCalculated=1;
   		}
   	}
-  	$this->save();
+  	$resultSaveProj=$this->save();
   	// Dispath to top element
   	if ($this->topId) {
   		self::updateSynthesis($this->topRefType, $this->topRefId);
