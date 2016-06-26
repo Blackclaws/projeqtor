@@ -657,7 +657,8 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
     // Create affectation for Manager.
     if ($this->idUser) {
-      if (securityGetAccessRight('menuProject', 'update', $this)=="PRO"){
+      debugLog(securityGetAccessRight('menuProject', 'update', $this));
+      if (securityGetAccessRight('menuProject', 'update', null)!="ALL"){
         $id=($this->id)?$this->id:Sql::$lastQueryNewid;
         $crit=array('idProject'=>$id, 'idResource'=>$this->idUser);
         $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
@@ -665,6 +666,12 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         	$aff=new Affectation();
         	$aff->idResource=$this->idUser;
         	$aff->idProject=$id;
+        	$aff->idProfile=getSessionUser()->idProfile;
+        	if (securityGetAccessRightYesNo('menuProject', 'update', null, getSessionUser()) != "YES") {
+        	  $crit=array('idProject'=>$this->idProject, 'idResource'=>$this->idUser);
+        	  $affTop=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
+        	  $aff->idProfile=$affTop->idProfile;
+        	}
         	$resAff=$aff->save();
         } else if (! $this->idle and $aff->idle) {
         	$aff->idle=0;

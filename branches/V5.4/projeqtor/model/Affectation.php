@@ -303,7 +303,8 @@ public $_noCopy;
   public function save() {
   	$old=$this->getOld();
   	$result = parent::save();
-    if (! $old->id or $this->idle!=$old->idle) {
+    if (! $old->id or $this->idle!=$old->idle 
+       or ($old->idProfile!=$this->idProfile and $this->idUser==getSessionUser()->id) ) {
       User::resetAllVisibleProjects(null,$this->idUser);
     }
     return $result;
