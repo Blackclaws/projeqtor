@@ -129,25 +129,26 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   $excludeArray=array();
   if ($obj) {
   	$class=get_class($obj);
-    if ( $class=='Project' and $col=="idProject" and $obj->id!=null) {
+    if ( $class=='Project' and $col=="idProject" and $obj->id!=null) { // on "is sub-project of", remove subproject and current project
       $excludeArray=$obj->getRecursiveSubProjectsFlatList();
       $excludeArray[$obj->id]=$obj->name;
-    } else if ($col=="idProject") {
+    } 
+    if ($col=="idProject") {
     	$menuClass=$obj->getMenuClass();
     	if ($class=='DocumentDirectory') {
     		$doc=new Document();
     		$menuClass=$doc->getMenuClass();
     	}
-      $controlRightsTable=$user->getAccessControlRights();
+      $controlRightsTable=$user->getAccessControlRights($obj);
       if (! array_key_exists($menuClass,$controlRightsTable)) {
 	      // If AccessRight notdefined for object and user profile => empty list + log error
 	      traceLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
         return;		
 	    }
-      $controlRights=$controlRightsTable[$menuClass]; 
+      $controlRights=$controlRightsTable[$menuClass];    
       if ($obj->id==null) {
         // creation mode
-        if ($controlRights["create"]=="PRO") {
+        if ($controlRights["create"]!="ALL") {         
           $restrictArray=$user->getVisibleProjects();
           if (count($restrictArray)==0) { // If user is affected to no project, only possible value is 0 (never users)
             $restrictArray[0]=0;
@@ -160,6 +161,24 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           if ($controlRights["update"]=="PRO" or $controlRights["update"]=="OWN" or $controlRights["update"]=="RES") {
             $restrictArray=$user->getVisibleProjects();
           }            
+        }
+      }
+      if (count($restrictArray) and $controlRights["create"]!="ALL") {
+        foreach ($restrictArray as $idP=>$nameP) {
+            $tmpAccessRight="NO";
+            $tmpAccessRightList = $user->getAccessControlRights($idP);
+            if (array_key_exists ( $menuClass, $tmpAccessRightList )) {
+              $tmpAccessRightObj = $tmpAccessRightList [$menuClass];
+              if (array_key_exists ( 'create', $tmpAccessRightObj )) {
+                $tmpAccessRight = $tmpAccessRightObj ['create'];
+              }
+            }
+            if ($tmpAccessRight!='ALL' and $tmpAccessRight!='PRO') {
+              unset($restrictArray[$idP]);
+            }
+        }
+        if (count($restrictArray)==0) { 
+          $restrictArray[0]=0;
         }
       }
     } else if ($col=='idStatus') {

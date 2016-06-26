@@ -1371,11 +1371,16 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             if (array_key_exists('project', $_SESSION) and !$obj->$col) {
               $val=$_SESSION ['project'];
             }
-            $accessRight=securityGetAccessRight('menu' . $classObj, 'create');
+            $accessRight=securityGetAccessRight('menu' . $classObj, 'create'); // TODO : study use of this variable...
           } else {
-            $accessRight=securityGetAccessRight('menu' . $classObj, 'update');
+            $accessRight=securityGetAccessRight('menu' . $classObj, 'update'); // TODO : study use of this variable...
           }
           if (securityGetAccessRight('menu' . $classObj, 'read') == 'PRO' and $classObj != 'Project') {
+            $isRequired=true; // TODO : study condition above : why security for 'read'', why not for project, ...
+          }
+          $controlRightsTable=$user->getAccessControlRights();
+          $controlRights=$controlRightsTable['menu'.$classObj];
+          if ($classObj=='Project' and $controlRights["create"]!="ALL" and $controlRights["create"]!="PRO") {
             $isRequired=true;
           }
         }

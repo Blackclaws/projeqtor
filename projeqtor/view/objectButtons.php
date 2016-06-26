@@ -52,7 +52,12 @@
   	$printPage='../report/object/'.$class.'.php';
   }
   $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
-  $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
+  if (!$obj->id) {
+    $updateRight=$createRight;
+  } else {
+    $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
+  }
+  $updateRight='YES';
   $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
 ?>
 <table style="width:100%;height:100%;">
@@ -297,7 +302,7 @@
         }
       ?>
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
-      <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
+      <input type="hidden" id="updateRight" name="updateRight" value="<?php echo (!$obj->id)?$createRight:$updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
        <?php $isAttachmentEnabled = true; // allow attachment
     		if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
