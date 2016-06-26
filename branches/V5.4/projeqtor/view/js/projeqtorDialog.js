@@ -760,11 +760,11 @@ function copyObjectBox(copyType) {
     callBack=function() {
       dojo.byId('copyClass').value=dojo.byId("objectClass").value;
       dojo.byId('copyId').value=dojo.byId("objectId").value;
-      for ( var i in copyableArray) {
-        if (copyableArray[i] == objectClass) {
+      /*for ( var i in copyableArray) {
+        if (copyableArray[i] == dojo.byId("objectClass").value) {
           dijit.byId('copyToClass').set('value', i);
         }
-      }
+      }*/
       copyObjectToShowStructure();
     };
   }else if(copyType=="copyProject"){
