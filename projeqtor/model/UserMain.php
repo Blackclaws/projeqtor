@@ -480,6 +480,7 @@ class UserMain extends SqlElement {
     // Retrieve current affectation profile for each project
     $resultAff=array();
     $resultProf=array();
+    $resultProf[$this->idProfile]=$this->idProfile; // The default profile, even if used on no project
     if ($this->idProfile) {
       $resultProf[$this->idProfile]=$this->idProfile;
     }

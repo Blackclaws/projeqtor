@@ -228,7 +228,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
   if (!$obj->id) {
-    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";  
+    $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'create', $obj) == "YES";
+    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj, $user) == "YES";  
     if (!$canRead or !$canUpdate) {
       $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
       $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
@@ -477,7 +478,11 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
     $obj->setAttributes();
   }
   $nobr=false;
-  $canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == 'YES');
+  if (!$obj->id) {
+    $canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'create', $obj) == 'YES');
+  } else {
+    $canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == 'YES');
+  }
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }

@@ -669,18 +669,19 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
   if (! $user) {
     return false;
   }
-  $profile = $user->idProfile;
-  $crit = array ();
-  $crit ['idProfile'] = $profile;
-  $crit ['idMenu'] = $menu;
-  $obj = SqlElement::getSingleSqlElementFromCriteria ( 'Habilitation', $crit );
-  if ($obj->id == null) {
-    return false;
+  $result=false;
+  $allProfiles=$user->getAllProfiles();
+  foreach ($allProfiles as $profile) {
+    $crit = array ();
+    $crit ['idProfile'] = $profile;
+    $crit ['idMenu'] = $menu;
+    $obj = SqlElement::getSingleSqlElementFromCriteria ( 'Habilitation', $crit );
+    if ($obj->id != null and $obj->allowAccess == 1) {
+      $result=true;
+      break;
+    }
   }
-  if ($obj->allowAccess == 1) {
-    return true;
-  }
-  return false;
+  return $result;
 }
 
 /**
@@ -1562,7 +1563,6 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
  * @return the right as Yes or No (depending on object properties)
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
-  // ATTENTION, NOT FOR READ ACCESS : result may be unexpected
   if (substr ( $menuName, 4 )=='Admin') return 'YES';
   if (! SqlElement::class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
@@ -1585,15 +1585,29 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       if ($maintenance) {
         return 'YES';
       } else {
-      	exit; //return 'NO'; // This is a case that should not exist unles hacking attempt
+        traceLog("securityGetAccessRightYesNo : This is a case that should not exist unless hacking attempt. Exit.");
+      	exit; //return 'NO'; // This is a case that should not exist unless hacking attempt
       }
     } else {
       $user = getSessionUser();
     }
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-  if ($accessType == 'create') {
-    $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
+  if ($accessType == 'create') {  
+    $accessRight='NO';
+    if ($accessRight=='READ') {
+      $accessRight='NO';
+    } else if ($accessRight=='WRITE') {
+      $accessRight='YES';
+    } else { // Case of project dependent screen, Will search on all profiles if user has some create rights
+      foreach ($user->getAllProfiles() as $prf) {
+        $tmpUser=new User();
+        $tmpUser->idProfile=$prf;
+        $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
+        $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
+        if ($accessRight=='YES') break;
+      }
+    }
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
     if ($accessRight == 'NO') {
       $accessRight="NO";// will return no
