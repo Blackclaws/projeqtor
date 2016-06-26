@@ -63,7 +63,7 @@ class BillMain extends SqlElement {
   public $taxAmount;
   public $fullAmount;
   public $commandAmountPct;
-  public $_tab_4_1_smallLabel = array('date', 'amount', 'paymentComplete', '', 'payment');
+  public $_tab_3_1_smallLabel = array('date', 'amount', 'paymentComplete', 'payment');
   public $paymentDate;
   public $paymentAmount;
   public $paymentDone;
@@ -430,7 +430,8 @@ class BillMain extends SqlElement {
     } else if ($item=='paymentsList') {
       $pay=new Payment();
       $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
-      $result='<div style="position:relative;top:0px;left:00px;">';
+      //$result.='</td><td>';
+      $result.='<div style="position:relative;top:-22px;left:317px;">';
       $result.='<table>';
       foreach ($payList as $pay) {
         $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'Payment\','.htmlEncode($pay->id).');">';
