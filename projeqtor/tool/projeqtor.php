@@ -1585,8 +1585,8 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       if ($maintenance) {
         return 'YES';
       } else {
-        traceLog("securityGetAccessRightYesNo : This is a case that should not exist unless hacking attempt. Exit.");
-      	exit; //return 'NO'; // This is a case that should not exist unless hacking attempt
+        //traceLog("securityGetAccessRightYesNo : This is a case that should not exist unless hacking attempt. Exit.");
+      	exit; //return 'NO'; // This is a case that should not exist unless hacking attempt or use of F5
       }
     } else {
       $user = getSessionUser();

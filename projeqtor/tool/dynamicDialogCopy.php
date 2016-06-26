@@ -62,7 +62,8 @@ if($copyType=="copyObjectTo"){
                <?php echo autoOpenFilteringSelect();?>
                 id="copyToClass" name="copyToClass" required
                 class="input" value="<?php echo $idClass;?>" >
-                 <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
+                debugLog($idClass);
+                 <?php htmlDrawOptionForReference('idCopyable', $idClass, null, true);?>
                  <script type="dojo/connect" event="onChange" args="evt" >
                    var objclass=copyableArray[this.value];
                    dijit.byId('copyToType').reset();

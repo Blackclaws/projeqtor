@@ -79,7 +79,12 @@ class ExpenseDetail extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
-    $exp=new Expense($this->idExpense);
+    $exp=new Expense($this->idExpense,false);
+    if ($exp->scope=='ProjectExpense') {
+      $exp=new ProjectExpense($this->idExpense,false);
+    } else if ($exp->scope=='IndividualExpense') {
+      $exp=new IndividualExpense($this->idExpense,false);
+    }
     $exp->updateAmount();
     return $result;
   }
@@ -91,7 +96,12 @@ class ExpenseDetail extends SqlElement {
   public function delete() {
   	$ref=$this->idExpense;
   	$result = parent::delete();
-    $exp=new Expense($ref);
+    $exp=new Expense($ref,false);
+    if ($exp->scope=='ProjectExpense') {
+      $exp=new ProjectExpense($ref,false);
+    } else if ($exp->scope=='IndividualExpense') {
+      $exp=new IndividualExpense($ref,false);
+    }
     $exp->updateAmount();  	
   	return $result;
   }

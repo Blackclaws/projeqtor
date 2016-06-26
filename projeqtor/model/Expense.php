@@ -50,6 +50,7 @@ class Expense extends SqlElement {
   public $month;
   public $year;
   public $idle;
+  public $scope;
   //public $_sec_Detail;
   public $_ExpenseDetail=array();
   public $_Attachment=array();
@@ -219,10 +220,10 @@ class Expense extends SqlElement {
   		return;
   	}
   	$total=0;
-  	$date=null;
+  	$date=date('Y-m-d');
   	foreach ($this->_ExpenseDetail as $ed) {
   		$total+=$ed->amount;
-  		$date=$ed->expenseDate;
+  		if ($ed->expenseDate) $date=$ed->expenseDate;
   	} 
   	$this->realAmount=$total;
   	if (! $this->expenseRealDate) {
