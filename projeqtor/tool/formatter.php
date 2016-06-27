@@ -48,7 +48,7 @@ function colorNameFormatter($value) {
         $light=(0.3)*base_convert($red,16,10)+(0.6)*base_convert($green,16,10)+(0.1)*base_convert($blue,16,10);
         if ($light<128) { $foreColor='#FFFFFF'; }
       }
-      return '<div style="vertical-align:middle;padding: 5px;border-radius:10px;text-align: center;'.(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'') . 'background-color: ' . $color . '; color:' . $foreColor . ';">' 
+      return '<div style="vertical-align:middle;padding: 5px;border:1px solid #CCC;border-radius:10px;text-align: center;'.(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'') . 'background-color: ' . $color . '; color:' . $foreColor . ';">' 
           .$val.'</div>';
 
     } else {
@@ -220,7 +220,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	  if ($pos>0) $nocache=substr($nocache,0,$pos);
 	}
 	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
-	$res='<img style="width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
+	$res='<img style="border: 1px solid #AAA;width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
 	
 	$res.=' src="'.$file.'" ';
 	if ($title) {
