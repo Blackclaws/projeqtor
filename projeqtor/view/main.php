@@ -161,6 +161,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.image.Lightbox");
     dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
+      if (target.id.indexOf('dialogRow')!=-1 && source.id!=target.id){
+        var idRow=nodes[0].id.split('itemRow')[1].split('-')[0];
+        var typeRow=nodes[0].id.split('-')[1];
+        var newStatut=target.id.split('dialogRow')[1];
+        sendChangeKanBan(idRow,typeRow,newStatut,target);
+      }
        if (source.id!=target.id) { return;}
        if (nodes.length>0 && nodes[0] && target && target.current) {
          var idFrom = nodes[0].id;
@@ -176,7 +182,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            setTimeout('reorderTodayItems()',100);  
          } else if (target.id=='dndFavoriteReports') {
         	 setTimeout('reorderFavoriteReportItems()',100);  
-         }
+         } 
        }
     });
     dndMoveInProgress=false;
