@@ -227,6 +227,15 @@ class QuotationMain extends SqlElement {
     	// fill the creatin date if it's empty - creationDate is not empty for import ! 
     	if ($this->creationDate=='') $this->creationDate=date('Y-m-d H:i');
 	  }
+	  if (trim($this->idClient)) {
+	    $client=new Client($this->idClient);
+	    if ($client->taxPct!='' and !$this->taxPct) {
+	      $this->taxPct=$client->taxPct;
+	    }
+	    if (!trim($this->idPaymentDelay)) {
+	      $this->idPaymentDelay=$client->idPaymentDelay;
+	    }
+	  }
     $this->name=trim($this->name);
 	  $billLine=new BillLine();
 	  $crit = array("refType"=> "Quotation", "refId"=>$this->id);

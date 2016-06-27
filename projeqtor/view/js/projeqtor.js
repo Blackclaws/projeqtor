@@ -987,7 +987,6 @@ function finalizeMessageDisplay(destination, validationType) {
     	  //hideWait();
       }
     } else {
-      console.log("no validationType");
       formInitialize();
       // refresh the grid to reflect changes
       var lastSaveId=dojo.byId('lastSaveId');
@@ -1014,7 +1013,6 @@ function finalizeMessageDisplay(destination, validationType) {
       // Refresh the planning Gantt (if visible)
       if (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV") ) {
         noHideWait=true;
-        console.log("destination="+dijit.byId(destination).get('content'));
         if (destination=="planResultDiv") {
           if (dojo.byId("saveDependencySuccess") && dojo.byId("saveDependencySuccess").value=='true') {
             refreshGrid(); // It is a dependency add throught D&D => must replan is needed
@@ -1030,7 +1028,6 @@ function finalizeMessageDisplay(destination, validationType) {
       }
       // last operations depending on the executed operatoin (insert, delete,
     // ...)
-      console.log("lastOperation="+lastOperation.value);
       if (lastOperation.value=="insert" || forceRefreshCreationInfo) {       
         dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {

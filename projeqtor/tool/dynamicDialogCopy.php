@@ -24,6 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 require_once "../tool/projeqtor.php";
+
 if (! array_key_exists('objectClass',$_REQUEST)) {
   throwError('Parameter objectClass not found in REQUEST');
 }
@@ -42,9 +43,10 @@ $copyType=$_REQUEST['copyType'];
 if($copyType!='copyObjectTo' && $copyType!='copyProject'){
   traceHack('dynamicDialogCopy: $copyType contains an unexpected valid value');
 } 
-$idClass=SqlList::getIdFromName('Copyable', $objectClass);
+$idClass=SqlList::getIdFromTranslatableName('Copyable', $objectClass);
 $toCopy=new $objectClass($objectId);
 if($copyType=="copyObjectTo"){
+  
 ?>
   <table>
     <tr>
@@ -61,18 +63,18 @@ if($copyType=="copyObjectTo"){
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="copyToClass" name="copyToClass" required
-                class="input" value="<?php echo $idClass;?>" >
-                debugLog($idClass);
+                class="input" >
                  <?php htmlDrawOptionForReference('idCopyable', $idClass, null, true);?>
                  <script type="dojo/connect" event="onChange" args="evt" >
                    var objclass=copyableArray[this.value];
-                   dijit.byId('copyToType').reset();
+                   dijit.byId('copyToType').set('value',null);
+                   //dijit.byId('copyToType').reset();
                    var idProject=(dijit.byId('idProject'))?dijit.byId('idProject').get('value'):null;
                    refreshList("id"+objclass+"Type","idProject", idProject, null,'copyToType',true);
-                   if (dojo.byId('copyClass').value==objclass) {
+                   /*if (dojo.byId('copyClass').value==objclass) {
                      var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objclass+"Type').get('value'))";
                      setTimeout(runModif,1);
-                   }
+                   }*/
                    copyObjectToShowStructure();
                  </script> 
                </select>

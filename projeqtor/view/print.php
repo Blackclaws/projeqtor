@@ -186,12 +186,13 @@
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
   $outputFileName=null;
-  if (isset($_REQUEST['page']) and $_REQUEST['page']=='objectDetail.php' and isset($_REQUEST['objectClass']) and isset($_REQUEST['objectId'])) {
+  if (isset($_REQUEST['objectClass']) and isset($_REQUEST['objectId']) and isset($_REQUEST['page']) 
+  and ($_REQUEST['page']=='objectDetail.php' or $_REQUEST['page']=='../report/object/'.$_REQUEST['objectClass'].'.php' )) {
     $objectClass=$_REQUEST['objectClass'];
     $objectId=$_REQUEST['objectId'];
     $obj=new $objectClass($objectId);
     $outputFileName=i18n($objectClass).' ';
-    if (property_exists($obj, 'reference')) {
+    if (property_exists($obj, 'reference') and $obj->reference) {
       $outputFileName.=$obj->reference;
     } else {
       $outputFileName.=$obj->id;

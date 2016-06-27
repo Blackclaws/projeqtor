@@ -4185,15 +4185,25 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
   var store=new dojo.store.DataStore({
     store : datastore
   });
-  store.query({
-    id : "*"
-  });
   if (destination) {
     var mySelect=dijit.byId(destination);
   } else {
     var mySelect=dijit.byId(field);
   }
   mySelect.set('store', store);
+  store.query({
+    id : "*"
+  }).then(function(items) {
+    if (destination) {
+      var mySelect=dijit.byId(destination);
+    } else {
+      var mySelect=dijit.byId(field);
+    }
+    if (required && !selected && !mySelect.get('value')) { // required but no value set : select first
+      mySelect.set("value", items[0].id);
+    }
+  });
+  
 }
 function refreshListSpecific(listType, destination, param, paramVal, selected, required) {
   var urlList='../tool/jsonList.php?listType=' + listType;

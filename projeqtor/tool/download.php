@@ -91,16 +91,16 @@ if ($type) {$contentType=$type;}
 if (substr($name, -10)=='.projeqtor') {
 	$name=substr($name,0,strlen($name)-10);
 } 
-
 if (($file != "") && (file_exists($file))) { 
 	header("Pragma: public"); 
-	
-  header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
+  header("Content-Type: " . $contentType . "; name=\"" . $name . "\"");   
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 
   if (!array_key_exists('showHtml', $_REQUEST)) {
     //header("Content-Disposition: attachment; filename=\"" .$name . "\"");
     header("Content-Disposition: ".(!isset($_REQUEST['nodl'])?"attachment":"inline")."; filename=\"" .$name . "\"");
+  } else {
+    header("Content-Disposition: inline; filename=\"" .$name . "\"");
   }
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");

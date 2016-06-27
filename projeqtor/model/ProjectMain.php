@@ -657,7 +657,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
     // Create affectation for Manager.
     if ($this->idUser) {
-      debugLog(securityGetAccessRight('menuProject', 'update', $this));
       if (securityGetAccessRight('menuProject', 'update', null)!="ALL"){
         $id=($this->id)?$this->id:Sql::$lastQueryNewid;
         $crit=array('idProject'=>$id, 'idResource'=>$this->idUser);

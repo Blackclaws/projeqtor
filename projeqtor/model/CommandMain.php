@@ -257,8 +257,8 @@ class CommandMain extends SqlElement {
   	$oldIdProject=0;
   	$oldTotalUntaxedAmount=0;
   	$oldValidatedWork=0;
+  	
   	//Check if we are in CREATION
-
     if (trim($this->id)=='') {
     	// fill the creatin date if it's empty - creationDate is not empty for import ! 
     	if ($this->creationDate=='') $this->creationDate=date('Y-m-d H:i');
@@ -269,6 +269,13 @@ class CommandMain extends SqlElement {
   		$oldValidatedWork=$old->validatedWork;
   	}
   
+  	if (trim($this->idClient)) {
+  	  $client=new Client($this->idClient);
+  	  if ($client->taxPct!='' and !$this->taxPct) {
+  	    $this->taxPct=$client->taxPct;
+  	  }
+  	}
+  	
   	$billLine=new BillLine();
   	$crit = array("refType"=> "Command", "refId"=>$this->id);
   	$billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
