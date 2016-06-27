@@ -248,7 +248,6 @@ class DocumentMain extends SqlElement {
   	if (!trim($this->idProject) and !trim($this->idProduct)) {
   		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
   	}
-  	
   	$defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -276,7 +275,7 @@ class DocumentMain extends SqlElement {
   		$this->documentReference=str_replace($old->name, $this->name, $this->documentReference);
   	}
   	$result=parent::save();
-  	if ($old->idDocumentDirectory!=$this->idDocumentDirectory) {
+  	if ($old->idDocumentDirectory!=$this->idDocumentDirectory and $this->id) {
   		// directory changed, must must files !
   		$oldDir=New DocumentDirectory($old->idDocumentDirectory);
   		$oldLoc=$oldDir->getLocation();
@@ -293,7 +292,7 @@ class DocumentMain extends SqlElement {
 	  		}
   		}
   	}
-  	if ($old->documentReference!=$this->documentReference) {
+  	if ($old->documentReference!=$this->documentReference and $this->id) {
   	  $vers=new DocumentVersion();
       $versList=$vers->getSqlElementsFromCriteria(array('idDocument'=>$this->id));
       foreach ($versList as $vers) {
