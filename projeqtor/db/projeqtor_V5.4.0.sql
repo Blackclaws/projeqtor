@@ -147,8 +147,6 @@ ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned DEFAULT 
 
 ALTER TABLE `${prefix}activity` ADD COLUMN `isPlanningActivity` int(1) unsigned DEFAULT '0';
 
-ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned;
-
 ALTER TABLE `${prefix}expensedetail` ADD COLUMN `externalReference` varchar(100) DEFAULT NULL;
 
 DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('ProductVersion'); 
