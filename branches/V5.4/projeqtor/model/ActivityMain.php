@@ -43,6 +43,7 @@ class ActivityMain extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
+  public $isPlanningActivity;  
   public $description;  
   public $_sec_treatment;
   public $idActivity;
@@ -109,7 +110,8 @@ class ActivityMain extends SqlElement {
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
                                                    'idContact' => 'requestor',
-                                                   'idTargetProductVersion'=>'targetVersion');
+                                                   'idTargetProductVersion'=>'targetVersion',
+                                                   'isPlanningActivity'=>'PlanningActivity');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array('idTargetProductVersion'=>'idVersion');
