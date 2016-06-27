@@ -152,3 +152,7 @@ ALTER TABLE `${prefix}expense` ADD COLUMN `paymentDone` int(1) unsigned;
 ALTER TABLE `${prefix}expensedetail` ADD COLUMN `externalReference` varchar(100) DEFAULT NULL;
 
 DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('ProductVersion'); 
+
+UPDATE `${prefix}activity` set `isPlanningActivity`=1 WHERE id in 
+  ( select refId from `${prefix}planningelement` where refType='Activity' and workElementCount>0 );
+  

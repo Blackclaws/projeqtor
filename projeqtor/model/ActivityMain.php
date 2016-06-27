@@ -43,7 +43,6 @@ class ActivityMain extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
-  public $isPlanningActivity;  
   public $description;  
   public $_sec_treatment;
   public $idActivity;
@@ -63,7 +62,7 @@ class ActivityMain extends SqlElement {
   public $_Assignment=array();
   public $_sec_Progress;
   public $ActivityPlanningElement; // is an object
-  
+  public $isPlanningActivity;
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
@@ -103,7 +102,8 @@ class ActivityMain extends SqlElement {
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "isPlanningActivity"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 

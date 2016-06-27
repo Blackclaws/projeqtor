@@ -239,6 +239,14 @@ class ActivityPlanningElementMain extends PlanningElement {
   	if (! $noSave) {
   	  $this->simpleSave();
   	}
+  	$top=new Activity($this->refId);
+  	if ($this->workElementCount==0 and $top->isPlanningActivity) {
+  	  $top->isPlanningActivity=0;
+  	  $top->saveForced();
+  	} else if ($this->workElementCount>0 and !$top->isPlanningActivity) {
+  	  $top->isPlanningActivity=1;
+  	  $top->saveForced();
+  	}
   }
   
   public function drawSpecificItem($item) {
