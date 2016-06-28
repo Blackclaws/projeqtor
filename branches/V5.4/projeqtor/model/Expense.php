@@ -50,7 +50,6 @@ class Expense extends SqlElement {
   public $month;
   public $year;
   public $idle;
-  public $scope;
   //public $_sec_Detail;
   public $_ExpenseDetail=array();
   public $_Attachment=array();

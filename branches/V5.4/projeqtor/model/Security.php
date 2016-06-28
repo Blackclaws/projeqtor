@@ -209,13 +209,14 @@ class Security
     //^[^/?*:;{}\\]*\.?[^/?*:;{}\\]+$ // => allows host and .htaccess as file name
     //
     // TODO (SECURITY) : use ctype_print()
-    if (basename($fileName)!=$fileName) {
+    if ($activeTraceHack && basename($fileName)!=$fileName) {
       if($activeTraceHack)traceHack("filename $fileName containts path elements that are not accepted");
       $fileName=""; // Not reached as traceHack will exit script
     }
     if (! preg_match('#^[^/?*:;{}\\<>|"]*\.?[^/?*:;{}\\<>|"]+$#', $fileName)) {
       if($activeTraceHack)traceHack("filename $fileName containts invalid characters \ / : * ? \" ; { } < >");
-      $fileName=preg_replace('/[^a-zA-Z0-9_-\.]/', '', $fileName); // reached only if $activeTraceHack==false
+      //$fileName=str_replace(array('/','\\'),array('',''), $fileName);
+      $fileName=preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $fileName); // reached only if $activeTraceHack==false
     }
     if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) or ! ctype_print($fileName)) {
       if($activeTraceHack)traceHack("filename $fileName containts non printable characters");

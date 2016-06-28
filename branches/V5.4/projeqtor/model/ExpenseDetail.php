@@ -79,11 +79,9 @@ class ExpenseDetail extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
-    $exp=new Expense($this->idExpense,false);
-    if ($exp->scope=='ProjectExpense') {
-      $exp=new ProjectExpense($this->idExpense,false);
-    } else if ($exp->scope=='IndividualExpense') {
-      $exp=new IndividualExpense($this->idExpense,false);
+    $exp=new ProjectExpense($this->idExpense,false);
+    if (!$exp->id) {
+     $exp=new IndividualExpense($this->idExpense,false);
     }
     $exp->updateAmount();
     return $result;
