@@ -74,6 +74,9 @@
   	<copy todir="${deploy.dir}/external/html2canvas">
   	   <fileset dir="${src.dir}/external/html2canvas"/>
   	</copy>
+  	<copy todir="${deploy.dir}/external/pdfmake">
+  	   <fileset dir="${src.dir}/external/pdfmake"/>
+  	</copy>
   </target>
   
   <target name="copyFiles">
