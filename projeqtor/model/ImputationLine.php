@@ -829,7 +829,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 						echo '<div style="position: relative">';
 						if ($showPlanned and $line->arrayPlannedWork[$i]->work) {
 							echo '<div style="display: inline;';
-							echo ' position: absolute; right: 10px; top: 0px; text-align: right;';
+							echo ' position: absolute; left: 7px; top: 1px; text-align: right;';
 							echo ' color:#8080DD; font-size:90%;">';
 							echo  Work::displayImputation($line->arrayPlannedWork[$i]->work);
 							echo '</div>';

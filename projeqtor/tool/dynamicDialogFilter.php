@@ -55,7 +55,6 @@ require_once "../tool/projeqtor.php";
          <input type="hidden" id="filterClauseId" name="filterClauseId" />
          <input type="hidden" id="filterDataType" name="filterDataType" />
          <input type="hidden" id="filterName" name="filterName" />
-         <input type="hidden" id="noFilterSelected" name="noFilterSelected" value="true" />
          <table width="100%" style="border: 1px solid grey;">
            <tr><td colspan="4" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
            <tr style="vertical-align: top;">
