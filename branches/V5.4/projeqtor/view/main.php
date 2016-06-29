@@ -980,6 +980,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
 </div>
 
+<input type="hidden" id="noFilterSelected" name="noFilterSelected" value="true" />
+         
 <div id="dialogLink" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLink");?>">
   <table>
     <tr>
