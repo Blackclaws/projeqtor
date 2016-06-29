@@ -71,6 +71,9 @@
   	 <copy todir="${deploy.dir}/external/ckeditor">
   	   <fileset dir="${src.dir}/external/ckeditor"/>
   	 </copy>
+  	<copy todir="${deploy.dir}/external/html2canvas">
+  	   <fileset dir="${src.dir}/external/html2canvas"/>
+  	</copy>
   </target>
   
   <target name="copyFiles">
