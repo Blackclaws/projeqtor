@@ -228,10 +228,11 @@ function addTab($param){
   $paramAdd="";
   $total=0;
   $obT=new Ticket();
+  $tableName=$obT->getDatabaseTableName();
   if(isset($param['paramAdd'])){
     $paramAdd=$param['paramAdd'];
     if($total1==null){
-      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $obT->getDatabaseTableName() t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
+      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
       if (Sql::$lastQueryNbRows > 0) {
         $line = Sql::fetchLine($result);
         $total1=$line['nbLine'];
@@ -240,7 +241,7 @@ function addTab($param){
     $total=$total1;
   }else{
     if($total2==null){
-      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $obT->getDatabaseTableName() t WHERE t.idProject in ".getVisibleProjectsList(false));
+      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false));
       if (Sql::$lastQueryNbRows > 0) {
         $line = Sql::fetchLine($result);
         $total2=$line['nbLine'];
@@ -249,7 +250,7 @@ function addTab($param){
     $total=$total2;
   }
   
-  $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM $obT->getDatabaseTableName() t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
+  $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM $tableName t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
   if ($total > 0) {
     $res=array();
     $totT=0;
