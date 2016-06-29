@@ -652,7 +652,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
         	+ ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>&nbsp;</div>';
-        vLeftTable += '<div onclick= JSGantt.taskLink("' + vTaskList[i].getLink() + '")' + 
+        vLeftTable += '<div ' + 
         ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
         + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")'+
         ' style="position:relative;z-index:1000;width: ' + vNameWidth + 'px;">';
@@ -664,13 +664,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         if( vTaskList[i].getGroup()) {
           if( vTaskList[i].getOpen() == 1) {
             vLeftTable += '<div id="group_' + vID + '" class="ganttExpandOpened"' 
-              + 'style="position: relative; z-index: 999; width:16px; height:13px;"'
+              + 'style="position: relative; z-index: 100000; width:16px; height:13px;"'
               +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();"' 
               +'>'           
               +'</div>' ;
           } else {
             vLeftTable += '<div id="group_' + vID + '" class="ganttExpandClosed"' 
-              + 'style="position: relative; z-index: 999; width:16px; height:13px;"'
+              + 'style="position: relative; z-index: 100000; width:16px; height:13px;"'
               +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();"' 
               +' >' 
               +'&nbsp;&nbsp;&nbsp;&nbsp;</div>' ;
@@ -684,7 +684,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vLeftTable +='</td><td>';
         var nameLeftWidth= vNameWidth - 16 - levlWidth - 18 ;
-        vLeftTable += '<div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
+        vLeftTable += '<div onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '") style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
         	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
