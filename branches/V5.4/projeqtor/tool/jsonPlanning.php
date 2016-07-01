@@ -159,6 +159,8 @@
   	$queryWhere.=' and ( refType=\'Project\' ';
     if (array_key_exists('showMilestone',$_REQUEST) ) {
       $showMilestone=trim($_REQUEST['showMilestone']);
+    } else if (array_key_exists('listShowMilestone',$_REQUEST) ) {
+      $showMilestone=trim($_REQUEST['listShowMilestone']);
     } else {
   	  $showMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
       $showMilestone=trim($showMilestoneObj->parameterValue);

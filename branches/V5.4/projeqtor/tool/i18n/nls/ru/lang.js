@@ -1104,6 +1104,7 @@ errorUploadFile: "Ошибка при загрузке файла. Код оши
 errorValueWithoutUnit: "Единица должна существовать&#44; если существует значение",
 errorWorflow: "рабочий процесс не позволяет вам изменить статус этого элемента",
 errorXhrPost: "Ошибка в xhrPost при возврате в loadContent('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}') ;<br/> ${5}",
+errorXhrPostMessage: "[Technical issue occured possibly due to bad network connectoin.<br/>Please try again.]",
 estimated: "Оценка работы",
 evolutive: "Эволюция",
 exceptionMessage: "Исключение составляет ${1} для ${2}",
