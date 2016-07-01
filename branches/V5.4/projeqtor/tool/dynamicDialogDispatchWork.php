@@ -112,7 +112,7 @@ foreach($arrayWork as $key=>$work) {
            dojoType="dijit.form.DateTextBox" invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
            <?php if ($readOnly) echo 'readonly';?>
            type="text" maxlength="10" style="width:100px; text-align: center;" class="input"
-           hasDownArrow="true" constraints="{datePattern:'<?php echo $_SESSION['browserLocaleDateFormatJs'];?>'}"
+           hasDownArrow="true" constraints="{datePattern:browserLocaleDateFormatJs}"
            value="<?php echo $work['date']?>"></div></td>
  <td>&nbsp;</td>
  <td><select dojoType="dijit.form.FilteringSelect" class="input" style="width:150px;"

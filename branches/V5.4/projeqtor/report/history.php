@@ -199,9 +199,12 @@ foreach($historyList as $hist) {
     } else if ($dataType=='datetime') {
       $oldValue=htmlFormatDateTime($oldValue);
       $newValue=htmlFormatDateTime($newValue);
-    } elseif ($dataType=='decimal' and substr($colName, -4,4)=='Work') {
+    } else if ($dataType=='decimal' and substr($colName, -4,4)=='Work') {
       $oldValue = Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
       $newValue = Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
+    } else if ($dataType=='varchar' and $dataLength>4000) {
+      $oldValue=htmlEncode($oldValue,'formatted');
+      $newValue=htmlEncode($newValue,'formatted');
     } else {
       $oldValue=htmlEncode($oldValue,'print');
       $newValue=htmlEncode($newValue,'print');
