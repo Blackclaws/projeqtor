@@ -130,9 +130,9 @@ foreach ($lst as $tc) {
   echo '<td class="reportTableData" style="width:8%">' . (($tc->idTestCaseType)?$lstType[$tc->idTestCaseType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:2%">#' . htmlEncode($tc->id) . '</td>';
   echo '<td class="reportTableData" style="text-align:left;width:20%">' . htmlEncode($tc->name) . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->description) . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->prerequisite) . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->result) . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->description,"formatted") . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->prerequisite,"formatted") . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:25%">' . htmlEncode($tc->result,"formatted") . '</td>';
   echo '</tr>';
 }
 echo '</table>';
