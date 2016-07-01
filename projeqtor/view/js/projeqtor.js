@@ -722,7 +722,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     },
     error: function(error,args){
         console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
-        if (! silent) hideWait();}
+        if (! silent) hideWait();
+        finaliseButtonDisplay();
+        formChanged();
+        showWarning(i18n('errorXhrPostMessage'));
+        }
   });
   if (fadingMode) {
 	  dojo.fadeOut({ 

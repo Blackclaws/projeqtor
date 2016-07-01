@@ -1104,6 +1104,7 @@ errorUploadFile: "ファイルの更新時にエラー。エラーコード=${1}
 errorValueWithoutUnit: "値には単位が必要です",
 errorWorflow: "このワークフローではこの項目をこのステータスにすることができません",
 errorXhrPost: "loadContent('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}')のxhrPostの返却でエラー : <br/> ${5}",
+errorXhrPostMessage: "[Technical issue occured possibly due to bad network connectoin.<br/>Please try again.]",
 estimated: "見積作業",
 evolutive: "進展的",
 exceptionMessage: "${1}の${2}で例外が発生しました",

@@ -134,6 +134,8 @@ class WorkElementMain extends SqlElement {
 	        return "OK";
 	      }
 	    }
+	    $this->ongoing=0;
+	    $this->ongoingStartDateTime=null;
 	  }
     $old = $this->getOld ();
 		$ass=null;
