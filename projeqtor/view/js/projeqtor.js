@@ -1798,6 +1798,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   if (selectionField) {
 	  dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
   }
+  currentSelectedProject=idProject;
   if (idProject!="") {
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?idData=project&value=" + idProject,

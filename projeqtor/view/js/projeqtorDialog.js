@@ -3877,10 +3877,15 @@ function addAffectation(objectClass, type, idResource, idProject) {
   } else {
     dijit.byId("affectationProfile").reset();
   }
-  refreshList('idProject', null, null, null, 'affectationProject', true);
   if (objectClass == 'Project') {
+    refreshList('idProject', 'id', idProject, null, 'affectationProject', true);
     refreshList('id' + type, null, null, null, 'affectationResource', true);
   } else {
+    if (currentSelectedProject=='*') {
+      refreshList('idProject', null, null, null, 'affectationProject', true);
+    } else {
+      refreshList('idProject', 'id', currentSelectedProject, null, 'affectationProject', true);
+    }
     refreshList('id' + objectClass, null, null, null, 'affectationResource',
         true);
   }
