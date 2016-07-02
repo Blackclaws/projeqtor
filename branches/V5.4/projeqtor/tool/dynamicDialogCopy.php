@@ -90,7 +90,8 @@ if($copyType=="copyObjectTo"){
                <?php echo autoOpenFilteringSelect();?>
                 id="copyToType" name="copyToType" required
                 class="input">
-                <?php htmlDrawOptionForReference('id'.$objectClass.'Type', null, null, true);?>
+                <?php $colName='id'.$objectClass.'Type';
+                      htmlDrawOptionForReference($colName, $toCopy->$colName, null, true);?>
                </select>
              </td>
            </tr>

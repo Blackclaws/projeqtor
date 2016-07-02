@@ -217,6 +217,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
+      if (array_key_exists('project',$_SESSION)) {
+        $proj=$_SESSION['project'];
+      } else {
+        $proj="*";
+      }
+      echo "currentSelectedProject='$proj';";
       if (isset($_SESSION['hideMenu'])) {
         if ($_SESSION['hideMenu']!='NO') {
           echo "menuHidden=true;";
