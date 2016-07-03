@@ -265,6 +265,24 @@ class TicketMain extends SqlElement {
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
+    } else if ($colName=="idProduct" or $colName=="idComponent") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.value) {';
+      $colScript .= '    var idP=dijit.byId("idProduct").get("value");';
+      $colScript .= '    var idC=dijit.byId("idComponent").get("value");';
+      $colScript .= '    var idR=dijit.byId("idResource").get("value");';
+      $colScript .= '    dojo.xhrGet({';
+      $colScript .= '      url: "../tool/getSingleData.php?dataType=responsible&idProduct="+idP+"&idComponent="+idC+"&idResource="+idR,';
+      $colScript .= '      handleAs: "text",';
+      $colScript .= '      load: function (data) {';
+      $colScript .= '        if (data) {';
+      $colScript .= '          refreshList("idResource", "idProject", dijit.byId("idProject").get("value"), data, null, dijit.byId("idResource").get("required"));';
+      $colScript .= '          dijit.byId("idResource").set("value",data);';
+      $colScript .= '        }';
+      $colScript .= '      }';
+      $colScript .= '    });';
+      $colScript .= '  };';
+      $colScript .= '</script>';
     }
     return $colScript;
   }

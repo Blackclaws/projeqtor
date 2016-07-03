@@ -77,8 +77,24 @@
       $idAffectation=$_REQUEST['idAffectation'];
       $aff=new Affectation($idAffectation);
       echo htmlTransformRichtextToPlaintext($aff->description);
-    } else {   
-       
+    } else if ($type=='responsible') {
+      $responsibleFromProduct=Parameter::getGlobalParameter('responsibleFromProduct');
+    	if (!$responsibleFromProduct) $responsibleFromProduct='always';
+    	$idC=$_REQUEST['idComponent'];
+    	$idP=$_REQUEST['idProduct'];
+    	$idR=$_REQUEST['idResource'];
+    	if ($responsibleFromProduct=='always' or ($responsibleFromProduct=='ifempty' and !trim($idR))) { 
+    	  $comp=new Component($idC,true);
+    	  if ($comp->idResource) {
+    	    echo $comp->idResource;
+    	  } else {
+    	    $prod=new Product($idP,true);
+    	    if ($prod->idResource) {
+    	      echo $prod->idResource;
+    	    }
+    	  }
+    	}
+    } else {          
       echo '';
     } 
 ?>
