@@ -1104,7 +1104,7 @@ errorUploadFile: "Помилка при зотвантаженні (uploading) �
 errorValueWithoutUnit: "Одиниця мусить існувати&#44; якщо значення існує",
 errorWorflow: "робочий процес не дозволяє перенести цей елемент в такому статусі",
 errorXhrPost: "Помилка у xhrPost при повернені(return) для LoadContent ('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}') : <br/> ${5}",
-errorXhrPostMessage: "[Technical issue occured possibly due to bad network connectoin.<br/>Please try again.]",
+errorXhrPostMessage: "[Technical issue occured possibly due to bad network connection.<br/>Please try again.<br/>If issue persists&#44; please contact your administrator.]",
 estimated: "оцінка роботи",
 evolutive: "розвиток (evolutive)",
 exceptionMessage: "Виняткова подія відбулася на ${1} в ${2}",

@@ -725,7 +725,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         if (! silent) hideWait();
         finaliseButtonDisplay();
         formChanged();
-        showWarning(i18n('errorXhrPostMessage'));
+        showError(i18n('errorXhrPostMessage'));
         }
   });
   if (fadingMode) {
