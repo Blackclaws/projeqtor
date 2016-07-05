@@ -40,7 +40,9 @@ class BillType extends Type {
     "lockHandled"=>"hidden",
     "_lib_statusMustChangeHandled"=>"hidden",
     "mandatoryResourceOnHandled"=>"hidden",
-    "_lib_mandatoryOnHandledStatus"=>"hidden");
+    "_lib_mandatoryOnHandledStatus"=>"hidden",
+    "mandatoryResolutionOnDone"=>"hidden",
+    "_lib_mandatoryResolutionOnDoneStatus"=>"hidden", );
   
    private static $_colCaptionTransposition = array('mandatoryDescription'=>'comment');   
    /** ==========================================================================
