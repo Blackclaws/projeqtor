@@ -42,8 +42,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.4.1"; // Version of application : Major / Minor / Release
-$build = "0141"; // Build number. To be increased on each release
+$version = "V5.4.2"; // Version of application : Major / Minor / Release
+$build = "0142"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 
 /**
