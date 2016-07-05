@@ -63,6 +63,8 @@ class MilestoneType extends Type {
       "mandatoryDescription"=>"nobr",
       "mandatoryResourceOnHandled"=>"nobr",
       "mandatoryResultOnDone"=>"nobr",
+      "mandatoryResolutionOnDone"=>"hidden",
+      "_lib_mandatoryResolutionOnDoneStatus"=>"hidden",
       "lockHandled"=>"nobr",
       "lockDone"=>"nobr",
       "lockIdle"=>"nobr",
