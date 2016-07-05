@@ -28,7 +28,7 @@
  * Light view of ticket, for simple definition.
  */ 
 require_once('_securityCheck.php');
-class TicketSimpleMain extends Ticket {
+class TicketSimpleMain extends TicketMain {
 
 	public $_noDisplayHistory=true;
 	
