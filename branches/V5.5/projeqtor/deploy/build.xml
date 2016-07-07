@@ -2,11 +2,11 @@
 <project name="ProjeQtOr V5.5" default="buildQuick">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V5.4.1" />
+  <property name="version"       value="V5.5.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="${drive}/www/projeqtorV5.4" />
+  <property name="src.dir"       value="${drive}/www/projeqtorV5.5" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -193,13 +193,13 @@
   
   <target name="buildFull">
     <antcall target="clean"/>
+    <antcall target="_sphinxBuildUserManual_HTML_windows"/>
     <antcall target="copyDb"/>
     <antcall target="copyExternal"/>
     <antcall target="copyFiles"/>
-    <!-- <antcall target="copyManual"/> -->
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
-  	<antcall target="copyPlugin"/>
+    <antcall target="copyPlugin"/>
     <antcall target="copyReport"/>
     <antcall target="copyTool"/>
     <antcall target="copyView"/>
@@ -212,7 +212,6 @@
   <target name="buildQuick">
     <antcall target="copyDb"/>
     <antcall target="copyFiles"/>
-    <!-- <antcall target="copyManual"/> -->
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
   	<antcall target="copyPlugin"/>
