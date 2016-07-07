@@ -193,10 +193,10 @@
   
   <target name="buildFull">
     <antcall target="clean"/>
+  	<antcall target="_sphinxBuildUserManual_HTML_windows"/>
     <antcall target="copyDb"/>
     <antcall target="copyExternal"/>
     <antcall target="copyFiles"/>
-    <!-- <antcall target="copyManual"/> -->
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
   	<antcall target="copyPlugin"/>
