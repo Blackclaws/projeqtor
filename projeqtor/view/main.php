@@ -306,6 +306,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         $id=$_REQUEST['objectId'];
         if ($class=='Ticket' and securityGetAccessRightYesNo('menuTicket', 'read')=='NO') {
           $class='TicketSimple';
+        } else if ($class=='TicketSimple' and securityGetAccessRightYesNo('menuTicket', 'read')=='YES') {
+          $class='Ticket';
         }
         if (array_key_exists('directAccess', $_REQUEST)) {
         	echo "noDisconnect=true;";
