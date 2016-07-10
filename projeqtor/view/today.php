@@ -35,9 +35,9 @@
   $cptMax=Parameter::getGlobalParameter('maxItemsInTodayLists');
   if (! $cptMax) {$cptMax=100;}
   
-SqlElement::$_cachedQuery['Project']=array();
-SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
-SqlElement::$_cachedQuery['PlanningElement']=array();
+  SqlElement::$_cachedQuery['Project']=array();
+  SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
+  SqlElement::$_cachedQuery['PlanningElement']=array();
 
   $templateProjectList=Project::getTemplateList();
 
@@ -414,7 +414,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_ProjectTasks', 'todayProjectsTasks');
   }
   
-  function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, $divName, $title) {
+  function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, $divName, $title) {   
   	//                   Assign  idRess  idUser  idCont  Items
   	// $where :          NO      YES     YES     NO      Milestone, Risk, Action, Issue, Opportunity, Decision, Question, Quote, Order, Bill
   	// $whereActivity :  YES     YES     YES     YES     Activity
@@ -544,9 +544,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
       $status=($status=='0')?'':$status;
       $goto="";
-      if (! $print and securityCheckDisplayMenu(null,$class) 
-      and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {
-        $goto=' onClick="gotoElement(' . "'" . $class . "','" . htmlEncode($elt->id) . "'" . ');" style="cursor: pointer;" ';  
+      $classGoto=$class;      
+      if ($classGoto=='Ticket' and (!securityCheckDisplayMenu(null,$classGoto) or !securityGetAccessRightYesNo('menu' . $classGoto, 'read', $elt)=="YES") ) {
+        $classGoto='TicketSimple';
+      }
+      if (! $print and securityCheckDisplayMenu(null,$classGoto) 
+      and securityGetAccessRightYesNo('menu' . $classGoto, 'read', $elt)=="YES") {
+        $goto=' onClick="gotoElement(' . "'" . $classGoto . "','" . htmlEncode($elt->id) . "'" . ');" style="cursor: pointer;" ';  
       }
       $alertLevelArray=$elt->getAlertLevel(true);
       $alertLevel=$alertLevelArray['level'];
