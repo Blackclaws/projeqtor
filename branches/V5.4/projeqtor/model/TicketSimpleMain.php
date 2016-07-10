@@ -78,9 +78,12 @@ class TicketSimpleMain extends TicketMain {
     "idTargetVersion"=>"readonly",
     "idTargetProductVersion"=>"readonly",
     "idTargetComponentVersion"=>"readonly",
-	"idOriginalVersion"=>"",
-  "idComponent"=>"hidden",
-    "WorkElement"=>"hidden", "_Link"=>"hidden"
+	  "idOriginalVersion"=>"",
+    "idComponent"=>"hidden",
+    "idResolution"=>"readonly",
+    "WorkElement"=>"hidden", "_Link"=>"hidden",
+    "doneDateTime"=>"nobr,readonly",
+    "solved"=>"nobr,readonly"
   );  
     
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
