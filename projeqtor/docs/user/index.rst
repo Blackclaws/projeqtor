@@ -35,6 +35,100 @@ The goal of ProjeQtOr is to be Project Management Method independent.
 Whatever your choice of the method, you can use ProjeQtOr.
 
 
+.. raw:: latex
+
+    \newpage
+
+What's New in this user guide version?
+======================================
+
+This section summarized significant changes made in the user guide document for this version.
+
+To see complete list of changes made to software, visit the ProjeQtOr web site. 
+
+.. rubric:: Integration of tickets dashboard
+
+* Tickets dashboard includes several small reports listing the number of tickets.
+  
+  * See: :ref:`ticket-dashboard`
+
+.. rubric:: Tickets management
+
+* Addition of the "resolution" of the ticket describing the solution provided (or not).
+* Addition of "solved" indicator to the ticket.
+  
+  * See: :ref:`Ticket (Treatment section)<ticket>`
+  * See: :ref:`Ticket type (Behavior section) <behavior-section>`
+
+* Management of the list of resolutions.
+
+  * See: :ref:`Resolution (list of values)<resolution>`
+
+* Automatic allocation of the responsible of the ticket when selecting the product or component.
+
+  * See: :ref:`Product (Description section)<product>`
+  * See: :ref:`Product (Description section)<component>`
+  * See: :ref:`Ticket (Responsible of product)<ticket>`
+
+.. rubric:: Project management 
+
+* Indicator added "under construction" on the project.
+
+  * See: :ref:`project`
+
+.. rubric:: Financial
+
+* Addition of the management of suppliers.
+
+  * See: :ref:`Provider (list of values)<provider>`
+
+* Complement on the project expense object with the same level of information as a bill, to enable purchase management.
+
+  * See: :ref:`individual-expense`
+  * See: :ref:`project-expense`
+
+.. rubric:: Planning management 
+
+* Exporting planning  to PDF, identical to the version displayed (with all details and links between tasks).
+
+  * See: :ref:`Export planning to PDF from Gantt chart<gantt-planning>`
+
+.. rubric:: Interfaces
+
+* Ability to research projects in the selector: new list type without auto-complete to search into the name of projects.
+
+  * See: :ref:`Project selector (top bar)<top-bar>`
+
+* Ability to share a filter with other users.
+
+  * See: :ref:`Shared filters (Advanced filter)<advanced-filter>`
+
+* Ability to preview documents for image, text and PDF files.
+
+  * See: :ref:`Document viewer (Attachments section)<attachment-section>`
+  * See: :ref:`Document viewer (Document versions section)<document>`
+
+* Addition of the filter for selecting an element in lists of values using the autocomplete.
+
+.. rubric:: Other 
+
+* Allow to manage "private" actions to manage a personal "to-do list".
+
+  * See: :ref:`action`
+
+* Lock the definition of the number of hours per day once real work has been entered.
+
+  * See: :ref:`RWA`
+
+* Explanation about how to create a draft project planning.
+
+  * See: :ref:`Draft planning under planning section (Concept)<planning>`
+
+
+.. raw:: latex
+
+    \newpage
+
 Features
 ========
 
@@ -130,6 +224,7 @@ Ticket management
    :maxdepth: 1
 
    Ticket
+   TicketDashBoard
 
   
 Requirements & Tests
@@ -178,6 +273,7 @@ Environmental parameters
    User
    Resource
    Customer
+   Provider
    Recipient
    Context
    DocumentDirectory 

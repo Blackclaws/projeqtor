@@ -29,18 +29,14 @@ Restrictions can be defined for a project, a project type or a profile.
 #. For each element type, select values that will be in the list of values.
 
 .. figure:: /images/GUI/BOX_RestrictTypeForProject.png
-   :alt: Restrict types for the project dialog box
+   :alt: Dialog box - Restrict types for the project 
    :align: center
-
-   Restrict types for the project dialog box
 
 .. rubric:: Displays element type names where a restriction is applied
 
 .. figure:: /images/GUI/ZONE_TypeRestrictionSection.png
-   :alt: Restrict types section
+   :alt: Section - Restrict types 
    :align: center
-
-   Restrict types section
 
 
 .. raw:: latex
@@ -111,7 +107,7 @@ Project type is a way to define common behavior on group of projects.
    * - Billing type
      - Will define billing behavior (see: :term:`Billing types`).
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -158,7 +154,7 @@ Ticket type is a way to define common behavior on group of tickets.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -202,7 +198,7 @@ Activity type is a way to define common behavior on group of activities.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -249,7 +245,7 @@ Milestone type is a way to define common behavior on group of milestones.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -292,7 +288,7 @@ Quotation type is a way to define the way the concerned activity should be bille
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -337,7 +333,7 @@ Order type is a way to define the way the activity references by the order will 
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -378,7 +374,7 @@ Individual expense type is a way to define common behavior on group of individua
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -420,7 +416,7 @@ Project expense type is a way to define common behavior on group of project expe
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -459,7 +455,7 @@ Expense detail type is a way to define common behavior and calculation mode on g
    * - Value / unit
      - Define calculation mode for the detail type. 
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -524,7 +520,7 @@ Bill type is a way to define common behavior on group of bills.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -562,7 +558,7 @@ Payment type is a way to define common behavior on group of payments.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -608,7 +604,7 @@ Risk type is a way to define common behavior on group of risks.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -651,7 +647,7 @@ Opportunity type is a way to define common behavior on group of opportunities.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -697,7 +693,7 @@ Action type is a way to define common behavior on group of actions.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -739,7 +735,7 @@ Issue type is a way to define common behavior on group of issues.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -786,7 +782,7 @@ Meeting type is a way to define common behavior on group of meetings.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -829,7 +825,7 @@ Decision type is a way to define common behavior on group of decisions.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -875,7 +871,7 @@ Question type is a way to define common behavior on group of questions.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -915,7 +911,7 @@ Message type is a way to define common behavior on group of messages (appearing 
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -960,7 +956,7 @@ Document type is a way to define common behavior on group of documents.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -975,16 +971,14 @@ Document type is a way to define common behavior on group of documents.
 Contexts types
 --------------
 
-Context type is defining a fixed list of environmental context to describe ticket or test case.
+Context types are used to define the environmental context to describe ticket or test case.
 
-Only three context types exist, corresponding to the three selectable fields.
+Only three context types exist, corresponding to the three selectable fields. (Environment, OS and Browser)
 
 .. note::
 
    * Only the name of the context types can be changed.
-
    * No new context type can be added.
-
    * No context type can be deleted.
 
 .. rubric:: Section: Description
@@ -1001,10 +995,12 @@ Only three context types exist, corresponding to the three selectable fields.
      - Unique Id for the type.
    * - **Name**
      - Name of the type.
-   * - :term:`Closed`
-     - Flag to indicate that type is archived.
    * - Description
      - Description of the type.
+
+..   * - :term:`Closed`
+..     - Box checked indicates the type is archived.
+
 
 **\* Required field**
 
@@ -1046,7 +1042,7 @@ Requirement type is a way to define common behavior on group of requirements.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -1088,7 +1084,7 @@ Test case type is a way to define common behavior on group of test cases.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -1135,7 +1131,7 @@ Test session type is a way to define common behavior on group of test sessions.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -1150,7 +1146,7 @@ Test session type is a way to define common behavior on group of test sessions.
 Customers types
 ---------------
 
-Customer type is a way to define different status of customers  (prospects or clients).
+Customer type is a way to define different kinds of customers  (prospects or clients).
 
 .. sidebar:: Other sections
 
@@ -1173,11 +1169,49 @@ Customer type is a way to define different status of customers  (prospects or cl
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
 **\* Required field**
+
+
+.. index:: ! Provider (Type)
+
+.. _provider-type:
+
+Providers types
+---------------
+
+Provider type is a way to define different kinds of providers.
+
+.. sidebar:: Other sections
+
+   * :ref:`Behavior <behavior-section>`
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the type.
+   * - **Name**
+     - Name of the type.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Box checked indicates the type is archived.
+   * - Description
+     - Description of the type.
+
+**\* Required field**
+
 
 
 .. raw:: latex
@@ -1217,7 +1251,7 @@ Product type is a way to define common behavior to group of product.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -1257,7 +1291,7 @@ Component type is a way to define common behavior to group of component.
    * - Sort order
      - Number to define order of display in lists.
    * - :term:`Closed`
-     - Flag to indicate that type is archived.
+     - Box checked indicates the type is archived.
    * - Description
      - Description of the type.
 
@@ -1274,8 +1308,9 @@ Component type is a way to define common behavior to group of component.
 Behavior section
 ----------------
 
-* This section is common to several element types.
-* Allows to determine some GUI behavior, according to element types.
+This section is common to several element types.
+
+Allows to determine some GUI behavior, according to element types.
 
 .. note::
  
@@ -1284,19 +1319,35 @@ Behavior section
 
 .. rubric:: Description or Comments
 
-* This field allows to define that :term:`description` field to this element type is mandatory.  
+* Box checked indicates the field “:term:`Description`” is mandatory.
 
 .. rubric:: Responsible
 
-* This field allows to define that :term:`responsible` field to this element type is mandatory when the status to treatment of an item is handled.  
+* Box checked indicates the field ":term:`Responsible`" is mandatory when the status to treatment of the item is "handled".  
 
 .. rubric:: Result
 
-* This field allows to define that :term:`result` field to this element type is mandatory when the status to treatment of an item is done.  
-
+* Box checked indicates the field ":term:`Result`" is mandatory when the status to treatment of the item is "done". 
  
 .. rubric:: Flag status
 
-* Those fields allow to determine whether flags status are locked or not.
+* Fields: Lock handled, Lock done, Lock closed and Lock cancelled
+* Those fields allow to determine whether the checkbox fields concerned are locked or not.
 * When a flag status is locked, move to this status through status change.
+
+Ticket type
+^^^^^^^^^^^
+
+.. rubric:: Resolution
+
+* Box checked indicates the field "Resolution" is mandatory when the status to treatment of an item is "done".  
+
+.. rubric:: Lock solved
+
+* Box checked indicates the field “Solved” is read only.
+* The value of field must come from the field "Solved" defined in the selected resolution.
+
+
+
+
 

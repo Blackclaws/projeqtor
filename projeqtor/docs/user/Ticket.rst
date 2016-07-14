@@ -80,8 +80,8 @@ For instance, bugs should be managed through tickets :
 
 .. rubric:: Product, component and versions fields
 
-* Allows to identify the product or component that is the subject of the ticket.
-* Allows to identify from what version (origin) and to which version (target).
+* Allows to identify the product and component relating to the issue.
+* Identifies from which versions, the issue occurs and to which versions a resolution will be applied. 
 
  .. compound:: **Versions identified**
 
@@ -91,6 +91,19 @@ For instance, bugs should be managed through tickets :
 .. note:: 
 
    * More detail, see: :ref:`Product concept<product-concept>`.
+
+
+-----------
+
+.. rubric:: Responsible of product
+
+A responsible can be defined for a product or component.
+
+If a product or component is selected, the responsible defined can be automatically assigned to the ticket.
+
+.. note:: Global parameter: Ticket responsible from product responsible
+
+   * This parameter allows to define, if the defined responsible is automatically assigned to the ticket or not.
 
 .. raw:: latex
 
@@ -138,9 +151,9 @@ For instance, bugs should be managed through tickets :
    * - Component
      - The component for which this ticket has been identified.
    * - Original product version
-     - Versions of product for which this ticket has been identified.
+     - Product versions for which the issue has been identified.
    * - Original comp. version 
-     - Versions of component for which this ticket has been identified.
+     - Component versions for which the issue has been identified.
    * - :term:`Description`
      - Complete description of the ticket.
 
@@ -175,6 +188,8 @@ For instance, bugs should be managed through tickets :
      - Activity where global work for this kind of ticket is planned. 
    * - **Status**
      - Actual :term:`status` of the ticket.
+   * - Resolution
+     - Ticket resolution.
    * - :term:`Responsible`
      - Resource who is responsible for the ticket.
    * - Criticality
@@ -192,22 +207,23 @@ For instance, bugs should be managed through tickets :
    * - Left work
      - Left workload needed to finish the ticket.
    * - :term:`Handled`
-     - Flag to indicate that ticket is taken into account.
+     - Box checked indicates the ticket is taken over.
    * - :term:`Done`
-     - Flag to indicate that ticket has been treated.
+     - Box checked indicates the ticket has been treated.
+   * - Solved
+     - Box checked indicates the ticket has been solved.
    * - :term:`Closed`
-     - Flag to indicate that ticket is archived.
+     - Box checked indicates the ticket is archived.
    * - Cancelled
-     - Flag to indicate that ticket is cancelled.
+     - Box checked indicates the ticket is cancelled.
    * - Target product version 
-     - Versions of a product for which the object will be delivered.
+     - Product versions for which a resolution of issue will be delivered.
    * - Target comp. version 
-     - Versions of a component for which the object will be delivered.
+     - Component versions for which a resolution of issue will be delivered.
    * - :term:`Result`
      - Complete description of the resolution of the ticket. 
  
 **\* Required field**
-
 
 .. topic:: Field: Priority
 
@@ -218,6 +234,10 @@ For instance, bugs should be managed through tickets :
 
    * Automatically calculated as Estimated – Real.
    * Set to zero when ticket is done.
+
+.. topic:: Field: Solved
+
+   * The box is automatically checked or unchecked, according to the resolution selected.
 
 .. topic:: Fields: Target product version & Target comp. version
 
@@ -247,17 +267,15 @@ For instance, bugs should be managed through tickets :
 This button allows to dispatch ticket.
 
 .. figure:: /images/GUI/BOX_DispatchWork.png
-   :alt: Dispatch work dialog box
+   :alt: Dialog box - Dispatch work 
    :align: center
-
-   Dispatch work dialog box
 
 
 * Click on |buttonAdd| to add a line. 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of dispatch work dialog box
+.. list-table:: Fields - Dispatch work dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -292,13 +310,10 @@ In the version fields, it's possible to set several versions.
 * Click on |buttonIconDelete| to delete a version.
 
 .. figure:: /images/GUI/BOX_AddOtherVersion.png
-   :alt: Add other version dialog box
+   :alt: Dialog box - Add other version 
    :align: center
 
-   Add other version dialog box
-
-
-
+   
 .. _priority-calculation:
 
 Priority value calculation

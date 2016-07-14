@@ -195,6 +195,9 @@ The rules defining a product structure are:
     \newpage
 
 
+.. _planning:
+
+
 Planning 
 ========
 
@@ -240,6 +243,39 @@ Based upon on resource availability and their capacity.
 
 * The task assignation rate is used to keep some scheduling time for other tasks.
 * Use with the resource capacity, it allows to define the assignation capacity on a daily base.
+
+Draft planning
+--------------
+
+Two methods can be used to create a draft planning.
+
+ .. compound:: **Use planning mode "fixed duration"**
+
+    * This planning mode is used to define fixed duration tasks. (See: :ref:`planningMode`)
+    * Dependencies allow to define the execution order of tasks. (See: :ref:`dependencies`)
+
+ .. compound:: **Use faked and overloaded resource**
+
+    * The faked and overloaded resource can be useful to get a first estimate of project cost and duration without involving the real resources.
+    * Planning schedule is calculated using of the work-driven planning method.
+
+     .. compound:: **Faked resources**
+
+        * For instance, you want to define a Java developer resource. You can create a resource named "Java developer #1".
+        * There are several levels of Java developer with different daily costs (beginner, intermediary and expert).
+        * You can define for this resource the functions and average daily cost for each level. (See: :ref:`resource-function-cost`)
+        * You assign this resource to tasks, to a specific function (level). (See: :ref:`assignment`)
+
+     .. compound:: **Overloaded resource**
+
+        * An overloaded resource is a resource whose daily capacity has been overloaded (Capacity (FTE) > 1).
+        * For instance, you needed to define four Java developers, but you don’t want to create a resource for each. You can overload the daily capacity of the resource (Example: Capacity FTE=4).
+        * Using overloaded resources renders estimation of project duration null and void.
+
+
+.. raw:: latex
+
+    \newpage
 
 .. _planning-element:
 
@@ -356,7 +392,7 @@ More detail, see: :ref:`meeting` screen.
 Dependencies
 ------------
 
-Dependencies allow to define the execution of tasks (sequential or concurrent).
+Dependencies allow to define the execution order of tasks (sequential or concurrent).
 
 All planning elements can be linked to others.
 
@@ -396,6 +432,8 @@ More detail, see: :ref:`project-planning`, :ref:`predSuces-element-section`.
 .. raw:: latex
 
     \newpage
+
+.. _planningMode:
 
 Planning mode
 -------------
@@ -485,10 +523,10 @@ Breakdown can be done with sub-projects, activities and test sessions.
 
     \newpage
 
-Project scheduling
------------------- 
+Project scheduling calculation
+------------------------------ 
 
-The project scheduling is done on a full project plan that includes parents and predecessor elements (dependencies). 
+The project schedule is calculated on the full project plan that includes parents and predecessor elements (dependencies).
 
 .. rubric:: Scheduling
 
@@ -994,15 +1032,24 @@ Project affectation can be defined in :ref:`project` and :ref:`contact` screens.
 
     \newpage
 
-Activity assignment
-===================
+.. _assignment:
 
-* Activity assignment is used to assign resource to project activities.
-* Project activities are activity, meeting and test session. 
+Assignment
+==========
+
+The assignment is used to assign resources to project tasks (activity, test session, meeting).
+
+Consists to assign a resource to a task in a specific function. The function allows to define the resource daily cost.
+
+A resource assignment contains data about work on task (planned,  real, left and reassessed work).
     
 .. note::
 
-   * Only resources affected to the project of the activity can be assigned to the activity.
+   * Only resources affected by the project can be assigned to project tasks.
+
+.. note::
+
+   * Assignment can be done in :ref:`activity`, :ref:`test-session` and :ref:`meeting` screens.
 
 
 

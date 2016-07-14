@@ -71,22 +71,55 @@ Top bar
 
 .. rubric:: 1 - Project selector
 
-* Allows restricting the visibility of all objects of the dedicated project, including sub-projects if any.
-* The selection will also define the “default” project for new items.
+* Allows to select the project to work on.
+* Restricted the visibility of all objects of the selected project, including sub-projects if any.
+* Defined the “default” project for new items.
 
- .. compound:: **Project selector parameters**
+.. note:: User parameter: Default project
 
-    * Click on |buttonIconParameter| to display the project selector parameters dialog box, you can select :
+   * Defines the project that will be selected by default.
 
-      * View closed projects.
-      * Change the project selector format.
-      * Refresh the list.
+.. rubric:: 1.1 - Project selector parameters
+
+* Click on |buttonIconParameter| to display the project selector parameters dialog box, you can select :
+
+  * View closed projects.
+  * Change the project list display mode.
+  * Refresh the list.
 
 .. figure:: /images/GUI/BOX_ProjectSelectorParameters.png
-   :alt: Project selector parameters dialog box
+   :alt: Dialog box - Project selector parameters
    :align: center
 
-   Project selector parameters dialog box
+.. rubric:: 1.1.a - Standard (reflecting WBS structure)
+
+* List of project and sub-project are displayed according to WBS structure.
+
+.. figure:: /images/GUI/ZONE_ProjectSelectorStandardMode.png
+   :alt: Example - Project list display mode standard
+   :align: center
+
+.. raw:: latex
+
+   \newpage
+
+
+.. rubric:: 1.1.b - Filtering select (with autocomplete)
+ 
+* List of project and sub-project are displayed according to entered text.
+
+.. figure:: /images/GUI/ZONE_ProjectSelectorAutoCompleteMode.png
+   :alt: Example - Filtering select (with autocomplete)
+   :align: center
+
+.. rubric:: 1.1.c - Filtering select (with search)
+
+* List of project and sub-project are displayed according to search criteria.
+
+.. figure:: /images/GUI/ZONE_ProjectSelectorSearchMode.png
+   :alt: Example - Filtering select (with search)
+   :align: center
+
 
 .. raw:: latex
 
@@ -172,10 +205,8 @@ Logo area
 * Click on «Logo Area» will display the software information box.
 
 .. figure:: /images/GUI/INFO_SoftwareInformation.png
-   :alt: Software information box
+   :alt: Box - Software information
    :align: center
-
-   Software information box
 
 
 .. rubric:: Online user manual
@@ -310,6 +341,11 @@ List window
   
     * Will restrict the list to the corresponding type.
 
+ .. compound:: **Other filter fields**
+  
+    * Depending on the element, other filter fields will be available.
+
+
 .. raw:: latex
 
     \newpage
@@ -362,13 +398,11 @@ Quick search
 The quick search allows to execute a textual search.
 
 .. figure:: /images/GUI/ZONE_QuickSearch.png
-   :alt: Quick search zone
+   :alt: Zone - Quick search
    :align: center
 
-   Quick search zone
-
-   * Click on |buttonIconSearch| to execute the search.
-   * Click on |buttonIconUndo| to close the quick search.
+* Click on |buttonIconSearch| to execute the search.
+* Click on |buttonIconUndo| to close the quick search.
 
 .. raw:: latex
 
@@ -384,11 +418,8 @@ The advanced filter allows to define clause to filter and sort.
 * The advanced filter definition dialog box is divided into two sections.
 
 .. figure:: /images/GUI/BOX_AdvancedFilterDefinition.png
-   :alt: Advanced filter definition dialog box
+   :alt: Dialog box - Advanced filter definition
    :align: center
-
-   Advanced filter definition dialog box
-
  
 .. rubric:: 1 - Active filter
 
@@ -425,14 +456,33 @@ The advanced filter allows to define clause to filter and sort.
 
 * Click on a saved filter to retrieve its definition.
 * Click on |buttonIconDelete| from a saved filter to delete it.
-* Click on the **Default** button to to define the active stored filter as the default, kept even after disconnection.
+* Click on the **Default** button to define the active stored filter as the default, kept even after disconnection.
 
 .. note:: Default filter
 
    * The default filter is defined for the user.
    * The filter will be automatically applied in the next connection.
 
-------------
+.. rubric:: 3 - Shared filters
+
+* Defined filters can be shared with other users.
+* Click on |unShareFilter| to shared the selected filter.
+* Click on |sharedFilter| to unshare the selected filter.
+
+
+
+Shared filters are available for all users in them session.
+
+.. figure:: /images/GUI/BOX_AdvancedFilterDefinitionWithSharedFilter.png
+   :alt: Dialog box - Advanced filter definition with shared filter 
+   :align: center
+
+   Dialog box - Advanced filter definition with shared filter 
+
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: List of filters
 
@@ -440,10 +490,8 @@ The advanced filter allows to define clause to filter and sort.
 * To see the filter list, move the cursor over the advanced filter icon.
 
 .. figure:: /images/GUI/TIP_AdvancedFilterList.png
-   :alt: Advancedilter list toolti
+   :alt: Popup menu - Stored filters
    :align: center
-
-   Stored filters
 
 * Click on the filter name to apply. |buttonIconActiveFilter|
 * Click on **«no filter clause»** to reset the filter. |buttonIconFilter|
@@ -470,10 +518,8 @@ This functionality allows to define columns displayed in the list  for this elem
     * The definition will be automatically applied in the next connection.
 
 .. figure:: /images/GUI/BOX_SelectColunmsToDisplay.png
-   :alt: Select columns to display dialog box
+   :alt: Dialog box - Select columns to display 
    :align: center
-
-   Select columns to display dialog box
 
 
 .. rubric:: Column selection
@@ -539,10 +585,8 @@ The fields are regrouped and presented in the order as they appear in the item d
    * The same definition can be applied in the next export.
 
 .. figure:: /images/GUI/BOX_Export.png
-   :alt: Export dialog box
+   :alt: Dialog box - Export 
    :align: center
-
-   Export dialog box
 
 .. rubric:: Fields selection
 
@@ -658,10 +702,10 @@ Detail window
     * When the section contains a list, the item count is displayed at right of the header.
 
     .. figure:: /images/GUI/ZONE_SectionHeader.png
-       :alt: Header section dialog box
+       :alt: Header section
        :align: center
 
-       Header section dialog box
+       Header section
 
  .. compound:: **Thumbnails on items in the list**
 
@@ -692,10 +736,8 @@ Copy item
 * The options displayed in dialog box depends on whether the element is simple or complex.
 
 .. figure:: /images/GUI/BOX_CopyElement.png
-   :alt: Copy element dialog box
+   :alt: Dialog box - Copy element
    :align: center
-
-   Copy element dialog box
 
 .. rubric:: Simple element
 
@@ -737,10 +779,8 @@ Email detail
 Allows to send an informative email to defined recipients list.
 
 .. figure:: /images/GUI/BOX_EmailDetail.png
-   :alt: Email detail dialog box
+   :alt: Dialog box - Email detail
    :align: center
-
-   Email detail dialog box
 
 .. rubric:: Recipients list
 
@@ -833,16 +873,16 @@ A checklist is available, whether a checklist form is already defined for the el
 * With other value the “Checklist” section appears in the detail window. 
 
 .. figure:: /images/GUI/BOX_Checklist.png
-   :alt: Checklist dialog box 
+   :alt: Dialog box - Checklist
    :align: center
 
-   Checklist dialog box 
+   Dialog box - Checklist
  
 .. figure:: /images/GUI/ZONE_Checklist.png
-   :alt: Checklist section
+   :alt: Section - Checklist
    :align: center
 
-   Checklist section
+   Section - Checklist
 
 .. rubric:: How to use
  
@@ -902,16 +942,21 @@ They are stored and displayed on each item.
 * If the value “Yes” is set, the “Change history” section appears in the detail window. 
 
 .. figure:: /images/GUI/BOX_HistoryChange.png
-   :alt: History of changes dialog box 
+   :alt: Dialog box - History of changes
    :align: center
 
-   History of changes dialog box 
+   Dialog box - History of changes
 
 .. figure:: /images/GUI/ZONE_HistoryChange.png
-   :alt: Change history section 
+   :alt: Section - Change history
    :align: center
 
-   Change history section
+   Section - Change history
+
+
+.. raw:: latex
+
+    \newpage
 
 .. rubric:: Show/Hide work
 
@@ -935,6 +980,7 @@ Text editors are available for editing of long text fields like description, res
 .. rubric:: CK Editor
 
 * The most advanced web editor.
+* Spell checker available with this text editor. 
 
 .. figure:: /images/GUI/ZONE_CKEditor.png
    :alt: CK Editor
@@ -1012,10 +1058,8 @@ Accelerator buttons
 * The next status is defined by the workflow linked to the type of element. 
 
 .. figure:: /images/GUI/BUTTON_MoveToNextStatus.png
-   :alt: Move to next status button
+   :alt: Button - Move to next status 
    :align: center
-
-   Move to next status button
 
 .. _assignToMe-button:
 
@@ -1024,10 +1068,10 @@ Accelerator buttons
 * This button allows to set the current user in the related field.
 
 .. figure:: /images/GUI/BUTTON_AssignToMe.png
-   :alt: Assign to me button
+   :alt: Button - Assign to me 
    :align: center
 
-   Assign to me button
+
 
 .. raw:: latex
 
@@ -1048,11 +1092,8 @@ Combo list field
 
 
 .. figure:: /images/GUI/ZONE_ComboListFields.png
-   :alt: Combo list field
+   :alt: Field - Combo list
    :align: center
-
-   Combo list field
-
 
 * Click on |comboArrowDown| to get the list of values.
 * Click on |iconGoto| will directly go to the selected item.
@@ -1074,10 +1115,10 @@ Combo list field
     * If the field value is filled, the details of item associated  are displayed.
 
     .. figure:: /images/GUI/BOX_DetailOfListElement.png
-       :alt: Detail of list element dialog box
+       :alt: Dialog box - Item details
        :align: center
 
-       Detail of list element dialog box
+       Dialog box - Item details
 
     * Click on |buttonIconSearch| to re-select an item.
     * Click on |buttonIconUndo| to close the dialog box.
@@ -1089,10 +1130,10 @@ Combo list field
     * If the field value is empty, the list of items is displayed, allowing to select an item.
 
     .. figure:: /images/GUI/BOX_DetailOfListElementList.png
-       :alt: Detail of list element (list) dialog box
+       :alt: Dialog box - List of items 
        :align: center
 
-       Detail of list element (list) dialog box 
+       Dialog box - List of items
 
        * Click on |buttonIconSelect| to select items.
        * Click on |buttonIconNew| to create a new item.
@@ -1121,11 +1162,8 @@ Origin field
 * The origin may be selected manually or automatically inserted during copying an element. 
 
 .. figure:: /images/GUI/ZONE_OriginField.png
-   :alt: Origin field
+   :alt: Field - Origin 
    :align: center
-
-   Origin field
-
 
 
 .. rubric:: Origin element
@@ -1134,10 +1172,8 @@ Origin field
 * Click on |buttonIconDelete| to delete the link.
 
 .. figure:: /images/GUI/BOX_AddAnOriginElement.png
-   :alt: Add an origin element dialog box
+   :alt: Dialog box - Add an origin element 
    :align: center
-
-   Add an origin element dialog box
 
 .. tabularcolumns:: |l|l|
 
@@ -1162,10 +1198,13 @@ Set color field
 * Click on “Reset” button to erase.
 
 .. figure:: /images/GUI/ZONE_SetColor.png
-   :alt: Set color field zone
+   :alt: Zone - Set color field 
    :align: center
 
-   Set color field zone
+
+.. raw:: latex
+
+    \newpage
 
 .. _thumbnails:
 
@@ -1320,10 +1359,8 @@ Three kinds of message may be displayed:
 * Alert
 
 .. figure:: /images/GUI/BOX_Alert.png
-   :alt: message pop-up
+   :alt: Example - message pop-up
    :align: center
-
-   message pop-up
 
 .. rubric:: Action on message pop-up
 

@@ -95,13 +95,13 @@ On the quotation form, you can record all the information about the sent proposa
    * - Likelihood
      - The probability that the proposal will be accepted.
    * - :term:`Handled`
-     - Flag to indicate that quotation is taken into account.
+     - Box checked indicates that the quotation is taken in charge.
    * - :term:`Done`
-     - Flag to indicate that quotation is done (execution processed).
+     - Box checked indicates that the quotation is processed.
    * - :term:`Closed`
-     - Flag to indicate that quotation is archived.
+     - Box checked indicates that the quotation is archived.
    * - Cancelled
-     - Flag to indicate that quotation is cancelled. 
+     - Box checked indicates that the quotation is cancelled. 
    * - Planned end date
      - Target end date of the activity object of the quotation.
    * - Activity type
@@ -117,18 +117,23 @@ On the quotation form, you can record all the information about the sent proposa
 
 **\* Required field**
 
+.. topic:: Field: Payment deadline
+
+   * If the payment deadline is not set, the value defined for the selected customer is used.
+
 .. topic:: Fields: Amount
 
    Columns:
 
    * **Ex VAT**: Amount without taxes.
+      
+     * The amount is automatically updated with the sum of bill lines.
+
    * **Tax**: Applicable tax. 
+
+     * If the applicable tax isn’t set, the tax defined for the selected customer is used.
+
    * **Full**: Amount with taxes.
-
-.. topic:: Column: Ex VAT
-
-   * The column value is automatically updated with the sum of bill line amounts. 
-
 
 .. hint:: Activity type
 
@@ -193,8 +198,8 @@ On the order form, you can record all the information of the received order.
      - Contact in customer organization to whom you sent the order.
    * - **External reference**
      - :term:`External reference` of the order (as received).
-   * - Submitted date
-     - Date when order is sent to customer.
+   * - Date of receipt
+     - Receipt date.
    * - Receive mode
      - Delivery mode. 
    * - :term:`Origin`
@@ -225,13 +230,13 @@ On the order form, you can record all the information of the received order.
    * - :term:`Responsible`
      - Resource who is responsible for the order.
    * - :term:`Handled`
-     - Flag to indicate that order is taken into account.
+     - Box checked indicates that the order is taken in charge.
    * - :term:`Done`
-     - Flag to indicate that order is done (execution processed).
+     - Box checked indicates that the order is processed.
    * - :term:`Closed`
-     - Flag to indicate that order is archived.
+     - Box checked indicates that the order is archived.
    * - Cancelled
-     - Flag to indicate that order is cancelled.
+     - Box checked indicates that the order is cancelled.
    * - Activity type
      - Type of the activity object of the order.
    * - Linked activity
@@ -260,7 +265,10 @@ On the order form, you can record all the information of the received order.
 
      * The column value is automatically updated with the sum of bill line amounts.
 
-   * **Tax**: Applicable tax. 
+   * **Tax**: Applicable tax.
+
+     * If the applicable tax isn’t set, the tax defined for the selected customer is used.
+ 
    * **Full**: Amount with taxes.
    * **Work**: Work days corresponding to the order.
  
