@@ -10,6 +10,8 @@
 
 .. index:: ! Real work allocation 
 
+.. _RWA:
+
 Real work allocation
 --------------------
 
@@ -22,6 +24,11 @@ Data entry for one resource, on a weekly base.
 .. note::
 
    * The corresponding cost to the real work is automatically updated to the assignment, activity and project.
+
+.. important:: **Global parameter: Number of hours per day**
+
+   * You must set this parameter before some real work has been entered.
+   * After, this parameter will be locked.
 
 .. figure:: /images/GUI/SCR_TimeSheetZone.png
    :alt: Timesheet zone screen

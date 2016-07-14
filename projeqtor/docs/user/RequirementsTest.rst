@@ -61,8 +61,8 @@ It can be linked to test cases, it's used to describe how you will test that a g
 
 .. sidebar:: Other sections
 
-   * :ref:`Predecessor and Sucessor element<predSuces-element-section>`
    * :ref:`Summary of test cases<summary-test-case-section>`
+   * :ref:`Predecessor and Sucessor element<predSuces-element-section>`
    * :ref:`Linked element<linkElement-section>`   
    * :ref:`Attachments<attachment-section>`   
    * :ref:`Notes<note-section>`   
@@ -107,8 +107,7 @@ It can be linked to test cases, it's used to describe how you will test that a g
 .. topic:: Fields: Project and Product
 
    * Must be concerned either with a project, a product or both.
-   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
-   * If the project is not specified, the list of values for the field "Product" contains all products defined.
+   * If the project is specified, the list of values for field "Product" contains only products linked the selected project.
 
 .. rubric:: Section: Treatment
 
@@ -135,13 +134,13 @@ It can be linked to test cases, it's used to describe how you will test that a g
    * - Estimated effort
      - Result of first analysis to measure the estimated effort of the implementation of the requirement.
    * - :term:`Handled`
-     - Flag to indicate that requirement is taken into account.
+     - Box checked indicates the requirement is taken over.
    * - :term:`Done`
-     - Flag to indicate that requirement has been treated.
+     - Box checked indicates the requirement has been treated.
    * - :term:`Closed`
-     - Flag to indicate that requirement is archived.
+     - Box checked indicates the requirement is archived.
    * - Cancelled
-     - Flag to indicate that requirement is cancelled.
+     - Box checked indicates the requirement is cancelled.
    * - Target version
      - Version of the product for which this requirement will be active.
    * - :term:`Result`
@@ -176,7 +175,7 @@ A requirement can be locked to ensure that its definition has not changed during
    * - Field
      - Description
    * - Locked
-     - Flag to indicated that the requirement is locked.
+     - Box checked indicates the requirement is locked.
    * - Locked by
      - User who locked the requirement.
    * - Locked since
@@ -206,7 +205,7 @@ Test cases are elementary actions executed to test a requirement.
 
 You may define several tests to check a requirement, or check several requirements with one test.
 
-The test case is defined  for a project, a product or one these components.
+The test case is defined for a project, a product or one these components.
 
 .. index:: ! Test case (Run status)
 
@@ -275,13 +274,11 @@ The test case is defined  for a project, a product or one these components.
 .. topic:: Fields: Project and Product
 
    * Must be concerned either with a project, a product or both.
-   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
-   * If the project is not specified, the list of values for the field "Product" contains all products defined.
+   * If the project is specified, the list of values for field "Product" contains only products linked the selected project.
 
 .. topic:: Field: Version
 
    * Contains the list of product and component versions available according to the project and product selected.
-
 
 .. topic:: Field: Environment (Context)
 
@@ -318,19 +315,17 @@ The test case is defined  for a project, a product or one these components.
    * - Priority
      - Level of priority for the test case.
    * - :term:`Handled`
-     - Flag to indicate that test case is taken into account.
+     - Box checked indicates the test case is taken over.
    * - :term:`Done`
-     - Flag to indicate that test case has been treated.
+     - Box checked indicates the test case has been treated.
    * - :term:`Closed`
-     - Flag to indicate that test case is archived.
+     - Box checked indicates the test case is archived.
    * - Cancelled
-     - Flag to indicate that test case is cancelled.
+     - Box checked indicates the test case is cancelled.
    * - Prerequisite
      - List of steps that must be performed before running the test.	
    * - :term:`Expected result<Result>`
      - Description of expected result of the test.
-   * - Summary
-     - :ref:`Summary of test case run status<summary-test-case-run-status>`. 
  
 **\* Required field**
 
@@ -344,6 +339,12 @@ The test case is defined  for a project, a product or one these components.
 * These are links of the test to test sessions.
 * This list also displays the current status of the test in the sessions.
 
+.. topic:: Field: Summary
+
+   * An icon whose presents the run status of the test case.
+   * For detail, see: :ref:`Summary of test case run status<summary-test-case-run-status>`. 
+
+
 .. note ::
 
    * To go, click on the corresponding test session.
@@ -351,7 +352,7 @@ The test case is defined  for a project, a product or one these components.
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of test case runs list
+.. list-table:: Fields - Test case runs list
    :widths: 20, 80
    :header-rows: 1
 
@@ -451,8 +452,7 @@ The test session is defined for a project, a product or one these components.
 .. topic:: Fields: Project and Product
 
    * Must be concerned either with a project, a product or both.
-   * If the project is specified, the list of values for the field “Product” contains the products linked the selected project.
-   * If the project is not specified, the list of values for the field "Product" contains all products defined.
+   * If the project is specified, the list of values for field "Product" contains only products linked the selected project.
 
 .. topic:: Field: Version
 
@@ -477,13 +477,13 @@ The test session is defined for a project, a product or one these components.
    * - :term:`Responsible`
      - Resource who is responsible of the test session.
    * - :term:`Handled`
-     - Flag to indicate that test session is taken into account.
+     - Box checked indicates the test session is taken over.
    * - :term:`Done`
-     - Flag to indicate that test session has been treated.
+     - Box checked indicates the test session has been treated.
    * - :term:`Closed`
-     - Flag to indicate that test session is archived.
+     - Box checked indicates the test session is archived.
    * - Cancelled
-     - Flag to indicate that test session is cancelled.
+     - Box checked indicates the test session is cancelled.
    * - :term:`Result`
      - Summary result of the test session. 
  
@@ -497,7 +497,7 @@ The test session is defined for a project, a product or one these components.
 
 This section allows to manage test case runs.
 
-.. list-table:: Fields of test case runs list
+.. list-table:: Fields - Test case runs list
    :widths: 20, 80
    :header-rows: 1
 
@@ -546,13 +546,13 @@ This section allows to manage test case runs.
     * The referenced ticket is automatically added in linked element. 
 
 .. figure:: /images/GUI/BOX_TestCaseRun.png
-   :alt: Test case run dialog box
+   :alt: Dialog box - Test case run 
    :align: center
 
-   Test case run dialog box
+   Dialog box - Test case run 
 
 
-.. list-table:: Fields of test case run dialog box
+.. list-table:: Fields - Test case run dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -561,23 +561,23 @@ This section allows to manage test case runs.
    * - Test cases
      - Test cases list.
    * - Allow duplicate
-     - Flag on if you permit that test case is use more one time in a test session.
+     - Check the box, if you allow this test case can be used more than once in a test session.
 
 
 
 
 
 .. figure:: /images/GUI/BOX_TestCaseRunDetail.png
-   :alt: Test case run detail dialog box
+   :alt: Diaglog box - Test case run detail
    :align: center
 
-   Test case run detail dialog box
+   Diaglog box - Test case run detail
 
 
 
 
 
-.. list-table:: Fields of test case run detail dialog box
+.. list-table:: Fields - Test case run detail dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -636,7 +636,7 @@ This section summarizes the status of test case runs to requirement and test ses
 
 ----------
 
-.. list-table:: Fields of summary of test cases
+.. list-table:: Fields - Summary of test cases
    :widths: 20, 80
    :header-rows: 1
 

@@ -49,10 +49,8 @@ Once defined, a workflow can be linked to any type of any item.
 * This button |buttonIconParameter|  can be used to hide some unnecessary status.
 
 .. figure:: /images/GUI/BOX_SelectStatusToShowOrHide.png
-   :alt: Select status to show or hide dialog box
+   :alt: Dialog box - Select status to show or hide 
    :align: center
-
-   Select status to show or hide dialog box
 
 
 .. rubric:: Section: Workflow Diagram
@@ -79,11 +77,11 @@ Once defined, a workflow can be linked to any type of any item.
 * Just check the profile (or “all”) who is allowed to pass from one status to the other.
 
 
-  .. figure:: /images/GUI/SEC_HabilitationTable.png
-     :alt: Habilitation table
-     :align: center
+ .. figure:: /images/GUI/SEC_HabilitationTable.png
+    :alt: Habilitation table
+    :align: center
 
-     Habilitation table
+    Habilitation table
 
 
  .. compound:: **In the upper example:**
@@ -353,14 +351,13 @@ A checklist is built from checklist lines.
 * Click on |buttonIconDelete| to delete the corresponding checklist line.
 
 .. figure:: /images/GUI/BOX_ChoicesForChecklistLines.png
-   :alt: Choices for the checklist lines dialog box
+   :alt: Dialog box - Choices for the checklist lines 
    :align: center
 
-   Choices for the checklist lines dialog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Choices for the checklist lines dialog box fields
+.. list-table:: Fields - Choices for the checklist lines
    :widths: 20, 80
    :header-rows: 1
 

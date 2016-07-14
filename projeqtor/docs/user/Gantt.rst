@@ -50,7 +50,7 @@ It is composed with two areas:
 
 * Click on |storePlannedDates| to store planned dates. (See: :ref:`project-planning`)
 * Click on |buttonIconPrint| to get a printable version of the Gantt chart.
-* Click on |buttonIconPdf| to get a printable version of the Gantt chart in PDF format. 
+* Click on |buttonIconPdf| to export Gantt chart in PDF format. (See: :ref:`export-Gantt-PDF`) 
 * Click on |msProject| to export planning to MS-Project xml format.
 * Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)
 * Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)
@@ -71,7 +71,7 @@ The task list area is composed with:
 * :ref:`progress-data-view` |two|
 
 .. figure:: /images/GUI/ZONE_GanttTaskListProgressData.png
-   :alt: Task list & progress data
+   :alt: Task list & progress data view
    :align: center
 
    Task list & progress data view
@@ -186,10 +186,10 @@ For each planning element, the progress data are displayed at them right.
    
 
 .. figure:: /images/GUI/TIP_GanttSelectColunmsToDisplay.png
-   :alt: Select columns tooltip
+   :alt: Popup list - Select columns
    :align: center
 
-   Select columns tooltip
+   Popup list - Select columns
 
 .. raw:: latex
 
@@ -345,15 +345,16 @@ Project planning and activity planning calculation can be done in the Gantt.
 
 .. rubric:: 1 - Add a new planning element
 
-* This tooltip allows to create a new planning element.
+* Allows to create a new planning element.
 * The created element is added in the Gantt and detail window is opened.
 * The detail window allows to complete entry.
 
 .. figure:: /images/GUI/TIP_CreateNewItem.png
-   :alt: Create a new item tooltip
+   :alt: Popup menu - Create a new item
    :align: center
 
-   Create a new item tooltip 
+
+   Popup menu - Create a new item
 
 .. note:: Planning elements management
   
@@ -363,10 +364,6 @@ Project planning and activity planning calculation can be done in the Gantt.
 .. rubric:: 2 - Reorder planning elements
 
 * The selector |buttonIconDrag| allows to reorder the planning elements.
-
-.. raw:: latex
-
-    \newpage
 
 
 .. rubric:: 3 - Indenting element
@@ -402,6 +399,10 @@ Project planning and activity planning calculation can be done in the Gantt.
 
     * Check the box to activate automatic calculation on each change.
 
+.. raw:: latex
+
+    \newpage
+
 .. rubric:: 6 - Store planned dates
 
 * Allows to store planned dates into requested and validated dates.
@@ -415,16 +416,14 @@ Project planning and activity planning calculation can be done in the Gantt.
   
 
 .. figure:: /images/GUI/BOX_StorePlannedDates.png
-   :alt: Store planned dates dialog box
+   :alt: Dialog box - Store planned dates
    :align: center
-
-   Store planned dates dialog box
-
 
 
 .. raw:: latex
 
     \newpage
+
 
 .. index:: ! Gantt chart (Projects portfolio)
 
@@ -505,3 +504,48 @@ Assigned tasks are grouped under resource level.
 
 * Left work can be displayed at right from Gantt bar.
 * Click on “Show left work” to display left work for each item.
+
+.. raw:: latex
+
+    \newpage
+
+.. _export-Gantt-PDF:
+
+Export planning to PDF
+----------------------
+
+Allows to export planning to PDF format.
+
+Export contains all details and links between tasks.
+
+.. figure:: /images/GUI/BOX_ExportPlanningPDF.png
+   :alt: Dialog box - Export planning to PDF
+   :align: center
+
+
+.. tabularcolumns:: |l|l|
+
+.. list-table:: Fields - Export planning to PDF dialog box
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Orientation
+     - Page orientation.
+   * - Zoom
+     - Allows to fit planning on page.
+   * - Repeat headers
+     - Planning can be  span multiple pages.
+
+.. note:: Browser compatibility
+
+   * This new feature is technically complex and it is not compatible with all browsers.
+   * Enabled only with Chrome browser as of now.
+   * Else, the old export feature will be used.
+
+.. note:: Forced feature activation (deactivation)
+
+   * To enable this feature for all browsers, add the parameter **$pdfPlanningBeta='true';** in parameters.php file.
+   * To disable, add the parameter **$pdfPlanningBeta='false';**
+

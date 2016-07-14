@@ -43,7 +43,11 @@ User parameters screen allows configuration of personal settings.
 
 .. rubric:: Section: Miscellaneous
 
-* Default selected project and choice of character used to indent lists of projects, to represent the WBS structure of projects and sub-project (cannot be a “space”, can be “none” to get flat lists).
+* Default selected project and choice of character used to indent lists of projects, to represent the WBS structure of projects and sub-project.
+
+.. note:: Field: Project indent char in lists
+
+   * Set to "none" to get a flat list.
 
 .. rubric:: Section: Photo
 
