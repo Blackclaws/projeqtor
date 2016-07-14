@@ -51,10 +51,11 @@ class UserMain extends SqlElement {
   public $_spe_affectations;
   public $_sec_Miscellaneous;
   public $password;
+  public $_spe_buttonSendMail;
   public $dontReceiveTeamMails;
   public $isLdap;
   public $apiKey;
-  public $_spe_buttonSendMail;
+
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();
   public $_arrayFiltersDetail=array();

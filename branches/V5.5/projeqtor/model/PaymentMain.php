@@ -81,7 +81,6 @@ class PaymentMain extends SqlElement {
   );
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer',
-      'idTargetVersion'=>'targetVersion',
       'paymentFeeAmount'=>'paymentFee',
       'paymentCreditAmount'=>'paymentCredit');
   
