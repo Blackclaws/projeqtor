@@ -42,6 +42,10 @@ This section allows to identify items of the element.
   * Link
 
 
+.. raw:: latex
+
+    \newpage
+
 Treatment section
 -----------------
 
@@ -81,7 +85,7 @@ This section allows to manage resource affectation to projects.
 
 
 
-.. list-table:: Fields of resource affectation list
+.. list-table:: Fields - Resource affectation list
    :widths: 20, 80
    :header-rows: 1
 
@@ -103,26 +107,28 @@ This section allows to manage resource affectation to projects.
      - Affectation rate for the project (%).
 
 
-
 .. rubric:: Affectation list management
 
 * Click on |buttonAdd| to create a new affectation. 
 * Click on |buttonEdit| to update an existing affectation.
 * Click on |buttonIconDelete| to delete the corresponding affectation.
 * Click on |iconSwitch| to replace resource on the corresponding affectation. (See: :ref:`Replace resource on an affectation<replace-resource-affectation>`)
-* This icon |closeIcon| indicates that affectation is closed.
+* The icon |closeIcon| indicates that affectation is closed.
+
+.. note:: Direct access to information
+
+   * From project screen, click on the resource name to go directly to the selected resource.
+   * From resource screen, click the project name to go directly to the selected project.
 
 .. _affectations-box:
 
 .. figure:: /images/GUI/BOX_Affectation.png
-   :alt: Affectation dialog box
+   :alt: Dialog box - Affectation
    :align: center
-
-   Affectation dialog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of affectation dialog box
+.. list-table:: Fields - Affectation dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -185,14 +191,12 @@ This section allows to manage resource affectation to projects.
    * Work done on tasks belongs to always the old resource.
 
 .. figure:: /images/GUI/BOX_ReplaceAffectation.png
-   :alt: Replace affectation dialog box
+   :alt: Dialog box - Replace affectation 
    :align: center
-
-   Replace affectation dialog box
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of replace affectation dialog box
+.. list-table:: Fields - Replace affectation dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -316,17 +320,13 @@ This section allows to manage assignment of resources to tasks.
    * If real work exists for an assignment, it can not be deleted.
 
 .. figure:: /images/GUI/BOX_Assignment.png
-   :alt: Assignment dialog box
+   :alt: Dialog box - Assignment 
    :align: center
-
-   Assignment dialog box
-
-
 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of assignment dialog box
+.. list-table:: Fields - Assignment dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -1069,12 +1069,9 @@ Allows tracking of tickets attached to the activity throught the "planning activ
 * Click on a ticket name to directly move to it.
 
 .. figure:: /images/GUI/BOX_ListOfTicket.png
-   :alt: List of tickets dialog box
+   :alt: Dialog box - List of tickets 
    :align: center
 
-   List of tickets dialog box
-
- 
  
 .. raw:: latex
 
@@ -1232,18 +1229,21 @@ A dependency link can be created from a planning element (Predecessor) and to a 
 * Click on |buttonIconDelete| to delete the corresponding dependency link. 
 
 .. figure:: /images/GUI/BOX_PredecessorSuccessorElement.png
-   :alt: Predecessor or Successor element dialog box
+   :alt: Dialog box - Predecessor or Successor element
    :align: center
 
-   Predecessor or Successor element dialog box
+   Dialog box - Predecessor or Successor element
 
 
 
 .. note:: 
 
    * Recursive loops are controlled on saving.
-   * Predecessors and successors must belong to the same project or be a project.
 
+.. topic:: Linked element list of values
+
+   * By default, the list of values shows items of the same project. But, it is possible to link items from different projects.
+   * Click on |buttonIconSearch| to get the list of elements of all projects. 	
 
 .. topic:: Multi-value selection
 
@@ -1314,10 +1314,14 @@ This section allows to manage link between items of elements.
 * Click on |buttonIconDelete| to delete the corresponding link.
 
 .. figure:: /images/GUI/BOX_AddLink.png
-   :alt: Add a link with element dialog box
+   :alt: Dialog box - Add a link with element 
    :align: center
 
-   Add a link with element dialog box
+.. topic:: Linked element list of values
+
+   * By default, the list of values shows items of the same project. But, it is possible to link items from different projects.
+   * Click on |buttonIconSearch| to get the list of elements of all projects. 	
+
 
 
 
@@ -1327,7 +1331,8 @@ This section allows to manage link between items of elements.
 
 .. rubric:: Link with Document
 
-* Click on |iconDownload| to download the file of document.
+* When a link to a document is selected. The document version can be selected. (See options below)
+* Linked documents are available directly in linked elements list.
 
  .. compound:: **Specified version**
 
@@ -1374,7 +1379,11 @@ This section allows to attach files or hyperlinks to items of elements.
 
   * Click on |iconDownload| to download attachment file.
   * Click on |iconLink| to access to hyperlink.
-  * Click on |buttonIconPdf| to view the PDF file online.
+
+.. rubric:: Document viewer
+
+* Document viewer available for files: image, text, PDF and hyperlinks.
+* Click on the icon.
 
 .. rubric:: Delete an attachment
 
@@ -1406,10 +1415,10 @@ This section allows to attach files or hyperlinks to items of elements.
         * Attachments directory is defined in :ref:`Global parameters <file-directory-section>` screen.
 
     .. figure:: /images/GUI/BOX_attachmentFile.png
-       :alt: Attachment file dialog box
+       :alt: Dialog box - Attachment for file
        :align: center
 
-       Attachment file dialog box
+       Dialog box - Attachment for file
    
 
  .. compound:: **Hyperlink**
@@ -1421,15 +1430,15 @@ This section allows to attach files or hyperlinks to items of elements.
 
 
     .. figure:: /images/GUI/BOX_attachmentHyperLink.png
-       :alt: Attachment hyperlink dialog box
+       :alt: Dialog box - Attachment for hyperlink 	
        :align: center
 
-       Hyperlink dialog box
+       Dialog box - Attachment for hyperlink
 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of attachment dialog box
+.. list-table:: Fields - Attachment dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -1502,10 +1511,5 @@ Notes are comments, that can be shared to track some information or progress.
 * Click on |buttonIconDelete| to delete the note.
 
 .. figure:: /images/GUI/BOX_Note.png
-   :alt: Note dialog box
+   :alt: Dialog box - Note 
    :align: center
-
-   Note dialog box
-
-
-

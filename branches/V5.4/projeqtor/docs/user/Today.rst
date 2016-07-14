@@ -32,10 +32,9 @@ Messages
 --------
 
 .. figure:: /images/GUI/SEC_TodayMessages.png
-   :alt: Today messages section
+   :alt: Section - Messages 
    :align: center
 
-   Messages section
 
 .. rubric:: Messages
 
@@ -96,10 +95,8 @@ Messages
     * Using the selector area button icon drag |buttonIconDrag|. 
 
 .. figure:: /images/GUI/BOX_TodayParameters.png
-   :alt: Today parameters dialog box
+   :alt: Dialog box - Today parameters 
    :align: center
-
-   Today parameters dialog box
 
 
 
@@ -122,11 +119,8 @@ Start guide
   * To show it again, select it as the start page in :ref:`Users parameters<graphic-interface-behavior-section>` screen. 
 
 .. figure:: /images/GUI/SEC_TodayStartGuide.png
-   :alt: Today start guide section
+   :alt: Section - Start guide 
    :align: center
-
-   Start guide section
-
 
 
 
@@ -143,10 +137,8 @@ A quick overview of projects status.
 The projects list is limited to the project visibility scope of the connected user. 
 
 .. figure:: /images/GUI/SEC_TodayProjects.png
-   :alt: Today projects section
+   :alt: Section - Projects 
    :align: center
-
-   Projects section
 
 
 
@@ -287,10 +279,10 @@ You can select any report to be displayed on the Today screen.
 * Click on |buttonIconDelete| to completely remove them from the list.
 
 .. figure:: /images/GUI/BOX_TodayParametersWithExtending.png
-   :alt: Today parameters with extending parts dialog box 
+   :alt: Dialog box - Today parameters with extending parts 
    :align: center
 
-   Parameters with extending parts dialog box  
+   Dialog box - Today parameters with extending parts 
 
  
 

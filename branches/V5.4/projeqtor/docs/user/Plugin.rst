@@ -73,10 +73,8 @@ This section allows to manage local plug-ins.
     * Click on |buttonIconDisplay| to display the description of plug-in.
  
 .. figure:: /images/GUI/BOX_DescriptionOfPlugin.png
-   :alt: Description plug-in dialog box
+   :alt: Dialog box - Description plug-in 
    :align: center
-
-   Description plug-in dialog box
 
 .. note:: 
 

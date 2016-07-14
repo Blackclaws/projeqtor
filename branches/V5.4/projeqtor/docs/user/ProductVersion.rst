@@ -64,10 +64,12 @@ Allows to link components to product.
      - The customer the product should be delivered to.
    * - Prime contractor
      - The contact, into customer organization, who will be responsible for the product delivery.
+   * - Responsible
+     - Person responsible for the product.
    * - Is sub-product of 
      - Name of the top product if this product is a sub-product. 
    * - :term:`Closed`
-     - Flag to indicate that product is archived.
+     - Box checked indicates the product is archived.
    * - Description
      - Complete description of the product.
 
@@ -216,8 +218,10 @@ Allows to define products using the component.
      - Type of component
    * - Identifier
      - Another name to identify the component.
+   * - Responsible
+     - Person responsible for the component.
    * - :term:`Closed`
-     - Flag to indicate that the component is archived.
+     - Box checked indicates the component is archived.
    * - Description
      - Complete description of the component.
 
@@ -321,10 +325,8 @@ See possible relationships:  :ref:`product-structure`
 * Click on |buttonIconDelete| to delete the corresponding relationship.
 
 .. figure:: /images/GUI/BOX_ProductStructure.png
-   :alt: Structure dialog box
+   :alt: Dialog box - Structure 
    :align: center
-
-   Structure dialog box
 
 
 .. raw:: latex
@@ -348,10 +350,8 @@ Allows to define links between versions of products and components.
 * Click on |buttonIconDelete| to delete the corresponding link.
 
 .. figure:: /images/GUI/BOX_VersionStructure.png
-   :alt: Version structure dialog box
+   :alt: Dialog box - Version structure 
    :align: center
-
-   Version structure dialog box
 
 
 
@@ -375,13 +375,11 @@ This section allows to manage links between projects and versions of products.
 
 
 .. figure:: /images/GUI/BOX_ProjectVersionLink.png
-   :alt: Project - Version link dialog box
+   :alt: Dialog box - Project-Version link 
    :align: center
 
-   Project - Version link dialog box
 
-
-.. list-table:: Fields of Project - Version link dialog box
+.. list-table:: Fields - Project-Version link dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -398,7 +396,7 @@ This section allows to manage links between projects and versions of products.
    * - End date
      - End date for validity of the link.
    * - Closed
-     - Box checked indicate that the link is not active anymore, without deleting it.
+     - Box checked indicates the link is not active anymore, without deleting it.
 
 .. topic:: Fields: Project, Product and Version
  

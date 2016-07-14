@@ -41,8 +41,14 @@ It is also the top-level of visibility, depending on profiles.
 
 .. rubric:: Fix planning 
 
-* Box checked "fix planning" indicates that project scheduling won't be remade.
+* When box “fix planning” is checked, the project scheduling won’t be remade.
 * This will avoid change on planned values.
+
+.. rubric:: Under construction
+
+* When a project is under construction, no automatic email is sent for the elements of the project.
+* A project can be under construction as long as isn’t taken over.
+
 
 .. rubric:: Manual indicators
 
@@ -129,13 +135,15 @@ It is also the top-level of visibility, depending on profiles.
    * - Overall progress
      - Overall progress to be selected in a defined list.
    * - Fix planning
-     - Selector to freeze the planning of the project, and its sub-projects.
+     - Box checked indicates the planning of the project is frozen, and its sub-projects.
+   * - Under construction
+     - Box checked indicates the project is under construction.
    * - :term:`Done`
-     - Flag to indicate that project is finished.
+     - Box checked indicates the project is finished.
    * - :term:`Closed`
-     - Flag to indicate that project is archived.
+     - Box checked indicates the project is archived.
    * - Cancelled
-     - Flag to indicate that project is cancelled.
+     - Box checked indicates the project is cancelled.
    * - :term:`Description`
      - Complete description of the project.
    * - Objectives
@@ -268,13 +276,13 @@ An activity can be:
    * - :term:`Responsible`
      - Resource who is responsible for the activity.
    * - :term:`Handled`
-     - Flag to indicate that activity is taken into account.
+     - Box checked indicates the activity is taken over.
    * - :term:`Done`
-     - Flag to indicate that activity has been treated.
+     - Box checked indicates the activity has been treated.
    * - :term:`Closed`
-     - Flag to indicate that activity is archived.
+     - Box checked indicates the activity is archived.
    * - Cancelled
-     - Flag to indicate that activity is cancelled.
+     - Box checked indicates the activity is cancelled.
    * - Target version
      - The target version of the product affected in delivery of the activity.	
    * - :term:`Result`
@@ -372,13 +380,13 @@ ProjeQtOr offers two types of milestone:
    * - :term:`Responsible`
      - Resource who is responsible for the milestone.
    * - :term:`Handled`
-     - Flag to indicate that milestone is taken into account.
+     - Box checked indicates the milestone is taken over.
    * - :term:`Done`
-     - Flag to indicate that milestone has been treated.
+     - Box checked indicates the milestone has been treated.
    * - :term:`Closed`
-     - Flag to indicate that milestone is archived.
+     - Box checked indicates the milestone is archived.
    * - Cancelled
-     - Flag to indicate that milestone is cancelled.
+     - Box checked indicates the milestone is cancelled.
    * - Target version
      - The target version of the product affected in delivery of the milestone.	
    * - :term:`Result`
