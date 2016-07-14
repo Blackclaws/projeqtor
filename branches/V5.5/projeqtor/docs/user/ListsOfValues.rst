@@ -110,9 +110,46 @@ Some automations are implemented, depending on status definition, to set on item
 **\* Required field**
 
 
+
+
 .. raw:: latex
 
     \newpage
+
+.. index:: ! Resolutions - Lists of values
+
+.. _resolution:
+
+Resolutions
+^^^^^^^^^^^
+
+Allows to define different kinds of resolution for tickets.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Solved
+     - Box checked indicates the ticket will be automatically marked as “solved” when this resolution is selected.
+   * - Color
+     - Color to display the resolution in element lists.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
 
 .. index:: ! Quality level - Lists of values
 
@@ -156,7 +193,9 @@ It defines in a visual way the global conformity of the project.
    * You can define your own icons list (see: administration guide).
 
 
+.. raw:: latex
 
+    \newpage
 
 
 .. index:: ! Health status - Lists of values
@@ -204,9 +243,6 @@ It is displayed on Today screen, for each project, as a Red / Amber / Green traf
    * You can define your own icons list (see: administration guide).
 
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Overall progress - Lists of values
 
@@ -243,6 +279,10 @@ It is displayed on Today screen, for each project.
 
 **\* Required field**
 
+
+.. raw:: latex
+
+    \newpage
 
 
 .. index:: ! Trend - Lists of values
@@ -289,9 +329,6 @@ It is displayed on Today screen, for each project.
    * If no icon is defined, color is used.
    * You can define your own icons list (see: administration guide).
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Likelihood - Lists of values
 
@@ -332,6 +369,11 @@ The likelihood is the probability of a risk or an opportunity to occur.
 .. topic:: Field: % value
 
    * This field is used to calculate a reserve amount according to the likelihood of risk or opportunity.
+
+
+.. raw:: latex
+
+    \newpage
 
 
 .. index:: ! Criticality - Lists of values
@@ -378,9 +420,6 @@ The criticality is the importance of an element to its context.
 **\* Required field**
 
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Severity - Lists of values
 
@@ -416,6 +455,11 @@ The severity designs the level of negative or positive impact the risk or opport
      - Flag to indicate this value is archived.
    
 **\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
 
 
 .. index:: ! Urgency - Lists of values
@@ -454,9 +498,6 @@ The ticket urgency is an element given by the requestor to indicate the quicknes
 
 
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Priority - Lists of values
 
@@ -494,6 +535,10 @@ The ticket priority defines the order to treat different tickets.
 **\* Required field**
 
 
+.. raw:: latex
+
+    \newpage
+
 
 .. index:: ! Risk level - Lists of values
 
@@ -528,9 +573,6 @@ The risk level measures the technical risk of implementation of a requirement.
    
 **\* Required field**
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Feasibility - Lists of values
 
@@ -566,6 +608,12 @@ The feasibility defines the first analysis of implementation of a requirement.
 **\* Required field**
 
 
+
+.. raw:: latex
+
+    \newpage
+
+
 .. index:: ! Efficiency - Lists of values
 
 .. _efficiency:
@@ -599,9 +647,6 @@ The efficiency measures the result of an action.
    
 **\* Required field**
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Payment deadline - Lists of values
 
@@ -638,6 +683,12 @@ The payment deadline is stated on the bill.
    
 **\* Required field**
 
+
+.. raw:: latex
+
+    \newpage
+
+
 .. index:: ! Payment method - Lists of values
 
 .. _payment-method:
@@ -670,9 +721,6 @@ The mode of payment.
 **\* Required field**
 
 
-.. raw:: latex
-
-    \newpage
 
 .. index:: ! Delivery mode - Lists of values
 
@@ -704,6 +752,12 @@ The mode of delivery.
      - Flag to indicate this value is archived.
    
 **\* Required field**
+
+
+.. raw:: latex
+
+    \newpage
+
 
 .. index:: ! Measure unit - Lists of values
 

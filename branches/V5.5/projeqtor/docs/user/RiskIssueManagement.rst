@@ -380,6 +380,11 @@ The actions are the main activities of the risk management plan.
 
 They must be regularly followed-up.
 
+.. rubric:: Private action
+
+* Private actions allow to manage a personal to-do list.
+
+
 .. rubric:: Monitoring indicator
 
 * Possibility to define indicators to follow the respect of dates values.
@@ -413,6 +418,8 @@ They must be regularly followed-up.
      - The project concerned by the action.
    * - Priority
      - Priority requested to the treatment of the action.
+   * - Private
+     - Box checked allows to define a private action.
    * - :term:`Description`
      - Complete description of the action.
 
@@ -437,13 +444,13 @@ They must be regularly followed-up.
    * - Planned due date
      - Updated end date of the action.
    * - :term:`Handled`
-     - Flag to indicate that action is taken into account.
+     - Box checked indicates that the action is taken over.
    * - :term:`Done`
-     - Flag to indicate that action has been treated.
+     - Box checked indicates that the action has been treated.
    * - :term:`Closed`
-     - Flag to indicate that action is archived.
+     - Box checked indicates that the action is archived.
    * - Cancelled
-     - Flag to indicate that action is cancelled.
+     - Box checked indicates that the action is cancelled.
    * - Efficiency
      - Evaluation of the efficiency the action had on the objective (for instance on the risk mitigation).
    * - :term:`Result`

@@ -245,14 +245,14 @@ Input for each bill line depends on billing type.
 .. rubric:: Bill line: At terms
 
 .. figure:: /images/GUI/BOX_BillLineAtTerms.png
-   :alt: Bill line dialog box - At terms 
+   :alt: Dialog box - Bill line - At terms 
    :align: center
 
-   Bill line dialog box - At terms
+   Bill line - At terms
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of bill line dialog box - At terms
+.. list-table:: Fields - Bill line - At terms
    :widths: 20, 80
    :header-rows: 1
 
@@ -296,12 +296,12 @@ Input for each bill line depends on billing type.
 .. rubric:: Bill line: On produced work & On capped produced work
 
 .. figure:: /images/GUI/BOX_BillLineOnProduceWork.png
-   :alt: Bill line dialog box - On produced work & On capped produced work
+   :alt: Dialog box - Bill line - On produced work & On capped produced work
    :align: center
 
-   Bill line dialog box - On produced work & On capped produced work
+   Bill line - On produced work & On capped produced work
 
-.. list-table:: Fields of bill line dialog box - On produced work & On capped produced work
+.. list-table:: Fields - Bill line - On produced work & On capped produced work
    :widths: 20, 80
    :header-rows: 1
 
@@ -351,14 +351,14 @@ Input for each bill line depends on billing type.
 .. rubric:: Bill line: Manual billing
 
 .. figure:: /images/GUI/BOX_BillLineManual.png
-   :alt: Bill line dialog box - Manual billing 
+   :alt: Dialog box - Bill line - Manual billing 
    :align: center
 
-   Bill line dialog box - Manual billing
+   Bill line - Manual billing
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields of bill line dialog box - Manual billing
+.. list-table:: Fields - Bill line - Manual billing
    :widths: 20, 80
    :header-rows: 1
 
@@ -476,13 +476,11 @@ This section allows to manage element trigger.
 * Click on |buttonIconDelete| to delete an element trigger.
 
 .. figure:: /images/GUI/BOX_AddTriggerElementToTerm.png
-   :alt: Add a trigger element to term dialog box
+   :alt: Dialog box - Add a trigger element to term 
    :align: center
 
-   Add a trigger element to term dialog box
 
-
-.. list-table:: Fields of add a trigger element to term dialog box
+.. list-table:: Fields - Add a trigger element to term dialog box
    :widths: 20, 80
    :header-rows: 1
 

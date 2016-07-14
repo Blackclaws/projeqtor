@@ -54,10 +54,10 @@ Planned amount will help to have an overview of project total costs, even before
      - Short description of the expense.
    * - **Type**
      - Type of expense.
-   * - **Resource**
-     - Resource concerned by the expense.
    * - **Project**
      - The project concerned by the expense.
+   * - **Resource**
+     - Resource concerned by the expense.
    * - :term:`Description`
      - Complete description of the expense.
 
@@ -76,33 +76,33 @@ Planned amount will help to have an overview of project total costs, even before
      - Description
    * - **Status**
      - Actual :term:`status` of the expense.
-   * - Planned date
-     - Planned date of the expense.
-   * - Planned amount
-     - Planned amount of the expense. 
-   * - Real date
-     - Real date of the expense.
-   * - Real amount
-     - Real amount of the expense. 
+   * - Responsible
+     - Person responsible for the processing of this expense.
+   * - Planned
+     - Planned amount of the expense (Date is mandatory). 
+   * - Real
+     - Real amount of the expense (Date is mandatory). 
+   * - Payment done
+     - Box checked indicates the payment is done.
    * - :term:`Closed`
-     - Flag to indicate that expense is archived.
+     - Box checked indicates that the expense is archived.
    * - Cancelled
-     - Flag to indicate that expense is cancelled.
+     - Box checked indicates that the expense is cancelled.
 
 **\* Required field**
 
-.. topic:: Fields: Planned date and amount
-  
-   * When planned date or planned amount is set, other must also be set.
+.. topic:: Fields: Planned & Real
 
-.. topic:: Fields: Real date and amount
+   Columns:
 
-   * When real date or real amount is set, other must also be set.
+   * **Full**: Amount.
 
-.. topic:: Field: Real amount 
- 
-   * If detail lines are entered, real amount is automatically calculated as sum of detail amounts, and is then locked.
+     * Real amount is automatically updated with the sum of the amounts of detail lines.
 
+   * **Payment date**: 
+
+     * For field "Planned" is the planned date.
+     * For field "Real" can be the payment date or else.
 
 
 .. raw:: latex
@@ -125,6 +125,11 @@ This can be used for all kinds of project cost :
 * Softwares.
 * Office.
 * Any logistic item.
+
+
+.. rubric:: Purchase request
+
+Allows to manage the purchase request information about the expense. (Purchase order, receipt and payment)
 
 
 .. rubric:: Planned amount
@@ -157,6 +162,16 @@ Planned amount will help to have an overview of project total costs, even before
      - Type of expense.
    * - **Project**
      - The project concerned by the expense.
+   * - Provider
+     - Provider name.
+   * - :term:`External reference`
+     - External reference of the expense.
+   * - Business responsible
+     - The person who makes the purchase requisition.
+   * - Financial responsible
+     - The person who pays the purchase.
+   * - Payment conditions
+     - Conditions of payment.
    * - :term:`Description`
      - Complete description of the expense.
 
@@ -178,28 +193,48 @@ Planned amount will help to have an overview of project total costs, even before
      - Description
    * - **Status**
      - Actual :term:`status` of the expense.
-   * - Planned date
-     - Planned date of the expense.
-   * - Planned amount
-     - Planned amount of the expense. 
-   * - Real date
-     - Real date of the expense.
-   * - Real amount
-     - Real amount of the expense. 
+   * - Order date
+     - Date of the order.
+   * - Delivery mode
+     - Delivery mode for the order.
+   * - Delivery delay
+     - Delivery delay for the order.
+   * - Expected delivery date
+     - Expected delivery date for the order.
+   * - Date of receipt
+     - Date of receipt of the order.
    * - :term:`Closed`
-     - Flag to indicate that expense is archived.
+     - Box checked indicates that the expense is archived.
    * - Cancelled
-     - Flag to indicate that expense is cancelled.
+     - Box checked indicates that the expense is cancelled.
+   * - Planned
+     - Planned amount of the expense (Date is mandatory).
+   * - Real
+     - Real amount of the expense (Date is mandatory).
+   * - Payment done
+     - Box checked indicates the payment is done.
+   * - Result
+     - Complete description of the treatment of the expense.  
+  
 
 **\* Required field**
 
-.. topic:: Fields: Planned date and amount
+.. topic:: Fields: Planned & Real
 
-   * When planned date or planned amount is set, other must also be set.
+   Columns:
 
-.. topic:: Fields: Real date and amount 
+   * **Ex VAT**: Amount without taxes.
+     
+     * Real amount is automatically updated with the sum of the amounts of detail lines.
 
-   * When real date or real amount is set, other must also be set.
+   * **Tax**: Applicable tax. 
+
+   * **Full**: Amount with taxes.
+
+   * **Payment date**: 
+
+     * For field "Planned" is the planned date.
+     * For field "Real" can be the payment date or else.
 
 
 .. raw:: latex
@@ -253,26 +288,28 @@ It allows to enter detail on expense line.
 
 
 .. figure:: /images/GUI/BOX_ExpenseDetail.png
-   :alt: Expense detail dialog box
+   :alt: Dialog box - Expense detail 
    :align: center
 
-   Expense detail dialog box
 
-
-.. list-table:: Fields of expense detail dialog box 
+.. list-table:: Fields - Expense detail dialog box 
    :widths: 20, 80
    :header-rows: 1
 
    * - Field
      - Description
-   * - Name
-     - Name of the detail.
    * - Date
      - Date of the detail.
+   * - Reference
+     - External reference.
+   * - **Name**
+     - Name of the detail.
    * - Type
      - Type of expense.
-   * - Amount
+   * - **Amount**
      - Amount of the detail.
+
+**\* Required field**
 
 
 .. topic:: Field: Date

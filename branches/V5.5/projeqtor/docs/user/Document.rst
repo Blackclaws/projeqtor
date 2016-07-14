@@ -116,17 +116,16 @@ The file document will be stored in the tool as versions.
    * - Author
      - User or Resource or Contact who created the document. 
    * - :term:`Closed`
-     - Flag to indicate that document is archived.
+     - Box checked indicates the document is archived.
    * - Cancelled
-     - Flag to indicate that document is cancelled.
+     - Box checked indicates the document is cancelled.
 
 **\* Required field**
 
 .. topic:: Fields: Project and Product
 
    * Must be concerned either with a project, a product or both.
-   * If the project is specified, the list of values for field “Product” contains the products linked the selected project.
-   * If the project is not specified, the list of values for field "Product" contains all products defined.
+   * If the project is specified, the list of values for field "Product" contains only products linked the selected project.
 
 .. topic:: Field: Document reference
 
@@ -173,24 +172,26 @@ This section allows to manage version list of document.
 * Click on |buttonEdit| to modifiy a version.
 * Click on |buttonIconDelete| to delete a version.
 * Click on |iconDownload| to download file at this version.
-* Click on |buttonIconPdf| to view the PDF file online.
 
-.. note:: Name of download file
+ .. compound:: **Document viewer**
 
-   * The name of download file will be the document reference name displayed in **description** section.
-   * If you want to preserve the uploaded file name, set the parameter in  the :ref:`Global parameters <format-reference-numbering-section>` screen. 
+    * Document viewer available for image, text and PDF files.
+    * Click on icon.
+
+ .. note:: Name of download file
+
+    * The name of download file will be the document reference name displayed in **description** section.
+    * If you want to preserve the uploaded file name, set the parameter in  the :ref:`Global parameters <format-reference-numbering-section>` screen. 
 
 
 .. figure:: /images/GUI/BOX_DocumentVersion.png
-   :alt: Document version dialog box 
+   :alt: Dialog box - Document version 
    :align: center
-
-   Document version dialog box
 
 
 .. tabularcolumns:: |l|l|
 
-.. list-table::  Document version dialog box fields
+.. list-table::  Fields - Document version dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -209,7 +210,7 @@ This section allows to manage version list of document.
    * - Status
      - Current status of the version.
    * - Is a reference
-     - Flag to set that this version is the new reference of the document.
+     - Check box to set this version is the new reference of the document.
    * - Description
      - Description of the version.
 
@@ -256,12 +257,12 @@ This section allows to manage approver list of a document.
 
 **Button: Approve now**
 
-  * This button appears in approver list.
-  * Just click on the button to approve the latest version of the document.
+ * This button appears in approver list.
+ * Just click on the button to approve the latest version of the document.
 
 **Button: Send a reminder email to the approvers**
 
-  * This button allows to send a reminder email to all the approvers who have not yet approved the document.
+ * This button allows to send a reminder email to all the approvers who have not yet approved the document.
 
  
 .. rubric:: Approver list management
@@ -294,7 +295,7 @@ This section allows to manage document locking.
      * - Field
        - Description
      * - Locked
-       - Flag to indicated that the document is locked.
+       - Box checked indicates the document is locked.
      * - Locked by
        - User who locked the document.
      * - Locked since

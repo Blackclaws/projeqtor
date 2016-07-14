@@ -204,8 +204,16 @@
 .. |teamThumb| image:: images/team.png
    :alt: team thumbnail
 
+.. |unShareFilter| image:: images/share.png
+   :alt: unshare filter
+
+.. |sharedFilter| image:: images/shared.png
+   :alt: shared filter
+
+
 .. |pointingHandCursor| image:: images/pointingHandCursor.png
    :alt: pointing hand cursor
+
 
 .. |one| image:: images/one.png
    :alt: One

@@ -13,10 +13,6 @@ Users can have a look at the list of the automatic emails sent.
 
 All the information about the email, including the status showing whether the email was correctly sent or not.
 
-.. raw:: latex
-
-    \newpage
-
 
 .. index:: ! Internal alert (Sent)
 
