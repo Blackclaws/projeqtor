@@ -1897,7 +1897,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 id="versionProjectProduct" name="versionProjectProduct" 
                 class="input" value="">
                 <script type="dojo/connect" event="onChange" args="evt">
+                   if (trim(this.value)) {
                     refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true);
+                   } else {
+                    refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+                   }
                 </script>
                  <?php //htmlDrawOptionForReference('idProject', null, null, true);
                        // no use : will be updated on dialog opening;?>
