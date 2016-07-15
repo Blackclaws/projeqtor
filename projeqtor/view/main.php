@@ -1895,7 +1895,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="versionProjectProduct" name="versionProjectProduct" 
-                class="input" value="" required="required">
+                class="input" value="">
                 <script type="dojo/connect" event="onChange" args="evt">
                     refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true);
                 </script>

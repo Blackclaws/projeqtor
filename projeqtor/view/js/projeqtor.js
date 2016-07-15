@@ -80,9 +80,9 @@ function refreshJsonList(className, keepUrl) {
   var grid = dijit.byId("objectGrid");
   if (grid) {
     showWait();
-	var sortIndex=grid.getSortIndex();
-  	var sortAsc=grid.getSortAsc();
-  	var scrollTop=grid.scrollTop;
+  var sortIndex=grid.getSortIndex();
+    var sortAsc=grid.getSortAsc();
+    var scrollTop=grid.scrollTop;
     // store = grid.store;
     // store.close();
     unselectAllRows("objectGrid");
@@ -120,18 +120,18 @@ function refreshJsonList(className, keepUrl) {
 
     // store.fetch();
     if (! keepUrl) {
-	    grid.setStore(new dojo.data.ItemFileReadStore({
-	      url: url, 
-	      clearOnClose: 'true'
-	    }));
+      grid.setStore(new dojo.data.ItemFileReadStore({
+        url: url, 
+        clearOnClose: 'true'
+      }));
     }
     store = grid.store;
     store.close();
     store.fetch({onComplete: function(){
-    	grid._refresh();
-    	hideBigImage(); // Will avoid resident pop-up always displayed
-    	var objectId=dojo.byId('objectId');
-    	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+      grid._refresh();
+      hideBigImage(); // Will avoid resident pop-up always displayed
+      var objectId=dojo.byId('objectId');
+      setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
         setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
         setTimeout('selectRowById("objectGrid", '+parseInt(objectId.value)+');',30);
         setTimeout('hideWait();',40);
@@ -149,9 +149,9 @@ function refreshJsonList(className, keepUrl) {
  */
 function refreshJsonPlanning() {
   if (dojo.byId("resourcePlanning")) {
-	url="../tool/jsonResourcePlanning.php";  
+  url="../tool/jsonResourcePlanning.php";  
   } else {
-	url="../tool/jsonPlanning.php";
+  url="../tool/jsonPlanning.php";
   }
   param=false;
   if ( dojo.byId('listShowIdle') ) {
@@ -233,12 +233,12 @@ function refreshGrid() {
     showWait();
     refreshJsonList(dojo.byId('objectClass').value, true);
   } else { // If Grid does not exist, we are displaying Planning : refresh it 
-	  showWait();
-	  if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
-	    plan();
-	  } else {
-	    refreshJsonPlanning();
-	  }
+    showWait();
+    if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
+      plan();
+    } else {
+      refreshJsonPlanning();
+    }
   }
 }
 /**
@@ -260,11 +260,11 @@ function refreshGridCount(repeat) {
   }
   /*objClass=dojo.byId("objectClass").value;
   if (avoidRecursiveRefresh==false && (objClass=='Resource' || objClass=='User' || objClass=='Contact') ) {
-	// If list may contain image, refresh once to fix issue : list not complete on Chrome
-	avoidRecursiveRefresh=true;
+  // If list may contain image, refresh once to fix issue : list not complete on Chrome
+  avoidRecursiveRefresh=true;
     setTimeout('dijit.byId("objectGrid")._refresh();',100);
   } else {
-	avoidRecursiveRefresh=false;
+  avoidRecursiveRefresh=false;
   }*/
 }
 
@@ -324,7 +324,7 @@ function saveUserParameter(parameter, value) {
     url: "../tool/saveUserParameter.php?parameter="+parameter+"&value=" + value,
     handleAs: "text",
     load: function(data,args) {}
-  });	 
+  });  
 }
 /**
  * ============================================================================
@@ -343,19 +343,19 @@ function saveBrowserLocaleToSession() {
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
   if (browserLocaleDateFormat) {
-	  format=browserLocaleDateFormat;
+    format=browserLocaleDateFormat;
   } else {
-	  var formatted=dojo.date.locale.format(date, {formatLength: "short", selector: "date"});
-	  var reg=new RegExp("(2000)", "g");
-	  format=formatted.replace(reg,'YYYY');
-	  reg=new RegExp("(00)", "g");
-	  format=format.replace(reg,'YYYY');
-	  reg=new RegExp("(12)", "g");
-	  format=format.replace(reg,'MM');
-	  reg=new RegExp("(31)", "g");
-	  format=format.replace(reg,'DD');
-	  browserLocaleDateFormat=format;
-	  browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
+    var formatted=dojo.date.locale.format(date, {formatLength: "short", selector: "date"});
+    var reg=new RegExp("(2000)", "g");
+    format=formatted.replace(reg,'YYYY');
+    reg=new RegExp("(00)", "g");
+    format=format.replace(reg,'YYYY');
+    reg=new RegExp("(12)", "g");
+    format=format.replace(reg,'MM');
+    reg=new RegExp("(31)", "g");
+    format=format.replace(reg,'DD');
+    browserLocaleDateFormat=format;
+    browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
   }
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value=" + encodeURI(format),
@@ -365,19 +365,19 @@ function saveBrowserLocaleToSession() {
   var fmt=""+dojo.number.format(1.1)+" ";
   var decPoint=fmt.substr(1,1);
   dojo.xhrPost({
-	url: "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value=" + decPoint,
-	handleAs: "text",
-	load: function(data,args) { }
+  url: "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value=" + decPoint,
+  handleAs: "text",
+  load: function(data,args) { }
   });
   var fmt=dojo.number.format(100000)+' ';
   var thousandSep=fmt.substr(3,1);
   if (thousandSep=='0') {
-	  thousandSep='';
+    thousandSep='';
   }
   dojo.xhrPost({
-	url: "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value=" + thousandSep,
-	handleAs: "text",
-	load: function(data,args) { }
+  url: "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value=" + thousandSep,
+  handleAs: "text",
+  load: function(data,args) { }
   });
   
 }
@@ -399,7 +399,7 @@ function changeLocale(locale) {
       handleAs: "text",
       load: function(data,args) {
         // action = function() {
-    	  showWait();
+        showWait();
           noDisconnect=true;
           quitConfirmed=true;
           dojo.byId("directAccessPage").value="parameter.php";
@@ -417,25 +417,25 @@ function changeLocale(locale) {
 }
 
 function changeBrowserLocaleForDates(newFormat) {
-	saveUserParameter('browserLocaleDateFormat', newFormat);
-	dojo.xhrPost({
-	    url: "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value=" + newFormat,
-	    handleAs: "text",
-	    load: function(data,args) {
-    	  showWait();
+  saveUserParameter('browserLocaleDateFormat', newFormat);
+  dojo.xhrPost({
+      url: "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value=" + newFormat,
+      handleAs: "text",
+      load: function(data,args) {
+        showWait();
           noDisconnect=true;
           quitConfirmed=true;
           dojo.byId("directAccessPage").value="parameter.php";
           dojo.byId("menuActualStatus").value=menuActualStatus;
           dojo.byId("p1name").value="type";
           dojo.byId("p1value").value="userParameter";
-          dojo.byId("directAccessForm").submit();	    	
-	    }
-	  });
+          dojo.byId("directAccessForm").submit();       
+      }
+    });
 }
 
 function requestPasswordChange() {
-	showWait();
+  showWait();
   noDisconnect=true;
   quitConfirmed=true;
   window.location="passwordChange.php";
@@ -454,10 +454,10 @@ function saveResolutionToSession() {
   var height=screen.height;
   var width=screen.width;
   dojo.xhrPost({
-	    url: "../tool/saveDataToSession.php?idData=screenWidth&value=" + width,
-	    handleAs: "text",
-	    load: function(data,args) {}
-	  });
+      url: "../tool/saveDataToSession.php?idData=screenWidth&value=" + width,
+      handleAs: "text",
+      load: function(data,args) {}
+    });
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?idData=screenHeight&value=" + height,
     handleAs: "text",
@@ -574,10 +574,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   }
   if (directAccessIndex) {
     if ( page.indexOf("?")>0) {
-	   page+="&directAccessIndex="+directAccessIndex;  
+     page+="&directAccessIndex="+directAccessIndex;  
     } else {
-	   page+="?directAccessIndex="+directAccessIndex;
-    }	   
+     page+="?directAccessIndex="+directAccessIndex;
+    }    
   } 
   page+=((page.indexOf("?")>0)?"&":"?")+"isIE="+((dojo.isIE)?dojo.isIE : '');
   if (! silent) showWait();
@@ -589,15 +589,15 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     handleAs: "text",
     load: function(data,args){
       var debugTemp=(new Date()).getTime();
-    	var contentNode = dojo.byId(destination);
-    	var contentWidget = dijit.byId(destination);
-    	if (fadingMode) {
+      var contentNode = dojo.byId(destination);
+      var contentWidget = dijit.byId(destination);
+      if (fadingMode) {
         dojo.fadeIn({ 
-  		    node: contentNode ,
-  		    duration: 500, 
-  		    onEnd: function() { }
-    		}).play();
-    	}
+          node: contentNode ,
+          duration: 500, 
+          onEnd: function() { }
+        }).play();
+      }
       // update the destination when ajax request is received
       if (! contentWidget) {return;}
       if (dijit.byId('planResultDiv')) {
@@ -648,7 +648,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         showList();
       }
       if (destination=="dialogLinkList") {
-    	  selectLinkItem();
+        selectLinkItem();
       }
       if (destination=="directFilterList") {
         if (!validationType && validationType!='returnFromFilter') {    
@@ -697,7 +697,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         if (! silent) hideWait();
         var bt=dijit.byId('planButton');
         if (bt) {
-      	  bt.set('iconClass',"iconPlanStopped");
+          bt.set('iconClass',"iconPlanStopped");
         }
       } else if (destination=="resultDivMultiple") {
         finalizeMultipleSave();
@@ -706,19 +706,19 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       } 
       // For debugging purpose : will display call page with execution time
       var debugEnd=(new Date()).getTime();
-    	var debugDuration=debugEnd-debugStart;
-    	var msg = "=> "+debugDuration+"ms";
-    	msg+=" | page='"+((page.indexOf('?'))?page.substring(0,page.indexOf('?')):page)+"'"; 
-    	msg+=" | destination='"+destination+"'";
-    	if (formName) msg+=" | formName="+formName+"'";
-    	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
-    	if (validationType) msg+=" | validationType='"+validationType+"'";
-    	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
-    	if (callBackFunction!=null) setTimeout(callBackFunction,100);
-    	var debugDurationServer=debugTemp-debugStart;
-    	var debugDurationClient=debugEnd-debugTemp;
-    	msg+=" (server:"+debugDurationServer+"ms, client:"+debugDurationClient+"ms)";
-    	consoleTraceLog(msg);
+      var debugDuration=debugEnd-debugStart;
+      var msg = "=> "+debugDuration+"ms";
+      msg+=" | page='"+((page.indexOf('?'))?page.substring(0,page.indexOf('?')):page)+"'"; 
+      msg+=" | destination='"+destination+"'";
+      if (formName) msg+=" | formName="+formName+"'";
+      if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
+      if (validationType) msg+=" | validationType='"+validationType+"'";
+      if (directAccess) msg+=" | directAccess='"+directAccess+"'";
+      if (callBackFunction!=null) setTimeout(callBackFunction,100);
+      var debugDurationServer=debugTemp-debugStart;
+      var debugDurationClient=debugEnd-debugTemp;
+      msg+=" (server:"+debugDurationServer+"ms, client:"+debugDurationClient+"ms)";
+      consoleTraceLog(msg);
     },
     error: function(error,args){
         console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
@@ -729,11 +729,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         }
   });
   if (fadingMode) {
-	  dojo.fadeOut({ 
-	    node: contentNode ,
-	    duration: 200, 
-	    onEnd: function() { }
-	  }).play();
+    dojo.fadeOut({ 
+      node: contentNode ,
+      duration: 200, 
+      onEnd: function() { }
+    }).play();
   }
 }
 
@@ -775,8 +775,8 @@ function checkDestination(destination){
     //}
   }
   if (! dijit.byId('objectGrid') && dojo.byId('multiUpdateButtonDiv')) {
-	  dojo.byId('multiUpdateButtonDiv').style.display='none';
-  }	
+    dojo.byId('multiUpdateButtonDiv').style.display='none';
+  } 
   if (dojo.byId('indentButtonDiv')) {
     if ( dijit.byId('objectGrid')) {
       dojo.byId('indentButtonDiv').style.display='none';
@@ -795,7 +795,7 @@ function checkLogin() {
   resultNode=dojo.byId('validated');
   resultWidget=dojo.byId('validated');
   if (resultNode && resultWidget) {
-	saveResolutionToSession();  
+  saveResolutionToSession();  
     // showWait();
     if (changePassword) {
       quitConfirmed=true;
@@ -806,7 +806,7 @@ function checkLogin() {
       noDisconnect=true;
       url="main.php";
       if (dojo.byId("objectClass") && dojo.byId("objectId")) {
-    	  url+="?directAccess=true&objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
+        url+="?directAccess=true&objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
       }
       window.location=url;
     }
@@ -865,13 +865,13 @@ function finalizeMessageDisplay(destination, validationType) {
   // scpecific Plan return
   if (destination=="planResultDiv" && (! validationType || validationType=='dependency')) {  
     if (dojo.byId('lastPlanStatus')) {
-	  lastOperationStatus = dojo.byId('lastPlanStatus');
+    lastOperationStatus = dojo.byId('lastPlanStatus');
       lastOperation = "plan";
       validationType=null;
     }
   }
   if (destination=='resultDiv' || destination=='planResultDiv') {
-	  contentNode.style.display="block"; 
+    contentNode.style.display="block"; 
   }
   var noHideWait=false;
   if ( ! (contentWidget && contentNode && lastOperationStatus && lastOperation) ) {
@@ -911,7 +911,7 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>',posdeb)-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-  if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
+  if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {   
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
     msg=message.substr(posdeb, posfin-posdeb);
@@ -919,7 +919,7 @@ function finalizeMessageDisplay(destination, validationType) {
     // changes
     addMessage(msg);
     //alert('validationType='+validationType);
-    if (validationType) {  	
+    if (validationType) {   
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_Note', 'listForm');
       } else if (validationType=='attachment') {
@@ -928,14 +928,14 @@ function finalizeMessageDisplay(destination, validationType) {
           waitingForReply=false;
           loadMenuBarItem('UserParameter','UserParameter','bar');
         }  else if (dojo.byId('objectClass') 
-      	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' 
-      	      || dojo.byId('objectClass').value=='Contact') ) {
-      	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      	  refreshGrid();
-      	} else  {     	
+          && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' 
+              || dojo.byId('objectClass').value=='Contact') ) {
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+          refreshGrid();
+        } else  {       
           loadContent("objectDetail.php?refreshAttachments=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
-      	}
-      	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
+        }
+        dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -945,50 +945,50 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='checklistDefinitionLine') {
         loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
       } else if (validationType=='testCaseRun') {
-    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
-    	    loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
-    	  }
+        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+        if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
+          loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
+        }
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
-    	  if (validationType=='copyProject') {
-    	    needProjectListRefresh=true;
-    		  dojo.byId('objectClass').value="Project";
-    	  } else {
-    		  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
-    	  }
-    	  var lastSaveId=dojo.byId('lastSaveId');
+        if (validationType=='copyProject') {
+          needProjectListRefresh=true;
+          dojo.byId('objectClass').value="Project";
+        } else {
+          dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
+        }
+        var lastSaveId=dojo.byId('lastSaveId');
         var lastSaveClass=dojo.byId('objectClass');
         if (lastSaveClass && lastSaveId) {
-        	 waitingForReply=false;
+           waitingForReply=false;
            gotoElement(lastSaveClass.value, lastSaveId.value,null,true);
            waitingForReply=true;
         }         
       } else if (validationType=='admin'){
-    	  hideWait();
+        hideWait();
       } else if (validationType=='link' && 
-    		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
-    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  refreshGrid();
+          (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
+        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+        refreshGrid();
       } else  if (validationType=='report'){
-    	  hideWait(); 
+        hideWait(); 
       } else  if (validationType=='checklist'){
-    	  hideWait(); 
+        hideWait(); 
       } else  if (validationType=='dispatchWork'){
         hideWait();
       } else if (lastOperation!='plan') {
-    	  if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
+        if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
             loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  }
+        }
           if (validationType=='assignment' || validationType=='documentVersion') {
-        	  refreshGrid();
+            refreshGrid();
           } else if (validationType=='dependency' && 
-        		  (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
+              (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
               noHideWait=true;
               refreshGrid(); // Will call refreshJsonPlanning() if needed and plan() if required
           }
-    	  //hideWait();
+        //hideWait();
       }
     } else {
       formInitialize();
@@ -996,22 +996,22 @@ function finalizeMessageDisplay(destination, validationType) {
       var lastSaveId=dojo.byId('lastSaveId');
       var objectId=dojo.byId('objectId');
       if (objectId && lastSaveId && destination!="planResultDiv") {
-      	objectId.value=lastSaveId.value;
+        objectId.value=lastSaveId.value;
       }
       // Refresh the Grid list (if visible)
       var grid = dijit.byId("objectGrid");  
       if (grid) {
-    	var sortIndex=grid.getSortIndex();
-    	var sortAsc=grid.getSortAsc();
-    	var scrollTop=grid.scrollTop;
+      var sortIndex=grid.getSortIndex();
+      var sortAsc=grid.getSortAsc();
+      var scrollTop=grid.scrollTop;
         store = grid.store;
         store.close();
         store.fetch({onComplete: function(){
-        	grid._refresh();
-        	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+          grid._refresh();
+          setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
             setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
             setTimeout('selectRowById("objectGrid", '+parseInt(objectId.value)+');',30);
-        	}
+          }
         });
       }
       // Refresh the planning Gantt (if visible)
@@ -1088,23 +1088,23 @@ function finalizeMessageDisplay(destination, validationType) {
           }
           var refreshDetailElse=false;
           if (lastOperation.value=="insert") {
-        	  refreshDetailElse=true;
+            refreshDetailElse=true;
           } else {
-        	  if (dijit.byId('idle') && dojo.byId('attachmentIdle')) {
-        		  if (dijit.byId('idle').get("value")!=dojo.byId('attachmentIdle').value) {
-        			  refreshDetailElse=true;
-        		  }
-        	  }
-        	  if (dijit.byId('idle') && dojo.byId('noteIdle')) {
-        		  if (dijit.byId('idle').get("value")!=dojo.byId('noteIdle').value) {
-        			  refreshDetailElse=true;
-        		  }
-        	  }
-        	  if (dijit.byId('idle') && dojo.byId('billLineIdle')) {
-        		  if (dijit.byId('idle').get("value")!=dojo.byId('billLineIdle').value) {
-        			  refreshDetailElse=true;
-        		  }
-        	  }
+            if (dijit.byId('idle') && dojo.byId('attachmentIdle')) {
+              if (dijit.byId('idle').get("value")!=dojo.byId('attachmentIdle').value) {
+                refreshDetailElse=true;
+              }
+            }
+            if (dijit.byId('idle') && dojo.byId('noteIdle')) {
+              if (dijit.byId('idle').get("value")!=dojo.byId('noteIdle').value) {
+                refreshDetailElse=true;
+              }
+            }
+            if (dijit.byId('idle') && dojo.byId('billLineIdle')) {
+              if (dijit.byId('idle').get("value")!=dojo.byId('billLineIdle').value) {
+                refreshDetailElse=true;
+              }
+            }
           }
           if (refreshDetailElse && ! validationType) {
             if (dojo.byId(dojo.byId('objectClass').value+'_Attachment')) {
@@ -1151,36 +1151,36 @@ function finalizeMessageDisplay(destination, validationType) {
     var classObj=null;
     if (dojo.byId('objectClass')) classObj=dojo.byId('objectClass');
     if (classObj && classObj.value=='DocumentDirectory') {
-    	dijit.byId("documentDirectoryTree").model.store.clearOnClose = true;
-    	dijit.byId("documentDirectoryTree").model.store.close();
-  	    // Completely delete every node from the dijit.Tree     
-   	    dijit.byId("documentDirectoryTree")._itemNodesMap = {};
-   	    dijit.byId("documentDirectoryTree").rootNode.state = "UNCHECKED";
-   	    dijit.byId("documentDirectoryTree").model.root.children = null;
-   	    // Destroy the widget
-   	    dijit.byId("documentDirectoryTree").rootNode.destroyRecursive();
-   	    // Recreate the model, (with the model again)
-   	    dijit.byId("documentDirectoryTree").model.constructor(dijit.byId("documentDirectoryTree").model);
-   	    // Rebuild the tree
-   	    dijit.byId("documentDirectoryTree").postMixInProperties();
-   	    dijit.byId("documentDirectoryTree")._load();
+      dijit.byId("documentDirectoryTree").model.store.clearOnClose = true;
+      dijit.byId("documentDirectoryTree").model.store.close();
+        // Completely delete every node from the dijit.Tree     
+        dijit.byId("documentDirectoryTree")._itemNodesMap = {};
+        dijit.byId("documentDirectoryTree").rootNode.state = "UNCHECKED";
+        dijit.byId("documentDirectoryTree").model.root.children = null;
+        // Destroy the widget
+        dijit.byId("documentDirectoryTree").rootNode.destroyRecursive();
+        // Recreate the model, (with the model again)
+        dijit.byId("documentDirectoryTree").model.constructor(dijit.byId("documentDirectoryTree").model);
+        // Rebuild the tree
+        dijit.byId("documentDirectoryTree").postMixInProperties();
+        dijit.byId("documentDirectoryTree")._load();
     }
     if (dojo.byId("forceRefreshMenu") && dojo.byId("forceRefreshMenu").value!="") {
       forceRefreshMenu=dojo.byId("forceRefreshMenu").value;
     }
     if (forceRefreshMenu) {
-    	//loadContent("../view/menuTree.php", "mapDiv",null,false);
-    	//loadContent("../view/menuBar.php", "toolBarDiv",null,false);
-    	showWait();
-    	noDisconnect=true;
+      //loadContent("../view/menuTree.php", "mapDiv",null,false);
+      //loadContent("../view/menuBar.php", "toolBarDiv",null,false);
+      showWait();
+      noDisconnect=true;
       quitConfirmed=true;        
-    	//window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
-    	dojo.byId("directAccessPage").value="parameter.php";
+      //window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
+      dojo.byId("directAccessPage").value="parameter.php";
         dojo.byId("menuActualStatus").value=menuActualStatus;
         dojo.byId("p1name").value="type";
         dojo.byId("p1value").value=forceRefreshMenu;
         forceRefreshMenu="";
-        dojo.byId("directAccessForm").submit();   	
+        dojo.byId("directAccessForm").submit();     
     }
   } else if (lastOperationStatus.value=="INVALID" || lastOperationStatus.value=="CONFIRM") {
     if (formChangeInProgress) {
@@ -1202,7 +1202,7 @@ function finalizeMessageDisplay(destination, validationType) {
     if (resultDivFadingOut) resultDivFadingOut.stop();
   }
   if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" 
-	  && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
+    && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
     if (destination=='planResultDiv') {
       planningResultDivFadingOut=dojo.fadeOut({
         node: contentNode, 
@@ -1224,19 +1224,19 @@ function finalizeMessageDisplay(destination, validationType) {
       if (lastOperationStatus.value=="CONFIRM") {
         if (message.indexOf('id="confirmControl" value="delete"')>0) {
         confirm=function () {
-	    		dojo.byId("deleteButton").blur();
-			    loadContent("../tool/deleteObject.php?confirmed=true", "resultDiv", 'objectForm', true);
-  	    	};
-      	} else {
-      		confirm=function () {
-          		dojo.byId("saveButton").blur();
-      		    loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
-          	  };
-      	}
-      	showConfirm(message,confirm);
-      	contentWidget=dijit.byId(destination);
-      	contentNode=dojo.byId(destination);
-      	contentNode.style.display="none"; 
+          dojo.byId("deleteButton").blur();
+          loadContent("../tool/deleteObject.php?confirmed=true", "resultDiv", 'objectForm', true);
+          };
+        } else {
+          confirm=function () {
+              dojo.byId("saveButton").blur();
+              loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
+              };
+        }
+        showConfirm(message,confirm);
+        contentWidget=dijit.byId(destination);
+        contentNode=dojo.byId(destination);
+        contentNode.style.display="none"; 
       } else {
         //showAlert(message);
         addCloseBoxToMessage(destination);
@@ -1296,9 +1296,9 @@ function finaliseButtonDisplay() {
       if (dijit.byId("objectGrid")) {
         enableWidget('multiUpdateButton');
       } else {
-    	  disableWidget('multiUpdateButton');
-    	  disableWidget('indentDecreaseButton');
-    	  disableWidget('indentIncreaseButton');
+        disableWidget('multiUpdateButton');
+        disableWidget('indentDecreaseButton');
+        disableWidget('indentIncreaseButton');
       }
     }
   } else {
@@ -1309,7 +1309,7 @@ function finaliseButtonDisplay() {
     if (dijit.byId("objectGrid")) {
       enableWidget('multiUpdateButton');
     } else {
-	  disableWidget('multiUpdateButton');
+    disableWidget('multiUpdateButton');
     }
     // but show print buttons if not in objectDetail (buttonDiv exists)
     if (! dojo.byId("buttonDiv")) {
@@ -1324,50 +1324,50 @@ function finalizeMultipleSave() {
   //refreshGrid();
   var grid = dijit.byId("objectGrid");  
   if (grid) {
-	//unselectAllRows("objectGrid");
+  //unselectAllRows("objectGrid");
     var sortIndex=grid.getSortIndex();
-	var sortAsc=grid.getSortAsc();
-	var scrollTop=grid.scrollTop;
-	store = grid.store;
-	store.close();
-	store.fetch({
-	  onComplete: function(items){
-	    grid._refresh();
-  	    setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+  var sortAsc=grid.getSortAsc();
+  var scrollTop=grid.scrollTop;
+  store = grid.store;
+  store.close();
+  store.fetch({
+    onComplete: function(items){
+      grid._refresh();
+        setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
         setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
         selection=';'+dojo.byId('selection').value;
         dojo.forEach(items, function (item, index) {
           if (selection.indexOf(";"+parseInt(item.id)+";")>=0) {
-  		    grid.selection.setSelected(index,true);
+          grid.selection.setSelected(index,true);
           } else {
-        	grid.selection.setSelected(index,false);  
+          grid.selection.setSelected(index,false);  
           }
-  	    }) 
-  	  }
+        }) 
+      }
     });
   }
   if (dojo.byId('summaryResult')) {
     contentNode=dojo.byId('resultDiv');
-	contentNode.innerHTML=dojo.byId('summaryResult').value;
-	msg=dojo.byId('summaryResult').value;
-	msg=msg.replace(" class='messageERROR' ","");
-	msg=msg.replace(" class='messageOK' ","");
-	msg=msg.replace(" class='messageWARNING' ","");
-	msg=msg.replace(" class='messageNO_CHANGE' ","");
-	msg=msg.replace("</div><div>",", ");
-	msg=msg.replace("</div><div>",", ");
-	msg=msg.replace("<div>","");
-	msg=msg.replace("<div>","");
-	msg=msg.replace("</div>","");
-	msg=msg.replace("</div>","");
+  contentNode.innerHTML=dojo.byId('summaryResult').value;
+  msg=dojo.byId('summaryResult').value;
+  msg=msg.replace(" class='messageERROR' ","");
+  msg=msg.replace(" class='messageOK' ","");
+  msg=msg.replace(" class='messageWARNING' ","");
+  msg=msg.replace(" class='messageNO_CHANGE' ","");
+  msg=msg.replace("</div><div>",", ");
+  msg=msg.replace("</div><div>",", ");
+  msg=msg.replace("<div>","");
+  msg=msg.replace("<div>","");
+  msg=msg.replace("</div>","");
+  msg=msg.replace("</div>","");
   addMessage(msg);
-	dojo.fadeIn({
+  dojo.fadeIn({
       node: contentNode, 
       duration: 10,
       onEnd: function() {
-	    dojo.fadeOut({node: contentNode, duration: 3000}).play();
-	  }
-	}).play();
+      dojo.fadeOut({node: contentNode, duration: 3000}).play();
+    }
+  }).play();
   }
   hideWait();  
 }
@@ -1581,10 +1581,10 @@ function checkFormChangeInProgress(actionYes, actionNo) {
     showInfo(i18n("alertOngoingQuery"));
     return true;
   } else if (formChangeInProgress) {
-	if (multiSelection) {
-		endMultipleUpdateMode();
-		return false;
-	}
+  if (multiSelection) {
+    endMultipleUpdateMode();
+    return false;
+  }
     if (actionYes) {
       if (! actionNo) {
         actionNo=function() {  };
@@ -1616,11 +1616,11 @@ function unselectAllRows(gridName) {
     return;
   }
   grid.store.fetch({ 
-	onComplete: function (items) { 
-	  dojo.forEach(items, function (item, index) { 
-		  grid.selection.setSelected(index,false);
-	  }); 
-	} 
+  onComplete: function (items) { 
+    dojo.forEach(items, function (item, index) { 
+      grid.selection.setSelected(index,false);
+    }); 
+  } 
   }); 
 }
 
@@ -1630,11 +1630,11 @@ function selectAllRows(gridName) {
     return;
   }
   grid.store.fetch({ 
-	onComplete: function (items) { 
-	  dojo.forEach(items, function (item, index) { 
-		  grid.selection.setSelected(index,true);
-	  }); 
-	} 
+  onComplete: function (items) { 
+    dojo.forEach(items, function (item, index) { 
+      grid.selection.setSelected(index,true);
+    }); 
+  } 
   }); 
 }
 
@@ -1666,7 +1666,7 @@ function selectRowById(gridName, id, tryCount) {
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
   if (dojo.isIE && parseInt(dojo.isIE,10)<='8') { 
-	  return;
+    return;
   }
   var nbRow=grid.rowCount;
   gridReposition=true;
@@ -1716,7 +1716,7 @@ function selectRowById(gridName, id, tryCount) {
   gridReposition=false;
 }
 function selectPlanningRow() {
-	setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
+  setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
 }
 function selectGridRow() {
   setTimeout("selectRowById('objectGrid',dojo.byId('objectId').value);",100);
@@ -1738,24 +1738,24 @@ function selectGridRow() {
  */
 function i18n(str, vars) {
   if ( ! i18nMessages ) {
-  	try {
-  	  //dojo.registerModulePath('i18n', '/tool/i18n'); 
+    try {
+      //dojo.registerModulePath('i18n', '/tool/i18n'); 
         dojo.requireLocalization("i18n","lang", currentLocale);
         i18nMessages=dojo.i18n.getLocalization("i18n","lang", currentLocale);
-  	} catch(err) {
-  	  i18nMessages=new Array();
+    } catch(err) {
+      i18nMessages=new Array();
     }
-  	if (customMessageExists) {
-    	try {
+    if (customMessageExists) {
+      try {
         //dojo.registerModulePath('i18n', '/tool/i18n'); 
           dojo.requireLocalization("i18nCustom","lang", currentLocale);
           i18nMessagesCustom=dojo.i18n.getLocalization("i18nCustom","lang", currentLocale);
       } catch(err) {
         i18nMessagesCustom=new Array();
       }
-  	} else {
-  	  i18nMessagesCustom=new Array();
-  	}
+    } else {
+      i18nMessagesCustom=new Array();
+    }
   }
   var ret=null;
   if (top.i18nMessagesCustom[str]) {
@@ -1796,7 +1796,7 @@ function i18n(str, vars) {
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
   if (selectionField) {
-	  dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
+    dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
   }
   currentSelectedProject=idProject;
   if (idProject!="") {
@@ -1807,9 +1807,9 @@ function setSelectedProject(idProject, nameProject, selectionField) {
         addMessage(i18n("Project")+ "=" + nameProject );
         if (dojo.byId("GanttChartDIV")) {
           if (dojo.byId("resourcePlanning") ) {
-        	loadContent("resourcePlanningList.php", "listDiv", 'listForm');  
+          loadContent("resourcePlanningList.php", "listDiv", 'listForm');  
           } else if (dojo.byId("portfolioPlanning") ) {
-          	loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
+            loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }
@@ -1888,7 +1888,7 @@ function quit() {
  */
 function beforequit() {
   if (! quitConfirmed) {
- 	if (checkFormChangeInProgress()) {
+  if (checkFormChangeInProgress()) {
       return (i18n("alertQuitOngoingChange"));
     } else {
       if (paramConfirmQuit!="NO") {
@@ -1907,10 +1907,10 @@ function beforequit() {
 function drawGantt() {
   // first, if detail is displayed, reload class
   if (dojo.byId("objectClass") && !dojo.byId("objectClass").value && dojo.byId("objectClassName") && dojo.byId("objectClassName").value) {
-	  dojo.byId("objectClass").value=dojo.byId("objectClassName").value;
+    dojo.byId("objectClass").value=dojo.byId("objectClassName").value;
   } 
   if (dojo.byId("objectId") && ! dojo.byId("objectId").value && dijit.byId("id") && dijit.byId("id").get("value")) {
-	  dojo.byId("objectId").value=dijit.byId("id").get("value");
+    dojo.byId("objectId").value=dijit.byId("id").get("value");
   } 
   if (dijit.byId('startDatePlanView')) {
     var startDateView=dijit.byId('startDatePlanView').get('value');
@@ -1956,7 +1956,7 @@ function drawGantt() {
   jsonData=dojo.byId('planningJsonData');
   if ( jsonData.innerHTML.indexOf('{"identifier"')<0) {
       if (jsonData.innerHTML.length>10) {
-	    showAlert(jsonData.innerHTML);
+      showAlert(jsonData.innerHTML);
       }
       hideWait();
       return;
@@ -2001,12 +2001,12 @@ function drawGantt() {
       pPlannedStart="";
       pWork="";
       if (dojo.byId('resourcePlanning')) {
-    	  pRealEnd=item.realenddate;
-    	  pPlannedStart=item.plannedstartdate;
+        pRealEnd=item.realenddate;
+        pPlannedStart=item.plannedstartdate;
         pWork=item.leftworkdisplay;
         g.setSplitted(true);
       } else {
-    	  pEnd=(trim(item.realenddate)!="")?item.realenddate:pEnd;
+        pEnd=(trim(item.realenddate)!="")?item.realenddate:pEnd;
       }
       if (pEnd<pStart) pEnd=pStart;
       //
@@ -2049,30 +2049,30 @@ function drawGantt() {
       var pResource=item.resource;
       var pCaption="";
       if ( dojo.byId('listShowResource') ) {
-	    if (dojo.byId('listShowResource').checked) { 
-	    	pCaption=pResource;
-	    }
-	  }
+      if (dojo.byId('listShowResource').checked) { 
+        pCaption=pResource;
+      }
+    }
       if ( dojo.byId('listShowLeftWork') && dojo.byId('listShowLeftWork').checked ) {
-  	    if (item.leftwork>0) { 
-  	    	pCaption=item.leftworkdisplay;
-  	    } else {
-  	    	pCaption="";
-  	    }
-  	  }
+        if (item.leftwork>0) { 
+          pCaption=item.leftworkdisplay;
+        } else {
+          pCaption="";
+        }
+      }
       var pDepend=item.depend;
       topKey="#"+topId+"#";
       curKey="#"+item.id+"#";
       if (keys.indexOf(topKey)==-1) {
-	     topId='';
+       topId='';
       } 
       keys+="#"+curKey+"#";
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
-    		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
-    		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
-    		                             item.validatedworkdisplay, item.assignedworkdisplay, 
-    		                             item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
-    		                             item.priority, item.planningmode));
+                                     pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
+                                     pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
+                                     item.validatedworkdisplay, item.assignedworkdisplay, 
+                                     item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
+                                     item.priority, item.planningmode));
     }
     g.Draw();  
     g.DrawDependencies();
@@ -2090,11 +2090,11 @@ function runScript(refType, refId, id) {
     refType='Project';
   }
   if (waitingForReply)  {
-	showInfo(i18n("alertOngoingQuery"));
+  showInfo(i18n("alertOngoingQuery"));
     return;
   }
   if (checkFormChangeInProgress() ) {
-	return false;
+  return false;
   }
   dojo.byId('objectClass').value=refType;
   dojo.byId('objectId').value=refId;
@@ -2108,39 +2108,39 @@ function highlightPlanningLine(id) {
   vGanttCurrentLine=id;
   vTaskList=g.getList();
   for (var i=0;i<vTaskList.length;i++) {
-	JSGantt.ganttMouseOut(i); 	
-  }	
+  JSGantt.ganttMouseOut(i);   
+  } 
   var vRowObj1 = JSGantt.findObj('child_' + id);
   if (vRowObj1) {
-	  //vRowObj1.className = "dojoxGridRowSelected dojoDndItem";// ganttTask" + pType;
-	  dojo.addClass(vRowObj1,"dojoxGridRowSelected");
+    //vRowObj1.className = "dojoxGridRowSelected dojoDndItem";// ganttTask" + pType;
+    dojo.addClass(vRowObj1,"dojoxGridRowSelected");
   }
   var vRowObj2 = JSGantt.findObj('childrow_' + id);
   if (vRowObj2) {
-	  //vRowObj2.className = "dojoxGridRowSelected";
-	  dojo.addClass(vRowObj2,"dojoxGridRowSelected");
+    //vRowObj2.className = "dojoxGridRowSelected";
+    dojo.addClass(vRowObj2,"dojoxGridRowSelected");
   }
 }
 function selectPlanningLine(selClass, selId) {
-	vGanttCurrentLine=id;
-	vTaskList=g.getList();
-	var tId=null;
-	for (var i=0;i<vTaskList.length;i++) {
-		scope = vTaskList[i].getScope();
-		spl=scope.split("_");	
-		if (spl.length>2 && spl[1]==selClass && spl[2]==selId) {
-		  tId=vTaskList[i].getID();
-		}	  
-	}
-	if (tId!=null) {
-	  unselectPlanningLines();
-	  highlightPlanningLine(tId);
-	}
+  vGanttCurrentLine=id;
+  vTaskList=g.getList();
+  var tId=null;
+  for (var i=0;i<vTaskList.length;i++) {
+    scope = vTaskList[i].getScope();
+    spl=scope.split("_"); 
+    if (spl.length>2 && spl[1]==selClass && spl[2]==selId) {
+      tId=vTaskList[i].getID();
+    }   
+  }
+  if (tId!=null) {
+    unselectPlanningLines();
+    highlightPlanningLine(tId);
+  }
 }
 function unselectPlanningLines() {
-	dojo.query(".dojoxGridRowSelected").forEach(function(node, index, nodelist){
-		dojo.removeClass(node,"dojoxGridRowSelected");
-	});
+  dojo.query(".dojoxGridRowSelected").forEach(function(node, index, nodelist){
+    dojo.removeClass(node,"dojoxGridRowSelected");
+  });
 }
 /**
  * calculate diffence (in work days) between dates
@@ -2153,14 +2153,14 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate.getMonth(), paramStartDate.getDate());
   var endDate=paramEndDate;
   if (paramEndDate<paramStartDate) {
-	return 0;
+  return 0;
   }
   var duration=1;
-  while (currentDate<=endDate) {	
-	if (! isOffDay(currentDate)) {
+  while (currentDate<=endDate) {  
+  if (! isOffDay(currentDate)) {
       duration++;
-	}
-	currentDate=addDaysToDate(currentDate,1);
+  }
+  currentDate=addDaysToDate(currentDate,1);
   }
   return duration;
 }
@@ -2240,10 +2240,10 @@ function addWorkDaysToDate(paramDate, paramDays) {
   left=paramDays;
   left--;
   while (left>0) {
-	endDate=addDaysToDate(endDate,1);
-	if (! isOffDay(endDate)) {
-	  left--;
-	}
+  endDate=addDaysToDate(endDate,1);
+  if (! isOffDay(endDate)) {
+    left--;
+  }
   }
   return endDate;
 }
@@ -2356,22 +2356,22 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     if (forceListRefresh) {
       refreshGrid();
     }
-	  dojo.byId('objectClass').value=eltClass;
-	  dojo.byId('objectId').value=eltId;
+    dojo.byId('objectClass').value=eltClass;
+    dojo.byId('objectId').value=eltId;
     loadContent('objectDetail.php','detailDiv','listForm');
   } else {
-	  if (dojo.byId("detailDiv")) {
-	    cleanContent("detailDiv");
-	  }
-	  if (! dojo.byId('objectClass') || dojo.byId('objectClass').value!=eltClass || forceListRefresh) {
+    if (dojo.byId("detailDiv")) {
+      cleanContent("detailDiv");
+    }
+    if (! dojo.byId('objectClass') || dojo.byId('objectClass').value!=eltClass || forceListRefresh) {
       loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
-	  } else {
-	    dojo.byId('objectClass').value=eltClass;
-	    dojo.byId('objectId').value=eltId;
-	    loadContent('objectDetail.php','detailDiv','listForm');
-	    hideList();
+    } else {
+      dojo.byId('objectClass').value=eltClass;
+      dojo.byId('objectId').value=eltId;
+      loadContent('objectDetail.php','detailDiv','listForm');
+      hideList();
       setTimeout('selectRowById("objectGrid", '+parseInt(eltId)+');',100);
-	  }
+    }
   }
   if (! noHistory) {
     stockHistory(eltClass,eltId);
@@ -2392,43 +2392,43 @@ function saveReportInToday() {
  */
 function globalSave() {
   if (dijit.byId('dialogDetail') && dijit.byId('dialogDetail').open) {
-	  var button=dijit.byId('comboSaveButton');
+    var button=dijit.byId('comboSaveButton');
   } else if (dijit.byId('dialogNote') && dijit.byId('dialogNote').open) {
-	  var button=dijit.byId('dialogNoteSubmit');
+    var button=dijit.byId('dialogNoteSubmit');
   } else if (dijit.byId('dialogLine') && dijit.byId('dialogLine').open) {
-		var button=dijit.byId('dialogLineSubmit');
+    var button=dijit.byId('dialogLineSubmit');
   } else if (dijit.byId('dialogLink') && dijit.byId('dialogLink').open) {
-		var button=dijit.byId('dialogLinkSubmit');
+    var button=dijit.byId('dialogLinkSubmit');
   } else if (dijit.byId('dialogOrigin') && dijit.byId('dialogOrigin').open) {
-		var button=dijit.byId('dialogOriginSubmit');
+    var button=dijit.byId('dialogOriginSubmit');
   } else if (dijit.byId('dialogCopy') && dijit.byId('dialogCopy').open) {
-		var button=dijit.byId('dialogCopySubmit');
+    var button=dijit.byId('dialogCopySubmit');
   } else if (dijit.byId('dialogCopyProject') && dijit.byId('dialogCopyProject').open) {
-		var button=dijit.byId('dialogProjectCopySubmit');
+    var button=dijit.byId('dialogProjectCopySubmit');
   } else if (dijit.byId('dialogAttachment') && dijit.byId('dialogAttachment').open) {
-		var button=dijit.byId('dialogAttachmentSubmit');
+    var button=dijit.byId('dialogAttachmentSubmit');
   } else if (dijit.byId('dialogDocumentVersion') && dijit.byId('dialogDocumentVersion').open) {
-		var button=dijit.byId('submitDocumentVersionUpload');
+    var button=dijit.byId('submitDocumentVersionUpload');
   } else if (dijit.byId('dialogAssignment') && dijit.byId('dialogAssignment').open) {
-		var button=dijit.byId('dialogAssignmentSubmit');
+    var button=dijit.byId('dialogAssignmentSubmit');
   } else if (dijit.byId('dialogExpenseDetail') && dijit.byId('dialogExpenseDetail').open) {
-		var button=dijit.byId('dialogExpenseDetailSubmit');
+    var button=dijit.byId('dialogExpenseDetailSubmit');
   } else if (dijit.byId('dialogPlan') && dijit.byId('dialogPlan').open) {
-		var button=dijit.byId('dialogPlanSubmit');
+    var button=dijit.byId('dialogPlanSubmit');
   } else if (dijit.byId('dialogDependency') && dijit.byId('dialogDependency').open) {
-		var button=dijit.byId('dialogDependencySubmit');
+    var button=dijit.byId('dialogDependencySubmit');
   } else if (dijit.byId('dialogResourceCost') && dijit.byId('dialogResourceCost').open) {
-		var button=dijit.byId('dialogResourceCostSubmit');
+    var button=dijit.byId('dialogResourceCostSubmit');
   } else if (dijit.byId('dialogVersionProject') && dijit.byId('dialogVersionProject').open) {
-		var button=dijit.byId('dialogVersionProjectSubmit');
+    var button=dijit.byId('dialogVersionProjectSubmit');
   } else if (dijit.byId('dialogAffectation') && dijit.byId('dialogAffectation').open) {
-		var button=dijit.byId('dialogAffectationSubmit');
+    var button=dijit.byId('dialogAffectationSubmit');
   } else if (dijit.byId('dialogFilter') && dijit.byId('dialogFilter').open) {
-		var button=dijit.byId('dialogFilterSubmit');
+    var button=dijit.byId('dialogFilterSubmit');
   } else if (dijit.byId('dialogBillLine') && dijit.byId('dialogBillLine').open) {
-		var button=dijit.byId('dialogBillLineSubmit');
+    var button=dijit.byId('dialogBillLineSubmit');
   } else if (dijit.byId('dialogMail') && dijit.byId('dialogMail').open) {
-		var button=dijit.byId('dialogMailSubmit');
+    var button=dijit.byId('dialogMailSubmit');
   } else if (dijit.byId('dialogChecklistDefinitionLine') && dijit.byId('dialogChecklistDefinitionLine').open) {
     var button=dijit.byId('dialogChecklistDefinitionLineSubmit');
   } else if (dijit.byId('dialogChecklist') && dijit.byId('dialogChecklist').open) {
@@ -2464,7 +2464,7 @@ function globalSave() {
     button=dijit.byId('saveParameterButton');
   }
   if (! button) {
-	  button=dijit.byId('saveButtonMultiple');
+    button=dijit.byId('saveButtonMultiple');
   }
   //for(name in CKEDITOR.instances) { // Moved to saveObject() function 
   //  CKEDITOR.instances[name].updateElement();
@@ -2523,9 +2523,9 @@ dateGetWeek = function (paramDate,dowOffset) {
       nday = nYear.getDay() - dowOffset;
       nday = nday >= 0 ? nday : nday + 7;
       /*
-		 * if the next year starts before the middle of the week, it is week #1
-		 * of that year
-		 */
+     * if the next year starts before the middle of the week, it is week #1
+     * of that year
+     */
       weeknum = nday < 4 ? 1 : 53;
     }
   }
@@ -2536,9 +2536,9 @@ dateGetWeek = function (paramDate,dowOffset) {
         nday = nYear.getDay() - dowOffset;
         nday = nday >= 0 ? nday : nday + 7;
         /*
-  		 * if the next year starts before the middle of the week, it is week #1
-  		 * of that year
-  		 */
+       * if the next year starts before the middle of the week, it is week #1
+       * of that year
+       */
         weeknum = nday < 4 ? 1 : 55;
       }
   }
@@ -2583,32 +2583,32 @@ function indentTask(way) {
 function saveCollapsed(scope){
   if (waitingForReply==true) return;
   if (! scope) {
-	if (dijit.byId(scope)) {
-	  scope=dijit.byId(scope);
-	} else {
-	  return;
-	}  
+  if (dijit.byId(scope)) {
+    scope=dijit.byId(scope);
+  } else {
+    return;
+  }  
   }
   dojo.xhrPost({
-	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
-	handleAs: "text",
-	load: function(data,args) { }
+  url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
+  handleAs: "text",
+  load: function(data,args) { }
   });
 }
 
 function saveExpanded(scope){
-  if (waitingForReply==true) return;	
+  if (waitingForReply==true) return;  
   if (! scope) {
-	if (dijit.byId(scope)) {
-	  scope=dijit.byId(scope);
-	} else {
-	  return;
-	}  
+  if (dijit.byId(scope)) {
+    scope=dijit.byId(scope);
+  } else {
+    return;
+  }  
   }
   dojo.xhrPost({
-	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
-	handleAs: "text",
-	load: function(data,args) { }
+  url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
+  handleAs: "text",
+  load: function(data,args) { }
   });
 }
 
@@ -2616,11 +2616,11 @@ function togglePane(pane) {
   if (waitingForReply==true) return;
   titlepane=dijit.byId(pane);
   if (titlepane) {
-	  if (titlepane.get('open')) {
-	    saveExpanded(pane);
-	  } else {
-		saveCollapsed(pane);
-	  }
+    if (titlepane.get('open')) {
+      saveExpanded(pane);
+    } else {
+    saveCollapsed(pane);
+    }
   }
   
 }
@@ -2628,38 +2628,38 @@ function togglePane(pane) {
 // IBAN KEY CALCULATOR
 // *********************************************************************************
 function calculateIbanKey() {
-	var country=ibanFormater(dijit.byId('ibanCountry').get('value'));
-	var bban=ibanFormater(dijit.byId('ibanBban').get('value'));
-	var number=ibanConvertLetters(bban.toString()+country.toString())+"00";	
-	var calculateKey=0;
-	var pos=0;
-	while (pos<number.length) {
-		calculateKey=parseInt(calculateKey.toString()+number.substr(pos,9),10) % 97;
-		pos+=9;
-	}
-	calculateKey=98-(calculateKey % 97);
-	var key=(calculateKey<10 ? "0" : "")+calculateKey.toString();
-	dijit.byId('ibanKey').set('value',key);
+  var country=ibanFormater(dijit.byId('ibanCountry').get('value'));
+  var bban=ibanFormater(dijit.byId('ibanBban').get('value'));
+  var number=ibanConvertLetters(bban.toString()+country.toString())+"00"; 
+  var calculateKey=0;
+  var pos=0;
+  while (pos<number.length) {
+    calculateKey=parseInt(calculateKey.toString()+number.substr(pos,9),10) % 97;
+    pos+=9;
+  }
+  calculateKey=98-(calculateKey % 97);
+  var key=(calculateKey<10 ? "0" : "")+calculateKey.toString();
+  dijit.byId('ibanKey').set('value',key);
 }
 
 function ibanFormater(text) {
-	var text=(text==null ? "" : text.toString().toUpperCase());	
-	return text;	
+  var text=(text==null ? "" : text.toString().toUpperCase()); 
+  return text;  
 }
 
 function ibanConvertLetters(text) {
-	convertedText="";
-	for (i=0;i<text.length;i++) {
-		car=text.charAt(i);
-		if (car>"9") {
-			if (car>="A" && car<="Z") {
-				convertedText+=(car.charCodeAt(0)-55).toString();
-			}
-		}else if (car>="0"){
-			convertedText+=car;
-		}
-	}
-	return convertedText;
+  convertedText="";
+  for (i=0;i<text.length;i++) {
+    car=text.charAt(i);
+    if (car>"9") {
+      if (car>="A" && car<="Z") {
+        convertedText+=(car.charCodeAt(0)-55).toString();
+      }
+    }else if (car>="0"){
+      convertedText+=car;
+    }
+  }
+  return convertedText;
 }
 
 function trim (myString, car) {
@@ -2676,36 +2676,36 @@ function trimTag (myString, car) {
 function moveMenuBar(way, duration) {
   if (! duration) duration=150;
   if (! menuBarMove) return;
-	var bar=dojo.byId('menubarContainer');
-	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
-	width=parseInt(bar.style.width.substr(0,bar.style.width.length-2),10);
-	var step=56*1;
-	if (way=='left')  {pos=left+step;}
-	if (way=='right') {pos=left-step;}
-	if (pos>0) pos=0;
-	if (way=='right') {
+  var bar=dojo.byId('menubarContainer');
+  left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
+  width=parseInt(bar.style.width.substr(0,bar.style.width.length-2),10);
+  var step=56*1;
+  if (way=='left')  {pos=left+step;}
+  if (way=='right') {pos=left-step;}
+  if (pos>0) pos=0;
+  if (way=='right') {
     var visibleWidthRight=dojo.byId('menuBarRight').getBoundingClientRect().left;
     var visibleWidthLeft=dojo.byId('menuBarLeft').getBoundingClientRect().right;
     var visibleWidth=visibleWidthRight-visibleWidthLeft;
     if (visibleWidth-left>width) {
       moveMenuBarStop(); 
-      exit;
+      return;
     }
-	}
-	dojo.fx.slideTo({ 
-	  duration: duration, 
-	  node: bar, 
-	  left: pos, 
-	  easing: function(n) {return n;},
-	  onEnd: function() {
-	    duration-=10;
-	    if (duration<50) duration=50;
-	    if (menuBarMove) {
-	      moveMenuBar(way, duration); 
-	    }
-	    showHideMoveButtons();
-	  }
-	}).play();
+  }
+  dojo.fx.slideTo({ 
+    duration: duration, 
+    node: bar, 
+    left: pos, 
+    easing: function(n) {return n;},
+    onEnd: function() {
+      duration-=10;
+      if (duration<50) duration=50;
+      if (menuBarMove) {
+        moveMenuBar(way, duration); 
+      }
+      showHideMoveButtons();
+    }
+  }).play();
 }
 menuBarMove=false;
 function moveMenuBarStop() {
@@ -2714,47 +2714,47 @@ function moveMenuBarStop() {
 }
 
 function isHtml5() {
-	if (dojo.isIE && dojo.isIE<=9) {
-		return false;
-	} else if (dojo.isFF && dojo.isFF<4) {
-		return false;
-	} else {
-		return true;
-	}
+  if (dojo.isIE && dojo.isIE<=9) {
+    return false;
+  } else if (dojo.isFF && dojo.isFF<4) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function updateCommandTotal() {
   if (cancelRecursiveChange_OnGoingChange) return;
   cancelRecursiveChange_OnGoingChange=true;
   // Retrieve values used for calculation
-	var untaxedAmount=dijit.byId("untaxedAmount").get("value");
-	if (! untaxedAmount) untaxedAmount=0;
-	var taxPct=dijit.byId("taxPct").get("value");
-	if (! taxPct) taxPct=0;
-	var addUntaxedAmount=dijit.byId("addUntaxedAmount").get("value");
-	if (! addUntaxedAmount) addUntaxedAmount=0;
-	var initialWork=dijit.byId("initialWork").get("value");
-	var addWork=dijit.byId("addWork").get("value");
-	// Calculated values
-	var taxAmount=Math.round(untaxedAmount*taxPct)/100;
-	var fullAmount=taxAmount+untaxedAmount;
-	var addTaxAmount=Math.round(addUntaxedAmount*taxPct)/100;
-	var addFullAmount=addTaxAmount+addUntaxedAmount;
-	var totalUntaxedAmount=untaxedAmount+addUntaxedAmount;
-	var totalTaxAmount=taxAmount+addTaxAmount;
-	var totalFullAmount=fullAmount+addFullAmount;
-	var validatedWork=initialWork+addWork;
-	// Set values to fields
-	dijit.byId("taxAmount").set('value',taxAmount);
-	dijit.byId("fullAmount").set('value',fullAmount);
-	dijit.byId("addTaxAmount").set('value',addTaxAmount);
-	dijit.byId("addFullAmount").set('value',addFullAmount);
-	dijit.byId("totalUntaxedAmount").set('value',totalUntaxedAmount);
-	dijit.byId("totalTaxAmount").set('value',totalTaxAmount);
-	dijit.byId("totalFullAmount").set('value',totalFullAmount);
-	dijit.byId("validatedWork").set('value',validatedWork);
-	
-	cancelRecursiveChange_OnGoingChange=false;
+  var untaxedAmount=dijit.byId("untaxedAmount").get("value");
+  if (! untaxedAmount) untaxedAmount=0;
+  var taxPct=dijit.byId("taxPct").get("value");
+  if (! taxPct) taxPct=0;
+  var addUntaxedAmount=dijit.byId("addUntaxedAmount").get("value");
+  if (! addUntaxedAmount) addUntaxedAmount=0;
+  var initialWork=dijit.byId("initialWork").get("value");
+  var addWork=dijit.byId("addWork").get("value");
+  // Calculated values
+  var taxAmount=Math.round(untaxedAmount*taxPct)/100;
+  var fullAmount=taxAmount+untaxedAmount;
+  var addTaxAmount=Math.round(addUntaxedAmount*taxPct)/100;
+  var addFullAmount=addTaxAmount+addUntaxedAmount;
+  var totalUntaxedAmount=untaxedAmount+addUntaxedAmount;
+  var totalTaxAmount=taxAmount+addTaxAmount;
+  var totalFullAmount=fullAmount+addFullAmount;
+  var validatedWork=initialWork+addWork;
+  // Set values to fields
+  dijit.byId("taxAmount").set('value',taxAmount);
+  dijit.byId("fullAmount").set('value',fullAmount);
+  dijit.byId("addTaxAmount").set('value',addTaxAmount);
+  dijit.byId("addFullAmount").set('value',addFullAmount);
+  dijit.byId("totalUntaxedAmount").set('value',totalUntaxedAmount);
+  dijit.byId("totalTaxAmount").set('value',totalTaxAmount);
+  dijit.byId("totalFullAmount").set('value',totalFullAmount);
+  dijit.byId("validatedWork").set('value',validatedWork);
+  
+  cancelRecursiveChange_OnGoingChange=false;
 }
 function updateBillTotal() { // Also used for Qutation !!!
   if (cancelRecursiveChange_OnGoingChange) return;
@@ -2790,12 +2790,12 @@ function copyDirectLinkUrl() {
     var flashcopier = 'flashcopier';
     if(!document.getElementById(flashcopier)) {
       var divholder = document.createElement('div');
-	  divholder.id = flashcopier;
-	  document.body.appendChild(divholder);
-	}
-	document.getElementById(flashcopier).innerHTML = '';
-	var divinfo = '<embed src="_clipboard.swf" FlashVars="clipboard='+escape(inElement.value)+'" width="0" height="0" type="application/x-shockwave-flash"></embed>';
-	document.getElementById(flashcopier).innerHTML = divinfo;
+    divholder.id = flashcopier;
+    document.body.appendChild(divholder);
+  }
+  document.getElementById(flashcopier).innerHTML = '';
+  var divinfo = '<embed src="_clipboard.swf" FlashVars="clipboard='+escape(inElement.value)+'" width="0" height="0" type="application/x-shockwave-flash"></embed>';
+  document.getElementById(flashcopier).innerHTML = divinfo;
   }
 }*/
 
@@ -2846,7 +2846,7 @@ function cryptData(data) {
 }
 var getHashTry=0;
 function connect(resetPassword) {
-	showWait();
+  showWait();
     dojo.byId('login').focus();
     dojo.byId('password').focus();
     changePassword=resetPassword;
@@ -2888,16 +2888,16 @@ function connect(resetPassword) {
 }
 
 function addNewItem(item) {
-	dojo.byId('objectClass').value=item;
-	dojo.byId('objectId').value=null;
-	if (switchedMode) {
+  dojo.byId('objectClass').value=item;
+  dojo.byId('objectId').value=null;
+  if (switchedMode) {
     setTimeout("hideList(null,true);", 1);
   }
-	loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
-	dijit.byId('planningNewItem').closeDropDown();
+  loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+  dijit.byId('planningNewItem').closeDropDown();
 }
 
-function startStopWork(action, type, id, start) {	
+function startStopWork(action, type, id, start) { 
   loadContent("../tool/startStopWork.php?action="+action,"resultDiv","objectForm",true);
   var now=new Date();
   var vars=new Array();
@@ -2983,10 +2983,10 @@ function onKeyDownFunction(event, field, editorFld) {
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
   } else if (event.keyCode==9 || event.keyCode==27) { // Tab : prevent
-	  if (fullScreenEditor) {
-	    event.preventDefault();
-	    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
-	  }
+    if (fullScreenEditor) {
+      event.preventDefault();
+      editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS even if it logs an error in the console
+    }
   } else {
     if (field=='noteNoteEditor') {
       // nothing
@@ -3095,34 +3095,34 @@ function getExtraRequiredFields() {
     form: dojo.byId('objectForm'),
     handleAs: "text",
     load: function(data) { 
-    	var obj = JSON.parse(data);
-    	for (var key in obj) {
-    		if (dijit.byId(key)) {
-    		  if (obj[key]=='required') {
-       	    //dijit.byId(key).set('class','input required');
-    		    dojo.addClass(dijit.byId(key).domNode,'required');
-    		  } else if (obj[key]=='optional') {
-    		    //dijit.byId(key).set('class','input');
-    		    dojo.removeClass(dijit.byId(key).domNode,'required');
-    		  }
-    		} else if (dojo.byId(key+'Editor')) {
-    		  keyEditor=key+'Editor';
-    		  if (obj[key]=='required') {
+      var obj = JSON.parse(data);
+      for (var key in obj) {
+        if (dijit.byId(key)) {
+          if (obj[key]=='required') {
+            //dijit.byId(key).set('class','input required');
+            dojo.addClass(dijit.byId(key).domNode,'required');
+          } else if (obj[key]=='optional') {
+            //dijit.byId(key).set('class','input');
+            dojo.removeClass(dijit.byId(key).domNode,'required');
+          }
+        } else if (dojo.byId(key+'Editor')) {
+          keyEditor=key+'Editor';
+          if (obj[key]=='required') {
             //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input required');
-    		    dojo.addClass(dijit.byId(keyEditor).domNode,'required');
+            dojo.addClass(dijit.byId(keyEditor).domNode,'required');
           } else if (obj[key]=='optional') {
             //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input');
             dojo.removeClass(dijit.byId(keyEditor).domNode,'required');
           }
-    		} else if (dojo.byId('cke_'+key)) {
-    		  var ckeKey='cke_'+key;
-    		  if (obj[key]=='required') {
+        } else if (dojo.byId('cke_'+key)) {
+          var ckeKey='cke_'+key;
+          if (obj[key]=='required') {
             dojo.addClass(ckeKey,'input required');
           } else if (obj[key]=='optional') {
             dojo.removeClass(ckeKey,'input required');
           }
-    		}
-    	}
+        }
+      }
     }
   }); 
 }
