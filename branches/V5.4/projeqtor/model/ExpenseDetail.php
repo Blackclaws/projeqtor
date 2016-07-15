@@ -94,10 +94,8 @@ class ExpenseDetail extends SqlElement {
   public function delete() {
   	$ref=$this->idExpense;
   	$result = parent::delete();
-    $exp=new Expense($ref,false);
-    if ($exp->scope=='ProjectExpense') {
-      $exp=new ProjectExpense($ref,false);
-    } else if ($exp->scope=='IndividualExpense') {
+    $exp=new ProjectExpense($ref,false);
+    if (! $exp->id) {
       $exp=new IndividualExpense($ref,false);
     }
     $exp->updateAmount();  	
