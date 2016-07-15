@@ -2689,7 +2689,7 @@ function moveMenuBar(way, duration) {
     var visibleWidth=visibleWidthRight-visibleWidthLeft;
     if (visibleWidth-left>width) {
       moveMenuBarStop(); 
-      exit;
+      return;
     }
 	}
 	dojo.fx.slideTo({ 

@@ -3406,7 +3406,7 @@ function defaultFilter() {
   if (top.dijit.byId('filterNameDisplay')) {
     // if (dijit.byId('filterNameDisplay').get('value')=="") {
     // showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
-    // exit;
+    // return;
     // }
     top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
         'value');
@@ -3615,9 +3615,9 @@ function addVersionProject(idVersion, idProject) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  refreshList('idProject', null, null, null, 'versionProjectProject', true);
+  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
   refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
-  refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion');
   dijit.byId("versionProjectProduct").set('value', null);
   dijit.byId("versionProjectProduct").set('readOnly', true);
   dojo.byId("versionProjectId").value="";
@@ -3648,6 +3648,7 @@ function addVersionProject(idVersion, idProject) {
   dijit.byId("versionProjectStartDate").reset();
   dijit.byId("versionProjectEndDate").reset();
   dijit.byId("dialogVersionProject").show();
+
 }
 
 function removeVersionProject(id) {
@@ -3886,8 +3887,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
     } else {
       refreshList('idProject', 'id', currentSelectedProject, null, 'affectationProject', true);
     }
-    refreshList('id' + objectClass, null, null, null, 'affectationResource',
-        true);
+    refreshList('id' + objectClass, null, null, idResource, 'affectationResource', true);
   }
   dojo.byId("affectationId").value="";
   dojo.byId("affectationIdTeam").value="";
@@ -4204,7 +4204,7 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     } else {
       var mySelect=dijit.byId(field);
     }
-    if (required && !selected && !mySelect.get('value')) { // required but no value set : select first
+    if (required && ! selected && ! trim(mySelect.get('value')) ) { // required but no value set : select first
       mySelect.set("value", items[0].id);
     }
   });
