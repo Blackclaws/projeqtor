@@ -3648,7 +3648,6 @@ function addVersionProject(idVersion, idProject) {
   dijit.byId("versionProjectStartDate").reset();
   dijit.byId("versionProjectEndDate").reset();
   dijit.byId("dialogVersionProject").show();
-
 }
 
 function removeVersionProject(id) {
@@ -4168,6 +4167,7 @@ function showHelp() {
  * Refresh a list (after update)
  */
 function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1,objectClass) {
+  console.log("refreshList(field="+field+", param="+param+", paramVal="+paramVal+", selected="+selected+", destination="+destination+", required="+required+", param1="+param1+", paramVal1="+paramVal1+",objectClass="+objectClass+")");
   var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
   if (param) {
     urlList+='&critField=' + param;
