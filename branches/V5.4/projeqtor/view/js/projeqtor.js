@@ -1763,7 +1763,7 @@ function i18n(str, vars) {
   } else if (top.i18nMessages[str]) {
     ret = top.i18nMessages[str];
   } else if (top.i18nPluginArray && top.i18nPluginArray[str]) {
-    ret =  top.i18nPluginArray[str];
+    ret = top.i18nPluginArray[str];
   }
   if (ret) {
     if (vars) {

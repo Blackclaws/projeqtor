@@ -1,5 +1,5 @@
 {
-aboutMessage: "ProjeQtOr …",
+aboutMessage: "ProjeQtOr ...",
 aboutMessageLocale: "Локаль",
 aboutMessageWebsite: "Вебсайт",
 AccessProfile: "Режим доступа",
