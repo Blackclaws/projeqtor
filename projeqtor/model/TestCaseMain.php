@@ -235,8 +235,7 @@ class TestCaseMain extends SqlElement {
   }
   
   public function save() {
-
-  	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
+  	if (! trim($this->idRunStatus) or ! $this->id) $this->idRunStatus=5;
   	if (! $this->prerequisite and $this->idTestCase) {
   		$parent=new TestCase($this->idTestCase);
   		$this->prerequisite=$parent->prerequisite;
