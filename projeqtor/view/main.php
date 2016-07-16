@@ -1897,6 +1897,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 id="versionProjectProduct" name="versionProjectProduct" 
                 class="input" value="">
                 <script type="dojo/connect" event="onChange" args="evt">
+                   dijit.byId('versionProjectVersion').set('value',null);
                    if (trim(this.value)) {
                     refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true);
                    } else {
