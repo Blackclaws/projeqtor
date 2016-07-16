@@ -632,6 +632,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     if (trim($this->idProject)!=trim($old->idProject)) {    	
       $this->ProjectPlanningElement->wbs=null;
       $this->ProjectPlanningElement->wbsSortable=null;
+      $this->sortOrder=null;
     }
     // Initialize user->_visibleProjects, to force recalculate
     $result = parent::save();
@@ -691,7 +692,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     	 	 }
     	 }
     }
-    parent::save();
+    //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 
 
   }
