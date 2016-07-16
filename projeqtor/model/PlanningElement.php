@@ -337,7 +337,7 @@ class PlanningElement extends SqlElement {
       $this->wbs=$wbs;
       $dispatchNeeded=true;
     }
-    $wbsSortable=formatSortableWbs($this->wbs);
+    $wbsSortable=formatSortableWbs($this->wbs); 
     if ($wbsSortable != $this->wbsSortable) {
       $dispatchNeeded=true;
     }
@@ -423,7 +423,7 @@ class PlanningElement extends SqlElement {
     if ($this->topId!='' and ! self::$_noDispatch) { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }
-    if ($this->wbsSortable!=$old->wbsSortable ) {
+    if ($this->wbsSortable!=$old->wbsSortable) {
     	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
