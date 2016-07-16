@@ -1402,6 +1402,12 @@ abstract class SqlElement {
 		if (property_exists($newObj,"reference")) {
 			$newObj->reference=null;
 		}
+		if (property_exists($newObj,"password")) {
+		  $newObj->password=null;
+		}
+		if (property_exists($newObj,"apiKey")) {
+		  $newObj->apiKey=md5($this->id.date('Ymdhis'));
+		}
 		foreach($newObj as $col_name => $col_value) {
 			if (ucfirst($col_name) == $col_name) {
 				// if property is an object, delete it

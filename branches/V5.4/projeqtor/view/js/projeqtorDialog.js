@@ -1197,8 +1197,7 @@ function selectLinkItem() {
       }
       if (selected.length == 1) {
         dijit.byId("linkDocumentVersion").reset();
-        refreshList('idDocumentVersion', 'idDocument', selected[0], null,
-            'linkDocumentVersion', false);
+        refreshList('idDocumentVersion', 'idDocument', selected[0], null,'linkDocumentVersion', false);
         dojo.style(dojo.byId('linkDocumentVersionDiv'), {
           display : 'block'
         });
@@ -1700,8 +1699,7 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
    * datastore}); //store.query({id:"*"});
    * dijit.byId('assignmentIdResource').set('store',store);
    */
-  refreshListSpecific('listResourceProject', 'assignmentIdResource',
-      'idProject', prj);
+  refreshListSpecific('listResourceProject', 'assignmentIdResource','idProject', prj);
   dijit.byId("assignmentIdResource").reset();
 
   dojo.byId("assignmentId").value="";
@@ -1767,8 +1765,7 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
    * dojo.store.DataStore({store: datastore}); //store.query({id:"*"});
    * dijit.byId('assignmentIdResource').set('store',store);
    */
-  refreshListSpecific('listResourceProject', 'assignmentIdResource',
-      'idProject', prj, idResource);
+  refreshListSpecific('listResourceProject', 'assignmentIdResource','idProject', prj, idResource);
   dijit.byId("assignmentIdResource").reset();
   dijit.byId("assignmentIdResource").set("value", idResource);
   dijit.byId("assignmentIdRole").set("value", idRole);
@@ -1966,8 +1963,7 @@ function addExpenseDetail(expenseType) {
   dijit.byId("expenseDetailType").reset();
   dojo.byId("expenseDetailDiv").innerHtml="";
   dijit.byId("expenseDetailAmount").reset();
-  refreshList('idExpenseDetailType', expenseType, '1', null,
-      'expenseDetailType', false);
+  refreshList('idExpenseDetailType', expenseType, '1', null,'expenseDetailType', false);
   // dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
   dijit.byId("dialogExpenseDetail").show();
 }
@@ -1984,8 +1980,7 @@ function editExpenseDetail(expenseType, id, idExpense, type, expenseDate,
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  refreshList('idExpenseDetailType', expenseType, '1', null,
-      'expenseDetailType', false);
+  refreshList('idExpenseDetailType', expenseType, '1', null,'expenseDetailType', false);
   dojo.byId("expenseDetailId").value=id;
   dojo.byId("idExpense").value=idExpense;
   dijit.byId("expenseDetailName").set("value",
@@ -2148,8 +2143,7 @@ function addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers)
   }
   dojo.byId("documentVersionId").value="";
   dojo.byId('documentVersionFileName').innerHTML="";
-  refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus',
-      'idDocumentVersion', '');
+  refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', '');
   dijit.byId('documentVersionIdStatus').set('value', defaultStatus);
   dojo.style(dojo.byId('inputFileDocumentVersion'), {
     display : 'block'
@@ -2212,8 +2206,7 @@ function editDocumentVersion(id, version, revision, draft, versionDate, status,
     return;
   }
   dijit.byId('documentVersionIdStatus').store;
-  refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus',
-      'idDocumentVersion', id);
+  refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', id);
   dijit.byId('documentVersionIdStatus').set('value', status);
   dojo.style(dojo.byId('inputFileDocumentVersion'), {
     display : 'none'
@@ -2481,24 +2474,22 @@ function addDependency(depType) {
         objectId.value));
   }
   if (objectClass == 'Requirement') {
-    refreshList('idDependable', 'scope', 'R', null, 'dependencyRefTypeDep',
-        true);
+    refreshList('idDependable', 'scope', 'R', '4', 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', '4');
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
   } else if (objectClass == 'TestCase') {
-    refreshList('idDependable', 'scope', 'TC', null, 'dependencyRefTypeDep',
-        true);
+    refreshList('idDependable', 'scope', 'TC', '5', 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', '5');
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
   } else {
-    refreshList('idDependable', 'scope', 'PE', null, 'dependencyRefTypeDep',
-        true);
     if (objectClass == 'Project') {
       dijit.byId("dependencyRefTypeDep").set('value', '3');
+      refreshList('idDependable', 'scope', 'PE', '3', 'dependencyRefTypeDep',true);
     } else {
       dijit.byId("dependencyRefTypeDep").set('value', '1');
+      refreshList('idDependable', 'scope', 'PE', '1', 'dependencyRefTypeDep',true);
     }
     if (objectClass == 'Term') {
       dojo.byId("dependencyDelayDiv").style.display="none";
@@ -2507,8 +2498,7 @@ function addDependency(depType) {
     }
   }
   refreshDependencyList();
-  refreshList('idActivity', 'idProject', '0', null, 'dependencyRefIdDepEdit',
-      false);
+  refreshList('idActivity', 'idProject', '0', null, 'dependencyRefIdDepEdit',false);
   dijit.byId('dependencyRefIdDepEdit').reset();
   dojo.byId("dependencyId").value="";
   dojo.byId("dependencyRefType").value=objectClass;
@@ -2531,27 +2521,23 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
   var objectId=dojo.byId("objectId").value;
   var message=i18n("dialogDependencyEdit");
   if (objectClass == 'Requirement') {
-    refreshList('idDependable', 'scope', 'R', null, 'dependencyRefTypeDep',
-        true);
+    refreshList('idDependable', 'scope', 'R', refType, 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
   } else if (objectClass == 'TestCase') {
-    refreshList('idDependable', 'scope', 'TC', null, 'dependencyRefTypeDep',
-        true);
+    refreshList('idDependable', 'scope', 'TC', refType, 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
   } else {
-    refreshList('idDependable', 'scope', 'PE', null, 'dependencyRefTypeDep',
-        true);
+    refreshList('idDependable', 'scope', 'PE', refType, 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', delay);
     dojo.byId("dependencyDelayDiv").style.display="block";
   }
   // refreshDependencyList();
-  refreshList('id' + refTypeName, 'idProject', '0', refId,
-      'dependencyRefIdDepEdit', true);
+  refreshList('id' + refTypeName, 'idProject', '0', refId,'dependencyRefIdDepEdit', true);
   dijit.byId('dependencyRefIdDepEdit').set('value', refId);
   dojo.byId("dependencyId").value=id;
   dojo.byId("dependencyRefType").value=objectClass;
@@ -2639,16 +2625,14 @@ function addBillLine() {
   var postLoad=function() {  
     var prj=dijit.byId('idProject').get('value');
     refreshListSpecific('listTermProject', 'billLineIdTerm', 'idProject', prj);
-    refreshListSpecific('listResourceProject', 'billLineIdResource', 'idProject',
-        prj);
-    refreshList('idActivityPrice', 'idProject', prj, null,
-        'billLineIdActivityPrice');
+    refreshListSpecific('listResourceProject', 'billLineIdResource', 'idProject',prj);
+    refreshList('idActivityPrice', 'idProject', prj, null,'billLineIdActivityPrice');
     dijit.byId("dialogBillLine").set('title', i18n("dialogBillLine"));
   };
   var params="&id=";
   params+="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
-  loadDialog('dialogBillLine', postLoad, true, params, true)
+  loadDialog('dialogBillLine', postLoad, true, params, true);
 }
 
 /**
@@ -2995,8 +2979,7 @@ function showFilterDialog() {
      * dojo.store.DataStore({store: datastore}); store.query({id:"*"});
      * dijit.byId('idFilterAttribute').set('store',store);
      */
-    top.refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo
-        .byId("objectClass").value);
+    top.refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
     top.dijit.byId("dialogFilter").show();
   }
   
@@ -3671,9 +3654,9 @@ function editVersionProject(id, idVersion, idProject, startDate, endDate, idle) 
     return;
   }
   dojo.byId("versionProjectId").value=id;
-  refreshList('idProject', null, null, null, 'versionProjectProject', true);
+  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
   refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
-  refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion', true);
   dijit.byId("versionProjectProduct").set('value', null);
   dijit.byId("versionProjectProduct").set('readOnly', true);
   if (idVersion) {
@@ -3767,10 +3750,8 @@ function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide)
     return;
   }
   idProject=dijit.byId('idProject').get('value');
-  refreshList('idTestCase', 'idProject', '0', idTestCase,
-      'testCaseRunTestCase', true);
-  refreshList('idTicket', 'idProject', idProject, idTicket,
-      'testCaseRunTicket', false);
+  refreshList('idTestCase', 'idProject', '0', idTestCase,'testCaseRunTestCase', true);
+  refreshList('idTicket', 'idProject', idProject, idTicket,'testCaseRunTicket', false);
   dijit.byId("testCaseRunTestCase").set('readOnly', true);
   dijit.byId('testCaseRunTestCase').set('value', idTestCase);
   if (idTicket) {
@@ -3878,28 +3859,29 @@ function addAffectation(objectClass, type, idResource, idProject) {
     dijit.byId("affectationProfile").reset();
   }
   if (objectClass == 'Project') {
-    refreshList('idProject', 'id', idProject, null, 'affectationProject', true);
-    refreshList('id' + type, null, null, null, 'affectationResource', true);
+    refreshList('idProject', 'id', idProject, idProject, 'affectationProject', true);
+    dijit.byId("affectationProject").set('value', idProject);
+    refreshList('id' + type, null, null, null, 'affectationResource', false);
+    dijit.byId("affectationResource").reset();
   } else {
     if (currentSelectedProject=='*') {
-      refreshList('idProject', null, null, null, 'affectationProject', true);
+      refreshList('idProject', null, null, null, 'affectationProject', false);
+      dijit.byId("affectationProject").reset();
     } else {
-      refreshList('idProject', 'id', currentSelectedProject, null, 'affectationProject', true);
+      refreshList('idProject', null, null, currentSelectedProject, 'affectationProject', true);
+      dijit.byId("affectationProject").set('value', currentSelectedProject);
     }
     refreshList('id' + objectClass, null, null, idResource, 'affectationResource', true);
+    dijit.byId("affectationResource").set('value', idResource);
   }
   dojo.byId("affectationId").value="";
   dojo.byId("affectationIdTeam").value="";
   if (objectClass == 'Project') {
     dijit.byId("affectationProject").set('readOnly', true);
-    dijit.byId("affectationProject").set('value', idProject);
     dijit.byId("affectationResource").set('readOnly', false);
-    dijit.byId("affectationResource").reset();
   } else {
     dijit.byId("affectationResource").set('readOnly', true);
-    dijit.byId("affectationResource").set('value', idResource);
     dijit.byId("affectationProject").set('readOnly', false);
-    dijit.byId("affectationProject").reset();
   }
   dijit.byId("affectationResource").set('required', true);
   dijit.byId("affectationProfile").set('required', true);
@@ -4024,7 +4006,13 @@ function affectTeamMembers(idTeam) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  refreshList('idProject', null, null, null, 'affectationProject', true);
+  if (currentSelectedProject=='*') {
+    refreshList('idProject', null, null, null, 'affectationProject', false);
+    dijit.byId("affectationProject").reset();
+  } else {
+    refreshList('idProject', null, null, currentSelectedProject, 'affectationProject', false);
+    dijit.byId("affectationProject").set('value', currentSelectedProject);
+  }
   dojo.byId("affectationId").value="";
   dojo.byId("affectationIdTeam").value=idTeam;
   dijit.byId("affectationResource").set('readOnly', true);
@@ -4034,7 +4022,6 @@ function affectTeamMembers(idTeam) {
   dijit.byId("affectationProfile").set('required', false);
   dijit.byId("affectationProfile").reset();
   dijit.byId("affectationProject").set('readOnly', false);
-  dijit.byId("affectationProject").reset();
   dijit.byId("affectationRate").set('value', '100');
   dijit.byId("affectationIdle").reset();
   dijit.byId("affectationDescription").reset();
@@ -4167,7 +4154,6 @@ function showHelp() {
  * Refresh a list (after update)
  */
 function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1,objectClass) {
-  console.log("refreshList(field="+field+", param="+param+", paramVal="+paramVal+", selected="+selected+", destination="+destination+", required="+required+", param1="+param1+", paramVal1="+paramVal1+",objectClass="+objectClass+")");
   var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
   if (param) {
     urlList+='&critField=' + param;
@@ -5918,8 +5904,7 @@ function refreshProjectSelectorList() {
     load : function() {
       loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');
       if (dijit.byId('idProjectPlan')) {
-        refreshList('planning', null, null, dijit.byId('idProjectPlan').get(
-            'value'), 'idProjectPlan', false);
+        refreshList('planning', null, null, dijit.byId('idProjectPlan').get('value'), 'idProjectPlan', false);
       }
     }
   });
