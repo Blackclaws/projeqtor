@@ -198,7 +198,7 @@ The rules defining a product structure are:
 .. _planning:
 
 
-Planning 
+Planning
 ========
 
 ProjeQtOr implements work-driven planning method.
@@ -253,11 +253,13 @@ Two methods can be used to create a draft planning.
 
     * This planning mode is used to define fixed duration tasks. (See: :ref:`planningMode`)
     * Dependencies allow to define the execution order of tasks. (See: :ref:`dependencies`)
+    * You can define this planning mode as defaut in the Activities Types screen for some types of activities you'll use in draft plannings
 
- .. compound:: **Use faked and overloaded resource**
+ .. compound:: **Use faked and team resource**
 
-    * The faked and overloaded resource can be useful to get a first estimate of project cost and duration without involving the real resources.
+    * The faked and team resource can be useful to get a first estimate of project cost and duration without involving the real resources.
     * Planning schedule is calculated using of the work-driven planning method.
+    * Faked and team resources can be mixed in same draft planning.
 
      .. compound:: **Faked resources**
 
@@ -265,12 +267,14 @@ Two methods can be used to create a draft planning.
         * There are several levels of Java developer with different daily costs (beginner, intermediary and expert).
         * You can define for this resource the functions and average daily cost for each level. (See: :ref:`resource-function-cost`)
         * You assign this resource to tasks, to a specific function (level). (See: :ref:`assignment`)
+        * Faked resource will be easily replaced with *real* resources when project becomes real, with *affectation replacement* feature. 
 
-     .. compound:: **Overloaded resource**
+     .. compound:: **Team resource**
 
-        * An overloaded resource is a resource whose daily capacity has been overloaded (Capacity (FTE) > 1).
-        * For instance, you needed to define four Java developers, but you don’t want to create a resource for each. You can overload the daily capacity of the resource (Example: Capacity FTE=4).
-        * Using overloaded resources renders estimation of project duration null and void.
+        * A team resource is a resource whose daily capacity has been defined to represent capacity of a team (Capacity (FTE) > 1).
+        * For instance, you needed to define four Java developers, but you don’t want to create a resource for each. You can *overload* the daily capacity of the resource (Example: Capacity FTE=4).
+        * Using team resources is very easy but renders estimation of project duration as draft, not taking into account constraint of different resources such as possibly different skills or expertise level.
+        * With team resources it is very easy to estimate planning with different number of members in the team : what if I include 5 Java develpers instead of 4 ? Just change capacity to 5 and re-calculate planning...      
 
 
 .. raw:: latex
@@ -684,7 +688,7 @@ Specific roles are defined to allow:
 
 .. _profiles-definition:
 
-Profiles definition 
+Profiles definition
 ===================
 
 The profile is a group used to define application authorization and access rights to the data.
@@ -764,7 +768,7 @@ A user linked to a profile belongs to this group who share same application beha
 
 .. _user-ress-contact-demystify:
 
-Stakeholder definition 
+Stakeholder definition
 ======================
 
 ProjeQtOr allows to define roles of stakeholders.

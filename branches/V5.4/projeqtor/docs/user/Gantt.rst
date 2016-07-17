@@ -538,6 +538,13 @@ Export contains all details and links between tasks.
    * - Repeat headers
      - Planning can be  span multiple pages.
 
+.. note:: Technical points
+
+   * This new feature will execute export on client side, in your browser.
+   * Thus the server will not be *heavy loaded* like *standard* PDF export does.
+   * It is highly faster than *standard* PDF export.
+   * Therefore, this feature is hightly dependant to browser compatibility.
+   
 .. note:: Browser compatibility
 
    * This new feature is technically complex and it is not compatible with all browsers.
@@ -547,5 +554,6 @@ Export contains all details and links between tasks.
 .. note:: Forced feature activation (deactivation)
 
    * To enable this feature for all browsers, add the parameter **$pdfPlanningBeta='true';** in parameters.php file.
-   * To disable, add the parameter **$pdfPlanningBeta='false';**
+   * To disable if for all brosers (including Chrome), add the parameter **$pdfPlanningBeta='false';**
+   * Default (when **$pdfPlanningBeta** parameter is not set) is *enabled with Chrome, disabled with other browsers* 
 

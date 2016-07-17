@@ -107,6 +107,8 @@ Top bar
 .. rubric:: 1.1.b - Filtering select (with autocomplete)
  
 * List of project and sub-project are displayed according to entered text.
+* Search criteria works in a "starts with" mode
+* Autocompletion is active
 
 .. figure:: /images/GUI/ZONE_ProjectSelectorAutoCompleteMode.png
    :alt: Example - Filtering select (with autocomplete)
@@ -115,6 +117,8 @@ Top bar
 .. rubric:: 1.1.c - Filtering select (with search)
 
 * List of project and sub-project are displayed according to search criteria.
+* Search criteria works in a "contains" mode
+* Autocompletion is **not** active
 
 .. figure:: /images/GUI/ZONE_ProjectSelectorSearchMode.png
    :alt: Example - Filtering select (with search)
@@ -466,7 +470,7 @@ The advanced filter allows to define clause to filter and sort.
 .. rubric:: 3 - Shared filters
 
 * Defined filters can be shared with other users.
-* Click on |unShareFilter| to shared the selected filter.
+* Click on |unShareFilter| to share the selected filter.
 * Click on |sharedFilter| to unshare the selected filter.
 
 
@@ -1081,7 +1085,7 @@ Accelerator buttons
 .. _combo-list-fields:
 
 Combo list field
-"""""""""""""""""
+""""""""""""""""
 
 * Combo list field allows to search, view or create item associated with the field.
 
