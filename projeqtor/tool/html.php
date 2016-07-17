@@ -1019,11 +1019,16 @@ function htmlDisplayCheckbox ($value) {
 }
 
 function htmlDisplayColored($value,$color) {
+  global $print, $outMode;
   $result= "";
   $foreColor=htmlForeColorForBackgroundColor($color);
-  $result.= '<table><tr><td style="background-color:' . $color . '; color:' . $foreColor . ';">';
-  $result.= $value;
-  $result.= "</td></tr></table>";
+  //$result.= '<table><tr><td style="background-color:' . $color . '; color:' . $foreColor . ';">';
+  //$result.= $value;
+  //$result.= "</td></tr></table>";
+  $result.='<div style="vertical-align:middle;padding: 2px 5px;border:1px solid #CCC;border-radius:10px;text-align: center;'
+      .(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'') 
+      . 'background-color: ' . $color . '; color:' . $foreColor . ';">'
+      .$value.'</div>';
   return $result;
 }
 
