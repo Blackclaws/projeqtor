@@ -42,9 +42,11 @@ Whatever your choice of the method, you can use ProjeQtOr.
 What's New in this user guide version?
 ======================================
 
-This section summarized significant changes made in the user guide document for this version.
+This section summarizes significant changes made in the user guide document for this version.
 
-To see complete list of changes made to software, visit the ProjeQtOr web site. 
+To see complete list of changes made to software, visit the ProjeQtOr web site.
+
+Current version is V5.4. 
 
 .. rubric:: Integration of tickets dashboard
 
@@ -67,7 +69,7 @@ To see complete list of changes made to software, visit the ProjeQtOr web site.
 * Automatic allocation of the responsible of the ticket when selecting the product or component.
 
   * See: :ref:`Product (Description section)<product>`
-  * See: :ref:`Product (Description section)<component>`
+  * See: :ref:`Component (Description section)<component>`
   * See: :ref:`Ticket (Responsible of product)<ticket>`
 
 .. rubric:: Project management 
@@ -218,7 +220,7 @@ ProjeQtOr integrates an easy to use Document Management feature.
    Document
 
 Ticket management
-===================
+=================
 
 .. toctree::
    :maxdepth: 1
@@ -295,7 +297,7 @@ Controls & Automation
    ControlAutomation
 
 Access rights
-=====================
+=============
 
 .. toctree::
    :maxdepth: 1
