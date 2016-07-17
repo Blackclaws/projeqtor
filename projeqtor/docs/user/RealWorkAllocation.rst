@@ -27,8 +27,9 @@ Data entry for one resource, on a weekly base.
 
 .. important:: **Global parameter: Number of hours per day**
 
-   * You must set this parameter before some real work has been entered.
-   * After, this parameter will be locked.
+   * In global parameters screen, you can define wether work will be entered in hours or in days.
+   * If you enter work in hours, you must define  the parameter **number of hours per day** before some real work has been entered.
+   * After first work is entered, this parameter will be locked.
 
 .. figure:: /images/GUI/SCR_TimeSheetZone.png
    :alt: Timesheet zone screen

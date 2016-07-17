@@ -47,7 +47,7 @@ It is also the top-level of visibility, depending on profiles.
 .. rubric:: Under construction
 
 * When a project is under construction, no automatic email is sent for the elements of the project.
-* A project can be under construction as long as isn’t taken over.
+* A project can be under construction as long as it isn’t stated (set to *handled* status).
 
 
 .. rubric:: Manual indicators

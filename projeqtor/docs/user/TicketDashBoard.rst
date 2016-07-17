@@ -14,7 +14,7 @@
 Tickets dashboard
 =================
 
-Allows user to have a tickets global view of its projects.
+Allows user to have a tickets global view of his projects.
 
 Shows several small reports, listing the number of tickets by item.
 
@@ -81,7 +81,7 @@ Filter clauses
 
   * Tickets that you are responsible for their treatment.
 
-* **Reported to me**
+* **Reported by me**
 
   * Tickets that you are the issuer.
 
@@ -89,6 +89,6 @@ Filter clauses
 
 * **Unscheduled**
 
-  * Tickets whose no resolution of the issue is scheduled in a next product version. 
+  * Tickets whose resolution is not scheduled in a next product version (target product version not set). 
 
 
