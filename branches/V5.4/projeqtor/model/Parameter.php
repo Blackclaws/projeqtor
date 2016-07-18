@@ -670,14 +670,10 @@ class Parameter extends SqlElement {
         $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
       }
   	}
-  	if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+  	if (isset($_SESSION['globalParamatersArray'][$code])) {
   		return $_SESSION['globalParamatersArray'][$code];
   	} else {
-  		if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
-  	    return $_SESSION['globalParamatersArray'][$code];
-      } else {
       	return '';
-      }
     }
   }
 
