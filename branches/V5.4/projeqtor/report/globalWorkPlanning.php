@@ -121,12 +121,14 @@ $queryGroupBy = $scale . ', t1.idProject';
 $tab=array();
 $start="";
 $end="";
+$prj=new Project();
+$prjTable=$prj->getDatabaseTableName();
 for ($i=1;$i<=2;$i++) {
   $obj=($i==1)?new Work():new PlannedWork();
   $var=($i==1)?'real':'plan';
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName().' t1, Project t2 '
+     . ' from ' . $obj->getDatabaseTableName().' t1, '.$prjTable.' t2 '
      . ' where ' . $queryWhere." and t1.idProject=t2.id "
      . ' group by ' . $queryGroupBy
      . ' order by t2.sortOrder asc '; 
