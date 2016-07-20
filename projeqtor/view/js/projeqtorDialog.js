@@ -494,6 +494,7 @@ function showDetailOrigin() {
 
 function showDetail(comboName, canCreate, objectClass, multiSelect) {
   var contentWidget=dijit.byId("comboDetailResult");
+  
   dojo.byId("canCreateDetail").value=canCreate;
   if (contentWidget) {
     contentWidget.set('content', '');
@@ -508,13 +509,14 @@ function showDetail(comboName, canCreate, objectClass, multiSelect) {
   var val=null;
   if (dijit.byId(comboName)) {
     val=dijit.byId(comboName).get('value');
-  } else {
+  } else if(dojo.byId(comboName)) {
     val=dojo.byId(comboName).value;
   }
   if (!val || val == "" || val == " ") {
     cl=objectClass;
     window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
         + i18n("messagePreview") + '</i>';
+    //window.frames['comboDetailFrame'].document.onpagehide=function(){console.log('ok');};
     dijit.byId("dialogDetail").show();
     displaySearch(cl);
   } else {
@@ -525,6 +527,7 @@ function showDetail(comboName, canCreate, objectClass, multiSelect) {
     dijit.byId("dialogDetail").show();
     displayDetail(cl, id);
   }
+  dojo.connect(dijit.byId("dialogDetail"),"onhide", function(){console.log('dsqdsd');});
 }
 
 function displayDetail(objClass, objId) {
