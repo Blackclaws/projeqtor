@@ -165,7 +165,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         var idRow=nodes[0].id.split('itemRow')[1].split('-')[0];
         var typeRow=nodes[0].id.split('-')[1];
         var newStatut=target.id.split('dialogRow')[1];
-        sendChangeKanBan(idRow,typeRow,newStatut,target);
+        var oldStatut=source.id.split('dialogRow')[1];
+        sendChangeKanBan(idRow,typeRow,newStatut,target,oldStatut);
       }
        if (source.id!=target.id) { return;}
        if (nodes.length>0 && nodes[0] && target && target.current) {
