@@ -722,6 +722,11 @@ function htmlEncode($val,$context="default") {
     $str=str_replace(array('</div>','</p>'),array('</div><br/>','</p><br/>'), $val);
     $str=strip_tags($str,'<br><br/><font><b>');
     return $str;
+  } else if ($context=="stipAllTags") {
+    //$str=str_replace(array('</div>','</p>',"\n"),array('</div><br/>','</p><br/>',''), $val);
+    $str=strip_tags($val);
+    //$str=str_replace('<br/>',"\n",$str);
+    return $str;
   } else if ($context=='protectQuotes') {
     $str=str_replace(array("'",'"'), array('\\'."'",'\\'.'"'), $val);
     return htmlspecialchars($str,ENT_QUOTES,'UTF-8');    
