@@ -28,6 +28,7 @@
  * ActionType defines the type of an issue.
  */ 
 require_once('_securityCheck.php');
+
 class Cron {
 
   // Define the layout that will be used for lists
@@ -43,6 +44,7 @@ class Cron {
   private static $deployFile;
   private static $restartFile;
   private static $cronWorkDir;
+  public static $listCronExecution;
   
    /** ==========================================================================
    * Constructor
@@ -50,7 +52,7 @@ class Cron {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
-  	
+
   }
 
   
@@ -269,6 +271,10 @@ class Cron {
       errorLog('Try to run cron already running');
       return;
     }
+    $inCronBlockFonctionCustom=true;
+    
+    $timeSecondCronExecution=0;
+    
     self::removeDeployFlag();
     self::removeRestartFlag();
     projeqtor_set_time_limit(0);
@@ -323,8 +329,27 @@ class Cron {
 	        $cronCheckEmails=Cron::getCheckEmails();
 	      }
       }
+      
+      // Check Database Execution
+      if($timeSecondCronExecution<=0){
+        foreach (self::$listCronExecution as $key=>$cronExecution){
+          $splitCron=explode(" ",$cronExecution->cron);
+          if(count($splitCron)!=5)errorLog("Invalid Cron #$cronExecution->id in database CronExecution");
+          else//cron minute/hour/day of month/month/day of week
+            if(($splitCron[0]=='*' || date("i")==$splitCron[0])
+            && ($splitCron[1]=='*' || date("H")==$splitCron[1])
+            && ($splitCron[2]=='*' || date("d")==$splitCron[2])
+            && ($splitCron[3]=='*' || date("m")==$splitCron[3])
+            && ($splitCron[4]=='*' || date("N")==$splitCron[4]))if(file_exists($cronExecution->fileExecuted)){
+              call_user_func($cronExecution->fonctionName);
+            }
+        }
+        $timeSecondCronExecution=60;
+      }
+      
       // Sleep to next check
       sleep($cronSleepTime);
+      $timeSecondCronExecution-=$cronSleepTime;
     }
   }
   
@@ -579,5 +604,18 @@ class Cron {
   		}
     }
   }
+}
+
+//Look if CronExecution exist in database
+if(Cron::$listCronExecution==null){
+	Cron::$listCronExecution=SqlList::getListWithCrit("CronExecution", array("idle"=>"0"), 'id');
+}
+$inCronBlockFonctionCustom=true;
+foreach (Cron::$listCronExecution as $key=>$cronExecution){
+  if(is_numeric($cronExecution)){
+    Cron::$listCronExecution[$key]=new CronExecution($cronExecution);
+    $cronExecution=Cron::$listCronExecution[$key];
+  }
+  require_once $cronExecution->fileExecuted;
 }
 ?>
