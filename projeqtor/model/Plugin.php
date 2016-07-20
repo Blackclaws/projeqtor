@@ -149,12 +149,13 @@ class Plugin extends SqlElement {
             $attr=$prop['attributes'];
             $fileName=(isset($attr['NAME']))?$attr['NAME']:null;
             $fileTarget=(isset($attr['TARGET']))?$attr['TARGET']:null;
+            $fileSource=(isset($attr['SOURCE']))?$attr['SOURCE']:'';
             $fileAction=(isset($attr['ACTION']))?$attr['ACTION']:null;
             if (!is_dir($fileTarget)) {
               mkdir($fileTarget,0777,true);
             }
             if ($fileName and $fileTarget and ($fileAction=='move' or $fileAction=='copy')) {
-              $res=copy(self::getDir()."/$plugin/$fileName","$fileTarget/$fileName");
+              $res=copy(self::getDir()."/$plugin/$fileSource/$fileName","$fileTarget/$fileName");
               if (! $res) {
                 $result=i18n('pluginErrorCopy',array($fileName,$fileTarget,$plugin));
                 errorLog("Plugin::load() : $result");
