@@ -492,7 +492,7 @@ function showDetailOrigin() {
   }
 }
 
-function showDetail(comboName, canCreate, objectClass, multiSelect) {
+function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
   var contentWidget=dijit.byId("comboDetailResult");
   
   dojo.byId("canCreateDetail").value=canCreate;
@@ -512,7 +512,24 @@ function showDetail(comboName, canCreate, objectClass, multiSelect) {
   } else if(dojo.byId(comboName)) {
     val=dojo.byId(comboName).value;
   }
-  if (!val || val == "" || val == " ") {
+  if (objectId) {
+    if (objectId=='new') {
+      cl=objectClass;
+      id=val;
+      window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
+          + i18n("messagePreview") + '</i>';
+      dijit.byId("dialogDetail").show();
+      newDetailItem(objectClass);
+    } else {
+      cl=objectClass;
+      id=objectId;
+      window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
+          + i18n("messagePreview") + '</i>';
+      dijit.byId("dialogDetail").show();
+      gotoDetailItem(objectClass,objectId);
+    }
+    
+  } else if (!val || val == "" || val == " ") {
     cl=objectClass;
     window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
         + i18n("messagePreview") + '</i>';
@@ -665,11 +682,18 @@ function displaySearch(objClass) {
   setTimeout('dijit.byId("dialogDetail").show()', 10);
 }
 
-function newDetailItem() {
+function newDetailItem(objectClass) {
+  gotoDetailItem(objectClass);
+}
+function gotoDetailItem(objectClass,objectId) {
   // comboName=dojo.byId('comboName').value;
-  var objClass=dojo.byId('comboClass').value;
+  hideField('comboSearchButton');
+  var objClass=objectClass;
+  if (!objectClass) {
+    objClass=dojo.byId('comboClass').value;
+    showField('comboSearchButton');
+  }
   showWait();
-  showField('comboSearchButton');
   hideField('comboSelectButton');
   hideField('comboNewButton');
   if (dojo.byId("canCreateDetail").value == "1") {
@@ -682,8 +706,13 @@ function newDetailItem() {
   destinationWidth=dojo.style(contentNode, "width");
   page="comboSearch.php";
   page+="?objectClass=" + objClass;
-  page+="&objectId=0";
-  page+="&mode=new";
+  if (objectId) {
+    page+="&objectId="+objectId;
+    //page+="&mode=new";    
+  } else {
+    page+="&objectId=0";
+    page+="&mode=new";
+  }
   page+="&destinationWidth=" + destinationWidth;
   top.frames['comboDetailFrame'].location.href=page;
   setTimeout('dijit.byId("dialogDetail").show()', 10);
