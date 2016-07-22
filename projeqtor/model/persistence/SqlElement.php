@@ -858,7 +858,7 @@ abstract class SqlElement {
 	 * @param string $force
 	 * @return Ambigous <NULL, unknown>
 	 */
-	public static function getCurrentObject ($objectClass=null, $objectId=null, $throwError=false, $force=false) {
+	public static function getCurrentObject ($objectClass=null, $objectId=null, $throwError=false, $force=false, $isComboDetail=false) {
 	  $oldObject = null;
 	  if ($force) {
 	    if ($objectClass) {
@@ -868,8 +868,8 @@ abstract class SqlElement {
 	    }
 	  }
 	  if ( isset($_REQUEST['directAccessIndex'])) {
-	    if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]) ) {
-  	    $testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+	    if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':'')]) ) {
+  	    $testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':'')];
   	    if (!$objectClass or get_class($testObject)==$objectClass) {
   	      $oldObject=$testObject;
   	    } else if ($throwError) {
@@ -880,8 +880,8 @@ abstract class SqlElement {
 	      throwError('currentObject parameter not found in SESSION');
 	      return null;
 	    }
-	  } else if (array_key_exists('currentObject',$_SESSION)) {
-	    $testObject = $_SESSION['currentObject'];
+	  } else if (array_key_exists('currentObject'.(($isComboDetail)?'_comboDetail':''),$_SESSION)) {
+	    $testObject = $_SESSION['currentObject'.(($isComboDetail)?'_comboDetail':'')];
 	    if (!$objectClass or get_class($testObject)==$objectClass) {
 	      $oldObject=$testObject;
 	    } else if ($throwError) {
@@ -894,12 +894,20 @@ abstract class SqlElement {
 	  }
 	  return $oldObject;
 	}
-	public static function setCurrentObject ($obj) {
+	public static function setCurrentObject ($obj, $isComboDetail=false) {
 	  if (isset($_REQUEST ['directAccessIndex'])) {
 	    if (!isset($_SESSION ['directAccessIndex'])) $_SESSION ['directAccessIndex']=array();
-	    $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]=$obj;
+	    if ($isComboDetail) {
+	      $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex'].'_comboDetail']=$obj;
+	    } else {
+	      $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]=$obj;
+	    }
 	  } else {
-	    $_SESSION ['currentObject']=$obj;
+	    if ($isComboDetail) {
+	      $_SESSION ['currentObject_comboDetail']=$obj;
+	    } else {
+	      $_SESSION ['currentObject']=$obj;
+	    }
 	  }
 	}
 	public static function unsetCurrentObject () {

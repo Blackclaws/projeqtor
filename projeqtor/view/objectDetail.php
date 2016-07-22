@@ -143,8 +143,12 @@ $print=false;
 if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
   $print=true;
 }
-if (!$print and !$comboDetail and $obj) {
-  SqlElement::setCurrentObject ($obj);
+if (!$print and $obj) {
+  if (!$comboDetail) {
+    SqlElement::setCurrentObject ($obj);
+  } else {
+    SqlElement::setCurrentObject ($obj,true);
+  }
 }
 $refresh=false;
 if (array_key_exists('refresh', $_REQUEST)) {
@@ -3647,15 +3651,15 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {
-        echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description,"stipAllTags") . '" alt="desc" />';
+        echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
         echo '&nbsp;';
       }
       if ($tc->result) {
-        echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result,"stipAllTags") . '" alt="desc" />';
+        echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result) . '" alt="desc" />';
         echo '&nbsp;';
       }
       if (isset($tc->prerequisite) and $tc->prerequisite) {
-        echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite,"stipAllTags") . '" alt="desc" />';
+        echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite) . '" alt="desc" />';
       }
       echo '</td>';
     }
