@@ -55,6 +55,7 @@ if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
     throwError ( 'last save object (' . get_class ( $obj ) . ') is not of the expected class (' . $className . ').' );
   }
 } else {
+  $obj=SqlElement::getCurrentObject(null,null,true,false,true);
   $ext = "_detail";
 }
 if (array_key_exists ( 'confirmed', $_REQUEST )) {

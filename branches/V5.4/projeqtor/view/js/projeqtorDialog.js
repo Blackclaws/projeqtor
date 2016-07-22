@@ -515,18 +515,19 @@ function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
   if (objectId) {
     if (objectId=='new') {
       cl=objectClass;
-      id=val;
+      id=null;
       window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
           + i18n("messagePreview") + '</i>';
       dijit.byId("dialogDetail").show();
-      newDetailItem(objectClass);
+      frames['comboDetailFrame'].location.href="print.php?print=true&page=preparePreview.php";
+      setTimeout("newDetailItem('"+objectClass+"');",500);
     } else {
       cl=objectClass;
       id=objectId;
       window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
           + i18n("messagePreview") + '</i>';
-      dijit.byId("dialogDetail").show();
-      gotoDetailItem(objectClass,objectId);
+      frames['comboDetailFrame'].location.href="print.php?print=true&page=preparePreview.php";
+      setTimeout("gotoDetailItem('"+objectClass+"',"+objectId+");",500);
     }
     
   } else if (!val || val == "" || val == " ") {
@@ -708,7 +709,7 @@ function gotoDetailItem(objectClass,objectId) {
   page+="?objectClass=" + objClass;
   if (objectId) {
     page+="&objectId="+objectId;
-    //page+="&mode=new";    
+    page+="&mode=new";    
   } else {
     page+="&objectId=0";
     page+="&mode=new";

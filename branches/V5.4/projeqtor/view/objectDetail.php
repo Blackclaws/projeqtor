@@ -143,8 +143,12 @@ $print=false;
 if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
   $print=true;
 }
-if (!$print and !$comboDetail and $obj) {
-  SqlElement::setCurrentObject ($obj);
+if (!$print and $obj) {
+  if (!$comboDetail) {
+    SqlElement::setCurrentObject ($obj);
+  } else {
+    SqlElement::setCurrentObject ($obj,true);
+  }
 }
 $refresh=false;
 if (array_key_exists('refresh', $_REQUEST)) {
