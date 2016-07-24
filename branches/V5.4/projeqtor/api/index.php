@@ -80,7 +80,8 @@ setSessionUser($user);
 if ($_SERVER['REQUEST_METHOD']=='GET') {
   // GET method : security => class is checked, id is numerically filtered, access right is applied
   if (isset($_REQUEST['uri'])) { 
-    $uri=htmlEncode($_REQUEST['uri']);
+    //$uri=htmlEncode($_REQUEST['uri']);
+    $uri=$_REQUEST['uri'];
     $split=explode('/',$uri);
     if (count($split>1)) {
     	$class=ucfirst($split[0]);
