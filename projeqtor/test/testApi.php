@@ -177,6 +177,7 @@ if ($action=='display') {
 <td style="border:1px solid grey"><div class="line title">Class of object</div>
 <div class="line">Object : <select class="input" name="object" id="object">
 <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
+<option value="History">History</option>
 </select></div>
 <div class="line"></div>
 </td>
