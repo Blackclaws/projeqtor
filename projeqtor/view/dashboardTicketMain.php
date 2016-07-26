@@ -269,7 +269,7 @@ function addTab($param){
     $addIfNoParam="";
     if(!$param['withParam'])$addIfNoParam='<span style="font-style:italic;color:#999999;">&nbsp;('.i18n('noFilterClause').')</span>';
     ksort($res);
-    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($param["title"])).$addIfNoParam."</h2>";
+    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($param["title"])).$addIfNoParam."</h2>";
     echo "<table width=\"95%\" class=\"tabDashboardTicketMain\">";
     echo '<tr><td class="titleTabTicket">'.i18n($param["title"]).'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnCount").'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnPourcent")."</td></tr>";
     foreach ($res as $idSort=>$nbLine){
@@ -317,7 +317,7 @@ function addTab($param){
     echo "</table>";
     echo '<div style="width:95%;height:2px;margin-top:0px;margin-bottom:35px;background-color:#CCCCCC"></div>';
   }else{
-    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($param["title"]))."</h2>";
+    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($param["title"]))."</h2>";
     echo '<span style="color:#333333;font-size:14px;font-style: italic;">'.i18n("noDataFound").'</span>';
     echo '<div style="width:95%;height:3px;margin-top:13px;margin-bottom:20px;background-color:#CCCCCC"></div>';
   }
@@ -342,7 +342,7 @@ foreach ($tabPosition['orderListLeft'] as $tableauBordLeftItem) {
   echo '<td valign="top" style="padding-right:10px;"><div id="tableauBordTabIdle' .$tableauBordLeftItem. '" 
                  dojoType="dijit.form.CheckBox" type="checkbox" '.($tabPosition[$tableauBordLeftItem]['idle']?' checked="checked"':'').'>
                 </div></td>';
-  echo "<td valign=\"top\" style=\"padding-right:10px;\"><span class='nobr'>".(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($tabPosition[$tableauBordLeftItem]['title']))."</span>";
+  echo "<td valign=\"top\" style=\"padding-right:10px;\"><span class='nobr'>".(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($tabPosition[$tableauBordLeftItem]['title']))."</span>";
   echo '</td>';
   echo '</tr>';
 }
@@ -357,7 +357,7 @@ foreach ($tabPosition['orderListRight'] as $tableauBordRightItem) {
   echo '<td valign="top" style="padding-right:10px;"><div id="tableauBordTabIdle' .$tableauBordRightItem. '" 
                dojoType="dijit.form.CheckBox" type="checkbox" '.($tabPosition[$tableauBordRightItem]['idle']?' checked="checked"':'').'>
               </div></td>';
-  echo "<td valign=\"top\" style=\"padding-right:10px;\"><span class='nobr'>".(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").strtolower(i18n($tabPosition[$tableauBordRightItem]['title']))."</span>";
+  echo "<td valign=\"top\" style=\"padding-right:10px;\"><span class='nobr'>".(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($tabPosition[$tableauBordRightItem]['title']))."</span>";
   echo '</td>';
   echo '</tr>';
 }
