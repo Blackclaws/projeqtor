@@ -43,6 +43,9 @@ if (! isset($obj)) {
   $objectClass=get_class($obj);
   $objectId=$obj->id;
 }
+if (! isset($comboDetail)) {
+  $comboDetail=false;
+}
 $updateRight=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj);
 $canUpdateCreationInfo=false;
 if ($obj->id and $updateRight) {
@@ -58,7 +61,7 @@ if ($obj->id and $updateRight) {
 ?>
 <div style="padding-right:16px;" <?php echo ($canUpdateCreationInfo)?'class="buttonDivCreationInfoEdit" onClick="changeCreationInfo();"':'';?>>
 <?php 
-if ($obj->id and property_exists ( $obj, 'idUser' )) {
+if (!$comboDetail and $obj->id and property_exists ( $obj, 'idUser' )) {
   echo formatUserThumb($obj->idUser,SqlList::getNameFromId('Affectable', $obj->idUser),'Creator',32,'right',true);
   $creationDate='';
 	if (property_exists ( $obj, 'creationDateTime' )) {
