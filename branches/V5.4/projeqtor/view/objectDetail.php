@@ -577,7 +577,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         }
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
-    } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
+    } else if (substr($col, 0, 5) == '_sec_' and (! $comboDetail or $col!='_sec_Link') ) { // if field is _section, draw a new section bar column
       $prevSection=$section;
       $currentCol+=1;
       if (strlen($col) > 8) {
@@ -666,7 +666,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if (!$nobr) {
         echo "</td></tr>";
       }
-    } else if (substr($col, 0, 5) == '_Link') { // Display links to other objects
+    } else if (substr($col, 0, 5) == '_Link' and ! $comboDetail) { // Display links to other objects
       $linkClass=null;
       if (strlen($col) > 5) {
         $linkClass=substr($col, 6);
@@ -703,7 +703,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       }
     } else if (substr($col, 0, 12) == '_TestCaseRun') { // Display TestCaseRun
       drawTestCaseRunFromObject($val, $obj);
-    } else if (substr($col, 0, 11) == '_Attachment') {
+    } else if (substr($col, 0, 11) == '_Attachment' and ! $comboDetail) {
       if (!isset($isAttachmentEnabled)) {
         $isAttachmentEnabled=true; // allow attachment
         if (!Parameter::getGlobalParameter('paramAttachmentDirectory') or !Parameter::getGlobalParameter('paramAttachmentMaxSize')) {
@@ -723,7 +723,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt);
         drawAttachmentsFromObject($obj, false);
       }
-    } else if (substr($col, 0, 5) == '_Note') {
+    } else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
       $prevSection=$section;
       $section="Note";
       $ress=new Resource(getCurrentUserId());
@@ -1923,6 +1923,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
 }
 
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null) {
+  scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn;
   if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
@@ -2269,7 +2270,7 @@ function drawHistoryFromObjects($refresh=false) {
         $newValue=$newValue . ' ' . i18n('colPct');
       } else if ($dataLength>4000 or $refType=='Note') {
         //$diff=diffValues($oldValue,$newValue);
-        // Nothing, préserve html format 
+        // Nothing, preserve html format 
         //$oldValue=$colName;
       } else if ($colName=='password' or $colName=='apiKey') {
         $allstars="**********";
@@ -3753,6 +3754,10 @@ function drawChecklistFromObject($obj) {
 
 
 function setWidthPct($displayWidth, $print, $printWidth, $obj,$colSpan=null) {
+  //scriptLog("setWidthPct(displayWidth=$displayWidth, print=$print, printWidth=$printWidth, obj,colSpan=$colSpan)");
+  if (intval($displayWidth)<=0 and intval($printWidth)>0) {
+    $displayWidth=(intval($printWidth)-50).'px';
+  }
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);
   if ($print) {
     $nbCol=1;
