@@ -341,7 +341,6 @@ class Cron {
             && ($splitCron[2]=='*' || date("d")==$splitCron[2])
             && ($splitCron[3]=='*' || date("m")==$splitCron[3])
             && ($splitCron[4]=='*' || date("N")==$splitCron[4]))if(file_exists($cronExecution->fileExecuted)){
-              debugLog("startFunction: ".$cronExecution->fonctionName);
               call_user_func($cronExecution->fonctionName);
             }
         }
