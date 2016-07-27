@@ -62,7 +62,7 @@ class DocumentDirectory extends SqlElement {
    
    private static $_fieldsAttributes=array("name"=>"required",
                                            "location"=>"readonly",
-                                           "idDocumentDirectory"=>"noList");  
+                                           "idDocumentDirectory"=>"");  
    
    private static $_databaseColumnName = array();
   

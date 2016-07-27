@@ -162,14 +162,14 @@ class Importable extends SqlElement {
 			if (is_object($val)) {
 				$objectArray[$fld]=$val;
 				foreach ($val as $subfld=>$subval){
-					$capt=$val->getColCaption($subfld);
+					$capt=trim($val->getColCaption($subfld));
 					if ($subfld!='id' and substr($capt,0,1)!='[' and ! isset($captionArray[$capt]) ) {
 						$captionArray[$capt]=$subfld;
 						$captionObjectArray[$capt]=$fld;
 					}
 				}
 			} else {
-				$capt=$obj->getColCaption($fld);
+				$capt=trim($obj->getColCaption($fld));
 				if (substr($fld,0,9)=='idContext' and strlen($fld)==10) {
           $ctx=new ContextType(substr($fld,-1));
           $val=$ctx->name;
@@ -196,7 +196,6 @@ class Importable extends SqlElement {
 				return $msg;
 				break;
 		}
-
 		$title=null;
 		$idxId=-1;
 		$htmlResult="";
@@ -262,7 +261,6 @@ class Importable extends SqlElement {
 							}
 						}
 					}
-
 					if (isset($titleObject[$idx]) and SqlElement::class_exists($titleObject[$idx]) ) {
 						$subObj=new $titleObject[$idx];
 						if ($subObj->isAttributeSetToField($title[$idx], 'noImport')) {
