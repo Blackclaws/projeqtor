@@ -6268,6 +6268,14 @@ function installPlugin(fileName,confirmed) {
           dojo.byId("p1value").value=forceRefreshMenu;
           forceRefreshMenu="";
           dojo.byId("directAccessForm").submit();     
+        } else if (data.substr(0,8)=="CALLBACK") {
+          var url=data.substring(9,data.indexOf('#')-1);
+          window.open(url);
+          var msg=data.substring(data.indexOf('#')+1,data.indexOf('##'));
+          hideWait();
+          callback=function() {loadContent("pluginManagement.php", "centerDiv");};
+          showInfo(msg);
+          setTimeout(callback,5000);
         } else {
           hideWait();
           showError(data+'<br/>');
