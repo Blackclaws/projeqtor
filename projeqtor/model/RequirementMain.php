@@ -139,7 +139,7 @@ class RequirementMain extends SqlElement {
                                   "pctFailed"=>"calculated,display,html",
                                   "noDisplay3"=>"calculated,hidden",
                                   "noDisplay4"=>"calculated,hidden",
-                                  "idRunStatus"=>"display,html,hidden",
+                                  "idRunStatus"=>"display,html,hidden,forceExport",
                                   "runStatusIcon"=>"calculated,display,html",
                                   "runStatusName"=>"calculated,display,html",
                                   "locked"=>"readonly",
@@ -154,6 +154,7 @@ class RequirementMain extends SqlElement {
                                                    'idRiskLevel'=>'technicalRisk',
                                                    'plannedWork'=>'estimatedEffort',
                                                    'idContact' => 'requestor',
+                                                   'idRunStatus'=>'testSummary'
                                                    );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');

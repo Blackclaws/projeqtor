@@ -103,7 +103,7 @@ class TestCaseMain extends SqlElement {
                                   "idContext1"=>"nobr,size1/3,title",
                                   "idContext2"=>"nobr,title", 
                                   "idContext3"=>"title",
-                                  "idRunStatus"=>"display,html,hidden",
+                                  "idRunStatus"=>"display,html,hidden,forceExport",
                                   "runStatusIcon"=>"calculated,display,html",
                                   "runStatusName"=>"calculated,display",
                                   "idleDate"=>"nobr",
@@ -114,6 +114,7 @@ class TestCaseMain extends SqlElement {
                                                    'result'=>'expectedResult',
                                                    'runStatusName'=>'testSummary',
                                                    'runStatusIcon'=>'testSummary',
+                                                   'idRunStatus'=>'testSummary'
                                                    );
   
   //private static $_databaseColumnName = array();
@@ -235,7 +236,7 @@ class TestCaseMain extends SqlElement {
   }
   
   public function save() {
-    if (! trim($this->idRunStatus) or ! $this->id) $this->idRunStatus=5;
+  	if (! trim($this->idRunStatus) or ! $this->id) $this->idRunStatus=5;
   	if (! $this->prerequisite and $this->idTestCase) {
   		$parent=new TestCase($this->idTestCase);
   		$this->prerequisite=$parent->prerequisite;

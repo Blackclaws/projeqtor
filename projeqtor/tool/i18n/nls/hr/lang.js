@@ -1,5 +1,5 @@
 {
-aboutMessage: "O ProjeQtOr ...",
+aboutMessage: "O ProjeQtOr …",
 aboutMessageLocale: "Lokalno",
 aboutMessageWebsite: "Web stranica",
 AccessProfile: "Pristupni profili",

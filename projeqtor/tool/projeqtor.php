@@ -1428,6 +1428,7 @@ function logTracing($message, $level = 9, $increment = 0) {
  *          to store on log 
  * @return void
  */
+// debugLog to keep
 function debugLog($message) {
   logTracing ( $message, 3 );
 }
