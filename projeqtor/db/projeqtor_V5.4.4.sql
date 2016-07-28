@@ -11,5 +11,6 @@ CREATE TABLE `${prefix}cronexecution` (
   `fileExecuted` varchar(500),
   `idle` int(1),
   `fonctionName` varchar(256),
+  `nextTime` varchar(64),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

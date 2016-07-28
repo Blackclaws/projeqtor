@@ -35,6 +35,8 @@ class CronExecution extends SqlElement {
   public $fileExecuted;
   public $idle;
   public $fonctionName;
+  public $nextTime;
+  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -52,10 +54,39 @@ class CronExecution extends SqlElement {
     parent::__destruct();
   }
 
-  public function save() {
+  public function save($withRelaunch=true) {
     parent::save();
-    Cron::relaunch();
   }
-
+  
+  public function calculNextTime(){
+    $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
+    $date=new DateTime('now');
+    $date->modify('+1 minute');
+    $splitCron=explode(" ",$this->cron);
+    $count=0;
+    if(count($splitCron)==5){
+      $find=false;
+      while(!$find){ //cron minute/hour/day of month/month/day of week
+        if(($splitCron[0]=='*' || $date->format("i")==$splitCron[0])
+        && ($splitCron[1]=='*' || $date->format("H")==$splitCron[1])
+        && ($splitCron[2]=='*' || $date->format("d")==$splitCron[2])
+        && ($splitCron[3]=='*' || $date->format("m")==$splitCron[3])
+        && ($splitCron[4]=='*' || $date->format("N")==$splitCron[4])){
+          $find=true;
+          $this->nextTime=$date->format("U");
+          $this->save(false);
+        }else{
+          $date->modify('+1 minute');
+        }
+        $count++;
+        if($count>=2150000){
+          $this->idle=1;
+          $this->save(false);
+          $find=true;
+          errorLog("Can't find next time for cronexecution because too many execution #".$this->id);
+        }
+      }
+    }
+  }
 }
 ?>
