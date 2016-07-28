@@ -732,6 +732,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	 </td></tr></table>
  </div>
 </div>
+
 <div id="dialogInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogInformation");?>">
   <table>
     <tr>
@@ -746,7 +747,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <tr>
       <td colspan="2" align="center">
         <br/>
-        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogInfo').hide();">
+        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogInfo').acceptCallback();dijit.byId('dialogInfo').hide();">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -795,7 +796,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <tr><td colspan="2" align="center">&nbsp;</td></tr>
     <tr>
       <td colspan="2" align="center">
-        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogAlert').hide();">
+        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogAlert').acceptCallback();dijit.byId('dialogAlert').hide();">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

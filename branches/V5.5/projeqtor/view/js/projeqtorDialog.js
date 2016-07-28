@@ -167,8 +167,12 @@ function showError(msg) {
  *          the message to display in the box
  * @return void
  */
-function showInfo(msg) {
+function showInfo(msg,callback) {
+  if (! callback) {
+    var callback=function() {};
+  }
   top.dojo.byId("dialogInfoMessage").innerHTML=msg;
+  top.dijit.byId("dialogInfo").acceptCallback=callback;
   top.dijit.byId("dialogInfo").show();
 }
 
@@ -180,9 +184,13 @@ function showInfo(msg) {
  *          the message to display in the box
  * @return void
  */
-function showAlert(msg) {
+function showAlert(msg,callback) {
   top.hideWait();
+  if (! callback) {
+    var callback=function() {};
+  }
   top.dojo.byId("dialogAlertMessage").innerHTML=msg;
+  top.dijit.byId("dialogAlert").acceptCallback=callback;
   top.dijit.byId("dialogAlert").show();
 }
 
@@ -5023,7 +5031,8 @@ function closeAlertBox() {
 // ===========================================================================================
 //
 var cronCheckIteration=5; // Number of cronCheckTimeout to way max
-function adminLaunchScript(scriptName) {
+function adminLaunchScript(scriptName,needRefresh) {
+  if(typeof needRefresh == 'undefined')needRefresh=true;
   var url="../tool/" + scriptName + ".php";
   dojo.xhrGet({
     url : url,
@@ -5034,8 +5043,8 @@ function adminLaunchScript(scriptName) {
     }
   });
   if (scriptName == 'cronRun') {
-    setTimeout('loadContent("admin.php","centerDiv");', 1000);
-  } else if (scriptName == 'cronStop') {
+    if(needRefresh)setTimeout('loadContent("admin.php","centerDiv");', 1000);
+  } else if (scriptName == 'cronStop' && needRefresh) {
     i=120;
     cronCheckIteration=5;
     setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
@@ -5051,7 +5060,7 @@ function adminCronCheckStop() {
         loadContent("admin.php", "centerDiv");
       } else {
         cronCheckIteration--;
-        if (cronCheckNumber > 0) {
+        if (cronCheckIteration > 0) {
           setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
         } else {
           loadContent("admin.php", "centerDiv");
@@ -6269,13 +6278,13 @@ function installPlugin(fileName,confirmed) {
           forceRefreshMenu="";
           dojo.byId("directAccessForm").submit();     
         } else if (data.substr(0,8)=="CALLBACK") {
-          var url=data.substring(9,data.indexOf('#')-1);
+          var url=data.substring(9,data.indexOf('#'));
           window.open(url);
           var msg=data.substring(data.indexOf('#')+1,data.indexOf('##'));
           hideWait();
           callback=function() {loadContent("pluginManagement.php", "centerDiv");};
-          showInfo(msg);
-          setTimeout(callback,5000);
+          showInfo(msg,callback);
+          //setTimeout(callback,5000);
         } else {
           hideWait();
           showError(data+'<br/>');
