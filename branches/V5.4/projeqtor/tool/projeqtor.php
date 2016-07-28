@@ -132,6 +132,7 @@ if (false === function_exists('lcfirst')) {
     return (string)$str;
   }
 }
+
 /*
  * ============================================================================ main controls ============================================================================
  */
@@ -243,6 +244,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
     Audit::updateAudit ();
   }
 }
+
 /*
  * ============================================================================ functions ============================================================================
  */
@@ -2758,4 +2760,5 @@ function debugPrintTraceStack() {
     debugTraceLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
   }
 }
+
 ?>

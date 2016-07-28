@@ -5023,7 +5023,8 @@ function closeAlertBox() {
 // ===========================================================================================
 //
 var cronCheckIteration=5; // Number of cronCheckTimeout to way max
-function adminLaunchScript(scriptName) {
+function adminLaunchScript(scriptName,needRefresh) {
+  if(typeof needRefresh == 'undefined')needRefresh=true;
   var url="../tool/" + scriptName + ".php";
   dojo.xhrGet({
     url : url,
@@ -5034,8 +5035,8 @@ function adminLaunchScript(scriptName) {
     }
   });
   if (scriptName == 'cronRun') {
-    setTimeout('loadContent("admin.php","centerDiv");', 1000);
-  } else if (scriptName == 'cronStop') {
+    if(needRefresh)setTimeout('loadContent("admin.php","centerDiv");', 1000);
+  } else if (scriptName == 'cronStop' && needRefresh) {
     i=120;
     cronCheckIteration=5;
     setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
@@ -5051,7 +5052,7 @@ function adminCronCheckStop() {
         loadContent("admin.php", "centerDiv");
       } else {
         cronCheckIteration--;
-        if (cronCheckNumber > 0) {
+        if (cronCheckIteration > 0) {
           setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
         } else {
           loadContent("admin.php", "centerDiv");
