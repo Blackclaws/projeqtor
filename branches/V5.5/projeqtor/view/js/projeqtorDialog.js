@@ -520,21 +520,21 @@ function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
           + i18n("messagePreview") + '</i>';
       dijit.byId("dialogDetail").show();
       frames['comboDetailFrame'].location.href="print.php?print=true&page=preparePreview.php";
-      setTimeout("newDetailItem('"+objectClass+"');",500);
+      newDetailItem(objectClass);
     } else {
       cl=objectClass;
       id=objectId;
       window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
           + i18n("messagePreview") + '</i>';
+      dijit.byId("dialogDetail").show();
       frames['comboDetailFrame'].location.href="print.php?print=true&page=preparePreview.php";
-      setTimeout("gotoDetailItem('"+objectClass+"',"+objectId+");",500);
+      gotoDetailItem(objectClass,objectId);
     }
     
   } else if (!val || val == "" || val == " ") {
     cl=objectClass;
     window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
         + i18n("messagePreview") + '</i>';
-    //window.frames['comboDetailFrame'].document.onpagehide=function(){console.log('ok');};
     dijit.byId("dialogDetail").show();
     displaySearch(cl);
   } else {
@@ -545,7 +545,10 @@ function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
     dijit.byId("dialogDetail").show();
     displayDetail(cl, id);
   }
-  dojo.connect(dijit.byId("dialogDetail"),"onhide", function(){console.log('dsqdsd');});
+  dojo.connect(dijit.byId("dialogDetail"),"onhide", 
+    function(){
+      // nothing to do;
+    });
 }
 
 function displayDetail(objClass, objId) {
@@ -703,8 +706,9 @@ function gotoDetailItem(objectClass,objectId) {
     hideField('comboSaveButton');
   }
   showField('comboCloseButton');
-  contentNode=frames['comboDetailFrame'].dojo.byId('body');
-  destinationWidth=dojo.style(contentNode, "width");
+  //contentNode=frames['comboDetailFrame'].dojo.byId('body');
+  //destinationWidth=dojo.style(contentNode, "width");
+  destinationWidth=frames['comboDetailFrame'].document.body.offsetWidth
   page="comboSearch.php";
   page+="?objectClass=" + objClass;
   if (objectId) {
@@ -5861,7 +5865,7 @@ function executeExport(obj, idUser) {
   if (verif == 1) {
     if (ExportType == 'csv') {
       showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml+
-      		"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport, 'list', null,
+          "&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport, 'list', null,
           'csv');
     }
     saveCheckboxExport(obj, idUser);

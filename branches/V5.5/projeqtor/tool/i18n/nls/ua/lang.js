@@ -1,5 +1,5 @@
 {
-aboutMessage: "Про ProjeQtOr ...",
+aboutMessage: "Про ProjeQtOr …",
 aboutMessageLocale: "Місцева специфіка(locale)",
 aboutMessageWebsite: "Сайт",
 AccessProfile: "Режим доступу",

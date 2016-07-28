@@ -1,5 +1,5 @@
 {
-aboutMessage: "Su ProjecQtOr ...",
+aboutMessage: "Su ProjecQtOr …",
 aboutMessageLocale: "Locale",
 aboutMessageWebsite: "Website",
 AccessProfile: "Modalità di Accesso",

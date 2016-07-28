@@ -133,7 +133,7 @@ class TestSessionMain extends SqlElement {
                                   "pctBlocked"=>"calculated,display,html",
                                   "pctFailed"=>"calculated,display,html",
                                   "noDisplay3"=>"calculated,hidden",
-                                  "idRunStatus"=>"display,html,hidden",
+                                  "idRunStatus"=>"display,html,hidden,forceExport",
                                   "runStatusIcon"=>"calculated,display,html",
                                   "runStatusName"=>"calculated,display,html",
                                   "startDate"=>"hidden", 
@@ -144,7 +144,8 @@ class TestSessionMain extends SqlElement {
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
                                                    'idActivity'=>'parentActivity',
-                                                   'idTestSession'=>'parentTestSession'
+                                                   'idTestSession'=>'parentTestSession',
+                                                   'idRunStatus'=>'testSummary'
                                                    );
   
   //private static $_databaseColumnName = array();
