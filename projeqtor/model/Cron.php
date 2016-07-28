@@ -328,17 +328,6 @@ class Cron {
 	      }
       }
       // Check Database Execution
-<<<<<<< .mine
-      foreach (self::$listCronExecution as $key=>$cronExecution){
-        if($cronExecution->nextTime==null){
-          $cronExecution->calculNextTime();
-        }
-        $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
-        $date=new DateTime('now');
-        if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime<=$date->format("U")){
-          $cronExecution->calculNextTime();
-          call_user_func($cronExecution->fonctionName);
-=======
       if($timeSecondCronExecution<=0){
         foreach (self::$listCronExecution as $key=>$cronExecution){
           $splitCron=explode(" ",$cronExecution->cron);
@@ -351,7 +340,6 @@ class Cron {
             && ($splitCron[4]=='*' || date("N")==$splitCron[4]))if(file_exists($cronExecution->fileExecuted)){
               call_user_func($cronExecution->fonctionName);
             }
->>>>>>> .r3648
         }
       }
       
