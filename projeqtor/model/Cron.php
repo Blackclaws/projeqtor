@@ -272,9 +272,6 @@ class Cron {
       return;
     }
     $inCronBlockFonctionCustom=true;
-    
-    $timeSecondCronExecution=0;
-    
     self::removeDeployFlag();
     self::removeRestartFlag();
     projeqtor_set_time_limit(0);
@@ -289,6 +286,7 @@ class Cron {
     self::setRunningFlag();
     traceLog('Cron started at '.date('d/m/Y H:i:s')); 
     while(1) {
+      
       if (self::checkStopFlag()) {
         return; 
       }
@@ -329,8 +327,18 @@ class Cron {
 	        $cronCheckEmails=Cron::getCheckEmails();
 	      }
       }
-      
       // Check Database Execution
+<<<<<<< .mine
+      foreach (self::$listCronExecution as $key=>$cronExecution){
+        if($cronExecution->nextTime==null){
+          $cronExecution->calculNextTime();
+        }
+        $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
+        $date=new DateTime('now');
+        if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime<=$date->format("U")){
+          $cronExecution->calculNextTime();
+          call_user_func($cronExecution->fonctionName);
+=======
       if($timeSecondCronExecution<=0){
         foreach (self::$listCronExecution as $key=>$cronExecution){
           $splitCron=explode(" ",$cronExecution->cron);
@@ -343,13 +351,12 @@ class Cron {
             && ($splitCron[4]=='*' || date("N")==$splitCron[4]))if(file_exists($cronExecution->fileExecuted)){
               call_user_func($cronExecution->fonctionName);
             }
+>>>>>>> .r3648
         }
-        $timeSecondCronExecution=60;
       }
       
       // Sleep to next check
       sleep($cronSleepTime);
-      $timeSecondCronExecution-=$cronSleepTime;
     }
   }
   
@@ -607,9 +614,7 @@ class Cron {
 }
 
 //Look if CronExecution exist in database
-if(Cron::$listCronExecution==null){
-	Cron::$listCronExecution=SqlList::getListWithCrit("CronExecution", array("idle"=>"0"), 'id');
-}
+Cron::$listCronExecution=SqlList::getListWithCrit("CronExecution", array("idle"=>"0"), 'id');
 $inCronBlockFonctionCustom=true;
 foreach (Cron::$listCronExecution as $key=>$cronExecution){
   if(is_numeric($cronExecution)){
@@ -618,4 +623,5 @@ foreach (Cron::$listCronExecution as $key=>$cronExecution){
   }
   require_once $cronExecution->fileExecuted;
 }
+
 ?>
