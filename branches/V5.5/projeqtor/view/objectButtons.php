@@ -309,7 +309,7 @@
     			$isAttachmentEnabled = false;
     		} 
        if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
-			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
+			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id or $comboDetail)?'visibility:hidden;':'';?>">
 		  <?php if (isHtml5()) {?>	
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
@@ -337,4 +337,3 @@
   </td>
   </tr>
 </table>
-

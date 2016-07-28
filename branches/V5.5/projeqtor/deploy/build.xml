@@ -336,5 +336,17 @@
         <arg line="/c make.bat latexpdf"/>
       </exec>
   </target>
+	<target name="_sphinxBuildTechnicalManual_HTML_windows">
+	    <echo>Build HTML User Manual.</echo>
+	      <exec dir="../docs/technical" executable="cmd" >
+	        <arg line="/c make.bat html"/>
+	      </exec>
+	</target>
+	<target name="_sphinxBuildTechnicalManual_PDF_windows">
+	    <echo>Build HTML User Manual.</echo>
+	      <exec dir="../docs/technical" executable="cmd" >
+	        <arg line="/c make.bat latexpdf"/>
+	      </exec>
+	</target>
   
 </project>
