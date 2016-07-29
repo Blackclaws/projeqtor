@@ -3019,9 +3019,11 @@ function isEditingKey(evt) {
   return true;
 }
 function onKeyDownFunctionEditorSave () {
-  formDivPosition=dojo.byId('formDiv').scrollTop;
-  dijit.byId('id').focus();
-  dojo.byId('formDiv').scrollTop=formDivPosition;
+  if (dojo.byId('formDiv')) {
+    formDivPosition=dojo.byId('formDiv').scrollTop;
+    dijit.byId('id').focus();
+    dojo.byId('formDiv').scrollTop=formDivPosition;
+  }
   top.setTimeout("top.globalSave();",20);
 }
 
