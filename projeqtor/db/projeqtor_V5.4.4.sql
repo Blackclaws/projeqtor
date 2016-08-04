@@ -14,3 +14,5 @@ CREATE TABLE `${prefix}cronexecution` (
   `nextTime` varchar(64),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}action` CHANGE COLUMN `isPrivate` `isPrivate` int(1) unsigned default 0;
