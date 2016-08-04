@@ -65,6 +65,10 @@ $browserLocale = "";
 $reportCount = 0;
 include_once ("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
+if (!defined('PHP_VERSION_ID')) {
+  $version = explode('.',PHP_VERSION);
+  define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
 /*
  * ============================================================================ global variables ============================================================================
  */
