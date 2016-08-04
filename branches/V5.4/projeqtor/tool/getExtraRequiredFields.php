@@ -36,9 +36,11 @@ if (isset($_REQUEST['objectClassName'])) {
 $objectId=null;
 if (isset($_REQUEST['id'])) {
   $objectId=$_REQUEST['id'];
+} else if (isset($_REQUEST['id_detail'])) {
+  $objectId=$_REQUEST['id_detail'];
 }
 if ($objectClass===null or $objectId===null) {
-  throwError('className and/or id not found in REQUEST');
+  throwError('className and/or id not found in REQUEST ('.$objectClass.'/'.$objectId.')');
 }
 
 $obj=new $objectClass($objectId);
