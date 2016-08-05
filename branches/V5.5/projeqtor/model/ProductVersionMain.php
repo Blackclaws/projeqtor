@@ -219,17 +219,20 @@ class ProductVersionMain extends Version {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
-    if ($colName=="versionNumber") {
-      $colScript .= '<script type="dojo/method" event="onKeyPress" >';
-      $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    }
-    if ($colName=="versionNumber" or $colName=="idProduct") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      if ($colName=="versionNumber") {
+        $colScript .= '<script type="dojo/method" event="onKeyPress" >';
+        $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';
+      }
+      if ($colName=="versionNumber" or $colName=="idProduct") {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+        $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';
+      }
     }
     return $colScript;
   }
@@ -286,6 +289,30 @@ class ProductVersionMain extends Version {
   	foreach($compList as $compId=>$compName) {
   	  $comp=new Component($compId);
   	  $comp->updateAllVersionProject();
+  	}
+  	// Propagate Product-Project link to Version-Project link
+  	if ($old->idProduct and $old->idProduct!=$this->idProduct) {
+  	  $pp=new ProductProject();
+  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$old->idProduct));
+  	  foreach ($ppList as $pp) {
+  	    $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idVersion'=>$this->id, 'idProject'=>$pp->idProject));
+  	    if ($vp->id) $vp->delete();
+  	  }
+  	}
+  	if ($this->idProduct) {
+  	  $pp=new ProductProject();
+  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct));
+  	  foreach ($ppList as $pp) {
+  	    $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idVersion'=>$this->id, 'idProject'=>$pp->idProject));
+  	    if (! $vp->id) {
+  	      $vp->idVersion=$this->id;
+  	      $vp->idProject=$pp->idProject;
+  	    }
+  	    $vp->startDate=$pp->startDate;
+  	    $vp->endDate=$pp->endDate;
+  	    $vp->idle=$pp->idle;
+  	    $vp->save();
+  	  }
   	}
   	return $result;
   }

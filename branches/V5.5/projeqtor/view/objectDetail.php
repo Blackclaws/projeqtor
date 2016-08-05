@@ -92,6 +92,10 @@ if ($noselect) {
     drawVersionProjectsFromObject($obj->$_VersionProject, $obj, true);
     exit();
   }
+  if (array_key_exists('refreshProductProject', $_REQUEST)) {
+    drawProductProjectsFromObject($obj->$_ProductProject, $obj, true);
+    exit();
+  }
   if (array_key_exists('refreshDocumentVersion', $_REQUEST)) {
     drawVersionFromObjectFromObject($obj->$_DocumentVersion, $obj, true);
     exit();
@@ -690,6 +694,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       drawApproverFromObject($val, $obj);
     } else if (substr($col, 0, 15) == '_VersionProject') { // Display Version Project
       drawVersionProjectsFromObject($val, $obj);
+    } else if (substr($col, 0, 15) == '_ProductProject') { // Display Version Project
+      drawProductProjectsFromObject($val, $obj);  
     } else if (substr($col, 0, 11) == '_Dependency') { // Display Dependencies
       $depType=(strlen($col) > 11)?substr($col, 12):"";
       drawDependenciesFromObject($val, $obj, $depType);
@@ -3408,7 +3414,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
     if (!$print) {
       echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
       if ($canUpdate and !$print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . htmlEncode($vp->id) . "'" . ",'" . htmlEncode($vp->idVersion) . "'" . ",'" . htmlEncode($vp->idProject) . "'" . ",'" . htmlEncode($vp->startDate) . "'" . ",'" . htmlEncode($vp->endDate) . "'" . ",'" . htmlEncode($vp->idle) . "'" . ');" ' . 'title="' .
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . htmlEncode($vp->id) . "'" . ",'" . htmlEncode($vp->idVersion) . "'" . ",'" . htmlEncode($vp->idProject) . "'" . ');" ' . 'title="' .
              i18n('editVersionProject') . '" class="roundedButtonSmall"/> ';
       }
       if ($canUpdate and !$print) {
@@ -3418,8 +3424,8 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
     }
     $goto="";
     if ($idProj) {
-      if (!$print and securityCheckDisplayMenu(null, 'Version') and securityGetAccessRightYesNo('menuVersion', 'read', '') == "YES") {
-        $goto=' onClick="gotoElement(\'Version\',\'' . htmlEncode($vp->idVersion) . '\');" style="cursor: pointer;" ';
+      if (!$print and securityCheckDisplayMenu(null, 'ProductVersion') and securityGetAccessRightYesNo('menuProductVersion', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'ProductVersion\',\'' . htmlEncode($vp->idVersion) . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Version', $vp->idVersion)) . '</td>';
     } else {
@@ -3432,6 +3438,75 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
     echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($vp->idle)?'OK':'KO') . '.png" /></td>';
     
+    echo '</tr>';
+  }
+  echo '</table></td></tr>';
+}
+function drawProductProjectsFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  if ($obj->idle == 1) {
+    $canUpdate=false;
+  }
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (get_class($obj) == 'Project') {
+    $idProj=$obj->id;
+    $idProd=null;
+  } else if (get_class($obj) =='Product' ) {
+    $idProj=null;
+    $idProd=$obj->id;
+  }
+  if (!$print) {
+    echo '<td class="assignHeader" style="width:10%">';
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addProductProject(\'' . $idProd . '\', \'' . $idProj . '\');" title="' . i18n('addProductProject') . '" /> ';
+    }
+    echo '</td>';
+  }
+  if ($idProj) {
+    echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdProduct') . '</td>';
+  } else {
+    echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdProject') . '</td>';
+  }
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate') . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle') . '</td>';
+
+  echo '</tr>';
+  foreach ( $list as $pp ) {
+    //$prod=new Product($pp->idProduct);
+    echo '<tr>';
+    if (!$print) {
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editProductProject(' . "'" . htmlEncode($pp->id) . "'" . ",'" . htmlEncode($pp->idProduct) . "'" . ",'" . htmlEncode($pp->idProject) . "'" . ');" ' . 'title="' .
+            i18n('editProductProject') . '" class="roundedButtonSmall"/> ';
+      }
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeProductProject(' . "'" . htmlEncode($pp->id) . "'" . ');" ' . 'title="' . i18n('removeProductProject') . '" class="roundedButtonSmall"/> ';
+      }
+      echo '</td>';
+    }
+    $goto="";
+    if ($idProj) {
+      if (!$print and securityCheckDisplayMenu(null, 'Product') and securityGetAccessRightYesNo('menuProduct', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Product\',\'' . htmlEncode($pp->idProduct) . '\');" style="cursor: pointer;" ';
+      }
+      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Product', $pp->idProduct)) . '</td>';
+    } else {
+      if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Project\',\'' . htmlEncode($pp->idProject) . '\');" style="cursor: pointer;" ';
+      }
+      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $pp->idProject)) . '</td>';
+    }
+    echo '<td class="assignData" align="center">' . htmlFormatDate($pp->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($pp->endDate) . '</td>';
+    echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($pp->idle)?'OK':'KO') . '.png" /></td>';
+
     echo '</tr>';
   }
   echo '</table></td></tr>';

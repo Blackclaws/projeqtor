@@ -328,18 +328,15 @@ class Cron {
 	      }
       }
       // Check Database Execution
-      if($timeSecondCronExecution<=0){
-        foreach (self::$listCronExecution as $key=>$cronExecution){
-          $splitCron=explode(" ",$cronExecution->cron);
-          if(count($splitCron)!=5)errorLog("Invalid Cron #$cronExecution->id in database CronExecution");
-          else//cron minute/hour/day of month/month/day of week
-            if(($splitCron[0]=='*' || date("i")==$splitCron[0])
-            && ($splitCron[1]=='*' || date("H")==$splitCron[1])
-            && ($splitCron[2]=='*' || date("d")==$splitCron[2])
-            && ($splitCron[3]=='*' || date("m")==$splitCron[3])
-            && ($splitCron[4]=='*' || date("N")==$splitCron[4]))if(file_exists($cronExecution->fileExecuted)){
-              call_user_func($cronExecution->fonctionName);
-            }
+      foreach (self::$listCronExecution as $key=>$cronExecution){
+        if($cronExecution->nextTime==null){
+          $cronExecution->calculNextTime();
+        }
+        $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
+        $date=new DateTime('now');
+        if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime<=$date->format("U")){
+          $cronExecution->calculNextTime();
+          call_user_func($cronExecution->fonctionName);
         }
       }
       

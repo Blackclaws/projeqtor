@@ -232,17 +232,20 @@ class ComponentVersionMain extends Version {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
-    if ($colName=="versionNumber") {
-      $colScript .= '<script type="dojo/method" event="onKeyPress" >';
-      $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    }
-    if ($colName=="versionNumber" or $colName=="idComponent") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      if ($colName=="versionNumber") {
+        $colScript .= '<script type="dojo/method" event="onKeyPress" >';
+        $colScript .= '  setTimeout(\'updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");\',100);';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';
+      }
+      if ($colName=="versionNumber" or $colName=="idComponent") {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+        $colScript .= '  updateVersionName("'.Parameter::getGlobalParameter("versionNameAutoformatSeparator").'");';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';
+      }
     }
     return $colScript;
   }

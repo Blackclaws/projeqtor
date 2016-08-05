@@ -56,9 +56,9 @@ if (! array_key_exists('versionProjectEndDate',$_REQUEST)) {
 }
 $endDate=($_REQUEST['versionProjectEndDate']);
 
-$idle=false;
+$idle=0;
 if (array_key_exists('versionProjectIdle',$_REQUEST)) {
-  $idle=true;
+  $idle=1;
 }
 Sql::beginTransaction();
 $versionProject=new VersionProject($id);
