@@ -168,11 +168,12 @@ function showError(msg) {
  * @return void
  */
 function showInfo(msg,callback) {
-  if (! callback) {
-    var callback=function() {};
+  var callbackFunc=function() {};
+  if (callback) { 
+    callbackFunc=callback;
   }
   top.dojo.byId("dialogInfoMessage").innerHTML=msg;
-  top.dijit.byId("dialogInfo").acceptCallback=callback;
+  top.dijit.byId("dialogInfo").acceptCallback=callbackFunc;
   top.dijit.byId("dialogInfo").show();
 }
 
@@ -186,11 +187,12 @@ function showInfo(msg,callback) {
  */
 function showAlert(msg,callback) {
   top.hideWait();
-  if (! callback) {
-    var callback=function() {};
+  var callbackFunc=function() {};
+  if (callback) { 
+    callbackFunc=callback;
   }
   top.dojo.byId("dialogAlertMessage").innerHTML=msg;
-  top.dijit.byId("dialogAlert").acceptCallback=callback;
+  top.dijit.byId("dialogAlert").acceptCallback=callbackFunc;
   top.dijit.byId("dialogAlert").show();
 }
 
