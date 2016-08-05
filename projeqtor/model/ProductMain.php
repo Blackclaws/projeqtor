@@ -45,6 +45,10 @@ class ProductMain extends ProductOrComponent {
   public $creationDate;
   public $idle;
   public $description;
+  
+  public $_sec_Productproject_projects;
+  public $_ProductProject=array();
+  
   public $_sec_ProductVersions;
   public $_spe_versions;
   public $_sec_SubProducts;

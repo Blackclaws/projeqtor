@@ -31,8 +31,8 @@
 require_once "../tool/projeqtor.php";
 
 $versionProjectId=null;
-if (array_key_exists('versionProjectId',$_REQUEST)) {
-  $versionProjectId=$_REQUEST['versionProjectId']; // validated to be numeric value in SqlElement base constructor.
+if (array_key_exists('idVersionProject',$_REQUEST)) {
+  $versionProjectId=$_REQUEST['idVersionProject']; // validated to be numeric value in SqlElement base constructor.
 }
 $versionProjectId=trim($versionProjectId);
 if ($versionProjectId=='') {
