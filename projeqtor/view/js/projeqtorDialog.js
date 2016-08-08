@@ -5495,9 +5495,6 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
     load : function(data) {
       var contentWidget=dijit.byId(dialogDiv);
       contentWidget.set('content', data);
-      if(closable){
-        contentWidget.set('content', data);
-      }
       if (autoShow) {
         setTimeout("dijit.byId('" + dialogDiv + "').show();", 100);
       }
