@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V5.4" default="buildQuick">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V5.4.4" />
+  <property name="version"       value="V5.4.5" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
