@@ -235,10 +235,6 @@ Global parameters screen allows configuration of application settings.
 
 * Allows to define reference formats for items of element, documents and bills.
 
- .. compound:: **Reference format for items of element**
-
-    *
-
  .. compound:: **Global parameters for reference formatting**
 
     * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
