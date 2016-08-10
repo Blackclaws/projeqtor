@@ -237,14 +237,16 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	return $res;
 }
 
-function formatColorThumb($col,$val, $size=20, $float='right') {
+function formatColorThumb($col,$val, $size=20, $float='right',$name="") {
   $class=substr($col,2);
   if (! SqlElement::class_exists($class)) return ''; 
   $color=SqlList::getFieldFromId($class, $val, 'color');
   if (! $color) return '';
   $radius=round($size/2,0);
   $res='<div style="border: 1px solid #AAAAAA;background:'.$color.';';
-  $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px">&nbsp;</div>';
+  $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px"';
+  if($name!="")$res.=' onMouseOver="showBigImage(null,null,this,\''.$name.'\');" onMouseOut="hideBigImage();"';
+  $res.='>&nbsp;</div>';
   return $res;
 }
 function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
