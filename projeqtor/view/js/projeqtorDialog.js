@@ -1,7 +1,7 @@
-/**** COPYRIGHT NOTICE *********************************************************
+/*******************************************************************************
+ * COPYRIGHT NOTICE *
  * 
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
- * Contributors : -
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org Contributors : -
  * 
  * This file is part of ProjeQtOr.
  * 
@@ -716,8 +716,8 @@ function gotoDetailItem(objectClass,objectId) {
     hideField('comboSaveButton');
   }
   showField('comboCloseButton');
-  // contentNode=frames['comboDetailFrame'].dojo.byId('body');
-  // destinationWidth=dojo.style(contentNode, "width");
+  //contentNode=frames['comboDetailFrame'].dojo.byId('body');
+  //destinationWidth=dojo.style(contentNode, "width");
   destinationWidth=frames['comboDetailFrame'].document.body.offsetWidth
   page="comboSearch.php";
   page+="?objectClass=" + objClass;
@@ -791,9 +791,9 @@ function hideDetail() {
   dijit.byId("dialogDetail").hide();
 }
 
-// =============================================================================
-// = Copy Object
-// =============================================================================
+//=============================================================================
+//= Copy Object
+//=============================================================================
 
 /**
  * Display a copy object Box
@@ -807,11 +807,11 @@ function copyObjectBox(copyType) {
     callBack=function() {
       dojo.byId('copyClass').value=dojo.byId("objectClass").value;
       dojo.byId('copyId').value=dojo.byId("objectId").value;
-      /*
-       * for ( var i in copyableArray) { if (copyableArray[i] ==
-       * dojo.byId("objectClass").value) {
-       * dijit.byId('copyToClass').set('value', i); } }
-       */
+      /*for ( var i in copyableArray) {
+        if (copyableArray[i] == dojo.byId("objectClass").value) {
+          dijit.byId('copyToClass').set('value', i);
+        }
+      }*/
       copyObjectToShowStructure();
     };
   }else if(copyType=="copyProject"){
@@ -833,14 +833,14 @@ function copyObjectBox(copyType) {
   loadDialog('dialogCopy', callBack, true, params, false);
 }
 
-// =============================================================================
-// = Planning PDF
-// =============================================================================
+//=============================================================================
+//= Planning PDF
+//=============================================================================
 
 /**
- * Display a planning PDF Box
- * 
- */
+* Display a planning PDF Box
+* 
+*/
 function planningPDFBox(copyType) { 
   loadDialog('dialogPlanningPdf', null, true, "", false);
 }
@@ -871,7 +871,7 @@ function addNote() {
   };
   var params="&objectClass="+dojo.byId("objectClass").value;
   params+="&objectId="+dojo.byId("objectId").value;
-  params+="&noteId="; // Null
+  params+="&noteId="; // Null    
   loadDialog('dialogNote', callBack, true, params, true);
 
 }
@@ -905,7 +905,7 @@ function editNote(noteId, privacy) {
     dijit.byId("noteNote").set("class", "");
   }
   var callBack=function() {
-    // dijit.byId('notePrivacyPublic').set('checked', 'true');
+    //dijit.byId('notePrivacyPublic').set('checked', 'true');
     var editorType=dojo.byId("noteEditorType").value;
     if (editorType=="CK") { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
@@ -1327,14 +1327,14 @@ function removeLink(linkId, refType, refId, refTypeName) {
   showConfirm(msg, actionOK);
 }
 
-// =============================================================================
-// = Product Composition
-// =============================================================================
+//=============================================================================
+//= Product Composition
+//=============================================================================
 
 /**
- * Display a add link Box
- * 
- */
+* Display a add link Box
+* 
+*/
 function addProductStructure(way) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
@@ -1367,9 +1367,9 @@ function refreshProductStructureList(selected,newName) {
   }
 }
 /**
- * save a link (after addLink)
- * 
- */
+* save a link (after addLink)
+* 
+*/
 function saveProductStructure() {
   if (dojo.byId("productStructureListId").value == "") return;
   loadContent("../tool/saveProductStructure.php", "resultDiv", "productStructureForm", true, 'ProductStructure');
@@ -1377,9 +1377,9 @@ function saveProductStructure() {
 }
 
 /**
- * Display a delete Link Box
- * 
- */
+* Display a delete Link Box
+* 
+*/
 function removeProductStructure(ProductStructureId, refType, refId, refTypeName) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
@@ -1395,14 +1395,14 @@ function removeProductStructure(ProductStructureId, refType, refId, refTypeName)
   showConfirm(msg, actionOK);
 }
 
-// =============================================================================
-// = Product Version Composition
-// =============================================================================
+//=============================================================================
+//= Product Version Composition
+//=============================================================================
 
 /**
- * Display a add link Box
- * 
- */
+* Display a add link Box
+* 
+*/
 function addProductVersionStructure(way) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
@@ -1435,9 +1435,9 @@ function refreshProductVersionStructureList(selected,newName) {
   }
 }
 /**
- * save a link (after addLink)
- * 
- */
+* save a link (after addLink)
+* 
+*/
 function saveProductVersionStructure() {
   if (dojo.byId("productVersionStructureListId").value == "") return;
   loadContent("../tool/saveProductVersionStructure.php", "resultDiv", "productVersionStructureForm", true, 'ProductVersionStructure');
@@ -1445,9 +1445,9 @@ function saveProductVersionStructure() {
 }
 
 /**
- * Display a delete Link Box
- * 
- */
+* Display a delete Link Box
+* 
+*/
 function removeProductVersionStructure(ProductVersionStructureId, refType, refId, refTypeName) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
@@ -2056,14 +2056,14 @@ function saveExpenseDetail() {
     showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
     return;
   }
-  /*
-   * if (!dijit.byId('expenseDetailDate').get('value')) {
-   * showAlert(i18n('messageMandatory', new Array(i18n('colDate')))); return; }
-   */
-  /*
-   * if (!dijit.byId('expenseDetailType').get('value')) {
-   * showAlert(i18n('messageMandatory', new Array(i18n('colType')))); return; }
-   */
+  /*if (!dijit.byId('expenseDetailDate').get('value')) {
+    showAlert(i18n('messageMandatory', new Array(i18n('colDate'))));
+    return;
+  }*/
+  /*if (!dijit.byId('expenseDetailType').get('value')) {
+    showAlert(i18n('messageMandatory', new Array(i18n('colType'))));
+    return;
+  }*/
   if (!dijit.byId('expenseDetailAmount').get('value')) {
     showAlert(i18n('messageMandatory', new Array(i18n('colAmount'))));
     return;
@@ -2722,7 +2722,7 @@ function saveBillLine() {
  * 
  */
 function removeBillLine(lineId) {
-  // dojo.byId("billLineId").value=lineId;
+  //dojo.byId("billLineId").value=lineId;
   actionOK=function() {
     loadContent("../tool/removeBillLine.php?billLineId="+lineId, "resultDiv", null,
         true, 'billLine');
@@ -3645,8 +3645,39 @@ function addVersionProject(idVersion, idProject) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  params="&idVersionProject=&idVersion="+idVersion+"&idProject="+idProject;
-  loadDialog('dialogVersionProject', null, true, params, true);
+  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
+  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
+  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion');
+  dijit.byId("versionProjectProduct").set('value', null);
+  dijit.byId("versionProjectProduct").set('readOnly', true);
+  dojo.byId("versionProjectId").value="";
+  if (idVersion) {
+    dijit.byId("versionProjectVersion").set('readOnly', true);
+    dijit.byId("versionProjectProduct").set('readOnly', true);
+    dijit.byId("versionProjectVersion").set('value', idVersion);
+    disableWidget("versionProjectProductDetailButton");
+    disableWidget("versionProjectVersionDetailButton");
+  } else {
+    dijit.byId("versionProjectVersion").set('readOnly', false);
+    dijit.byId("versionProjectProduct").set('readOnly', false);
+    dijit.byId("versionProjectVersion").reset();
+    enableWidget("versionProjectProductDetailButton");
+    enableWidget("versionProjectVersionDetailButton");
+  }
+  if (idProject) {
+    dijit.byId("versionProjectProject").set('readOnly', true);
+    dijit.byId("versionProjectProject").set('value', idProject);
+    disableWidget("versionProjectProjectDetailButton");
+  } else {
+    dijit.byId("versionProjectProject").set('readOnly', false);
+    dijit.byId("versionProjectProject").reset();
+    enableWidget("versionProjectProjectDetailButton");
+  }
+
+  dijit.byId("versionProjectIdle").reset();
+  dijit.byId("versionProjectStartDate").reset();
+  dijit.byId("versionProjectEndDate").reset();
+  dijit.byId("dialogVersionProject").show();
 }
 
 function removeVersionProject(id) {
@@ -3654,20 +3685,65 @@ function removeVersionProject(id) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  dojo.byId("versionProjectId").value=id;
   actionOK=function() {
-    loadContent("../tool/removeVersionProject.php?idVersionProject="+id, "resultDiv", null, true, 'versionProject');
+    loadContent("../tool/removeVersionProject.php", "resultDiv",
+        "versionProjectForm", true, 'versionProject');
   };
   msg=i18n('confirmDeleteVersionProject');
   showConfirm(msg, actionOK);
 }
-;
-function editVersionProject(id, idVersion, idProject) {
+
+versionProjectLoad=false;
+function editVersionProject(id, idVersion, idProject, startDate, endDate, idle) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  params="&idVersionProject="+id+"&idVersion="+idVersion+"&idProject="+idProject;
-  loadDialog('dialogVersionProject', null, true, params, true);
+  dojo.byId("versionProjectId").value=id;
+  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
+  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
+  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion', true);
+  dijit.byId("versionProjectProduct").set('value', null);
+  dijit.byId("versionProjectProduct").set('readOnly', true);
+  if (idVersion) {
+    dijit.byId("versionProjectVersion").set('readOnly', true);
+    dijit.byId("versionProjectVersion").set('value', idVersion);
+    dijit.byId("versionProjectProduct").set('readOnly', true);
+    disableWidget("versionProjectProductDetailButton");
+    disableWidget("versionProjectVersionDetailButton");
+  } else {
+    dijit.byId("versionProjectVersion").set('readOnly', false);
+    dijit.byId("versionProjectProduct").set('readOnly', false);
+    dijit.byId("versionProjectVersion").reset();
+    enableWidget("versionProjectProductDetailButton");
+    enableWidget("versionProjectVersionDetailButton");
+  }
+  if (idProject) {
+    dijit.byId("versionProjectProject").set('readOnly', true);
+    dijit.byId("versionProjectProject").set('value', idProject);
+    disableWidget("versionProjectProjectDetailButton");
+  } else {
+    dijit.byId("versionProjectProject").set('readOnly', false);
+    dijit.byId("versionProjectProject").reset();
+    enableWidget("versionProjectProjectDetailButton");
+  }
+  if (startDate) {
+    dijit.byId("versionProjectStartDate").set('value', startDate);
+  } else {
+    dijit.byId("versionProjectStartDate").reset();
+  }
+  if (endDate) {
+    dijit.byId("versionProjectEndDate").set('value', endDate);
+  } else {
+    dijit.byId("versionProjectEndDate").reset();
+  }
+  if (idle == 1) {
+    dijit.byId("versionProjectIdle").set('value', idle);
+  } else {
+    dijit.byId("versionProjectIdle").reset();
+  }
+  dijit.byId("dialogVersionProject").show();
 }
 
 function saveVersionProject() {
@@ -3676,51 +3752,6 @@ function saveVersionProject() {
     loadContent("../tool/saveVersionProject.php", "resultDiv",
         "versionProjectForm", true, 'versionProject');
     dijit.byId('dialogVersionProject').hide();
-  } else {
-    showAlert(i18n("alertInvalidForm"));
-  }
-}
-
-// =============================================================================
-// = Product Project
-// =============================================================================
-
-function addProductProject(idProduct, idProject) {
-  if (checkFormChangeInProgress()) {
-    showAlert(i18n('alertOngoingChange'));
-    return;
-  }
-  params="&idProductProject=&idProduct="+idProduct+"&idProject="+idProject;
-  loadDialog('dialogProductProject', null, true, params, true);
-}
-
-function removeProductProject(id) {
-  if (checkFormChangeInProgress()) {
-    showAlert(i18n('alertOngoingChange'));
-    return;
-  }
-  actionOK=function() {
-    loadContent("../tool/removeProductProject.php?idProductProject="+id, "resultDiv", null, true, 'productProject');
-  };
-  msg=i18n('confirmDeleteProductProject');
-  showConfirm(msg, actionOK);
-}
-
-function editProductProject(id, idProduct, idProject) {
-  if (checkFormChangeInProgress()) {
-    showAlert(i18n('alertOngoingChange'));
-    return;
-  }
-  params="&idProductProject="+id+"&idProduct="+idProduct+"&idProject="+idProject;
-  loadDialog('dialogProductProject', null, true, params, true);
-}
-
-function saveProductProject() {
-  var formVar=dijit.byId('productProjectForm');
-  if (formVar.validate()) {
-    loadContent("../tool/saveProductProject.php", "resultDiv",
-        "productProjectForm", true, 'productProject');
-    dijit.byId('dialogProductProject').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -4206,11 +4237,7 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     } else {
       var mySelect=dijit.byId(field);
     }
-    if (required && ! selected && ! trim(mySelect.get('value')) ) { // required
-                                                                    // but no
-                                                                    // value set
-                                                                    // : select
-                                                                    // first
+    if (required && ! selected && ! trim(mySelect.get('value')) ) { // required but no value set : select first
       mySelect.set("value", items[0].id);
     }
   });
@@ -4557,11 +4584,7 @@ function stockHistory(curClass, curId) {
   }
   if (historyPosition>=0) {
     current=historyTable[historyPosition];
-    if (current[0]==curClass && current[1]==curId && current[2]==currentScreen) return; // do
-                                                                                        // not
-                                                                                        // re-stock
-                                                                                        // current
-                                                                                        // item
+    if (current[0]==curClass && current[1]==curId && current[2]==currentScreen) return; // do not re-stock current item
   }
   historyPosition+=1;
   historyTable[historyPosition]=new Array(curClass, curId,currentScreen);
@@ -5495,6 +5518,9 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
     load : function(data) {
       var contentWidget=dijit.byId(dialogDiv);
       contentWidget.set('content', data);
+//      if(closable){
+//        contentWidget.set('content', data);
+//      }
       if (autoShow) {
         setTimeout("dijit.byId('" + dialogDiv + "').show();", 100);
       }
@@ -6260,7 +6286,7 @@ function installPlugin(fileName,confirmed) {
           hideWait();
           callback=function() {loadContent("pluginManagement.php", "centerDiv");};
           showInfo(msg,callback);
-          // setTimeout(callback,5000);
+          //setTimeout(callback,5000);
         } else {
           hideWait();
           showError(data+'<br/>');
@@ -6385,7 +6411,7 @@ function savePluginFinalize() {
 function refreshFavoriteReportList() {
   if (!dijit.byId('favoriteReports')) return;
   dijit.byId('favoriteReports').refresh();
-  // var listContent=trim(dijit.byId('favoriteReports').get('content'));
+  //var listContent=trim(dijit.byId('favoriteReports').get('content'));
 }
 function saveReportAsFavorite() {
   var fileName=dojo.byId('reportFile').value;
@@ -6508,19 +6534,12 @@ function planningToCanvasToPDF(){
 
   var iframe = document.createElement('iframe');
   
-  // this onload is for firefox but also work on others browsers
+  //this onload is for firefox but also work on others browsers
   iframe.onload = function() {
   var orientation="landscape";  // "portrait" ou "landscape"
   if(!document.getElementById("printLandscape").checked)orientation="portrait";
   var ratio=parseInt(document.getElementById("printZoom").value)/100;
-  var repeatIconTask=document.getElementById("printRepeat").checked; // If true
-                                                                      // this
-                                                                      // will
-                                                                      // repeat
-                                                                      // on each
-                                                                      // page
-                                                                      // the
-                                                                      // icon
+  var repeatIconTask=document.getElementById("printRepeat").checked; // If true this will repeat on each page the icon
   loadContent("../tool/submitPlanningPdf.php", "planResultDiv", 'planningPdfForm', false,null,null,null,function(){showWait();});
   var sizeElements=[];
   var marge=0;
@@ -6538,8 +6557,7 @@ function planningToCanvasToPDF(){
     maxHeight=(450-marge)*1.25;
   }
   
-  // We create an iframe will which contain the planning to transform it in
-  // image
+  //We create an iframe will which contain the planning to transform it in image
   var frameContent=document.getElementById("iframeTmpPlanning");
   
   var cssLink2 = document.createElement("link");
@@ -6554,22 +6572,21 @@ function planningToCanvasToPDF(){
   cssLink .type = "text/css";
   frameContent.contentWindow.document.head.appendChild(cssLink);
   
-  /*
-   * var css = document.createElement("style"); css .type = "text/css";
-   * frameContent.contentWindow.document.head.appendChild(css); styles =
-   * '.rightTableLine{ height:22px; }';
-   * 
-   * if (css.styleSheet) css.styleSheet.cssText = styles; else
-   * css.appendChild(document.createTextNode(styles));
-   */
+  /*var css = document.createElement("style");
+  css .type = "text/css";
+  frameContent.contentWindow.document.head.appendChild(css);
+  styles = '.rightTableLine{ height:22px; }';
+  
+  if (css.styleSheet) css.styleSheet.cssText = styles;
+  else css.appendChild(document.createTextNode(styles));*/
   var heightV=(heightColumn+getMaxHeight(document.getElementById('leftside'))+(getMaxHeight(document.getElementById('leftside'))/21))+'px';
   
   frameContent.style.position='absolute';
   frameContent.style.width=(4+parseInt(document.getElementById('leftGanttChartDIV').style.width)+getMaxWidth(document.getElementById('rightTableContainer')))+'px';
   frameContent.style.height=heightV;
   frameContent.style.border='0';
-  // frameContent.style.top='0';
-  // frameContent.style.left='0';
+  //frameContent.style.top='0';
+  //frameContent.style.left='0';
   frameContent.contentWindow.document.body.innerHTML='<div style="float:left;width:'+document.getElementById('leftGanttChartDIV').style.width+';overflow:hidden;height:'+heightV+';">'+document.getElementById('leftGanttChartDIV').innerHTML+'</div><div style="float:left;width:'+getMaxWidth(document.getElementById('rightTableContainer'))+'px;height:'+heightV+';">'+document.getElementById('GanttChartDIV').innerHTML+"</div>";
 
   frameContent.contentWindow.document.getElementById('ganttScale').style.display='none';
@@ -6587,7 +6604,7 @@ function planningToCanvasToPDF(){
   frameContent.contentWindow.document.getElementById('leftside').style.width=document.getElementById('leftGanttChartDIV').style.width;
   frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.overflowX="visible";
   frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.overflowY="visible";
-  // Calculate each width column in left top side
+  //Calculate each width column in left top side
   for(var i=0; i<dojo.query("[id^='topSourceTable'] tr")[1].childNodes.length;i++){
     sizeElements.push((dojo.query("[id^='topSourceTable'] tr")[1].childNodes[i].offsetWidth)*ratio);
   }
@@ -6605,7 +6622,7 @@ function planningToCanvasToPDF(){
   frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
   frameContent.contentWindow.document.getElementById('topGanttChartDIV').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
   frameContent.contentWindow.document.getElementById('mainRightPlanningDivContainer').style.width=getMaxWidth(frameContent.contentWindow.document.getElementById('rightGanttChartDIV'))+'px';
-  // add border into final print
+  //add border into final print
   frameContent.contentWindow.document.getElementById('leftsideTop').innerHTML ='<div id="separatorLeftGanttChartDIV2" style="position:absolute;height:100%;z-index:10000;width:4px;background-color:#C0C0C0;"></div>'+frameContent.contentWindow.document.getElementById('leftsideTop').innerHTML;
   frameContent.contentWindow.document.getElementById('leftside').innerHTML ='<div id="separatorLeftGanttChartDIV" style="position:absolute;height:100%;z-index:10000;width:4px;background-color:#C0C0C0;"></div>'+frameContent.contentWindow.document.getElementById('leftside').innerHTML;
   frameContent.contentWindow.document.getElementById('leftside').style.width=(parseInt(frameContent.contentWindow.document.getElementById('leftside').style.width)+parseInt(frameContent.contentWindow.document.getElementById('separatorLeftGanttChartDIV').style.width))+'px';
@@ -6615,21 +6632,20 @@ function planningToCanvasToPDF(){
   frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.width=frameContent.contentWindow.document.getElementById('rightTableContainer').style.width;
   frameContent.contentWindow.document.getElementById('rightGanttChartDIV').style.height=frameContent.contentWindow.document.getElementById('rightTableContainer').style.height;
 
-  var tabImage=[]; // Contain pictures
-  var mapImage={}; // Contain pictures like key->value, cle=namePicture,
-                    // value=base64(picture)
+  var tabImage=[]; //Contain pictures 
+  var mapImage={}; //Contain pictures like key->value, cle=namePicture, value=base64(picture)
   
-  // Start the 4 prints function
-  // Print image activities and projects
+  //Start the 4 prints function
+  //Print image activities and projects
   html2canvas(frameContent.contentWindow.document.getElementById('leftside')).then(function(leftElement) {
     
-    // Print image column left side
+    //Print image column left side
     html2canvas(frameContent.contentWindow.document.getElementById('leftsideTop')).then(function(leftColumn) { 
       
-      // Print right Line
+      //Print right Line
       html2canvas(frameContent.contentWindow.document.getElementById('rightGanttChartDIV')).then(function(rightElement) {
         
-        // Print right column
+        //Print right column
         html2canvas(frameContent.contentWindow.document.getElementById('rightside')).then(function(rightColumn) {
           if(ratio!=1){
             leftElement=cropCanvas(leftElement,0,0,leftElement.width,leftElement.height,ratio);
@@ -6637,18 +6653,18 @@ function planningToCanvasToPDF(){
             rightElement=cropCanvas(rightElement,0,0,rightElement.width,rightElement.height,ratio);
             rightColumn=cropCanvas(rightColumn,0,0,rightColumn.width,rightColumn.height,ratio);
           }
-          // Init number of total rows
+          //Init number of total rows
           nbRowTotal=Math.round(leftElement.height/heightRow); 
-          // frameContent.parentNode.removeChild(frameContent);
+          //frameContent.parentNode.removeChild(frameContent);
           
-          // Start pictures's calcul
+          //Start pictures's calcul
           firstEnterHeight=true;
-          var EHeightValue=0; // Height pointer cursor
-          var EHeight=leftElement.height; // total height
+          var EHeightValue=0; //Height pointer cursor
+          var EHeight=leftElement.height; //total height
           while((Math.ceil(EHeight/maxHeight)>=1 || firstEnterHeight) && EHeight>heightRow){
             var calculHeight=maxHeight;
-            var ELeftWidth=leftElement.width; // total width
-            var ERightWidth=rightElement.width; // total width
+            var ELeftWidth=leftElement.width; //total width
+            var ERightWidth=rightElement.width; //total width
             var addHeighColumn=0;
             if(firstEnterHeight || (!firstEnterHeight && repeatIconTask)){
               addHeighColumn=heightColumn;
@@ -6739,7 +6755,7 @@ function planningToCanvasToPDF(){
             widthElement=0;
             firstEnterWidth=true;
             var canvasList2=[];
-            // Init number of total cols
+            //Init number of total cols
             nbColTotal=Math.round(rightElement.width/widthRow); 
             while((Math.ceil(ERightWidth/maxWidth)>=1 || (!firstEnterWidth && ERightWidth>0)) && nbColTotal>0){
               firstEnterWidth2=true;
@@ -6797,11 +6813,10 @@ function planningToCanvasToPDF(){
             var baseIterateur=tabImage.length;
             for(var i=0;i<canvasList.length-1;i++){
               
-              // Add image to mapImage in base64 format
+              //Add image to mapImage in base64 format
               mapImage["image"+(i+baseIterateur)]=canvasList[i].toDataURL();
               
-              // Add to tabImage an array wich contain parameters to put an
-              // image into a pdf page with a pagebreak if necessary
+              //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
               ArrayToPut={image: "image"+(i+baseIterateur),width: canvasList[i].width*0.75,height:canvasList[i].height*0.75};
               if(!(canvasList2.length==0 && i==canvasList.length-1)){
                 ArrayToPut['pageBreak']='after';
@@ -6810,11 +6825,10 @@ function planningToCanvasToPDF(){
             }
             for(var i=0;i<canvasList2.length;i++){
               if(canvasList2[i].width-widthIconTask>4){
-                // Add image to mapImage in base64 format
+                //Add image to mapImage in base64 format
                 mapImage["image"+(i+canvasList.length+baseIterateur)]=canvasList2[i].toDataURL();
                 
-                // Add to tabImage an array wich contain parameters to put an
-                // image into a pdf page with a pagebreak if necessary
+                //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
                 ArrayToPut={image: "image"+(i+canvasList.length+baseIterateur),width: canvasList2[i].width*0.75,height:canvasList2[i].height*0.75};
                 if(i!=canvasList2.length-1){
                   ArrayToPut['pageBreak']='after';
@@ -6852,7 +6866,7 @@ function planningToCanvasToPDF(){
             pdfMake.createPdf(dd).download(pdfFileName);
           }
           // open the PDF in a new window
-          // pdfMake.createPdf(dd).open();
+          //pdfMake.createPdf(dd).open();
           // print the PDF (temporarily Chrome-only)
          // pdfMake.createPdf(dd).print();
           // download the PDF (temporarily Chrome-only)
@@ -6877,8 +6891,7 @@ function cropCanvas(canvasToCrop,x,y,w,h,r){
     return tempCanvas;
 }
 
-// addBottom=true : we add the canvas2 at the bottom of canvas1, addBottom=false
-// : we add the canvas2 at the right of canvas1
+//addBottom=true : we add the canvas2 at the bottom of canvas1, addBottom=false : we add the canvas2 at the right of canvas1
 function combineCanvasIntoOne(canvas1,canvas2,addBottom){
   var tempCanvas = document.createElement("canvas");
   var tCtx = tempCanvas.getContext("2d");
@@ -6918,7 +6931,7 @@ function changeDashboardTicketMainTabPos(){
       if(listChild[i].id.includes('dialogDashboardRightParametersRow')){
         getId=listChild[i].id.split('dialogDashboardRightParametersRow')[1];
       }
-      // iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
+      //iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
       if(getId!=""){
         addLeft+='"'+getId+'"';
         iddleList+='{"name":"'+getId+'","idle":'+dijit.byId('tableauBordTabIdle'+getId).get('checked')+'}';
@@ -6946,7 +6959,7 @@ function changeDashboardTicketMainTabPos(){
         if(listChild[i].id.includes('dialogDashboardRightParametersRow')){
           getId=listChild[i].id.split('dialogDashboardRightParametersRow')[1];
         }
-        // iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
+        //iddleList+='"'+dijit.byId('dialogTodayParametersIdle'+listChild[i].id.split('dialogDashboardLeftParametersRow')[1]).get('checked')+'"';
         if(getId!=""){
           addRight+='"'+getId+'"';
           iddleList+='{"name":"'+getId+'","idle":'+dijit.byId('tableauBordTabIdle'+getId).get('checked')+'}';
@@ -6979,4 +6992,39 @@ function getLocalLocation(){
   }else{
     return dojo.locale.split('-')[0]+"_"+dojo.locale.split('-')[1].toUpperCase();
   }
+}
+
+function commentImputationSubmit(year,week,idAssignment){
+  var text=dijit.byId('commentImputation').get('value');
+  if(text.trim()==''){
+    showAlert(i18n('messageMandatory',[i18n('colComment')]));
+    return;
+  }
+  showWait();
+  dojo.xhrPost({
+    url : "../tool/dynamicDialogCommentImputation.php?year="+year+"&week="+week+"&idAssignment="+idAssignment,
+    handleAs : "text",
+    form : 'commentImputationForm',
+    load : function(data, args) {
+      formChangeInProgress=false;
+      dojo.byId("showBig"+idAssignment).childNodes[0].onmouseover=function(){
+        showBigImage(null,null,this,data);
+      };
+      dijit.byId('dialogCommentImputation').hide();
+      hideWait();
+    },
+    error : function() {
+      hideWait();
+    }
+  });
+}
+
+function commentImputationTitlePopup(type){
+  title='';
+  if(type=='add'){
+    title= i18n('commentImputationAdd');
+  }else if(type=='view'){
+    title= i18n('commentImputationView');
+  }
+  dijit.byId('dialogCommentImputation').set('title',title);
 }
