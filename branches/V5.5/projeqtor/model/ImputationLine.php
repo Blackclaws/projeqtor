@@ -766,7 +766,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if (! $print and $canGoto) {
 			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
 			}
-			echo '>' . $line->name ;
+			echo '>' . (($line->refType == "Activity" && $showIdActivities) ? htmlEncode($line->name.' #'.$line->refId) : $line->name) ;
 			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
 				
 			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
@@ -774,7 +774,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '</td>';
 			if ($line->comment and !$print) {
-					echo '<td>&nbsp;&nbsp;</td><td>'.formatCommentThumb($line->comment).'</td>';
+			  $explodeComment=explode("\n", $line->comment);
+					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>
+					    <td onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
 			}
 			echo '</tr></table>';
 			echo '</td>';
