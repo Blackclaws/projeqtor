@@ -85,7 +85,8 @@ function refreshImputationList() {
 	formInitialize();
 	dojo.byId('userId').value=dijit.byId('userName').get("value");
 	dojo.byId('idle').checked=dojo.byId('listShowIdle').checked;
-	dojo.byId('showPlannedWork').checked=dojo.byId('listShowPlannedWork').checked;
+  dojo.byId('showPlannedWork').checked=dojo.byId('listShowPlannedWork').checked;
+  dojo.byId('showIdActivitiesT').checked=dojo.byId('showIdActivities').checked;
 	dojo.byId('hideDone').checked=dojo.byId('listHideDone').checked;
 	if (dojo.byId('hideNotHandled') && dojo.byId('listHideNotHandled') ) {
 	  dojo.byId('hideNotHandled').checked=dojo.byId('listHideNotHandled').checked;
