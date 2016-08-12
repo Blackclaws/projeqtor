@@ -443,7 +443,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false, 
-			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
+			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false,$currentWeek=0,$currentYear=0,$showIdActivities=false) {
 		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
 		$outMode=preg_replace('/.*(pdf|csv|html|mpp).*/','$1', $outMode); // can only be [pdf|csv|html|mpp]
 //scriptLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");
@@ -766,17 +766,17 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if (! $print and $canGoto) {
 			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
 			}
-			echo '>' . (($line->refType == "Activity" && $showIdActivities) ? htmlEncode($line->name.' #'.$line->refId) : $line->name) ;
+			echo '>' . (($line->refType == "Activity" && $showIdActivities) ? $line->name.' #'.$line->refId : $line->name) ;
 			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
 				
 			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
-					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">' . htmlEncode($line->functionName) . '</div>';
+					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">'.htmlEncode($line->functionName).'</div>';
 			}
 			echo '</td>';
 			if ($line->comment and !$print) {
 			  $explodeComment=explode("\n", $line->comment);
-					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>
-					    <td onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
+					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', null, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>
+					    <td onclick="loadDialog(\'dialogCommentImputation\', null, true, \'&year='.$currentYear.'&week='.$currentWeek.'&refTypeComment='.$line->refType.'&refIdComment='.$line->refId.'&idAssignment='.$line->idAssignment.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
 			}
 			echo '</tr></table>';
 			echo '</td>';

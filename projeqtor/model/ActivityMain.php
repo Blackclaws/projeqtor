@@ -40,6 +40,7 @@ class ActivityMain extends SqlElement {
   public $idProject;
   public $externalReference;  
   public $creationDate;
+  public $lastUpdateDateTime;
   public $idUser;
   public $idContact;
   public $Origin;

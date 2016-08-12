@@ -40,11 +40,28 @@ if (array_key_exists('idle',$_REQUEST)) {
     $idle=$_REQUEST['idle'];
 }
 
+$year=0;
+if (array_key_exists('yearSpinnerT',$_REQUEST)) {
+  $year=$_REQUEST['yearSpinnerT'];
+}
+
+$week=0;
+if (array_key_exists('weekSpinnerT',$_REQUEST)) {
+  $week=$_REQUEST['weekSpinnerT'];
+}
+
 $showPlannedWork=0;
 if (array_key_exists('showPlannedWork',$_REQUEST)) {
     $showPlannedWork=1;
 }
 Parameter::storeUserParameter('imputationShowPlannedWork',$showPlannedWork);
+
+$showIdActivities=0;
+if (array_key_exists('showIdActivitiesT',$_REQUEST)) {
+  $showIdActivities=1;
+}
+Parameter::storeUserParameter('showIdActivities',$showIdActivities);
+if($showIdActivities==1)$showIdActivities=true; else $showIdActivities=false;
 
 $hideDone=0;
 if (array_key_exists('hideDone',$_REQUEST)) {
@@ -70,12 +87,15 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo htmlEncode($rangeValue);?>"/>
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
+  <input type="checkbox" name="showIdActivitiesT" id="showIdActivitiesT" style="display: none;" />
   <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
   <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
+  <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value=""/>
+  <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
   <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
-ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
+ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings, $week, $year, $showIdActivities);
 ?>
 </form>
