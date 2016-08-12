@@ -51,6 +51,9 @@ if ($displayHandledGlobal=="YES") {
 	$hideNotHandled=1;
 }
 $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOnlyCurrentWeekMeetings');
+
+$showIdActivities=false;
+if(Parameter::getUserParameter("showIdActivities")!=null && Parameter::getUserParameter("showIdActivities")==1)$showIdActivities=true;
 ?>
 
 <div dojoType="dijit.layout.BorderContainer">
@@ -125,7 +128,19 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
                   </script>
                 </div>
               </td>
-              <td style="width: 20%;text-align: right; align: right;min-width:150px" >
+              <td style="width: 10%;text-align: right; align: right;min-width:150px" >
+      	        &nbsp;&nbsp;<?php echo i18n("labelShowIdActivities");?>
+              </td>
+              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+				        <div title="<?php echo i18n('labelShowIdActivities')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+				        class="whiteCheck"
+				         id="showIdActivities" name="showIdActivities" <?php if ($showIdActivities) echo 'checked';?>>
+				          <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+				        </div>&nbsp;
+				      </td>
+              <td style="width: 10%;text-align: right; align: right;min-width:150px" >
       	        &nbsp;&nbsp;<?php echo i18n("labelShowPlannedWork");?>
               </td>
               <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
@@ -246,13 +261,16 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;" />     
        <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;" />
+       <input type="checkbox" name="showIdActivitiesT" id="showIdActivitiesT" style="display: none;" />
        <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
        <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
        <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
        <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
        <input type="hidden" id="outMode" name="outMode" value="" />
+       <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value=""/>
+       <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
       <?php if (! isset($print) ) {$print=false;}
-      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);?>
+      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings,$currentWeek,$currentYear, $showIdActivities);?>
      </form>
   </div>
 </div>

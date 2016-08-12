@@ -6994,7 +6994,7 @@ function getLocalLocation(){
   }
 }
 
-function commentImputationSubmit(year,week,idAssignment){
+function commentImputationSubmit(year,week,idAssignment,refType,refId){
   var text=dijit.byId('commentImputation').get('value');
   if(text.trim()==''){
     showAlert(i18n('messageMandatory',[i18n('colComment')]));
@@ -7002,7 +7002,7 @@ function commentImputationSubmit(year,week,idAssignment){
   }
   showWait();
   dojo.xhrPost({
-    url : "../tool/dynamicDialogCommentImputation.php?year="+year+"&week="+week+"&idAssignment="+idAssignment,
+    url : "../tool/dynamicDialogCommentImputation.php?year="+year+"&week="+week+"&idAssignment="+idAssignment+"&refTypeComment="+refType+"&refIdComment="+refId,
     handleAs : "text",
     form : 'commentImputationForm',
     load : function(data, args) {

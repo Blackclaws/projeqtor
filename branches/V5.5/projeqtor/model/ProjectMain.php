@@ -48,6 +48,7 @@ class ProjectMain extends SqlElement {
   public $idResource;
   public $idUser;
   public $creationDate;
+  public $lastUpdateDateTime;
   public $color;
   public $idStatus;
   public $idHealth;
