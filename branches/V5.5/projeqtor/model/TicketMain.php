@@ -112,7 +112,6 @@ class TicketMain extends SqlElement {
                                   "idTicketType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
-                                  "lastUpdateDateTime"=>"hidden",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
