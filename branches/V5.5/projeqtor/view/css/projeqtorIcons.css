@@ -209,6 +209,14 @@
 .iconBillType22 { background-image: url(images/iconBillType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconBillType16 { background-image: url(images/iconBillType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconCallForTender32 { background-image: url(images/iconCallForTender32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconCallForTender22 { background-image: url(images/iconCallForTender22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconCallForTender16 { background-image: url(images/iconCallForTender16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconCallForTenderType32 { background-image: url(images/iconCallForTenderType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconCallForTenderType22 { background-image: url(images/iconCallForTenderType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconCallForTenderType16 { background-image: url(images/iconCallForTenderType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconCommand32 { background-image: url(images/iconCommand32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconCommand22 { background-image: url(images/iconCommand22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCommand16 { background-image: url(images/iconCommand16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -276,6 +284,10 @@
 .iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconEnvironmentalParameter16 { background-image: url(images/iconEnvironmentalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconExpenses32 { background-image: url(images/iconExpenses32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconExpenses22 { background-image: url(images/iconExpenses22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconExpenses16 { background-image: url(images/iconExpenses16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconExpenseDetailType32 { background-image: url(images/iconExpenseDetailType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconExpenseDetailType22 { background-image: url(images/iconExpenseDetailType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconExpenseDetailType16 { background-image: url(images/iconExpenseDetailType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -328,6 +340,10 @@
 .iconHealth32 { background-image: url(images/iconHealth32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconHealth22 { background-image: url(images/iconHealth22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconHealth16 { background-image: url(images/iconHealth16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIncomings32 { background-image: url(images/iconIncomings32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIncomings22 { background-image: url(images/iconIncomings22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIncomings16 { background-image: url(images/iconIncomings16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconIndividualExpense32 { background-image: url(images/iconIndividualExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconIndividualExpense22 { background-image: url(images/iconIndividualExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -617,6 +633,14 @@
 .iconTeam32 { background-image: url(images/iconTeam32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTeam22 { background-image: url(images/iconTeam22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTeam16 { background-image: url(images/iconTeam16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTender32 { background-image: url(images/iconTender32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTender22 { background-image: url(images/iconTender22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTender16 { background-image: url(images/iconTender16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTenderType32 { background-image: url(images/iconTenderType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTenderType22 { background-image: url(images/iconTenderType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTenderType16 { background-image: url(images/iconTenderType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTerm32 { background-image: url(images/iconTerm32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTerm22 { background-image: url(images/iconTerm22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
