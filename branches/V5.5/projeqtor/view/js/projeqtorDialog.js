@@ -7028,3 +7028,43 @@ function commentImputationTitlePopup(type){
   }
   dijit.byId('dialogCommentImputation').set('title',title);
 }
+
+// Evaluation criteria
+function addTenderEvaluationCriteria(callForTenderId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var params="&mode=add&callForTenderId="+callForTenderId;
+  loadDialog('dialogCallForTenderCriteria', null, true, params, false);
+}
+function editTenderEvaluationCriteria(criteriaId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var params="&mode=edit&criteriaId="+criteriaId;
+  loadDialog('dialogCallForTenderCriteria', null, true, params, false);
+}
+function saveTenderEvaluationCriteria() {
+  var formVar=dijit.byId("dialogTenderCriteriaForm");
+  if (!formVar) {
+    showError(i18n("errorSubmitForm", new Array("n/a", "n/a", "dialogTenderCriteriaForm")));
+    return;
+  }
+  if (formVar.validate()) {
+    loadContent("../tool/saveTenderEvaluationCriteria.php", "resultDiv", "dialogTenderCriteriaForm", true,'tenderEvaluationCriteria');
+    dijit.byId('dialogCallForTenderCriteria').hide();
+  }  
+}
+function removeTenderEvaluationCriteria(criteriaId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeTenderEvaluationCriteria.php?criteriaId="+criteriaId, "resultDiv", null,true,'tenderEvaluationCriteria');
+  };
+  msg=i18n('confirmDelete', new Array(i18n('TenderEvaluationCriteria'), criteriaId));
+  showConfirm(msg, actionOK);
+}
