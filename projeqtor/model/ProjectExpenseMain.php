@@ -40,6 +40,7 @@ class ProjectExpenseMain extends Expense {
   public $idUser;
   public $idProvider;
   public $externalReference;
+  public $Origin;
   public $idResource;
   public $idResponsible;
   public $paymentCondition;

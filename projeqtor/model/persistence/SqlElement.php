@@ -4296,7 +4296,8 @@ abstract class SqlElement {
 	public static function isColorableField($col) {
 	  return ($col=='idProject' or $col=='idStatus' or $col=='idQuality' or $col=='idHealth' or $col=='idTrend'
 				or $col=='idLikelihood' or $col=='idCriticality' or $col=='idSeverity' or $col=='idUrgency' or $col=='idPriority'
-				or $col=='idRiskLevel' or $col=='idFeasibility' or $col=='idEfficiency' or $col=='idResolution')?true:false;
+				or $col=='idRiskLevel' or $col=='idFeasibility' or $col=='idEfficiency' or $col=='idResolution'
+				or $col=='idTenderStatus')?true:false;
 	}
 	public static function isIconableField($col) {
 	  return ($col=='idQuality' or $col=='idHealth' or $col=='idTrend')?true:false;

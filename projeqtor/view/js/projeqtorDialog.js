@@ -7068,3 +7068,59 @@ function removeTenderEvaluationCriteria(criteriaId) {
   msg=i18n('confirmDelete', new Array(i18n('TenderEvaluationCriteria'), criteriaId));
   showConfirm(msg, actionOK);
 }
+
+//Tender submission
+function addTenderSubmission(callForTenderId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var params="&mode=add&callForTenderId="+callForTenderId;
+  loadDialog('dialogCallForTenderSubmission', null, true, params, false);
+}
+function editTenderSubmission(tenderId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var params="&mode=edit&tenderId="+tenderId;
+  loadDialog('dialogCallForTenderSubmission', null, true, params, false);
+}
+function saveTenderSubmission() {
+  var formVar=dijit.byId("dialogTenderSubmissionForm");
+  if (!formVar) {
+    showError(i18n("errorSubmitForm", new Array("n/a", "n/a", "dialogTenderSubmissionForm")));
+    return;
+  }
+  if (formVar.validate()) {
+    loadContent("../tool/saveTenderSubmission.php", "resultDiv", "dialogTenderSubmissionForm", true,'tenderSubmission');
+    dijit.byId('dialogCallForTenderSubmission').hide();
+  }  
+}
+function removeTenderSubmission(tenderId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeTenderSubmission.php?tenderId="+tenderId, "resultDiv", null,true,'tenderSubmission');
+  };
+  msg=i18n('confirmDelete', new Array(i18n('Tender'), tenderId))+'<br/><b>'+i18n('messageAlerteDeleteTender')+'</b>';
+  showConfirm(msg, actionOK);
+}
+
+
+function changeTenderEvaluationValue(index) {
+  var value=dijit.byId("tenderEvaluation_"+index).get("value");
+  var coef=dojo.byId("tenderCoef_"+index).value;
+  var total=value*coef;
+  dijit.byId("tenderTotal_"+index).set("value",total);
+  var list=dojo.byId('idTenderCriteriaList').value.split(';');
+  var sum=0;
+  for (var i=0;i<list.length;i++) {
+    sum+=dijit.byId('tenderTotal_'+list[i]).get('value');
+  }
+  dijit.byId("tenderTotal").set("value",sum);
+  var newValue=Math.round(sum*dojo.byId('evaluationMaxCriteriaValue').value/dojo.byId('evaluationSumCriteriaValue').value*100)/100;
+  dijit.byId("evaluationValue").set("value",newValue);
+}

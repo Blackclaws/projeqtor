@@ -40,6 +40,7 @@ class ContactMain extends SqlElement {
   public $email;
   public $idProfile;
   public $idClient;
+  public $idProvider;
   public $function;
   public $phone;
   public $mobile;
