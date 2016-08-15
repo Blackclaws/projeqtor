@@ -49,6 +49,8 @@ class ProviderMain extends SqlElement {
   public $city;
   public $state;
   public $country;
+  public $_sec_Contacts;
+  public $_spe_contacts;
   public $_Attachment=array();
   public $_Note=array();
   
@@ -129,21 +131,12 @@ class ProviderMain extends SqlElement {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='projects') {
-      $prj=new Project();
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
-      }
-      $result .="</td></tr></table>";
-      return $result;
-    } else if ($item=='contacts') {
+    if ($item=='contacts') {
       $con=new Contact();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('contacts') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       if ($this->id) {
-        $result .= $con->drawContactsList(array('idClient'=>$this->id,'idle'=>'0'));
+        $result .= $con->drawContactsList(array('idProvider'=>$this->id,'idle'=>'0'));
       }
       $result .="</td></tr></table>";
       return $result;
