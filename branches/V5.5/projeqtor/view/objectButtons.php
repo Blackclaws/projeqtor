@@ -62,17 +62,17 @@
 ?>
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
-  <td  style="z-index:-1;width:30%;position:relative;white-space:nowrap;">
+  <td  style="z-index:-1;width:40%;position:relative;white-space:nowrap;">
     <img style="position:relative; left:10px;" src="css/images/icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32.png" width="32" height="32" />
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>
   </td>
-  <td style="width:80px; text-align:right;"  >
+  <td style="width:8%; text-align:right;"  >
       <div style="width:90px;margin-right:16px;" id="buttonDivCreationInfo" 
         ><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
-  <td style="width:09%;">
+  <td style="width:2%;">
     &nbsp;
   </td>
   <td  style="white-space:nowrap;">

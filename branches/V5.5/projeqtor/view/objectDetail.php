@@ -826,9 +826,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
             $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
             echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.'">';
             if ($outMode == 'pdf') { 
-              echo str_replace(' ', '&nbsp;',htmlEncode($obj->getColCaption($col)));
+              echo str_replace(' ', '&nbsp;',htmlEncode($obj->getColCaption($col),'stipAllTags'));
             } else {
-              echo htmlEncode($obj->getColCaption($col));
+              echo htmlEncode($obj->getColCaption($col),'stipAllTags');
             }
             echo '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
             if ($thumb) {
@@ -1001,7 +1001,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
-          echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col)).'&nbsp;:&nbsp;</div>';
+          echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col),'stipAllTags').'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;">';
           $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
@@ -1741,7 +1741,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         //class="generalColClass '.$col.'Class" style="'.$specificStyle.'"
         if (getEditorType()=="CK") {
           //if (isIE() and ! $val) $val='<div></div>';
-          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
+          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
           $ckEditorNumber++;
           echo '<textarea style="height:300px"'; // Important to set big height to retreive correct scroll position after save
           echo ' name="'.$col.$extName.'" ';
@@ -1767,7 +1767,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           echo htmlspecialchars($val);
           echo '</textarea>';
           if (isIE() and ! $val) $val='<div></div>'; 
-          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
+          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
           if (getEditorType()=="Dojo") {
             echo '<div data-dojo-type="dijit.Editor"'; // TEST
             echo ' id="' . $fieldId . 'Editor" ';
@@ -2094,7 +2094,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 
 function drawOrigin($refType, $refId, $obj, $col, $print) {
   echo '<tr class="detail"><td class="label" xstyle="width:10%;">';
-  echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>';
+  echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '&nbsp;:&nbsp;</label>';
   echo '</td>';
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
