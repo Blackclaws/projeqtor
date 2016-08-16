@@ -2005,6 +2005,8 @@ abstract class SqlElement {
   							// V5.4 : for action isPrivate can be dynamically hidden, was not detected with prior test
   							if ($_REQUEST[$formField]==='0' or $_REQUEST[$formField]==='1') {  
   							  $this->$key = $_REQUEST[$formField];
+  							} else if ($_REQUEST[$formField]=='') {
+  							  $this->$key = 0;
   							} else {
   								$this->$key = 1;
   							}
