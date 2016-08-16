@@ -1408,6 +1408,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
             $critFld='idClient';
             $critVal=$obj->idClient;
+          } else   if ($col == 'idContact' and property_exists($obj, 'idProvider') and $obj->idProvider) {
+              $critFld='idProvider';
+              $critVal=$obj->idProvider;
           } else if (property_exists($obj, 'idProject') and get_class($obj) != 'Project' and get_class($obj) != 'Affectation') {
             if ($obj->id) {
               $critFld='idProject';

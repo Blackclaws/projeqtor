@@ -88,6 +88,9 @@ abstract class SqlElement {
     "Bill" =>               array("BillLine"=>"confirm",
                                   "Note"=>"cascade", ),
     "BillType" =>           array("Bill"=>"controlStrict"),
+    "CallForTender"=>       array("Tender"=>"controlStrict",
+                                  "TenderEvaluationCriteria"=>"cascade"),
+    "CallForTenderType"=>   array("CallForTender"=>"controlStrict"),
     "CalendarDefinition" => array("Calendar"=>"cascade",
                                   "Resource"=>"controlStrict"),
     "Checklist" =>	        array("ChecklistLine"=>"cascade"),
@@ -109,6 +112,7 @@ abstract class SqlElement {
                                   "Bill"=>"controlStrict",
                                   "Product"=>"controlStrict",
                                   "Project"=>"controlStrict",
+                                  "Tender"=>"ControlStrict",
                                   "Ticket"=>"controlStrict",
                                   "Version"=>"controlStrict"),
     "ContextType" =>        array("Context" => "controlStrict"),
@@ -195,6 +199,7 @@ abstract class SqlElement {
                                   "Assignment"=>"cascade",
                                   "Attachment"=>"cascade",
                                   "Bill"=>"control",
+                                  "CallForTender"=>"control",
                                   "Command"=>"control",
                                   "Decision"=>"control",
                                   "Dependency"=>"cascade",
@@ -221,7 +226,8 @@ abstract class SqlElement {
                                   "Ticket"=>"control",
                                   "VersionProject"=>"cascade",
                                   "Work"=>"control"),
-    "Provider" =>           array("ProjectExpense"=>"controlStrict"),
+    "Provider" =>           array("ProjectExpense"=>"controlStrict",
+                                  "Tender"=>"ControlStrict"),
     "Quality" =>            array("Project"=> "controlStrict"),
     "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"controlStrict"),
@@ -241,6 +247,7 @@ abstract class SqlElement {
                                   "Activity"=>"controlStrict",
                                   "Affectation"=>"control",
                                   "Assignment"=>"control",
+                                  "CallForTender"=>"controlStrict",
                                   "Decision"=>"controlStrict",
                                   "Issue"=>"controlStrict",
                                   "Meeting"=>"controlStrict",
@@ -250,6 +257,7 @@ abstract class SqlElement {
                                   "ResourceCost"=>"cascade",
                                   "Risk"=>"controlStrict", 
                                   "Ticket"=>"controlStrict",
+                                  "Tender"=>"controlStrict",
                                   "TestCase"=>"controlStrict",
                                   "TestSession"=>"controlStrict",
                                   "Work"=>"controlStrict"),
@@ -290,6 +298,9 @@ abstract class SqlElement {
                                   "Ticket"=>"controlStrict",
                                   "WorkflowStatus"=>"cascade"),
     "Team" =>               array("Resource"=>"control"),
+    "Tender"=>              array("TenderEvaluation"=>"cascade"),
+    "TenderStatus"=>        array("Tender"=>"control"),
+    "TenderType"=>          array("Tender"=>"control"),
     "Term" =>               array("Dependency"=>"cascade"),
     "TestCase" =>           array("TestCase"=>"control",
                                   "TestCaseRun"=>"control" ),
@@ -388,6 +399,7 @@ abstract class SqlElement {
     "Project" =>            array("Action"=>"confirm",
                                   "Activity"=>"control",
                                   "Affectation"=>"cascade",
+                                  "CallForTender"=>"control",
     		                          "Command"=>"control",
                                   "Document"=>"confirm",
                                   "Issue"=>"confirm",
@@ -407,6 +419,7 @@ abstract class SqlElement {
                                   "Question"=>"confirm",
     		                          "Quotation"=>"confirm",
                                   "Requirement"=>"confirm",
+                                  "Tender"=>"control",
                                   "TestCase"=>"confirm",
                                   "TestSession"=>"confirm"),
     "Requirement" =>        array("Requirement"=>"control"),
@@ -1455,6 +1468,7 @@ abstract class SqlElement {
 			$newObj->isCopyStatus=0;
 		}
 		$result=$newObj->saveSqlElement();
+		Sql::$lastCopyId=$newObj->id;
 		if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 			$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultCopied') . ' #' . $newObj->id;
 			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode($newObj->id) . '" />';
@@ -2005,6 +2019,8 @@ abstract class SqlElement {
   							// V5.4 : for action isPrivate can be dynamically hidden, was not detected with prior test
   							if ($_REQUEST[$formField]==='0' or $_REQUEST[$formField]==='1') {  
   							  $this->$key = $_REQUEST[$formField];
+  							} else if ($_REQUEST[$formField]=='') {
+  							  $this->$key = 0;
   							} else {
   								$this->$key = 1;
   							}
