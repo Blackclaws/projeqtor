@@ -208,10 +208,14 @@ class Audit extends SqlElement {
 		// terminate the session
 		if (ini_get ( "session.use_cookies" )) {
 			$params = session_get_cookie_params ();
-			setcookie ( session_name (), '', time () - 42000, $params ["path"], $params ["domain"], $params ["secure"], $params ["httponly"] );
+			// TODO : use browser time zone to compute time
+			// date_default_timezone_set("UTC");
+			setcookie ( session_name (), '', time ()- 42000, $params ["path"], $params ["domain"], $params ["secure"], $params ["httponly"] );
 		}
 		try {
-			@session_destroy ();
+			$_SESSION=array();
+			if (function_exists(' session_write_close‌​')) session_write_close‌​();
+			@session_destroy();
 		} catch ( Exception $e ) {
 			// tried twice : OK let's give up.
 		}
