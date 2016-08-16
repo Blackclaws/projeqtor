@@ -39,7 +39,7 @@ require_once "../tool/projeqtor.php";
  * @return void
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
-	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
+	//scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",required=$required,critFld=$critFld,critval=$critVal)");
 	if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
 	    $crtName='critFld'.$tempId;

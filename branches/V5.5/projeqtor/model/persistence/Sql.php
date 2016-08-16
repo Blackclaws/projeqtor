@@ -52,7 +52,8 @@ class Sql {
   public static $lastQueryNewObjectId=NULL;
   public static $lastQueryErrorMessage=NULL;
   public static $lastQueryErrorCode=NULL;
-  public static $lastConnectError=NULL;  
+  public static $lastConnectError=NULL;
+  public static $lastCopyId=NULL;  
   public static $maintenanceMode=false;
 
   /** ========================================================================
@@ -242,7 +243,7 @@ class Sql {
    * Return the connexion. Private. Only for internal use.
    * @return resource connexion to database
    */
-  private static function getConnection() {
+  public static function getConnection() {
     global $enforceUTF8;
     if (self::$connexion != NULL) {
     	//if (mysql_ping(self::$connexion)) {

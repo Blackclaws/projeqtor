@@ -276,7 +276,7 @@ class Cron {
     self::removeRestartFlag();
     projeqtor_set_time_limit(0);
     ignore_user_abort(1);
-    session_write_close();
+    if (function_exists(' session_write_close‌​')) session_write_close();
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
     $cronCheckEmails=self::getCheckEmails();
