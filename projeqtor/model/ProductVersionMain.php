@@ -55,9 +55,10 @@ class ProductVersionMain extends Version {
   public $_VersionProject=array();
   public $_sec_ProductVersionComposition;
   public $_productVersionComposition=array();
+  public $_spe_tenders;
   public $_Attachment=array();
   public $_Note=array();
-  
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -251,18 +252,10 @@ class ProductVersionMain extends Version {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='XXXVersionProjects') {
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= "xx";
-      }
-      $result .="</td></tr></table>";
-      return $result;
+    if ($item=='tenders') {
+       Tender::drawListFromCriteria('id'.get_class($this),$this->id);
     } 
   }
-  
-
   
   public function save() {
     $old=$this->getOld();
