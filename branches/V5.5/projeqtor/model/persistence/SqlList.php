@@ -160,7 +160,7 @@ class SqlList {
   }
  
   private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue, $showIdle) {
-//scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
+  //scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
     $res=array();
     $obj=new $listType();
     $calculated=false;
@@ -172,6 +172,7 @@ class SqlList {
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
     $query.=(! $showIdle and property_exists($obj, 'idle'))?' and idle=0 ':'';
     if (($listType=='Version' 
+        or $listType=='ProductVersion' or $listType=='ComponentVersion'
         or $listType=='TargetVersion' or $listType=='TargetProductVersion' or $listType=='TargetComponentVersion'
         or $listType=='OriginalVersion' or $listType=='OriginalProductVersion' or $listType=='OriginalComponentVersion') and $criteria) {
       foreach($criteria as $key=>$val) {
@@ -188,7 +189,8 @@ class SqlList {
         $user=new Resource();
         if ($val=='*' or ! $val) {$val=0;}
         $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject=" . Sql::fmtId($val) . " and a.idResource=" . $user->getDatabaseTableName() . ".id)";
-      } else if ((strtolower($listType)=='version' 
+      } else if ((strtolower($listType)=='version'
+          or strtolower($listType)=='productversion' or strtolower($listType)=='componentversion' 
           or strtolower($listType)=='originalversion' or strtolower($listType)=='originalproductversion' or strtolower($listType)=='originalcomponentversion' 
           or strtolower($listType)=='targetversion' or strtolower($listType)=='targetproductversion' or strtolower($listType)=='targetcomponentversion') and $col=='idProject') {
       	$vp=new VersionProject();
@@ -203,7 +205,7 @@ class SqlList {
         	}
         }
         $inClause.=')';
-        $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
+        if ($val) $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
       } else if ( ( strtolower($listType)=='componentversion'  
             or strtolower($listType)=='originalcomponentversion'
             or strtolower($listType)=='targetcomponentversion') and $col=='idProductVersion') {
