@@ -49,9 +49,11 @@ class ComponentMain extends ProductOrComponent {
   public $_componentStructure=array();
   public $_sec_ComponentComposition;
   public $_componentComposition=array(); 
+  public $_spe_tenders;
   public $_Attachment=array();
   public $_Note=array();
-
+  public $_nbColMax=3;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
@@ -180,7 +182,11 @@ class ComponentMain extends ProductOrComponent {
       }
       $result .="</td></tr></table>";
       return $result;
-    } 
+    } else {
+      if ($item=='tenders') {
+        Tender::drawListFromCriteria('id'.get_class($this),$this->id);
+      }
+    }
   }
   
   /** =========================================================================

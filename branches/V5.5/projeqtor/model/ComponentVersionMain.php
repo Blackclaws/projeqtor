@@ -55,9 +55,10 @@ class ComponentVersionMain extends Version {
   public $_componentVersionStructure=array();
   public $_sec_ComponentVersionComposition;
   public $_componentVersionComposition=array();
+  public $_spe_tenders;
   public $_Attachment=array();
   public $_Note=array();
-  
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -264,14 +265,8 @@ class ComponentVersionMain extends Version {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='XXXVersionProjects') {
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= "xx";
-      }
-      $result .="</td></tr></table>";
-      return $result;
+    if ($item=='tenders') {
+       Tender::drawListFromCriteria('id'.get_class($this),$this->id);
     } 
   }
   

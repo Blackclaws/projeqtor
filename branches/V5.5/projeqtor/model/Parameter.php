@@ -409,6 +409,13 @@ class Parameter extends SqlElement {
                     'ifempty'=>i18n('ifEmpty'),
                     'never'=>i18n('never'));
         break;
+      case 'showTendersOnVersions':
+        $list=array('NO'=>i18n('never'),
+          '1#Product#'=>i18n("menuProduct"),
+          '2#Product#ProductVersion#'=>i18n("menuProduct").', '.i18n("menuVersion"),
+          '3#Product#Component#'=>i18n("menuProduct").', '.i18n("menuComponent"),
+          '4#Product#Component#ProductVersion#ComponentVersion#'=>i18n("menuProduct").', '.i18n("menuComponent").', '.i18n("menuVersion")) ;
+        break;
     } 
     return $list;
   }
@@ -466,18 +473,19 @@ class Parameter extends SqlElement {
       	                     'sectionWorkUnit'=>'section',      	                     
       	                       'imputationUnit'=>'list',
       	                       'workUnit'=>'list',
-      	                       'dayTime'=>'number',
+      	                       'dayTime'=>'number',      	                      
+      	                     'sectionImputation'=>'section',
+      	                       'displayOnlyHandled'=>'list',
+      	                       'setHandledOnRealWork'=>'list',
+      	                       'setDoneOnNoLeftWork'=>'list',
       	                       'maxDaysToBookWork'=>'number',
+      	                       'maxDaysToBookWorkBlocking'=>'number',
       	                     'sectionPlanning'=>'section',
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',
       	                       'ganttPlanningPrintOldStyle'=>'list',
       	                       'consolidateValidated'=>'list',
-      	                       'dependencyStrictMode'=>'list',
-      	                     'sectionImputation'=>'section',
-      	                       'displayOnlyHandled'=>'list',
-      	                       'setHandledOnRealWork'=>'list',
-      	                       'setDoneOnNoLeftWork'=>'list',
+      	                       'dependencyStrictMode'=>'list',                     
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
@@ -531,6 +539,7 @@ class Parameter extends SqlElement {
       	                       'fontForPDF'=>'list',
       	                       "editor"=>'list',
       	                       'allowTypeRestrictionOnProject'=>'list',
+      	                       'showTendersOnVersions'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  

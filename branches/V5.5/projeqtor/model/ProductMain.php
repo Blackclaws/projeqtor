@@ -45,10 +45,8 @@ class ProductMain extends ProductOrComponent {
   public $creationDate;
   public $idle;
   public $description;
-  
   public $_sec_Productproject_projects;
   public $_ProductProject=array();
-  
   public $_sec_ProductVersions;
   public $_spe_versions;
   public $_sec_SubProducts;
@@ -56,9 +54,10 @@ class ProductMain extends ProductOrComponent {
   public $_sec_ProductComposition;
   public $_productComposition;
   public $_spe_structure;
+  public $_spe_tenders;
   public $_Attachment=array();
   public $_Note=array();
-
+  public $_nbColMax=3;
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -191,7 +190,9 @@ class ProductMain extends ProductOrComponent {
     } else if ($item=='structure' and !$print and $this->id) {
       $result=parent::drawStructureButton('Product',$this->id);
       return $result;
-    }
+    } else if ($item=='tenders') {
+       Tender::drawListFromCriteria('id'.get_class($this),$this->id);
+    } 
   }
   
   /** =========================================================================
