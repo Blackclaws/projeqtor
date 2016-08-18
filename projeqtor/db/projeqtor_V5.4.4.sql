@@ -15,4 +15,4 @@ CREATE TABLE `${prefix}cronexecution` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}action` CHANGE COLUMN `isPrivate` `isPrivate` int(1) unsigned default 0;
+ALTER TABLE `${prefix}action` ALTER `isPrivate` SET DEFAULT 0;
