@@ -228,6 +228,19 @@ if($copyType=="copyObjectTo"){
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
+             <td class="dialogLabel" >
+               <label for="copyProjectToName" ><?php echo i18n("copyToProjectCode") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyProjectToProjectCode" name="copyProjectToProjectCode" dojoType="dijit.form.ValidationTextBox"
+                style="width: 400px;"
+                trim="true" maxlength="100" class="input"
+                value="">
+               </div>     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyProjectStructure") ?>&nbsp;:&nbsp;</label>
                <div id="copyProjectStructure" name="copyProjectStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
