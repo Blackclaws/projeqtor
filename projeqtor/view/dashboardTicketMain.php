@@ -232,39 +232,39 @@ function addTab($param){
   if(isset($param['paramAdd'])){
     $paramAdd=$param['paramAdd'];
     if($total1==null){
-      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
+      $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
       if (Sql::$lastQueryNbRows > 0) {
         $line = Sql::fetchLine($result);
-        $total1=$line['nbLine'];
+        $total1=$line['nbline'];
       }
     }
     $total=$total1;
   }else{
     if($total2==null){
-      $result=Sql::query("SELECT COUNT(*) as nbLine FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false));
+      $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName t WHERE t.idProject in ".getVisibleProjectsList(false));
       if (Sql::$lastQueryNbRows > 0) {
         $line = Sql::fetchLine($result);
-        $total2=$line['nbLine'];
+        $total2=$line['nbline'];
       }
     }
     $total=$total2;
   }
   
-  $result=Sql::query("SELECT COUNT(*) as nbLine, $ajoutGroupBy as idNeed FROM $tableName t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
+  $result=Sql::query("SELECT COUNT(*) as nbline, $ajoutGroupBy as idneed FROM $tableName t WHERE $ajoutGroupBy is not null AND t.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
   if ($total > 0) {
     $res=array();
     $totT=0;
     while ($line = Sql::fetchLine($result)) {
-      $object= new $param["groupBy"]($line['idNeed'],true);
+      $object= new $param["groupBy"]($line['idneed'],true);
       $idU=$object->name;
       if(isset($object->sortOrder)){
         $idU=$object->sortOrder.'-'.$object->id;
       }
       $res[$idU]["name"]=$object->name;
-      $res[$idU]["nb"]=$line['nbLine'];
+      $res[$idU]["nb"]=$line['nbline'];
       $res[$idU]["id"]=$object->id;
       if(isset($object->color))$res[$idU]["color"]=$object->color;
-      $totT+=$line['nbLine'];
+      $totT+=$line['nbline'];
     }
     $addIfNoParam="";
     if(!$param['withParam'])$addIfNoParam='<span style="font-style:italic;color:#999999;">&nbsp;('.i18n('noFilterClause').')</span>';
@@ -272,11 +272,11 @@ function addTab($param){
     echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($param["title"])).$addIfNoParam."</h2>";
     echo "<table width=\"95%\" class=\"tabDashboardTicketMain\">";
     echo '<tr><td class="titleTabTicket">'.i18n($param["title"]).'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnCount").'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnPourcent")."</td></tr>";
-    foreach ($res as $idSort=>$nbLine){
-      $name='<a href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&val='.$nbLine['id'].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.$nbLine["name"].'</a>';
+    foreach ($res as $idSort=>$nbline){
+      $name='<a href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&val='.$nbline['id'].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.$nbline["name"].'</a>';
       $addColor=$name;
-      if(isset($nbLine["color"])){
-        $addColor="<div style=\"background-color:".$nbLine["color"].";border:1px solid #AAAAAA;border-radius:50%;width:20px;height:18px;float:left;\">&nbsp;</div><div style=\"color:".$nbLine["color"].";radius:50%;width:10px;height:10px;float:left;\">&nbsp;</div>"
+      if(isset($nbline["color"])){
+        $addColor="<div style=\"background-color:".$nbline["color"].";border:1px solid #AAAAAA;border-radius:50%;width:20px;height:18px;float:left;\">&nbsp;</div><div style=\"color:".$nbline["color"].";radius:50%;width:10px;height:10px;float:left;\">&nbsp;</div>"
                  ."<div style=\"float:left;\">".$name."</div>";
       }
       echo "  <tr>";
@@ -284,10 +284,10 @@ function addTab($param){
       echo $addColor;
       echo "    </td>";
       echo "    <td width=\"10%\">";
-      echo $nbLine["nb"];
+      echo $nbline["nb"];
       echo "    </td>";
       echo "    <td width=\"40%\">";
-      echo '<div style="background-color:#3c78b5;margin-top: 3px;position:relative;height:13px;width:'.round(100*($nbLine["nb"]/$total)).'px;float:left;">&nbsp;</div><div style="position:relative;margin-left:10px;width:50px; float: left;">'.round(100*($nbLine["nb"]/$total))." %</div>";
+      echo '<div style="background-color:#3c78b5;margin-top: 3px;position:relative;height:13px;width:'.round(100*($nbline["nb"]/$total)).'px;float:left;">&nbsp;</div><div style="position:relative;margin-left:10px;width:50px; float: left;">'.round(100*($nbline["nb"]/$total))." %</div>";
       echo "    </td>";
       echo "  </tr>";
     }
