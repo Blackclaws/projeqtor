@@ -92,6 +92,8 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
   <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value=""/>
   <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
+  <input type="hidden" name="daysWorkFuture" id="daysWorkFuture" value="0"/>
+  <input type="hidden" name="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
   <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
