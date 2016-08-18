@@ -109,6 +109,16 @@ class IndicatorValue extends SqlElement {
   	  	return;
   	  }
   	}
+  	if (property_exists($obj, 'idProject')) {
+  	  if ($class=='Project') {
+  	    $proj=$obj;
+  	  } else {
+  	    $proj=new Project($obj->idStatus, true);
+  	  }
+  	  if ($proj->isUnderConstruction) { // Project "under construction" : do not generate indicator alerts
+  	    return;
+  	  }
+  	}
   	if ($def->nameIndicatorable!=$class) {
   		errorLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
   		return;
@@ -285,6 +295,17 @@ class IndicatorValue extends SqlElement {
         	$date=$obj->$pe->realStartDate . " 00:00:00";
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
+        break;
+      case 'DELAY' : // name of field to compare on columnName
+        $date=date('Y-m-d H:i:s');
+        if ($obj and $obj->done) {
+          if (substr($this->code,-3)=='DDT'){
+            $date=$obj->doneDateTime;
+          } else {
+            $date=$obj->doneDate . " 00:00:00";
+          }
+          $this->status=($date>$this->targetDateTime)?'KO':'OK';
+        }
         break;
   	}
     if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime) {

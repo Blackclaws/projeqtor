@@ -191,6 +191,73 @@ function dispatchWorkValueChange(rowId, colId) {
   if (isNaN(newWorkValue)) {
     newWorkValue=0;
   }
+  if(parseInt(dojo.byId('isAdministrative_' + rowId + '_' + colId).value)==0){
+    //daysWorkFuture daysWorkFutureBlocking
+    isFuture=dojo.byId('colIsFuture_' + colId).value==1;
+    isFutureBlocking=dojo.byId('colIsFutureBlocking_' + colId).value==1;
+    daysWorkFutureV=dojo.byId('daysWorkFuture').value;
+    daysWorkFutureBlockingV=dojo.byId('daysWorkFutureBlocking').value;
+    toAdd=rowId+"|"+colId;
+    if(newWorkValue!=0){
+      if(isFuture)
+        if(daysWorkFutureV==0){
+          daysWorkFutureV=[];
+          daysWorkFutureV.push(rowId+"|"+colId);
+        }else{
+          daysWorkFutureV=daysWorkFutureV.split(',');
+          find=false;
+          for(var ite in daysWorkFutureV){
+            if(daysWorkFutureV[ite]==toAdd)find=true;
+          }
+          if(!find){
+            daysWorkFutureV.push(toAdd);
+          }
+        }
+      if(isFutureBlocking)
+        if(daysWorkFutureBlockingV==0){
+          daysWorkFutureBlockingV=[];
+          daysWorkFutureBlockingV.push(rowId+"|"+colId);
+        }else{
+          daysWorkFutureBlockingV=daysWorkFutureBlockingV.split(',');
+          find=false;
+          for(var ite in daysWorkFutureBlockingV){
+            if(daysWorkFutureBlockingV[ite]==toAdd)find=true;
+          }
+          if(!find){
+            daysWorkFutureBlockingV.push(toAdd);
+          }
+        }
+    }else{
+      if(isFuture)
+        if(daysWorkFutureV!=0){
+          daysWorkFutureV=daysWorkFutureV.split(',');
+          console.log(daysWorkFutureV);
+          find=false;
+          for(var ite in daysWorkFutureV){
+            if(daysWorkFutureV[ite]==toAdd)daysWorkFutureV.splice(ite, 1);
+          }
+        }
+      if(isFutureBlocking)
+        if(daysWorkFutureBlockingV!=0){
+          daysWorkFutureBlockingV=daysWorkFutureBlockingV.split(',');
+          for(var ite in daysWorkFutureBlockingV){
+            if(daysWorkFutureBlockingV[ite]==toAdd)daysWorkFutureBlockingV.splice(ite, 1);
+          }
+        }
+    }
+    toAddFuture='';
+    for(var ite in daysWorkFutureV){
+      toAddFuture+=(ite==0 ? '' : ',')+daysWorkFutureV[ite];
+    }
+    if(toAddFuture=='')toAddFuture='0';
+    dojo.byId('daysWorkFuture').value=toAddFuture;
+    toAddFutureBlocking='';
+    for(var ite in daysWorkFutureBlockingV){
+      toAddFutureBlocking+=(ite==0 ? '' : ',')+daysWorkFutureBlockingV[ite];
+    }
+    if(toAddFutureBlocking=='')toAddFutureBlocking='0';
+    dojo.byId('daysWorkFutureBlocking').value=toAddFutureBlocking;
+  }
   var diff=newWorkValue-oldWorkValue;
   // Update sum for column
   var oldSum=dijit.byId('colSumWork_' + colId).get("value");
@@ -331,23 +398,31 @@ function checkCapacity() {
   }
 }
 
-function saveImputation() {
-  var futureInput=false;  
-  for (colId=1; colId<=7; colId++) {
-  valSum=dijit.byId('colSumWork_' + colId).get("value");
-  isFuture=dojo.byId('colIsFuture_' + colId).value;
-  if (isFuture=='1' && valSum>0) {
-    futureInput=true;
-  }
-  } 
-  if (futureInput) {
+function validFutureWorkDate(){
   valid=function() {
+    formChangeInProgress=false; 
+    submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
+  };
+  nbDays=dojo.byId('nbFutureDays').value;
+  var msg=i18n('msgRealWorkInTheFuture',new Array(nbDays));
+  showConfirm(msg,valid);
+}
+
+function saveImputation() {
+  var futureInput=dojo.byId('daysWorkFuture').value != '0' ? true : false;
+  var futureInputBlocking=dojo.byId('daysWorkFutureBlocking').value != '0' ? true : false;;  
+
+  if(futureInputBlocking){
+    nbDays=dojo.byId('nbFutureDaysBlocking').value;
+    showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDays)));
+  }else if (futureInput) {
+    valid=function() {
       formChangeInProgress=false; 
       submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
     };
     nbDays=dojo.byId('nbFutureDays').value;
     var msg=i18n('msgRealWorkInTheFuture',new Array(nbDays));
-  showConfirm(msg,valid);
+    showConfirm(msg,valid);
   } else {
     formChangeInProgress=false; 
     submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
@@ -429,9 +504,17 @@ function updateDispatchWorkTotal() {
 function dispatchWorkSave() {
   var listArray=new Array();
   var cpt=1;
+  var futureInput=false;  
+  var futureInputBlocking=false;  
+  var nbDays=dojo.byId('nbFutureDays').value;
+  var nbDaysTime=dojo.byId('nbFutureDaysTime').value;
+  var nbDaysBlocking=dojo.byId('nbFutureDaysBlocking').value;
+  var nbDaysBlockingTime=dojo.byId('nbFutureDaysBlockingTime').value;
+  var isAdministrative=dojo.byId('isAdministrative').value==1;
   while (dijit.byId('dispatchWorkValue_'+cpt)) {
     res=dijit.byId('dispatchWorkResource_'+cpt).get('value');
     dat=dijit.byId('dispatchWorkDate_'+cpt).get('value');
+    val=dijit.byId('dispatchWorkValue_'+cpt).get('value');
     if ( res && dat) {
       var key=res+"#"+dat;
       if (key in listArray) {
@@ -440,8 +523,28 @@ function dispatchWorkSave() {
       }
       listArray[res+"#"+dat]='OK';
     }
+    if(dat!=null && !isAdministrative){
+      if(dat.getTime()/1000>nbDaysTime && val!=0)futureInput=true;
+      if(dat.getTime()/1000>nbDaysBlockingTime && val!=0)futureInputBlocking=true;
+    }
     cpt++;
   }
+  
+  if(futureInputBlocking){
+    showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDaysBlocking)));
+  }else if(futureInput){
+    valid=function() {
+      finishDispatchWorkSave();
+    };
+    var msg=i18n('msgRealWorkInTheFuture',new Array(nbDays));
+    showConfirm(msg,valid);
+  }else{
+    finishDispatchWorkSave();
+  }
+  
+}
+
+function finishDispatchWorkSave(){
   updateDispatchWorkTotal();
   sum=dijit.byId('dispatchWorkTotal').get('value');
   if (dijit.byId('WorkElement_realWork')) {
