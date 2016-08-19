@@ -6232,8 +6232,6 @@ function saveCreationInfo() {
     }
   }
   formChanged();
-  dojo.byId('buttonDivCreationInfo').innerHTML="";
-  forceRefreshCreationInfo=true;
   saveObject();
   dijit.byId('dialogCreationInfo').hide();
 }

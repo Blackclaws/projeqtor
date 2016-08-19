@@ -59,6 +59,13 @@ if ($obj->id and $updateRight) {
   }
 }
 ?>
+<div style="float:left;">
+<?php 
+if (property_exists ( $obj, 'lastUpdateDateTime' ) && $obj->lastUpdateDateTime) {
+  echo formatDateThumb(null,$obj->lastUpdateDateTime,'left',32,'Update');
+}
+?>
+</div>
 <div style="padding-right:16px;" <?php echo ($canUpdateCreationInfo)?'class="buttonDivCreationInfoEdit" onClick="changeCreationInfo();"':'';?>>
 <?php 
 if (!$comboDetail and $obj->id and property_exists ( $obj, 'idUser' )) {
@@ -72,7 +79,7 @@ if (!$comboDetail and $obj->id and property_exists ( $obj, 'idUser' )) {
 	if ($creationDate) {
     echo formatDateThumb($creationDate,null,'right',32);
   }
-      
+
 }
 if (property_exists ( $obj, 'isPrivate' )) {
   echo '<div style="position:absolute;top:0px;">';
