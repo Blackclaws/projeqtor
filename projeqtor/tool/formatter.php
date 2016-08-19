@@ -249,7 +249,7 @@ function formatColorThumb($col,$val, $size=20, $float='right',$name="") {
   $res.='>&nbsp;</div>';
   return $res;
 }
-function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
+function formatDateThumb($creationDate,$updateDate,$float='right',$size=22,$addName="") {
   global $print;
   if ($print) return "";//htmlFormatDate($creationDate);
   if (! trim($creationDate) and ! trim($updateDate)) return '';
@@ -261,13 +261,18 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
     $color='Red';
   } else if (addWorkDaysToDate($date,2)==$today) {
     $color='Yellow';
-  }  
-  $title=i18n('thumbCreationTitle',array('<b>'.htmlFormatDate($creationDate).'</b>'));
+  } 
+  $title='';
+  if($creationDate)$title=i18n('thumbCreationTitle',array('<b>'.htmlFormatDate($creationDate).'</b>'));
   if ($updateDate and $updateDate!=$creationDate) {
-    $title.="<br><i>".i18n('thumbUpdateTitle',array('<b>'.htmlFormatDate($updateDate).'</b>')).'</i>';
+    if($title==''){
+      $title.="<i>".i18n('thumbUpdateTitle',array('<b>'.htmlFormatDate($updateDate).'</b>')).'</i>';
+    }else{
+      $title.="<br><i>".i18n('thumbUpdateTitle',array('<b>'.htmlFormatDate($updateDate).'</b>')).'</i>';
+    }
   }
   $title=htmlEncode($title,'quotes');
-  $file="../view/css/images/calendar$color$size.png";
+  $file="../view/css/images/calendar$color$addName$size.png";
   $res='<span style="position:relative;float:'.$float.';padding-right:3px">';
   $res.='<img ';
 	$res.=' src="'.$file.'" ';
@@ -327,6 +332,7 @@ function formatCommentThumb($comment) {
   $res='';
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
+  debugLog($title);
   $res.='<img style="float:right;padding-right:3px;" src="img/note.png" ';
   $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
   $res.='/>';

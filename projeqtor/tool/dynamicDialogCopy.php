@@ -229,7 +229,7 @@ if($copyType=="copyObjectTo"){
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel" >
-               <label for="copyProjectToName" ><?php echo i18n("copyToProjectCode") ?>&nbsp;:&nbsp;</label>
+               <label for="copyProjectToName" ><?php echo i18n("colProjectCode") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <div id="copyProjectToProjectCode" name="copyProjectToProjectCode" dojoType="dijit.form.ValidationTextBox"

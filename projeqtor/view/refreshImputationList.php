@@ -56,12 +56,12 @@ if (array_key_exists('showPlannedWork',$_REQUEST)) {
 }
 Parameter::storeUserParameter('imputationShowPlannedWork',$showPlannedWork);
 
-$showIdActivities=0;
-if (array_key_exists('showIdActivitiesT',$_REQUEST)) {
-  $showIdActivities=1;
+$showId=0;
+if (array_key_exists('showIdT',$_REQUEST)) {
+  $showId=1;
 }
-Parameter::storeUserParameter('showIdActivities',$showIdActivities);
-if($showIdActivities==1)$showIdActivities=true; else $showIdActivities=false;
+Parameter::storeUserParameter('showId',$showId);
+if($showId==1)$showId=true; else $showId=false;
 
 $hideDone=0;
 if (array_key_exists('hideDone',$_REQUEST)) {
@@ -87,7 +87,7 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo htmlEncode($rangeValue);?>"/>
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
-  <input type="checkbox" name="showIdActivitiesT" id="showIdActivitiesT" style="display: none;" />
+  <input type="checkbox" name="showIdT" id="showIdT" style="display: none;" />
   <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
   <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
   <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value=""/>
@@ -98,6 +98,6 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
-ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings, $week, $year, $showIdActivities);
+ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings, $week, $year, $showId);
 ?>
 </form>

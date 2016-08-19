@@ -269,7 +269,7 @@ function addTab($param){
     $addIfNoParam="";
     if(!$param['withParam'])$addIfNoParam='<span style="font-style:italic;color:#999999;">&nbsp;('.i18n('noFilterClause').')</span>';
     ksort($res);
-    echo '<h2 style="color:#333333;font-size:16px;">'.(substr(i18n("dashboardTicketMainTitleBase"),-1)==" "?i18n("dashboardTicketMainTitleBase"):i18n("dashboardTicketMainTitleBase")." ").(i18n($param["title"])).$addIfNoParam."</h2>";
+    echo '<h2 style="color:#333333;font-size:16px;">'.trim(i18n("dashboardTicketMainTitleBase"))." ".(i18n($param["title"])).$addIfNoParam."</h2>";
     echo "<table width=\"95%\" class=\"tabDashboardTicketMain\">";
     echo '<tr><td class="titleTabTicket">'.i18n($param["title"]).'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnCount").'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnPourcent")."</td></tr>";
     foreach ($res as $idSort=>$nbline){
@@ -407,7 +407,7 @@ function addParametersDashboardTicketMain($prefix="t"){
   if (Sql::isPgsql()) {
     if($recent=="1")$result.=" AND $prefix.creationDateTime>=NOW() - INTERVAL '" . intval($nbDay) . " day' ";
     if($recent=="2")$result.=" AND $prefix.doneDateTime>=NOW() - INTERVAL '" . intval($nbDay) . " day' ";
-    if($recent=="3")$result.=" AND $prefix.id IN (SELECT t2.refId FROM history t2 WHERE t2.refId=$prefix.id AND t2.refType='Ticket' AND t2.operationDate>=NOW() - INTERVAL '" . intval($nbDay) . " day' )) ";
+    if($recent=="3")$result.=" AND $prefix.id IN (SELECT t2.refId FROM history t2 WHERE t2.refId=$prefix.id AND t2.refType='Ticket' AND t2.operationDate>=NOW() - INTERVAL '" . intval($nbDay) . " day' ) ";
   } else {
     if($recent=="1")$result.=" AND $prefix.creationDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
     if($recent=="2")$result.=" AND $prefix.doneDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";

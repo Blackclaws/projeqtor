@@ -69,7 +69,7 @@
     </span>
   </td>
   <td style="width:8%; text-align:right;"  >
-      <div style="width:90px;margin-right:16px;" id="buttonDivCreationInfo" 
+      <div style="width:120px;margin-right:16px;" id="buttonDivCreationInfo" 
         ><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
   <td style="width:2%;">

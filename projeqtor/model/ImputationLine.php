@@ -443,7 +443,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false, 
-			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false,$currentWeek=0,$currentYear=0,$showIdActivities=false) {
+			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false,$currentWeek=0,$currentYear=0,$showId=false) {
 		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
 		$outMode=preg_replace('/.*(pdf|csv|html|mpp).*/','$1', $outMode); // can only be [pdf|csv|html|mpp]
 //scriptLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");
@@ -766,7 +766,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if (! $print and $canGoto) {
 			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
 			}
-			echo '>' . (($line->refType == "Activity" && $showIdActivities) ? $line->name.' #'.$line->refId : $line->name) ;
+			echo '>' . (($showId && $line->refId) ? '#'.$line->refId.' - '.$line->name: $line->name) ;
 			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
 				
 			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
@@ -774,10 +774,12 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '</td>';
 			if ($line->comment and !$print) {
-			  $explodeComment=explode("\n", $line->comment);
-					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', null, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>
-					    <td onclick="loadDialog(\'dialogCommentImputation\', null, true, \'&year='.$currentYear.'&week='.$currentWeek.'&refTypeComment='.$line->refType.'&refIdComment='.$line->refId.'&idAssignment='.$line->idAssignment.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
-			}
+			  $explodeComment=explode("\n\n", $line->comment);
+					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
+		  }
+		  
+		  if($line->idAssignment)echo '<td onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
+		  
 			echo '</tr></table>';
 			echo '</td>';
 			//echo '<td class="ganttDetail" align="center">' . htmlEncode($line->description) . '</td>';
@@ -816,6 +818,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '</td>';
 			$curDate=$startDate;
+			$listProject=Project::getAdminitrativeProjectList(true);
 			for ($i=1; $i<=$nbDays; $i++) {
 				echo '<td class="ganttDetail" align="center" width="'.$inputWidth.'px;"';
 				if ($today==$curDate) {
@@ -825,6 +828,8 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				}
 				echo '>';
 				if ($line->imputable) {
+				  $isAdministrative=false;
+				  if(array_key_exists($line->idProject, $listProject))$isAdministrative=true;
 					$valWork=$line->arrayWork[$i]->work;
 					$idWork=$line->arrayWork[$i]->id;
 					if (! $print) {
@@ -860,6 +865,8 @@ scriptLog("      => ImputationLine->getParent()-exit");
 								echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
 								. ' name="workId_' . $i . '[]"'
 								. ' value="' . $idWork . '"/>';
+								echo '<input type="hidden" id="isAdministrative_' . $nbLine . '_' . $i . '"'
+								. ' value="' . ($isAdministrative ? 1 : 0) . '"/>';
 							echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
 							. ' value="' .  Work::displayImputation($valWork) . '"/>';
 						}
@@ -933,8 +940,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 
 		$curDate=$startDate;
 		$nbFutureDays=Parameter::getGlobalParameter('maxDaysToBookWork');
+		if($nbFutureDays==null || $nbFutureDays=='')$nbFutureDays=10000000;
+		$nbFutureDaysBlocking=Parameter::getGlobalParameter('maxDaysToBookWorkBlocking');
+		if($nbFutureDaysBlocking==null || $nbFutureDaysBlocking=='')$nbFutureDaysBlocking=10000000;
 		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days", strtotime($today)));
+		$maxDateFutureBlocking=date('Y-m-d',strtotime("+".$nbFutureDaysBlocking." days", strtotime($today)));
 		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
+		if (! $print) echo '<input type="hidden" id="nbFutureDaysBlocking" value="'.$nbFutureDaysBlocking.'" />';
 		if (! $print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
@@ -959,6 +971,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo ' >';
 				echo '</div>';
 				echo '<input type="hidden" id="colIsFuture_' . $i . '" value="'.(($curDate>$maxDateFuture)?1:0).'" />';
+				echo '<input type="hidden" id="colIsFutureBlocking_' . $i . '" value="'.(($curDate>$maxDateFutureBlocking)?1:0).'" />';
 			} else {
 				echo $colSum[$i];
 			}

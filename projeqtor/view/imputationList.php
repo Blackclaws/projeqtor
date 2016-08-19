@@ -52,8 +52,8 @@ if ($displayHandledGlobal=="YES") {
 }
 $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOnlyCurrentWeekMeetings');
 
-$showIdActivities=false;
-if(Parameter::getUserParameter("showIdActivities")!=null && Parameter::getUserParameter("showIdActivities")==1)$showIdActivities=true;
+$showId=false;
+if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("showId")==1)$showId=true;
 ?>
 
 <div dojoType="dijit.layout.BorderContainer">
@@ -129,12 +129,12 @@ if(Parameter::getUserParameter("showIdActivities")!=null && Parameter::getUserPa
                 </div>
               </td>
               <td style="width: 10%;text-align: right; align: right;min-width:150px" >
-      	        &nbsp;&nbsp;<?php echo i18n("labelShowIdActivities");?>
+      	        &nbsp;&nbsp;<?php echo i18n("labelShowId");?>
               </td>
               <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-				        <div title="<?php echo i18n('labelShowIdActivities')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+				        <div title="<?php echo i18n('labelShowId')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
 				        class="whiteCheck"
-				         id="showIdActivities" name="showIdActivities" <?php if ($showIdActivities) echo 'checked';?>>
+				         id="showId" name="showId" <?php if ($showId) echo 'checked';?>>
 				          <script type="dojo/method" event="onChange" >
                     return refreshImputationList();
                   </script>
@@ -261,7 +261,7 @@ if(Parameter::getUserParameter("showIdActivities")!=null && Parameter::getUserPa
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;" />     
        <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;" />
-       <input type="checkbox" name="showIdActivitiesT" id="showIdActivitiesT" style="display: none;" />
+       <input type="checkbox" name="showIdT" id="showIdT" style="display: none;" />
        <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
        <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
        <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
@@ -272,7 +272,7 @@ if(Parameter::getUserParameter("showIdActivities")!=null && Parameter::getUserPa
        <input type="hidden" name="daysWorkFuture" id="daysWorkFuture" value="0"/>
        <input type="hidden" name="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
       <?php if (! isset($print) ) {$print=false;}
-      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings,$currentWeek,$currentYear, $showIdActivities);?>
+      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings,$currentWeek,$currentYear, $showId);?>
      </form>
   </div>
 </div>

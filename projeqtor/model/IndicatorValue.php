@@ -38,6 +38,7 @@ class IndicatorValue extends SqlElement {
   public $refType;
   public $refId;
   public $idIndicatorDefinition;
+  public $targetDateColumnName;
   public $targetDateTime;
   public $targetValue;
   public $warningTargetDateTime;
@@ -147,12 +148,16 @@ class IndicatorValue extends SqlElement {
     if (property_exists($obj, 'handled')) {
       $indVal->handled=$obj->handled;
     }
-    if (property_exists($obj, 'done')) {
+    $targetDateColumnName=$indVal->targetDateColumnName;
+    if ($targetDateColumnName and $obj and property_exists($obj, $targetDateColumnName)) {
+      $indVal->done=(trim($obj->$targetDateColumnName))?'1':'0';
+    } else if (property_exists($obj, 'done')) {
       $indVal->done=$obj->done;
     }
     $indVal->code=$def->codeIndicator;
     $indVal->type=$def->typeIndicator;
   	$ind=new Indicator($def->idIndicator);
+  	$indVal->targetDateColumnName=$ind->targetDateColumnName;
   	if ($ind->type=="delay") {
   		$fld=$ind->name;
   		if ($class=='Risk' or $class=='Issue') {
@@ -164,6 +169,7 @@ class IndicatorValue extends SqlElement {
   		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  } else {
   	    $indVal->targetDateTime=$obj->$fld;
+  	    if ($fld=="meetingDate" and property_exists($obj,'meetingStartTime')) $indVal->targetDateTime.=" ".$obj->meetingStartTime;
   	    $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  }
   	  if (! trim($indVal->targetDateTime)) {
@@ -251,9 +257,10 @@ class IndicatorValue extends SqlElement {
     if ($this->type!='delay') {
   		return;
   	}
-  	if (!$obj and ($this->idle or $this->done)) {
+  	if (!$obj and ($this->idle or ($this->done and $this->code!='DELAY'))) {
   		return;
   	} 
+  	$targetControlColumnName='done';
   	switch ($this->code) {
   		case 'IDDT' :   //InitialDueDateTime
   		case 'ADDT' :   //ActualDueDateTime
@@ -276,7 +283,7 @@ class IndicatorValue extends SqlElement {
       case 'IED' :    //InitialEndDate
       case 'VED' :    //ValidatedEndDate
       case 'PED' :    //PlannedEndDate
-      	$date=date('Y-m-d');
+      	$date=date('Y-m-d'). " 00:00:00";
         if ($obj and $obj->done) {
         	$date=$obj->doneDate . " 00:00:00";
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
@@ -298,28 +305,48 @@ class IndicatorValue extends SqlElement {
         break;
       case 'DELAY' : // name of field to compare on columnName
         $date=date('Y-m-d H:i:s');
-        if ($obj and $obj->done) {
-          if (substr($this->code,-3)=='DDT'){
-            $date=$obj->doneDateTime;
+        $targetControlColumnName=$this->targetDateColumnName;
+        if ($obj and trim($obj->$targetControlColumnName)) {
+          if (substr($targetControlColumnName,-8)=='DateTime'){
+            $date=$obj->$targetControlColumnName;
           } else {
-            $date=$obj->doneDate . " 00:00:00";
+            $date=$obj->$targetControlColumnName . " 00:00:00";
           }
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
         break;
   	}
-    if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime) {
-      if (! $this->warningSent and !$this->done) {
+  	debugLog("date=$date ,warning=$this->warningTargetDateTime, alert=$this->alertTargetDateTime, done=$this->done");
+    if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime and !$this->done) {
+      debugLog("warning (not done)");
+      $this->warningSent='1';
+      if (! $this->warningSent ) {
+        debugLog('send Warning');
         $this->sendWarning();
-        $this->warningSent='1';
+      }
+    } else if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime and $this->done) {
+      debugLog("warning (done)");
+      $this->warningSent='1';
+      if (! $this->warningSent) {
+        debugLog('send Warning');
+        $this->sendWarning();
       }
     } else {
       $this->warningSent='0';
     }
-    if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime) {
-      if (! $this->alertSent and !$this->done) {
+    if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime and !$this->done) {
+      debugLog("alert (not done)");
+      $this->alertSent='1';
+      if (! $this->alertSent) {
+        debugLog('send Alert');
         $this->sendAlert();
-        $this->alertSent='1';
+      }
+    } else if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime and $this->done) {
+      debugLog("alert (done)");
+      $this->alertSent='1';
+      if (! $this->alertSent) {
+        debugLog('send Alert');
+        $this->sendAlert();
       }
     } else {
       $this->alertSent='0';
@@ -580,11 +607,11 @@ class IndicatorValue extends SqlElement {
   }
   
   public function save() {
-  	$this->targetDateTime=trim($this->alertTargetDateTime);
+  	$this->targetDateTime=trim($this->targetDateTime);
   	if ($this->targetDateTime=='00:00' or $this->targetDateTime=='00:00:00') $this->targetDateTime='';
   	$this->warningTargetDateTime=trim($this->warningTargetDateTime);
   	if ($this->warningTargetDateTime=='00:00' or $this->warningTargetDateTime=='00:00:00') $this->warningTargetDateTime='';
-  	$this->alertTargetDateTime=trim($this->warningTargetDateTime);
+  	$this->alertTargetDateTime=trim($this->alertTargetDateTime);
   	if ($this->alertTargetDateTime=='00:00' or $this->alertTargetDateTime=='00:00:00') $this->alertTargetDateTime='';
   	return parent::save();
   }
