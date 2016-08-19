@@ -37,6 +37,7 @@ class Indicator extends SqlElement {
   public $code;
   public $type;
   public $sortOrder;
+  public $targetDateColumnName;
   public $idle;
   public $_sec_void;
   public $_isNameTranslatable = true;

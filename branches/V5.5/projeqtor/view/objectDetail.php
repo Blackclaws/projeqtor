@@ -1488,7 +1488,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
           if ($col == 'idWarningDelayUnit' or $col == 'idAlertDelayUnit') {
             $critFld='idIndicator';
-            $critVal=$obj->idIndicatorable;
+            $critVal=$obj->idIndicator;
           }
         }
         if (get_class($obj) == 'PredefinedNote') {

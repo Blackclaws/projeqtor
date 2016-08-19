@@ -3239,6 +3239,10 @@ function newObject() {
 }
 
 function saveObject() {
+  if(dojo.byId('buttonDivCreationInfo')!=null){
+    dojo.byId('buttonDivCreationInfo').innerHTML="";
+    forceRefreshCreationInfo=true;
+  }
   if (waitingForReply) {
     showInfo(i18n("alertOngoingQuery"));
     return true;
