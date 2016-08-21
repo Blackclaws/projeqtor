@@ -88,7 +88,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
     <table >
       <tr height="100%" style="vertical-align: middle;">
         <td width="50px" align="center">
-          <img src="css/images/icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32.png" width="32" height="32" />
+         <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32" style="margin-left:9px;width:32px;height:32px" /></div>    
         </td>
         <td><span class="title" ><?php echo i18n("menu" . $objectClass);?></span></td>
         <td style="text-align:right;" width="200px">
@@ -130,7 +130,9 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
 <table width="100%" class="listTitle" >
   <tr >
     <td width="50px" align="center">
-      <img src="css/images/icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32.png" width="32" height="32" />
+       <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
+       <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
+    
     </td>
     <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
     <td>   

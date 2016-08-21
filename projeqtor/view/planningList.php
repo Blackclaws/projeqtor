@@ -86,7 +86,7 @@ if ($canPlan) {
 		  <tr height="27px">
 		    <td width="50px" align="center">
 		      <span style="position:absolute; left:10px; top:7px">
-            <img src="css/images/iconPlanning32.png" width="32" height="32" />
+            <?php echo formatIcon('Planning', 32, null, true);?>
           </span>
 		    </td>
 		    <td><span class="title"><?php echo i18n('menuPlanning');?></span><br/></td>

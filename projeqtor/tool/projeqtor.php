@@ -2762,4 +2762,15 @@ function debugPrintTraceStack() {
     debugTraceLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
   }
 }
+
+function formatIcon ($class, $size, $title=null, $withHighlight=false) {
+  //if ($size=="22") $size==24;
+  $result='';
+  if ($withHighlight) {
+    $result.='<div style="position:absolute;left:0px;width:43px;top:0px;height:32px;" class="iconHighlight">&nbsp;</div>';
+  }
+  $position=($withHighlight)?'position:absolute;top:0;left:5px;':'';
+  $result.="<div class='icon$class$size' style='width:$size;height:$size;$position;' title='$title'>&nbsp;</div>"; 
+  return $result;
+}
 ?>
