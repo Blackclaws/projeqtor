@@ -198,6 +198,7 @@ class IndicatorValue extends SqlElement {
   
   public function checkPercent($obj,$def) {
   	$pe=get_class($obj).'PlanningElement';
+  	$this->status="";
   	switch ($this->code) {
       case 'PCOVC' :   //PlannedCostOverValidatedCost
       	$this->targetValue=$obj->$pe->validatedCost;
@@ -261,6 +262,7 @@ class IndicatorValue extends SqlElement {
   		return;
   	} 
   	$targetControlColumnName='done';
+  	$this->status='';
   	switch ($this->code) {
   		case 'IDDT' :   //InitialDueDateTime
   		case 'ADDT' :   //ActualDueDateTime

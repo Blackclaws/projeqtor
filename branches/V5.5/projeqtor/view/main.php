@@ -75,7 +75,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   
   <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <?php if (! isHtml5()) {?>
   <script type="text/javascript" src="../external/pdfmake/pdfmake.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <?php }?>
   <script type="text/javascript" src="../external/pdfmake/vfs_fonts.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
@@ -601,11 +603,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       <table width="100%">
         <tr>
           <td width="5%"  >
-            <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
+            <div class="pseudoButton disconnectTextClass" style="min-width:100px" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
               <table >
                 <tr>
                   <td>
-                    <img style="height:24px" src="img/disconnect.png" />
+                    <div class="disconnectClass">&nbsp;</div>
                   </td>
                   <td>
                     &nbsp;<?php echo i18n('disconnect'); ?>&nbsp;&nbsp;
@@ -621,18 +623,20 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             $buttonUserParameter=securityCheckDisplayMenu($menu->id,$menu);
             if ($buttonUserParameter) {?>
             <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
-              <table >
+              <table style="width:100%">
                 <tr>
-                  <td>
-                    <?php $user=getSessionUser();
+                <?php $user=getSessionUser();
                        $imgUrl=Affectable::getThumbUrl('User',$user->id, 22,true);
-                       if (!$imgUrl) {
-                         $imgUrl="css/images/iconUserParameter22.png";
-                       }?>
-                       
+                  if ($imgUrl) {?>  
+                  <td style="width:24px;position:relative;vertical-align:middle;position:relative;">          
                     <img style="border-radius:13px;height:26px" src="<?php echo $imgUrl; ?>" />
                   </td>
-                  <td>&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
+                <?php } else {?>
+                    <td style="width:24px;padding-top:2px;">
+                      <div class="iconUserParameter22">&nbsp;</div> 
+                    </td>
+                <?php }?>
+                  <td style="vertical-align:middle;">&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
                 </tr>
               </table>      
             </div>
@@ -692,7 +696,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
                   <tr>
-                    <td style="color:#000000;position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
+                    <td style="color:#545381;position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
                       <?php echo "$copyright<br>$version";?>
                     </td>
                     <td  style="width:35px">

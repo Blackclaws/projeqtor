@@ -558,7 +558,9 @@
       if ($alertLevel=='ALERT') {
       	$color='background-color:#FFAAAA;';
       } else if ($alertLevel=='WARNING') {
-      	$color='background-color:#FFFFAA;';         
+      	$color='background-color:#FFDDAA;';         
+      } else if ($alertLevel=='CRITICAL') {
+        $color='background-color:#FF5555;';
       }
       echo '<tr ' . $goto . ' id="displayWork_' . $cptDisplayId . '" >';
       if (!$print and $alertLevel!='NONE') {
@@ -567,7 +569,7 @@
         echo '</div>';
       }
       echo '  <td class="messageData" style="'.$color.'">' . 
-                   '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
+                   '<table><tr><td>'.formatIcon($class,16,i18n($class)) .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
              '  <td class="messageData" style="'.$color.'">' . htmlEncode(SqlList::getNameFromId('Project', $elt->idProject)) . '</td>' .
              '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .

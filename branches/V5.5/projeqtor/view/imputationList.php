@@ -61,10 +61,10 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
        id="resultDiv" dojoType="dijit.layout.ContentPane" region="none" >
   </div>   
   <div dojoType="dijit.layout.ContentPane" region="top" id="imputationButtonDiv" class="listTitle" >
-  <table width="100%" height="27px" class="listTitle" >
-    <tr height="27px">
+  <table width="100%" height="32px" class="listTitle" >
+    <tr height="32px">
       <td width="50px" align="center">
-        <img src="css/images/iconImputation32.png" width="32" height="32" />
+        <?php echo formatIcon('Imputation', 32, null, true);?>
       </td>
       <td width="200px" ><span class="title"><?php echo i18n('menuImputation');?></span></td>
       <td>   

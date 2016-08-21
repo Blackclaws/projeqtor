@@ -33,4 +33,6 @@ $debugIEcompatibility=false;
 //$showAutoPlan=true;
 $paramSupportEmail="support@projeqtor.org";
 $pdfPlanningBeta='true';
+
+$testFlatTheme=true;
 //======= END

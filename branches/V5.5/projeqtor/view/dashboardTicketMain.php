@@ -89,9 +89,8 @@
 			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: 999"></div>
 
 		<table width="100%">
-			<tr height="100%" style="vertical-align: middle;">
-				<td width="50px" align="center"><img
-					src="css/images/iconDashboardTicket32.png" width="32" height="32" /></td>
+			<tr height="32px" >
+				<td width="50px" align="center"><?php echo formatIcon('TicketDashboard', 32, null, true);?></td>
 				<td><span class="title"><?php echo i18n('dashboardTicketMainTitle');?>&nbsp;</span>
 				</td>
 			</tr>

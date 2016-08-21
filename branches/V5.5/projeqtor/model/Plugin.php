@@ -354,6 +354,9 @@ class Plugin extends SqlElement {
     } 
     
     public static function includeAllFiles () {
+      global $testFlatTheme;
+      if (isset($testFlatTheme) and $testFlatTheme)
+      echo '<link rel="stylesheet" type="text/css" href="../view/css/projeqtorFlat.css" />'; // Test to check new theme
       $list=self::getActivePluginList();
       foreach ($list as $plugin) {
         $plugin->includeFiles();

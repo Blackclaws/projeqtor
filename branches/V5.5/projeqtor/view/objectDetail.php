@@ -1109,9 +1109,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           }
           echo '<span style="width:20px; position: absolute; left: 5px;" id="alertId" >';
           if ($alertLevel == 'ALERT') {
-            echo '<image src="../view/css/images/iconAlert32.png" />';
+            echo '<image src="../view/css/images/indicatorAlert32.png" />';
           } else {
-            echo '<image src="../view/css/images/iconDecision32.png" />';
+            echo '<image src="../view/css/images/indicatorWarning32.png" />';
           }
           echo '</span>';
           echo '<div dojoType="dijit.Tooltip" connectId="alertId" position="below">';
@@ -2780,7 +2780,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
             echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
           }
         } else {
-          echo '<img src="css/images/icon'.get_class($linkObj).'16.png" />';
+          echo formatIcon(get_class($linkObj),16);
         }
         echo '</td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
