@@ -63,7 +63,8 @@
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
   <td  style="z-index:-1;width:40%;position:relative;white-space:nowrap;">
-    <img style="position:relative; left:10px;" src="css/images/icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32.png" width="32" height="32" />
+    <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
+    <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>

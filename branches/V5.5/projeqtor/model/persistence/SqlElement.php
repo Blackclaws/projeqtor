@@ -4043,14 +4043,18 @@ abstract class SqlElement {
 		$desc='';
 		foreach($lst as $indVal) {
 			if ($indVal->warningSent and $level!="ALERT") {
-				$level="WARNING";
+				$level="WARNING"; // Over warning value
 			}
 			if ($indVal->alertSent) {
-				$level="ALERT";
+				$level="ALERT"; // Over alert value
 			}
-			if ($withIndicator) {
-				$color=($indVal->alertSent)?"#FFCCCC":"#FFFFCC";
-				$desc.='<div style="font-size:80%;background-color:'.$color.'">'.$indVal->getShortDescription().'</div>';
+			if ($indVal->status=="KO") {
+			  //$level="OVER"; // Over target value
+			}
+			if ($withIndicator and ($indVal->warningSent or $indVal->alertSent) ) {
+			  if ($desc=='') $desc.='<div style="font-size:80%;color:#555555;">'.i18n('colIdIndicator').'&nbsp;:</div>';
+				$color=($indVal->alertSent)?"#FFAAAA":"#FFDDAA";
+				$desc.='<div style="font-size:80%;background-color:'.$color.';padding:2px 5px;margin:3px 0px 2px 0px;border:1px solid #aaaaaa">'.$indVal->getShortDescription().'</div>';
 				//$indDesc=$indVal->getShortDescriptionArray();
 				//$desc.=$indDesc['indicator'];
 				//$desc.=$indDesc['target'];

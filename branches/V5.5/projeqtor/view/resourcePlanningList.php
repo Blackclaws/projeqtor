@@ -74,11 +74,9 @@ if ($saveShowClosed) {
 	<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px"
 	style="z-index: 3; position: relative; overflow: visible !important;">
 		<table width="100%" height="27px" class="listTitle" >
-		  <tr height="27px">
-		    <td width="50px" align="center">
-		      <span style="position:absolute; left:10px; top:7px">
-            <img src="css/images/iconResourcePlanning32.png" width="32" height="32" />
-          </span>
+		  <tr height="32px">
+		    <td width="50px" align="center" style="position:relative">
+            <?php echo formatIcon('ResourcePlanning', 32, null, true);?>
 		    </td>
 		    <td  width="120px"><span class="title"><?php echo i18n('menuResourcePlanning');?></span></td>
 		    <td>   
