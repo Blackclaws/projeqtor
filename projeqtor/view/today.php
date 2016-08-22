@@ -67,7 +67,7 @@
     $listMsg=$msg->getSqlElementsFromCriteria(null,false,$where,$sort);
     if (count($listMsg)>0) {
     	$cpt=0;
-      echo '<table align="center" style="width:95%">';
+      echo '<table align="center" style="width:100%">';
       foreach($listMsg as $msg) {
       	$cpt++;
       	if ($cpt>$cptMax) {
@@ -113,7 +113,7 @@
     if (count($prjLst)>0) {
     	echo '<div style="width:100%; overflow-x:auto">';
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
-      echo '<table align="center" style="width:95%">'; 
+      echo '<table align="center" style="width:100%">'; 
       echo '<tr><td style="text-align:left;width:10%" class="tabLabel" >';
       echo '<span class="nobr">'. i18n('titleCountScope') . ' : </span>';
       echo '</td>';
@@ -151,7 +151,7 @@
       echo '</tr>';
       echo '</table></form>';          
       $width=($print)?'45':'55';
-      echo '<table align="center" style="width:95%; ">';
+      echo '<table align="center" style="width:100%; ">';
       echo '<tr>' .
            '  <td class="messageHeader" colspan="3">' . i18n('menuProject') . '</td>' . 
            '  <td class="messageHeader" colspan="2" width="' . ($width) . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
@@ -484,7 +484,7 @@
     } else {
       echo '<div class="section">'.ucfirst(i18n($title)).'</div><br/><div>';
     }    
-    echo '<table align="center" style="width:95%">';
+    echo '<table align="center" style="width:100%">';
     echo '<tr>' . 
            ' <td class="messageHeader" width="6%">' . ucfirst(i18n('colId')) . '</td>' .  
            ' <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdProject')) . '</td>' . 
@@ -610,7 +610,7 @@
     <div class="parametersButton">
     <?php if(1 or $user->idProfile == 9) { ?>
     <button id="todayRefreshButton" dojoType="dijit.form.Button" showlabel="false"
-      title="<?php echo i18n('enableRefresh');?>"
+      title="<?php echo i18n('enableRefresh');?>" style="width:28px"  
       iconClass="dijitButtonIcon dijitButtonIconRefresh" >
       <script type="dojo/connect" event="onClick" args="evt">
         if(typeof refreshEnabled === 'undefined') {
@@ -697,23 +697,17 @@
     </script>
 <?php
 }
-?>
-    
-    
-    
-    
-    
-    
+?>    
 	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
-	       title="<?php echo i18n('menuParameter');?>"
-	       iconClass="iconParameter16" >
+	       title="<?php echo i18n('menuParameter');?>" style="width:28px"
+	       iconClass="dijitButtonIcon iconParameter22" >
 	        <script type="dojo/connect" event="onClick" args="evt">
           loadDialog('dialogTodayParameters', null, true);
         </script>
 	    </button>
       <button id="todayPrintButton" dojoType="dijit.form.Button" showlabel="false"
-         title="<?php echo i18n('print');?>"
-         iconClass="dijitEditorIcon dijitEditorIconPrint" >
+         title="<?php echo i18n('print');?>" 
+         iconClass="dijitButtonIcon dijitButtonIconPrint" >
           <script type="dojo/connect" event="onClick" args="evt">
           showPrint('../view/today.php');
         </script>
