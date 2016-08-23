@@ -773,12 +773,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">'.htmlEncode($line->functionName).'</div>';
 			}
 			echo '</td>';
-			if ($line->comment and !$print) {
-			  $explodeComment=explode("\n\n", $line->comment);
-					echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
+			if (!$print && $line->idAssignment) {
+			  $explodeComment=array(" a");
+			  if($line->comment)$explodeComment=explode("\n\n", $line->comment);
+				echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer;'.($line->comment ? "" : "display:none;").'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
 		  }
 		  
-		  if($line->idAssignment)echo '<td onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
+		  if($line->idAssignment)
+		    echo '<td title="'.i18n('commentImputationAdd').'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
 		  
 			echo '</tr></table>';
 			echo '</td>';
@@ -948,6 +950,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
 		if (! $print) echo '<input type="hidden" id="nbFutureDaysBlocking" value="'.$nbFutureDaysBlocking.'" />';
 		if (! $print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
+		$totalWork=0;
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
 			if ($today==$curDate) {
@@ -975,11 +978,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			} else {
 				echo $colSum[$i];
 			}
+			$totalWork+=$colSum[$i];
 			echo '</span></TD>';
 			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 		}
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><span class="nobr">'
-		.  '</span></TD>';
+		echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="width: 45px; text-align: center; color: #000000 !important;" class="displayTransparent" value="'.$totalWork
+		.  '"</div></span></TD>';
+			
 		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><span class="nobr">'
 		.  '</span></TD>';
 		echo '</TR>';

@@ -75,10 +75,16 @@ if ($saveShowClosed) {
 	style="z-index: 3; position: relative; overflow: visible !important;">
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="32px">
-		    <td width="50px" align="center" style="position:relative">
-            <?php echo formatIcon('ResourcePlanning', 32, null, true);?>
+		    <td style="vertical-align:top; width:300px;">
+		      <table >
+    		    <tr height="32px">
+      		    <td width="50px" align="center">
+                <?php echo formatIcon('ResourcePlanning', 32, null, true);?>
+              </td>
+              <td width="250px"><span class="title" ><?php echo i18n('menuResourcePlanning');?></span></td>
+      		  </tr>
+    		  </table>
 		    </td>
-		    <td  width="120px"><span class="title"><?php echo i18n('menuResourcePlanning');?></span></td>
 		    <td>   
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">

@@ -292,9 +292,15 @@ class Assignment extends SqlElement {
     if (! $this->idResource) {
       $result.='<br/>' . i18n('messageMandatory', array(i18n('colIdResource')));
     } 
+    debugLog($this->refType);
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
+    }else if($this->refType=="Meeting"){
+      $elm=SqlElement::getSingleSqlElementFromCriteria("Assignment", array('refType'=>$this->refType,'refId'=>$this->refId,'idResource'=>$this->idResource));
+      if($elm && $elm->id!=$this->id){
+        $result.='<br/>' . i18n('messageResourceDouble');
+      }
     }
     if ($result=="") {
       $result='OK';
