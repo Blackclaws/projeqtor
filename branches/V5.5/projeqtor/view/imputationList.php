@@ -61,16 +61,16 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
        id="resultDiv" dojoType="dijit.layout.ContentPane" region="none" >
   </div>   
   <div dojoType="dijit.layout.ContentPane" region="top" id="imputationButtonDiv" class="listTitle" >
-  <table width="100%" height="32px" class="listTitle" >
+  <table width="100%" height="32px" class="listTitle">
     <tr height="32px">
       <td width="50px" align="center">
         <?php echo formatIcon('Imputation', 32, null, true);?>
       </td>
       <td width="200px" ><span class="title"><?php echo i18n('menuImputation');?></span></td>
-      <td>   
+      <td rowspan="2" width="500px" style="vertical-align:top">   
           <table style="width: 100%;" >
-            <tr>
-              <td nowrap="nowrap">
+            <tr height="32px">
+              <td nowrap="nowrap" style="text-align: right;">
                 <?php echo i18n("colIdResource");?> 
                 <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
                   style="width: 150px;"
@@ -85,6 +85,8 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                    $specific='imputation';
                    include '../tool/drawResourceListForSpecificAccess.php';?>  
                 </select>
+             </td>
+             <td nowrap="nowrap" style="text-align: right;">   
                 &nbsp;&nbsp;<?php echo i18n("year");?>
                 <div style="width:70px; text-align: center; color: #000000;" 
                   dojoType="dijit.form.NumberSpinner" 
@@ -97,6 +99,8 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                    return refreshImputationPeriod();
                   </script>
                 </div>
+             </td>
+             <td nowrap="nowrap" style="text-align: right;">  
                 &nbsp;&nbsp;<?php echo i18n("week");?>
                 <div style="width:55px; text-align: center; color: #000000;" 
                   dojoType="dijit.form.NumberSpinner" 
@@ -110,8 +114,10 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                   </script>
                 </div>
               </td>
-              <td>
-              <td style="width: 200px;text-align: left; align: left;"nowrap="nowrap">
+            </tr>
+            <tr height="32px">
+              <td style=""></td>
+              <td style="width: 200px;text-align: right; align: left;" nowrap="nowrap" colspan="2">
                 <?php echo i18n("colFirstDay");?> 
                 <div dojoType="dijit.form.DateTextBox"
                 	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
@@ -128,22 +134,51 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                   </script>
                 </div>
               </td>
-              <td style="width: 10%;text-align: right; align: right;min-width:150px" >
-      	        &nbsp;&nbsp;<?php echo i18n("labelShowId");?>
+            </tr>
+          </table>
+       </td>
+       <td rowspan="2">   
+          <table style="width: 100%;" >
+            <tr>
+              <td style="text-align: right; align: right;min-width:150px" >
+            	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyCurrentWeekMeetings");?>
               </td>
-              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-				        <div title="<?php echo i18n('labelShowId')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
-				        class="whiteCheck"
-				         id="showId" name="showId" <?php if ($showId) echo 'checked';?>>
-				          <script type="dojo/method" event="onChange" >
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+                <div title="<?php echo i18n('labelDisplayOnlyCurrentWeekMeetings')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
+                  id="listDisplayOnlyCurrentWeekMeetings" name="listDisplayOnlyCurrentWeekMeetings" <?php if ($displayOnlyCurrentWeekMeetings) echo 'checked';?>>
+                  <script type="dojo/method" event="onChange" >
                     return refreshImputationList();
                   </script>
-				        </div>&nbsp;
-				      </td>
-              <td style="width: 10%;text-align: right; align: right;min-width:150px" >
+                </div>&nbsp;
+              </td>
+              <td style="width:200px;text-align: right; align: right;min-width:150px" >
+              &nbsp;&nbsp;<?php echo i18n("labelShowIdle");?>
+              </td>
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+                <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
+                  id="listShowIdle" name="listShowIdle">
+                  <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+                </div>&nbsp;
+              </td>
+            </tr>
+				    <tr>
+              <td style="text-align: right; align: right;min-width:150px" >
+            	  &nbsp;&nbsp;<?php echo i18n("labelHideDone");?>
+              </td>
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+                <div title="<?php echo i18n('labelHideDone')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
+                  id="listHideDone" name="listHideDone" <?php if ($hideDone) echo 'checked';?>>
+                  <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+                </div>&nbsp;
+              </td>
+              <td style="width:200px;text-align: right; align: right;min-width:150px" >
       	        &nbsp;&nbsp;<?php echo i18n("labelShowPlannedWork");?>
               </td>
-              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
 				        <div title="<?php echo i18n('showPlannedWork')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
 				        class="whiteCheck"
 				         id="listShowPlannedWork" name="listShowPlannedWork" <?php if ($showPlanned) echo 'checked';?>>
@@ -153,105 +188,82 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
 				        </div>&nbsp;
 				      </td>
             </tr>
+            <tr>
+              <td style="text-align: right; align: right;min-width:150px" >
+            	  <?php if ( $displayHandledGlobal!="YES") { echo '&nbsp;&nbsp;'.i18n("labelHideNotHandled");}?>
+              </td>
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+                <?php if ( $displayHandledGlobal!="YES") { ?>
+                <div title="<?php echo i18n('labelHideNotHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
+                id="listHideNotHandled" name="listHideNotHandled" <?php if ($hideNotHandled) echo 'checked';?>>
+                  <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+                </div>&nbsp;
+                <?php }?>
+              </td>
+              <td style="width:200px;text-align: right; align: right;min-width:150px" >
+      	        &nbsp;&nbsp;<?php echo i18n("labelShowId");?>
+              </td>
+              <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
+				        <div title="<?php echo i18n('labelShowId')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+				        class="whiteCheck"
+				         id="showId" name="showId" <?php if ($showId) echo 'checked';?>>
+				          <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+				        </div>&nbsp;
+				      </td>
+				    </tr>
           </table>    
       </td>
     </tr>
     
-    <tr><td colspan="3">
-
-  <table width="100%"  >
-    <tr height="27px">
-      <td width="50px" >
-        &nbsp;
-      </td>
-      <td style="min-width:200px"> 
-        <button id="saveParameterButton" dojoType="dijit.form.Button" showlabel="false"
-          title="<?php echo i18n('buttonSaveImputation');?>"
-          iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton" >
-            <script type="dojo/connect" event="onClick" args="evt">
-              this.focus();
-              setTimeout('saveImputation()',10);;
-            </script>
-        </button>
-        <button title="<?php echo i18n('print')?>"  
-         dojoType="dijit.form.Button" 
-         id="printButton" name="printButton"
-         iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
-          <script type="dojo/connect" event="onClick" args="evt">
-            showPrint('../report/imputation.php', 'imputation');
-          </script>
-        </button>
-        <button title="<?php echo i18n('reportPrintPdf')?>"  
-         dojoType="dijit.form.Button" 
-         id="printButtonPdf" name="printButtonPdf"
-         iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
-          <script type="dojo/connect" event="onClick" args="evt">
-            showPrint('../report/imputation.php', 'imputation', null, 'pdf');
-          </script>
-        </button>
-        <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
-         title="<?php echo i18n('buttonUndoImputation');?>"
-         "disabled"
-         iconClass="dijitButtonIcon dijitButtonIconUndo"  class="detailButton">
-          <script type="dojo/connect" event="onClick" args="evt">
-            formChangeInProgress=false;
-            refreshImputationList();
-          </script>
-        </button>    
-        <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveImputation")?></div>
-      </td>
-      <td>    
-      </td>
-      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
-      	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyCurrentWeekMeetings");?>
-      </td>
-      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-          <div title="<?php echo i18n('labelDisplayOnlyCurrentWeekMeetings')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
-          id="listDisplayOnlyCurrentWeekMeetings" name="listDisplayOnlyCurrentWeekMeetings" <?php if ($displayOnlyCurrentWeekMeetings) echo 'checked';?>>
-            <script type="dojo/method" event="onChange" >
-              return refreshImputationList();
-            </script>
-          </div>&nbsp;
-      </td>
-      <?php if ( $displayHandledGlobal!="YES") {?>
-      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
-      	  &nbsp;&nbsp;<?php echo i18n("labelHideNotHandled");?>
-      </td>
-      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-          <div title="<?php echo i18n('labelHideNotHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
-          id="listHideNotHandled" name="listHideNotHandled" <?php if ($hideNotHandled) echo 'checked';?>>
-            <script type="dojo/method" event="onChange" >
-              return refreshImputationList();
-            </script>
-          </div>&nbsp;
-      </td>
-      <?php }?>
-      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
-      	  &nbsp;&nbsp;<?php echo i18n("labelHideDone");?>
-      </td>
-      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-          <div title="<?php echo i18n('labelHideDone')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
-          id="listHideDone" name="listHideDone" <?php if ($hideDone) echo 'checked';?>>
-            <script type="dojo/method" event="onChange" >
-              return refreshImputationList();
-            </script>
-          </div>&nbsp;
-      </td>
-      <td style="width: 20%;text-align: right; align: right;min-width:150px" >
-        &nbsp;&nbsp;<?php echo i18n("labelShowIdle");?>
-      </td>
-      <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
-        <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
-          id="listShowIdle" name="listShowIdle">
-          <script type="dojo/method" event="onChange" >
-            return refreshImputationList();
-          </script>
-        </div>&nbsp;
-      </td>
-    </tr>
-  </table>
-  </td>
-  </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%"  >
+          <tr height="27px">
+            
+            <td style="min-width:200px"> 
+              <button id="saveParameterButton" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('buttonSaveImputation');?>"
+                iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton" >
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    this.focus();
+                    setTimeout('saveImputation()',10);;
+                 </script>
+              </button>
+              <button title="<?php echo i18n('print')?>"  
+               dojoType="dijit.form.Button" 
+               id="printButton" name="printButton"
+               iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint('../report/imputation.php', 'imputation');
+                </script>
+              </button>
+              <button title="<?php echo i18n('reportPrintPdf')?>"  
+               dojoType="dijit.form.Button" 
+               id="printButtonPdf" name="printButtonPdf"
+               iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint('../report/imputation.php', 'imputation', null, 'pdf');
+                </script>
+              </button>
+              <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
+               title="<?php echo i18n('buttonUndoImputation');?>"
+               "disabled"
+               iconClass="dijitButtonIcon dijitButtonIconUndo"  class="detailButton">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  formChangeInProgress=false;
+                  refreshImputationList();
+                </script>
+              </button>    
+              <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveImputation")?></div>
+            </td>
+          </tr>
+        </table>
+      <td>
+    <tr>
   </table>
   </div>
   <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">
