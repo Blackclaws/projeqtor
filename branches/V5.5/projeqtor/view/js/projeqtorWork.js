@@ -286,6 +286,7 @@ function dispatchWorkValueChange(rowId, colId) {
   //oldImputationWorkValue=newWorkValue;
   formChanged();
   checkCapacity();
+  dijit.byId('totalWork').set("value",parseFloat(dijit.byId('totalWork').get("value"))+diff);
   if ((oldReal==0 && newReal>0) || (oldLeft>0 && newLeft==0) || (newReal<oldReal) ) {
     var url= '../tool/checkStatusChange.php';
     url+='?newReal='+newReal;

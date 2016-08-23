@@ -84,12 +84,16 @@ if ($canPlan) {
 	 style="z-index: 3; position: relative; overflow: visible !important;">
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
-		    <td width="50px" align="center">
-		      <span style="position:absolute; left:10px; top:7px">
-            <?php echo formatIcon('Planning', 32, null, true);?>
-          </span>
+		    <td style="vertical-align:top; width:250px;">
+		      <table >
+    		    <tr height="32px">
+      		    <td width="50px" align="center">
+                <?php echo formatIcon('Planning', 32, null, true);?>
+              </td>
+              <td width="200px" ><span class="title"><?php echo i18n('menuPlanning');?></span></td>
+      		  </tr>
+    		  </table>
 		    </td>
-		    <td><span class="title"><?php echo i18n('menuPlanning');?></span><br/></td>
 		    <td>   
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">

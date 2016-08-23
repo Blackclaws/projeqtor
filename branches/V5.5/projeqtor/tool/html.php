@@ -119,6 +119,15 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
+  }else if ($col=='idLinkable'){
+    $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
+    $arrayToDel=array();
+    foreach($table as $key => $val){
+      debugLog('menu'.$val.' : '.securityGetAccessRightYesNo('menu'.$val, 'read', new Linkable($key)));
+      if(securityGetAccessRightYesNo('menu'.$val, 'read', new Linkable($key))=="NO")$arrayToDel[]=$key;
+    }
+    $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
+    foreach($arrayToDel as $key)unset($table[$key]);
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
