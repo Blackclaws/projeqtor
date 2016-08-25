@@ -108,6 +108,15 @@
 }
 .iconValidateProject { background-image: url(images/iconValidateProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .dijitDisabled .iconValidateProject { background-image: url(images/iconValidateProject16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+
+.iconButtonDownload16 { background-image: url(images/smallButtonDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
+.iconButtonEdit16 { background-image: url(images/smallButtonEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonRemove16 { background-image: url(images/smallButtonRemove.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonAdd16 { background-image: url(images/smallButtonAdd.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonLink16 { background-image: url(images/smallButtonLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonView16 { background-image: url(images/display.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */
