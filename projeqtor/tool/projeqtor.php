@@ -2770,7 +2770,13 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
     $result.='<div style="position:absolute;left:0px;width:43px;top:0px;height:32px;" class="iconHighlight">&nbsp;</div>';
   }
   $position=($withHighlight)?'position:absolute;top:0;left:5px;':'';
-  $result.="<div class='icon$class$size' style='width:$size;height:$size;$position;' title='$title'>&nbsp;</div>"; 
+  $result.="<div class='icon$class$size' style='width:".$size."px;height:".$size."px;$position;' title='$title'>&nbsp;</div>"; 
+  return $result;
+}
+function formatSmallButton($class) {
+  $size="16";
+  $result='';
+  $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
   return $result;
 }
 ?>

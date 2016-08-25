@@ -91,8 +91,12 @@ if ($type) {$contentType=$type;}
 if (substr($name, -10)=='.projeqtor') {
 	$name=substr($name,0,strlen($name)-10);
 } 
+$name=str_replace(array("\n","\r"),array('',''),$name);
 if (($file != "") && (file_exists($file))) { 
 	header("Pragma: public"); 
+	traceLog("download file :");
+	traceLog($name);
+	traceLog($contentType);
   header("Content-Type: " . $contentType . "; name=\"" . $name . "\"");   
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 
@@ -100,7 +104,7 @@ if (($file != "") && (file_exists($file))) {
     //header("Content-Disposition: attachment; filename=\"" .$name . "\"");
     header("Content-Disposition: ".(!isset($_REQUEST['nodl'])?"attachment":"inline")."; filename=\"" .$name . "\"");
   } else {
-    header("Content-Disposition: inline; filename=\"" .$name . "\"");
+    header("Content-Disposition: inline; filename=\"" . $name . "\"");
   }
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");

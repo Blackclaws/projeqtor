@@ -2048,17 +2048,23 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   foreach ( $list as $version ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center; white-space: nowrap;">';
+      echo '<td class="assignData" style="text-align:center; white-space: nowrap;vertical-align:top;">';
       if (!$print) {
         echo '<a href="../tool/download.php?class=DocumentVersion&id=' . htmlEncode($version->id) . '"';
-        echo ' target="printFrame" title="' . i18n('helpDownload') . "\n" . (($preserveFileName == 'YES')?$version->fileName:$version->fullName) . '"><img src="css/images/smallButtonDownload.png" /></a>';
+        echo ' target="printFrame" title="' . i18n('helpDownload') . "\n" . (($preserveFileName == 'YES')?$version->fileName:$version->fullName) . '">'
+             .formatSmallButton('Download') 
+             .'</a>';
       }
       if ($canUpdate and !$print and (!$obj->idle or $obj->idDocumentVersion == $version->id)) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editDocumentVersion(' . "'" . htmlEncode($version->id) . "'" . ",'" . htmlEncode($version->version) . "'" . ",'" . htmlEncode($version->revision) . "'" . ",'" . htmlEncode($version->draft) . "'" . ",'" . htmlEncode($version->versionDate) . "'" . ",'" . htmlEncode($version->idStatus) . "'" . ",'" .
-             $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . htmlEncode($version->name) . "'" . ",'" . htmlEncode($version->name) . "'" . ",'" . htmlEncode($version->name) . "'" . ');" ' . 'title="' . i18n('editDocumentVersion') . '" class="roundedButtonSmall"/> ';
+        echo '  <a onClick="editDocumentVersion(' . "'" . htmlEncode($version->id) . "'" . ",'" . htmlEncode($version->version) . "'" . ",'" . htmlEncode($version->revision) . "'" . ",'" . htmlEncode($version->draft) . "'" . ",'" . htmlEncode($version->versionDate) . "'" . ",'" . htmlEncode($version->idStatus) . "'" . ",'" .
+             $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . htmlEncode($version->name) . "'" . ",'" . htmlEncode($version->name) . "'" . ",'" . htmlEncode($version->name) . "'" . ');" ' . 'title="' . i18n('editDocumentVersion') . '" >'
+                .formatSmallButton('Edit') 
+                .'</a> ';
       }
       if ($canUpdate and !$print and !$obj->idle) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . htmlEncode($version->id) . "'" . ', \'' . htmlEncode($version->name) . '\');" ' . 'title="' . i18n('removeDocumentVersion') . '" class="roundedButtonSmall"/> ';
+        echo '  <a src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . htmlEncode($version->id) . "'" . ', \'' . htmlEncode($version->name) . '\');" ' . 'title="' . i18n('removeDocumentVersion') . '" >'
+                .formatSmallButton('Remove') 
+                .'</a> ';
       }
       echo '<input type="hidden" id="documentVersion_' . htmlEncode($version->id) . '" name="documentVersion_' . htmlEncode($version->id) . '" value="' . htmlEncode($version->description) . '"/>';
       echo '</td>';
@@ -2619,14 +2625,16 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '<td class="attachmentData smallButtonsGroup" style="width:10%"">';
         if ($attachment->fileName and $attachment->subDirectory and !$print) {
           echo '<a href="../tool/download.php?class=Attachment&id=' . htmlEncode($attachment->id) . '"';
-          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img class="roundedButtonSmall" src="css/images/smallButtonDownload.png" /></a>';
+          echo ' target="printFrame" title="' . i18n('helpDownload') . '">'.formatSmallButton('Download').'</a>';
         }
         if ($attachment->link and !$print) {
           echo '<a href="' . htmlEncode(urldecode($attachment->link)) . '"';
-          echo ' target="#" title="' . urldecode($attachment->link) . '"><img class="roundedButtonSmall" src="css/images/smallButtonLink.png" /></a>';
+          echo ' target="#" title="' . urldecode($attachment->link) . '">'.formatSmallButton('Link').'</a>';
         }
         if ($attachment->idUser == $user->id and !$print and $canUpdate) {
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . htmlEncode($attachment->id) . ');" title="' . i18n('removeAttachment') . '" class="roundedButtonSmall"/>';
+          echo ' <a onClick="removeAttachment(' . htmlEncode($attachment->id) . ');" title="' . i18n('removeAttachment') . '" class="roundedButtonSmall">'
+              . formatSmallButton('Remove')
+              . '</a>';
         }
         echo '</td>';
       }
@@ -2755,10 +2763,14 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
         if ($canGoto and (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') and isset($gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion) {
           echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id=' . htmlEncode($linkObj->id) . '"';
-          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+          echo ' target="printFrame" title="' . i18n('helpDownload') . '">'
+               .formatSmallButton('Download')
+               .'</a>';
         }
         if ($canUpdate) {
-          echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . htmlEncode($link->id) . "','" . get_class($linkObj) . "','" . htmlEncode($linkObj->id) . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="roundedButtonSmall"/> ';
+          echo '  <a onClick="removeLink(' . "'" . htmlEncode($link->id) . "','" . get_class($linkObj) . "','" . htmlEncode($linkObj->id) . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" > '
+                  .formatSmallButton('Remove')
+               .'</a>';
         }
         echo '</td>';
       }

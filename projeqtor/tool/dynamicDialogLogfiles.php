@@ -50,9 +50,11 @@ foreach ($list as $id=>$file) {
   echo '<td class="reportTableData">'.byteSize($file['size']).'</td>';
   echo '<td class="reportTableData">';
   echo '<a href="../tool/download.php?class=Logfile&id=' . $id . '" target="printFrame" title="' . i18n('helpDownload') . '">';
-  echo '<img src="../view/css/images/smallButtonDownload.png" class"roundedButtonSmall" onClick=""/>';
+  echo formatSmallButton('Download');
   echo '</a>&nbsp;&nbsp;';
-  echo '<img style="cursor:pointer" src="../view/css/images/display.png" class"roundedButtonSmall" title="'. i18n('helpLogfile').'" onClick="showLogfile(\''.$file['name'].'\');" />';
+  echo '<a style="cursor:pointer" title="'. i18n('helpLogfile').'" onClick="showLogfile(\''.$file['name'].'\');" >';
+  echo formatSmallButton('View');
+  echo '</a>';
   echo '</td>';
   echo '</tr>';
 }
