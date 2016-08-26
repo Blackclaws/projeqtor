@@ -606,6 +606,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colReal') . '</TD>';
 		$curDate=$startDate;
+		$businessDay=0;
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;max-width:'.$inputWidth.'px;overflow:hidden;';
 			if ($today==$curDate) {
@@ -613,6 +614,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			} else if (isOffDay($curDate,$cal)) {
 				echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;';
 			}
+			if (!isOffDay($curDate,$cal))$businessDay++;
 			echo '">';
 			if ($rangeType=='week') {
 				echo  i18n('colWeekday' . $i) . " "  . date('d',strtotime($curDate)) . '';
@@ -642,290 +644,297 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		$closedWbs='';
 		$wbsLevelArray=array();
 		foreach ($tab as $key=>$line) {
-			if ($locked) $line->locked=true;
-			$nbLine++;
-			if ($line->elementary) {
-				$rowType="row";
-			} else {
-				$rowType="group";
-			}
-			//if ($closedWbs and strlen($line->wbsSortable)<=strlen($closedWbs)) {
-			if ($closedWbs and (strlen($line->wbsSortable)<=strlen($closedWbs) or $closedWbs!=substr($line->wbsSortable,0,strlen($closedWbs)) ) ) {
-				$closedWbs="";
-			}
-			$scope='Imputation_'.$resourceId.'_'.htmlEncode($line->refType).'_'.$line->refId;
-			$collapsed=false;
-			if ($rowType=="group" and array_key_exists($scope, $collapsedList)) {
-				$collapsed=true;
-				if (! $closedWbs) {
-					$closedWbs=$line->wbsSortable;
-				}
-			}
-			$canRead=false;
-			$canGoto=false;
-			if ($line->refType and $line->refId) {
-			  $obj=new $line->refType($line->refId,true);
-			  $canRead=(securityGetAccessRightYesNo('menu' . $line->refType, 'read', $obj)=='YES');
-			  $canGoto=($canRead and securityCheckDisplayMenu(null, $line->refType))?true:false;
-			}
-			
-			echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '"';
-			if ($closedWbs and $closedWbs!=$line->wbsSortable) {
-				echo ' style="display:none" ';
-			}
-			echo '>';
-			echo '<td class="ganttName" style="width:'.($iconWidth+1).'px;">';
-			if (! $print) {
-				echo '<input type="hidden" id="wbs_' . $nbLine . '" '
-				. ' value="' . htmlEncode($line->wbsSortable) . '"/>';
-				echo '<input type="hidden" id="status_' . $nbLine . '" ';
-				if ($collapsed) {
-					echo   ' value="closed"';
-				} else {
-					echo   ' value="opened"';
-				}
-				echo '/>';
-				echo '<input type="hidden" id="idAssignment_' . $nbLine . '" name="idAssignment[]"'
-				. ' value="' . htmlEncode($line->idAssignment) . '"/>';
-				echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable[]"'
-				. ' value="' . (($line->imputable)?'1':'0') . '"/>';
-				echo '<input type="hidden" id="locked_' . $nbLine . '" name="locked[]"'
-        . ' value="' . (($line->locked)?'1':'0') . '"/>';
-			}
-			if (! $line->refType) {$line->refType='Imputation';};
-			echo '<img src="css/images/icon' . htmlEncode($line->refType) . '16.png" ';
-			if ($line->refType!='Imputation' and !$print) {
-			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.htmlEncode($line->refId).'<br/>';
-			  if ($canRead) echo '<i>'. i18n("clickToView").'</i>';
-			  echo '\');" onmouseout="hideBigImage();"';
-			}
-			if (! $print and $canRead) {
-			  echo ' class="pointer" onClick="directDisplayDetail(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
-			}
-			echo '/>';
-			echo '</td>';
-			echo '<td class="ganttName" >';
-			// tab the name depending on level
-			echo '<table width:"100%"><tr><td>';
-		  $wbs=$line->wbsSortable;
-      $wbsTest=$wbs;
-      $level=1;
-      while (strlen($wbsTest)>3) {
-        $wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
-        if (array_key_exists($wbsTest, $wbsLevelArray)) {
-          $level=$wbsLevelArray[$wbsTest]+1;
-          $wbsTest="";
+		  if(($line->refType=='Activity' && !SqlList::getFieldFromId("Project", SqlList::getFieldFromId("Activity", $line->refId, "idProject"), 'isUnderConstruction'))
+		  || ($line->refType!='Project' && $line->refType!='Activity' && !SqlList::getFieldFromId("Project", $line->idProject, "isUnderConstruction"))
+		  || ($line->refType=='Project' && !SqlList::getFieldFromId("Project", $line->refId, "isUnderConstruction")))
+		  if(($line->refType=='Activity' && SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", SqlList::getFieldFromId("Activity", $line->refId, "idProject"), "idProjectType"), 'code')!='TMP') 
+		  || ($line->refType!='Project' && $line->refType!='Activity' && SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", $line->idProject, "idProjectType"), 'code')!='TMP') 
+		  || ($line->refType=='Project' && SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", $line->refId, "idProjectType"), 'code')!='TMP')){
+  			if ($locked) $line->locked=true;
+  			$nbLine++;
+  			if ($line->elementary) {
+  				$rowType="row";
+  			} else {
+  				$rowType="group";
+  			}
+  			//if ($closedWbs and strlen($line->wbsSortable)<=strlen($closedWbs)) {
+  			if ($closedWbs and (strlen($line->wbsSortable)<=strlen($closedWbs) or $closedWbs!=substr($line->wbsSortable,0,strlen($closedWbs)) ) ) {
+  				$closedWbs="";
+  			}
+  			$scope='Imputation_'.$resourceId.'_'.htmlEncode($line->refType).'_'.$line->refId;
+  			$collapsed=false;
+  			if ($rowType=="group" and array_key_exists($scope, $collapsedList)) {
+  				$collapsed=true;
+  				if (! $closedWbs) {
+  					$closedWbs=$line->wbsSortable;
+  				}
+  			}
+  			$canRead=false;
+  			$canGoto=false;
+  			if ($line->refType and $line->refId) {
+  			  $obj=new $line->refType($line->refId,true);
+  			  $canRead=(securityGetAccessRightYesNo('menu' . $line->refType, 'read', $obj)=='YES');
+  			  $canGoto=($canRead and securityCheckDisplayMenu(null, $line->refType))?true:false;
+  			}
+  			
+  			echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '"';
+  			if ($closedWbs and $closedWbs!=$line->wbsSortable) {
+  				echo ' style="display:none" ';
+  			}
+  			echo '>';
+  			echo '<td class="ganttName" style="width:'.($iconWidth+1).'px;">';
+  			if (! $print) {
+  				echo '<input type="hidden" id="wbs_' . $nbLine . '" '
+  				. ' value="' . htmlEncode($line->wbsSortable) . '"/>';
+  				echo '<input type="hidden" id="status_' . $nbLine . '" ';
+  				if ($collapsed) {
+  					echo   ' value="closed"';
+  				} else {
+  					echo   ' value="opened"';
+  				}
+  				echo '/>';
+  				echo '<input type="hidden" id="idAssignment_' . $nbLine . '" name="idAssignment[]"'
+  				. ' value="' . htmlEncode($line->idAssignment) . '"/>';
+  				echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable[]"'
+  				. ' value="' . (($line->imputable)?'1':'0') . '"/>';
+  				echo '<input type="hidden" id="locked_' . $nbLine . '" name="locked[]"'
+          . ' value="' . (($line->locked)?'1':'0') . '"/>';
+  			}
+  			if (! $line->refType) {$line->refType='Imputation';};
+  			echo '<img src="css/images/icon' . htmlEncode($line->refType) . '16.png" ';
+  			if ($line->refType!='Imputation' and !$print) {
+  			  echo ' onmouseover="showBigImage(null,null,this,\''.i18n($line->refType).' #'.htmlEncode($line->refId).'<br/>';
+  			  if ($canRead) echo '<i>'. i18n("clickToView").'</i>';
+  			  echo '\');" onmouseout="hideBigImage();"';
+  			}
+  			if (! $print and $canRead) {
+  			  echo ' class="pointer" onClick="directDisplayDetail(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
+  			}
+  			echo '/>';
+  			echo '</td>';
+  			echo '<td class="ganttName" >';
+  			// tab the name depending on level
+  			echo '<table width:"100%"><tr><td>';
+  		  $wbs=$line->wbsSortable;
+        $wbsTest=$wbs;
+        $level=1;
+        while (strlen($wbsTest)>3) {
+          $wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+          if (array_key_exists($wbsTest, $wbsLevelArray)) {
+            $level=$wbsLevelArray[$wbsTest]+1;
+            $wbsTest="";
+          }
         }
-      }
-      $wbsLevelArray[$wbs]=$level;
-			//$level=(strlen($line->wbsSortable)+1)/4;
-			$levelWidth = ($level-1) * 16;
-	    echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';
-			echo '</td>';
-			if (! $print) {
-				if ($rowType=="group") {
-					echo '<td width="16"><span id="group_' . $nbLine . '" ';
-					if ($collapsed) {
-						echo 'class="ganttExpandClosed"';
-					} else {
-						echo 'class="ganttExpandOpened"';
-					}
-					if (! $print) {
-						echo 'onclick="workOpenCloseLine(' . $nbLine . ',\''.$scope.'\')"';
-					} else {
-						echo ' style="cursor:default;"';
-					}
-					echo '>';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
-				} else {
-					echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
-				}
-			}
-			if($line->refType == "Project") {
-				$description=null;
-				$crit=array();
-				$crit['id']=$line->refId;
-				$description=SqlElement::getSingleSqlElementFromCriteria('Project', $crit);
-				if($description) {
-					$line->description=$description->description;
-				}
-			}
-			else if ($line->refType == "Activity")
-			{
-				$descriptionActivity=null;
-				$crit2=array();
-				$crit2['id']=$line->refId;
-				$crit2['idProject']=$line->idProject;
-				$descriptionActivity=SqlElement::getSingleSqlElementFromCriteria('Activity', $crit2);
-				if($descriptionActivity)
-				{
-					$line->description=$descriptionActivity->description;
-				}
-			}
-			echo '<td width="100%" style="position:relative"';
-			if (! $print and $canGoto) {
-			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
-			}
-			echo '>' . (($showId && $line->refId) ? '#'.$line->refId.' - '.$line->name: $line->name) ;
-			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
-				
-			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
-					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">'.htmlEncode($line->functionName).'</div>';
-			}
-			echo '</td>';
-			if (!$print && $line->idAssignment) {
-			  $explodeComment=array(" a");
-			  if($line->comment)$explodeComment=explode("\n\n", $line->comment);
-				echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer;'.($line->comment ? "" : "display:none;").'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
-		  }
-		  
-		  if($line->idAssignment)
-		    echo '<td title="'.i18n('commentImputationAdd').'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
-		  
-			echo '</tr></table>';
-			echo '</td>';
-			//echo '<td class="ganttDetail" align="center">' . htmlEncode($line->description) . '</td>';
-			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->startDate) . '</td>';
-			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->endDate) . '</td>';
-			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
-			if ($line->imputable) {
-				if (!$print) {
-					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-					//echo ' constraints="{pattern:\'###0.0#\'}"';
-					echo ' style="width: 60px; text-align: center; " ';
-					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-					echo ' id="assignedWork_' . $nbLine . '"';
-					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)) . '" ';
-					echo ' />';
-					//echo '</div>';
-				} else {
-					echo  Work::displayImputation($line->assignedWork);
-				}
-			}
-			echo '</td>';
-			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
-			if ($line->imputable) {
-				if (!$print) {
-					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-					//echo ' constraints="{pattern:\'###0.0#\'}"';
-					echo ' style="width: 60px; text-align: center;" ';
-					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-					echo ' id="realWork_' . $nbLine . '"';
-					echo ' value="' .  htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)) . '" ';
-					echo ' />';
-					//echo '</div>';
-				} else {
-					echo   Work::displayImputation($line->realWork);
-				}
-			}
-			echo '</td>';
-			$curDate=$startDate;
-			$listProject=Project::getAdminitrativeProjectList(true);
-			for ($i=1; $i<=$nbDays; $i++) {
-				echo '<td class="ganttDetail" align="center" width="'.$inputWidth.'px;"';
-				if ($today==$curDate) {
-					echo ' style="background-color:#' . $currentdayColor . ';"';
-				} else if (isOffDay($curDate,$cal)) {
-					echo ' style="background-color:#' . $weekendColor . '; color: #aaaaaa;"';
-				}
-				echo '>';
-				if ($line->imputable) {
-				  $isAdministrative=false;
-				  if(array_key_exists($line->idProject, $listProject))$isAdministrative=true;
-					$valWork=$line->arrayWork[$i]->work;
-					$idWork=$line->arrayWork[$i]->id;
-					if (! $print) {
-						echo '<div style="position: relative">';
-						if ($showPlanned and $line->arrayPlannedWork[$i]->work) {
-							echo '<div style="display: inline;';
-							echo ' position: absolute; left: 7px; top: 1px; text-align: right;';
-							echo ' color:#8080DD; font-size:90%;">';
-							echo  Work::displayImputation($line->arrayPlannedWork[$i]->work);
-							echo '</div>';
-						}
-						echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-						echo ' constraints="{min:0}"';
-						echo '  style="width: 45px; text-align: center; ' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
-						echo ' trim="true" maxlength="4" class="input" ';
-						echo ' id="workValue_' . $nbLine . '_' . $i . '"';
-						echo ' name="workValue_' . $i . '[]"';
-						echo ' value="' .  Work::displayImputation($valWork) . '" ';
-						if ($line->idle or $line->locked) {
-							echo ' readOnly="true" ';
-						}
-						echo ' >';
-						//echo '<script type="dojo/method" event="onFocus" args="evt">';
-						//echo ' oldImputationWorkValue=this.value;';
-						//echo '</script>';
-						echo $keyDownEventScript;
-						echo '<script type="dojo/method" event="onChange" args="evt">';
-						echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
-						echo '</script>';
-						echo '</div>';
-						echo '</div>';
-						if (! $print) {
-								echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
-								. ' name="workId_' . $i . '[]"'
-								. ' value="' . $idWork . '"/>';
-								echo '<input type="hidden" id="isAdministrative_' . $nbLine . '_' . $i . '"'
-								. ' value="' . ($isAdministrative ? 1 : 0) . '"/>';
-							echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
-							. ' value="' .  Work::displayImputation($valWork) . '"/>';
-						}
-					} else {
-						echo  Work::displayImputation($valWork);
-					}
-					$colSum[$i]+= Work::displayImputation($valWork);
-				} else {
-					echo '<input type="hidden" name="workId_' . $i . '[]" />';
-					echo '<input type="hidden" name="workValue_' . $i . '[]" />';
-				}
-				echo '</td>';
-				$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
-			}
-			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
-			if ($line->imputable) {
-				if (!$print) {
-					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-					echo ' constraints="{min:0}"';
-					echo '  style="width: 60px; text-align: center;' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
-					echo ' trim="true" class="input" ';
-					echo ' id="leftWork_' . $nbLine . '"';
-					echo ' name="leftWork[]"';
-					echo ' value="' .  Work::displayImputation($line->leftWork) . '" ';
-					if ($line->idle or $line->locked) {
-						echo ' readOnly="true" ';
-					}
-					echo ' >';
-					echo $keyDownEventScript;
-					echo '<script type="dojo/method" event="onChange" args="evt">';
-					echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
-					echo '</script>';
-					echo '</div>';
-				} else {
-					echo  Work::displayImputation($line->leftWork);
-				}
-			} else {
-				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
-			}
-			echo '</td>';
-			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
-			if ($line->imputable) {
-				if (!$print) {
-					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-					//echo ' constraints="{pattern:\'###0.0#\'}"';
-					echo '  style="width: 60px; text-align: center;" ';
-					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-					echo ' id="plannedWork_' . $nbLine . '"';
-					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->plannedWork)) . '" ';
-					echo ' />';
-					//echo '</div>';
-				} else {
-					echo  Work::displayImputation($line->plannedWork);
-				}
-			}
-			echo '</td>';
-			echo '</tr>';
+        $wbsLevelArray[$wbs]=$level;
+  			//$level=(strlen($line->wbsSortable)+1)/4;
+  			$levelWidth = ($level-1) * 16;
+  	    echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';
+  			echo '</td>';
+  			if (! $print) {
+  				if ($rowType=="group") {
+  					echo '<td width="16"><span id="group_' . $nbLine . '" ';
+  					if ($collapsed) {
+  						echo 'class="ganttExpandClosed"';
+  					} else {
+  						echo 'class="ganttExpandOpened"';
+  					}
+  					if (! $print) {
+  						echo 'onclick="workOpenCloseLine(' . $nbLine . ',\''.$scope.'\')"';
+  					} else {
+  						echo ' style="cursor:default;"';
+  					}
+  					echo '>';
+  					echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
+  				} else {
+  					echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
+  				}
+  			}
+  			if($line->refType == "Project") {
+  				$description=null;
+  				$crit=array();
+  				$crit['id']=$line->refId;
+  				$description=SqlElement::getSingleSqlElementFromCriteria('Project', $crit);
+  				if($description) {
+  					$line->description=$description->description;
+  				}
+  			}
+  			else if ($line->refType == "Activity")
+  			{
+  				$descriptionActivity=null;
+  				$crit2=array();
+  				$crit2['id']=$line->refId;
+  				$crit2['idProject']=$line->idProject;
+  				$descriptionActivity=SqlElement::getSingleSqlElementFromCriteria('Activity', $crit2);
+  				if($descriptionActivity)
+  				{
+  					$line->description=$descriptionActivity->description;
+  				}
+  			}
+  			echo '<td width="100%" style="position:relative"';
+  			if (! $print and $canGoto) {
+  			  echo ' class="pointer" onClick="gotoElement(\''.htmlEncode($line->refType).'\',\''.htmlEncode($line->refId).'\')"';
+  			}
+  			echo '>' . (($showId && $line->refId) ? '#'.$line->refId.' - '.$line->name: $line->name) ;
+  			echo '<div id="extra_'.$nbLine.'" style="position:absolute; top:-2px; right:2px;" ></div>';
+  				
+  			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
+  					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">'.htmlEncode($line->functionName).'</div>';
+  			}
+  			echo '</td>';
+  			if (!$print && $line->idAssignment) {
+  			  $explodeComment=array(" a");
+  			  if($line->comment)$explodeComment=explode("\n\n", $line->comment);
+  				echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer;'.($line->comment ? "" : "display:none;").'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
+  		  }
+  		  
+  		  if($line->idAssignment)
+  		    echo '<td title="'.i18n('commentImputationAdd').'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
+  		  
+  			echo '</tr></table>';
+  			echo '</td>';
+  			//echo '<td class="ganttDetail" align="center">' . htmlEncode($line->description) . '</td>';
+  			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->startDate) . '</td>';
+  			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->endDate) . '</td>';
+  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
+  			if ($line->imputable) {
+  				if (!$print) {
+  					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+  					//echo ' constraints="{pattern:\'###0.0#\'}"';
+  					echo ' style="width: 60px; text-align: center; " ';
+  					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+  					echo ' id="assignedWork_' . $nbLine . '"';
+  					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)) . '" ';
+  					echo ' />';
+  					//echo '</div>';
+  				} else {
+  					echo  Work::displayImputation($line->assignedWork);
+  				}
+  			}
+  			echo '</td>';
+  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
+  			if ($line->imputable) {
+  				if (!$print) {
+  					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+  					//echo ' constraints="{pattern:\'###0.0#\'}"';
+  					echo ' style="width: 60px; text-align: center;" ';
+  					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+  					echo ' id="realWork_' . $nbLine . '"';
+  					echo ' value="' .  htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)) . '" ';
+  					echo ' />';
+  					//echo '</div>';
+  				} else {
+  					echo   Work::displayImputation($line->realWork);
+  				}
+  			}
+  			echo '</td>';
+  			$curDate=$startDate;
+  			$listProject=Project::getAdminitrativeProjectList(true);
+  			for ($i=1; $i<=$nbDays; $i++) {
+  				echo '<td class="ganttDetail" align="center" width="'.$inputWidth.'px;"';
+  				if ($today==$curDate) {
+  					echo ' style="background-color:#' . $currentdayColor . ';"';
+  				} else if (isOffDay($curDate,$cal)) {
+  					echo ' style="background-color:#' . $weekendColor . '; color: #aaaaaa;"';
+  				}
+  				echo '>';
+  				if ($line->imputable) {
+  				  $isAdministrative=false;
+  				  if(array_key_exists($line->idProject, $listProject))$isAdministrative=true;
+  					$valWork=$line->arrayWork[$i]->work;
+  					$idWork=$line->arrayWork[$i]->id;
+  					if (! $print) {
+  						echo '<div style="position: relative">';
+  						if ($showPlanned and $line->arrayPlannedWork[$i]->work) {
+  							echo '<div style="display: inline;';
+  							echo ' position: absolute; left: 7px; top: 1px; text-align: right;';
+  							echo ' color:#8080DD; font-size:90%;">';
+  							echo  Work::displayImputation($line->arrayPlannedWork[$i]->work);
+  							echo '</div>';
+  						}
+  						echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+  						echo ' constraints="{min:0}"';
+  						echo '  style="width: 45px; text-align: center; ' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
+  						echo ' trim="true" maxlength="4" class="input" ';
+  						echo ' id="workValue_' . $nbLine . '_' . $i . '"';
+  						echo ' name="workValue_' . $i . '[]"';
+  						echo ' value="' .  Work::displayImputation($valWork) . '" ';
+  						if ($line->idle or $line->locked) {
+  							echo ' readOnly="true" ';
+  						}
+  						echo ' >';
+  						//echo '<script type="dojo/method" event="onFocus" args="evt">';
+  						//echo ' oldImputationWorkValue=this.value;';
+  						//echo '</script>';
+  						echo $keyDownEventScript;
+  						echo '<script type="dojo/method" event="onChange" args="evt">';
+  						echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
+  						echo '</script>';
+  						echo '</div>';
+  						echo '</div>';
+  						if (! $print) {
+  								echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
+  								. ' name="workId_' . $i . '[]"'
+  								. ' value="' . $idWork . '"/>';
+  								echo '<input type="hidden" id="isAdministrative_' . $nbLine . '_' . $i . '"'
+  								. ' value="' . ($isAdministrative ? 1 : 0) . '"/>';
+  							echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
+  							. ' value="' .  Work::displayImputation($valWork) . '"/>';
+  						}
+  					} else {
+  						echo  Work::displayImputation($valWork);
+  					}
+  					$colSum[$i]+= Work::displayImputation($valWork);
+  				} else {
+  					echo '<input type="hidden" name="workId_' . $i . '[]" />';
+  					echo '<input type="hidden" name="workValue_' . $i . '[]" />';
+  				}
+  				echo '</td>';
+  				$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
+  			}
+  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
+  			if ($line->imputable) {
+  				if (!$print) {
+  					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+  					echo ' constraints="{min:0}"';
+  					echo '  style="width: 60px; text-align: center;' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
+  					echo ' trim="true" class="input" ';
+  					echo ' id="leftWork_' . $nbLine . '"';
+  					echo ' name="leftWork[]"';
+  					echo ' value="' .  Work::displayImputation($line->leftWork) . '" ';
+  					if ($line->idle or $line->locked) {
+  						echo ' readOnly="true" ';
+  					}
+  					echo ' >';
+  					echo $keyDownEventScript;
+  					echo '<script type="dojo/method" event="onChange" args="evt">';
+  					echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
+  					echo '</script>';
+  					echo '</div>';
+  				} else {
+  					echo  Work::displayImputation($line->leftWork);
+  				}
+  			} else {
+  				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
+  			}
+  			echo '</td>';
+  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
+  			if ($line->imputable) {
+  				if (!$print) {
+  					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+  					//echo ' constraints="{pattern:\'###0.0#\'}"';
+  					echo '  style="width: 60px; text-align: center;" ';
+  					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+  					echo ' id="plannedWork_' . $nbLine . '"';
+  					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->plannedWork)) . '" ';
+  					echo ' />';
+  					//echo '</div>';
+  				} else {
+  					echo  Work::displayImputation($line->plannedWork);
+  				}
+  			}
+  			echo '</td>';
+  			echo '</tr>';
+  		}
 		}
 		if (!$print and count($tab)>20) {
 		  echo '</table>';
@@ -942,14 +951,15 @@ scriptLog("      => ImputationLine->getParent()-exit");
 
 		$curDate=$startDate;
 		$nbFutureDays=Parameter::getGlobalParameter('maxDaysToBookWork');
-		if($nbFutureDays==null || $nbFutureDays=='')$nbFutureDays=10000000;
+		if($nbFutureDays==null || $nbFutureDays=='')$nbFutureDays=-1;
 		$nbFutureDaysBlocking=Parameter::getGlobalParameter('maxDaysToBookWorkBlocking');
-		if($nbFutureDaysBlocking==null || $nbFutureDaysBlocking=='')$nbFutureDaysBlocking=10000000;
-		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days", strtotime($today)));
-		$maxDateFutureBlocking=date('Y-m-d',strtotime("+".$nbFutureDaysBlocking." days", strtotime($today)));
+		if($nbFutureDaysBlocking==null || $nbFutureDaysBlocking=='')$nbFutureDaysBlocking=-1;
+		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days"));
+		$maxDateFutureBlocking=date('Y-m-d',strtotime("+".$nbFutureDaysBlocking." days"));
 		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
 		if (! $print) echo '<input type="hidden" id="nbFutureDaysBlocking" value="'.$nbFutureDaysBlocking.'" />';
 		if (! $print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
+		if (! $print) echo '<input type="hidden" id="businessDay" value="'.$businessDay.'" />';
 		$totalWork=0;
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
@@ -973,8 +983,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo ' value="' . $colSum[$i] . '" ';
 				echo ' >';
 				echo '</div>';
-				echo '<input type="hidden" id="colIsFuture_' . $i . '" value="'.(($curDate>$maxDateFuture)?1:0).'" />';
-				echo '<input type="hidden" id="colIsFutureBlocking_' . $i . '" value="'.(($curDate>$maxDateFutureBlocking)?1:0).'" />';
+				debugLog($curDate.'>'.$maxDateFuture);
+				echo '<input type="hidden" id="colIsFuture_' . $i . '" value="'.(($curDate>$maxDateFuture && $nbFutureDays!=-1)?1:0).'" />';
+				echo '<input type="hidden" id="colIsFutureBlocking_' . $i . '" value="'.(($curDate>$maxDateFutureBlocking && $nbFutureDaysBlocking!=-1)?1:0).'" />';
 			} else {
 				echo $colSum[$i];
 			}
@@ -982,11 +993,15 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</span></TD>';
 			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 		}
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="width: 45px; text-align: center; color: #000000 !important;" class="displayTransparent" value="'.$totalWork
+		$classTotalWork="imputationValidCapacity";
+		if (round($totalWork,2)>$businessDay) {
+		  $classTotalWork='imputationInvalidCapacity';
+		} else if (round($totalWork,2)<$businessDay) {
+		  $classTotalWork='displayTransparent';
+		}
+		echo '  <TD colspan="2" class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="width: 95%; text-align: center; color: #000000 !important;" class="'.$classTotalWork.'" value="'.$totalWork
 		.  '"</div></span></TD>';
 			
-		echo '  <TD class="ganttLeftTopLine" style="width: ' . ($workWidth+1) . 'px;"><span class="nobr">'
-		.  '</span></TD>';
 		echo '</TR>';
 		echo '</table>';
 		if (!$print) {

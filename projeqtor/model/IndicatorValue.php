@@ -114,7 +114,7 @@ class IndicatorValue extends SqlElement {
   	  if ($class=='Project') {
   	    $proj=$obj;
   	  } else {
-  	    $proj=new Project($obj->idStatus, true);
+  	    $proj=new Project($obj->idProject, true);
   	  }
   	  if ($proj->isUnderConstruction) { // Project "under construction" : do not generate indicator alerts
   	    return;
@@ -311,8 +311,12 @@ class IndicatorValue extends SqlElement {
         if ($obj and trim($obj->$targetControlColumnName)) {
           if (substr($targetControlColumnName,-8)=='DateTime'){
             $date=$obj->$targetControlColumnName;
-          } else {
+          } else if (substr($targetControlColumnName,-4)=='Date'){ 
             $date=$obj->$targetControlColumnName . " 00:00:00";
+          } else {
+            if ($obj->$targetControlColumnName) {
+              return; // $targetControlColumnName is not a date, so if set don't update indicator
+            }
           }
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
@@ -548,16 +552,16 @@ class IndicatorValue extends SqlElement {
     }
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
-    
     $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
-    $message='<table>';
+    $message=$obj->getMailDetail();
+    /*$message='<table>';
     $message.='<tr><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.htmlEncode($obj->id).');">' . htmlEncode($name) . '</td></tr>';
     $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
     $message.='<tr><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
     $message.=($warningTarget and $type=="WARNING")?'<tr><td width="35%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';
     $message.=($alertTarget and $type=="ALERT")?'<tr><td width="35%" align="right">' . i18n('alertValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $alertTarget . '</td>':'';
     $message.=($value)?'<tr><td width="30%">' . i18n('value') . '</td><td>&nbsp;:&nbsp;</td><td>' . $value . '</td>':'';
-    $message.='</table>';
+    $message.='</table>';*/
     $messageMail='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .

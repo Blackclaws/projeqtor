@@ -110,12 +110,19 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $list=SqlList::getListWithCrit('Version',$crit);
       $table=array_merge_preserve_keys($table,$list);
     }  
+    if ($selection) {
+      $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+    }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
+    if ($selection) {
+      $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+    }
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }
+
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
@@ -132,7 +139,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
-    }  
+    } 
+    if ($selection) {
+      $table[$selection]=SqlList::getNameFromId($listType, $selection);
+    } 
   }
   $restrictArray=array();
   $excludeArray=array();
@@ -244,11 +254,19 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$vers=new Version($versProj->idVersion);
     		$restrictArray[$vers->idProduct]="OK";
     	}
+    	if ($selection) {
+    	  $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+    	}
+    	if (isset($restrictArray[$selection])) unset($restrictArray[$selection]);
+    	debugLog("CASE 1");
+    	debugLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",required=$required,critFld=$critFld,critval=$critVal)");
+    	debugLog($table);
+    	debugLog($restrictArray);
     } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
       $prod=new Product($critVal);
       $table=$prod->getComposition(true,true);
       if ($selection) {
-        $table[$selection]=SqlList::getNameFromId('Component', $selection);
+        $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
       }
     } else if (substr($col,-16)=='ComponentVersion' and $critFld=='idProductVersion' and $critVal) {
       $prodVers=new ProductVersion($critVal);
@@ -319,9 +337,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (! $obj) $sepChar='no';
   $selectedFound=false;
   $next="";
+  if (isset($table['*'])) unset($table['*']);
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) or $key==$selection) ) {
-      if ($col=="idProject" and $sepChar!='no') {
+      if ($col=="idProject" and $sepChar!='no') {   
         $wbs=$wbsList[$key];
         $wbsTest=$wbs;
         $level=1;

@@ -588,7 +588,7 @@ function loadContent(page, destination, formName, isResultMessage,
   if (contentNode) {
     destinationWidth = dojo.style(contentNode, "width");
     destinationHeight = dojo.style(contentNode, "height");
-    if (destination == 'detailFormDiv') {
+    if (destination == 'detailFormDiv' && !editorInFullScreen()) {
       widthNode = dojo.byId('detailDiv');
       if (widthNode) {
         destinationWidth = dojo.style(widthNode, "width");
@@ -648,7 +648,7 @@ function loadContent(page, destination, formName, isResultMessage,
           // Must destroy existing instances of CKEDITOR before refreshing the
           // page.
           if (page.substr(0, 16) == 'objectDetail.php'
-              && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv")) {
+              && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv") && !editorInFullScreen()) {
             editorArray = new Array();
             for (name in CKEDITOR.instances) {
               CKEDITOR.instances[name].removeAllListeners();
@@ -656,11 +656,11 @@ function loadContent(page, destination, formName, isResultMessage,
             }
           }
           hideBigImage(); // Will avoid resident pop-up always displayed
-          contentWidget.set('content', data);
+          if(!editorInFullScreen())contentWidget.set('content', data);
           checkDestination(destination);
           // Create instances of CKEDITOR
           if (page.substr(0, 16) == 'objectDetail.php'
-              && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv")) {
+              && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv")&& !editorInFullScreen()) {
             ckEditorReplaceAll();
           }
           if (page.substr(0, 16) == 'objectDetail.php'
@@ -734,7 +734,23 @@ function loadContent(page, destination, formName, isResultMessage,
               node : contentNode,
               duration : 100,
               onEnd : function() {
-                finalizeMessageDisplay(destination, validationType);
+                if(!editorInFullScreen())finalizeMessageDisplay(destination, validationType);
+                else{
+                  var elemDiv = document.createElement('div');
+                  elemDiv.id='testFade';
+                  elemDiv.style.cssText = 'position:absolute;width:200px;height:16px;z-index:10000;';
+                  elemDiv.className='messageOK';
+                  elemDiv.innerHTML=i18n('resultOk');
+                  document.body.appendChild(elemDiv);
+                  resultDivFadingOut = dojo.fadeOut({
+                    node : elemDiv,
+                    duration : 3000,
+                    onEnd : function() {
+                      elemDiv.remove();
+                    }
+                  }).play();
+                  hideWait();
+                }
               }
             }).play();
           } else if (destination == "loginResultDiv") {
@@ -1325,6 +1341,8 @@ function finalizeMessageDisplay(destination, validationType) {
       forceRefreshMenu = dojo.byId("forceRefreshMenu").value;
     }
     if (forceRefreshMenu) {
+
+
       // loadContent("../view/menuTree.php", "mapDiv",null,false);
       // loadContent("../view/menuBar.php", "toolBarDiv",null,false);
       showWait();
@@ -3247,8 +3265,6 @@ function saveObject() {
     showInfo(i18n("alertOngoingQuery"));
     return true;
   }
-  if (editorInFullScreen())
-    return;
   for (name in CKEDITOR.instances) { // Necessary to update CKEditor field
                                       // whith focus, otherwise changes are not
                                       // detected
@@ -3323,8 +3339,8 @@ function onKeyDownCkEditorFunction(event, editor) {
                                                                             // mode
   if (event.data.keyCode == CKEDITOR.CTRL + 83) { // CTRL + S
     event.cancel();
-    if (fullScreenEditor)
-      return;
+    /*if (fullScreenEditor)
+      return;*/
     if (top.dojo.isFF) {
       top.stopDef();
     }
@@ -3394,6 +3410,15 @@ function editorInFullScreen() {
       fullScreenTest = true;
     }
   });
+  if(!fullScreenTest){
+    var numEditor = 1;
+    while (dojo.byId('ckeditor' + numEditor)) {
+      if(typeof editorArray[numEditor] != 'undefined'){
+        if(editorArray[numEditor].toolbar[3].items[1]._.state==1)fullScreenTest=true;
+      }
+      numEditor++;
+    }
+  }
   return fullScreenTest;
 }
 
