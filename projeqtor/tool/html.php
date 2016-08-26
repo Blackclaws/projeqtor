@@ -235,6 +235,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$vers=new Version($versProj->idVersion);
     		$restrictArray[$vers->idProduct]="OK";
     	}
+    	if ($selection) {
+    	  $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+    	}
     } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
       $prod=new Product($critVal);
       $table=$prod->getComposition(true,true);
