@@ -207,7 +207,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
     style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
     <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
-      style="display: none"></div>
+      style="display: none;z-index:99999;"></div>
 		<?php  include 'objectButtons.php'; ?>
 		<div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');">
       <div id="detailBarIcon" align="center"></div>

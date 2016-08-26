@@ -473,7 +473,7 @@ class Parameter extends SqlElement {
       	                     'sectionWorkUnit'=>'section',      	                     
       	                       'imputationUnit'=>'list',
       	                       'workUnit'=>'list',
-      	                       'dayTime'=>'number',      	                      
+      	                       'dayTime'=>'number',       	                      
       	                     'sectionImputation'=>'section',
       	                       'displayOnlyHandled'=>'list',
       	                       'setHandledOnRealWork'=>'list',

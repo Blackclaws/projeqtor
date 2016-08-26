@@ -620,6 +620,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	          + JSGantt.i18n('colIdPlanningMode') + '</span></div></TD>' ;
 		  }
       }
+      var planningPage=dojo.byId('objectClassManual').value;
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
         +'<DIV class="scrollLeft" id="leftside" style="z-index:-1;position:relative;width:' + vLeftWidth + 'px;">'
@@ -638,15 +639,23 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var invisibleDisplay=(vTaskList[i].getVisible() == 0)?'style="display:none"':'';
         vLeftTable += '<TR id=child_' + vID + ' dndType="planningTask" class="dojoDndItem ganttTask' + vRowType + '" ' 
           + invisibleDisplay + ' style="height:21px">' ;
-        vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">'
-          +'<span class="dojoDndHandle handleCursor">'
-          + '<table><tr><td>'
-          + '<img style="width:8px" src="css/images/iconDrag.gif" />'
-          + '</td><td>'
-          + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
-          + '</td></tr></table>'
-          +'</span>'
-          +'</TD>'
+        vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">';
+        if (planningPage=='ResourcePlanning') {
+          vLeftTable += '<span class="">'
+            + '<table><tr><td>&nbsp;</td><td>'
+            + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            + '</td></tr></table>'
+            +'</span>';
+        } else {
+          vLeftTable += '<span class="dojoDndHandle handleCursor">'
+            + '<table><tr><td>'
+            + '<img style="width:8px" src="css/images/iconDrag.gif" />'
+            + '</td><td>'
+            + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            + '</td></tr></table>'
+            +'</span>';
+        }
+        vLeftTable += '</TD>'
           +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap title="' + vTaskList[i].getName() + '">';
         vLeftTable+='<div class="ganttLeftHover" style="width:'+(vLeftWidth-25)+'px;" '
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '

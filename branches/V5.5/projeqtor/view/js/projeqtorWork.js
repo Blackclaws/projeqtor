@@ -287,6 +287,16 @@ function dispatchWorkValueChange(rowId, colId) {
   formChanged();
   checkCapacity();
   dijit.byId('totalWork').set("value",parseFloat(dijit.byId('totalWork').get("value"))+diff);
+  totalWork=parseFloat(dijit.byId('totalWork').get("value"));
+  businessDay=parseInt(dojo.byId('businessDay').value);
+  classTotalWork="imputationValidCapacity";
+  console.log(Math.round(totalWork)+'<'+businessDay);
+  if (totalWork>businessDay) {
+    classTotalWork='imputationInvalidCapacity';
+  } else if (totalWork<businessDay) {
+    classTotalWork='displayTransparent';
+  }
+  dijit.byId('totalWork').set("class",classTotalWork);
   if ((oldReal==0 && newReal>0) || (oldLeft>0 && newLeft==0) || (newReal<oldReal) ) {
     var url= '../tool/checkStatusChange.php';
     url+='?newReal='+newReal;
