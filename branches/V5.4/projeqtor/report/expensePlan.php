@@ -105,6 +105,7 @@ for ($i=1;$i<=2;$i++) {
   $query=$querySelect 
      . ' from ' . $obj->getDatabaseTableName().' exp, Project t2 ' 
      . ' where ' . $queryWhere.' AND t2.id=exp.idProject '
+     . ' and exp.cancelled=0'    
      . ' group by ' . $queryGroupBy
      . ' order by t2.sortOrder asc '; 
   $result=Sql::query($query);

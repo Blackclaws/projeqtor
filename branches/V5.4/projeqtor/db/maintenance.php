@@ -482,6 +482,14 @@ if (beforeVersion($currVersion,"V5.3.0") and $currVersion!='V0.0.0') {
   Sql::commitTransaction();
   traceLog("   => $cpt components updated");
 }
+if (beforeVersion($currVersion,"V5.4.5") and $currVersion!='V0.0.0') {
+  traceLog("recalculate expense for each project [5.4.5]");
+  $ppe=new ProjectPlanningElement();
+  $list=$ppe->getSqlElementsFromCriteria(array());
+  foreach ($list as $ppe) {
+    if ($ppe->expensePlannedAmount>0 or $ppe->expenseRealAmount>0) $ppe->updateExpense(false);
+  }
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
