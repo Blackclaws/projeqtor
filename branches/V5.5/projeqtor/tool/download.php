@@ -94,9 +94,6 @@ if (substr($name, -10)=='.projeqtor') {
 $name=str_replace(array("\n","\r"),array('',''),$name);
 if (($file != "") && (file_exists($file))) { 
 	header("Pragma: public"); 
-	traceLog("download file :");
-	traceLog($name);
-	traceLog($contentType);
   header("Content-Type: " . $contentType . "; name=\"" . $name . "\"");   
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 

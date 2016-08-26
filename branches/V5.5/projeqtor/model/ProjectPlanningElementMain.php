@@ -263,7 +263,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   
   public function updateExpense($doNotSave=false) {
   	$exp=new Expense();
-  	$lstExp=$exp->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+  	$lstExp=$exp->getSqlElementsFromCriteria(array('idProject'=>$this->refId,'cancelled'=>'0'));
   	$assigned=0;
   	$real=0;
   	$planned=0;
