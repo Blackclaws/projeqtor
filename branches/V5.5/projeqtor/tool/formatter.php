@@ -332,7 +332,6 @@ function formatCommentThumb($comment) {
   $res='';
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
-  debugLog($title);
   $res.='<img style="float:right;padding-right:3px;" src="img/note.png" ';
   $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
   $res.='/>';

@@ -292,7 +292,6 @@ class Assignment extends SqlElement {
     if (! $this->idResource) {
       $result.='<br/>' . i18n('messageMandatory', array(i18n('colIdResource')));
     } 
-    debugLog($this->refType);
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
