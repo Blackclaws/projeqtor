@@ -322,38 +322,29 @@ class IndicatorValue extends SqlElement {
         }
         break;
   	}
-  	debugLog("date=$date ,warning=$this->warningTargetDateTime, alert=$this->alertTargetDateTime, done=$this->done");
     if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime and !$this->done) {
-      debugLog("warning (not done)");
-      $this->warningSent='1';
       if (! $this->warningSent ) {
-        debugLog('send Warning');
         $this->sendWarning();
       }
-    } else if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime and $this->done) {
-      debugLog("warning (done)");
       $this->warningSent='1';
+    } else if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime and $this->done) {
       if (! $this->warningSent) {
-        debugLog('send Warning');
         $this->sendWarning();
       }
+      $this->warningSent='1';
     } else {
       $this->warningSent='0';
     }
     if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime and !$this->done) {
-      debugLog("alert (not done)");
-      $this->alertSent='1';
       if (! $this->alertSent) {
-        debugLog('send Alert');
         $this->sendAlert();
       }
+      $this->alertSent='1';
     } else if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime and $this->done) {
-      debugLog("alert (done)");
-      $this->alertSent='1';
       if (! $this->alertSent) {
-        debugLog('send Alert');
         $this->sendAlert();
       }
+      $this->alertSent='1';
     } else {
       $this->alertSent='0';
     }        
@@ -553,15 +544,16 @@ class IndicatorValue extends SqlElement {
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
     $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
-    $message=$obj->getMailDetail();
-    /*$message='<table>';
+    
+    $message='<table>';
     $message.='<tr><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.htmlEncode($obj->id).');">' . htmlEncode($name) . '</td></tr>';
     $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
     $message.='<tr><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
     $message.=($warningTarget and $type=="WARNING")?'<tr><td width="35%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';
     $message.=($alertTarget and $type=="ALERT")?'<tr><td width="35%" align="right">' . i18n('alertValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $alertTarget . '</td>':'';
     $message.=($value)?'<tr><td width="30%">' . i18n('value') . '</td><td>&nbsp;:&nbsp;</td><td>' . $value . '</td>':'';
-    $message.='</table>';*/
+    $message.='</table><br/>';
+    $message.=$obj->getMailDetail();
     $messageMail='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .

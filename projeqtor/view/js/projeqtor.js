@@ -616,12 +616,11 @@ function loadContent(page, destination, formName, isResultMessage,
     showWait();
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
-  dojo
-      .xhrPost({
+    dojo.xhrPost({
         url : page,
         form : dojo.byId(formName),
         handleAs : "text",
-        load : function(data, args) {
+        load : function(data, args) {          
           var debugTemp = (new Date()).getTime();
           var contentNode = dojo.byId(destination);
           var contentWidget = dijit.byId(destination);
@@ -728,19 +727,21 @@ function loadContent(page, destination, formName, isResultMessage,
                   + parseInt(directAccess) + ');', 500);
             }
           }
-          if (isResultMessage) {
+          if (isResultMessage) {    
             var contentNode = dojo.byId(destination);
             dojo.fadeIn({
               node : contentNode,
               duration : 100,
               onEnd : function() {
-                if(!editorInFullScreen())finalizeMessageDisplay(destination, validationType);
-                else{
+                if(!editorInFullScreen()) {
+                  finalizeMessageDisplay(destination, validationType);
+                } else {
                   var elemDiv = document.createElement('div');
                   elemDiv.id='testFade';
-                  elemDiv.style.cssText = 'position:absolute;width:200px;height:16px;z-index:10000;';
+                  var leftMsg=(window.innerWidth - 200)/2;
+                  elemDiv.style.cssText = 'position:absolute;text-align:center;width:200px;height:16px;z-index:10000;top:50px;left:'+leftMsg+'px';
                   elemDiv.className='messageOK';
-                  elemDiv.innerHTML=i18n('resultOk');
+                  elemDiv.innerHTML=i18n('resultSave');
                   document.body.appendChild(elemDiv);
                   resultDivFadingOut = dojo.fadeOut({
                     node : elemDiv,
@@ -750,6 +751,7 @@ function loadContent(page, destination, formName, isResultMessage,
                     }
                   }).play();
                   hideWait();
+                  formInitialize();
                 }
               }
             }).play();
@@ -1341,8 +1343,6 @@ function finalizeMessageDisplay(destination, validationType) {
       forceRefreshMenu = dojo.byId("forceRefreshMenu").value;
     }
     if (forceRefreshMenu) {
-
-
       // loadContent("../view/menuTree.php", "mapDiv",null,false);
       // loadContent("../view/menuBar.php", "toolBarDiv",null,false);
       showWait();
@@ -3414,7 +3414,7 @@ function editorInFullScreen() {
     var numEditor = 1;
     while (dojo.byId('ckeditor' + numEditor)) {
       if(typeof editorArray[numEditor] != 'undefined'){
-        if(editorArray[numEditor].toolbar[3].items[1]._.state==1)fullScreenTest=true;
+        if(editorArray[numEditor].toolbar && editorArray[numEditor].toolbar[3].items[1]._.state==1)fullScreenTest=true;
       }
       numEditor++;
     }
