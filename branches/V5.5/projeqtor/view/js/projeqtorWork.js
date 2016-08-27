@@ -231,7 +231,6 @@ function dispatchWorkValueChange(rowId, colId) {
       if(isFuture)
         if(daysWorkFutureV!=0){
           daysWorkFutureV=daysWorkFutureV.split(',');
-          console.log(daysWorkFutureV);
           find=false;
           for(var ite in daysWorkFutureV){
             if(daysWorkFutureV[ite]==toAdd)daysWorkFutureV.splice(ite, 1);
@@ -290,7 +289,6 @@ function dispatchWorkValueChange(rowId, colId) {
   totalWork=parseFloat(dijit.byId('totalWork').get("value"));
   businessDay=parseInt(dojo.byId('businessDay').value);
   classTotalWork="imputationValidCapacity";
-  console.log(Math.round(totalWork)+'<'+businessDay);
   if (totalWork>businessDay) {
     classTotalWork='imputationInvalidCapacity';
   } else if (totalWork<businessDay) {

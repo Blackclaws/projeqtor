@@ -630,9 +630,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
 		. i18n('colReassessed') . '</TD>';
 		echo '</TR>';
-		if (! $print) {
-			echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';
-		}
 		if (!$print) {
 		  echo '</table>';
 		  echo '</div>';
@@ -936,6 +933,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
   			echo '</tr>';
   		}
 		}
+		if (! $print) {
+		  echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '" />';
+		}
 		if (!$print and count($tab)>20) {
 		  echo '</table>';
 		  echo '</div>';
@@ -983,7 +983,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				echo ' value="' . $colSum[$i] . '" ';
 				echo ' >';
 				echo '</div>';
-				debugLog($curDate.'>'.$maxDateFuture);
 				echo '<input type="hidden" id="colIsFuture_' . $i . '" value="'.(($curDate>$maxDateFuture && $nbFutureDays!=-1)?1:0).'" />';
 				echo '<input type="hidden" id="colIsFutureBlocking_' . $i . '" value="'.(($curDate>$maxDateFutureBlocking && $nbFutureDaysBlocking!=-1)?1:0).'" />';
 			} else {

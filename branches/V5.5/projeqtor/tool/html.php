@@ -130,7 +130,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     $arrayToDel=array();
     foreach($table as $key => $val){
-      debugLog('menu'.$val.' : '.securityGetAccessRightYesNo('menu'.$val, 'read', new Linkable($key)));
       if(securityGetAccessRightYesNo('menu'.$val, 'read', new Linkable($key))=="NO")$arrayToDel[]=$key;
     }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
@@ -258,10 +257,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	  $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
     	}
     	if (isset($restrictArray[$selection])) unset($restrictArray[$selection]);
-    	debugLog("CASE 1");
-    	debugLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",required=$required,critFld=$critFld,critval=$critVal)");
-    	debugLog($table);
-    	debugLog($restrictArray);
     } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
       $prod=new Product($critVal);
       $table=$prod->getComposition(true,true);
