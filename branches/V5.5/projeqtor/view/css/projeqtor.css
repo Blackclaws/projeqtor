@@ -727,8 +727,9 @@ label, .label, .smallLabel {
 .colorSelector {
   background-image: url(images/colorSelector.png);
   background-repeat: no-repeat;
-  width: 16px;
-  height: 16px;
+  background-size: 18px 18px;
+  width: 19px;
+  height: 19px;
   text-align: center;
 }
 

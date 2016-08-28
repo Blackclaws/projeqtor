@@ -1604,7 +1604,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       $accessRight='NO';
     } else if ($accessRight=='WRITE') {
       $accessRight='YES';
-    } else { // Case of project dependent screen, Will search on all profiles if user has some create rights
+    } else if (!$obj or !property_exists($obj, 'idProject') or !$obj->idProject) { // Case of project dependent screen, Will search on all profiles if user has some create rights
       foreach ($user->getAllProfiles() as $prf) {
         $tmpUser=new User();
         $tmpUser->idProfile=$prf;
@@ -1612,6 +1612,11 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
         $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
         if ($accessRight=='YES') break;
       }
+    } else if ($obj and property_exists($obj, 'idProject') and $obj->idProject) {
+      $tmpUser=new User();
+      $tmpUser->idProfile=$user->getProfile($obj);
+      $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
+      $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
     }
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
     if ($accessRight == 'NO') {

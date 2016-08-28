@@ -366,6 +366,7 @@ class RequirementMain extends SqlElement {
   	$this->_noHistory=true;
   	$listCrit='idTestCase in (0';
   	$this->countLinked=0;
+  	$this->countIssues=0;
     foreach ($this->_Link as $link) {
       if ($link->ref2Type=='TestCase') {
         $listCrit.=','.Sql::fmtId($link->ref2Id);
@@ -380,7 +381,6 @@ class RequirementMain extends SqlElement {
     $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit,  "statusDateTime asc");
     $this->countBlocked=0;
     $this->countFailed=0;
-    $this->countIssues=0;
     $this->countPassed=0;
     $this->countPlanned=0;
     $this->countTotal=0;

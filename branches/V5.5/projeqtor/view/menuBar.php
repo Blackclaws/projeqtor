@@ -97,7 +97,7 @@
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
           <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
-           id="listFavoriteReports" name="listFavoriteReports">
+           id="listFavoriteReports" name="listFavoriteReports" style="position:relative;top:-10px;left:-10px;">
             <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="display:none;"
               href="../tool/refreshFavoriteReportList.php"
               onMouseEnter="clearTimeout(closeFavoriteReportsTimeout);"
