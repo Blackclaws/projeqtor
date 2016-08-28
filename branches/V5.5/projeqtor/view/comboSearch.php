@@ -134,10 +134,16 @@
             }  
       };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      dojo.fadeIn({
+          node : dojo.byId('body'),
+          duration : 300,
+          onEnd : function() {
+          }
+      }).play();
     });
   </script>
 </head>
-<body id="body" class="<?php echo getTheme();?>" onload="ckEditorReplaceAll();top.hideWait();">
+<body id="body" style="opacity:0" class="<?php echo getTheme();?>" onload="ckEditorReplaceAll();top.hideWait();">
   <input type="hidden" id="comboDetail" name="comboDetail" value="true" />
   <input type="hidden" id="comboDetailId" name="comboDetailId" value="" />
   <input type="hidden" id="comboDetailName" name="comboDetailName" value="" />

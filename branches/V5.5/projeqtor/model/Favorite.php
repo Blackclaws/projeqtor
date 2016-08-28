@@ -73,7 +73,7 @@ class Favorite extends SqlElement {
     }
     echo '<form dojoType="dijit.form.Form" id="favoriteReportsForm" name="todayParametersForm" onSubmit="return false;">';
     echo '<table style="width:100%">';
-    echo '<tr><td class="dialogSection" colspan="4" height="20px">'.i18n('favoriteReports').'</td></tr>';
+    echo '<tr><td class="" colspan="4" height="20px" style="text-align:center;font-weight:bold;">'.i18n('favoriteReports').'</td></tr>';
     echo '<tr><td colspan="4">&nbsp;</td></tr>';
     echo '</table>';
     echo '<table id="dndFavoriteReports" jsId="dndFavoriteReports" dojotype="dojo.dnd.Source"
@@ -101,6 +101,7 @@ class Favorite extends SqlElement {
       echo '<input type="hidden" name="favoriteReport' . htmlEncode($favorite->id). '" id="favoriteReport' . htmlEncode($favorite->id). '" value="0" />';
       echo '</td>';
       echo '<td  style="vertical-align:top;">';
+      $cmd="";
       $cmd="dojo.byId('favoriteForm').reportName.value='". htmlEncode(i18n($rpt['name']),'quotes')."';";
       $cmd.="showPrint('../report/".htmlEncode($fileName).$urlParam."', 'favorite',null,null,'$orientation');";   
       echo '<div class="selectableList" onClick="'.$cmd.'">'.i18n($rpt['name']).'</div>';
