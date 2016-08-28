@@ -63,11 +63,11 @@
      $canRead=(securityGetAccessRightYesNo('menuUser', 'read') == "YES");
      echo '<tr VALIGN="top" style="padding:0;margin:0;white-space:nowrap">';
      echo '<td class="siteH2" style="text-align:right;">&nbsp;&nbsp;&nbsp;'.i18n("startGuideActionCreate")." ".i18n('menu'.$item).'</td>';
-     echo '<td>&nbsp;&nbsp;&nbsp;';
+     echo '<td style="position: relative; padding-left:10px;top:-3px;">&nbsp;&nbsp;&nbsp;';
      if ($canRead) {
-       echo '<span style="cursor:pointer" onClick="loadMenuBar'.(($is_object)?'Object':'Item').'(\'' . $item .  '\',null,\'bar\');" >';
+       echo '<span style="cursor:pointer; position: relative;top:-10px; margin-left:10px;" onClick="loadMenuBar'.(($is_object)?'Object':'Item').'(\'' . $item .  '\',null,\'bar\');" >';
      }
-     echo '<img src="../view/css/images/icon'.$item.'32.png" />';
+     echo formatIcon($item, 32);
      echo '</span>';
      echo '&nbsp;&nbsp;&nbsp;';
      if ($item=='Planning') {
@@ -92,7 +92,7 @@
         }
         $nbItem=$obj->countSqlElementsFromCriteria($crit);
      }
-     
+     echo '</td><td>';
      if ($nbItem==0 or ($item=='User' and $nbItem<=2) ) {
        echo '<img src="css/images/iconStartGuideTodo.png" />&nbsp;&nbsp;&nbsp;</td>';
        echo '<td VALIGN="middle" colspan="2" style="white-space:normal">';

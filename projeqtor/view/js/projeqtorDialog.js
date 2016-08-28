@@ -789,6 +789,9 @@ function hideDetail() {
   hideField('comboCloseButton');
   frames['comboDetailFrame'].location.href="preparePreview.php";
   dijit.byId("dialogDetail").hide();
+  if (dijit.byId(dojo.byId('comboName').value)) {
+    dijit.byId(dojo.byId('comboName').value).focus();
+  }
 }
 
 //=============================================================================
@@ -3647,105 +3650,29 @@ function addVersionProject(idVersion, idProject) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
-  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
-  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion');
-  dijit.byId("versionProjectProduct").set('value', null);
-  dijit.byId("versionProjectProduct").set('readOnly', true);
-  dojo.byId("versionProjectId").value="";
-  if (idVersion) {
-    dijit.byId("versionProjectVersion").set('readOnly', true);
-    dijit.byId("versionProjectProduct").set('readOnly', true);
-    dijit.byId("versionProjectVersion").set('value', idVersion);
-    disableWidget("versionProjectProductDetailButton");
-    disableWidget("versionProjectVersionDetailButton");
-  } else {
-    dijit.byId("versionProjectVersion").set('readOnly', false);
-    dijit.byId("versionProjectProduct").set('readOnly', false);
-    dijit.byId("versionProjectVersion").reset();
-    enableWidget("versionProjectProductDetailButton");
-    enableWidget("versionProjectVersionDetailButton");
+  params="&idVersionProject=&idVersion="+idVersion+"&idProject="+idProject;
+  loadDialog('dialogVersionProject', null, true, params, true);
   }
-  if (idProject) {
-    dijit.byId("versionProjectProject").set('readOnly', true);
-    dijit.byId("versionProjectProject").set('value', idProject);
-    disableWidget("versionProjectProjectDetailButton");
-  } else {
-    dijit.byId("versionProjectProject").set('readOnly', false);
-    dijit.byId("versionProjectProject").reset();
-    enableWidget("versionProjectProjectDetailButton");
-  }
-
-  dijit.byId("versionProjectIdle").reset();
-  dijit.byId("versionProjectStartDate").reset();
-  dijit.byId("versionProjectEndDate").reset();
-  dijit.byId("dialogVersionProject").show();
-}
 
 function removeVersionProject(id) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  dojo.byId("versionProjectId").value=id;
   actionOK=function() {
-    loadContent("../tool/removeVersionProject.php", "resultDiv",
-        "versionProjectForm", true, 'versionProject');
+    loadContent("../tool/removeVersionProject.php?idVersionProject="+id, "resultDiv", null, true, 'versionProject');
   };
   msg=i18n('confirmDeleteVersionProject');
   showConfirm(msg, actionOK);
 }
-
-versionProjectLoad=false;
-function editVersionProject(id, idVersion, idProject, startDate, endDate, idle) {
+;
+function editVersionProject(id, idVersion, idProject) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  dojo.byId("versionProjectId").value=id;
-  refreshList('idProject', null, null, idProject, 'versionProjectProject', true);
-  refreshList('idProduct', null, null, null, 'versionProjectProduct', false);
-  refreshList('idProductVersion', null, null, idVersion, 'versionProjectVersion', true);
-  dijit.byId("versionProjectProduct").set('value', null);
-  dijit.byId("versionProjectProduct").set('readOnly', true);
-  if (idVersion) {
-    dijit.byId("versionProjectVersion").set('readOnly', true);
-    dijit.byId("versionProjectVersion").set('value', idVersion);
-    dijit.byId("versionProjectProduct").set('readOnly', true);
-    disableWidget("versionProjectProductDetailButton");
-    disableWidget("versionProjectVersionDetailButton");
-  } else {
-    dijit.byId("versionProjectVersion").set('readOnly', false);
-    dijit.byId("versionProjectProduct").set('readOnly', false);
-    dijit.byId("versionProjectVersion").reset();
-    enableWidget("versionProjectProductDetailButton");
-    enableWidget("versionProjectVersionDetailButton");
-  }
-  if (idProject) {
-    dijit.byId("versionProjectProject").set('readOnly', true);
-    dijit.byId("versionProjectProject").set('value', idProject);
-    disableWidget("versionProjectProjectDetailButton");
-  } else {
-    dijit.byId("versionProjectProject").set('readOnly', false);
-    dijit.byId("versionProjectProject").reset();
-    enableWidget("versionProjectProjectDetailButton");
-  }
-  if (startDate) {
-    dijit.byId("versionProjectStartDate").set('value', startDate);
-  } else {
-    dijit.byId("versionProjectStartDate").reset();
-  }
-  if (endDate) {
-    dijit.byId("versionProjectEndDate").set('value', endDate);
-  } else {
-    dijit.byId("versionProjectEndDate").reset();
-  }
-  if (idle == 1) {
-    dijit.byId("versionProjectIdle").set('value', idle);
-  } else {
-    dijit.byId("versionProjectIdle").reset();
-  }
-  dijit.byId("dialogVersionProject").show();
+  params="&idVersionProject="+id+"&idVersion="+idVersion+"&idProject="+idProject;
+  loadDialog('dialogVersionProject', null, true, params, true);
 }
 
 function saveVersionProject() {
@@ -3754,6 +3681,51 @@ function saveVersionProject() {
     loadContent("../tool/saveVersionProject.php", "resultDiv",
         "versionProjectForm", true, 'versionProject');
     dijit.byId('dialogVersionProject').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+
+// =============================================================================
+// = Product Project
+// =============================================================================
+
+function addProductProject(idProduct, idProject) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  params="&idProductProject=&idProduct="+idProduct+"&idProject="+idProject;
+  loadDialog('dialogProductProject', null, true, params, true);
+}
+
+function removeProductProject(id) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeProductProject.php?idProductProject="+id, "resultDiv", null, true, 'productProject');
+  };
+  msg=i18n('confirmDeleteProductProject');
+  showConfirm(msg, actionOK);
+}
+
+function editProductProject(id, idProduct, idProject) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  params="&idProductProject="+id+"&idProduct="+idProduct+"&idProject="+idProject;
+  loadDialog('dialogProductProject', null, true, params, true);
+}
+
+function saveProductProject() {
+  var formVar=dijit.byId('productProjectForm');
+  if (formVar.validate()) {
+    loadContent("../tool/saveProductProject.php", "resultDiv",
+        "productProjectForm", true, 'productProject');
+    dijit.byId('dialogProductProject').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -5520,9 +5492,6 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
     load : function(data) {
       var contentWidget=dijit.byId(dialogDiv);
       contentWidget.set('content', data);
-//      if(closable){
-//        contentWidget.set('content', data);
-//      }
       if (autoShow) {
         setTimeout("dijit.byId('" + dialogDiv + "').show();", 100);
       }
@@ -6234,6 +6203,8 @@ function saveCreationInfo() {
     }
   }
   formChanged();
+  //dojo.byId('buttonDivCreationInfo').innerHTML="";
+  //forceRefreshCreationInfo=true;
   saveObject();
   dijit.byId('dialogCreationInfo').hide();
 }

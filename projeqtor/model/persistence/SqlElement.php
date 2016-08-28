@@ -4105,6 +4105,7 @@ abstract class SqlElement {
 
 	public function setReference($force=false, $old=null) {
 		scriptLog('SqlElement::setReference');
+		$objectsWithFixedReference=array('Bill');
 		if (! property_exists($this,'reference')) {
 			return;
 		}
@@ -4143,6 +4144,9 @@ abstract class SqlElement {
 			}
 			if ($this->$type==$old->$type and $this->idProject==$old->idProject) {
 				return;
+			}
+			if (in_array(get_class($this),$objectsWithFixedReference)) {
+			  return;
 			}
 		}
 		if (isset($this->idProject)) {
