@@ -29,6 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/jsonResourcePlanning.php');
+debugLog($_REQUEST);
 $objectClass='PlanningElement';
 $obj=new $objectClass();
 $table=$obj->getDatabaseTableName();
@@ -76,6 +77,15 @@ if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDat
 		}
 	}
 }
+$selectResource=null;
+if (array_key_exists('userName',$_REQUEST)) {
+  $selectResource=trim($_REQUEST['userName']);
+}
+$selectTeam=null;
+if (array_key_exists('teamName',$_REQUEST)) {
+  $selectTeam=trim($_REQUEST['teamName']);
+}
+
 // Header
 if ( array_key_exists('report',$_REQUEST) ) {
 	$headerParameters="";
@@ -159,6 +169,30 @@ $objectClass='ResourcePlanning';
 foreach ($list as $script) {
   require $script; // execute code
 }
+
+$table=array();
+$specific="imputation";
+ob_start();
+include("../tool/drawResourceListForSpecificAccess.php");
+ob_clean();
+$allowedResource=$table;
+if ($selectTeam) {
+  $team=new Team($selectTeam);
+  $teamMembers=$team->getMembers();
+} else {
+  $teamMembers=null;
+}
+foreach ($allowedResource as $resId=>$resName) {
+  if ($selectResource and $selectResource!=$resId) {
+    unset($allowedResource[$resId]);
+  } else if ($selectTeam and is_array($teamMembers)) {
+	  if (!isset($teamMembers[$resId])) {
+	    unset($allowedResource[$resId]);
+	  }
+  }
+}
+debugLog($allowedResource);
+$queryWhere.="and ass.idResource in ".transformListIntoInClause($allowedResource);
 // constitute query and execute
 $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
 $query='select ' . $querySelect
@@ -172,6 +206,7 @@ if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
   debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
   debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
 }
+
 $arrayPeAss=array();
 $arrayResource=array();
 $arrayProject=array();
@@ -198,8 +233,11 @@ if (Sql::$lastQueryNbRows == 0) {
   $idProj='';
   $keyRes="";
   $idRes='';
+  $cptLine=0;
 	while ($line = Sql::fetchLine($result)) {
 		$line=array_change_key_case($line,CASE_LOWER);
+		if (! isset($allowedResource[$line['idresource']])) continue;
+		$cptLine++;
 		if ($line['idresource']!=$idResource) {
 			$idResource=$line['idresource'];
 			$arrayResource[$idResource]=array();;

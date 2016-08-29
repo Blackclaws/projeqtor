@@ -3635,14 +3635,18 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
           echo '  <a onClick="removeAffectation(' . "'" . htmlEncode($aff->id) . "'" . ','.(($aff->idResource==getSessionUser()->id)?'1':'0').');" ' . 
               'title="' . i18n('removeAffectation') . '" > '.formatSmallButton('Remove').'</a>';
         }
-        if ($canUpdate and !$print and $isResource) {
+        if ($canUpdate and !$print and $isResource and !$aff->idle) {
           echo '  <a onClick="replaceAffectation(' . "'" . htmlEncode($aff->id) . "'" . ",'" . get_class($obj) . "'" . ",'" . $type . "'" . ",'" . htmlEncode($aff->idResource) . "'" . ",'" . htmlEncode($aff->idProject) . "'" . ",'" . htmlEncode($aff->rate) . "'" . ",'" . htmlEncode($aff->idle) . "'" . ",'" .
               $aff->startDate . "'" . ",'" . htmlEncode($aff->endDate) . "'" . ',' . htmlEncode($aff->idProfile) . ');" ' . 
               'title="' . i18n('replaceAffectation') . '" > '.formatSmallButton('SwitchUser').'</a>';
+        } else {
+          if ($aff->idle) {
+            echo '<a><div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '"/></div></a>';
+          } else {
+            echo '<a><div style="display:table-cell;width:20px;">&nbsp;</div></a>';
+          }
         }
-        if ($aff->idle) {
-          echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="roundedButtonSmall"/> ';
-        }
+       
         echo '</td>';
       }
       echo '<td class="assignData' . $idleClass . '" align="center">' . htmlEncode($aff->id) . '</td>';

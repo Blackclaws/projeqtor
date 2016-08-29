@@ -116,6 +116,7 @@
 .iconButtonAdd16 { background-image: url(images/smallButtonAdd.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonLink16 { background-image: url(images/smallButtonLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonView16 { background-image: url(images/display.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonSwitchUser16 { background-image: url(images/smallButtonSwitch.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconButtonPassed16 { background-image: url(images/iconPassed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonFailed16 { background-image: url(images/iconFailed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

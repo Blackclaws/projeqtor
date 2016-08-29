@@ -57,8 +57,12 @@ class ActivityMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $idTargetProductVersion;
   public $result;
+  public $_sec_productComponent;
+  public $idProduct;
+  public $idComponent;
+  public $idTargetProductVersion;
+  public $idTargetComponentVersion;
   public $_sec_Assignment;
   public $_Assignment=array();
   public $_sec_Progress;
@@ -111,11 +115,12 @@ class ActivityMain extends SqlElement {
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
                                                    'idContact' => 'requestor',
-                                                   'idTargetProductVersion'=>'targetVersion',
+                                                   
                                                    'isPlanningActivity'=>'PlanningActivity');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array('idTargetProductVersion'=>'idVersion');
+  private static $_databaseColumnName = array('idTargetProductVersion'=>'idVersion', 
+      'idTargetComponentVersion'=>'idComponentVersion');
     
    /** ==========================================================================
    * Constructor

@@ -2171,6 +2171,9 @@ function drawGantt() {
   }
   jsonData = dojo.byId('planningJsonData');
   if (jsonData.innerHTML.indexOf('{"identifier"') < 0) {
+    if (dijit.byId('leftGanttChartDIV')) dijit.byId('leftGanttChartDIV').set('content',null);
+    if (dijit.byId('rightGanttChartDIV')) dijit.byId('rightGanttChartDIV').set('content',null);
+    if (dijit.byId('topGanttChartDIV')) dijit.byId('topGanttChartDIV').set('content',null);  
     if (jsonData.innerHTML.length > 10) {
       showAlert(jsonData.innerHTML);
     }
