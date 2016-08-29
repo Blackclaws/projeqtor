@@ -49,12 +49,7 @@ class TicketMain extends SqlElement {
   public $idContext1;
   public $idContext2;
   public $idContext3;
-  public $idProduct;
-  public $idComponent;
-  public $idOriginalProductVersion;
-  public $_OtherOriginalProductVersion=array();
-  public $idOriginalComponentVersion;
-  public $_OtherOriginalComponentVersion=array();
+  
   public $description;
   public $_sec_treatment;
   public $idActivity;
@@ -77,11 +72,18 @@ class TicketMain extends SqlElement {
   public $idleDateTime;
   public $cancelled;
   public $_lib_cancelled;
+  public $result;
+  public $_sec_productComponent;
+  public $idProduct;
+  public $idComponent;
+  public $idOriginalProductVersion;
+  public $_OtherOriginalProductVersion=array();
+  public $idOriginalComponentVersion;
+  public $_OtherOriginalComponentVersion=array();
   public $idTargetProductVersion;
   public $_OtherTargetProductVersion=array();
   public $idTargetComponentVersion;
   public $_OtherTargetComponentVersion=array();
-  public $result;
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();

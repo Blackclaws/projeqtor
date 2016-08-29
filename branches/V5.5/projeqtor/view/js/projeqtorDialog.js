@@ -1317,13 +1317,10 @@ function removeLink(linkId, refType, refId, refTypeName) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  dojo.byId("linkId").value=linkId;
-  dojo.byId("linkRef1Type").value=dojo.byId("objectClass").value;
-  dojo.byId("linkRef1Id").value=dojo.byId("objectId").value;
-  dijit.byId("linkRef2Type").set('value', refType);
-  dojo.byId("linkRef2Id").value=refId;
   actionOK=function() {
-    loadContent("../tool/removeLink.php", "resultDiv", "linkForm", true, 'link');
+    loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
+        +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
+        +"&linkRef2Id="+refId, "resultDiv", null, true, 'link');
   };
   if (!refTypeName) {
     refTypeName=i18n(refType);

@@ -130,7 +130,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     $arrayToDel=array();
     foreach($table as $key => $val){
-      if(securityGetAccessRightYesNo('menu'.$val, 'read', new Linkable($key))=="NO")$arrayToDel[]=$key;
+      $objTmp=new $val();
+      if(property_exists($objTmp, "idProject") && $obj && property_exists($obj, "idProject")){
+        $objTmp->idProject=$obj->idProject;
+      }
+      if(securityGetAccessRightYesNo('menu'.$val, 'read', $objTmp)=="NO" or !securityCheckDisplayMenu(null,$val))$arrayToDel[]=$key;
     }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     foreach($arrayToDel as $key)unset($table[$key]);
