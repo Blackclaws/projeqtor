@@ -145,7 +145,7 @@ if ($saveShowClosed) {
                     </tr>
                   </table>
 		            </td>
-                <td>
+                <td style="width:150px">
                   <table>
                     <tr>
                       <td width="32px">
@@ -222,15 +222,55 @@ if ($saveShowClosed) {
                     </tr>
                   </table>
                 </td>
-		            <td>
+		            <td style="width:5px">
                   <div id="planResultDiv" style="display:none"
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
+                  <table>
+                    <tr>
+                      <td style="text-align:right;"><?php echo i18n('colIdResource');?>&nbsp;&nbsp;</td>
+                      <td>
+                      <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="userName" id="userName"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >
+                           refreshJsonPlanning();
+                        </script>
+                         <option value=""></option>
+                        <?php 
+                         $specific='imputation';
+                         $specificDoNotInitialize=true;
+                         include '../tool/drawResourceListForSpecificAccess.php';?>  
+                      </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align:right;"><?php echo i18n('colIdTeam');?>&nbsp;&nbsp;</td>
+                      <td>
+                      <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="teamName" id="teamName"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >                           
+                           refreshJsonPlanning();
+                        </script>
+                        <?php 
+                         htmlDrawOptionForReference('idTeam', null)?>  
+                      </select>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
 		            <td style="text-align: right; align: right;">
-		              <table width="100%"><tr><td>
+		              <table width="100%"><tr>
+		              <td>&nbsp;</td>
+		              <td width="35px">&nbsp;</td>
+		              <td width="200px">
                   <?php echo i18n("labelShowWbs");?>
-                  </td><td >
+                  </td><td width="35px">
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="showWBS" name="showWBS" class="whiteCheck"
                     <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
@@ -239,7 +279,11 @@ if ($saveShowClosed) {
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
-		              </td></tr><tr><td>
+		              </td></tr>
+		              <tr>
+		              <td>&nbsp;</td>
+		              <td>&nbsp;</td>
+		              <td>
 		              <?php echo i18n("labelShowIdle");?>
                   </td><td>
 		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
@@ -250,7 +294,20 @@ if ($saveShowClosed) {
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
-                  </td></tr><tr><td>
+                  </td></tr>
+                  <tr>
+                  <td><?php echo i18n("labelShowProjectLevel");?></td>
+		              <td>
+                  <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowProject" name="listShowProject" class="whiteCheck"
+                    <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
+                    <script type="dojo/method" event="onChange" >
+                      saveUserParameter('planningShowProject',((this.checked)?'1':'0'));
+                      refreshJsonPlanning();
+                    </script>
+                  </div>&nbsp;
+                  </td>
+                  <td>
                   <?php echo i18n("labelShowLeftWork");?>
                   </td><td>
                   <div title="<?php echo i18n('showLeftWork')?>" dojoType="dijit.form.CheckBox" 
@@ -258,17 +315,6 @@ if ($saveShowClosed) {
                     <?php if ($saveShowWork=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowWork',((this.checked)?'1':'0'));
-                      refreshJsonPlanning();
-                    </script>
-                  </div>&nbsp;
-                  </td></tr><tr><td>
-                  <?php echo i18n("labelShowProjectLevel");?>
-                  </td><td >
-                  <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowProject" name="listShowProject" class="whiteCheck"
-                    <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
-                    <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowProject',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
                   </div>&nbsp;
@@ -313,7 +359,7 @@ if ($saveShowClosed) {
       id="GanttChartDIV" name="GanttChartDIV" >
        <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
          <div dojoType="dijit.layout.ContentPane" region="top" 
-          style="width:100%; height:43px; overflow:hidden;" class="ganttDiv"
+          style="width:100%; height:45px; overflow:hidden;" class="ganttDiv"
           id="topGanttChartDIV" name="topGanttChartDIV">
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" 

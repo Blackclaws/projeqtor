@@ -62,6 +62,7 @@ class RiskMain extends SqlElement {
   public $idleDate;  
   public $cancelled;
   public $_lib_cancelled;
+  public $mitigationPlan;
   public $result;
   //public $_sec_linkAction;
   //public $_Link_Action=array();

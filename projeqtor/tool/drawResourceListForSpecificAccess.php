@@ -79,7 +79,7 @@ if (count($table)==0) {
 asort($table);
 foreach($table as $key => $val) {
   echo '<option value="' . $key . '"';
-  if ( $key==$user->id ) { echo ' SELECTED '; }
+  if ( $key==$user->id and ! isset($specificDoNotInitialize)) { echo ' SELECTED '; }
   echo '>' . $val . '</option>';
 }
 ?>

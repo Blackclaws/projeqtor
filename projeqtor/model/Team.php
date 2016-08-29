@@ -112,5 +112,16 @@ class Team extends SqlElement {
     }
   }
   
+  public function getMembers() {
+    $result=array();
+    $crit=array('idTeam'=>$this->id);
+    $res=new Resource();
+    $resList=$res->getSqlElementsFromCriteria($crit, false);
+    foreach ($resList as $res) {
+      $result[$res->id]=$res->name;
+    }
+    return $result;
+  }
+  
 }
 ?>

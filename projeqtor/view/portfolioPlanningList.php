@@ -90,7 +90,7 @@ if ($saveShowClosed) {
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">
 		          <tr>
-		            <td>
+		            <td style="width:70px">
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
                   <input type="hidden" id="portfolio" name="portfolio" value="true" />
@@ -106,7 +106,7 @@ if ($saveShowClosed) {
 		              </button>
 <?php }?>             
 		            </td>
-		            <td style="white-space:nowrap;">
+		            <td style="white-space:nowrap;width:240px">
 		              <table>
                     <tr>
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
@@ -316,7 +316,7 @@ if ($saveShowClosed) {
       id="GanttChartDIV" name="GanttChartDIV" >
        <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
          <div dojoType="dijit.layout.ContentPane" region="top" 
-          style="width:100%; height:43px; overflow:hidden;" class="ganttDiv"
+          style="width:100%; height:45px; overflow:hidden;" class="ganttDiv"
           id="topGanttChartDIV" name="topGanttChartDIV">
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" 
