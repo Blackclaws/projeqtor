@@ -176,6 +176,11 @@ function refreshImputationPeriod(directDate) {
   return true;
 }
 
+function recursiveAddWorkProject(idProject, day, diff){
+  dojo.byId('sumProject_'+idProject+'_'+day).innerHTML=parseFloat(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML)+parseFloat(diff);
+  if(dojo.byId('projectParent_'+idProject+'_'+day)!=null)recursiveAddWorkProject(dojo.byId('projectParent_'+idProject+'_'+day).value, day, diff);
+}
+
 /**
  * Dispatch updates for a work value : to column sum, real work, left work and planned work
  * @param rowId
@@ -183,7 +188,7 @@ function refreshImputationPeriod(directDate) {
  * @return
  */
 //var oldImputationWorkValue=0;
-function dispatchWorkValueChange(rowId, colId) {
+function dispatchWorkValueChange(rowId, colId) { 
   var oldWorkValue=dojo.byId('workOldValue_' + rowId + '_' + colId).value;
   //var oldWorkValue=oldImputationWorkValue;
   if (oldWorkValue==null || oldWorkValue=='') {oldWorkValue=0;}   
@@ -258,6 +263,7 @@ function dispatchWorkValueChange(rowId, colId) {
     dojo.byId('daysWorkFutureBlocking').value=toAddFutureBlocking;
   }
   var diff=newWorkValue-oldWorkValue;
+  recursiveAddWorkProject(dojo.byId('idProject_'+rowId+'_'+colId).value, colId, diff);
   // Update sum for column
   var oldSum=dijit.byId('colSumWork_' + colId).get("value");
   var newSum=oldSum + diff;

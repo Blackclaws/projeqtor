@@ -210,6 +210,24 @@
               </td>
             </tr>
             <?php }
+       // fix planning, under construction
+             $arrayCheckbox=array("fixPlanning","isUnderConstruction");
+             foreach($arrayCheckbox as $checkField) {
+             if (isDisplayable($obj,$checkField)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeRequestor',array($obj->getColCaption($checkField)));?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="<?php echo $checkField;?>" name="<?php echo $checkField;?>">
+                 <option value=""> </option>
+                 <option value="ON"><?php echo i18n("checked");?></option>
+                 <option value="OFF"><?php echo i18n("unchecked");?></option>
+                </select>
+              </td>
+            </tr>
+            <?php }
+                }
       // Description 
             if (isDisplayable($obj, 'description') ) {?>
             <tr class="detail">
@@ -447,6 +465,19 @@
                 <?php echo autoOpenFilteringSelect();?>
                  id="<?php echo $pe.'_'.$pm;?>" name="<?php echo $pe.'_'.$pm;?>">
                  <?php htmlDrawOptionForReference($pm, null, null, false);?>
+                </select>
+              </td>
+            </tr>
+            <?php }
+      // Priority
+            $pe=get_class($obj).'PlanningElement';
+            $pm='id'.get_class($obj).'PlanningMode';
+            if (isDisplayable($obj,'priority', true)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeRequestor',array(i18n('colPriority')));?>&nbsp;:&nbsp;</td>
+              <td>
+                <input dojoType="dijit.form.TextBox" class="input" style="width:<?php echo $fieldWidth;?>px;" 
+                 id="<?php echo $pe.'_priority';?>" name="<?php echo $pe.'_priority';?>" value="">
                 </select>
               </td>
             </tr>
