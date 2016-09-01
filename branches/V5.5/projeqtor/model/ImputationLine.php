@@ -513,7 +513,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		
 		if (!$print) {
 		  echo '<div dojoType="dijit.layout.BorderContainer">';
-		  echo '<div dojoType="dijit.layout.ContentPane" region="top" style="overflow-y: scroll; height: auto;">';
+		  echo '<div dojoType="dijit.layout.ContentPane" id="topRegionImputation" data-dojo-props="splitter: true" region="top" style="overflow-y: scroll;height: auto;">';
 		}
 		echo '<table class="imputationTable" style="width:100%">';
 		echo '<TR class="ganttHeight">';
@@ -521,7 +521,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if (! $print) {
 		echo '<td style="width:90%"><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
 		           .' onChange="formChanged();"'
-               .' style="width: 99%;min-height:32px;max-height:32px;" maxlength="4000" class="input">'.htmlEncode($period->comment).'</textarea></td>';
+               .' style="width: 99%;min-height:32px;" maxlength="4000" class="input">'.htmlEncode($period->comment).'</textarea></td>';
 		} else {
 			echo htmlEncode($period->comment,'print');
 		}
@@ -530,116 +530,142 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if (! $print) {
 		  echo '<input type="hidden" id="resourceCapacity" value="'.$capacity.'" />';
 		}
-		echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
-		echo '<TR class="ganttHeight">';
-		echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
-		echo '  <TD class="ganttLeftTopLine" colspan="5">';
-		echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
-		echo '</td>';
-		if ($period->submitted) {		
-			$msg='<div class="imputationSubmitted"><span class="nobr">'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</span></div>';	
-			if (!$print and ! $period->validated and ($resourceId==$user->id or $canValidate)) {
-				echo '<td style="width:1%">'.$msg.'</td>'; 
-				echo '<td style="width:1%">';
-			  echo '<button id="unsubmitButton" jsid="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
-        echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unsubmit");</script>';
-        echo i18n('unSubmitWorkPeriod');
-        echo '</button>';
-        echo '</td>';
-        $locked=true;
-			} else {
-				echo '<td style="width:1%">'.$msg.'</td>'; 
-			}
-		} else if (!$print and $resourceId==$user->id and ! $period->validated) {
-			echo '<td style="width:1%">';
-	    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
-	    echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("submit");</script>';
-	    echo i18n('submitWorkPeriod');
-	    echo '</button>';
-	    echo '</td>'; 
-		}
-		echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';		
-		if ($period->validated) {
-			$locked=true;
-			$res=SqlList::getNameFromId('User', $period->idLocker);
-			$msg='<div class="imputationValidated"><span class="nobr">'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</span></div>';
-		  if (!$print and $canValidate) {
-		  	echo '<td style="width:1%">'.$msg.'</td>';
-		  	//echo '<div xdojoType="dijit.Tooltip" xconnectId="unvalidateButton" xposition="above" >'.$msg.'</div>';
-		  	echo '<td style="width:1%">';
-		  	echo '<button id="unvalidateButton" jsid="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
-        echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unvalidate");</script>';
-        echo i18n('unValidateWorkPeriod');
-        echo '</button>';
-        echo '</td>'; 
-		  } else {
-		  	echo '<td style="width:1%">'.$msg.'</td>';
-		  }
-		} else if (!$print and $canValidate) {
-			echo '<td style="width:1%">';
-		  echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
-      echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("validate");</script>';
-      echo i18n('validateWorkPeriod');
-      echo '</button>';
-      echo '</td>';
-		}
-		echo '</tr></table>';
-		echo '</TD>';
-		echo '  <TD class="ganttLeftTitle" colspan="' . $nbDays . '" '
-		. 'style="border-right: 1px solid #ffffff;border-bottom: 1px solid #DDDDDD;">'
-		. htmlFormatDate($startDate)
-		. ' - '
-		. htmlFormatDate($endDate)
-		. '</TD>';
-		echo '  <TD class="ganttLeftTopLine" colspan="2" style="text-align:center;color: #707070">' .  htmlFormatDate($today) . '</TD>';
-		echo '</TR>';
-		echo '<TR class="ganttHeight">';
-		echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;"></TD>';
-		echo '  <TD class="ganttLeftTitle" style="text-align: left; '
-		. 'border-left:0px; " nowrap>' .  i18n('colTask') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
-		. i18n('colStart') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
-		. i18n('colEnd') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
-		. i18n('colAssigned') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
-		. i18n('colReal') . '</TD>';
-		$curDate=$startDate;
-		$businessDay=0;
-		for ($i=1; $i<=$nbDays; $i++) {
-			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;max-width:'.$inputWidth.'px;overflow:hidden;';
-			if ($today==$curDate) {
-				echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;';
-			} else if (isOffDay($curDate,$cal)) {
-				echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;';
-			}
-			if (!isOffDay($curDate,$cal))$businessDay++;
-			echo '">';
-			if ($rangeType=='week') {
-				echo  i18n('colWeekday' . $i) . " "  . date('d',strtotime($curDate)) . '';
-			}
-			if (! $print) {
-				echo ' <input type="hidden" id="day_' . $i . '" name="day_' . $i . '" value="' . $curDate . '" />';
-			}
-			echo '</TD>';
-			$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
-		}
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
-		. i18n('colLeft') . '</TD>';
-		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
-		. i18n('colReassessed') . '</TD>';
-		echo '</TR>';
-		if (!$print) {
-		  echo '</table>';
+		
+		  echo '<script type="dojo/connect" event="resize" args="evt">
+            var valueHeight=parseInt(dojo.byId(\'topRegionImputation\').offsetHeight)-5;
+            dojo.byId(\'imputationComment\').style.height=valueHeight+\'px\';
+            dojo.byId(\'imputationComment\').style.maxHeight=valueHeight+\'px\';
+            dojo.byId(\'imputationComment\').style.minHeight=valueHeight+\'px\';
+            </script>';
 		  echo '</div>';
-		  echo '<div style="position:relative;overflow-y:scroll;" dojoType="dijit.layout.ContentPane" region="center">';
+		  
+		  
+
+		  echo '<div style="position:relative;overflow-y:scroll;" dojoType="dijit.layout.ContentPane" region="top">'; echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
+		  echo '<TR class="ganttHeight">';
+		  echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
+		  echo '  <TD class="ganttLeftTopLine" colspan="5">';
+		  echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
+		  echo '</td>';
+		  if ($period->submitted) {
+		    $msg='<div class="imputationSubmitted"><span class="nobr">'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</span></div>';
+		    if (!$print and ! $period->validated and ($resourceId==$user->id or $canValidate)) {
+		      echo '<td style="width:1%">'.$msg.'</td>';
+		      echo '<td style="width:1%">';
+		      echo '<button id="unsubmitButton" jsid="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >';
+		      echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unsubmit");</script>';
+		      echo i18n('unSubmitWorkPeriod');
+		      echo '</button>';
+		      echo '</td>';
+		      $locked=true;
+		    } else {
+		      echo '<td style="width:1%">'.$msg.'</td>';
+		    }
+		  } else if (!$print and $resourceId==$user->id and ! $period->validated) {
+		    echo '<td style="width:1%">';
+		    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >';
+		    echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("submit");</script>';
+		    echo i18n('submitWorkPeriod');
+		    echo '</button>';
+		    echo '</td>';
+		  }
+		  echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';
+		  if ($period->validated) {
+		    $locked=true;
+		    $res=SqlList::getNameFromId('User', $period->idLocker);
+		    $msg='<div class="imputationValidated"><span class="nobr">'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</span></div>';
+		    if (!$print and $canValidate) {
+		      echo '<td style="width:1%">'.$msg.'</td>';
+		      //echo '<div xdojoType="dijit.Tooltip" xconnectId="unvalidateButton" xposition="above" >'.$msg.'</div>';
+		      echo '<td style="width:1%">';
+		      echo '<button id="unvalidateButton" jsid="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >';
+		      echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unvalidate");</script>';
+		      echo i18n('unValidateWorkPeriod');
+		      echo '</button>';
+		      echo '</td>';
+		    } else {
+		      echo '<td style="width:1%">'.$msg.'</td>';
+		    }
+		  } else if (!$print and $canValidate) {
+		    echo '<td style="width:1%">';
+		    echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >';
+		    echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("validate");</script>';
+		    echo i18n('validateWorkPeriod');
+		    echo '</button>';
+		    echo '</td>';
+		  }
+		  echo '</tr></table>';
+		  echo '</TD>';
+		  echo '  <TD class="ganttLeftTitle" colspan="' . $nbDays . '" '
+		      . 'style="border-right: 1px solid #ffffff;border-bottom: 1px solid #DDDDDD;">'
+		          . htmlFormatDate($startDate)
+		          . ' - '
+		              . htmlFormatDate($endDate)
+		              . '</TD>';
+		  echo '  <TD class="ganttLeftTopLine" colspan="2" style="text-align:center;color: #707070">' .  htmlFormatDate($today) . '</TD>';
+		  echo '</TR>';
+		  echo '<TR class="ganttHeight">';
+		  echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;"></TD>';
+		  echo '  <TD class="ganttLeftTitle" style="text-align: left; '
+		      . 'border-left:0px; " nowrap>' .  i18n('colTask') . '</TD>';
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
+		      . i18n('colStart') . '</TD>';
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;max-width:'.$dateWidth.'px;overflow:hidden;">'
+		      . i18n('colEnd') . '</TD>';
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
+		      . i18n('colAssigned') . '</TD>';
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
+		      . i18n('colReal') . '</TD>';
+		  $curDate=$startDate;
+		  $businessDay=0;
+		  for ($i=1; $i<=$nbDays; $i++) {
+		    echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;max-width:'.$inputWidth.'px;overflow:hidden;';
+		    if ($today==$curDate) {
+		      echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;';
+		    } else if (isOffDay($curDate,$cal)) {
+		      echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;';
+		    }
+		    if (!isOffDay($curDate,$cal))$businessDay++;
+		    echo '">';
+		    if ($rangeType=='week') {
+		      echo  i18n('colWeekday' . $i) . " "  . date('d',strtotime($curDate)) . '';
+		    }
+		    if (! $print) {
+		      echo ' <input type="hidden" id="day_' . $i . '" name="day_' . $i . '" value="' . $curDate . '" />';
+		    }
+		    echo '</TD>';
+		    $curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
+		  }
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
+		      . i18n('colLeft') . '</TD>';
+		  echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;max-width:'.$workWidth.'px;overflow:hidden;">'
+		      . i18n('colReassessed') . '</TD>';
+		  echo '</TR>';
+		  if (!$print) {
+		    echo '</table></div>';
+		  
+		  
+		  
+		  
+		  
+		  echo '<div style="position:relative;overflow-y:scroll;" dojoType="dijit.layout.ContentPane" data-dojo-props="splitter: true" region="center">';
+		  
 		  echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
 		}
 		$nbLine=0;
 		$collapsedList=Collapsed::getCollaspedList();
 		$closedWbs='';
 		$wbsLevelArray=array();
+		$listLienProject=array();
+		$listAllProject=array();
+		foreach ($tab as $key=>$line) {
+		  if($line->refType=='Project' && !isset($listAllProject[$line->refId])){
+		    $listAllProject[$line->refId]=new Project($line->refId);
+		    $listLienProject[$line->refId]=array();
+		    $listLienProject[$line->refId][]=$line->refId;;
+		  }
+		}
+		$listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject);
 		foreach ($tab as $key=>$line) {
 		  if(($line->refType=='Activity' && !SqlList::getFieldFromId("Project", SqlList::getFieldFromId("Activity", $line->refId, "idProject"), 'isUnderConstruction'))
 		  || ($line->refType!='Project' && $line->refType!='Activity' && !SqlList::getFieldFromId("Project", $line->idProject, "isUnderConstruction"))
@@ -848,7 +874,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
   							echo  Work::displayImputation($line->arrayPlannedWork[$i]->work);
   							echo '</div>';
   						}
-  						echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+  						echo '<div type="text" idProject="'.$line->idProject.'" dojoType="dijit.form.NumberTextBox" ';
   						echo ' constraints="{min:0}"';
   						echo '  style="width: 45px; text-align: center; ' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
   						echo ' trim="true" maxlength="4" class="input" ';
@@ -876,12 +902,23 @@ scriptLog("      => ImputationLine->getParent()-exit");
   								. ' value="' . ($isAdministrative ? 1 : 0) . '"/>';
   							echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
   							. ' value="' .  Work::displayImputation($valWork) . '"/>';
+  							echo '<input type="hidden" id="idProject_' . $nbLine . '_' . $i . '"'
+  							. ' value="' .  $line->idProject . '"/>';
   						}
   					} else {
   						echo  Work::displayImputation($valWork);
   					}
   					$colSum[$i]+= Work::displayImputation($valWork);
   				} else {
+  				  $sumWork=0;
+  				  if($line->refType=='Project'){
+  				    $sumWork=ImputationLine::getAllWorkProjectDay($i,$listLienProject,$tab,$line->refId);
+  					  echo '<div id="sumProject_'.$line->refId.'_'.$i.'">'.$sumWork.'</div>';
+  					  if($listAllProject[$line->refId]->idProject && $listAllProject[$line->refId]->idProject!=$line->refId)echo '<input type="hidden" id="projectParent_'.$line->refId.'_'.$i.'" value="'.$listAllProject[$line->refId]->idProject.'">';
+  				  }
+  				  /*foreach ($line->arrayWork as $idW=>$lll){
+  				    if(isset($line->arrayWork[$idW]) && isset($line->arrayWork[$idW]->work))$sumWork+=$line->arrayWork[$idW]->work;
+  				  }*/
   					echo '<input type="hidden" name="workId_' . $i . '[]" />';
   					echo '<input type="hidden" name="workValue_' . $i . '[]" />';
   				}
@@ -1009,6 +1046,39 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		}
 
 	}
+	
+	static function getAllWorkProjectDay($day,$listLienProject,$imputationList,$idProject){
+	  $sumWork=0;
+	  foreach ($imputationList as $id=>$line){
+	    foreach ($listLienProject[$idProject] as $id2=>$line2){
+	      if($line->idProject==$line2)$sumWork+=$line->arrayWork[$day]->work;
+	    }
+	  }
+	  return $sumWork;
+	}
+	
+	static function addProjectToListLienProject($listLienProject, $listAllProject, $idProject=-1, $idProjectOld=-1){
+	  if($idProject==-1)foreach ($listAllProject as $idP=>$line){
+	    if($listAllProject[$idP]->idProject && $listAllProject[$idP]->idProject!=$listAllProject[$idP]->id){
+	      $listLienProject[$listAllProject[$idP]->idProject][]=$listAllProject[$idP]->id;
+	      $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject[$idP]->idProject, $listAllProject[$idP]->id);
+	    }
+	  }
+	  if($idProject!=-1){
+	    foreach ($listLienProject[$idProjectOld] as $idLP=>$line){
+	       $find = false;
+  	     foreach ($listLienProject[$idProject] as $idLP2=>$line2){
+  	       if($listLienProject[$idProject][$idLP2] == $listLienProject[$idProjectOld][$idLP])$find=true;
+  	     }
+  	     if(!$find)$listLienProject[$idProject][]=$listLienProject[$idProjectOld][$idLP];
+	    }
+	    if($listAllProject[$idProject]->idProject && $listAllProject[$idProject]->idProject!=$listAllProject[$idProject]->id){
+	      $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject[$idProject]->idProject, $listAllProject[$idProject]->id);
+	    }
+	  }
+	  return $listLienProject;
+	}
+	
 	// ============================================================================**********
 	// GET STATIC DATA FUNCTIONS
 	// ============================================================================**********

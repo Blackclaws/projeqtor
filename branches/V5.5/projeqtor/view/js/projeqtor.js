@@ -3403,8 +3403,12 @@ function editorBlur(fieldId, editorFld) {
 }
 
 var fullScreenTest = false;
+var whichFullScreen=-1;
+var isCk=false;
 function editorInFullScreen() {
   fullScreenTest = false;
+  isCk=false;
+  whichFullScreen=-1;
   dojo.query(".dijitEditor").forEach(function(node, index, arr) {
     var editorWidth = node.offsetWidth;
     var screenWidth = document.body.getBoundingClientRect().width;
@@ -3417,7 +3421,11 @@ function editorInFullScreen() {
     var numEditor = 1;
     while (dojo.byId('ckeditor' + numEditor)) {
       if(typeof editorArray[numEditor] != 'undefined'){
-        if(editorArray[numEditor].toolbar && editorArray[numEditor].toolbar[3].items[1]._.state==1)fullScreenTest=true;
+        if(editorArray[numEditor].toolbar && editorArray[numEditor].toolbar[3].items[1]._.state==1){
+          fullScreenTest=true;
+          whichFullScreen=numEditor;
+          isCk=true;
+        }
       }
       numEditor++;
     }

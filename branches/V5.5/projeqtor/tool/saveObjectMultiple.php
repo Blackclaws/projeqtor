@@ -140,7 +140,18 @@ $type="";
 if (array_key_exists('idType',$_REQUEST)) {
 	$type=trim($_REQUEST['idType']);
 }
-
+$fixPlanning="";
+if (array_key_exists('fixPlanning',$_REQUEST)) {
+  $fixPlanning=trim($_REQUEST['fixPlanning']);
+}
+$isUnderConstruction="";
+if (array_key_exists('isUnderConstruction',$_REQUEST)) {
+  $isUnderConstruction=trim($_REQUEST['isUnderConstruction']);
+}
+$pe_priority="";
+if (array_key_exists($pe.'_priority',$_REQUEST)) {
+  $pe_priority=trim($_REQUEST[$pe.'_priority']);
+}
 
 //unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 SqlElement::unsetCurrentObject();
@@ -216,6 +227,12 @@ foreach ($selectList as $id) {
   if ($actualDueDate and $actualDueTime and property_exists($item,'actualDueDateTime')) {
   	$item->actualDueDateTime=$actualDueDate.' '.substr($actualDueTime,1);
   }
+  if ($fixPlanning and $fixPlanning!="" and property_exists($item,'fixPlanning')) {
+    $item->fixPlanning=($fixPlanning=='ON')?1:0;
+  }
+  if ($isUnderConstruction and $isUnderConstruction!="" and property_exists($item,'isUnderConstruction')) {
+    $item->isUnderConstruction=($isUnderConstruction=='ON')?1:0;
+  }
   if (property_exists($item,$pe) and is_object($item->$pe)) {
   	if ($pe_validatedStartDate and property_exists($item->$pe,'validatedStartDate')) {
   	  $item->$pe->validatedStartDate=$pe_validatedStartDate;
@@ -226,6 +243,9 @@ foreach ($selectList as $id) {
   	if ($pe_pm and property_exists($item->$pe,$pm)) {
   		$item->$pe->$pm=$pe_pm;
   	}
+    if ($pe_priority and property_exists($item->$pe,'priority')) {
+  		$item->$pe->priority=$pe_priority;
+  	} 
   }
   $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {
