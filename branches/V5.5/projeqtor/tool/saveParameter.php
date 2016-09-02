@@ -228,15 +228,24 @@ if ($type=='habilitation') {
 } else if ($type=='globalParameter') {
   $parameterList=Parameter::getParamtersList($type);
   foreach($_REQUEST as $fld => $val) { // TODO (SECURITY) : forbit writting of db and prefix params
+    $changeImputationAlerts=false;
     if (array_key_exists($fld, $parameterList)) {
       $crit['parameterCode']=$fld;
       $crit['idUser']=null;
       $crit['idProject']=null;
       $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
       if ($parameterList[$fld]=='time') {
-      	$val=substr($val,1,5);
+        $val=substr($val,1,5);
       }
-      $val=str_replace('#comma#',',',$val); 
+      $val=str_replace('#comma#',',',$val);
+      if ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
+       or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
+       or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader') {
+        $$fld=$val;
+        if ($obj->parameterValue!=$val) {
+          $changeImputationAlerts=true;
+        }
+      }
       $obj->parameterValue=$val;
       $obj->idUser=null;
       $obj->idProject=null;
@@ -254,15 +263,48 @@ if ($type=='habilitation') {
         }
       }
     }
+    // If 
+    if ($changeImputationAlerts) {
+      $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'generateImputationAlert'));
+      if (isset($imputationAlertControlDay) and $imputationAlertControlDay=='NEVER' 
+      or (isset($imputationAlertSendToResource) and $imputationAlertSendToResource=='NO' and isset($imputationAlertSendToProjectLeader) and $imputationAlertSendToProjectLeader=='NO')) {
+        if ($cronExec->id) {
+          $cronExec->delete();
+        } else {
+          // No cron, nothing to do
+        }
+      } else {
+        debugLog($imputationAlertGenerationHour);
+        $hours=substr($imputationAlertGenerationHour,0,2);
+        $minutes=substr($imputationAlertGenerationHour,3,2);;
+        $dayOfMonth='*';
+        $month='*';
+        $dayOfWeek=$imputationAlertGenerationDay;
+        $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
+        $cronExec->cron=$cronStr;
+        $cronExec->fileExecuted='../tool/generateImputationAlert.php';
+        $cronExec->idle=false;
+        $cronExec->fonctionName='generateImputationAlert';
+        $cronExec->nextTime=null;
+        $cronExec->save();
+      }
+      //Cron::restart();
+     $errors=i18n("cronRestartRequired");
+     $status='WARNING';
+    }
   }
   Parameter::clearGlobalParameters();// force refresh 
 } else {
    $errors="Save not implemented";
-   $status='ERROR';
+   $status='WARNING';
 }
 if ($status=='ERROR') {
 	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $errors . '</span>';
+} else if ($status=='WARNING'){ 
+	Sql::commitTransaction();
+  echo '<span class="messageWARNING" >' . i18n('messageParametersSaved') . ' - ' .$errors .'</span>';
+  $status='INVALID';
 } else if ($status=='OK'){ 
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . i18n('messageParametersSaved') . '</span>';

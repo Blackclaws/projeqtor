@@ -34,6 +34,7 @@ class Team extends SqlElement {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
+  public $idResource;
   public $idle;
   public $description;
   public $_sec_members;
@@ -46,7 +47,7 @@ class Team extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_colCaptionTransposition = array();
+  private static $_colCaptionTransposition = array('idResource'=>'manager');
   
    /** ==========================================================================
    * Constructor

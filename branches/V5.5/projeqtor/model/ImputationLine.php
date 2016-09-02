@@ -925,7 +925,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
   				echo '</td>';
   				$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
   			}
-  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
+  			echo '<td class="ganttDetail" '.($line->refType=='Project' ? 'colspan="2"' : '').' align="center" width="'.$workWidth.'px;">';
   			if ($line->imputable) {
   				if (!$print) {
   					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -947,28 +947,32 @@ scriptLog("      => ImputationLine->getParent()-exit");
   				} else {
   					echo  Work::displayImputation($line->leftWork);
   				}
-  			} else {
+  			} else if($line->refType=='Project') { 
+  			    echo '<div id="sumWeekProject_'.$line->refId.'">'.ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays).'</div>';
+		    } else {
   				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
   			}
   			echo '</td>';
-  			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
-  			if ($line->imputable) {
-  				if (!$print) {
-  					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-  					//echo ' constraints="{pattern:\'###0.0#\'}"';
-  					echo '  style="width: 60px; text-align: center;" ';
-  					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-  					echo ' id="plannedWork_' . $nbLine . '"';
-  					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->plannedWork)) . '" ';
-  					echo ' />';
-  					//echo '</div>';
-  				} else {
-  					echo  Work::displayImputation($line->plannedWork);
-  				}
-  			}
-  			echo '</td>';
-  			echo '</tr>';
-  		}
+  			if($line->refType!='Project'){
+    			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px;">';
+    			if ($line->imputable) {
+    				if (!$print) {
+    					echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+    					//echo ' constraints="{pattern:\'###0.0#\'}"';
+    					echo '  style="width: 60px; text-align: center;" ';
+    					echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+    					echo ' id="plannedWork_' . $nbLine . '"';
+    					echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->plannedWork)) . '" ';
+    					echo ' />';
+    					//echo '</div>';
+    				} else {
+    					echo  Work::displayImputation($line->plannedWork);
+    				}
+    			}
+    			echo '</td>';
+    			echo '</tr>';
+    		}
+		  }
 		}
 		if (! $print) {
 		  echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '" />';
@@ -1052,6 +1056,20 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	  foreach ($imputationList as $id=>$line){
 	    foreach ($listLienProject[$idProject] as $id2=>$line2){
 	      if($line->idProject==$line2)$sumWork+=$line->arrayWork[$day]->work;
+	    }
+	  }
+	  return $sumWork;
+	}
+	
+	static function getAllWorkProjectWeek($listLienProject,$imputationList,$idProject, $nbDays){
+	  $sumWork=0;
+	  foreach ($imputationList as $id=>$line){
+	    foreach ($listLienProject[$idProject] as $id2=>$line2){
+	      if($line->idProject==$line2){
+	        for ($i=1; $i<=$nbDays; $i++) {
+	         $sumWork+=$line->arrayWork[$i]->work;
+	        }
+	      }
 	    }
 	  }
 	  return $sumWork;

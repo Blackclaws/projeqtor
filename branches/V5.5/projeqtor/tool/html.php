@@ -126,7 +126,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
-  }else if ($col=='idLinkable'){
+  }else if ($col=='idLinkable' || $col=='idCopyable'){
+    $typeRight='read';
+    if($col=='idCopyable')$typeRight='update';
     $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     $arrayToDel=array();
     foreach($table as $key => $val){
@@ -134,7 +136,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if(property_exists($objTmp, "idProject") && $obj && property_exists($obj, "idProject")){
         $objTmp->idProject=$obj->idProject;
       }
-      if(securityGetAccessRightYesNo('menu'.$val, 'read', $objTmp)=="NO" or !securityCheckDisplayMenu(null,$val))$arrayToDel[]=$key;
+      if(securityGetAccessRightYesNo('menu'.$val, $typeRight, $objTmp)=="NO" or !securityCheckDisplayMenu(null,$val))$arrayToDel[]=$key;
     }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     foreach($arrayToDel as $key)unset($table[$key]);
