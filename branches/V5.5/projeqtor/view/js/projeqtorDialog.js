@@ -5011,6 +5011,7 @@ function adminLaunchScript(scriptName,needRefresh) {
     url : url,
     handleAs : "text",
     load : function(data, args) {
+      
     },
     error : function() {
     }
@@ -7094,42 +7095,3 @@ function changeTenderEvaluationValue(index) {
   dijit.byId("evaluationValue").set("value",newValue);
 }
 
-document.addEventListener("keydown", keyDownTextField, false);
-
-function keyDownTextField(e) {
-  var keyCode = e.keyCode;
-  if(keyCode==27){
-    if(editorInFullScreen() && whichFullScreen!=-1){
-      editorArray[whichFullScreen].execCommand('maximize');
-    }
-  }
-}
-
-var fullScreenTest = false;
-var whichFullScreen=-1;
-var isCk=false;
-function editorInFullScreen() {
-  fullScreenTest = false;
-  whichFullScreen=-1;
-  dojo.query(".dijitEditor").forEach(function(node, index, arr) {
-    var editorWidth = node.offsetWidth;
-    var screenWidth = document.body.getBoundingClientRect().width;
-    var fullScreenEditor = (editorWidth > screenWidth * (0.8)) ? true : false;
-    if (fullScreenEditor) {
-      fullScreenTest = true;
-    }
-  });
-  if(!fullScreenTest){
-    var numEditor = 1;
-    while (dojo.byId('ckeditor' + numEditor)) {
-      if(typeof editorArray[numEditor] != 'undefined'){
-        if(editorArray[numEditor].toolbar && editorArray[numEditor].toolbar[3].items[1]._.state==1){
-          fullScreenTest=true;
-          whichFullScreen=numEditor;
-        }
-      }
-      numEditor++;
-    }
-  }
-  return fullScreenTest;
-}

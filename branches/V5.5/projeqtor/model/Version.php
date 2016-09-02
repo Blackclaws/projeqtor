@@ -259,6 +259,33 @@ class Version extends SqlElement {
   	
   	return $result;
   }
+  
+  /** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+  
+    if (trim($this->versionNumber)) {
+      $cpt=$this->countSqlElementsFromCriteria(null,"idProduct=".Sql::fmtId($this->idProduct)." and versionNumber='$this->versionNumber' and id!=".Sql::fmtId($this->id));
+      if ($cpt>0) {
+        $result.="<br/>" . i18n('errorDuplicate');
+      }
+    }
+  
+    
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
 
 }
 ?>

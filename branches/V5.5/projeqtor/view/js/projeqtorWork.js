@@ -178,6 +178,7 @@ function refreshImputationPeriod(directDate) {
 
 function recursiveAddWorkProject(idProject, day, diff){
   dojo.byId('sumProject_'+idProject+'_'+day).innerHTML=parseFloat(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML)+parseFloat(diff);
+  dojo.byId('sumWeekProject_'+idProject).innerHTML=parseFloat(dojo.byId('sumWeekProject_'+idProject).innerHTML)+parseFloat(diff);
   if(dojo.byId('projectParent_'+idProject+'_'+day)!=null)recursiveAddWorkProject(dojo.byId('projectParent_'+idProject+'_'+day).value, day, diff);
 }
 
