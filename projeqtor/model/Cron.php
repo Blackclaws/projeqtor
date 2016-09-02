@@ -241,6 +241,18 @@ class Cron {
     }
   }
   
+  // Restrart already running CRON  !!! NOT WORKING !!!
+  public static function restart() {
+    error_reporting(0);
+    //session_write_close();
+    if (self::check()=='running') {
+      self::setStopFlag();
+      sleep(self::getSleepTime());
+    }
+    self::setRestartFlag();
+    //self::relaunch(); // FREEZES CURRENT USER
+  }
+  
 	// If running flag exists and cron is not really running, relaunch
 	public static function relaunch() {
 		self::init();
@@ -276,7 +288,9 @@ class Cron {
     self::removeRestartFlag();
     projeqtor_set_time_limit(0);
     ignore_user_abort(1);
-    if (function_exists(' session_write_close‌​')) session_write_close();
+    error_reporting(0);
+    session_write_close();
+    error_reporting(E_ERROR);
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
     $cronCheckEmails=self::getCheckEmails();
@@ -286,7 +300,6 @@ class Cron {
     self::setRunningFlag();
     traceLog('Cron started at '.date('d/m/Y H:i:s')); 
     while(1) {
-      
       if (self::checkStopFlag()) {
         return; 
       }
