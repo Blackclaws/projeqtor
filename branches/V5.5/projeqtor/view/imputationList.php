@@ -281,8 +281,8 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
        <input type="hidden" id="outMode" name="outMode" value="" />
        <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value=""/>
        <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
-       <input type="hidden" name="daysWorkFuture" id="daysWorkFuture" value="0"/>
-       <input type="hidden" name="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
+       <input type="hidden" noname="daysWorkFuture" id="daysWorkFuture" value="0"/>
+       <input type="hidden" noname="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
       <?php if (! isset($print) ) {$print=false;}
       ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings,$currentWeek,$currentYear, $showId);?>
      </form>

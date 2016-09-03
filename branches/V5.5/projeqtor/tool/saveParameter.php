@@ -227,8 +227,8 @@ if ($type=='habilitation') {
   }
 } else if ($type=='globalParameter') {
   $parameterList=Parameter::getParamtersList($type);
+  $changeImputationAlerts=false;
   foreach($_REQUEST as $fld => $val) { // TODO (SECURITY) : forbit writting of db and prefix params
-    $changeImputationAlerts=false;
     if (array_key_exists($fld, $parameterList)) {
       $crit['parameterCode']=$fld;
       $crit['idUser']=null;
@@ -240,7 +240,8 @@ if ($type=='habilitation') {
       $val=str_replace('#comma#',',',$val);
       if ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
        or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
-       or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader') {
+       or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader'
+       or $fld=='imputationAlertSendToTeamManager') {
         $$fld=$val;
         if ($obj->parameterValue!=$val) {
           $changeImputationAlerts=true;
@@ -262,36 +263,42 @@ if ($type=='habilitation') {
           $status="OK";
         }
       }
+    } else if  ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
+       or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
+       or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader'
+       or $fld=='imputationAlertSendToTeamManager') {
+        $$fld=$val;
+        $changeImputationAlerts=true;
     }
-    // If 
-    if ($changeImputationAlerts) {
-      $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'generateImputationAlert'));
-      if (isset($imputationAlertControlDay) and $imputationAlertControlDay=='NEVER' 
-      or (isset($imputationAlertSendToResource) and $imputationAlertSendToResource=='NO' and isset($imputationAlertSendToProjectLeader) and $imputationAlertSendToProjectLeader=='NO')) {
-        if ($cronExec->id) {
-          $cronExec->delete();
-        } else {
-          // No cron, nothing to do
-        }
+  }
+  if ($changeImputationAlerts) {
+    $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'generateImputationAlert'));
+    if (isset($imputationAlertControlDay) and $imputationAlertControlDay=='NEVER'
+    or (    isset($imputationAlertSendToResource) and $imputationAlertSendToResource=='NO' 
+        and isset($imputationAlertSendToProjectLeader) and $imputationAlertSendToProjectLeader=='NO'
+        and isset($imputationAlertSendToTeamManager) and $imputationAlertSendToTeamManager=='NO')) {
+      if ($cronExec->id) {
+        $cronExec->delete();
       } else {
-        debugLog($imputationAlertGenerationHour);
-        $hours=substr($imputationAlertGenerationHour,0,2);
-        $minutes=substr($imputationAlertGenerationHour,3,2);;
-        $dayOfMonth='*';
-        $month='*';
-        $dayOfWeek=$imputationAlertGenerationDay;
-        $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
-        $cronExec->cron=$cronStr;
-        $cronExec->fileExecuted='../tool/generateImputationAlert.php';
-        $cronExec->idle=false;
-        $cronExec->fonctionName='generateImputationAlert';
-        $cronExec->nextTime=null;
-        $cronExec->save();
+        // No cron, nothing to do
       }
-      //Cron::restart();
-     $errors=i18n("cronRestartRequired");
-     $status='WARNING';
+    } else {
+      $hours=substr($imputationAlertGenerationHour,0,2);
+      $minutes=substr($imputationAlertGenerationHour,3,2);;
+      $dayOfMonth='*';
+      $month='*';
+      $dayOfWeek=$imputationAlertGenerationDay;
+      $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
+      $cronExec->cron=$cronStr;
+      $cronExec->fileExecuted='../tool/generateImputationAlert.php';
+      $cronExec->idle=false;
+      $cronExec->fonctionName='generateImputationAlert';
+      $cronExec->nextTime=null;
+      $cronExec->save();
     }
+    //Cron::restart();
+    $errors=i18n("cronRestartRequired");
+    $status='WARNING';
   }
   Parameter::clearGlobalParameters();// force refresh 
 } else {
