@@ -66,7 +66,6 @@ ini_set('suhosin.post.max_vars', 50*$nbLines+20);
 ini_set('suhosin.request.max_vars', 50*$nbLines+20);
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
-  
   $imputable=$_REQUEST['imputable'][$i];
   $locked=$_REQUEST['locked'][$i];
   if ($imputable and ! $locked) {
@@ -140,6 +139,7 @@ if ($status=='ERROR') {
 } else if ($status=='OK'){ 
 	Sql::commitTransaction();
   echo '<div class="messageOK" >' . i18n('messageImputationSaved') . '</div>';
+  checkSendAlert($userId,$rangeValue);
 } else {
 	Sql::rollbackTransaction();
   echo '<div class="messageNO_CHANGE" >' . i18n('messageNoImputationChange') . '</div>';
@@ -147,4 +147,32 @@ if ($status=='ERROR') {
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';
 
+function checkSendAlert($userId,$periodValue) {
+  $currentUser=getSessionUser();
+  if ($userId==$currentUser->id) return;
+  $param=Parameter::getGlobalParameter('imputationAlertInputByOther');
+  if (!trim($param) or $param=='NO') return;
+  $name=($currentUser->resourceName)?$currentUser->resourceName:$currentUser->name;
+  $name='"'.$name.'"';
+  $periodValue=substr($periodValue,0,4).'-'.substr($periodValue,4);
+  $alertSendTitle=i18n('messageAlertImputationByOtherTitle');
+  $alertSendMessage=i18n('messageAlertImputationByOtherBody',array($name,$periodValue));
+  if ($param=='ALERT' or $param=='ALERT&MAIL') {
+    $alertSendType='WARNING';
+    $alert=new Alert();
+    $alert->idUser=$userId;
+    $alert->alertType=$alertSendType;
+    $alert->alertInitialDateTime=date('Y-m-d H:i:s');
+    $alert->alertDateTime=date('Y-m-d H:i:s');
+    $alert->title=mb_substr($alertSendTitle,0,100);
+    $alert->message=$alertSendMessage;
+    $result=$alert->save();
+  }
+  if ($param=='MAIL' or $param=='ALERT&MAIL') {
+    $to=SqlList::getFieldFromId('User', $userId, 'email');
+    if (trim($to)) {
+      $result=sendMail($to, '['.Parameter::getGlobalParameter('paramDbDisplayName').'] '.$alertSendTitle, $alertSendMessage);
+    }
+  }
+}
 ?>
