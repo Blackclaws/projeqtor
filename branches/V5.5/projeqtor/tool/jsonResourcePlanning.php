@@ -29,7 +29,6 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/jsonResourcePlanning.php');
-debugLog($_REQUEST);
 $objectClass='PlanningElement';
 $obj=new $objectClass();
 $table=$obj->getDatabaseTableName();
@@ -191,7 +190,6 @@ foreach ($allowedResource as $resId=>$resName) {
 	  }
   }
 }
-debugLog($allowedResource);
 $queryWhere.="and ass.idResource in ".transformListIntoInClause($allowedResource);
 // constitute query and execute
 $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;

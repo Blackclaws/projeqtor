@@ -947,10 +947,11 @@ scriptLog("      => ImputationLine->getParent()-exit");
   				} else {
   					echo  Work::displayImputation($line->leftWork);
   				}
-  			} else if($line->refType=='Project') { 
+  			} else {
+  			  if($line->refType=='Project') { 
   			    echo '<div id="sumWeekProject_'.$line->refId.'">'.ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays).'</div>';
-		    } else {
-  				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
+		      }
+  				echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
   			}
   			echo '</td>';
   			if($line->refType!='Project'){
@@ -1039,7 +1040,14 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		} else if (round($totalWork,2)<$businessDay) {
 		  $classTotalWork='displayTransparent';
 		}
-		echo '  <TD colspan="2" class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="width: 95%; text-align: center; color: #000000 !important;" class="'.$classTotalWork.'" value="'.$totalWork
+		$colSpanFooter='colspan="2"';
+		$inputWidthFooter=$inputWidth;
+		if (!$print and count($tab)>20) {
+		  $colSpanFooter='';
+		  $inputWidthFooter=2*$inputWidth;
+		}
+		
+		echo '  <TD '.$colSpanFooter.' class="ganttLeftTitle" style="width: 132px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="width: 95%; text-align: center; color: #000000 !important;" class="'.$classTotalWork.'" value="'.$totalWork
 		.  '"</div></span></TD>';
 			
 		echo '</TR>';

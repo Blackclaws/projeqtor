@@ -601,5 +601,23 @@ public $_noCopy;
   	return htmlFormatDate($date);
   }
   
+  public static function getProjectLeaderList($idProject) {
+    $aff=new Affectation();
+    $crit=array('idProject'=>$idProject, 'idle'=>'0');
+    $affList=$aff->getSqlElementsFromCriteria($crit, false);
+    $result=array();
+    if ($affList and count($affList)>0) {
+      foreach ($affList as $aff) {
+        $resource=new Resource($aff->idResource);
+        $profile=($aff->idProfile)?$aff->idProfile:$resource->idProfile;
+        $prf=new Profile($profile);
+        if ($prf->profileCode=='PL') {
+          $result[$resource->id]=$resource->name;
+        }
+      }
+    }
+    return$result;
+  }
+  
 }
 ?>
