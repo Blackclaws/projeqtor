@@ -55,7 +55,10 @@ $divUnitStyle='';
 $divExtraStyle='display:none;';
 
 $billingType='M';
-if (property_exists($obj, 'billingType')) {
+if (array_key_exists("billingType", $_REQUEST)) {
+  $billingType=$_REQUEST["billingType"];
+  Security::checkValidAlphanumeric($billingType);
+} else if (property_exists($obj, 'billingType')) {
   $billingType=$obj->billingType;
 }
 $currency=Parameter::getGlobalParameter('currency');
@@ -119,6 +122,7 @@ if ($line->line) {
       	 <input id="billLineId" name="billLineId" type="hidden" value="<?php echo $line->id;?>" />
          <input id="billLineRefType" name="billLineRefType" type="hidden" value="<?php echo htmlEncode($refType);?>" />
          <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo htmlEncode($refId);?>" />
+         <input id="billLineBillingType" name="billLineBillingType" type="hidden" value="<?php echo htmlEncode($billingType);?>" />
        	 <table>
            <tr>
              <td class="dialogLabel" >

@@ -104,7 +104,7 @@
        } else {
          echo i18n('menu'.$item);
        }
-       echo '&nbsp;&nbsp;</td><td VALIGN="middle" style="white-space:normal; color:#A0A0A0">';
+       echo '&nbsp;&nbsp;</td><td VALIGN="middle" style="white-space:normal; color:#a6a0bc;vertical-align:top;padding-top:8px;">';
        $progress++;
      }
      $help=i18n("startGuide".$item);

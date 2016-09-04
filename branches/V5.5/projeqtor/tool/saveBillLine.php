@@ -121,6 +121,12 @@ $lineId=trim($lineId);
 if ($lineId=='') {
   $lineId=null;
 } 
+$billingType='M';
+if (array_key_exists('billLineBillingType',$_REQUEST)) {
+  $billingType=$_REQUEST['billLineBillingType'];
+  Security::checkValidAlphanumeric($billingType);
+}
+
 
 Sql::beginTransaction();
 $line=new BillLine($lineId);
@@ -138,6 +144,7 @@ $line->detail=$detail;
 $line->price=$price;
 $line->idMeasureUnit=$unit;
 $line->extra=$extra;
+$line->billingType=$billingType;
 $result=$line->save();
 // Message of correct saving
 displayLastOperationStatus($result);
