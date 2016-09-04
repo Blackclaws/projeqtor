@@ -47,6 +47,7 @@ class BillLine extends SqlElement {
   public $startDate;
   public $endDate;
   public $extra;
+  public $billingType;
   
   public $_noHistory=true; // Will never save history for this object
   
@@ -83,7 +84,9 @@ class BillLine extends SqlElement {
     
   	$bill = new $this->refType($this->refId);
   	$billingType='M';
-  	if (property_exists($bill, 'billingType')) {
+  	if ($this->billingType) {
+  	  $billingType=$this->billingType;
+  	} else if (property_exists($bill, 'billingType')) {
       $billingType=$bill->billingType;
   	}
 	  if (property_exists($bill, 'billId') and is_numeric($bill->billId) and $bill->done) {
@@ -156,10 +159,12 @@ class BillLine extends SqlElement {
   	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   		
 	  $bill=new $this->refType($this->refId);
-	  $billingType='M';
-	  if (property_exists($bill, 'billingType')) {
+    $billingType='M';
+  	if ($this->billingType) {
+  	  $billingType=$this->billingType;
+  	} else if (property_exists($bill, 'billingType')) {
       $billingType=$bill->billingType;
-	  }
+  	}
 	  if ($billingType=='E') {
       $term=new Term($this->idTerm);
       $term->idBill=null;
@@ -230,9 +235,11 @@ class BillLine extends SqlElement {
     $bill=new $this->refType($this->refId);
     
     $billingType='M';
-    if (property_exists($bill,'billingType')) {
-  	  $billingType=$bill->billingType;
-    }
+  	if ($this->billingType) {
+  	  $billingType=$this->billingType;
+  	} else if (property_exists($bill, 'billingType')) {
+      $billingType=$bill->billingType;
+  	}
   	
   	if ($billingType=='E') {
   		if (! $this->id) {

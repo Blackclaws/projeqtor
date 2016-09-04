@@ -134,6 +134,22 @@
       	    unset($list[$prj]);
       	  }
       	}
+      } else if ($dataType=='idProfile' 
+        and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST) 
+        and $_REQUEST['critField']=='idProject') {
+        $idProj=$_REQUEST['critValue'];
+        $user=new User();
+        $prf=new Profile(getSessionUser()->getProfile($idProj));
+        $lstPrf=$prf->getSqlElementsFromCriteria(null,false,"sortOrder>=".$prf->sortOrder,"sortOrder asc");
+        $list=array();
+        foreach ($lstPrf as $profile) {
+          $list[$profile->id]=i18n($profile->name);
+        }
+        if ($selected) {
+          $aff=new Affectation($selected);
+          $list[$aff->idProfile]=SqlList::getNameFromId('Profile', $aff->idProfile);
+          $selected=null;
+        }
       } else if (($dataType=='idProduct' or $dataType=='idComponent' or $dataType=='idProductOrComponent') 
         and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
       	if (trim($_REQUEST['critValue']) and $_REQUEST['critField']=='idProject') {    	

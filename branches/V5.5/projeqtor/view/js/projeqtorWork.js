@@ -178,7 +178,9 @@ function refreshImputationPeriod(directDate) {
 
 function recursiveAddWorkProject(idProject, day, diff){
   dojo.byId('sumProject_'+idProject+'_'+day).innerHTML=parseFloat(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML)+parseFloat(diff);
+  dojo.byId('sumProjectDisplay_'+idProject+'_'+day).value=formatDecimalToDisplay(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML);
   dojo.byId('sumWeekProject_'+idProject).innerHTML=parseFloat(dojo.byId('sumWeekProject_'+idProject).innerHTML)+parseFloat(diff);
+  dojo.byId('sumWeekProjectDisplay_'+idProject).value=formatDecimalToDisplay(dojo.byId('sumWeekProject_'+idProject).innerHTML);
   if(dojo.byId('projectParent_'+idProject+'_'+day)!=null)recursiveAddWorkProject(dojo.byId('projectParent_'+idProject+'_'+day).value, day, diff);
 }
 
@@ -295,11 +297,11 @@ function dispatchWorkValueChange(rowId, colId) {
   dijit.byId('totalWork').set("value",parseFloat(dijit.byId('totalWork').get("value"))+diff);
   totalWork=parseFloat(dijit.byId('totalWork').get("value"));
   businessDay=parseInt(dojo.byId('businessDay').value);
-  classTotalWork="imputationValidCapacity";
+  classTotalWork="imputationValidCapacity imputation";
   if (totalWork>businessDay) {
-    classTotalWork='imputationInvalidCapacity';
+    classTotalWork='imputationInvalidCapacity imputation';
   } else if (totalWork<businessDay) {
-    classTotalWork='displayTransparent';
+    classTotalWork='displayTransparent imputation';
   }
   dijit.byId('totalWork').set("class",classTotalWork);
   if ((oldReal==0 && newReal>0) || (oldLeft>0 && newLeft==0) || (newReal<oldReal) ) {
@@ -403,13 +405,13 @@ function checkCapacity() {
   valSum=Math.round(parseFloat(dijit.byId('colSumWork_' + colId).get("value"))*100)/100;
   if (valSum > capacity) {
     //dojo.style('colSumWork_' + colId, "backgroung","red");
-    dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity");
+    dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity imputation");
   } else if (valSum < capacity) {
-    dijit.byId('colSumWork_' + colId).set("class","displayTransparent");
+    dijit.byId('colSumWork_' + colId).set("class","displayTransparent imputation");
     //domClass.remove('colSumWork_' + colId, "imputationInvalidCapacity");
   } else {
     //dojo.style('colSumWork_' + colId, "backgroung","red");
-    dijit.byId('colSumWork_' + colId).set("class","imputationValidCapacity");
+    dijit.byId('colSumWork_' + colId).set("class","imputationValidCapacity imputation");
   }   
   }
 }

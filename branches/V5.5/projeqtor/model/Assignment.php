@@ -311,44 +311,31 @@ class Assignment extends SqlElement {
     // Insert new assignment for all administrative activities
     $type=new ProjectType();
     $critType=array('code'=>'ADM', 'idle'=>'0');
-    $lstType=$type->getSqlElementsFromCriteria($critType);
+    $lstType=$type->getSqlElementsFromCriteria($critType,false,null,null,false,true);
     foreach ($lstType as $type) {
     	$proj=new Project();
     	$critProj=array('idProjectType'=>$type->id, 'idle'=>'0');
-    	$lstProj=$proj->getSqlElementsFromCriteria($critProj);
+    	$lstProj=$proj->getSqlElementsFromCriteria($critProj,false,null,null,false,true);
     	foreach ($lstProj as $proj) {
     		$acti=new Activity();
     	  $critActi=array('idProject'=>$proj->id, 'idle'=>'0');
-    	  $lstActi=$acti->getSqlElementsFromCriteria($critActi);
+    	  $lstActi=$acti->getSqlElementsFromCriteria($critActi,false,null,null,false,true);
     	  foreach ($lstActi as $acti) {
           $assi=new Assignment();
           $critAssi=array('refType'=>'Activity', 'refId'=>$acti->id, 'idResource'=>$resourceId);
-          $lstAssi=$assi->getSqlElementsFromCriteria($critAssi,false);
+          $lstAssi=$assi->getSqlElementsFromCriteria($critAssi,false,null,null,false,true);
           if (count($lstAssi)==0) {
           	$assi->idProject=$proj->id;
           	$assi->refType='Activity';
           	$assi->refId=$acti->id;
           	$assi->idResource=$resourceId;          	
-            //$assi->idRole;
-            //$assi->comment;
             $assi->assignedWork=0;
             $assi->realWork=0;
             $assi->leftWork=0;
             $assi->plannedWork=0;
             $assi->notPlannedWork=0;
             $assi->rate=0;
-            //$assi->realStartDate;
-            //$assi->$realEndDate;
-            //$assi->plannedStartDate;
-            //$assi->plannedEndDate;
-            //$assi->dailyCost;
-            //$assi->newDailyCost;
-            //$assi->assignedCost;
-            //$assi->realCost;
-            //$assi->leftCost;
-            //$assi->plannedCost;
             $assi->idle=0;
-            //$assi->billedWork;
             $assi->save();
           }
     	  }

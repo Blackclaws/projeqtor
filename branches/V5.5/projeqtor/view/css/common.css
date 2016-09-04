@@ -573,6 +573,10 @@ table.dojoDndAvatar {
     float: right;
     padding: 2px 3px 2px 0px !important
 }
+div.imputation input.dijitInputInner {
+	text-align: center;
+	padding: 2px 0px 2px 0px !important;
+}
 .dijitTextArea {
   padding: 1px;
 }
