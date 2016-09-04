@@ -642,8 +642,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">';
         if (planningPage=='ResourcePlanning') {
           vLeftTable += '<span class="">'
-            + '<table><tr><td>&nbsp;</td><td>'
-            + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            + '<table><tr><td>&nbsp;</td><td style="background-color:#ffffff">'
+            //+ '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            + '<div class="icon'+vTaskList[i].getClass()+'16" style="background-color:#ffffff !important;width:16px;height:16px;" >&nbsp;</div>'
             + '</td></tr></table>'
             +'</span>';
         } else {
@@ -651,7 +652,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + '<table><tr><td>'
             + '<img style="width:8px" src="css/images/iconDrag.gif" />'
             + '</td><td>'
-            + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            //+ '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+            + '<div class="icon'+vTaskList[i].getClass()+'16" style="width:16px;height:16px;" >&nbsp;</div>'
             + '</td></tr></table>'
             +'</span>';
         }

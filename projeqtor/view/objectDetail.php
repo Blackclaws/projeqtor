@@ -2446,10 +2446,17 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     echo '<table width="100%">'; 
   }
   echo '<tr>';
+  $billingType='M';
+  if (property_exists($obj,'billingType') and $obj->billingType) {
+    $billingType=$obj->billingType;
+  }
   if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
     if ($obj->id != null and !$print and !$lock) {
-      echo '<a onClick="addBillLine();" title="' . i18n('addLine') . '" > '.formatSmallButton('Add').'</a>';
+      echo '<a onClick="addBillLine(\'M\');" title="' . i18n('addLine') . '" > '.formatSmallButton('Add').'</a>';
+      if ($billingType!='M') {
+        echo '<a onClick="addBillLine(\''.$billingType.'\');" title="' . i18n('addLine') . '" style="cursor: pointer;display: inline-block;margin-left:5px;" class="roundedButtonSmall"> '.formatIcon('Bill',16).'</a>';
+      }
     }
     echo '</td>';
   }
@@ -2471,7 +2478,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     if (!$print) {
       echo '<td class="noteData" style="text-align:center;white-space:nowrap">';
       if ($lock == 0) {
-        echo ' <a onClick="editBillLine('.htmlEncode($line->id).');" ';
+        echo ' <a onClick="editBillLine('.htmlEncode($line->id).',\''.htmlEncode(($line->billingType)?$line->billingType:$billingType).'\');" ';
         echo '  title="' . i18n('editLine') . '" > '.formatSmallButton('Edit').'</a>';
         echo ' <a onClick="removeBillLine(' . htmlEncode($line->id) . ');"' . ' ';
         echo '  title="' . i18n('removeLine') . '" > '.formatSmallButton('Remove').'</a>';

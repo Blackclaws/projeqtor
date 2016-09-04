@@ -2670,7 +2670,7 @@ function removeDependency(dependencyId, refType, refId) {
  * Display a add line Box
  * 
  */
-function addBillLine() {
+function addBillLine(billingType) {
   var postLoad=function() {  
     var prj=dijit.byId('idProject').get('value');
     refreshListSpecific('listTermProject', 'billLineIdTerm', 'idProject', prj);
@@ -2681,6 +2681,7 @@ function addBillLine() {
   var params="&id=";
   params+="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
+  if (billingType) params+="&billingType="+billingType;
   loadDialog('dialogBillLine', postLoad, true, params, true);
 }
 
@@ -2688,10 +2689,11 @@ function addBillLine() {
  * Display a edit line Box
  * 
  */
-function editBillLine(id) {
+function editBillLine(id,billingType) {
   var params="&id="+id;
   params+="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
+  if (billingType) params+="&billingType="+billingType;
   loadDialog('dialogBillLine', null, true, params, true)
 }
 
@@ -3870,12 +3872,14 @@ function addAffectation(objectClass, type, idResource, idProject) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  
   if (dijit.byId('idProfile')) {
     dijit.byId("affectationProfile").set('value',
         dijit.byId('idProfile').get('value'));
   } else {
     dijit.byId("affectationProfile").reset();
   }
+  refreshList('idProfile', 'idProject', idProject, null, 'affectationProfile', false  ); // Attention, selected is given as idAffectation => must seach its profile ...
   if (objectClass == 'Project') {
     refreshList('idProject', 'id', idProject, idProject, 'affectationProject', true);
     dijit.byId("affectationProject").set('value', idProject);
@@ -3939,6 +3943,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  refreshList('idProfile', 'idProject', idProject, id, 'affectationProfile', false  ); // Attention, selected is given as idAffectation => must seach its profile ...
   disableWidget("affectationDescription");
   dojo.xhrGet({
     url : '../tool/getSingleData.php?dataType=affectationDescription&idAffectation='+id,
@@ -3953,6 +3958,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
   } else {
     dijit.byId("affectationProfile").reset();
   }
+  
   refreshList('idProject', null, null, idProject, 'affectationProject', true);
   if (objectClass == 'Project') {
     refreshList('id' + type, null, null, idResource, 'affectationResource',
