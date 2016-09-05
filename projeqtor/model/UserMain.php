@@ -1008,7 +1008,7 @@ class UserMain extends SqlElement {
 						$this->resourceName=$first_user['cn'][0];    
 					} 
 				  $this->isLdap=1;
-				  $this->name=$paramlogin;
+				  $this->name=strtolower($paramlogin);
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  $createAction=Parameter::getGlobalParameter('ldapCreationAction');
 				  if ($createAction=='createResource' or $createAction=='createResourceAndContact') {

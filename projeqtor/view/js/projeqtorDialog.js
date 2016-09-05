@@ -7064,8 +7064,12 @@ function editTenderSubmission(tenderId) {
 }
 function saveTenderSubmission() {
   var formVar=dijit.byId("dialogTenderSubmissionForm");
+  if (dijit.byId('dialogCallForTenderSubmissionProvider') && ! trim(dijit.byId('dialogCallForTenderSubmissionProvider').get("value"))) {
+    showAlert(i18n('messageMandatory', new Array(i18n('colIdProvider'))));
+    return;
+  }
   if (!formVar) {
-    showError(i18n("errorSubmitForm", new Array("n/a", "n/a", "dialogTenderSubmissionForm")));
+    showAlert(i18n("errorSubmitForm", new Array("n/a", "n/a", "dialogTenderSubmissionForm")));
     return;
   }
   if (formVar.validate()) {
