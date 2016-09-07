@@ -177,13 +177,13 @@ foreach ($resources as $idR=>$nameR) {
 	    }
 	  }
     echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
-    echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="4">' . i18n('sum') . " " . $nameR . '</td>';
+    echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="3">' . i18n('sum') . " " . $nameR . '</td>';
     echo '</tr>';
   }
 }
 echo '<tr>';
 echo '<td class="reportTableHeader">' . i18n('sum') . '</td>';
 echo '<td class="reportTableHeader">' . Work::displayWorkWithUnit($sum) . '</td>';
-echo '<td colspan="4"></td>';
+echo '<td colspan="3"></td>';
 echo '</tr>';
 echo '</table>';
