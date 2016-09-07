@@ -43,16 +43,17 @@
 
   $collapsedList=Collapsed::getCollaspedList();
   
+
+  $pe=new ProjectPlanningElement();
+  $pe->setVisibility();
+  $workVisibility=$pe->_workVisibility;
+  $costVisibility=$pe->_costVisibility;
+  
   if (array_key_exists('refreshProjects',$_REQUEST)) {
     $_SESSION['todayCountScope']=(array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo';
     showProjects();
     exit;
   } 
-
-  $pe=new ProjectPlanningElement();
-  $pe->setVisibility();
-  $workVisibility=$pe->_workVisibility;
-  $costVisibility=$pe->_costVisibility;    
     
   function showMessages() {
   	global $cptMax;
@@ -337,6 +338,11 @@
   $cptDisplayId=0;
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
     global $cptDisplayId, $print, $workVisibility;
+    if (!$workVisibility) {
+      $pe=new ProjectPlanningElement();
+      $pe->setVisibility();
+      $workVisibility=$pe->_workVisibility;
+    }
     if ($value==='') {return $value;}
     $width=($print)?'45':'55';;
     $green=($allValue!=0 and $allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;

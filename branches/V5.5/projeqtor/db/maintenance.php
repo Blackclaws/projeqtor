@@ -484,6 +484,11 @@ if (beforeVersion($currVersion,"V5.3.0") and $currVersion!='V0.0.0') {
   traceLog("   => $cpt components updated");
 }
 
+if ($currVersion=='V5.5.0' and Sql::isPgsql()) {
+  traceLog("   => Fix issues on tenderstatus for PostgreSql database");
+  traceLog("   => If issue has already been fixed, don't care about errors");
+  $nbErrorsPg=runScript('V5.5.1.pg');
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
