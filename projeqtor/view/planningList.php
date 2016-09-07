@@ -90,7 +90,7 @@ if ($canPlan) {
       		    <td width="50px" align="center">
                 <?php echo formatIcon('Planning', 32, null, true);?>
               </td>
-              <td width="200px" ><span class="title"><?php echo i18n('menuPlanning');?></span></td>
+              <td width="200px" ><span class="title" style="max-width:200px;white-space:normal"><?php echo i18n('menuPlanning');?></span></td>
       		  </tr>
     		  </table>
 		    </td>

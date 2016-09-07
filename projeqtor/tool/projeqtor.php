@@ -42,8 +42,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V5.5.0"; // Version of application : Major / Minor / Release
-$build = "0146"; // Build number. To be increased on each release
+$version = "V5.5.1"; // Version of application : Major / Minor / Release
+$build = "0147"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 
 /**
@@ -848,7 +848,7 @@ function getTheme() {
   if (isset ( $defaultTheme )) {
     $theme = $defaultTheme;
   }
-  if (array_key_exists ( 'theme', $_SESSION )) {
+  if (array_key_exists ( 'theme', $_SESSION ) and trim($_SESSION ['theme'])) {
     $theme = $_SESSION ['theme'];
   }
   if ($theme == "random") {
