@@ -222,6 +222,9 @@
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
       		$name=SqlList::getNameFromId('Affectable', $selected);
       	}
+      	if ($name==$selected and substr($class,-7)=='Version') {
+      	  $name=SqlList::getNameFromId('Version', $selected);
+      	}
         $list[$selected]=$name;
       }
       if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
