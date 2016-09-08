@@ -71,11 +71,11 @@ if ($idProject!='') {
 $queryWhere.= " and exp.idProject not in " . Project::getAdminitrativeProjectList() ;
 
 $querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
-$queryGroupBy1 = 'exp.'.$scale . ', exp.idProject';
+$queryGroupBy1 = 'exp.'.$scale . ', exp.idProject, t2.sortOrder';
 $queryWhere1 = $queryWhere . ' and exp.expenseRealDate is not null ';
 
 $querySelect2= 'select sum(exp.plannedAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
-$queryGroupBy2 = 'exp.'.$scale . ', exp.idProject';
+$queryGroupBy2 = 'exp.'.$scale . ', exp.idProject, t2.sortOrder';
 $queryWhere2 = $queryWhere . ' and exp.expenseRealDate is null ';
 
 if ($scope) {

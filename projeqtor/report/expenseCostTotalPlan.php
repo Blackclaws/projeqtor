@@ -74,11 +74,11 @@ $queryWhereW.= " and w.idProject not in " . Project::getAdminitrativeProjectList
 $queryWhereExp.= " and exp.idProject not in " . Project::getAdminitrativeProjectList() ;
   
 $querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
-$queryGroupBy1 = 'exp.'.$scale . ', exp.idProject';
+$queryGroupBy1 = 'exp.'.$scale . ', exp.idProject, t2.sortOrder';
 $queryWhere1 = $queryWhereExp . ' and exp.expenseRealDate is not null ';
 
 $querySelect2= 'select sum(exp.plannedAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
-$queryGroupBy2 = 'exp.'.$scale . ', exp.idProject';
+$queryGroupBy2 = 'exp.'.$scale . ', exp.idProject, t2.sortOrder';
 $queryWhere2 = $queryWhereExp . ' and exp.expenseRealDate is null ';
 
 if ($scope) {
@@ -105,7 +105,7 @@ for ($i=1;$i<=2;$i++) {
   $queryWhereTmp=($i==1)?$queryWhere1:$queryWhere2;
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhereTmp=($queryWhereTmp=='')?' 1=1':$queryWhereTmp;
-  $query=$querySelect 
+  $query=$querySelect
      . ' from ' . $obj->getDatabaseTableName().' exp, Project t2 ' 
      . ' where ' . $queryWhereTmp.' AND t2.id=exp.idProject '
      . ' and exp.cancelled=0'  

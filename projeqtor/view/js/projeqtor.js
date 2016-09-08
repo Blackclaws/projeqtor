@@ -1203,8 +1203,8 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       }
       if (lastOperation.value == "delete") {
-        zone = dijit.byId("formDiv");
-        msg = dojo.byId("noDataMessage");
+        var zone = dijit.byId("formDiv");
+        var msg = dojo.byId("noDataMessage");
         if (zone && msg) {
           zone.set('content', msg.value);
         }
@@ -1405,7 +1405,7 @@ function finalizeMessageDisplay(destination, validationType) {
       addCloseBoxToMessage(destination);
     } else {
       if (lastOperationStatus.value == "CONFIRM") {
-        if (message.indexOf('id="confirmControl" value="delete"') > 0) {
+        if (message.indexOf('id="confirmControl" value="delete"') > 0 || message.indexOf('id="confirmControl" type="hidden" value="delete"') > 0) {
           confirm = function() {
             dojo.byId("deleteButton").blur();
             loadContent("../tool/deleteObject.php?confirmed=true", "resultDiv",

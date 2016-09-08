@@ -40,7 +40,7 @@ require_once "../tool/projeqtor.php";
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 	//scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",required=$required,critFld=$critFld,critval=$critVal)");
-	if (is_array($critFld)) {
+  if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
 	    $crtName='critFld'.$tempId;
 	    $$crtName=$tempCrt;
@@ -111,13 +111,15 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $table=array_merge_preserve_keys($table,$list);
     }  
     if ($selection) {
-      $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+      $table[$selection]=SqlList::getNameFromId('Version', $selection);
     }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($selection) {
-      $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
+      $refTable=substr($col,2);
+      if (substr($listType,-7)=='Version') $refTable='Version';
+      $table[$selection]=SqlList::getNameFromId($refTable, $selection);
     }
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
@@ -146,7 +148,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     } 
     if ($selection) {
-      $table[$selection]=SqlList::getNameFromId($listType, $selection);
+      $refTable=$listType;
+      if (substr($listType,-7)=='Version') $refTable='Version';
+      $table[$selection]=SqlList::getNameFromId($refTable, $selection);
     } 
   }
   $restrictArray=array();

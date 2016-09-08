@@ -116,11 +116,11 @@ if ($paramTeam) {
 }
 
 $querySelect1= 'select sum(w.cost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
-$queryGroupBy1 = 'w.'.$scale . ', w.idProject';
+$queryGroupBy1 = 'w.'.$scale . ', w.idProject, t2.sortOrder';
 $queryWhere1 = $queryWhere;
 
 $querySelect2= 'select sum(w.work * a.dailyCost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
-$queryGroupBy2 = $scale . ', w.idProject';
+$queryGroupBy2 = $scale . ', w.idProject, t2.sortOrder';
 $queryWhere2 = $queryWhere . ' and w.idAssignment=a.id ';
 // constitute query and execute
 
