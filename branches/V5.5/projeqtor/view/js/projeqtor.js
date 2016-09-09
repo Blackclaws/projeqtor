@@ -3568,12 +3568,15 @@ function ckEditorReplaceEditor(editorName, numEditor) {
       && dojo.byId('ckeditor' + numEditor + 'ReadOnly').value == 'true') {
     readOnly = true;
   }
+  console.log(currentLocale);
   autofocus = (editorName == 'noteNote') ? true : false;
   editorArray[numEditor] = CKEDITOR.replace(editorName, {
     customConfig : 'projeqtorConfig.js',
     filebrowserUploadUrl : '../tool/uploadImage.php',
     height : height,
     readOnly : readOnly,
+    language : currentLocale,
+    uiColor: '#A0A0A0',
     startupFocus : autofocus
   });
   if (editorName != 'noteNote') { // No formChanged for notes

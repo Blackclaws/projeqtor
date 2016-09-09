@@ -45,6 +45,12 @@
 .iconFlashPdf { background-image: url(images/flashPdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconFlash { background-image: url(images/flash.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
+.iconMenuBarItem16 { background-image: url(../img/logoSmall.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.iconMenuBarItem22 { background-image: url(../img/logoSmall.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.iconMenuBarItem32 { background-image: url(../img/logoSmall.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
+
+.iconMenuBarCustom16 { background-image: url(images/iconMenuBarCustom16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .iconCollapse {
   background-image: url(images/minus.gif);
   background-repeat: no-repeat;
