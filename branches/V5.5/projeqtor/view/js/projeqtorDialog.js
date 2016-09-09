@@ -6471,8 +6471,9 @@ function showMenuList() {
   openMenuListTimeout=setTimeout("dijit.byId('menuSelector').loadAndOpenDropDown();",popupOpenDelay);
   
 }
-function hideMenuList(delay) {
+function hideMenuList(delay, item) {
   if (! menuListAutoshow) return;
+console.log ("hideMenuList("+item+")"); 
   clearTimeout(closeMenuListTimeout);
   clearTimeout(openMenuListTimeout);
   closeMenuListTimeout=setTimeout("dijit.byId('menuSelector').closeDropDown();",delay);
