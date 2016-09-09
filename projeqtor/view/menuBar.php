@@ -167,9 +167,10 @@
         ><?php foreach ($allMenuClass as $cl=>$clVal) {
           $selected=($defaultMenu==$cl)?' selected=selected ':'';
           echo '<option value="'.$cl.'" '.$selected.' style="color:#fff !important;">';
-          echo '<div style="z-index:9999;height:16px;vertical-align:middle;" value="'.$cl.'" '.$selected.' class="menuSelectList" onMouseOver="clearTimeout(closeMenuListTimeout);" onMouseLeave="hideMenuList(100);">';
-          echo '<img style="position:absolute;height:15px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-          echo i18n('menu'.ucfirst($clVal));
+          echo '<div style="z-index:9999;height:14px;vertical-align:middle;top:-1px;width:180px;" value="'.$cl.'" '.$selected.' class="menuSelectList" onMouseOver="console.log(\'clearTimeout('.$cl.')\');clearTimeout(closeMenuListTimeout);" onMouseLeave="hideMenuList(200,\''.$cl.'\');">';
+          echo '  <div style="z-index:9;position:absolute;height:16px;width:18px;left:9px;background-color:#ffffff;border-radius:5px;opacity: 0.5;">&nbsp;</div>';
+          echo '  <span style="z-index:10;position:absolute;height:16px;left:10px;" class="icon'.ucfirst($cl).'16">&nbsp;</span>';
+          echo '  <span style="z-index:11;position:absolute;left:35px;top:5px;">'. i18n('menu'.ucfirst($clVal)).'</span>';
           echo '</div>';
           echo '</option>';
       }?></div>
