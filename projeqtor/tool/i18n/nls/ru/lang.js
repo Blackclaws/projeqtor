@@ -1919,7 +1919,7 @@ planDoneWithLimits: "Следующие задания не могут быть 
 planned: "Запланировано",
 PlannedCostOverAssignedCost: "Плановая стоимость&#44; по сравнению с назанченной стоимостью",
 PlannedCostOverValidatedCost: "Плановая стоимость&#44; по сравнению с проверочной стоимостью",
-plannedDate: "[respect of plannied date]",
+plannedDate: "[respect of planned date]",
 plannedEndDate: "Дата окончания запланированных отношений",
 plannedProjects: "спранированные проекты",
 plannedStartDate: "Дата начала запланированных отношений",
