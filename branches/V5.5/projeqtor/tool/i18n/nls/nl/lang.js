@@ -1919,7 +1919,7 @@ planDoneWithLimits: "De volgende taken konden niet geheel worden geplanned &#58"
 planned: "gepland",
 PlannedCostOverAssignedCost: "herbeoordeelde kosten vergeleken met toegekende kosten",
 PlannedCostOverValidatedCost: "herbeoordeelde kosten vergeleken met gevalideerde kosten",
-plannedDate: "[respect of plannied date]",
+plannedDate: "[respect of planned date]",
 plannedEndDate: "actuele geplande einddatum",
 plannedProjects: "geplande projecten",
 plannedStartDate: "actuele geplande startdatum",
