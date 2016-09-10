@@ -1919,7 +1919,7 @@ planDoneWithLimits: "以下のタスクは完全には計画なされません &
 planned: "予定",
 PlannedCostOverAssignedCost: "予定コスト/割当コスト",
 PlannedCostOverValidatedCost: "予定コスト/承認コスト",
-plannedDate: "[respect of plannied date]",
+plannedDate: "[respect of planned date]",
 plannedEndDate: "予定終了日",
 plannedProjects: "計画されたプロジェクト",
 plannedStartDate: "予定開始日",

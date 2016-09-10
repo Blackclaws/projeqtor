@@ -1919,7 +1919,7 @@ planDoneWithLimits: "As seguintes tarefas não puderam ser planejadas devido ao 
 planned: "planejado",
 PlannedCostOverAssignedCost: "custo planejado X custo atribuído",
 PlannedCostOverValidatedCost: "custo planejado X custo validado",
-plannedDate: "[respect of plannied date]",
+plannedDate: "[respect of planned date]",
 plannedEndDate: "respeito à data final planejada",
 plannedProjects: "projetos planejados",
 plannedStartDate: "respeito à data inicial planejada",

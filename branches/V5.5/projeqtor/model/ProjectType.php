@@ -165,22 +165,26 @@ class ProjectType extends SqlElement {
     	$val=$this->internalData;
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
-      $result .=autoOpenFilteringSelect();
-      if ($this->code=="ADM" or $this->code=="TMP") {
-      	$result.=' readonly="readonlyy"';
-      } 
-      $result .='  style="width: 200px;" name="billingType" id="billingType" >';
-      $result .='<option value="E" ' . (($val=="E" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeE') . '</option>';
-      $result .='<option value="R" ' . (($val=="R" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeR') . '</option>';
-      $result .='<option value="P" ' . (($val=="P" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeP') . '</option>';
-      $result .='<option value="M" ' . (($val=="M" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeM') . '</option>';
-      $result .='<option value="N" ' . (($val=="N" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeN') . '</option>';
-      $result .= '<script type="dojo/connect" event="onChange" >';
-      $result .=' dijit.byId("internalData").set("value",this.value);';
-      $result .=' formChanged(); ';
-      $result .= '</script>';
-      $result .='</select>';
+      if ($print) {
+        $result.="&nbsp;&nbsp;&nbsp;".i18n('billingType'.$val);
+      } else {
+        $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
+        $result .=autoOpenFilteringSelect();
+        if ($this->code=="ADM" or $this->code=="TMP") {
+        	$result.=' readonly="readonlyy"';
+        } 
+        $result .='  style="width: 200px;" name="billingType" id="billingType" >';
+        $result .='<option value="E" ' . (($val=="E" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeE') . '</option>';
+        $result .='<option value="R" ' . (($val=="R" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeR') . '</option>';
+        $result .='<option value="P" ' . (($val=="P" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeP') . '</option>';
+        $result .='<option value="M" ' . (($val=="M" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeM') . '</option>';
+        $result .='<option value="N" ' . (($val=="N" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeN') . '</option>';
+        $result .= '<script type="dojo/connect" event="onChange" >';
+        $result .=' dijit.byId("internalData").set("value",this.value);';
+        $result .=' formChanged(); ';
+        $result .= '</script>';
+        $result .='</select>';
+      }
       $result .= '</td></tr></table>';
       return $result;
     } else if ($item=='restrictTypes') {

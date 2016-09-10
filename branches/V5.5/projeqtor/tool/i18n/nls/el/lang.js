@@ -1919,7 +1919,7 @@ planDoneWithLimits: "Παρακάτω εργασία δεν ήταν δυνατ�
 planned: "προγραμμ.",
 PlannedCostOverAssignedCost: "προγραμμ. κόστος σε σύγκριση με εκχωρ. κόστος",
 PlannedCostOverValidatedCost: "προγραμμ. κόστος σε σύγκριση με επικυρ. κόστος",
-plannedDate: "[respect of plannied date]",
+plannedDate: "[respect of planned date]",
 plannedEndDate: "σεβασμός της προγραμμ. ημερ. λήξης",
 plannedProjects: "προγραμματισμένα έργα",
 plannedStartDate: "σεβασμός της προγραμμ. ημερ. έναρξης",
