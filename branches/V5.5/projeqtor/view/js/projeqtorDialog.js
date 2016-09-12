@@ -3394,7 +3394,11 @@ function selectFilterContinue() {
       "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
           + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
       false, 'returnFromFilter', false);
-  doc.refreshJsonList(dojo.byId('objectClass').value);
+  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Kanban' || dojo.byId('objectClassManual').value=='LiveMeeting')){
+    loadContent("../plugin/kanban/kanbanView.php?idKanban="+dojo.byId('idKanban').value, "divKanbanContainer");
+  }else{
+    doc.refreshJsonList(dojo.byId('objectClass').value);
+  }
   top.dijit.byId("dialogFilter").hide();
   filterStartInput=false;
 }
@@ -6473,7 +6477,6 @@ function showMenuList() {
 }
 function hideMenuList(delay, item) {
   if (! menuListAutoshow) return;
-console.log ("hideMenuList("+item+")"); 
   clearTimeout(closeMenuListTimeout);
   clearTimeout(openMenuListTimeout);
   closeMenuListTimeout=setTimeout("dijit.byId('menuSelector').closeDropDown();",delay);
