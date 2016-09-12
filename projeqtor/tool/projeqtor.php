@@ -674,15 +674,25 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
     return false;
   }
   $result=false;
-  $allProfiles=$user->getAllProfiles();
-  foreach ($allProfiles as $profile) {
-    $crit = array ();
-    $crit ['idProfile'] = $profile;
+  $type=SqlList::getFieldFromId('Menu', $idMenu, 'type');
+  if ($type=='Project') {
+    $allProfiles=$user->getAllProfiles();
+    foreach ($allProfiles as $profile) {
+      $crit = array ();
+      $crit ['idProfile'] = $profile;
+      $crit ['idMenu'] = $menu;
+      $obj = SqlElement::getSingleSqlElementFromCriteria ( 'Habilitation', $crit );
+      if ($obj->id != null and $obj->allowAccess == 1) {
+        $result=true;
+        break;
+      }
+    }
+  } else {
+    $crit ['idProfile'] = $user->idProfile;
     $crit ['idMenu'] = $menu;
     $obj = SqlElement::getSingleSqlElementFromCriteria ( 'Habilitation', $crit );
     if ($obj->id != null and $obj->allowAccess == 1) {
       $result=true;
-      break;
     }
   }
   return $result;

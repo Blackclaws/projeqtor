@@ -86,6 +86,8 @@ class CronExecution extends SqlElement {
           errorLog("Can't find next time for cronexecution because too many execution #".$this->id);
         }
       }
+    }else{
+      errorLog("Can't find next time for cronexecution because too many execution #".$this->id);
     }
   }
 }
