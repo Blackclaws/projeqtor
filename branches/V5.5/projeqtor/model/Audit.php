@@ -203,6 +203,8 @@ class Audit extends SqlElement {
 			$audit->save ();
 		}
 		AuditSummary::updateAuditSummary ( $audit->auditDay );
+		enableCatchErrors();
+		enableSilentErrors();
 		$user = getSessionUser();
 		$user->disconnect();
 		// terminate the session
@@ -220,6 +222,8 @@ class Audit extends SqlElement {
 		} catch ( Exception $e ) {
 			// tried twice : OK let's give up.
 		}
+		disableCatchErrors();
+		disableSilentErrors();
 	}
 	static function getBrowser() {
 		$u_agent = $_SERVER ['HTTP_USER_AGENT'];
