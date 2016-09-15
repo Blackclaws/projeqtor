@@ -176,7 +176,12 @@ if ($action=='display') {
 <td>&nbsp;&nbsp;&nbsp;</td>
 <td style="border:1px solid grey"><div class="line title">Class of object</div>
 <div class="line">Object : <select class="input" name="object" id="object">
-<?php htmlDrawOptionForReference('idImportable', null, null, true);?>
+<?php 
+//htmlDrawOptionForReference('idImportable', null, null, true);
+foreach (SqlList::getListNotTranslated('Importable') as $id=>$val) {
+  echo "<option valued='$val' >$val</option>";
+}
+?>
 <option value="History">History</option>
 </select></div>
 <div class="line"></div>
@@ -229,7 +234,7 @@ if ($id) {
 } else if ($list and $list=='search'){
 	$fullUrl=$service_url.'/'.$object.'/search'.$searchParameters;
 } else if ($action=="PUT" or $action=="POST" or $action=="DELETE") {
-  $fullUrl=$service_url.'/'.$object;
+  $fullUrl=$service_url.'/'.$object."?confirmed=true";
   if (isset($_REQUEST['data'])) {
     $data=$_REQUEST['data'];
   } else {

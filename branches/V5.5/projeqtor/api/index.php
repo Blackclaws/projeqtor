@@ -258,6 +258,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 			if (get_class($obj)=="Work") {
 			  $result=$obj->deleteWork(); // Specific delete method for import and API
 			} else {
+			  SqlElement::setDeleteConfirmed();
 			  $result=$obj->delete();
 			}
 		}
