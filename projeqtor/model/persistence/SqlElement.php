@@ -1463,6 +1463,10 @@ abstract class SqlElement {
 		if (get_class($this)=='User') {
 			$newObj->name=i18n('copiedFrom') . ' ' . $newObj->name;
 		}
+		if (is_a($this, 'Version') and $newObj->versionNumber) {
+		  $newObj->versionNumber=$newObj->versionNumber.' ('.i18n('copy').')';
+		  $newObj->name=$newObj->name.' ('.i18n('copy').')';
+		}
 		if (property_exists($newObj,"isCopyStatus")) {
 			$newObj->isCopyStatus=0;
 		}

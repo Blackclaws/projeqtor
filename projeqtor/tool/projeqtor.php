@@ -59,6 +59,7 @@ if (! isset($_SERVER ['PHP_SELF']) or ! $_SERVER ['PHP_SELF']) { // PHP_SELF do 
 } 
 date_default_timezone_set ( 'Europe/Paris' );
 $globalCatchErrors = false;
+$globalSilentErrors = false;
 set_exception_handler ( 'exceptionHandler' );
 set_error_handler ( 'errorHandler' );
 $browserLocale = "";
@@ -455,8 +456,11 @@ function exceptionHandler($exception) {
  * @return void
  */
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
-  global $globalCatchErrors;
+  global $globalCatchErrors, $globalSilentErrors;
   $logLevel = Parameter::getGlobalParameter ( 'logLevel' );
+  if ($globalSilentErrors) {
+    return true;
+  }
   if (! strpos ( $errorMessage, "getVersion.php" ) and ! strpos ( $errorMessage, "file-get-contents" ) and ! strpos ( $errorMessage, "function.session-destroy" )) {
     errorLog ( "ERROR *****" );
     errorLog ( "on file '" . $errorFile . "' at line (" . $errorLine . ")" );
@@ -485,6 +489,15 @@ function enableCatchErrors() {
 function disableCatchErrors() {
   global $globalCatchErrors;
   $globalCatchErrors = false;
+}
+function enableSilentErrors() {
+  global $globalSilentErrors;
+  $globalSilentErrors = true;
+}
+
+function disableSilentErrors() {
+  global $globalSilentErrors;
+  $globalSilentErrors = false;
 }
 
 function traceHack($msg = "Unidentified source code") {
