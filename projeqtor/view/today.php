@@ -614,7 +614,6 @@
   <div style="overflow: <?php echo(!$print)?'auto':'hidden';?>;padding:10px" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
     <?php if (!$print) {?>
     <div class="parametersButton">
-    <?php if(1 or $user->idProfile == 9) { ?>
     <button id="todayRefreshButton" dojoType="dijit.form.Button" showlabel="false"
       title="<?php echo i18n('enableRefresh');?>" style="width:28px"  
       iconClass="dijitButtonIcon dijitButtonIconRefresh" >
@@ -625,7 +624,10 @@
           }
           dijit.byId("toolBarDiv").resize({h :0});
           dijit.byId("statusBarDiv").resize({h :0});
-          showInfo(i18n("enableRefreshDone"));
+          var msgParams=new Array();
+          msgParams[0]='<?php echo $paramScrollDelay;?>';
+          msgParams[1]='<?php echo $paramRefreshDelay;?>';
+          showInfo(i18n("enableRefreshDone",msgParams));
           formChanged();
           // Check if old animation is not still running
           var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
@@ -700,10 +702,7 @@
         }
         delete refreshEnabled;
       }
-    </script>
-<?php
-}
-?>    
+    </script> 
 	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
 	       title="<?php echo i18n('menuParameter');?>" style="width:28px"
 	       iconClass="dijitButtonIcon iconParameter22" >
