@@ -354,6 +354,7 @@ class Plugin extends SqlElement {
     } 
     
     public static function includeAllFiles () {
+      if (version_compare(Sql::getDbVersion(), '5.0.0',"<")) return;
       $list=self::getActivePluginList();
       foreach ($list as $plugin) {
         $plugin->includeFiles();
@@ -380,6 +381,7 @@ class Plugin extends SqlElement {
     
     public static function getTranslationJsArrayForPlugins($arrayName) {
       global $currentLocale;
+      if (version_compare(Sql::getDbVersion(), '5.0.0',"<")) return;
       $langFileList=array();
       $pluginList=self::getInstalledPluginNames();
       $locale=(isset($currentLocale))?$currentLocale:'';
@@ -438,6 +440,7 @@ class Plugin extends SqlElement {
     }
     
     public static function getEventScripts($event, $className) {
+      if (version_compare(Sql::getDbVersion(), '5.2.0',"<")) return array();
       if (!self::$_triggeredEventList) {
         self::getTriggeredEventList();
       }
