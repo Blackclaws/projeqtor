@@ -102,8 +102,10 @@ function runScript($vers,$pluginSqlFile=null) {
               $action="DELETE FROM";
             } else if (substr($query,0,14)=='TRUNCATE TABLE') {
               $action="TRUNCATE TABLE";
-            } else if (substr($query,0,12)=='CREATE INDEX' or substr($query,0,19)=='CREATE UNIQUE INDEX') {
+            } else if (substr($query,0,12)=='CREATE INDEX') {
               $action="CREATE INDEX";
+            } else if (substr($query,0,19)=='CREATE UNIQUE INDEX') {
+              $action="CREATE UNIQUE INDEX";
             }
             $deb=strlen($action)+stripos($query, $action);            
             $end=strpos($query,' ', $deb+1);
@@ -167,7 +169,7 @@ function runScript($vers,$pluginSqlFile=null) {
                 traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\".");
                 if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
                 break;              
-              case "CREATE INDEX" :
+              case "CREATE INDEX" : case "CREATE UNIQUE INDEX" :
                 traceLog(" Index \"" . $tableName . "\" created."); 
                 break;
               case "DROP INDEX" :
