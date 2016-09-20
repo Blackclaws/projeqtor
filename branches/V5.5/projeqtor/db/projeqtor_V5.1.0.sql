@@ -102,9 +102,9 @@ ADD `fullAmount` decimal(12,2) DEFAULT NULL,
 ADD `addFullAmount` decimal(12,2) DEFAULT NULL,
 ADD `totalFullAmount` decimal(12,2) DEFAULT NULL,
 ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
-ALTER TABLE `${prefix}command` CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED;
-ALTER TABLE `${prefix}command` CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2) UNSIGNED;
-ALTER TABLE `${prefix}command` CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}command` CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2);
+ALTER TABLE `${prefix}command` CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2);
+ALTER TABLE `${prefix}command` CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2);
 
 CREATE TABLE `${prefix}deliverymode` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
