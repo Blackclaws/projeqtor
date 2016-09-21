@@ -232,7 +232,7 @@ if ($saveShowClosed) {
                       <td>
                       <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
                         style="width: 150px;"
-                        name="userName" id="userName"
+                        name="selectResourceName" id="selectResourceName"
                         <?php echo autoOpenFilteringSelect();?>
                         >
                         <script type="dojo/method" event="onChange" >

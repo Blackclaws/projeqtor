@@ -934,7 +934,8 @@ function saveNote() {
   if (editorType=="CK") {
     noteEditor=CKEDITOR.instances['noteNote'];
     noteEditor.updateElement();
-    if (noteEditor.getData()=="") {
+    var tmpCkEditor=noteEditor.document.getBody().getText();
+    if (tmpCkEditor.trim()=="") {
       var msg=i18n('messageMandatory', new Array(i18n('Note')));
       noteEditor.focus();
       showAlert(msg);
@@ -4075,7 +4076,9 @@ function affectationChangeResource() {
 
 function replaceAffectation (id, objectClass, type, idResource, idProject, rate,
     idle, startDate, endDate, idProfile) {
-  var callback=function() {};
+  var callback=function() {
+    refreshList('idProfile', 'idProject', idProject, null, 'replaceAffectationProfile', false  );
+  };
   var param="&idAffectation="+id;
   loadDialog("dialogReplaceAffectation", callback, true, param);
 }
