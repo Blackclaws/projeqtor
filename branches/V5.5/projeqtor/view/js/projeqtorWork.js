@@ -548,9 +548,9 @@ function dispatchWorkSave() {
     cpt++;
   }
   
-  if(futureInputBlocking){
+  if(futureInputBlocking && parseInt(nbDaysBlocking)!=-1){
     showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDaysBlocking)));
-  }else if(futureInput){
+  }else if(futureInput && parseInt(nbDays)!=-1){
     valid=function() {
       finishDispatchWorkSave();
     };
