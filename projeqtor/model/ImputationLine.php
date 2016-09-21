@@ -267,6 +267,9 @@ class ImputationLine {
 			$elt->arrayWork=array();
 			if (isset($ass->_locked)) $elt->locked=true;
 			$elt->arrayPlannedWork=array();
+			if(!$ass->idProject){
+			  $elt->idProject=SqlList::getFieldFromId($ass->refType, $ass->refId, 'idProject');
+			}
 			if ($ass->idRole) {
 			  $elt->functionName=SqlList::getNameFromId('Role', $ass->idRole);
 			}
@@ -512,6 +515,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			$width=($width)-155-30;
 		}
 		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
+	
 		
 		if (!$print) {
 		  echo '<div dojoType="dijit.layout.BorderContainer">';
@@ -808,13 +812,13 @@ scriptLog("      => ImputationLine->getParent()-exit");
   					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">'.htmlEncode($line->functionName).'</div>';
   			}
   			echo '</td>';
-  			if (!$print && $line->idAssignment) {
+  			if (!$print && $line->idAssignment && $line->refType!='Ticket') {
   			  $explodeComment=array(" a");
   			  if($line->comment)$explodeComment=explode("\n\n", $line->comment);
   				echo '<td id="showBig'.$line->idAssignment.'" style="cursor:pointer;'.($line->comment ? "" : "display:none;").'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'view\');}, true, \'&idAssignment='.$line->idAssignment.'\', true);">'.formatCommentThumb($explodeComment[0]).'</td>';
   		  }
   		  
-  		  if($line->idAssignment)
+  		  if($line->idAssignment && $line->refType!='Ticket')
   		    echo '<td title="'.i18n('commentImputationAdd').'" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year='.$currentYear.'&week='.$currentWeek.'&idAssignment='.$line->idAssignment.'&refIdComment='.$line->refId.'&refTypeComment='.$line->refType.'\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
   		  
   			echo '</tr></table>';
@@ -1012,7 +1016,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 		if($nbFutureDaysBlocking==null || $nbFutureDaysBlocking=='')$nbFutureDaysBlocking=-1;
 		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days"));
 		$maxDateFutureBlocking=date('Y-m-d',strtotime("+".$nbFutureDaysBlocking." days"));
-		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
+		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />'; 
 		if (! $print) echo '<input type="hidden" id="nbFutureDaysBlocking" value="'.$nbFutureDaysBlocking.'" />';
 		if (! $print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
 		if (! $print) echo '<input type="hidden" id="businessDay" value="'.$businessDay.'" />';
@@ -1077,7 +1081,10 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	  $sumWork=0;
 	  foreach ($imputationList as $id=>$line){
 	    foreach ($listLienProject[$idProject] as $id2=>$line2){
-	      if($line->idProject==$line2)$sumWork+=$line->arrayWork[$day]->work;
+	      if($line->idProject==$line2){
+	        if ($line->refType=='Ticket')debugLog($line);
+	        $sumWork+=$line->arrayWork[$day]->work;
+	      }
 	    }
 	  }
 	  return $sumWork;

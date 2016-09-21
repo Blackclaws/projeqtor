@@ -77,8 +77,8 @@ if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDat
 	}
 }
 $selectResource=null;
-if (array_key_exists('userName',$_REQUEST)) {
-  $selectResource=trim($_REQUEST['userName']);
+if (array_key_exists('selectResourceName',$_REQUEST)) {
+  $selectResource=trim($_REQUEST['selectResourceName']);
 }
 $selectTeam=null;
 if (array_key_exists('teamName',$_REQUEST)) {
