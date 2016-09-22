@@ -966,11 +966,13 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   echo "</td>";
   echo "</tr>";
   if ($context=='directFilterList') {
+    debugLog("enter good");
+    debugLog(array_key_exists("contentLoad", $_REQUEST) && array_key_exists("container", $_REQUEST) ? '\''.$_REQUEST['contentLoad'].'\',\''.$_REQUEST['container'].'\'' : '');
     echo "<tr>";
     echo '<td style="cursor:pointer;font-size:8pt;font-style:italic;' 
            . '"' 
            . ' class="filterData" '
-           . 'onClick="selectStoredFilter(\'0\',\'directFilterList\');" ' 
+           . 'onClick="selectStoredFilter(\'0\',\'directFilterList\''.(array_key_exists("contentLoad", $_REQUEST) && array_key_exists("container", $_REQUEST) ? ',\''.$_REQUEST['contentLoad'].'\',\''.$_REQUEST['container'].'\'' : '').');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
            . i18n("noFilterClause")
            . "</td>";
@@ -982,7 +984,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
       echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter and $context=='directFilterList')?'color:white; background-color: grey;':'cursor: pointer;') . '"' 
            . ' class="filterData" '
            //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . htmlEncode($filter->id) . "'" . ');" ')
-           . 'onClick="selectStoredFilter(\'' . htmlEncode($filter->id) . '\',\'' . htmlEncode($context) . '\');" ' 
+           . 'onClick="selectStoredFilter(\'' . htmlEncode($filter->id) . '\',\'' . htmlEncode($context) . '\''.(array_key_exists("contentLoad", $_REQUEST) && array_key_exists("container", $_REQUEST) ? ',\''.$_REQUEST['contentLoad'].'\',\''.$_REQUEST['container'].'\'' : '').');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
            . htmlEncode($filter->name)
            . ( ($defaultFilter==$filter->id and $context!='directFilterList')?' (' . i18n('defaultValue') . ')':'')
