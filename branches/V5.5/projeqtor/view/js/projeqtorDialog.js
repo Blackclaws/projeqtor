@@ -3477,7 +3477,7 @@ function saveFilter() {
  * Select a stored filter in the list and fetch criteria
  * 
  */
-function selectStoredFilter(idFilter, context) {
+function selectStoredFilter(idFilter, context, contentLoad, container) {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   if (context == 'directFilterList') {
     if (top.dojo.byId('noFilterSelected')) {
@@ -3487,10 +3487,19 @@ function selectStoredFilter(idFilter, context) {
         top.dojo.byId('noFilterSelected').value='false';
       }
     }
-    loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
-        + "&context=" + context + "&filterObjectClass="
-        + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
-        false);
+
+    if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
+      loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
+          + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
+          + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
+          false);
+      loadContent(contentLoad, container);
+    }else{
+      loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
+          + "&context=" + context + "&filterObjectClass="
+          + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
+          false);
+    }
   } else {
     loadContent(
         "../tool/selectStoredFilter.php?idFilter=" + idFilter + compUrl,
