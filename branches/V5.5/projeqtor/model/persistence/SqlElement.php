@@ -940,6 +940,8 @@ abstract class SqlElement {
 		$depedantObjects=array();
 		$objectClass = get_class($this);
 		$arrayCols=array();
+		if (Sql::isPgsql()) $arrayCols['lastupdatedatetime']='$lastUpdateDateTime';
+		else $arrayCols['lastUpdateDateTime']='$lastUpdateDateTime';
 		$idleChange=false;
 		// Get old values (stored) to : 1) build the smallest query 2) save change history
 		$oldObject = self::getCurrentObject (get_class($this),$this->id,false,$force);
@@ -1011,7 +1013,8 @@ abstract class SqlElement {
 				    if (substr($col_new_value,0,4)!='<div') $col_new_value=nl2br($col_new_value);
 				  }
 				}
-				if ( $col_new_value != $col_old_value or ($isText and ('x'.$col_new_value != 'x'.$col_old_value) )) {
+				// !!! do not insert query for last update date time unless some change is detected
+				if ( $col_new_value != $col_old_value or ($isText and ('x'.$col_new_value != 'x'.$col_old_value) ) ) { 
 					if ($col_name=='idle') {$idleChange=true;}
 					$insertableColName= $this->getDatabaseColumnName($col_name);
 					if (Sql::isPgsql()) {$insertableColName=strtolower($insertableColName);}
@@ -1025,7 +1028,7 @@ abstract class SqlElement {
 						}
 						$nbChanged+=1;
 						// Save change history
-						if ($objectClass!='History' and ! property_exists($this,'_noHistory') and $col_name!='id') {
+						if ($objectClass!='History' and ! property_exists($this,'_noHistory') and $col_name!='id' and $col_name!='lastUpdateDateTime') {
 							$result = History::store($this, $objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
 							if (!$result) {
 								$returnStatus="ERROR";

@@ -2984,45 +2984,45 @@ function showFilterDialog() {
     top.filterFromDetail=false;
     if (top.dijit.byId('dialogDetail').open) {
       top.filterFromDetail=true;
-      top.dojo.byId('filterDefaultButtonDiv').style.display='none';
+      dojo.byId('filterDefaultButtonDiv').style.display='none';
     } else {
-      top.dojo.byId('filterDefaultButtonDiv').style.display='block';
+      dojo.byId('filterDefaultButtonDiv').style.display='block';
     }
-    dojo.style(top.dijit.byId('idFilterOperator').domNode, {
+    dojo.style(dijit.byId('idFilterOperator').domNode, {
       visibility : 'hidden'
     });
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueList').domNode, {
+    dojo.style(dijit.byId('filterValueList').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+    dojo.style(dijit.byId('filterValueCheckbox').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueDate').domNode, {
+    dojo.style(dijit.byId('filterValueDate').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterSortValueList').domNode, {
+    dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
-    top.dijit.byId('idFilterAttribute').reset();
-    top.dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
+    dijit.byId('idFilterAttribute').reset();
+    dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
     filterType="";
     var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
-    top.dojo.xhrPost({
+    dojo.xhrPost({
       url : "../tool/backupFilter.php?filterObjectClass="
-          + top.dojo.byId('filterObjectClass').value + compUrl,
+          + dojo.byId('filterObjectClass').value + compUrl,
       handleAs : "text",
       load : function(data, args) {
       }
     });
     compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-    top.loadContent("../tool/displayFilterClause.php" + compUrl,
+    loadContent("../tool/displayFilterClause.php" + compUrl,
         "listFilterClauses", "dialogFilterForm", false);
-    top.loadContent("../tool/displayFilterList.php" + compUrl,
+    loadContent("../tool/displayFilterList.php" + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
-    top.loadContent("../tool/displayFilterSharedList.php" + compUrl,
+    loadContent("../tool/displayFilterSharedList.php" + compUrl,
         "listSharedFilters", "dialogFilterForm", false);
     /*
      * var datastore = new dojo.data.ItemFileReadStore({url:
@@ -3031,8 +3031,8 @@ function showFilterDialog() {
      * dojo.store.DataStore({store: datastore}); store.query({id:"*"});
      * dijit.byId('idFilterAttribute').set('store',store);
      */
-    top.refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
-    top.dijit.byId("dialogFilter").show();
+    refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
+    dijit.byId("dialogFilter").show();
   }
   
   loadDialog('dialogFilter', callBack, true, "", true);
@@ -3045,10 +3045,10 @@ function showFilterDialog() {
 function filterSelectAtribute(value) {
   if (value) {
     filterStartInput=true;
-    top.dijit.byId('idFilterAttribute').store.store.fetchItemByIdentity({
+    dijit.byId('idFilterAttribute').store.store.fetchItemByIdentity({
       identity : value,
       onItem : function(item) {
-        var dataType=top.dijit.byId('idFilterAttribute').store.store.getValue(
+        var dataType=dijit.byId('idFilterAttribute').store.store.getValue(
             item, "dataType", "inconnu");
         var datastoreOperator=new dojo.data.ItemFileReadStore({
           url : '../tool/jsonList.php?listType=operator&dataType=' + dataType
@@ -3059,36 +3059,36 @@ function filterSelectAtribute(value) {
         storeOperator.query({
           id : "*"
         });
-        top.dijit.byId('idFilterOperator').set('store', storeOperator);
+        dijit.byId('idFilterOperator').set('store', storeOperator);
         datastoreOperator.fetch({
           query : {
             id : "*"
           },
           count : 1,
           onItem : function(item) {
-            top.dijit.byId('idFilterOperator').set("value", item.id);
+            dijit.byId('idFilterOperator').set("value", item.id);
           },
           onError : function(err) {
             console.info(err.message);
           }
         });
-        dojo.style(top.dijit.byId('idFilterOperator').domNode, {
+        dojo.style(dijit.byId('idFilterOperator').domNode, {
           visibility : 'visible'
         });
-        top.dojo.byId('filterDataType').value=dataType;
+        dojo.byId('filterDataType').value=dataType;
         if (dataType == "bool") {
           filterType="bool";
-          dojo.style(top.dijit.byId('filterValue').domNode, {
+          dojo.style(dijit.byId('filterValue').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueList').domNode, {
+          dojo.style(dijit.byId('filterValueList').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+          dojo.style(dijit.byId('filterValueCheckbox').domNode, {
             display : 'block'
           });
-          top.dijit.byId('filterValueCheckbox').set('checked', '');
-          dojo.style(top.dijit.byId('filterValueDate').domNode, {
+          dijit.byId('filterValueCheckbox').set('checked', '');
+          dojo.style(dijit.byId('filterValueDate').domNode, {
             display : 'none'
           });
         } else if (dataType == "list") {
@@ -3100,7 +3100,7 @@ function filterSelectAtribute(value) {
             url : '../tool/jsonList.php?required=true&listType=list&dataType='
                 + value
           });
-          var mySelect=top.dojo.byId("filterValueList");
+          var mySelect=dojo.byId("filterValueList");
           mySelect.options.length=0;
           var nbVal=0;
           tmpStore.fetch({
@@ -3117,88 +3117,88 @@ function filterSelectAtribute(value) {
             }
           });
           mySelect.size=(nbVal > 10) ? 10 : nbVal;
-          dojo.style(top.dijit.byId('filterValue').domNode, {
+          dojo.style(dijit.byId('filterValue').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueList').domNode, {
+          dojo.style(dijit.byId('filterValueList').domNode, {
             display : 'block'
           });
-          top.dijit.byId('filterValueList').reset();
-          dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+          dijit.byId('filterValueList').reset();
+          dojo.style(dijit.byId('filterValueCheckbox').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueDate').domNode, {
+          dojo.style(dijit.byId('filterValueDate').domNode, {
             display : 'none'
           });
         } else if (dataType == "date") {
           filterType="date";
-          dojo.style(top.dijit.byId('filterValue').domNode, {
+          dojo.style(dijit.byId('filterValue').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueList').domNode, {
+          dojo.style(dijit.byId('filterValueList').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+          dojo.style(dijit.byId('filterValueCheckbox').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueDate').domNode, {
+          dojo.style(dijit.byId('filterValueDate').domNode, {
             display : 'block'
           });
-          top.dijit.byId('filterValueDate').reset();
+          dijit.byId('filterValueDate').reset();
         } else {
           filterType="text";
-          dojo.style(top.dijit.byId('filterValue').domNode, {
+          dojo.style(dijit.byId('filterValue').domNode, {
             display : 'block'
           });
-          top.dijit.byId('filterValue').reset();
-          dojo.style(top.dijit.byId('filterValueList').domNode, {
+          dijit.byId('filterValue').reset();
+          dojo.style(dijit.byId('filterValueList').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+          dojo.style(dijit.byId('filterValueCheckbox').domNode, {
             display : 'none'
           });
-          dojo.style(top.dijit.byId('filterValueDate').domNode, {
+          dojo.style(dijit.byId('filterValueDate').domNode, {
             display : 'none'
           });
         }
       },
       onError : function(err) {
-        dojo.style(top.dijit.byId('idFilterOperator').domNode, {
+        dojo.style(dijit.byId('idFilterOperator').domNode, {
           visibility : 'hidden'
         });
-        dojo.style(top.dijit.byId('filterValue').domNode, {
+        dojo.style(dijit.byId('filterValue').domNode, {
           display : 'none'
         });
-        dojo.style(top.dijit.byId('filterValueList').domNode, {
+        dojo.style(dijit.byId('filterValueList').domNode, {
           display : 'none'
         });
-        dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+        dojo.style(dijit.byId('filterValueCheckbox').domNode, {
           display : 'none'
         });
-        dojo.style(top.dijit.byId('filterValueDate').domNode, {
+        dojo.style(dijit.byId('filterValueDate').domNode, {
           display : 'none'
         });
         // hideWait();
       }
     });
-    top.dijit.byId('filterValue').reset();
-    top.dijit.byId('filterValueList').reset();
-    top.dijit.byId('filterValueCheckbox').reset();
-    top.dijit.byId('filterValueDate').reset();
+    dijit.byId('filterValue').reset();
+    dijit.byId('filterValueList').reset();
+    dijit.byId('filterValueCheckbox').reset();
+    dijit.byId('filterValueDate').reset();
   } else {
-    dojo.style(top.dijit.byId('idFilterOperator').domNode, {
+    dojo.style(dijit.byId('idFilterOperator').domNode, {
       visibility : 'hidden'
     });
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueList').domNode, {
+    dojo.style(dijit.byId('filterValueList').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+    dojo.style(dijit.byId('filterValueCheckbox').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueDate').domNode, {
+    dojo.style(dijit.byId('filterValueDate').domNode, {
       display : 'none'
     });
   }
@@ -3208,82 +3208,82 @@ function filterSelectOperator(operator) {
   filterStartInput=true;
   if (operator == "SORT") {
     filterType="SORT";
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueList').domNode, {
+    dojo.style(dijit.byId('filterValueList').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+    dojo.style(dijit.byId('filterValueCheckbox').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueDate').domNode, {
+    dojo.style(dijit.byId('filterValueDate').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterSortValueList').domNode, {
+    dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'block'
     });
   } else if (operator == "<=now+" || operator == ">=now+") {
     filterType="text";
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'block'
     });
-    dojo.style(top.dijit.byId('filterValueList').domNode, {
+    dojo.style(dijit.byId('filterValueList').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+    dojo.style(dijit.byId('filterValueCheckbox').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueDate').domNode, {
+    dojo.style(dijit.byId('filterValueDate').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterSortValueList').domNode, {
+    dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
   } else if (operator == "isEmpty" || operator == "isNotEmpty"
       || operator == "hasSome") {
     filterType="null";
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueList').domNode, {
+    dojo.style(dijit.byId('filterValueList').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+    dojo.style(dijit.byId('filterValueCheckbox').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterValueDate').domNode, {
+    dojo.style(dijit.byId('filterValueDate').domNode, {
       display : 'none'
     });
-    dojo.style(top.dijit.byId('filterSortValueList').domNode, {
+    dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
   } else {
-    dojo.style(top.dijit.byId('filterValue').domNode, {
+    dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
     });
-    dataType=top.dojo.byId('filterDataType').value;
-    dojo.style(top.dijit.byId('filterSortValueList').domNode, {
+    dataType=dojo.byId('filterDataType').value;
+    dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
     if (dataType == "bool") {
       filterType="bool";
-      dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {
+      dojo.style(dijit.byId('filterValueCheckbox').domNode, {
         display : 'block'
       });
     } else if (dataType == "list") {
       filterType="list";
-      dojo.style(top.dijit.byId('filterValueList').domNode, {
+      dojo.style(dijit.byId('filterValueList').domNode, {
         display : 'block'
       });
     } else if (dataType == "date") {
       filterType="date";
-      dojo.style(top.dijit.byId('filterValueDate').domNode, {
+      dojo.style(dijit.byId('filterValueDate').domNode, {
         display : 'block'
       });
     } else {
       filterType="text";
-      dojo.style(top.dijit.byId('filterValue').domNode, {
+      dojo.style(dijit.byId('filterValue').domNode, {
         display : 'block'
       });
     }
@@ -3296,43 +3296,43 @@ function filterSelectOperator(operator) {
  */
 function addfilterClause(silent) {
   filterStartInput=false;
-  if (top.dijit.byId('filterNameDisplay')) {
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
+  if (dijit.byId('filterNameDisplay')) {
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
   }
   if (filterType == "") {
     if (!silent)
       showAlert(i18n('attributeNotSelected'));
     return;
   }
-  if (trim(top.dijit.byId('idFilterOperator').get('value')) == '') {
+  if (trim(dijit.byId('idFilterOperator').get('value')) == '') {
     if (!silent)
       showAlert(i18n('operatorNotSelected'));
     return;
   }
   if (filterType == "list"
-      && trim(top.dijit.byId('filterValueList').get('value')) == '') {
+      && trim(dijit.byId('filterValueList').get('value')) == '') {
     if (!silent)
       showAlert(i18n('valueNotSelected'));
     return;
   }
-  if (filterType == "date" && !top.dijit.byId('filterValueDate').get('value')) {
+  if (filterType == "date" && !dijit.byId('filterValueDate').get('value')) {
     if (!silent)
       showAlert(i18n('valueNotSelected'));
     return;
   }
-  if (filterType == "text" && !top.dijit.byId('filterValue').get('value')) {
+  if (filterType == "text" && !dijit.byId('filterValue').get('value')) {
     if (!silent)
       showAlert(i18n('valueNotSelected'));
     return;
   }
-  if (top.dijit.byId('idFilterAttribute').get('value')=='idle' 
-    && top.dijit.byId('idFilterOperator').get('value')=='='
-    && top.dijit.byId('filterValueCheckbox').get('checked')) {
-    top.dijit.byId('listShowIdle').set('checked',true);
+  if (dijit.byId('idFilterAttribute').get('value')=='idle' 
+    && dijit.byId('idFilterOperator').get('value')=='='
+    && dijit.byId('filterValueCheckbox').get('checked')) {
+    dijit.byId('listShowIdle').set('checked',true);
   }
   // Add controls on operator and value
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-  top.loadContent("../tool/addFilterClause.php" + compUrl, "listFilterClauses",
+  loadContent("../tool/addFilterClause.php" + compUrl, "listFilterClauses",
       "dialogFilterForm", false);
   // dijit.byId('filterNameDisplay').set('value',null);
   // dojo.byId('filterName').value=null;
@@ -3343,14 +3343,14 @@ function addfilterClause(silent) {
  * 
  */
 function removefilterClause(id) {
-  if (top.dijit.byId('filterNameDisplay')) {
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
+  if (dijit.byId('filterNameDisplay')) {
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get(
         'value');
   }
   // Add controls on operator and value
-  top.dojo.byId("filterClauseId").value=id;
+  dojo.byId("filterClauseId").value=id;
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-  top.loadContent("../tool/removeFilterClause.php" + compUrl,
+  loadContent("../tool/removeFilterClause.php" + compUrl,
       "listFilterClauses", "dialogFilterForm", false);
   // dijit.byId('filterNameDisplay').set('value',null);
   // dojo.byId('filterName').value=null;
@@ -3370,23 +3370,23 @@ function selectFilter() {
 }
 function selectFilterContinue() {
   if (top.dijit.byId('dialogDetail').open) {
-    var doc=window.frames['comboDetailFrame'];
+    var doc=top.window.frames['comboDetailFrame'];
   } else {
     var doc=top;
   }
-  if (top.dijit.byId('filterNameDisplay')) {
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
+  if (dijit.byId('filterNameDisplay')) {
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get(
         'value');
   }
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   dojo.xhrPost({
     url : "../tool/backupFilter.php?valid=true" + compUrl,
-    form : top.dojo.byId('dialogFilterForm'),
+    form : dojo.byId('dialogFilterForm'),
     handleAs : "text",
     load : function(data, args) {
     }
   });
-  if (top.dojo.byId("nbFilterCriteria").value > 0) {
+  if (dojo.byId("nbFilterCriteria").value > 0) {
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
   } else {
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
@@ -3400,7 +3400,7 @@ function selectFilterContinue() {
   }else{
     doc.refreshJsonList(dojo.byId('objectClass').value);
   }
-  top.dijit.byId("dialogFilter").hide();
+  dijit.byId("dialogFilter").hide();
   filterStartInput=false;
 }
 
@@ -3411,14 +3411,14 @@ function selectFilterContinue() {
 function cancelFilter() {
   filterStartInput=true;
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
-  top.dojo.xhrPost({
+  dojo.xhrPost({
     url : "../tool/backupFilter.php?cancel=true" + compUrl,
     form : dojo.byId('dialogFilterForm'),
     handleAs : "text",
     load : function(data, args) {
     }
   });
-  top.dijit.byId('dialogFilter').hide();
+  dijit.byId('dialogFilter').hide();
 }
 
 /**
@@ -3426,15 +3426,15 @@ function cancelFilter() {
  * 
  */
 function clearFilter() {
-  if (top.dijit.byId('filterNameDisplay')) {
-    top.dijit.byId('filterNameDisplay').reset();
+  if (dijit.byId('filterNameDisplay')) {
+    dijit.byId('filterNameDisplay').reset();
   }
-  top.dojo.byId('filterName').value="";
-  top.removefilterClause('all');
+  dojo.byId('filterName').value="";
+  removefilterClause('all');
   // setTimeout("selectFilter();dijit.byId('listFilterFilter').set('iconClass','iconFilter');",100);
   dijit.byId('listFilterFilter').set('iconClass', 'iconFilter');
-  top.dijit.byId('filterNameDisplay').set('value', null);
-  top.dojo.byId('filterName').value=null;
+  dijit.byId('filterNameDisplay').set('value', null);
+  dojo.byId('filterName').value=null;
 }
 
 /**
@@ -3442,16 +3442,16 @@ function clearFilter() {
  * 
  */
 function defaultFilter() {
-  if (top.dijit.byId('filterNameDisplay')) {
+  if (dijit.byId('filterNameDisplay')) {
     // if (dijit.byId('filterNameDisplay').get('value')=="") {
     // showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
     // return;
     // }
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get(
         'value');
   }
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-  top.loadContent("../tool/defaultFilter.php" + compUrl, "listStoredFilters",
+  loadContent("../tool/defaultFilter.php" + compUrl, "listStoredFilters",
       "dialogFilterForm", false);
 }
 
@@ -3460,16 +3460,16 @@ function defaultFilter() {
  * 
  */
 function saveFilter() {
-  if (top.dijit.byId('filterNameDisplay')) {
-    if (top.dijit.byId('filterNameDisplay').get('value') == "") {
+  if (dijit.byId('filterNameDisplay')) {
+    if (dijit.byId('filterNameDisplay').get('value') == "") {
       showAlert(i18n("messageMandatory", new Array(i18n("filterName"))));
       return;
     }
-    top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get(
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get(
         'value');
   }
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-  top.loadContent("../tool/saveFilter.php" + compUrl, "listStoredFilters",
+  loadContent("../tool/saveFilter.php" + compUrl, "listStoredFilters",
       "dialogFilterForm", false);
 }
 
@@ -3480,11 +3480,11 @@ function saveFilter() {
 function selectStoredFilter(idFilter, context, contentLoad, container) {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   if (context == 'directFilterList') {
-    if (top.dojo.byId('noFilterSelected')) {
+    if (dojo.byId('noFilterSelected')) {
       if (idFilter == '0') {
-        top.dojo.byId('noFilterSelected').value='true';
+        dojo.byId('noFilterSelected').value='true';
       } else {
-        top.dojo.byId('noFilterSelected').value='false';
+        dojo.byId('noFilterSelected').value='false';
       }
     }
 
@@ -3514,10 +3514,10 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
 function removeStoredFilter(idFilter, nameFilter) {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   var action=function() {
-    top.loadContent("../tool/removeFilter.php?idFilter=" + idFilter + compUrl,
+    loadContent("../tool/removeFilter.php?idFilter=" + idFilter + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
   };
-  showConfirm(i18n("confirmRemoveFilter", new Array(nameFilter)), action);
+  top.showConfirm(i18n("confirmRemoveFilter", new Array(nameFilter)), action);
 }
 
 /**
@@ -3526,7 +3526,7 @@ function removeStoredFilter(idFilter, nameFilter) {
  */
 function shareStoredFilter(idFilter, nameFilter) {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
-  top.loadContent("../tool/shareFilter.php?idFilter=" + idFilter + compUrl,
+  loadContent("../tool/shareFilter.php?idFilter=" + idFilter + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
 }
 
