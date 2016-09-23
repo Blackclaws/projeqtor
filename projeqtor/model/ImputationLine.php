@@ -920,7 +920,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
   				} else {
   				  $sumWork=0;
   				  if($line->refType=='Project'){
-  				    $sumWork=ImputationLine::getAllWorkProjectDay($i,$listLienProject,$tab,$line->refId);
+  				    $sumWork=Work::displayImputation(ImputationLine::getAllWorkProjectDay($i,$listLienProject,$tab,$line->refId));
   					  echo '<div style="display:none" id="sumProject_'.$line->refId.'_'.$i.'">'.$sumWork.'</div>';
   					  echo '<input type="text" style="width: 45px; text-align: center;font-weight:bold;" ';
   					  echo ' class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent imputation" readOnly="true" tabindex="-1" ';
@@ -962,11 +962,11 @@ scriptLog("      => ImputationLine->getParent()-exit");
   				}
   			} else {
   			  if($line->refType=='Project') { 
-  			    echo '<div style="display:none" id="sumWeekProject_'.$line->refId.'">'.ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays).'</div>';
+  			    echo '<div style="display:none" id="sumWeekProject_'.$line->refId.'">'.Work::displayImputation(ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays)).'</div>';
   			    echo '<input type="text" style="width: 90px; text-align: center;font-weight:bold;" ';
   			    echo ' class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
   			    echo ' id="sumWeekProjectDisplay_'.$line->refId.'"';
-  			    echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays)) . '" ';
+  			    echo ' value="' . htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation(ImputationLine::getAllWorkProjectWeek($listLienProject, $tab, $line->refId, $nbDays))) . '" ';
   			    echo ' />';
 		      }
   				echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
@@ -1082,7 +1082,6 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	  foreach ($imputationList as $id=>$line){
 	    foreach ($listLienProject[$idProject] as $id2=>$line2){
 	      if($line->idProject==$line2){
-	        if ($line->refType=='Ticket')debugLog($line);
 	        $sumWork+=$line->arrayWork[$day]->work;
 	      }
 	    }
