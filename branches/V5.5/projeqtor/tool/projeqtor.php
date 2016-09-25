@@ -688,7 +688,7 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
   }
   $result=false;
   $type=SqlList::getFieldFromId('Menu', $idMenu, 'type');
-  if ($type=='Project') {
+  if ($type=='Project' or $class=='Project') {
     $allProfiles=$user->getAllProfiles();
     foreach ($allProfiles as $profile) {
       $crit = array ();
@@ -1613,7 +1613,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       if ($maintenance) {
         return 'YES';
       } else {
-        //traceLog("securityGetAccessRightYesNo : This is a case that should not exist unless hacking attempt. Exit.");
       	exit; //return 'NO'; // This is a case that should not exist unless hacking attempt or use of F5
       }
     } else {
@@ -1622,7 +1621,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
   if ($accessType == 'create') {  
-    $accessRight='NO';
+    /*$accessRight='NO';
     if ($accessRight=='READ') {
       $accessRight='NO';
     } else if ($accessRight=='WRITE') {
@@ -1640,13 +1639,52 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       $tmpUser->idProfile=$user->getProfile($obj);
       $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
       $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
+     }*/
+    if ((!$obj or (property_exists(substr($menuName,4), 'name') and !$obj->name)) and property_exists(substr($menuName,4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
+      foreach ($user->getAllProfiles() as $prf) {
+        $tmpUser=new User();
+        $tmpUser->idProfile=$prf;
+        $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
+        $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
+        if ($accessRight=='YES') break;
+      }
+    } else if ($accessRight == 'NO') {
+      $accessRight="NO";// will return no
+    } else if  ($accessRight=='READ') {
+      $accessRight="NO";
+    } else if ($accessRight == 'ALL' or $accessRight=='WRITE') {
+      $accessRight = 'YES';
+    } else if ($accessRight == 'PRO') {
+      $accessRight = 'NO';
+      if ($obj != null) {
+        if (! $obj->id and (!property_exists(substr($menuName,4), 'name') or  !$obj->name)) {
+          $accessRight = 'YES';      
+        } else if (get_class ( $obj ) == 'Project') {
+          if (array_key_exists ( $obj->id, $user->getAffectedProjects ( false ) )) {
+            $accessRight = 'YES';
+          }
+        } else if (property_exists ( $obj, 'idProject' )) {
+          $limitToActiveProjects = (get_class ( $obj ) == 'Affectation') ? false : true;
+          if (isset ( $_SESSION ['projectSelectorShowIdle'] ) and $_SESSION ['projectSelectorShowIdle'] == 1)
+            $limitToActiveProjects = false;
+          if (array_key_exists ( $obj->idProject, $user->getAffectedProjects ( $limitToActiveProjects ) ) ) {
+            $accessRight = 'YES';
+          }
+        }
+      } else {
+        $accessRight = 'YES';
+      }
+    } else if ($accessRight == 'OWN') {
+      $accessRight = 'NO';
+    } else if ($accessRight == 'RES') {
+      $accessRight = 'NO';
     }
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
     if ($accessRight == 'NO') {
       $accessRight="NO";// will return no
     } else if  ($accessRight=='READ') {
       if ($accessType == 'read') {
-      	$accessRight="NO";
+      	$accessRight="NO"; // TODO : why is it no here ?
       } else {
       	$accessRight="NO";
       }
@@ -1656,7 +1694,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       $accessRight = 'NO';
       if ($obj != null) {
         if (get_class ( $obj ) == 'Project') {
-          if (array_key_exists ( $obj->id, $user->getAffectedProjects ( false ) ) or ! $obj->id) {
+          if ( array_key_exists ( $obj->id, $user->getAffectedProjects(false))  or ! $obj->id) {
             $accessRight = 'YES';
           }
         } else if (property_exists ( $obj, 'idProject' )) {

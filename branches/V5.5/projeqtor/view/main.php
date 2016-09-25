@@ -629,7 +629,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           <td width="5%">
             <?php 
             $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menuUserParameter'));
-            $buttonUserParameter=securityCheckDisplayMenu($menu->id,$menu);
+            $buttonUserParameter=securityCheckDisplayMenu($menu->id,substr($menu->name,4));
             if ($buttonUserParameter) {?>
             <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
               <table style="width:100%">
