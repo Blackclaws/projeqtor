@@ -52,7 +52,7 @@
   $defaultMenu=Parameter::getUserParameter('defaultMenu');
   if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
-    if (securityCheckDisplayMenu($menu->id,$menu)) {
+    if (securityCheckDisplayMenu($menu->id,substr($menu->name,4))) {
       $menuClass=$menu->menuClass;
       if (in_array($menu->name,$customMenuArray)) $menuClass.=" menuBarCustom";
       if ($menu->type!='menu' and (strpos(' menuBarItem '.$menuClass, $defaultMenu)>0)) {
@@ -149,7 +149,7 @@
     $menuList=$tableObject;
     $lastType='';
     foreach ($menuList as $menu) { 
-    	if (securityCheckDisplayMenu($menu->id,$menu) ) {
+    	if (securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
     		drawMenu($menu);
     		$lastType=$menu->type;
     	}

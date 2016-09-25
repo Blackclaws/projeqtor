@@ -966,8 +966,6 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   echo "</td>";
   echo "</tr>";
   if ($context=='directFilterList') {
-    debugLog("enter good");
-    debugLog(array_key_exists("contentLoad", $_REQUEST) && array_key_exists("container", $_REQUEST) ? '\''.$_REQUEST['contentLoad'].'\',\''.$_REQUEST['container'].'\'' : '');
     echo "<tr>";
     echo '<td style="cursor:pointer;font-size:8pt;font-style:italic;' 
            . '"' 

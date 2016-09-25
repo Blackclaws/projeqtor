@@ -347,7 +347,7 @@ class Cron {
         }
         $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
         $date=new DateTime('now');
-        if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime<=$date->format("U")){
+        if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime!=null && $cronExecution->nextTime<=$date->format("U")){
           $cronExecution->calculNextTime();
           call_user_func($cronExecution->fonctionName);
         }

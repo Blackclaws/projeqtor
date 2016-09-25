@@ -124,7 +124,7 @@ var menuData = {
   $prioMenuType=null;
   foreach ($menuList as $menu) {
     //echo "id=" . htmlEncode($menu->id) . "     idMenu=" . htmlEncode($menu->idMenu) . "     level=" . $level . "\n";
-    if ($level>0 and securityCheckDisplayMenu($menu->id,$menu) ) {
+    if ($level>0 and securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
       while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
         drawMenuCloseChildren();
       }

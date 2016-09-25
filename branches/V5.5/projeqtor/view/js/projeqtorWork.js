@@ -177,11 +177,16 @@ function refreshImputationPeriod(directDate) {
 }
 
 function recursiveAddWorkProject(idProject, day, diff){
-  dojo.byId('sumProject_'+idProject+'_'+day).innerHTML=parseFloat(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML)+parseFloat(diff);
-  dojo.byId('sumProjectDisplay_'+idProject+'_'+day).value=formatDecimalToDisplay(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML);
-  dojo.byId('sumWeekProject_'+idProject).innerHTML=parseFloat(dojo.byId('sumWeekProject_'+idProject).innerHTML)+parseFloat(diff);
-  dojo.byId('sumWeekProjectDisplay_'+idProject).value=formatDecimalToDisplay(dojo.byId('sumWeekProject_'+idProject).innerHTML);
-  if(dojo.byId('projectParent_'+idProject+'_'+day)!=null)recursiveAddWorkProject(dojo.byId('projectParent_'+idProject+'_'+day).value, day, diff);
+  if (dojo.byId('sumProject_'+idProject+'_'+day))
+    dojo.byId('sumProject_'+idProject+'_'+day).innerHTML=parseFloat(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML)+parseFloat(diff);
+  if (dojo.byId('sumProjectDisplay_'+idProject+'_'+day))
+    dojo.byId('sumProjectDisplay_'+idProject+'_'+day).value=formatDecimalToDisplay(dojo.byId('sumProject_'+idProject+'_'+day).innerHTML);
+  if (dojo.byId('sumWeekProject_'+idProject))
+    dojo.byId('sumWeekProject_'+idProject).innerHTML=parseFloat(dojo.byId('sumWeekProject_'+idProject).innerHTML)+parseFloat(diff);
+  if (dojo.byId('sumWeekProjectDisplay_'+idProject))
+    dojo.byId('sumWeekProjectDisplay_'+idProject).value=formatDecimalToDisplay(dojo.byId('sumWeekProject_'+idProject).innerHTML);
+  if(dojo.byId('projectParent_'+idProject+'_'+day) && dojo.byId('projectParent_'+idProject+'_'+day)!=null)
+    recursiveAddWorkProject(dojo.byId('projectParent_'+idProject+'_'+day).value, day, diff);
 }
 
 /**

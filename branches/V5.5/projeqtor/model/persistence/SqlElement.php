@@ -2446,18 +2446,11 @@ abstract class SqlElement {
 	 */
 	public function getDatabaseColumnNameReversed($field) {
 		$databaseColumnName=$this->getStaticDatabaseColumnName();
-		//if (1 or Sql::isPgsql()) {
 		$databaseColumnNameReversed=array_flip(array_map('strtolower',$databaseColumnName));
 		$field=strtolower($field);
-		//} else {
-		//	$databaseColumnNameReversed=array_flip($databaseColumnName);
-		//}
-		//I deleted Sql::str because it's add ' '
 		if (array_key_exists(strtolower($field),$databaseColumnNameReversed)) {
 			return $databaseColumnNameReversed[$field];
-			//return Sql::str($databaseColumnNameReversed[$field]);
 		} else {
-			//return Sql::str($field);
 			return $field;
 		}
 	}
