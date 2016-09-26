@@ -3568,7 +3568,6 @@ function ckEditorReplaceEditor(editorName, numEditor) {
       && dojo.byId('ckeditor' + numEditor + 'ReadOnly').value == 'true') {
     readOnly = true;
   }
-  console.log(currentLocale);
   autofocus = (editorName == 'noteNote') ? true : false;
   editorArray[numEditor] = CKEDITOR.replace(editorName, {
     customConfig : 'projeqtorConfig.js',
