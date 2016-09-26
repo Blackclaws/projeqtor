@@ -244,7 +244,7 @@ public $_noCopy;
       } else {
       	$this->idResource=$this->idUser;
       }
-    }
+    }    
     //echo " ress=".htmlEncode($this->idResourceSelect)." cont=".htmlEncode($this->idContact)." user=".$this->idUser;
     //echo " id=".htmlEncode($this->idResource);
     $affectable=new Affectable($this->idResource);
@@ -275,6 +275,12 @@ public $_noCopy;
     if (! $this->idProject) {
     	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdProject'))));
     }
+    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
+    $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder');
+    if ($usrPrfOrder>$prfOrder) {
+      $result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');
+    }
+    
     if ($result=='') {
       /*$clauseWhere=" idResource=".Sql::fmtId($this->idResource)
          ." and idProject=".Sql::fmtId($this->idProject)
@@ -325,7 +331,11 @@ public $_noCopy;
       $result.='<br/>' . i18n('confirmDeleteOwnAffectation');
       $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="delete" />';
     } 
-
+    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
+    $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder');
+    if ($usrPrfOrder>$prfOrder) {
+      $result.='<br/>' . i18n('errorDeleteRights');
+    }
      
     if (! $result) {
       $result=parent::deleteControl();
