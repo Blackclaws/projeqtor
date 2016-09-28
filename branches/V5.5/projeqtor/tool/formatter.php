@@ -196,6 +196,10 @@ function workFormatter($value) {
   //$val=ltrim($value,"0");
   return Work::displayWorkWithUnit($value);
 }
+function imputationFormatter($value) {
+  //$val=ltrim($value,"0");
+  return Work::displayImputationWithUnit($value);
+}
 
 function costFormatter($value) {
 	return htmlDisplayCurrency($value);
