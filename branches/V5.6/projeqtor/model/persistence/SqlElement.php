@@ -591,7 +591,7 @@ abstract class SqlElement {
 		if ($force) {
 			$control="OK";
 		} else {
-		  $control=$this->control();			
+			$control=$this->control();			
 			$class=get_class($this);
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
 			and property_exists($class, $class.'PlanningElement')) {

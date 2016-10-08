@@ -41,6 +41,7 @@ class ComponentVersionMain extends Version {
   public $idContact;
   public $idResource;
   public $creationDate;
+  public $idUser;
   public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
   public $initialEisDate;
   public $plannedEisDate;

@@ -149,7 +149,7 @@
     $menuList=$tableObject;
     $lastType='';
     foreach ($menuList as $menu) { 
-    	if (securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
+      if (securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
     		drawMenu($menu);
     		$lastType=$menu->type;
     	}
