@@ -556,6 +556,7 @@ function cleanContent(destination) {
  */
 var formDivPosition = null; // to replace scrolling of detail after save.
 var editorArray = new Array();
+var loadContentRetryArray=new Array();
 function loadContent(page, destination, formName, isResultMessage,
     validationType, directAccess, silent, callBackFunction) {
   var debugStart = (new Date()).getTime();
@@ -563,7 +564,12 @@ function loadContent(page, destination, formName, isResultMessage,
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
-
+  var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
+  if (loadContentRetryArray[callKey]===undefined) {
+    loadContentRetryArray[callKey]=1;
+  } else {
+    loadContentRetryArray[callKey]+=1;
+  }
   if (dojo.isIE && dojo.isIE <= 8) {
     fadingMode = false;
   }
@@ -624,6 +630,9 @@ function loadContent(page, destination, formName, isResultMessage,
           var debugTemp = (new Date()).getTime();
           var contentNode = dojo.byId(destination);
           var contentWidget = dijit.byId(destination);
+          if (loadContentRetryArray[callKey]!==undefined) {
+            loadContentRetryArray.splice(callKey, 1);
+          }
           if (fadingMode) {
             dojo.fadeIn({
               node : contentNode,
@@ -810,13 +819,20 @@ function loadContent(page, destination, formName, isResultMessage,
           consoleTraceLog(msg);
         },
         error : function(error, args) {
-          console.warn(i18n("errorXhrPost", new Array(page, destination,
-              formName, isResultMessage, error)));
-          if (!silent)
-            hideWait();
+          var retries=-1;
+          if (loadContentRetryArray[callKey]!==undefined) {
+            retries=loadContentRetryArray[callKey];
+          }
+          if (!silent) hideWait();
           finaliseButtonDisplay();
           formChanged();
-          showError(i18n('errorXhrPostMessage'));
+          if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
+            console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+            loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
+          } else {
+            console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+            showError(i18n('errorXhrPostMessage'));
+          }
         }
       });
   if (fadingMode) {
@@ -3575,7 +3591,6 @@ function ckEditorReplaceEditor(editorName, numEditor) {
     height : height,
     readOnly : readOnly,
     language : currentLocale,
-    uiColor: '#A0A0A0',
     startupFocus : autofocus
   });
   if (editorName != 'noteNote') { // No formChanged for notes

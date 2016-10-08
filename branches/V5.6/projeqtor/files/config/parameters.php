@@ -6,9 +6,9 @@
 // ========== Database configuration =====================================================
 // --- MySql Degfault
   $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-  $paramDbName='projeqtor_v55';$paramDbPrefix='';
+  $paramDbName='projeqtor_v56';$paramDbPrefix='';
 // --- PostgreSql Default
-//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
+//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor_maaf'; $paramDbPassword='projeqtor';
 //$paramDbName='projeqtor';$paramDbPrefix=''; 
 $paramDbHost='127.0.0.1';         // With MySql on Windows, better use "127.0.0.1" rather than "localhost"
 $enforceUTF8 = '0';               // Positionned by default for new installs since V4.4.0

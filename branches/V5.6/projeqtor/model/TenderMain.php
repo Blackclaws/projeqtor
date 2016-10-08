@@ -121,7 +121,7 @@ class TenderMain extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idTenderType'=>'type', 'requestDateTime'=>'requestDate', 'expectedTenderDateTime'=>'expectedTenderDate',
-      'idResource'=>'responsible' );
+     'idResource'=>'responsible' );
   
   private static $_databaseColumnName = array();
   

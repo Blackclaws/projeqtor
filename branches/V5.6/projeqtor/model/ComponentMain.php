@@ -41,6 +41,7 @@ class ComponentMain extends ProductOrComponent {
   public $idResource;
   public $idComponent;
   public $creationDate;
+  public $idUser;
   public $idle;
   public $description;
   public $_sec_ComponentVersions;

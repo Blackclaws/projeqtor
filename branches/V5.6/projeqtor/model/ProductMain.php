@@ -43,6 +43,7 @@ class ProductMain extends ProductOrComponent {
   public $idResource;
   public $idProduct;
   public $creationDate;
+  public $idUser;
   public $idle;
   public $description;
   public $_sec_Productproject_projects;
