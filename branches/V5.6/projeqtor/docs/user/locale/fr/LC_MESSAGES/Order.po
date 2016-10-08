@@ -1,0 +1,476 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Order.rst:0
+msgid "Quotation and Order"
+msgstr ""
+
+#: ../../Order.rst:17 ../../Order.rst:14
+msgid "Quotation"
+msgstr ""
+
+#: ../../Order.rst:19
+msgid ""
+"An quotation is a proposal estimate sent to customer to get approval of "
+"what’s to be done, and how must the customer will pay for it."
+msgstr ""
+
+#: ../../Order.rst:21
+msgid ""
+"On the quotation form, you can record all the information of the sent "
+"proposal, including attaching some file completely describing the proposal "
+"with details terms and conditions."
+msgstr ""
+
+#: ../../Order.rst:25
+msgid ""
+"A quotation can be copied into an order when corresponding document is "
+"received as customer agreement."
+msgstr ""
+
+#: ../../Order.rst:0 ../../Order.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Order.rst:29 ../../Order.rst:141
+msgid ":ref:`gui-LinkElement-section-label`"
+msgstr ""
+
+#: ../../Order.rst:31 ../../Order.rst:143
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ""
+
+#: ../../Order.rst:33 ../../Order.rst:145
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../Order.rst:35 ../../Order.rst:147
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Order.rst:38 ../../Order.rst:150
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Order.rst:45 ../../Order.rst:76 ../../Order.rst:157
+#: ../../Order.rst:190
+msgid "Field"
+msgstr ""
+
+#: ../../Order.rst:46 ../../Order.rst:77 ../../Order.rst:158
+#: ../../Order.rst:175 ../../Order.rst:191
+msgid "Description"
+msgstr ""
+
+#: ../../Order.rst:47 ../../Order.rst:159
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Order.rst:48
+msgid "Unique Id for the quotation."
+msgstr ""
+
+#: ../../Order.rst:49 ../../Order.rst:161
+msgid "**Name**"
+msgstr ""
+
+#: ../../Order.rst:50
+msgid "Short description of the quotation."
+msgstr ""
+
+#: ../../Order.rst:51
+msgid "**Quotation type**"
+msgstr ""
+
+#: ../../Order.rst:52
+msgid "Type of quotation."
+msgstr ""
+
+#: ../../Order.rst:53
+msgid "**Project**"
+msgstr ""
+
+#: ../../Order.rst:54
+msgid "The project concerned by the quotation."
+msgstr ""
+
+#: ../../Order.rst:55 ../../Order.rst:173
+msgid ":term:`Origin`"
+msgstr ""
+
+#: ../../Order.rst:56
+msgid "Element which is the origin of the quotation."
+msgstr ""
+
+#: ../../Order.rst:57 ../../Order.rst:167
+msgid "Customer"
+msgstr ""
+
+#: ../../Order.rst:58
+msgid "Customer concerned by the quotation."
+msgstr ""
+
+#: ../../Order.rst:59 ../../Order.rst:169
+msgid "Contact"
+msgstr ""
+
+#: ../../Order.rst:60
+msgid "Contact in customer organization to who you sent the quotation."
+msgstr ""
+
+#: ../../Order.rst:61
+msgid "Request"
+msgstr ""
+
+#: ../../Order.rst:62
+msgid "Request description."
+msgstr ""
+
+#: ../../Order.rst:63 ../../Order.rst:177
+msgid "Additional info."
+msgstr ""
+
+#: ../../Order.rst:64
+msgid "Any additional information about the quotation."
+msgstr ""
+
+#: ../../Order.rst:66 ../../Order.rst:107 ../../Order.rst:180
+#: ../../Order.rst:221
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Order.rst:69 ../../Order.rst:183
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Order.rst:78 ../../Order.rst:194
+msgid "**Status**"
+msgstr ""
+
+#: ../../Order.rst:79
+msgid "Actual :term:`status` of the quotation."
+msgstr ""
+
+#: ../../Order.rst:80 ../../Order.rst:196
+msgid "Responsible"
+msgstr ""
+
+#: ../../Order.rst:81
+msgid "Resource who is responsible for the quotation."
+msgstr ""
+
+#: ../../Order.rst:82
+msgid "Sent date"
+msgstr ""
+
+#: ../../Order.rst:83
+msgid "Date when quotation is sent to customer contact."
+msgstr ""
+
+#: ../../Order.rst:84
+msgid "Offer validity"
+msgstr ""
+
+#: ../../Order.rst:85
+msgid "Limit date of the validity of the proposal."
+msgstr ""
+
+#: ../../Order.rst:86 ../../Order.rst:198
+msgid ":term:`Handled`"
+msgstr ""
+
+#: ../../Order.rst:87
+msgid "Flag to indicate that quotation is taken into account."
+msgstr ""
+
+#: ../../Order.rst:88 ../../Order.rst:200
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../Order.rst:89
+msgid "Flag to indicate that quotation is done (execution processed)."
+msgstr ""
+
+#: ../../Order.rst:90 ../../Order.rst:202
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Order.rst:91
+msgid "Flag to indicate that quotation is archived."
+msgstr ""
+
+#: ../../Order.rst:92 ../../Order.rst:204
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Order.rst:93
+msgid "Flag to indicate that quotation is cancelled."
+msgstr ""
+
+#: ../../Order.rst:94
+msgid "Planned work"
+msgstr ""
+
+#: ../../Order.rst:95
+msgid "Work days corresponding to the quotation."
+msgstr ""
+
+#: ../../Order.rst:96 ../../Order.rst:208
+msgid ":term:`PPD`"
+msgstr ""
+
+#: ../../Order.rst:97
+msgid "Price Per Day for the quotation."
+msgstr ""
+
+#: ../../Order.rst:98
+msgid "Planned amount"
+msgstr ""
+
+#: ../../Order.rst:99
+msgid "Total amount of the quotation."
+msgstr ""
+
+#: ../../Order.rst:100
+msgid "Planned end date"
+msgstr ""
+
+#: ../../Order.rst:101
+msgid "Target end date of the activity object of the quotation."
+msgstr ""
+
+#: ../../Order.rst:102 ../../Order.rst:113 ../../Order.rst:212
+#: ../../Order.rst:240
+msgid "Activity type"
+msgstr ""
+
+#: ../../Order.rst:103
+msgid "Type of the activity object of the quotation."
+msgstr ""
+
+#: ../../Order.rst:104 ../../Order.rst:218
+msgid "Comments"
+msgstr ""
+
+#: ../../Order.rst:105
+msgid "Comment about the treatment of the quotation."
+msgstr ""
+
+#: ../../Order.rst:0
+msgid "Field: Planned amount"
+msgstr ""
+
+#: ../../Order.rst:111
+msgid "Planned amount = Planned work * PPD."
+msgstr ""
+
+#: ../../Order.rst:115 ../../Order.rst:242
+msgid "The activity should be created only after approval."
+msgstr ""
+
+#: ../../Order.rst:127 ../../Order.rst:124
+msgid "Order"
+msgstr ""
+
+#: ../../Order.rst:129
+msgid "An order (also called command) is the trigger to start work."
+msgstr ""
+
+#: ../../Order.rst:131
+msgid ""
+"On the order form, you can record all the information of the received order."
+msgstr ""
+
+#: ../../Order.rst:133
+msgid "**Work on the activity**"
+msgstr ""
+
+#: ../../Order.rst:135
+msgid ""
+"An order can be linked to an activity. It then represents the command of the"
+" work on the activity."
+msgstr ""
+
+#: ../../Order.rst:137
+msgid ""
+"In that case, validated work of the activity is the sum of the orders linked"
+" to the activity."
+msgstr ""
+
+#: ../../Order.rst:160
+msgid "Unique Id for the order."
+msgstr ""
+
+#: ../../Order.rst:162
+msgid "Short description of the order."
+msgstr ""
+
+#: ../../Order.rst:163
+msgid "**Order type**"
+msgstr ""
+
+#: ../../Order.rst:164
+msgid "Type of order."
+msgstr ""
+
+#: ../../Order.rst:165
+msgid "Project"
+msgstr ""
+
+#: ../../Order.rst:166
+msgid "The project concerned by the order."
+msgstr ""
+
+#: ../../Order.rst:168
+msgid "Customer concerned by the order."
+msgstr ""
+
+#: ../../Order.rst:170
+msgid "Contact in customer organization to who you sent the order."
+msgstr ""
+
+#: ../../Order.rst:171
+msgid "**External reference**"
+msgstr ""
+
+#: ../../Order.rst:172
+msgid ":term:`External reference` of the order (as received)."
+msgstr ""
+
+#: ../../Order.rst:174
+msgid "Element which is the origin of the order."
+msgstr ""
+
+#: ../../Order.rst:176
+msgid "Complete description of the order."
+msgstr ""
+
+#: ../../Order.rst:178
+msgid "Any additional information about the order."
+msgstr ""
+
+#: ../../Order.rst:192
+msgid "Linked activity"
+msgstr ""
+
+#: ../../Order.rst:193
+msgid "Activity representing the execution of the order."
+msgstr ""
+
+#: ../../Order.rst:195
+msgid "Actual :term:`status` of the order."
+msgstr ""
+
+#: ../../Order.rst:197
+msgid "Resource who is responsible for the order."
+msgstr ""
+
+#: ../../Order.rst:199
+msgid "Flag to indicate that order is taken into account."
+msgstr ""
+
+#: ../../Order.rst:201
+msgid "Flag to indicate that order is done (execution processed)."
+msgstr ""
+
+#: ../../Order.rst:203
+msgid "Flag to indicate that order is archived."
+msgstr ""
+
+#: ../../Order.rst:205
+msgid "Flag to indicate that order is cancelled."
+msgstr ""
+
+#: ../../Order.rst:206
+msgid "Work"
+msgstr ""
+
+#: ../../Order.rst:207
+msgid "Work days corresponding to the order."
+msgstr ""
+
+#: ../../Order.rst:209
+msgid "Price Per Day for the order."
+msgstr ""
+
+#: ../../Order.rst:210
+msgid "Amount"
+msgstr ""
+
+#: ../../Order.rst:211
+msgid "Total amount of the order."
+msgstr ""
+
+#: ../../Order.rst:213
+msgid "Type of the activity object of the order."
+msgstr ""
+
+#: ../../Order.rst:214
+msgid "Start date"
+msgstr ""
+
+#: ../../Order.rst:215
+msgid "Initial start date of the execution of the order."
+msgstr ""
+
+#: ../../Order.rst:216
+msgid "End date"
+msgstr ""
+
+#: ../../Order.rst:217
+msgid "Initial and validated end date of the execution of the order."
+msgstr ""
+
+#: ../../Order.rst:219
+msgid "Comment about the treatment of the order."
+msgstr ""
+
+#: ../../Order.rst:0
+msgid "Fields: Work, PPD and Amount"
+msgstr ""
+
+#: ../../Order.rst:225
+msgid "Columns:"
+msgstr ""
+
+#: ../../Order.rst:227
+msgid "**Initial** : Initial values."
+msgstr ""
+
+#: ../../Order.rst:228
+msgid "**Amendment** : Additionnal values."
+msgstr ""
+
+#: ../../Order.rst:229
+msgid "**Validated** : Sum of the initial values and amendment."
+msgstr ""
+
+#: ../../Order.rst:231
+msgid "Calculation:"
+msgstr ""
+
+#: ../../Order.rst:233
+msgid "Amount = Work * PPD."
+msgstr ""
+
+#: ../../Order.rst:0
+msgid "Fields: Start and End date"
+msgstr ""
+
+#: ../../Order.rst:237
+msgid "**Initial** : Initial dates"
+msgstr ""
+
+#: ../../Order.rst:238
+msgid "**Validated** : Validated dates"
+msgstr ""
