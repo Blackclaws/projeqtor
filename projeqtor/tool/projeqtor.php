@@ -1613,6 +1613,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       if ($maintenance) {
         return 'YES';
       } else {
+        //traceLog("securityGetAccessRightYesNo : This is a case that should not exist unless hacking attempt. Exit.");
       	exit; //return 'NO'; // This is a case that should not exist unless hacking attempt or use of F5
       }
     } else {
@@ -1621,25 +1622,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
   if ($accessType == 'create') {  
-    /*$accessRight='NO';
-    if ($accessRight=='READ') {
-      $accessRight='NO';
-    } else if ($accessRight=='WRITE') {
-      $accessRight='YES';
-    } else if (!$obj or !property_exists($obj, 'idProject') or !$obj->idProject) { // Case of project dependent screen, Will search on all profiles if user has some create rights
-      foreach ($user->getAllProfiles() as $prf) {
-        $tmpUser=new User();
-        $tmpUser->idProfile=$prf;
-        $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
-        $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
-        if ($accessRight=='YES') break;
-      }
-    } else if ($obj and property_exists($obj, 'idProject') and $obj->idProject) {
-      $tmpUser=new User();
-      $tmpUser->idProfile=$user->getProfile($obj);
-      $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $tmpUser );
-      $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES' or $accessRight=='READ') ? 'NO' : 'YES';
-     }*/
     if ((!$obj or (property_exists(substr($menuName,4), 'name') and !$obj->name)) and property_exists(substr($menuName,4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
       foreach ($user->getAllProfiles() as $prf) {
         $tmpUser=new User();
