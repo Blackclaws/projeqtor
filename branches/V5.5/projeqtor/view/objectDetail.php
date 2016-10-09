@@ -1529,7 +1529,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         $hasOtherVersion=false;
         $versionType='';
         $otherVersion='';
-        if (substr($col, 7) == 'Version' 
+        if ( (substr($col, 7) == 'Version' and SqlElement::is_a(substr($col,2), 'Version') )
             or ($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion' ) 
             or ($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion' )  ) {
           $versionType=substr($col, 2);
