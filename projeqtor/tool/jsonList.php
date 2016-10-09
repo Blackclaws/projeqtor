@@ -222,7 +222,7 @@
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
       		$name=SqlList::getNameFromId('Affectable', $selected);
       	}
-      	if ($name==$selected and substr($class,-7)=='Version') {
+      	if ($name==$selected and substr($class,-7)=='Version' and SqlElement::is_a($class, 'Version')) {
       	  $name=SqlList::getNameFromId('Version', $selected);
       	}
         $list[$selected]=$name;

@@ -500,7 +500,7 @@
 		      $queryWhere.= $crit['sql']['operator'] . ' ' . $critSqlValue;
 		      if (strlen($crit['sql']['attribute'])>=9 
 		      and substr($crit['sql']['attribute'],0,2)=='id'
-		      and substr($crit['sql']['attribute'],-7)=='Version'
+		      and ( substr($crit['sql']['attribute'],-7)=='Version' and SqlElement::is_a(substr($crit['sql']['attribute'],2), 'Version') )
 		      and $crit['sql']['operator']=='IN') {
 		      	$scope=substr($crit['sql']['attribute'],2);
 		      	$vers=new OtherVersion();

@@ -607,6 +607,7 @@ function projeqtorAutoload($className) {
   } else {
     if (! $hideAutoloadError) {
       errorLog ( "Impossible to load class $className<br/>" . "  => Not found in $customfile <br/>" . "  => Not found in $modelfile <br/>" . "  => Not found in $persistfile <br/>" );
+      debugPrintTraceStack();
     }
     return false;
   }
@@ -2807,7 +2808,16 @@ function autoOpenFilteringSelect() {
 function debugPrintTraceStack() {
   $stack=debug_backtrace();
   foreach ($stack as $stackLine) {
-    debugTraceLog(" => ".$stackLine['file'].' calling funtion "'.$stackLine['function'].'" at line '.$stackLine['line']);
+    $file=isset($stackLine['file'])?$stackLine['file']:'';
+    $line=isset($stackLine['line'])?$stackLine['line']:'';
+    $func=isset($stackLine['function'])?$stackLine['function']:'';
+    $clas=isset($stackLine['class'])?$stackLine['class']:'';
+    debugTraceLog(" =>"
+        .(($file)?" $file":"")
+        .(($line)?" at line $line":"")
+        .(($func)?" called from $func":"")
+        .(($clas)?" for class $clas":"")
+    );
   }
 }
 
