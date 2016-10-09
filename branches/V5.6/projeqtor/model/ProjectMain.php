@@ -603,7 +603,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $old=$this->getOld();
     $this->recalculateCheckboxes();
     if (!$this->id) {
-      $this->isUnderConstruction=1;
+      //$this->isUnderConstruction=1; // Will post this later...
     }
     if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) {
       $this->isUnderConstruction=0;
@@ -667,6 +667,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
         if ( ! $aff or ! $aff->id) {
         	$aff=new Affectation();
+        	$aff->_automaticCreation=true;
         	$aff->idResource=$this->idUser;
         	$aff->idProject=$id;
         	$aff->idProfile=getSessionUser()->idProfile;
@@ -677,6 +678,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         	}
         	$resAff=$aff->save();
         } else if (! $this->idle and $aff->idle) {
+          $aff->_automaticCreation=true;
         	$aff->idle=0;
         	$resAff=$aff->save();
         }
