@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 			                     . $critSqlValue;
 			          if (strlen($crit->sqlAttribute)>=9 
 			          and substr($crit->sqlAttribute,0,2)=='id'
-			          and substr($crit->sqlAttribute,-7)=='Version'
+			          and (substr($crit->sqlAttribute,-7)=='Version' and SqlElement::is_a(substr($crit->sqlAttribute,2), 'Version') )
 			          and $crit->sqlOperator=='IN') {
 			            $scope=substr($crit->sqlAttribute,2);
 			            $vers=new OtherVersion();
