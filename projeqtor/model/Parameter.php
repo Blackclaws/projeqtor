@@ -427,7 +427,8 @@ class Parameter extends SqlElement {
           4=>i18n('Thursday'),
           5=>i18n('Friday'),
           6=>i18n('Saturday'),
-          7=>i18n('Sunday')
+          7=>i18n('Sunday'),
+          '*'=>i18n('periodicityDaily')
         );
         break;
       case 'imputationAlertControlDay' :
