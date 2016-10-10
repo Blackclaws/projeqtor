@@ -98,7 +98,7 @@ if(trim($commentImputation)==''){
     <tr>
       <td>
         <div style="min-width: 500px;max-height: 500px; overflow: auto;" name="commentImputation" id="commentImputation">
-        <?php echo htmlEncode($assignment->comment,'title');?>
+        <?php echo htmlEncode($assignment->comment,'withBR');?>
         </div>
       </td>
     </tr>
@@ -155,6 +155,6 @@ if(trim($commentImputation)==''){
     $note->idPrivacy=1;
     $note->save();
   }
-  echo htmlEncode($finalComment,'title');
+  echo $finalComment;
 }
 ?>
