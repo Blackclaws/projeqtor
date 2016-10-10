@@ -507,23 +507,36 @@ function addParamToUser($user){
     
     $recent=Parameter::getUserParameter("dashboardTicketMainRecent");
     $nbDay=Parameter::getUserParameter("dashboardTicketMainNumberDay");
+    if (preg_match('/[^\-0-9]/', $nbDay) == true) {
+      $nbDay="";
+    }
     if($recent=="1"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='creationDateTime';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='>=';
-      $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=(-$nbDay)+'';
+      //$user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=(-$nbDay)+'';
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('creationDateTime');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=">=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=i18n('today').' -'.$nbDay.' '.i18n('days');
+      if (Sql::isPgsql()) {
+        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']= "NOW() + INTERVAL '" . (intval($nbDay)*(-1)) . " day'";
+      } else {
+        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']= "ADDDATE(NOW(), INTERVAL (" . (intval($nbDay)*(-1)) . ") DAY)";
+      }
       $iterateur++;
     }
     
     if($recent=="2"){
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute']='doneDateTime';
       $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator']='>=';
-      $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=(-$nbDay)+'';
+      //$user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=(-$nbDay)+'';
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute']=$obRef->getColCaption('doneDateTime');
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=">=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=i18n('today').' -'.$nbDay.' '.i18n('days');
+      if (Sql::isPgsql()) {
+        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']= "NOW() + INTERVAL '" . (intval($nbDay)*(-1)) . " day'";
+      } else {
+        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']= "ADDDATE(NOW(), INTERVAL (" . (intval($nbDay)*(-1)) . ") DAY)";
+      }
       $iterateur++;
     }
       //if($recent=="2")$result.=" AND $prefix.doneDateTime>=NOW() - INTERVAL '" . intval($nbDay) . " day' ";
@@ -535,7 +548,7 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator']=">=";
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']=i18n('today').' -'.$nbDay.' '.i18n('days');
       if (Sql::isPgsql()) {
-        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=" (SELECT t2.refId FROM history t2 WHERE t2.refId=ticket.id AND t2.refType='Ticket' AND t2.operationDate>=NOW() - INTERVAL '" . intval($nbDay) . " day' )) ";
+        $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=" (SELECT t2.refId FROM history t2 WHERE t2.refId=ticket.id AND t2.refType='Ticket' AND t2.operationDate>=NOW() - INTERVAL '" . intval($nbDay) . " day' ) ";
       } else {
         $user->_arrayFilters['Ticket'][$iterateur]['sql']['value']=" (SELECT t2.refId FROM history t2 WHERE t2.refId=ticket.id AND t2.refType='Ticket' AND t2.operationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY)) ";
       }

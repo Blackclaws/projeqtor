@@ -219,6 +219,9 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arrayDisp["operator"]="<= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]="<=";
     $arrayDisp["value"]=htmlEncode(intval($filterValue)) . ' ' . i18n('days');
+    if (preg_match('/[^\-0-9]/', $filterValue) == true) {
+      $filterValue="";
+    }
     if (Sql::isPgsql()) {
       $arraySql["value"]= "NOW() + INTERVAL '" . intval($filterValue) . " day'";
     } else {
@@ -228,15 +231,13 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arrayDisp["operator"]=">= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]=">=";
     $arrayDisp["value"]=htmlEncode(intval($filterValue)) . ' ' . i18n('days');
+    if (preg_match('/[^\-0-9]/', $filterValue) == true) {
+      $filterValue="";
+    }
     if (Sql::isPgsql()) {
       $arraySql["value"]= "NOW() + INTERVAL '" . intval($filterValue) . " day'";
     } else {
-		if (preg_match('/[^0-9]/', $filterValue) == true) {
-		  $filterValue="";
-		  // a bit hard to disconnect if isser enters bad value
-		  //traceHack("invalid filterValue - $filterValue");
-		}
-    $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . intval($filterValue) . ") DAY)";
+      $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . intval($filterValue) . ") DAY)";
     }
   } else {
      echo htmlGetErrorMessage(i18n('incorrectOperator'));
