@@ -40,6 +40,7 @@ class Dependency extends SqlElement {
   public $successorRefId;
   public $dependencyType;
   public $dependencyDelay;
+  public $comment;
   
    /** ==========================================================================
    * Constructor

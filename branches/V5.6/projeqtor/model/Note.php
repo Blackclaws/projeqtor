@@ -71,5 +71,32 @@ class Note extends SqlElement {
     $colScript = parent::getValidationScript($colName);
   }
     
+  public function save() {
+    $result = parent::save ();
+    if ($this->idPrivacy != 3) {
+      $class = $this->refType;
+      $id = $this->refId;
+      $obj = new $class( $id );
+      if (property_exists ( $class, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
+    }
+    return $result;
+  }
+  
+  public function delete() {
+    $result = parent::delete ();
+    if ($this->idPrivacy != 3) {
+      $class = $this->refType;
+      $id = $this->refId;
+      $obj = new $class( $id );
+      if (property_exists ( $class, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
+    }
+    return $result;
+  }
 }
 ?>

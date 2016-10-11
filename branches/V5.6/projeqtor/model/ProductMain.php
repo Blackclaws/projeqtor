@@ -60,6 +60,7 @@ class ProductMain extends ProductOrComponent {
   public $_Note=array();
   public $_nbColMax=3;
 
+
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
@@ -337,5 +338,25 @@ class ProductMain extends ProductOrComponent {
     $result .="</table>";
     return $result;
   }
+  
+  // Ticket 2325 Kevin
+  public function copy() {
+  $result=parent::copy();
+  
+    
+      $pp=new ProductProject();
+      $crit=array('idProduct'=>$this->id);
+      $list=$pp->getSqlElementsFromCriteria($crit);
+      foreach ($list as $pp) {
+        $pp->idProduct=$result->id;
+        $pp->id=null;
+        $pp->save();
+      }
+    
+
+    return $result;
+  }
+
+  
 }
 ?>

@@ -2558,7 +2558,10 @@ function addDependency(depType) {
   dojo.byId('dependencyAddDiv').style.display='block';
   dojo.byId('dependencyEditDiv').style.display='none';
   dijit.byId("dependencyRefTypeDep").set('readOnly', false);
+  dijit.byId("dependencyComment").set('value',null);
   disableWidget('dialogDependencySubmit');
+  
+  
 }
 
 function editDependency(depType, id, refType, refTypeName, refId, delay) {
@@ -2598,6 +2601,7 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
   dojo.byId('dependencyEditDiv').style.display='block';
   dijit.byId("dependencyRefTypeDep").set('readOnly', true);
   dijit.byId("dependencyRefIdDepEdit").set('readOnly', true);
+  dijit.byId("dependencyComment").set('readOnly', false);
   enableWidget('dialogDependencySubmit');
 }
 

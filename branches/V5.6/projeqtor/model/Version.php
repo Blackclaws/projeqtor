@@ -220,7 +220,7 @@ class Version extends SqlElement {
   
   public function drawVersionsList($critArray,$withProjects=false) {
     $result="<table>";
-    $versList=$this->getSqlElementsFromCriteria($critArray,false,null,null,false,true);
+    $versList=$this->getSqlElementsFromCriteria($critArray,false,null,'name asc',false,true);
     foreach ($versList as $vers) {
       $result.= '<tr>';
       $result.= '<td valign="top" width="20px" style="padding-left:15px;"><img src="css/images/icon'.$vers->scope.'Version16.png" height="16px" /></td>';

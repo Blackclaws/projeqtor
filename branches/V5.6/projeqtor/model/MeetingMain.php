@@ -358,7 +358,7 @@ class MeetingMain extends SqlElement {
           }
         } else if (in_array($attendee,$listInitials)) {
           $this->attendees.=($this->attendees)?', ':'';
-          $aff=new Affectable(array_search($attendee,$listInitials));         
+          $aff=new Affectable(array_search($attendee,$listInitials));        
           $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$stockAttendee)) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
@@ -533,5 +533,25 @@ class MeetingMain extends SqlElement {
     	echo "saved";
     }
   }
+  
+  // gautier ticket #2315
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false){
+    $result = parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    $ass=new Assignment();
+    $crit=array('refId'=>$this->id,'refType'=>'Meeting');
+    $list=$ass->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ass) {
+      $newAss = new Assignment();
+      $newAss->idResource= $ass->idResource;
+      $newAss->refId = $result->id;
+      $newAss->refType = 'Meeting';
+      $newAss->assignedWork = $ass->assignedWork;
+      $newAss->idProject = $ass->idProject;
+      $newAss->save();
+    }
+   
+    return $result;
+  }
 }
 ?>
+

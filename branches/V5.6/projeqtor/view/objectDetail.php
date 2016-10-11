@@ -3562,6 +3562,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     $canCreate=false;
     $canDelete=false;
   }
+  
   echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
@@ -3606,7 +3607,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
       $canCreate=false;
       $canDelete=false;
     }
-    $idleClass=($aff->idle)?' affectationIdleClass':'';
+    $idleClass=($aff->idle or ($aff->endDate and $aff->endDate < $dateNow = date("Y-m-d")) )?' affectationIdleClass':'';
     $res=new Resource($aff->idResource);
     $isResource=($res->id)?true:false;
     $goto="";
@@ -3648,14 +3649,14 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
               'title="' . i18n('replaceAffectation') . '" > '.formatSmallButton('SwitchUser').'</a>';
         } else {
           if ($aff->idle) {
-            echo '<a><div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '"/></div></a>';
+             echo '<a><div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '"/></div></a>';
           } else {
             echo '<a><div style="display:table-cell;width:20px;">&nbsp;</div></a>';
           }
         }
-       
+        
         echo '</td>';
-      }
+      } 
       echo '<td class="assignData' . $idleClass . '" align="center">' . htmlEncode($aff->id) . '</td>';
       /*if ($idProj) {
         echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';

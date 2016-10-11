@@ -102,7 +102,7 @@
       var changePassword=false;
       hideWait();
       showMessage(1, <?php echo count($msgList);?>);
-      if (dojo.isIE && dojo.isIE<=7) {
+      if (dojo.isIE && dojo.isIE<=8) {
         $varsParam=new Array();
         $varsParam[0]=dojo.isIE;
         dojo.byId('loginResultDiv').innerHTML=
@@ -121,7 +121,7 @@
         disableWidget('passwordButton');
         disableWidget('passwordButton');
         disableWidget('rememberMe');
-      } else if (dojo.isIE && dojo.isIE<=8) {
+      } else if (dojo.isIE && dojo.isIE<=10) {
         $varsParam=new Array();
         $varsParam[0]=dojo.isIE;
         dojo.byId('loginResultDiv').innerHTML=
