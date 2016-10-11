@@ -1047,14 +1047,23 @@ function finalizeMessageDisplay(destination, validationType) {
     // alert('validationType='+validationType);
     if (validationType) {
       if (validationType == 'note') {
-        loadContent("objectDetail.php?refreshNotes=true", dojo
-            .byId('objectClass').value
-            + '_Note', 'listForm');
+        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Note', 'listForm');
+        if (dojo.byId('buttonDivCreationInfo')) {
+          var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
+          loadDiv(url, 'buttonDivCreationInfo', null);
+        }
       } else if (validationType == 'attachment') {
+        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Attachment', 'listForm');
+        if (dojo.byId('buttonDivCreationInfo')) {
+          var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value 
+          + '&objectId='+dojo.byId('objectId').value;
+          loadDiv(url, 'buttonDivCreationInfo', null);
+        }
         if (dojo.byId('parameter') && dojo.byId('parameter').value == 'true') {
           formChangeInProgress = false;
           waitingForReply = false;
           loadMenuBarItem('UserParameter', 'UserParameter', 'bar');
+          
         } else if (dojo.byId('objectClass')
             && (dojo.byId('objectClass').value == 'Resource'
                 || dojo.byId('objectClass').value == 'User' || dojo
@@ -1113,12 +1122,19 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       } else if (validationType == 'admin') {
         hideWait();
-      } else if (validationType == 'link'
-          && (dojo.byId('objectClass').value == 'Requirement' || dojo
-              .byId('objectClass').value == 'TestSession')) {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv",
-            'listForm');
+      } else if (validationType == 'link'  && (dojo.byId('objectClass').value == 'Requirement' || dojo.byId('objectClass').value == 'TestSession')) {
+        loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
+        if (dojo.byId('buttonDivCreationInfo')) {
+          var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
+          loadDiv(url, 'buttonDivCreationInfo', null);  
+        }
         refreshGrid();
+      }else if(validationType =='link'){
+        if (dojo.byId('buttonDivCreationInfo')) {
+          var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
+          loadDiv(url, 'buttonDivCreationInfo', null);  
+        }
+        loadContent("objectDetail.php?refreshLinks=true",dojo.byId('objectClass').value+ '_Link','listForm');
       } else if (validationType == 'report') {
         hideWait();
       } else if (validationType == 'checklist') {

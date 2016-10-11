@@ -77,22 +77,55 @@ class Attachment extends SqlElement {
   }
   
   public function delete() {
-  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-  	$paramAttachmentDirectory=Parameter::getGlobalParameter('paramAttachmentDirectory');
-  	return parent::delete();
-  	$subDirectory=str_replace('${attachmentDirectory}', $paramAttachmentDirectory, $this->subDirectory);
-    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
-      return $result;     
+   // begin Gautier add
+    $result = parent::delete();
+     
+    if ($this->idPrivacy != 3) {
+      $class = $this->refType;
+      $id = $this->refId;
+      $obj = new $class( $id );
+  
+      if (property_exists ( $class, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
     }
-  	enableCatchErrors();
-  	if (file_exists($subDirectory . $paramPathSeparator . $this->fileName)) {
-  	  unlink($subDirectory . $paramPathSeparator . $this->fileName);
-  	}
-  	if (file_exists($subDirectory)) {
-  		purgeFiles($subDirectory, null);
-  	  rmdir($subDirectory);
-  	}
-  	disableCatchErrors();
+    return $result;
+    // End Gautier Add
+    $paramPathSeparator = Parameter::getGlobalParameter ( 'paramPathSeparator' );
+    $paramAttachmentDirectory = Parameter::getGlobalParameter ( 'paramAttachmentDirectory' );
+    return parent::delete ();
+    $subDirectory = str_replace ( '${attachmentDirectory}', $paramAttachmentDirectory, $this->subDirectory );
+    if (! strpos ( $result, 'id="lastOperationStatus" value="OK"' )) {
+      return $result;
+    }
+    enableCatchErrors ();
+    if (file_exists ( $subDirectory . $paramPathSeparator . $this->fileName )) {
+      unlink ( $subDirectory . $paramPathSeparator . $this->fileName );
+    }
+    if (file_exists ( $subDirectory )) {
+      purgeFiles ( $subDirectory, null );
+      rmdir ( $subDirectory );
+    }
+    disableCatchErrors ();
+  }
+  
+  public function save() {
+    $result = parent::save ();
+//     debugLog ( "note saved = $result" );
+//     debugLog( $this->idPrivacy);
+    if ($this->idPrivacy != 3) {
+      $class = $this->refType;
+      $id = $this->refId;
+      $obj = new $class( $id );
+    //  debugLog ( "ok, not private, will update $class #$id" );
+      if (property_exists ( $class, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+    //    debugLog("object saved => $resObj");
+      }
+    }
+    return $result;
   }
    
   public function getFullPathFileName() {

@@ -329,6 +329,18 @@ class ProductVersionMain extends Version {
     }
     return $result;
   }
-
+  
+  public function copy() {
+    $result=parent::copy(); 
+    $pp=new VersionProject();
+    $crit=array('idVersion'=>$this->id);
+    $list=$pp->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pp) {
+      $pp->idVersion=$result->id;
+      $pp->id=null;
+      $pp->save();
+    }
+    return $result;
+  } 
 }
 ?>

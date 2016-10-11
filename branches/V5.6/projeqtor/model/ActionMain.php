@@ -40,6 +40,7 @@ class ActionMain extends SqlElement {
   public $creationDate;
   public $idUser;
   public $idPriority;
+  public $idContact;
   public $isPrivate;
   public $description;
   public $_sec_treatment;
@@ -57,6 +58,7 @@ class ActionMain extends SqlElement {
   public $_lib_cancelled;
   public $idEfficiency;
   public $result;
+  
   //public $_sec_linkRisk;
   //public $_Link_Risk=array();
   //public $_sec_linkIssue;
@@ -96,7 +98,8 @@ class ActionMain extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
-                                                   'idResource'=> 'responsible');
+                                                   'idResource'=> 'responsible',
+                                                    'idContact' => 'requestor');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();

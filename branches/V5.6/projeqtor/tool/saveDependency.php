@@ -51,7 +51,6 @@ if (! array_key_exists('dependencyRefTypeDep',$_REQUEST)) {
 //$dependencyRefTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
 $dependencyRefTypeDepObj=New Dependable($_REQUEST['dependencyRefTypeDep']);
 $dependencyRefTypeDep=$dependencyRefTypeDepObj->name;
-
 if (! array_key_exists('dependencyRefIdDep',$_REQUEST)) {
   //if (! array_key_exists('dependencyId',$_REQUEST)) {
     throwError('dependencyRefIdDep parameter not found in REQUEST');
@@ -68,6 +67,8 @@ $dependencyId=null;
 if (array_key_exists('dependencyId',$_REQUEST)) {
   $dependencyId=$_REQUEST['dependencyId'];
 }
+
+$dependencyComment=$_REQUEST['dependencyComment'];
 
 $arrayDependencyRefIdDep=array();
 if (is_array($dependencyRefIdDep)) {
@@ -101,6 +102,8 @@ if ($dependencyId) { // Edit Mode
 		$dep->predecessorId=$predecessor->id;
 		$dep->predecessorRefType=$predecessor->refType;
 		$dep->predecessorRefId=$predecessor->refId;
+		$dep->comment=$dependencyComment;
+		debugLog($dep);
 		$dep->dependencyType='E-S';
 		//$dep->dependencyDelay=0;
 		$dep->dependencyDelay=$dependencyDelay;

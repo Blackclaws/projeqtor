@@ -1676,6 +1676,16 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 	         </table>
           </div>
+          <!--KEVIN TICKET #2038 -->
+          	<table>
+							<tr>
+								<td><label for="dependencyComment"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label></td>															
+								<td><input id="dependencyComment" name="dependencyComment" value="" dojoType="dijit.form.Textarea" class="input" /></td>
+							</tr>
+						</table>
+					</form>
+				</td>
+			</tr>         
         </form>
       </td>
     </tr>
@@ -1813,8 +1823,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                </td>    
              </tr>
 	         </table>
-         </div>
-         <div id="testCaseRunEditDiv">  
+         </div>           
+           <div id="testCaseRunEditDiv">  
 	         <table>
 	           <tr>
 	             <td class="dialogLabel"  >
