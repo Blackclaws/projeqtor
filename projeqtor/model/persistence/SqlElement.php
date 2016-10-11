@@ -591,7 +591,7 @@ abstract class SqlElement {
 		if ($force) {
 			$control="OK";
 		} else {
-		  $control=$this->control();			
+			$control=$this->control();			
 			$class=get_class($this);
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
 			and property_exists($class, $class.'PlanningElement')) {
@@ -1039,10 +1039,11 @@ abstract class SqlElement {
 				}
 			}
 		}
-		if ($nbChanged>0 and property_exists($this, 'lastUpdateDateTime')) {
+		if (($force or $nbChanged>0) and property_exists($this, 'lastUpdateDateTime')) {
 		  $insertableColName= $this->getDatabaseColumnName('lastUpdateDateTime');
 		  if (Sql::isPgsql()) {$insertableColName=strtolower($insertableColName);}
-		  $query .= ', '.$insertableColName. '=' . Sql::str(date('Y-m-d H:i:s')) .' ';
+		  $query .= (($nbChanged==0)?' SET ':', ').$insertableColName. '=' . Sql::str(date('Y-m-d H:i:s')) .' ';
+		  $nbChanged+=1;
 		}
 		$query .= ' where id=' . $this->id;
 		// If changed, execute the query
