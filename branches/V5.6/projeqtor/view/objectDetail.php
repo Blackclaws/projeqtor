@@ -3120,6 +3120,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
         echo '  <a onClick="editDependency(' . "'" . $depType . "','" . htmlEncode($dep->id) . "','" . SqlList::getIdFromName('Dependable', i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . htmlEncode($depObj->id) . "','" . htmlEncode($dep->dependencyDelay) . "'" . ');" ' .
              ' title="' . i18n('editDependency' . $depType) . '" > '.formatSmallButton('Edit').'</a>';
       }
+ 
       if ($canUpdate) {
         echo '  <a onClick="removeDependency(' . "'" . htmlEncode($dep->id) . "','" . get_class($depObj) . "','" . htmlEncode($depObj->id) . "'" . ');" ' .
             'title="' . i18n('removeDependency' . $depType) . '"/> '.formatSmallButton('Remove').'</a>';
@@ -3128,6 +3129,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '<td class="dependencyData" style="white-space:nowrap"><table><tr><td>'.formatIcon(get_class($depObj),16).'</td><td>&nbsp;' . i18n(get_class($depObj)) . ' #' . htmlEncode($depObj->id) . '</td></tr></table></td>';
     echo '<td class="dependencyData"';
+   
     $goto="";
     if (securityCheckDisplayMenu(null, get_class($depObj)) and securityGetAccessRightYesNo('menu' . get_class($depObj), 'read', $depObj) == "YES") {
       $goto=' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . htmlEncode($depObj->id) . "'" . ');" style="cursor: pointer;" ';
@@ -3135,7 +3137,9 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     if (!$print) {
       echo $goto;
     }
-    echo '>' . htmlEncode($depObj->name);
+    ////KEVIN TICKET #2038
+    echo formatCommentThumb($dep->comment);
+    echo htmlEncode($depObj->name);
     if ($dep->dependencyDelay != 0 and $canEdit) {
       echo '&nbsp;<span style="float:right;background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;" title="' . i18n("colDependencyDelay") . '">&nbsp;' . htmlEncode($dep->dependencyDelay) . '&nbsp;' . i18n('shortDay') . '&nbsp;</span>';
     }
