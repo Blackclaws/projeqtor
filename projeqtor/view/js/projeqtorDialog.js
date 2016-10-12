@@ -2601,8 +2601,20 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
   dojo.byId('dependencyEditDiv').style.display='block';
   dijit.byId("dependencyRefTypeDep").set('readOnly', true);
   dijit.byId("dependencyRefIdDepEdit").set('readOnly', true);
-  dijit.byId("dependencyComment").set('readOnly', false);
-  enableWidget('dialogDependencySubmit');
+  disableWidget('dialogDependencySubmit');
+  
+  //KEVIN TICKET #2038 
+  disableWidget('dependencyComment');
+  dijit.byId('dependencyComment').set('value',"");
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=dependencyComment&idDependency='+ id,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('dependencyComment').set('value', data);
+      enableWidget('dialogDependencySubmit');
+      enableWidget('dependencyComment');
+    }
+  });
 }
 
 /**
@@ -2619,6 +2631,7 @@ function refreshDependencyList(selected) {
   }
   loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
 }
+
 
 /**
  * save a Dependency (after addLink)
