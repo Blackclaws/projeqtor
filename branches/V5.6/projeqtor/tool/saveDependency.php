@@ -68,6 +68,7 @@ if (array_key_exists('dependencyId',$_REQUEST)) {
   $dependencyId=$_REQUEST['dependencyId'];
 }
 
+// KEVIN TICKET #2038 
 $dependencyComment=$_REQUEST['dependencyComment'];
 
 $arrayDependencyRefIdDep=array();
@@ -80,6 +81,7 @@ Sql::beginTransaction();
 if ($dependencyId) { // Edit Mode
 	$dep=new Dependency($dependencyId);
 	$dep->dependencyDelay=$dependencyDelay;
+	$dep->comment=$dependencyComment;
 	$result=$dep->save();
 } else { // Add Mode
 	$result="";

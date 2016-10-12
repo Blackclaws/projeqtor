@@ -94,6 +94,11 @@
     	    }
     	  }
     	}
+    } else if ($type=='dependencyComment') {
+      $idDependency=$_REQUEST['idDependency'];
+      $dep=new Dependency($idDependency);
+      echo $dep->comment;
+    	  
     } else {          
       echo '';
     } 
