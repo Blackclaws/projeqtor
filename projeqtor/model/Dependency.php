@@ -85,6 +85,7 @@ class Dependency extends SqlElement {
     $prec=new PlanningElement();
     $precList=array();
     $precParentList=array();
+    $precSonList=array();
     if ($this->predecessorId) {
       $prec=new PlanningElement($this->predecessorId);
       $precList=$prec->getPredecessorItemsArrayIncludingParents();
