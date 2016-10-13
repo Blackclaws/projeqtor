@@ -49,7 +49,7 @@ class ProfileMain extends SqlElement {
   
   public $_isNameTranslatable = true;
   
-  private static $_fieldsAttributes=array();
+  private static $_fieldsAttributes=array('name'=>'required', 'sortOrder'=>'required');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
