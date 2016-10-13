@@ -379,7 +379,7 @@ body .ProjeQtOr {
 .ProjeQtOr .iconFilter { background-image: url(customIcons/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOr .iconActiveFilter { background-image: url(customIcons/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 
-.ProjeQtOr .iconHelpTitle { background-image: url(customIcons/iconHelpWhite.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOr .iconHelpTitle { background-image: url(customIcons/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOr .iconHelp { background-image: url(customIcons/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
@@ -640,9 +640,9 @@ body .ProjeQtOr {
 
 /* I */
 
-/* .ProjeQtOr .iconImportData32 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;} */
-/* .ProjeQtOr .iconImportData22 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;} */
-/* .ProjeQtOr .iconImportData16 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; } */
+.ProjeQtOr .iconImportData32 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;} 
+.ProjeQtOr .iconImportData22 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;} 
+.ProjeQtOr .iconImportData16 { background-image: url(customIcons/iconImportData.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOr .iconImputation32 { background-image: url(customIcons/iconImputation.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOr .iconImputation22 { background-image: url(customIcons/iconImputation.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

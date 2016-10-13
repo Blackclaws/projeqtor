@@ -1076,9 +1076,9 @@ label, .label, .smallLabel {
 .iconHelpTitle {
   background-image: url('../img/help.png');
   background-repeat: no-repeat;
-  width: 32px;
-  height: 32px;
-  background-size: 32px 32px;
+  width: 24px;
+  height: 24px;
+  background-size: 22px 22px;
   text-align: center;
   cursor: pointer;
 }
