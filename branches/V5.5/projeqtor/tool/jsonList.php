@@ -140,7 +140,7 @@
         $idProj=$_REQUEST['critValue'];
         $user=new User();
         $prf=new Profile(getSessionUser()->getProfile($idProj));
-        $lstPrf=$prf->getSqlElementsFromCriteria(null,false,"idle=0 and sortOrder>=".$prf->sortOrder,"sortOrder asc");
+        $lstPrf=$prf->getSqlElementsFromCriteria(null,false,"idle=0 and sortOrder>=".(($prf->sortOrder)?$prf->sortOrder:'0'),"sortOrder asc");
         $list=array();
         foreach ($lstPrf as $profile) {
           $list[$profile->id]=i18n($profile->name);
