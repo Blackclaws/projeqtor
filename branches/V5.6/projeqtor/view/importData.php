@@ -41,7 +41,7 @@
     <table width="100%">
       <tr height="100%" style="vertical-align: middle;">
         <td width="50px" align="center">
-          <img src="css/images/iconImportData32.png" width="32" height="32" />
+          <?php echo formatIcon('ImportData',32,null,true);?>
         </td>
         <td><span class="title">
           <?php echo i18n('menuImportData')?>&nbsp;&nbsp;&nbsp;

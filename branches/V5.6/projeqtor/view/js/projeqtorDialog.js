@@ -1877,12 +1877,19 @@ function assignmentUpdateLeftWork(prefix) {
     assigned.value=dojo.number.format(newAssigned);
   }
   var left=dojo.byId(prefix + "LeftWork");
-  // var real = dojo.byId(prefix + "RealWork");
+  //// KEVIN #2338 ////
+  var real = dojo.byId(prefix + "RealWork");
   // var planned = dojo.byId(prefix + "PlannedWork");
   diff=dojo.number.parse(assigned.value) - initAssigned.value;
   newLeft=parseFloat(initLeft.value) + diff;
   if (newLeft < 0 || isNaN(newLeft)) {
     newLeft=0;
+  }
+  if(assigned.value != initAssigned.value){
+    diffe=dojo.number.parse(assigned.value) - real.value ;
+    if (initAssigned.value==0 || isNaN(initAssigned.value)){
+      newLeft= 0 + diffe;
+    }
   }
   left.value=dojo.number.format(newLeft);
   assignmentUpdatePlannedWork(prefix);
@@ -2602,7 +2609,6 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
   dijit.byId("dependencyRefTypeDep").set('readOnly', true);
   dijit.byId("dependencyRefIdDepEdit").set('readOnly', true);
   disableWidget('dialogDependencySubmit');
-  
   //KEVIN TICKET #2038 
   disableWidget('dependencyComment');
   dijit.byId('dependencyComment').set('value',"");
@@ -2631,8 +2637,6 @@ function refreshDependencyList(selected) {
   }
   loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
 }
-
-
 /**
  * save a Dependency (after addLink)
  * 
