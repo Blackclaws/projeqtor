@@ -236,7 +236,7 @@ foreach ($listParam as $param) {
     </tr>
 <?php    
   } else if ($param->paramType=='boolean') {
-    $defaultValue=($param->defaultValue=='true')?true:false;
+    $defaultValue=($param->defaultValue=='true' or $param->defaultValue=='1')?true:false;
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
