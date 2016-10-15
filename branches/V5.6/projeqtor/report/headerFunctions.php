@@ -53,7 +53,9 @@ function checkNoData($result) {
   global $outMode;
   if (count($result)==0) {
     echo '<table width="95%" align="center"><tr height="50px"><td width="100%" align="center">';
-    echo i18n('reportNoData');
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('reportNoData'); 
+    echo '</div>';
     echo '</td></tr></table>';
     if ($outMode=='pdf') {
       finalizePrint();
