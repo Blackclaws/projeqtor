@@ -23,7 +23,8 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (59, 'idProject', 'projectList', 10, 'currentProject'),
 (59, 'format', 'periodScale', 20, 'day'),
-(59, 'showBurndownActivities', 'boolean', 30, '1');
+(59, 'showBurndownActivities', 'boolean', 30, '1'),
+(59, 'showBurndownToday', 'boolean', 40, '1');
 INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
 (1,59,1),
 (2,59,1),
