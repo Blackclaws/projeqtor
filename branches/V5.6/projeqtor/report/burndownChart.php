@@ -40,6 +40,10 @@ $showCompleted=false;
 if (array_key_exists('showBurndownActivities',$_REQUEST)) {
   $showCompleted=true;
 }
+$showToday=false;
+if (array_key_exists('showBurndownToday',$_REQUEST)) {
+  $showToday=true;
+}
 
 $headerParameters="";
 if ($idProject!="") {
@@ -50,6 +54,9 @@ if ( $scale) {
 }
 if ($showCompleted) {
   $headerParameters.= i18n("colShowBurndownActivities"). '<br/>';
+}
+if ($showToday) {
+  $headerParameters.= i18n("colShowBurndownToday"). '<br/>';
 }
 
 include "header.php";
@@ -173,7 +180,7 @@ if (!$start or !$end) {
 }
 while ($date<=$end) {
   if ($scale=='week') { $arrDates[$date]=date('Y-W',strtotime($date)); } 
-  else if ($scale=='month') { $arrDates[$date]=getMonthName(date('m',strtotime($date))).' '.date('Y',strtotime($date));  } 
+  else if ($scale=='month') { $arrDates[$date]=date('Y-m',strtotime($date));  } 
   else if ($scale=='quarter') { 
     $year=date('Y',strtotime($date));
     $month=date('m',strtotime($date));
@@ -250,17 +257,22 @@ foreach ($arrDates as $date => $period) {
   if ($date<=$pe->validatedEndDate) $nbSteps++;
 }
 
+$startLabel=reset($arrDates);
 $maxLeft=Work::displayWork($pe->validatedWork);
-if (!$maxLeft) $maxLeft=max(array($resLeft[$start],$resLeftPlanned[$start]));
+if (!$maxLeft and isset($resLeft[$startLabel])) $maxLeft=$resLeft[$startLabel];
+if (!$maxLeft and isset($resLeftPlanned[$startLabel])) $maxLeft=$resLeftPlanned[$startLabel];
 $minLeft=0;
 //$nbSteps=count($arrDates)-1;
+if (!$nbSteps) $nbSteps=count($arrDates);
 $stepValue=($nbSteps)?(($maxLeft-$minLeft)/($nbSteps-1)):0;
 $val=$maxLeft;
 
 $graphWidth=1000;
 $graphHeight=500;
-
+$indexToday=0;
+$today=null;
 foreach ($arrDates as $date => $period) {
+  if ($date==date('Y-m-d')) {$today=$period;}
   if ($val!=="" or ! isset($resBest[$period])) $resBest[$period]=$val;
   if ($val) {
     $val-=$stepValue;
@@ -274,10 +286,17 @@ $cpt=0;
 $modulo=intVal(50*count($arrDates)/$graphWidth);
 if ($modulo<1) $modulo=1;
 foreach ($arrDates as $date => $period) {
+  if ($date<$today) $indexToday++;
   if ($cpt % $modulo !=0 ) {
     $arrDates[$date]="";
   } else {
-    $arrDates[$date]=htmlFormatDate($date);
+    if ($scale=='day') {
+      $arrDates[$date]=htmlFormatDate($date);
+    } else if ($scale=='month') {
+      $arrDates[$date]=getMonthName(substr($date,5)).' '.substr($date,0,4);
+    } else {
+      $arrDates[$date]=$date;
+    }
   }
   $cpt++;
 }
@@ -363,11 +382,19 @@ $dataSet->RemoveSerie('left');
 if ($showCompleted){
   $dataSet->RemoveSerie('leftTasks');
 }
+$graph->setLineStyle(1,5);
 $graph->clearScale();
 $dataSet->SetYAxisUnit("");
-
+if ($showToday and $indexToday and count($arrLabel)) {
+  $grW=$graphWidth-50-70;
+  $intervals=count($arrLabel);
+  $posLine=70+$grW/$intervals*($indexToday+0.5);
+  $graph->setLineStyle(1,2);
+  $graph->drawLine($posLine,20,$posLine,$graphHeight-(($scale=='month')?90:70),255,0,0);
+}
 // Draw complete tasks line
 if ($showCompleted){
+  $graph->setLineStyle(1,0);
   $dataSet->AddSerie('leftTasks');
   $dataSet->AddSerie('leftTasksPlanned');
   $dataSet->AddSerie('taskScale');
@@ -400,6 +427,7 @@ $graph->setLineStyle(1,0);
 $graph->clearScale();
 
 // Draw "left" lines
+$graph->setLineStyle(1,0);
 $dataSet->SetAbsciseLabelSerie("dates");
 $dataSet->AddSerie("best");
 $dataSet->AddSerie("left");
