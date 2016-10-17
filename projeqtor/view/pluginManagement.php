@@ -41,9 +41,9 @@ require_once "../tool/formatter.php";
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="pluginButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top" style="z-index:3;overflow:visible">
     <table width="100%">
-      <tr height="100%" style="vertical-align: middle;">
+      <tr height="32px" style="vertical-align: middle;">
         <td width="50px" align="center">
-          <img src="css/images/iconPlugin32.png" width="32" height="32" />
+           <?php echo formatIcon('Plugin',32,null,true);?>
         </td>
         <td><span class="title"><?php echo i18n("menuPlugin");?>&nbsp;</span>        
         </td>

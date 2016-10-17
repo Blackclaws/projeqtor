@@ -37,7 +37,7 @@
   <table width="100%" height="27px" class="listTitle" >
     <tr height="17px">
       <td width="50px" align="center">
-        <img src="css/images/iconDiary32.png" width="32" height="32" />
+        <?php echo formatIcon('Diary',32,null,true);?>
       </td>
       <td width="100px" ><span class="title"><?php echo i18n('menuDiary');?></span></td>
       <td style="text-align: center"> 

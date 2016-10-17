@@ -38,10 +38,11 @@ scriptLog('   ->/view/reportsList.php');
   
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
-<table width="100%" height="27px" class="listTitle" >
+<table width="100%" height="35px" class="listTitle" >
   <tr height="27px">
     <td width="50px" align="center">
-      <span style="position:absolute; left:10px; top:2px"><img src="css/images/iconReports22.png" width="22" height="22" /></span>
+      <span style="position:absolute; left:5px; top:2px"</span>
+      <?php echo formatIcon('Reports',32,null,true);?>
     </td>
     <td><span class="title"><?php echo i18n('menuReports');?></span></td>
     <td>   

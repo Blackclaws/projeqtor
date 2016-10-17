@@ -40,9 +40,9 @@
     <div id="resultDiv" dojoType="dijit.layout.ContentPane"
       region="top" style="padding:5px;max-height:100px;padding-left:300px;z-index:999"></div>
     <table width="100%">
-      <tr height="100%" style="vertical-align: middle;">
+      <tr height="32px" style="vertical-align: middle;">
         <td width="50px" align="center">
-          <img src="css/images/iconAdmin32.png" width="32" height="32" />
+         <?php echo formatIcon('Admin',32,null,true);?>
         </td>
         <td><span class="title">
           <?php echo i18n("menuAdmin");?>&nbsp;</span>      
