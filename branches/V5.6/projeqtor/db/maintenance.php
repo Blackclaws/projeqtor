@@ -489,6 +489,18 @@ if ($currVersion=='V5.5.0' and Sql::isPgsql()) {
   traceLog("   => If issue has already been fixed, don't care about errors");
   $nbErrorsPg=runScript('V5.5.1.pg');
 }
+if (beforeVersion($currVersion,"V5.5.4") and $currVersion!='V0.0.0') {
+  traceLog("   => Removing default .htpassword file in API to avoid security leak");
+  $pwd=file_get_contents('../api/.htpasswd');
+  if (strpos($pwd,'admin:$apr1$31cb5jwm$Ae3XumMQ1ckxUerDZoi290')!==null) {
+    if (! rename('../api/.htpasswd','../api/.htpasswd.sav') ) {
+      traceLog("   => Could not rename ../api/.htpasswd - this can be a security leak");
+      echo "Could not rename file '../api/.htpasswd' - this can be a security leak<br/>";
+      echo "Try and rename or remove this file to secure your data<br/><br/>";
+      $nbErrors++;
+    }
+  }
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
