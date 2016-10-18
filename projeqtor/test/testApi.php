@@ -181,6 +181,7 @@ if ($action=='display') {
 foreach (SqlList::getListNotTranslated('Importable') as $id=>$val) {
   echo "<option valued='$val' >$val</option>";
 }
+echo "<option value='User'>User</option>";
 ?>
 <option value="History">History</option>
 </select></div>

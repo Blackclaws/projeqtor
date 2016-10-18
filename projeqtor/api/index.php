@@ -299,8 +299,9 @@ function jsonDumpObj($obj, $included=false) {
 			$res.=jsonDumpObj($val, true);
 		} else if (substr($fld,0,1)=='_'
 		  or $obj->isAttributeSetToField($fld, 'hidden')
-		  or $included and ($fld=='id' or $fld=='refType' or $fld=='refId' or $fld=='refName' 
-		                 or $fld=='handled' or $fld=='done' or $fld=='idle' or $fld=='cancelled') ) {
+		  or $fld=='apiKey' or $fld=='password'
+		  or $included and ($fld=='id' or $fld=='refType' or $fld=='refId' or $fld=='refName'
+		  or $fld=='handled' or $fld=='done' or $fld=='idle' or $fld=='cancelled') ) {
 			// Nothing
 		} else {
 		  if ($fld=='name' and property_exists($obj, '_isNameTranslatable') and $obj->_isNameTranslatable) { $val=i18n($val); }
@@ -333,6 +334,7 @@ function jsonFillObj(&$obj, $arrayObj, $included=false) {
 			jsonFillObj($val, $arrayObj, true);
 		} else if (substr($fld,0,1)=='_' 
 				or $obj->isAttributeSetToField($fld, 'hidden')
+				or $fld=='apiKey' or $fld=='password'
 				or $included and ($fld=='id' or $fld=='refType' or $fld=='refId' or $fld=='refName'
 						or $fld=='handled' or $fld=='done' or $fld=='idle' or $fld=='cancelled') ) {
 			// Nothing
