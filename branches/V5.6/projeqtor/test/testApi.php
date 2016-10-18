@@ -182,6 +182,7 @@ foreach (SqlList::getListNotTranslated('Importable') as $id=>$val) {
   echo "<option valued='$val' >$val</option>";
 }
 ?>
+<option value="User">User</option>
 <option value="History">History</option>
 </select></div>
 <div class="line"></div>
