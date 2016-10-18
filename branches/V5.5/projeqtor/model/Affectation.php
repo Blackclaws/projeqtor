@@ -275,8 +275,10 @@ public $_noCopy;
     if (! $this->idProject) {
     	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdProject'))));
     }
-    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
-    $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder');
+    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder',false);
+    if (!$prfOrder) $prfOrder=0;
+    $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder',false);
+    if (!$usrPrfOrder) $usrPrfOrder=0;
     if ($usrPrfOrder>$prfOrder) {
       $result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');
     }

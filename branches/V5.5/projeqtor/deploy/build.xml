@@ -146,9 +146,12 @@
 
   <target name="copyApi">
       <copy todir="${deploy.dir}/api">
-        <fileset dir="${src.dir}/api"/>
+        <fileset dir="${src.dir}/api">
+          <include name="*.*" />
+          <exclude name=".htpasswd" />
+        </fileset>
       </copy>
-    </target>
+  </target>
   
   <target name="copyReport">
     <copy todir="${deploy.dir}/report">
