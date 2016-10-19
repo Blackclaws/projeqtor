@@ -250,7 +250,10 @@ class Affectable extends SqlElement {
         $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
         if ($id==getSessionUser()->id) $canUpdate=true;
         if ($canUpdate) {
-         $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+          //KEVIN
+         $result.= '<span onClick="addAttachment(\'file\');"title="' . i18n('addPhoto') .'" >';
+         $result.= formatSmallButton('Add');
+         $result.= '</span>';
         }
         $result.='</span>';
         $extraStyle='top:30px;'.$horizontal;

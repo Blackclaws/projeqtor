@@ -217,8 +217,13 @@ $param['DefaultTimezone'] = 'Europe/Paris';
 $label['DefaultTimezone'] = "Default time zone";
 $value['DefaultTimezone'] = "default time zone, list can be found at <a href='http://us3.php.net/manual/en/timezones.php' target='#'>http://us3.php.net/manual/en/timezones.php</a>";
 $pname['DefaultTimezone'] = 'paramDefaultTimezone';
-$ctrls['DefaultTimezone'] = '';
+$ctrls['DefaultTimezone'] = '=';
 $requi['DefaultTimezone'] = true;
+//gautier ticket #2290
+ $listTimezone=Parameter::getTimezoneList();
+  foreach ($listTimezone as $nls=>$zone) {
+    $ctrls['DefaultTimezone'].=$zone."=";
+  }
 
 $param['Currency'] = '€';                              
 $label['Currency'] = "Currency";

@@ -73,6 +73,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/projeqtorFlat.css" type="text/css" />
   
   <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
   <?php if (isHtml5()) {?>
