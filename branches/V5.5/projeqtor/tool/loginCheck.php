@@ -41,17 +41,23 @@
     $password=$_POST['password'];
   }    
   if ($login=="") {
+    debugTraceLog("loginCheck : no login provided");
     loginError();
   }
   if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256)=="") {
+    debugTraceLog("loginCheck : no password or not encrypted / $password /".$_SESSION['sessionSalt']);
     loginError();
   }
-  if (! Sql::getDbVersion()) {
+  $dbVersion=Sql::getDbVersion();
+  debugTraceLog("loginCheck : current db version = '$dbVersion'");
+  if (! $dbVersion or $dbVersion=='0.0.0') {
 	  $password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256);
+	  debugTraceLog("login for maintenance with '$login' / '$password'");
     if ($login=="admin" and $password=="admin") {
       include "../db/maintenance.php";
       exit;
     }
+    debugTraceLog("login for maintenance with other than 'admin' / 'admin'");
   }   
   if (Sql::getDbVersion() and Sql::getDbVersion()!=$version and version_compare(substr(Sql::getDbVersion(),1), '3.0.0','<')) {
   	User::setOldUserStyle();
@@ -60,13 +66,14 @@
   $crit=array('name'=>$login);
   $users=$obj->getSqlElementsFromCriteria($crit,true);
   if ( ! $users ) {
+    debugTraceLog("loginCheck : no user with name '$login'");
   	loginError();
   	exit;
   } 
   if ( count($users)==1 ) {
   	$user=$users[0];
   } else if ( count($users)>1 ) {
-  	traceLog("User '" . $login . "' : too many rows in Database" );
+  	debugTraceLog("User '" . $login . "' : too many rows in Database" );
     loginError();
    	exit;
   } else {
@@ -93,28 +100,35 @@
   
   if ( $authResult!="OK") {
   	if ($user->locked!=0) {
+  	  debugTraceLog("loginCheck : user locked");
       loginErrorLocked();
   	} else if ($authResult=="ldap") {
+  	  debugTraceLog("loginCheck : incorrect ldap authentification");
     	loginLdapError();
     } else if ($authResult=="plugin") {
+      debugTraceLog("loginCheck : incorrect plugin authentification");
       loginErrorPlugin(); // Message is expected in the plugin
     } else {
+      debugTraceLog("loginCheck : unidentified incorrect authentification");
   	  loginError();
     }
     exit;
  	} 
 	
  	if ( ! $user->id) {
+ 	  debugTraceLog("loginCheck : no user retreived");
    	loginError();
    	exit;
  	} 
   if ( $user->idle!=0 or  $user->locked!=0) {
+    debugTraceLog("loginCheck : user idle or locked");
     loginErrorLocked();
   } 
 
   if (Sql::getDbVersion()!=$version) {
     $prf=new Profile($user->idProfile);
     if ($prf->profileCode!='ADM') {
+      debugTraceLog("loginCheck : not an Admin during maintenance");
       loginErrorMaintenance();
       exit;
     }
@@ -124,6 +138,7 @@
   if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
   	$prf=new Profile($user->idProfile);
     if ($prf->profileCode!='ADM') { 
+      debugTraceLog("loginCheck : not an Admin and application is closed");
       loginErrorClosedApplication();
       exit;
     }                     
