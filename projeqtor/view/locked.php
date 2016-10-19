@@ -45,6 +45,7 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
+  <link rel="stylesheet" href="css/projeqtorFlat.css" type="text/css" />
   <title>ProjeQtOr</title>
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='parseOnLoad: false, 

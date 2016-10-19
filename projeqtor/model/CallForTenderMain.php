@@ -264,7 +264,10 @@ class CallForTenderMain extends SqlElement {
     if (!$print) {
       echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
       if ($this->id != null and !$print and $canUpdate) {
-        echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addTenderEvaluationCriteria('.htmlEncode($this->id).');" title="' . i18n('addTenderEvaluationCriteria') . '" /> ';
+        ////KEVIN TICKET #2278
+        echo '<a '; echo 'onClick="addTenderEvaluationCriteria('.htmlEncode($this->id). ');"title="' . i18n('addTenderEvaluationCriteria') .'"'; echo '>';
+        echo formatSmallButton('Add');
+        echo '</a>';
       }
       echo '</td>';
     }
@@ -316,7 +319,10 @@ class CallForTenderMain extends SqlElement {
     if (!$print and !$readOnly) {
       echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
       if ($this->id != null and !$print and $canUpdate) {
-        echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addTenderSubmission('.htmlEncode($this->id).');" title="' . i18n('addTenderSubmission') . '" /> ';
+        ////KEVIN TICKET #2278
+        echo '<a '; echo 'onClick="addTenderSubmission('.htmlEncode($this->id). ');"title="' . i18n('addTenderSubmission') .'"'; echo '>';
+        echo formatSmallButton('Add');
+        echo '</a>';        
       }
       echo '</td>';
     }

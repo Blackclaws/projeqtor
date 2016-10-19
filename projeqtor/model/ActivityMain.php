@@ -114,8 +114,7 @@ class ActivityMain extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
-                                                   'idContact' => 'requestor',
-                                                   
+                                                   'idContact' => 'requestor',                                    
                                                    'isPlanningActivity'=>'PlanningActivity');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
