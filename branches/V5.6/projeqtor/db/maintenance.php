@@ -489,7 +489,7 @@ if ($currVersion=='V5.5.0' and Sql::isPgsql()) {
   traceLog("   => If issue has already been fixed, don't care about errors");
   $nbErrorsPg=runScript('V5.5.1.pg');
 }
-if (beforeVersion($currVersion,"V5.5.4") and $currVersion!='V0.0.0') {
+if (beforeVersion($currVersion,"V5.5.4") and $currVersion!='V0.0.0' and file_exists('../api/.htpasswd')) {
   traceLog("   => Removing default .htpassword file in API to avoid security leak");
   $pwd=file_get_contents('../api/.htpasswd');
   if (strpos($pwd,'admin:$apr1$31cb5jwm$Ae3XumMQ1ckxUerDZoi290')!==null) {
