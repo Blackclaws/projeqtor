@@ -58,7 +58,8 @@ class WorkflowMain extends SqlElement {
     ';
   
   private static $_fieldsAttributes=array(
-    "workflowUpdate"=>"hidden");
+    "workflowUpdate"=>"hidden"
+  );
     
   /** ==========================================================================
    * Constructor
