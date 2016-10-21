@@ -65,7 +65,11 @@ class ComponentMain extends ProductOrComponent {
     ';
 
    private static $_fieldsAttributes=array("name"=>"required",
-      "scope"=>"hidden", "idClient"=>"hidden", "idContact"=>"hidden", "idProduct"=>"hidden", "idComponent"=>"hidden"
+      "scope"=>"hidden", 
+       "idClient"=>"hidden", 
+       "idContact"=>"hidden", 
+       "idProduct"=>"hidden", 
+       "idComponent"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor',

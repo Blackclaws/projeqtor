@@ -65,7 +65,10 @@ class ProviderMain extends SqlElement {
     ';
   
   private static $_colCaptionTransposition = array('idPaymentDelay'=>'paymentDelay');
-  private static $_fieldsAttributes=array('name'=>'required', 'idClientType'=>'required');
+  private static $_fieldsAttributes=array(
+      'name'=>'required', 
+      'idClientType'=>'required'
+  );
   private static $_databaseColumnName = array('taxPct'=>'tax');
   
    /** ==========================================================================

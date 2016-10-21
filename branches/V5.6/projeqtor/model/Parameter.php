@@ -165,6 +165,10 @@ class Parameter extends SqlElement {
     switch ($parameter) {
       case 'theme': case 'defaultTheme':
         $list=array('ProjeQtOr'=>i18n('themeProjeQtOr'),
+                    'ProjeQtOrFlatBlue'=>i18n('themeProjeQtOrFlatBlue'),
+                    'ProjeQtOrFlatRed'=>i18n('themeProjeQtOrFlatRed'),
+                    'ProjeQtOrFlatGreen'=>i18n('themeProjeQtOrFlatGreen'),
+                    'ProjeQtorFlatGrey'=>i18n('themeProjeQtOrFlatGrey'),
                     'ProjeQtOrFire'=>i18n('themeProjeQtOrFire'),
                     'ProjeQtOrForest'=>i18n('themeProjeQtOrForest'),
                     'ProjeQtOrEarth'=>i18n('themeProjeQtOrEarth'),

@@ -109,8 +109,10 @@ class DocumentMain extends SqlElement {
     "cancelled"=>"nobr"
    );
    
-   private static $_colCaptionTransposition = array('idDocumentType' => 'type',
-   'idDocumentVersion' => 'currentDocumentVersion');
+   private static $_colCaptionTransposition = array(
+       'idDocumentType' => 'type',
+      'idDocumentVersion' => 'currentDocumentVersion'
+   );
    private static $_databaseColumnName = array();
    
    /** ==========================================================================
