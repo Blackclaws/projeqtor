@@ -73,7 +73,10 @@ class ProductVersionMain extends Version {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required","scope"=>"hidden"
+  private static $_fieldsAttributes=array(
+      "name"=>"required", 
+      "idProduct"=>"required",
+      "scope"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'

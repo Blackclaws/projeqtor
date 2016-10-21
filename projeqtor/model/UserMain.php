@@ -859,7 +859,7 @@ class UserMain extends SqlElement {
    * @return -1 or Id of authentified user
    */
 	public function authenticate( $paramlogin, $parampassword) {
-//scriptLog("UserClass->authenticate ('" . $paramlogin . "', '*****')" );	
+debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );	
 	  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
 	  $paramLdap_base_dn=Parameter::getGlobalParameter('paramLdap_base_dn');
 	  $paramLdap_host=Parameter::getGlobalParameter('paramLdap_host');
@@ -877,7 +877,9 @@ class UserMain extends SqlElement {
 			if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 		  	$this->name=strtolower($paramlogin);
 		  	$this->isLdap = 1;
+        debugTraceLog("User->authenticate : access through LDAP");		  	
 			} else {
+        debugTraceLog("User->authenticate : no user id (exit)");			  
 				return "login";
 		  }	
 	 	}	
@@ -890,31 +892,39 @@ class UserMain extends SqlElement {
 	 	  }
 	 	}
 	 	if (isset($plgErrorLogin)) {
+	 	  debugTraceLog("User->authenticate : some plugin error (exit)");	 	  
 	 	  return $plgErrorLogin;
 	 	}
 		if ($this->isLdap == 0) {
 			if ($this->crypto=='sha256') {
+			  debugTraceLog("User->authenticate : sha256 encryption");
         $expected=$this->password.$_SESSION['sessionSalt'];
         $expected=hash("sha256", $expected);
       } else if ($this->crypto=='md5') {
+        debugTraceLog("User->authenticate : md5 encryption");
 				$expected=$this->password.$_SESSION['sessionSalt'];
 				$expected=md5($expected);				
 			} else if ($this->crypto=='old') {
+			  debugTraceLog("User->authenticate : migration, no encryption");
         // Migrating to V4.0.0 : $parampassword is not MD5 unencrypted, but User->password is
         $expected=$this->password; // is MD5 encrypted
         $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256));
       } else { // no crypto
+        debugTraceLog("User->authenticate : no encryption");
 				$expected=$this->password;
 				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
 			}
 			if ( $expected <> $parampassword) {
 				$this->unsuccessfullLogin();
+				debugTraceLog("User->authenticate : wrong password $expected!=$parampassword (exit)");
 	      return "password";
 			} else {
+			  debugTraceLog("User->authenticate : Successfull login");
 				$this->successfullLogin($rememberMe);
 	  	  return "OK";
 	  	}
 	  } else {
+	    debugTraceLog("User->authenticate : LDAP authenticate");
 	  	disableCatchErrors();
 	  	// Decode password
 	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);

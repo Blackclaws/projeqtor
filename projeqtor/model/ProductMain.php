@@ -71,7 +71,9 @@ class ProductMain extends ProductOrComponent {
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-   private static $_fieldsAttributes=array("name"=>"required", "scope"=>"hidden"
+   private static $_fieldsAttributes=array(
+       "name"=>"required", 
+       "scope"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf',
