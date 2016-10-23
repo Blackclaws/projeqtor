@@ -171,9 +171,19 @@ if ($canPlan) {
                       <td width="32px">
                         <button id="savePlanningButton" dojoType="dijit.form.Button" showlabel="false"
                          title="<?php echo i18n('savePlannedDates');?>"
-                         iconClass="dijitButtonIcon dijitButtonIconSavePlan" class="detailButton">
+                         iconClass="dijitButtonIcon dijitButtonIconValidPlan" class="detailButton">
                          <script type="dojo/connect" event="onClick" args="evt">
 		                      showPlanSaveDates();
+                          return false;  
+                         </script>
+                        </button>
+                      </td>
+                       <td width="32px">
+                        <button id="saveBaselineButton" dojoType="dijit.form.Button" showlabel="false"
+                         title="<?php echo i18n('savePlanningBaseline');?>"
+                         iconClass="dijitButtonIcon dijitButtonIconSavePlan" class="detailButton">
+                         <script type="dojo/connect" event="onClick" args="evt">
+		                      showPlanningBaseline();
                           return false;  
                          </script>
                         </button>
