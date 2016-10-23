@@ -259,18 +259,12 @@ $value['IconSize'] = "'16' for small icons, '22' for medium icons, '32' for big 
 $pname['IconSize'] = 'paramIconSize';
 $ctrls['IconSize'] = '=16=22=32=';
 
-$param['DefaultTheme'] = 'ProjeQtOr';                              
+$param['DefaultTheme'] = 'ProjeQtOrFlatBlue';                              
 $label['DefaultTheme'] = "Default color theme, proposed while login";
 $value['DefaultTheme'] = "select a theme in the list";
 $pname['DefaultTheme'] = 'defaultTheme';
-$ctrls['DefaultTheme'] = '=ProjeQtOr=ProjeQtOrContrasted=ProjeQtOrLight'
-                       . '=blue=blueLight=blueContrast'
-                       . '=red=redLight=redContrast'
-                       . '=green=greenLight=greenContrast'
-                       . '=orange=orangeLight=orangeContrast'
-                       . '=grey=greyLight=greyContrast'
-                       . '=white=random=';
-
+$ctrls['DefaultTheme'] = '=ProjeQtOrFlatBlue=ProjeQtOrFlatRed=ProjeQtOrFlatGreen=ProjeQtorFlatGrey'
+                        .'=ProjeQtOr=ProjeQtOrFire=ProjeQtOrForest=ProjeQtOrEarth=ProjeQtOrWater=ProjeQtOrWine=';
 /*                       
 $param['crlf06']='';
 $label['crlf06']='crlf';

@@ -1,7 +1,7 @@
 <?php
 include_once('../tool/projeqtor.php');
 
-$tkt=new Ticket(3)
+$tkt=new Ticket(3);
 echo securityGetAccessRightYesNo('menuTicket', 'update', $this);
 
 $user=getSessionUser();

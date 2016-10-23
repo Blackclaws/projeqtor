@@ -246,7 +246,7 @@ function drawTableFromObjectList($objectList) {
       region="top" style="padding:5px;padding-bottom:20px;max-height:100px;padding-left:300px;z-index:999"></div>
 <table width="100%">
   <tr height="100%" style="vertical-align: middle;">
-    <td width="50px" align="center"><?php echo formatIcon('Habilitation', 32, null, true);?></td>
+    <td width="50px" align="center"><?php echo formatIcon(ucfirst($type), 32, null, true);?></td>
     <td><span class="title"><?php echo str_replace(" ","&nbsp;",i18n('menu'.ucfirst($type)))?>&nbsp;</span>
     </td>
     <td width="10px">&nbsp;</td>
