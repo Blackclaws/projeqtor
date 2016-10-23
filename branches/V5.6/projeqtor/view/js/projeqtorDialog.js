@@ -2985,6 +2985,22 @@ function planSaveDates() {
       "dialogPlanSaveDatesForm", true, null);
   dijit.byId("dialogPlanSaveDates").hide();
 }
+function showPlanningBaseline() {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  callBack=function() {
+    var proj=dijit.byId('idProjectPlan');
+    if (proj) {
+      dijit.byId('idProjectPlanBaseline').set('value', proj.get('value'));
+    }
+  };
+  loadDialog('dialogPlanBaseline', callBack, true);
+}
+function savePlanningBaseline() {
+  dijit.byId("dialogPlanBaseline").hide();
+}
 // =============================================================================
 // = Filter
 // =============================================================================
@@ -3396,8 +3412,7 @@ function selectFilterContinue() {
     var doc=top;
   }
   if (dijit.byId('filterNameDisplay')) {
-    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get(
-        'value');
+    dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
   }
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   dojo.xhrPost({
@@ -3416,7 +3431,7 @@ function selectFilterContinue() {
       "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
           + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
       false, 'returnFromFilter', false);
-  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Kanban' || dojo.byId('objectClassManual').value=='LiveMeeting')){
+  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Plugin_kanban' || dojo.byId('objectClassManual').value=='Plugin_liveMeeting')){
     loadContent("../plugin/kanban/kanbanView.php?idKanban="+dojo.byId('idKanban').value, "divKanbanContainer");
   }else{
     doc.refreshJsonList(dojo.byId('objectClass').value);

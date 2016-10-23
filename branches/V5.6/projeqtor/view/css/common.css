@@ -2039,6 +2039,7 @@ table.dijitCalendarContainer {
 .dijitButtonIconToday { background-position: -676px;}
 .dijitButtonIconExit { background-position: -701px;}
 .dijitButtonIconStats { background-position: -726px;}
+.dijitButtonIconValidPlan { background-position: -751px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
