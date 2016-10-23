@@ -3395,7 +3395,7 @@ function selectFilterContinue() {
       "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
           + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
       false, 'returnFromFilter', false);
-  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Kanban' || dojo.byId('objectClassManual').value=='LiveMeeting')){
+  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Plugin_kanban' || dojo.byId('objectClassManual').value=='Plugin_liveMeeting')){
     loadContent("../plugin/kanban/kanbanView.php?idKanban="+dojo.byId('idKanban').value, "divKanbanContainer");
   }else{
     doc.refreshJsonList(dojo.byId('objectClass').value);
