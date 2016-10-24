@@ -24,11 +24,27 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+$base=new Baseline();
+$crit=array("idUser"=>getSessionUser()->id);
+$proj=null;
+if (array_key_exists('project',$_SESSION)) {
+  $proj=$_SESSION['project'];
+}
+if ($proj=="*" or ! $proj) {
+  $proj=null;
+} else {
+  $crit['idProject']=$proj;
+}
+
+$listeBase=$base->getSqlElementsFromCriteria($crit,false, null, 'idProject asc, baselineNumber desc');
+$currentBaseline=new Baseline();
 ?>
 <table width="500px">
+    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n("saveNewBaseline");?></td></tr>
+    <tr><td >&nbsp;</td></tr>
     <tr>
       <td width="100%">
-       <form id='dialogPlanBaselineForm' name='dialogPlanBaselineForm' onSubmit="return false;">
+       <form dojoType="dijit.form.Form" id='dialogPlanBaselineForm' name='dialogPlanBaselineForm' onSubmit="return false;">
          <table width="100%" >
            <tr>
              <td class="dialogLabel"  >
@@ -38,13 +54,8 @@
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="idProjectPlanBaseline" name="idProjectPlanBaseline" 
-                class="input" value="" >
+                class="input required" required value="" >
                  <?php 
-                    $proj=null; 
-                    if (array_key_exists('project',$_SESSION)) {
-                        $proj=$_SESSION['project'];
-                    }
-                    if ($proj=="*" or ! $proj) $proj=null;
                     htmlDrawOptionForReference('idProject', $proj, null, false);
                  ?>
                </select>
@@ -56,13 +67,13 @@
                <label for="namePlanBaseline" ><?php echo i18n("colName") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="namePlanBaseline" name="namePlanBaseline" dojoType="dijit.form.TextBox" />
+               <input id="namePlanBaseline" name="namePlanBaseline" dojoType="dijit.form.ValidationTextBox" class="input required" required  />
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel"  >
-               <label for="startDatePlan" ><?php echo i18n("colStartDate") ?>&nbsp;:&nbsp;</label>
+               <label for="datePlanBaseline" ><?php echo i18n("colDate") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <div dojoType="dijit.form.DateTextBox" 
@@ -77,6 +88,26 @@
                </div>
              </td>
            </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr><td colspan="2">
+            <table width="100%"><tr height="25px">
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="planBaselinePrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="planBaselinePrivacy" id="planBaselinePrivacyPublic" value="1" <?php if ($currentBaseline->idPrivacy==1 or !$currentBaseline->id) echo "checked";?> />
+            </td>
+            <td width="34%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="planBaselinePrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
+              <?php $res=new Resource(getSessionUser()->id);
+                    $hasTeam=($res->id and $res->idTeam)?true:false;
+              ?>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="planBaselinePrivacy" id="planBaselinePrivacyTeam" value="2" <?php if ($currentBaseline->idPrivacy==2) echo "checked"; if (!$hasTeam) echo ' disabled ';?> />
+            </td>
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="planBaselinePrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="planBaselinePrivacy" id="planBaselinePrivacyPrivate" value="3" <?php if ($currentBaseline->idPrivacy==3) echo "checked";?> />
+            </td>
+          </tr></table>
+          </td></tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
          </table>
         </form>
@@ -93,4 +124,32 @@
         </button>
       </td>
     </tr>
+    <tr><td >&nbsp;</td></tr>
+    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n("existingBaselines");?></td></tr>
+    <?php if (count($listeBase)==0) {?>
+    <tr><td style="width:100%;padding:10px;text-align:center;"><?php echo i18n("noBaseline");?></td></tr>
+    <?php } else {?>
+    <tr><td style="width:100%;">
+      <br/>
+      <table width="100%">
+      <?php
+        echo '<table style="width:100%">';
+        echo "<tr><td class='noteHeader' style='width:10%'>".i18n("colId")."</td>"
+                ."<td class='noteHeader' style='width:25%'>".i18n("colIdProject")."</td>"
+                ."<td class='noteHeader' style='width:5%'>".i18n("colLineNumber")."</td>"
+                ."<td class='noteHeader' style='width:15%'>".i18n("colDate")."</td>"
+                ."<td class='noteHeader' style='width:45%'>".i18n("colName")."</td></tr>";
+        foreach($listeBase as $base) {
+          echo '<tr><td class="noteData">#'.$base->id.'</td>'
+                  .'<td class="noteData">'.SqlList::getNameFromId('Project', $base->idProject).'</td>'
+                  .'<td class="noteData" style="text-align:center">'.$base->baselineNumber.'</td>'
+                  .'<td class="noteData" style="text-align:center">'.htmlFormatDate($base->baselineDate).'</td>'
+                  .'<td class="noteData">'.$base->name.'</td></tr>';
+        }
+        echo '</table>';
+      ?>
+      </table>
+    </td></tr>
+    <?php }?>
+    <tr><td >&nbsp;</td></tr>
   </table>

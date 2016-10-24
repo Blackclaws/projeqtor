@@ -32,10 +32,11 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
-  <link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
+  
+  <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
 </head>
 
-<body id="body" >
+<body id="body" class="ProjeQtOrFlatGrey" >
 <i> <?php echo i18n("messagePreview");?></i>
 </body>
 </html>

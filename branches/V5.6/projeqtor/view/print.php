@@ -98,6 +98,7 @@
   <title><?php echo getPrintTitle();?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
 <?php if (! isset($debugIEcompatibility) or $debugIEcompatibility==false) {?>  
@@ -151,7 +152,7 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="white" onload="top.hideWait();">
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="ProjeQtOrFlatGrey" onload="top.hideWait();">
   <?php 
   }
   $page=$_REQUEST['page'];

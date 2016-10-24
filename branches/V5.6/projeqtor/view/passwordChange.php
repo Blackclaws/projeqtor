@@ -43,7 +43,7 @@
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
-  <link rel="stylesheet" href="css/projeqtorFlat.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
