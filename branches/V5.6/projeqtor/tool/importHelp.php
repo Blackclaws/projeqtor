@@ -37,6 +37,7 @@ scriptLog('   ->/tool/importHelp.php');
   <link rel="shortcut icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
+  <link rel="stylesheet" type="text/css" href="../view/css/projeqtorFlat.css" />
 </head>
 
 <body class="white" onLoad="top.hideWait();" style="overflow: auto; ">

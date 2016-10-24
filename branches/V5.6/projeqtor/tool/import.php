@@ -37,6 +37,7 @@ header ('Content-Type: text/html; charset=UTF-8');
   <link rel="shortcut icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
+  <link rel="stylesheet" type="text/css" href="../view/css/projeqtorFlat.css" />
   <script type="text/javascript" src="../view/js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
 </head>
 

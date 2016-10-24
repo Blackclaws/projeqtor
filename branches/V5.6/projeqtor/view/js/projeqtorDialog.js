@@ -2999,7 +2999,17 @@ function showPlanningBaseline() {
   loadDialog('dialogPlanBaseline', callBack, true);
 }
 function savePlanningBaseline() {
-  dijit.byId("dialogPlanBaseline").hide();
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var formVar=dijit.byId('dialogPlanBaselineForm');
+  if (formVar.validate()) {
+    loadContent("../tool/savePlanningBaseline.php", "planResultDiv", "dialogPlanBaselineForm", true, null);
+    dijit.byId("dialogPlanBaseline").hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
 }
 // =============================================================================
 // = Filter

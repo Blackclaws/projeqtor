@@ -26,6 +26,8 @@
 
 ?>
 <table width="500px">
+    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n("savePlannedDates");?></td></tr>
+    <tr><td >&nbsp;</td></tr>
     <tr>
       <td width="100%">
        <form id='dialogPlanSaveDatesForm' name='dialogPlanSaveDatesForm' onSubmit="return false;">
