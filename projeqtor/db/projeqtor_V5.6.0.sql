@@ -10,9 +10,9 @@ ALTER TABLE `${prefix}version` ADD `idUser` int(12) UNSIGNED DEFAULT NULL;
 ALTER TABLE `${prefix}action` ADD `idContact` int(12) UNSIGNED DEFAULT NULL;
 ALTER TABLE `${prefix}dependency` ADD `comment` varchar(4000)DEFAULT NULL;
 
-UPDATE `${prefix}parameter` set paramValue='ProjeQtOrFlatBlue' where paramValue='ProjeQtOr' and (paramCode='defaultTheme' or paramCode='defaultTheme');
-UPDATE `${prefix}parameter` set paramValue='ProjeQtOrFlatRed' where paramValue='ProjeQtOrFire' and (paramCode='defaultTheme' or paramCode='defaultTheme');
-UPDATE `${prefix}parameter` set paramValue='ProjeQtOrFlatGreen' where paramValue='ProjeQtOrForest' and (paramCode='defaultTheme' or paramCode='defaultTheme');
+UPDATE `${prefix}parameter` set parameterValue='ProjeQtOrFlatBlue' where parameterValue='ProjeQtOr' and (parameterCode='theme' or parameterCode='defaultTheme');
+UPDATE `${prefix}parameter` set parameterValue='ProjeQtOrFlatRed' where parameterValue='ProjeQtOrFire' and (parameterCode='theme' or parameterCode='defaultTheme');
+UPDATE `${prefix}parameter` set parameterValue='ProjeQtOrFlatGreen' where parameterValue='ProjeQtOrForest' and (parameterCode='theme' or parameterCode='defaultTheme');
 
 UPDATE `${prefix}product` set idUser=
 (select min(idUser) from `${prefix}history` where (refType='Product' or refType='Component') and refId=`${prefix}product`.id and operationDate=
@@ -34,14 +34,22 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (2,59,1),
 (3,59,1);
 
-CREATE TABLE `baseline` (
+CREATE TABLE `${prefix}baseline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT NULL,
+  `baselineNumber` int(3) unsigned DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `baselineDate` date DEFAULT NULL
+  `baselineDate` date DEFAULT NULL,
+  `creationDateTime` datetime DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `idTeam` int(12) unsigned DEFAULT NULL,
+  `idPrivacy` int(12) unsigned DEFAULT 1,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX `baselineProject` ON `${prefix}baseline` (`idProject`);
+CREATE INDEX `baselineUser` ON `${prefix}baseline` (`idUser`);
   
-CREATE TABLE `plannedworkbaseline` (
+CREATE TABLE `${prefix}plannedworkbaseline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idBaseline` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned NOT NULL,
@@ -56,9 +64,10 @@ CREATE TABLE `plannedworkbaseline` (
   `month` varchar(6) DEFAULT NULL,
   `year` varchar(4) DEFAULT NULL,
   `dailyCost` decimal(7,2) DEFAULT NULL,
-  `cost` decimal(11,2) DEFAULT NULL
+  `cost` decimal(11,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-CREATE INDEX plannedworkbaselineWorkDay ON `${prefix}plannedworkbaseline` (`workDay`);
+CREATE INDEX plannedworkbaselineWorkDate ON `${prefix}plannedworkbaseline` (`workDate`);
 CREATE INDEX plannedworkbaselineRef ON `${prefix}plannedworkbaseline` (`refType`,`refId`);
 CREATE INDEX plannedworkbaselineBaseline ON `${prefix}plannedworkbaseline` (`idBaseline`);
 
@@ -134,7 +143,8 @@ CREATE TABLE `${prefix}planningelementbaseline` (
   `validatedEndFraction` decimal(6,5) DEFAULT '1.00000',
   `reserveAmount` decimal(11,2) unsigned DEFAULT '0.00',
   `validatedExpenseCalculated` int(1) unsigned DEFAULT '0',
-  `needReplan` int(1) unsigned DEFAULT '0'
+  `needReplan` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX planningelementbaselineBaseline ON `${prefix}planningelementbaseline` (`idBaseline`);

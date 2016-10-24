@@ -114,7 +114,7 @@ CREATE INDEX parameterProject ON `${prefix}parameter` (`idProject`);
 CREATE INDEX parameterUser ON `${prefix}parameter` (`idUser`);
   
 CREATE INDEX planningelementProject ON `${prefix}planningelement` (`idProject`);
-CREATE INDEX planningelementWbsSortable ON `${prefix}planningelement` (`wbsSortable`);  
+CREATE INDEX planningelementWbsSortable ON `${prefix}planningelement` (`wbsSortable`(255));  
 
 CREATE INDEX projectProject ON `${prefix}project` (`idProject`);
 CREATE INDEX projectClient ON `${prefix}project` (`idClient`);

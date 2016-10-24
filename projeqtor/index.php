@@ -46,6 +46,7 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   <link rel="shortcut icon" href="view/img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="view/img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="view/css/projeqtor.css" />
+  <link rel="stylesheet" type="text/css" href="view/css/projeqtorFlat.css" />
   <title>ProjeQtOr</title>
   <script language="javascript">
     function autoRedirect() {
