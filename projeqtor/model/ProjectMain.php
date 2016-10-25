@@ -68,12 +68,9 @@ class ProjectMain extends SqlElement {
   public $description;
   public $objectives;
   public $_sec_Progress;
-  
   public $ProjectPlanningElement; // is an object
-  
   public $_sec_Affectations;
   public $_spe_affectations;
-  
   public $_sec_Productproject_products;
   public $_ProductProject=array();
   

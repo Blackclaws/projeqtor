@@ -30,21 +30,40 @@ $proj=null;
 if (array_key_exists('project',$_SESSION)) {
   $proj=$_SESSION['project'];
 }
+$mode="add";
+$idBaseline=null;
+if (array_key_exists('editMode',$_REQUEST)) {
+  $mode="edit";
+  if (! array_key_exists('baselineId',$_REQUEST)) {
+    throwError("parameter baselineId not found in request");
+    exit;
+  }
+  $idBaseline=$_REQUEST['baselineId'];
+}
+
+$currentBaseline=new Baseline($idBaseline);
+if ($mode=='edit') {
+  $proj=$currentBaseline->idProject;
+}
+
 if ($proj=="*" or ! $proj) {
   $proj=null;
 } else {
   $crit['idProject']=$proj;
 }
-
 $listeBase=$base->getSqlElementsFromCriteria($crit,false, null, 'idProject asc, baselineNumber desc');
-$currentBaseline=new Baseline();
+
+$crit=array('idProject'=>$proj,'baselineDate'=>date('Y-m-d'));
+$listCtrlDate=$base->getSqlElementsFromCriteria($crit);
+
 ?>
 <table width="500px">
-    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n("saveNewBaseline");?></td></tr>
+    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n($mode."Baseline");?></td></tr>
     <tr><td >&nbsp;</td></tr>
     <tr>
       <td width="100%">
        <form dojoType="dijit.form.Form" id='dialogPlanBaselineForm' name='dialogPlanBaselineForm' onSubmit="return false;">
+         <input type="hidden" name="idBaselinePlanBaseline" value="<?php echo $currentBaseline->id;?>" /> 
          <table width="100%" >
            <tr>
              <td class="dialogLabel"  >
@@ -52,9 +71,10 @@ $currentBaseline=new Baseline();
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
-               <?php echo autoOpenFilteringSelect();?>
+               <?php echo autoOpenFilteringSelect(); 
+               if ($mode=='edit') echo 'readonly';?>
                 id="idProjectPlanBaseline" name="idProjectPlanBaseline" 
-                class="input required" required value="" >
+                class="input required" required >
                  <?php 
                     htmlDrawOptionForReference('idProject', $proj, null, false);
                  ?>
@@ -67,7 +87,8 @@ $currentBaseline=new Baseline();
                <label for="namePlanBaseline" ><?php echo i18n("colName") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="namePlanBaseline" name="namePlanBaseline" dojoType="dijit.form.ValidationTextBox" class="input required" required  />
+               <input id="namePlanBaseline" name="namePlanBaseline" dojoType="dijit.form.ValidationTextBox" 
+                 class="input required" required value="<?php echo $currentBaseline->name;?>" />
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -84,10 +105,25 @@ $currentBaseline=new Baseline();
                  style="width:100px; text-align: center;" class="input"
                  hasDownArrow="true"
                  readonly
-                 value="<?php echo date('Y-m-d');?>" >
+                 value="<?php echo ($mode=='edit')?$currentBaseline->baselineDate:date('Y-m-d');?>" >
                </div>
              </td>
            </tr>
+           <?php if ($mode=="edit"){?>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="numberBaseline" ><?php echo i18n("colLineNumber") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div dojoType="dijit.form.NumberTextBox" 
+                 id="numberBaseline" name="numberBaseline" 
+                 type="text" style="width:50px; class="input"
+                 readonly value="<?php echo $currentBaseline->baselineNumber;?>" >
+               </div>
+             </td>
+           </tr>
+           <?php }?>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr><td colspan="2">
             <table width="100%"><tr height="25px">
@@ -113,6 +149,23 @@ $currentBaseline=new Baseline();
         </form>
       </td>
     </tr>
+    <?php if ($mode=='edit') {?>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogPlanBaselineCancel">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogPlanBaseline').hide();showPlanningBaseline();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogPlanBaselineSubmit" onclick="protectDblClick(this);savePlanningBaseline();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+    <?php } else {
+      if (count($listCtrlDate)>0) {?>
+    <tr><td><div style="text-align:center" class="messageINVALID"><?php echo i18n('saveNewBaselineAlreadyExists')?></div></td></tr>  
+    <tr><td >&nbsp;</td></tr>
+    <?php }?>
     <tr>
       <td align="center">
         <input type="hidden" id="dialogPlanBaselineCancel">
@@ -134,13 +187,18 @@ $currentBaseline=new Baseline();
       <table width="100%">
       <?php
         echo '<table style="width:100%">';
-        echo "<tr><td class='noteHeader' style='width:10%'>".i18n("colId")."</td>"
+        echo "<tr><td class='noteHeader' style='width:15%'>".i18n("colId")."</td>"
                 ."<td class='noteHeader' style='width:25%'>".i18n("colIdProject")."</td>"
                 ."<td class='noteHeader' style='width:5%'>".i18n("colLineNumber")."</td>"
                 ."<td class='noteHeader' style='width:15%'>".i18n("colDate")."</td>"
-                ."<td class='noteHeader' style='width:45%'>".i18n("colName")."</td></tr>";
+                ."<td class='noteHeader' style='width:40%'>".i18n("colName")."</td></tr>";
         foreach($listeBase as $base) {
-          echo '<tr><td class="noteData">#'.$base->id.'</td>'
+          echo '<tr><td class="noteData"><table><tr><td style="width:50%" class="smallButtonsGroup">';
+          if ($base->idUser==getSessionUser()->id) {
+            echo ' <a onClick="editBaseline(' . htmlEncode($base->id) .');" title="' . i18n('editBaseline') . '" > '.formatSmallButton('Edit').'</a>';
+            echo ' <a onClick="removeBaseline(' . htmlEncode($base->id) . ');" title="' . i18n('removeBaseline') . '" > '.formatSmallButton('Remove').'</a>';
+          }
+          echo '&nbsp;</td><td>#'.$base->id.'</td></tr></table></td>'
                   .'<td class="noteData">'.SqlList::getNameFromId('Project', $base->idProject).'</td>'
                   .'<td class="noteData" style="text-align:center">'.$base->baselineNumber.'</td>'
                   .'<td class="noteData" style="text-align:center">'.htmlFormatDate($base->baselineDate).'</td>'
@@ -152,4 +210,5 @@ $currentBaseline=new Baseline();
     </td></tr>
     <?php }?>
     <tr><td >&nbsp;</td></tr>
+    <?php }?>
   </table>

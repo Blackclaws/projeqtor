@@ -70,7 +70,7 @@ abstract class SqlElement {
     "AccessScopeUpdate" =>  array("AccessProfile"=>"controlStrict"),
     "AccessScopeDelete" =>  array("AccessProfile"=>"controlStrict"),
     "Assignment" =>         array("PlannedWork"=>"cascade",
-	     				                    "Work"=>"control"),
+	     				                    "Work"=>"controlStrict"),
     "Action" =>             array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
