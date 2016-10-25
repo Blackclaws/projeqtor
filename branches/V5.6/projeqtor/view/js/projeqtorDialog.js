@@ -2985,6 +2985,11 @@ function planSaveDates() {
       "dialogPlanSaveDatesForm", true, null);
   dijit.byId("dialogPlanSaveDates").hide();
 }
+
+//=============================================================================
+//= Baseline
+//=============================================================================
+
 function showPlanningBaseline() {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
@@ -3010,6 +3015,19 @@ function savePlanningBaseline() {
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
+}
+function editBaseline(baselineId) {
+  var params="&editMode=true&baselineId="+baselineId;
+  loadDialog('dialogPlanBaseline', null, true, params, true);
+}
+
+function removeBaseline(baselineId) {
+  var param="?baselineId="+baselineId;
+  actionOK=function() {
+    loadContent("../tool/removePlanningBaseline.php"+param, "dialogPlanBaseline", null);
+  };
+  msg=i18n('confirmDelete', new Array(i18n('Baseline'), baselineId));
+  showConfirm(msg, actionOK);
 }
 // =============================================================================
 // = Filter
