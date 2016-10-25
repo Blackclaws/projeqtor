@@ -53,29 +53,45 @@ if (! array_key_exists('planBaselinePrivacy',$_REQUEST)) {
 $privacy=$_REQUEST['planBaselinePrivacy']; // validated to be numeric in SqlElement base constructor
 Security::checkValidInteger($privacy);
 
-$baseline=new Baseline();
-$baseline->idProject=$idProject;
-$baseline->baselineNumber=null;
-$baseline->name=$name;
-$baseline->baselineDate=$date;
-$baseline->idUser=getSessionUser()->id;
-$baseline->creationDateTime=date('Y-m-d H:i:s');
-$baseline->idPrivacy=$privacy;
-$res=new Resource(getSessionUser()->id);
-$baseline->idTeam=$res->idTeam;
+
+$id=null;
+if (array_key_exists('idBaselinePlanBaseline',$_REQUEST)) {
+  $id=$_REQUEST['idBaselinePlanBaseline'];
+}
+Security::checkValidId($id);
+$mode=($id)?'edit':'add'; 
 
 projeqtor_set_time_limit(600);
 Sql::beginTransaction();
-$result=$baseline->saveWithPlanning();
+
+$baseline=new Baseline($id);
+if ($id) {
+  $baseline->name=$name;
+  $baseline->idPrivacy=$privacy;
+  $result=$baseline->save();
+} else {
+  $baseline->idProject=$idProject;
+  $baseline->baselineNumber=null;
+  $baseline->name=$name;
+  $baseline->baselineDate=$date;
+  $baseline->idUser=getSessionUser()->id;
+  $baseline->creationDateTime=date('Y-m-d H:i:s');
+  $baseline->idPrivacy=$privacy;
+  $res=new Resource(getSessionUser()->id);
+  $baseline->idTeam=$res->idTeam;
+  $result=$baseline->saveWithPlanning();
+}
 $result.= '<input type="hidden" id="lastPlanStatus" value="OK" />';
 // return $result;
 // Message of correct saving
 displayLastOperationStatus($result);
 
-// Once long treatment has been done (and after commit), define Number
-$max=$baseline->countSqlElementsFromCriteria(array('idProject'=>$idProject));
-$baseline->baselineNumber=$max;
-$baseline->save();
+if ($mode='add') {
+  // Once long treatment has been done (and after commit), define Number
+  $maxList=$baseline->getSqlElementsFromCriteria(array('idProject'=>$idProject),false,null,'baselineNumber desc');
+  $baseline->baselineNumber=(count($maxList)==0)?1:reset($maxList)->baselineNumber+1;
+  $baseline->save();
+}
 
 
 ?>

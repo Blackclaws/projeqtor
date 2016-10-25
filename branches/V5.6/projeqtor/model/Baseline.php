@@ -63,14 +63,26 @@ class Baseline extends SqlElement {
 // ============================================================================**********
     
   public function saveWithPlanning() {
+    // Remove existing for same date : only one baseline a day
+    $crit=array('idProject'=>$this->idProject,'baselineDate'=>$this->baselineDate);
+    $list=$this->getSqlElementsFromCriteria($crit);
+    foreach ($list as $base) {
+      $base->deleteWithPlanning();
+    }
     $result = parent::save();
     $this->copyItem('PlanningElement');
     $this->copyItem('PlannedWork');
     return $result;
   }
   
-  public function delete() {
-
+  public function deleteWithPlanning() {
+    $clause='idBaseline='.Sql::fmtId($this->id);
+    $pwb=new PlannedWorkBaseline();
+    $pwb->purge($clause);
+    $peb=new PlanningElementBaseline();
+    $peb->purge($clause);
+    $result=parent::delete();
+    return $result;
   }
   
   public function copyItem($itemFrom) {
