@@ -44,6 +44,7 @@ CREATE TABLE `${prefix}baseline` (
   `idUser` int(12) unsigned DEFAULT NULL,
   `idTeam` int(12) unsigned DEFAULT NULL,
   `idPrivacy` int(12) unsigned DEFAULT 1,
+  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `baselineProject` ON `${prefix}baseline` (`idProject`);

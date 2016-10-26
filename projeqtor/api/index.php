@@ -209,16 +209,16 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     returnError($invalidQuery, $querySyntax);
   }
 } else IF ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST' or $_SERVER['REQUEST_METHOD']=='DELETE') {
-  // PUT, POST or DELETE : security => data is encoded with API Key (AES 256)
+  // PUT, POST or DELETE : security => data is encoded with API Key (AES 128, 192 or 256 depending on $aesKeyLength)
   // So caller needs correct User/Password and API Key.
   // We can trust data.
   // NB : access rights will be controlled on insert/update/delete (!)
 	if (isset($_REQUEST['data']) ) {
 		$dataEncoded=$_REQUEST['data'];
-		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
+		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, Parameter::getGlobalParameter('aesKeyLength'));
 	} else {
 		$dataEncoded = file_get_contents("php://input");
-		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
+		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, Parameter::getGlobalParameter('aesKeyLength'));
 	}
 	if (! $data) {
 		returnError($invalidQuery, "'data' missing for method ".$_SERVER['REQUEST_METHOD']);

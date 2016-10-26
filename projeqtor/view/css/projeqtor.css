@@ -1249,8 +1249,7 @@ label, .label, .smallLabel {
   height: 26px;
 }
 .pseudoButton:hover {
-  background-color: #ffffff;
-  background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
+  background: rgba(255,255,255,1);
   color: #000000;
   text-shadow: 1px 1px #FFFFFF  ;
 }

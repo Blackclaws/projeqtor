@@ -46,6 +46,8 @@ if (! array_key_exists('testCaseRunTestSession',$_REQUEST)) {
 }
 $session=($_REQUEST['testCaseRunTestSession']);
 
+////KEVIN RAJOUT 17H55
+$testCaseList = null;
 if ($mode=='add') {
 	if (! array_key_exists('testCaseRunTestCaseList',$_REQUEST)) {
 	  throwError('testCaseRunTestCaseList parameter not found in REQUEST');
@@ -53,32 +55,45 @@ if ($mode=='add') {
 	$testCaseList=($_REQUEST['testCaseRunTestCaseList']);
 }
 
-if (! array_key_exists('testCaseRunTestCase',$_REQUEST)) {
-  throwError('testCaseRunTestCase parameter not found in REQUEST');
+$testCase = null;
+if ($mode=='edit'){
+  if (! array_key_exists('testCaseRunTestCase',$_REQUEST)) {
+    throwError('testCaseRunTestCase parameter not found in REQUEST');
+  }
+  $testCase=($_REQUEST['testCaseRunTestCase']);
 }
-$testCase=($_REQUEST['testCaseRunTestCase']);
 
 if (! array_key_exists('testCaseRunComment',$_REQUEST)) {
   throwError('testCaseRunComment parameter not found in REQUEST');
 }
 $comment=($_REQUEST['testCaseRunComment']);
 
+$status=null;
+if ($mode=='edit'){
 if (! array_key_exists('testCaseRunStatus',$_REQUEST)) {
   throwError('testCaseRunStatus parameter not found in REQUEST');
 }
 $status=($_REQUEST['testCaseRunStatus']);
+}
 
+$ticket=null;
+if($mode=='add'){
 if (! array_key_exists('testCaseRunTicket',$_REQUEST)) {
   throwError('testCaseRunTicket parameter not found in REQUEST');
 }
 $ticket=($_REQUEST['testCaseRunTicket']);
+}
 
+$allowDuplicate=null;
+if ($mode=='add'){
 $allowDuplicate=false;
 if (array_key_exists('testCaseRunAllowDuplicate',$_REQUEST)) {
   $allowDuplicate=true;
 }
+}
 
 $arrayTestCase=array();
+debugLog($testCaseList);
 if ($mode=='add') {
 	$id='';
 	if (is_array($testCaseList)) {
@@ -119,7 +134,7 @@ foreach($arrayTestCase as $testCaseId) {
         $result .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
   		}
   	}
-  }    
+  } 
   if ($save) {
     $res=$testCaseRun->save($allowDuplicate);
 	  if (!$result) {
@@ -137,6 +152,7 @@ foreach($arrayTestCase as $testCaseId) {
 	    } 
 	  }
   }
+  debugLog($testCaseRun);
 }
 displayLastOperationStatus($result);
 // Message of correct saving

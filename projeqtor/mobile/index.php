@@ -50,6 +50,7 @@ function i18nMobile($value) {
 		mblHideAddressBar: true,
 		parseOnLoad: true 
     };
+		var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;
   </script>
 <!-- dojo bootstrap -->
 <!--  <script type="text/javascript" src="../external/dojo/projeqtorMobileDojo.js"></script> -->

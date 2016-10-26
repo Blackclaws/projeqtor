@@ -252,7 +252,7 @@ if ($id) {
   }*/
   require_once "../external/phpAES/aes.class.php";
   require_once "../external/phpAES/aesctr.class.php";
-  $data=AesCtr::encrypt($data, $apiKeyParam, 256);
+  $data=AesCtr::encrypt($data, $apiKeyParam, Parameter::getGlobalParameter('aesKeyLength'));
 } else {
 	echo "invalid query - API not called#$#$#";
 	exit;

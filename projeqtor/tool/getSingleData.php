@@ -98,6 +98,22 @@
       $idDependency=$_REQUEST['idDependency'];
       $dep=new Dependency($idDependency);
       echo $dep->comment;	  
+    } else if ($type=='count') {
+      $class=$_REQUEST['class'];
+      Security::checkValidClass($class);
+      $obj=new $class();
+      $cpt=1;
+      $crit=array();
+      while (isset($_REQUEST['param'.$cpt]) and isset($_REQUEST['value'.$cpt]) ){
+        $param=$_REQUEST['param'.$cpt];
+        Security::checkValidAlphanumeric($param);
+        $value=$_REQUEST['value'.$cpt];
+        $value=htmlEncode($value);
+        $crit[$param]=$value;
+        $cpt++;
+      }      
+      $val=$obj->countSqlElementsFromCriteria($crit);
+      echo $val;
     } else {          
       echo '';
     } 
