@@ -33,7 +33,7 @@ require_once "../external/phpAES/aesctr.class.php";
 $username="";
 if (isset($_REQUEST['username'])) {
 	$username=$_REQUEST['username'];
-	$username=AesCtr::decrypt($username, md5(session_id()), 256);	
+	$username=AesCtr::decrypt($username, md5(session_id()), Parameter::getGlobalParameter('aesKeyLength'));	
 }
 if (! function_exists('mb_check_encoding')) {
   $msg="mbstring module not enabled (mb_check_encoding not existing) : install module and unable module in php.ini";

@@ -218,6 +218,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
     <?php $fmt=new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );?>
     var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
+    var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -706,7 +707,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
                   <tr>
-                    <td style="color:#545381;position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
+                    <td class="dijitTreeRow" style="position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
                       <?php echo "$copyright<br>$version";?>
                     </td>
                     <td  style="width:35px">

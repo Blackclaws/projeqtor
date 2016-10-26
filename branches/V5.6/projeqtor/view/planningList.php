@@ -75,6 +75,13 @@ if ($canPlan) {
   $canPlan=(count($plannableProjectsList)>0)?true:false;
 }
 
+$proj=null;
+if (array_key_exists('project',$_SESSION)) {
+  $proj=$_SESSION['project'];
+}
+if ($proj=='*' or !$proj) {
+  $proj=null;
+}
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
@@ -163,7 +170,7 @@ if ($canPlan) {
                     </tr>
                   </table>
 		            </td>
-                <td>
+                <td style="width:250px;">
                   <table>
                     <tr>
                     <?php if ($canPlan) { ?>
@@ -296,11 +303,40 @@ if ($canPlan) {
                     </tr>
                   </table>
                 </td>
-		            <td>
+		            <td style="">
                   <div id="planResultDiv" style="display:none" 
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
+                  <table>
+                  <tr><td style="font-weight:bold;text-align:center;"><?php echo i18n('displayBaseline');?></td></tr>
+                  <tr><td style="text-align:right"><?php echo i18n('baselineTop').'&nbsp;:&nbsp;';?>
+                  <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="selectBaselineTop" id="selectBaselineTop"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >
+                           refreshJsonPlanning();
+                        </script>
+                        <?php htmlDrawOptionForReference('idBaseline', null, null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                      </select>
+                  </td></tr>
+                  <tr><td style="text-align:right"><?php echo i18n('baselineBottom').'&nbsp;:&nbsp';?>
+                  
+                   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="selectBaselineBottom" id="selectBaselineBottom"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >
+                           refreshJsonPlanning();
+                        </script>
+                        <?php htmlDrawOptionForReference('idBaseline', null, null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                      </select>
+                  </td></tr>
+                  </table>
                 </td>
+                
 		            <td style="text-align: right; align: right;">
 		              <table width="100%"><tr><td>
                   <?php echo i18n("labelShowWbs");?>

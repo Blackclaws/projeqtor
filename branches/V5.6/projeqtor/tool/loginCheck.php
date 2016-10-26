@@ -35,7 +35,7 @@
   $password="";
   if (array_key_exists('login',$_POST)) {
     $login=$_POST['login'];
-    $login=AesCtr::decrypt($login, $_SESSION['sessionSalt'], 256);
+    $login=AesCtr::decrypt($login, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
   }
   if (array_key_exists('password',$_POST)) {
     $password=$_POST['password'];
@@ -44,14 +44,14 @@
     debugTraceLog("loginCheck : no login provided");
     loginError();
   }
-  if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256)=="") {
+  if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'))=="") {
     debugTraceLog("loginCheck : no password or not encrypted / $password /".$_SESSION['sessionSalt']);
     loginError();
   }
   $dbVersion=Sql::getDbVersion();
   debugTraceLog("loginCheck : current db version = '$dbVersion'");
   if (! $dbVersion or $dbVersion=='0.0.0') {
-	  $password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256);
+	  $password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
 	  debugTraceLog("login for maintenance with '$login' / '$password'");
     if ($login=="admin" and $password=="admin") {
       include "../db/maintenance.php";

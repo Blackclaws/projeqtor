@@ -58,7 +58,7 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
 
 ?>
 <table width="500px">
-    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n($mode."Baseline");?></td></tr>
+    <tr><td class="section"><?php echo i18n($mode."Baseline");?></td></tr>
     <tr><td >&nbsp;</td></tr>
     <tr>
       <td width="100%">
@@ -78,6 +78,21 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                  <?php 
                     htmlDrawOptionForReference('idProject', $proj, null, false);
                  ?>
+                 <script type="dojo/connect" event="onChange" args="evt">
+                   dojo.xhrGet({
+                     url : '../tool/getSingleData.php?dataType=count&class=Baseline&param1=idProject&value1='+this.value+'&param2=baselineDate&value2=<?php echo date('Y-m-d');?>',
+                     handleAs : "text",
+                     load : function(data) {
+                       if (dojo.byId('baselineAlertAlreadyExists')) {
+                         if (parseInt(data)>0) {
+                           dojo.byId('baselineAlertAlreadyExists').style.display="block";
+                         } else {
+                           dojo.byId('baselineAlertAlreadyExists').style.display="none";
+                         }
+                       }
+                     }
+                   });
+                 </script>
                </select>
              </td>
            </tr>
@@ -161,11 +176,9 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
         </button>
       </td>
     </tr>
-    <?php } else {
-      if (count($listCtrlDate)>0) {?>
-    <tr><td><div style="text-align:center" class="messageINVALID"><?php echo i18n('saveNewBaselineAlreadyExists')?></div></td></tr>  
+    <?php } else {?>
+    <tr><td><div id="baselineAlertAlreadyExists" style="<?php if (count($listCtrlDate)==0) echo "display:none;";?>text-align:center" class="messageINVALID"><?php echo i18n('saveNewBaselineAlreadyExists')?></div></td></tr>  
     <tr><td >&nbsp;</td></tr>
-    <?php }?>
     <tr>
       <td align="center">
         <input type="hidden" id="dialogPlanBaselineCancel">
@@ -178,7 +191,7 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
       </td>
     </tr>
     <tr><td >&nbsp;</td></tr>
-    <tr><td style="width:100%;background-color:#F0F0F0;font-weight:bold;text-align:center;padding:10px;"><?php echo i18n("existingBaselines");?></td></tr>
+    <tr><td class="section"><?php echo i18n("existingBaselines");?></td></tr>
     <?php if (count($listeBase)==0) {?>
     <tr><td style="width:100%;padding:10px;text-align:center;"><?php echo i18n("noBaseline");?></td></tr>
     <?php } else {?>
