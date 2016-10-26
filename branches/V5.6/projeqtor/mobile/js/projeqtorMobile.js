@@ -25,7 +25,7 @@ function connect() {
     dojo.byId('login').focus();
     dojo.byId('password').focus();
     var login=dijit.byId('login').get('value');  
-    var crypted=Aes.Ctr.encrypt(login, aesLoginHash, 256);   
+    var crypted=Aes.Ctr.encrypt(login, aesLoginHash, aesKeyLength);   
     dojo.byId('login').focus();
     dojo.xhrGet({
       url: '../tool/getHash.php?username='+encodeURIComponent(crypted),
@@ -57,7 +57,7 @@ function cryptData(data) {
   var sessionSalt=arr[2];
   var pwd=dijit.byId('password').get('value');
   var login=dijit.byId('login').get('value');
-  dojo.byId('hashStringLogin').value=Aes.Ctr.encrypt(login, sessionSalt, 256);
+  dojo.byId('hashStringLogin').value=Aes.Ctr.encrypt(login, sessionSalt, aesKeyLength);
   if (crypto=='md5') {
     crypted=CryptoJS.MD5(pwd+userSalt);
     crypted=CryptoJS.MD5(crypted+sessionSalt);
@@ -67,7 +67,7 @@ function cryptData(data) {
     crypted=CryptoJS.SHA256(crypted+sessionSalt);
     dojo.byId('hashStringPassword').value=crypted;
   } else {
-    var crypted=Aes.Ctr.encrypt(pwd, sessionSalt, 256);
+    var crypted=Aes.Ctr.encrypt(pwd, sessionSalt, aesKeyLength);
     dojo.byId('hashStringPassword').value=crypted;
   }
 }

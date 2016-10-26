@@ -713,7 +713,7 @@ class UserOld extends SqlElement {
 			if (! isset($this->crypto)) {						
 				// With ild user, should always be unencrypted
 				$expected=$this->password; // is MD5 encrypted
-        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256));
+        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength')));
 			} else if ($this->crypto=='md5') {
 				$expected=$this->password.$_SESSION['sessionSalt'];
 				$expected=md5($expected);				
@@ -722,7 +722,7 @@ class UserOld extends SqlElement {
 				$expected=hash("sha256", $expected);
 			} else {
 				$expected=$this->password;
-				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
 			}
 			if ( $expected <> $parampassword) {
 				$this->unsuccessfullLogin();
@@ -733,7 +733,7 @@ class UserOld extends SqlElement {
 	  	}
 	  } else {
 	  	// Decode password
-	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
 	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        

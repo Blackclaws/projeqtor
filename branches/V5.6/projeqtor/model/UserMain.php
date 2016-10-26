@@ -908,11 +908,11 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 			  debugTraceLog("User->authenticate : migration, no encryption");
         // Migrating to V4.0.0 : $parampassword is not MD5 unencrypted, but User->password is
         $expected=$this->password; // is MD5 encrypted
-        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256));
+        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength')));
       } else { // no crypto
         debugTraceLog("User->authenticate : no encryption");
 				$expected=$this->password;
-				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
 			}
 			if ( $expected <> $parampassword) {
 				$this->unsuccessfullLogin();
@@ -927,7 +927,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 	    debugTraceLog("User->authenticate : LDAP authenticate");
 	  	disableCatchErrors();
 	  	// Decode password
-	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
 	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        

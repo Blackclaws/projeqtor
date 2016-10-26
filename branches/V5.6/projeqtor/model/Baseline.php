@@ -39,6 +39,7 @@ class Baseline extends SqlElement {
   public $creationDateTime;
   public $idPrivacy;
   public $idTeam;
+  public $idle;
     
   /** ==========================================================================
    * Constructor

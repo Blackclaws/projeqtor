@@ -90,6 +90,7 @@
     var aesLoginHash="<?php echo md5(session_id());?>";
     var browserLocaleDateFormat="";
     var browserLocaleDateFormatJs="";
+    var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
