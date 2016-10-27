@@ -61,9 +61,15 @@ var arrayClosed=new Array();
 var vGanttCurrentLine=-1;
 var linkInProgress=false;
 
-JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
-                            pParent, pOpen, pDepend, pCaption, pClass, pScope, pRealEnd, pPlanStart,
-                            pValidatedWork, pAssignedWork, pRealWork, pLeftWork, pPlannedWork, pPriority, pPlanningMode) {
+JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, 
+                            pLink, pMile, pRes, pComp, pGroup, 
+                            pParent, pOpen, pDepend, 
+                            pCaption, pClass, pScope, pRealEnd, pPlanStart,
+                            pValidatedWork, pAssignedWork, pRealWork, pLeftWork, pPlannedWork, 
+                            pPriority, pPlanningMode,
+                            pStatus, pType, 
+                            pValidatedcost, pAssignedcost, pRealcost, pLeftcost, pReassessedcost,
+                            pBaseTopStart, pBaseTopEnd, pBaseBottomStart, pBaseBottomEnd) {
   var vID    = pID;
   var vName  = pName;
   var vStart = new Date();  
@@ -94,10 +100,27 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   var vPlannedWork=pPlannedWork;
   var vPriority=pPriority;
   var vPlanningMode=pPlanningMode;
+  var vStatus=pStatus;
+  var vType=pType; 
+  var vValidatedcost=pValidatedcost;
+  var vAssignedcost=pAssignedcost;
+  var vRealcost=pRealcost;
+  var vLeftcost=pLeftcost;
+  var vReassessedcost=pReassessedcost;
+  var vBaseTopStart=new Date(); ;
+  var vBaseTopEnd=new Date(); ;
+  var vBaseBottomStart=new Date(); ;
+  var vBaseBottomEnd=new Date(); ;
+  
   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
   vRealEnd = JSGantt.parseDateStr(pRealEnd,g.getDateInputFormat());
   vPlanStart = JSGantt.parseDateStr(pPlanStart,g.getDateInputFormat());
+  vBaseTopStart = JSGantt.parseDateStr(pBaseTopStart,g.getDateInputFormat());
+  vBaseTopEnd = JSGantt.parseDateStr(pBaseTopEnd,g.getDateInputFormat());
+  vBaseBottomStart = JSGantt.parseDateStr(pBaseBottomStart,g.getDateInputFormat());
+  vBaseBottomEnd = JSGantt.parseDateStr(pBaseBottomEnd,g.getDateInputFormat());
+  
   this.getID       = function(){ return vID; };
   this.getName     = function(){ return vName; };
   this.getStart    = function(){ return vStart;};
@@ -111,6 +134,17 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getPlannedWork     = function(){ return vPlannedWork;  };
   this.getPriority     = function(){ return vPriority;  };
   this.getPlanningMode     = function(){ return vPlanningMode;  };
+  this.getStatus     = function(){ return vStatus;  };
+  this.getType     = function(){ return vType;  };
+  this.getValidatedCost     = function(){ return vValidatedCost;  };
+  this.getAssignedCost     = function(){ return vAssignedCost;  };
+  this.getRealCost     = function(){ return vRealCost;  };
+  this.getLeftCost     = function(){ return vLeftCost;  };
+  this.getReassessedCost     = function(){ return vReassessedCost;  };
+  this.getBaseTopStart     = function(){ return vBaseTopStart;  };
+  this.getBaseTopEnd     = function(){ return vBaseTopEnd;  };
+  this.getBaseBottomStart     = function(){ return vBaseBottomStart;  };
+  this.getBaseBottomEnd     = function(){ return vBaseBottomEnd;  };
   this.getColor    = function(){ return vColor;};
   this.getLink     = function(){ return vLink; };
   this.getMile     = function(){ return vMile; };
@@ -178,6 +212,18 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.setScope  = function(pScope) {vScope = pScope; };
   this.setPriority     = function(pPriority)  { vPriority   = pPriority;  };
   this.setPlanningMode     = function(pPlanningMode)  { vPlanningMode   = pPlanningMode;  };
+  this.setStatus  = function(pStatus) {vStatus = pStatus; };
+  this.setType  = function(pType) {vType = pType; };
+  this.setValidatedCost  = function(pValidatedCost) {vValidatedCost = pValidatedCost; };
+  this.setAssignedCost  = function(pAssignedCost) {vAssignedCost = pAssignedCost; };
+  this.setRealCost  = function(pRealCost) {vRealCost = pRealCost; };
+  this.setLeftCost  = function(pLeftCost) {vLeftCost = pLeftCost; };
+  this.setReassessedCost  = function(pReassessedCost) {vReassessedCost = pReassessedCost; };
+  this.setBaseTopStart  = function(pBaseTopStart) {vBaseTopStart = pBaseTopStart; };
+  this.setBaseTopEnd  = function(pBaseTopEnd) {vBaseTopEnd = pBaseTopEnd; };
+  this.setBaseBottomStart  = function(pPlanningMode) {vBaseBottomStart = pBaseBottomStart; };
+  this.setBaseBottomEnd  = function(pBaseBottomEnd) {vBaseBottomEnd = pBaseBottomEnd; };
+  
 };  
   
 /**
@@ -308,7 +354,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
    this.ClearGraph = function () {
 	  var vList = this.getList();
 	  var vBarDiv;
-	  for(i = 0; i < vList.length; i++) {
+	  for(var i = 0; i < vList.length; i++) {
 		  vID = vList[i].getID();
 		  vBarDiv  = JSGantt.findObj("bardiv_"+vID);
 		  if(vBarDiv) {
@@ -324,7 +370,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	var parent = JSGantt.findObj('rightGanttChartDIV');
 	var depLine;
     var vMaxId = vDepId;
-    for ( i=1; i<vMaxId; i++ ) {
+    for (var i=1; i<vMaxId; i++ ) {
       depLine = JSGantt.findObj( ((temp)?"temp":"")+"line"+i);
       if (depLine) { parent.removeChild(depLine); }
     };
@@ -363,7 +409,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var n = Math.max(Math.abs(dx),Math.abs(dy));
     dx = dx / n;
     dy = dy / n;
-    for ( i = 0; i <= n; i++ ) {
+    for (var i = 0; i <= n; i++ ) {
       vx = Math.round(x); 
       vy = Math.round(y);
       if (!color) color="#000000";
@@ -570,7 +616,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         +'<TD class="ganttLeftTitle" style="width:22px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:22px; z-index:1000;" class="namePartgroup"><span class="nobr">&nbsp;</span></div></TD>'
         +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vNameWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">'
         +(JSGantt.i18n('colTask')==''?'&nbsp;':JSGantt.i18n('colTask'))+'</span></div></TD>' ;     
-      for (iSort=0;iSort<sortArray.length;iSort++) {
+      for (var iSort=0;iSort<sortArray.length;iSort++) {
 	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;max-width: ' + vWorkWidth + 'px;overflow:hidden" nowrap><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vWorkWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">' 
 	          + JSGantt.i18n('colValidated') + '</span></div></TD>' ;
@@ -627,7 +673,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         + ( (dojo.ifFF)?'<div style="height:1px"></div>':'')
         +'<TABLE dojoType="dojo.dnd.Source" withHandles="true" jsId="dndSourceTable" id="dndSourceTable" type="xxx"'
         +'class="ganttTable"  ><TBODY>';
-      for(i = 0; i < vTaskList.length; i++) {
+      for(var i = 0; i < vTaskList.length; i++) {
         if( vTaskList[i].getGroup()) {
           vRowType = "group";
         } else if( vTaskList[i].getMile()){
@@ -642,16 +688,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">';
         if (planningPage=='ResourcePlanning') {
           vLeftTable += '<span class="">'
-            + '<table><tr><td>&nbsp;</td><td style="background-color:#ffffff">'
+            + '<table><tr><td>&nbsp;</td><td class="ganttIconBackground">'
             //+ '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
-            + '<div class="icon'+vTaskList[i].getClass()+'16" style="background-color:#ffffff !important;width:16px;height:16px;" >&nbsp;</div>'
+            + '<div class="icon'+vTaskList[i].getClass()+'16" style="width:16px;height:16px;" >&nbsp;</div>'
             + '</td></tr></table>'
             +'</span>';
         } else {
           vLeftTable += '<span class="dojoDndHandle handleCursor">'
             + '<table><tr><td>'
             + '<img style="width:8px" src="css/images/iconDrag.gif" />'
-            + '</td><td>'
+            + '</td><td class="ganttIconBackground">'
             //+ '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
             + '<div class="icon'+vTaskList[i].getClass()+'16" style="width:16px;height:16px;" >&nbsp;</div>'
             + '</td></tr></table>'
@@ -699,7 +745,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        for (iSort=0;iSort<sortArray.length;iSort++) {
+        for (var iSort=0;iSort<sortArray.length;iSort++) {
           if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getValidatedWork() 
@@ -1011,11 +1057,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" style="height: 21px;"'
               + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
-	        if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
-	          vBardivName='bardiv_' + vID;
-	        } else {
-	          vBardivName='outbardiv_' + vID;
-	        }	 
+  	        if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
+  	          vBardivName='bardiv_' + vID;
+  	        } else {
+  	          vBardivName='outbardiv_' + vID;
+  	        }	 
             vRightTable += '<div id=' + vBardivName + ' class="barDivGoup" style="'
                 + ' left:' + vBarLeft + 'px; height: 7px; '
                 + ' width:' + vBarWidth + 'px">';
@@ -1073,7 +1119,39 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	        } else {
   	          vBardivName='outbardiv_' + vID;
   	        }
-            vRightTable += vDivStr;               
+            vRightTable += vDivStr;   
+            if (vTaskList[i].getBaseTopStart() && vTaskList[i].getBaseTopEnd()) {              
+              vBaseEnd=vTaskList[i].getBaseTopEnd();
+              vBaseStart=vTaskList[i].getBaseTopStart();
+              vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
+              console.log(vDateBaseStr);
+              vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
+              vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
+              vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+              vBaseLeft = vBaseLeft - 1;
+              var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
+              var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
+              vRightTable +='<div class="ganttTaskrowBaseBar"  title="' + vTaskList[i].getName() + ': ' + vDateBaseStr + '" '
+              + 'style="position: absolute; background-color:#CCBBDD;'
+              + 'top: 0px; width:' + vBarBaseWidth + 'px; left: ' + vBarBaseLeft + 'px; "'
+              + ' ></div>';
+            }
+            if (vTaskList[i].getBaseBottomStart() && vTaskList[i].getBaseBottomEnd()) {              
+              vBaseEnd=vTaskList[i].getBaseBottomEnd();
+              vBaseStart=vTaskList[i].getBaseBottomStart();
+              vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
+              console.log(vDateBaseStr);
+              vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
+              vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
+              vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+              vBaseLeft = vBaseLeft - 1;
+              var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
+              var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
+              vRightTable +='<div class="ganttTaskrowBaseBar"  title="' + vTaskList[i].getName() + ': ' + vDateBaseStr + '" '
+              + 'style="position: absolute; background-color:#BBCCDD;'
+              + 'top: 10px; width:' + vBarBaseWidth + 'px; left: ' + vBarBaseLeft + 'px; "'
+              + ' ></div>';
+            }
             vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
 	            + ' left:' + vBarLeft + 'px; height:11px; '
@@ -1081,39 +1159,38 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vRightTable += ' <div class="ganttTaskrowBarComplete"  '
             	+ ' style="width:' + vTaskList[i].getCompStr() + '; cursor: pointer;"'
       		    + ' onmousedown=JSGantt.startLink('+i+'); '
-                + ' onmouseup=JSGantt.endLink('+i+'); '
-                + ' onMouseover=JSGantt.enterBarLink('+i+'); '
-                + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+              + ' onmouseup=JSGantt.endLink('+i+'); '
+              + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+              + ' onMouseout=JSGantt.exitBarLink('+i+'); '
             	+ ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>'
                 + ' </div>'; 
-	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
-	        	var tmpColor=vTaskList[i].getColor();
-	        	if (g.getSplitted()) {
-	        		tmpColor='999999';
-	        		vBarWidth=vBarWidthReal;
-	        	}
-	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-	            + ' class="ganttTaskrowBar" style="background-color:#' + tmpColor +'; '
-	            + ' width:' + vBarWidth + 'px; " ' 
-      		    + ' onmousedown=JSGantt.startLink('+i+'); '
+  	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
+  	        	var tmpColor=vTaskList[i].getColor();
+  	        	if (g.getSplitted()) {
+  	        		tmpColor='999999';
+  	        		vBarWidth=vBarWidthReal;
+  	        	}
+  	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+  	            + ' class="ganttTaskrowBar" style="background-color:#' + tmpColor +'; '
+  	            + ' width:' + vBarWidth + 'px; " ' 
+        		    + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
                 + ' onMouseout=JSGantt.exitBarLink('+i+'); '
-	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
-	            vRightTable += ' </div>';
-	        	
-	        	if (g.getSplitted()) {
-	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-		        		  + 'style="position: absolute; background-color:#' + vTaskList[i].getColor() +';'
-		        		  + 'top: 0px; width:' + vBarWidthPlan + 'px; left: ' + vBarLeftPlan + 'px; "'
-		        		  + ' onmousedown=JSGantt.startLink('+i+'); '
-		                  + ' onmouseup=JSGantt.endLink('+i+'); '
-		                  + ' onMouseover=JSGantt.enterBarLink('+i+'); '
-		                  + ' onMouseout=JSGantt.exitBarLink('+i+'); '
-		        		  + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");></div>';
-		        	}
+  	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
+  	            vRightTable += ' </div>';	        	
+  	        	if (g.getSplitted()) {
+  	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+  		        		  + 'style="position: absolute; background-color:#' + vTaskList[i].getColor() +';'
+  		        		  + 'top: 0px; width:' + vBarWidthPlan + 'px; left: ' + vBarLeftPlan + 'px; "'
+  		        		  + ' onmousedown=JSGantt.startLink('+i+'); '
+  		                  + ' onmouseup=JSGantt.endLink('+i+'); '
+  		                  + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+  		                  + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+  		        		  + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");></div>';
+  		        }
               if( g.getCaptionType() ) {
-               vCaptionStr = '';
+                vCaptionStr = '';
                 switch( g.getCaptionType() ) {           
                   case 'Caption':    vCaptionStr = vTaskList[i].getCaption();  break;
                   case 'Resource':   vCaptionStr = vTaskList[i].getResource();  break;
@@ -1127,7 +1204,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   + ' onMouseover=JSGantt.exitBarLink('+i+'); '
                 	+ 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
-	        }
+	          }
             vRightTable += '</div>' ;
           }
         }
@@ -1661,284 +1738,6 @@ Date.prototype.getWeek = function() {
   var onejan = new Date(this.getFullYear(),0,1);
   return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
 };
-
-/**
- * Parse an external XML file containing task items.
- * 
- * @method parseXML
- * @param ThisFile
- *            {String} - URL to XML file
- * @param pGanttVar
- *            {Gantt} - Gantt object
- * @return {void}
- */
-JSGantt.parseXML = function(ThisFile,pGanttVar){
-  var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;   // Is
-                                        // this
-                                        // Chrome
-  try { // Internet Explorer
-    xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-  }
-  catch(e) {
-    try { // Firefox, Mozilla, Opera, Chrome etc.
-      if (is_chrome==false) {  xmlDoc=document.implementation.createDocument("","",null); }
-    }
-    catch(e) {
-      alert(e.message);
-      return;
-    }
-  }
-  if (is_chrome==false) {   // can't use xmlDoc.load in chrome at the moment
-    xmlDoc.async=false;
-    xmlDoc.load(ThisFile);    // we can use loadxml
-    JSGantt.AddXMLTask(pGanttVar);
-    xmlDoc=null;      // a little tidying
-    Task = null;
-  }
-  else {
-    JSGantt.ChromeLoadXML(ThisFile,pGanttVar);  
-    ta=null;  // a little tidying
-  }
-};
-
-/**
- * Add a task based on parsed XML doc
- * 
- * @method AddXMLTask
- * @param pGanttVar
- *            {Gantt} - Gantt object
- * @return {void}
- */
-JSGantt.AddXMLTask = function(pGanttVar){
-  Task=xmlDoc.getElementsByTagName("task");
-  var n = xmlDoc.documentElement.childNodes.length;  // the number of tasks.
-                            // IE gets this right,
-                            // but mozilla add extra
-                            // ones (Whitespace)
-  for(var i=0;i<n;i++) {
-    // optional parameters may not have an entry (Whitespace from mozilla
-    // also returns an error )
-    // Task ID must NOT be zero other wise it will be skipped
-    try { pID = Task[i].getElementsByTagName("pID")[0].childNodes[0].nodeValue;
-    } catch (error) {pID =0;}
-    pID *= 1;  // make sure that these are numbers rather than strings in
-          // order to make jsgantt.js behave as expected.
-    if(pID!=0){
-       try { 
-         pName = Task[i].getElementsByTagName("pName")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pName ="No Task Name";
-      }      // If there is no corresponding entry in the XML file the
-          // set a default.
-      try { 
-        pColor = Task[i].getElementsByTagName("pColor")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pColor ="0000ff";
-      }
-      try { 
-        pParent = Task[i].getElementsByTagName("pParent")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pParent =0;
-      }
-      pParent *= 1;
-      try { 
-        pStart = Task[i].getElementsByTagName("pStart")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pStart ="";
-      }
-      try { 
-        pEnd = Task[i].getElementsByTagName("pEnd")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pEnd ="";
-      }
-      try { 
-        pLink = Task[i].getElementsByTagName("pLink")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pLink ="";
-      }
-      try { 
-        pMile = Task[i].getElementsByTagName("pMile")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pMile=0;
-      }
-      pMile *= 1;
-      try { 
-        pRes = Task[i].getElementsByTagName("pRes")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pRes ="";
-      }
-      try { 
-        pComp = Task[i].getElementsByTagName("pComp")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pComp =0;
-      }
-      pComp *= 1;
-      try { 
-        pGroup = Task[i].getElementsByTagName("pGroup")[0].childNodes[0].nodeValue;
-      } catch (error) {
-        pGroup =0;
-      }
-      pGroup *= 1;
-      try { 
-        pOpen = Task[i].getElementsByTagName("pOpen")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pOpen =1;
-      }
-      pOpen *= 1;
-      try { 
-        pDepend = Task[i].getElementsByTagName("pDepend")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pDepend =0;
-      }
-      if (pDepend.length==0){
-        pDepend='';
-      } // need this to draw the dependency lines
-      try { 
-        pCaption = Task[i].getElementsByTagName("pCaption")[0].childNodes[0].nodeValue;
-      } catch (error) { 
-        pCaption ="";
-      }
-      // Finally add the task
-      pGanttVar.AddTaskItem(new JSGantt.TaskItem(pID , pName, pStart, pEnd, pColor,  pLink, pMile, pRes,  pComp, pGroup, pParent, pOpen, pDepend,pCaption));
-    }
-  }
-};
-
-/**
- * Load an XML document in Chrome
- * 
- * @method ChromeLoadXML
- * @param ThisFile
- *            {String} - URL to XML file
- * @param pGanttVar
- *            {Gantt} - Gantt object
- * @return {void}
- */
-JSGantt.ChromeLoadXML = function(ThisFile,pGanttVar){
-// Thanks to vodobas at mindlence,com for the initial pointers here.
-  XMLLoader = new XMLHttpRequest();
-  XMLLoader.onreadystatechange= function(){
-    JSGantt.ChromeXMLParse(pGanttVar);
-  };
-  XMLLoader.open("GET", ThisFile, false);
-  XMLLoader.send(null);
-};
-
-/**
- * Parse XML document in Chrome
- * 
- * @method ChromeXMLParse
- * @param pGanttVar
- *            {Gantt} - Gantt object
- * @return {void}
- */
-JSGantt.ChromeXMLParse = function (pGanttVar){
-// Manually parse the file as it is loads quicker
-  if (XMLLoader.readyState == 4) {
-    var ta=XMLLoader.responseText.split(/<task>/gi);
-    var n = ta.length;  // the number of tasks.
-    for(var i=1;i<n;i++) {
-      Task = ta[i].replace('/<[/]p/g', '<p');  
-      var te = Task.split(/<pid>/i);  
-      if(te.length> 2){
-        var pID=te[1];
-      } else {
-        var pID = 0;
-      }
-      pID *= 1;
-      var te = Task.split(/<pName>/i);
-      if(te.length> 2){
-        var pName=te[1];
-      } else {
-        var pName = "No Task Name";
-      }
-      var te = Task.split(/<pstart>/i);
-      if(te.length> 2){
-        var pStart=te[1];
-      } else {
-        var pStart = "";
-      }  
-      var te = Task.split(/<pEnd>/i);
-      if(te.length> 2){
-        var pEnd=te[1];
-      } else {
-        var pEnd = "";
-      }  
-      var te = Task.split(/<pColor>/i);
-      if(te.length> 2){
-        var pColor=te[1];
-      } else {
-        var pColor = '0000ff';
-      }
-      var te = Task.split(/<pLink>/i);
-      if(te.length> 2){
-        var pLink=te[1];
-      } else {
-        var pLink = "";
-      }
-      var te = Task.split(/<pMile>/i);
-      if(te.length> 2){
-        var pMile=te[1];
-      } else {
-        var pMile = 0;
-      }
-      pMile  *= 1;
-      var te = Task.split(/<pRes>/i);
-      if(te.length> 2){
-        var pRes=te[1];
-      } else {
-        var pRes = "";
-      }  
-      var te = Task.split(/<pComp>/i);
-      if(te.length> 2){
-        var pComp=te[1];
-      } else {
-        var pComp = 0;
-      }  
-      pComp  *= 1;  
-      var te = Task.split(/<pGroup>/i);
-      if(te.length> 2){
-        var pGroup=te[1];
-      } else {
-        var pGroup = 0;
-      }  
-      pGroup *= 1;
-      var te = Task.split(/<pParent>/i);
-      if(te.length> 2){
-        var pParent=te[1];
-      } else {
-        var pParent = 0;
-      }  
-      pParent *= 1;
-      var te = Task.split(/<pOpen>/i);
-      if(te.length> 2){
-        var pOpen=te[1];
-      } else {
-        var pOpen = 1;
-      }
-      pOpen *= 1;  
-      var te = Task.split(/<pDepend>/i);
-      if(te.length> 2){
-        var pDepend=te[1];
-      } else {
-        var pDepend = "";
-      }  
-      if (pDepend.length==0){
-        pDepend='';
-      } // need this to draw the dependency lines
-      var te = Task.split(/<pCaption>/i);
-      if(te.length> 2){
-        var pCaption=te[1];
-      } else {
-        var pCaption = "";
-      }
-      // Finally add the task
-      pGanttVar.AddTaskItem(new JSGantt.TaskItem(pID , pName, pStart, 
-        pEnd, pColor,  pLink, pMile, pRes,  pComp, pGroup, pParent, pOpen, pDepend,pCaption   ));
-    };
-  };
-};
-
 
 JSGantt.benchMark = function(pItem){
   var vEndTime=new Date().getTime();

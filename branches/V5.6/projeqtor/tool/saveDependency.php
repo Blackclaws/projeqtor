@@ -105,7 +105,6 @@ if ($dependencyId) { // Edit Mode
 		$dep->predecessorRefType=$predecessor->refType;
 		$dep->predecessorRefId=$predecessor->refId;
 		$dep->comment=$dependencyComment;
-		debugLog($dep);
 		$dep->dependencyType='E-S';
 		//$dep->dependencyDelay=0;
 		$dep->dependencyDelay=$dependencyDelay;

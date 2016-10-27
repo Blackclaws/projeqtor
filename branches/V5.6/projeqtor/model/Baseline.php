@@ -106,9 +106,6 @@ class Baseline extends SqlElement {
         ."SELECT $colList $idBaseline FROM $tableFrom \n"
         ." where idProject in ".transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     $res=SqlDirectElement::execute($query);
-    debugLog($query);
-    debugLog($res);
-    debugLog("");
   }
   
 }

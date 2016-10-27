@@ -93,7 +93,6 @@ if (array_key_exists('testCaseRunAllowDuplicate',$_REQUEST)) {
 }
 
 $arrayTestCase=array();
-debugLog($testCaseList);
 if ($mode=='add') {
 	$id='';
 	if (is_array($testCaseList)) {
@@ -152,18 +151,7 @@ foreach($arrayTestCase as $testCaseId) {
 	    } 
 	  }
   }
-  debugLog($testCaseRun);
 }
 displayLastOperationStatus($result);
-// Message of correct saving
-/*if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
-} else { 
-	Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
-}*/
+
 ?>

@@ -248,6 +248,10 @@
 .iconComponent22 { background-image: url(images/iconComponent22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconComponent16 { background-image: url(images/iconComponent16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconFinancial32 { background-image: url(images/iconFinancial32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFinancial22 { background-image: url(images/iconFinancial22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFinancial16 { background-image: url(images/iconFinancial16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconContact32 { background-image: url(images/iconContact32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconContact22 { background-image: url(images/iconContact22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconContact16 { background-image: url(images/iconContact16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -523,6 +527,12 @@
 .iconProject32 { background-image: url(images/iconProject32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProject22 { background-image: url(images/iconProject22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProject16 { background-image: url(images/iconProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconConstruction32 { background-image: url(images/iconConstruction.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconConstruction22 { background-image: url(images/iconConstruction.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconConstruction16 { background-image: url(images/iconConstruction.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconFixed32 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconFixed22 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconFixed16 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconProjectExpense32 { background-image: url(images/iconProjectExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProjectExpense22 { background-image: url(images/iconProjectExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
