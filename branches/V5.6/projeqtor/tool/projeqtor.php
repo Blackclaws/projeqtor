@@ -2266,10 +2266,15 @@ function isOpenDay($dateValue, $idCalendarDefinition = '1') {
     }
     $bankHolidays [$year . '#' . $idCalendarDefinition] = $aBankHolidays;
   }
-  if (in_array ( date ( 'w', $iDate ), array (
-      0,
-      6 
-  ) )) {
+  $arrayDefaultOffDays=array();
+  if (Parameter::getGlobalParameter('OpenDayMonday')=='') $arrayDefaultOffDays[]=1;
+  if (Parameter::getGlobalParameter('OpenDayTuesday')=='') $arrayDefaultOffDays[]=2;
+  if (Parameter::getGlobalParameter('OpenDayWednesday')) $arrayDefaultOffDays[]=3;
+  if (Parameter::getGlobalParameter('OpenDayThursday')) $arrayDefaultOffDays[]=4;
+  if (Parameter::getGlobalParameter('OpenDayFriday')) $arrayDefaultOffDays[]=5;
+  if (Parameter::getGlobalParameter('OpenDaySaturday')) $arrayDefaultOffDays[]=6;
+  if (Parameter::getGlobalParameter('OpenDaySunday')) $arrayDefaultOffDays[]=0;
+  if (in_array ( date ( 'w', $iDate ), $arrayDefaultOffDays)) {
     if (in_array ( date ( 'Ymd', $iDate ), $aBankWorkdays )) {
       return true;
     } else {

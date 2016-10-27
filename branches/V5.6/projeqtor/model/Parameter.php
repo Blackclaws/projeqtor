@@ -290,6 +290,42 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
+  /////KEVIN////      
+      case 'OpenDayMonday':
+        $list=array('openDays'=>i18n('openDays'),
+                    'offDays'=>i18n('offDays'));
+        break;
+        
+       case 'OpenDayTuesday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+         
+       case 'OpenDayWednesday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+         
+       case 'OpenDayThursday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+         
+       case 'OpenDayFriday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+         
+       case 'OpenDaySaturday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+         
+       case 'OpenDaySunday':
+         $list=array('openDays'=>i18n('openDays'),
+                     'offDays'=>i18n('offDays'));
+         break;
+                 
       case 'imputationUnit':
       	$list=array('days'=>i18n('days'),
       	            'hours'=>i18n('hours'));
@@ -500,6 +536,14 @@ class Parameter extends SqlElement {
       	                       'endAM'=>'time',
       	                       'startPM'=>'time',
       	                       'endPM'=>'time',
+      	                     'sectionOpenDays'=>'section',
+      	                       'OpenDayMonday'=>'list',
+      	                       'OpenDayTuesday'=>'list',
+      	                       'OpenDayWednesday'=>'list',
+      	                       'OpenDayThursday'=>'list',
+      	                       'OpenDayFriday'=>'list',
+      	                       'OpenDaySaturday'=>'list',
+      	                       'OpenDaySunday'=>'list',
       	                     'sectionWorkUnit'=>'section',      	                     
       	                       'imputationUnit'=>'list',
       	                       'workUnit'=>'list',

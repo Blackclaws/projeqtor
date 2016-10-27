@@ -2274,8 +2274,10 @@ function drawGantt() {
           progress = 100;
         }
       }
-      // pGroup : is the tack a group one ?
+      // pGroup : is the task a group one ?
       var pGroup = (item.elementary == '0') ? 1 : 0;
+      console.log()
+      if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Construction' ) pGroup=1;
       // runScript : JavaScript to run when click on task (to display the
       // detail of the task)
       var runScript = "runScript('" + item.reftype + "','" + item.refid + "','"
@@ -2287,14 +2289,19 @@ function drawGantt() {
       // wbs code
       // var pName=item.refname;
       // display color of the task bar
-      var pColor = '50BB50';
-      // show in red not respected constraints
-      if (trim(item.validatedenddate) != "" && item.validatedenddate < pEnd) {
-        pColor = 'BB5050';
-      }
-      if (item.notplannedwork > 0) {
+      var pColor = '50BB50'; // Default green
+      if (item.notplannedwork > 0) { // Some left work not planned : purple
         pColor = '9933CC';
+      } else if (trim(item.validatedenddate) != "" && item.validatedenddate < pEnd) { // Not respected constraints (end date) : red
+        if (! item.assignedwork || item.assignedwork==0) {
+          pColor = 'BB9099';
+        } else {
+          pColor = 'BB5050';
+        }
+      } else if (! item.assignedwork || item.assignedwork==0) { // No workassigned : greyed green
+        pColor = 'aec5ae';
       }
+      // pColor = '9099BB';
       // pMile : is it a milestone ?
       var pMile = (item.reftype == 'Milestone') ? 1 : 0;
       if (pMile) {
@@ -2327,11 +2334,14 @@ function drawGantt() {
       }
       keys += "#" + curKey + "#";
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor,
-          runScript, pMile, pResource, progress, pGroup, topId, pOpen, pDepend,
+          runScript, pMile, pResource, progress, pGroup, 
+          topId, pOpen, pDepend,
           pCaption, pClass, pScope, pRealEnd, pPlannedStart,
-          item.validatedworkdisplay, item.assignedworkdisplay,
-          item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
-          item.priority, item.planningmode));
+          item.validatedworkdisplay, item.assignedworkdisplay, item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
+          item.priority, item.planningmode, 
+          item.status, item.type, 
+          item.validatedcost, item.assignedcost, item.realcost, item.leftcost, item.reassessedcost,
+          item.baseTopStart, item.baseTopEnd, item.baseBottomStart, item.baseBottomEnd));
     }
     g.Draw();
     g.DrawDependencies();
@@ -2343,7 +2353,7 @@ function drawGantt() {
 }
 
 function runScript(refType, refId, id) {
-  if (refType == 'Fixed') {
+  if (refType == 'Fixed' || refType=='Construction') {
     refType = 'Project';
   }
   if (waitingForReply) {
