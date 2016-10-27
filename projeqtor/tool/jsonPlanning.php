@@ -28,6 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
   require_once "../tool/projeqtor.php";
+
   scriptLog('   ->/tool/jsonPlanning.php');
   SqlElement::$_cachedQuery['Project']=array();
   SqlElement::$_cachedQuery['Resource']=array();
@@ -78,6 +79,14 @@
         $paramEnd->delete();
       }
     }
+  }
+  $baselineTop=null;
+  $baselineBottom=null;
+  if (array_key_exists('selectBaselineTop',$_REQUEST) and trim($_REQUEST['selectBaselineTop'])) {
+    $baselineTop=trim($_REQUEST['selectBaselineTop']);
+  }
+  if (array_key_exists('selectBaselineBottom',$_REQUEST) and trim($_REQUEST['selectBaselineBottom'])) {
+    $baselineBottom=trim($_REQUEST['selectBaselineBottom']);
   }
   // Header
   if ( array_key_exists('report',$_REQUEST) ) {
@@ -170,6 +179,31 @@
     }
   	$queryWhere.=')';
   }
+  
+  // Retreive baseline info
+  $arrayBase=array();
+  $arrayBase['top']=array();
+  $arrayBase['bottom']=array();
+  $arrayBase['list']=array();
+  if ($baselineTop) $arrayBase['list']['top']=$baselineTop;
+  if ($baselineBottom) $arrayBase['list']['bottom']=$baselineBottom;
+  $peb=new PlanningElementBaseline();
+  $pebTable=$peb->getDatabaseTableName();
+  foreach ($arrayBase['list'] as $pos=>$id) {
+    $query='select refType as itemtype, refId as itemid,' 
+    . ' coalesce(plannedStartDate,validatedStartDate,initialStartDate) as startdate,'
+    . ' coalesce(plannedEndDate,validatedEndDate,initialEndDate) as enddate'
+    . ' from ' . $pebTable
+    . ' where ' . str_replace('planningelement','planningelementbaseline',$queryWhere) . ' and idBaseline='.Sql::fmtId($id)
+    . ' order by ' . str_replace('planningelement','planningelementbaseline',$queryOrderBy);
+    $resBase=Sql::query($query);
+     while ($base = Sql::fetchLine($resBase)) {
+       if ($base['startdate'] and $base['enddate'] and $base['itemtype'] and $base['itemid']) {
+         $arrayBase[$pos][$base['itemtype'].'_'.$base['itemid']]=array('start'=>$base['startdate'],'end'=>$base['enddate']);
+       }
+     }
+  }
+  
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect
@@ -207,12 +241,12 @@
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
       	if ($line['id'] and !$line['refname']) { // If refName not set, delete corresponding PE (results from incorrect delete
-      	  $peDel=new PlanningElement($line['id']);
+      	  $peDel=new PlanningElement($line['id'],true);
       	  $peDel->delete();
       	  continue;
       	}
         if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
-          $mile=new Milestone($line['refid']);
+          $mile=new Milestone($line['refid'],true);
           if ($mile->idMilestoneType!=$showMilestone) {
           	continue;
           }
@@ -238,7 +272,10 @@
         $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
         if ($line["reftype"]=="Project") {
         	$topProjectArray[$line['refid']]=$line['id'];
-        	$proj=new Project($line["refid"]);
+        	$proj=new Project($line["refid"],true);
+        	if ($proj->isUnderConstruction) {
+        	  $line['reftype']='Construction';
+        	}
         	if ($proj->fixPlanning) {
         	  $line['reftype']='Fixed';
         	}
@@ -262,12 +299,21 @@
           if ($id=='id') {$idPe=$val;}
         }
         //add expanded status
-        if (isset($collapsedList['Planning_'.$line['reftype'].'_'.$line['refid']])) {
+        $refItem=$line['reftype'].'_'.$line['refid'];
+        if (isset($collapsedList['Planning_'.$refItem])) {
         	echo ',"collapsed":"1"';
         } else {
         	echo ',"collapsed":"0"';
         }
-        if ($line['reftype']!='Project' and $line['reftype']!='Fixed') {
+        if ($baselineTop and isset($arrayBase['top'][$refItem])) {
+          echo ',"baseTopStart":"'.$arrayBase['top'][$refItem]['start'].'"';
+          echo ',"baseTopEnd":"'.$arrayBase['top'][$refItem]['end'].'"';
+        }
+        if ($baselineBottom and isset($arrayBase['bottom'][$refItem])) {
+          echo ',"baseBottomStart":"'.$arrayBase['bottom'][$refItem]['start'].'"';
+          echo ',"baseBottomEnd":"'.$arrayBase['bottom'][$refItem]['end'].'"';
+        }
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction') {
           $arrayResource=array();
           // if ($showResource) { //
           if (1) { // Must always retreive resource to display value in column, even if not displayed 
@@ -288,7 +334,7 @@
   	          $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
   	        }
   	        foreach ($assList as $ass) {       	
-  	        	$res=new Resource($ass->idResource);
+  	        	$res=new Resource($ass->idResource,true);
   	        	if (! isset($arrayResource[$res->id])) {
     	        	$display=$res->$displayResource;
     	        	if ($displayResource=='initials' and ! $display) {
@@ -376,7 +422,7 @@
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
         if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
-          $mile=new Milestone($line['refid']);
+          $mile=new Milestone($line['refid'],true);
           if ($mile->idMilestoneType!=$showMilestone) {
             continue;
           }
@@ -411,9 +457,9 @@
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
           $arrayResource=array();
-          $objElt=new $line['reftype']($line['refid']);
+          $objElt=new $line['reftype']($line['refid'],true);
           foreach ($assList as $ass) {
-            $res=new Resource($ass->idResource);
+            $res=new Resource($ass->idResource,true);
             if ($res->$displayResource) {
               $arrayResource[$res->id]=$res->$displayResource;
               if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
@@ -584,8 +630,9 @@
         $plannedWork=$line['plannedwork'];
         $progress=$line['progress'];
 
-        // pGroup : is the tack a group one ?
+        // pGroup : is the task a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
+        if ($line['reftype']=='Fixed') $pGroup=1;
         if ($closedWbs and strlen($line['wbssortable'])<=strlen($closedWbs)) {
           $closedWbs="";
         }
@@ -1105,7 +1152,7 @@
     	  if (isset($arrayResource[$ass->idResource])) {
           $res=$arrayResource[$ass->idResource];
     	  } else {
-    	    $res=new Resource($ass->idResource);
+    	    $res=new Resource($ass->idResource,true);
     	    $arrayResource[$ass->idResource]=$res;
     	  }
 	      echo "<Assignment>" . $nl;

@@ -112,17 +112,13 @@ class Attachment extends SqlElement {
   
   public function save() {
     $result = parent::save ();
-//     debugLog ( "note saved = $result" );
-//     debugLog( $this->idPrivacy);
     if ($this->idPrivacy != 3) {
       $class = $this->refType;
       $id = $this->refId;
       $obj = new $class( $id );
-    //  debugLog ( "ok, not private, will update $class #$id" );
       if (property_exists ( $class, 'lastUpdateDateTime' )) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
-    //    debugLog("object saved => $resObj");
       }
     }
     return $result;
