@@ -78,7 +78,7 @@ if ($line->id) {
   </tr>
   <tr>
     <td class="dialogLabel" ><label><?php echo i18n('colSortOrder');?> : </label></td>
-    <td><input type="text" dojoType="dijit.form.TextBox" 
+    <td><input type="text" dojoType="dijit.form.NumberTextBox" 
       id="dialogChecklistDefinitionLineSortOrder" 
       name="dialogChecklistDefinitionLineSortOrder"
       value="<?php echo $line->sortOrder;?>"

@@ -1258,7 +1258,7 @@ class PlanningElement extends SqlElement {
         if (array_key_exists('#'.$pe->topId, $result)) {
           $parent=$result['#'.$pe->topId];
         } else {
-          $parent=new PlanningElement($pe->topId);
+          $parent=new PlanningElement($pe->topId,true);
           $parent->_parentList=array();
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
@@ -1279,7 +1279,7 @@ class PlanningElement extends SqlElement {
         if (array_key_exists('#'.$pe->topId, $result)) {
           $parent=$result['#'.$pe->topId];
         } else {
-          $parent=new PlanningElement($pe->topId);
+          $parent=new PlanningElement($pe->topId,true);
           $parent->_parentList=array();
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
@@ -1307,7 +1307,7 @@ class PlanningElement extends SqlElement {
       //$lstPrec["#".$dep->predecessorId]=$dep->predecessorId;
       $lstPrec["#".$dep->predecessorId]=$dep->dependencyDelay;  // #77 : store delay of dependency
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-      	$parent=new PlanningElement($dep->predecessorId);
+      	$parent=new PlanningElement($dep->predecessorId,true);
         $parent->_parentList=array();
         $parent->_predecessorList=array();
         $parent->_predecessorListWithParent=array();

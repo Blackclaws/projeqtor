@@ -565,11 +565,13 @@ function loadContent(page, destination, formName, isResultMessage,
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
   var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
+  console.log("callKey="+callKey);
   if (loadContentRetryArray[callKey]===undefined) {
     loadContentRetryArray[callKey]=1;
   } else {
     loadContentRetryArray[callKey]+=1;
   }
+  console.log("retry="+loadContentRetryArray[callKey]);
   if (dojo.isIE && dojo.isIE <= 8) {
     fadingMode = false;
   }
@@ -591,7 +593,7 @@ function loadContent(page, destination, formName, isResultMessage,
         formName, isResultMessage, destination)));
     return;
   }
-  if (contentNode) {
+  if (contentNode && page.indexOf("destinationWidth=")<0) {
     destinationWidth = dojo.style(contentNode, "width");
     destinationHeight = dojo.style(contentNode, "height");
     if (destination == 'detailFormDiv' && !editorInFullScreen()) {
@@ -609,17 +611,17 @@ function loadContent(page, destination, formName, isResultMessage,
           + destinationHeight;
     }
   }
-  if (directAccessIndex) {
+  if (directAccessIndex && page.indexOf("directAccessIndex=")<0) {
     if (page.indexOf("?") > 0) {
       page += "&directAccessIndex=" + directAccessIndex;
     } else {
       page += "?directAccessIndex=" + directAccessIndex;
     }
   }
-  page += ((page.indexOf("?") > 0) ? "&" : "?") + "isIE="
-      + ((dojo.isIE) ? dojo.isIE : '');
-  if (!silent)
-    showWait();
+  if (page.indexOf("isIE=")<0) {
+    page += ((page.indexOf("?") > 0) ? "&" : "?") + "isIE=" + ((dojo.isIE) ? dojo.isIE : '');
+  }
+  if (!silent) showWait();
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
     dojo.xhrPost({
@@ -630,9 +632,6 @@ function loadContent(page, destination, formName, isResultMessage,
           var debugTemp = (new Date()).getTime();
           var contentNode = dojo.byId(destination);
           var contentWidget = dijit.byId(destination);
-          if (loadContentRetryArray[callKey]!==undefined) {
-            loadContentRetryArray.splice(callKey, 1);
-          }
           if (fadingMode) {
             dojo.fadeIn({
               node : contentNode,
@@ -643,6 +642,9 @@ function loadContent(page, destination, formName, isResultMessage,
           }
           // update the destination when ajax request is received
           if (!contentWidget) {
+            if (loadContentRetryArray[callKey]!==undefined) {
+              loadContentRetryArray.splice(callKey, 1);
+            }
             return;
           }
           if (dijit.byId('planResultDiv')) {
@@ -679,11 +681,7 @@ function loadContent(page, destination, formName, isResultMessage,
                   dojo.byId('attachmentFileDirectDiv'));
             }
           }
-          if (dojo.byId('objectClass')
-              && destination.indexOf(dojo.byId('objectClass').value) == 0) { // If
-                                                                              // refresh
-                                                                              // a
-                                                                              // section
+          if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value) == 0) { // If refresh a section
             var section = destination
                 .substr(dojo.byId('objectClass').value.length + 1);
             if (dojo.byId(section + "SectionCount")
@@ -817,6 +815,9 @@ function loadContent(page, destination, formName, isResultMessage,
           msg += " (server:" + debugDurationServer + "ms, client:"
               + debugDurationClient + "ms)";
           consoleTraceLog(msg);
+          if (loadContentRetryArray[callKey]!==undefined) {
+            loadContentRetryArray.splice(callKey, 1);
+          }
         },
         error : function(error, args) {
           var retries=-1;
@@ -825,8 +826,9 @@ function loadContent(page, destination, formName, isResultMessage,
           }
           if (!silent) hideWait();
           finaliseButtonDisplay();
-          formChanged();
+          //formChanged();
           if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
+            console.log(callKey);
             console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
           } else {
@@ -2190,7 +2192,13 @@ function drawGantt() {
   // ('mm/dd/yyyy', 'dd/mm/yyyy',
   // 'yyyy-mm-dd')
   g.setFormatArr("day", "week", "month", "quarter"); // Set format options (up
-                                                      // to 4 :
+  if (dijit.byId('selectBaselineBottom')) {
+    g.setBaseBottomName(dijit.byId('selectBaselineBottom').get('displayedValue'));
+  }
+  if (dijit.byId('selectBaselineTop')) {
+    g.setBaseTopName(dijit.byId('selectBaselineTop').get('displayedValue'));
+  }
+  // to 4 :
   // "minute","hour","day","week","month","quarter")
   if (ganttPlanningScale) {
     g.setFormat(ganttPlanningScale);
@@ -2276,7 +2284,6 @@ function drawGantt() {
       }
       // pGroup : is the task a group one ?
       var pGroup = (item.elementary == '0') ? 1 : 0;
-      console.log()
       if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Construction' ) pGroup=1;
       // runScript : JavaScript to run when click on task (to display the
       // detail of the task)
@@ -2293,12 +2300,12 @@ function drawGantt() {
       if (item.notplannedwork > 0) { // Some left work not planned : purple
         pColor = '9933CC';
       } else if (trim(item.validatedenddate) != "" && item.validatedenddate < pEnd) { // Not respected constraints (end date) : red
-        if (! item.assignedwork || item.assignedwork==0) {
+        if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) {
           pColor = 'BB9099';
         } else {
           pColor = 'BB5050';
         }
-      } else if (! item.assignedwork || item.assignedwork==0) { // No workassigned : greyed green
+      } else if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) { // No workassigned : greyed green
         pColor = 'aec5ae';
       }
       // pColor = '9099BB';
@@ -3677,4 +3684,21 @@ function runGallery() {
 }
 function changeGalleryEntity() {
   loadContent("galleryParameters.php", "listGalleryDiv", "galleryForm", false);
+}
+
+function saveDataToSession(param, value, saveUserParameter) {
+  var url="../tool/saveDataToSession.php";
+  url+="?idData="+param;
+  url+="&value="+value;
+  if (saveUserParameter && (saveUserParameter==true || saveUserParameter=='true' || saveUserParameter==1)) { 
+    url+="&saveUserParam=true";
+  }
+  dojo.xhrPost({
+    url : url,
+    load : function(data, args) {
+    },
+    error : function () {
+      console.log("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);
+    }
+ });;
 }
