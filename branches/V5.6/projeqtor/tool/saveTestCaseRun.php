@@ -68,28 +68,28 @@ if (! array_key_exists('testCaseRunComment',$_REQUEST)) {
 }
 $comment=($_REQUEST['testCaseRunComment']);
 
-$status=null;
-if ($mode=='edit'){
-if (! array_key_exists('testCaseRunStatus',$_REQUEST)) {
-  throwError('testCaseRunStatus parameter not found in REQUEST');
-}
-$status=($_REQUEST['testCaseRunStatus']);
+$status=1;
+if ( array_key_exists('testCaseRunStatus',$_REQUEST)) {
+  $status=($_REQUEST['testCaseRunStatus']);
 }
 
 $ticket=null;
-if($mode=='add'){
-if (! array_key_exists('testCaseRunTicket',$_REQUEST)) {
-  throwError('testCaseRunTicket parameter not found in REQUEST');
-}
-$ticket=($_REQUEST['testCaseRunTicket']);
+if (array_key_exists('testCaseRunTicket',$_REQUEST)) {
+  $ticket=($_REQUEST['testCaseRunTicket']);
 }
 
-$allowDuplicate=null;
-if ($mode=='add'){
+
 $allowDuplicate=false;
-if (array_key_exists('testCaseRunAllowDuplicate',$_REQUEST)) {
-  $allowDuplicate=true;
+if ($mode=='add'){
+  if (array_key_exists('testCaseRunAllowDuplicate',$_REQUEST)) {
+    $allowDuplicate=true;
+  }
 }
+
+$sortOrder=0;
+if (array_key_exists('dialogTestCaseRunSortOrder',$_REQUEST)) {
+  $sortOrder=($_REQUEST['dialogTestCaseRunSortOrder']);
+  Security::checkValidNumeric($sortOrder);
 }
 
 $arrayTestCase=array();
@@ -114,6 +114,7 @@ foreach($arrayTestCase as $testCaseId) {
   $testCaseRun->idTestSession=$session;
   $testCaseRun->idTicket=$ticket;
   $testCaseRun->comment=$comment;
+  $testCaseRun->sortOrder=$sortOrder;
   if ($testCaseRun->idRunStatus!=$status) {
     $testCaseRun->idRunStatus=$status;
     if ($id) {

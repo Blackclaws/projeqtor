@@ -67,6 +67,14 @@ $saveShowMilestone=$saveShowMilestoneObj->parameterValue;
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
+
+$proj=null;
+if (array_key_exists('project',$_SESSION)) {
+  $proj=$_SESSION['project'];
+}
+if ($proj=='*' or !$proj) {
+  $proj=null;
+}
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
@@ -229,6 +237,36 @@ if ($saveShowClosed) {
                   <div id="planResultDiv" style="display:none" 
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
+                  <table>
+                  <tr><td style="font-weight:bold;text-align:center;"><?php echo i18n('displayBaseline');?></td></tr>
+                  <tr><td style="text-align:right"><?php echo i18n('baselineTop').'&nbsp;:&nbsp;';?>
+                  <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="selectBaselineTop" id="selectBaselineTop"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >
+                           saveDataToSession("planningBaselineTop",this.value,false);
+                           refreshJsonPlanning();
+                        </script>
+                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineTop"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                      </select>
+                  </td></tr>
+                  <tr><td style="text-align:right"><?php echo i18n('baselineBottom').'&nbsp;:&nbsp';?>
+                  
+                   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
+                        style="width: 150px;"
+                        name="selectBaselineBottom" id="selectBaselineBottom"
+                        <?php echo autoOpenFilteringSelect();?>
+                        >
+                        <script type="dojo/method" event="onChange" >
+                           saveDataToSession("planningBaselineBottom",this.value,false);
+                           refreshJsonPlanning();
+                        </script>
+                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineBottom"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                      </select>
+                  </td></tr>
+                  </table>
                 </td>
 		            <td style="text-align: right; align: right;">
 		              <table width="100%">
@@ -271,7 +309,9 @@ if ($saveShowClosed) {
                           </script>
                             <option value=" " <?php echo (! $saveShowMilestone)?'SELECTED':'';?>><?php echo i18n("paramNone");?></option>                            
                             <?php htmlDrawOptionForReference('idMilestoneType', $saveShowMilestone,null, true);?>
-                            <option value="all" <?php echo ($saveShowMilestone=='all')?'SELECTED':'';?>><?php echo i18n("all");?></option>
+                            <?php if ($saveShowMilestone!='all') {?>
+                            <option value="all"><?php echo i18n("all");?></option>
+                            <?php }?>
 			                  </select>
                       </td>
                     </tr>

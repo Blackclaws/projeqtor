@@ -36,10 +36,12 @@ class TestCaseRun extends SqlElement {
   public $idTestCase;
   public $idTestSession;
   public $comment;
+  public $sortOrder;
   public $idRunStatus;
   public $statusDateTime;
   public $idTicket;
   public $idle;
+
   
   private static $_colCaptionTransposition = array('idRunStatus'=> 'idStatus',
                                                    'idTicket'=>'ticket',
@@ -144,6 +146,7 @@ class TestCaseRun extends SqlElement {
 	        $tcr->statusDateTime=$this->statusDateTime;
 	        $tcr->idTicket=$this->idTicket;
 	        $tcr->idle=$this->idle;
+	        $tcr->sortOrder=$this->sortOrder;
 	        $res=$tcr->save();
 	  	    if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
 		        $deb=stripos($res,'#');
@@ -200,6 +203,21 @@ class TestCaseRun extends SqlElement {
     $session->updateDependencies();
     return $result;
   }
+  
+  public static function sort($b, $a) {
+    if ($a->sortOrder == $b->sortOrder) {
+    		if ($a->id < $b->id) {
+    		  return -1;
+    		} else {
+    		  return 1;
+    		}
+    } else if ($a->sortOrder < $b->sortOrder) {
+    		return -1;
+    } else {
+    		return 1;
+    }
+  }
+  
   
 }
 ?>

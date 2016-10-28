@@ -286,12 +286,12 @@ if ($proj=='*' or !$proj) {
                             <div style="font-weight:bold; height:25px;text-align:center">
                             <?php echo i18n('comboNewButton');?>
                             </div>
-                            <?php $arrayItems=array('Project','Activity','Milestone');
+                            <?php $arrayItems=array('Project','Activity','Milestone','Meeting','TestSession');
                             foreach($arrayItems as $item) {?>
-                            <div style="vertical-align:top;cursor:pointer;" 
+                            <div style="vertical-align:top;cursor:pointer;" class="dijitTreeRow"
                              onClick="addNewItem('<?php echo $item;?>');" >
-                              <table><tr style="height:22px">
-                              <td style="vertical-align:top;"><img src="../view/css/images/icon<?php echo $item;?>22.png" />&nbsp;&nbsp;</td>    
+                              <table width:"100%"><tr style="height:22px" >
+                              <td style="vertical-align:top; width: 30px;padding-left:5px"><?php echo formatIcon($item, 22, null, false);;?></td>    
                               <td style="vertical-align:top;padding-top:2px"><?php echo i18n($item)?></td>
                               </tr></table>   
                             </div>
@@ -316,9 +316,10 @@ if ($proj=='*' or !$proj) {
                         <?php echo autoOpenFilteringSelect();?>
                         >
                         <script type="dojo/method" event="onChange" >
+                           saveDataToSession("planningBaselineTop",this.value,false);
                            refreshJsonPlanning();
                         </script>
-                        <?php htmlDrawOptionForReference('idBaseline', null, null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineTop"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
                       </select>
                   </td></tr>
                   <tr><td style="text-align:right"><?php echo i18n('baselineBottom').'&nbsp;:&nbsp';?>
@@ -329,9 +330,10 @@ if ($proj=='*' or !$proj) {
                         <?php echo autoOpenFilteringSelect();?>
                         >
                         <script type="dojo/method" event="onChange" >
+                           saveDataToSession("planningBaselineBottom",this.value,false);
                            refreshJsonPlanning();
                         </script>
-                        <?php htmlDrawOptionForReference('idBaseline', null, null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineBottom"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
                       </select>
                   </td></tr>
                   </table>

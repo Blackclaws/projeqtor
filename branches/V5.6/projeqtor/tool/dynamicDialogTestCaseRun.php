@@ -43,6 +43,9 @@ $session=new TestSession($testSessionId);
 $idProject=$session->idProject;
 $idProduct=$session->idProduct;
 $testCaseRun=new TestCaseRun($testCaseRunId);
+if(!$testCaseRun->idRunStatus){
+  $testCaseRun->idRunStatus=1;
+}
 $selected="";
 if (array_key_exists('selected', $_REQUEST)) {
   $selected=$_REQUEST['selected'];
@@ -60,13 +63,21 @@ if (trim($idProduct)) {
   else if (property_exists($obj,'idComponent')) $crit['idComponent']=$idProduct;
 }
 
-$list=$obj->getSqlElementsFromCriteria($crit,false,null, null,true);
+$list=$obj->getSqlElementsFromCriteria($crit,false,null,null,true);
 foreach ($selectedArray as $selected) {
   if ($selected and ! array_key_exists("#" . $selected, $list)) {
     $list["#".$selected]=new TestCase($selected);
   }
 }
-
+if ($mode=='add'){
+$tcr=new TestCaseRun();
+$listTcr=$tcr->getSqlElementsFromCriteria(array('idTestSession'=>$testSessionId),false,null,'sortOrder desc');
+if (count($listTcr)) {
+  $testCaseRun->sortOrder=(reset($listTcr)->sortOrder)+10;
+} else {
+  $testCaseRun->sortOrder=10;
+}
+}
 ?>
 
   <table>
@@ -74,9 +85,10 @@ foreach ($selectedArray as $selected) {
       <td>
        <form dojoType="dijit.form.Form" id='testCaseRunForm' name='testCaseRunForm' onSubmit="return false;">
          <input id="testCaseRunId" name="testCaseRunId" type="hidden" value="<?php echo $testCaseRunId;?>" />
-         <input id="testCaseRunTestSession" name="testCaseRunTestSession" type="hidden" value="" />
-         <input id="testCaseRunMode" name="testCaseRunMode" type="hidden" value="" />
+         <input id="testCaseRunTestSession" name="testCaseRunTestSession" type="hidden" value="<?php echo $testSessionId;?>" />
+         <input id="testCaseRunMode" name="testCaseRunMode" type="hidden" value="<?php echo $mode;?>"  />
          <?php if ($mode=='add') {?>
+         <input type="hidden" id="testCaseRunStatus" name="testCaseRunStatus" value="1" />
          <div id="testCaseRunAddDiv">
 	         <table>
 	           <tr>
@@ -85,7 +97,6 @@ foreach ($selectedArray as $selected) {
 	             </td>
 	             <td>
 	               <div id="testCaseRunListDiv" dojoType="dijit.layout.ContentPane" region="center">
-	                  <input id="testCaseRunTestCaseList" name="testCaseRunTestCaseList" type="hidden" value="" />
                     <select xdojoType="dijit.form.MultiSelect" multiple
                       id="testCaseRunTestCaseList" name="testCaseRunTestCaseList[]" 
                       class="selectList" required="required" size="10"
@@ -204,6 +215,20 @@ foreach ($selectedArray as $selected) {
                                              
 	             </td>    
 	           </tr>
+	           <tr>
+                <td class="dialogLabel" >
+                  <label for="dialogTestCaseRunSortOrder" ><?php echo i18n('colSortOrder');?> : </label>
+                </td>
+                <td>
+                  <input type="text" dojoType="dijit.form.NumberTextBox" 
+                  id="dialogTestCaseRunSortOrder" 
+                  name="dialogTestCaseRunSortOrder"                 
+                  value="<?php echo $testCaseRun->sortOrder;?>"
+                  style="width: 30px;" 
+                  maxlength="3" 
+                  class="input"></input>
+                </td>
+             </tr>
 	         </table>
         </form>
       </td>
