@@ -1061,6 +1061,7 @@ label, .label, .smallLabel {
   background-repeat: no-repeat;
   width: 30px;
   height: 30px;
+  background-size:30px 30px;
   text-align: center;
   cursor: pointer;
 }

@@ -81,12 +81,16 @@
     }
   }
   $baselineTop=null;
-  $baselineBottom=null;
-  if (array_key_exists('selectBaselineTop',$_REQUEST) and trim($_REQUEST['selectBaselineTop'])) {
+  if (array_key_exists('selectBaselineTop',$_REQUEST)) {
     $baselineTop=trim($_REQUEST['selectBaselineTop']);
+  } else {
+    $baselineTop=trim(getSessionValue('planningBaselineTop'));
   }
-  if (array_key_exists('selectBaselineBottom',$_REQUEST) and trim($_REQUEST['selectBaselineBottom'])) {
+  $baselineBottom=null;
+  if (array_key_exists('selectBaselineBottom',$_REQUEST)) {
     $baselineBottom=trim($_REQUEST['selectBaselineBottom']);
+  } else {
+    $baselineBottom=trim(getSessionValue('planningBaselineBottom'));
   }
   // Header
   if ( array_key_exists('report',$_REQUEST) ) {

@@ -159,7 +159,7 @@ class PlannedWork extends GeneralWork {
     }
     
     //-- Build in list to get a where clause : "idProject in ( ... )"
-    $proj=new Project($projectId);
+    $proj=new Project($projectId,true);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     //$inClause.=" and " . getAccesRestrictionClause('Activity',false);
     //-- Remove Projects with Fixed Planning flag
@@ -192,6 +192,7 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
+      debugLog("#$plan->id ref=$plan->refType #$plan->refId - $plan->refName");
       if (! $plan->id) {
         continue;
       }
@@ -213,7 +214,7 @@ class PlannedWork extends GeneralWork {
       if (! $plan->idPlanningMode) {
         $profile="ASAP";
       } else {
-        $pm=new PlanningMode($plan->idPlanningMode);
+        $pm=new PlanningMode($plan->idPlanningMode,true);
         $profile=$pm->code;  
       }
       if ($profile=="ASAP" and $plan->assignedWork==0 and $plan->leftWork==0 and $plan->validatedDuration>0) {
@@ -368,7 +369,7 @@ class PlannedWork extends GeneralWork {
         }
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {
-          $proj = new Project($plan->idProject);
+          $proj = new Project($plan->idProject,true);
           $listTopProjects=$proj->getTopProjectList(true);
         }
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
@@ -381,7 +382,7 @@ class PlannedWork extends GeneralWork {
         }
         if ($profile=='GROUP') {
         	foreach ($listAss as $ass) {
-	        	$r=new Resource($ass->idResource);
+	        	$r=new Resource($ass->idResource,true);
 	          $capacity=($r->capacity)?$r->capacity:1;
 	          if (array_key_exists($ass->idResource,$resources)) {
 	            $ress=$resources[$ass->idResource];
@@ -426,6 +427,7 @@ class PlannedWork extends GeneralWork {
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
+          debugLog("   Ass #$ass->id ress=$ass->idResource left=$ass->leftWork");
           if ($ass->notPlannedWork>0) {
             $ass->notPlannedWork=0;
             $changedAss=true;
@@ -441,7 +443,7 @@ class PlannedWork extends GeneralWork {
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
-          $r=new Resource($ass->idResource);
+          $r=new Resource($ass->idResource,true);
           $capacity=($r->capacity)?$r->capacity:1;
           if (array_key_exists($ass->idResource,$resources)) {
             $ress=$resources[$ass->idResource];
@@ -798,7 +800,7 @@ class PlannedWork extends GeneralWork {
     	//$result='<div class="messageWARNING">'
     	$result=i18n('planDoneWithLimits', array($duration));
     	foreach ($arrayNotPlanned as $assId=>$left) {
-    		$ass=new Assignment($assId);
+    		$ass=new Assignment($assId,true);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
     		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName; 
@@ -949,7 +951,7 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   		return $result;
   	}
   	$cpt=0;
-  	$proj=new Project($projectId);
+  	$proj=new Project($projectId,true);
   	$inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
   	$obj=new PlanningElement();
   	$tablePE=$obj->getDatabaseTableName();

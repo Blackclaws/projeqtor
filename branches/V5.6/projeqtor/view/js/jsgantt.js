@@ -223,7 +223,6 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.setBaseTopEnd  = function(pBaseTopEnd) {vBaseTopEnd = pBaseTopEnd; };
   this.setBaseBottomStart  = function(pPlanningMode) {vBaseBottomStart = pBaseBottomStart; };
   this.setBaseBottomEnd  = function(pBaseBottomEnd) {vBaseBottomEnd = pBaseBottomEnd; };
-  
 };  
   
 /**
@@ -263,6 +262,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vGanttWidth=1000;
   var vStartDateView=new Date();
   var vEndDateView=new Date();
+  var vBaseTopName="";
+  var vBaseBottomName="";
   this.setFormatArr = function() {
     vFormatArr = new Array();
     for(var i = 0; i < arguments.length; i++) {vFormatArr[i] = arguments[i];}
@@ -285,7 +286,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.setDateInputFormat = function(pShow) { vDateInputFormat = pShow; };
   this.setDateDisplayFormat = function(pShow) { vDateDisplayFormat = pShow; };
   this.setCaptionType = function(pType) { vCaptionType = pType; };
-
+  this.setBaseBottomName = function(pBaseBottomName) {vBaseBottomName = pBaseBottomName; };
+  this.setBaseTopName = function(pBaseTopName) {vBaseTopName = pBaseTopName; };
   this.setFormat = function(pFormat){ 
     vFormat = pFormat; 
     this.clearDependencies();
@@ -327,12 +329,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.getEndDateView = function() { return vEndDateView; };
   this.getInitialStartDateView = function() { return vInitialStartDateView; };
   this.getFormat = function(){ return vFormat; };
+  this.getBaseBottomName = function() { return vBaseBottomName; };
+  this.getBaseTopName = function() { return vBaseTopName; };
   this.CalcTaskXY = function () { 
     var vList = this.getList();
     var vTaskDiv;
     var vParDiv;
     var vLeft, vTop, vHeight, vWidth;
-    for(i = 0; i < vList.length; i++) {
+    for(var i = 0; i < vList.length; i++) {
       vID = vList[i].getID();
       vTaskDiv = JSGantt.findObj("taskbar_"+vID);
       vBarDiv  = JSGantt.findObj("bardiv_"+vID);
@@ -983,6 +987,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
+          var vBaselineTopTitle="";
+          if ( vTaskList[i].getBaseTopStart()) {              
+            vBaseStart=vTaskList[i].getBaseTopStart();
+            vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat);
+            vBaselineTopTitle="\n"+vBaseTopName+" : "+vDateBaseStr;
+            vBaseRight = 1 ;            
+            vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+            if (vFormat=='day') vBaseLeft = vBaseLeft - 0.70;
+            else if (vFormat=='week') vBaseLeft = vBaseLeft - 0.40;
+            else if (vFormat=='month') vBaseLeft = vBaseLeft + 0.20;
+            else if (vFormat=='quarter') vBaseLeft = vBaseLeft + 3;
+            if (Date.parse(vMaxDate)>=Date.parse(vBaseStart) ) {
+              vRightTable += '<div class="barDivMilestone ganttTaskrowBaseTopMile" style="top:-6px;left:' + Math.ceil(vBaseLeft * (vDayWidth)) + 'px;" >' 
+              + '<div style="overflow:hidden; font-size:16px;">&diams;</div>'
+              + '</div>';
+            }
+          }
+          var vBaselineBottomTitle="";
+          if ( vTaskList[i].getBaseBottomStart()) {              
+            vBaseStart=vTaskList[i].getBaseBottomStart();
+            vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat);
+            vBaselineBottomTitle="\n"+vBaseBottomName+" : "+vDateBaseStr;
+            vBaseRight = 1 ;            
+            vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+            if (vFormat=='day') vBaseLeft = vBaseLeft - 0.70;
+            else if (vFormat=='week') vBaseLeft = vBaseLeft - 0.40;
+            else if (vFormat=='month') vBaseLeft = vBaseLeft + 0.20;
+            else if (vFormat=='quarter') vBaseLeft = vBaseLeft + 3;
+            if (Date.parse(vMaxDate)>=Date.parse(vBaseStart) ) {
+              vRightTable += '<div class="barDivMilestone ganttTaskrowBaseBottomMile" style="top:6px;left:' + Math.ceil(vBaseLeft * (vDayWidth)) + 'px;" >' 
+              + '<div style="overflow:hidden; font-size:16px;">&diams;</div>'
+              + '</div>';
+            }
+          }
           vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
           //if (vMinDate>vDefaultMinDate) {
             vTaskLeft = vTaskLeft - 0.85;
@@ -1001,7 +1039,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onMouseover=JSGantt.enterBarLink('+i+'); '
             + ' onMouseout=JSGantt.exitBarLink('+i+'); '
             +'>' 
-            + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+            + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
             + ' style="overflow:hidden; font-size:18px;" '
             + ' onmousedown=JSGantt.startLink('+i+'); '
             + ' onmouseup=JSGantt.endLink('+i+'); '
@@ -1057,6 +1095,38 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" style="height: 21px;"'
               + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
+            var vBaselineTopTitle="";
+            if (vTaskList[i].getBaseTopStart() && vTaskList[i].getBaseTopEnd()) {              
+              vBaseEnd=vTaskList[i].getBaseTopEnd();
+              vBaseStart=vTaskList[i].getBaseTopStart();
+              vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
+              vBaselineTopTitle="\n"+vBaseTopName+" : "+vDateBaseStr;
+              vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
+              vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
+              vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+              vBaseLeft = vBaseLeft - 1;
+              var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
+              var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
+              vRightTable +='<div class="ganttTaskrowBaseBar ganttTaskrowBaseTop ganttTaskrowBaseTopGroup"  '
+              + 'style="width:'+vBarBaseWidth+'px;left:'+vBarBaseLeft+'px;" >'
+              + '</div>';
+            }
+            var vBaselineBottomTitle="";
+            if (vTaskList[i].getBaseBottomStart() && vTaskList[i].getBaseBottomEnd()) {              
+              vBaseEnd=vTaskList[i].getBaseBottomEnd();
+              vBaseStart=vTaskList[i].getBaseBottomStart();
+              vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
+              vBaselineBottomTitle="\n"+vBaseBottomName+" : "+vDateBaseStr;
+              vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
+              vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
+              vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+              vBaseLeft = vBaseLeft - 1;
+              var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
+              var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
+              vRightTable +='<div class="ganttTaskrowBaseBar ganttTaskrowBaseBottom ganttTaskrowBaseBottomGroup" '
+              + 'style="width:'+vBarBaseWidth+'px;left:'+vBarBaseLeft+'px;" >'
+              + '</div>';
+            }
   	        if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
   	          vBardivName='bardiv_' + vID;
   	        } else {
@@ -1066,7 +1136,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' left:' + vBarLeft + 'px; height: 7px; '
                 + ' width:' + vBarWidth + 'px">';
             if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskStart) ) {
-              vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+              vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle +'" '
               + ' onmousedown=JSGantt.startLink('+i+'); '
               + ' onmouseup=JSGantt.endLink('+i+'); '
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
@@ -1120,37 +1190,37 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	          vBardivName='outbardiv_' + vID;
   	        }
             vRightTable += vDivStr;   
+            var vBaselineTopTitle="";
             if (vTaskList[i].getBaseTopStart() && vTaskList[i].getBaseTopEnd()) {              
               vBaseEnd=vTaskList[i].getBaseTopEnd();
               vBaseStart=vTaskList[i].getBaseTopStart();
               vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
-              console.log(vDateBaseStr);
+              vBaselineTopTitle="\n"+vBaseTopName+" : "+vDateBaseStr;
               vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
               vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
               vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
               vBaseLeft = vBaseLeft - 1;
               var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
               var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
-              vRightTable +='<div class="ganttTaskrowBaseBar"  title="' + vTaskList[i].getName() + ': ' + vDateBaseStr + '" '
-              + 'style="position: absolute; background-color:#CCBBDD;'
-              + 'top: 0px; width:' + vBarBaseWidth + 'px; left: ' + vBarBaseLeft + 'px; "'
-              + ' ></div>';
+              vRightTable +='<div class="ganttTaskrowBaseBar ganttTaskrowBaseTop"  '
+              + 'style="width:'+vBarBaseWidth+'px;left:'+vBarBaseLeft+'px;" >'
+              + '</div>';
             }
+            var vBaselineBottomTitle="";
             if (vTaskList[i].getBaseBottomStart() && vTaskList[i].getBaseBottomEnd()) {              
               vBaseEnd=vTaskList[i].getBaseBottomEnd();
               vBaseStart=vTaskList[i].getBaseBottomStart();
               vDateBaseStr = JSGantt.formatDateStr(vBaseStart,vDateDisplayFormat) + ' - ' + JSGantt.formatDateStr(vBaseEnd,vDateDisplayFormat);
-              console.log(vDateBaseStr);
+              vBaselineBottomTitle="\n"+vBaseBottomName+" : "+vDateBaseStr;
               vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vBaseEnd))?vMaxDate:vBaseEnd;
               vBaseRight = (Date.parse(vTmpEnd) - Date.parse(vBaseStart)) / (24 * 60 * 60 * 1000) + 1 ;            
               vBaseLeft = Math.ceil((Date.parse(vBaseStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
               vBaseLeft = vBaseLeft - 1;
               var vBarBaseLeft=Math.ceil(vBaseLeft * (vDayWidth));
               var vBarBaseWidth=Math.ceil((vBaseRight) * (vDayWidth) );
-              vRightTable +='<div class="ganttTaskrowBaseBar"  title="' + vTaskList[i].getName() + ': ' + vDateBaseStr + '" '
-              + 'style="position: absolute; background-color:#BBCCDD;'
-              + 'top: 10px; width:' + vBarBaseWidth + 'px; left: ' + vBarBaseLeft + 'px; "'
-              + ' ></div>';
+              vRightTable +='<div class="ganttTaskrowBaseBar ganttTaskrowBaseBottom" '
+              + 'style="width:'+vBarBaseWidth+'px;left:'+vBarBaseLeft+'px;" >'
+              + '</div>';
             }
             vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
@@ -1170,7 +1240,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	        		tmpColor='999999';
   	        		vBarWidth=vBarWidthReal;
   	        	}
-  	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+  	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
   	            + ' class="ganttTaskrowBar" style="background-color:#' + tmpColor +'; '
   	            + ' width:' + vBarWidth + 'px; " ' 
         		    + ' onmousedown=JSGantt.startLink('+i+'); '
@@ -1180,7 +1250,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
   	            vRightTable += ' </div>';	        	
   	        	if (g.getSplitted()) {
-  	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+  	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
   		        		  + 'style="position: absolute; background-color:#' + vTaskList[i].getColor() +';'
   		        		  + 'top: 0px; width:' + vBarWidthPlan + 'px; left: ' + vBarLeftPlan + 'px; "'
   		        		  + ' onmousedown=JSGantt.startLink('+i+'); '

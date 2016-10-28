@@ -9,6 +9,7 @@ ALTER TABLE `${prefix}product` ADD `idUser` int(12) UNSIGNED DEFAULT NULL;
 ALTER TABLE `${prefix}version` ADD `idUser` int(12) UNSIGNED DEFAULT NULL;
 ALTER TABLE `${prefix}action` ADD `idContact` int(12) UNSIGNED DEFAULT NULL;
 ALTER TABLE `${prefix}dependency` ADD `comment` varchar(4000)DEFAULT NULL;
+ALTER TABLE `${prefix}testcaserun` ADD `sortOrder` int(3) DEFAULT 0;
 
 UPDATE `${prefix}parameter` set parameterValue='ProjeQtOrFlatBlue' where parameterValue='ProjeQtOr' and (parameterCode='theme' or parameterCode='defaultTheme');
 UPDATE `${prefix}parameter` set parameterValue='ProjeQtOrFlatRed' where parameterValue='ProjeQtOrFire' and (parameterCode='theme' or parameterCode='defaultTheme');
@@ -33,6 +34,15 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (1,59,1),
 (2,59,1),
 (3,59,1);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'OpenDaySunday','offDays'),
+(null, null, 'OpenDaySaturday','offDays'),
+(null, null, 'OpenDayFriday','openDays'),
+(null, null, 'OpenDayThursday','openDays'),
+(null, null, 'OpenDayWednesday','openDays'),
+(null, null, 'OpenDayTuesday','openDays'),
+(null, null, 'OpenDayMonday','openDays');
 
 CREATE TABLE `${prefix}baseline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

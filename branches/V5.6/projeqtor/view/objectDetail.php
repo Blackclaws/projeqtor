@@ -3717,6 +3717,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     $canCreate=false;
     $canDelete=false;
   }
+  usort($list, "TestCaseRun::sort");
   echo '<tr><td colspan="2" style="width:100%;">';
   echo '<table style="width:100%;">';
   echo '<tr>';
@@ -3730,13 +3731,12 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     // also count colDetail size
     $nameWidth-=10;
   }
-  echo '<td class="assignHeader" colspan="3" style="width:' . ($nameWidth + 15) . '%">' . i18n('col' . $otherClass) . '</td>';
+  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth + 15) . '%">' . i18n('col' . $otherClass) . '</td>';
   if (!$print and $class == 'TestSession') {
     echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
   }
-  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>';
+  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>'; 
   echo '</tr>';
-  asort($list);
   foreach ( $list as $tcr ) {
     if ($otherClass == 'TestCase') {
       $tc=new TestCase($tcr->idTestCase);
@@ -3780,7 +3780,8 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . htmlEncode($tc->id) . '\');" style="cursor: pointer;" ';
     }
     $typeClass='id' . $otherClass . 'Type';
-    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';
+    echo '<td class="assignData" align="center" style="width:3%">' . htmlEncode($tcr->sortOrder) . '</td>';
+    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';    
     echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
     echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
     if ($tcr->comment and !$print) {
@@ -3805,7 +3806,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" style="width:8%;text-align:left;border-right:0px;">';
     echo colorNameFormatter(i18n($st->name) . '#split#' . $st->color);
     echo '</td>';
-    echo '<td class="assignData" style="width:10%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3')?'100':'80') . '%; text-align: center;">';
+    echo '<td class="assignData" style="width:7%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3')?'100':'80') . '%; text-align: center;">';
     if ($tcr->idTicket and $tcr->idRunStatus == '3') {
       echo i18n('Ticket') . ' #' . $tcr->idTicket;
     } else if ($tcr->statusDateTime) {
