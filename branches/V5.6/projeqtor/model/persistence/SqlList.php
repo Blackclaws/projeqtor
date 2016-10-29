@@ -131,7 +131,7 @@ class SqlList {
         	}
         }
         if ($displayCol=='name' and property_exists($obj,'_constructForName') and !$calculated) {
-        	$nameObj=new $listType($line['id']);
+        	$nameObj=new $listType($line['id'],true);
         	$name=$nameObj->name;
         }
         $res[($line['id'])]=$name;
@@ -269,7 +269,7 @@ class SqlList {
         	if ($listType=='TargetVersion') $listType='OriginalVersion';
         	if ($listType=='TargetProductVersion') $listType='OriginalProductVersion';
         	if ($listType=='TargetComponentVersion') $listType='OriginalComponentVersion';
-          $nameObj=new $listType($line['id']);
+          $nameObj=new $listType($line['id'],true);
           if ($nameObj->id) {
             $name=$nameObj->name;
           }

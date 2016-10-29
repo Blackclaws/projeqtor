@@ -319,7 +319,7 @@ if ($proj=='*' or !$proj) {
                            saveDataToSession("planningBaselineTop",this.value,false);
                            refreshJsonPlanning();
                         </script>
-                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineTop"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                        <?php htmlDrawOptionForReference('idBaselineSelect', getSessionValue("planningBaselineTop"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
                       </select>
                   </td></tr>
                   <tr><td style="text-align:right"><?php echo i18n('baselineBottom').'&nbsp;:&nbsp';?>
@@ -333,7 +333,7 @@ if ($proj=='*' or !$proj) {
                            saveDataToSession("planningBaselineBottom",this.value,false);
                            refreshJsonPlanning();
                         </script>
-                        <?php htmlDrawOptionForReference('idBaseline', getSessionValue("planningBaselineBottom"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
+                        <?php htmlDrawOptionForReference('idBaselineSelect', getSessionValue("planningBaselineBottom"), null,false,($proj)?'idProject':null,($proj)?$proj:null);?>
                       </select>
                   </td></tr>
                   </table>

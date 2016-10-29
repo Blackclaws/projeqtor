@@ -1142,7 +1142,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
               + ' onMouseout=JSGantt.exitBarLink('+i+'); '
               + '  onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
-                + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
+                + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;background-color:#'+vTaskList[i].getColor()+'">'
                 + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
                 + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
@@ -1151,15 +1151,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' class="ganttGrouprowBarComplete">' 
                 + '</div>' 
                 + '</div>' 
-                + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
-                + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
-                + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
-                + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' ;
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px;background-color:#'+vTaskList[i].getColor()+'"></div>'               
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px;background-color:#'+vTaskList[i].getColor()+'"></div>'                 
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px;background-color:#'+vTaskList[i].getColor()+'"></div>'              
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px;background-color:#'+vTaskList[i].getColor()+'"></div>' ;
               if (Date.parse(vMaxDate)>=Date.parse(vTaskEnd)) {
-                vRightTable += '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>' 
-                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
-                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
-                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';  
+                vRightTable += '<div class="ganttTaskgroupBarExt" style="float:right; height:4px;background-color:#'+vTaskList[i].getColor()+'"></div>' 
+                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px;background-color:#'+vTaskList[i].getColor()+'"></div>'
+                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px;background-color:#'+vTaskList[i].getColor()+'"></div>' 
+                  + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px;background-color:#'+vTaskList[i].getColor()+'"></div>';  
               }
               if( g.getCaptionType() ) {
                 vCaptionStr = '';
