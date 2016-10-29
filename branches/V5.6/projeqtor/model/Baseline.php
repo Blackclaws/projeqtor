@@ -40,7 +40,7 @@ class Baseline extends SqlElement {
   public $idPrivacy;
   public $idTeam;
   public $idle;
-    
+      
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

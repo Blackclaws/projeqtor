@@ -2296,16 +2296,16 @@ function drawGantt() {
       // wbs code
       // var pName=item.refname;
       // display color of the task bar
-      var pColor = '50BB50'; // Default green
-      if (item.notplannedwork > 0) { // Some left work not planned : purple
+      var pColor = (pGroup)?'003000':'50BB50'; // Default green
+      if (! pGroup && item.notplannedwork > 0) { // Some left work not planned : purple
         pColor = '9933CC';
       } else if (trim(item.validatedenddate) != "" && item.validatedenddate < pEnd) { // Not respected constraints (end date) : red
         if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) {
-          pColor = 'BB9099';
+          pColor = (pGroup)?'650000':'BB9099';
         } else {
-          pColor = 'BB5050';
+          pColor = (pGroup)?'650000':'BB5050';
         }
-      } else if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) { // No workassigned : greyed green
+      } else if (! pGroup && item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) { // No workassigned : greyed green
         pColor = 'aec5ae';
       }
       // pColor = '9099BB';
