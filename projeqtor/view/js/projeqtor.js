@@ -2300,12 +2300,12 @@ function drawGantt() {
       if (! pGroup && item.notplannedwork > 0) { // Some left work not planned : purple
         pColor = '9933CC';
       } else if (trim(item.validatedenddate) != "" && item.validatedenddate < pEnd) { // Not respected constraints (end date) : red
-        if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) {
+        if (item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) && ( ! item.leftwork || item.leftwork==0 ) && ( ! item.realwork || item.realwork==0 )) {
           pColor = (pGroup)?'650000':'BB9099';
         } else {
           pColor = (pGroup)?'650000':'BB5050';
         }
-      } else if (! pGroup && item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) ) { // No workassigned : greyed green
+      } else if (! pGroup && item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) && ( ! item.leftwork || item.leftwork==0 ) && ( ! item.realwork || item.realwork==0 ) ) { // No workassigned : greyed green
         pColor = 'aec5ae';
       }
       // pColor = '9099BB';
