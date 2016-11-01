@@ -33,11 +33,7 @@ scriptLog('   ->/tool/planningColumnSelector');
 
 $columns=Parameter::getPlanningColumnOrder();
 $columnsAll=Parameter::getPlanningColumnOrder(true);
-//asort($columns);
-//$pe=new ProjectPlanningElement();
-//$pe->setVisibility();
-//$workVisibility=$pe->_workVisibility;
-//$costVisibility=$pe->_costVisibility;    
+  
 foreach ($columnsAll as $order=>$col) {
 	if ( (isset($resourcePlanning) and ($col=='ValidatedWork' or $col=='Resource' ) )
 	  or (isset($portfolioPlanning) and ($col=='Priority' or $col=='Resource' or $col=='IdPlanningMode') )	) {

@@ -1683,7 +1683,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 							<tr>
 								<td><label for="dependencyComment"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label></td>															
 								<td><input id="dependencyComment" name="dependencyComment" value="" dojoType="dijit.form.Textarea" class="input"/></td>
-		
 							</tr>
 						</table>
 					</form>

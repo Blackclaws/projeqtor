@@ -4638,7 +4638,7 @@ function stockHistory(curClass, curId) {
   historyPosition+=1;
   historyTable[historyPosition]=new Array(curClass, curId,currentScreen);
   // Purge next history (not valid any more)
-  for (i=historyPosition+1;i<historyTable.length;i++) {
+  for (var i=historyPosition+1;i<historyTable.length;i++) {
     historyTable.splice(i,1);
   }
   if (historyPosition > 0) {
