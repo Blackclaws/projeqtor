@@ -413,7 +413,7 @@ $dataSet->setSerieDrawable("left",FALSE);
 $dataSet->setSerieDrawable("leftPlanned",FALSE);
 $dataSet->setSerieDrawable("leftTasks",FALSE);
 $dataSet->setSerieDrawable("leftTasksPlanned",FALSE);
-$graph->drawBarChart();
+$graph->drawStackedBarChart();
 
 $dataSet->setSerieDrawable("completedTasks",FALSE);
 $dataSet->setSerieDrawable("completedTasksPlanned",FALSE);

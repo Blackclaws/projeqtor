@@ -17,6 +17,7 @@ class Parameter extends SqlElement {
   
   private static $planningColumnOrder=array();
   private static $planningColumnOrderAll=array();
+  private static $planningColumnWidth=array();
   
   /** ==========================================================================
    * Constructor
@@ -866,6 +867,7 @@ class Parameter extends SqlElement {
   	}
   	ksort($arrayFiledsSorted);
   	$arrayFields=array('ValidatedWork','AssignedWork','RealWork','LeftWork','PlannedWork','Duration',
+  	                   'ValidatedCost', 'AssignedCost', 'RealCost', 'LeftCost', 'PlannedCost', 'IdStatus', 'Type',
   	                   'Progress','StartDate','EndDate','Resource','Priority','IdPlanningMode');
   	foreach($arrayFields as $order=>$column) {
   	  if (! in_array($column,$arrayFiledsSorted)) {
@@ -877,6 +879,59 @@ class Parameter extends SqlElement {
   		$res[$i++]=($all or !strpos($hidden,$column)>0)?$column:'Hidden'.$column;
   	}
   	if ($all) {
+      self::$planningColumnOrderAll=$res;
+    } else {
+      self::$planningColumnOrder=$res;
+    }
+    return $res;
+  }
+  
+  static public function getPlanningColumnWidth() {
+    
+    if (count(self::$planningColumnWidth)) return self::$planningColumnWidth;
+    
+    $pe=new ProjectPlanningElement();
+    $pe->setVisibility();
+    $workVisibility=$pe->_workVisibility;
+    $costVisibility=$pe->_costVisibility;
+    $res=array();
+    // Default Values
+    $user=getSessionUser();
+    $critHidden="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningHideColumn%'";
+    $critOrder="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningColumnOrder%'";
+    $param=new Parameter();
+    $hiddenList=$param->getSqlElementsFromCriteria(null, false, $critHidden);
+    $orderList=$param->getSqlElementsFromCriteria(null, false, $critOrder);
+    $hidden="|";
+    foreach($hiddenList as $param) {
+    		if ($param->parameterValue=='1') {
+    		  $hidden.=substr($param->parameterCode,18).'|';
+    		}
+    }
+    if ($workVisibility!='ALL') {
+    		if ($workVisibility!='VAL') {
+    		  $hidden.='ValidatedWork|';
+    		}
+    		$hidden.='AssignedWork|RealWork|LeftWork|PlannedWork|';
+    }
+    $arrayFiledsSorted=array();
+    foreach ($orderList as $param) {
+      $arrayFiledsSorted[$param->parameterValue]=substr($param->parameterCode,19);
+    }
+    ksort($arrayFiledsSorted);
+    $arrayFields=array('ValidatedWork','AssignedWork','RealWork','LeftWork','PlannedWork','Duration',
+        'ValidatedCost', 'AssignedCost', 'RealCost', 'LeftCost', 'PlannedCost', 'IdStatus', 'Type',
+        'Progress','StartDate','EndDate','Resource','Priority','IdPlanningMode');
+    foreach($arrayFields as $order=>$column) {
+      if (! in_array($column,$arrayFiledsSorted)) {
+    	  	$arrayFiledsSorted[]=$column;
+      }
+    }
+    $i=1;
+    foreach($arrayFiledsSorted as $order=>$column) {
+    		$res[$i++]=($all or !strpos($hidden,$column)>0)?$column:'Hidden'.$column;
+    }
+    if ($all) {
       self::$planningColumnOrderAll=$res;
     } else {
       self::$planningColumnOrder=$res;

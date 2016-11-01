@@ -29,18 +29,11 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/listColumnSelector');
-//echo "$objectClass<br/>";
-//$columns=Parameter::getPlanningColumnOrder();
-//$columnsAll=Parameter::getPlanningColumnOrder(true);
+
 $listColumns=ColumnSelector::getColumnsList($objectClass);
-//echo "<textarea>$listColumns</textarea>";
-//asort($columns);
-//$pe=new ProjectPlanningElement();
-//$pe->setVisibility();
-//$workVisibility=$pe->_workVisibility;
-//$costVisibility=$pe->_costVisibility;
+
 $cpt=0;
-//echo '<table style="width:100%"><tr><td>';
+
 foreach ($listColumns as $col) {
 	if ( ! SqlElement::isVisibleField($col->attribute) ) {
 		// nothing
@@ -79,8 +72,7 @@ foreach ($listColumns as $col) {
 		echo '&nbsp;</div>';
 		echo '</div>';
 		$cpt++;
-		//if ($cpt%10==0) {echo '</td><td>';}
+
 	}
 }
-//echo '</td></tr></table>';
 ?>
