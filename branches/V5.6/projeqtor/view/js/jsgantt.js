@@ -232,6 +232,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vGanttVar = pGanttVar;
   var vDiv      = pDiv;
   var vFormat   = pFormat;
+  var vShowField=array();
   var vShowRes  = 1;
   var vShowDur  = 1;
   var vShowComp = 1;
