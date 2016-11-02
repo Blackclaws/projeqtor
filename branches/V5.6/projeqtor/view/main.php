@@ -431,11 +431,20 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       	echo "checklistableArray['" . $id . "']='" . $name . "';";
       }
       echo "\n";
+     
       $list=Parameter::getPlanningColumnOrder();
       foreach ($list as $order=>$name) {
         echo "planningColumnOrder[" . ($order-1) . "]='" . $name . "';";
+        echo "setPlanningFieldShow('$name',true);";
+        echo "setPlanningFieldOrder('$name',$order);\n";
+      }
+      $list=Parameter::getPlanningColumnDescription();
+      foreach ($list as $name=>$desc) {
+        debugLog($desc);
+        echo "setPlanningFieldWidth('$name',".$desc['width'].");";
       }
       echo "\n";
+      echo "console.log(planningFieldsDescription);";
       Plugin::getTranslationJsArrayForPlugins('i18nPluginArray');
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};

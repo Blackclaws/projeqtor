@@ -33,6 +33,7 @@
   SqlElement::$_cachedQuery['Project']=array();
   SqlElement::$_cachedQuery['Resource']=array();
   $objectClass='PlanningElement';
+  $columnsDescription=Parameter::getPlanningColumnDescription();
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
   $displayResource=Parameter::getGlobalParameter('displayResourcePlan');
@@ -273,6 +274,18 @@
         $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
         $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
         $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
+        $line["validatedcostdisplay"]=htmlDisplayCurrency($line["validatedcost"],true);
+        $line["assignedcostdisplay"]=htmlDisplayCurrency($line["assignedcost"],true);
+        $line["realcostdisplay"]=htmlDisplayCurrency($line["realcost"],true);
+        $line["leftcostdisplay"]=htmlDisplayCurrency($line["leftcost"],true);
+        $line["plannedcostdisplay"]=htmlDisplayCurrency($line["plannedcost"],true);
+        if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
+          $ref=$line['reftype'];
+          $type='id'.$ref.'Type';
+          $item=new $ref($line['refid'],true);
+          $line["status"]=SqlList::getNameFromId('Status',$item->idStatus);
+          $line["type"]=SqlList::getNameFromId('Type',$item->$type);
+        }
         $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
         if ($line["reftype"]=="Project") {
         	$topProjectArray[$line['refid']]=$line['id'];
@@ -361,6 +374,8 @@
           }
 	        //$res=new Resource($ass->idResource);
 	        echo ',"resource":"' . htmlEncodeJson(implode(', ',$arrayResource)) . '"';
+        } else {
+          echo ',"resource":""';
         }
         $crit=array('successorId'=>$idPe);
         $listPred="";
