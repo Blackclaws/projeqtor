@@ -30,6 +30,7 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/tool/jsonPlanning_pdf.php');
   $objectClass='PlanningElement';
+  $columnsDescription=Parameter::getPlanningColumnDescription();
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
   $displayResource=Parameter::getGlobalParameter('displayResourcePlan');

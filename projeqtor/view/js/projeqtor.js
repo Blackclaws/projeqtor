@@ -565,13 +565,11 @@ function loadContent(page, destination, formName, isResultMessage,
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
   var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
-  console.log("callKey="+callKey);
   if (loadContentRetryArray[callKey]===undefined) {
     loadContentRetryArray[callKey]=1;
   } else {
     loadContentRetryArray[callKey]+=1;
   }
-  console.log("retry="+loadContentRetryArray[callKey]);
   if (dojo.isIE && dojo.isIE <= 8) {
     fadingMode = false;
   }
@@ -589,7 +587,7 @@ function loadContent(page, destination, formName, isResultMessage,
     }
   }
   if (!(contentNode && contentWidget)) {
-    console.warn(i18n("errorLoadContent", new Array(page, destination,
+    consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
         formName, isResultMessage, destination)));
     return;
   }
@@ -828,7 +826,6 @@ function loadContent(page, destination, formName, isResultMessage,
           finaliseButtonDisplay();
           //formChanged();
           if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
-            console.log(callKey);
             console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
           } else {
@@ -2347,7 +2344,7 @@ function drawGantt() {
           item.validatedworkdisplay, item.assignedworkdisplay, item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
           item.priority, item.planningmode, 
           item.status, item.type, 
-          item.validatedcost, item.assignedcost, item.realcost, item.leftcost, item.reassessedcost,
+          item.validatedcostdisplay, item.assignedcostdisplay, item.realcostdisplay, item.leftcostdisplay, item.plannedcostdisplay,
           item.baseTopStart, item.baseTopEnd, item.baseBottomStart, item.baseBottomEnd));
     }
     g.Draw();
@@ -3698,7 +3695,7 @@ function saveDataToSession(param, value, saveUserParameter) {
     load : function(data, args) {
     },
     error : function () {
-      console.log("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);
+      consoleTraceLog("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);
     }
  });;
 }
