@@ -163,3 +163,19 @@ CREATE INDEX planningelementbaselineBaseline ON `${prefix}planningelementbaselin
 CREATE INDEX planningelementbaselineRef ON `${prefix}planningelementbaseline` (`refType`,`refId`);
 CREATE INDEX planningelementbaselineProject ON `${prefix}planningelementbaseline` (`idProject`);
 CREATE INDEX planningelementbaselineWbsSortable ON `${prefix}planningelementbaseline` (`wbsSortable`(255));
+
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnValidatedCost', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnAssignedCost', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnRealCost', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnLeftCost', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnPlannedCost', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnIdStatus', '1' FROM `${prefix}resource` WHERE isUser=1; 
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) 
+SELECT id, null, 'planningHideColumnType', '1' FROM `${prefix}resource` WHERE isUser=1; 
+

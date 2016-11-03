@@ -90,6 +90,19 @@ function refreshImputationList() {
   dojo.byId('yearSpinnerT').value=dojo.byId('yearSpinner').value;
   dojo.byId('weekSpinnerT').value=dijit.byId('weekSpinner').get('value');
   dojo.byId('hideDone').checked=dojo.byId('listHideDone').checked;
+  
+
+  enableWidget("userName");
+  enableWidget("yearSpinner");
+  enableWidget("weekSpinner");
+  enableWidget("dateSelector");
+  enableWidget("listDisplayOnlyCurrentWeekMeetings");
+  enableWidget("listHideDone");
+  enableWidget("listHideNotHandled");
+  enableWidget("listShowIdle");
+  enableWidget("listShowPlannedWork");
+  enableWidget("showId");
+  
   if (dojo.byId('hideNotHandled') && dojo.byId('listHideNotHandled') ) {
     dojo.byId('hideNotHandled').checked=dojo.byId('listHideNotHandled').checked;
   }
@@ -298,6 +311,16 @@ function dispatchWorkValueChange(rowId, colId) {
   dojo.byId('workOldValue_' + rowId + '_' + colId).value=newWorkValue;
   //oldImputationWorkValue=newWorkValue;
   formChanged();
+  disableWidget("userName");
+  disableWidget("yearSpinner");
+  disableWidget("weekSpinner");
+  disableWidget("dateSelector");
+  disableWidget("listDisplayOnlyCurrentWeekMeetings");
+  disableWidget("listHideDone");
+  disableWidget("listHideNotHandled");
+  disableWidget("listShowIdle");
+  disableWidget("listShowPlannedWork");
+  disableWidget("showId");
   checkCapacity();
   dijit.byId('totalWork').set("value",parseFloat(dijit.byId('totalWork').get("value"))+diff);
   totalWork=parseFloat(dijit.byId('totalWork').get("value"));
@@ -374,6 +397,18 @@ function dispatchLeftWorkValueChange(rowId) {
   var newPlanned=newReal+newLeft;
   dojo.byId('plannedWork_' + rowId).value=formatDecimalToDisplay(newPlanned);
   formChanged();
+  
+  disableWidget("userName");
+  disableWidget("yearSpinner");
+  disableWidget("weekSpinner");
+  disableWidget("dateSelector");
+  disableWidget("listDisplayOnlyCurrentWeekMeetings");
+  disableWidget("listHideDone");
+  disableWidget("listHideNotHandled");
+  disableWidget("listShowIdle");
+  disableWidget("listShowPlannedWork");
+  disableWidget("showId");
+  
 }
 
 
@@ -450,6 +485,18 @@ function saveImputation() {
     formChangeInProgress=false; 
     submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
   }
+  
+  enableWidget("userName");
+  enableWidget("yearSpinner");
+  enableWidget("weekSpinner");
+  enableWidget("dateSelector");
+  enableWidget("listDisplayOnlyCurrentWeekMeetings");
+  enableWidget("listHideDone");
+  enableWidget("listHideNotHandled");
+  enableWidget("listShowIdle");
+  enableWidget("listShowPlannedWork");
+  enableWidget("showId");
+  
 }
 
 function dispatchWork(refType, refId) {
