@@ -35,22 +35,36 @@ $columns=Parameter::getPlanningColumnOrder();
 $columnsAll=Parameter::getPlanningColumnOrder(true);
   
 foreach ($columnsAll as $order=>$col) {
+debugLog("$order => $col");  
 	if ( (isset($resourcePlanning) and ($col=='ValidatedWork' or $col=='Resource' ) )
 	  or (isset($portfolioPlanning) and ($col=='Priority' or $col=='Resource' or $col=='IdPlanningMode') )	) {
 	  // noting	
 	} else if ( ! SqlElement::isVisibleField($col) ) {
 		// noting 
 	} else {
-	  debugLog($col);
-		echo '<div class="dojoDndItem" id="columnSelector'.$col.'" dndType="planningColumn">';
-		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
+	  if ($col=='Name') {
+		  echo '<div style="padding: 2px;" id="columnSelector'.$col.'" >';		
+		  echo '<span style="display:inline-block;width:15px">&nbsp;</span>'; 
+		} else {
+		  echo '<div class="dojoDndItem" id="columnSelector'.$col.'" dndType="planningColumn">';
+		  echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
+		}
 	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkColumnSelector'.$col.'" ' 
 	    . ((substr($columns[$order],0,6)!='Hidden')?' checked="checked" ':'') 
+	    . (($col=='Name')?' readonly':'')
 	    . ' onChange="changePlanningColumn(\'' . $col . '\',this.checked,\'' . $order . '\')" '
-	    . '></span><label for="checkColumnSelector'.$col.'" class="checkLabel">';
+	    . '></span><label for="checkColumnSelector'.$col.'" class="checkLabel" style="white-space:nowrap">';
 	  echo '&nbsp;';
 	  echo i18n('col' . $col) . "</label>";
-	  echo '</div>';
+	  echo '<div style="float: right; text-align:right">&nbsp;';
+	  echo '<div dojoType="dijit.form.NumberSpinner" id="planningColumnSelectorWidthId'.$order.'" ';
+	  echo (substr($columns[$order],0,6)=='Hidden')?'disabled="disabled" ':'';
+	  echo ' onChange="changePlanningColumnWidth(\'' . $order . '\','.$order.',this.value)" ';
+	  echo ' constraints="{ min:10, max:500, places:0 }"';
+	  echo ' style="width:50px; text-align: center;" value="'.htmlEncode(10).'" >';
+	  echo '</div>'; // NumberSpinner
+	  echo '&nbsp;</div>'; // style="float: right
+	  echo '</div>'; // id=columnSelector
 	}
 }
 
