@@ -277,8 +277,38 @@ class Sql {
       ini_set('mysql.connect_timeout', 10);
     }
     try {
-    	$dsn = self::$dbType.':host='.self::$dbHost.';port='.self::$dbPort.';dbname='.self::$dbName; 	  
-    	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
+      
+      //KEVIN
+      $ssl=array();
+      $sslKey=Parameter::getGlobalParameter("SslKey");
+      debugLog($sslKey);
+      if($sslKey and !file_exists($sslKey)){
+        traceLog("Error for SSL Key : file $sslKey do not exist");
+        $sslKey=null;
+      } 
+           
+      $sslCert=Parameter::getGlobalParameter("SslCert");
+      if($sslCert and !file_exists($sslCert)){
+        traceLog("Error for SSL Certification : file $sslCert do not exist");
+        $sslCert=null;
+      }
+            
+      $sslCa=Parameter::getGlobalParameter("SslCa");
+      if($sslCa and !file_exists($sslCa)){
+        traceLog("Error for SSL Certification Authority : file $sslCa do not exist");
+        $sslCa=null;
+      }
+      
+      if($sslKey!=null and $sslCert!=null and $sslCa!=null){
+      $ssl=array(
+          \PDO::MYSQL_ATTR_SSL_KEY    =>'/etc/pki/tls/private/my-key.pem',
+          \PDO::MYSQL_ATTR_SSL_CERT=>'/etc/pki/tls/certs/my-cert.pem',
+          \PDO::MYSQL_ATTR_SSL_CA    =>'/etc/pki/CA/certs/my-ca-cert.pem'
+      );}
+      
+    	$dsn = self::$dbType.':host='.self::$dbHost.';port='.self::$dbPort.';dbname='.self::$dbName;
+    	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword, $ssl);
+//     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword,
     	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     	// Could solve some erroneous default storing in non utf8 format
     	if (self::$dbType == "mysql" and isset($enforceUTF8) and $enforceUTF8) {

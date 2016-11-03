@@ -2156,20 +2156,17 @@ function drawGantt() {
       && dijit.byId("id").get("value")) {
     dojo.byId("objectId").value = dijit.byId("id").get("value");
   }
+  var startDateView = new Date();
   if (dijit.byId('startDatePlanView')) {
-    var startDateView = dijit.byId('startDatePlanView').get('value');
-  } else {
-    var startDateView = new Date();
+    startDateView = dijit.byId('startDatePlanView').get('value');
   }
+  var endDateView = null;
   if (dijit.byId('endDatePlanView')) {
-    var endDateView = dijit.byId('endDatePlanView').get('value');
-  } else {
-    var endDateView = null;
+    endDateView = dijit.byId('endDatePlanView').get('value');
   }
+  var showWBS = null;
   if (dijit.byId('showWBS')) {
-    var showWBS = dijit.byId('showWBS').get('checked');
-  } else {
-    var showWBS = null;
+    showWBS = dijit.byId('showWBS').get('checked');
   }
   // showWBS=true;
   var gFormat = "day";
@@ -2250,7 +2247,7 @@ function drawGantt() {
       }
       // pEnd : end date of task
       var pEnd = now;
-      var pEndFraction = 1;
+      //var pEndFraction = 1;
       pEnd = (trim(item.initialenddate) != "") ? item.initialenddate : pEnd;
       pEnd = (trim(item.validatedenddate) != "") ? item.validatedenddate : pEnd;
       pEnd = (trim(item.plannedenddate) != "") ? item.plannedenddate : pEnd;

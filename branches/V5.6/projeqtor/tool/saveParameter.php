@@ -307,17 +307,17 @@ if ($type=='habilitation') {
 }
 if ($status=='ERROR') {
 	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $errors . '</span>';
+  echo '<div class="messageERROR" >' . $errors . '</div>';
 } else if ($status=='WARNING'){ 
 	Sql::commitTransaction();
-  echo '<span class="messageWARNING" >' . i18n('messageParametersSaved') . ' - ' .$errors .'</span>';
+  echo '<div class="messageWARNING" >' . i18n('messageParametersSaved') . ' - ' .$errors .'</div>';
   $status='INVALID';
 } else if ($status=='OK'){ 
 	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . i18n('messageParametersSaved') . '</span>';
+  echo '<div class="messageOK" >' . i18n('messageParametersSaved') . '</div>';
 } else {
 	Sql::rollbackTransaction();
-  echo '<span class="messageNO_CHANGE" >' . i18n('messageParametersNoChangeSaved') . '</span>';
+  echo '<div class="messageNO_CHANGE" >' . i18n('messageParametersNoChangeSaved') . '</div>';
 }
 echo '<input type="hidden" id="forceRefreshMenu" value="'.$forceRefreshMenu.'" />';
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';

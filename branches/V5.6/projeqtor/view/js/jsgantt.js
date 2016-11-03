@@ -186,8 +186,8 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.getFieldValue = function(pField) {
     if (pField=='Name') return vName;
     else if (pField=='ID') return vID;
-    else if (pField=='StartDate') return this.getStart();
-    else if (pField=='EndDate') return (this.getEnd())?this.getEnd():this.getRealEnd();
+    else if (pField=='StartDate') return JSGantt.formatDateStr(this.getStart(),'default');
+    else if (pField=='EndDate') return JSGantt.formatDateStr((this.getEnd())?this.getEnd():this.getRealEnd(),'default');
     else if (pField=='Resource') return vRes;
     else if (pField=='PlanEnd') return vPlanEnd;
     else if (pField=='RealEnd') return vRealEnd;
@@ -208,7 +208,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
     else if (pField=='Duration') return this.getDuration(g.getFormat());
     else if (pField=='Progress') return this.getCompStr();
     else return "["+pField+"]";
-  }
+  };
   this.getID       = function(){ return vID; };
   this.getName     = function(){ return vName; };
   this.getStart    = function(){ return vStart;};
@@ -612,12 +612,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vPlanningModeWidth=150;
     var vWidth=this.getWidth();
     var sortArray=this.getSortArray();
-    var vLeftWidth = vIconWidth;
+    var vLeftWidth = vIconWidth+getPlanningFieldWidth('Name')+2;
     for (var iSort=0;iSort<sortArray.length;iSort++) {
       var field=sortArray[iSort];
+      if (field.substr(0,6)=='Hidden') field=field.substr(6);
       var showField=getPlanningFieldShow(field);
       var fieldWidth=getPlanningFieldWidth(field);
-      if (showField) vLeftWidth+=1+fieldWidth;
+      if (showField && field!='Name') vLeftWidth+=1+fieldWidth;
     }
     
     var vRightWidth = vWidth - vLeftWidth - 18;
@@ -662,11 +663,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</span></TD>'; 
       
-      for (iSort=1;iSort<sortArray.length;iSort++) {
+      for (iSort=0;iSort<sortArray.length;iSort++) {
         var field=sortArray[iSort];
+        if (field.substr(0,6)=='Hidden') field=field.substr(6);
         var showField=getPlanningFieldShow(field);
         var fieldWidth=getPlanningFieldWidth(field);
-	      if(showField) { 
+	      if(showField && field!='Name') { 
 	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + fieldWidth + 'px;"></TD>' ;
 	      }
       }
@@ -674,11 +676,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         +'<TD class="ganttLeftTitle" style="width:22px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:22px; z-index:1000;" class="namePartgroup"><span class="nobr">&nbsp;</span></div></TD>'
         +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vNameWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">'
         +(JSGantt.i18n('colTask')==''?'&nbsp;':JSGantt.i18n('colTask'))+'</span></div></TD>' ;     
-      for (var iSort=1;iSort<sortArray.length;iSort++) {
+      for (var iSort=0;iSort<sortArray.length;iSort++) {
         var field=sortArray[iSort];
+        if (field.substr(0,6)=='Hidden') field=field.substr(6);
         var showField=getPlanningFieldShow(field);
         var fieldWidth=getPlanningFieldWidth(field);
-        if(showField) {
+        if(showField && field!='Name') {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">' 
 	          + JSGantt.i18n( ('col'+field).replace('Work','')) + '</span></div></TD>' ;
 	      }
@@ -760,11 +763,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        for (var iSort=1;iSort<sortArray.length;iSort++) {
+        for (var iSort=0;iSort<sortArray.length;iSort++) {
           var field=sortArray[iSort];
+          if (field.substr(0,6)=='Hidden') field=field.substr(6);
           var showField=getPlanningFieldShow(field);
           var fieldWidth=getPlanningFieldWidth(field);
-          if(showField==1) { 
+          if(showField==1 && field!='Name') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + fieldWidth + 'px;">'
               +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + fieldWidth + 'px;text-overflow:ellipsis;">' + vTaskList[i].getFieldValue(field,JSGantt) 
               +'</span></TD>' ;
@@ -1873,34 +1877,6 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
 };
 
 function setGanttVisibility(g) {
-	g.setShowRes(0);                       
-	g.setShowDur(0);                       
-	g.setShowComp(0);                      
-	g.setShowStartDate(0);   
-	g.setShowEndDate(0);   
-	g.setShowValidatedWork(0);
-	g.setShowAssignedWork(0);
-	g.setShowRealWork(0);
-	g.setShowLeftWork(0);
-	g.setShowPlannedWork(0);
-	g.setShowPriority(0);
-	g.setShowPlanningMode(0);
-	for (iSort=0;iSort<planningColumnOrder.length; iSort++) {
-		switch (planningColumnOrder[iSort]) {
-		  case 'Resource' : g.setShowRes(1);break;                       
-		  case 'Duration' : g.setShowDur(1); break;                 
-		  case 'Progress' : g.setShowComp(1); break;             
-		  case 'StartDate' : g.setShowStartDate(1);break;  
-		  case 'EndDate' : g.setShowEndDate(1);break;   
-		  case 'ValidatedWork' : g.setShowValidatedWork(1);break;
-		  case 'AssignedWork' : g.setShowAssignedWork(1);break;
-		  case 'RealWork' : g.setShowRealWork(1);break;
-		  case 'LeftWork' : g.setShowLeftWork(1);break;
-		  case 'PlannedWork' : g.setShowPlannedWork(1);break;
-		  case 'Priority' : g.setShowPriority(1);break;
-		  case 'IdPlanningMode' : g.setShowPlanningMode(1);break;
-		}
-	}
 	if (dojo.byId('resourcePlanning')) {
 	  g.setShowRes(0); 
 	  g.setShowValidatedWork(0);
@@ -1909,11 +1885,11 @@ function setGanttVisibility(g) {
 	  g.setShowRes(0); 
 	  g.setShowPriority(0);
 	  g.setShowPlanningMode(0);
-    }
+  }
 	g.setSortArray(planningColumnOrder);
 }
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
-  if (!g) return;
+  if (dojo.byId('bodyPrint')) return;
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -1940,7 +1916,7 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
-  if (!g) return;
+  if (dojo.byId('bodyPrint')) return;
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -1961,13 +1937,13 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
 
 ongoingJsLink=-1;
 JSGantt.startLink = function (idRow) {
-	if (!g) return;
+  if (dojo.byId('bodyPrint')) return;
 	vTaskList=g.getList();
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
 	ongoingJsLink=idRow;
 };
 JSGantt.endLink = function (idRow) {
-	if (!g) return;
+  if (dojo.byId('bodyPrint')) return;
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (ongoingJsLink>=0 && idRow!=ongoingJsLink) {
@@ -1991,7 +1967,7 @@ JSGantt.endLink = function (idRow) {
 	ongoingJsLink=-1;
 };
 JSGantt.cancelLink = function (idRow) {
-	if (!g) return;
+  if (dojo.byId('bodyPrint')) return;
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (idRow) {
@@ -2008,11 +1984,12 @@ JSGantt.cancelLink = function (idRow) {
 	ongoingJsLink=-1;
 };
 JSGantt.enterBarLink = function (idRow) {
+  if (dojo.byId('bodyPrint')) return;
 	JSGantt.ganttMouseOver(idRow);
 	vTaskList=g.getList();
 	if (ongoingJsLink>=0) {
 		if (idRow!=ongoingJsLink) {
-			g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
+		  g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
 			              vTaskList[idRow].getStartX()-1,vTaskList[idRow].getStartY(),
 			              "#"+vTaskList[ongoingJsLink].getColor(),true);
 		}
@@ -2022,6 +1999,7 @@ JSGantt.enterBarLink = function (idRow) {
 	}
 };
 JSGantt.exitBarLink = function (idRow) {
+  if (dojo.byId('bodyPrint')) return;
 	JSGantt.ganttMouseOut(idRow);
 	vTaskList=g.getList();
 	if (ongoingJsLink>=0) {

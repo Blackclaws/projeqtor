@@ -84,7 +84,13 @@
   // dsn without database
   $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'];
   try {
-    $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
+    //KEVIN
+   $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword'],
+  array(
+            \PDO::MYSQL_ATTR_SSL_KEY    =>'/etc/pki/tls/private/my-key.pem',
+            \PDO::MYSQL_ATTR_SSL_CERT=>'/etc/pki/tls/certs/my-cert.pem',
+            \PDO::MYSQL_ATTR_SSL_CA    =>'/etc/pki/CA/certs/my-ca-cert.pem'
+        ));
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   } catch (PDOException $e) {
   	if ($dbType=='pgsql' and strpos($e->getMessage(), $param['DbUser'])>0 
@@ -105,8 +111,13 @@
   $baseExists=false;
   $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
   try {
-  	$cnxDb = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
-    $cnxDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //KEVIN
+  $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword'],
+  array(
+            \PDO::MYSQL_ATTR_SSL_KEY    =>'/etc/pki/tls/private/my-key.pem',
+            \PDO::MYSQL_ATTR_SSL_CERT=>'/etc/pki/tls/certs/my-cert.pem',
+            \PDO::MYSQL_ATTR_SSL_CA    =>'/etc/pki/CA/certs/my-ca-cert.pem'
+        ));etAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $baseExists=true;
   } catch (PDOException $e) {
     $baseExists=false;

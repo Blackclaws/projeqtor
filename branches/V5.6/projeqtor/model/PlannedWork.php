@@ -192,7 +192,6 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
-      debugLog("#$plan->id ref=$plan->refType #$plan->refId - $plan->refName");
       if (! $plan->id) {
         continue;
       }
@@ -427,7 +426,6 @@ class PlannedWork extends GeneralWork {
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
-          debugLog("   Ass #$ass->id ress=$ass->idResource left=$ass->leftWork");
           if ($ass->notPlannedWork>0) {
             $ass->notPlannedWork=0;
             $changedAss=true;
