@@ -277,3 +277,5 @@ INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValu
 ALTER TABLE `${prefix}billline` ADD `billingType` varchar(10) default null;
 
 CREATE INDEX workReference ON `${prefix}work` (idAssignment, workDate, idWorkElement);
+
+

@@ -34,7 +34,9 @@ $user=getSessionUser();
 $action=$_REQUEST['action'];
 if ($action=='status') {
   $status=$_REQUEST['status'];
+  Security::checkValidAlphanumeric($status);
   $item=$_REQUEST['item'];
+  Security::checkValidAlphanumeric($item);
   $crit=array('idUser'=>$user->id, 'idProject'=>null, 'parameterCode'=>'planningHideColumn'.$item);
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
   if ($param and $param->id) {
@@ -54,6 +56,15 @@ if ($action=='status') {
   		$param->save();
   	}
   }
-}  
+} else if ($action=='width') {
+  $width=$_REQUEST['width'];
+  Security::checkValidAlphanumeric($width);
+  $item=$_REQUEST['item'];
+  Security::checkValidAlphanumeric($item);
+  $crit=array('idUser'=>$user->id, 'idProject'=>null, 'parameterCode'=>'planningColumnWidth'.$item);
+  $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+  $param->parameterValue=intval($width);
+  $param->save();
+}
 Sql::commitTransaction();
 ?>

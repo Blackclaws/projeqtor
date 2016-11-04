@@ -5249,7 +5249,20 @@ function changePlanningColumn(col, status, order) {
     }
   });
 }
-
+function changePlanningColumnWidth(col, width) {
+  setPlanningFieldWidth(col,width);
+  showWait();
+  JSGantt.changeFormat(g.getFormat(), g);
+  dojo.xhrGet({
+    url : '../tool/savePlanningColumn.php?action=width&width='+width+'&item=' + col,
+    handleAs : "text",
+    load : function(data, args) {
+    },
+    error : function() {
+    }
+  });
+  hideWait();
+}
 var validatePlanningColumnNeedRefresh=false;
 function validatePlanningColumn() {
   dijit.byId('planningColumnSelector').closeDropDown();
@@ -5515,7 +5528,23 @@ function sendMail() {
       "mailForm", true, 'mail');
   dijit.byId("dialogMail").hide();
 }
-
+//gautier ticket #2096
+function assignTeamForMeeting() {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  dojo.byId("assignmentId").value=null;
+  dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+  dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+  actionOK=function() {
+    loadContent("../tool/assignTeamForMeeting.php","resultDiv", "assignmentForm",
+        true, 'assignment');
+  };
+  msg=i18n('confirmAssignWholeTeam');
+  showConfirm(msg, actionOK);
+  
+}
 function lockRequirement() {
   if (checkFormChangeInProgress()) {
     return false;

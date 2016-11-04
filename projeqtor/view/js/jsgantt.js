@@ -682,8 +682,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var showField=getPlanningFieldShow(field);
         var fieldWidth=getPlanningFieldWidth(field);
         if(showField && field!='Name') {
-	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">' 
-	          + JSGantt.i18n( ('col'+field).replace('Work','')) + '</span></div></TD>' ;
+	        vLeftTable += '<TD id="jsGanttHeaderTD'+field+'" class="ganttLeftTitle" style="position:relative;width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap>'
+	          +'<div id="jsGanttHeader'+field+'" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup">'
+	          +'<span class="nobr">'+ JSGantt.i18n( ('col'+field).replace('Work','')) + '</span>'
+	          //+'<div class="columnHandle" onmousedown="startResizeJsHeader(event,\''+field+'\');"  onmouseup="stopResizeJsHeader(event);" onmouseleave="stopResizeJsHeader(event);" onmousemove="resizeJsHeader(event);">&nbsp;</div>'
+	          +'</div></TD>' ;
 	      }
       }
       var planningPage=dojo.byId('objectClassManual').value;
@@ -2030,4 +2033,27 @@ function adjustSpecificDaysHeight() {
 	  dojo.byId("vScpecificDay_"+vScpecificDayCount).style.height=height+'px';
 	  vScpecificDayCount++;
 	}
+}
+
+jsHeaderResizePos=null;
+jsHeaderResizeField=field;
+jsHeaderResizeSize=null;
+function startResizeJsHeader(event,field) {
+  jsHeaderResizeField=field;
+  jsHeaderResizePos=event.clientX;
+  console.log("start "+field+" "+event.clientX);
+}
+function stopResizeJsHeader(event) {
+  if (!jsHeaderResizePos) return;
+  console.log("stop "+jsHeaderResizeField+" "+event.clientX);
+  jsHeaderResizePos=null;
+  jsHeaderResizeField=null;
+}
+function resizeJsHeader(event) {
+  if (!jsHeaderResizePos) return;
+  var newWidth=dojo.byId('jsGanttHeader'+jsHeaderResizeField).style.width+event.clientX-jsHeaderResizePos;
+  dojo.byId('jsGanttHeader'+jsHeaderResizeField).style.width=newWidth;
+  dojo.byId('jsGanttHeaderTD'+jsHeaderResizeField).style.width=newWidth;
+  console.log("move "+jsHeaderResizeField+" "+event.clientX);
+  jsHeaderResizePos=event.clientX;
 }

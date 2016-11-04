@@ -475,3 +475,16 @@ div .scrollRightTop {
 .dojoxGridRowSelected .ganttIconBackground {
 	background-color:rgba(255,255,255,0.7)
 }
+
+.columnHandle {
+	display:block;
+	position:absolute;
+	right:1px;
+	top:0px;
+	height:20px;
+	width:4px;
+	border:1px solid red;
+}
+.columnHandle:hover {
+	cursor:col-resize;
+}
