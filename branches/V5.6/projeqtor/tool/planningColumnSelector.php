@@ -33,9 +33,9 @@ scriptLog('   ->/tool/planningColumnSelector');
 
 $columns=Parameter::getPlanningColumnOrder();
 $columnsAll=Parameter::getPlanningColumnOrder(true);
+$desc=Parameter::getPlanningColumnDescription();
   
 foreach ($columnsAll as $order=>$col) {
-debugLog("$order => $col");  
 	if ( (isset($resourcePlanning) and ($col=='ValidatedWork' or $col=='Resource' ) )
 	  or (isset($portfolioPlanning) and ($col=='Priority' or $col=='Resource' or $col=='IdPlanningMode') )	) {
 	  // noting	
@@ -59,9 +59,9 @@ debugLog("$order => $col");
 	  echo '<div style="float: right; text-align:right">&nbsp;';
 	  echo '<div dojoType="dijit.form.NumberSpinner" id="planningColumnSelectorWidthId'.$order.'" ';
 	  echo (substr($columns[$order],0,6)=='Hidden')?'disabled="disabled" ':'';
-	  echo ' onChange="changePlanningColumnWidth(\'' . $order . '\','.$order.',this.value)" ';
-	  echo ' constraints="{ min:10, max:500, places:0 }"';
-	  echo ' style="width:50px; text-align: center;" value="'.htmlEncode(10).'" >';
+	  echo ' onChange="changePlanningColumnWidth(\'' . $col . '\',this.value)"; ';
+	  echo ' constraints="{ min:'.(($col=='Name')?'200':'20').', max:500, places:0 }"';
+	  echo ' style="width:50px; text-align: center;" value="'.htmlEncode($desc[$col]['width']).'" >';
 	  echo '</div>'; // NumberSpinner
 	  echo '&nbsp;</div>'; // style="float: right
 	  echo '</div>'; // id=columnSelector

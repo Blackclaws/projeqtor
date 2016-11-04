@@ -268,10 +268,9 @@ public $_noCopy;
     }
     
     if (! $this->idResource) {
-    	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdResource')) 
-    	                                         . ' ' . htmlEncode(i18n('colOrContact')) 
-    	                                         . ' ' . htmlEncode(i18n('colOrUser'))));
+    	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdResource'))));
     }
+    
     if (! $this->idProject) {
     	$result.='<br/>' . htmlEncode(i18n('messageMandatory',array(i18n('colIdProject'))));
     }
