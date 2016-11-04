@@ -65,6 +65,7 @@ class MeetingMain extends SqlElement {
   public $_sec_Attendees;
   public $_Assignment=array();
   public $attendees;
+  public $_spe_buttonAssignTeam;
   public $_sec_progress;
   public $MeetingPlanningElement;
   public $_sec_predecessor;
@@ -294,6 +295,20 @@ class MeetingMain extends SqlElement {
       $result .= '</td></tr>';
       return $result;
     }
+    // Gautier ticket #2096
+    if ($item=='buttonAssignTeam') {
+      if ($print) {
+        return "";
+      }
+      $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
+      $result .= '<button id="attendeesAllTeam" dojoType="dijit.form.Button" showlabel="true" onClick ="assignTeamForMeeting()"';
+      $result .= ' title="' . i18n('buttonAssignWholeTeam') . '" >';
+      $result .= '<span>' . i18n('buttonAssignWholeTeam') . '</span>';
+      $result .= '</button>';
+      $result .= '</td></tr>';
+      return $result;
+    }
+    
   }
   
   public function deleteControl() { 

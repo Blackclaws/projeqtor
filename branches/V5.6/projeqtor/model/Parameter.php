@@ -881,12 +881,12 @@ class Parameter extends SqlElement {
   	// Default Values
   	$user=getSessionUser();
   	$critHidden="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningHideColumn%'";
-  	$critOrder="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningColumnOrder%'";
-  	$critWidth="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningColumnWidth%'";
+  	$critOrder="idUser=" . $user->id . " and idProject is null and parameterCode  like 'planningColumnOrder%'";
+  	$critWidth="idUser=" . $user->id . " and idProject is null and parameterCode  like 'planningColumnWidth%'";
   	$param=new Parameter();
   	$hiddenList=$param->getSqlElementsFromCriteria(null, false, $critHidden);
   	$orderList=$param->getSqlElementsFromCriteria(null, false, $critOrder);
-  	$widthList=$param->getSqlElementsFromCriteria(null, false, $critOrder);
+  	$widthList=$param->getSqlElementsFromCriteria(null, false, $critWidth);
   	$hidden="|";
   	foreach($hiddenList as $param) {
   		if ($param->parameterValue=='1') {
@@ -920,6 +920,10 @@ class Parameter extends SqlElement {
   	$arrayFieldsSorted[0]='Name';
   	foreach ($orderList as $param) {
   	  $arrayFieldsSorted[intval($param->parameterValue)+1]=substr($param->parameterCode,19);	
+  	  self::$planningColumnDescription[substr($param->parameterCode,19)]['order']=intval($param->parameterValue);
+  	}
+  	foreach ($widthList as $param) {
+  	  self::$planningColumnDescription[substr($param->parameterCode,19)]['width']=intval($param->parameterValue);
   	}
   	ksort($arrayFieldsSorted);
   	foreach($arrayFields as $column=>$width) {

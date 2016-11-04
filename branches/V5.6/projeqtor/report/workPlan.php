@@ -47,6 +47,15 @@
 
     $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
   }
+  //gautier ticket #2354
+  $showIdle=false;
+  
+  if (array_key_exists('showIdle',$_REQUEST)) {
+    $showIdle=true;
+    $headerParameters.= i18n("labelShowIdle").'<br/>';
+  }
+  
+  
   include "header.php";
 
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
@@ -56,7 +65,13 @@
   $queryWhere='';
   $queryOrderBy='';
   $idTab=0;
-  if (! array_key_exists('idle',$_REQUEST) ) {
+//   if (! array_key_exists('idle',$_REQUEST) ) {
+//     $queryWhere= $table . ".idle=0 ";
+//   }
+  //gautier ticket #2354
+  if ($showIdle) {
+    $queryWhere ="1=1 ";
+  }else{
     $queryWhere= $table . ".idle=0 ";
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
