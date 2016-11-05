@@ -25,58 +25,38 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * DecisionType defines the type of a decision.
+ * OrganizationType defines the type of an organization.
  */ 
 require_once('_securityCheck.php');
-class OrganizationType extends SqlElement {
+class OrganizationType extends Type {
 
   // Define the layout that will be used for lists
-    // extends SqlElement, so has $id
-  public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place 
-  public $name;
-  public $code;
-  public $internalData;
-  public $idWorkflow;
-  public $sortOrder=0; 
-  public $_spe_billingType;
-  public $idle;
-  public $description;
-  public $_sec_Behavior;
-  public $mandatoryDescription;
-  public $_lib_mandatoryField;
-  public $lockDone;
-  public $_lib_statusMustChangeDone;
-  public $lockIdle;
-  public $_lib_statusMustChangeIdle;
-  public $lockCancelled;
-  public $_lib_statusMustChangeCancelled;
-  public $_sec_restrictTypes;
-  public $_spe_restrictTypes;
-
-   private static $_layout='
+    
+  private static $_fieldsAttributes=array('idWorkflow'=>'hidden',
+      "mandatoryResultOnDone"=>"hidden",
+      "_lib_mandatoryOnDoneStatus"=>"hidden",
+      "lockHandled"=>"hidden",
+      "_lib_statusMustChangeHandled"=>"hidden",
+      "lockDone"=>"hidden",
+      "_lib_statusMustChangeDone"=>"hidden",
+      "lockIdle"=>"hidden",
+      "_lib_statusMustChangeIdle"=>"hidden",
+      "lockCancelled"=>"hidden",
+      "_lib_statusMustChangeCancelled"=>"hidden",
+      "mandatoryResourceOnHandled"=>"hidden",
+      "_lib_mandatoryOnHandledStatus"=>"hidden");
+  
+  // Define the layout that will be used for lists
+  private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="50%">${name}</th>
+    <th field="name" width="70%">${name}</th>
     <th field="code" width="10%">${code}</th>
     <th field="sortOrder" width="5%">${sortOrderShort}</th>
-    <th field="nameWorkflow" width="20%" >${idWorkflow}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
-   
+  
   private static $_databaseCriteria = array('scope'=>'Organization');
   
-   private static $_fieldsAttributes=array("name"=>"required", 
-                                          "idWorkflow"=>"required",
-                                          "mandatoryDescription"=>"nobr",
-                                          "code"=> "readonly,nobr",
-                                          "lockDone"=>"nobr",
-                                          "lockIdle"=>"nobr",
-                                          "lockCancelled"=>"nobr",
-                                          "internalData"=>"hidden");
-   
-   private static $_databaseColumnName = array();
-   
-   private static $_databaseTableName = 'type';
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -99,13 +79,6 @@ class OrganizationType extends SqlElement {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
-   */
-  protected function getStaticLayout() {
-    return self::$_layout;
-  }
 
   /** ========================================================================
    * Return the specific database criteria
@@ -114,105 +87,21 @@ class OrganizationType extends SqlElement {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
-
-  /** ========================================================================
-   * Return the specific databaseColumnName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseColumnName() {
-    return self::$_databaseColumnName;
-  }
   
   /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
-    return self::$_fieldsAttributes;
+    return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
   }
   
-    /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
    */
-  protected function getStaticDatabaseTableName() {
-    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
-    return $paramDbPrefix . self::$_databaseTableName;
+  protected function getStaticLayout() {
+    return self::$_layout;
   }
-  
-  public function deleteControl() {
-  	$result="";
-    if ($this->code=='ADM' or $this->code=='TMP') {    
-      $result="<br/>" . i18n("msgCannotDeleteProjectType");
-    }
-    if (! $result) {  
-      $result=parent::deleteControl();
-    }
-    return $result;
-  }
-  
-  public function save() {
-  	if (! $this->code) {
-  		$this->code='OPE';
-  	}
-  	return parent::save();
-  }
-  
-  public function drawSpecificItem($item){
-      global $print;
-    $result="";
-    if ($item=='billingType') {
-    	$val=$this->internalData;
-      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($print) {
-        $result.="&nbsp;&nbsp;&nbsp;".i18n('billingType'.$val);
-      } else {
-        $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
-        $result .=autoOpenFilteringSelect();
-        if ($this->code=="ADM" or $this->code=="TMP") {
-        	$result.=' readonly="readonlyy"';
-        } 
-        $result .='  style="width: 200px;" name="billingType" id="billingType" >';
-        $result .='<option value="E" ' . (($val=="E" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeE') . '</option>';
-        $result .='<option value="R" ' . (($val=="R" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeR') . '</option>';
-        $result .='<option value="P" ' . (($val=="P" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeP') . '</option>';
-        $result .='<option value="M" ' . (($val=="M" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeM') . '</option>';
-        $result .='<option value="N" ' . (($val=="N" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeN') . '</option>';
-        $result .= '<script type="dojo/connect" event="onChange" >';
-        $result .=' dijit.byId("internalData").set("value",this.value);';
-        $result .=' formChanged(); ';
-        $result .= '</script>';
-        $result .='</select>';
-      }
-      $result .= '</td></tr></table>';
-      return $result;
-    } else if ($item=='restrictTypes') {
-      if (!$this->id) return '';
-      if (! $print) {
-        $result.= '<button id="buttonRestrictTypes" dojoType="dijit.form.Button" showlabel="true"'
-          . ' title="'.i18n('helpRestrictTypesProjectType').'" iconClass="iconType16" >'
-          . '<span>'.i18n('restrictTypes').'</span>'
-          . ' <script type="dojo/connect" event="onClick" args="evt">'
-          . '  var params="&idProjectType='.$this->id.'";'
-          . '  loadDialog("dialogRestrictTypes", null, true, params);'
-          . ' </script>'
-          . '</button>';
-        $result.= '<span style="font-size:80%">&nbsp;&nbsp;&nbsp;('.i18n('helpRestrictTypesProjectTypeInline').')</span>';
-      }
-      $result.='<table style="witdh:100%"><tr><td class="label">'.i18n('existingRestrictions').'&nbsp;:&nbsp;</td><td>';
-      $result.='<div id="resctrictedTypeClassList">';
-      $list=Type::getRestrictedTypesClass(null,$this->id,null);
-      $cpt=0;
-      foreach ($list as $cl) {
-        $cpt++;
-        $result.=(($cpt>1)?', ':'').$cl;
-      }
-      $result.='</div>';
-      $result.='</td></tr></table>';
-      return $result;
-    }
-  }
-  
 }
 ?>
