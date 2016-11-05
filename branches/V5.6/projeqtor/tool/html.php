@@ -74,7 +74,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $critFld='idProduct';
   }
   if ($col=='idResource' and $critFld=='idProject') {
-  	$prj=new Project($critVal);
+  	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
     $where="idProject in " . $in; 
@@ -101,7 +101,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idVersion' or $critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
     $critClass=substr($critFld,2);
     $versionField=str_replace('Version', '', $critFld);
-    $version=new Version($critVal);
+    $version=new Version($critVal,true);
     $critArray=array($versionField=>$version->idProduct);
     $list=SqlList::getListWithCrit('ProductStructure',$critArray,str_replace('Version', '',$col),$selection);
     $table=array();
@@ -223,7 +223,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           if (sessionUserExists()) {
             $profile=getSessionUser()->getProfile($obj);
           } 
-          $type=new $typeClass($obj->$idType);
+          $type=new $typeClass($obj->$idType,true);
           if (property_exists($type,'idWorkflow') ) {
             $ws=new WorkflowStatus();
             $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$obj->idStatus);
@@ -239,7 +239,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
       }
       if ($selection) {
-        $selStatus=new Status($selection);
+        $selStatus=new Status($selection,true);
         if ($selStatus->isCopyStatus) {
         	$table[$fisrtKey]=$firstName;
         }
@@ -247,7 +247,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if (($col=='idProduct' or $col=='idComponent' or  $col=='idProductOrComponent') and $critFld=='idProject' and $critVal) {
     	$restrictArray=array();
     	$versProj=new VersionProject();
-    	$proj=new Project($critVal);
+    	$proj=new Project($critVal,true);
     	$lst=$proj->getTopProjectList(true);
     	$inClause='(0';
     	foreach ($lst as $prj) {
@@ -260,7 +260,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$versProjList=$versProj->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
     	if (count($versProjList)==0) $table=array();
     	foreach ($versProjList as $versProj) {
-    		$vers=new Version($versProj->idVersion);
+    		$vers=new Version($versProj->idVersion,true);
     		$restrictArray[$vers->idProduct]="OK";
     	}
     	if ($selection) {
@@ -268,13 +268,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	}
     	if (isset($restrictArray[$selection])) unset($restrictArray[$selection]);
     } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
-      $prod=new Product($critVal);
+      $prod=new Product($critVal,true);
       $table=$prod->getComposition(true,true);
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
       }
     } else if (substr($col,-16)=='ComponentVersion' and $critFld=='idProductVersion' and $critVal) {
-      $prodVers=new ProductVersion($critVal);
+      $prodVers=new ProductVersion($critVal,true);
       $table=$prodVers->getComposition(true,true);
       if (isset($critFld1) and isset($critVal1) and $critFld1=='idComponent') {
         $listVers=SqlList::getListWithCrit('ComponentVersion', array('idComponent'=>$critVal1));
@@ -503,11 +503,11 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   foreach($lineList as $lineId => $lineName) {
   	if ($break and ! is_array($lineObj)) {
   		$class=ucfirst($lineObj);
-  		$test=new $class($lineId);
+  		$test=new $class($lineId,true);
   		if ($test->$break != $breakVal) {
   			$breakNum++;
   			$breakClass=substr($break,2);
-  			$breakObj=new $breakClass($test->$break);
+  			$breakObj=new $breakClass($test->$break,true);
   			$breakName="";
   			if ($breakObj->name) {
   			  $breakName=(property_exists($breakObj,'_isNameTranslatable'))?i18n($breakObj->name):$breakObj->name;

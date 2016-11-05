@@ -61,17 +61,31 @@
   $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
 ?>
 <table style="width:100%;height:100%;">
-  <tr style="height:100%;";>
-  <td  style="z-index:-1;width:40%;position:relative;white-space:nowrap;">
-    <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
-    <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
-    <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
-      <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
-    </span>
-  </td>
+ <tr style="height:100%";>
+  <td style="z-index:-1;width:40%;white-space:nowrap;">  
+    <div style="width:100%;height:100%;">
+      <table style="width:100%;height:100%;">
+        <tr>
+          <td style="width:43px;height:100%;">&nbsp;
+            <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
+            <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
+          </td>
+          <td class="title" style="width:10%;">
+            &nbsp;<?php echo i18n($_REQUEST['objectClass']);?><span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?>&nbsp;</span>
+          </td>
+          <td class="title" style="height:100%;">
+          
+            <div style="width:100%;height:100%;position:relative;">
+            <div style="width:100%;position:absolute;top:8px;text-overflow:ellipsis;overflow:hidden;">
+              <?php echo ($obj->name)?'&nbsp;-&nbsp;'.$obj->name:'';?>
+            </div>
+          </td>
+        </tr>
+      </table>  
+    </div> 
+  </td>     
   <td style="width:8%; text-align:right;"  >
-      <div style="width:120px;margin-right:16px;" id="buttonDivCreationInfo" 
-        ><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+      <div style="width:120px;margin-right:16px;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
   <td style="width:2%;">
     &nbsp;

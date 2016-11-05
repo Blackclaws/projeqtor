@@ -1701,7 +1701,7 @@ msgEvalutationMaxValue: "最大評価値は次のとおり設定されました:
 msgFirstStatusMandatoryInWorkflow: "ワークフローの最初のステータス「${1}」を設定してください",
 msgIncorrectReceiver: "この要素の宛先が選択されていません",
 msgNoCallForTender: "入札要請が選択されていません",
-msgNotaFile: "[Error for ${1} <br /> '${2}' does not exist]",
+msgNotaFile: "[Error for ${1} <br /> The file '${2}' does not exist]",
 msgNotGranted: "この操作は許可されていません",
 msgParentActivityInSameProject: "親アクティビティは同じプロジェクトの必要があります",
 msgParentRequirementInSameProjectProduct: "親要件は同じ製品かプロジェクトに属している必要があります",
