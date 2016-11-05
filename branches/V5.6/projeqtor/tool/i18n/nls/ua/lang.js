@@ -1701,7 +1701,7 @@ msgEvalutationMaxValue: "Встановлено максимальне знач�
 msgFirstStatusMandatoryInWorkflow: "Ви повинні включити початковий стан '$ {1}' в робочому процесі",
 msgIncorrectReceiver: "цей приймач не можна обрати для цього елемента",
 msgNoCallForTender: "не вибрано запрошення на тендер",
-msgNotaFile: "[Error for ${1} <br /> '${2}' does not exist]",
+msgNotaFile: "[Error for ${1} <br /> The file '${2}' does not exist]",
 msgNotGranted: "Ви не дозволено робити цю операцію",
 msgParentActivityInSameProject: "Батько справ (activity) мусить бути в одному проекті",
 msgParentRequirementInSameProjectProduct: "батько вимоги (requirement) мусить належати до того ж продукту або проекту",

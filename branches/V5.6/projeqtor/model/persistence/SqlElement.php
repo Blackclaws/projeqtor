@@ -54,8 +54,8 @@ abstract class SqlElement {
 	private static $_fieldsAttributes=array("name"=>"required");
 
 	// Management of cache for queries : cache is only valid during current script
-	public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array());
-
+	public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array(),'PluginTriggeredEvent'=>array(), 'Plugin'=>array());
+	
 	// Management of extraHiddenFileds per type
 	private static $_extraHiddenFields=null;
 	

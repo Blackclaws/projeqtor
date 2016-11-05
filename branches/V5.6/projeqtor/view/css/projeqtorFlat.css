@@ -741,6 +741,15 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconOpportunityType22 { background-image: url(customIcons/blue/iconOpportunityType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconOpportunityType16 { background-image: url(customIcons/blue/iconOpportunityType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatBlue .iconOrganization32 { background-image: url(customIcons/blue/iconOrganization.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconOrganization22 { background-image: url(customIcons/blue/iconOrganization.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconOrganization16 { background-image: url(customIcons/blue/iconOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+
+.ProjeQtOrFlatBlue .iconOrganizationType32 { background-image: url(customIcons/blue/iconOrganizationType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconOrganizationType22 { background-image: url(customIcons/blue/iconOrganizationType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconOrganizationType16 { background-image: url(customIcons/blue/iconOrganizationType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatBlue .iconOverallProgress32 { background-image: url(customIcons/blue/iconOverallProgress.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconOverallProgress22 { background-image: url(customIcons/blue/iconOverallProgress.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconOverallProgress16 { background-image: url(customIcons/blue/iconOverallProgress.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -1771,6 +1780,16 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconOpportunityType32 { background-image: url(customIcons/red/iconOpportunityType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconOpportunityType22 { background-image: url(customIcons/red/iconOpportunityType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconOpportunityType16 { background-image: url(customIcons/red/iconOpportunityType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconOrganization32 { background-image: url(customIcons/red/iconOrganization.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconOrganization22 { background-image: url(customIcons/red/iconOrganization.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconOrganization16 { background-image: url(customIcons/red/iconOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+
+.ProjeQtOrFlatRed .iconOrganizationType32 { background-image: url(customIcons/red/iconOrganizationType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconOrganizationType22 { background-image: url(customIcons/red/iconOrganizationType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconOrganizationType16 { background-image: url(customIcons/red/iconOrganizationType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 
 .ProjeQtOrFlatRed .iconOverallProgress32 { background-image: url(customIcons/red/iconOverallProgress.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconOverallProgress22 { background-image: url(customIcons/red/iconOverallProgress.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -2803,6 +2822,16 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconOpportunityType22 { background-image: url(customIcons/green/iconOpportunityType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconOpportunityType16 { background-image: url(customIcons/green/iconOpportunityType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGreen .iconOrganization32 { background-image: url(customIcons/green/iconOrganization.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconOrganization22 { background-image: url(customIcons/green/iconOrganization.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconOrganization16 { background-image: url(customIcons/green/iconOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+
+.ProjeQtOrFlatGreen .iconOrganizationType32 { background-image: url(customIcons/green/iconOrganizationType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconOrganizationType22 { background-image: url(customIcons/green/iconOrganizationType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconOrganizationType16 { background-image: url(customIcons/green/iconOrganizationType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+
 .ProjeQtOrFlatGreen .iconOverallProgress32 { background-image: url(customIcons/green/iconOverallProgress.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconOverallProgress22 { background-image: url(customIcons/green/iconOverallProgress.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconOverallProgress16 { background-image: url(customIcons/green/iconOverallProgress.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -3832,6 +3861,15 @@ body .ProjeQtorFlatGrey {
 .ProjeQtorFlatGrey .iconOpportunityType32 { background-image: url(customIcons/grey/iconOpportunityType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtorFlatGrey .iconOpportunityType22 { background-image: url(customIcons/grey/iconOpportunityType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtorFlatGrey .iconOpportunityType16 { background-image: url(customIcons/grey/iconOpportunityType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtorFlatGrey .iconOrganization32 { background-image: url(customIcons/grey/iconOrganization.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtorFlatGrey .iconOrganization22 { background-image: url(customIcons/grey/iconOrganization.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtorFlatGrey .iconOrganization16 { background-image: url(customIcons/grey/iconOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtorFlatGrey .iconOrganizationType32 { background-image: url(customIcons/grey/iconOrganizationType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtorFlatGrey .iconOrganizationType22 { background-image: url(customIcons/grey/iconOrganizationType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtorFlatGrey .iconOrganizationType16 { background-image: url(customIcons/grey/iconOrganizationType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 
 .ProjeQtorFlatGrey .iconOverallProgress32 { background-image: url(customIcons/grey/iconOverallProgress.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtorFlatGrey .iconOverallProgress22 { background-image: url(customIcons/grey/iconOverallProgress.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
