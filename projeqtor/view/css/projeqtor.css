@@ -590,7 +590,6 @@ label, .label, .smallLabel {
 .title {
     font-size: 12pt; 
     font-weight: bold;
-    display: block;
     max-height: 2em;
     white-space: nowrap;
 }
