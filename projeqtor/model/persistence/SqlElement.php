@@ -52,6 +52,7 @@ abstract class SqlElement {
 
 	// Define the specific field attributes
 	private static $_fieldsAttributes=array("name"=>"required");
+	private static $_defaultValues=array();
 
 	// Management of cache for queries : cache is only valid during current script
 	public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array(),'PluginTriggeredEvent'=>array(), 'Plugin'=>array());
@@ -2404,6 +2405,35 @@ abstract class SqlElement {
 			return false;
 		}
 	}
+	
+	/** ========================================================================
+	 * Return the default value for a given field
+	 * @return string the name of the data table
+	 */
+	public function getDefaultValue($fieldName) {
+	  $defaultValues=$this->getStaticDefaultValues();
+	  if (array_key_exists($fieldName,$defaultValues)) {
+	    return $defaultValues[$fieldName];
+	  } else {
+	    return null;
+	  }
+	}
+	/** ========================================================================
+	 * Return the default value for a given field
+	 * @return string the name of the data table
+	 */
+	public function setAllDefaultValues() {
+	  $defaultValues=$this->getStaticDefaultValues();
+	  foreach ($defaultValues as $field=>$value) {
+	    if (! $this->id) {
+	      $this->$field=$value;
+	    } else if ($this->$field===null) {
+	      if ($this->isAttributeSetToField($field, 'required')) {
+	        $this->$field=$value;
+	      }
+	    }
+	  } 
+	}
 
 	/** ========================================================================
 	 * Return the name of the table in the database
@@ -2584,6 +2614,14 @@ abstract class SqlElement {
 	 */
 	protected function getStaticFieldsAttributes() {
 		return self::$_fieldsAttributes;
+	}
+	
+	/** ==========================================================================
+	 * Return the generic defaultValues
+	 * @return the layout
+	 */
+	protected function getStaticDefaultValues() {
+	  return self::$_defaultValues;
 	}
 
 	/** ==========================================================================
