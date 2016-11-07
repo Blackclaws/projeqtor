@@ -24,7 +24,7 @@ UPDATE `${prefix}version` set idUser=
 (select min(operationDate) from `${prefix}history` where (refType='Version' or refType='ProductVersion' or refType='ComponentVersion') and refId=`${prefix}version`.id));
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `orientation`) VALUES
-(59, 'reportBurndownChart', 2, 'burndownChart.php', 284, 'L');
+(59, 'reportBurndownChart', 10, 'burndownChart.php', 1010, 'L');
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (59, 'idProject', 'projectList', 10, 'currentProject'),
 (59, 'format', 'periodScale', 20, 'day'),
@@ -220,3 +220,57 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `mandatoryDes
 ('Organization', 'Unit', '20',0,false,'UNIT'),
 ('Organization', 'Location', '30',0,false,'LOC');
 
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES 
+(10, 'reportCategorySteeringCharts', 25);
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES 
+(60, 'reportPlanProjectPerRessourceAndMonth', 2, 'reportPlanProjectPerRessourceAndMonth.php', 275);
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES 
+(1,60,1),
+(2,60,1),
+(3,60,1);
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(60,'idProject','projectList',10,'currentProject'), 
+(60,'idTeam','teamList',20,null), 
+(60,'month','month',40,'currentMonth');
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES 
+(61, 'reportSCurveChart', 10, 'reportSCurveChart.php', 1020);
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES 
+(1,61,1),
+(2,61,1),
+(3,61,1);
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(61, 'idProject', 'projectList', 10, 'currentProject'),
+(61, 'idBaselineSelect', 'baselineList', 20, null),
+(61, 'format', 'periodScale', 30, 'day'),
+(61, 'startDate', 'date', 40, null),
+(61, 'endDate', 'date', 50, null),
+(61, 'showBurndownToday', 'boolean', 60, '1'),
+(61, 'showBurndownLegendOnTop', 'boolean', 70, '0');
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES 
+(62, 'report45DegreeChart', 10, 'report45DegreeChart.php', 1030);
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES 
+(1,62,1),
+(2,62,1),
+(3,62,1);
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(62, 'idProject', 'projectList', 10, 'currentProject'),
+(62, 'format', 'periodScale', 20, 'day'),
+(62, 'startDate', 'date', 30, null),
+(62, 'endDate', 'date', 40, null),
+(62, 'idMilestoneType', 'milestoneList', 50, null),
+(62, 'showBurndownToday', 'boolean', 60, '1'),
+(62, 'showBurndownLegendOnTop', 'boolean', 70, '0');
+
+UPDATE `${prefix}menu` SET idMenu=11,  sortOrder=435  WHERE ID=122; 
+UPDATE `${prefix}menu` SET idMenu=0,   sortOrder=1100 WHERE ID=37;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1110 WHERE ID=49;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1120 WHERE ID=47;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1130 WHERE ID=21;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1140 WHERE ID=70;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1150 WHERE ID=48;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1160 WHERE ID=135;
+UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1170 WHERE ID=71;
+UPDATE `${prefix}menu` SET idMenu=0,  sortOrder=1200 WHERE ID=92;

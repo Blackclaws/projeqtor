@@ -152,7 +152,7 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="tundra ProjeQtorFlatGrey" onload="top.hideWait();">
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="tundra ProjeQtOrFlatGrey" onload="top.hideWait();">
   <?php 
   }
   $page=$_REQUEST['page'];

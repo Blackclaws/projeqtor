@@ -743,6 +743,11 @@
 .iconUser22 { background-image: url(images/iconUser22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconUser16 { background-image: url(images/iconUser16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconLoginUser { background-image: url(images/iconLogin.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px}
+
+.iconLoginPassword { background-image: url(images/iconPassword.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px}
+
+
 .iconUserParameter32 { background-image: url(images/iconUserParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUserParameter22 { background-image: url(images/iconUserParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconUserParameter16 { background-image: url(images/iconUserParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
