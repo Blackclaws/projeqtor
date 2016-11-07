@@ -373,7 +373,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
   // $obj->splitLongFields ();
   // }
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
-  
+  $obj->setAllDefaultValues();
   if (property_exists($obj, '_sec_Assignment')) {
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
     if ($habil and $habil->rightAccess != 1) {

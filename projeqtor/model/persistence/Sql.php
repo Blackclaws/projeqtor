@@ -281,7 +281,6 @@ class Sql {
       //KEVIN
       $ssl=array();
       $sslKey=Parameter::getGlobalParameter("SslKey");
-      debugLog($sslKey);
       if($sslKey and !file_exists($sslKey)){
         traceLog("Error for SSL Key : file $sslKey do not exist");
         $sslKey=null;

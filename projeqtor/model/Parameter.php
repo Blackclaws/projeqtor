@@ -168,7 +168,7 @@ class Parameter extends SqlElement {
         $list=array('ProjeQtOrFlatBlue'=>i18n('themeProjeQtOrFlatBlue'),
                     'ProjeQtOrFlatRed'=>i18n('themeProjeQtOrFlatRed'),
                     'ProjeQtOrFlatGreen'=>i18n('themeProjeQtOrFlatGreen'),
-                    'ProjeQtorFlatGrey'=>i18n('themeProjeQtOrFlatGrey'),
+                    'ProjeQtOrFlatGrey'=>i18n('themeProjeQtOrFlatGrey'),
                     'ProjeQtOr'=>i18n('themeProjeQtOr'),
                     'ProjeQtOrFire'=>i18n('themeProjeQtOrFire'),
                     'ProjeQtOrForest'=>i18n('themeProjeQtOrForest'),
