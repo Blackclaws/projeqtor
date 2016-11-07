@@ -609,6 +609,31 @@ label, .label, .smallLabel {
   border: 1px solid #b3b3b3;
   line-height: normal;
 }
+.inputLogin{
+	font-weight: normal;
+  color: #000;
+  margin: 0px; padding: 5px;
+  border: 1px solid #b3b3b3;
+  line-height: normal;
+  border-radius:0px 5px 5px 0px;
+  barckground: url() !important;
+  barckground-color: #ffffff !important;
+  width:200px;
+}
+.inputLoginIcon {
+	float:right;
+	right:-5px;
+  font-weight: normal;
+  color: #000;
+  margin: -3px;
+  padding: 3px 4px 2px 4px ; 
+  border: 1px solid #b3b3b3;
+  line-height: normal;
+  border-radius:5px 0px 0px 5px;
+  barckground: url() !important;
+  barckground-color: #ffffff !important;
+  background-position: 3px 3px;
+}
 
 .display {
   background-image: url(images/noimage.png);

@@ -2413,7 +2413,17 @@ abstract class SqlElement {
 	public function getDefaultValue($fieldName) {
 	  $defaultValues=$this->getStaticDefaultValues();
 	  if (array_key_exists($fieldName,$defaultValues)) {
-	    return $defaultValues[$fieldName];
+	    if (substr($defaultValues[$fieldName],0,10)=='#$#EVAL#$#') {
+	      $eval=substr($defaultValues[$fieldName],10);
+        //if (strpos($eval,'return')===false) {
+        //  $eval="return ".$eval;
+        //}
+	      $eval='$value='. str_replace("'",'"',$eval).";";
+	      eval($eval);
+	      return $value;
+	    } else {
+	      return $defaultValues[$fieldName];
+	    }
 	  } else {
 	    return null;
 	  }
@@ -2426,10 +2436,10 @@ abstract class SqlElement {
 	  $defaultValues=$this->getStaticDefaultValues();
 	  foreach ($defaultValues as $field=>$value) {
 	    if (! $this->id) {
-	      $this->$field=$value;
+	      $this->$field=$this->getDefaultValue($field);
 	    } else if ($this->$field===null) {
 	      if ($this->isAttributeSetToField($field, 'required')) {
-	        $this->$field=$value;
+	        $this->$field=$this->getDefaultValue($field);
 	      }
 	    }
 	  } 

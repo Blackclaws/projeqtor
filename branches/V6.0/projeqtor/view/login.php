@@ -199,9 +199,11 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
                   <br/><br/>
 			            <table width="100%">
 			              <tr>     
-			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
-			                <td>
-			                  <input tabindex="1" id="login" style="width:200px" type="text"  class="rounded"
+			                <td title="<?php echo i18n("login");?>" style="background:transparent !important;">
+			                  <div class="inputLoginIcon iconLoginUser">&nbsp;</div>
+			                </td>
+			                <td title="<?php echo i18n("login");?>">
+			                  <input tabindex="1" id="login" type="text"  class="inputLogin"
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
 			                </td>
@@ -209,9 +211,11 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 			              </tr>
 			              <tr style="font-size:50%"><td colspan="3">&nbsp;</td></tr>
 			              <tr>
-			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
-			                <td>
-			                  <input tabindex="2" id="password" style="width:200px" type="password" class="rounded"
+			                <td title="<?php echo i18n("password");?>" style="background:transparent !important;">
+			                  <div  class="inputLoginIcon iconLoginPassword">&nbsp;</div>
+			                </td>  
+			                <td title="<?php echo i18n("password");?>">
+			                  <input  tabindex="2" id="password" type="password" class="inputLogin"
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
 			                </td>

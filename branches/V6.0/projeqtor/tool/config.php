@@ -263,7 +263,7 @@ $param['DefaultTheme'] = 'ProjeQtOrFlatBlue';
 $label['DefaultTheme'] = "Default color theme, proposed while login";
 $value['DefaultTheme'] = "select a theme in the list";
 $pname['DefaultTheme'] = 'defaultTheme';
-$ctrls['DefaultTheme'] = '=ProjeQtOrFlatBlue=ProjeQtOrFlatRed=ProjeQtOrFlatGreen=ProjeQtorFlatGrey'
+$ctrls['DefaultTheme'] = '=ProjeQtOrFlatBlue=ProjeQtOrFlatRed=ProjeQtOrFlatGreen=ProjeQtOrFlatGrey'
                         .'=ProjeQtOr=ProjeQtOrFire=ProjeQtOrForest=ProjeQtOrEarth=ProjeQtOrWater=ProjeQtOrWine=';
 /*                       
 $param['crlf06']='';
