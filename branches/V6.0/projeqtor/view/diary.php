@@ -28,6 +28,7 @@
  * Presents an object. 
  */
   require_once "../tool/projeqtor.php";
+  require_once "../tool/formatter.php";
   scriptLog('   ->/view/diary.php');   
 
   if (! isset($destinationHeight)) {
@@ -172,8 +173,8 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
 		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
-		echo '<table><tr><td>';
-		$attr=((! $item['real'])?'':' style="opacity:0.5;filter:alpha(opacity=50);"');
+		echo '<table><tr><td style="vertical-align:top">';
+		$attr=((! $item['real'])?'':' style="top:0px;opacity:0.5;filter:alpha(opacity=50);"');
 		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"'.$attr.'/></td><td style="width:1px">';
 		echo '</td><td style="color:#555555">';
 		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['type'].'\', '.$item['id'].', false);" >';
@@ -242,14 +243,14 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	  	$critWhere.=" and 1=0";
 	  }
 		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
-		foreach ($lst as $o) {
+		foreach ($lst as $o) {	  
 			if (array_key_exists($o->idProject,$projectColorArray)) {
 				$color=$projectColorArray[$o->idProject];
 				$projName=$projectNameArray[$o->idProject];
 			} else {
 				$pro=new Project($o->idProject);
 				$color=$pro->color;
-				$projName=$pro->name;
+				$projName=$pro->id;
 				$projectColorArray[$o->idProject]=$color;
 				$projectNameArray[$o->idProject]=$projName;
 			}
@@ -287,18 +288,29 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				if (!array_key_exists($date, $result)) {
 					$result[$date]=array();
 				}				
+				//KEVIN
+				if(get_class($o)=='Action' or get_class($o)=='Ticket'){
+				  $item=$o;
+				} else {
+				  $item=new $o->refType($o->refId);
+				}
+				$display=$name;
+				$display.='<div style="cursor:move;width:129px;height:23px;position:relative;">';
+				$display.='   <div style="float:right;width:22px;height:22px;margin-right:-20px;margin-top:10px;position:relative;" id="userThumbMilestone'.$item->id.'">'.formatUserThumb($item->idResource, SqlList::getNameFromId("Affectable", $item->idResource), "", 22, 'left', false).'</div>';
+				$display.='   <div style="float:right;margin-left:50%;width:22px;height:22px;margin-right:-50px;margin-top:10px;position:relative">'.formatColorThumb("idStatus",$item->idStatus, 22, 'left', SqlList::getNameFromId("Status", $item->idStatus)).'</div>';
+				$display.= "</div>";
 				$result[$date][get_class($o).'#'.$o->id]=array(
 						'type'=>$class,
 						'id'=>$id,
 						'work'=>0,
 						'name'=>$name,
 						'color'=>$color,
-						'display'=>$name,
+						'display'=>$display,
 						'date'=>$dateField,
 						'project'=>$projName,
 						'real'=>false
 				);
-			}		
+			}
 		}
 	}
 	// Planned Activities and real work
@@ -309,6 +321,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	$pwList=$pw->getSqlElementsFromCriteria(null,false,$critWhere);
 	$wList=$w->getSqlElementsFromCriteria(null,false,$critWhere);
 	$workList=array_merge($pwList,$wList);
+	//KEVIN
 	foreach ($workList as $pw) {
 		$item=new $pw->refType($pw->refId);
 		if ($item->done and !$showDone) continue;
@@ -318,9 +331,13 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 		} else if (get_class($pw)=='Work') {
 				$display='['.Work::displayWorkWithUnit($pw->work).'] '.htmlEncode($item->name);
 		} else {
-		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);
+		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);		  
 		}
-		if (array_key_exists($item->idProject,$projectColorArray)) {
+		$display.='<div style="cursor:move;width:129px;height:23px;position:relative;">';
+    $display.='   <div style="float:right;width:22px;height:22px;margin-right:-20px;margin-top:10px;position:relative;" id="userThumbTicket'.$item->id.'">'.formatUserThumb($item->idResource, SqlList::getNameFromId("Affectable", $item->idResource), "", 22, 'left', false).'</div>';
+		$display.='   <div style="float:right;margin-left:50%;width:22px;height:22px;margin-right:-50px;margin-top:10px;position:relative">'.formatColorThumb("idStatus",$item->idStatus, 22, 'left', SqlList::getNameFromId("Status", $item->idStatus)).'</div>';	
+		$display.= "</div>";
+		  if (array_key_exists($item->idProject,$projectColorArray)) {
 			$color=$projectColorArray[$item->idProject];
 			$projName=$projectNameArray[$item->idProject];
 		} else {

@@ -619,6 +619,7 @@ label, .label, .smallLabel {
   barckground: url() !important;
   barckground-color: #ffffff !important;
   width:200px;
+  height:17px;
 }
 .inputLoginIcon {
 	float:right;
@@ -633,6 +634,7 @@ label, .label, .smallLabel {
   barckground: url() !important;
   barckground-color: #ffffff !important;
   background-position: 3px 3px;
+  height:22px;
 }
 
 .display {
