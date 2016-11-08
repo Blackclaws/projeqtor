@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 $projeqtor = 'loaded';
 spl_autoload_register ( 'projeqtorAutoload', true );
-include_once ('../model/User.php');
+//include_once ('../model/User.php');
 global $targetDirImageUpload;
 $targetDirImageUpload='../files/images/';
 // Example
@@ -2267,13 +2267,13 @@ function isOpenDay($dateValue, $idCalendarDefinition = '1') {
     $bankHolidays [$year . '#' . $idCalendarDefinition] = $aBankHolidays;
   }
   $arrayDefaultOffDays=array();
-  if (Parameter::getGlobalParameter('OpenDayMonday')=='') $arrayDefaultOffDays[]=1;
-  if (Parameter::getGlobalParameter('OpenDayTuesday')=='') $arrayDefaultOffDays[]=2;
-  if (Parameter::getGlobalParameter('OpenDayWednesday')) $arrayDefaultOffDays[]=3;
-  if (Parameter::getGlobalParameter('OpenDayThursday')) $arrayDefaultOffDays[]=4;
-  if (Parameter::getGlobalParameter('OpenDayFriday')) $arrayDefaultOffDays[]=5;
-  if (Parameter::getGlobalParameter('OpenDaySaturday')) $arrayDefaultOffDays[]=6;
-  if (Parameter::getGlobalParameter('OpenDaySunday')) $arrayDefaultOffDays[]=0;
+  if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') $arrayDefaultOffDays[]=1;
+  if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') $arrayDefaultOffDays[]=2;
+  if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') $arrayDefaultOffDays[]=3;
+  if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') $arrayDefaultOffDays[]=4;
+  if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') $arrayDefaultOffDays[]=5;
+  if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') $arrayDefaultOffDays[]=6;
+  if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') $arrayDefaultOffDays[]=0;
   if (in_array ( date ( 'w', $iDate ), $arrayDefaultOffDays)) {
     if (in_array ( date ( 'Ymd', $iDate ), $aBankWorkdays )) {
       return true;

@@ -293,6 +293,11 @@ foreach ($listParam as $param) {
           if (dijit.byId('idProduct')) {
             refreshList("idProduct","idProject", this.value);
           }
+          if (dijit.byId('idBaselineSelect')) {
+            dijit.byId('idBaselineSelect').set("value",null);
+            refreshList("idBaselineSelect","idProject", this.value, null, null, true);
+          }
+
        </script>
      </select>    
     </td>
@@ -572,8 +577,8 @@ foreach ($listParam as $param) {
     if ($param->defaultValue) {
       $defaultValue=$param->defaultValue; 
     }
-    //$class=(substr($param->paramType,-4,4)=='List')?substr($param->paramType,0,strlen($param->paramType)-4):$param->paramType;
-    //$class=ucfirst($class);
+    $class=(substr($param->paramType,-4,4)=='List')?substr($param->paramType,0,strlen($param->paramType)-4):$param->paramType;
+    $class=ucfirst($class);
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
@@ -583,7 +588,7 @@ foreach ($listParam as $param) {
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
-       <?php htmlDrawOptionForReference($param->name, $defaultValue, null, false); ?>
+       <?php htmlDrawOptionForReference($param->name, $defaultValue, null, ($class=='Baseline')?true:false); ?>
      </select>    
     </td>
     </tr>

@@ -1221,6 +1221,12 @@ function finalizeMessageDisplay(destination, validationType) {
             && lastSaveId.value) {
           dojo.byId("buttonDivObjectId").innerHTML = "&nbsp;#"
               + lastSaveId.value;
+          //gautier
+          if(dojo.byId("buttonDivObjectName")){
+              if(dijit.byId('name').get("value")){
+                dojo.byId("buttonDivObjectName").innerHTML=" - "+dijit.byId('name').get("value");
+            }
+          }
           if (dojo.byId('buttonDivCreationInfo')) {
             var url = '../tool/getObjectCreationInfo.php' + '?objectClass='
                 + dojo.byId('objectClass').value + '&objectId='
@@ -1246,6 +1252,7 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId("buttonDivObjectId")) {
           dojo.byId("buttonDivObjectId").innerHTML = "";
         }
+        
         if (dojo.byId('buttonDivCreationInfo')) {
           dojo.byId("buttonDivCreationInfo").innerHTML = "";
         }

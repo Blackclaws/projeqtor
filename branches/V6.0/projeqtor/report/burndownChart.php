@@ -39,6 +39,14 @@ $scale="";
 if (array_key_exists('format',$_REQUEST)) {
 	$scale=$_REQUEST['format'];
 };
+$startDateReport="";
+if (array_key_exists('startDate',$_REQUEST)) {
+  $startDateReport=$_REQUEST['startDate'];
+};
+$endDateReport="";
+if (array_key_exists('endDate',$_REQUEST)) {
+  $endDateReport=$_REQUEST['endDate'];
+};
 $showCompleted=false;
 if (array_key_exists('showBurndownActivities',$_REQUEST)) {
   $showCompleted=true;
@@ -58,6 +66,12 @@ if ($idProject!="") {
 }
 if ( $scale) {
   $headerParameters.= i18n("colFormat") . ' : ' . i18n($scale) . '<br/>';
+}
+if ($startDateReport!="") {
+  $headerParameters.= i18n("colStartDate") . ' : ' . htmlFormatDate($startDateReport) . '<br/>';
+}
+if ($endDateReport!="") {
+  $headerParameters.= i18n("colEndDate") . ' : ' . htmlFormatDate($endDateReport) . '<br/>';
 }
 if ($showCompleted) {
   $headerParameters.= i18n("colShowBurndownActivities"). '<br/>';
@@ -80,6 +94,7 @@ if (! testGraphEnabled()) { return;}
 $user=getSessionUser();
 $proj=new Project($idProject);
 
+$today=date('Y-m-d');
 // constitute query and execute for left work (history)
 $ph=new ProjectHistory();
 $phTable=$ph->getDatabaseTableName();
@@ -99,12 +114,18 @@ $lastLeft=0;
 while ($line = Sql::fetchLine($result)) {
   $day=substr($line['day'],0,4).'-'.substr($line['day'],4,2).'-'.substr($line['day'],6);
   $left=$line['leftwork'];
-  $tabLeft[$day]=$left;
-  $lastLeft=$left;
-  if ($start=="" or $start>$day) {$start=$day;}
-  if ($end=="" or $end<$day) { $end=$day;}
+  $real=$line['realwork'];
+  if ($real>0) {
+    $tabLeft[$day]=$left;
+  
+    $lastLeft=$left;
+    if ( ($start=="" or $start>$day) and $day<=$today) {$start=$day;}
+    if ( ($end=="" or $end<$day) and $day<=$today) { $end=$day;}
+  }
   if ($day>date('Y-m-d')) break;
 }
+if (!$end) $end=$today;
+if (!$start) $start=$today;
 $endReal=$end;
 
 // constitute query and execute for planned post $end (last real work day)
@@ -174,9 +195,14 @@ if ($showCompleted) {
 if (checkNoData(array_merge($tabLeft,$tabLeftPlanned))) exit;
 
 $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'Project', 'refId'=>$idProject));
-if (trim($pe->realStartDate)) $start=$pe->realStartDate;
-if (trim($pe->realEndDate)) $end=$pe->realEndDate;
+if (trim($pe->realStartDate) and $pe->realStartDate<$start) $start=$pe->realStartDate;
+if (trim($pe->realEndDate) and $pe->realEndDate>$end) $end=$pe->realEndDate;
 if (trim($pe->validatedEndDate) and $pe->validatedEndDate>$end) $end=$pe->validatedEndDate;
+if (trim($pe->validatedStartDate)) {
+  $valStart=$pe->realStartDate;
+} else {
+  $valStart=$start;
+}
 $arrDates=array();
 $date=$start;
 if (!$start or !$end) {
@@ -185,6 +211,7 @@ if (!$start or !$end) {
   echo '</div>';
   exit;
 }
+
 while ($date<=$end) {
   if ($scale=='week') { $arrDates[$date]=date('Y-W',strtotime($date)); } 
   else if ($scale=='month') { $arrDates[$date]=date('Y-m',strtotime($date));  } 
@@ -261,7 +288,7 @@ foreach ($arrDates as $date => $period) {
     }
     
   }
-  if ($date<=$pe->validatedEndDate) $nbSteps++;
+  if ($date>=$valStart and $date<=$pe->validatedEndDate) $nbSteps++;
 }
 
 $startLabel=reset($arrDates);
@@ -280,6 +307,10 @@ $indexToday=0;
 $today=null;
 foreach ($arrDates as $date => $period) {
   if ($date==date('Y-m-d')) {$today=$period;}
+  if ($date<$valStart) {
+    $resBest[$period]=VOID;
+    continue;
+  }
   if ($val!==VOID or ! isset($resBest[$period])) $resBest[$period]=$val;
   if ($val) {
     $val-=$stepValue;
@@ -289,6 +320,29 @@ foreach ($arrDates as $date => $period) {
     $val=VOID;
   }
 }
+
+$startDatePeriod=null;
+$endDatePeriod=null;
+if ($startDateReport and isset($arrDates[$startDateReport])) $startDatePeriod=$arrDates[$startDateReport];
+if ($endDateReport and isset($arrDates[$endDateReport])) $endDatePeriod=$arrDates[$endDateReport];
+if ($startDatePeriod or $endDatePeriod) {
+  foreach ($arrDates as $date => $period) {
+    if ( ($startDatePeriod and $period<$startDatePeriod) or ($endDatePeriod and $period>$endDatePeriod) ) {
+      unset($arrDates[$date]);
+      unset($resBest[$period]);
+      unset($resLeft[$period]);
+      unset($resLeftPlanned[$period]);
+      if ($showCompleted){
+        unset($resLeftTasks[$period]);
+        unset($resLeftTasksPlanned[$period]);
+        unset($resCompletedTasks[$period]);
+        unset($resCompletedTasksPlanned[$period]);
+      }
+    }
+  }
+}
+
+
 $arrDates=array_flip($arrDates);
 $cpt=0;
 $modulo=intVal(50*count($arrDates)/$graphWidth);
@@ -385,10 +439,10 @@ $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.t
 /* Draw the scale */
 $graph->setGraphArea(60,30,$graphWidth-55,$graphHeight-(($scale=='month')?100:75));
 $graph->drawFilledRectangle(60,30,$graphWidth-55,$graphHeight-(($scale=='month')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
-$formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>0,
-    "Mode"=>SCALE_MODE_START0,
+$formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
+    "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
     "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT, 
-    "LabelRotation"=>60, "GridR"=>100,"GridG"=>100,"GridB"=>100);
+    "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
 $graph->drawScale($formatGrid);
 
 $dataSet->setSerieWeight("best",1);

@@ -76,8 +76,8 @@
           <td class="title" style="height:100%;">
           
             <div style="width:100%;height:100%;position:relative;">
-            <div style="width:100%;position:absolute;top:8px;text-overflow:ellipsis;overflow:hidden;">
-              <?php echo ($obj->name)?'&nbsp;-&nbsp;'.$obj->name:'';?>
+            <div id="buttonDivObjectName" style="width:100%;position:absolute;top:8px;text-overflow:ellipsis;overflow:hidden;">
+                 <?php  if (property_exists($obj,'name')){ echo ($obj->name)?'&nbsp;-&nbsp;'.$obj->name:''; }?>
             </div>
           </td>
         </tr>
