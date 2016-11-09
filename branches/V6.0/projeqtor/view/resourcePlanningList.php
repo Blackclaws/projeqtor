@@ -183,7 +183,7 @@ if ($saveShowClosed) {
                              showlabel="false" class="comboButton" iconClass="dijitButtonIcon dijitButtonIconColumn" 
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
-                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:250px;">
                             <script type="dojo/connect" event="onHide" args="evt">
                               if (dndMoveInProgress) { this.show(); }
                             </script>   
