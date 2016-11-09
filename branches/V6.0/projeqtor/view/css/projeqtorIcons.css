@@ -115,7 +115,7 @@
 .iconValidateProject { background-image: url(images/iconValidateProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .dijitDisabled .iconValidateProject { background-image: url(images/iconValidateProject16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
-
+.iconButtonBack32 { background-image: url(images/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px;}
 .iconButtonDownload16 { background-image: url(images/smallButtonDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconButtonEdit16 { background-image: url(images/smallButtonEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonRemove16 { background-image: url(images/smallButtonRemove.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

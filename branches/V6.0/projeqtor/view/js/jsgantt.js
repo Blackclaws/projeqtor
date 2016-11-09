@@ -61,50 +61,58 @@ var arrayClosed=new Array();
 var vGanttCurrentLine=-1;
 var linkInProgress=false;
 var planningFieldsDescription=new Array(
-    {name:"Name",           show:false,  order:0,  width:100},
-    {name:"Resource",       show:false,  order:1,  width:100},
-    {name:"Duration",       show:false,  order:2,  width:100},
-    {name:"Completed",      show:false,  order:3,  width:100},
-    {name:"StartDate",      show:false,  order:4,  width:100},
-    {name:"EndDate",        show:false,  order:5,  width:100},
-    {name:"ValidatedWork",  show:false,  order:6,  width:100},
-    {name:"AssignedWork",   show:false,  order:7,  width:100},
-    {name:"RealWork",       show:false,  order:8,  width:100},
-    {name:"LeftWork",       show:false,  order:9,  width:100},
-    {name:"PlannedWork",    show:false,  order:10, width:100},
-    {name:"ValidatedCost",  show:false,  order:11, width:100},
-    {name:"AssignedCost",   show:false,  order:12, width:100},
-    {name:"RealCost",       show:false,  order:13, width:100},
-    {name:"LeftCost",       show:false,  order:14, width:100},
-    {name:"PlannedCost",    show:false,  order:15, width:100},
-    {name:"Priority",       show:false,  order:16, width:100},
-    {name:"PlanningMode",   show:false,  order:17, width:100},
-    {name:"Progress",       show:false,  order:18, width:100},
-    {name:"IdStatus",       show:false,  order:19, width:100},
+    {name:"Name",           show:false,  order:0,  width:100, showSpecif:true},
+    {name:"Resource",       show:false,  order:1,  width:100, showSpecif:true},
+    {name:"Duration",       show:false,  order:2,  width:100, showSpecif:true},
+    {name:"Completed",      show:false,  order:3,  width:100, showSpecif:true},
+    {name:"StartDate",      show:false,  order:4,  width:100, showSpecif:true},
+    {name:"EndDate",        show:false,  order:5,  width:100, showSpecif:true},
+    {name:"ValidatedWork",  show:false,  order:6,  width:100, showSpecif:true},
+    {name:"AssignedWork",   show:false,  order:7,  width:100, showSpecif:true},
+    {name:"RealWork",       show:false,  order:8,  width:100, showSpecif:true},
+    {name:"LeftWork",       show:false,  order:9,  width:100, showSpecif:true},
+    {name:"PlannedWork",    show:false,  order:10, width:100, showSpecif:true},
+    {name:"ValidatedCost",  show:false,  order:11, width:100, showSpecif:true},
+    {name:"AssignedCost",   show:false,  order:12, width:100, showSpecif:true},
+    {name:"RealCost",       show:false,  order:13, width:100, showSpecif:true},
+    {name:"LeftCost",       show:false,  order:14, width:100, showSpecif:true},
+    {name:"PlannedCost",    show:false,  order:15, width:100, showSpecif:true},
+    {name:"Priority",       show:false,  order:16, width:100, showSpecif:true},
+    {name:"PlanningMode",   show:false,  order:17, width:100, showSpecif:true},
+    {name:"Progress",       show:false,  order:18, width:100, showSpecif:true},
+    {name:"IdStatus",       show:false,  order:19, width:100, showSpecif:true},
     {name:"Type",         show:false,  order:20, width:100}
   );
 function setPlanningFieldShow(field, value) {
-  return setPlanningField('show',field, value)
+  return setPlanningField('show',field, value);
+}
+function setPlanningFieldShowSpecif(field, value) {
+  return setPlanningField('showSpecif',field, value);
 }
 function getPlanningFieldShow(field) {
-  return getPlanningField('show',field)
+  if (getPlanningField('show',field) && getPlanningField('showSpecif',field)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 function setPlanningFieldOrder(field, value) {
-  return setPlanningField('order',field, value)
+  return setPlanningField('order',field, value);
 }
 function getPlanningFieldOrder(field) {
-  return getPlanningField('order',field)
+  return getPlanningField('order',field);
 }
 function setPlanningFieldWidth(field, value) {
-  return setPlanningField('width',field, value)
+  return setPlanningField('width',field, value);
 }
 function getPlanningFieldWidth(field) {
-  return getPlanningField('width',field)
+  return getPlanningField('width',field);
 }
 function setPlanningField(attribute, field, value) {
   for (var i=0;i<planningFieldsDescription.length;i++) {
     if (planningFieldsDescription[i].name==field) {
       if (attribute=='show') {planningFieldsDescription[i].show=value;}
+      else if (attribute=='showSpecif') {planningFieldsDescription[i].showSpecif=value;}
       else if (attribute=='order') {planningFieldsDescription[i].order=value;}
       else if (attribute=='width') {planningFieldsDescription[i].width=value;}
       return true;
@@ -115,6 +123,7 @@ function getPlanningField(attribute,field) {
   for (var i=0;i<planningFieldsDescription.length;i++) {
     if (planningFieldsDescription[i].name==field) {
       if (attribute=='show') {return planningFieldsDescription[i].show;}
+      else if (attribute=='showSpecif') {return planningFieldsDescription[i].showSpecif;}
       else if (attribute=='order') {return planningFieldsDescription[i].order;}
       else if (attribute=='width') {return planningFieldsDescription[i].width;}
       else {return null;}
@@ -151,7 +160,10 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   var vLevel = 0;
   var vNumKid = 0;
   var vVisible  = 1;
-  var x1, y1, x2, y2;
+  var x1=0;
+  var y1=0;
+  var x2=0;
+  var y2=0;
   var vClass=pClass;
   var vScope=pScope;
   var vRealEnd=new Date();
@@ -576,7 +588,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     }
   };
   this.Draw = function(){
-	top.showWait();
+	  top.showWait();
     var vMaxDate = new Date();
     var vMinDate = new Date();
     var vDefaultMinDate = new Date();
@@ -1577,7 +1589,7 @@ JSGantt.expand= function (ganttObj) {
   JSGantt.collapse(ganttObj);
   var vList = ganttObj.getList();
   //for(i = 0; i < vList.length; i++) {
-  for(i = vList.length -1; i >=0 ; i--) {
+  for(var i = vList.length -1; i >=0 ; i--) {
     if(vList[i].getGroup()) {
       if (! vList[i].getOpen()) {
     	  JSGantt.folder(vList[i].getID(),ganttObj);
@@ -1717,12 +1729,7 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
   if (vMonthStr.length==1) vMonthStr="0"+vMonthStr;
   var vDayStr   = pDate.getDate() + '';
   if (vDayStr.length==1) vDayStr="0"+vDayStr;
-  var onejan = new Date(pDate.getFullYear(),0,1);
-  // var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) +
-  // onejan.getDay()+1)/7) + '';
-  //var vWeekNum = dojo.date.locale.format(pDate, {datePattern: "w", selector: "date"});
-  var vWeekNum = dateGetWeek(pDate,1);
-  var vDateStr = "";  
+  var vWeekNum = dateGetWeek(pDate,1); 
   switch(pFormatStr) {
     case 'default':
       fmt=top.getBrowserLocaleDateFormatJs();
@@ -1880,14 +1887,22 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
 };
 
 function setGanttVisibility(g) {
-	if (dojo.byId('resourcePlanning')) {
-	  g.setShowRes(0); 
-	  g.setShowValidatedWork(0);
+  for (var i=0; i<planningFieldsDescription.length ;i++) {
+    planningFieldsDescription[i].showSpecif=true;
+  }
+  if (dojo.byId('resourcePlanning')) {
+    setPlanningFieldShowSpecif('Resource',0); 
+    setPlanningFieldShowSpecif('ValidatedWork',0);
+	  setPlanningFieldShowSpecif('ValidatedCost',0);
+	  setPlanningFieldShowSpecif('AssignedCost',0);
+	  setPlanningFieldShowSpecif('RealCost',0);
+	  setPlanningFieldShowSpecif('LeftCost',0);
+	  setPlanningFieldShowSpecif('PlannedCost',0);
 	}
 	if (dojo.byId('portfolio')) {
-	  g.setShowRes(0); 
-	  g.setShowPriority(0);
-	  g.setShowPlanningMode(0);
+	  setPlanningFieldShowSpecif('Resource',0); 
+	  //setPlanningFieldShow('priority',0);
+	  setPlanningFieldShowSpecif('PlanningMode',0);
   }
 	g.setSortArray(planningColumnOrder);
 }
@@ -2036,16 +2051,14 @@ function adjustSpecificDaysHeight() {
 }
 
 jsHeaderResizePos=null;
-jsHeaderResizeField=field;
+jsHeaderResizeField=null;
 jsHeaderResizeSize=null;
 function startResizeJsHeader(event,field) {
   jsHeaderResizeField=field;
   jsHeaderResizePos=event.clientX;
-  console.log("start "+field+" "+event.clientX);
 }
 function stopResizeJsHeader(event) {
   if (!jsHeaderResizePos) return;
-  console.log("stop "+jsHeaderResizeField+" "+event.clientX);
   jsHeaderResizePos=null;
   jsHeaderResizeField=null;
 }
@@ -2054,6 +2067,5 @@ function resizeJsHeader(event) {
   var newWidth=dojo.byId('jsGanttHeader'+jsHeaderResizeField).style.width+event.clientX-jsHeaderResizePos;
   dojo.byId('jsGanttHeader'+jsHeaderResizeField).style.width=newWidth;
   dojo.byId('jsGanttHeaderTD'+jsHeaderResizeField).style.width=newWidth;
-  console.log("move "+jsHeaderResizeField+" "+event.clientX);
   jsHeaderResizePos=event.clientX;
 }

@@ -116,6 +116,8 @@ class SqlList {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else if (property_exists($obj,'order')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
+    } else if (property_exists($obj,'baselineDate')) {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.baselineDate, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     }
@@ -255,6 +257,8 @@ class SqlList {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
     } else if (property_exists($obj,'order')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
+    } else if (property_exists($obj,'baselineDate')) {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.baselineDate, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else{
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     }

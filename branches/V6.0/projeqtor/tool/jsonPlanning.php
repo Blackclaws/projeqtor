@@ -31,7 +31,10 @@
 
   scriptLog('   ->/tool/jsonPlanning.php');
   SqlElement::$_cachedQuery['Project']=array();
+  SqlElement::$_cachedQuery['Ticket']=array();
+  SqlElement::$_cachedQuery['Activity']=array();
   SqlElement::$_cachedQuery['Resource']=array();
+  SqlElement::$_cachedQuery['PlanningElement']=array();
   $objectClass='PlanningElement';
   $columnsDescription=Parameter::getPlanningColumnDescription();
   $obj=new $objectClass();

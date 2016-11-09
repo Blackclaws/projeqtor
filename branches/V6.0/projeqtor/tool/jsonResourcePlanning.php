@@ -29,6 +29,11 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/jsonResourcePlanning.php');
+SqlElement::$_cachedQuery['Project']=array();
+SqlElement::$_cachedQuery['Ticket']=array();
+SqlElement::$_cachedQuery['Activity']=array();
+SqlElement::$_cachedQuery['Resource']=array();
+SqlElement::$_cachedQuery['PlanningElement']=array();
 $objectClass='PlanningElement';
 $columnsDescription=Parameter::getPlanningColumnDescription();
 $obj=new $objectClass();
@@ -177,7 +182,7 @@ include("../tool/drawResourceListForSpecificAccess.php");
 ob_clean();
 $allowedResource=$table;
 if ($selectTeam) {
-  $team=new Team($selectTeam);
+  $team=new Team($selectTeam,true);
   $teamMembers=$team->getMembers();
 } else {
   $teamMembers=null;
@@ -274,7 +279,7 @@ if (Sql::$lastQueryNbRows == 0) {
       if (array_key_exists($idProject, $arrayProject)) {
       	$prj=$arrayProject[$idProject];
       } else {
-        $prj=new Project($idProject);
+        $prj=new Project($idProject,false);
         $arrayProject[$idProject]=$prj;
       }
       $resPr=array();
@@ -313,11 +318,6 @@ if (Sql::$lastQueryNbRows == 0) {
 		$line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
 		$line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
 		$line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
-		$line["validatedcostdisplay"]=htmlDisplayCurrency($line["validatedcost"],true);
-		$line["assignedcostdisplay"]=htmlDisplayCurrency($line["assignedcost"],true);
-		$line["realcostdisplay"]=htmlDisplayCurrency($line["realcost"],true);
-		$line["leftcostdisplay"]=htmlDisplayCurrency($line["leftcost"],true);
-		$line["plannedcostdisplay"]=htmlDisplayCurrency($line["plannedcost"],true);
 		if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
 		  $ref=$line['reftype'];
 		  $type='id'.$ref.'Type';
@@ -373,6 +373,8 @@ if (Sql::$lastQueryNbRows == 0) {
 		$list[$keyRes]["leftworkdisplay"]=Work::displayWorkWithUnit($sumLeft);
 		$list[$keyRes]["plannedworkdisplay"]=Work::displayWorkWithUnit($sumPlanned);
 		$list[$keyRes]["progress"]=($sumPlanned>0)?round($sumReal/$sumPlanned,2):0;
+		$list[$keyRes]["status"]="";
+		$list[$keyRes]["type"]="";
 		if ($showProject) {
 			$sumProjAssigned+=$line["assignedwork"];
 	    $sumProjReal+=$line["realwork"];
@@ -387,6 +389,12 @@ if (Sql::$lastQueryNbRows == 0) {
 	    $list[$keyProj]["leftworkdisplay"]=Work::displayWorkWithUnit($sumProjLeft);
 	    $list[$keyProj]["plannedworkdisplay"]=Work::displayWorkWithUnit($sumProjPlanned);
 	    $list[$keyProj]["progress"]=($sumProjPlanned)?round($sumProjReal/$sumProjPlanned,2):0;
+	    if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1 or $columnsDescription['Priority']['show']==1) {
+	      $item=new Project($line['idproject'],false);
+	      $list[$keyProj]["status"]=SqlList::getNameFromId('Status',$item->idStatus);
+	      $list[$keyProj]["type"]=SqlList::getNameFromId('Type',$item->idProjectType);
+	      $list[$keyProj]["priority"]=SqlList::getNameFromId('Priority',$item->ProjectPlanningElement->priority);
+	    }
 			if (! $list[$keyProj]["realstartdate"] or $line['realstartdate'] < $list[$keyProj]["realstartdate"]) {
 	      if ($line['realstartdate'] and $line['realstartdate']<$line['plannedstartdate']) {
 	        $list[$keyProj]["realstartdate"]=$line['realstartdate'];
