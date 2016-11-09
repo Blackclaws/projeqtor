@@ -69,39 +69,15 @@ scriptLog('   ->/view/reportsList.php');
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
   <table>
     <tr>
-      <td class="tabLabel">
-        <?php echo i18n('colCategory');?>        
-      </td>
-      <td width="5px">&nbsp;</td>
-      <td class="tabLabel" >
-        <?php echo i18n('colReport');?>
-      </td>
-      <td width="20px">&nbsp;</td>
+      <td width="5px" height="35px">&nbsp;</td>
       <td class="tabLabel" >
         <?php echo i18n('colParameters');?>
       </td>
     </tr>
     <tr>
-      <td valign="top">
-        <select id="reportsCategory" name="reportsCategory" value=""  
-                dojoType="dijit.form.MultiSelect" multiple="false"
-                 style="width:200px;height:225px" size="12" class="input" >
-           <?php htmlDrawOptionForReference('idReportCategory',null,null, true); ?>
-          <script type="dojo/connect" event="onChange" args="value">
-             reportSelectCategory(value);       
-          </script>
-        </select>
-      </td>
-      <td ></td>
-      <td valign="top">
-        <select id="reportsList" name="reportsList" value=""  
-                dojoType="dijit.form.MultiSelect"  multiple="false"
-                style="width:300px;height:225px" size="12" class="input" store="reportStore">
-        <script type="dojo/connect" event="onChange" args="value">
-             reportSelectReport(value);       
-          </script>
-        </select>
-        <div dojoType="dojo.data.ItemFileReadStore" jsId="reportStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
+      <td valign="top" style="width:40%" >
+        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:200px;">
+           <?php include "reportListMenu.php";?>
         </div>
       </td>
       <td ></td>

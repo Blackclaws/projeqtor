@@ -127,6 +127,7 @@ $resultReal=Sql::query($query);
 $tableReal=array();
 //$tableRealSum=array();
 //$sumReal=0;
+$endACWP="";
 $today=date('Y-m-d');
 while ($line = Sql::fetchLine($resultReal)) {
   $day=$line['day'];
@@ -136,6 +137,7 @@ while ($line = Sql::fetchLine($resultReal)) {
   //$tableRealSum[$day]=$sumReal;
   if ( ($start=="" or $start>$day) and $day<=$today) {$start=$day;}
   if ( ($end=="" or $end<$day) and $day<=$today) { $end=$day;}
+  if ( $endACWP="" or $endACWP<$day) {$endACWP=$day;}
 }
 if (!$end) $end=$today;
 if (!$start) $start=$today;
@@ -164,6 +166,7 @@ while ($line = Sql::fetchLine($resultPlanned)) {
   //$tablePlannedSum[$day]=$sumPlanned;
   if ($start>$day) {$start=$day;}
   if ($end<$day) { $end=$day;}
+  if ( $endACWP="" or $endACWP<$day) {$endACWP=$day;}
 }
 
 // constitute query and execute for baseline
@@ -179,12 +182,14 @@ $queryOrder= "  group by pwb.workDate";
 $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
 $resultBaseline=Sql::query($query);
 $tableBaseline=array();
+$endBCWS="";
 while ($line = Sql::fetchLine($resultBaseline)) {
   $day=$line['day'];
   $planned=$line['work'];
   $tableBaseline[$day]=$planned;
   if ($start>$day) {$start=$day;}
   if ($end<$day) { $end=$day;}
+  if ( $endBCWS="" or $endBCWS<$day) {$endBCWS=$day;}
 }
 
 if (checkNoData(array_merge($tablePlanned,$tableReal,$tableBaseline))) exit;
@@ -202,9 +207,11 @@ if (!$start or !$end) {
   exit;
 }
 while ($date<=$end) {
-  if ($scale=='week') { $arrDates[$date]=date('Y-W',strtotime($date)); } 
-  else if ($scale=='month') { $arrDates[$date]=date('Y-m',strtotime($date));  } 
-  else if ($scale=='quarter') { 
+  if ($scale=='week') { 
+    $arrDates[$date]=weekFormat($date); 
+  } else if ($scale=='month') { 
+    $arrDates[$date]=date('Y-m',strtotime($date));  
+  } else if ($scale=='quarter') { 
     $year=date('Y',strtotime($date));
     $month=date('m',strtotime($date));
     $quarter=1+intval(($month-1)/3);
@@ -214,7 +221,6 @@ while ($date<=$end) {
   }
   $date=addDaysToDate($date, 1);
 }
-
 $resReal=array();
 $sumReal=0;
 $resPlanned=array();
@@ -242,9 +248,17 @@ foreach ($arrDates as $date => $period) {
     $resPlanned[$period]=$sumPlanned;
   } else if ($date>$endReal) {
     if (!isset($resReal[$period])) $resReal[$period]=VOID;
-    $resPlanned[$period]=$sumPlanned;
-  } 
-  $resBaseline[$period]=$sumBaseline;
+    if ($date>$endACWP) {
+      if (!isset($resPlanned[$period])) {$resPlanned[$period]=VOID;}
+    } else {
+      $resPlanned[$period]=$sumPlanned;
+    }
+  }
+  if (($date>$endBCWS)) {
+    if (!isset($resBaseline[$period])) {$resBaseline[$period]=VOID;}
+  } else {
+    $resBaseline[$period]=$sumBaseline;
+  }
 }
 $startDatePeriod=null;
 $endDatePeriod=null;
@@ -368,13 +382,41 @@ if ($legend=="top") {
       "Margin"=>5));
   $graph->drawText($graphWidth/2,20,i18n("reportSCurveChart"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 }
+
+$workGap=$sumBaseline-$sumPlanned;
+if ($workGap>0) {
+  $format=array("R"=>50, "G"=>100, "B"=>50, "Align"=>TEXT_ALIGN_BOTTOMRIGHT, "FontSize"=>'12');
+  $title=i18n('legendWorkPositive');
+} else {
+  $format=array("R"=>100, "G"=>50, "B"=>50, "Align"=>TEXT_ALIGN_BOTTOMRIGHT, "FontSize"=>'12');
+  $title=i18n('legendWorkNegative');
+}
+$title.=" : ".str_replace('&nbsp;',' ',Work::displayWorkWithUnit(abs($workGap)));
+$graph->drawText($graphWidth-40,$graphHeight-120,$title,$format);
+
+if ($endACWP>$endBCWS) {
+  $delayGap=dayDiffDates($endBCWS, $endACWP);
+  $delayGapOpen=workDayDiffDates($endBCWS, $endACWP)-1;
+  $format=array("R"=>100, "G"=>50, "B"=>50, "Align"=>TEXT_ALIGN_BOTTOMRIGHT, "FontSize"=>'12');
+  $title=i18n('legendDelayNegative');
+} else {
+  $delayGap=dayDiffDates($endACWP, $endBCWS);
+  $delayGapOpen=workDayDiffDates($endACWP, $endBCWS)-1;
+  $format=array("R"=>50, "G"=>100, "B"=>50, "Align"=>TEXT_ALIGN_BOTTOMRIGHT, "FontSize"=>'12');
+  $title=i18n('legendDelayPositive');
+}
+$title.=" : ".$delayGap.' '.i18n('days');
+$graph->drawText($graphWidth-40,$graphHeight-100,$title,$format);
+$title='('.$delayGapOpen.' '.i18n('openDays').')';
+$graph->drawText($graphWidth-40,$graphHeight-80,$title,$format);
+
 /* Render the picture (choose the best way) */
-$imgName=getGraphImgName("burndownChart");
+$imgName=getGraphImgName("scurvechart");
 $graph->Render($imgName);
 
-//$graph->autoOutput($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img style="width:1000px;height:600px" src="' . $imgName . '" />'; 
 echo '</td></tr></table>';
 echo '<br/>';
+
 ?>
