@@ -129,6 +129,7 @@ $start="";
 $end="";
 for ($i=1;$i<=2;$i++) {
   $obj=($i==1)?new Work():new PlannedWork();
+  $proj= new Project();
   $ass=new Assignment();
   $var=($i==1)?'real':'plan';
   $querySelect=($i==1)?$querySelect1:$querySelect2;
@@ -137,7 +138,7 @@ for ($i=1;$i<=2;$i++) {
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName().' w '.(($i==2)?', '.$ass->getDatabaseTableName() . ' a':'') .', Project t2  '
+     . ' from ' . $obj->getDatabaseTableName().' w '.(($i==2)?', '.$ass->getDatabaseTableName() . ' a':'') .', '.$proj->getDatabaseTableName().' t2 ' 
      . ' where ' . $queryWhere.' AND t2.id=w.idProject ' 
      . ' group by ' . $queryGroupBy
      . ' order by t2.sortOrder asc ';
