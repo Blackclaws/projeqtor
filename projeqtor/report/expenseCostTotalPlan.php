@@ -98,6 +98,7 @@ $start="";
 $end="";
 for ($i=1;$i<=2;$i++) {
   $obj=new ProjectExpense();
+  $proj= new Project();
   $ass=new Assignment();
   $var=($i==1)?'real':'plan';
   $querySelect=($i==1)?$querySelect1:$querySelect2;
@@ -106,7 +107,7 @@ for ($i=1;$i<=2;$i++) {
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhereTmp=($queryWhereTmp=='')?' 1=1':$queryWhereTmp;
   $query=$querySelect
-     . ' from ' . $obj->getDatabaseTableName().' exp, Project t2 ' 
+     . ' from ' . $obj->getDatabaseTableName().' exp, '.$proj->getDatabaseTableName().' t2 ' 
      . ' where ' . $queryWhereTmp.' AND t2.id=exp.idProject '
      . ' and exp.cancelled=0'  
      . ' group by ' . $queryGroupBy
