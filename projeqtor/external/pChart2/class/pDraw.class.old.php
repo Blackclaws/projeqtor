@@ -12,7 +12,6 @@
 
      You can find the whole class documentation on the pChart web site.
  */
-// PATCHED VERSION
 
  define("DIRECTION_VERTICAL"		, 690001);
  define("DIRECTION_HORIZONTAL"		, 690002);
@@ -1803,16 +1802,7 @@
      $SkippedTickAlpha	= isset($Format["SkippedTickAlpha"]) ? $Format["SkippedTickAlpha"] : $TickAlpha-80;
      $SkippedInnerTickWidth	= isset($Format["SkippedInnerTickWidth"]) ? $Format["SkippedInnerTickWidth"] : 0;
      $SkippedOuterTickWidth	= isset($Format["SkippedOuterTickWidth"]) ? $Format["SkippedOuterTickWidth"] : 2;
-     
-     // Patch Start
-     $ScaleModeAuto	= isset($Format["ScaleModeAuto"]) ? $Format["ScaleModeAuto"] : FALSE;
-     $LabelSkipOffset		= isset($Format["LabelSkipOffset"]) ? $Format["LabelSkipOffset"] : 0;
-     $LabelShowBoundaries	= isset($Format["LabelShowBoundaries"]) ? $Format["LabelShowBoundaries"] : FALSE;
-     $DrawXBoundaryLines	= isset($Format["DrawXBoundaryLines"]) ? $Format["DrawXBoundaryLines"] : FALSE;
-     $ScaleModeAutoGridInterval	= isset($Format["ScaleModeAutoGridInterval"]) ? $Format["ScaleModeAutoGridInterval"] : 0;
-     $ScaleModeAutoGridLabel	= isset($Format["ScaleModeAutoGridLabel"]) ? $Format["ScaleModeAutoGridLabel"] : FALSE;
-     // Patch stop
-     
+
      /* Floating scale require X & Y margins to be set manually */
      if ( $Floating && ( $XMargin == AUTO || $YMargin == 0 ) ) { $Floating = FALSE; }
 
@@ -1931,14 +1921,8 @@
         {
          $Points = 0;
          $AxisName = isset($Data["XAxisName"]) ? $Data["XAxisName"] : NULL;
-         // Patch start
-         //foreach($Data["Series"] as $SerieID => $SerieParameter)
-         //  { if ( $SerieParameter["isDrawable"] ) { $Points = max($Points,count($SerieParameter["Data"])); } }
-         if (count($Data["Series"]) > 0) {
-           foreach($Data["Series"] as $SerieID => $SerieParameter)
-           { if ( $SerieParameter["isDrawable"] ) { $Points = max($Points,count($SerieParameter["Data"])); } }
-         }
-         //Patch end
+         foreach($Data["Series"] as $SerieID => $SerieParameter)
+          { if ( $SerieParameter["isDrawable"] ) { $Points = max($Points,count($SerieParameter["Data"])); } }
         }
 
        $AxisID = count($Data["Axis"]);
@@ -1954,10 +1938,7 @@
 
          if ( $Points == 1 )
           $Data["Axis"][$AxisID]["Margin"] = $Height / 2;
-         // Patch start
-         // else
-         else if ($Points > 1)
-         // Patch end
+         else
           $Data["Axis"][$AxisID]["Margin"] = ($Height/$Points) / 2;
         }
        else
@@ -2005,24 +1986,6 @@
         {
          if ( $Pos == SCALE_POS_LEFTRIGHT )
           {
-            // Patch Start
-            $Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
-            if ( $ScaleModeAuto && isset($Data["Series"][$Abscissa]["Data"][0]) ) {
-             	$AbscissaScaleValueMin = $Data["Series"][$Abscissa]["Data"][0];
-            } else {
-             	$AbscissaScaleValueMin = 0;
-            }
-            if ( $ScaleModeAuto && isset($Data["Series"][$Abscissa]["Data"][$Parameters["Rows"]]) ) {
-            	$AbscissaScaleValueMax = $Data["Series"][$Abscissa]["Data"][$Parameters["Rows"]];
-            } else {
-             	$AbscissaScaleValueMax = $Width;
-            }
-            $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-            if ($AbscissaScaleValueWidth > 0)
-             	$AbscissaScaleFactor = $AbscissaScaleValueWidth / $Width;
-            else
-             	$AbscissaScaleFactor = 1;
-            // Patch end
            if ( $Parameters["Position"] == AXIS_POSITION_BOTTOM )
             {
              if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_TOPMIDDLE; $YLabelOffset = 2; }
@@ -2040,28 +2003,14 @@
                if ( $DrawArrows ) { $this->drawArrow($this->GraphAreaX2-$Parameters["Margin"],$AxisPos["B"],$this->GraphAreaX2+($ArrowSize*2),$AxisPos["B"],array("FillR"=>$AxisR,"FillG"=>$AxisG,"FillB"=>$AxisB,"Size"=>$ArrowSize)); }
               }
 
-             // Patch start 
-             //$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
-             // Patch end
-             
+             $Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
+
              if ($Parameters["Rows"] == 0 ) { $Step  = $Width; } else { $Step  = $Width / ($Parameters["Rows"]); }
              
              $MaxBottom = $AxisPos["B"];
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
-               // Patch start
-               //$XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-               if ( $ScaleModeAuto && $Abscissa != NULL ) {
-                if ( isset($Data["Series"][$Abscissa]["Data"][$i]) ) {
-                 $AbscissaScaleValue = $Data["Series"][$Abscissa]["Data"][$i] - $AbscissaScaleValueMin;
-                 $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $AbscissaScaleValue / $AbscissaScaleFactor;
-                } else {
-                 $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-                } 
-               } else {
-                $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-               }
-               // Patch end         
+               $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
                $YPos  = $AxisPos["B"];
 
                if ( $Abscissa != NULL )
@@ -2074,11 +2023,8 @@
                   $Value = $i;
                 }
 
-               $ID++; $Skipped = TRUE;//
-               // Patch start
-               //if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
-               if ( (!$RemoveXAxis && ($LabelShowBoundaries && ($i==0 || $i==$Parameters["Rows"])) || $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip,$LabelSkipOffset) ) )
-               // Patch end
+               $ID++; $Skipped = TRUE;
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
                 {
                  $Bounds    = $this->drawText($XPos,$YPos+$OuterTickWidth+$YLabelOffset,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBottom = $YPos+$OuterTickWidth+2+($Bounds[0]["Y"]-$Bounds[2]["Y"]);
@@ -2086,13 +2032,7 @@
                  $LastValue = $Value;
                  $Skipped   = FALSE;
                 }
-                // Patch start
-                if ( $DrawXBoundaryLines && ($i==0 || $i==$Parameters["Rows"]) )
-                {
-                 $this->drawLine($XPos,$this->GraphAreaY1+$FloatingOffset,$XPos,$this->GraphAreaY2-$FloatingOffset,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-                }
-                // Patch end
-                  
+
                if ( $RemoveXAxis ) { $Skipped   = FALSE; }
 
                if ( $Skipped )
@@ -2106,29 +2046,7 @@
                  if ( ($InnerTickWidth !=0 || $OuterTickWidth != 0) && !$RemoveXAxis ) { $this->drawLine($XPos,$YPos-$InnerTickWidth,$XPos,$YPos+$OuterTickWidth,array("R"=>$TickR,"G"=>$TickG,"B"=>$TickB,"Alpha"=>$TickAlpha)); }
                 }
               }
-             // Patch start
-             if ( $ScaleModeAuto && ($ScaleModeAutoGridInterval > 0) )
-               {
-                $ScaleModeAutoGridIntervalDraw = true;
-                $ScaleModeAutoGridIntervalStep = 0;
-                
-                while ($ScaleModeAutoGridIntervalDraw) {
-                	$ScaleModeAutoGridIntervalStep++;
-                 	$ScaleModeAutoGridIntervalValue = $ScaleModeAutoGridIntervalStep*$ScaleModeAutoGridInterval;
-                
-                 	if ($ScaleModeAutoGridIntervalValue < ($AbscissaScaleValueMax-$AbscissaScaleValueMin)) {
-                 		$ScaleModeAutoGridIntervalX  = $this->GraphAreaX1 + $Parameters["Margin"] + $ScaleModeAutoGridIntervalValue / $AbscissaScaleFactor;
-                 		$this->drawLine($ScaleModeAutoGridIntervalX,$this->GraphAreaY1+$FloatingOffset,$ScaleModeAutoGridIntervalX,$this->GraphAreaY2-$FloatingOffset,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-                 		if ($ScaleModeAutoGridLabel) {
-                 			$ScaleModeAutoGridLabelDescription = $this->scaleFormat($AbscissaScaleValueMin+$ScaleModeAutoGridIntervalValue,$Data["XAxisDisplay"],$Data["XAxisFormat"],"");
-                 			$this->drawText($ScaleModeAutoGridIntervalX,$this->GraphAreaY1+$FloatingOffset+5,$ScaleModeAutoGridLabelDescription,array("Align"=>TEXT_ALIGN_MIDDLERIGHT,"Angle"=>90,"R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>floor($GridAlpha*2)));
-                 		}
-                 	} else {
-                 		$ScaleModeAutoGridIntervalDraw = false;
-                 	}
-                }
-             }
-             // Patch end
+
              if ( isset($Parameters["Name"]) && !$RemoveXAxis)
               {
                $YPos   = $MaxBottom+2;
@@ -2158,28 +2076,14 @@
                if ( $DrawArrows ) { $this->drawArrow($this->GraphAreaX2-$Parameters["Margin"],$AxisPos["T"],$this->GraphAreaX2+($ArrowSize*2),$AxisPos["T"],array("FillR"=>$AxisR,"FillG"=>$AxisG,"FillB"=>$AxisB,"Size"=>$ArrowSize)); }
               }
 
-             // Patch start
-             //$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
-             // Patch end
-             
+             $Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
+
              if ($Parameters["Rows"] == 0 ) { $Step  = $Width; } else { $Step  = $Width / $Parameters["Rows"]; }
              
              $MinTop = $AxisPos["T"];
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
-               // Patch start
-               //$XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-               if ( $ScaleModeAuto && $Abscissa != NULL ) {
-               	if ( isset($Data["Series"][$Abscissa]["Data"][$i]) ) {
-               	 $AbscissaScaleValue = $Data["Series"][$Abscissa]["Data"][$i] - $AbscissaScaleValueMin;
-                 $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $AbscissaScaleValue / $AbscissaScaleFactor;
-                } else {
-                 $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-                }
-               } else {
-                $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
-               }
-               // Patch end
+               $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
                $YPos  = $AxisPos["T"];
 
                if ( $Abscissa != NULL )
@@ -2193,10 +2097,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               // Patch start
-               //if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
-               if ( !$RemoveXAxis && (($LabelShowBoundaries && ($i==0 || $i==$Parameters["Rows"])) || $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip,$LabelSkipOffset)) )
-               // Patch end
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
                 {
                  $Bounds = $this->drawText($XPos,$YPos-$OuterTickWidth-$YLabelOffset,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox = $YPos-$OuterTickWidth-2-($Bounds[0]["Y"]-$Bounds[2]["Y"]);
@@ -2207,12 +2108,6 @@
 
                if ( $RemoveXAxis ) { $Skipped   = FALSE; }
 
-               // Patch start
-               if ( $DrawXBoundaryLines && ($i==0 || $i==$Parameters["Rows"]) )
-               {
-               	$this->drawLine($XPos,$this->GraphAreaY1+$FloatingOffset,$XPos,$this->GraphAreaY2-$FloatingOffset,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-               }
-               // Patch end
                if ( $Skipped )
                 {
                  if ( $DrawXLines && !$RemoveSkippedAxis ) { $this->drawLine($XPos,$this->GraphAreaY1+$FloatingOffset,$XPos,$this->GraphAreaY2-$FloatingOffset,$SkippedAxisColor); }
@@ -2225,31 +2120,7 @@
                 }
 
               }
-              // Patch start
-              if ( $ScaleModeAuto && ($ScaleModeAutoGridInterval > 0) )
-              {
-               	$ScaleModeAutoGridIntervalDraw = true;
-               	$ScaleModeAutoGridIntervalStep = 0;
-              
-               	while ($ScaleModeAutoGridIntervalDraw) {
-               		$ScaleModeAutoGridIntervalStep++;
-               		$ScaleModeAutoGridIntervalValue = $ScaleModeAutoGridIntervalStep*$ScaleModeAutoGridInterval;
-              
-               		if ($ScaleModeAutoGridIntervalValue < ($AbscissaScaleValueMax-$AbscissaScaleValueMin)) {
-               			$ScaleModeAutoGridIntervalX  = $this->GraphAreaX1 + $Parameters["Margin"] + $ScaleModeAutoGridIntervalValue / $AbscissaScaleFactor;
-               			$this->drawLine($ScaleModeAutoGridIntervalX,$this->GraphAreaY1+$FloatingOffset,$ScaleModeAutoGridIntervalX,$this->GraphAreaY2-$FloatingOffset,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-              
-               			if ($ScaleModeAutoGridLabel) {
-               				$ScaleModeAutoGridLabelDescription = $this->scaleFormat($AbscissaScaleValueMin+$ScaleModeAutoGridIntervalValue,$Data["XAxisDisplay"],$Data["XAxisFormat"],"");
-               				$this->drawText($ScaleModeAutoGridIntervalX,$this->GraphAreaY1+$FloatingOffset+5,$ScaleModeAutoGridLabelDescription,array("Align"=>TEXT_ALIGN_MIDDLERIGHT,"Angle"=>90,"R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>floor($GridAlpha*2)));
-                    }
-                  } else {
-                  	$ScaleModeAutoGridIntervalDraw = false;
-                  }
-                }
-              }
-              // Patch end          
-              
+
              if ( isset($Parameters["Name"]) && !$RemoveXAxis )
               {
                $YPos   = $MinTop-2;
@@ -2265,22 +2136,6 @@
           }
          elseif ( $Pos == SCALE_POS_TOPBOTTOM )
           {
-            //Patch start
-            $Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Parameters["Margin"]*2;
-            
-            if ( $ScaleModeAuto && isset($Data["Series"][$Abscissa]["Data"][0]) ) {
-             	$AbscissaScaleValueMin = $Data["Series"][$Abscissa]["Data"][0];
-            } else {
-             	$AbscissaScaleValueMin = 0;
-            }
-            if ( $ScaleModeAuto && isset($Data["Series"][$Abscissa]["Data"][$Parameters["Rows"]]) ) {
-             	$AbscissaScaleValueMax = $Data["Series"][$Abscissa]["Data"][$Parameters["Rows"]];
-            } else {
-            	$AbscissaScaleValueMax = $Height;
-            }
-            $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-            $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Height;
-            // Patch end
            if ( $Parameters["Position"] == AXIS_POSITION_LEFT )
             {
              if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = -2; }
@@ -2298,27 +2153,14 @@
                if ( $DrawArrows ) { $this->drawArrow($AxisPos["L"],$this->GraphAreaY2-$Parameters["Margin"],$AxisPos["L"],$this->GraphAreaY2+($ArrowSize*2),array("FillR"=>$AxisR,"FillG"=>$AxisG,"FillB"=>$AxisB,"Size"=>$ArrowSize)); }
               }
 
-             //Patch start
-             //$Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Parameters["Margin"]*2;
-             //Patch end
+             $Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Parameters["Margin"]*2;
+
              if ($Parameters["Rows"] == 0 ) { $Step  = $Height; } else { $Step   = $Height / $Parameters["Rows"]; }
 
              $MinLeft = $AxisPos["L"];
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
-               // Patch start 
-               //$YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-               if ( $ScaleModeAuto && $Abscissa != NULL ) {
-               	 if ( isset($Data["Series"][$Abscissa]["Data"][$i]) ) {
-                   $AbscissaScaleValue = $Data["Series"][$Abscissa]["Data"][$i] - $AbscissaScaleValueMin;
-                   $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $AbscissaScaleValue / $AbscissaScaleFactor;
-                 } else {
-                 	 $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-                 }
-               } else {
-               	 $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-               } 
-               // Patch end
+               $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
                $XPos  = $AxisPos["L"];
 
                if ( $Abscissa != NULL )
@@ -2332,10 +2174,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               // Patch start
-               //if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
-               if ( !$RemoveXAxis && (($LabelShowBoundaries && ($i==0 || $i==$Parameters["Rows"])) || $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip,$LabelSkipOffset) ))
-               // Patch end
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
                 {
                  $Bounds  = $this->drawText($XPos-$OuterTickWidth+$XLabelOffset,$YPos,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox  = $XPos-$OuterTickWidth-2-($Bounds[1]["X"]-$Bounds[0]["X"]);
@@ -2345,12 +2184,7 @@
                 }
 
                if ( $RemoveXAxis ) { $Skipped   = FALSE; }
-               // Patch start
-               if ( $DrawXBoundaryLines && ($i==0 || $i==$Parameters["Rows"]) )
-               {
-                 $this->drawLine($this->GraphAreaX1+$FloatingOffset,$YPos,$this->GraphAreaX2-$FloatingOffset,$YPos,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-               }
-               // Patch end
+
                if ( $Skipped )
                 {
                  if ( $DrawXLines && !$RemoveSkippedAxis ) { $this->drawLine($this->GraphAreaX1+$FloatingOffset,$YPos,$this->GraphAreaX2-$FloatingOffset,$YPos,$SkippedAxisColor); }
@@ -2363,33 +2197,6 @@
                 }
 
               }
-              
-              // Patch start
-              if ( $ScaleModeAuto && ($ScaleModeAutoGridInterval > 0) )
-              {
-                $ScaleModeAutoGridIntervalDraw = true;
-               	$ScaleModeAutoGridIntervalStep = 0;
-              
-               	while ($ScaleModeAutoGridIntervalDraw) {
-               		$ScaleModeAutoGridIntervalStep++;
-               		$ScaleModeAutoGridIntervalValue = $ScaleModeAutoGridIntervalStep*$ScaleModeAutoGridInterval;
-              
-               		if ($ScaleModeAutoGridIntervalValue < ($AbscissaScaleValueMax-$AbscissaScaleValueMin)) {
-               			$ScaleModeAutoGridIntervalY  = $this->GraphAreaY1 + $Parameters["Margin"] + $ScaleModeAutoGridIntervalValue / $AbscissaScaleFactor;
-               			$this->drawLine($this->GraphAreaX1+$FloatingOffset,$ScaleModeAutoGridIntervalY,$this->GraphAreaX2-$FloatingOffset,$ScaleModeAutoGridIntervalY,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-              
-              			if ($ScaleModeAutoGridLabel) {
-               				$ScaleModeAutoGridLabelDescription = $this->scaleFormat($AbscissaScaleValueMin+$ScaleModeAutoGridIntervalValue,$Data["XAxisDisplay"],$Data["XAxisFormat"],"");
-              
-               				$this->drawText($this->GraphAreaX2+$FloatingOffset-5,$ScaleModeAutoGridIntervalY,$ScaleModeAutoGridLabelDescription,array("Align"=>TEXT_ALIGN_MIDDLERIGHT,"Angle"=>0,"R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>floor($GridAlpha*2)));
-               			}
-               		} else {
-               			$ScaleModeAutoGridIntervalDraw = false;
-               		}
-               	}
-              }
-              // Patch end
-                        
              if ( isset($Parameters["Name"]) && !$RemoveXAxis )
               {
                $XPos   = $MinLeft-2;
@@ -2418,27 +2225,15 @@
 
                if ( $DrawArrows ) { $this->drawArrow($AxisPos["R"],$this->GraphAreaY2-$Parameters["Margin"],$AxisPos["R"],$this->GraphAreaY2+($ArrowSize*2),array("FillR"=>$AxisR,"FillG"=>$AxisG,"FillB"=>$AxisB,"Size"=>$ArrowSize)); }
               }
-             // Patch start
-             //$Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Parameters["Margin"]*2;
-             // Patch end
+
+             $Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Parameters["Margin"]*2;
+
              if ($Parameters["Rows"] == 0 ) { $Step  = $Height; } else { $Step   = $Height / $Parameters["Rows"]; }
              
              $MaxRight = $AxisPos["R"];
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
-               // Patch start
-               //$YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-               if ( $ScaleModeAuto && $Abscissa != NULL ) {
-               	 if ( isset($Data["Series"][$Abscissa]["Data"][$i]) ) {
-                   $AbscissaScaleValue = $Data["Series"][$Abscissa]["Data"][$i] - $AbscissaScaleValueMin;
-                   $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $AbscissaScaleValue / $AbscissaScaleFactor;
-                 } else {
-                   $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-                 }
-               } else {
-                 $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
-               }
-               // Patch end
+               $YPos  = $this->GraphAreaY1 + $Parameters["Margin"] + $Step*$i;
                $XPos  = $AxisPos["R"];
 
                if ( $Abscissa != NULL )
@@ -2452,10 +2247,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               // Patch start
-               //if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
-               if ( !$RemoveXAxis && ( ($LabelShowBoundaries && ($i==0 || $i==$Parameters["Rows"])) || $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip,$LabelSkipOffset) ) )
-               // Patch end    
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
                 {
                  $Bounds   = $this->drawText($XPos+$OuterTickWidth+$XLabelOffset,$YPos,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox   = $XPos+$OuterTickWidth+2+($Bounds[1]["X"]-$Bounds[0]["X"]);
@@ -2465,12 +2257,7 @@
                 }
 
                if ( $RemoveXAxis ) { $Skipped   = FALSE; }
-               // Patch start
-               if ( $DrawXBoundaryLines && ($i==0 || $i==$Parameters["Rows"]) )
-               {
-                 $this->drawLine($this->GraphAreaX1+$FloatingOffset,$YPos,$this->GraphAreaX2-$FloatingOffset,$YPos,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-               }
-               // Patch end
+
                if ( $Skipped )
                 {
                  if ( $DrawXLines && !$RemoveSkippedAxis ) { $this->drawLine($this->GraphAreaX1+$FloatingOffset,$YPos,$this->GraphAreaX2-$FloatingOffset,$YPos,$SkippedAxisColor); }
@@ -2484,31 +2271,6 @@
 
               }
 
-              // Patch start
-              if ( $ScaleModeAuto && ($ScaleModeAutoGridInterval > 0) )
-              {
-                $ScaleModeAutoGridIntervalDraw = true;
-                $ScaleModeAutoGridIntervalStep = 0;
-                
-                while ($ScaleModeAutoGridIntervalDraw) {
-                 	$ScaleModeAutoGridIntervalStep++;
-                	$ScaleModeAutoGridIntervalValue = $ScaleModeAutoGridIntervalStep*$ScaleModeAutoGridInterval;
-                
-                 	if ($ScaleModeAutoGridIntervalValue < ($AbscissaScaleValueMax-$AbscissaScaleValueMin)) {
-                 		$ScaleModeAutoGridIntervalY  = $this->GraphAreaY1 + $Parameters["Margin"] + $ScaleModeAutoGridIntervalValue / $AbscissaScaleFactor;
-                 		$this->drawLine($this->GraphAreaX1+$FloatingOffset,$ScaleModeAutoGridIntervalY,$this->GraphAreaX2-$FloatingOffset,$ScaleModeAutoGridIntervalY,array("R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>$GridAlpha,"Ticks"=>$GridTicks));
-                
-                		if ($ScaleModeAutoGridLabel) {
-                 			$ScaleModeAutoGridLabelDescription = $this->scaleFormat($AbscissaScaleValueMin+$ScaleModeAutoGridIntervalValue,$Data["XAxisDisplay"],$Data["XAxisFormat"],"");
-                 			$this->drawText($this->GraphAreaX2+$FloatingOffset-5,$ScaleModeAutoGridIntervalY,$ScaleModeAutoGridLabelDescription,array("Align"=>TEXT_ALIGN_MIDDLERIGHT,"Angle"=>0,"R"=>$GridR,"G"=>$GridG,"B"=>$GridB,"Alpha"=>floor($GridAlpha*2)));
-                 		}
-                 	} else {
-                 	  $ScaleModeAutoGridIntervalDraw = false;
-                  }
-                }
-              }
-              // Patch end
-              
              if ( isset($Parameters["Name"]) && !$RemoveXAxis)
               {
                $XPos   = $MaxRight+4;
@@ -2680,14 +2442,11 @@
 
              if ( $DrawArrows ) { $this->drawArrow($this->GraphAreaX2-$Parameters["Margin"],$AxisPos["B"],$this->GraphAreaX2+($ArrowSize*2),$AxisPos["B"],array("FillR"=>$AxisR,"FillG"=>$AxisG,"FillB"=>$AxisB,"Size"=>$ArrowSize)); }
 
-             // Patch start
-             //$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
-             // Patch end
+             $Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"]*2;
              $Step   = $Width / $Parameters["Rows"]; $SubTicksSize = $Step /2; $MaxBottom = $AxisPos["B"];
              $LastX  = NULL;
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
-               
                $XPos  = $this->GraphAreaX1 + $Parameters["Margin"] + $Step*$i;
                $YPos  = $AxisPos["B"];
                $Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"]*$i,$Parameters["Display"],$Parameters["Format"],$Parameters["Unit"]);
@@ -2725,19 +2484,13 @@
       }
     }
 
-   // Patch start
-   //function isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip)
-   function isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip,$LabelSkipOffset=0)
-   // Patch end
+   function isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip)
     {
      if ( $LabelingMethod == LABELING_DIFFERENT && $Value != $LastValue ) { return(TRUE); }
      if ( $LabelingMethod == LABELING_DIFFERENT && $Value == $LastValue ) { return(FALSE); }
-     // Patch start
-     //if ( $LabelingMethod == LABELING_ALL && $LabelSkip == 0 ) { return(TRUE); }
-     //if ( $LabelingMethod == LABELING_ALL && ($ID+$LabelSkip) % ($LabelSkip+1) != 1 ) { return(FALSE); }
      if ( $LabelingMethod == LABELING_ALL && $LabelSkip == 0 ) { return(TRUE); }
-     if ( $LabelingMethod == LABELING_ALL && ($ID+$LabelSkip+$LabelSkipOffset) % ($LabelSkip+1) != 1 ) { return(FALSE); }
-     // Patch end
+     if ( $LabelingMethod == LABELING_ALL && ($ID+$LabelSkip) % ($LabelSkip+1) != 1 ) { return(FALSE); }
+
      return(TRUE);
     }
 
@@ -3592,9 +3345,6 @@
      $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
      $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
      $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     // Patch start
-     $ScaleModeAuto	= isset($Format["ScaleModeAuto"]) ? $Format["ScaleModeAuto"] : FALSE;
-     // Patch end
      $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
@@ -3629,32 +3379,6 @@
 
          $this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
 
-         // Patch start
-         $Width = $this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2;
-         $Height = $this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2;
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][0]) ) {
-           $AbscissaScaleValueMin = $Data["Series"][$Data["Abscissa"]]["Data"][0];
-         } else {
-           $AbscissaScaleValueMin = 0;
-         }
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][$XDivs]) ) {
-           $AbscissaScaleValueMax = $Data["Series"][$Data["Abscissa"]]["Data"][$XDivs];
-         } else {
-           $AbscissaScaleValueMax = $Width;
-         }
-         $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-         if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT ) {
-           if ($AbscissaScaleValueWidth > 0)
-           	 $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Width;
-           else
-           	 $AbscissaScaleFactor = 1;
-         } else {
-           if ($AbscissaScaleValueWidth > 0)
-           	 $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Height;
-           else
-             $AbscissaScaleFactor = 1;
-         }
-         // Patch end
          if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT )
           {
            if ( $XDivs == 0 ) { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1)/4; } else { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2)/$XDivs; }
@@ -3664,12 +3388,6 @@
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
            foreach($PosArray as $Key => $Y)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-             	$AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-             	$X = $this->GraphAreaX1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             //Patch end
              if ( $DisplayValues ) 
               $this->drawText($X,$Y-$DisplayOffset-$SerieWeight-$BorderSize-$PicOffset,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
@@ -3682,12 +3400,7 @@
                else
                 { $this->drawShape($X,$Y,$Shape,$SerieWeight,$PlotBorder,$BorderSize,$R,$G,$B,$Alpha,$BorderR,$BorderG,$BorderB,$BorderAlpha); }
               }
-             // Patch start
-             //$X = $X + $XStep;
-             if (!$ScaleModeAuto)  {
-               $X = $X + $XStep;
-             }
-             // Patch end
+             $X = $X + $XStep;
             }
           }
          else
@@ -3699,12 +3412,6 @@
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
            foreach($PosArray as $Key => $X)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-             	 	$AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-             	 	$Y = $this->GraphAreaY1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $DisplayValues ) 
               $this->drawText($X+$DisplayOffset+$SerieWeight+$BorderSize+$PicOffset,$Y,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("Angle"=>270,"R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
@@ -3717,12 +3424,7 @@
                else
                 { $this->drawShape($X,$Y,$Shape,$SerieWeight,$PlotBorder,$BorderSize,$R,$G,$B,$Alpha,$BorderR,$BorderG,$BorderB,$BorderAlpha); }
               }
-             // Patch start
              $Y = $Y + $YStep;
-             if (!$ScaleModeAuto)  {
-             	 $Y = $Y + $YStep;
-             }
-             // Patch end
             }
           }
         }
@@ -4030,9 +3732,6 @@
      $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
      $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
      $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     // Patch start
-     $ScaleModeAuto	= isset($Format["ScaleModeAuto"]) ? $Format["ScaleModeAuto"] : FALSE;
-     // Patch end
      $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
      $ImageMapPlotSize  = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 5;
      $ForceColor	= isset($Format["ForceColor"]) ? $Format["ForceColor"] : FALSE;
@@ -4071,32 +3770,7 @@
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
 
          $this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
-         // Patch start
-         $Width = $this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2;
-		     $Height = $this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2;
-		     if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][0]) ) {
-  			   $AbscissaScaleValueMin = $Data["Series"][$Data["Abscissa"]]["Data"][0];
-  		   } else {
-    			 $AbscissaScaleValueMin = 0;
-    		 }
-    		 if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][$XDivs]) ) {
-      		 $AbscissaScaleValueMax = $Data["Series"][$Data["Abscissa"]]["Data"][$XDivs];
-      	 } else {
-        	 $AbscissaScaleValueMax = $Width;
-         }
-         $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-         if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT ) {
-           if ($AbscissaScaleValueWidth > 0)
-             $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Width;
-           else
-             $AbscissaScaleFactor = 1;
-         } else {
-           if ($AbscissaScaleValueWidth > 0)
-         		 $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Height;
-           else
-             $AbscissaScaleFactor = 1;
-         }
-         // Patch end
+
          if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT )
           {
            if ( $XDivs == 0 ) { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1)/4; } else { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2)/$XDivs; }
@@ -4106,12 +3780,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL;
            foreach($PosArray as $Key => $Y)
             {
-              // Patch start
-              if ($ScaleModeAuto) {
-                $AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-                $X = $this->GraphAreaX1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-              }
-              // Patch end
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
               {
                if ( $Serie["Data"][$Key] > 0 ) { $Align = TEXT_ALIGN_BOTTOMMIDDLE; $Offset = $DisplayOffset; } else { $Align = TEXT_ALIGN_TOPMIDDLE; $Offset = -$DisplayOffset; }
@@ -4130,12 +3798,7 @@
              if ( $Y == VOID ) { $Y = NULL; }
 
              $LastX = $X; $LastY = $Y;
-             // Patch start
-             //$X = $X + $XStep;
-             if (!$ScaleModeAuto)  {
-               $X = $X + $XStep;
-             }
-             // Patch end
+             $X = $X + $XStep;
             }
           }
          else
@@ -4147,12 +3810,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL;
            foreach($PosArray as $Key => $X)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-              $AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-             	$Y = $this->GraphAreaY1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
               { $this->drawText($X+$DisplayOffset+$Weight,$Y,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("Angle"=>270,"R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE)); }
 
@@ -4168,12 +3825,7 @@
              if ( $X == VOID ) { $X = NULL; }
 
              $LastX = $X; $LastY = $Y;
-             // Patch start
-             //$Y = $Y + $YStep;
-             if (!$ScaleModeAuto)  {
-               	$Y = $Y + $YStep;
-             }
-             // Patch end
+             $Y = $Y + $YStep;
             }
           }
         }
@@ -4284,9 +3936,6 @@
      $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
      $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
      $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     // Patch start
-     $ScaleModeAuto	= isset($Format["ScaleModeAuto"]) ? $Format["ScaleModeAuto"] : FALSE;
-     // Patch end
      $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
      $ImageMapPlotSize  = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 5;
 
@@ -4319,32 +3968,6 @@
 
          $this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
 
-         // Patch start
-         $Width = $this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2;
-         $Height = $this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2;
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][0]) ) {
-           $AbscissaScaleValueMin = $Data["Series"][$Data["Abscissa"]]["Data"][0];
-         } else {
-        	 $AbscissaScaleValueMin = 0;
-         }
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][$XDivs]) ) {
-        	 $AbscissaScaleValueMax = $Data["Series"][$Data["Abscissa"]]["Data"][$XDivs];
-         } else {
-           $AbscissaScaleValueMax = $Width;
-         }
-         $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-         if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT ) {
-           if ($AbscissaScaleValueWidth > 0)
-         		 $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Width;
-           else
-           	 $AbscissaScaleFactor = 1;
-         } else {
-           if ($AbscissaScaleValueWidth > 0)
-         		 $AbscissaScaleFactor = $AbscissaScaleValueWidth / $Height;
-           else
-           	 $AbscissaScaleFactor = 1;
-         }
-         // Patch end
          if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT )
           {
            if ( $XDivs == 0 ) { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1)/4; } else { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2)/$XDivs; }
@@ -4354,12 +3977,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL; $Init = FALSE;
            foreach($PosArray as $Key => $Y)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-               $AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-               $X = $this->GraphAreaX1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
               {
                if ( $Y <= $LastY ) { $Align = TEXT_ALIGN_BOTTOMMIDDLE; $Offset = $DisplayOffset; } else { $Align = TEXT_ALIGN_TOPMIDDLE; $Offset = -$DisplayOffset; }
@@ -4407,12 +4024,7 @@
              if ( !$Init && $ReCenter ) { $X = $X - $XStep/2; $Init = TRUE; }
              $LastX = $X; $LastY = $Y;
              if ( $LastX < $this->GraphAreaX1 + $XMargin ) { $LastX = $this->GraphAreaX1 + $XMargin; }
-             // Patch start
-             //$X = $X + $XStep;
-             if (!$ScaleModeAuto)  {
-               $X = $X + $XStep;
-             }
-             // Patch end
+             $X = $X + $XStep;
             }
            if ( $ReCenter )
             {
@@ -4429,12 +4041,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL; $Init = FALSE;
            foreach($PosArray as $Key => $X)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-              	$AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-               	$Y = $this->GraphAreaY1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
               {
                if ( $X >= $LastX ) { $Align = TEXT_ALIGN_MIDDLELEFT; $Offset = $DisplayOffset; } else { $Align = TEXT_ALIGN_MIDDLERIGHT; $Offset = -$DisplayOffset; }
@@ -4472,12 +4078,7 @@
              if ( !$Init && $ReCenter ) { $Y = $Y - $YStep/2; $Init = TRUE; }
              $LastX = $X; $LastY = $Y;
              if ( $LastY < $this->GraphAreaY1 + $XMargin ) { $LastY = $this->GraphAreaY1 + $XMargin; }
-             // Patch start
-             //$Y = $Y + $YStep;
-             if (!$ScaleModeAuto)  {
-             	$Y = $Y + $YStep;
-             }
-             // Patch end
+             $Y = $Y + $YStep;
             }
            if ( $ReCenter )
             {
@@ -4501,9 +4102,7 @@
      $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
      $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
      $AroundZero	= isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
-     // Patch start
-     $ScaleModeAuto	= isset($Format["ScaleModeAuto"]) ? $Format["ScaleModeAuto"] : FALSE;
-     // Patch end
+
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
      $Data = $this->DataSet->getData();
@@ -4528,32 +4127,7 @@
          $YZero    = $this->scaleComputeY(0,array("AxisID"=>$Serie["Axis"]));
 
          $this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
-         // Patch start
-         $Width = $this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2;
-         $Height = $this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2;
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][0]) ) {
-           $AbscissaScaleValueMin = $Data["Series"][$Data["Abscissa"]]["Data"][0];
-         } else {
-           $AbscissaScaleValueMin = 0;
-         }
-         if ( $ScaleModeAuto && isset($Data["Series"][$Data["Abscissa"]]["Data"][$XDivs]) ) {
-           $AbscissaScaleValueMax = $Data["Series"][$Data["Abscissa"]]["Data"][$XDivs];
-         } else {
-           $AbscissaScaleValueMax = $Width;
-         }
-         $AbscissaScaleValueWidth = $AbscissaScaleValueMax - $AbscissaScaleValueMin;
-         if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT ) {
-           if ($AbscissaScaleValueWidth > 0)
-            	$AbscissaScaleFactor = $AbscissaScaleValueWidth / $Width;
-           else
-             	$AbscissaScaleFactor = 1;
-         } else {
-           if ($AbscissaScaleValueWidth > 0)
-             	$AbscissaScaleFactor = $AbscissaScaleValueWidth / $Height;
-           else
-             	$AbscissaScaleFactor = 1;
-         }
-         // Patch enf
+
          if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT )
           {
            if ( $YZero > $this->GraphAreaY2-1 ) { $YZero = $this->GraphAreaY2-1; }
@@ -4568,12 +4142,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL; $Points = ""; $Init = FALSE;
            foreach($PosArray as $Key => $Y)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-             	 	$AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-              	$X = $this->GraphAreaX1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $Y == VOID && $LastX != NULL && $LastY != NULL && $Points !="" )
               {
                $Points[] = $LastX; $Points[] = $LastY;
@@ -4597,13 +4165,7 @@
              if ( !$Init && $ReCenter ) { $X = $X - $XStep/2; $Init = TRUE; }
              $LastX = $X; $LastY = $Y;
              if ( $LastX < $this->GraphAreaX1 + $XMargin ) { $LastX = $this->GraphAreaX1 + $XMargin; }
-             // Patch start
-             //$X = $X + $XStep;
-             if (!$ScaleModeAuto)  {
-             	$X = $X + $XStep;
-             }
-             // Patch end
-             
+             $X = $X + $XStep;
             }
 
            if ( $ReCenter )
@@ -4628,12 +4190,6 @@
            $LastGoodY = NULL; $LastGoodX = NULL; $Points = "";
            foreach($PosArray as $Key => $X)
             {
-             // Patch start
-             if ($ScaleModeAuto) {
-             	$AbscissaScaleValue = $Data["Series"][$Data["Abscissa"]]["Data"][$Key] - $AbscissaScaleValueMin;
-             	$Y = $this->GraphAreaY1 + $XMargin + $AbscissaScaleValue / $AbscissaScaleFactor;
-             }
-             // Patch end
              if ( $X == VOID && $LastX != NULL && $LastY != NULL && $Points !="" )
               {
                $Points[] = $LastX; $Points[] = $LastY;
@@ -4657,12 +4213,7 @@
              if ( $LastX == NULL && $ReCenter ) { $Y = $Y - $YStep/2; }
              $LastX = $X; $LastY = $Y;
              if ( $LastY < $this->GraphAreaY1 + $XMargin ) { $LastY = $this->GraphAreaY1 + $XMargin; }
-             // Patch start
-             //$Y = $Y + $YStep;
-             if (!$ScaleModeAuto)  {
-             	$Y = $Y + $YStep;
-             }
-             // Patch end
+             $Y = $Y + $YStep;
             }
 
            if ( $ReCenter )

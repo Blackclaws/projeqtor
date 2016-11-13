@@ -70,13 +70,13 @@ scriptLog('   ->/view/reportsList.php');
   <table>
     <tr>
       <td width="5px" height="35px">&nbsp;</td>
-      <td class="tabLabel" >
-        <?php echo i18n('colParameters');?>
+      <td class="tabLabel">
+        <div style="position:relative;left:100px"><?php echo i18n('colParameters');?></div>
       </td>
     </tr>
     <tr>
       <td valign="top" style="width:40%" >
-        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:200px;">
+        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:170px;">
            <?php include "reportListMenu.php";?>
         </div>
       </td>

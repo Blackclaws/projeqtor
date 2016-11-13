@@ -2230,6 +2230,9 @@ abstract class SqlElement {
 			$query = "select id from " . $obj->getDatabaseTableName()
 			. ' where refId =' . $curId.
        " and refType ='" . get_class($this) . "'" ;      
+			foreach ($obj->getDatabaseCriteria() as $critFld=>$critVal) {
+			  $query .= ' and ' . $critFld . ' = ' . Sql::str($critVal);
+			}
 			$result = Sql::query($query);
 			// if no element in database, will return empty object
 			//
