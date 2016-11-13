@@ -1,8 +1,7 @@
-<?php 
+<?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
- * Contributors : -
+ * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  *
  * This file is part of ProjeQtOr.
  * 
@@ -25,17 +24,27 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Presents an object. 
- */
-  require_once "../tool/projeqtor.php";
-  scriptLog('   ->/view/reportsMain.php');  
+ * Budget Element is an object included in all objects that can be budgeted.
+ */ 
+require_once('_securityCheck.php');
+class BudgetElement extends BudgetElementMain {
+
+  /** ==========================================================================
+   * Constructor
+   * @param $id the id of the object in the database (null if not stored yet)
+   * @return void
+   */ 
+  function __construct($id = NULL, $withoutDependentObjects=false) {
+    parent::__construct($id,$withoutDependentObjects);
+  }
+  
+  /** ==========================================================================
+   * Destructor
+   * @return void
+   */ 
+  function __destruct() {
+    parent::__destruct();
+  }
+ 
+}
 ?>
-<input type="hidden" name="objectClassManual" id="objectClassManual" value="Report" />
-<div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="listReportDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:245px;">
-   <?php include 'reportsList.php'?>
-  </div>
-  <div id="detailReportDiv" dojoType="dijit.layout.ContentPane" region="center">
-   <?php $noselect=true; //include 'objectDetail.php'; ?>
-  </div>
-</div>  

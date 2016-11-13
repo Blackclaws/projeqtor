@@ -3629,6 +3629,8 @@ function reportSelectCategory(idCateg) {
 
 function reportSelectReport(idReport) {
   if (isNaN(idReport)) return;
+  dojo.query(".section").removeClass("reportSelected");
+  dojo.addClass(dojo.byId('report'+idReport),"reportSelected");
   loadContent("../view/reportsParameters.php?idReport=" + idReport,
       "reportParametersDiv", null, false);
 }

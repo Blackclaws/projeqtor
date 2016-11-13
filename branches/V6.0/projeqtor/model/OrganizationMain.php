@@ -42,8 +42,8 @@ class OrganizationMain extends SqlElement {
   public $lastUpdateDateTime;
   public $idle;
   public $description;
-  public $_sec_Progress;
-  public $OrganizationPlanningElement; // is an object
+  public $_sec_currentProjects;
+  public $BudgetElementCurrent; // is an object
 
   public $_sec_Link;
   public $_Link=array();
@@ -51,7 +51,6 @@ class OrganizationMain extends SqlElement {
   public $_Note=array();
 
   // hidden
-  public $sortOrder;
   public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
@@ -66,24 +65,13 @@ class OrganizationMain extends SqlElement {
 //  <th field="nameRecipient" width="10%" >${idRecipient}</th>
   
 
-  private static $_fieldsAttributes=array("name"=>"required",                                   
-                                  "sortOrder"=>"hidden",
-                                  "idOrganizationType"=>"required",
-                                  "longitude"=>"hidden", "latitude"=>"hidden",
-                                  "idStatus"=>"required",
-                                  "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+  private static $_fieldsAttributes=array(
+      "name"=>"required",                                   
+      "idOrganizationType"=>"required"
   );   
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
-   'idProject'=> 'isSubProject',
-   'idProjectType'=>'type',
-   'idContact'=>'billContact',
    'idUser'=>'issuer');
-
-  private static $_subProjectList=array();
-  private static $_subProjectFlatList=array();
-  private static $_drawSubProjectsDone=array();
   
    /** ==========================================================================
    * Constructor
@@ -174,146 +162,16 @@ class OrganizationMain extends SqlElement {
    */
   public function save() {	
     $old=$this->getOld();
-    $this->recalculateCheckboxes();
-    if (!$this->id) {
-      //$this->isUnderConstruction=1; // Will post this later...
-    }
-    if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) {
-      $this->isUnderConstruction=0;
-    }
-    //$old=$this->getOld();
-    //$oldtype=new ProjectType($old->idProjectType);
-    $type=new ProjectType($this->idProjectType);
-    
-    $noMoreAdministrative=false;
-    if ($this->codeType=='ADM' and $type->code!='ADM') {
-    	$noMoreAdministrative=true;
-    }
-    $this->codeType=$type->code;
-    
-    $this->ProjectPlanningElement->refName=$this->name;
-    $this->ProjectPlanningElement->idProject=$this->id;
-    $this->ProjectPlanningElement->idle=$this->idle;
-    $this->ProjectPlanningElement->done=$this->done;
-    $this->ProjectPlanningElement->cancelled=$this->cancelled;
-    if ($this->idProject and trim($this->idProject)!='') {
-      $this->ProjectPlanningElement->topRefType='Project';
-      $this->ProjectPlanningElement->topRefId=$this->idProject;
-      $this->ProjectPlanningElement->topId=null;
-    } else {
-      $this->ProjectPlanningElement->topId=null;
-      $this->ProjectPlanningElement->topRefType=null;
-      $this->ProjectPlanningElement->topRefId=null;
-    }
-    if (trim($this->idProject)!=trim($old->idProject)) {    	
-      $this->ProjectPlanningElement->wbs=null;
-      $this->ProjectPlanningElement->wbsSortable=null;
-      $this->sortOrder=null;
-    }
-    // Initialize user->_visibleProjects, to force recalculate
     $result = parent::save();
-    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
-      return $result;     
-    } 
-    if (! $old->id or $this->idle!=$old->idle or $this->idProject!=$old->idProject) {
-    	if ($old->idProject) {
-        User::resetAllVisibleProjects($this->id, null);
-    	} else {
-    		User::resetAllVisibleProjects(null, null);
-    	}
-    	
-    }
-    if ($this->idle) {
-      $crit=array('idProject'=>$this->id, 'idle'=>'0');
-      $vp=new VersionProject();
-      $vpLst=$vp->getSqlElementsFromCriteria($crit, false);
-      foreach ($vpLst as $vp) {
-        $vp->idle=$this->idle;
-        $vp->save();
-      }
-    }
-    // Create affectation for Manager.
-    if ($this->idUser) {
-      if (securityGetAccessRight('menuProject', 'update', null)!="ALL"){
-        $id=($this->id)?$this->id:Sql::$lastQueryNewid;
-        $crit=array('idProject'=>$id, 'idResource'=>$this->idUser);
-        $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
-        if ( ! $aff or ! $aff->id) {
-        	$aff=new Affectation();
-        	$aff->_automaticCreation=true;
-        	$aff->idResource=$this->idUser;
-        	$aff->idProject=$id;
-        	$aff->idProfile=getSessionUser()->idProfile;
-        	if (securityGetAccessRightYesNo('menuProject', 'update', null, getSessionUser()) != "YES") {
-        	  $crit=array('idProject'=>$this->idProject, 'idResource'=>$this->idUser);
-        	  $affTop=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
-        	  $aff->idProfile=$affTop->idProfile;
-        	}
-        	$resAff=$aff->save();
-        } else if (! $this->idle and $aff->idle) {
-          $aff->_automaticCreation=true;
-        	$aff->idle=0;
-        	$resAff=$aff->save();
-        }
-      }
-    }
-
-    if ($this->idle) {
-      Affectation::updateIdle($this->id, null);
-    }
-    if ($noMoreAdministrative) {
-    	 $ass=new Assignment();
-    	 $lstAss=$ass->getSqlElementsFromCriteria(array('idProject'=>$this->id));
-    	 foreach ($lstAss as $ass) {
-    	 	 if ($ass->realWork==0 and $ass->leftWork==0) {
-    	 	 	 $ass->delete();
-    	 	 }
-    	 }
-    }
-    //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 
 
   }
   public function delete() {
-    User::resetAllVisibleProjects($this->id,null);
   	$result = parent::delete();
     return $result;
   }
   
-  // Ticket #1175
-  public function updateValidatedWork() {
-  	if (! $this->id) return;
-	  $lst=null;
-  	$sumValidatedWork=0;
-  	$sumValidatedCost=0;
-  	$order=new Command();
-  	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id, 'cancelled'=>'0'));
-  	foreach ($lst as $item) { 		
-  		$sumValidatedWork+=$item->validatedWork;
-  		$sumValidatedCost+=$item->totalUntaxedAmount;
-  	}
-  	
-  	$lst=null;
-  	$prj=new Project();
-  	$queryWhere='refType=\'Project\' and refId in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and cancelled=0)';
-  	
-  	$prj=new ProjectPlanningElement();
-  	$lst=$prj->getSqlElementsFromCriteria(array(), false, $queryWhere);
-  	foreach ($lst as $item) {
-  		$sumValidatedWork+=$item->validatedWork;
-  		$sumValidatedCost+=$item->validatedCost;
-  	}
 
-  	$this->ProjectPlanningElement->validatedWork=$sumValidatedWork;
-  	$this->ProjectPlanningElement->validatedCost=$sumValidatedCost;
-  	$this->save();
-  	
-  	if (trim($this->idProject)!='') {
-  		$prj=new Project($this->idProject);
-  		$prj->updateValidatedWork();
-  	}
-  }
-  // Ticket END
   
 /** =========================================================================
    * control data corresponding to Model constraints
@@ -323,22 +181,9 @@ class OrganizationMain extends SqlElement {
    */
   public function control(){
     $result="";
-    if ($this->id and $this->id==$this->idProject) {
-      $result.='<br/>' . i18n('errorHierarchicLoop');
-    } else if ($this->ProjectPlanningElement and $this->ProjectPlanningElement->id){
-      $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'Project','refId'=>$this->idProject));
-      $parentList=$parent->getParentItemsArray();
-      if (array_key_exists('#' . $this->ProjectPlanningElement->id,$parentList)) {
-        $result.='<br/>' . i18n('errorHierarchicLoop');
-      }
-    }
-    
-    if ($this->longitude!=null and $this->latitude!=null) {
-      if ($this->longitude > 180 || $this->longitude < -180 || $this->latitude < -90 || $this->latitude > 90) {
-        $result = i18n('invalidGpsData');
-      }
-    }
-    
+    //if ($this->id and $this->id==$this->idProject) {
+    //  $result.='<br/>' . i18n('errorHierarchicLoop');
+    //} 
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -348,74 +193,6 @@ class OrganizationMain extends SqlElement {
     }
     return $result;
   }
-  
-  public static function getAdminitrativeProjectList($returnResultAsArray=false) {
-  	$arrayProj=array();
-  	$arrayProj[]=0;
-  	$type=new ProjectType();
-  	$critType=array('code'=>'ADM');
-  	$listType=$type->getSqlElementsFromCriteria($critType, false);
-  	foreach ($listType as $type) {
-  	  $proj=new Project(); 
-  		$critProj=array('idProjectType'=>$type->id);
-      $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
-      foreach ($listProj as $proj) {
-      	$arrayProj[$proj->id]=$proj->id;
-      }
-  	}
-  	if ($returnResultAsArray) return $arrayProj;
-  	return '(' . implode(', ',$arrayProj) . ')';
-  }
-
-  public static function getFixedProjectList($returnResultAsArray=false) {
-    $arrayProj=array();
-    $arrayProj[]=0;
-    $proj=new Project(); 
-    $critProj=array('fixPlanning'=>'1', 'idle'=>'0');
-    $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
-    foreach ($listProj as $proj) {
-      $arrayProj[]=$proj->id;
-      $sublist=$proj->getRecursiveSubProjectsFlatList(true);
-      if ($sublist and count($sublist)>0) {
-        foreach($sublist as $subId=>$subName) {
-          $arrayProj[]=$subId;
-        }
-      }
-    }
-    if ($returnResultAsArray) return $arrayProj;
-    return '(' . implode(', ',$arrayProj) . ')';
-  }
-  
-  public function getColor() {
-    $color=null;
-    if ($this->color) {
-      $color=$this->color;
-    } else if ($this->idProject) {
-      $top=new Project($this->idProject);
-      $color=$top->getColor();
-    }
-    return $color;
-  }
-  
-  public static function getTemplateList() {
-    $result=array();
-    $types=SqlList::getListWithCrit('ProjectType',array('code'=>'TMP'));
-    foreach($types as $typId=>$typName) {
-      $projects=SqlList::getListWithCrit('Project', array('idProjectType'=>$typId));
-      $result=array_merge_preserve_keys($result,$projects);
-    }
-    return $result;
-  }
-  public static function getTemplateInClauseList() {
-    $list=self::getTemplateList();
-    $in='(0';
-    foreach ($list as $id=>$name) {
-      $in.=','.$id;
-    }
-    $in.=')';
-    return $in;
-  }
-
   
 }
 ?>
