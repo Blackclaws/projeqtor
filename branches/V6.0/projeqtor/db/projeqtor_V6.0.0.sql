@@ -260,11 +260,10 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (62, 'idProject', 'projectList', 10, 'currentProject'),
 (62, 'format', 'periodScale', 20, 'day'),
-(62, 'startDate', 'date', 30, null),
-(62, 'endDate', 'date', 40, null),
-(62, 'idMilestoneType', 'milestoneList', 50, null),
-(62, 'showBurndownToday', 'boolean', 60, '1'),
-(62, 'showBurndownLegendOnTop', 'boolean', 70, '0');
+(62, 'idMilestoneType', 'milestoneList', 30, null),
+(62, 'startDate', 'date', 40, null),
+(62, 'endDate', 'date', 45, null),
+(62, 'showBurndownToday', 'boolean', 60, '1');
 
 UPDATE `${prefix}menu` SET idMenu=11,  sortOrder=435  WHERE ID=122; 
 UPDATE `${prefix}menu` SET idMenu=0,   sortOrder=1100 WHERE ID=37;
@@ -276,3 +275,45 @@ UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1150 WHERE ID=48;
 UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1160 WHERE ID=135;
 UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1170 WHERE ID=71;
 UPDATE `${prefix}menu` SET idMenu=0,  sortOrder=1200 WHERE ID=92;
+
+CREATE TABLE `${prefix}budgetelement` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `year` int(4) unsigned DEFAULT NULL,
+  `refType` varchar(100) NOT NULL,
+  `refId` int(12) unsigned NOT NULL,
+  `refName` varchar(100) DEFAULT NULL,
+  `budgetWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `validatedWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `assignedWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `realWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `leftWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `plannedWork` decimal(14,5) unsigned DEFAULT '0.00000',
+  `topId` int(12) unsigned DEFAULT NULL,
+  `topRefType` varchar(100) DEFAULT NULL,
+  `topRefId` int(12) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT NULL,
+  `elementary` int(1) unsigned DEFAULT NULL,
+  `budgetCost` decimal(11,2) DEFAULT NULL,
+  `validatedCost` decimal(11,2) DEFAULT NULL,
+  `assignedCost` decimal(11,2) DEFAULT NULL,
+  `realCost` decimal(11,2) DEFAULT NULL,
+  `leftCost` decimal(11,2) DEFAULT NULL,
+  `plannedCost` decimal(11,2) DEFAULT NULL,
+  `progress` int(3) unsigned DEFAULT '0',
+  `expenseBudgetAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `expenseAssignedAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `expensePlannedAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `expenseRealAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `expenseLeftAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `expenseValidatedAmount` decimal(11,2) unsigned DEFAULT NULL,
+  `totalBudgetCost` decimal(11,2) unsigned DEFAULT NULL,
+  `totalAssignedCost` decimal(11,2) unsigned DEFAULT NULL,
+  `totalPlannedCost` decimal(11,2) unsigned DEFAULT NULL,
+  `totalRealCost` decimal(11,2) unsigned DEFAULT NULL,
+  `totalLeftCost` decimal(11,2) unsigned DEFAULT NULL,
+  `totalValidatedCost` decimal(11,2) unsigned DEFAULT NULL,
+  `reserveAmount` decimal(11,2) unsigned DEFAULT '0.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE INDEX budgetelementRef ON `${prefix}budgetelement` (`refType`,`refId`);

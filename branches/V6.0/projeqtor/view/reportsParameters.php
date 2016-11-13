@@ -598,12 +598,8 @@ foreach ($listParam as $param) {
 }
 ?>
   <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
     <td></td>
-    <td><span class="nobr">
+    <td><div style="position:absolute;top:5px" class="nobr">
       <button title="<?php echo i18n('reportShow')?>"   
          dojoType="dijit.form.Button" type="submit" 
          id="reportSubmit" name="reportSubmit" 
@@ -657,10 +653,7 @@ foreach ($listParam as $param) {
         <input type="hidden" id="report" name="report" value=true />
         <input type="hidden" id="outMode" name="outMode" value='' />
         <input type="hidden" id="reportName" name="reportName" value="<?php echo i18n($report->name);?>" />
-      </span></td>
-  </tr>
-  <tr><td colspan="2">
-    </td>
+      </dib></td>
   </tr>
 </table>
 </td><td>&nbsp;

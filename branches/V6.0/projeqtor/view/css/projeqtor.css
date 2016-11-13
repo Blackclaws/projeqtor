@@ -3267,41 +3267,82 @@ p {
 
 .bmenu{
     padding: 0px;
-    margin: 0 0 10px 0;
     position: relative;
-
+    margin-left:20px;
+    margin-right:20px;
+    margin-top:0px;
+    width:100%;
 }
 
 .bmenu li{
-    font-size: 10px;
+	  display:table-cell;
+	  cursor:pointer;
+	  color: #505050 !important;
     display: block;
-    width:500px;
-
+    width:250px;
+    float:left;
 	  text-transform: uppercase;
 	  text-shadow: 1px 1px 2px rgba(89,22,20,0.3);
-	  color: #FFFFFF;
-	  padding: 5px 20px;
+	  text-align:center;
 	  margin: 2px;
+	  height:30px;
+	  padding:0px;
 	  background: rgba(255,255,255,0.2);
-	  letter-spacing: 1px;
-	  -webkit-transform: skew(-12deg);
-	  -moz-transform: skew(-12deg);
-	  -o-transform: skew(-12deg);
-	  -ms-transform: skew(-12deg);
-	  transform: skew(-12deg);
-	  -webkit-transition: all 0.4s ease-in-out;
-	  -moz-transition: all 0.4s ease-in-out;
-	  -o-transition: all 0.4s ease-in-out;
-	  -ms-transition: all 0.4s ease-in-out;
-	  transition: all 0.4s ease-in-out;
+	  -webkit-transition: all 0.3s ease-in-out;
+	  -moz-transition: all 0.3s ease-in-out;
+	  -o-transition: all 0.3s ease-in-out;
+	  -ms-transition: all 0.3s ease-in-out;
+	  transition: all 0.3s ease-in-out;
+}
+.bmenuText {
+	font-size: 11px;
+	display:table-cell;
+	width:250px;
+	height: 30px;
+	vertical-align: middle;
+	font-weight:normal;
+	text-transform: none;
+	letter-spacing:0px;
+	padding:0px;
+}
+.bmenuCategText {
+	padding: 0px 10px;
+  display:table-cell;
+  width:250px;
+  height: 28px;
+  vertical-align: middle;
+  letter-spacing: 1px;
+  font-weight:borld;  
+}
+
+.bmenu li:hover{
+  background-color: #e97b2c  !important;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.bmenu li .reportSelected, .reportSelected {
+	font-size:105%;
+	font-weight:bold;
+	background-color: #e97b2c  !important;
+}
+.reportSelected .bmenuText{
+  font-size:105%;
+  font-weight:bold;
+  background-color: #e97b2c  !important;
 }
 
 .headerReport{
   color:black;
-  font-size: 26px; 
-  margin-left: 207px;
+  font-size: 22px; 
   font-family: Verdana,"Arial Black", Arial, sans-serif;
   font-weight: bold;
   border:0px;
+  position:absolute;
+  top:3px;
+  text-align:center;
+  background:transparent;
+  left:40px;
+  width:470px;
 }
 
