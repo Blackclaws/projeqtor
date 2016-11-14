@@ -209,6 +209,6 @@ class BudgetElementMain extends SqlElement {
   public function getFieldAttributes($fieldName) {
     return parent::getFieldAttributes($fieldName);
   }  
-  
+
 }
 ?>

@@ -194,6 +194,7 @@ CREATE TABLE `${prefix}organization` (
   `idResource` int(12) unsigned DEFAULT NULL,
   `sortOrder` varchar(400) DEFAULT NULL,
   `idOrganizationType` int(12) unsigned DEFAULT NULL,
+  `idOrganization` int(12) unsigned DEFAULT NULL,
   `creationDate` datetime DEFAULT NULL,
   `lastUpdateDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -317,3 +318,15 @@ CREATE TABLE `${prefix}budgetelement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX budgetelementRef ON `${prefix}budgetelement` (`refType`,`refId`);
+
+ALTER TABLE `${prefix}project` ADD `idOrganization` int(12) UNSIGNED DEFAULT NULL,
+ADD `organizationInherited` int(1) unsigned DEFAULT NULL,
+ADD `organizationElementary` int(1) unsigned DEFAULT NULL;
+
+CREATE INDEX projectOrganization ON `${prefix}project` (`idOrganization`);
+
+ALTER TABLE `${prefix}planningelement` ADD `idOrganization` int(12) UNSIGNED DEFAULT NULL,
+ADD `organizationInherited` int(1) unsigned DEFAULT NULL,
+ADD `organizationElementary` int(1) unsigned DEFAULT NULL;
+
+CREATE INDEX planningelementOrganization ON `${prefix}planningelement` (`idOrganization`);

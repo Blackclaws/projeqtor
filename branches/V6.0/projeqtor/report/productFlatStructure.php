@@ -42,17 +42,10 @@ if (array_key_exists('objectId', $_REQUEST)){
 Security::checkValidId($objectId);
 if (!$objectClass or !$objectId) return;
 if ($objectClass!='Product' and $objectClass!='Component') return;
-$showVersionsForAll=false;
-if (array_key_exists('showVersionsForAll', $_REQUEST)){
-  if ($_REQUEST['showVersionsForAll']!='0') {
-    $showVersionsForAll=true;
-  }
-}
-$showProjectsLinked=true;
-if (array_key_exists('showProjectsLinked', $_REQUEST)){
-  if ($_REQUEST['showProjectsLinked']=='0') {
-    $showProjectsLinked=false;
-  }
+
+$format="print";
+if (array_key_exists('format', $_REQUEST)){
+  $format=trim($_REQUEST['format']);
 }
 
 $item=new $objectClass($objectId);
@@ -64,52 +57,58 @@ if ($objectClass=='Product') {
   $subProducts=$item->getRecursiveSubProducts();
   $parentProducts=$item->getParentProducts();
 }
-$level=0;
-foreach ($parentProducts as $parentId=>$parentName) {
-  $level++;
-  showProduct('Product',$parentId,$parentName,$level,'top');
-}
-$level++;
-showProduct($objectClass,$item->id,$item->name,$level,'current');
-showSubItems('Product',$subProducts,$level+1);
+$result=array();
+//showProduct($objectClass,$item->id,$item->name,$level,'current');
+$result=getSubItems('Product',$subProducts,$result);
+debugLog($result);
 
-function showSubItems($class,$subItems,$level){
-  if (!$subItems) return;
-  foreach ($subItems as $item) {
-    showProduct($class,$item['id'],$item['name'],$level,'sub');
-    if (isset($item['subItems']) and is_array($item['subItems'])) {
-      showSubItems('Product',$item['subItems'],$level+1);
-    }
+if ($format=='print') {
+  echo "<table style='width:100%'>";
+  echo "<tr><td style='width:50%;vertical-align:top;padding:5px;'>";
+  // Items
+  echo "<table style='width:100%;'>";
+  echo "<tr><th style='padding:5px;text-align:center;'>".i18n('sectionComposition',array(i18n($objectClass),intval($objectId))).'</th></tr>';
+  foreach ($result as $item) {
+    echo "<tr><td>";
+    showProduct($item['class'], $item['id'], $item['name']);
+    echo "</td></tr>";
   }
-}
-
-function showProduct($class,$id,$name,$level,$position) {
-  global $showVersionsForAll, $showProjectsLinked;
-  $padding=30;
-  $name="#$id - $name";
-  $style="";
-  $current=($position=='current');
-  $item=new $class($id);
-  if ($current) $style.='border:2px solid #000;border-radius:5px;';
-  echo '<div style="padding-bottom:5px;padding-left:'.($level*$padding).'px;">'
-      .'<table style="border:1px dotted #ddd;width:100%"><tr><td style="vertical-align:top;width:10px;white-space:nowrap">'
-      .'<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;"><img src="../view/css/images/icon'.$class.'16.png" /></td>'
-      .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>'
-      .'</td>';
-  if ($showVersionsForAll or $current) {
-    echo '<td style="padding-top:5px;">';
-    echo $item->drawSpecificItem('versions'.(($showProjectsLinked)?'WithProjects':''));
-    echo "</td>";
+  echo "</table>";
+  echo "</td><td style='width:50%;vertical-align:top;padding:5px;'>";
+  // Parents  
+  echo "<table style='width:100%;'>";
+  echo "<tr><th style='padding:5px;text-align:center;'>".i18n('parentProductList').'</th></tr>';
+  foreach ($parentProducts as $prdId=>$prdName) {
+    echo "<tr><td>";
+    showProduct('Product', $prdId, $prdName);
+    echo "</td></tr>";
   }
-  echo'</tr>';
-  echo'</table></div>';
-  if ($position!='top') {
-    $compList=$item->getComposition(true,false);
-    foreach ($compList as $compId=>$compName) {
-      //echo '<tr><td></td><td>';
-      showProduct('Component',$compId,$compName,$level+1,'sub');
-      //echo '</td></tr>';
-    }
-  }
+  echo "</table>";
+  echo "</td></tr>";
+  echo "</table>";
+} else if ($format=='csv') {
   
+} else {
+  debugLog("productFlatStructure : incorrect format '$format'");
+  exit;
+}
+
+function getSubItems($class,$subItems,$result){
+  if (!$subItems) return $result;
+  foreach ($subItems as $item) {
+    $result[$item['id']]=array('class'=>'Product','id'=>$item['id'],'name'=>$item['name']);
+    //showProduct($class,$item['id'],$item['name'],$level,'sub');
+    if (isset($item['subItems']) and is_array($item['subItems'])) {
+      $result=getSubItems('Product',$item['subItems'],$result);
+    }
+  }
+  return $result;
+}
+
+function showProduct($class,$id,$name) {
+  $name="#$id - $name";
+  $style="width:100%";
+  $item=new $class($id);
+  echo '<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:20px;"><img src="../view/css/images/icon'.$class.'16.png" /></td>'
+      .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>';
 }
