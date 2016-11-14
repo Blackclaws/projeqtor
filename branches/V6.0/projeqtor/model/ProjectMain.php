@@ -37,6 +37,9 @@ class ProjectMain extends SqlElement {
   public $_spe_rf; 
   public $name;
   public $idProjectType;
+  public $idOrganization;
+  public $organizationInherited;
+  public $organizationElementary;
   public $codeType;
   public $idClient;
   public $idContact;
@@ -129,7 +132,9 @@ class ProjectMain extends SqlElement {
                                   "longitude"=>"hidden", "latitude"=>"hidden",
                                   "idStatus"=>"required",
                                   "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "organizationInherited"=>"hidden",
+                                  "organizationElementary"=>"hidden"
   );   
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
@@ -272,7 +277,7 @@ class ProjectMain extends SqlElement {
    * Retrieves the hierarchic sub-projects of the current project
    * @return an array of Projects as sub-projects
    */
-  public function getSubProjects($limitToActiveProjects=false) {
+  public function getSubProjects($limitToActiveProjects=false, $withoutDependantElement=false) {
 //scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");  	
     if ($this->id==null or $this->id=='') {
       return array();
@@ -292,7 +297,7 @@ class ProjectMain extends SqlElement {
     //uasort($subProjects,'wbsProjectSort');
     $subProjects=array();
     foreach($sorted as $projId=>$projName) {
-      $subProjects[$projId]=new Project($projId);
+      $subProjects[$projId]=new Project($projId, $withoutDependantElement);
     }
     return $subProjects;
   }
@@ -528,7 +533,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     		}
     	}
     } else {
-  	  $subList=$this->getSubProjectsList($limitToActiveProjects);
+  	  $subList=$this->getSubProjectsList($limitToActiveProjects,true);
     }
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
@@ -634,19 +639,44 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $this->ProjectPlanningElement->wbsSortable=null;
       $this->sortOrder=null;
     }
-    // Initialize user->_visibleProjects, to force recalculate
+    
+    // Organization
+    $subProj=$this->getSubProjects(false,false);
+    $this->organizationElementary=(count($subProj)==0)?0:1;
+    $this->ProjectPlanningElement->idOrganization=$this->idOrganization;
+    $this->ProjectPlanningElement->organizationInherited=$this->organizationInherited;
+    $this->ProjectPlanningElement->organizationElementary=$this->organizationElementary;
+    
+    // SAVE
     $result = parent::save();
+    
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     } 
+    
     if (! $old->id or $this->idle!=$old->idle or $this->idProject!=$old->idProject) {
     	if ($old->idProject) {
         User::resetAllVisibleProjects($this->id, null);
     	} else {
     		User::resetAllVisibleProjects(null, null);
     	}
-    	
     }
+    
+    // Dispatch Organization 
+    foreach ($subProj as $sp) {
+      debugLog($sp->name);
+      if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
+        debugLog("inherit");
+        $sp->idOrganization=$this->idOrganization;
+        $sp->organizationInherited=1;
+        $resSp=$sp->save();
+        debugLog($resSp);
+      } else if ($sp->organizationInherited) {
+        $sp->organizationInherited=0;
+        $sp->save();
+      }
+    }
+    
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
       $vp=new VersionProject();
