@@ -194,5 +194,90 @@ class OrganizationMain extends SqlElement {
     return $result;
   }
   
+  public function updateSynthesis() {
+    // Update current budgetElement
+    $bec=$this->BudgetElementCurrent;
+    $pe=new ProjectPlanningElement();
+    
+    $bec->validatedWork=0;
+    $bec->assignedWork=0;
+    $bec->realWork=0;
+    $bec->leftWork=0;
+    $bec->plannedWork=0;
+    $bec->validatedCost=0;
+    $bec->assignedCost=0;
+    $bec->realCost=0;
+    $bec->leftCost=0;
+    $bec->plannedCost=0;
+    $bec->expenseValidatedAmount=0;
+    $bec->expenseAssignedAmount=0;
+    $bec->expenseRealAmount=0;
+    $bec->expenseLeftAmount=0;
+    $bec->expensePlannedAmount=0;
+    $bec->reserveAmount=0;
+    $bec->totalValidatedCost=0;
+    $bec->totalAssignedCost=0;
+    $bec->totalRealCost=0;
+    $bec->totalLeftCost=0;
+    $bec->totalPlannedCost=0;
+    
+    // Add all Projects
+    $crit=array('idOrganization'=>$this->id, 'idle'=>'0');
+    $peList=$pe->getSqlElementsFromCriteria($crit);
+    foreach ($peList as $pe) {
+      $bec->validatedWork+=$pe->validatedWork;
+      $bec->assignedWork+=$pe->assignedWork;
+      $bec->realWork+=$pe->realWork;
+      $bec->leftWork+=$pe->leftWork;
+      $bec->plannedWork+=$pe->plannedWork;
+      $bec->validatedCost+=$pe->validatedCost;
+      $bec->assignedCost+=$pe->assignedCost;
+      $bec->realCost+=$pe->realCost;
+      $bec->leftCost+=$pe->leftCost;
+      $bec->plannedCost+=$pe->plannedCost;
+      $bec->expenseValidatedAmount+=$pe->expenseValidatedAmount;
+      $bec->expenseAssignedAmount+=$pe->expenseAssignedAmount;
+      $bec->expenseRealAmount+=$pe->expenseRealAmount;
+      $bec->expenseLeftAmount+=$pe->expenseLeftAmount;
+      $bec->expensePlannedAmount+=$pe->expensePlannedAmount;
+      $bec->reserveAmount+=$pe->reserveAmount;
+      $bec->totalValidatedCost+=$pe->totalValidatedCost;
+      $bec->totalAssignedCost+=$pe->totalAssignedCost;
+      $bec->totalRealCost+=$pe->totalRealCost;
+      $bec->totalLeftCost+=$pe->totalLeftCost;
+      $bec->totalPlannedCost+=$pe->totalPlannedCost;
+      $crit=array('topId'=>$pe->id,'refType'=>'Project');
+      // Remove sub-projects : will remove sub-projects of same Organization (already included) and of different Organization (must not be included)
+      // This way, for projects with sub-projects we count only work on main project, sub-projects are added separately
+      // It is importatn to di this way to remove sub-projects of different Organization 
+      $subList=$pe->getSqlElementsFromCriteria($crit);
+      foreach ($subList as $sub) {
+        $bec->validatedWork-=$sub->validatedWork;
+        $bec->assignedWork-=$sub->assignedWork;
+        $bec->realWork-=$sub->realWork;
+        $bec->leftWork-=$sub->leftWork;
+        $bec->plannedWork-=$sub->plannedWork;
+        $bec->validatedCost-=$sub->validatedCost;
+        $bec->assignedCost-=$sub->assignedCost;
+        $bec->realCost-=$sub->realCost;
+        $bec->leftCost-=$sub->leftCost;
+        $bec->plannedCost-=$sub->plannedCost;
+        $bec->expenseValidatedAmount-=$sub->expenseValidatedAmount;
+        $bec->expenseAssignedAmount-=$sub->expenseAssignedAmount;
+        $bec->expenseRealAmount-=$sub->expenseRealAmount;
+        $bec->expenseLeftAmount-=$sub->expenseLeftAmount;
+        $bec->expensePlannedAmount-=$sub->expensePlannedAmount;
+        $bec->reserveAmount-=$sub->reserveAmount;
+        $bec->totalValidatedCost-=$sub->totalValidatedCost;
+        $bec->totalAssignedCost-=$sub->totalAssignedCost;
+        $bec->totalRealCost-=$sub->totalRealCost;
+        $bec->totalLeftCost-=$sub->totalLeftCost;
+        $bec->totalPlannedCost-=$sub->totalPlannedCost;
+      }
+    }
+
+    $bec->save();
+  }
+  
 }
 ?>

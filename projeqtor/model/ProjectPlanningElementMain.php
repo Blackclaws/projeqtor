@@ -101,6 +101,10 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $topRefType;
   public $topRefId;
   public $idle;
+  public $idOrganization;
+  public $organizationInherited;
+  public $organizationElementary;
+  
   private static $_fieldsAttributes=array(
     "plannedStartDate"=>"readonly,noImport",
     "realStartDate"=>"readonly,noImport",
@@ -128,7 +132,10 @@ class ProjectPlanningElementMain extends PlanningElement {
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
     "validatedEndFraction"=>"hidden",
-    "reserveAmount"=>"readonly"
+    "reserveAmount"=>"readonly",
+    "idOrganization"=>"hidden",
+    "organizationInherited"=>"hidden",
+    "organizationElementary"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -181,6 +188,17 @@ class ProjectPlanningElementMain extends PlanningElement {
   	  $histo->totalLeftCost=$this->totalLeftCost;
   	  $histo->save();
   	}
+  	
+  	// Update BudgetElement (for organization summary)
+  	if ($this->idOrganization) {
+  	  $org=new Organization($this->idOrganization,false);
+  	  $org->updateSynthesis();
+  	} 
+  	if ($old->idOrganization and $this->idOrganization!=$old->idOrganization) {
+  	  $org=new Organization($old->idOrganization,false);
+  	  $org->updateSynthesis();
+  	}
+  	
   	return $result;
   }
   

@@ -237,6 +237,17 @@ class ProductOrComponent extends SqlElement {
     $result.='showPrint(url, null, null, "html", "P");';
     $result.='</script>';
     $result.='</button>';
+    $result.='&nbsp;';
+    $result.='<button id="showFlatStructureButton" dojoType="dijit.form.Button" showlabel="true"';
+    $result.=' title="'.i18n('showFlatStructure').'" style="vertical-align: middle;">';
+    $result.='<span>' . i18n('showFlatStructure') . '</span>';
+    $result.='<script type="dojo/connect" event="onClick" args="evt">';
+    $page="../report/productFlatStructure.php?objectClass=$class&objectId=$id";
+    $result.="var url='$page';";
+    $result.='url+="&format=print";';
+    $result.='showPrint(url, null, null, "html", "P");';
+    $result.='</script>';
+    $result.='</button>';
     $result.='</td></tr>';
     $result.='<tr><td><label for="showProjectsLinked" style="width:250px">'.i18n('showProjectsLinked').'&nbsp;</label>';
     $result.='<div id="showProjectsLinked" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showProjectsLinked)?'checked':'').' >';
