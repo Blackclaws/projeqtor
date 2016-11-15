@@ -1938,7 +1938,7 @@ paramVersionNameAutoformat: "Автоматичний формат наймен�
 paramVersionNameAutoformatSeparator: "Роздільник поміж ім'ям та числом",
 paramVersionReferenceSuffix: "суфікс для версії посилання(reference)",
 paramWorkUnit: "одиниця для робочого навантаження",
-parentProductList: "[Praent products list]",
+parentProductList: "[Parent products list]",
 passed: "пройшло",
 passedTestCaseRun: "Маркування тестового сценарію&#44; як пройшло",
 password: "пароль",
