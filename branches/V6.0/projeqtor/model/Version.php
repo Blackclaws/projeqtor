@@ -287,6 +287,34 @@ class Version extends SqlElement {
     }
     return $result;
   }
+  static protected function drawFlatStructureButton($class,$id) {
+    global $print;
+    if ($print) return "";
+    $result='<br/><table>';
+    $result.='<tr><td>';
+    $result.='<button id="showFlatStructureButton" dojoType="dijit.form.Button" showlabel="true"';
+    $result.=' title="'.i18n('showFlatStructure').'" style="vertical-align: middle;">';
+    $result.='<span>' . i18n('showFlatStructure') . '</span>';
+    $result.='<script type="dojo/connect" event="onClick" args="evt">';
+    $page="../report/productVersionFlatStructure.php?objectClass=$class&objectId=$id";
+    $result.="var url='$page';";
+    $result.='url+="&format=print";';
+    $result.='showPrint(url, null, null, "html", "P");';
+    $result.='</script>';
+    $result.='</button>';
+    $result.='<button id="showFlatStructureButtonCsv" dojoType="dijit.form.Button" showlabel="false" ';
+    $result.=' title="'.i18n('showFlatStructure').'" iconClass="dijitButtonIcon dijitButtonIconCsv" class="roundedButtonSmall">';
+    $result.='<script type="dojo/connect" event="onClick" args="evt">';
+    $page="../report/productVersionFlatStructure.php?objectClass=$class&objectId=$id";
+    $result.="var url='$page';";
+    $result.='url+="&format=csv";';
+    $result.='showPrint(url, null, null, "csv", "P");';
+    $result.='</script>';
+    $result.='</button>';
+    $result.='</td>';
+    $result.='</tr></table>';
+    return $result;
+  }
 
 }
 ?>

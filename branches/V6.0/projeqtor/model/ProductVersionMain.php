@@ -56,6 +56,7 @@ class ProductVersionMain extends Version {
   public $_VersionProject=array();
   public $_sec_ProductVersionComposition;
   public $_productVersionComposition=array();
+  public $_spe_flatStructure;
   public $_spe_tenders;
   public $_Attachment=array();
   public $_Note=array();
@@ -255,9 +256,13 @@ class ProductVersionMain extends Version {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
+    global $print;
     $result="";
     if ($item=='tenders') {
        Tender::drawListFromCriteria('id'.get_class($this),$this->id);
+    } else if ($item=='flatStructure' and !$print and $this->id) {
+      $result=parent::drawFlatStructureButton('ProductVersion',$this->id);
+      return $result;
     } 
   }
   

@@ -219,7 +219,7 @@ class ProductOrComponent extends SqlElement {
     if ($print) return "";
     $result='<br/><table>';
     $result.='<tr>';
-    $result.='<td><label for="showVersionsForAll" style="width:250px">'.i18n('showVersionsForAll').'&nbsp;</label>';
+    $result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showVersionsForAll" style="width:250px">'.i18n('showVersionsForAll').'&nbsp;</label>';
     $result.='<div id="showVersionsForAll" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showVersionsForAll)?'checked':'').' >';
     $result.='<script type="dojo/connect" event="onChange" args="evt">';
     $result.=' saveUserParameter("strucutreShowVersionsForAll",((this.checked)?"1":"0"));';
@@ -248,8 +248,17 @@ class ProductOrComponent extends SqlElement {
     $result.='showPrint(url, null, null, "html", "P");';
     $result.='</script>';
     $result.='</button>';
+    $result.='<button id="showFlatStructureButtonCsv" dojoType="dijit.form.Button" showlabel="false" ';
+    $result.=' title="'.i18n('showFlatStructure').'" iconClass="dijitButtonIcon dijitButtonIconCsv" class="roundedButtonSmall">';
+    $result.='<script type="dojo/connect" event="onClick" args="evt">';
+    $page="../report/productFlatStructure.php?objectClass=$class&objectId=$id";
+    $result.="var url='$page';";
+    $result.='url+="&format=csv";';
+    $result.='showPrint(url, null, null, "csv", "P");';
+    $result.='</script>';
+    $result.='</button>';
     $result.='</td></tr>';
-    $result.='<tr><td><label for="showProjectsLinked" style="width:250px">'.i18n('showProjectsLinked').'&nbsp;</label>';
+    $result.='<tr><td style="white-space:nowrap;padding-right:10px;"><label for="showProjectsLinked" style="width:250px">'.i18n('showProjectsLinked').'&nbsp;</label>';
     $result.='<div id="showProjectsLinked" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showProjectsLinked)?'checked':'').' >';
     $result.='<script type="dojo/connect" event="onChange" args="evt">';
     $result.=' saveUserParameter("strucutreShowProjectsLinked",((this.checked)?"1":"0"));';

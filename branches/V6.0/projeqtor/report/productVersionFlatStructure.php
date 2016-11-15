@@ -41,7 +41,7 @@ if (array_key_exists('objectId', $_REQUEST)){
 }
 Security::checkValidId($objectId);
 if (!$objectClass or !$objectId) return;
-if ($objectClass!='Product' and $objectClass!='Component') return;
+if ($objectClass!='ProductVersion' and $objectClass!='ComponentVersion') return;
 
 $format="print";
 if (array_key_exists('format', $_REQUEST)){
@@ -49,12 +49,12 @@ if (array_key_exists('format', $_REQUEST)){
 }
 
 $item=new $objectClass($objectId);
+
 $canRead=securityGetAccessRightYesNo('menu' . $objectClass, 'read', $item)=="YES";
 if (!$canRead) exit;
 
-$subProducts=array();
-if ($objectClass=='Product') {
-  $parentProducts=$item->getParentProducts();
+if ($objectClass=='VersionProduct') {
+  //$parentVersionProducts=$item->getParentProducts();
 }
 $result=array();
 $result=getSubItems($item,$result);
@@ -73,14 +73,14 @@ if ($format=='print') {
   echo "</table>";
   echo "</td><td style='width:50%;vertical-align:top;padding:5px;'>";
   // Parents  
-  /*echo "<table style='width:100%;'>";
-  echo "<tr><th style='padding:5px;text-align:center;'>".i18n('parentProductList').'</th></tr>';
-  foreach ($parentProducts as $prdId=>$prdName) {
+  //echo "<table style='width:100%;'>";
+  //echo "<tr><th style='padding:5px;text-align:center;'>".i18n('parentProductList').'</th></tr>';
+  /*foreach ($parentProducts as $prdId=>$prdName) {
     echo "<tr><td>";
     showProduct('Product', $prdId, $prdName);
     echo "</td></tr>";
-  }
-  echo "</table>";*/
+  }*/
+  //echo "</table>";
   echo "</td></tr>";
   echo "</table>";
 } else if ($format=='csv') {
@@ -94,19 +94,19 @@ if ($format=='print') {
 }
 
 function getSubItems($item,$result){
-  if (get_class($item)=='Product') {
-    $crit=array('idProduct'=>$item->id);
+  if (get_class($item)=='ProductVersion') {
+    $crit=array('idProductVersion'=>$item->id);
     $lst=$item->getSqlElementsFromCriteria($crit);
     foreach ($lst as $prd) {
       $result[$prd->id]=array('class'=>'Product','id'=>$prd->id,'name'=>$prd->name);
       $result=getSubItems($prd,$result);
     }
   }
-  $ps=new ProductStructure();
-  $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$item->id));
+  $ps=new ProductVersionStructure();
+  $psList=$ps->getSqlElementsFromCriteria(array('idProductVersion'=>$item->id));
   foreach ($psList as $ps) {
-    $comp=new Component($ps->idComponent);
-    $result[$ps->idComponent]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
+    $comp=new ComponentVersion($ps->idComponentVersion);
+    $result[$ps->idComponentVersion]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
     $result=getSubItems($comp,$result);
   }
   return $result;
