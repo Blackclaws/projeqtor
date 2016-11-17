@@ -117,6 +117,6 @@ function showProduct($class,$id,$name) {
   $name="#$id - $name";
   $style="width:100%";
   $item=new $class($id);
-  echo '<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:20px;"><img src="../view/css/images/icon'.$class.'16.png" /></td>'
+  echo '<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:20px;" class="icon'.$class.'16" >&nbsp;</td>'
       .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>';
 }
