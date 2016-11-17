@@ -266,6 +266,9 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (62, 'endDate', 'date', 45, null),
 (62, 'showBurndownToday', 'boolean', 60, '1');
 
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(160,'menuProductVersionType', 79, 'object', 933, 'ReadWriteType', 0, 'Type');
+
 UPDATE `${prefix}menu` SET idMenu=11,  sortOrder=435  WHERE ID=122; 
 UPDATE `${prefix}menu` SET idMenu=0,   sortOrder=1100 WHERE ID=37;
 UPDATE `${prefix}menu` SET idMenu=37,  sortOrder=1110 WHERE ID=49;
@@ -330,3 +333,5 @@ ADD `organizationInherited` int(1) unsigned DEFAULT NULL,
 ADD `organizationElementary` int(1) unsigned DEFAULT NULL;
 
 CREATE INDEX planningelementOrganization ON `${prefix}planningelement` (`idOrganization`);
+
+ALTER TABLE `${prefix}resource` ADD `idOrganization` int(12) UNSIGNED DEFAULT NULL;
