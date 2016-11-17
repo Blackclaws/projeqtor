@@ -223,7 +223,7 @@ class Version extends SqlElement {
     $versList=$this->getSqlElementsFromCriteria($critArray,false,null,'name asc',false,true);
     foreach ($versList as $vers) {
       $result.= '<tr>';
-      $result.= '<td valign="top" width="20px" style="padding-left:15px;"><img src="css/images/icon'.$vers->scope.'Version16.png" height="16px" /></td>';
+      $result.= '<td style="padding-left:15px;">&nbsp;&nbsp;</td><td valign="top" width="20px" style="padding-left:5px;" class="icon'.$vers->scope.'Version16" height="16px" />&nbsp;</td>';
       $style="";
       if ($vers->idle) {$style='color#5555;text-decoration: line-through;';}
       else if ($vers->isEis) {$style='font-weight: bold;';}
@@ -236,7 +236,7 @@ class Version extends SqlElement {
         $result.= '<table>';
         foreach ($vpList as $vp) {
           $result.= '<tr>';
-          $result.= '<td valign="top" width="20px" style="padding-left:10px;"><img src="css/images/iconProject16.png" height="16px" /></td>';
+          $result.= '<td style="padding-left:15px;"><td valign="top" width="20px" style="padding-left:5px;" class="iconProject16" height="16px" />&nbsp;</td>';
           $result.= '<td style="vertical-align:top;">'.SqlList::getNameFromId('Project', $vp->idProject).'</td>';
           $result.= '</tr>';
         }

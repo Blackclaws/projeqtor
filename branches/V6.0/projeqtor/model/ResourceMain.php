@@ -41,6 +41,7 @@ class ResourceMain extends SqlElement {
   public $idProfile;
   public $capacity;
   public $idCalendarDefinition;
+  public $idOrganization;
   public $idTeam;
   public $phone;
   public $mobile;

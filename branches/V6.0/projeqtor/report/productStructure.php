@@ -93,7 +93,7 @@ function showProduct($class,$id,$name,$level,$position) {
   if ($current) $style.='border:2px solid #000;border-radius:5px;';
   echo '<div style="padding-bottom:5px;padding-left:'.($level*$padding).'px;">'
       .'<table style="border:1px dotted #ddd;width:100%"><tr><td style="vertical-align:top;width:10px;white-space:nowrap">'
-      .'<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;"><img src="../view/css/images/icon'.$class.'16.png" /></td>'
+      .'<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:25px;" class="icon'.$class.'16" />&nbsp;&nbsp;&nbsp;</td>'
       .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>'
       .'</td>';
   if ($showVersionsForAll or $current) {
