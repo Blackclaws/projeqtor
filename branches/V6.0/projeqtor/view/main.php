@@ -760,7 +760,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <table>
     <tr>
       <td width="50px">
-        <img src="img/info.png" />
+        <?php echo formatIcon('Info', 32);?>
       </td>
       <td>
         <div id="dialogInfoMessage">
@@ -782,7 +782,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <table>
     <tr>
       <td width="50px">
-        <img src="img/error.png" />
+        <?php echo formatIcon('Error',32);?>
       </td>
       <td>
         <div id="dialogErrorMessage">
@@ -809,7 +809,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <table>
     <tr>
       <td width="50px">
-        <img src="img/alert.png" />
+           <?php echo formatIcon('Alert', 32);?>
       </td>
       <td>
         <div id="dialogAlertMessage">
@@ -855,7 +855,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <table>
     <tr>
       <td width="50px">
-        <img src="img/alert.png" />
+           <?php echo formatIcon('Confirm',32);?>
       </td>
       <td>
         <div id="dialogConfirmMessage"></div>
