@@ -160,6 +160,17 @@ class DocumentDirectory extends SqlElement {
   	//$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$paramPathSeparator="/"; // Save with Linux format (windows interprets it correctly)
   	$old=$this->getOld();
+  	// #2373 - start
+  	if (!$this->idDocumentDirectory and $this->location) {
+  	  if ( substr($this->location,(-1)*strlen($this->name))==$this->name) {
+  	    $search=substr($this->location,0,strlen($this->location)-strlen($this->name)-1);
+  	    $dir=SqlElement::getSingleSqlElementFromCriteria('DocumentDirectory',array('location'=>$search));
+  	    if ($dir and $dir->id) {
+  	      $this->idDocumentDirectory=$dir->id;
+  	    }
+  	  }
+  	}
+  	// #2373 - end
   	$this->location="";
   	if ($this->idDocumentDirectory) {
   		$dir=new DocumentDirectory($this->idDocumentDirectory);

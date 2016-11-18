@@ -3008,9 +3008,15 @@ function savePlanningBaseline() {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  var callback=function(){
+    dijit.byId('selectBaselineTop').reset();
+    dijit.byId('selectBaselineBottom').reset();
+    refreshList('idBaselineSelect',null,null,null,'selectBaselineTop');
+    refreshList('idBaselineSelect',null,null,null,'selectBaselineBottom');
+  };
   var formVar=dijit.byId('dialogPlanBaselineForm');
   if (formVar.validate()) {
-    loadContent("../tool/savePlanningBaseline.php", "planResultDiv", "dialogPlanBaselineForm", true, null);
+    loadContent("../tool/savePlanningBaseline.php", "planResultDiv", "dialogPlanBaselineForm", true, null,null,null,callback);
     dijit.byId("dialogPlanBaseline").hide();
   } else {
     showAlert(i18n("alertInvalidForm"));

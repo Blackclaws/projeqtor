@@ -514,6 +514,11 @@ class IndicatorValue extends SqlElement {
     $id=$obj->id;
     $name=$obj->name;
     $status=(property_exists($obj, 'idStatus'))?SqlList::getNameFromId('Status', $obj->idStatus):"";
+    //gautier #2297
+    $nameProject="";
+    if(property_exists($obj, 'idProject')){
+      $nameProject = SqlList::getNameFromId('Project', $obj->idProject);
+    }   
     $indicator=SqlList::getNameFromId('Indicator',$def->idIndicator);
     $target="";
     $warningTarget="";
@@ -545,14 +550,19 @@ class IndicatorValue extends SqlElement {
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
     $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
     
-    $message='<table>';
-    $message.='<tr><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.htmlEncode($obj->id).');">' . htmlEncode($name) . '</td></tr>';
+    $message='<table style="margin-top:10px;">';
+    $message.='<tr style="margin-top:10px;"><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.htmlEncode($obj->id).');">' . htmlEncode($name) . '</td></tr>';
+    //gautier #2297
+    if($nameProject!=""){
+      $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdProject') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $nameProject . '</td>';
+    }
     $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
     $message.='<tr><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
     $message.=($warningTarget and $type=="WARNING")?'<tr><td width="35%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';
     $message.=($alertTarget and $type=="ALERT")?'<tr><td width="35%" align="right">' . i18n('alertValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $alertTarget . '</td>':'';
     $message.=($value)?'<tr><td width="30%">' . i18n('value') . '</td><td>&nbsp;:&nbsp;</td><td>' . $value . '</td>':'';
     $message.='</table><br/>';
+    $messageAlert=$message;
     $message.=$obj->getMailDetail();
     $messageMail='<html>' . "\n" .
       '<head>'  . "\n" .
@@ -563,7 +573,6 @@ class IndicatorValue extends SqlElement {
       $message . "\n" .
       '</body>' . "\n" .
       '</html>';
-    $messageAlert=$message;
     $messageMail = wordwrap($messageMail, 70); // wrapt text so that line do not exceed 70 cars per line
     if ($dest!="") {     
       $resultMail=sendMail($dest, $title, $messageMail, $obj);

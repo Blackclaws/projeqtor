@@ -544,3 +544,8 @@ if (window.addEventListener) {
 var konamiMsg = [ '5ùhmuôçYgluêYuôYgluû',
     'FhmjïmhçuàljYufhXYklYuïmRgXuhguYkluêYufYçêêYmjuû', 'NcRluYêkYuû',
     'NcRluXçXurhmuYqîYVluû' ];
+
+function formatSmallButton(classname) {
+  var result="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:16px;height:16px;'><div class='iconButton"+classname+"16' style='' >&nbsp;</div></span>";
+  return result;
+}
