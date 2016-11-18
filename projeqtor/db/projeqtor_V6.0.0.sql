@@ -215,6 +215,13 @@ INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`
 (159,'menuOrganizationType', 79, 'object', 803, 'ReadWriteType', 0, 'Type');
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) 
 SELECT `idProfile`, 159, `allowAccess` FROM `${prefix}habilitation` WHERE `idMenu`=93;
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1,160,1);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1,161,1);
+
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 159, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=93;  
 
@@ -268,6 +275,9 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (160,'menuProductVersionType', 79, 'object', 933, 'ReadWriteType', 0, 'Type');
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(161,'menuComponentVersionType', 79, 'object', 934, 'ReadWriteType', 0, 'Type');
 
 UPDATE `${prefix}menu` SET idMenu=11,  sortOrder=435  WHERE ID=122; 
 UPDATE `${prefix}menu` SET idMenu=0,   sortOrder=1100 WHERE ID=37;
@@ -335,3 +345,11 @@ ADD `organizationElementary` int(1) unsigned DEFAULT NULL;
 CREATE INDEX planningelementOrganization ON `${prefix}planningelement` (`idOrganization`);
 
 ALTER TABLE `${prefix}resource` ADD `idOrganization` int(12) UNSIGNED DEFAULT NULL;
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `mandatoryDescription`, `code`) VALUES 
+('ProductVersion', 'Major Version', '10',0,false,'MAJ'),
+('ProductVersion', 'Minor Version', '20',0,false,'MIN'),
+('ProductVersion', 'Patch', '30',0,false,'PATCH'),
+('ComponentVersion', 'Major Version', '10',0,false,'maj'),
+('ComponentVersion', 'Minor Version', '20',0,false,'min'),
+('ComponentVersion', 'Patch', '30',0,false,'patch');

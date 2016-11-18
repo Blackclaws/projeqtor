@@ -788,9 +788,16 @@ class ImputationLine {
              formatCommentThumb($explodeComment [0]) . '</td>';
       }
       
-      if ($line->idAssignment && $line->refType != 'Ticket')
-        echo '<td title="' . i18n('commentImputationAdd') . '" onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year=' . $currentYear . '&week=' . $currentWeek . '&idAssignment=' . $line->idAssignment . '&refIdComment=' . $line->refId .
-             '&refTypeComment=' . $line->refType . '\', true);" style="cursor:pointer"><img src="img/noteAdd.png"></td>';
+      if ($line->idAssignment && $line->refType != 'Ticket'){
+        //KEVIN
+
+      
+
+      echo '<td '; echo 'onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year=' . $currentYear . '&week=' . $currentWeek . '&idAssignment=' . $line->idAssignment . '&refIdComment=' . $line->refId .
+      '&refTypeComment=' . $line->refType . '\', true);"title="' . i18n('commentImputationAdd') .'"'; echo '>';
+      echo formatSmallButton('AddComment');
+      echo '</td>';}
+
       
       echo '</tr></table>';
       echo '</td>';

@@ -664,13 +664,10 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     
     // Dispatch Organization 
     foreach ($subProj as $sp) {
-      debugLog($sp->name);
       if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
-        debugLog("inherit");
         $sp->idOrganization=$this->idOrganization;
         $sp->organizationInherited=1;
         $resSp=$sp->save();
-        debugLog($resSp);
       } else if ($sp->organizationInherited) {
         $sp->organizationInherited=0;
         $sp->save();

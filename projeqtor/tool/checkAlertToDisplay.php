@@ -46,7 +46,7 @@ $date=date('Y-m-d H:i:s');
 foreach($lst as $alert) {
 	if ($alert->alertDateTime<=$date) {
 	  echo '<b>' . htmlEncode($alert->title) . '</b>';
-	  echo '<br/><br/>';
+	  echo '<br/>';
 	  echo  $alert->message;
 	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . htmlEncode($alert->id) . ' " ./>';
 	  echo '<input type="hidden" id="alertType" name="alertType" value="' . htmlEncode($alert->alertType) . '" ./>';

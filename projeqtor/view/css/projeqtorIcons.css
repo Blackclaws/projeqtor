@@ -244,6 +244,10 @@
 .iconCommandType22 { background-image: url(images/iconCommandType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCommandType16 { background-image: url(images/iconCommandType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconComment32 { background-image: url(images/iconComment32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconComment22 { background-image: url(images/iconComment22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconComment16 { background-image: url(images/iconComment16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconComponent32 { background-image: url(images/iconComponent32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconComponent22 { background-image: url(images/iconComponent22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconComponent16 { background-image: url(images/iconComponent16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -251,6 +255,10 @@
 .iconFinancial32 { background-image: url(images/iconFinancial32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconFinancial22 { background-image: url(images/iconFinancial22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconFinancial16 { background-image: url(images/iconFinancial16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconComponent32 { background-image: url(images/iconComponentVersionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconComponent22 { background-image: url(images/iconComponentVersionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconComponent16 { background-image: url(images/iconComponentVersionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconContact32 { background-image: url(images/iconContact32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconContact22 { background-image: url(images/iconContact22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -527,6 +535,10 @@
 .iconProductVersion32 { background-image: url(images/iconProductVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProductVersion22 { background-image: url(images/iconProductVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProductVersion16 { background-image: url(images/iconProductVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProductVersionType32 { background-image: url(images/iconProductVersionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProductVersionType22 { background-image: url(images/iconProductVersionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProductVersionType16 { background-image: url(images/iconProductVersionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconProfile32 { background-image: url(images/iconProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProfile22 { background-image: url(images/iconProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
