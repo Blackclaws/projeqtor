@@ -37,6 +37,7 @@ class ComponentVersionMain extends Version {
   public $scope;
   public $idComponent;
   public $versionNumber;
+  public $idComponentVersionType;
   public $name;
   public $idContact;
   public $idResource;
@@ -83,7 +84,7 @@ class ComponentVersionMain extends Version {
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
-  private static $_databaseColumnName = array('idComponent'=>'idProduct');
+  private static $_databaseColumnName = array('idComponent'=>'idProduct','idComponentVersionType'=>'idVersionType');
   private static $_databaseTableName = 'version';
   private static $_databaseCriteria = array('scope'=>'Component');
   

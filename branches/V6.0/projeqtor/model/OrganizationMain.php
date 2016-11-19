@@ -279,5 +279,15 @@ class OrganizationMain extends SqlElement {
     $bec->save();
   }
   
+  public static function getUserVisibility() {
+    // TODO : define Organization visibility depending on profile
+    return "all";
+    // return "same"; // Only resource of same organization
+  } 
+  public static function getUserOrganization() {
+    $res=new Resource();
+    return $res->idOrganization;
+  }
+  
 }
 ?>
