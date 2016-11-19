@@ -115,14 +115,13 @@ function refreshImputationList() {
  * Refresh the imputation list after period update (check format first)
  * @return
  */
-var noRefreshImputationPeriod=false;
+var temps=null;
 function refreshImputationPeriod(directDate) {
-  if (noRefreshImputationPeriod) {
-    return;
+  if (temps) {
+   clearTimeout(temps);
   }
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
-    noRefreshImputationPeriod=true;
     var period=dojo.byId('rangeValue').value;
     var year=period.substr(0,4);
         dijit.byId('yearSpinner').set('value',year);
@@ -131,10 +130,9 @@ function refreshImputationPeriod(directDate) {
     //var week=dijit.byId('weekSpinner').get('value') + '';
     var day=getFirstDayOfWeek(week,year);
     dijit.byId('dateSelector').set('value',day);
-    noRefreshImputationPeriod=false;
     return false;
   }
-  noRefreshImputationPeriod=true;
+
   if (directDate) {
     var year=directDate.getFullYear();
     var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
@@ -182,11 +180,12 @@ function refreshImputationPeriod(directDate) {
   var day=getFirstDayOfWeek(week,year);
   dijit.byId('dateSelector').set('value',day);
   dojo.byId('rangeValue').value='' + year + week;
-  if ((year+'').length==4) {
-    refreshImputationList();
+  if ((year+'').length==4) { 
+     temps=setTimeout("refreshImputationList();",500);
+     //temps=setTimeout("alert('coucou');",100);
   }
-  setTimeout("noRefreshImputationPeriod=false;",100);
   return true;
+  
 }
 
 function recursiveAddWorkProject(idProject, day, diff){
@@ -348,7 +347,8 @@ function dispatchWorkValueChange(rowId, colId) {
 }
 
 function isOffDay(vDate) {
-  if ( vDate.getDay() % 6 == 0) {
+  
+  if ( defaultOffDays.indexOf(vDate.getDay()) != -1) {
     var day=(vDate.getFullYear()*10000)+((vDate.getMonth()+1)*100)+vDate.getDate();
     if (workDayList.lastIndexOf('#'+day+'#')>=0) {
     return false; 
@@ -363,26 +363,17 @@ function isOffDay(vDate) {
       return false;
     }
   }
-  
 }
-function isOffDayNotWeekEnd(vDate) {
-  /*if ( vDate.getDay() % 6 == 0) {
-    var day=(vDate.getFullYear()*10000)+((vDate.getMonth()+1)*100)+vDate.getDate();
-    if (workDayList.lastIndexOf('#'+day+'#')>=0) {
-    return false; 
-    } else {
-      return true;
-    }
-  } else {*/
+// V6.0.0 : not used any more
+/*function isOffDayNotWeekEnd(vDate) {
     var day=(vDate.getFullYear()*10000)+((vDate.getMonth()+1)*100)+vDate.getDate();
     if (offDayList.lastIndexOf('#'+day+'#')>=0) {
     return true; 
     } else {
       return false;
     }
-  /*}*/
-  
-}
+}*/
+
 /**
  * Dispatch updates for left work : re-calculate planned work 
  */

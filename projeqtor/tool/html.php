@@ -75,6 +75,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   }
   if ($col=='idResource' and $critFld=='idProject') {
   	$prj=new Project($critVal, true);
+  	$limitToSameOrga=(Organization::getUserVisibility()=="same")?Organization::getUserOrganization():'NO';
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
     $where="idProject in " . $in; 
@@ -93,11 +94,23 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         	$name=SqlList::getNameFromId('User', $id);
         }
         if ($name!=$id) {
-          $table[$id]=$name;
+          $orga=null;
+          if ($limitToSameOrga!='NO') {
+            $orga=SqlList::getFieldFromId('Resource', $id,'idOrganization');
+          }
+          if ($limitToSameOrga=='NO' or $orga==$limitToSameOrga) {
+            $table[$id]=$name;
+          }
         } 
       }
     }
     asort($table);
+  } else if ($col=='idResource' and Organization::getUserVisibility()=="same") { 
+    $res=new Resource($user->id);
+    $list=$res->getSqlElementsFromCriteria(array('idOrganization'=>$res->idOrganization));
+    foreach ($list as $res) {
+      $table[$id]=$res->name;
+    }
   } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idVersion' or $critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
     $critClass=substr($critFld,2);
     $versionField=str_replace('Version', '', $critFld);

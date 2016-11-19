@@ -441,6 +441,14 @@ div .scrollRightTop {
   background-color: #FFFF00;
   position:absolute; 
 }
+.specificDayToday {
+  opacity:0.9;
+  filter: alpha(opacity=90);
+  z-index:0; 
+  background-color: #FF0000;
+  position:absolute; 
+  width:2px;
+}
 .rightTableLine {
   /*z-index: 8;*/
   /*opacity:0.9;

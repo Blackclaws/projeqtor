@@ -793,7 +793,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
-      vPerf=1; // New style is always used. No need to keep old style
       var vOutDays="";
       var vCurrentDay="";
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
@@ -847,7 +846,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       cpt=0;
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
-          if (isOffDayNotWeekEnd(vTmpDate))	{
+          if (isOffDay(vTmpDate))	{
         	  vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
             vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth));
             vScpecificDayCount++;
@@ -940,6 +939,19 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     	vItemRowStr='<td><div class="ganttDetail '+vFormat+'Background" style="border-left:0px; height: 20px; width: ' + vChartWidth + 'px;"></div></td>';  
       vTopRightTable += vDateRowStr + '</DIV>';
             
+      // Display "Today"
+      vTmpDate=new Date();
+      vTmpDateZero=new Date();
+      vTmpDateZero.setHours(1);
+      vTmpDateZero.setMinutes(0);
+      vTmpDateZero.setSeconds(0);
+      vHour=Date.parse(vTmpDate)-Date.parse(vTmpDateZero);
+      vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+      vDayLeft= (vTaskLeft-1+(vHour/(24 * 60 * 60 * 1000))) * (vDayWidth);
+      vScpecificDayCount++;
+      vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayToday" '
+      +'style="top: 0px; left:'+vDayLeft+'px; height:'+100+'px;"></DIV>'; 
+        
       for(i = 0; i < vTaskList.length; i++) {
         vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
         vTaskStart = vTaskList[i].getStart();
@@ -1255,10 +1267,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vRightTable += '</DIV>';
       }
-      if (vPerf) {
-        vRightTable+=vHighlightSpecificDays;
+      vRightTable+=vHighlightSpecificDays;
+      //vRightTable+=vHighlightToday;  
         //vRightTable+='<div class="ganttUnselectable" style="position: absolute; z-index:25; opacity:0.1; filter: alpha(opacity=10); width: 200px; height: 200px; left: 0px; top:0px; background-color: red"></div>';
-      }
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer">'+vRightTable+'</div>';
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
