@@ -353,3 +353,5 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `mandatoryDes
 ('ComponentVersion', 'Major Version', '10',0,false,'maj'),
 ('ComponentVersion', 'Minor Version', '20',0,false,'min'),
 ('ComponentVersion', 'Patch', '30',0,false,'patch');
+
+ALTER TABLE `${prefix}version` ADD `idVersionType` int(12) unsigned DEFAULT NULL;

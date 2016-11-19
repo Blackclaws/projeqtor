@@ -37,6 +37,7 @@ class ProductVersionMain extends Version {
   public $scope;
   public $idProduct;
   public $versionNumber;
+  public $idProductVersionType;
   public $name;
   public $idContact;
   public $idResource;
@@ -82,6 +83,8 @@ class ProductVersionMain extends Version {
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
+  
+  private static $_databaseColumnName = array('idProductVersionType'=>'idVersionType');
   
   private static $_databaseTableName = 'version';
   private static $_databaseCriteria = array('scope'=>'Product');
@@ -146,6 +149,15 @@ class ProductVersionMain extends Version {
     return $paramDbPrefix . self::$_databaseTableName;
   }
   
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
+  }
+  
+
   /** ========================================================================
    * Return the specific database criteria
    * @return the databaseTableName

@@ -204,6 +204,16 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var alertCheckTime='<?php echo Parameter::getGlobalParameter('alertCheckTime');?>';
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
+    var defaultOffDays=new Array();
+    <?php 
+    if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') echo "defaultOffDays[0]=0;";
+    if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') echo "defaultOffDays[1]=1;"; 
+    if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') echo "defaultOffDays[2]=2;"; 
+    if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') echo "defaultOffDays[3]=3;"; 
+    if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') echo "defaultOffDays[4]=4;"; 
+    if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') echo "defaultOffDays[5]=5;"; 
+    if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') echo "defaultOffDays[6]=6;"; 
+    ?>
     var draftSeparator='<?php echo Parameter::getGlobalParameter('draftSeparator');?>';
     var paramCurrency='<?php echo $currency;?>';
     var paramCurrencyPosition='<?php echo $currencyPosition;?>';

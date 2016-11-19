@@ -158,6 +158,15 @@ class PlannedWork extends GeneralWork {
       }
     }
     
+    $daysPerWeek=7;
+    if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') $daysPerWeek--;
+    if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') $daysPerWeek--;
+    if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') $daysPerWeek;
+    if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') $daysPerWeek--;
+    if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') $daysPerWeek--;
+    if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') $daysPerWeek--;
+    if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') $daysPerWeek--;
+    
     //-- Build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId,true);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
@@ -571,7 +580,7 @@ class PlannedWork extends GeneralWork {
                     	$leftProj=round(7*$capacity*$rateProj,2)-$plannedProj; // capacity for a full week
                     	// => to be able to plan weekends
                     } else {
-                      $leftProj=round(5*$capacity*$rateProj,2)-$plannedProj; // capacity for a week
+                      $leftProj=round($daysPerWeek*$capacity*$rateProj,2)-$plannedProj; // capacity for a week
                     }
                     if ($value>$leftProj) {
                       $value=$leftProj;
@@ -657,7 +666,7 @@ class PlannedWork extends GeneralWork {
 	                      $leftProj=round(7*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a full week
 	                      // => to be able to plan weekends
 	                    } else {
-	                      $leftProj=round(5*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a week
+	                      $leftProj=round($daysPerWeek*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a week
 	                    }
 	                    if ($value>$leftProj) {
 	                      $value=$leftProj;

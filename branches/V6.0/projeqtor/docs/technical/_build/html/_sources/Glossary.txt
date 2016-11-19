@@ -13,3 +13,7 @@ Glossaire
 
     * MySql est le gestionnaire de base de données utilisé par défaut par ProjeQtOr.  
     * ProjeQtOr peut aussi utiliser une base de données de type PostgreSql.
+    
+   Dojo
+  
+    * Dojo est le framework javascript de mise en oeuvre de l'interface pour la présentation.
