@@ -161,32 +161,47 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
 		$cpt++;
-		$hint=i18n($item['type']).' #'.$item['id']."\n"
+		$hint=i18n($item['class']).' #'.$item['id']."\n"
 				.$item['name']."\n"
-				.i18n('colIdProject').": ".$item['project'];
-		$hintHtml=i18n($item['type']).' #'.$item['id']."<br/>"
+				.i18n('colIdProject').": ".$item['projectName'];
+		$hintHtml=i18n($item['class']).' #'.$item['id']."<br/>"
 				.'<b>'.$item['name']."</b><br/>"
-				.i18n('colIdProject').": <i>".$item['project'].'</i><br/>';
+				.i18n('colIdProject').": <i>".$item['projectName'].'</i><br/>';
 		if ($item['date']) { $hintHtml.=i18n('colDate').": <i>".$item['date']."</i>"; }
 		if ($item['work'] and $item['real']) { $hintHtml.=i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
 		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('planned').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
-		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
+		echo '<td style="padding: 3px 3px 0px 3px; width:100%;position:relative;">';
 		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
-		echo '<table><tr><td style="vertical-align:top">';		
-		$attr=((! $item['real'])?'':' style="top:0px;opacity:0.5;filter:alpha(opacity=50);"');
-		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"'.$attr.'/></td><td style="width:1px">';
+		echo '<table style="width:100%"><tr><td style="vertical-align:top;width:20px">';		
+		$attr=((! $item['real'])?'':' style="top:0px;background-color:#ffffff;opacity:0.5;filter:alpha(opacity=50);"');
+		echo '<span '.$attr.'>'.formatIcon($item['class'], 16,null,true).'</span>';
 		echo '</td><td style="color:#555555">';
 		//Modification ici , typename ne marche pas...
-		if ($period=='week') {
-		  echo $item['typename'];
-		}
-		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['type'].'\', '.$item['id'].', false);" >';
+		
+		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
 		if ($item['real']) {
-		  echo $item['display'];
+		  echo $item['name'];
 		} else {
-			echo '<i>'.$item['display'].'</i>';
+			echo '<i>'.$item['name'].'</i>';
 		}
+		if ($period=='week' or $period=='day') {
+		  echo '<table style="vertical-align:top;width:100%">';
+		  if ($item['projectName']) echo '<tr><td style="width:50px;text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdProject').'&nbsp;:&nbsp;</td><td>'.$item['projectName'].'</td></tr>';
+		  if ($item['typeName']) echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colType').'&nbsp;:&nbsp;</td><td>'.$item['typeName'].'</td></tr>';
+		  if ($item['priorityName'])echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdPriority').'&nbsp;:&nbsp;</td><td>'.$item['priorityName'].'</td></tr>';
+		  if ($item['responsibleName'])echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colResponsible').'&nbsp;:&nbsp;</td><td>'.$item['responsibleName'].'</td></tr>';
+		  echo '</table>';
+		}
+		if ($period=='day') {
+		  echo '<div style="padding:5px;max-height:200px;width:100%;border:1px solid #A0A0A0;margin-top:5px;margin-bottom:5px;">'.$item['description'].'</div>';
+		}
+		echo '<div style="width:100%;height:24px;float:left;position:relative;left:-18px;padding-top:2px">';
+		echo '   <div style="float:left;min-width:22px;height:22px;position:relative;margin-top:5px;">#'.$item['id'].'</div>';
+		echo '   <div style="float:left;width:22px;height:22px;position:relative;padding-left:5px;">'.formatColorThumb("idPriority",$item['priorityId'], 22, 'left', i18n('colIdPriority').' : '.$item['priorityName']).'</div>';
+		echo '   <div style="float:left;padding-left:5px;width:22px;height:22px;position:relative;" id="userThumbMilestone'.$item['id'].'">'.formatUserThumb($item['responsibleId'], i18n('colResponsible').' : '.$item['responsibleName'], "", 22, 'left', false).'</div>';
+		echo '   <div style="float:left;max-width:100px;height:22px;position:relative;padding-left:5px;top:-1px">'.colorNameFormatter($item['statusName'].'#split#'.SqlList::getFieldFromId('Status', $item['statusId'], 'color')).'</div>';
+		echo '</div>';
 		echo '</div>';
 		echo '</td></tr></table>';
 		echo '</div>';
@@ -250,26 +265,44 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 		foreach ($lst as $o) {	  
 			if (array_key_exists($o->idProject,$projectColorArray)) {
 				$color=$projectColorArray[$o->idProject];
-				$projName=$projectNameArray[$o->idProject];
+				$projectId=$o->idProject;
+				$projectName=$projectNameArray[$o->idProject];
 			} else {
 				$pro=new Project($o->idProject);
 				$color=$pro->color;
-				$projName=$pro->id;
+				$projectId=$pro->id;
+				$projectName=$pro->name;
 				$projectColorArray[$o->idProject]=$color;
-				$projectNameArray[$o->idProject]=$projName;
+				$projectNameArray[$o->idProject]=$projectName;
 			}
 			$typeName=null;
-			$type='id'.get_class($obj).'Type';
-			if (property_exists($obj,$type)) {
-			  $typeName=SqlList::getNameFromId('Type', $obj->$type);
+			$typeId=null;
+			$type='id'.get_class($o).'Type';
+			if (property_exists($o,$type)) {
+			  $typeId=$o->$type;
+			  $typeName=SqlList::getNameFromId('Type', $o->$type);
 			}
 			$priorityName=null;
-			if (property_exists($obj,'idPriority')) {
-			  $priorityName=SqlList::getNameFromId('Priority', $obj->idPriority);
+			$priorityId=null;
+			if (property_exists($o,'idPriority')) {
+			  $priorityId=$o->idPriority;
+			  $priorityName=SqlList::getNameFromId('Priority', $o->idPriority);
+			}
+			$responsibleName=null;
+			$responsibleId=null;
+			if (property_exists($o,'idResource')) {
+			  $responsibleId=$o->idResource;
+			  $responsibleName=SqlList::getNameFromId('Affectable', $o->idResource);
+			}
+			$statusName=null;
+			$statusId=null;
+			if (property_exists($o,'idStatus')) {
+			  $statusId=$o->idStatus;
+			  $statusName=SqlList::getNameFromId('Status', $o->idStatus);
 			}
 			$description=null;
-			if (property_exists($obj,'description')) {
-			  $description=$obj->description;
+			if (property_exists($o,'description')) {
+			  $description=$o->description;
 			}
 			$date=null;
 			$dateField="";
@@ -305,29 +338,25 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				if (!array_key_exists($date, $result)) {
 					$result[$date]=array();
 				}				
-				//KEVIN
-				if(get_class($o)=='Action' or get_class($o)=='Ticket'){
-				  $item=$o;
-				} else {
-				  $item=new $o->refType($o->refId);
-				}
-				$display=$name;
-				$display.='<div style="cursor:move;width:195px;height:24px;position:relative;">';
-				$display.='   <div style="float:right;margin-left:3px;width:22px;height:22px;position:relative;" id="userThumbMilestone'.$item->id.'">'.formatUserThumb($item->idResource, SqlList::getNameFromId("Affectable", $item->idResource), "", 22, 'left', false).'</div>';
-				$display.='   <div style="float:right;width:22px;height:22px;position:relative">'.formatColorThumb("idStatus",$item->idStatus, 22, 'left', SqlList::getNameFromId("Status", $item->idStatus)).'</div>';
-				$display.= "</div>";
-				$result[$date][get_class($o).'#'.$o->id]=array(
-						'type'=>$class,
-						'id'=>$id,
+				
+				$result[$date]["$class#$id"]=array(
+						'class'=>$class,
+						'id'=>$o->id,
 						'work'=>0,
+				    'real'=>false,
 						'name'=>$name,
 						'color'=>$color,
-						'display'=>$display,
 						'date'=>$dateField,
-						'project'=>$projName,
-						'real'=>false,
-				    'typename'=>$typeName,
-				    'priority'=>$priorityName,
+				    'projectId'=>$projectId,
+						'projectName'=>$projectName,
+				    'typeId'=>$typeId,
+				    'typeName'=>$typeName,
+				    'priorityId'=>$priorityId,
+				    'priorityName'=>$priorityName,
+				    'responsibleId'=>$responsibleName,
+				    'responsibleName'=>$responsibleName,
+				    'statusId'=>$statusId,
+				    'statusName'=>$statusName,
 				    'description'=>$description
 				);
 			}
@@ -353,49 +382,69 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 		} else {
 		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);		  
 		}
-		$display.='<div style="cursor:move;width:129px;height:23px;position:relative;">';
-    $display.='   <div style="float:right;width:22px;height:22px;margin-right:-20px;margin-top:10px;position:relative;" id="userThumbTicket'.$item->id.'">'.formatUserThumb($item->idResource, SqlList::getNameFromId("Affectable", $item->idResource), "", 22, 'left', false).'</div>';
-		$display.='   <div style="float:right;margin-left:50%;width:22px;height:22px;margin-right:-50px;margin-top:10px;position:relative">'.formatColorThumb("idStatus",$item->idStatus, 22, 'left', SqlList::getNameFromId("Status", $item->idStatus)).'</div>';	
-		$display.= "</div>";
-		  if (array_key_exists($item->idProject,$projectColorArray)) {
+		if (array_key_exists($item->idProject,$projectColorArray)) {
 			$color=$projectColorArray[$item->idProject];
-			$projName=$projectNameArray[$item->idProject];
+			$projectId=$item->idProject;
+			$projectName=$projectNameArray[$item->idProject];
 		} else {
 			$pro=new Project($item->idProject);
 			$color=$pro->color;
-			$projName=$pro->name;
+			$projectId=$item->idProject;
+			$projectName=$pro->name;
 			$projectColorArray[$item->idProject]=$color;
-			$projectNameArray[$item->idProject]=$projName;
+			$projectNameArray[$item->idProject]=$projectName;
 		}
 		$date=$pw->workDate;
 		if (!array_key_exists($date, $result)) {
 			$result[$date]=array();
 		}
+		$typeId=null;
 		$typeName=null;
-		$type='id'.get_class($obj).'Type';
-		if (property_exists($obj,$type)) {
-		  $typeName=SqlList::getNameFromId('Type', $obj->$type);
+		$type='id'.get_class($item).'Type';
+		if (property_exists($item,$type)) {
+		  $typeId=$item->$type;
+		  $typeName=SqlList::getNameFromId('Type', $item->$type);
 		}
+		$priorityId=null;
 		$priorityName=null;
-		if (property_exists($obj,'idPriority')) {
-		  $priorityName=SqlList::getNameFromId('Priority', $obj->idPriority);
+		if (property_exists($item,'idPriority')) {
+		  $priorityId=$item->idPriority;
+		  $priorityName=SqlList::getNameFromId('Priority', $item->idPriority);
+		}
+		$responsibleId=null;
+		$responsibleName=null;
+		if (property_exists($item,'idResource')) {
+		  $responsibleId=$item->idResource;
+		  $responsibleName=SqlList::getNameFromId('Affectable', $item->idResource);
+		}
+		$statusName=null;
+		$statusId=null;
+		if (property_exists($item,'idStatus')) {
+		  $statusId=$item->idStatus;
+		  $statusName=SqlList::getNameFromId('Status', $item->idStatus);
 		}
 		$description=null;
 		if (property_exists($obj,'description')) {
 		  $description=$obj->description;
 		}
 		$result[$date][$pw->refType.'#'.$pw->refId]=array(
-				'type'=>$pw->refType,
+				'class'=>$pw->refType,
 		    'id'=>$pw->refId,
 				'work'=>$pw->work,
+		    'real'=>((get_class($pw)=='Work')?true:false),
 				'name'=>$item->name,
 				'color'=>$color,
-				'display'=>$display,
-				'project'=>$projName,
-				'date'=>"",
-				'real'=>((get_class($pw)=='Work')?true:false),
-		    'typename'=>$typeName,
-		    'priority'=>$priorityName,
+		    'date'=>"",
+				'projectId'=>$projectId,
+				'projectName'=>$projectName,
+				'typeId'=>$typeId,
+				'typeName'=>$typeName,
+				'priorityId'=>$priorityId,
+				'priorityName'=>$priorityName,
+				'responsibleId'=>$responsibleName,
+				'responsibleName'=>$responsibleName,
+		    'statusId'=>$statusId,
+		    'statusName'=>$statusName,
 		    'description'=>$description
 		);
 	}

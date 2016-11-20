@@ -25,29 +25,24 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Stauts defines list stauts an activity or action can get in (lifecylce).
+ * ListYesNo defines a short List .
  */ 
 require_once('_securityCheck.php');
-class Role extends SqlElement {
+class ListTeamOrga extends SqlElement {
 
-  // extends SqlElement, so has $id
-  public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place 
-  public $name;
-  public $sortOrder=0;
-  public $defaultCost;
-  public $idle;
-  public $description;
-  public $_sec_void;
-  
   // Define the layout that will be used for lists
-  private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="75%">${name}</th>
-    <th field="sortOrder" width="10%">${sortOrderShort}</th>    
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
-    ';
-
+  public $id;
+  public $list;
+  public $name;
+  public $code;
+  public $sortOrder;
+  public $idle;
+	
+  public $_isNameTranslatable = true;
+   
+    
+  private static $_databaseCriteria = array('list'=>'teamOrga');
+  private static $_databaseTableName = 'list';
   
    /** ==========================================================================
    * Constructor
@@ -71,12 +66,22 @@ class Role extends SqlElement {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
+
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
    */
-  protected function getStaticLayout() {
-    return self::$_layout;
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
+  }
+  
+      /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
   }
   
 }

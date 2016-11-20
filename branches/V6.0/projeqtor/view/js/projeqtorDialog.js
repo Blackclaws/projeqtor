@@ -3714,6 +3714,15 @@ function resourceCostUpdateRole() {
   if (reourceCostLoad) {
     return;
   }
+  if (dijit.byId("resourceCostIdRole").get('value') ) {
+    dojo.xhrGet({
+      url : '../tool/getSingleData.php?dataType=resourceCostDefault&idRole=' + dijit.byId("resourceCostIdRole").get('value'),
+      handleAs : "text",
+      load : function(data) {
+        dijit.byId('resourceCostValue').set('value', dojo.number.format(data));
+      }
+    });
+  }
   var funcList=dojo.byId('resourceCostFunctionList').value;
   $key='#' + dijit.byId("resourceCostIdRole").get('value') + '#';
   if (funcList.indexOf($key) >= 0) {

@@ -75,7 +75,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   }
   if ($col=='idResource' and $critFld=='idProject') {
   	$prj=new Project($critVal, true);
-  	$limitToSameOrga=(Organization::getUserVisibility()=="same")?Organization::getUserOrganization():'NO';
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
     $where="idProject in " . $in; 
@@ -90,27 +89,15 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if (! array_key_exists($aff->idResource, $table)) {
         $id=$aff->idResource;
         $name=SqlList::getNameFromId('Resource', $id);
-        if ($name==$id and $col=='idResource') {
-        	$name=SqlList::getNameFromId('User', $id);
-        }
+        //if ($name==$id and $col=='idResource') { // PBE V6.0 : this would insert users in Reosurce list (for instance responsible on Ticket)
+        //	$name=SqlList::getNameFromId('User', $id);
+        //}
         if ($name!=$id) {
-          $orga=null;
-          if ($limitToSameOrga!='NO') {
-            $orga=SqlList::getFieldFromId('Resource', $id,'idOrganization');
-          }
-          if ($limitToSameOrga=='NO' or $orga==$limitToSameOrga) {
-            $table[$id]=$name;
-          }
+          $table[$id]=$name;
         } 
       }
     }
     asort($table);
-  } else if ($col=='idResource' and Organization::getUserVisibility()=="same") { 
-    $res=new Resource($user->id);
-    $list=$res->getSqlElementsFromCriteria(array('idOrganization'=>$res->idOrganization));
-    foreach ($list as $res) {
-      $table[$id]=$res->name;
-    }
   } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idVersion' or $critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
     $critClass=substr($critFld,2);
     $versionField=str_replace('Version', '', $critFld);
@@ -314,7 +301,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         foreach($rtListProjectType as $id=>$idType) {
           $restrictArray[$idType]="OK";
         }
-        if ($selection) $restrictArray[$selection]="OK";
+        if ($selection) {$restrictArray[$selection]="OK";}
       }
     }
   } else { // (! $obj)
@@ -334,8 +321,30 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	return ;
     }
   }
+  if ($col=='idResource' and Affectable::getVisibilityScope()!="all") {
+    $restrictArray=array();
+    $res=new Resource();
+    $scope=Affectable::getVisibilityScope();
+    if ($scope=='orga') {
+      $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+    } else if ($scope=='team') {
+      $aff=new Affectable(getSessionUser()->id,true);
+      $crit="idTeam='$aff->idTeam'";
+    } else {
+      traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
+      $crit=array('id'=>'0');
+    }
+    $list=$res->getSqlElementsFromCriteria(null,false,$crit);
+    foreach ($list as $res) {
+      $restrictArray[$res->id]=$res->name;
+    }
+    if ($selection) $restrictArray[$selection]="OK";
+  }
   if (! $required) {
     echo '<option value=" " ></option>';
+  }
+  if ($selection and $col=='idResource' and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
+    $table[$selection]=SqlList::getNameFromId('Affectable', $selection);
   }
   if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' or $listType=='Mailable'
    or $listType=='Indicatorable' or $listType=='Checklistable' or $listType=='Dependable' or $listType=='Originable'

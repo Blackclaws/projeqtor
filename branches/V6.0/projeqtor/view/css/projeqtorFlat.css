@@ -407,6 +407,44 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconLoginUser { background-image: url(customIcons/blue/iconLogin.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px}
 .ProjeQtOrFlatBlue .iconLoginPassword { background-image: url(customIcons/blue/iconPassword.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px}
 
+
+.ProjeQtOrFlatBlue .calendarRed32, .ProjeQtOrFlatRed .calendarRed32, .ProjeQtOrFlatGreen .calendarRed32, .ProjeQtOrFlatGrey .calendarRed32 
+  { background-image: url(images/calendarRedFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarRed22, .ProjeQtOrFlatRed .calendarRed22, .ProjeQtOrFlatGreen .calendarRed22, .ProjeQtOrFlatGrey .calendarRed22 
+  { background-image: url(images/calendarRedFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarRed16, .ProjeQtOrFlatRed .calendarRed16, .ProjeQtOrFlatGreen .calendarRed16, .ProjeQtOrFlatGrey .calendarRed16 
+  { background-image: url(images/calendarRedFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .calendarWhite32, .ProjeQtOrFlatRed .calendarWhite32, .ProjeQtOrFlatGreen .calendarWhite32, .ProjeQtOrFlatGrey .calendarWhite32 
+  { background-image: url(images/calendarWhiteFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarWhite22, .ProjeQtOrFlatRed .calendarWhite22, .ProjeQtOrFlatGreen .calendarWhite22, .ProjeQtOrFlatGrey .calendarWhite22 
+  { background-image: url(images/calendarWhiteFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarWhite16, .ProjeQtOrFlatRed .calendarWhite16, .ProjeQtOrFlatGreen .calendarWhite16, .ProjeQtOrFlatGrey .calendarWhite16 
+  { background-image: url(images/calendarWhiteFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .calendarYellow32, .ProjeQtOrFlatRed .calendarYellow32, .ProjeQtOrFlatGreen .calendarYellow32, .ProjeQtOrFlatGrey .calendarYellow32 
+  { background-image: url(images/calendarYellowFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarYellow22, .ProjeQtOrFlatRed .calendarYellow22, .ProjeQtOrFlatGreen .calendarYellow22, .ProjeQtOrFlatGrey .calendarYellow22 
+  { background-image: url(images/calendarYellowFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarYellow16, .ProjeQtOrFlatRed .calendarYellow16, .ProjeQtOrFlatGreen .calendarYellow16, .ProjeQtOrFlatGrey .calendarYellow16 
+  { background-image: url(images/calendarYellowFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatBlue .calendarRedUpdate32, .ProjeQtOrFlatRed .calendarRedUpdate32, .ProjeQtOrFlatGreen .calendarRedUpdate32, .ProjeQtOrFlatGrey .calendarRedUpdate32 
+  { background-image: url(images/calendarRedUpdateFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarRedUpdate22, .ProjeQtOrFlatRed .calendarRedUpdate22, .ProjeQtOrFlatGreen .calendarRedUpdate22, .ProjeQtOrFlatGrey .calendarRedUpdate22 
+  { background-image: url(images/calendarRedUpdateFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarRedUpdate16, .ProjeQtOrFlatRed .calendarRedUpdate16, .ProjeQtOrFlatGreen .calendarRedUpdate16, .ProjeQtOrFlatGrey .calendarRedUpdate16 
+  { background-image: url(images/calendarRedUpdateFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .calendarWhiteUpdate32, .ProjeQtOrFlatRed .calendarWhiteUpdate32, .ProjeQtOrFlatGreen .calendarWhiteUpdate32, .ProjeQtOrFlatGrey .calendarWhiteUpdate32 
+  { background-image: url(images/calendarWhiteUpdateFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarWhiteUpdate22, .ProjeQtOrFlatRed .calendarWhiteUpdate22, .ProjeQtOrFlatGreen .calendarWhiteUpdate22, .ProjeQtOrFlatGrey .calendarWhiteUpdate22 
+  { background-image: url(images/calendarWhiteUpdateFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarWhiteUpdate16, .ProjeQtOrFlatRed .calendarWhiteUpdate16, .ProjeQtOrFlatGreen .calendarWhiteUpdate16, .ProjeQtOrFlatGrey .calendarWhiteUpdate16 
+  { background-image: url(images/calendarWhiteUpdateFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .calendarYellowUpdate32, .ProjeQtOrFlatRed .calendarYellowUpdate32, .ProjeQtOrFlatGreen .calendarYellowUpdate32, .ProjeQtOrFlatGrey .calendarYellowUpdate32 
+  { background-image: url(images/calendarYellowUpdateFlat.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .calendarYellowUpdate22, .ProjeQtOrFlatRed .calendarYellowUpdate22, .ProjeQtOrFlatGreen .calendarYellowUpdate22, .ProjeQtOrFlatGrey .calendarYellowUpdate22 
+  { background-image: url(images/calendarYellowUpdateFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .calendarYellowUpdate16, .ProjeQtOrFlatRed .calendarYellowUpdate16, .ProjeQtOrFlatGreen .calendarYellowUpdate16, .ProjeQtOrFlatGrey .calendarYellowUpdate16 
+  { background-image: url(images/calendarYellowUpdateFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */
