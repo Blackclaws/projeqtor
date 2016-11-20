@@ -41,6 +41,7 @@ class Affectable extends SqlElement {
   public $isContact;
   public $email;
   public $idTeam;
+  public $idOrganization;
   public $idle;
   public $_constructForName=true;
   public $_calculateForColumn=array("name" => "coalesce(fullName,concat(name,' #'))","userName" => "coalesce(name,concat(fullName,' *'))");
@@ -48,6 +49,8 @@ class Affectable extends SqlElement {
   private static $_databaseTableName='resource';
   private static $_databaseColumnName=array('name' => 'fullName','userName' => 'name');
   private static $_databaseCriteria=array();
+  
+  private static $_visibilityScope;
 
   /**
    * ==========================================================================
@@ -211,14 +214,18 @@ class Affectable extends SqlElement {
         //$result.='<tr style="height:20px;">';
         //$result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
         //$result.='<td>&nbsp;&nbsp;';
-        $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
+        $result.='<span class="label" style="position: absolute;top:28px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
         if ($id==getSessionUser()->id) $canUpdate=true;
         if ($canUpdate) {
-        $result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
-            .'onClick="removeAttachment('.htmlEncode($image->id).');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+          //$result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
+          //    .'onClick="removeAttachment('.htmlEncode($image->id).');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+          $result.= '<span onClick="removeAttachment('.htmlEncode($image->id).');" title="'.i18n('removePhoto').'" >';
+          $result.= formatSmallButton('Remove');
+          $result.= '</span>';
         }
+        
         $horizontal='right:10px';
         $top='30px';
         $result.='</span>';
@@ -245,7 +252,7 @@ class Affectable extends SqlElement {
         //$result.='<tr style="height:20px;">';
         //$result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
         //$result.='<td>&nbsp;&nbsp;';
-        $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
+        $result.='<span class="label" style="position: absolute;top:28px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $canUpdate=securityGetAccessRightYesNo('menu'.$class, 'update') == "YES";
         if ($id==getSessionUser()->id) $canUpdate=true;
@@ -273,6 +280,18 @@ class Affectable extends SqlElement {
       }
     }
     return false;
+  }
+  
+  public static function  getVisibilityScope($scope='List') {
+    if (self::$_visibilityScope) return self::$_visibilityScope;
+    $res='all';
+    $crit=array('idProfile'=>getSessionUser()->idProfile, 'scope'=>'resVisibility'.$scope);
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    if ($habil and $habil->id) {
+      $res=SqlList::getFieldFromId('ListTeamOrga', $habil->rightAccess,'code',false);
+    }
+    self::$_visibilityScope==$res;
+    return $res;
   }
 }
 ?>

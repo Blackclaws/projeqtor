@@ -92,6 +92,24 @@ $value['DbPrefix'] = "prefix on table names, used to store several instances und
 $pname['DbPrefix'] = 'paramDbPrefix';
 $ctrls['DbPrefix'] = '';
 
+$param['SslKey'] = '';
+$label['SslKey'] = "SSL Key for SSL connexion";
+$value['SslKey'] = "Location for SSL Key file for SSL connexion to MySql database (keep empty unless you know what it is)";
+$pname['SslKey'] = 'SslKey';
+$ctrls['SslKey'] = '';
+
+$param['SslCert'] = '';
+$label['SslCert'] = "Certificate for SSL connexion";
+$value['SslCert'] = "Location for SSL Certificate file for SSL connexion to MySql database (keep empty unless you know what it is)";
+$pname['SslCert'] = 'SslCert';
+$ctrls['SslCert'] = '';
+
+$param['SslCa'] = '';
+$label['SslCa'] = "CA for SSL connexion";
+$value['SslCa'] = "Location for Certificate Authority file for SSL connexion to MySql database (keep empty unless you know what it is)";
+$pname['SslCa'] = 'SslCa';
+$ctrls['SslCa'] = '';
+
 $param['crlf00']='';
 $label['crlf00']='crlf';
 

@@ -295,12 +295,32 @@
 	      if (array_key_exists('selected', $_REQUEST)) {
 	        $lstRes[$_REQUEST['selected']]=SqlList::getNameFromId('Affectable', $_REQUEST['selected']);
 	      }
+	      $restrictArray=array();
+	      $scope=Affectable::getVisibilityScope();
+	      if ($scope!="all") {
+	        $res=new Resource();
+	        if ($scope=='orga') {
+	          $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+	        } else if ($scope=='team') {
+	          $aff=new Affectable(getSessionUser()->id,true);
+	          $crit="idTeam='$aff->idTeam'";
+	        } else {
+	          traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
+	          $crit=array('id'=>'0');
+	        }
+	        $listRestrict=$res->getSqlElementsFromCriteria(null,false,$crit);
+	        foreach ($listRestrict as $res) {
+	          $restrictArray[$res->id]=$res->name;
+	        }
+	      }
 	      foreach ($list as $aff) {
 	        if (! array_key_exists($aff->idResource, $lstRes)) {
 	        	$id=$aff->idResource;
 	        	$name=SqlList::getNameFromId('Resource', $id);
 	        	if ($name!=$id) {
-	            $lstRes[$id]=$name;
+	        	  if ($scope=="all" or isset($restrictArray[$id])) {
+	              $lstRes[$id]=$name;
+	        	  }
 	        	}
 	        }
 	      }

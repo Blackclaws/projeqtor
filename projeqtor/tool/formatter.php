@@ -279,12 +279,14 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22,$addN
   $title=htmlEncode($title,'quotes');
   $file="../view/css/images/calendar$color$addName$size.png";
   $res='<span style="position:relative;float:'.$float.';padding-right:3px">';
-  $res.='<img ';
-	$res.=' src="'.$file.'" ';
+  $res.='<a ';
+	//$res.=' src="'.$file.'" ';
 	if (! $print) {
 	  $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
 	}
-	$res.='/>';	
+	$res.='>';
+	$res.="<div class='calendar$color$addName$size' style=';width:".$size."px;height:".$size."px;' >&nbsp;</div>";
+	$res.='</a>';
 	
   $month=getMonthName(substr($date, 5,2),5);
   $day=substr($date, 8,2);
