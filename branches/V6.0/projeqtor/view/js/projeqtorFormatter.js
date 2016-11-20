@@ -524,10 +524,16 @@ function simpleDecrypt(inStr) {
   }
   return outStr;
 }
-if (window.addEventListener) {
+
+function formatSmallButton(classname) {
+  var result="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:16px;height:16px;'><div class='iconButton"+classname+"16' style='' >&nbsp;</div></span>";
+  return result;
+}
+
+if (document.addEventListener) {
   var keys = [];
   var konami = "38,38,40,40,37,39,37,39,66,65";
-  window.addEventListener("keydown", function(e) {
+  document.addEventListener("keydown", function(e) {
     keys.push(e.keyCode);
     if (konami.indexOf(keys.toString()) == 0) {
       if (keys.toString().indexOf(konami) >= 0) {
@@ -541,11 +547,8 @@ if (window.addEventListener) {
     }
   }, true);
 };
+
+
 var konamiMsg = [ '5ùhmuôçYgluêYuôYgluû',
     'FhmjïmhçuàljYufhXYklYuïmRgXuhguYkluêYufYçêêYmjuû', 'NcRluYêkYuû',
     'NcRluXçXurhmuYqîYVluû' ];
-
-function formatSmallButton(classname) {
-  var result="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:16px;height:16px;'><div class='iconButton"+classname+"16' style='' >&nbsp;</div></span>";
-  return result;
-}

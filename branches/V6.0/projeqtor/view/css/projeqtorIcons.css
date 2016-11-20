@@ -771,3 +771,22 @@
 .iconWorkflow32 { background-image: url(images/iconWorkflow32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconWorkflow22 { background-image: url(images/iconWorkflow22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconWorkflow16 { background-image: url(images/iconWorkflow16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.calendarRed32 { background-image: url(images/calendarRed32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarRed22 { background-image: url(images/calendarRed32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarRed16 { background-image: url(images/calendarRed32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.calendarYellow32 { background-image: url(images/calendarYellow32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarYellow22 { background-image: url(images/calendarYellow32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarYellow16 { background-image: url(images/calendarYellow32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.calendarWhite32 { background-image: url(images/calendarWhite32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarWhite22 { background-image: url(images/calendarWhite32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarWhite16 { background-image: url(images/calendarWhite32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.calendarRedUpdate32 { background-image: url(images/calendarRedUpdate32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarRedUpdate22 { background-image: url(images/calendarRedUpdate32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarRedUpdate16 { background-image: url(images/calendarRedUpdate32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.calendarYellowUpdate32 { background-image: url(images/calendarYellowUpdate32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarYellowUpdate22 { background-image: url(images/calendarYellowUpdate32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarYellowUpdate16 { background-image: url(images/calendarYellowUpdate32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.calendarWhiteUpdate32 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.calendarWhiteUpdate22 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.calendarWhiteUpdate16 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}

@@ -30,7 +30,7 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
-	Security::checkValidClass($objectClass);
+	  Security::checkValidClass($objectClass);
 	
     $showThumb=Parameter::getUserParameter('paramShowThumbList');
     if ($showThumb=='NO') {
@@ -191,6 +191,18 @@
           $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         }
         $queryWhere.= ')';
+      }
+    }
+    if ($objectClass=='Resource') {
+      $scope=Affectable::getVisibilityScope('Screen');
+      if ($scope!="all") {
+        $queryWhere.= ($queryWhere=='')?'':' and ';
+        if ($scope=='orga') {
+          $queryWhere.=" $table.idOrganization in (". Organization::getUserOrganisationList().")";
+        } else if ($scope=='team') {
+          $aff=new Affectable(getSessionUser()->id,true);
+          $queryWhere.=" $table.idTeam='$aff->idTeam'";
+        }
       }
     }
     

@@ -89,7 +89,7 @@ if ($format=='print') {
     echo $item['class'].';'.$item['id'].';'.$item['name']."\n";
   }
 } else {
-  debugLog("productFlatStructure : incorrect format '$format'");
+  errorLog("productStructure : incorrect format '$format'");
   exit;
 }
 
