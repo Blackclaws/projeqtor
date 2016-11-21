@@ -1,23 +1,23 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : 
  *  2014 - Caccia : fix #1544
  *
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free 
+ * the terms of the GNU Affero General Public License as published by the Free 
  * Software Foundation, either version 3 of the License, or (at your option) 
  * any later version.
  * 
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
@@ -908,7 +908,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <table width="100%"><tr><td width="300px" align="right">
               <button  id="sendToPrinter" dojoType="dijit.form.Button" showlabel="false"
                 title="<?php echo i18n('sendToPrinter');?>" 
-                iconClass="dijitEditorIcon dijitEditorIconPrint" >
+                iconClass="dijitButtonIcon dijitButtonIconPrint" >
                 <script type="dojo/connect" event="onClick" args="evt">
                   sendFrameToPrinter();
                 </script>

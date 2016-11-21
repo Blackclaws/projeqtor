@@ -1,22 +1,22 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free 
+ * the terms of the GNU Affero General Public License as published by the Free 
  * Software Foundation, either version 3 of the License, or (at your option) 
  * any later version.
  * 
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
@@ -936,14 +936,16 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo '<button title="' . i18n('saveFilter') . '" ';  
   echo ' dojoType="dijit.form.Button" '; 
   echo ' id="dialogFilterSave" name="dialogFilterSave" ';
-  echo ' iconClass="dijitEditorIcon dijitEditorIconSave" showLabel="false"> ';
+  echo ' iconClass="dijitButtonIcon dijitButtonIconSave" showLabel="false"> ';
   echo ' <script type="dojo/connect" event="onClick" args="evt">saveFilter();</script>';
   echo '</button>';
   echo "</td></tr>";
   echo "<tr>";
   echo "<td class='filterHeader' style='width:525px;'>" . i18n("criteria") . "</td>";
   echo "<td class='filterHeader' style='width:25px;'>";
-  echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removefilterClause(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
+  echo ' <a src="css/images/smallButtonRemove.png" onClick="removefilterClause(\'all\');" title="' . i18n('removeAllFilters') . '" > ';
+  echo formatSmallButton('Remove');
+  echo ' </a>';
   echo "</td>";
   echo "</tr>";
   if (count($filterArray)>0) { 
@@ -955,7 +957,9 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
            $filter['disp']['value'] .
            "</td>";
       echo "<td class='filterData' style='text-align: center;'>";
-      echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
+      echo ' <a src="css/images/smallButtonRemove.png" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" > ';
+      echo formatSmallButton('Remove');
+      echo ' </a>';
       echo "</td>";
       echo "</tr>";
     }
@@ -1011,7 +1015,9 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
            . "</td>";
       if ($context!='directFilterList') {
         echo "<td class='filterData' style='text-align: center;'>";      
-        echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removeStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
+        echo ' <a src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" > ';
+        echo formatSmallButton('Remove');
+        echo ' </a>';
         echo "</td>";
         echo "<td class='filterData' style='text-align: center;'>";
         if($filter->isShared==0)echo ' <img src="css/images/share.png" class="roundedButtonSmall" onClick="shareStoredFilter('. "'" . htmlEncode($filter->id) . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('shareStoredFilter') . '" class="smallButton"/> ';
