@@ -29,16 +29,16 @@
 * This file has bee adapted and is part of ProjeQtOr.
 * 
 * ProjeQtOr is free software: you can redistribute it and/or modify it under 
-* the terms of the GNU General Public License as published by the Free 
+* the terms of the GNU Affero General Public License as published by the Free 
 * Software Foundation, either version 3 of the License, or (at your option) 
 * any later version.
 * 
 * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
-* FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+* FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
 * more details.
 *
-* You should have received a copy of the GNU General Public License along with
+* You should have received a copy of the GNU Affero General Public License along with
 * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
 *
 * You can get complete code of ProjeQtOr, other resource, help and information
@@ -134,7 +134,7 @@ function getPlanningField(attribute,field) {
 
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, 
-                            pLink, pMile, pRes, pComp, pGroup, 
+                            pLink, pContextMenu, pMile, pRes, pComp, pGroup, 
                             pParent, pOpen, pDepend, 
                             pCaption, pClass, pScope, pRealEnd, pPlanStart,
                             pValidatedWork, pAssignedWork, pRealWork, pLeftWork, pPlannedWork, 
@@ -148,6 +148,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   var vEnd   = new Date();
   var vColor = pColor;
   var vLink  = pLink;
+  var vContextMenu  = pContextMenu;
   var vMile  = pMile;
   var vRes   = pRes;
   var vComp  = pComp;
@@ -247,6 +248,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.getBaseBottomEnd     = function(){ return vBaseBottomEnd;  };
   this.getColor    = function(){ return vColor;};
   this.getLink     = function(){ return vLink; };
+  this.getContextMenu = function(){ return vContextMenu; };
   this.getMile     = function(){ return vMile; };
   this.getDepend   = function(){ if(vDepend) return vDepend; else return null; };
   this.getCaption  = function(){ if(vCaption) return vCaption; else return ''; };
@@ -1234,6 +1236,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
                 + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+                + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
   	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
   	            vRightTable += ' </div>';	        	
   	        	if (g.getSplitted()) {
@@ -1271,7 +1274,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       //vRightTable+=vHighlightToday;  
         //vRightTable+='<div class="ganttUnselectable" style="position: absolute; z-index:25; opacity:0.1; filter: alpha(opacity=10); width: 200px; height: 200px; left: 0px; top:0px; background-color: red"></div>';
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
-      dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer">'+vRightTable+'</div>';
+      dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer"><div id="rightTableBarDetail">&nbsp;</div>'+vRightTable+'</div>';
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
       dojo.parser.parse('leftGanttChartDIV');
       //dojo.parser.parse('rightGanttChartDIV');
@@ -2036,6 +2039,10 @@ JSGantt.exitBarLink = function (idRow) {
 	  g.clearDependencies(true);
 	} else {
 	  document.body.style.cursor='default';
+	}
+	if (dojo.byId('rightTableBarDetail')) {
+	  dojo.byId('rightTableBarDetail').innerHTML=""; 
+	  dojo.byId('rightTableBarDetail').style.display="none";
 	}
 };
 

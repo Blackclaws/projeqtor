@@ -1,20 +1,20 @@
 /*******************************************************************************
  * COPYRIGHT NOTICE *
  * 
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org Contributors : -
+ * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org Contributors : -
  * 
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
+ * the terms of the GNU Affero General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  * 
  * You can get complete code of ProjeQtOr, other resource, help and information
@@ -2018,7 +2018,7 @@ function addExpenseDetail(expenseType) {
   dijit.byId("expenseDetailReference").reset();
   dijit.byId("expenseDetailDate").set('value', null);
   dijit.byId("expenseDetailType").reset();
-  dojo.byId("expenseDetailDiv").innerHtml="";
+  dojo.byId("expenseDetailDiv").innerHTML="";
   dijit.byId("expenseDetailAmount").reset();
   refreshList('idExpenseDetailType', expenseType, '1', null,'expenseDetailType', false);
   // dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
@@ -3167,9 +3167,12 @@ function filterSelectAtribute(value) {
           if (value == 'idTargetVersion' || value == 'idOriginalValue') {
             value='idVersion';
           }
+          var urlListFilter='../tool/jsonList.php?required=true&listType=list&dataType='+value;
+          if (currentSelectedProject && currentSelectedProject!='' && currentSelectedProject!='*') {
+            urlListFilter+='&critField=idProject&critValue='+currentSelectedProject;
+          }
           var tmpStore=new dojo.data.ItemFileReadStore({
-            url : '../tool/jsonList.php?required=true&listType=list&dataType='
-                + value
+            url : urlListFilter
           });
           var mySelect=dojo.byId("filterValueList");
           mySelect.options.length=0;

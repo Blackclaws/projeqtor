@@ -1,21 +1,21 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free 
+ * the terms of the GNU Affero General Public License as published by the Free 
  * Software Foundation, either version 3 of the License, or (at your option) 
  * any later version.
  * 
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
@@ -253,7 +253,8 @@
   position:relative; top:2px;
 }
 .ProjeQtOrFlatBlue .linkHeader, .ProjeQtOrFlatBlue .attachmentHeader, .ProjeQtOrFlatBlue .noteHeader, .ProjeQtOrFlatBlue .dependencyHeader,
-.ProjeQtOrFlatBlue .historyHeader, .ProjeQtOrFlatBlue .assignHeader {
+.ProjeQtOrFlatBlue .historyHeader, .ProjeQtOrFlatBlue .assignHeader,
+.ProjeQtOrFlatBlue .messageHeader, .ProjeQtOrFlatBlue .workflowHeader, .ProjeQtOrFlatBlue .filterHeader, .ProjeQtOrFlatBlue .calendarHeader {
 	background-image: url();
 	background: url() #cdcadb !important;
 	color: #545381;
@@ -1176,7 +1177,7 @@ body .ProjeQtOrFlatBlue {
   background-color: #fafafa; color: #833e3e;
 }
 .ProjeQtOrFlatRed .dojoxGridRowOver .dojoxGridCell {
- background: #aca0bc !important;
+ background: #bcaca0 !important;
  color: #833e3e !important;
  -moz-opacity: 0.7;
  opacity: 0.7;
@@ -1296,7 +1297,7 @@ body .ProjeQtOrFlatBlue {
 }
 
 .ProjeQtOrFlatRed .dojoxGridRowOdd {
-  background-color: #ecebf2;
+  background-color: #f2ebeb;
 }
 .ProjeQtOrFlatRed .dojoxGridHeader .dojoxGridCell {
     background: none repeat scroll 0 0 #bda1a6 !important;
@@ -1373,7 +1374,8 @@ body .ProjeQtOrFlatBlue {
   position:relative; top:2px;
 }
 .ProjeQtOrFlatRed .linkHeader, .ProjeQtOrFlatRed .attachmentHeader, .ProjeQtOrFlatRed .noteHeader, .ProjeQtOrFlatRed .dependencyHeader,
-.ProjeQtOrFlatRed .historyHeader, .ProjeQtOrFlatRed .assignHeader {
+.ProjeQtOrFlatRed .historyHeader, .ProjeQtOrFlatRed .assignHeader,
+.ProjeQtOrFlatRed .messageHeader, .ProjeQtOrFlatRed .workflowHeader, .ProjeQtOrFlatRed .filterHeader, .ProjeQtOrFlatRed .calendarHeader {
   background-image: url();
   background: url() #ddcdce !important;
   color: #833e3e;
@@ -1516,7 +1518,7 @@ body .ProjeQtOrFlatRed {
 }
 .ProjeQtOrFlatRed .ganttTaskgroup {
   /* background: #dedae6; */
-  background: #ecebf2;
+  background: #f2ebeb;
 }
 .ProjeQtOrFlatRed .ganttTaskgroup:Hover, .ProjeQtOrFlatRed .ganttTaskrow:hover, .ProjeQtOrFlatRed .ganttTaskmile:Hover, .ProjeQtOrFlatRed .ganttRowHover {
   background-color: #ffffaa;
@@ -2259,7 +2261,7 @@ body .ProjeQtOrFlatRed {
   background-color: #fafafa; color: #537665;
 }
 .ProjeQtOrFlatGreen .dojoxGridRowOver .dojoxGridCell {
- background: #aca0bc !important;
+ background: #acbca0 !important;
  color: #537665 !important;
  -moz-opacity: 0.7;
  opacity: 0.7;
@@ -2379,7 +2381,7 @@ body .ProjeQtOrFlatRed {
 }
 
 .ProjeQtOrFlatGreen .dojoxGridRowOdd {
-  background-color: #ecebf2;
+  background-color: #ecf2eb;
 }
 .ProjeQtOrFlatGreen .dojoxGridHeader .dojoxGridCell {
     background: none repeat scroll 0 0 #86a790 !important;
@@ -2456,7 +2458,8 @@ body .ProjeQtOrFlatRed {
   position:relative; top:2px;
 }
 .ProjeQtOrFlatGreen .linkHeader, .ProjeQtOrFlatGreen .attachmentHeader, .ProjeQtOrFlatGreen .noteHeader, .ProjeQtOrFlatGreen .dependencyHeader,
-.ProjeQtOrFlatGreen .historyHeader, .ProjeQtOrFlatGreen .assignHeader {
+.ProjeQtOrFlatGreen .historyHeader, .ProjeQtOrFlatGreen .assignHeader,
+.ProjeQtOrFlatGreen .messageHeader, .ProjeQtOrFlatGreen .workflowHeader, .ProjeQtOrFlatGreen .filterHeader, .ProjeQtOrFlatGreen .calendarHeader {
   background-image: url();
   background: url() #c9dbce !important;
   color: #537665;
@@ -2600,7 +2603,7 @@ body .ProjeQtOrFlatGreen {
 }
 .ProjeQtOrFlatGreen .ganttTaskgroup {
   /* background: #dedae6; */
-  background: #ecebf2;
+  background: #ecf2eb;
 }
 .ProjeQtOrFlatGreen .ganttTaskgroup:Hover, .ProjeQtOrFlatGreen .ganttTaskrow:hover, .ProjeQtOrFlatGreen .ganttTaskmile:Hover, .ProjeQtOrFlatGreen .ganttRowHover {
   background-color: #ffffaa;
@@ -3342,7 +3345,7 @@ body .ProjeQtOrFlatGreen {
   background-color: #fafafa; color: #656565;
 }
 .ProjeQtOrFlatGrey .dojoxGridRowOver .dojoxGridCell {
- background: #aca0bc !important;
+ background: #acacac !important;
  color: #656565 !important;
  -moz-opacity: 0.7;
  opacity: 0.7;
@@ -3462,7 +3465,7 @@ body .ProjeQtOrFlatGreen {
 }
 
 .ProjeQtOrFlatGrey .dojoxGridRowOdd {
-  background-color: #ecebf2;
+  background-color: #ececec;
 }
 .ProjeQtOrFlatGrey .dojoxGridHeader .dojoxGridCell {
     background: none repeat scroll 0 0 #AEAEAE !important;
@@ -3539,7 +3542,8 @@ body .ProjeQtOrFlatGreen {
   position:relative; top:2px;
 }
 .ProjeQtOrFlatGrey .linkHeader, .ProjeQtOrFlatGrey .attachmentHeader, .ProjeQtOrFlatGrey .noteHeader, .ProjeQtOrFlatGrey .dependencyHeader,
-.ProjeQtOrFlatGrey .historyHeader, .ProjeQtOrFlatGrey .assignHeader {
+.ProjeQtOrFlatGrey .historyHeader, .ProjeQtOrFlatGrey .assignHeader,
+.ProjeQtOrFlatGrey .messageHeader, .ProjeQtOrFlatGrey .workflowHeader, .ProjeQtOrFlatGrey .filterHeader, .ProjeQtOrFlatGrey .calendarHeader {
   background-image: url();
   background: url() #D4D1D1 !important;
   color: #656565;
@@ -3683,7 +3687,7 @@ body .ProjeQtOrFlatGrey {
 }
 .ProjeQtOrFlatGrey .ganttTaskgroup {
   /* background: #dedae6; */
-  background: #ecebf2;
+  background: #ececec;
 }
 .ProjeQtOrFlatGrey .ganttTaskgroup:Hover, .ProjeQtOrFlatGrey .ganttTaskrow:hover, .ProjeQtOrFlatGrey .ganttTaskmile:Hover, .ProjeQtOrFlatGrey .ganttRowHover {
   background-color: #ffffaa;
