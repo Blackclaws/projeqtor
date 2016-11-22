@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V6.0" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V6.0.0" />
+  <property name="version"       value="V6.0.1" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -32,6 +32,9 @@
      <copy todir="${deploy.dir}/external/pChart">
        <fileset dir="${src.dir}/external/pChart"/>
      </copy>
+  	 <copy todir="${deploy.dir}/external/pChart2">
+  	   <fileset dir="${src.dir}/external/pChart2"/>
+  	 </copy>
      <copy todir="${deploy.dir}/external/html2pdf">
        <fileset dir="${src.dir}/external/html2pdf">
          <exclude name="**/exemples/"/>
