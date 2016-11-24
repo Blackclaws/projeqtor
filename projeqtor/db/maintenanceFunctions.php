@@ -350,6 +350,8 @@ function formatForDbType($query) {
     } else if (substr($res,0,12)=='RENAME TABLE') {
        $res=str_replace('RENAME TABLE','ALTER TABLE',$res);
        $res=str_replace(' TO ',' RENAME TO ',$res);
+    } else if (substr($res,0,12)=='CREATE INDEX') {
+      $res=str_replace('(255)','',$res);
     }
   } else {
     // not mysql, not pgsql, so WHAT ?
