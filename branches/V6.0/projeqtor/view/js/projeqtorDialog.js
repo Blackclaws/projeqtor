@@ -3855,101 +3855,87 @@ if (selected) {
 loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
 }
 
-function editTestCaseRun(testCaseRunId) {
+function editTestCaseRun(testCaseRunId, idRunStatus, callback) {
 if (checkFormChangeInProgress()) {
  showAlert(i18n('alertOngoingChange'));
  return;
 }
-//var callBack=function() {
-//idProject=dijit.byId('idProject').get('value');
-//refreshList('idTestCase', 'idProject', '0', idTestCase,'testCaseRunTestCase', true);
-//refreshList('idTicket', 'idProject', idProject, idTicket,'testCaseRunTicket', false);
-//dijit.byId("testCaseRunTestCase").set('readOnly', true);
-//dijit.byId('testCaseRunTestCase').set('value', idTestCase);
-//dojo.byId("testCaseRunId").value=idTestCaseRun;
-//dojo.byId("testCaseRunMode").value="edit";
 var testSessionId = dijit.byId('id').get('value');
-//dijit.byId('testCaseRunComment').set('value',
-//   dojo.byId("comment_" + idTestCaseRun).value);
-////dijit.byId('testCaseRunStatus').set('value', idRunStatus);
-//
-// testCaseRunChangeStatus();
-//enableWidget('dialogTestCaseRunSubmit');
-//if (!hide) {
-// dijit.byId("dialogTestCaseRun").show();
-//}
-//};
 var params="&testCaseRunId=" + testCaseRunId + "&testSessionId=" + testSessionId;
-loadDialog('dialogTestCaseRun', null, true, params);
+if (idRunStatus) params+="&runStatusId="+idRunStatus;
+loadDialog('dialogTestCaseRun', callback, ((callback)?false:true), params);
 }
 
-function passedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
-editTestCaseRun(idTestCaseRun, idTestCase, '2', idTicket, true);
-showWait();
-setTimeout("saveTestCaseRun()", 500);
+function passedTestCaseRun(idTestCaseRun) {
+  var callback=function() { 
+    saveTestCaseRun(); 
+    dijit.byId('dialogTestCaseRun').hide();
+  };
+  editTestCaseRun(idTestCaseRun, '2', callback);
 }
 
-function failedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
-editTestCaseRun(idTestCaseRun, idTestCase, '3', idTicket, false);
+function failedTestCaseRun(idTestCaseRun) {
+  editTestCaseRun(idTestCaseRun, '3', null);
 }
 
-function blockedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
-editTestCaseRun(idTestCaseRun, idTestCase, '4', idTicket, true);
-showWait();
-setTimeout("saveTestCaseRun()", 500);
+function blockedTestCaseRun(idTestCaseRun) {
+  var callback=function() { 
+    saveTestCaseRun(); 
+    dijit.byId('dialogTestCaseRun').hide();
+  };
+  editTestCaseRun(idTestCaseRun, '4', callback);
 }
 
 function testCaseRunChangeStatus() {
-var status=dijit.byId('testCaseRunStatus').get('value');
-if (status == '3') {
- dojo.byId('testCaseRunTicketDiv').style.display="block";
-} else {
- if (!trim(dijit.byId('testCaseRunTicket').get('value'))) {
-   dojo.byId('testCaseRunTicketDiv').style.display="none";
- } else {
+  var status=dijit.byId('testCaseRunStatus').get('value');
+  if (status == '3') {
    dojo.byId('testCaseRunTicketDiv').style.display="block";
- }
-}
+  } else {
+   if (!trim(dijit.byId('testCaseRunTicket').get('value'))) {
+     dojo.byId('testCaseRunTicketDiv').style.display="none";
+   } else {
+     dojo.byId('testCaseRunTicketDiv').style.display="block";
+   }
+  }
 }
 
 function removeTestCaseRun(id, idTestCase) {
-if (checkFormChangeInProgress()) {
- showAlert(i18n('alertOngoingChange'));
- return;
-}
-dojo.byId("testCaseRunId").value=id;
-actionOK=function() {
- loadContent("../tool/removeTestCaseRun.php", "resultDiv",
-     "testCaseRunForm", true, 'testCaseRun');
-};
-msg=i18n('confirmDeleteTestCaseRun', new Array(idTestCase));
-showConfirm(msg, actionOK);
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  dojo.byId("testCaseRunId").value=id;
+  actionOK=function() {
+   loadContent("../tool/removeTestCaseRun.php", "resultDiv",
+       "testCaseRunForm", true, 'testCaseRun');
+  };
+  msg=i18n('confirmDeleteTestCaseRun', new Array(idTestCase));
+  showConfirm(msg, actionOK);
 }
 
 function saveTestCaseRun() {
-var formVar=dijit.byId('testCaseRunForm');
-var mode=dojo.byId("testCaseRunMode").value;
-if ( (mode == 'add'  && dojo.byId("testCaseRunTestCaseList").value == "") 
-  || (mode == 'edit' && dojo.byId("testCaseRunTestCase").value == "" ) )
- return ;
-if (mode == 'edit') {
- var status=dijit.byId('testCaseRunStatus').get('value');
- if (status == '3') {
-   if (trim(dijit.byId('testCaseRunTicket').get('value')) == '') {
-     dijit.byId("dialogTestCaseRun").show();
-     showAlert(i18n('messageMandatory', new Array(i18n('colTicket'))));
-     return;
+  var formVar=dijit.byId('testCaseRunForm');
+  var mode=dojo.byId("testCaseRunMode").value;
+  if ( (mode == 'add'  && dojo.byId("testCaseRunTestCaseList").value == "") 
+    || (mode == 'edit' && dojo.byId("testCaseRunTestCase").value == "" ) )
+   return ;
+  if (mode == 'edit') {
+   var status=dijit.byId('testCaseRunStatus').get('value');
+   if (status == '3') {
+     if (trim(dijit.byId('testCaseRunTicket').get('value')) == '') {
+       dijit.byId("dialogTestCaseRun").show();
+       showAlert(i18n('messageMandatory', new Array(i18n('colTicket'))));
+       return;
+     }
    }
- }
-}
-if (mode == 'add' || formVar.validate()) {
- loadContent("../tool/saveTestCaseRun.php", "resultDiv", "testCaseRunForm",
-     true, 'testCaseRun');
- dijit.byId('dialogTestCaseRun').hide();
-} else {
- dijit.byId("dialogTestCaseRun").show();
- showAlert(i18n("alertInvalidForm"));
-}
+  }
+  if (formVar.validate()) {
+   loadContent("../tool/saveTestCaseRun.php", "resultDiv", "testCaseRunForm", true, 'testCaseRun');
+   dijit.byId('dialogTestCaseRun').hide();
+  } else {
+   dijit.byId("dialogTestCaseRun").show();
+   showAlert(i18n("alertInvalidForm"));
+  }
 }
 
 // =============================================================================

@@ -3749,7 +3749,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="width:10%;text-align:center;">';
       echo '<table style="width:100%"><tr><td style="width:30%;white-space:nowrap;">';
       if ($canUpdate and !$print) {
-        echo '  <a onClick="editTestCaseRun(' . "'" . htmlEncode($tcr->id) . "'" . ",'" . htmlEncode($tcr->idTestCase) . "'" . ",'" . htmlEncode($tcr->idRunStatus) . "'" . ",'" . htmlEncode($tcr->idTicket) . "'" . ');" ' 
+        echo '  <a onClick="editTestCaseRun(\''.htmlEncode($tcr->id).'\', null, null);" ' 
       . 'title="' . i18n('editTestCaseRun') . '" > '.formatSmallButton('Edit').'</a>';
       }
       if ($canDelete and !$print) {
@@ -3761,15 +3761,15 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       }
       echo '</td><td>&nbsp;&nbsp;&nbsp;</td><td style="white-space:nowrap;">';
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3 or $tcr->idRunStatus == 4) {
-        echo '  <a onClick="passedTestCaseRun(' . "'" . htmlEncode($tcr->id) . "'" . ",'" . htmlEncode($tcr->idTestCase) . "'" . ",'" . htmlEncode($tcr->idRunStatus) . "'" . ",'" . htmlEncode($tcr->idTicket) . "'" . ');" ' 
+        echo '  <a onClick="passedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" ' 
         . 'title="' . i18n('passedTestCaseRun') . '" /> '.formatSmallButton('Passed').'</a>';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 4) {
-        echo '  <a onClick="failedTestCaseRun(' . "'" . htmlEncode($tcr->id) . "'" . ",'" . htmlEncode($tcr->idTestCase) . "'" . ",'" . htmlEncode($tcr->idRunStatus) . "'" . ",'" . htmlEncode($tcr->idTicket) . "'" . ');" ' 
+        echo '  <a onClick="failedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" '  
       . 'title="' . i18n('failedTestCaseRun') . '" > '.formatSmallButton('Failed').'</a>';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3) {
-        echo '  <a onClick="blockedTestCaseRun(' . "'" . htmlEncode($tcr->id) . "'" . ",'" . htmlEncode($tcr->idTestCase) . "'" . ",'" . htmlEncode($tcr->idRunStatus) . "'" . ",'" . htmlEncode($tcr->idTicket) . "'" . ');" ' 
+        echo '  <a onClick="blockedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" '  
             . 'title="' . i18n('blockedTestCaseRun') . '" > '.formatSmallButton('Blocked').'</a>';
       }
       echo '</td></tr></table>';

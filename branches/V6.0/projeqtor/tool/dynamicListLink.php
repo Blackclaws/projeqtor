@@ -49,12 +49,14 @@ $selectedArray=explode('_',$selected);
 $obj=new $ref1Type($ref1Id);
 if ($ref2Type) {
   $objList=new $ref2Type();
-  if (property_exists($objList, "idProject")) {
+  if (property_exists($objList, "idProject") and property_exists($obj, "idProject")) {
     $crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
     $list=$objList->getSqlElementsFromCriteria($crit,false,null);
   } else if ($ref2Type=='DocumentVersionFull' or $ref2Type=='DocumentVersion') {
     $doc=new Document();
-  	$critWhere = "idle='0' and exists(select 'x' from " . $doc->getDatabaseTableName() . " doc where doc.id=idDocument and doc.idProject='" . Sql::fmtId($obj->idProject) . "')";
+  	$critWhere = "idle='0' and exists(select 'x' from " . $doc->getDatabaseTableName() . " doc where doc.id=idDocument ";
+  	if (property_exists($obj, "idProject")) $critWhere.="and doc.idProject='" . Sql::fmtId($obj->idProject) . "'";
+    $critWhere.=")";
     $list=$objList->getSqlElementsFromCriteria(null,false,$critWhere, 'id desc');
   } else {
   	$crit = array ( 'idle'=>'0');

@@ -226,9 +226,9 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`)
 SELECT `idProfile`, 159, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=93;  
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `mandatoryDescription`, `code`) VALUES 
-('Organization', 'Department', '10',0,false,'DEPT'),
-('Organization', 'Unit', '20',0,false,'UNIT'),
-('Organization', 'Location', '30',0,false,'LOC');
+('Organization', 'Department', '10',0,0,'DEPT'),
+('Organization', 'Unit', '20',0,0,'UNIT'),
+('Organization', 'Location', '30',0,0,'LOC');
 
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES 
 (10, 'reportCategorySteeringCharts', 25);
@@ -347,12 +347,12 @@ CREATE INDEX planningelementOrganization ON `${prefix}planningelement` (`idOrgan
 ALTER TABLE `${prefix}resource` ADD `idOrganization` int(12) UNSIGNED DEFAULT NULL;
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `mandatoryDescription`, `code`) VALUES 
-('ProductVersion', 'Major Version', '10',0,false,'MAJ'),
-('ProductVersion', 'Minor Version', '20',0,false,'MIN'),
-('ProductVersion', 'Patch', '30',0,false,'PATCH'),
-('ComponentVersion', 'Major Version', '10',0,false,'maj'),
-('ComponentVersion', 'Minor Version', '20',0,false,'min'),
-('ComponentVersion', 'Patch', '30',0,false,'patch');
+('ProductVersion', 'Major Version', '10',0,0,'MAJ'),
+('ProductVersion', 'Minor Version', '20',0,0,'MIN'),
+('ProductVersion', 'Patch', '30',0,0,'PATCH'),
+('ComponentVersion', 'Major Version', '10',0,0,'maj'),
+('ComponentVersion', 'Minor Version', '20',0,0,'min'),
+('ComponentVersion', 'Patch', '30',0,0,'patch');
 
 ALTER TABLE `${prefix}version` ADD `idVersionType` int(12) unsigned DEFAULT NULL;
 
