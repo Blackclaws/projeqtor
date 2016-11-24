@@ -494,7 +494,7 @@ class UserMain extends SqlElement {
     $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
     $today=date('Y-m-d');
     foreach ($affList as $aff) {
-      if ( (! $aff->startDate or $aff->startDate<$today) and (! $aff->endDate or $aff->endDate>$today)) {
+      if ( (! $aff->startDate or $aff->startDate<=$today) and (! $aff->endDate or $aff->endDate>=$today)) {
         $affProfile[$aff->idProject]=$aff->idProfile;
         $resultProf[$aff->idProfile]=$aff->idProfile;
       }

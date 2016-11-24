@@ -46,6 +46,10 @@ $testCaseRun=new TestCaseRun($testCaseRunId);
 if(!$testCaseRun->idRunStatus){
   $testCaseRun->idRunStatus=1;
 }
+if (isset($_REQUEST['runStatusId'])) {
+  $testCaseRun->idRunStatus=intval($_REQUEST['runStatusId']);
+}
+
 $selected="";
 if (array_key_exists('selected', $_REQUEST)) {
   $selected=$_REQUEST['selected'];
@@ -175,7 +179,7 @@ if (count($listTcr)) {
 		             <td>
 		               <select dojoType="dijit.form.FilteringSelect" 
 		               <?php echo autoOpenFilteringSelect();?>
-		                id="testCaseRunTicket" name="testCaseRunTicket" 
+		                id="testCaseRunTicket" name="testCaseRunTicket" value="<?php echo $testCaseRun->idTicket;?>"
 		                class="input"><?php echo $testCaseRun->idTicket;?>
 		                <?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, true); ?>
 		               </select>

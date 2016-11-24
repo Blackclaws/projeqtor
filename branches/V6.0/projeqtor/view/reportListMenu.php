@@ -30,7 +30,7 @@ if (!$categ) {
   
   $report=new Report();
   $crit=array('idReportCategory'=>$categ);
-  $listReport=$report->getSqlElementsFromCriteria($crit);
+  $listReport=$report->getSqlElementsFromCriteria($crit, false, null, 'sortOrder asc');
   echo "<ul class='bmenu report' style=''>";
   foreach ($listReport as $rpt) {
     echo "<li class='section' id='report$rpt->id' onClick='reportSelectReport($rpt->id);'><div class='bmenuText'>".i18n($rpt->name)."</div></li>";   

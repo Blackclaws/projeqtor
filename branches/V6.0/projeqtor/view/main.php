@@ -382,6 +382,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       showHideMoveButtons();
     }); 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
+    if (! ganttPlanningScale) ganttPlanningScale='day';
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();
     var dependableArray=new Array();

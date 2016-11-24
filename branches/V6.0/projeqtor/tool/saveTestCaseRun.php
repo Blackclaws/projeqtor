@@ -108,12 +108,14 @@ if (count($arrayTestCase)>10) {
 }
 Sql::beginTransaction();
 $result="";
+$sortOrder-=10;
 foreach($arrayTestCase as $testCaseId) {
   $testCaseRun=new TestCaseRun($id);
   $testCaseRun->idTestCase=$testCaseId;
   $testCaseRun->idTestSession=$session;
   $testCaseRun->idTicket=$ticket;
   $testCaseRun->comment=$comment;
+  $sortOrder+=10;
   $testCaseRun->sortOrder=$sortOrder;
   if ($testCaseRun->idRunStatus!=$status) {
     $testCaseRun->idRunStatus=$status;
