@@ -4,8 +4,18 @@ $categ=null;
 if (isset($_REQUEST['idCategory'])) {
   $categ=$_REQUEST['idCategory'];
 }
-
-
+$hr=new HabilitationReport();
+$user=getSessionUser();
+$allowedReport=array();
+$allowedCategory=array();
+$lst=$hr->getSqlElementsFromCriteria(array('idProfile'=>$user->idProfile, 'allowAccess'=>'1'), false);
+foreach ($lst as $h) {
+  $report=$h->idReport;
+  
+  $allowedReport[$report]=$report;
+  $category=SqlList::getFieldFromId('Report', $report, 'idReportCategory',false);
+  $allowedCategory[$category]=$category;
+}
 
 if (!$categ) {
   echo "<div class='messageData headerReport' style= ''>";
@@ -14,7 +24,9 @@ if (!$categ) {
   $listCateg=SqlList::getList('ReportCategory');
   echo "<ul class='bmenu'>";
   foreach ($listCateg as $id=>$name) {
-    echo "<li class='section' onClick='loadDiv(\"../view/reportListMenu.php?idCategory=$id\",\"reportMenuList\");'><div class='bmenuCategText'>$name</div></li>";
+    if (isset($allowedCategory[$id])) {
+      echo "<li class='section' onClick='loadDiv(\"../view/reportListMenu.php?idCategory=$id\",\"reportMenuList\");'><div class='bmenuCategText'>$name</div></li>";
+    }
   }
   echo "</ul>";
 } else {
@@ -33,7 +45,9 @@ if (!$categ) {
   $listReport=$report->getSqlElementsFromCriteria($crit, false, null, 'sortOrder asc');
   echo "<ul class='bmenu report' style=''>";
   foreach ($listReport as $rpt) {
-    echo "<li class='section' id='report$rpt->id' onClick='reportSelectReport($rpt->id);'><div class='bmenuText'>".i18n($rpt->name)."</div></li>";   
+    if (isset($allowedReport[$rpt->id])) {
+      echo "<li class='section' id='report$rpt->id' onClick='reportSelectReport($rpt->id);'><div class='bmenuText'>".i18n($rpt->name)."</div></li>";   
+    }
   }
   echo "</ul>";
 }  
