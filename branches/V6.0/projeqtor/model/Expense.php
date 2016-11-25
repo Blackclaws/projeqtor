@@ -205,6 +205,13 @@ class Expense extends SqlElement {
     $pe->updateExpense();
     return $result;
   }
+  
+  public function delete() {
+    $result=parent::delete();
+    $pe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement', array('refType'=>'Project','refId'=>$this->idProject));
+    $pe->updateExpense();
+    return $result;
+  }
 
   public function getExpenseDetail() {
   	$result=array();
