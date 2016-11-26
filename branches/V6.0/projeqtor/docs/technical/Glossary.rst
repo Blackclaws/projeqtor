@@ -1,8 +1,11 @@
-.. include:: ImageReplacement.txt
+.. raw:: latex
+
+    \newpage
+
+.. title:: Glossary
 
 Glossaire
----------
-
+--------------
 .. glossary::
   
    PHP

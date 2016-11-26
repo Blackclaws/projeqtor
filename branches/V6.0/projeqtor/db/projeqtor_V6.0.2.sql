@@ -6,3 +6,5 @@
 -- ///////////////////////////////////////////////////////////
 
 INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (20,'Organization', 0, null);
+
+DELETE FROM `${prefix}columnselector` WHERE `objectClass` in ('Organization');
