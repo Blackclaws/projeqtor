@@ -255,6 +255,16 @@ class TestSessionMain extends SqlElement {
     if (!trim($this->idProject) and !trim($this->idProduct)) {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
+    if ($this->TestSessionPlanningElement and $this->TestSessionPlanningElement->id){
+      if (trim($this->idActivity)) {
+        $parentType='Activity';
+        $parentId=$this->idActivity;
+      } else {
+        $parentType='Project';
+        $parentId=$this->idProject;
+      }
+      $result.=$this->TestSessionPlanningElement->controlHierarchicLoop($parentType, $parentId);
+    }
     if ($this->id and $this->id==$this->idTestSession) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->TestSessionPlanningElement and $this->TestSessionPlanningElement->id){

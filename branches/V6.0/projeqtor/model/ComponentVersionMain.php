@@ -305,6 +305,17 @@ class ComponentVersionMain extends Version {
     foreach ($vpList as $vp) {
       $vp->delete();
     }
+    $pvs=new ProductVersionStructure();
+    $crit=array('idProductVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->delete();
+    }
+    $crit=array('idComponentVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->delete();
+    }
     return $result;
   }
   public function getLinkedProjects($withName=true) {
@@ -324,6 +335,28 @@ class ComponentVersionMain extends Version {
       if ($vers->scope=='Product') {
         $result[$idVers]=($withName)?$vers->name:$vers->id;
       }
+    }
+    return $result;
+  }
+  public function copy() {
+    $result=parent::copy();
+    
+    $pvs=new ProductVersionStructure();
+    $crit=array('idProductVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->idProductVersion=$result->id;
+      $pvs->id=null;
+      $pvs->creationDate=date('Y-m-d');
+      $pvs->save();
+    }
+    $crit=array('idComponentVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->idComponentVersion=$result->id;
+      $pvs->id=null;
+      $pvs->creationDate=date('Y-m-d');
+      $pvs->save();
     }
     return $result;
   }

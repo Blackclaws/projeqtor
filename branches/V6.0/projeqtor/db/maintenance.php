@@ -351,7 +351,7 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
   if (file_exists($attDir)) {
     $handle = opendir($attDir);
     if (! $handle) $error=true;
-    $globalCatchErrors=true;
+    enableCatchErrors();
     while (!$error and ($file = readdir($handle)) !== false) {
       if ($file == '.' || $file == '..' || $file=='index.php') {
         continue;
@@ -374,7 +374,7 @@ if (beforeVersion($currVersion,"V5.0.1") and $currVersion!='V0.0.0') {
     traceLog("WARNING : attachment directory '$attDir' not found");
   }
   traceLog("update attachment in table [5.0.1]");
-  $globalCatchErrors=false;
+  disableCatchErrors();
   $att=new Attachment();
   $lstAtt=$att->getSqlElementsFromCriteria(array()); // All attachments stored in DB
   $cpt=0;
@@ -447,7 +447,7 @@ if (beforeVersion($currVersion,"V5.2.0") and $currVersion!='V0.0.0') {
   }
   foreach($weList as $we) {
     $res=$we->save();
-    $cpt++;
+    $cpt++; 
     if ( ($cpt % $cptCommit) == 0) {
       Sql::commitTransaction();
       traceLog("   => $cpt work elements done...");      
@@ -492,6 +492,7 @@ if ($currVersion=='V5.5.0' and Sql::isPgsql()) {
 }
 if (beforeVersion($currVersion,"V5.5.4") and $currVersion!='V0.0.0' and file_exists('../api/.htpasswd')) {
   traceLog("   => Removing default .htpassword file in API to avoid security leak");
+  enableCatchErrors();
   $pwd=file_get_contents('../api/.htpasswd');
   if (strpos($pwd,'admin:$apr1$31cb5jwm$Ae3XumMQ1ckxUerDZoi290')!==null) {
     if (! rename('../api/.htpasswd','../api/.htpasswd.sav') ) {
@@ -501,7 +502,23 @@ if (beforeVersion($currVersion,"V5.5.4") and $currVersion!='V0.0.0' and file_exi
       $nbErrors++;
     }
   }
+  disableCatchErrors();
 }
+if ($currVersion=="V6.0.0" or $currVersion=="V6.0.1" ) {
+  enableCatchErrors();
+  if (file_exists('../model/OrganizationPlanningElement.php')) {
+    if ( ! kill('../model/OrganizationPlanningElement.php') ) {
+      
+    }
+  }
+  if (file_exists('../model/OrganizationPlanningElementMain.php')) {
+    if ( ! kill('../model/OrganizationPlanningElementMain.php') ) {
+      
+    }
+  }
+  disableCatchErrors();
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

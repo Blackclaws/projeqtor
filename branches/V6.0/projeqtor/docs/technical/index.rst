@@ -12,6 +12,9 @@ ProjeQtOr est un organisatieur de projets orienté qualité, sous la forme d'une
 ProjeQtOr est devenu très populaire grâce à sa complétude du périmètre de la gestion de projet 
 et sans grande paramétrabilité.
 
+.. image:: /images/GUI/projeqtor.png
+   :align: right
+
 Les fonctionnalités sont largement explicitées dans le Manuel Utilisateur en ligne.
 
 Mais les caractéristiques techinques de ProjeQtOr ne sont pas incluses dans le Manuel Utilisateur.
@@ -21,7 +24,6 @@ C'est le sujet du présent document.
 
 .. raw:: latex
 
-    \newpage
 
 Les nouveautés
 ==============
@@ -30,27 +32,50 @@ Ceci est la première version du document.
 
 .. raw:: latex
 
-    \newpage
 
 Structure du code
 =================
-  
+ 
 .. toctree::
    :maxdepth: 1
    
-   CodeStructure
+   Structure
+   
+Technique
+=================
+
+.. toctree::
+   :maxdepth: 1
+   
+   Technical
+
+Installation
+=================
+ 
+.. toctree::
+   :maxdepth: 1
+   
+   Installation
+   
+Configuration
+=================
+
+.. toctree::
+   :maxdepth: 1
+   
+   Configuration
 
 Développement objet
 ===================
-  
+
 .. toctree::
    :maxdepth: 1
    
-   ObjectOrientedDevelopement
-
+   Development
+   
 Internationalisation
 ====================
-  
+ 
 .. toctree::
    :maxdepth: 1
    
@@ -62,11 +87,11 @@ Gestion des paramètres
 .. toctree::
    :maxdepth: 1
    
-   Parameters
+   ParametersManagement
    
 Customisation
 =============
-  
+   
 .. toctree::
    :maxdepth: 1
    
@@ -79,14 +104,14 @@ Habilitations
    :maxdepth: 1
    
    Habilitations
-
+   
 Utilisation de l'API
 ====================
 
 .. toctree::
    :maxdepth: 1
    
-   API
+   UseApi
 
 Développement de plugins
 ========================
@@ -103,7 +128,47 @@ Procédure de déploiement
    :maxdepth: 1
    
    Deployment
-    
+
+Installer nouvelle version
+==========================
+
+.. toctree::
+   :maxdepth: 1
+   
+   NewVersion
+
+Import
+==========================
+
+.. toctree::
+   :maxdepth: 1
+   
+   Import
+
+Automatique Import
+==========================
+ 
+.. toctree::
+   :maxdepth: 1
+   
+   ImportAutomatic
+
+Paramètres Globaux
+==========================
+ 
+.. toctree::
+   :maxdepth: 1
+   
+   GlobalParameters
+
+Backup / Restore
+==========================
+
+.. toctree::
+   :maxdepth: 1
+   
+   Backup   
+
 Glossaire
 =========
 

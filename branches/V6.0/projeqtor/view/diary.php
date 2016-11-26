@@ -269,7 +269,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				$projectName=$projectNameArray[$o->idProject];
 			} else {
 				$pro=new Project($o->idProject);
-				$color=$pro->color;
+				$color=$pro->getColor();
 				$projectId=$pro->id;
 				$projectName=$pro->name;
 				$projectColorArray[$o->idProject]=$color;
@@ -388,7 +388,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 			$projectName=$projectNameArray[$item->idProject];
 		} else {
 			$pro=new Project($item->idProject);
-			$color=$pro->color;
+			$color=$pro->getColor();
 			$projectId=$item->idProject;
 			$projectName=$pro->name;
 			$projectColorArray[$item->idProject]=$color;

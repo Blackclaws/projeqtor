@@ -206,7 +206,7 @@ htmlhelp_basename = 'ProjeQtOrTechnicalGuideDoc'
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-'papersize': 'a4paper',
+'papersize': 'a4paper,openany',
 
 # The font size ('10pt', '11pt' or '12pt').
 #'pointsize': '10pt',
@@ -220,7 +220,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'ProjeQtOrTechnicalGuide.tex', u'ProjeQtOr Technical Guide',
-   u'ProjeQtOr', 'technical'),
+   u'ProjeQtOr', 'sphinxmanual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

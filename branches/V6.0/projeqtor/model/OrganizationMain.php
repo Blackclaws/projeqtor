@@ -25,8 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
- * Project is the main object of the project managmement.
- * Almost all other objects are linked to a given project.
+ * Organization is a structure that provides consolidation over new axis.
  */ 
 require_once('_securityCheck.php');
 class OrganizationMain extends SqlElement {
@@ -43,7 +42,7 @@ class OrganizationMain extends SqlElement {
   public $idle;
   public $description;
   public $_sec_currentProjects;
-  public $BudgetElementCurrent; // is an object
+  public $OrganizationBudgetElementCurrent; // is an object
 
   public $_sec_Link;
   public $_Link=array();
@@ -55,14 +54,11 @@ class OrganizationMain extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="wbsSortable" from="OrganizationPlanningElement" formatter="sortableFormatter" width="10%" >${wbs}</th>
-    <th field="name" width="65%" >${projectName}</th>
     <th field="nameOrganizationType" width="20%" >${type}</th>
+    <th field="name" width="50%" >${projectName}</th>
+    <th field="nameResource" width="20%" >${responsible}</th>
+    <th field="idle" formatter="booleanFormatter" width="5%" >${idle}</th>  
     ';
-// Removed in 1.2.0 
-//     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
-// Removed in 2.0.1
-//  <th field="nameRecipient" width="10%" >${idRecipient}</th>
   
 
   private static $_fieldsAttributes=array(
@@ -196,7 +192,7 @@ class OrganizationMain extends SqlElement {
   
   public function updateSynthesis() {
     // Update current budgetElement
-    $bec=$this->BudgetElementCurrent;
+    $bec=$this->OrganizationBudgetElementCurrent;
     $pe=new ProjectPlanningElement();
     
     $bec->validatedWork=0;
