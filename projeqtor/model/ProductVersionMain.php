@@ -349,7 +349,16 @@ class ProductVersionMain extends Version {
     }
     return $result;
   }
-  
+  public function delete() {
+    $result=parent::delete();
+    $pvs=new ProductVersionStructure();
+    $crit=array('idProductVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->delete();
+    }
+    return $result;
+  }
   public function copy() {
     $result=parent::copy(); 
     $pp=new VersionProject();
@@ -359,6 +368,15 @@ class ProductVersionMain extends Version {
       $pp->idVersion=$result->id;
       $pp->id=null;
       $pp->save();
+    }
+    $pvs=new ProductVersionStructure();
+    $crit=array('idProductVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pvs) {
+      $pvs->idProductVersion=$result->id;
+      $pvs->id=null;
+      $pvs->creationDate=date('Y-m-d');
+      $pvs->save();
     }
     return $result;
   } 

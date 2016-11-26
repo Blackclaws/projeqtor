@@ -225,6 +225,16 @@ class MilestoneMain extends SqlElement {
    */
   public function control(){
     $result="";
+    if ($this->MilestonePlanningElement and $this->MilestonePlanningElement->id){
+      if (trim($this->idActivity)) {
+        $parentType='Activity';
+        $parentId=$this->idActivity;
+      } else {
+        $parentType='Project';
+        $parentId=$this->idProject;
+      }
+      $result.=$this->MilestonePlanningElement->controlHierarchicLoop($parentType, $parentId);
+    }
     if (trim($this->idActivity)) {
       $parentActivity=new Activity($this->idActivity);
       if ($parentActivity->idProject!=$this->idProject) {

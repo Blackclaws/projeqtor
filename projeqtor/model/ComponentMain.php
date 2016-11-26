@@ -349,6 +349,42 @@ class ComponentMain extends ProductOrComponent {
     }
     return 'NO';
   }
-
+  public function delete() {
+    $result=parent::delete();
+    $ps=new ProductStructure();
+    $crit=array('idProduct'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->delete();
+    }
+    $crit=array('idComponent'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->delete();
+    }
+    return $result;
+  }
+  public function copy() {
+    $result=parent::copy();
+  
+    $ps=new ProductStructure();
+    $crit=array('idProduct'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->idProduct=$result->id;
+      $ps->id=null;
+      $ps->creationDate=date('Y-m-d');
+      $ps->save();
+    }
+    $crit=array('idComponent'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->idComponent=$result->id;
+      $ps->id=null;
+      $ps->creationDate=date('Y-m-d');
+      $ps->save();
+    }
+    return $result;
+  }
 }
 ?>

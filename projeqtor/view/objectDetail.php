@@ -2980,7 +2980,7 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     else $compObj=new ComponentVersion($compObj->id);
     $userId=$comp->idUser;
     $userName=SqlList::getNameFromId('User', $userId);
-    $creationDate=$compObj->creationDate;
+    $creationDate=$comp->creationDate;
     $canGoto=(securityCheckDisplayMenu(null, get_class($compObj)) and securityGetAccessRightYesNo('menu' . get_class($compObj), 'read', $compObj) == "YES")?true:false;
     echo '<tr>';
     $classCompName=i18n(get_class($compObj));

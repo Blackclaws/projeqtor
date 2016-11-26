@@ -324,6 +324,16 @@ class MeetingMain extends SqlElement {
 
   public function control(){
     $result="";
+    if ($this->MeetingPlanningElement and $this->MeetingPlanningElement->id){
+      if (trim($this->idActivity)) {
+        $parentType='Activity';
+        $parentId=$this->idActivity;
+      } else {
+        $parentType='Project';
+        $parentId=$this->idProject;
+      }
+      $result.=$this->MeetingPlanningElement->controlHierarchicLoop($parentType, $parentId);
+    }
     if (trim($this->idActivity)) {
       $parentActivity=new Activity($this->idActivity);
       if ($parentActivity->idProject!=$this->idProject) {

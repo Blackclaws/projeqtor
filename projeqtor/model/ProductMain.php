@@ -341,21 +341,38 @@ class ProductMain extends ProductOrComponent {
     return $result;
   }
   
+  public function delete() {
+    $result=parent::delete();
+    $ps=new ProductStructure();
+    $crit=array('idProduct'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->delete();
+    }
+    return $result;
+  }
   // Ticket 2325 Kevin
   public function copy() {
-  $result=parent::copy();
+    $result=parent::copy();
   
+    $pp=new ProductProject();
+    $crit=array('idProduct'=>$this->id);
+    $list=$pp->getSqlElementsFromCriteria($crit);
+    foreach ($list as $pp) {
+      $pp->idProduct=$result->id;
+      $pp->id=null;
+      $pp->save();
+    }
+    $ps=new ProductStructure();
+    $crit=array('idProduct'=>$this->id);
+    $list=$ps->getSqlElementsFromCriteria($crit);
+    foreach ($list as $ps) {
+      $ps->idProduct=$result->id;
+      $ps->id=null;
+      $ps->creationDate=date('Y-m-d');
+      $ps->save();
+    }
     
-      $pp=new ProductProject();
-      $crit=array('idProduct'=>$this->id);
-      $list=$pp->getSqlElementsFromCriteria($crit);
-      foreach ($list as $pp) {
-        $pp->idProduct=$result->id;
-        $pp->id=null;
-        $pp->save();
-      }
-    
-
     return $result;
   }
 
