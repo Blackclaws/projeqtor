@@ -287,16 +287,24 @@ if ($proj=='*' or !$proj) {
                             <?php echo i18n('comboNewButton');?>
                             </div>
                             <?php $arrayItems=array('Project','Activity','Milestone','Meeting','TestSession');
-                            foreach($arrayItems as $item) {?>
-                            <div style="vertical-align:top;cursor:pointer;" class="dijitTreeRow"
-                             onClick="addNewItem('<?php echo $item;?>');" >
-                              <table width:"100%"><tr style="height:22px" >
-                              <td style="vertical-align:top; width: 30px;padding-left:5px"><?php echo formatIcon($item, 22, null, false);;?></td>    
-                              <td style="vertical-align:top;padding-top:2px"><?php echo i18n($item)?></td>
-                              </tr></table>   
-                            </div>
-                            <div style="height:5px;"></div>
-                            <?php }?>
+                            foreach($arrayItems as $item) {
+                              $canCreate=securityGetAccessRightYesNo('menu' . $item,'create');
+                              if ($canCreate=='YES') {
+                                if (! securityCheckDisplayMenu(null,$item) ) {
+                                  $canCreate='NO';
+                                }
+                              }
+                              if ($canCreate=='YES') {?>
+                              <div style="vertical-align:top;cursor:pointer;" class="dijitTreeRow"
+                               onClick="addNewItem('<?php echo $item;?>');" >
+                                <table width:"100%"><tr style="height:22px" >
+                                <td style="vertical-align:top; width: 30px;padding-left:5px"><?php echo formatIcon($item, 22, null, false);;?></td>    
+                                <td style="vertical-align:top;padding-top:2px"><?php echo i18n($item)?></td>
+                                </tr></table>   
+                              </div>
+                              <div style="height:5px;"></div>
+                              <?php } 
+                              }?>
                           </div>
                         </div>
                       </td>

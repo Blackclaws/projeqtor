@@ -58,7 +58,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
   $detailHeight=round($_SESSION['screenHeight']*0.60);
 }
 ?>
-<div>
+<div >
   <table style="width:100%;">
     <tr><td>
       <div <?php if (!$noteId) echo 'style="padding-bottom:7px"';?> id="dialogNotePredefinedDiv" dojoType="dijit.layout.ContentPane" region="center">
@@ -79,7 +79,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
           $val=$text->getText();?>
           <textarea dojoType="dijit.form.Textarea" 
           id="noteNote" name="noteNote"
-          style="width: 500px;"
+          style="max-width:<?php echo $detailWidth;?>px;height:<?php echo $detailHeight;?>px;max-height:<?php echo $detailHeight;?>px"
           maxlength="4000"
           class="input"
           onClick="dijit.byId('noteNote').setAttribute('class','');"><?php echo $val;?></textarea>
@@ -94,8 +94,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
               ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}
               ,onBlur:function(event){top.editorBlur('noteNoteEditor',this);}
               ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
-              style="color:#606060 !important; background:none; 
-                padding:3px 0px 3px 3px;margin-right:2px;height:<?php echo $detailHeight;?>px;width:<?php echo $detailWidth;?>px;min-height:16px;overflow:auto;"
+              style="color:#606060 !important; background:none;padding:3px 0px 3px 3px;margin-right:2px;width:<?php echo $detailWidth;?>px;overflow:auto;"
               class="input"><?php echo $note->note;?></div>
         <?php }?>
           <table width="100%"><tr height="25px">
