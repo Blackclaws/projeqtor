@@ -300,9 +300,9 @@ class Sql {
       
       if($sslKey and $sslCert and $sslCa){
         $sslArray=array(
-          \PDO::MYSQL_ATTR_SSL_KEY  => $sslKey,
-          \PDO::MYSQL_ATTR_SSL_CERT => $sslCert,
-          \PDO::MYSQL_ATTR_SSL_CA   => $sslCa
+          PDO::MYSQL_ATTR_SSL_KEY  => $sslKey,
+          PDO::MYSQL_ATTR_SSL_CERT => $sslCert,
+          PDO::MYSQL_ATTR_SSL_CA   => $sslCa
         );
 	    }
     	$dsn = self::$dbType.':host='.self::$dbHost.';port='.self::$dbPort.';dbname='.self::$dbName;

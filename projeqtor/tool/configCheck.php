@@ -87,9 +87,9 @@
    $arraySsl=null;
    if (isset($param['SslKey']) and $param['SslKey'] and isset($param['SslCert']) and $param['SslCert'] and isset($param['SslCa']) and $param['SslCa']) {
      $arraySsl=array(
-            \PDO::MYSQL_ATTR_SSL_KEY   => $param['SslKey'],
-            \PDO::MYSQL_ATTR_SSL_CERT  => $param['SslCert'],
-            \PDO::MYSQL_ATTR_SSL_CA    => $param['SslCa']
+            PDO::MYSQL_ATTR_SSL_KEY   => $param['SslKey'],
+            PDO::MYSQL_ATTR_SSL_CERT  => $param['SslCert'],
+            PDO::MYSQL_ATTR_SSL_CA    => $param['SslCa']
         );
    }
     $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword'],$arraySsl);
