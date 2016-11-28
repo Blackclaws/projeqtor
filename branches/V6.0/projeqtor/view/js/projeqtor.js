@@ -766,16 +766,13 @@ function loadContent(page, destination, formName, isResultMessage,
             checkLogin();
           } else if (page.indexOf("planningMain.php") >= 0
               || page.indexOf("planningList.php") >= 0
-              || (page.indexOf("jsonPlanning.php") >= 0 && dijit
-                  .byId("startDatePlanView"))
+              || (page.indexOf("jsonPlanning.php") >= 0 && dijit.byId("startDatePlanView"))
               || page.indexOf("resourcePlanningMain.php") >= 0
               || page.indexOf("resourcePlanningList.php") >= 0
-              || (page.indexOf("jsonResourcePlanning.php") >= 0 && dijit
-                  .byId("startDatePlanView"))
+              || (page.indexOf("jsonResourcePlanning.php") >= 0 && dijit.byId("startDatePlanView"))
               || page.indexOf("portfolioPlanningMain.php") >= 0
               || page.indexOf("portfolioPlanningList.php") >= 0
-              || (page.indexOf("jsonPortfolioPlanning.php") >= 0 && dijit
-                  .byId("startDatePlanView"))) {
+              || (page.indexOf("jsonPortfolioPlanning.php") >= 0 && dijit.byId("startDatePlanView"))) {
             drawGantt();
             selectPlanningRow();
             if (!silent)
