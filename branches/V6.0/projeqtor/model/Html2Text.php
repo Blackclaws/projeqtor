@@ -216,7 +216,7 @@ class Html2Text
                                 // 'table' (if a table of link URLs should be listed after the text.
                                 // 'bbcode' (show links as bbcode)
 
-        'width' => 70,          //  Maximum width of the formatted text, in columns.
+        'width' => 0,          //  Maximum width of the formatted text, in columns.
                                 //  Set this value to 0 (or less) to ignore word wrapping
                                 //  and not constrain text to a fixed-width column.
     );

@@ -299,7 +299,17 @@ class PlannedWork extends GeneralWork {
           $startPossible=$precEnd;
           $startPossibleFraction=$precFraction;
         }
-        if ($startPossible>=$startPlan or ($startPossible==$startPlan and $startPossibleFraction>$startFraction)) { // #77       
+        if ($profile=="ALAP") {
+          if ($startPossible>=$endPlan) {
+            $endPlan=$startPossible;
+            if ($startPlan<$endPlan) {
+              $startPlan=$endPlan;
+              $endPlan=null;
+              $step=1;
+              $profile=="ASAP";
+            }
+          }
+        } else if ($startPossible>=$startPlan or ($startPossible==$startPlan and $startPossibleFraction>$startFraction)) { // #77       
           $startPlan=$startPossible;
           $startFraction=$startPossibleFraction;
         }

@@ -208,7 +208,7 @@
         and ($critField=='idProductOrComponent' or $critField=='idComponent')) {
           $critField='idProduct';
         }
-        if (property_exists($class,$critField)) {
+        if (property_exists($class,$critField) or ($critField=='idProjectSub' and property_exists($class,'idProject')) ) {
           $crit=array( $critField => $_REQUEST['critValue']);
         } else {
           $crit=array();

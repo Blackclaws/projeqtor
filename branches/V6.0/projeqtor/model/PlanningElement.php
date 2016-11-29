@@ -1360,7 +1360,12 @@ class PlanningElement extends SqlElement {
       $pe->_predecessorListWithParent=$pe->_predecessorList;
       foreach ($pe->_parentList as $idParent=>$parent) {
       	$visited=array();
-        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result,'parent', $visited));
+      	$parentPrecListTmp=self::getRecursivePredecessor($directPredecessors,$idParent,$result,'parent', $visited);
+      	foreach ($parentPrecListTmp as $idPrec=>$valPrec) {
+      	  if (!isset($pe->_predecessorListWithParent[$idPrec]) or $valPrec>$pe->_predecessorListWithParent[$idPrec]) {
+      	    $pe->_predecessorListWithParent[$idPrec]=$valPrec;
+      	  }
+      	}
       }
       if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
         $pe->plannedStartDate=null;
