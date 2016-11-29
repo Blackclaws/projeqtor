@@ -328,9 +328,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         $class=$_REQUEST['objectClass'];
 		    Security::checkValidClass($class);
         $id=$_REQUEST['objectId'];
-        if ($class=='Ticket' and securityGetAccessRightYesNo('menuTicket', 'read')=='NO') {
+        Security::checkValidId($id);
+        $directObj=new $class($id);
+        if ($class=='Ticket' and securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='NO') {
           $class='TicketSimple';
-        } else if ($class=='TicketSimple' and securityGetAccessRightYesNo('menuTicket', 'read')=='YES') {
+        } else if ($class=='TicketSimple' and securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='YES') {
           $class='Ticket';
         }
         if (array_key_exists('directAccess', $_REQUEST)) {

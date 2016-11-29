@@ -230,11 +230,15 @@ class SqlList {
       } else if ( (strtolower($listType)=='warningdelayunit' or strtolower($listType)=='alertdelayunit') and $col=='idIndicator' ) {
         $ind=new Indicator($val);
         $query .= " and " . $obj->getDatabaseTableName() . '.type='. Sql::str($ind->type);
+      } else if ( $col=='idProjectSub' ) {
+        if ($val and $val!='*') {
+          $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idProject') . ' in ' . getVisibleProjectsList(true,$val);
+        }
       } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
         } else {
-          if ($col=='idProject' and ($val=='*' or ! $val)) {$val=0;}
+          if ($col=='idProject' and ($val=='*' or ! $val)) {continue;}
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
         }
       }
