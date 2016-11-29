@@ -1690,6 +1690,8 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
             $accessRight = 'YES';
           }
         }
+      } else {
+        // TODO : IF NO OBJ and AccesRight = PRO : should return YES ???
       }
     } else if ($accessRight == 'OWN') {
       $accessRight = 'NO';
