@@ -152,7 +152,7 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;font-size:10px" id="bodyPrint" class="tundra ProjeQtOrFlatGrey" onload="top.hideWait();">
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;id="bodyPrint" class="tundra ProjeQtOrFlatGrey" onload="top.hideWait();">
   <?php 
   }
   $page=$_REQUEST['page'];
@@ -233,7 +233,7 @@
       $html2pdf->setDefaultFont($fontForPDF);
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
-      $content=str_replace("à","&agrave;",$content);
+      $content=str_replace("Ã ","&agrave;",$content);
 //traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output($outputFileName);
