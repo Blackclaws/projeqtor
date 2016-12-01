@@ -53,7 +53,7 @@
    background: #545281 !important;
 }
 .ProjeQtOrFlatBlue .tabLabel, .ProjeQtOrFlatBlue .label {
-  background-color: #fafafa; color: #545281;
+  background-color: color: #545281;
 }
 .ProjeQtOrFlatBlue .dojoxGridRowOver .dojoxGridCell {
  background: #aca0bc !important;
@@ -3357,13 +3357,18 @@ body .ProjeQtOrFlatGreen {
   
 }
 
+.ProjeQtOrFlatGrey #mapDiv, .ProjeQtOrFlatGrey #messageDiv, .ProjeQtOrFlatGrey #listDiv, .ProjeQtOrFlatGrey #formDiv, .ProjeQtOrFlatGrey .display, .ProjeQtOrFlatGrey .background,
+.ProjeQtOrFlatGrey .dijitTitlePaneContentInner, 
+.ProjeQtOrFlatGrey #mainDiv, .ProjeQtOrFlatGrey #centerDiv {
+  background-color: #fafafa;
+}
 
 .ProjeQtOrFlatGrey #toolBarDiv, .ProjeQtOrFlatGrey #statusBarDiv, .ProjeQtOrFlatGrey .statusBar { /**toolbar**/
    color: #EEEEEE;
    background: #656565 !important;
 }
 .ProjeQtOrFlatGrey .tabLabel, .ProjeQtOrFlatGrey .label {
-  color: #656565;
+ color: #656565;
 }
 .ProjeQtOrFlatGrey .dojoxGridRowOver .dojoxGridCell {
  background: #acacac !important;
