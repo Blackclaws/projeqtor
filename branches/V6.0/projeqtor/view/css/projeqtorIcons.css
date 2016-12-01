@@ -123,6 +123,10 @@
 .iconButtonLink16 { background-image: url(images/smallButtonLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonView16 { background-image: url(images/display.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonSwitchUser16 { background-image: url(images/smallButtonSwitch.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonArrowRight16 { background-image: url(images/smallButtonArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconConfirm32 { background-image: url(images/iconDecision32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconInfo32 { background-image: url(images/iconQuestion32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 
 .iconButtonPassed16 { background-image: url(images/iconPassed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonFailed16 { background-image: url(images/iconFailed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
