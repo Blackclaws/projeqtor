@@ -201,7 +201,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
   exit();
 }
 ?>
-<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer"><?php
   if (!$refresh and !$print) {
     ?>
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
