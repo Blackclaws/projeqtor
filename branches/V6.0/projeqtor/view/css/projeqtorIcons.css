@@ -115,6 +115,7 @@
 .iconValidateProject { background-image: url(images/iconValidateProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .dijitDisabled .iconValidateProject { background-image: url(images/iconValidateProject16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
+
 .iconButtonBack32 { background-image: url(images/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px;}
 .iconButtonDownload16 { background-image: url(images/smallButtonDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconButtonEdit16 { background-image: url(images/smallButtonEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -126,6 +127,9 @@
 .iconButtonArrowRight16 { background-image: url(images/smallButtonArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconConfirm32 { background-image: url(images/iconDecision32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconInfo32 { background-image: url(images/iconQuestion32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonAddComment16 { background-image: url(images/iconNoteAdd.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonComment16 { background-image: url(images/iconNote.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 
 
 .iconButtonPassed16 { background-image: url(images/iconPassed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
