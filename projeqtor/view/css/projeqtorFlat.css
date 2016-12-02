@@ -253,7 +253,7 @@
   font-weight: bold;
 }
 .ProjeQtOrFlatBlue .dijitTreeRowSelected .dijitTreeLabel::after { 
-  content: "  â€¢";
+  content: "  •";
   color: #e97b2c;
   font-size:150%;
   font-weight: bold;
@@ -1385,7 +1385,7 @@ body .ProjeQtOrFlatBlue {
   font-weight: bold;
 }
 .ProjeQtOrFlatRed .dijitTreeRowSelected .dijitTreeLabel::after { 
-  content: "  â€¢";
+  content: "  •";
   color: #833e3e;
   font-size:150%;
   font-weight: bold;
@@ -2476,7 +2476,7 @@ body .ProjeQtOrFlatRed {
   font-weight: bold;
 }
 .ProjeQtOrFlatGreen .dijitTreeRowSelected .dijitTreeLabel::after { 
-  content: "  â€¢";
+  content: "  •";
   color: #537665;
   font-size:150%;
   font-weight: bold;
@@ -3568,7 +3568,7 @@ body .ProjeQtOrFlatGreen {
   font-weight: bold;
 }
 .ProjeQtOrFlatGrey .dijitTreeRowSelected .dijitTreeLabel::after { 
-  content: "  â€¢";
+  content: "  •";
   color: #656565;
   font-size:150%;
   font-weight: bold;
