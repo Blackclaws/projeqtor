@@ -104,7 +104,7 @@ $m=new Milestone();
 $mpe=new MilestonePlanningElement();
 $mTable=$m->getDatabaseTableName();
 $mpeTable=$mpe->getDatabaseTableName();
-$querySelect= "select mpe.id as idpe, m.name as name, m.id as id, m.idMilestoneType as type";
+$querySelect= "select mpe.id as idpe, m.name as name, m.id as id, m.idMilestoneType as type, mpe.realEndDate as realend, mpe.plannedEndDate as plannedend ";
 $queryFrom=   " from $mTable m, $mpeTable as mpe";
 $queryWhere=  " where mpe.refType='Milestone' and mpe.refId=m.id";
 $queryWhere.= " and m.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
@@ -115,6 +115,7 @@ if ($type) {
 $query=$querySelect.$queryFrom.$queryWhere;
 $resultMile=Sql::query($query);
 $arrayMile=array();
+$existingDates=array();
 
 $listMilePE='(0';
 while ($line = Sql::fetchLine($resultMile)) {
@@ -124,6 +125,16 @@ while ($line = Sql::fetchLine($resultMile)) {
   $tp=$line['type'];
   $listMilePE.=','.$idpe;
   $arrayMile[$idpe]=array('id'=>$id, 'idpe'=>$idpe, 'name'=>$name,'type'=>$tp,'dates'=>array(), 'periods'=>array(), 'current'=>VOID, 'lastDate'=>null);
+  $mpeEndDate=null;
+  if ($line['realend']) {
+    $mpeEndDate=$line['realend'];
+  } else {
+    $mpeEndDate=$line['plannedend'];
+  }
+  $arrayMile[$idpe]['dates'][$mpeEndDate]=strtotime($mpeEndDate);
+  $arrayMile[$idpe]['lastDate']=$mpeEndDate;
+  $existingDates[$mpeEndDate]=$mpeEndDate;
+  if ($end=="" or $end<$mpeEndDate) { $end=$mpeEndDate;}
 }
 $listMilePE.=')';
 
@@ -138,7 +149,7 @@ $queryOrder= "  order by h.operationDate";
 $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
 $resultPlanned=Sql::query($query);
 $tablePlanned=array();
-$existingDates=array();
+//$existingDates=array();
 while ($line = Sql::fetchLine($resultPlanned)) {
   $day=substr($line['date'],0,10);
   $existingDates[$day]=$day;
@@ -146,7 +157,7 @@ while ($line = Sql::fetchLine($resultPlanned)) {
   $old=$line['old'];
   $new=$line['new'];
   $arrayMile[$idpe]['dates'][$day]=strtotime($new);
-  $arrayMile[$idpe]['lastDate']=$day;
+  if ($day>$arrayMile[$idpe]['lastDate']) { $arrayMile[$idpe]['lastDate']=$day;}
   if ($start=="" or $start>$day) {$start=$day;}
   if ($end=="" or $end<$day) { $end=$day;}
 }
@@ -163,6 +174,7 @@ if (!$start or !$end) {
 $start=substr($start,0,8).'01';
 $end=substr($end,0,8).date('t',strtotime($end));
 $arrDates=array();
+ksort($existingDates);
 while ($date<=$end) {
   if (isset($existingDates[$date]) or $date==$today) {
     if ($scale=='day') { 
@@ -176,9 +188,7 @@ while ($date<=$end) {
   }
   $date=addDaysToDate($date, 1);
 }
-
 $resBase=array();
-
 $startDatePeriod=null;
 $endDatePeriod=null;
 if ($startDateReport and isset($arrDates[$startDateReport])) $startDatePeriod=$arrDates[$startDateReport];
@@ -202,6 +212,7 @@ foreach ($arrDates as $date => $period) {
     }
   }
 }
+
 if (count($arrDates)<2) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData');
