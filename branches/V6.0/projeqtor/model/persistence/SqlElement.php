@@ -2840,9 +2840,12 @@ abstract class SqlElement {
 			  $colScript .= '   getExtraRequiredFields();';
 			}	
 		  if ($colName=='id'.get_class($this).'Type') {
-		    $colScript .= '   getExtraHiddenFields(this.value);';
+		    $colScript .= '   getExtraHiddenFields(this.value,null,null);';
 		  }
-			$colScript .= '</script>';
+		  //if ($colName=='idStatus') {         // Disabled : it is not desirable to hade extra fields before saving
+		  //  $colScript .= '   getExtraHiddenFields(null,this.value,null);';
+		  //}
+		  $colScript .= '</script>';
 		}
 		if (substr($colName,$posDate,4)=='Date') {  // Date => onChange
 			$colScript .= '<script type="dojo/connect" event="onChange">';
@@ -4494,16 +4497,41 @@ abstract class SqlElement {
 	  }
 	  return $result;
 	}
-	public function getExtraHiddenFields($newType="") {
+	public function getExtraHiddenFields($newType="", $newStatus="", $newProfile="") {
 	  $class=get_class($this);
 	  $typeFld='id'.$class."Type";
-	  if (! property_exists($this,$typeFld) and !$newType) { return array(); } // No type for this item, so no extra field
 	  $list=self::getExtraHiddenFieldsFullList();
-	  $type=($newType)?$newType:$this->$typeFld;
-	  if (!isset($list[$class])) { return array(); }
-	  if (!isset($list[$class][$type])) { return array(); }
-	  return $list[$class][$type];
+	  $listType=array();
+	  $listStatus=array();
+	  $listProfile=array();
+	  if (property_exists($this,$typeFld) and $newType!='*') { 
+	    $type=($newType)?$newType:$this->$typeFld;
+	    if (isset($list['Type']) and isset($list['Type'][$class]) and isset($list['Type'][$class][$type]) ) {
+	      $listType=$list['Type'][$class][$type];
+	    }
+	  }
+	  if (property_exists($this,'idStatus') and $newStatus!='*') {
+	    $status=($newStatus)?$newStatus:$this->idStatus;
+	    if (isset($list['Status']) and isset($list['Status'][$class]) and isset($list['Status'][$class][$status]) ) {
+	      $listStatus=$list['Status'][$class][$status];
+	    }
+	  }
+	  if ($newProfile!='*') {
+	    if ($newProfile) {
+	      $profile=$newProfile;
+	    } else {
+	      $profile=getSessionUser()->getProfile($this);
+	    }
+	    if (isset($list['Profile']) and isset($list['Profile'][$class]) and isset($list['Profile'][$class][$profile]) ) {
+	      $listProfile=$list['Profile'][$class][$profile];
+	    }
+	  }
+	  //if ($newStatus=='*' and $newProfile=='*') return $listType;
+	  //if ($newType=='*' and $newProfile=='*') return $listStatus;
+	  //if ($newType=='*' and $newStatus=='*') return $listProfile;
+	  return array_unique(array_merge($listType,$listStatus,$listProfile));
 	}
+	
 	private static function getExtraHiddenFieldsFullList() {
 	  if (self::$_extraHiddenFields!=null) {
 	    return self::$_extraHiddenFields;
@@ -4515,11 +4543,19 @@ abstract class SqlElement {
 	  }
 	  $extra=new ExtraHiddenField();
 	  $extraList=$extra->getSqlElementsFromCriteria(null); // Get all fields
-	  $result=array();
+	  $result=array('Type'=>array(),'Status'=>array(),'Profile'=>array()); // Only scope for Type, Status, Profile
 	  foreach ($extraList as $extra) {
-	    if (! isset($result[$extra->scope])) $result[$extra->scope]=array();
-	    if (! isset($result[$extra->scope][$extra->idType])) $result[$extra->scope][$extra->idType]=array();
-	    $result[$extra->scope][$extra->idType][]=$extra->field;
+	    $sp=explode('#',$extra->scope);
+	    if (count($sp)!=2) return array();
+	    $scope=$sp[0];
+	    $class=$sp[1];
+	    if (! isset($result[$scope])) { 
+	      errorLog("getExtraHiddenFieldsFullList() : some data has scope '$scope' different from Type, Status, Profile");
+	      return array(); 
+	    }
+	    if (! isset($result[$scope][$class])) $result[$scope][$class]=array();
+	    if (! isset($result[$scope][$class][$extra->idType])) $result[$scope][$class][$extra->idType]=array();
+	    $result[$scope][$class][$extra->idType][]=$extra->field;
 	  }
 	  self::$_extraHiddenFields=$result;
 	  setSessionValue('extraHiddenFieldsArray', $result);

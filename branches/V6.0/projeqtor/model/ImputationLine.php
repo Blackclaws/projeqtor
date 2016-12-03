@@ -913,7 +913,7 @@ class ImputationLine {
         echo '</td>';
         $curDate=date('Y-m-d', strtotime("+1 days", strtotime($curDate)));
       }
-      echo '<td class="ganttDetail" ' . ($line->refType == 'Project'?'colspan="2"':'') . ' align="center" width="' . $workWidth . 'px;">';
+      echo '<td class="ganttDetail" align="center" width="' . ($workWidth*2+1) . 'px;">';
       if ($line->imputable) {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -946,9 +946,9 @@ class ImputationLine {
         }
         echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
       }
-      echo '</td>';
+      
       if ($line->refType != 'Project') {
-        echo '<td class="ganttDetail" align="center" width="' . $workWidth . 'px;">';
+        //echo '<td class="ganttDetail" align="center" width="' . $workWidth . 'px;">';
         if ($line->imputable) {
           if (!$print) {
             echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
@@ -963,9 +963,11 @@ class ImputationLine {
             echo Work::displayImputation($line->plannedWork);
           }
         }
-        echo '</td>';
-        echo '</tr>';
+        //echo '</td>';
+        
       }
+      echo '</td>';
+      echo '</tr>';
     }
 }
 if (!$print) {
