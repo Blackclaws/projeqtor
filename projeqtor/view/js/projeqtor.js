@@ -3593,10 +3593,22 @@ function getExtraRequiredFields() {
     }
   });
 }
-function getExtraHiddenFields(idType) {
-
+function getExtraHiddenFields(idType,idStatus,idProfile) {
+  if (!idStatus) {
+    if (dijit.byId('idStatus')) {
+      idStatus=dijit.byId('idStatus').get('value');
+    }
+  }
+  if (!idType) {
+    if (dojo.byId('objectClass')) {
+      var typeName='id'+dojo.byId('objectClass').value+'Type';
+      if (dijit.byId(typeName)) {
+        idType=dijit.byId(typeName).get('value');
+      }
+    }
+  }
   dojo.xhrGet({
-    url : "../tool/getExtraHiddenFields.php" + "?type=" + idType
+    url : "../tool/getExtraHiddenFields.php" + "?type=" + idType+"&status="+idStatus+"&profile="+idProfile
         + "&objectClass=" + dojo.byId("objectClass").value,
     handleAs : "text",
     load : function(data) {

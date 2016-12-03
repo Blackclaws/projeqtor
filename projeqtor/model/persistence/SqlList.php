@@ -340,6 +340,33 @@ class SqlList {
   public static function getIdFromTranslatableName($listType, $name) {
     return self::getIdFromName($listType, i18n($name));
   }
+  
+  public static function getStatusList($class) {
+    $result=SqlList::getList('Status');
+    if (!property_exists($class,'idStatus')) return array();
+    $wfArray=array();
+    $type=$class.'Type';
+    if (!SqlElement::class_exists($type) or !property_exists($type,'idWorkflow')) return $result;
+    $typeObj=new $type();
+    $lstType=$typeObj->getSqlElementsFromCriteria(null);
+    foreach ($lstType as $tp) {
+      if (!$tp->idWorkflow) continue;
+      $wfArray[$tp->idWorkflow]=$tp->idWorkflow;
+    }
+    $allowedStatus=array();
+    foreach ($wfArray as $wfId) {
+      $stListFrom=SqlList::getListWithCrit('WorkflowStatus',array('idWorkflow'=>$wfId, 'allowed'=>'1'),'idStatusFrom');
+      $stListTo=SqlList::getListWithCrit('WorkflowStatus',array('idWorkflow'=>$wfId, 'allowed'=>'1'),'idStatusTo');
+      foreach ($stListFrom as $wfs) { $allowedStatus[$wfs]=$wfs;}
+      foreach ($stListTo as $wfs) { $allowedStatus[$wfs]=$wfs;}
+    }
+    foreach ($result as $id=>$name) {
+      if (!isset($allowedStatus[$id])) {
+        unset($result[$id]);
+      }
+    }
+    return $result;
+  }
 }
 
 ?>

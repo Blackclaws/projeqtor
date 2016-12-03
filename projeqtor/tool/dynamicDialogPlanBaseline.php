@@ -80,11 +80,22 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                  ?>
                  <script type="dojo/connect" event="onChange" args="evt">
                    dojo.xhrGet({
+                     url : '../tool/getSingleData.php?dataType=count&class=Baseline&param1=idProject&value1='+this.value,
+                     handleAs : "text",
+                     load : function(data) {
+                        if (parseInt(data)>0) {
+                           disableWidget('datePlanBaseline');
+                         } else {
+                           enableWidget('datePlanBaseline');
+                         }
+                     }
+                   });                   
+                   dojo.xhrGet({
                      url : '../tool/getSingleData.php?dataType=count&class=Baseline&param1=idProject&value1='+this.value+'&param2=baselineDate&value2=<?php echo date('Y-m-d');?>',
                      handleAs : "text",
                      load : function(data) {
                        if (dojo.byId('baselineAlertAlreadyExists')) {
-                         if (parseInt(data)>0) {
+                          if (parseInt(data)>0) {
                            dojo.byId('baselineAlertAlreadyExists').style.display="block";
                          } else {
                            dojo.byId('baselineAlertAlreadyExists').style.display="none";
@@ -92,6 +103,7 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                        }
                      }
                    });
+                   
                  </script>
                </select>
              </td>
@@ -119,7 +131,7 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                  type="text" maxlength="10"
                  style="width:100px; text-align: center;" class="input"
                  hasDownArrow="true"
-                 readonly
+                 <?php if (count($listeBase)>0) { echo "readonly"; }?>
                  value="<?php echo ($mode=='edit')?$currentBaseline->baselineDate:date('Y-m-d');?>" >
                </div>
              </td>

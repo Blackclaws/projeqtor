@@ -95,6 +95,7 @@ if (! testGraphEnabled()) { return;}
 $user=getSessionUser();
 $proj=new Project($idProject,true);
 $today=date('Y-m-d');
+$refTime=' 23:00:00';
 
 $start="";
 $end="";
@@ -131,7 +132,7 @@ while ($line = Sql::fetchLine($resultMile)) {
   } else {
     $mpeEndDate=$line['plannedend'];
   }
-  $arrayMile[$idpe]['dates'][$mpeEndDate]=strtotime($mpeEndDate);
+  $arrayMile[$idpe]['dates'][$mpeEndDate]=strtotime($mpeEndDate.$refTime);
   $arrayMile[$idpe]['lastDate']=$mpeEndDate;
   $existingDates[$mpeEndDate]=$mpeEndDate;
   if ($end=="" or $end<$mpeEndDate) { $end=$mpeEndDate;}
@@ -156,7 +157,7 @@ while ($line = Sql::fetchLine($resultPlanned)) {
   $idpe=$line['idpe'];
   $old=$line['old'];
   $new=$line['new'];
-  $arrayMile[$idpe]['dates'][$day]=strtotime($new);
+  $arrayMile[$idpe]['dates'][$day]=strtotime($new.$refTime);
   if ($day>$arrayMile[$idpe]['lastDate']) { $arrayMile[$idpe]['lastDate']=$day;}
   if ($start=="" or $start>$day) {$start=$day;}
   if ($end=="" or $end<$day) { $end=$day;}
@@ -178,10 +179,10 @@ ksort($existingDates);
 while ($date<=$end) {
   if (isset($existingDates[$date]) or $date==$today) {
     if ($scale=='day') { 
-      $arrDates[$date]=strtotime($date.' 12:00:00');
+      $arrDates[$date]=strtotime($date.$refTime);
     } else {
       $dt=new DateTime();
-      $dt->setTimestamp(strtotime($date.' 12:00:00'));
+      $dt->setTimestamp(strtotime($date.$refTime));
       $last=lastDayOf($scale,$dt);
       $arrDates[$date]=$last->getTimestamp(); 
     }
@@ -237,10 +238,9 @@ foreach ($arrDates as $date => $period) {
   } else {
     $arrDates[$date]=$date;
   }
-
   $cpt++;
 }
-
+echo $indexToday;
 $arrLabel=array();
 foreach($arrDates as $date){
   $arrLabel[]=$date;
@@ -254,7 +254,7 @@ foreach($arrayMile as $idx=>$arr) {
   $dataSet->addPoints($arrayMile[$idx]['periods'],"mile$idx");
   $dataSet->setSerieOnAxis("mile$idx",0);
   $dataSet->setSerieWeight("mile$idx",1);
-  $dataSet->setSerieDescription("mile$idx",$arrayMile[$idx]['name']."  ");
+  $dataSet->setSerieDescription("mile$idx",wordwrap($arrayMile[$idx]['name']."  ",25,"\n"));
 }
 $dataSet->addPoints($resBase,"base");
 $dataSet->setSerieOnAxis("base",0);
@@ -264,10 +264,10 @@ $dataSet->setSerieDescription("base",i18n("legendBaseline")."  ");
 
 foreach ($arrLabel as $idx=>$val) {
   if ($scale=='day') {
-    $arrLabel[$idx]=strtotime($val.' 12:00:00');
+    $arrLabel[$idx]=strtotime($val.$refTime);
   }
   if ($scale=='month') {
-    //$arrLabel[$idx]=strtotime($val.date(' 12:00:00')
+    //$arrLabel[$idx]=strtotime($val.$refTime);
   }
 }
 $dataSet->addPoints($arrLabel,"dates");
