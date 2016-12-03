@@ -39,16 +39,26 @@ if (isset($_REQUEST['type'])) {
   $type=$_REQUEST['type'];
 }
 Security::checkValidId($type);
+$status=null;
+if (isset($_REQUEST['status'])) {
+  $status=$_REQUEST['status'];
+}
+Security::checkValidId($status);
+$profile=null;
+if (isset($_REQUEST['profile'])) {
+  $profile=$_REQUEST['profile'];
+}
+Security::checkValidId($profile);
 
 $peName=$objectClass.'PlanningElement';
 
 $obj=new $objectClass();
-$result=$obj->getExtraHiddenFields($type);
+$result=$obj->getExtraHiddenFields($type,$status,$profile);
 
 $peName=$objectClass.'PlanningElement';
 if (property_exists($obj, $peName)) {
   $pe=$obj->$peName;
-  $resultPe=$pe->getExtraHiddenFields($type);
+  $resultPe=$pe->getExtraHiddenFields($type,$status,$profile);
   $result=array_merge($result,$resultPe);
 }
 echo json_encode($result);
