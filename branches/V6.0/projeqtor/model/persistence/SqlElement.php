@@ -2840,10 +2840,10 @@ abstract class SqlElement {
 			  $colScript .= '   getExtraRequiredFields();';
 			}	
 		  if ($colName=='id'.get_class($this).'Type') {
-		    $colScript .= '   getExtraHiddenFields(this.value,null,null);';
+		    $colScript .= '   getExtraHiddenFields(this.value,"","");';
 		  }
 		  //if ($colName=='idStatus') {         // Disabled : it is not desirable to hade extra fields before saving
-		  //  $colScript .= '   getExtraHiddenFields(null,this.value,null);';
+		  //  $colScript .= '   getExtraHiddenFields("",this.value,"");';
 		  //}
 		  $colScript .= '</script>';
 		}
