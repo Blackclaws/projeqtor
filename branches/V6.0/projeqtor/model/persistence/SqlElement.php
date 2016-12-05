@@ -35,6 +35,9 @@ abstract class SqlElement {
 	// List of fields that will be exposed in general user interface
 	public $id; // every SqlElement have an id !!!
 
+	public static $_evaluationString='###EVAL###';
+	public static $_evaluationStringForbiddenKeywords=array('paramDb','getGlobalParameter','readfile','exit','fopen',
+	    'fsockopen','copy','move','kill','file_get_contents','include','stream_context_create');
 	private static $staticCostVisibility=null;
 	private static $staticWorkVisibility=null;
   private static $staticDeleteConfirmed=false;
@@ -2416,12 +2419,10 @@ abstract class SqlElement {
 	public function getDefaultValue($fieldName) {
 	  $defaultValues=$this->getStaticDefaultValues();
 	  if (array_key_exists($fieldName,$defaultValues)) {
-	    if (substr($defaultValues[$fieldName],0,10)=='#$#EVAL#$#') {
-	      $eval=substr($defaultValues[$fieldName],10);
-        //if (strpos($eval,'return')===false) {
-        //  $eval="return ".$eval;
-        //}
-	      $eval='$value='. str_replace("'",'"',$eval).";";
+	    if (substr($defaultValues[$fieldName],0,strlen(self::$_evaluationString))==self::$_evaluationString) {
+	      $eval=substr($defaultValues[$fieldName],strlen(self::$_evaluationString));
+	      //$eval='$value='. str_replace("'",'"',$eval).";";
+	      $eval='$value='. $eval .';';
 	      eval($eval);
 	      return $value;
 	    } else {
@@ -2430,6 +2431,28 @@ abstract class SqlElement {
 	  } else {
 	    return null;
 	  }
+	}
+	public function getDefaultValueString($fieldName) {
+	  $defaultValues=$this->getStaticDefaultValues();
+	  if (array_key_exists($fieldName,$defaultValues)) {
+	    return $defaultValues[$fieldName];
+	  } else {
+	    return null;
+	  }
+	}
+	public function checkValidEvaluationString($str) {
+	  if (substr($str,0,strlen(self::$_evaluationString))!=self::$_evaluationString) return false;
+	  // Some check to avoid hack (even if this feature should only be given to admin)
+	  foreach (self::$_evaluationStringForbiddenKeywords as $keyword) {
+	    if (strpos($str,$keyword)!==false) return false;
+	  }
+	  $eval=substr($str,strlen(self::$_evaluationString));
+	  $eval='$value='. $eval .';$resultOkForCheckValidEvaluationString=true;';
+	  disableCatchErrors();
+    @eval($eval);
+	  enableCatchErrors();
+	  if (isset($resultOkForCheckValidEvaluationString) and $resultOkForCheckValidEvaluationString==true) return true;
+	  return false;
 	}
 	/** ========================================================================
 	 * Return the default value for a given field

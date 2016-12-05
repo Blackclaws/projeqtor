@@ -52,7 +52,7 @@ class Security
   *  checkValidPeriodScale($periodScale) : $periodScale is a valid period scale (year, quarter, month, week, day)
   *  
   */
-  public static function checkValidClass($className) {
+  public static function checkValidClass($className,$activeTraceHack=true) {
     if ($className=='') return ''; // Allow empty string
     // not checking file existence using realpath() due to inconsistent behavior in different versions.
     if (!file_exists('../model/'.$className.'.php') || 
@@ -67,32 +67,35 @@ class Security
     }
     return $className;
   }
-  public static function checkValidId($id) {
+  public static function checkValidId($id,$activeTraceHack=true) {
     if (is_array($id)) {
       foreach ($id as $val);
       Security::checkValidId($val);
       return $id;
     }
     if (! is_numeric($id) and $id!='*' and trim($id)!='') {
-      traceHack("Id '$id' is not numeric");
+      if($activeTraceHack)traceHack("Id '$id' is not numeric");
+      $id=null;
     }
     return $id;
   }
-  public static function checkValidBoolean($boolean) {
+  public static function checkValidBoolean($boolean,$activeTraceHack=true) {
     if (! $boolean or $boolean==false or trim($boolean)=='') return 0;
     if ($boolean==-1 or $boolean===true) return 1;
     if ($boolean=='on') return 1;
     if ($boolean=='off') return 0;
-    if ($boolean!=0 and $boolean!=1) {
-      traceHack("the value '$boolean' is not a boolean");
+    if ($boolean!==0 and $boolean!==1) {
+      if($activeTraceHack)traceHack("the value '$boolean' is not a boolean");
+      $boolean=null;
     }
     return $boolean;
   }
-  public static function checkValidDateTime($dateTime) {
+  public static function checkValidDateTime($dateTime,$activeTraceHack=true) {
     if (trim($dateTime)=='') return '';
     $len=strlen($dateTime);
     if ($len<5 or $len>19) {
-      traceHack("Invalid dateTime format for '$dateTime' : only 5 to 19 characters length possible");
+      if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : only 5 to 19 characters length possible");
+      $dateTime=null;
     }
     $date=""; $time="";
     if ($len<10) {
@@ -106,46 +109,52 @@ class Security
         $split=explode('T',$dateTime);
       }
       if (count($split)!=2) {
-        traceHack("Invalid dateTime format for '$dateTime' : date / time not separated by space");
+        if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : date / time not separated by space");
+        $dateTime=null;
       }
       $date=$split[0];
-      $time=$split[1];
+      $time=(count($split)>1)?$split[1]:null;
     }
     if ($date) {
       if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date)) != true) {
-        traceHack("Invalid dateTime format for '$dateTime' : date expected format is YYYY-MM-DD");
-        exit; // Not reached, traceHack exits script
+        if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : date expected format is YYYY-MM-DD");
+        $dateTime=null;
+        //exit; // Not reached, traceHack exits script
       }
     }
     if ($time) {
       if (preg_match('/^\d{2}:\d{2}:\d{2}$/', trim($time)) != true 
-      and preg_match('/^\d{:}:\d{2}$/', trim($time)) != true) {
-        traceHack("Invalid dateTime format for '$dateTime' : time expected format is HH:MN or HH:MN:SS");
-        exit; // Not reached, traceHack exits script
+      and preg_match('/^\d{2}:\d{2}$/', trim($time)) != true) {
+        if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : time expected format is HH:MN or HH:MN:SS");
+        $dateTime=null;
+        //exit; // Not reached, traceHack exits script
       }
     }
     return $dateTime;
   }
-  public static function checkValidNumeric($numeric) {
+  public static function checkValidNumeric($numeric,$activeTraceHack=true) {
     if ($numeric===null or $numeric==='' or trim($numeric)==='' or $numeric=='NaN') return null; //allow null or empty value
     if (! is_numeric($numeric)) {
-      traceHack("Value '$numeric' is not numeric");
+      if($activeTraceHack) traceHack("Value '$numeric' is not numeric");
+      $numeric=null;
     }
     return $numeric;
   }
-  public static function checkValidInteger($integer) {
+  public static function checkValidInteger($integer,$activeTraceHack=true) {
     if ($integer===null or $integer==='' or trim($integer)==='' or $integer=='NaN') return; //allow null or empty value
     if ($integer=='on') return 1;
     if ($integer=='off') return 0;
     if (! is_numeric($integer)) {
-      traceHack("Value '$integer' is not a numeric integer");
+      if($activeTraceHack) traceHack("Value '$integer' is not a numeric integer");
+      $interger=null;
     }
     return intval($integer);
   }
-  public static function checkValidAlphanumeric($string) {
+  public static function checkValidAlphanumeric($string,$activeTraceHack=true) {
     // TODO (SECURITY) : use ctype_alnum()
     if (preg_match('/[^0-9a-zA-Z]/', $string) == true) {
-      traceHack("invalid alpanumeric string value - $string");
+      if($activeTraceHack) traceHack("invalid alpanumeric string value - $string");
+      $string=null;
     }
     return $string;
   }
@@ -199,7 +208,7 @@ class Security
     $scale=preg_replace('/[^a-z]/', '', $scale); // only allow a-z.
     if ($scale!='week' and $scale!='month' and$scale!='day' and $scale!='quarter' and $scale!='year') {
       traceHack("period scale '$scale' is not an expected period scale");
-      $scale=""; // Not reached as traceHack will exit script
+      $scale=null; // Not reached as traceHack will exit script
     }
     return $scale;
   }

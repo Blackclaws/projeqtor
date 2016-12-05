@@ -69,7 +69,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $_label_wbs;
   public $wbs;
   public $priority;
-  public $_label_idActivityPlanningMode;
+  public $_label_planning;
   public $idActivityPlanningMode;
   public $_tab_5_1_smallLabel = array('workElementCount', 'estimated', 'real', 'left', '', 'ticket');
   public $workElementCount;
