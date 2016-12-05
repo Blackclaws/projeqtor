@@ -360,3 +360,7 @@ label, .label {
   background: url(images/titleBarDark.png) #909090 top repeat-x !important;
   margin: 5px !important; 
 } 
+
+.tabLabel {
+	border:0;
+}
