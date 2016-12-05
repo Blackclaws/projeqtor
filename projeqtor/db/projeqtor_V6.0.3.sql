@@ -6,3 +6,5 @@
 -- ///////////////////////////////////////////////////////////
 
 UPDATE  `${prefix}extrahiddenfield` set scope=concat('Type#',scope) where scope not like '%#%';
+
+INSERT INTO `${prefix}importable` (`id`, `name`, `idle`) VALUES ('43', 'Provider', '0');

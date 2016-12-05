@@ -512,6 +512,26 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
       $hide=true;
     }
+    if (substr($col,0,7)=='_label_') {
+      $attFld=substr($col,7);
+      if ($attFld=='expected') $attFld='expectedProgress';
+      else if ($attFld=='planning') $attFld='id'.str_replace('PlanningElement','',get_class($obj)).'PlanningMode';
+      if (property_exists(get_class($obj), $attFld) and $obj->isAttributeSetToField($attFld, "hidden")) {
+        $hide=true;
+      } else if (in_array($attFld,$extraHiddenFields)) {
+        $hide=true;
+      }
+    }
+    if (substr($col,0,5)=='_lib_') {
+      $attFld=substr($col,5);
+      if (substr($attFld,0,3)=='col' and ucfirst(substr($attFld,3,1))==substr($attFld,3,1)) $attFld=substr($attFld,3);
+      debugLog($attFld);
+      if (property_exists(get_class($obj), $attFld) and $obj->isAttributeSetToField($attFld, "hidden")) {
+        $hide=true;
+      } else if (in_array($attFld,$extraHiddenFields)) {
+        $hide=true;
+      }
+    }
     // If field is _tab_x_y, start a table presentation with x columns and y lines
     // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
@@ -566,7 +586,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       echo '</table><table id="' . $col . '" class="detail">';
       echo '<tr class="detail">';
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
-      $internalTableBorderTitle=($print)?'border:1px solid #A0A0A0;':'';
+      //$internalTableBorderTitle=($print)?'border:1px solid #A0A0A0;':'';
+      $internalTableBorderTitle=($print)?'padding-top:5px;text-decoration: underline;padding-bottom:2px;':'';
       for ($i=0; $i < $internalTableCols; $i++) { // draw table headers
         echo '<td class="detail" style="min-width:75px;'.$internalTableBorderTitle.'">';
         if ($arrTab['cols'][$i]==0) {
@@ -678,7 +699,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       if (strpos($obj->getFieldAttributes($col), 'nobr') !== false) {
         $nobr=true;
       }
-      if ($obj->getFieldAttributes($col) != 'hidden') {
+      if ($obj->getFieldAttributes($col) != 'hidden' and !$hide) {
         if ($nobr)
           echo '&nbsp;';
         echo '<span class="tabLabel" style="font-weight:normal">' . i18n($item) . '</span>';
@@ -960,8 +981,9 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         //
       } else if (substr($col, 0, 7) == '_label_') {
         $captionName=substr($col, 7);
-        echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
-       
+        if (! $hide) {
+          echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
+        }
       } else if (substr($col, 0, 8) == '_button_') {
         if (! $print and !$comboDetail and !$obj->isAttributeSetToField($col,'hidden')) {
           $item=substr($col, 8);
@@ -1020,7 +1042,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col),'stipAllTags').'&nbsp;:&nbsp;</div>';
-          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;">';
+          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;">';
           $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
             if ($preseveHtmlFormatingForPDF) {
