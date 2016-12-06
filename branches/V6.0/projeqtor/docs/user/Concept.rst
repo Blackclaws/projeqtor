@@ -94,6 +94,37 @@ A project can be billable or not.
 
     \newpage
 
+.. _organization-concept:
+
+Organization
+=======
+
+The notion of organization introduces a way to consolidate projects on a different hiererchic structure, apart from projects / sub-projects structure.
+
+.. rubric:: Definition of the structure of the company in the frame of organizations (Departments, Units, Location, ...)
+* The organization summarizes the data of the projects in progress for the organization
+
+.. figure:: /images/Organization.png
+   :align: center
+
+.. rubric:: Organization link
+* Each project can be linked to an organization
+
+.. note::
+
+  * Sub-projects are by default attached to the same organization as the parent, but can be integrated into another organization.
+  
+* Resources can be linked to an organization.
+
+.. note::
+
+  * Depending on the profile, you can limit the visibility of resources to people in the same organization or team as the current user.
+
+
+.. raw:: latex
+
+    \newpage
+
 .. _product-concept:
 
 Product

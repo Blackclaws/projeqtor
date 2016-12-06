@@ -1,5 +1,8 @@
 .. |iconNotPlanned| image:: images/iconNotPlanned.png
    :alt: Icon not planned
+   
+.. |iconenablecalendar| image:: images/iconEnableCalendar.png
+   :alt: Icon not planned
 
 .. |iconPlanned| image:: images/iconPlanned.png
    :alt: Icon planned

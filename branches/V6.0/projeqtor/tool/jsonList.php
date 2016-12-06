@@ -38,7 +38,7 @@
         errorLog("incorrect query jonList : critValue is not set but critField set");
         return;
       }
-      if (substr($field,0,2)=='id') {
+      if (substr($field,0,2)=='id' and substr($field,2,1)==strtoupper(substr($field,2,1))) {
         Security::checkValidId($_REQUEST['critValue']);
       } 
     } else if (isset($_REQUEST['critValue'])) {
@@ -208,15 +208,23 @@
         and ($critField=='idProductOrComponent' or $critField=='idComponent')) {
           $critField='idProduct';
         }
-        if (property_exists($class,$critField) or ($critField=='idProjectSub' and property_exists($class,'idProject')) ) {
+        $showIdle=false;
+        if ($critField=='idle' and $_REQUEST['critValue']=='all') {
+          $showIdle=true;
+          $crit=array();
+        } else if (property_exists($class,$critField) or ($critField=='idProjectSub' and property_exists($class,'idProject')) ) {
           $crit=array( $critField => $_REQUEST['critValue']);
         } else {
           $crit=array();
         }
-        if (substr($dataType,-16)=='ComponentVersion' and isset($_REQUEST['critField1']) and isset($_REQUEST['critValue1'])) {
-          $crit[$_REQUEST['critField1']]=$_REQUEST['critValue1'];
+        if (isset($_REQUEST['critField1']) and isset($_REQUEST['critValue1'])) {
+          if ($_REQUEST['critField1']=='idle' and $_REQUEST['critValue1']=='all') {
+            $showIdle=true;
+          } else {
+            $crit[$_REQUEST['critField1']]=$_REQUEST['critValue1'];
+          }
         }
-        $list=SqlList::getListWithCrit($class, $crit);
+        $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
         
       } else {
         $list=SqlList::getList($class);        

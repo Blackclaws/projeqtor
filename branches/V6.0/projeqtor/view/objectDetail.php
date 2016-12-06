@@ -525,7 +525,6 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
     if (substr($col,0,5)=='_lib_') {
       $attFld=substr($col,5);
       if (substr($attFld,0,3)=='col' and ucfirst(substr($attFld,3,1))==substr($attFld,3,1)) $attFld=substr($attFld,3);
-      debugLog($attFld);
       if (property_exists(get_class($obj), $attFld) and $obj->isAttributeSetToField($attFld, "hidden")) {
         $hide=true;
       } else if (in_array($attFld,$extraHiddenFields)) {
