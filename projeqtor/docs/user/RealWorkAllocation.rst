@@ -229,6 +229,10 @@ Input fields
 
 * A global comment can be added on the weekly follow-up.
 
+.. note::
+  * Possibility to extend the main comment area.
+  * Can enter a comment on each line of real work allocation screen.
+
 .. rubric:: 2 - Real work entry
 
 * Area allows to entry real work.

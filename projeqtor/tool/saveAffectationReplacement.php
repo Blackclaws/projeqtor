@@ -74,7 +74,7 @@ $rcList=$rc->getSqlElementsFromCriteria($crit,null,null,'id asc');
 $costArray=array();
 $defaultRole=$resObj->idRole;
 $defaultCost=0;
-if (count($costArray)>0) {
+if (count($rcList)>0) {
   foreach ($rcList as $rc) {
     $costArray[$rc->idRole]=$rc->cost;
     if ($rc->idRole==$defaultRole) {

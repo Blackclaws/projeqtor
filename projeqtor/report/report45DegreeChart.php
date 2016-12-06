@@ -161,23 +161,24 @@ while ($line = Sql::fetchLine($resultPlanned)) {
   if ($day>$arrayMile[$idpe]['lastDate']) { $arrayMile[$idpe]['lastDate']=$day;}
   if ($start=="" or $start>$day) {$start=$day;}
   if ($end=="" or $end<$day) { $end=$day;}
+  if ($end<$new) {$end=$new;}
 }
 
 if (checkNoData($arrayMile)) exit;
 
-$date=$start;
 if (!$start or !$end) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData'); 
   echo '</div>';
   exit;
 }
-$start=substr($start,0,8).'01';
-$end=substr($end,0,8).date('t',strtotime($end));
+//$start=substr($start,0,8).'01';
+//$end=substr($end,0,8).date('t',strtotime($end));
+$date=$start;
 $arrDates=array();
 ksort($existingDates);
 while ($date<=$end) {
-  if (isset($existingDates[$date]) or $date==$today) {
+  if (isset($existingDates[$date]) or $date==$today or $date==$end or $date==$start) {
     if ($scale=='day') { 
       $arrDates[$date]=strtotime($date.$refTime);
     } else {
@@ -314,8 +315,13 @@ $dataSet->setSerieDrawable("base",false);
 if (count($arrLabel)<$maxPlotted) {
   $graph->drawPlotChart($drawFormat);
 }
-if ($showToday) $graph->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
-
+if ($showToday) { 
+  $min=reset($arrLabel);
+  $max=$arrLabel[count($arrLabel)-1];
+  $td=strtotime($today.$refTime);
+  $pos=($td-$min)/($max-$min)*(count($arrLabel)-1);
+  $graph->drawXThreshold(array($pos),array("Alpha"=>70,"Ticks"=>0));
+}
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
 $graph->drawLegend($graphWidth-190,50,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,

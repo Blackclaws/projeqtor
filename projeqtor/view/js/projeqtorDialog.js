@@ -3172,17 +3172,29 @@ function filterSelectAtribute(value) {
           });
         } else if (dataType == "list") {
           filterType="list";
-          if (value == 'idTargetVersion' || value == 'idOriginalValue') {
-            value='idVersion';
+          var extraUrl="";
+          if (value == 'idTargetVersion' || value == 'idTargetProductVersion' || value == 'idOriginalProductVersion') {
+            value='idProductVersion';
+            extraUrl='&critField=idle&critValue=all';
+          } else if (value == 'idTargetComponentVersion' || value == 'idOriginalComponentVersion') {
+            value='idComponentVersion';
+            extraUrl='&critField=idle&critValue=all';
           }
           var urlListFilter='../tool/jsonList.php?required=true&listType=list&dataType='+value;
+          
           if (currentSelectedProject && currentSelectedProject!='' && currentSelectedProject!='*') {
             if (value=='idActivity') {
               urlListFilter+='&critField=idProjectSub&critValue='+currentSelectedProject;
             } else {
               urlListFilter+='&critField=idProject&critValue='+currentSelectedProject;
             }
+            if (extraUrl=='&critField=idle&critValue=all') {
+              extraUrl=='&critField1=idle&critValue1=all';
+            }
           }
+          if (extraUrl!="") {
+            urlListFilter+=extraUrl;
+          }  
           var tmpStore=new dojo.data.ItemFileReadStore({
             url : urlListFilter
           });

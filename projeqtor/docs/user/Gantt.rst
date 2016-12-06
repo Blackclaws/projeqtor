@@ -32,7 +32,7 @@ It is composed with two areas:
 
    * This screen offers many features that will be described in the next sections.
 
-.. figure:: /images/GUI/SCR_GanttPlanning.png
+.. figure:: /images/GUI/SCR_GanttPlanning2.png
    :alt: Gantt (Planning)
    :align: center
 
@@ -48,12 +48,22 @@ It is composed with two areas:
 
 .. rubric:: 4 - Buttons
 
-* Click on |storePlannedDates| to store planned dates. (See: :ref:`project-planning`)
+* Click on |iconEnableCalendar| to validate planning.
+* Click on |storePlannedDates| to save baseline of planning. (See: :ref:`project-planning`)
 * Click on |buttonIconPrint| to get a printable version of the Gantt chart.
 * Click on |buttonIconPdf| to export Gantt chart in PDF format. (See: :ref:`export-Gantt-PDF`) 
 * Click on |msProject| to export planning to MS-Project xml format.
 * Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)
 * Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)
+
+.. rubric:: 5 - Show Baseline
+
+* Allows to display one baseline on top and one on bottom of the Gantt chart. 
+
+.. note::
+    
+   * Ability to display two baselines on the Gantt chart.
+   * Baseline can be saved with |storePlannedDates|.
 
 
 .. raw:: latex
@@ -70,7 +80,7 @@ The task list area is composed with:
 * :ref:`task-list` |one| 
 * :ref:`progress-data-view` |two|
 
-.. figure:: /images/GUI/ZONE_GanttTaskListProgressData.png
+.. figure:: /images/GUI/ZONE_GanttTaskListProgressData2.png
    :alt: Task list & progress data view
    :align: center
 
@@ -204,7 +214,7 @@ The Gantt chart view is a graphic representation of progress data.
 
 For each planning element, a Gantt bar is displayed at them right.
 
-.. figure:: /images/GUI/ZONE_GanttChartView.png
+.. figure:: /images/GUI/ZONE_GanttChartView2.png
    :alt: Gantt chart view
    :align: center
 
@@ -261,6 +271,9 @@ For each planning element, a Gantt bar is displayed at them right.
     * The line that cross a Gantt bar displays the percentage of actual progress.
     * The length of the line represents the percentage of completion, based on the percentage of actual progress against the length of Gantt bar.
 
+ .. note:: Lighter bar
+      
+      * Activities without assigned work are lighter bar, pale red or pale green as appropriate.
 
  .. note:: 
 
@@ -321,6 +334,17 @@ For each planning element, a Gantt bar is displayed at them right.
 .. rubric:: 8 - Current date
 
 * Yellow column indicates the current day, week, month or quarter, according to scale selected.
+* Red bar in yellow collumn display the current day and time.
+
+.. rubric:: 9 - Detail of the work
+
+* Right click on a bar to displays the detail of the work for this bar.
+  
+  .. image:: /images/GUI/Right_click_gantt.png
+
+ .. warning::
+ 
+  * You have to selected week or day scale to displays detail or a message will ask you to switch in smaller scale.
 
 .. raw:: latex
 

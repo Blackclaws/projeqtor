@@ -27,6 +27,15 @@
 /* =============================================================================== */
 /* ProjeqtorFlatBlue THEME                                                             */
 /* =============================================================================== */
+.ProjeQtOrFlatBlue .dijitFolderOpened {
+  background: url('customIcons/blue/folderOpened.png') no-repeat;
+  width:16px; height: 16px;
+}
+
+.ProjeQtOrFlatBlue .dijitFolderClosed {
+  background: url('customIcons/blue/folderClosed.png') no-repeat;
+  width:16px; height: 16px;
+}
 
 .ProjeQtOrFlatBlue html, .ProjeQtOrFlatBlue body, .ProjeQtOrFlatBlue #leftDiv, .ProjeQtOrFlatBlue #logoDiv,
 .ProjeQtOrFlatBlue .dijitSplitterH, .ProjeQtOrFlatBlue .dijitGutterH, .ProjeQtOrFlatBlue .dijitSplitterV, .ProjeQtOrFlatBlue .dijitGutterV,
@@ -520,10 +529,6 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconAutomation16 { background-image: url(customIcons/blue/iconAutomation.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* B */
-
-.ProjeQtOrFlatBlue .iconBackup32 { background-image: url(customIcons/blue/iconBackup.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.ProjeQtOrFlatBlue .iconBackup22 { background-image: url(customIcons/blue/iconBackup.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatBlue .iconBackup16 { background-image: url(customIcons/blue/iconBackup.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatBlue .iconBill32 { background-image: url(customIcons/blue/iconBill.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconBill22 { background-image: url(customIcons/blue/iconBill.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -1160,6 +1165,16 @@ body .ProjeQtOrFlatBlue {
 /* ProjeqtorFlatRed THEME                                                             */
 /* =============================================================================== */
 
+.ProjeQtOrFlatRed .dijitFolderOpened {
+  background: url('customIcons/red/folderOpened.png') no-repeat;
+  width:16px; height: 16px;
+}
+
+.ProjeQtOrFlatRed .dijitFolderClosed {
+  background: url('customIcons/red/folderClosed.png') no-repeat;
+  width:16px; height: 16px;
+}
+
 .ProjeQtOrFlatRed html, .ProjeQtOrFlatRed body, .ProjeQtOrFlatRed #leftDiv, .ProjeQtOrFlatRed #logoDiv,
 .ProjeQtOrFlatRed .dijitSplitterH, .ProjeQtOrFlatRed .dijitGutterH, .ProjeQtOrFlatRed .dijitSplitterV, .ProjeQtOrFlatRed .dijitGutterV,
 .ProjeQtOrFlatRed .loginBackground {
@@ -1610,10 +1625,6 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconAutomation16 { background-image: url(customIcons/red/iconAutomation.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* B */
-
-.ProjeQtOrFlatRed .iconBackup32 { background-image: url(customIcons/red/iconBackup.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.ProjeQtOrFlatRed .iconBackup22 { background-image: url(customIcons/red/iconBackup.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatRed .iconBackup16 { background-image: url(customIcons/red/iconBackup.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatRed .iconBill32 { background-image: url(customIcons/red/iconBill.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconBill22 { background-image: url(customIcons/red/iconBill.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -2250,6 +2261,15 @@ body .ProjeQtOrFlatRed {
 /* =============================================================================== */
 /* ProjeqtorFlatGreen THEME                                                             */
 /* =============================================================================== */
+.ProjeQtOrFlatGreen .dijitFolderOpened {
+  background: url('customIcons/green/folderOpened.png') no-repeat;
+  width:16px; height: 16px;
+}
+
+.ProjeQtOrFlatGreen .dijitFolderClosed {
+  background: url('customIcons/green/folderClosed.png') no-repeat;
+  width:16px; height: 16px;
+}
 
 .ProjeQtOrFlatGreen html, .ProjeQtOrFlatGreen body, .ProjeQtOrFlatGreen #leftDiv, .ProjeQtOrFlatGreen #logoDiv,
 .ProjeQtOrFlatGreen .dijitSplitterH, .ProjeQtOrFlatGreen .dijitGutterH, .ProjeQtOrFlatGreen .dijitSplitterV, .ProjeQtOrFlatGreen .dijitGutterV,
@@ -2702,10 +2722,6 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconAutomation16 { background-image: url(customIcons/green/iconAutomation.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* B */
-
-.ProjeQtOrFlatGreen .iconBackup32 { background-image: url(customIcons/green/iconBackup.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.ProjeQtOrFlatGreen .iconBackup22 { background-image: url(customIcons/green/iconBackup.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGreen .iconBackup16 { background-image: url(customIcons/green/iconBackup.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGreen .iconBill32 { background-image: url(customIcons/green/iconBill.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconBill22 { background-image: url(customIcons/green/iconBill.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3341,6 +3357,15 @@ body .ProjeQtOrFlatGreen {
 /* =============================================================================== */
 /* ProjeqtorFlatGrey THEME                                                  */
 /* =============================================================================== */
+.ProjeQtOrFlatGrey .dijitFolderOpened {
+  background: url('customIcons/grey/folderOpened.png') no-repeat;
+  width:16px; height: 16px;
+}
+
+.ProjeQtOrFlatGrey .dijitFolderClosed {
+  background: url('customIcons/grey/folderClosed.png') no-repeat;
+  width:16px; height: 16px;
+}
 
 .ProjeQtOrFlatGrey html, .ProjeQtOrFlatGrey body, .ProjeQtOrFlatGrey #leftDiv, .ProjeQtOrFlatGrey #logoDiv,
 .ProjeQtOrFlatGrey .dijitSplitterH, .ProjeQtOrFlatGrey .dijitGutterH, .ProjeQtOrFlatGrey .dijitSplitterV, .ProjeQtOrFlatGrey .dijitGutterV,
@@ -3794,10 +3819,6 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconAutomation16 { background-image: url(customIcons/grey/iconAutomation.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* B */
-
-.ProjeQtOrFlatGrey .iconBackup32 { background-image: url(customIcons/grey/iconBackup.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.ProjeQtOrFlatGrey .iconBackup22 { background-image: url(customIcons/grey/iconBackup.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGrey .iconBackup16 { background-image: url(customIcons/grey/iconBackup.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGrey .iconBill32 { background-image: url(customIcons/grey/iconBill.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconBill22 { background-image: url(customIcons/grey/iconBill.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

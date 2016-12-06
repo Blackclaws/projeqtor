@@ -115,10 +115,14 @@ function refreshImputationList() {
  * Refresh the imputation list after period update (check format first)
  * @return
  */
-var temps=null;
+var refreshTimoutInProgress=null;
+var refreshInProgress=false;
 function refreshImputationPeriod(directDate) {
-  if (temps) {
-   clearTimeout(temps);
+  if (refreshInProgress && directDate) {
+    return true; 
+  }
+  if (refreshTimoutInProgress!==null) {
+   clearTimeout(refreshTimoutInProgress);
   }
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
@@ -132,7 +136,7 @@ function refreshImputationPeriod(directDate) {
     dijit.byId('dateSelector').set('value',day);
     return false;
   }
-
+  refreshInProgress=true;
   if (directDate) {
     var year=directDate.getFullYear();
     var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
@@ -181,11 +185,9 @@ function refreshImputationPeriod(directDate) {
   dijit.byId('dateSelector').set('value',day);
   dojo.byId('rangeValue').value='' + year + week;
   if ((year+'').length==4) { 
-     temps=setTimeout("refreshImputationList();",500);
-     //temps=setTimeout("alert('coucou');",100);
+     refreshTimoutInProgress=setTimeout("refreshImputationList();refreshInProgress=false;",500);
   }
   return true;
-  
 }
 
 function recursiveAddWorkProject(idProject, day, diff){

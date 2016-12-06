@@ -4,9 +4,8 @@ Glossary
 --------
 
 .. glossary::
-  
+   
    Closed
-
      * Flag to indicate that item is archived.
      * Item will not appear in lists any more, unless “show closed” is checked.
 
