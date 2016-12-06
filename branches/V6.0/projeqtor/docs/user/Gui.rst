@@ -632,7 +632,7 @@ Detail window
 
 .. rubric:: 1 - Item identifier
 
-* Identifies the item with the element name and the item id.
+* Identifies the item with the element type and the item id and name.
 * Each element is identified with a distinctive icon.
 
 .. rubric:: 2 - Creation information
@@ -661,9 +661,6 @@ Detail window
 * Click on |buttonIconRefresh| to refresh the display.      
 * Click on |buttonIconEmail| to send details of item by email. (See: :ref:`email-detail`)
 * Click on |buttonIconMultipleUpdate| to update several items in one operation. (See: :ref:`multiple-update`)
-* Click on |buttonIconShowChecklist| to show the checklist form. (See: :ref:`checklist`)
-* Click on |buttonIconShowHistory| to show history of changes. (See: :ref:`change-history`)
-
 
  .. note::
 
@@ -1417,14 +1414,18 @@ Just move the mouse over the red line to display, which indicator has been raise
 Themes
 ======
 
-Users can select colors Theme to display the interface. 
+Users can select Theme to display the interface. 
 
-The new theme is automatically applied when selected.
+.. rubric:: User parameter “Theme”
+* This parameter defines the theme to display.
+* The new theme is automatically applied when selected.
 
-.. note:: User parameter “Theme”
+.. figure:: /images/GUI/theme.png
 
-   * This parameter defines the theme to display.
+.. note:: Default theme
 
+  * By default your selected theme is "ProjeQtOr 'Flat Desgin' Blue".
+  * Screenshoots has been taken with "ProjeQtOr Standard" theme. 
 
 Multilingual
 ============
@@ -1446,6 +1447,7 @@ Keyboard functionality
 
 * :kbd:`Control-s` to save the changes. 
 * :kbd:`F1` to open the online user manual, to the page corresponding to the actual screen.
+* :kbd:`ESC` to exit full screen mode of CK Editor.
 
 .. rubric:: Numeric keypad
 

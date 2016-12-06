@@ -3857,6 +3857,7 @@ abstract class SqlElement {
 	public function getMailDetail () {
 		$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
 		$currency=Parameter::getGlobalParameter('currency');
+		SqlList::cleanAllLists(); // To be sure...
 		$msg="";
 		$rowStart='<tr>';
 		$rowEnd='</tr>';

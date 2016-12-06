@@ -7,6 +7,8 @@
 
 .. index:: ! Report
 
+.. _report:
+
 Reports
 -------
 
@@ -17,7 +19,7 @@ A list of reports is available in different categories.
 #. Update the parameters to get the information you need.
 #. Click on a button to produce the report. |four|
 
-.. figure:: /images/GUI/SCR_Reports.png
+.. figure:: /images/GUI/Report_menu.PNG
    :alt: Reports screen
    :align: center
 

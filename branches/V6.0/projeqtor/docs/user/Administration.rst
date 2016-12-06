@@ -112,6 +112,17 @@ Global parameters screen allows configuration of application settings.
 
 * Used to calculate delays based on “open hours”.
 
+.. rubric:: Section: Open days
+
+* Possibility to define the working days in the company.
+
+  * For each day of the week, you can choose between open days or off days.
+
+  .. note::
+  
+       * Taking into account the working days on calendars
+       * Taking into account the working days on the calculation of the planning and the display.
+       * Taking into account the working days on the display of real work allocation
 
 
 .. index:: ! Real work allocation (Unit for work)
