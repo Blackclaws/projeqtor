@@ -31,7 +31,7 @@ Resources
 
 Human and material resource are involved in the project.
 
-Project affectation defines its availability.
+Project allocation defines its availability.
 
 .. rubric:: As group of person
 
@@ -45,7 +45,7 @@ Project affectation defines its availability.
 
 .. sidebar:: Other sections
    
-   * :ref:`Affectations<affectations-section>`
+   * :ref:`Allocations<allocations-section>`
 
 .. rubric:: Section: Description
 
@@ -261,7 +261,7 @@ The team is a group of resources gathered on any criteria.
 .. topic:: Button: Affect all team members of a project
 
    * This button allows to affect all team members of a project.
-   * The :ref:`affectation dialog box<affectations-box>` will be displayed.
+   * The :ref:`allocation dialog box<allocations-box>` will be displayed.
 
 .. raw:: latex
 

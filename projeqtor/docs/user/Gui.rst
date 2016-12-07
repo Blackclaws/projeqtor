@@ -198,7 +198,7 @@ Menu on top bar allows a rapid access to elements.
 Logo area
 ---------
 
-.. figure:: /images/GUI/SCR_LogoArea.png
+.. figure:: /images/GUI/logoArea.png
    :alt: Logo area
    :align: center
 

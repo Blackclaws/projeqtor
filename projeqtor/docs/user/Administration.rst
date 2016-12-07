@@ -120,10 +120,7 @@ Global parameters screen allows configuration of application settings.
 
   .. note::
   
-       * Taking into account the working days on calendars
-       * Taking into account the working days on the calculation of the planning and the display.
-       * Taking into account the working days on the display of real work allocation
-
+       * This parameter are taken into account in : working days on calendars, the working days on the calculation and the display ,the working days on the display of real work allocation.
 
 .. index:: ! Real work allocation (Unit for work)
 .. index:: ! Workload (Unit form work)
@@ -207,6 +204,23 @@ Global parameters screen allows configuration of application settings.
 
     * Change status of the task to the first "done" status when no left work remains.
 
+ .. compound:: **Max days to book work (warning) :**
+
+    * Number of days that user can enter work in the future will get a warning.
+    
+    .. note::
+        * this parameter does not apply for administrative
+    
+ .. compound:: **Max days to book work (blocking)**
+
+    * Number of days that user can enter work in the future will be block.
+  
+  .. note::
+        * this parameter does not apply for administrative
+  
+ .. compound:: **Alert resource on input done by someone else**
+
+    * Select your type of alert : Internal, Email, both or none.
 
 .. _responsible-section:
 
@@ -370,6 +384,12 @@ Parameters for the “Cron” process.
 .. rubric:: Section: Emailing
 
 Parameters to allow the application to send emails.
+
+.. rubric:: Section: SSL connection to database
+* SSL Key
+* SSL Certification
+* SSL Certificate Authority
+Enter your code for automatic connection to the database
 
 
 .. index:: ! Email (Formatted message)

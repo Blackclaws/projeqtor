@@ -80,7 +80,7 @@ The planning is based on all the constraints defined:
 
 * availability of resources
 
-* rate of resource affectation to projects and assignment rate of resources to activities
+* rate of resource allocation to projects and assignment rate of resources to activities
 
 * planning mode for each activity (as soon as possible, fixed duration, ... )
 
@@ -115,10 +115,10 @@ A resource can also be a group of persons (team) for which you do not want to ma
 
 You can manage this through the capacity of the resource, that can be greater than 1 (for a group of people) or less than 1 (for a person working part-time).
 
-.. index:: Resource management (Affectation)
-.. rubric:: Affectations
+.. index:: Resource management (Allocation)
+.. rubric:: Allocations
  
-The first step is to affect each resource to the projects on which it has to work, specifying the affectation rate (% of maximum weekly time spent on this project).
+The first step is to affect each resource to the projects on which it has to work, specifying the allocation rate (% of maximum weekly time spent on this project).
 
 .. index:: Resource management (Assignment)
 .. rubric:: Assignments
