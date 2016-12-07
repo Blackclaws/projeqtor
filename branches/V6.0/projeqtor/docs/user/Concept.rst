@@ -33,7 +33,7 @@ Project element is more than a :ref:`planning-element`, it is also used to:
 * Allows restricting data visibility to users by project.
 * The project data visibility is granted according to the user profile.
 * See: :ref:`profiles-definition`
-* See: :ref:`project-affectation`
+* See: :ref:`allocation-to-project`
 
 
  .. compound:: **Project selector**
@@ -238,7 +238,7 @@ Based upon on resource availability and their capacity.
 
 .. rubric:: Resource availability
 
-* Resource availability is defined by calendars and project affectation period.
+* Resource availability is defined by calendars and project allocation period.
 
  .. compound:: **Resource calendar**
 
@@ -246,11 +246,11 @@ Based upon on resource availability and their capacity.
     * Tasks assigned to the resource will be planned according to working days defined in the calendar.
     * More detail, see: :ref:`resource-calendar`
 
- .. compound:: **Project affectation period**
+ .. compound:: **Project allocation period**
 
     * The resource can be affected to several projects.
-    * Possibility to define affectation period.
-    * More detail, see: :ref:`resource-affectation`
+    * Possibility to define allocation period.
+    * More detail, see: :ref:`resource-allocation`
 
 .. rubric:: Resource capacity
 
@@ -263,11 +263,11 @@ Based upon on resource availability and their capacity.
    * It allows to define the daily capacity.
    * More detail, see: :ref:`resource`
 
-.. rubric:: Project affectation rate
+.. rubric:: Project allocation rate
 
-* The project affectation rate is used to resolve affectation conflicts between projects.
+* The project allocation rate is used to resolve allocation conflicts between projects.
 * It allows to define resource availability for a project during a period.
-* Use with the resource capacity, it allows to define the project affectation capacity on a weekly base.
+* Use with the resource capacity, it allows to define the project allocation capacity on a weekly base.
 
 
 .. rubric:: Task assignation rate
@@ -298,7 +298,7 @@ Two methods can be used to create a draft planning.
         * There are several levels of Java developer with different daily costs (beginner, intermediary and expert).
         * You can define for this resource the functions and average daily cost for each level. (See: :ref:`resource-function-cost`)
         * You assign this resource to tasks, to a specific function (level). (See: :ref:`assignment`)
-        * Faked resource will be easily replaced with *real* resources when project becomes real, with *affectation replacement* feature. 
+        * Faked resource will be easily replaced with *real* resources when project becomes real, with *allocation replacement* feature. 
 
      .. compound:: **Team resource**
 
@@ -339,7 +339,7 @@ This planning element defines the project.
 
         * A project can be split into multiple sub projects.
         * A project leader and team can be affected to each sub-project. 
-        * Project affectation allows to define data visibility and isolate sub-projects. (See: :ref:`project-affectation`)
+        * Project allocation allows to define data visibility and isolate sub-projects. (See: :ref:`allocation-to-project`)
         * A supervisor can follow-up the project in its totality. 
 
         .. figure:: /images/SeparationDuties.png
@@ -581,7 +581,7 @@ The remaining work (left) on tasks will be distributed on the following days fro
 * Resource availability
 * Resource capacity
     
-  * Project affectation capacity (Project affectation rate)
+  * Project allocation capacity (Project allocation rate)
   * Assignation capacity (Task assignation rate)
 
 * Planning mode
@@ -737,9 +737,9 @@ A user linked to a profile belongs to this group who share same application beha
 * The profile is used to define access rights to application and data, first.
 * Also, the profile is used to send message, email and alert to groups.
 
-.. rubric:: Selected profile in project affectation
+.. rubric:: Selected profile in project allocation
 
-* A profile can be selected to a user, resource or contact in project affectation.
+* A profile can be selected to a user, resource or contact in project allocation.
 * The profile selected is used to give data access to elements of the projects.
 
 .. rubric:: Workflow definition
@@ -878,8 +878,8 @@ The next matrix shows the different possibilities.
  .. compound:: **Own projects**
     
     * Users with this access right must be affected to project to get data visibility.
-    * Selected profile in affectation allows to define access rights on project elements.
-    * For more detail, see: :ref:`project-affectation`.
+    * Selected profile in allocation allows to define access rights on project elements.
+    * For more detail, see: :ref:`allocation-to-project`.
 
 
 .. raw:: latex
@@ -897,7 +897,7 @@ The next matrix shows the different possibilities.
    Resource availability diagram
 
 * Only resource can be assigned to project activities.
-* Project affectation allows to define the resource availability on project.
+* Project allocation allows to define the resource availability on project.
 
  .. compound:: **Human resource**
 
@@ -948,12 +948,12 @@ Project affection and user profile are also shared.
     \newpage
 
 
-.. _project-affectation:
+.. _allocation-to-project:
 
-Project affectation
+Allocation to project
 ===================
 
-Project affectation is used to:
+Allocation to project is used to:
 
 * Defines project data visibility.
 * Defines resource availability.
@@ -961,16 +961,16 @@ Project affectation is used to:
 
 .. note::
 
-   * The :ref:`affectation` screen allows to manage overall project affectations. 
+   * The :ref:`allocation` screen allows to manage overall allocations to project. 
 
-The following sections describe project affectation, performed for user, resource or contact.
+The following sections describe allocation to project, performed for user, resource or contact.
 
-User affectation
+User allocation
 ----------------
 
-Project affectation gives data visibility on a project.
+Allocation to project gives data visibility on a project.
 
-Project affectation can be defined in the :ref:`user` screen.
+Allocation to project can be defined in the :ref:`user` screen.
 
 .. rubric:: Profile selection
 
@@ -983,7 +983,7 @@ Project affectation can be defined in the :ref:`user` screen.
 
    .. note:: 
 
-      * Profile defined in project affectation does not grant or revoke access to users.
+      * Profile defined in allocation to project does not grant or revoke access to users.
       * General access to application functionalities and data is defined by user profile. 
 
 .. rubric:: Period selection
@@ -1001,16 +1001,16 @@ Project affectation can be defined in the :ref:`user` screen.
 
     \newpage
 
-.. _resource-affectation:
+.. _resource-allocation-to-project:
 
-Resource affectation
---------------------
+Resource allocation to project
+------------------------------
 
-Project affectation allows to define the resource availability on project.
+Allocation to project allows to define the resource availability on project.
 
 A resource may be affected to projects at a specified rate for a period.
 
-Project affectation can be defined in :ref:`project` and :ref:`resource` screens.
+Allocation to project can be defined in :ref:`project` and :ref:`resource` screens.
 
 It is also possible to affect a team to a project in :ref:`team` screens.
 
@@ -1032,34 +1032,34 @@ It is also possible to affect a team to a project in :ref:`team` screens.
     * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
     * If remaining work on the task can't be planned, a purple bar appears in the Gantt view.
 
-.. rubric:: Change resource on a project affectation
+.. rubric:: Change resource on an allocation to project
 
-* A resource can be changed on project affectation.
+* A resource can be changed on allocation to project.
 * All tasks assigned to old resource will be transferred to the new resource with planned work and remaining work.
 * Work done on tasks belongs to always the old resource.
 
 
-Multi-project affectation
+Multi-allocation to project
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A resource can be affected to multiple projects in the same period.
 
-Make sure that the affectation to projects for a period not exceeding 100%.
+Make sure that the allocation to projects for a period not exceeding 100%.
 
-In the section **Affectations** in :ref:`resource` screen, a tool allows to displayed conflicts.
+In the section **Allocations** in :ref:`resource` screen, a tool allows to displayed conflicts.
 
 .. hint:: How resolve conflicts?
 
-   * You can change affectation period to avoid overlap between projects.
-   * You can change the rate of affectation for it does not exceed 100% for the period.
+   * You can change allocation period to avoid overlap between projects.
+   * You can change the rate of allocation for it does not exceed 100% for the period.
 
 
-Contact affectation
--------------------
+Contact allocation to project
+-----------------------------
 
 A contact affected to a project can be defined as :term:`requestor`.
 
-Project affectation can be defined in :ref:`project` and :ref:`contact` screens.
+Allocation to project can be defined in :ref:`project` and :ref:`contact` screens.
 
 
 

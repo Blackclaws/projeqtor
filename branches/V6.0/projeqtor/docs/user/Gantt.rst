@@ -272,8 +272,10 @@ For each planning element, a Gantt bar is displayed at them right.
     * The length of the line represents the percentage of completion, based on the percentage of actual progress against the length of Gantt bar.
 
  .. note:: Lighter bar
-      
-      * Activities without assigned work are lighter bar, pale red or pale green as appropriate.
+
+     * Activities without assigned work are lighter bar, pale red or pale green as appropriate.
+  
+  .. figure:: /images/GUI/lighter_bar.png
 
  .. note:: 
 
@@ -344,7 +346,7 @@ For each planning element, a Gantt bar is displayed at them right.
 
  .. warning::
  
-  * You have to selected week or day scale to displays detail or a message will ask you to switch in smaller scale.
+  * You have to selected week or day scale to display detail or a message will ask you to switch to smaller scale.
 
 .. raw:: latex
 
@@ -512,22 +514,27 @@ Assigned tasks are grouped under resource level.
    * All others behaviors are similar to :ref:`gantt-planning` screen.
 
 
-.. figure:: /images/GUI/SCR_GanttResourcePlanning.png
+.. figure:: /images/GUI/SCR_GanttResourcePlanning2.png
    :alt: Gantt (Resource planning) 
    :align: center
 
    Gantt (Resource planning)
 
 
-.. rubric:: 1 - Show project level
+.. rubric:: |one| - Show project level  
 
 * Tasks can be grouped by project.
 * Click on “Show project level” to display project level.
 
-.. rubric:: 2 - Show left work
+.. rubric:: |two| - Show left work 
 
 * Left work can be displayed at right from Gantt bar.
 * Click on “Show left work” to display left work for each item.
+
+.. rubric:: |three| - Displays selected ressource and team 
+
+* Click and select one ressource for displays his data.
+* Click and select one team for displays his data.
 
 .. raw:: latex
 
