@@ -123,7 +123,7 @@ Buttons allow to send and validate real work.
 
 .. rubric:: 8 - Tasks list
 
-.. figure:: /images/GUI/ZONE_TaskList.png
+.. figure:: /images/GUI/ZONE_TaskList2.png
    :alt: Task list zone
    :align: center
 
@@ -155,9 +155,15 @@ The list displays the assigned tasks for the resource.
     * The assigned task function is displayed in blue after the name of the activity.  
 
  .. compound:: **C - Assigned task comments**
-
+    
+    * The icon |iconNoteAdd| allows to add a comment.
     * The icon |Note| indicates there is a comment on assigned task. 
-    * Just move the mouse over the icon to see comments.
+    * Just move the mouse over the icon to see the last comment.
+    .. note:: Click on icon |Note|
+      
+      * to open windows view comments
+      
+      .. figure:: /images/GUI/left_click_note.png
 
  .. compound:: **D - Progress data**
 
@@ -165,11 +171,15 @@ The list displays the assigned tasks for the resource.
     * **Assigned**: Planned work assigned to the resource.
     * **Real**: Sum of work done by the resource.
     * **Left**: The remaining planned work. 
-    * **Reassessed**: The work needed to complete the task.  
+    * **Reassessed**: The work needed to complete the task.
 
-
-
-
+    .. note:: Total of days
+      
+      .. figure:: /images/GUI/total_real_work_allocation.png
+       :alt: The last column is the sum of each day.
+        
+      * The last column is the sum of each day.
+      
 .. raw:: latex
 
     \newpage

@@ -69,30 +69,30 @@ Depending on the element, this section  may have a different name.
 
     \newpage
 
-.. index:: ! Project (Affectation)
+.. index:: ! Project (Allocation)
 
-.. _affectations-section:
+.. _allocation-section:
 
-Affectations section
+Allocations section
 --------------------
 
 .. sidebar:: Concepts 
 
    * :ref:`profiles-definition`
-   * :ref:`project-affectation`
+   * :ref:`allocation-to-project`
 
-This section allows to manage resource affectation to projects.
+This section allows to manage resource allocation to projects.
 
 
 
-.. list-table:: Fields - Resource affectation list
+.. list-table:: Fields - Resource allocation list
    :widths: 20, 80
    :header-rows: 1
 
    * - Field
      - Description
    * - :term:`Id`
-     - Unique Id for the affectation.
+     - Unique Id for the allocation.
    * - Project
      - Project affected to.
    * - Resource
@@ -100,19 +100,19 @@ This section allows to manage resource affectation to projects.
    * - Profile
      - Selected profile.
    * - Start date
-     - Start date of affectation.
+     - Start date of allocation.
    * - End date
-     - End date of affectation.
+     - End date of allocation.
    * - Rate
-     - Affectation rate for the project (%).
+     - Allocation rate for the project (%).
 
 
-.. rubric:: Affectation list management
+.. rubric:: Allocation list management
 
-* Click on |buttonAdd| to create a new affectation. 
-* Click on |buttonEdit| to update an existing affectation.
-* Click on |buttonIconDelete| to delete the corresponding affectation.
-* Click on |iconSwitch| to replace resource on the corresponding affectation. (See: :ref:`Replace resource on an affectation<replace-resource-affectation>`)
+* Click on |buttonAdd| to create a new allocation. 
+* Click on |buttonEdit| to update an existing allocation.
+* Click on |buttonIconDelete| to delete the corresponding allocation.
+* Click on |iconSwitch| to replace resource on the corresponding allocation. (See: :ref:`Replace resource on an allocation<replace-resource-allocation>`)
 * The icon |closeIcon| indicates that affectation is closed.
 
 .. note:: Direct access to information
@@ -120,15 +120,15 @@ This section allows to manage resource affectation to projects.
    * From project screen, click on the resource name to go directly to the selected resource.
    * From resource screen, click the project name to go directly to the selected project.
 
-.. _affectations-box:
+.. _allocation-box:
 
 .. figure:: /images/GUI/BOX_Affectation.png
-   :alt: Dialog box - Affectation
+   :alt: Dialog box - Allocation
    :align: center
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields - Affectation dialog box
+.. list-table:: Fields - Allocation dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -141,26 +141,26 @@ This section allows to manage resource affectation to projects.
    * - **Profile**
      - Profile list.
    * - Rate
-     - Rate (in %) of the affectation to the project.
+     - Rate (in %) of the allocation to the project.
    * - Start date
-     - Start date of affectation.
+     - Start date of allocation.
    * - End date
-     - End date of affectation.
+     - End date of allocation.
    * - Description
-     - Complete description of the affectation.
+     - Complete description of the allocation.
    * - Closed
-     - Flag to indicate that affectation in not active anymore, without deleting it.
+     - Flag to indicate that allocation in not active anymore, without deleting it.
 
 **\* Required field**
 
 .. topic:: Fields: Project & Resource
  
-   * If the affectation is done on the screen «Projects», the field «resource» will be selectable.
-   * If the affectation is done on the screens «Resources», «Contacts» or «Users», the field «project» will be selectable.
+   * If the allocation is done on the screen «Projects», the field «resource» will be selectable.
+   * If the allocation is done on the screens «Resources», «Contacts» or «Users», the field «project» will be selectable.
 
 .. topic:: Field: Resource
 
-   * This field can contain a list of users, resources or contacts according to which screen comes from project affectation.
+   * This field can contain a list of users, resources or contacts according to which screen comes from project allocation.
 
 .. topic:: Field: Profile
 
@@ -168,20 +168,20 @@ This section allows to manage resource affectation to projects.
 
 .. topic:: Field: Rate
 
-   * 100% means a full time affectation.
+   * 100% means a full time allocation.
 
 .. note::
  
-   * Depending on which screen is used to manage project affectations, the behavior of fields will change. 
+   * Depending on which screen is used to manage project allocations, the behavior of fields will change. 
 
 
 .. raw:: latex
 
     \newpage
 
-.. _replace-resource-affectation:
+.. _replace-resource-allocation:
 
-.. rubric:: Replace resource on an affectation
+.. rubric:: Replace resource on an allocation
 
 * This feature allows to replace a resource by another.
 * All tasks assigned to old resource will be transferred to the new resource with assigned and left work.
@@ -191,12 +191,12 @@ This section allows to manage resource affectation to projects.
    * Work done on tasks belongs to always the old resource.
 
 .. figure:: /images/GUI/BOX_ReplaceAffectation.png
-   :alt: Dialog box - Replace affectation 
+   :alt: Dialog box - Replace allocation 
    :align: center
 
 .. tabularcolumns:: |l|l|
 
-.. list-table:: Fields - Replace affectation dialog box
+.. list-table:: Fields - Replace allocation dialog box
    :widths: 20, 80
    :header-rows: 1
 
@@ -209,11 +209,11 @@ This section allows to manage resource affectation to projects.
    * - **Profile**
      - Profile list.
    * - **Rate**
-     - Rate (in %) of the affectation to the project.
+     - Rate (in %) of the allocation to the project.
    * - Start date
-     - Start date of affectation.
+     - Start date of allocation.
    * - End date
-     - End date of affectation.
+     - End date of allocation.
  
 **\* Required field**
 
@@ -224,7 +224,7 @@ This section allows to manage resource affectation to projects.
 
 .. topic:: Field: Rate
 
-   * 100% means a full time affectation.
+   * 100% means a full time allocation.
 
 
  
@@ -349,7 +349,7 @@ This section allows to manage assignment of resources to tasks.
    * - Reassessed work
      - The new total work planned to complete the task.
    * - Comments
-     - Any comment on the affectation.
+     - Any comment on the allocation.
 
 .. topic:: Field: Function
 

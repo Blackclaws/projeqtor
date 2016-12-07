@@ -14,16 +14,21 @@ Reports
 
 A list of reports is available in different categories.
 
-#. Select a category |one|, report list |two| will update.
+#. Select a category |one|, report list |two| will appear.
 #. Select a report in the list, this will display specific parameters |three| for the report.
 #. Update the parameters to get the information you need.
 #. Click on a button to produce the report. |four|
+#. Click on arrow to return on category list. |five|
 
 .. figure:: /images/GUI/Report_menu.PNG
    :alt: Reports screen
    :align: center
+   
+.. figure:: /images/GUI/Report_menu2.PNG
+    :alt: Reports screen
+    :align: center
 
-   Reports screen
+    Reports screen
 
 
 .. rubric:: Buttons

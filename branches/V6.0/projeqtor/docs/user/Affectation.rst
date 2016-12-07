@@ -2,13 +2,13 @@
 
     \newpage
 
-.. title:: Affectations
+.. title:: Allocations
 
-.. index:: ! Affectation
+.. index:: ! Allocation
 
-.. _affectation:
+.. _allocation:
 
-Affectations
+Allocations
 ------------
 
 
@@ -16,12 +16,12 @@ Affectations
 
    * :ref:`profiles-definition`
    * :ref:`user-ress-contact-demystify`
-   * :ref:`project-affectation`
+   * :ref:`allocation-to-project`
 
 
-Allows to manage project affectations.
+Allows to manage allocations to project.
 
-Offers a global view of affectation.
+Offers a global view of allocation.
 
 .. hint::
  
@@ -39,7 +39,7 @@ Offers a global view of affectation.
    * - Field
      - Description
    * - :term:`Id`
-     - Unique Id for the affectation.
+     - Unique Id for the allocation.
    * - Resource
      - Name of the affected resource.
    * - Or contact
@@ -49,22 +49,22 @@ Offers a global view of affectation.
    * - **Project**
      - Project affected to.
    * - Rate
-     - Affectation rate for the project (%).
+     - Allocation rate for the project (%).
    * - Start date
-     - Start date of affectation.
+     - Start date of allocation.
    * - End date
-     - End date of affectation.
+     - End date of allocation.
    * - :term:`Closed`
-     - Flag to indicate that the affectation is archived.
+     - Flag to indicate that the allocation is archived.
    * - :term:`Description`
-     - Complete description of the affectation.
+     - Complete description of the allocation.
 
 **\* Required field**
 
 .. topic:: Fields: Resource & Contact
 
    * You can select resource or contact.
-   * If none is selected then the user connected is used to define the affectation.
+   * If none is selected then the user connected is used to define the allocation.
    * If a contact is a resource and inversely, then resource or contact name will be selected too.
 
 

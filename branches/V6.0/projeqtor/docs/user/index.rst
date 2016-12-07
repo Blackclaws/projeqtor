@@ -66,16 +66,6 @@ Current version is V6.0.0
 
   * See: :ref:`organization-concept`
 
-.. rubric:: Financial.
-
-* Management of call for tenders
-
-  * See: :ref:`organization-concept`
-  
-* Management of provider offers
-
-  * See: :ref:`organization-concept`
-
 .. rubric:: Gantt-Planning.
 
 * Management of planning baselines.
@@ -228,7 +218,7 @@ Environmental parameters
    :maxdepth: 1
 
    ProductVersion
-   Affectation
+   Allocation
    User
    Resource
    Customer
