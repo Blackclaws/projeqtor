@@ -677,19 +677,12 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
       } else {
         echo '<tr><td colspan=2>';
       }
-      echo $obj->drawSpecificItem($item); // the method must be implemented in the corresponidng class
+      if (!$hide and !$obj->isAttributeSetToField($col,'hidden')) {echo $obj->drawSpecificItem($item);} // the method must be implemented in the corresponidng class
       if ($internalTable) {
         // echo '<td>';
       } else {
         echo '</td></tr>';
       }
-/*    } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
-      $item=substr($col, 5);
-      if ($internalTable) echo '<td>';
-      else   echo '<tr><td colspan=2>';
-      echo $obj->drawSpecificItem($item); // the method must be implemented in the corresponidng class
-      if ($internalTable) echo '<td>';
-      else   echo '</td></tr>';*/
     } else if (substr($col, 0, 6) == '_calc_') { // if field is _calc_xxxx, draw calculated item
       $item=substr($col, 6);
       echo $obj->drawCalculatedItem($item); // the method must be implemented in the corresponidng class

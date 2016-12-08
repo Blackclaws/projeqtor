@@ -682,7 +682,7 @@ function displaySearch(objClass) {
   showWait();
   hideField('comboSearchButton');
   showField('comboSelectButton');
-  if (dojo.byId("canCreateDetail").value=="1" && objClass!='Project' && objectClass!='Status' ) {
+  if (dojo.byId("canCreateDetail").value=="1" && objClass!='Project' && objClass!='Status' ) {
     showField('comboNewButton');
   } else {
     hideField('comboNewButton');

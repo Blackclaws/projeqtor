@@ -1085,28 +1085,32 @@ return $sumWork;
 }
 
 static function addProjectToListLienProject($listLienProject, $listAllProject, $idProject=-1, $idProjectOld=-1) {
-if ($idProject == -1)
-  foreach ( $listAllProject as $idP => $line ) {
-    if ($listAllProject [$idP]->idProject && $listAllProject [$idP]->idProject != $listAllProject [$idP]->id) {
-      $listLienProject [$listAllProject [$idP]->idProject] []=$listAllProject [$idP]->id;
-      $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject [$idP]->idProject, $listAllProject [$idP]->id);
+  if ($idProject == -1) {
+    foreach ( $listAllProject as $idP => $line ) {
+      if ($listAllProject [$idP]->idProject && $listAllProject [$idP]->idProject != $listAllProject [$idP]->id) {
+        $listLienProject [$listAllProject [$idP]->idProject] []=$listAllProject [$idP]->id;
+        $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject [$idP]->idProject, $listAllProject [$idP]->id);
+      }
     }
   }
-if ($idProject != -1) {
-  foreach ( $listLienProject [$idProjectOld] as $idLP => $line ) {
-    $find=false;
-    foreach ( $listLienProject [$idProject] as $idLP2 => $line2 ) {
-      if ($listLienProject [$idProject] [$idLP2] == $listLienProject [$idProjectOld] [$idLP])
-        $find=true;
+  if (! isset($listLienProject [$idProjectOld])) {
+    $listLienProject [$idProjectOld]=array();
+  }
+  if ($idProject != -1) {
+    foreach ( $listLienProject [$idProjectOld] as $idLP => $line ) {
+      $find=false;
+      foreach ( $listLienProject [$idProject] as $idLP2 => $line2 ) {
+        if ($listLienProject [$idProject] [$idLP2] == $listLienProject [$idProjectOld] [$idLP])
+          $find=true;
+      }
+      if (!$find)
+        $listLienProject [$idProject] []=$listLienProject [$idProjectOld] [$idLP];
     }
-    if (!$find)
-      $listLienProject [$idProject] []=$listLienProject [$idProjectOld] [$idLP];
+    if (isset($listAllProject [$idProject]) && $listAllProject [$idProject]->idProject && $listAllProject [$idProject]->idProject != $listAllProject [$idProject]->id) {
+      $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject [$idProject]->idProject, $listAllProject [$idProject]->id);
+    }
   }
-  if (isset($listAllProject [$idProject]) && $listAllProject [$idProject]->idProject && $listAllProject [$idProject]->idProject != $listAllProject [$idProject]->id) {
-    $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject, $listAllProject [$idProject]->idProject, $listAllProject [$idProject]->id);
-  }
-}
-return $listLienProject;
+  return $listLienProject;
 }
 
 // ============================================================================**********
