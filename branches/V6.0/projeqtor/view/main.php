@@ -631,7 +631,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     </div>
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
     </div>
-    <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
+    <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom" style="height:28px; position:absolute; bottom:0px;">
       <table width="100%">
         <tr>
           <td width="5%"  >
