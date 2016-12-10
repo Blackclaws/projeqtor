@@ -224,7 +224,7 @@ if (count($arrDates)<2) {
 
 
 
-$graphWidth=1200;
+$graphWidth=1250;
 $graphHeight=720;
 $indexToday=0;
 
@@ -241,7 +241,7 @@ foreach ($arrDates as $date => $period) {
   }
   $cpt++;
 }
-echo $indexToday;
+
 $arrLabel=array();
 foreach($arrDates as $date){
   $arrLabel[]=$date;
@@ -255,7 +255,7 @@ foreach($arrayMile as $idx=>$arr) {
   $dataSet->addPoints($arrayMile[$idx]['periods'],"mile$idx");
   $dataSet->setSerieOnAxis("mile$idx",0);
   $dataSet->setSerieWeight("mile$idx",1);
-  $dataSet->setSerieDescription("mile$idx",wordwrap($arrayMile[$idx]['name']."  ",25,"\n"));
+  $dataSet->setSerieDescription("mile$idx",wordwrap($arrayMile[$idx]['name']."\n",25,"\n"));
 }
 $dataSet->addPoints($resBase,"base");
 $dataSet->setSerieOnAxis("base",0);
@@ -295,8 +295,8 @@ $graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /* Draw the scale */
-$graph->setGraphArea(90,30,$graphWidth-200,$graphHeight-(($scale=='month' or $scale=='quarter')?100:75));
-$graph->drawFilledRectangle(90,30,$graphWidth-200,$graphHeight-(($scale=='month' or $scale=='quarter')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
+$graph->setGraphArea(90,30,$graphWidth-220,$graphHeight-(($scale=='month' or $scale=='quarter')?100:75));
+$graph->drawFilledRectangle(90,30,$graphWidth-220,$graphHeight-(($scale=='month' or $scale=='quarter')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
 $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
     "Mode"=>SCALE_MODE_FLOATING, "GridTicks"=>0, 
     "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT, 
@@ -323,7 +323,7 @@ if ($showToday) {
   $graph->drawXThreshold(array($pos),array("Alpha"=>70,"Ticks"=>0));
 }
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
-$graph->drawLegend($graphWidth-190,50,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+$graph->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
