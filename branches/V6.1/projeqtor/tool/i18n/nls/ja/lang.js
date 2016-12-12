@@ -1173,6 +1173,7 @@ errorTooBigFile: "ファイルサイズが${1}バイト(${2})を超過してい�
 errorUpdateRights: "この項目を更新する権限がありません",
 errorUploadFile: "ファイルの更新時にエラー。エラーコード=${1}",
 errorValueWithoutUnit: "値には単位が必要です",
+errorWeekValidated: "[The week is locked]",
 errorWorflow: "このワークフローではこの項目をこのステータスにすることができません",
 errorXhrPost: "loadContent('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}')のxhrPostの返却でエラー : <br/> ${5}",
 errorXhrPostMessage: "ネットワーク接続不良による問題が発生しました。<br/>もう一度操作を実施してください。<br/>問題が解決しない場合はシステム管理者に連絡してください。",

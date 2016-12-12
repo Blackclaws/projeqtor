@@ -79,6 +79,40 @@ class Work extends GeneralWork {
   //
   // ================================================================================================
   
+  public function control(){
+    $result="";
+    $crit=array('periodValue'=>$this->week,
+                'idResource'=>$this->idResource);
+    debugLog($crit);
+    $obj=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
+    if ($obj->validated=='1' or $obj->submitted=='1') {
+      $result.='<br/>' . i18n('errorWeekValidated');
+      debugLog($result);
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  
+  public function deleteControl() {
+    $result='';
+    $crit=array('periodValue'=>$this->week,
+                'idResource'=>$this->idResource);
+    $obj=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
+    if ($obj->validated=='1' or $obj->submitted=='1') {
+      $result.='<br/>' . i18n('msgUnableToDeleteRealWork');
+    }
+    if ($result=='') {
+      $result .= parent::deleteControl();
+    }
+    return $result;
+  }
+  
   function save() {
     // On saving remove corresponding planned work if exists
     $oldWork=0;

@@ -176,9 +176,9 @@ The list displays the assigned tasks for the resource.
     .. note:: Total of days
       
       .. figure:: /images/GUI/total_real_work_allocation.png
-       :alt: The last column is the sum of each day.
+       :alt: The last column is the sum for all days.
         
-      * The last column is the sum of each day.
+      * On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
       
 .. raw:: latex
 
