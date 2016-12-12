@@ -145,10 +145,6 @@ Global parameters screen allows configuration of application settings.
 
     * Allows to set number of hours per day.
 
- .. compound:: **Max days to book work**
-
-    * Allows to set a max of days resource can enter real work without receiving an alert. 
-
 
 
 
@@ -182,8 +178,50 @@ Global parameters screen allows configuration of application settings.
 
     * Defines if a task can begin the same day as the preceding one.
  
+ 
+.. rubric:: Section: Generation of alerts if real work is not entered
 
+* Specific parameters about alerts.
 
+ .. compound:: **Send reminder on**
+ 
+ * Select a day if you want send a reminder.
+  
+        .. note:: 
+  
+            * It is possible to choose every day or never.
+
+ .. compound:: **Send reminder at** 
+
+      * Select the hour when you want receive the reminder.
+
+ .. compound:: **Control input up to**
+
+      * Select when you want to be controlled, current day, previous day or next days.
+
+ .. compound:: **Number of days to control**
+
+      * Choose how many days will be controled
+      
+        .. note::
+              
+              * All days of the week, open or off days are taken into account.
+              
+              * Off days in real work allocation will not send you an alert.
+
+ .. compound:: **Send alert to resource**
+
+      * Select how send alert to ressource, Internal alert, email, both or none.
+
+ .. compound:: **Send alert to project leader**
+
+      * Select how send alert to project leader
+      
+ .. compound:: **Send alert to team manager**   
+      
+      * Select how send alert to team manager
+  
+  
 .. index:: ! Real work allocation (Behavior)
 
 .. _realWorkAllocation-section:
@@ -206,17 +244,17 @@ Global parameters screen allows configuration of application settings.
 
  .. compound:: **Max days to book work (warning) :**
 
-    * Number of days that user can enter work in the future will get a warning.
+    * Number of days that user can enter real work in the future before getting a warning.
     
     .. note::
-        * this parameter does not apply for administrative
+        * this parameter does not apply to administrative projects
     
  .. compound:: **Max days to book work (blocking)**
 
-    * Number of days that user can enter work in the future will be block.
+    * Number of days that user can enter real work in the future. This limit is blocking.
   
   .. note::
-        * this parameter does not apply for administrative
+        * this parameter does not apply to administrative projects
   
  .. compound:: **Alert resource on input done by someone else**
 
@@ -230,7 +268,7 @@ Global parameters screen allows configuration of application settings.
 
  .. compound:: **Auto set responsible if single resource**
 
-    * Automatically set responsible if not set and only one resource if affected to the project.
+    * Automatically set responsible if not set and only one resource if allocated to the project.
 
  .. compound:: **Auto set responsible if needed**
 
@@ -389,7 +427,11 @@ Parameters to allow the application to send emails.
 * SSL Key
 * SSL Certification
 * SSL Certificate Authority
-Enter your code for automatic connection to the database
+Enter patch to corresponding files to enable SSL connection to the database.
+
+  .. warning:: Take care that these files must exist and be valid SSL files.
+  
+     If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database.
 
 
 .. index:: ! Email (Formatted message)

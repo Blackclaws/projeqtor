@@ -280,6 +280,13 @@ Plug-ins
 
    Plugin
 
+Organizations
+=============
+
+.. toctree::
+   :maxdepth: 1
+
+   Organization
 
 Administration
 ==============
@@ -288,7 +295,6 @@ Administration
    :maxdepth: 1
 
    Administration
-
 
 Glossary
 ========

@@ -2717,6 +2717,10 @@ function getLastOperationStatus($result) {
     $search = 'id="lastPlanStatus" value="';
   }
   $start = stripos ( $result, $search ) + strlen ( $search );
+  if (strlen($result)<=$start) {
+    errorLog("invalid search for result in string '$result'");
+    debugPrintTraceStack();
+  }
   $end = stripos ( $result, '"', $start );
   $status = substr ( $result, $start, $end - $start );
   switch ($status) {

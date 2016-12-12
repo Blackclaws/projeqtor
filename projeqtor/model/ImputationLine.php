@@ -256,6 +256,9 @@ class ImputationLine {
       $elt->realWork=$ass->realWork;
       $elt->leftWork=$ass->leftWork;
       $elt->arrayWork=array();
+      if ($ass->isNotImputable){
+        $elt->imputable=false;
+      }
       if (isset($ass->_locked))
         $elt->locked=true;
       $elt->arrayPlannedWork=array();
@@ -281,7 +284,9 @@ class ImputationLine {
         $elt->startDate=null;
         $elt->endDate=null;
         $elt->elementary=1;
-        $elt->imputable=true;
+       	if (! $ass->isNotImputable){
+        	$elt->imputable=true;
+        }
         if (isset($ass->_idWorkElement)) {
           $elt->_idWorkElement=$ass->_idWorkElement;
         }
@@ -301,7 +306,9 @@ class ImputationLine {
         $elt->elementary=$plan->elementary;
         $elt->startDate=($plan->realStartDate)?$plan->realStartDate:$plan->plannedStartDate;
         $elt->endDate=($plan->realEndDate)?$plan->realEndDate:$plan->plannedEndDate;
-        $elt->imputable=true;
+        if (! $ass->isNotImputable){
+          $elt->imputable=true;
+        }
       } else {
         $cptNotAssigned+=1;
         if (isset($ass->name)) {
@@ -318,7 +325,9 @@ class ImputationLine {
         $elt->wbsSortable='000.' . str_pad($cptNotAssigned, 3, "0", STR_PAD_LEFT);
         $elt->elementary=1;
         $elt->topId=null;
-        $elt->imputable=true;
+        if (! $ass->isNotImputable){
+          $elt->imputable=true;
+        }
         $elt->idAssignment=null;
         $elt->locked=true;
       }

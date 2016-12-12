@@ -605,6 +605,22 @@ abstract class SqlElement {
 					$control=$controlPe;
 				}
 			}
+			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
+			and property_exists($class, 'WorkElement')) {
+			  $we='WorkElement';
+			  $controlWe=$this->$we->control();
+			  if ($controlWe!='OK') {
+			    $control=$controlWe;
+			  }
+			}
+			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
+			and property_exists($class, 'OrganizationBudgetElementCurrent')) {
+			  $be='OrganizationBudgetElementCurrent';
+			  $controlBe=$this->$be->control();
+			  if ($controlBe!='OK') {
+			    $control=$controlBe;
+			  }
+			}
 		}
 		if ($control=="OK") {
 			//$old=new Project();
@@ -848,8 +864,17 @@ abstract class SqlElement {
 			if (!$result) {$returnStatus="ERROR";}
 		}
 		// save depedant elements (properties that are objects)
-		if ($returnStatus!="ERROR") {
+		if ($returnStatus!="ERROR" and $returnStatus!="INVALID") {
 			$returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
+			if ($returnStatus=="ERROR") {
+			  $returnValue=Sql::$lastQueryErrorMessage;
+			} else if ($returnStatus=="OK") {
+			  $returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultUpdated');
+			} else if ($returnStatus=="NO_CHANGE" or $returnStatus=="INCOMPLETE" or $returnStatus=="WARNING" or $returnStatus=="CONFIRM") {
+			  // OK 
+			} else if (getLastOperationStatus($returnStatus)=='INVALID') {
+			  return $returnStatus;
+			}
 		}
 		// Prepare return data
 		if ($returnStatus!="ERROR") {
@@ -1089,13 +1114,16 @@ abstract class SqlElement {
 		}
 
 		// save depedant elements (properties that are objects)
-		if ($returnStatus!="ERROR" and ! $withoutDependencies) {
+		if ($returnStatus!="ERROR" and $returnStatus!="INVALID" and ! $withoutDependencies) {
 			$returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
 			if ($returnStatus=="ERROR") {
 				$returnValue=Sql::$lastQueryErrorMessage;
-			}
-			if ($returnStatus=="OK") {
+			} else if ($returnStatus=="OK") {
 				$returnValue=i18n(get_class($this)) . ' #' . htmlEncode($this->id) . ' ' . i18n('resultUpdated');
+			} else if ($returnStatus=="NO_CHANGE" or $returnStatus=="INCOMPLETE" or $returnStatus=="WARNING" or $returnStatus=="CONFIRM") {
+			  // OK 
+			} else if (getLastOperationStatus($returnStatus)=='INVALID') {
+			  return $returnStatus;
 			}
 		}
 		if ($returnStatus=="OK") {
@@ -1135,6 +1163,8 @@ abstract class SqlElement {
 				$ret=$depObj->save();
 				if (stripos($ret,'id="lastOperationStatus" value="ERROR"')) {
 					$returnStatusDep="ERROR";
+				} else if (stripos($ret,'id="lastOperationStatus" value="INVALID"')) {
+					$returnStatusDep=$ret;
 				} else if (stripos($ret,'id="lastOperationStatus" value="OK"')) {
 					$returnStatusDep='OK';
 				}
@@ -1566,6 +1596,13 @@ abstract class SqlElement {
 		}
 		if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
 			$newObj->idUser=getSessionUser()->id;
+		}
+		if (property_exists($newObj,"paymentAmount")) {
+		  $newObj->paymentAmount=null;
+		}
+		if (property_exists($newObj,"paymentDate")) {
+		  $newObj->paymentDate=null;
+		  debugLog($newObj);
 		}
 		if (property_exists($newObj,"creationDate")) {
 			$newObj->creationDate=date('Y-m-d');

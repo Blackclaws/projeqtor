@@ -70,14 +70,14 @@ Project type is a way to define common behavior on group of projects.
       **ADM** : Administrative project
 
           * Type of project to follow non productive work : holidays, sickness, training, …
-          * Every resource will be able to enter some real work on such projects, without having to be affected to the project, nor assigned to project activities.
+          * Every resource will be able to enter some real work on such projects, without having to be allocated to the project, nor assigned to project activities.
           * Assignments to all project task will be automatically created for users to enter real work.
 
       **TMP** : Template project 
 
           * These projects will not be used to follow some work.
           * They are just designed to define templates, to be copied as operational projects.
-          * Any project leader can copy such projects, without having to be affected to them.
+          * Any project leader can copy such projects, without having to be allocated to them.
 
 .. sidebar:: Other sections
 

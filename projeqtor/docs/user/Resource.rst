@@ -230,7 +230,7 @@ The team is a group of resources gathered on any criteria.
 
 .. rubric:: Use for
 
-* To affect all team members of a project.
+* To allocate all team members of a project.
 * To filter resource data in work, cost and planning reports.
 * To set attachment, note and document visibility to the team.
 
@@ -258,9 +258,9 @@ The team is a group of resources gathered on any criteria.
 
 * List of the resources members of the team.
 
-.. topic:: Button: Affect all team members of a project
+.. topic:: Button: Allocate all team members of a project
 
-   * This button allows to affect all team members of a project.
+   * This button allows to allocate all team members of a project.
    * The :ref:`allocation dialog box<allocations-box>` will be displayed.
 
 .. raw:: latex

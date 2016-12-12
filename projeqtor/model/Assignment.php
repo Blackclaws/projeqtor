@@ -58,6 +58,7 @@ class Assignment extends SqlElement {
   public $plannedCost;
   public $idle;
   public $billedWork;
+  public $isNotImputable;
   
   private static $_fieldsAttributes=array("idProject"=>"required", 
     "idResource"=>"required", 

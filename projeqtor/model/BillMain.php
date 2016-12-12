@@ -449,16 +449,20 @@ class BillMain extends SqlElement {
      return parent::save();
   }
   
-  public function retreivePayments($save=true) {
-    $pay=new Payment();
-    $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
-    $this->paymentsCount=count($payList);
-    if (count($payList)==0) {
+  public function retreivePayments($save=true) {   
+    $pay=new Payment();  
+    if ($this->id) {
+      $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
+    } else {
+      $payList=array();
+    }
+    if (count($payList)==0 or $this->id==null) {
       if ($save) {
         $this->simpleSave();
       }
       return;
     }
+    $this->paymentsCount=count($payList);
     $this->paymentAmount=0;
     $this->paymentDate='';
     $this->paymentDone=0;

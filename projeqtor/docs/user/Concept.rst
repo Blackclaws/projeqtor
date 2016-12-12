@@ -60,12 +60,12 @@ Three project types can be defined:
 
     .. note::
        
-       * All resource will be able to enter some real work on such project, without having to be affected to the project, nor assigned to project activities.
+       * All resource will be able to enter some real work on such project, without having to be allocated to the project, nor assigned to project activities.
 
  .. compound:: **Template project**
 
     * Designed to define templates, to be copied as operational project. (See: :ref:`copy-item`)
-    * Any project leaders can copy such projects, without having to be affected to them.
+    * Any project leaders can copy such projects, without having to be allocated to them.
 
 .. note:: 
 
@@ -248,7 +248,7 @@ Based upon on resource availability and their capacity.
 
  .. compound:: **Project allocation period**
 
-    * The resource can be affected to several projects.
+    * The resource can be allocated to several projects.
     * Possibility to define allocation period.
     * More detail, see: :ref:`resource-allocation`
 
@@ -338,7 +338,7 @@ This planning element defines the project.
      .. admonition:: Separation of duties
 
         * A project can be split into multiple sub projects.
-        * A project leader and team can be affected to each sub-project. 
+        * A project leader and team can be allocated to each sub-project. 
         * Project allocation allows to define data visibility and isolate sub-projects. (See: :ref:`allocation-to-project`)
         * A supervisor can follow-up the project in its totality. 
 
@@ -645,7 +645,7 @@ Specific roles are defined to allow:
 
    Project leader
 
-    * A project leader is a :term:`resource` affected to a project with a “Project Leader” profile.
+    * A project leader is a :term:`resource` allocated to a project with a “Project Leader” profile.
 
    Project manager
 
@@ -658,20 +658,20 @@ Specific roles are defined to allow:
 
    Project team
 
-    * All :term:`resources<resource>` affected to a project.
+    * All :term:`resources<resource>` allocated to a project.
 
 
    Requestor
 
     * A requestor is a :term:`contact`.
     * Used to specify the requestor for ticket, activity and requirement.
-    * Only contacts affected to the selected project can be a requestor.  
+    * Only contacts allocated to the selected project can be a requestor.  
  
    Responsible
 
     * A responsible is a :term:`resource` in charge of item treatment. 
     * Usually, the responsible is set when the status of the item is :term:`handled<Handled status>`.
-    * Only resources affected to the selected project can be a responsible.  
+    * Only resources allocated to the selected project can be a responsible.  
 
     .. seealso:: GUI behavior
 
@@ -776,12 +776,12 @@ A user linked to a profile belongs to this group who share same application beha
   
     Project member profile
 
-     * A project member is working on projects affected to it.
+     * A project member is working on projects allocated to it.
      * The user linked to this profile is a  member of  team projects.
 
     Project guest profile
 
-     * Users linked to this profile have limited visibility to projects affected to them.
+     * Users linked to this profile have limited visibility to projects allocated to them.
      * The user "guest" is already defined.
 
 .. rubric:: Predefined profiles (External)
@@ -877,7 +877,7 @@ The next matrix shows the different possibilities.
 
  .. compound:: **Own projects**
     
-    * Users with this access right must be affected to project to get data visibility.
+    * Users with this access right must be allocated to project to get data visibility.
     * Selected profile in allocation allows to define access rights on project elements.
     * For more detail, see: :ref:`allocation-to-project`.
 
@@ -934,7 +934,7 @@ Shared data
 
 For a stakeholder, data on user, resource and contact are shared.
 
-Project affection and user profile are also shared.
+Allocation to project and user profile are also shared.
 
 .. note::
 
@@ -1008,28 +1008,28 @@ Resource allocation to project
 
 Allocation to project allows to define the resource availability on project.
 
-A resource may be affected to projects at a specified rate for a period.
+A resource may be allocated to projects at a specified rate for a period.
 
 Allocation to project can be defined in :ref:`project` and :ref:`resource` screens.
 
-It is also possible to affect a team to a project in :ref:`team` screens.
+It is also possible to allocate a team to a project in :ref:`team` screens.
 
 .. note::
 
-   * A resource affected to a project can be defined as :term:`responsible` of project items treatment.
+   * A resource allocated to a project can be defined as :term:`responsible` of project items treatment.
 
 
 .. rubric:: Period & Rate selection
 
-* A resource may be affected to a project at a specified rate for a period. 
+* A resource may be allocated to a project at a specified rate for a period. 
 
 .. note::
 
-   * If the period is not specified then the resource is affected throughout the project.
+   * If the period is not specified then the resource is allocated throughout the project.
 
 .. attention::
 
-    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
+    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the allocation to project period.
     * If remaining work on the task can't be planned, a purple bar appears in the Gantt view.
 
 .. rubric:: Change resource on an allocation to project
@@ -1042,7 +1042,7 @@ It is also possible to affect a team to a project in :ref:`team` screens.
 Multi-allocation to project
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A resource can be affected to multiple projects in the same period.
+A resource can be allocated to multiple projects in the same period.
 
 Make sure that the allocation to projects for a period not exceeding 100%.
 
@@ -1057,7 +1057,7 @@ In the section **Allocations** in :ref:`resource` screen, a tool allows to displ
 Contact allocation to project
 -----------------------------
 
-A contact affected to a project can be defined as :term:`requestor`.
+A contact allocated to a project can be defined as :term:`requestor`.
 
 Allocation to project can be defined in :ref:`project` and :ref:`contact` screens.
 
@@ -1080,7 +1080,7 @@ A resource assignment contains data about work on task (planned,  real, left and
     
 .. note::
 
-   * Only resources affected by the project can be assigned to project tasks.
+   * Only resources allocated by the project can be assigned to project tasks.
 
 .. note::
 
