@@ -417,11 +417,11 @@ A description of receivers below.
 
 .. rubric:: Project team
 
-* All resources affected to the project.
+* All resources allocated to the project.
 
 .. rubric:: Project leader
 
-* The resource(s) affected to the project with a “Project Leader” profile.
+* The resource(s) allocated to the project with a “Project Leader” profile.
 
 .. rubric:: Project manager
 

@@ -1173,6 +1173,7 @@ errorTooBigFile: "Dateigröße übersteigt maximales Limit von ${1} Bytes (${2})
 errorUpdateRights: "Sie haben nicht das Recht zum Ändern",
 errorUploadFile: "Fehler beim Hochladen der Datei. Fehler Kode = ${1}",
 errorValueWithoutUnit: "Einheit erforderlich&#44; wenn ein Wert vorhanden ist",
+errorWeekValidated: "[The week is locked]",
 errorWorflow: "Dieser Status ist laut Workflow nicht zugelassen",
 errorXhrPost: "Fehler xhrPost return für loadContent('${1}'&#44; '${2}'&#44; '${3}'&#44; '${4}') : <br/> ${5}",
 errorXhrPostMessage: "Es ist ein technisches Problem aufgetreten. Wahrscheinlich durch ein Problem in der Netzwerkverbindung.<br/>Bitte versuchen Sie es noch einmal.<br/>Wenn das Problem weiterhin besteht&#44; dann kontaktieren Sie bitten Ihren Administrator.",

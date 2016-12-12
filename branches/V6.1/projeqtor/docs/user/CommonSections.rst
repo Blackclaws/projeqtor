@@ -94,9 +94,9 @@ This section allows to manage resource allocation to projects.
    * - :term:`Id`
      - Unique Id for the allocation.
    * - Project
-     - Project affected to.
+     - Project allocated to.
    * - Resource
-     - Name of the affected resource.
+     - Name of the allocated resource.
    * - Profile
      - Selected profile.
    * - Start date
@@ -113,7 +113,7 @@ This section allows to manage resource allocation to projects.
 * Click on |buttonEdit| to update an existing allocation.
 * Click on |buttonIconDelete| to delete the corresponding allocation.
 * Click on |iconSwitch| to replace resource on the corresponding allocation. (See: :ref:`Replace resource on an allocation<replace-resource-allocation>`)
-* The icon |closeIcon| indicates that affectation is closed.
+* The icon |closeIcon| indicates that allocation to project is closed.
 
 .. note:: Direct access to information
 
@@ -246,7 +246,7 @@ This section allows to manage assignment of resources to tasks.
 
 .. note::
 
-   * Only resources affected to a project can be assigned to its tasks.
+   * Only resources allocated to a project can be assigned to its tasks.
 
 .. rubric:: Assignment function
 
@@ -265,7 +265,7 @@ This section allows to manage assignment of resources to tasks.
 
 .. rubric:: Incomplete planned work
 
-* The scheduling process tries to schedule, the remaining work on the assigned task within the project affection period.
+* The scheduling process tries to schedule, the remaining work on the assigned task within the allocation to project period.
 * The remaining work that can't be planned is displayed on the right of the resource name.
 
 .. figure:: /images/GUI/ZONE_AssignmentSectionWithNotPlannedWork.png

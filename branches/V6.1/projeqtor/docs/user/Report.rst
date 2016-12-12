@@ -14,11 +14,11 @@ Reports
 
 A list of reports is available in different categories.
 
-#. Select a category |one|, report list |two| will appear.
+#. Select a category |one|, corresponding reports list |two| will appear.
 #. Select a report in the list, this will display specific parameters |three| for the report.
 #. Update the parameters to get the information you need.
 #. Click on a button to produce the report. |four|
-#. Click on arrow to return on category list. |five|
+#. Click on the arrow to return to the category list. |five|
 
 .. figure:: /images/GUI/Report_menu.PNG
    :alt: Reports screen
