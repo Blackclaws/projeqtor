@@ -1,0 +1,178 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Recipient.rst:10 ../../Recipient.rst:7
+msgid "Recipient"
+msgstr ""
+
+#: ../../Recipient.rst:12
+msgid "The Recipient is the beneficiary of bill payments."
+msgstr ""
+
+#: ../../Recipient.rst:14
+msgid "Recipients are mainly defined to store billing information."
+msgstr ""
+
+#: ../../Recipient.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../Recipient.rst:18
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../Recipient.rst:28 ../../Recipient.rst:53
+msgid "Field"
+msgstr ""
+
+#: ../../Recipient.rst:29 ../../Recipient.rst:54
+msgid "Description"
+msgstr ""
+
+#: ../../Recipient.rst:30
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Recipient.rst:31
+msgid "Unique Id for the recipient."
+msgstr ""
+
+#: ../../Recipient.rst:32
+msgid "**Name**"
+msgstr ""
+
+#: ../../Recipient.rst:33
+msgid "Short name of the recipient."
+msgstr ""
+
+#: ../../Recipient.rst:34
+msgid "Company number"
+msgstr ""
+
+#: ../../Recipient.rst:35
+msgid "Company number, to be displayed on bill."
+msgstr ""
+
+#: ../../Recipient.rst:36
+msgid "Tax number"
+msgstr ""
+
+#: ../../Recipient.rst:37
+msgid "Tax reference number, to be displayed on bill."
+msgstr ""
+
+#: ../../Recipient.rst:38
+msgid "Tax free"
+msgstr ""
+
+#: ../../Recipient.rst:39
+msgid ""
+"Flag to indicate that tax is automatically set to zero for this recipient."
+msgstr ""
+
+#: ../../Recipient.rst:40
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Recipient.rst:41
+msgid "Flag to indicate that recipient is archived."
+msgstr ""
+
+#: ../../Recipient.rst:43
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Recipient.rst:55
+msgid "Bank"
+msgstr ""
+
+#: ../../Recipient.rst:56
+msgid "Bank name."
+msgstr ""
+
+#: ../../Recipient.rst:57
+msgid "Country"
+msgstr ""
+
+#: ../../Recipient.rst:58
+msgid "Country code. IBAN format."
+msgstr ""
+
+#: ../../Recipient.rst:59
+msgid "Key"
+msgstr ""
+
+#: ../../Recipient.rst:60
+msgid "Key code. IBAN format."
+msgstr ""
+
+#: ../../Recipient.rst:61
+msgid "Account number"
+msgstr ""
+
+#: ../../Recipient.rst:62
+msgid "Full account number defining the BBAN account code."
+msgstr ""
+
+#: ../../Recipient.rst:66
+msgid "Automatically calculated from other IBAN fields."
+msgstr ""
+
+#: ../../Recipient.rst:70
+msgid "Format depends on country."
+msgstr ""
+
+#: ../../Recipient.rst:21
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Recipient.rst:46
+msgid "Section: International Bank Account Number (IBAN)"
+msgstr ""
+
+#: ../../Recipient.rst:0
+msgid "Field: Key"
+msgstr ""
+
+#: ../../Recipient.rst:0
+msgid "Field: Account number"
+msgstr ""
+
+#: ../../Recipient.rst:73
+msgid "Section: Addreses"
+msgstr ""
+
+#: ../../Recipient.rst:74
+msgid "Full address of the recipient."
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "International Bank Account Number (IBAN) section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Key**"
+#~ msgstr ""
+
+#~ msgid "**Account number**"
+#~ msgstr ""
+
+#~ msgid "Addreses section"
+#~ msgstr ""
+
+#~ msgid "Full address of the customer."
+#~ msgstr ""
