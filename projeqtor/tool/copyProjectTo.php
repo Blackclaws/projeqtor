@@ -67,13 +67,20 @@ $codeProject=null;
 if (array_key_exists('copyProjectToProjectCode',$_REQUEST)) {
   $codeProject=$_REQUEST['copyProjectToProjectCode'];
 }
+
+//gautier #1769
+$copyToWithLinks=false;
+if (array_key_exists('copyToWithLinks',$_REQUEST)) {
+  $copyToWithLinks=true;
+}
+
 // copy from existing object
 Sql::beginTransaction();
 $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
 Security::checkValidId($toType);
-$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false, false, $copyAssignments);
+$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments);
 $newProj->projectCode=$codeProject;
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -82,7 +89,7 @@ if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 unset($newProj->_copyResult);
 if(!$error)$newProj->save();
 if (!$error and $copyStructure) {
-  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,false, $copyAssignments, $copyAffectations,$newProj->id,$copySubProjects);
+  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,$copyToWithLinks, $copyAssignments, $copyAffectations,$newProj->id,$copySubProjects);
   if ($res!='OK') {
     $result=$res;
     $error=true;
