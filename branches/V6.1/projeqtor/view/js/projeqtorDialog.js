@@ -4656,7 +4656,19 @@ function listClick() {
   setTimeout("hideList(null,true);", 1);
 }
 
+function debugLogHistory(msg) {
+  console.log ('====='+msg+'==== ('+historyTable.length+')');
+  if (historyTable.length==0) {
+    console.log(msg+' => Empty');
+  }
+  for (i=0;i<historyTable.length;i++) {
+    current=historyTable[i];
+    console.log(msg+' => '+current[0]+ ' | '+current[1]+' | '+current[2]);
+  }
+}
+
 function stockHistory(curClass, curId) {
+  debugLogHistory("before");
   currentScreen="object";
   if (dojo.byId("GanttChartDIV")) {
     currentScreen="planning";
@@ -4677,7 +4689,9 @@ function stockHistory(curClass, curId) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
+  debugLogHistory("after");
 }
+
 
 function undoItemButton() {
   var len=historyTable.length;
