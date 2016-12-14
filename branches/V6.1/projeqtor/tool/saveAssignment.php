@@ -143,7 +143,7 @@ if (! $oldCost and $cost and $assignment->realWork) {
 	$wkList=$wk->getSqlElementsFromCriteria(null, false, $where);
 	foreach ($wkList as $wk) {
 		$wk->dailyCost=$cost;
-		$wk->dailyCost=$cost*$wk->work;
+		$wk->cost=$cost*$wk->work;
 		$wk->save();
 	}
 	$assignment->realCost=$assignment->realWork*$assignment->dailyCost;

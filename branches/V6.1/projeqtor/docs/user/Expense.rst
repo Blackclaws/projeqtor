@@ -14,6 +14,186 @@ The expenses incurred for the project are monitored.
    :backlinks: top
    :local:
 
+.. index:: ! Expense (Call_for_tender)
+
+.. _call-for-tenders:
+
+Call for tenders
+------------------
+
+Call for tenders stores information about your needs to create a submission to call for tenders.
+
+This can for instance be used to detail all the requests and find the best answer.
+
+You have the possibility to create some different evaluation criterias like technical, financial or the notoriety of the provider for example. Thereafter attribute them a value in Offer.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the Organization.
+   * - **Name**
+     - Short name of the tender.
+   * - **Type**
+     - Type of tender.
+   * - Project
+     - Project link to tender.
+   * - Maximum amount
+     - Maximum amount of the tender.
+   * - Expected delivery date
+     - Date expected.
+
+**\* Required field**
+
+.. rubric:: Section: Treatment
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+   
+   * - Field
+     - Description
+   * - **Status**
+     - Actual :term:`status` of the tender.
+   * - Responsible
+     - Person responsible for the processing of this tender.
+   * - Sent date
+     - Sent date of the expense (Date is mandatory). 
+   * - Expected answer date
+     - Expected answer date of the tender (Date is mandatory).
+   * - Handled
+     - Box checked indicates that the tender is handled with date when checked.
+   * - Done
+     - Box checked indicates that the tender is done with date when checked. 
+   * - Closed
+     - Box checked indicates that the expense is archived with date when checked.
+   * - Cancelled
+     - Box checked indicates that the expense is cancelled.
+
+**\* Required field**
+
+
+.. rubric:: Section: Submissions of tenders
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Provider
+     - Provider of the tender.
+   * - Contact
+     - Contact for the tender. 
+   * - Request date
+     - Request date when tender sent with the hour.
+   * - Expected answer date
+     - Date expected with the hour.
+   * - Tender status
+     - Statut of the tender.
+
+.. index:: ! Expense (Tenders)
+
+.. _tenders:
+
+Tenders
+-------
+
+Tenders store information about the responses to the call for tenders that you have submitted.
+
+This can for instance be used to detail all the tenders and compare them to choose one of them.
+
+If your call for tenders have created an evaluation criteria, you can attribute a rating for each of criteria.
+
+Evalutation will display a summary of your criterias with their ratings. 
+
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the Organization.
+   * - **Name**
+     - Short name of the tender.
+   * - **Type**
+     - Type of tender.
+   * - Project
+     - Project link to tender.
+   * - Call for tender
+     - Link to call for tender.
+   * - Tender statuts
+     - Statut of the tender.
+   * - **Provider**
+     -  Provider of the tender.
+   * - External reference
+     - External reference of the tender.
+
+**\* Required field**
+
+.. rubric:: Section: Treatment
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+   
+   * - Field
+     - Description
+   * - **Status**
+     - Actual :term:`status` of the tender.
+   * - Responsible
+     - Person responsible for the processing of this tender.
+   * - Contact
+     - Contact of the tender.
+   * - Request date
+     - Resquest date for tender.
+   * - Expected answer date
+     - Expected answer date of the tender (Date is mandatory).
+   * - Date of receipt
+     - Date of receipt of the tender with the hour.
+   * - Offer validity
+     - Offer validity of the tender with the hour.
+   * - Initial
+     - Price
+   * - Negotiated
+     - Price of negotiated.
+   * - Payment conditions
+     - Type of payment conditions.
+   * - Delivery delay
+     - Delivery delay of the tender.
+   * - Expected delivery date
+     - Expected delivery date of the tender.   
+   * - Handled
+     - Box checked indicates that the tender is handled with date when checked.
+   * - Done
+     - Box checked indicates that the tender is done with date when checked. 
+   * - Closed
+     - Box checked indicates that the tender is archived with date when checked.
+   * - Cancelled
+     - Box checked indicates that the tender is cancelled.
+
+**\* Required field**
+
+
 .. index:: ! Expense (Individual)
 
 .. _individual-expense:
