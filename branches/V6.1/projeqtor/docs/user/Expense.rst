@@ -19,13 +19,13 @@ The expenses incurred for the project are monitored.
 .. _call-for-tenders:
 
 Call for tenders
-------------------
+----------------
 
 Call for tenders stores information about your needs to create a submission to call for tenders.
 
 This can for instance be used to detail all the requests and find the best answer.
 
-You have the possibility to create some different evaluation criterias like technical, financial or the notoriety of the provider for example. Thereafter attribute them a value in Offer.
+You have the possibility to create some different evaluation criterias. Thereafter you can attribute them a value in Offer.
 
 .. rubric:: Section: Description
 
@@ -38,15 +38,15 @@ You have the possibility to create some different evaluation criterias like tech
    * - Field
      - Description
    * - :term:`Id`
-     - Unique Id for the Organization.
+     - Unique Id for the call for tender.
    * - **Name**
-     - Short name of the tender.
+     - Short name of the call for tender.
    * - **Type**
      - Type of tender.
    * - Project
-     - Project link to tender.
+     - Project link to call for tender.
    * - Maximum amount
-     - Maximum amount of the tender.
+     - Maximum amount of the call for tender.
    * - Expected delivery date
      - Date expected.
 
@@ -63,21 +63,21 @@ You have the possibility to create some different evaluation criterias like tech
    * - Field
      - Description
    * - **Status**
-     - Actual :term:`status` of the tender.
+     - Actual :term:`status` of the call for tender.
    * - Responsible
-     - Person responsible for the processing of this tender.
+     - Person responsible for the processing of this call for tender.
    * - Sent date
-     - Sent date of the expense (Date is mandatory). 
+     - Sent date of the call for tender. 
    * - Expected answer date
-     - Expected answer date of the tender (Date is mandatory).
+     - Expected answer date, meaning expected tender date.
    * - Handled
-     - Box checked indicates that the tender is handled with date when checked.
+     - Box checked indicates that the call for tender is handled with date when checked.
    * - Done
-     - Box checked indicates that the tender is done with date when checked. 
+     - Box checked indicates that the call for tender is done with date when checked. 
    * - Closed
-     - Box checked indicates that the expense is archived with date when checked.
+     - Box checked indicates that the call for tender is archived with date when checked.
    * - Cancelled
-     - Box checked indicates that the expense is cancelled.
+     - Box checked indicates that the call for tender is cancelled.
 
 **\* Required field**
 
@@ -114,9 +114,11 @@ Tenders store information about the responses to the call for tenders that you h
 
 This can for instance be used to detail all the tenders and compare them to choose one of them.
 
-If your call for tenders have created an evaluation criteria, you can attribute a rating for each of criteria.
+If your call for tenders has evaluation criteria, you can attribute a rating for each criteria.
 
 Evalutation will display a summary of your criterias with their ratings. 
+
+Global rating will then be displayed on the call for tender for all concerned tenders.
 
 
 .. rubric:: Section: Description
@@ -130,7 +132,7 @@ Evalutation will display a summary of your criterias with their ratings.
    * - Field
      - Description
    * - :term:`Id`
-     - Unique Id for the Organization.
+     - Unique Id for the tender.
    * - **Name**
      - Short name of the tender.
    * - **Type**
@@ -167,11 +169,11 @@ Evalutation will display a summary of your criterias with their ratings.
    * - Request date
      - Resquest date for tender.
    * - Expected answer date
-     - Expected answer date of the tender (Date is mandatory).
+     - Expected answer date of the tender.
    * - Date of receipt
      - Date of receipt of the tender with the hour.
    * - Offer validity
-     - Offer validity of the tender with the hour.
+     - Offer validity date.
    * - Initial
      - Price
    * - Negotiated
