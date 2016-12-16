@@ -44,7 +44,7 @@ Glossary
    Id
 
     * Every item has a unique Id, automatically generated on creation.
-    * Id is chronologically affected, for all kind of items (Activity, Ticket).
+    * Id is chronologically allocated, for all kind of items (Activity, Ticket).
     * Id is shared for all projects and all types (i.e. incident) of the same kind items (i.e. Ticket).
     * **Reference** is displayed after id, automatically generated on creation. 
 

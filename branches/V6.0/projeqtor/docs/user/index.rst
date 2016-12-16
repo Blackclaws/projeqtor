@@ -54,17 +54,21 @@ Current version is V6.0.0
   
   * See: :ref:`report`
 
-.. rubric:: Definition of working days.
+.. rubric:: Global Parameters.
 
-* Possibility to define the working days in the company: work basis is no longer in a fixed mode worked from Monday to Friday
-
+* Possibility to define the working days in the company: work basis is no longer in a fixed mode worked from Monday to Friday.
+* Generation of alerts if real work is not entered.
+* Possibility to specify the certificate files for a connection to MySql database in SSL secured mode.
+  
   * See: :ref:`global-parameters`
 
 .. rubric:: Management of organizations.
 
 * Definition of the structure of the company in the frame of organizations (Departments, Units, Location, ...)
 
-  * See: :ref:`organization-concept`
+  * See: :ref:`organization-concept` concept
+  
+  * See: :ref:`Organizations`
 
 .. rubric:: Gantt-Planning.
 
@@ -73,6 +77,16 @@ Current version is V6.0.0
 * On the Gantt chart, a right click on a bar displays the detail of the work for this bar.
 
   * See: :ref:`gantt-planning`
+  
+.. rubric:: Financial.
+
+* Management of call for tenders.
+
+  * See: :ref:`call-for-tenders`
+  
+* Tenders.
+  
+  * See: :ref:`tenders`
 
 .. raw:: latex
 
@@ -280,6 +294,13 @@ Plug-ins
 
    Plugin
 
+Organizations
+=============
+
+.. toctree::
+   :maxdepth: 1
+
+   Organization
 
 Administration
 ==============
@@ -288,7 +309,6 @@ Administration
    :maxdepth: 1
 
    Administration
-
 
 Glossary
 ========
