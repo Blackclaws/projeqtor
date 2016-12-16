@@ -60,7 +60,7 @@ Resources can be assigned to activities.
 
 This means that some work is defined on this activity for the resource.
 
-Only the resources affected to the project of the activity can be assigned to the activity.
+Only the resources allocated to the project of the activity can be assigned to the activity.
 
 .. index:: Planning management (Real work allocation) 
 .. rubric:: Real work allocation
@@ -104,7 +104,7 @@ The planning can also be viewed as a Project Portfolio, which is a Gantt plannin
 Resource management
 -------------------
 
-ProjeQtOr  manages the availability of resources that can be affected to multiple projects. Tool calculates a reliable, optimized and realistic planning.
+ProjeQtOr  manages the availability of resources that can be allocated to multiple projects. Tool calculates a reliable, optimized and realistic planning.
 
 .. index:: Resource management (Resource)
 .. rubric:: Resources
@@ -118,7 +118,7 @@ You can manage this through the capacity of the resource, that can be greater th
 .. index:: Resource management (Allocation)
 .. rubric:: Allocations
  
-The first step is to affect each resource to the projects on which it has to work, specifying the allocation rate (% of maximum weekly time spent on this project).
+The first step is to allocate each resource to the projects on which it has to work, specifying the allocation rate (% of maximum weekly time spent on this project).
 
 .. index:: Resource management (Assignment)
 .. rubric:: Assignments
@@ -127,7 +127,7 @@ Then you can assign resources to project activities.
 
 This means that some work is defined on this activity for the resource.
 
-Only the resources affected to the project of the activity can be assigned to the activity.
+Only the resources allocated to the project of the activity can be assigned to the activity.
 
 .. index:: Resource management (Calendar)
 .. rubric:: Calendars

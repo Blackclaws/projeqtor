@@ -249,7 +249,7 @@ For each planning element, a Gantt bar is displayed at them right.
 
  .. compound:: **Purple bar** 
 
-    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the project affection period.
+    * The planning calculator tries to plan, the remaining work on the task assigned to a resource within the allocation to project period.
     * If remaining work on the task can't be planned, a purple bar appears in the Gantt view.
 
 
@@ -531,10 +531,10 @@ Assigned tasks are grouped under resource level.
 * Left work can be displayed at right from Gantt bar.
 * Click on “Show left work” to display left work for each item.
 
-.. rubric:: |three| - Displays selected ressource and team 
+.. rubric:: |three| - Limit display to selected ressource or team 
 
-* Click and select one ressource for displays his data.
-* Click and select one team for displays his data.
+* Click and select one ressource to display only his data.
+* Click and select one team to display only data of resources of this team.
 
 .. raw:: latex
 

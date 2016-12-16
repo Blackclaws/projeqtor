@@ -85,8 +85,8 @@ For instance, bugs should be managed through tickets :
 
  .. compound:: **Versions identified**
 
-    * A ticket can identify all versions affected.
-    * Possibility to define a main version and the other versions affected.
+    * A ticket can identify all versions allocated.
+    * Possibility to define a main version and the other versions allocated.
 
 .. note:: 
 

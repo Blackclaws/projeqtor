@@ -106,6 +106,8 @@ It is also the top-level of visibility, depending on profiles.
      - Short name of the project.
    * - **Type**
      - Type of project.
+   * - Organization
+     - The organization of the project.
    * - Customer
      - The customer of the project.
    * - Bill contact
@@ -284,7 +286,7 @@ An activity can be:
    * - Cancelled
      - Box checked indicates the activity is cancelled.
    * - Target version
-     - The target version of the product affected in delivery of the activity.	
+     - The target version of the product allocated in delivery of the activity.	
    * - :term:`Result`
      - Complete description of the treatment done on the activity. 
  
@@ -388,7 +390,7 @@ ProjeQtOr offers two types of milestone:
    * - Cancelled
      - Box checked indicates the milestone is cancelled.
    * - Target version
-     - The target version of the product affected in delivery of the milestone.	
+     - The target version of the product allocated in delivery of the milestone.	
    * - :term:`Result`
      - Complete description of the treatment done on the milestone. 
  

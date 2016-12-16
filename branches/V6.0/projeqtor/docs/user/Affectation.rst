@@ -41,13 +41,13 @@ Offers a global view of allocation.
    * - :term:`Id`
      - Unique Id for the allocation.
    * - Resource
-     - Name of the affected resource.
+     - Name of the allocated resource.
    * - Or contact
-     - Name of the affected contact.
+     - Name of the allocated contact.
    * - **Profile**
      - Selected profile.
    * - **Project**
-     - Project affected to.
+     - Project allocated to.
    * - Rate
      - Allocation rate for the project (%).
    * - Start date

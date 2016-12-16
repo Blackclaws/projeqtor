@@ -118,6 +118,10 @@ $userLink['Plugin']='Plugin.html';
 $userLink['Audit']='Administration.html#audit-connections';
 $userLink['GlobalParameter']='Administration.html#global-parameters';
 $userLink['Gallery']='FinancialGallery.html';
+$userLink['Organization']='Organization.html';
+$userLink['Tender']='Expense.html#tenders';
+$userLink['CallForTender']='Expense.html#call-for-tenders';
+
 
 $section=null;
 if (isset($_REQUEST['section'])) {
