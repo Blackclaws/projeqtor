@@ -100,7 +100,7 @@ Each access is defined as scope of visible and updatable elements, that can be :
 * **No element:** No element is visible and updatable.
 * **Own elements:** Only the elements created by the user.
 * **Elements he is responsible for:** Only the elements the user is responsible for.
-* **Elements of own project:** Only the elements of the projects the user/resource is affected to.
+* **Elements of own project:** Only the elements of the projects the user/resource is allocated to.
 * **All elements on all projects:** All elements, whatever the project.
 
 -----------------------

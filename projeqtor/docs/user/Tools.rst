@@ -84,7 +84,7 @@ The message will be displayed in a color depending on the message type.
    * - Profile
      - The message is limited to users with this profile.
    * - Project
-     - The message is limited to resources affected to the project.
+     - The message is limited to resources allocated to the project.
    * - User
      - The message is limited to this user.
    * - Show on login screen
