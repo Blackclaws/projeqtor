@@ -290,6 +290,13 @@ foreach ($listParam as $param) {
               }
             }
           } 
+          if (dijit.byId('idActivity')) {
+            if (trim(this.value)) {
+              refreshList("idActivity", "idProject", this.value);
+            } else {
+              refreshList("idActivity");
+            }
+          }
           if (dijit.byId('idProduct')) {
             refreshList("idProduct","idProject", this.value);
           }
@@ -583,13 +590,13 @@ foreach ($listParam as $param) {
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
-    <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <select dojoType="dijit.form.<?php echo (($param->multiple == 1) ? 'MultiSelect' : 'FilteringSelect') ?>" class="input" 
     <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
-       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name . (($param->multiple == 1) ? '[]' : '');?>"
      >
-       <?php htmlDrawOptionForReference($param->name, $defaultValue, null, ($class=='Baseline')?true:false); ?>
-     </select>    
+       <?php htmlDrawOptionForReference($param->name, $defaultValue, null, ($class=='Baseline' || $param->multiple)); ?>
+     </select>     
     </td>
     </tr>
 
@@ -648,6 +655,19 @@ foreach ($listParam as $param) {
          onclick="saveReportAsFavorite();">
       </button>
       <?php }?>
+      <?php if($report->hasCsv) { ?>
+        <button title="<?php echo i18n('reportPrintCsv')?>"
+           dojoType="dijit.form.Button" type="button"
+           id="reportPrintCsv" name="reportPrintCsv"
+           iconClass="dijitButtonIcon dijitButtonIconCsv" class="detailButton whiteBackground" showLabel="false">
+           <script type="dojo/connect" event="onClick" args="evt">
+             dojo.byId('outMode').value='csv';
+             var fileName=dojo.byId('reportFile').value;
+             showPrint("../report/"+ fileName, 'report',null,'csv','<?php echo $report->orientation;?>');
+           </script>
+        </button>
+        <input type="hidden" id="objectClass" name="objectClass" value="Job" />
+		<?php }?>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />
