@@ -149,6 +149,8 @@ abstract class SqlElement {
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "IssueType" =>          array("Issue"=>"controlStrict"),
+	"JoblistDefinition"  => array("Job"=>"control",
+								  "JobDefinition"=>"cascade"),
     "Likelihood" =>         array("Opportunity"=> "controlStrict",
                                   "Risk"=>"controlStrict"),
     "Meeting" =>            array("Assignment"=>"cascade",
@@ -2902,10 +2904,7 @@ abstract class SqlElement {
 		  if ($colName=='id'.get_class($this).'Type') {
 		    $colScript .= '   getExtraHiddenFields(this.value,"","");';
 		  }
-		  //if ($colName=='idStatus') {         // Disabled : it is not desirable to hade extra fields before saving
-		  //  $colScript .= '   getExtraHiddenFields("",this.value,"");';
-		  //}
-		  $colScript .= '</script>';
+			$colScript .= '</script>';
 		}
 		if (substr($colName,$posDate,4)=='Date') {  // Date => onChange
 			$colScript .= '<script type="dojo/connect" event="onChange">';

@@ -4667,11 +4667,13 @@ function debugLogHistory(msg) {
   }
 }
 
-function stockHistory(curClass, curId) {
-  debugLogHistory("before");
-  currentScreen="object";
-  if (dojo.byId("GanttChartDIV")) {
-    currentScreen="planning";
+function stockHistory(curClass, curId, currentScreen) {
+  //debugLogHistory("before");
+  if (!currentScreen) {
+    currentScreen="object";
+    if (dojo.byId("objectClassManual")){
+      currentScreen=dojo.byId("objectClassManual").value;
+    }
   }
   if (historyPosition>=0) {
     current=historyTable[historyPosition];
@@ -4693,7 +4695,7 @@ function stockHistory(curClass, curId) {
 }
 
 
-function undoItemButton() {
+function undoItemButton(curClass,curId) {
   var len=historyTable.length;
   if (len == 0) {
     return;
@@ -4702,29 +4704,81 @@ function undoItemButton() {
     return;
   }
   historyPosition-=1;
-  gotoElement(historyTable[historyPosition][0],
-  historyTable[historyPosition][1], true, false, historyTable[historyPosition][2]);
+  var currentItem=historyTable[historyPosition];
+  var currentScreen=currentItem[2];
+  
+  var target="";
+  if (currentScreen=="object" && currentItem[1]!=null){
+    gotoElement(currentItem[0], currentItem[1], true, false, currentScreen);
+  } else if (currentScreen=="object") {
+    loadContent("objectMain.php?objectClass=" + currentItem[0],"centerDiv");
+  } else {
+    target=getTargetFromCurrentScreen(currentScreen);
+    loadContent(target,"centerDiv"); 
+  }
   enableWidget('menuBarRedoButton');
   if (historyPosition == 0) {
     disableWidget('menuBarUndoButton');
   }
 }
 
+function getTargetFromCurrentScreen(currentScreen){
+  if (currentScreen=="Administration" || currentScreen=="Admin"){ 
+    target="admin.php";
+  } else if (currentScreen=="Import" || currentScreen=="ImportData"){ 
+    target="importData.php";
+  } else if (currentScreen=="Plugin"){ 
+    target="pluginManagement.php";
+  } else if (currentScreen=="Today"){ 
+    target="today.php";
+  } else if (currentScreen=="UserParameter") {
+    target="parameter.php?type=userParameter";
+  } else if (currentScreen=="ProjectParameter") {
+    target="parameter.php?type=projectParameter";
+  } else if (currentScreen=="GlobalParameter") {
+    target="parameter.php?type=globalParameter";
+  } else if (currentScreen=="Habilitation") {
+    target="parameter.php?type=habilitation";
+  } else if (currentScreen=="HabilitationReport") {
+    target="parameter.php?type=habilitationReport";
+  } else if (currentScreen=="HabilitationOther") {
+    target="parameter.php?type=habilitationOther";
+  } else if (currentScreen=="AccessRight") {
+    target="parameter.php?type=accessRight";
+  } else if (currentScreen=="AccessRightNoProject") {
+    target="parameter.php?type=accessRightNoProject";
+  } else {
+    target=currentScreen.charAt(0).toLowerCase()+currentScreen.substr(1)+"Main.php";
+  }
+  return target;
+}
+
 function redoItemButton() {
   var len=historyTable.length;
   if (len == 0) {
     return;
-  }
+  }  
   if (historyPosition == len - 1) {
     return;
   }
   historyPosition+=1;
-  gotoElement(historyTable[historyPosition][0],
-      historyTable[historyPosition][1], true, false, historyTable[historyPosition][2]);
+  
+  var currentItem=historyTable[historyPosition];
+  var currentScreen=currentItem[2];
+  var target="";
+  if (currentScreen=="object" && currentItem[1]!=null){
+    gotoElement(currentItem[0], currentItem[1], true, false, currentScreen);
+  } else if (currentScreen=="object") {
+    loadContent("objectMain.php?objectClass=" + currentItem[0],"centerDiv");
+  } else {
+    target=getTargetFromCurrentScreen(currentScreen);
+    loadContent(target,"centerDiv"); 
+  }
   enableWidget('menuBarUndoButton');
   if (historyPosition == (len - 1)) {
     disableWidget('menuBarRedoButton');
   }
+  getTargetFromCurrentScreen(currentScreen);
 }
 
 // Stock id and name, to
@@ -4862,7 +4916,9 @@ function loadMenuBarObject(menuClass, itemName, from) {
   }
   cleanContent("detailDiv");
   formChangeInProgress=false;
-  loadContent("objectMain.php?objectClass=" + menuClass, "centerDiv");
+  var currentScreen=menuClass; 
+    loadContent("objectMain.php?objectClass=" + currentScreen, "centerDiv"); 
+  stockHistory(currentScreen,null,"object");
   return true;
 }
 
@@ -4876,6 +4932,7 @@ function loadMenuBarItem(item, itemName, from) {
   }
   cleanContent("detailDiv");
   formChangeInProgress=false;
+  var currentScreen=item;
   if (item == 'Today') {
     loadContent("today.php", "centerDiv");
   } else if (item == 'Planning') {
@@ -4930,6 +4987,8 @@ function loadMenuBarItem(item, itemName, from) {
   } else {  
     showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
+  stockHistory(null,null,currentScreen);
+  
   return true;
 }
 
@@ -7261,4 +7320,167 @@ function changeTenderEvaluationValue(index) {
   var newValue=Math.round(sum*dojo.byId('evaluationMaxCriteriaValue').value/dojo.byId('evaluationSumCriteriaValue').value*100)/100;
   dijit.byId("evaluationValue").set("value",newValue);
 }
+// =============================================================================
+// = JobDefinition
+// =============================================================================
 
+/**
+ * Display a add line Box
+ *
+ */
+function addJobDefinition(checkId) {
+  var params="&checkId=" + checkId;
+  loadDialog('dialogJobDefinition', null, true, params);
+}
+
+/**
+ * Display a edit line Box
+ *
+ */
+function editJobDefinition(checkId, lineId) {
+  var params="&checkId=" + checkId + "&lineId=" + lineId;
+  loadDialog('dialogJobDefinition', null, true, params);
+}
+
+/**
+ * save a line (after addDetail or editDetail)
+ *
+ */
+function saveJobDefinition() {
+  if (!dijit.byId("dialogJobDefinitionName").get('value')) {
+    showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
+    return false;
+  }
+  loadContent("../tool/saveJobDefinition.php", "resultDiv",
+      "dialogJobDefinitionForm", true, 'jobDefinition');
+  dijit.byId('dialogJobDefinition').hide();
+
+}
+
+/**
+ * Display a delete line Box
+ *
+ */
+function removeJobDefinition(lineId) {
+  var params="?lineId=" + lineId;
+  // loadDialog('dialogJobDefinition',null, true, params)
+  // dojo.byId("jobDefinitionId").value=lineId;
+  actionOK=function() {
+    loadContent("../tool/removeJobDefinition.php" + params,
+        "resultDiv", null, true, 'jobDefinition');
+  };
+  msg=i18n('confirmDelete', new Array(i18n('JobDefinition'), lineId));
+  showConfirm(msg, actionOK);
+}
+
+// =============================================================================
+// = Joblist
+// =============================================================================
+
+function showJoblist(objectClass) {
+  if (!objectClass) {
+    return;
+  }
+  if (dijit.byId('id')) {
+    var objectId=dijit.byId('id').get('value');
+  } else {
+    return;
+  }
+  var params="&objectClass=" + objectClass + "&objectId=" + objectId;
+  loadDialog('dialogJoblist', null, true, params, true);
+}
+
+function saveJoblist() {
+  // var params="&objectClass="+objectClass+"&objectId="+objectId;
+  // loadDialog('dialogJoblist',null, true, params);
+  loadContent('../tool/saveJoblist.php', 'resultDiv', 'dialogJoblistForm',
+      true, 'joblist');
+  dijit.byId('dialogJoblist').hide();
+  return false;
+}
+
+function jobClick(line) {
+  jobName="check_" + line;
+  if (dijit.byId(jobName).get('checked') && dijit.byId("check_" + line)) {
+    dijit.byId("check_" + line).set('checked', false);
+  }
+}
+
+// ===================================================
+// custom
+// ===================================================
+function changeJobInfo(jobId) {
+  toShow=false;
+  if(dijit.byId('dialogJobInfoJobId')) {
+    dijit.byId('dialogJobInfoJobId').set('value', jobId);
+  } else if (dijit.byId('dialogJobInfoJobId')) {
+    dojo.byId('dialogJobInfoJobId').value = jobId;
+  }
+
+  if (dijit.byId('job_'+jobId+'_idUser')) {
+    dijit.byId('dialogJobInfoCreator').set('value',
+        dijit.byId('job_'+jobId+'_idUser').get('value'));
+    dojo.byId('dialogJobInfoCreatorLine').style.display='inline';
+    toShow=true;
+  } else if (dojo.byId('job_'+jobId+'_idUser')) {
+    dijit.byId('dialogJobInfoCreator').set('value',
+        dojo.byId('job_'+jobId+'_idUser').value);
+    dojo.byId('dialogJobInfoCreatorLine').style.display='inline';
+    toShow=true;
+  } else {
+    dojo.byId('dialogJobInfoCreatorLine').style.display='none';
+  }
+
+  if (dijit.byId('job_'+jobId+'_creationDate')) {
+    if(dijit.byId('job_'+jobId+'_creationDate').get('value') != '') {
+      dijit.byId('dialogJobInfoDate').set('value', dijit.byId('job_'+jobId+'_creationDate').get('value'));
+    }
+    dojo.byId('dialogJobInfoDateLine').style.display='inline';
+    toShow=true;
+  } else if (dojo.byId('job_'+jobId+'_creationDate')) {
+    if(dojo.byId('job_'+jobId+'_creationDate').value != '') {
+      dojo.byId('dialogJobInfoDate').set('value', dojo.byId('job_'+jobId+'_creationDate').value);
+    }
+    dojo.byId('dialogJobInfoDateLine').style.display='inline';
+    toShow=true;
+  } else {
+    dojo.byId('dialogJobInfoDateLine').style.display='none';
+  }
+
+  if (toShow) {
+    dijit.byId('dialogJobInfo').show();
+  }
+}
+
+function saveJobInfo() {
+  if(dijit.byId('dialogJobInfoJobId')) {
+    jobId = dijit.byId('dialogJobInfoJobId').get('value');
+  } else if (dijit.byId('dialogJobInfoJobId')) {
+    jobId = dijit.byId('dialogJobInfoJobId').get('value');
+  }
+  if(jobId) {
+    if (dijit.byId('job_'+jobId+'_idUser')) {
+      dijit.byId('job_'+jobId+'_idUser').set('value',
+        dijit.byId('dialogJobInfoCreator').get('value'));
+    } else if (dojo.byId('job_'+jobId+'_idUser')) {
+      dojo.byId('job_'+jobId+'_idUser').value = dijit.byId('dialogJobInfoCreator').get(
+          'value');
+    }
+
+    if(dijit.byId('dialogJobInfoDate').get('value') != '') {
+        if (dijit.byId('job_'+jobId+'_creationDate')) {
+            dijit.byId('job_'+jobId+'_creationDate').set('value',
+              formatDate(dijit.byId('dialogJobInfoDate').get('value')));
+        } else if (dojo.byId('job_'+jobId+'_creationDate')) {
+            dojo.byId('job_'+jobId+'_creationDate').value = formatDate(dijit.byId(
+              'dialogJobInfoDate').get('value'));
+        }
+    }
+    formChanged();
+    // To implement if we want to hide before reload after save
+    /*dojo.byId('buttonDivCreationInfo').innerHTML="";*/
+    forceRefreshJobInfo=true;
+    saveObject();
+    dijit.byId('dialogJobInfo').hide();
+  }
+}
