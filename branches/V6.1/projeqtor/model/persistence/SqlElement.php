@@ -4560,6 +4560,7 @@ abstract class SqlElement {
 	public function getExtraHiddenFields($newType="", $newStatus="", $newProfile="") {
 	  $class=get_class($this);
 	  $typeFld='id'.$class."Type";
+	  if ($class=='TicketSimple') $typeFld='idTicketType';
 	  $list=self::getExtraHiddenFieldsFullList();
 	  $listType=array();
 	  $listStatus=array();

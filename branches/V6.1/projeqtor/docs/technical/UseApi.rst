@@ -8,7 +8,7 @@ Utilisation de l'API
     
     Il est possible de lire les éléments (méthode GET), de créer ( méthodes PUT,POST),de modifier (méthodes PUT,POST) et de supprimer ( méthode DELETE ). 
     
-    .. warning:: Dans projeQtOr , les méthodes PUT et POST sont équivalentes , c'est la présence de l'id qui va déterminer quelle méthode utiliser.
+    .. warning:: Dans projeQtOr , les méthodes PUT et POST sont équivalentes , c'est la présence de l'id qui va déterminer quelle méthode utilisé.
     
     Tout d'abord , l'API doit être activée : pour des raisons de sécurité , elle n'est pas activée par défaut.
     
@@ -18,7 +18,7 @@ Utilisation de l'API
 
     - Mettre à jour le fichier .htaccess pour spécifier l'emplacement de votre fichier .htpasswd : AuthUserFile "/pathToFile/.htpasswd"
     
-    L'emplacement par defaut est le répertoire Apache.
+    L'emplacement par défaut est le répertoire Apache.
     
     Utilisation de l'API :
     
@@ -28,11 +28,11 @@ Utilisation de l'API
       
       Cela vous permet de fournir un certain accès aux utilisateurs externes et de contrôler la visibilité qu'ils obtiennent sur vos données.
       
-    - Les méthodes disponibles sont GET(lecture), PUT(creéation,mise à jour), POST(création,mise à jour) et DELETE(suppression).
+    - Les méthodes disponibles sont GET(lecture), PUT(création,mise à jour), POST(création,mise à jour) et DELETE(suppression).
     
     - Pour les méthodes PUT,PUSH et DELETE, les données doivent être cryptées avec l'algorithme AES-256, avec la clé comme clé API définie pour l'utilisation. L'administrateur doit fournir cette clé d'API au consommateur de l'API.
     
-      Vous pouvez utiliser la bibliothéque AESCRT fournie dans le répertoire /external pour le cryptage.
+      Vous pouvez utiliser la bibliothèque AESCRT fournie dans le répertoire /external pour le cryptage.
       
     - Les méthodes PUT et PUSH sont similaires et peuvent être utilisées pour créer ou mettre à jour des éléments.
     

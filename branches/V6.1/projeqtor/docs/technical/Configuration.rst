@@ -24,7 +24,7 @@ Lorsque vous ouvrez une session, le processus normal doit être:
     
     - Vous entrez la connexion par défault : admin/admin et cliquez sur le bouton "OK".
     
-    - Un spinner est affiché: cette étape peut prendre un certain temps(environ 1 minutes) parceque toute la structure de la base de données est créé.
+    - Un spinner est affiché: cette étape peut prendre un certain temps(environ 1 minutes) car toute la structure de la base de données est créé.
     
     - Le spinner disparaît et un message court indique le résultat de la création de la base de données ( le détail de cette étape est écrit dans le fichier log).
     

@@ -16,6 +16,8 @@ ALTER TABLE `${prefix}report` ADD COLUMN `hasCsv` int(1) unsigned DEFAULT '0';
 
 UPDATE `${prefix}report` SET hasCsv = 1 WHERE `id` = 49;
 
+UPDATE `${prefix}menu` SET name='menuIncomes' WHERE name='menuIncomings';
+
 -- PAPJUL ADDITION FOR REPORTS (END)
 -- =================================
 
@@ -195,10 +197,10 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `code`) VALUE
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (163,'menuDeliverableWeight', 36, 'object', 792, 'ReadWriteList', 0, 'ListOfValues'),
 (164,'menuDeliverableStatus', 36, 'object', 794, 'ReadWriteList', 0, 'ListOfValues'),
-(165,'menuDeliverableType', 79, 'object', 936, 'ReadWriteType', 0, 'ListOfValues'),
-(166,'menuIncomingType', 79, 'object', 938, 'ReadWriteType', 0, 'Type'),
-(167,'menuDeliverable', 6, 'object', 372, 'Project', 0, 'Work Meeting'),
-(168,'menuIncoming', 6, 'object', 374, 'Project', 0, 'Work Meeting'),
+(165,'menuDeliverableType', 79, 'object', 938, 'ReadWriteType', 0, 'ListOfValues'),
+(166,'menuIncomingType', 79, 'object', 936, 'ReadWriteType', 0, 'Type'),
+(167,'menuDeliverable', 6, 'object', 374, 'Project', 0, 'Work Meeting'),
+(168,'menuIncoming', 6, 'object', 372, 'Project', 0, 'Work Meeting'),
 (169,'menuKpiDefinition', 88, 'object', 615, 'ReadWriteEnvironment', 0, 'Automation');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
@@ -218,3 +220,25 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`)
 SELECT `idProfile`, 167, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=16;
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 168, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=16;   
+
+CREATE TABLE `${prefix}category` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(170,'menuCategory', 36, 'object', 791, 'ReadWriteType', 0, ' ListOfValues');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1,170,1);
+
+INSERT INTO `${prefix}category` (`id`, `name`, `idle`) VALUES 
+(1, 'Build', 0),
+(2, 'Run', 0);
+
+ALTER TABLE `${prefix}project` ADD COLUMN `idCategory` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}type` ADD COLUMN `idCategory` int(12) unsigned DEFAULT NULL;

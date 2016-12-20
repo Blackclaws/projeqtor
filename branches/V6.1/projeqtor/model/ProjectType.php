@@ -38,6 +38,7 @@ class ProjectType extends SqlElement {
   public $code;
   public $internalData;
   public $idWorkflow;
+  public $idCategory;
   public $sortOrder=0; 
   public $_spe_billingType;
   public $idle;

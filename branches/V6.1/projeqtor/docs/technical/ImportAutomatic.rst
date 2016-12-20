@@ -9,7 +9,7 @@ Automatique Import
 
 Les importations peuvent être automatisées: les fichiers placés sur un répertoire défini seront automatiquement importés.
 
-Les fichiers doivent respecter certaines régles de base : 
+Les fichiers doivent respecter certaines règles de base : 
 
  - Le nom du fichier est: "Class" _ "Timestamp". "ext" .
   
