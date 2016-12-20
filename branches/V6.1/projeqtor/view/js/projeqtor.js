@@ -3722,6 +3722,19 @@ function setDefaultPlanningMode(typeValue) {
   });
 }
 
+function setDefaultCategory(typeValue) {
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=defaultCategory&idType='
+        + typeValue + "&objectClass=" + dojo.byId('objectClass').value ,
+    handleAs : "text",
+    load : function(data) {
+      console.log(data);
+      dijit.byId("idCategory").set('value', data);
+
+    }
+  });
+}
+
 function updateVersionName(sep) {
   var prd = '';
   if (dijit.byId("idComponent")) {

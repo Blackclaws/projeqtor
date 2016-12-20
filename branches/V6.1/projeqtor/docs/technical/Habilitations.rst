@@ -12,7 +12,7 @@ Affichage des menus
       
 Affichage des listes
       
-Affichage des détails et accés à chaque éléments
+Affichage des détails et accès à chaques éléments
       
 
 .. index:: getVisibleProjectsList()
@@ -44,7 +44,7 @@ User->getVisibleProject (limitToActiveProjects)
 .. figure:: /images/GUI/usergetvisibleprojet.png
   
 Si securityGetAccessRight('menuProject','read')="ALL" ( droits de voir tous les projets),retourne tous les projets.
-Sinon , retourne tous les projets affectés ( et leurs sous projets).
+Sinon , retourne tous les projets affectés ( et leurs sous-projets).
 
 Le résultat est mise en cache dans
 
@@ -92,13 +92,13 @@ Les droits possibles sont :
   
 * PRO : tous les éléments des projets affectés
   
-* RES : les éléements dont il est le responsables (c'est à dire tels que idResource=User->id)
+* RES : les éléments dont il est le responsable (c'est à dire tels que idResource=User->id)
   
 * OWN : ses propres éléments ( dont il est le créateur,c'est à dire idUser=User->id)
   
 * NO  : aucun accès
   
-Le résultat est mise en cache dans
+Le résultat est mis en cache dans
  
 *$this->_accessControlRights*
 
@@ -116,13 +116,13 @@ Affichage menu                                     | Profil principal
                                                                                     
 Affichage liste d'éléments                                               
                                                                     
-Affichage détail d'un éléments                                
+Affichage détail d'un élément                              
           
 Droits CRUD sur un élément                                        
 
-Droits spécifique                                                                                                
+Droits spécifiques                                                                                               
 
-Accés aux états                          
+Accès aux états                          
                                                    
 Affichage contenu des états                 
                                                                                                                                                                                   

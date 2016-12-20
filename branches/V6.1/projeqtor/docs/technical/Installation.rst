@@ -29,9 +29,9 @@ Ce montage peut être utilisé à des fins de productions.
 
 - Au premier lancement, l'écran de configuration s'affiche.
 
-- Pour éxécuter à nouveau l'écran de configuration, il suffit de supprimer le fichier "/tool/parametersLocation.php".
+- Pour exécuter à nouveau l'écran de configuration, il suffit de supprimer le fichier "/tool/parametersLocation.php".
 
-- Lors de la premiére connexion, la base de données sera automatiquement mise à jour, cela peut prendre plusieurs minutes.
+- Lors de la première connexion, la base de données sera automatiquement mise à jour, cela peut prendre plusieurs minutes.
 
 ..rubric::Support : 
 

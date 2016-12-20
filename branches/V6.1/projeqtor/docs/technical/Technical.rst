@@ -4,9 +4,9 @@
 
 Technical
 -----------
-.. rubric:: Facilité d'utilisattion
+.. rubric:: Facilité d'utilisation
 
-- ProjeQtOr propose un interface conviviale.
+- ProjeQtOr propose une interface conviviale.
 
 - Une application internet riche qui s'exécute comme un client léger , dans un navigateur simple.
 
@@ -17,8 +17,8 @@ Technical
   L'interface utilisateur générale est conçue pour se conformer à de nombreux outils habituellement utilisés ( tels que WebMail ) :
     - Menu à gauche
     - Données à droite , divisé en haut comme liste d'article et en bas comme détail pour l'élément sélectionné.
-      La selection d'un élément dans la liste affiche directement son détail.
-- Possibilité d'acceder à l'historique des changements est offert sur chaque élément.
+      La sélection d'un élément dans la liste affiche directement son détail.
+- Possibilité d'accéder à l'historique des changements est offert sur chaque élément.
 - La gestion des notes permet de joindre des commentaires à n'importe quel élément.
 - Une piéce jointe est proposée pour les éléments les plus importants.
 - Multi-Langue.
@@ -28,7 +28,7 @@ Technical
 
 .. rubric:: Facilité d'installation
 
-- ProjeQtOr utilise des technologies trés connues : PHP/ MySQL (ou PostgreSql)/ AJAX
+- ProjeQtOr utilise des technologies très connues : PHP/ MySQL (ou PostgreSql)/ AJAX
 
 - La configuration requiert uniquement la trilogie habituelle: Apache,MySQL(ou PostgreSql),PHP.
   Il suffit d'utiliser votre paquet préféré:XAMPP,LAMP,WAMP,EasyPhP,Serveur ZEND...
@@ -45,17 +45,17 @@ Technical
   - XAMPP 1.7.7 [Apache V2.2.21, MySQL 5.5.16, PHP V5.3.8]
   
  
-- La gestion automatique des versions déclenche la mise à jour de la structure de la base de données lors de la premiére éxécution pour toute nouvelle version.
+- La gestion automatique des versions déclenche la mise à jour de la structure de la base de données lors de la première exécution pour toute nouvelle version.
 - L'écran de configuration lors de la premiére éxécution pour définir les paramètres internes (accés à la base de données,paramètres par défault,...).
 - La plupart des paramètres peuvent être mis à jour via un écran dédié.
 
 .. rubric:: Facile à paramétrer
 
-- Chaque paramètre utilisateur, chaque liste de valeurs peut-être changé à travers un écran dédié.
+- Chaque paramètre utilisateur, chaque liste de valeurs peut-être changée à travers un écran dédié.
 
-- Des paramètres par défault sont proposés,correspondant aux besoins les plus courants.
+- Des paramètres par défaut sont proposés,correspondant aux besoins les plus courants.
 
-- Sélection de la langues,proposée sur la valeur locale,éditable par l'utilisateur ( 16 langues sur la version actuelle 6.0 = 
+- Sélection de la langue proposée sur la valeur locale,éditable par l'utilisateur ( 16 langues sur la version actuelle 6.0 = 
   - Chinois
   - Croate
   - Néerlandais
@@ -76,7 +76,7 @@ Technical
 
 - Comme ProjeQtOr est proposé sous licences AGPL open source, vous pouvez l'adapter à vos besoins.
 
-- ProjeQtOr à été développé en tant que Framework , il est donc trés facile d'ajouter un élément,d'ajouter des données ou de modifier l'affichage d'un élément.
+- ProjeQtOr à été développé en tant que Framework , il est donc très facile d'ajouter un élément,d'ajouter des données ou de modifier l'affichage d'un élément.
 
 .. rubric:: Facile à surveiller
 

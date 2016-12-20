@@ -2,11 +2,15 @@
 
 .. title:: Internationalization
 
+.. index:: ! Internationalization
+
+.. _internationalization :
+
 Internationalisation
 --------------------------
 **L'internationalisation** aussi appélé **i18n** [#f1]_ dans ProjeQtOr comprends plusieurs fonctionnalitées :
 
-    - i18n est utilisé pour ne pas écrire en dur dans le code de ProjeQtOr. Par exemple , dés que un titre doit être écrit on va utilisé la fonction i18n().
+    - i18n est utilisé pour ne pas écrire en dur dans le code de ProjeQtOr. Par exemple , dés qu'n titre doit être écrit on va utiliser la fonction i18n().
     
     - i18n est aussi utilisé pour , comme son nom l'indique , l'internationalisation. C'est à dire la traduction en plusieurs langues de l'application.
     
@@ -20,7 +24,7 @@ Voici la structure du dossier i18n :
 
     .. figure:: /images/GUI/internationalisation.png
 
-Comme ont peut le remarquer , dans la structure de i18n il y a un lang.xls , c'est dans ce fichir que l'ont va définir les traductions des codes utilisés dans les différentes langues !
+Comme on peut le remarquer , dans la structure de i18n il y a un lang.xls , c'est dans ce fichier que l'on va définir les traductions des codes utilisés dans les différentes langues !
 
 Voici un exemple du contenu de lang.xls ouvert à partir de Exel :
 
@@ -41,16 +45,16 @@ Voici un exemple d'ajout d'un nouveau profil :
     
     - Ajoutez une nouvelle ligne dans lang.xls avec une chaîne = "profileNewValue" (exemple) et remplir les champs default,en,fr et la légende que vous souhaitez afficher.
     
-    - Ensuite , "enregistrez sous"(pour positionner le répertoire par défault dans Excel n'utilisez pas directement "enregistrer") et cliquez sur "Générer".
+    - Ensuite , "enregistrez sous"(pour positionner le répertoire par défaut dans Excel n'utilisez pas directement "enregistrer") et cliquez sur "Générer".
     
-    - Positionnez vous dans le dossier "nls" pour générer.
+    - Positionnez-vous dans le dossier "nls" pour générer.
     
-    - Cela générera un fichier lang.js dans le répertoire courant et dans les sous-répertoire (en,fr,...).
+    - Cela générera un fichier lang.js dans le répertoire courant et dans les sous-répertoires (en,fr,...).
     
     - Maintenant vous pouvez copier ces fichiers pour remplacer ceux existants dans le répertoire /tool/i18n/nls de votre serveur.
     
     - Le nom est maintenant traduit.
     
-.. warning:: n'oubliez pas de sauvegarder votre fichier lang.xls et d'identifier vos modifications . Car vous devrez les réappliquer après chaque nouvelle version.
+.. warning:: n'oubliez pas de sauvegarder votre fichier lang.xls et d'identifier vos modifications . Car vous devrez les rappliquer après chaque nouvelle version.
 
 .. [#f1] i18n = Internationalisation = i + 18 caractére + n

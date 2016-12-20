@@ -6,7 +6,7 @@ Développement de Plugins
 ----------------------------
 .. rubric:: Déploiement et structure d'un plugin
 
-Les plug-ins doivent être compréssés sous forme de fichier zip incluant le nom du plugin et sa version.
+Les plug-ins doivent être compressés sous forme de fichier zip incluant le nom du plugin et sa version.
       
 Par exemple : myPlugin_V1.0.zip
       
@@ -14,7 +14,7 @@ Le fichier zip doit inclure le dossier racine avec le nom du plug-in.
       
 Pour être intégré, le fichier zip doit être placé dans le dossier / plugin manuellement ou via la fonctionnalité "télécharger le plug-in". 
 
-.. rubric:: Structure de l'archive de deploiement d'un plug-in
+.. rubric:: Structure de l'archive de déploiement d'un plug-in
 
 ===============================================    ===================================================================      
 | **Repertoire du fichier**                        | **Utilité**                                                          
@@ -41,7 +41,7 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
                                                    | (sera chargé automatiquement)
       
       | ____pluginDescriptor.xml                   | Le fichier descripteur xml du plug-in.
-                                                   | Obligatoire. Contient des informations de déploiement                                                                                                                                                                                                                                                                                              
+                                                   | Obligatoire. Contiens des informations de déploiement                                                                                                                                                                                                                                                                                              
 ===============================================    ===================================================================   
 
 .. rubric:: pluginDescriptor.xml
@@ -82,7 +82,7 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
                                                            | l'installation du plug-in(par exemple si un nouveau menu est
                                                            | crée).
                                                     
-| __property name="postInstall"                            | Fichier qui va être éxécuté aprés l'installation du plug-in
+| __property name="postInstall"                            | Fichier qui va être exécuté aprés l'installation du plug-in
 
 | __files
 
@@ -90,14 +90,14 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
                                                            | "x.y": nom du fichier(doit exister dans le répertoire racine
                                                            | du plugin.
                                                            | "z":répertoire cible pour copier ou déplacer le fichier
-                                                           | "act":action à faire: peut être copier ou déplacer
+                                                           | "act":action à faire: peut-être copié ou déplacer
                                                   
 | __triggers
 
 | ____trigger event="evt" class="cls" script="script"      | Un noeud va événement déclanché.
                                                            | "evt": événement à déclencher
                                                            | "cls": classe d'objets pour laquelle l'événement sera déclenché
-                                                           | "script": nom du script (fichier php) à éxécuter                    
+                                                           | "script": nom du script (fichier php) à exécuter                    
                                                                                                                                                                                                                                                               
 =======================================================    ===================================================================   
 
@@ -121,7 +121,7 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
         
 .. rubric:: Comment ajouter un nouveau menu
 
-* Insérer une nouvelle ligne dans le menu du tableau , avec type='item'. Vous devez également ajouter l'accés par défault dans l'habilitation de table. L'accés sera gérable via des écrans de gestions des droits d'accès par défaut.
+* Insérer une nouvelle ligne dans le menu du tableau , avec type='item'. Vous devez également ajouter l'accès par défaut dans l'habilitation de table. L'accès sera gérable via des écrans de gestions des droits d'accès par défaut.
   Exemple: insérez les mises à jour de base de données dans myPlugin.sql et définissez ce fichier comme "sql" dans pluginDescriptor.xml, nous attendons que le nom du menu soit 'myPlugin'.   
     
 * Définir trois images , une pour chaques tailles ( 32px , 22px et 16px ) et ajoutez leur description dans pluginDescription pour les déplacer vers le dossier /view/css/images.
@@ -130,7 +130,7 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
     
 * Ajouter une entrée javascript pour l'écran de plugin dans pluginMenuPage (cette variable est un tableau) . Exemple: dans myPlugin.js , ajouter pluginMenuPage['menuMyPlugin']='../plugin/myPlugin/myPlugin.php'.
     
-* Définissez la propriété reload à "1" dans pluginDescriptor ( pour l'actualisation de l'écran aprés l'installation pour que le nouvel écran s'affiche ).
+* Définissez la propriété reload à "1" dans pluginDescriptor ( pour l'actualisation de l'écran après l'installation pour que le nouvel écran s'affiche ).
     
 .. rubric:: Conseils de codages
 
@@ -174,6 +174,6 @@ Pour être intégré, le fichier zip doit être placé dans le dossier / plugin 
   * Pour un événement "control", pour retourner et uerroné un contrôle, compléter le message dans la variable $result (considérer qu'il est initialisé et non vide, donc utiliser $result.="<br/>...")
     
   * Dans les scripts déclenchés , si vous devez comparer des valeurs dans la base de données aux valeurs qui seront ou ont été stockées , utilisez dans l'événement "beforeSave" : $old=$this->getOld(); ( ceci va récupérer des valeurs dans la base de données pour l'élément courant.
-    Ensuite , vous pourrez comperer les valeurs de $old et $this
+    Ensuite , vous pourrez comparer les valeurs de $old et $this
     
   * Dans les aprés événements (afterSave ou afterDelete), la variable $result contient le résultat de l'opération correspondante(save ou delete)

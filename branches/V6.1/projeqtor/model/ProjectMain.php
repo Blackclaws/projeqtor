@@ -38,6 +38,7 @@ class ProjectMain extends SqlElement {
   public $name;
   public $idProjectType;
   public $idOrganization;
+  public $idCategory;
   public $organizationInherited;
   public $organizationElementary;
   public $codeType;
@@ -265,7 +266,12 @@ class ProjectMain extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
+    } else if ($colName=="idProjectType") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  setDefaultCategory(this.value);';
+      $colScript .= '</script>';
     }
+    
     return $colScript;
   }
   
@@ -866,7 +872,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $in.=')';
     return $in;
   }
-
   
 }
 ?>

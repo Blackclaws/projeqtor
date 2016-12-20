@@ -12,19 +12,19 @@ Developpement Objet
 
 Il existe plusieurs méthodes génériques de persistance , les plus utiles et les plus utilisés sont :
 
-  - La méthode Save : Utilisé pour sauvegarder des données en base de donnée . Peut-être réutilisé dans d'autres classe en faisant un : 
+  - La méthode Save : Utilisé pour sauvegarder des données en base de données . Peut-être réutilisé dans d'autres classes en faisant un : 
     *$result=parent::save();* 
   
   - La méthode Control : 
   
-  - La methode Delete : Utilisé pour supprimer des données en base de donnée . Peut-être réutilisé dans d'autres classe en faisant un : 
+  - La methode Delete : Utilisé pour supprimer des données en base de données . Peut-être réutilisé dans d'autres classes en faisant un : 
     *$result=parent::delete();*
 
-.. warning :: Ces trois méthodes sont définis dans SqlElement.php en privée , il faut donc les étendres avec la notions d'héritage si ont veux les réutiliser dans d'autres classes. 
+.. warning :: Ces trois méthodes sont définis dans SqlElement.php en privée , il faut donc les étendre avec la notion d'héritage si on veux les réutiliser dans d'autres classes. 
 
 .. rubric:: Description générique des objets
 
-.. rubric:: Régles de base de développement
+.. rubric:: Règles de base de développement
 
 * Toujours inclure (require_once) le fichier /tool/projeqtor.php au début des scripts.Cela garantira que toutes les contraintes de sécurité sont prises en compte, y compris le fait que l'utilisateur doit être connecté. Ceci est également obligatoire si vous souhaitez utiliser les fonctionnalités de Framework(objects , persistance).
 * Toujours vérifier que l'utilisateur connecté à le droit d'éxécuter l'action demandée.

@@ -17,7 +17,7 @@ H-1:
       
 H:
   - Déconnexion des derniers utilisateurs connectés
-  - Installation de la nouvelle version (repopie du code pour écraser l'existant)
+  - Installation de la nouvelle version (recopie du code pour écraser l'existant)
   - Déconnexion/reconnexion admin
   - Vérifications (VABF)
   - Réouverture de l'application
