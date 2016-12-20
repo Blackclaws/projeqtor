@@ -225,7 +225,7 @@ class QuotationMain extends SqlElement {
   	$result='';
     if (trim($this->id)=='') {
     	// fill the creatin date if it's empty - creationDate is not empty for import ! 
-    	if ($this->creationDate=='') $this->creationDate=date('Y-m-d H:i');
+    	if ($this->creationDate=='') $this->creationDate=date('Y-m-d');
 	  }
 	  if (trim($this->idClient)) {
 	    $client=new Client($this->idClient);
