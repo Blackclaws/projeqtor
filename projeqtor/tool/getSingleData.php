@@ -121,7 +121,15 @@
       }      
       $val=$obj->countSqlElementsFromCriteria($crit);
       echo $val;
-    } else {          
+    } else if ($type=='defaultCategory'){
+      $idType=$_REQUEST['idType'];
+      $className=$_REQUEST['objectClass'];
+      Security::checkValidClass($className);
+      $typeClass=$className.'Type';
+      $type=new $typeClass($idType);
+      echo $type->idCategory;
+    } else {
+      debugTraceLog("Unknown type '$type'");          
       echo '';
     } 
 ?>

@@ -97,6 +97,22 @@ Customisation
    
    Customization
 
+Créer nouveau écran
+===================
+   
+.. toctree::
+   :maxdepth: 1
+   
+  NewScreen
+  
+Modifier des icônes
+============================
+   
+.. toctree::
+   :maxdepth: 1
+   
+  CreateIcon
+   
 Habilitations
 =============
 
