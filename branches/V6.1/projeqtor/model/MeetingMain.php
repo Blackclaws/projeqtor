@@ -142,8 +142,8 @@ class MeetingMain extends SqlElement {
       self::$_fieldsAttributes['isPeriodic']='readonly';
       self::$_fieldsAttributes['periodicOccurence']='display';
     } else {
-    	self::$_fieldsAttributes['isPeriodic']="readonly";
-    	unset($this->isPeriodic);
+    	self::$_fieldsAttributes['isPeriodic']="hidden";
+    	//unset($this->isPeriodic);
     }  	
     /*if (! $this->id) {
       unset($this->_sec_progress);

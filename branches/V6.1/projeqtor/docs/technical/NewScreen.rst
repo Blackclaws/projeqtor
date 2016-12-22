@@ -8,7 +8,7 @@ Créer un nouvel écran dans ProjeQtOr
 
 .. rubric:: Etape pour créer un nouvel écran
 
-- Commencer par créer une table. Il est fortement recommandé de créer la requête SQL dans le script SQL ( par exemple "projeqtor_V6.1.0") avant de l'exécuter dans votre Système de Gestion de Base de Données.
+- Créer une table. Il est fortement recommandé de créer la requête SQL dans le script SQL ( par exemple "projeqtor_V6.1.0") avant de l'exécuter dans votre Système de Gestion de Base de Données.
 
 .. warning:: Le nom d'une table s'écrit "xxx" sans majuscule. Le nom d'une table s'écrit impérativement en minuscules pour garantir la compatibilité avec PostgreSQL.
 
@@ -16,7 +16,7 @@ Créer un nouvel écran dans ProjeQtOr
 
 .. warning:: Le nom d'un menu s'écrit "menuXxx".
 
-- Initialiser l'accés . Pour ce faire , vous devez ajouter une ligne dans la table 'Habilitation' .
+- Initialiser l'accés . Pour ce faire , ajouter une ligne dans la table 'Habilitation' .
 
 Exemple de requête à faire pour ajouter dans la table Habilitation :
  
