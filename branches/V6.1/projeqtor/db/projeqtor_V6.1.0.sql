@@ -158,33 +158,38 @@ CREATE TABLE `${prefix}deliverableWeight` (
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `value` int(3) unsigned NOT NULL,
-  `sortOrder` int(3) unsigned NOT NULL, 
+  `color` varchar(7) DEFAULT '#FFFFFF',
+  `sortOrder` int(3) DEFAULT 0, 
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `${prefix}deliverableWeight` (`id`, `scope`, `name`, `value`, `sortOrder`, `idle`) VALUES 
-(1, 'Deliverable', 'low', 0, 10, '0'),
-(2, 'Deliverable', 'medium', 0, 20, '0'),
-(3, 'Deliverable', 'high', 1, 30, '0');
+INSERT INTO `${prefix}deliverableWeight` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
+(1, 'Deliverable', 'low', 0, 10, '#d3d3d3', '0'),
+(2, 'Deliverable', 'medium', 0, 20, '#d3d3d3', '0'),
+(3, 'Deliverable', 'high', 1, 30, '#ffc0cb', '0'),
+(4, 'Incoming', 'low', 0, 10, '#d3d3d3', '0'),
+(5, 'Incoming', 'medium', 0, 20, '#d3d3d3', '0'),
+(6, 'Incoming', 'high', 1, 30, '#ffc0cb', '0');
 
 CREATE TABLE `${prefix}deliverableStatus` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `value` int(3) unsigned NOT NULL,
-  `sortOrder` int(3) unsigned NOT NULL, 
+  `value` int(3) DEFAULT 0,
+  `color` varchar(7) DEFAULT '#FFFFFF',
+  `sortOrder` int(3) DEFAULT 0, 
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `${prefix}deliverableStatus` (`id`, `scope`, `name`, `value`, `sortOrder`, `idle`) VALUES 
-(1, 'Deliverable', 'not done', 0, 10, '0'),
-(2, 'Deliverable', 'delivery refused (major reservations)', 1, 20, '0'),
-(3, 'Deliverable', 'accepted with minor reservations', 2, 30, '0'),
-(4, 'Deliverable', 'accepted without reservations', 3, 40, '0'),
-(5, 'Incoming', 'not provided', 0, 10, '0'),
-(6, 'Incoming', 'not conform', 1, 20, '0'),
-(7, 'Incoming', 'accepted with minor reservations', 2, 30, '0'),
-(8, 'Incoming', 'accepted without reservations', 3, 40, '0');
+INSERT INTO `${prefix}deliverableStatus` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
+(1, 'Deliverable', 'not done', 0, 10, '#ff0000', '0'),
+(2, 'Deliverable', 'delivery refused (major reservations)', 1, 20, '#ff8c00', '0'),
+(3, 'Deliverable', 'accepted with minor reservations', 2, 30, '#afeeee', '0'),
+(4, 'Deliverable', 'accepted without reservations', 3, 40, '#7fff00', '0'),
+(5, 'Incoming', 'not provided', 0, 10, '#ff0000', '0'),
+(6, 'Incoming', 'not conform', 1, 20, '#ff8c00', '0'),
+(7, 'Incoming', 'accepted with minor reservations', 2, 30, '#afeeee', '0'),
+(8, 'Incoming', 'accepted without reservations', 3, 40, '#7fff00', '0');
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `code`) VALUES 
 ('Deliverable', 'document', '10',0,'DOC'),
@@ -201,7 +206,9 @@ INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`
 (166,'menuIncomingType', 79, 'object', 936, 'ReadWriteType', 0, 'Type'),
 (167,'menuDeliverable', 6, 'object', 374, 'Project', 0, 'Work Meeting'),
 (168,'menuIncoming', 6, 'object', 372, 'Project', 0, 'Work Meeting'),
-(169,'menuKpiDefinition', 88, 'object', 615, 'ReadWriteEnvironment', 0, 'Automation');
+(169,'menuKpiDefinition', 88, 'object', 615, 'ReadWriteEnvironment', 0, 'Automation'),
+(171,'menuIncomingWeight', 36, 'object', 791, 'ReadWriteList', 0, 'ListOfValues'),
+(172,'menuIncomingStatus', 36, 'object', 793, 'ReadWriteList', 0, 'ListOfValues');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
 (1, 163, 1),
@@ -214,7 +221,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 168, 1),
 (2, 168, 2),
 (3, 168, 3),
-(1, 169, 1);
+(1, 169, 1),
+(1, 171, 1),
+(1, 172, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 167, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=16;

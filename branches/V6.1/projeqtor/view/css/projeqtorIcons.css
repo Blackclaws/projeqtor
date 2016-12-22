@@ -401,9 +401,17 @@
 .iconIncoming22 { background-image: url(images/iconIncoming32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconIncoming16 { background-image: url(images/iconIncoming32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
+.iconIncomingStatus32 { background-image: url(images/iconIncomingStatus32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconIncomingStatus22 { background-image: url(images/iconIncomingStatus32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconIncomingStatus16 { background-image: url(images/iconIncomingStatus32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconIncomingType32 { background-image: url(images/iconIncomingType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconIncomingType22 { background-image: url(images/iconIncomingType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconIncomingType16 { background-image: url(images/iconIncomingType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconIncomingWeight32 { background-image: url(images/iconIncomingWeight32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconIncomingWeight22 { background-image: url(images/iconIncomingWeight32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconIncomingWeight16 { background-image: url(images/iconIncomingWeight32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconIncomes32 { background-image: url(images/iconIncomes32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconIncomes22 { background-image: url(images/iconIncomes32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -445,9 +453,9 @@
 .iconIssueType22 { background-image: url(images/iconIssueType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconIssueType16 { background-image: url(images/iconIssueType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconJoblistDefinition32 { background-image: url(images/iconJoblistDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.iconJoblistDefinition22 { background-image: url(images/iconJoblistDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.iconJoblistDefinition16 { background-image: url(images/iconJoblistDefinition.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconJoblistDefinition32 { background-image: url(images/iconJoblistDefinition32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconJoblistDefinition22 { background-image: url(images/iconJoblistDefinition32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconJoblistDefinition16 { background-image: url(images/iconJoblistDefinition32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconKpiDefinition32 { background-image: url(images/iconKpiDefinition32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconKpiDefinition22 { background-image: url(images/iconKpiDefinition32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

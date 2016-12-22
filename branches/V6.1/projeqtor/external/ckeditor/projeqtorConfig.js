@@ -17,6 +17,7 @@ CKEDITOR.editorConfig = function( config ) {
   //config.enterMode = CKEDITOR.ENTER_BR;
   config.removeDialogTabs = 'link:advanced;image:advanced;image:link';
   config.extraPlugins = 'uploadimage';
+  config.extraPlugins = 'staticspace';
   config.removePlugins='magicline';
   config.uploadUrl = '../tool/uploadImage.php';
   config.imageUploadUrl = '../tool/uploadImage.php';
