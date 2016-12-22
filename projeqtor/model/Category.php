@@ -34,8 +34,8 @@ class Category extends SqlElement {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
   public $name;
-  public $idle;
   public $sortOrder=0;
+  public $idle;
   public $_sec_void;
 
   
@@ -43,8 +43,8 @@ class Category extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="70%">${name}</th>
-    <th field="idle" width="10%" formatter="booleanFormatter">${idle}</th>
     <th field="sortOrder" width="10%">${sortOrderShort}</th>  
+    <th field="idle" width="10%" formatter="booleanFormatter">${idle}</th>
     ';
   
   private static $_fieldsAttributes=array("name"=>"required");

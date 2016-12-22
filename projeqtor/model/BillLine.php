@@ -130,7 +130,7 @@ class BillLine extends SqlElement {
   public function deleteControl() {
   	$result="";    
     $bill = new $this->refType($this->refId);
-    if (property_exists($bill, 'billId') and is_numeric($bill->billId)) {
+    if (property_exists($bill, 'billId') and is_numeric($bill->billId) and $bill->done) {
       $result.='<br/>' . i18n('errorLockedBill');
     }    
   	if (! $result) {  

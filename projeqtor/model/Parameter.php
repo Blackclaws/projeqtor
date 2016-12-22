@@ -434,6 +434,7 @@ class Parameter extends SqlElement {
       	break;
       case 'editor' :
         $list=array('CK'=>i18n('CKEditor'),
+                    'CKInline'=>i18n('CkEditorInline'),
                     'Dojo'=>i18n('DojoEditor'),
                     'DojoInline'=>i18n('DojoEditorInline'),
                     'text'=>i18n('plainTextEditor'));

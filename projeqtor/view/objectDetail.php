@@ -1809,7 +1809,27 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($readOnly) {
             echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
           }
-        } else {
+        }
+        //gautier
+        if (getEditorType()=="CKInline") {
+          //if (isIE() and ! $val) $val='<div></div>';
+          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
+          $ckEditorNumber++;
+          echo '<textarea style="height:300px"'; // Important to set big height to retreive correct scroll position after save
+          echo ' name="'.$col.$extName.'" ';
+          echo ' id="'.$col.$extName.'" ';
+          echo ' class="input '.(($isRequired)?'required':'').'" ';
+          //echo $name.' '.$attributes;
+          echo ' maxlength="' . $dataLength . '"';
+          echo '>';
+          echo htmlspecialchars($val);
+          echo '</textarea>';
+          //echo  str_replace( "\n", '<br/>', $val );
+          echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'" value="'. $col . $extName.'" />';
+          if ($readOnly) {
+            echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
+          }
+        }else {
           $val=str_replace("\n","",$val);
           echo '<textarea style="display:none; visibility:hidden;" ';
           echo ' maxlength="' . $dataLength . '" ';

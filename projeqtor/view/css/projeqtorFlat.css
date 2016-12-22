@@ -757,11 +757,19 @@ body .ProjeQtOrFlatBlue {
 
 .ProjeQtOrFlatBlue .iconIncoming32 { background-image: url(customIcons/blue/iconIncoming.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconIncoming22 { background-image: url(customIcons/blue/iconIncoming.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatBlue .iconIncoming16 { background-image: url(customIcons/blue/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatBlue .iconIncoming16 { background-image: url(customIcons/blue/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatBlue .iconIncomingStatus32 { background-image: url(customIcons/blue/iconIncomingStatus.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconIncomingStatus22 { background-image: url(customIcons/blue/iconIncomingStatus.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconIncomingStatus16 { background-image: url(customIcons/blue/iconIncomingStatus.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatBlue .iconIncomingType32 { background-image: url(customIcons/blue/iconIncomingType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconIncomingType22 { background-image: url(customIcons/blue/iconIncomingType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatBlue .iconIncomingType16 { background-image: url(customIcons/blue/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatBlue .iconIncomingType16 { background-image: url(customIcons/blue/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatBlue .iconIncomingWeight32 { background-image: url(customIcons/blue/iconIncomingWeight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconIncomingWeight22 { background-image: url(customIcons/blue/iconIncomingWeight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconIncomingWeight16 { background-image: url(customIcons/blue/iconIncomingWeight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatBlue .iconIndicatorDefinition32 { background-image: url(customIcons/blue/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconIndicatorDefinition22 { background-image: url(customIcons/blue/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -1887,11 +1895,19 @@ body .ProjeQtOrFlatRed {
 
 .ProjeQtOrFlatRed .iconIncoming32 { background-image: url(customIcons/red/iconIncoming.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconIncoming22 { background-image: url(customIcons/red/iconIncoming.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatRed .iconIncoming16 { background-image: url(customIcons/red/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatRed .iconIncoming16 { background-image: url(customIcons/red/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatRed .iconIncomingStatus32 { background-image: url(customIcons/red/iconIncomingStatus.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconIncomingStatus22 { background-image: url(customIcons/red/iconIncomingStatus.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconIncomingStatus16 { background-image: url(customIcons/red/iconIncomingStatus.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatRed .iconIncomingType32 { background-image: url(customIcons/red/iconIncomingType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconIncomingType22 { background-image: url(customIcons/red/iconIncomingType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatRed .iconIncomingType16 { background-image: url(customIcons/red/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatRed .iconIncomingType16 { background-image: url(customIcons/red/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatRed .iconIncomingWeight32 { background-image: url(customIcons/red/iconIncomingWeight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconIncomingWeight22 { background-image: url(customIcons/red/iconIncomingWeight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconIncomingWeight16 { background-image: url(customIcons/red/iconIncomingWeight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatRed .iconIndicatorDefinition32 { background-image: url(customIcons/red/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconIndicatorDefinition22 { background-image: url(customIcons/red/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3018,11 +3034,19 @@ body .ProjeQtOrFlatGreen {
 
 .ProjeQtOrFlatGreen .iconIncoming32 { background-image: url(customIcons/green/iconIncoming.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconIncoming22 { background-image: url(customIcons/green/iconIncoming.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGreen .iconIncoming16 { background-image: url(customIcons/green/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGreen .iconIncoming16 { background-image: url(customIcons/green/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatGreen .iconIncomingStatus32 { background-image: url(customIcons/green/iconIncomingStatus.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconIncomingStatus22 { background-image: url(customIcons/green/iconIncomingStatus.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconIncomingStatus16 { background-image: url(customIcons/green/iconIncomingStatus.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatGreen .iconIncomingType32 { background-image: url(customIcons/green/iconIncomingType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconIncomingType22 { background-image: url(customIcons/green/iconIncomingType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGreen .iconIncomingType16 { background-image: url(customIcons/green/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGreen .iconIncomingType16 { background-image: url(customIcons/green/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatGreen .iconIncomingWeight32 { background-image: url(customIcons/green/iconIncomingWeight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconIncomingWeight22 { background-image: url(customIcons/green/iconIncomingWeight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconIncomingWeight16 { background-image: url(customIcons/green/iconIncomingWeight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatGreen .iconIndicatorDefinition32 { background-image: url(customIcons/green/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconIndicatorDefinition22 { background-image: url(customIcons/green/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -4145,11 +4169,19 @@ body .ProjeQtOrFlatGrey {
 
 .ProjeQtOrFlatGrey .iconIncoming32 { background-image: url(customIcons/grey/iconIncoming.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconIncoming22 { background-image: url(customIcons/grey/iconIncoming.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGrey .iconIncoming16 { background-image: url(customIcons/grey/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGrey .iconIncoming16 { background-image: url(customIcons/grey/iconIncoming.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatGrey .iconIncomingStatus32 { background-image: url(customIcons/grey/iconIncomingStatus.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconIncomingStatus22 { background-image: url(customIcons/grey/iconIncomingStatus.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconIncomingStatus16 { background-image: url(customIcons/grey/iconIncomingStatus.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatGrey .iconIncomingType32 { background-image: url(customIcons/grey/iconIncomingType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconIncomingType22 { background-image: url(customIcons/grey/iconIncomingType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.ProjeQtOrFlatGrey .iconIncomingType16 { background-image: url(customIcons/grey/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGrey .iconIncomingType16 { background-image: url(customIcons/grey/iconIncomingType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.ProjeQtOrFlatGrey .iconIncomingWeight32 { background-image: url(customIcons/grey/iconIncomingWeight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconIncomingWeight22 { background-image: url(customIcons/grey/iconIncomingWeight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconIncomingWeight16 { background-image: url(customIcons/grey/iconIncomingWeight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatGrey .iconIndicatorDefinition32 { background-image: url(customIcons/grey/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconIndicatorDefinition22 { background-image: url(customIcons/grey/iconIndicatorDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
