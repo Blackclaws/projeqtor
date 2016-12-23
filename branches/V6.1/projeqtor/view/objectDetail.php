@@ -1791,7 +1791,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         // Draw a long text (as a textarea) =================================== TEXTAREA
         // No real need to hide and apply class : long fields will be hidden while hiding row
         //class="generalColClass '.$col.'Class" style="'.$specificStyle.'"
-        if (getEditorType()=="CK") {
+        if (getEditorType()=="CK" || (getEditorType()=="CKInline")) {
           //if (isIE() and ! $val) $val='<div></div>';
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
           $ckEditorNumber++;
@@ -1809,26 +1809,8 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           if ($readOnly) {
             echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
           }
-        }
-        //gautier
-        if (getEditorType()=="CKInline") {
-          //if (isIE() and ! $val) $val='<div></div>';
-          echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
-          $ckEditorNumber++;
-          echo '<textarea style="height:300px"'; // Important to set big height to retreive correct scroll position after save
-          echo ' name="'.$col.$extName.'" ';
-          echo ' id="'.$col.$extName.'" ';
-          echo ' class="input '.(($isRequired)?'required':'').'" ';
-          //echo $name.' '.$attributes;
-          echo ' maxlength="' . $dataLength . '"';
-          echo '>';
-          echo htmlspecialchars($val);
-          echo '</textarea>';
-          //echo  str_replace( "\n", '<br/>', $val );
-          echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'" value="'. $col . $extName.'" />';
-          if ($readOnly) {
-            echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
-          }
+          echo '<input type="hidden" id="ckeditorType" value="'.getEditorType().'" />';
+          
         }else {
           $val=str_replace("\n","",$val);
           echo '<textarea style="display:none; visibility:hidden;" ';
@@ -2893,15 +2875,18 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       echo formatCommentThumb($link->comment);
       
       echo '</td>';
-      if (property_exists($linkObj, 'idStatus')) {
-        $objStatus=new Status($linkObj->idStatus);
-        // $color=$objStatus->color;
-        // $foreColor=getForeColor($color);
-        // echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . htmlEncode($objStatus->color) . '; color:' . $foreColor . ';width: 100%;">' . htmlEncode($objStatus->name) . '</td></tr></table></td>';
-        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+      $idStatus='idStatus';
+      $statusClass='Status';
+      if (! property_exists($linkObj, $idStatus) and property_exists($linkObj, 'id'.get_class($linkObj).'Status')) {
+        $idStatus='id'.get_class($linkObj).'Status';
+        $statusClass=get_class($linkObj).'Status';
       }
-      //echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-      //echo '<td class="dependencyData"  style="width:15%">' . $userName . '</td>';
+      if (property_exists($linkObj, $idStatus)) {
+        $objStatus=new $statusClass($linkObj->$idStatus);
+        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+      } else {
+        echo '<td class="dependencyData"  style="width:15%">&nbsp;</td>';
+      }
       echo '</tr>';
     }
   }

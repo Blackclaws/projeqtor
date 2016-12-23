@@ -119,6 +119,23 @@ INSERT INTO `${prefix}kpiThreshold` (`id`, `name`, `idKpiDefinition`, `threshold
 (12, 'not good', 4, 0, '#f08080'),
 (13, 'good', 4, 0.66, '#98fb98');  
 
+CREATE TABLE `${prefix}kpivalue` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idKpiDefinition` int(12) unsigned DEFAULT NULL,
+  `refType` varchar(100) DEFAULT NULL,
+  `refId` int(12) unsigned DEFAULT NULL,
+  `kpiType` varchar(1) DEFAULT NULL,
+  `kpiDate` date DEFAULT NULL,
+  `day` varchar(8) DEFAULT NULL,
+  `week` varchar(6) DEFAULT NULL,
+  `month` varchar(6) DEFAULT NULL,
+  `year` varchar(4) DEFAULT NULL,
+  `kpiValue` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX `kpivalueKpiDefinition` ON `${prefix}kpivalue` (`idKpiDefinition`);
+CREATE INDEX `kpivalueReference` ON `${prefix}kpivalue` (`refType`, `refId`);
+
 CREATE TABLE `${prefix}kpihistory` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idKpiDefinition` int(12) unsigned DEFAULT NULL,
@@ -138,20 +155,27 @@ CREATE INDEX `kpihistoryReference` ON `${prefix}kpihistory` (`refType`, `refId`)
 
 CREATE TABLE `${prefix}deliverable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT NULL,
   `reference` varchar(100) DEFAULT NULL,
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `idDeliverableType` int(12) unsigned NOT NULL,
-  `idResource` int(12) unsigned NOT NULL ,
+  `idDeliverableType` int(12) unsigned DEFAULT NULL,
+  `creationDateTime` datetime DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `result` mediumtext DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
   `externalReference` varchar(100),
   `plannedDate` date DEFAULT NULL,
   `realDate` date DEFAULT NULL,
-  `idDeliverableWeight` int(12) unsigned NOT NULL,
-  `idDeliverableStatus` int(12) unsigned NOT NULL,
+  `idDeliverableWeight` int(12) unsigned DEFAULT NULL,
+  `idDeliverableStatus` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `deliverableType` ON `${prefix}deliverable` (`idDeliverableType`);
+CREATE INDEX `deliverableStatus` ON `${prefix}deliverable` (`idDeliverableStatus`);
+CREATE INDEX `deliverableProject` ON `${prefix}deliverable` (`idProject`);
 
 CREATE TABLE `${prefix}deliverableWeight` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -251,3 +275,7 @@ INSERT INTO `${prefix}category` (`id`, `name`, `idle`) VALUES
 ALTER TABLE `${prefix}project` ADD COLUMN `idCategory` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}type` ADD COLUMN `idCategory` int(12) unsigned DEFAULT NULL;
+
+INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (21,'Deliverable', 0, 9);
+INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (22,'Incoming', 0, 9);
+UPDATE `${prefix}linkable` set `idDefaultLinkable`=21 WHERE id=9;
