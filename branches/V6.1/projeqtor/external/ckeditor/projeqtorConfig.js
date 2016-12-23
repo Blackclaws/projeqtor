@@ -17,7 +17,6 @@ CKEDITOR.editorConfig = function( config ) {
   //config.enterMode = CKEDITOR.ENTER_BR;
   config.removeDialogTabs = 'link:advanced;image:advanced;image:link';
   config.extraPlugins = 'uploadimage';
-  config.extraPlugins = 'staticspace';
   config.removePlugins='magicline';
   config.uploadUrl = '../tool/uploadImage.php';
   config.imageUploadUrl = '../tool/uploadImage.php';
@@ -25,6 +24,16 @@ CKEDITOR.editorConfig = function( config ) {
   config.magicline_color = '#aaaaaa';
   config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style;';
   config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style';
+  //gautier
+  if (dojo.byId('ckeditorType')){
+    var cktype=dojo.byId('ckeditorType').value;
+    if (cktype != 'CK') {
+      config.extraPlugins += ',staticspace';
+      config.staticSpacePriority=1;
+      config.removePlugins += ',elementspath';
+      config.resize_enabled = false;
+    }
+  }
   //config.pasteFromWordRemoveStyles = false; // Removed in 4.6.0
   //config.pasteFromWordRemoveFontStyles = false; // Deprecated in 4.6.0, defaults to false
   config.scayt_sLang = getLocalLocation();
