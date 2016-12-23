@@ -55,27 +55,29 @@ if (array_key_exists('periodType',$_REQUEST)) {
 	$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
     //$periodValue=$_REQUEST['periodValue'];
 }
-//On construit la clause where 
+// We build the Where clause
+$term = new Term();
+$termAlias = $term->getDatabaseTableName();
 $where = '1=1';
-if ($idProject) $where .= ' AND term.idProject = '.$idProject;
+if ($idProject)
+$where .= " AND ".$termAlias . ".idProject = " . $idProject;
 if ($periodType) {
-    $start=date('Y-m-d');
-    $end=date('Y-m-d');
-    if ($periodType=='year') {
-        $start=$paramYear . '-01-01';
-        $end=$paramYear . '-12-31';
-    } else if ($periodType=='month') {
-        $start=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-01';
-        $end=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-' . date('t',mktime(0,0,0,$paramMonth,1,$paramYear));  
-    } if ($periodType=='week') {
-        $start=date('Y-m-d', firstDayofWeek($paramWeek, $paramYear));
-        $end=addDaysToDate($start,6);
-    }
-  $where.=" AND (  term.date >= '" . $start . "'";
-  $where.="        and term.date <='" . $end . "' )";
+	$start = date('Y-m-d');
+	$end = date('Y-m-d');
+	if ($periodType == 'year') {
+		$start = $paramYear . '-01-01';
+		$end = $paramYear . '-12-31';
+	} else if ($periodType == 'month') {
+		$start = $paramYear . '-' . (($paramMonth < 10) ? '0' : '') . $paramMonth . '-01';
+		$end = $paramYear . '-' . (($paramMonth < 10) ? '0' : '') . $paramMonth . '-' . date('t', mktime(0, 0, 0, $paramMonth, 1, $paramYear));
+	} if ($periodType == 'week') {
+		$start=date('Y-m-d', firstDayofWeek($paramWeek, $paramYear));
+  	$end=addDaysToDate($start,6);
+	}
+	$where.=" AND ( ".$termAlias . ".date >= '" . $start . "'";
+	$where.=" and ". $termAlias . ".date <='" . $end . "' )";
 }
 
-$term = new Term();
 $termList = $term->getSqlElementsFromCriteria(null,false, $where);
 
 //En-tete du tableau

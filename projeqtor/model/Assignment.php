@@ -119,6 +119,9 @@ class Assignment extends SqlElement {
    */
   public function save() {
     
+    if ($this->billedWork==null){
+      $this->billedWork=0;
+    }
   	$creation=($this->id)?false:true;
   	
     if (! $this->realWork) { $this->realWork=0; }

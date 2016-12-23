@@ -4452,7 +4452,8 @@ abstract class SqlElement {
 	  return ($col=='idProject' or $col=='idStatus' or $col=='idQuality' or $col=='idHealth' or $col=='idTrend'
 				or $col=='idLikelihood' or $col=='idCriticality' or $col=='idSeverity' or $col=='idUrgency' or $col=='idPriority'
 				or $col=='idRiskLevel' or $col=='idFeasibility' or $col=='idEfficiency' or $col=='idResolution'
-				or $col=='idTenderStatus')?true:false;
+				or $col=='idTenderStatus' or $col=='idDeliverableWeight' or $col=='idDeliverableStatus'
+				or $col=='idIncomingWeight' or $col=='idIncomingStatus')?true:false;
 	}
 	public static function isIconableField($col) {
 	  return ($col=='idQuality' or $col=='idHealth' or $col=='idTrend')?true:false;
