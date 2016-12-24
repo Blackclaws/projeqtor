@@ -28,6 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php"; 
+    ob_clean(); // Important : clean possible extra char before returning data;
     scriptLog('   ->/tool/getSingleData.php');
     $type=$_REQUEST['dataType']; // checked against constant values
     if ($type=='resourceCost') {

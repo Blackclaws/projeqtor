@@ -31,6 +31,7 @@ $targetDirImageUpload='../files/images/';
 // Example
 if ( is_session_started() === FALSE ) {
   session_start ();
+  //ob_clean(); // It seems that sometimes session_start adds unexpected linebreak that can start to full the output buffer
 } else {
   echo "ProjeQtOr is not compatible with session auto start.<br/>";
   echo "session.auto_start must be disabled (set to Off or 0). <br/>";
@@ -42,8 +43,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V6.0.4"; // Version of application : Major / Minor / Release
-$build = "0155"; // Build number. To be increased on each release
+$version = "V6.0.5"; // Version of application : Major / Minor / Release
+$build = "0156"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
