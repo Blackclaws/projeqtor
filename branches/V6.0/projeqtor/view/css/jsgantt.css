@@ -505,3 +505,10 @@ div .scrollRightTop {
 	z-index:60000;
 	display:none;
 }
+
+.nobr {
+    white-space: nowrap;
+}
+tr {
+  height: 10px !important;
+}
