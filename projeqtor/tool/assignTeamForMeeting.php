@@ -50,6 +50,11 @@ $crit = array('idProject'=> $meet->idProject);
 $aff = new Affectation();
 $list=$aff->getSqlElementsFromCriteria($crit);
 
+$canUpdate=securityGetAccessRightYesNo('menuMeeting', 'update', $meet) == "YES";
+if (!$canUpdate) {
+  $list=array(); // Empty list for reader only (no update right)
+}
+
 $hoursPerDay=Parameter::getGlobalParameter('dayTime');
 $hourMeeting = ($meet->meetingEndTime)-($meet->meetingStartTime);
 

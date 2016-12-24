@@ -30,7 +30,8 @@ global $targetDirImageUpload;
 $targetDirImageUpload='../files/images/';
 // Example
 if ( is_session_started() === FALSE ) {
-  session_start ();
+  session_start();
+  //ob_clean(); // It seems that sometimes session_start adds unexpected linebreak that can start to full the output buffer
 } else {
   echo "ProjeQtOr is not compatible with session auto start.<br/>";
   echo "session.auto_start must be disabled (set to Off or 0). <br/>";
@@ -205,7 +206,6 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
       exit ();
     }
   }
-
   if (isset ( $user )) {
     if ($user->isLdap == 0) {
       if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
@@ -437,8 +437,6 @@ function exceptionHandler($exception) {
       errorLog ( "   => #" . $indTrc . " " . $trc ['file'] . " (" . $trc ['line'] . ")" . " -> " . $trc ['function'] . "()" );
     }
   }
-  // echo "<span class='messageERROR'>" . i18n("messageError") . " : " . $exception->getMessage() . "</span> ";
-  // echo "(" . i18n("contactAdministrator") . ")";
   if ($logLevel >= 3) {
     throwError ( $exception->getMessage () );
   } else {
@@ -468,8 +466,6 @@ function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
     errorLog ( "on file '" . $errorFile . "' at line (" . $errorLine . ")" );
     errorLog ( "cause = " . $errorMessage );
   }
-  // echo "<span class='messageERROR'>" . i18n("messageError") . " : " . $exception->getMessage() . "</span> ";
-  // echo "(" . i18n("contactAdministrator") . ")";
   if ($globalCatchErrors) {
     return true;
   }
@@ -2865,4 +2861,3 @@ function formatBigButton($class) {
   $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
   return $result;
 }
-?>
