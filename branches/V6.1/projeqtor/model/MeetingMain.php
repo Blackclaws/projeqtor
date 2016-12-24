@@ -279,8 +279,9 @@ class MeetingMain extends SqlElement {
   public function drawSpecificItem($item){
     global $print;
     $result="";
+    $canUpdate=securityGetAccessRightYesNo('menuMeeting', 'update', $this) == "YES";
     if ($item=='buttonSendMail') {
-      if ($print) {
+      if ($print or !$canUpdate) {
         return "";
       }
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
@@ -297,7 +298,7 @@ class MeetingMain extends SqlElement {
     }
     // Gautier ticket #2096
     if ($item=='buttonAssignTeam') {
-      if ($print) {
+      if ($print or !$canUpdate) {
         return "";
       }
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';

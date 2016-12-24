@@ -58,6 +58,7 @@ class Type extends SqlElement {
   public $_lib_statusMustChangeCancelled;
   public $showInFlash;
   public $internalData;
+  public $scope;
   
   public static $_cacheClassList=array();
   public static $_cacheRestrictedTypesClass;
@@ -85,7 +86,8 @@ class Type extends SqlElement {
                                           "lockIdle"=>"nobr",
                                           "lockCancelled"=>"nobr",
   										                    "internalData"=>"hidden",
-                                          "showInFlash"=>"hidden");
+                                          "showInFlash"=>"hidden",
+                                          "scope"=>"hidden");
   
   private static $_databaseTableName = 'type';
   private static $_databaseCriteria = array();

@@ -1198,4 +1198,3 @@ function htmlTransformRichtextToPlaintext($string) {
   $string=strip_tags(html_entity_decode($string));
   return $string;
 }
-?>

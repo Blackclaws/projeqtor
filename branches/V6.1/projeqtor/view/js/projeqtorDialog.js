@@ -1972,18 +1972,19 @@ function removeAssignment(assignmentId, realWork, resource) {
 }
 
 function assignmentChangeResource() {
+  console.log("assignmentChangeResource");
   if (editAssignmentLoading)
     return;
   var idResource=dijit.byId("assignmentIdResource").get("value");
-  if (!idResource)
-    return;
-  dijit.byId('assignmentDailyCost').reset();
+  console.log("  idResource="+idResource);
+  if (!idResource) {return;}
+  if (dijit.byId('assignmentDailyCost')) {dijit.byId('assignmentDailyCost').reset();}
   dojo.xhrGet({
-    url : '../tool/getSingleData.php?dataType=resourceRole&idResource='
-        + idResource,
+    url : '../tool/getSingleData.php?dataType=resourceRole&idResource='+idResource,
     handleAs : "text",
     load : function(data) {
-      dijit.byId('assignmentIdRole').set('value', data);
+      console.log("data='"+data+"'");
+      dijit.byId('assignmentIdRole').set('value', parseInt(data));
     }
   });
 }

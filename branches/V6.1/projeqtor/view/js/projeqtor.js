@@ -1223,7 +1223,7 @@ function finalizeMessageDisplay(destination, validationType) {
           dojo.byId("buttonDivObjectId").innerHTML = "&nbsp;#"
               + lastSaveId.value;
           //gautier
-          if(dojo.byId("buttonDivObjectName")){
+          if(dojo.byId("buttonDivObjectName") && dijit.byId('name')){
               if(dijit.byId('name').get("value")){
                 dojo.byId("buttonDivObjectName").innerHTML=" - "+dijit.byId('name').get("value");
             }
