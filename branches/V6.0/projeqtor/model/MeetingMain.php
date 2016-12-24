@@ -142,8 +142,8 @@ class MeetingMain extends SqlElement {
       self::$_fieldsAttributes['isPeriodic']='readonly';
       self::$_fieldsAttributes['periodicOccurence']='display';
     } else {
-    	self::$_fieldsAttributes['isPeriodic']="readonly";
-    	unset($this->isPeriodic);
+    	self::$_fieldsAttributes['isPeriodic']="hidden";
+    	//unset($this->isPeriodic);
     }  	
     /*if (! $this->id) {
       unset($this->_sec_progress);
@@ -279,8 +279,9 @@ class MeetingMain extends SqlElement {
   public function drawSpecificItem($item){
     global $print;
     $result="";
+    $canUpdate=securityGetAccessRightYesNo('menuMeeting', 'update', $this) == "YES";
     if ($item=='buttonSendMail') {
-      if ($print) {
+      if ($print or !$canUpdate) {
         return "";
       }
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
@@ -297,7 +298,7 @@ class MeetingMain extends SqlElement {
     }
     // Gautier ticket #2096
     if ($item=='buttonAssignTeam') {
-      if ($print) {
+      if ($print or !$canUpdate) {
         return "";
       }
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';

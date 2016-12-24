@@ -364,3 +364,6 @@ label, .label {
 .tabLabel {
 	border:0;
 }
+div .scrollLeftTop {
+  height:43px !important;
+}

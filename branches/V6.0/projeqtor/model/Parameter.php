@@ -948,7 +948,7 @@ class Parameter extends SqlElement {
    *  else : write param to file 
    */
   static public function regenerateParamFile($echoResult=false) {
-  	global $parametersLocation, $currVersion;
+  	global $parametersLocation, $currVersion, $maintenanceDisableEnforceUTF8;
   	// Security : copy file (except for first installation
   	if (!isset($currVersion) or $currVersion!='V0.0.0') {
   	  copy($parametersLocation, $parametersLocation.'.'.date('YmdHis'));
@@ -1002,17 +1002,15 @@ class Parameter extends SqlElement {
         $result="moved to database";
         $resultHtml="<span style=\"color:red\">$result</span>";   
         $cptVarDb+=1;     
-      } else if ($paramCode=='$enforceUTF8' and $paramValue) {
-        global $maintenanceDisableEnforceUTF8;
-        if (isset($maintenanceDisableEnforceUTF8) and $maintenanceDisableEnforceUTF8) {
-          fwrite($fileHandler,$paramCode."='0';".$nl);
-          $msg="For compatibility reason, \$enforceUTF8 parameter has been set to '0' in your parameters.php file<br/>";
-          $msg.="Check your data through ProjeQtOr : if non ASCCII characters (like accentuated characters) are not displayed correctly, revert to \$enforceUTF8='1';";
-          echo "<div class='messageWARNING'><i>" . $msg . "</i></div><br/>"; 
-        }
+      } else if ($paramCode=='$enforceUTF8' and $paramValue and isset($maintenanceDisableEnforceUTF8) and $maintenanceDisableEnforceUTF8) {
+        $result="enforceUTF8 set to 0";
+        fwrite($fileHandler,$paramCode."='0';".$nl);
+        $msg="For compatibility reason, \$enforceUTF8 parameter has been set to '0' in your parameters.php file<br/>";
+        $msg.="Check your data through ProjeQtOr : if non ASCCII characters (like accentuated characters) are not displayed correctly, revert to \$enforceUTF8='1';";
+        echo "<div class='messageWARNING'><i>" . $msg . "</i></div><br/>"; 
       } else {
       	fwrite($fileHandler,$paramCode.'='.$paramValue.';'.$nl);
-      	$result="kept in parameter file";
+      	$result="$paramCode kept in parameter file";
         $resultHtml="<span style=\"color:green\">$result</span>";
         $cptVarFile+=1;           
       }
