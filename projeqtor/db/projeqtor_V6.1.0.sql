@@ -116,8 +116,8 @@ INSERT INTO `${prefix}kpiThreshold` (`id`, `name`, `idKpiDefinition`, `threshold
 (9, 'not sufficient', 3, 0.7, '#f08080'),
 (10, 'not good', 4, 0, '#f08080'),
 (11, 'good', 4, 0.66, '#98fb98'),
-(12, 'not good', 4, 0, '#f08080'),
-(13, 'good', 4, 0.66, '#98fb98');  
+(12, 'not good', 5, 0, '#f08080'),
+(13, 'good', 5, 0.66, '#98fb98');  
 
 CREATE TABLE `${prefix}kpivalue` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -261,13 +261,10 @@ CREATE TABLE `${prefix}category` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (170,'menuCategory', 36, 'object', 791, 'ReadWriteType', 0, ' ListOfValues');
-
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
 (1,170,1);
-
 INSERT INTO `${prefix}category` (`id`, `name`, `idle`) VALUES 
 (1, 'Build', 0),
 (2, 'Run', 0);
