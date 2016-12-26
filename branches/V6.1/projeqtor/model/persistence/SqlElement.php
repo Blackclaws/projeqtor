@@ -1604,7 +1604,6 @@ abstract class SqlElement {
 		}
 		if (property_exists($newObj,"paymentDate")) {
 		  $newObj->paymentDate=null;
-		  debugLog($newObj);
 		}
 		if (property_exists($newObj,"creationDate")) {
 			$newObj->creationDate=date('Y-m-d');
