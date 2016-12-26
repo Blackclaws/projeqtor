@@ -384,7 +384,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
  * @return void
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
+  scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
    $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
