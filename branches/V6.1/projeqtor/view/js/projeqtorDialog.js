@@ -4657,7 +4657,7 @@ function listClick() {
   setTimeout("hideList(null,true);", 1);
 }
 
-function debugLogHistory(msg) {
+function consoleLogHistory(msg) {
   console.log ('====='+msg+'==== ('+historyTable.length+')');
   if (historyTable.length==0) {
     console.log(msg+' => Empty');
@@ -4669,7 +4669,7 @@ function debugLogHistory(msg) {
 }
 
 function stockHistory(curClass, curId, currentScreen) {
-  //debugLogHistory("before");
+  //consoleLogHistory("before");
   if (!currentScreen) {
     currentScreen="object";
     if (dojo.byId("objectClassManual")){
@@ -4692,7 +4692,7 @@ function stockHistory(curClass, curId, currentScreen) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
-  debugLogHistory("after");
+  consoleLogHistory("after");
 }
 
 
@@ -7484,4 +7484,56 @@ function saveJobInfo() {
     saveObject();
     dijit.byId('dialogJobInfo').hide();
   }
+}
+
+//=============================================================================
+//= KpiThreshold
+//=============================================================================
+
+/**
+* Display a add Kpi Threshold Box
+*
+*/
+function addKpiThreshold(idKpiDefinition) {
+  var params="&mode=add&idKpiDefinition=" + idKpiDefinition;
+  loadDialog('dialogKpiThreshold', null, true, params);
+}
+
+/**
+* Display a edit Kpi Threshold Box
+*
+*/
+function editKpiThreshold(idKpiThreshold) {
+  var params="&mode=edit&idKpiThreshold=" + idKpiThreshold;
+  loadDialog('dialogKpiThreshold', null, true, params);
+}
+
+/**
+* save a Kpi Threshold (after add or edit)
+*
+*/
+function saveKpiThreshold() {
+  if (!dijit.byId("kpiThresholdName").get('value')) {
+    showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
+    return false;
+  }
+  if (! dijit.byId("kpiThresholdValue").get('value') && dijit.byId("kpiThresholdValue").get('value')!='0') {
+    showAlert(i18n('messageMandatory', new Array(i18n('colValue'))));
+    return false;
+  }
+  loadContent("../tool/saveKpiThreshold.php", "resultDiv","dialogKpiThresholdForm", true,'kpiThreshold');
+  dijit.byId('dialogKpiThreshold').hide();
+}
+
+/**
+* Display a delete line Box
+*
+*/
+function removeKpiThreshold(idKpiThreshold) {
+  var params="?kpiThresholdId=" + idKpiThreshold;
+  actionOK=function() {
+    loadContent("../tool/removeKpiThreshold.php" + params, "resultDiv", null, true,'kpiThreshold');
+  };
+  msg=i18n('confirmDelete', new Array(i18n('KpiThreshold'), idKpiThreshold));
+  showConfirm(msg, actionOK);
 }

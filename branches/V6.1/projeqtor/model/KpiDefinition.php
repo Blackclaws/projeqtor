@@ -38,6 +38,8 @@ class KpiDefinition extends SqlElement {
   public $idle;
   public $_sec_thresholds;
   public $_spe_thresholds;
+  public $_noDelete=true;
+  public $_noCreate=true;
   
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>

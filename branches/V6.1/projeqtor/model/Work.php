@@ -83,11 +83,9 @@ class Work extends GeneralWork {
     $result="";
     $crit=array('periodValue'=>$this->week,
                 'idResource'=>$this->idResource);
-    debugLog($crit);
     $obj=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
     if ($obj->validated=='1' or $obj->submitted=='1') {
       $result.='<br/>' . i18n('errorWeekValidated');
-      debugLog($result);
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
