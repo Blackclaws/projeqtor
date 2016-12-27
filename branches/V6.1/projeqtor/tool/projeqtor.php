@@ -31,7 +31,6 @@ $targetDirImageUpload='../files/images/';
 // Example
 if ( is_session_started() === FALSE ) {
   session_start();
-  //ob_clean(); // It seems that sometimes session_start adds unexpected linebreak that can start to full the output buffer
 } else {
   echo "ProjeQtOr is not compatible with session auto start.<br/>";
   echo "session.auto_start must be disabled (set to Off or 0). <br/>";
