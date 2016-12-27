@@ -179,7 +179,9 @@ $table=array();
 $specific="imputation";
 ob_start();
 include("../tool/drawResourceListForSpecificAccess.php");
-ob_clean();
+if (ob_get_length()){
+  ob_clean();  // Important : clean possible extra char before returning data;
+}
 $allowedResource=$table;
 if ($selectTeam) {
   $team=new Team($selectTeam,true);

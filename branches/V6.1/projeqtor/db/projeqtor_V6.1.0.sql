@@ -276,3 +276,5 @@ ALTER TABLE `${prefix}type` ADD COLUMN `idCategory` int(12) unsigned DEFAULT NUL
 INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (21,'Deliverable', 0, 9);
 INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (22,'Incoming', 0, 9);
 UPDATE `${prefix}linkable` set `idDefaultLinkable`=21 WHERE id=9;
+
+DELETE FROM `${prefix}type` where scope='Invoice';

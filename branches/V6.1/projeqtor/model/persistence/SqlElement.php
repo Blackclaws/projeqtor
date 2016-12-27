@@ -366,7 +366,7 @@ abstract class SqlElement {
                                   "DocumentType"=>"controlStrict",
                                   //"ExpenseDetailType"=>"controlStrict",
                                   "IndividualExpenseType"=>"controlStrict",
-                                  "InvoiceType"=>"controlStrict",
+                                  //"InvoiceType"=>"controlStrict",
                                   "IssueType"=>"controlStrict",
                                   "TicketType"=>"controlStrict", 
                                   "MeetingType"=>"controlStrict",
