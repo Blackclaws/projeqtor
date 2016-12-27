@@ -48,6 +48,9 @@ class KpiDefinition extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
     
+    private static $_fieldsAttributes=array(
+        "code"=>"readonly"
+    );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -75,6 +78,15 @@ class KpiDefinition extends SqlElement {
    */
   protected function getStaticLayout() {
     return self::$_layout;
+  }
+  
+
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
   }
   
   /** =========================================================================
