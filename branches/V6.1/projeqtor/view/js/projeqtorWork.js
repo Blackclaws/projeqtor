@@ -466,7 +466,7 @@ function saveImputation() {
   if(futureInputBlocking){
     nbDays=dojo.byId('nbFutureDaysBlocking').value;
     showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDays)));
-  }else if (futureInput) {
+  } else if (futureInput) {
     valid=function() {
       formChangeInProgress=false; 
       submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
