@@ -4017,7 +4017,7 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<th class="noteHeader" style="width:5%">'; // changer le header
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png"' . ' onClick="addJobDefinition(' . $obj->id . ');"' . ' title="' . i18n('addLine') . '" class="roundedButtonSmall"/> ';
+      echo '<a onClick="addJobDefinition(' . $obj->id . ');"' . ' title="' . i18n('addLine') . '" class="roundedButtonSmall">'.formatSmallButton('Add').'</a>';
     }
     echo '</th>';
   }
@@ -4032,8 +4032,8 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
     if (!$print) {
       echo '<td class="noteData" style="text-align:center;">';
       if ($canUpdate) {
-        echo ' <img src="css/images/smallButtonEdit.png"' . ' onClick="editJobDefinition(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n('editLine') . '" class="roundedButtonSmall"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeJobDefinition(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="roundedButtonSmall"/> ';
+        echo ' <a onClick="editJobDefinition(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n('editLine') . '" class="roundedButtonSmall">'.formatSmallButton('Edit').'</a>';
+        echo ' <a onClick="removeJobDefinition(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="roundedButtonSmall"> '.formatSmallButton('Remove').'</a>';
       }
       echo '</td>';
     }
@@ -4042,7 +4042,7 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
     echo "<table><tr><td>".htmlDisplayCheckbox(0) . "&nbsp;</td><td valign='top'>" . htmlEncode($line->name) . "</td></tr></table>";
     echo '</td>';
     echo '<td class="noteData">';
-    echo $line->daysBeforeWarning . ' d';
+    echo $line->daysBeforeWarning . ' '.i18n('shortDay');
     echo '</td>';
     echo '</tr>';
   }
@@ -4060,7 +4060,7 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
 
 function drawJoblistFromObject($obj) {
   global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
-  if (!$obj or !$obj->id) return; // Don't try and display joblist for non existant objects
+  if (!$obj or !$obj->id) return; // Don't try and display joblist for non existing objects
   $crit="nameChecklistable='".get_class($obj)."'";
   $type='id'.get_class($obj).'Type';
   if (property_exists($obj,$type) ) {
@@ -4072,7 +4072,7 @@ function drawJoblistFromObject($obj) {
   }
   $cd=new JoblistDefinition();
   $cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
-  if (count($cdList)==0) return; // Don't display joblist if non definition exist for it
+  if (count($cdList)==0) return; // Don't display joblist if no definition exists for it
   $user=getSessionUser();
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'joblist'));
   $list=new ListYesNo($habil->rightAccess);

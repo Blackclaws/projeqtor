@@ -198,6 +198,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   	  $org=new Organization($old->idOrganization,false);
   	  $org->updateSynthesis();
   	}
+  	KpiValue::calculateKpi($this);
   	
   	return $result;
   }
