@@ -7,6 +7,8 @@
 
 ALTER TABLE `${prefix}assignment` ADD `isNotImputable` int(1) unsigned default '0';
 
+UPDATE `${prefix}menu` SET name='menuIncomes' WHERE name='menuIncomings';
+
 -- ===================================
 -- PAPJUL ADDITION FOR REPORTS (START)
 
@@ -15,8 +17,7 @@ ALTER TABLE `${prefix}reportparameter` ADD COLUMN `multiple` int(1) unsigned DEF
 ALTER TABLE `${prefix}report` ADD COLUMN `hasCsv` int(1) unsigned DEFAULT '0';
 
 UPDATE `${prefix}report` SET hasCsv = 1 WHERE `id` = 49;
-
-UPDATE `${prefix}menu` SET name='menuIncomes' WHERE name='menuIncomings';
+UPDATE `${prefix}report` SET hasCsv = 1 WHERE `id` = 7;
 
 -- PAPJUL ADDITION FOR REPORTS (END)
 -- =================================

@@ -41,6 +41,8 @@ class KpiDefinition extends SqlElement {
   public $_noDelete=true;
   public $_noCreate=true;
   
+  public static $_kpiDefinitionList=null;
+  
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="50%" >${name}</th>
@@ -108,6 +110,24 @@ class KpiDefinition extends SqlElement {
       
       return $result;
     } 
+  }
+  
+  public static function getKpiDefinitionList() {
+    if (self::$_kpiDefinitionList) {
+      return self::$_kpiDefinitionList;
+    } 
+    $sessionList=getSessionValue('kpiDefinitionList',null,true);
+    if ($sessionList) {
+      self::$_kpiDefinitionList=$sessionList;
+      return self::$_kpiDefinitionList;
+    }
+    $list=(new KpiDefinition())->getSqlElementsFromCriteria(array('idle'=>'0'));
+    self::$_kpiDefinitionList=array();
+    foreach ($list as $kd) {
+      self::$_kpiDefinitionList[$kd->code]=$kd;
+    }
+    setSessionValue('kpiDefinitionList', self::$_kpiDefinitionList);
+    return self::$_kpiDefinitionList;
   }
   
 }

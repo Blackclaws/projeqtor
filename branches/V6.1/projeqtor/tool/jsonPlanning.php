@@ -404,7 +404,8 @@
   }
 
   function displayGantt($result) {
-  	global $displayResource, $outMode, $showMilestone, $portfolio;
+  	global $displayResource, $outMode, $showMilestone, $portfolio,  $columnsDescription;
+  	$csvSep=Parameter::getGlobalParameter('csvSeparator');
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
@@ -509,6 +510,14 @@
             $status = new Status($project->idStatus);
             $line['status'] = $status->name;
             $line['statuscolor'] = $status->color;
+        } else if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
+          $ref=$line['reftype'];
+          $type='id'.$ref.'Type';
+          $item=new $ref($line['refid'],true);
+          $status = new Status($item->idStatus);
+          $line['status'] = $status->name;
+          $line['statuscolor'] = $status->color;
+          $line["type"]=SqlList::getNameFromId('Type',$item->$type);
         }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
@@ -661,30 +670,30 @@
       echo '</TR>';
 	  } else {
         echo chr(239) . chr(187) . chr(191); // Needed by Microsoft Excel to make it CSV
-        echo i18n('colId') . ';' . i18n('colTask') . ';';
+        echo i18n('colId') . $csvSep . i18n('colTask') . $csvSep;
         foreach ($sortArray as $col) {
-          if ($col=='Color') echo i18n('colColor') . ';' ;
-          if ($col=='Type') echo i18n('colType') . ';' ;
-          if ($col=='Status') echo i18n('colIdStatus') . ';' ;
-          if ($col=='StatusColor') echo i18n('colStatusColor') . ';' ;
-          if ($col=='ValidatedWork') echo i18n('colValidated') . ';' ;
-          if ($col=='AssignedWork') echo i18n('colAssigned') . ';' ;
-          if ($col=='RealWork') echo i18n('colReal') . ';' ;
-          if ($col=='LeftWork') echo i18n('colLeft') . ';' ;
-          if ($col=='PlannedWork') echo i18n('colReassessed') . ';' ;
-          if ($col=='Duration') echo i18n('colDuration') . ';' ;
-          if ($col=='Progress') echo i18n('colPct') . ';' ;
+          if ($col=='Color') echo i18n('colColor') . $csvSep ;
+          if ($col=='Type') echo i18n('colType') . $csvSep ;
+          if ($col=='Status' and $columnsDescription['IdStatus']['show']==1) echo i18n('colIdStatus') . $csvSep ;
+          if ($col=='StatusColor' and $columnsDescription['IdStatus']['show']==1) echo i18n('colStatusColor') . $csvSep ;
+          if ($col=='ValidatedWork') echo i18n('colValidated') . $csvSep ;
+          if ($col=='AssignedWork') echo i18n('colAssigned') . $csvSep ;
+          if ($col=='RealWork') echo i18n('colReal') . $csvSep ;
+          if ($col=='LeftWork') echo i18n('colLeft') . $csvSep ;
+          if ($col=='PlannedWork') echo i18n('colReassessed') . $csvSep ;
+          if ($col=='Duration') echo i18n('colDuration') . $csvSep ;
+          if ($col=='Progress') echo i18n('colPct') . $csvSep ;
           if ($col=='StartDate') {
-            echo i18n('colValidatedStartDate') . ';' ;
-            echo i18n('colPlannedStartDate') . ';' ;
+            echo i18n('colValidatedStartDate') . $csvSep ;
+            echo i18n('colPlannedStartDate') . $csvSep ;
           }
           if ($col=='EndDate') {
-            echo i18n('colValidatedEndDate') . ';' ;
-            echo i18n('colPlannedEndDate') . ';' ;
+            echo i18n('colValidatedEndDate') . $csvSep ;
+            echo i18n('colPlannedEndDate') . $csvSep ;
           }
-          if ($col=='Resource') echo i18n('colResource') . ';' ;
-          if ($col=='Priority') echo i18n('colPriorityShort') . ';' ;
-          if ($col=='IdPlanningMode') echo i18n('colIdPlanningMode') . ';' ;
+          if ($col=='Resource') echo i18n('colResource') . $csvSep ;
+          if ($col=='Priority') echo i18n('colPriorityShort') . $csvSep ;
+          if ($col=='IdPlanningMode') echo i18n('colIdPlanningMode') . $csvSep ;
         }
         echo "\n";
       }
@@ -881,30 +890,30 @@
         }
         echo '</TR>';
       } else {
-          echo $line['refid'] . ';' . html_entity_decode(strip_tags($tab), ENT_COMPAT, 'UTF-8') . html_entity_decode($pName) . ';';
+          echo $line['refid'] . $csvSep . html_entity_decode(strip_tags($tab), ENT_COMPAT, 'UTF-8') . html_entity_decode($pName) . $csvSep;
           foreach ($sortArray as $col) {
-            if ($col=='Color') echo $line["color"]  . ';';
-            if ($col=='Type') echo $line["type"]  . ';';
-            if ($col=='Status') echo $line["status"]  . ';';
-            if ($col=='StatusColor') echo $line["statuscolor"]  . ';';
-            if ($col=='ValidatedWork') echo $line["validatedwork"]  . ';';
-            if ($col=='AssignedWork') echo $line["assignedwork"]  . ';';
-            if ($col=='RealWork') echo $line["realwork"]  . ';';
-            if ($col=='LeftWork') echo $line["leftwork"]  . ';';
-            if ($col=='PlannedWork') echo $line["plannedwork"]  . ';';
-            if ($col=='Duration') echo (($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd))  . ';';
-            if ($col=='Progress') echo $progress . ';';
+            if ($col=='Color') echo ((isset($line["color"]))?$line["color"]:'') . $csvSep;
+            if ($col=='Type') echo $line["type"]  . $csvSep;
+            if ($col=='Status' and $columnsDescription['IdStatus']['show']==1) echo $line["status"]  . $csvSep;
+            if ($col=='StatusColor' and $columnsDescription['IdStatus']['show']==1) echo $line["statuscolor"]  . $csvSep;
+            if ($col=='ValidatedWork') echo $line["validatedwork"]  . $csvSep;
+            if ($col=='AssignedWork') echo $line["assignedwork"]  . $csvSep;
+            if ($col=='RealWork') echo $line["realwork"]  . $csvSep;
+            if ($col=='LeftWork') echo $line["leftwork"]  . $csvSep;
+            if ($col=='PlannedWork') echo $line["plannedwork"]  . $csvSep;
+            if ($col=='Duration') echo (($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd))  . $csvSep;
+            if ($col=='Progress') echo $progress . $csvSep;
             if ($col=='StartDate') {
-              echo (($line['validatedstartdate'])?$line['validatedstartdate']:'-') . ';';
-              echo (($pStart)?$pStart:'-') . ';';
+              echo (($line['validatedstartdate'])?$line['validatedstartdate']:'-') . $csvSep;
+              echo (($pStart)?$pStart:'-') . $csvSep;
             }
             if ($col=='EndDate') {
-              echo (($line['validatedenddate'])?$line['validatedenddate']:'-') . ';';
-              echo (($pEnd)?$pEnd:'-') . ';';
+              echo (($line['validatedenddate'])?$line['validatedenddate']:'-') . $csvSep;
+              echo (($pEnd)?$pEnd:'-') . $csvSep;
             }
-            if ($col=='Resource') echo $line["resource"]  . ';';
-            if ($col=='Priority') echo $line["priority"]  . ';';
-            if ($col=='IdPlanningMode') echo SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . ';';
+            if ($col=='Resource') echo $line["resource"]  . $csvSep;
+            if ($col=='Priority') echo $line["priority"]  . $csvSep;
+            if ($col=='IdPlanningMode') echo SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . $csvSep;
           }
           echo "\n";
 		}

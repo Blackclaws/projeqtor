@@ -65,11 +65,11 @@ if ($outMode == 'csv') {
 
 // All activities
 $where = getAccesRestrictionClause('Activity', false);
-if ($paramActivity != '') {
+if (trim($paramActivity) != '') {
     $where .= " and idActivity = " . $paramActivity;
-} elseif ($paramProject != '') {
+} else if (trim($paramProject) != '') {
     $where .= " and idProject = " . $paramProject;
-    $where .= " and idActivity IS NOT NULL";
+    //$where .= " and idActivity IS NOT NULL";
 }
 
 $lstActivity = (new Activity())->getSqlElementsFromCriteria(null, false, $where, null);
