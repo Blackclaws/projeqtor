@@ -580,7 +580,7 @@ abstract class SqlElement {
 		return $this->copySqlElement();
 	}
 
-	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false) {
+	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
 		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments, $withAffectations, $toProject, $toActivity, $copyToWithResult);
 	}
 	/** =========================================================================

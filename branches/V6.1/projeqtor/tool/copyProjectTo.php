@@ -74,13 +74,19 @@ if (array_key_exists('copyToWithLinks',$_REQUEST)) {
   $copyToWithLinks=true;
 }
 
+//Krowry #2206
+$copyToWithVersionProjects=false;
+if (array_key_exists('copyToWithVersionProjects',$_REQUEST)) {
+  $copyToWithVersionProjects=true;
+}
+
 // copy from existing object
 Sql::beginTransaction();
 $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
 Security::checkValidId($toType);
-$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments);
+$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments, false, null, null, false, $copyToWithVersionProjects );
 $newProj->projectCode=$codeProject;
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -89,7 +95,7 @@ if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 unset($newProj->_copyResult);
 if(!$error)$newProj->save();
 if (!$error and $copyStructure) {
-  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,$copyToWithLinks, $copyAssignments, $copyAffectations,$newProj->id,$copySubProjects);
+  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
   if ($res!='OK') {
     $result=$res;
     $error=true;
