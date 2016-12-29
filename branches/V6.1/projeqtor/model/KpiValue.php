@@ -43,6 +43,8 @@ class KpiValue extends SqlElement {
   public $month;
   public $year;
   public $kpiValue;
+  public $weight;
+  public $refDone;
   public $_noHistory=true; // Will never save history for this object
   
    /** ==========================================================================
@@ -78,6 +80,8 @@ class KpiValue extends SqlElement {
   
   public function storeHistory() {
     $h=new KpiHistory();
+    $clause="idKpiDefinition=$this->idKpiDefinition and refType='$this->refType' and refId=$this->refId and kpiDate='$this->kpiDate'";
+    $h->purge($clause); // Purge existing history for same day, same item, same kpi
     foreach ($this as $fld=>$val) {
       $h->$fld=$val;
     }
@@ -86,18 +90,19 @@ class KpiValue extends SqlElement {
   }
   
   public static function calculateKpi($obj) {
-    debugLog("calculateKpi for ".get_class($obj).' #'.$obj->id) ;
     $class=get_class($obj);
     $kpiListToCalculate=KpiDefinition::getKpiDefinitionList();
-    if ($class=='ProjectPlanningElement' or $class=='PlanningElement') {
+    if ($class=='ProjectPlanningElement' or ($class=='PlanningElement' and $obj->refType=='Project') ) {
       if (isset($kpiListToCalculate['duration'])) {
-        if ($obj->validatedDuration and $obj->refType=='Project') {
+        if ($obj->validatedDuration and $obj->validatedDuration!=0) {
           $kpi=$kpiListToCalculate['duration'];
           $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>$obj->refType,'refId'=>$obj->refId,'idKpiDefinition'=>$kpi->id));
           $kv->idKpiDefinition=$kpi->id;
           $kv->refType=$obj->refType;
           $kv->refId=$obj->refId;
           $kv->kpiType='D';
+          $kv->weight=1;
+          $kv->refDone=($obj->realDuration)?1:0;
           $kv->setDates();
           if ($obj->realDuration) {
             $kv->kpiValue=$obj->realDuration/$obj->validatedDuration;
@@ -107,7 +112,61 @@ class KpiValue extends SqlElement {
           $kv->save();
         }
       }
+      if (isset($kpiListToCalculate['workload'])) {
+        if ($obj->validatedWork and $obj->validatedWork!=0) {  
+          $kpi=$kpiListToCalculate['workload'];
+          $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>$obj->refType,'refId'=>$obj->refId,'idKpiDefinition'=>$kpi->id));
+          $kv->idKpiDefinition=$kpi->id;
+          $kv->refType=$obj->refType;
+          $kv->refId=$obj->refId;
+          $kv->kpiType='W';
+          $kv->weight=$obj->validatedWork;
+          $kv->refDone=($obj->realDuration)?1:0;
+          $kv->setDates();
+          $kv->kpiValue=$obj->plannedWork/$obj->validatedWork;
+          $kv->save();
+        }
+      }
+      self::consolidate($obj->refType,$obj->refId);
     }
+  }
+  public static function consolidate($refType,$refId) {
+    if (! SqlElement::class_exists($refType)) return;
+    if (! $refId) return;
+    $obj=new $refType($refId);
+    if (! property_exists($obj,'idOrganization') or ! $obj->idOrganization) return;
+    $consolidatedList=self::consolidateOrganization($obj->idOrganization);
+    foreach ($consolidatedList as $id=>$consolidated) {
+      $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>'Category','refId'=>$obj->idOrganization,'idKpiDefinition'=>$id));
+      $kv->idKpiDefinition=$id;
+      $kv->refType='Category';
+      $kv->refId=$obj->idOrganization;
+      $kv->kpiType=$consolidated['type'];
+      $kv->weight=$consolidated['weight'];
+      $kv->refDone=null;
+      $kv->setDates();
+      $kv->kpiValue=$consolidated['value'];
+      $kv->save();
+    }
+  }
+  public static function consolidateOrganization($id) {
+    $result=array();
+    $crit=array('idOrganization'=>$id);
+    $listPrj=SqlList::getListWithCrit('Project', $crit);
+    $where="idKpiDefinition in (1,2) and refDone=1 and refType='Project' and refId in (".transformListIntoInClause($listPrj).")";
+    $kpi=new KpiValue();
+    $kpiList=$kpi->getSqlElementsFromCriteria(null,false,$where);
+    foreach($kpiList as $kpi) {
+      if (! isset($result[$kpi->idKpiDefinition])) $result[$kpi->idKpiDefinition]=array('type'=>$kpi->kpiType, 'nb'=>0,'total'=>0,'weight'=>0);
+      $result[$kpi->idKpiDefinition]['nb']+=1;
+      $result[$kpi->idKpiDefinition]['total']+=$kpi->weight*$kpi->kpiValue;
+      $result[$kpi->idKpiDefinition]['weight']+=$kpi->weight;
+      $result[$kpi->idKpiDefinition]['value']=
+        ($result[$kpi->idKpiDefinition]['weight']!=0)
+          ?($result[$kpi->idKpiDefinition]['total']/$result[$kpi->idKpiDefinition]['weight'])
+          :null;
+    }
+    return $result;
   }
   
   public function setDates($date=null) {

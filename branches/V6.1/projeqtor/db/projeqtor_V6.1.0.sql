@@ -132,6 +132,8 @@ CREATE TABLE `${prefix}kpivalue` (
   `month` varchar(6) DEFAULT NULL,
   `year` varchar(4) DEFAULT NULL,
   `kpiValue` decimal(5,2) DEFAULT NULL,
+  `weight` decimal(14,5) DEFAULT NULL,
+  `refDone` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `kpivalueKpiDefinition` ON `${prefix}kpivalue` (`idKpiDefinition`);
@@ -149,10 +151,13 @@ CREATE TABLE `${prefix}kpihistory` (
   `month` varchar(6) DEFAULT NULL,
   `year` varchar(4) DEFAULT NULL,
   `kpiValue` decimal(5,2) DEFAULT NULL,
+  `weight` decimal(14,5) DEFAULT NULL,
+  `refDone` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `kpihistoryKpiDefinition` ON `${prefix}kpihistory` (`idKpiDefinition`);
 CREATE INDEX `kpihistoryReference` ON `${prefix}kpihistory` (`refType`, `refId`);
+CREATE INDEX `kpihistoryDate` ON `${prefix}kpihistory` (`kpiDate`);
 
 CREATE TABLE `${prefix}deliverable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
