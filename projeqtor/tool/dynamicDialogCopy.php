@@ -282,6 +282,15 @@ if($copyType=="copyObjectTo"){
                </div>
              </td>
            </tr>
+           <!--  Krowry #2206 -->
+            <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithVersionProjects" style="width:90%;text-align: right;"><?php echo i18n("copyToWithVersionProjects") ?>&nbsp;:&nbsp;</label>
+               <div id="copyToWithVersionProjects" name="copyToWithVersionProjects" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
+             </td>
+           </tr>
            <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
          </table>
         </form>

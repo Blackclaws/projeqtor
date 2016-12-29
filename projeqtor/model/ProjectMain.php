@@ -873,5 +873,19 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     return $in;
   }
   
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
+    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    if($copyToWithVersionProjects==true){
+      $vp=new VersionProject();
+      $crit=array('idProject'=>$this->id);
+      $list=$vp->getSqlElementsFromCriteria($crit);
+      foreach ($list as $vp) {
+        $vp->idProject=$result->id;
+        $vp->id=null;
+        $vp->save();
+      }
+    }
+    return $result;
+  } 
 }
 ?>

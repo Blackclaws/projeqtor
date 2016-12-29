@@ -549,6 +549,9 @@ class PlanningElement extends SqlElement {
       $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
     }
     $result = parent::save();
+    if ($this->refType=='Project') {
+      KpiValue::calculateKpi($this);
+    }
   }
 
   public function wbsSave() {
