@@ -52,7 +52,9 @@ table {
 
 tr {
    /*border: 2px solid #0000FF;  padding: 3px !important; margin: 3px !important; /* for debug purpose */
-   height:25px;
+}
+tr .defaultHeight {
+	height: 25px;
 }
 
 .menuTree {
@@ -206,6 +208,7 @@ label, .label {
   text-shadow: 1px 1px #FFFFFF;
   background: url(images/titleBar.png) #DDDDDD top repeat-x !important;
   color: #505050;
+  height:25px;
 }
 .workflowHeader {
   font-size: 90%;
@@ -304,6 +307,7 @@ label, .label {
   border: 1px solid #AAAAAA;
   vertical-align: top;
   background-color: #FFFFFF;
+  height:25px;
 }
 .historyDataNewOperation {
   font-size: 90%;

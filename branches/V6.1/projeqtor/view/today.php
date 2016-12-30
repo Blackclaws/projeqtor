@@ -478,6 +478,12 @@
     $bill= new Bill();
     $listBill=$bill->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listBill);
+    $calltender= new CallForTender();
+    $listcalltender=$calltender->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listcalltender);
+    $tender= new Tender();
+    $listtender=$tender->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listtender);
     
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {

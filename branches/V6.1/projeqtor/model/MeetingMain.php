@@ -561,7 +561,7 @@ class MeetingMain extends SqlElement {
   }
   
   // gautier ticket #2315
-  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false){
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false, $copyToWithVersionProjects=false){
     $result = parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
     $ass=new Assignment();
     $crit=array('refId'=>$this->id,'refType'=>'Meeting');

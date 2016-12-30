@@ -3728,9 +3728,7 @@ function setDefaultCategory(typeValue) {
         + typeValue + "&objectClass=" + dojo.byId('objectClass').value ,
     handleAs : "text",
     load : function(data) {
-      console.log(data);
       dijit.byId("idCategory").set('value', data);
-
     }
   });
 }

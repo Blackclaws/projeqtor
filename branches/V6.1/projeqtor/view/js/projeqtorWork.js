@@ -166,7 +166,7 @@ function refreshImputationPeriod(directDate) {
       week='01';
       year+=1;
     dijit.byId('yearSpinner').set('value', year);
-    dijit.byId('weekSpinner').set('value', '1');
+    dijit.byId('weekSpinner').set('value', week);
   } else if (parseInt(week,10)>52) {
     lastWeek=getWeek(31,12,year);
     if (lastWeek==1) {
@@ -178,7 +178,7 @@ function refreshImputationPeriod(directDate) {
       week='01';
         year+=1;
       dijit.byId('yearSpinner').set('value', year);
-      dijit.byId('weekSpinner').set('value', '1');
+      dijit.byId('weekSpinner').set('value', week);
     }
   }
   var day=getFirstDayOfWeek(week,year);
@@ -226,7 +226,7 @@ function dispatchWorkValueChange(rowId, colId) {
     daysWorkFutureBlockingV=dojo.byId('daysWorkFutureBlocking').value;
     toAdd=rowId+"|"+colId;
     if(newWorkValue!=0){
-      if(isFuture)
+      if(isFuture) {
         if(daysWorkFutureV==0){
           daysWorkFutureV=[];
           daysWorkFutureV.push(rowId+"|"+colId);
@@ -240,7 +240,8 @@ function dispatchWorkValueChange(rowId, colId) {
             daysWorkFutureV.push(toAdd);
           }
         }
-      if(isFutureBlocking)
+      }
+      if(isFutureBlocking) {
         if(daysWorkFutureBlockingV==0){
           daysWorkFutureBlockingV=[];
           daysWorkFutureBlockingV.push(rowId+"|"+colId);
@@ -254,8 +255,9 @@ function dispatchWorkValueChange(rowId, colId) {
             daysWorkFutureBlockingV.push(toAdd);
           }
         }
-    }else{
-      if(isFuture)
+      }
+    } else {
+      if(isFuture) {
         if(daysWorkFutureV!=0){
           daysWorkFutureV=daysWorkFutureV.split(',');
           find=false;
@@ -263,23 +265,29 @@ function dispatchWorkValueChange(rowId, colId) {
             if(daysWorkFutureV[ite]==toAdd)daysWorkFutureV.splice(ite, 1);
           }
         }
-      if(isFutureBlocking)
+      }
+      if(isFutureBlocking) {
         if(daysWorkFutureBlockingV!=0){
           daysWorkFutureBlockingV=daysWorkFutureBlockingV.split(',');
           for(var ite in daysWorkFutureBlockingV){
             if(daysWorkFutureBlockingV[ite]==toAdd)daysWorkFutureBlockingV.splice(ite, 1);
           }
         }
+      }
     }
     toAddFuture='';
-    for(var ite in daysWorkFutureV){
-      toAddFuture+=(ite==0 ? '' : ',')+daysWorkFutureV[ite];
+    if (Array.isArray(daysWorkFutureV)) {
+      for(var ite in daysWorkFutureV){
+        toAddFuture+=(ite==0 ? '' : ',')+daysWorkFutureV[ite];
+      }
     }
     if(toAddFuture=='')toAddFuture='0';
     dojo.byId('daysWorkFuture').value=toAddFuture;
     toAddFutureBlocking='';
-    for(var ite in daysWorkFutureBlockingV){
-      toAddFutureBlocking+=(ite==0 ? '' : ',')+daysWorkFutureBlockingV[ite];
+    if (Array.isArray(daysWorkFutureBlockingV)) {
+      for(var ite in daysWorkFutureBlockingV){
+        toAddFutureBlocking+=(ite==0 ? '' : ',')+daysWorkFutureBlockingV[ite];
+      }
     }
     if(toAddFutureBlocking=='')toAddFutureBlocking='0';
     dojo.byId('daysWorkFutureBlocking').value=toAddFutureBlocking;
@@ -462,7 +470,6 @@ function validFutureWorkDate(){
 function saveImputation() {
   var futureInput=dojo.byId('daysWorkFuture').value != '0' ? true : false;
   var futureInputBlocking=dojo.byId('daysWorkFutureBlocking').value != '0' ? true : false;;  
-
   if(futureInputBlocking){
     nbDays=dojo.byId('nbFutureDaysBlocking').value;
     showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDays)));
