@@ -1972,18 +1972,15 @@ function removeAssignment(assignmentId, realWork, resource) {
 }
 
 function assignmentChangeResource() {
-  console.log("assignmentChangeResource");
   if (editAssignmentLoading)
     return;
   var idResource=dijit.byId("assignmentIdResource").get("value");
-  console.log("  idResource="+idResource);
   if (!idResource) {return;}
   if (dijit.byId('assignmentDailyCost')) {dijit.byId('assignmentDailyCost').reset();}
   dojo.xhrGet({
     url : '../tool/getSingleData.php?dataType=resourceRole&idResource='+idResource,
     handleAs : "text",
     load : function(data) {
-      console.log("data='"+data+"'");
       dijit.byId('assignmentIdRole').set('value', parseInt(data));
     }
   });
@@ -4658,13 +4655,13 @@ function listClick() {
 }
 
 function consoleLogHistory(msg) {
-  console.log ('====='+msg+'==== ('+historyTable.length+')');
+  consoleTraceLog('====='+msg+'==== ('+historyTable.length+')');
   if (historyTable.length==0) {
-    console.log(msg+' => Empty');
+    consoleTraceLog(msg+' => Empty');
   }
   for (i=0;i<historyTable.length;i++) {
     current=historyTable[i];
-    console.log(msg+' => '+current[0]+ ' | '+current[1]+' | '+current[2]);
+    consoleTraceLog(msg+' => '+current[0]+ ' | '+current[1]+' | '+current[2]);
   }
 }
 
