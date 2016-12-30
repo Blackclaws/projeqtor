@@ -128,8 +128,36 @@ class KpiValue extends SqlElement {
         }
       }
       self::consolidate($obj->refType,$obj->refId);
+    } else if ($class=='Term') {
+      debugLog("OK Kpi to calculate for term");
+      if (isset($kpiListToCalculate['term'])) {
+        $idP=$obj->idProject;
+        $real=0;
+        $validated=0;
+        $list=$obj->getSqlElementsFromCriteria(array('idProject'=>$idP),false,null,null,false,false);
+        foreach ($list as $term) {
+          $term->setCalculatedFromActivities();
+          debugLog($term);
+          $real+=$term->amount;
+          $validated+=$term->validatedAmount;
+        } 
+        if ($validated!=0) {
+          $kpi=$kpiListToCalculate['term'];
+          $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>'Project','refId'=>$idP,'idKpiDefinition'=>$kpi->id));
+          $kv->idKpiDefinition=$kpi->id;
+          $kv->refType='Project';
+          $kv->refId=$idP;
+          $kv->kpiType='T';
+          $kv->weight=1;
+          $kv->refDone=0;
+          $kv->setDates();
+          $kv->kpiValue=$real/$validated;
+          $kv->save();
+        }
+      }
     }
   }
+  
   public static function consolidate($refType,$refId) {
     if (! SqlElement::class_exists($refType)) return;
     if (! $refId) return;
@@ -153,7 +181,7 @@ class KpiValue extends SqlElement {
     $result=array();
     $crit=array('idOrganization'=>$id);
     $listPrj=SqlList::getListWithCrit('Project', $crit);
-    $where="idKpiDefinition in (1,2) and refDone=1 and refType='Project' and refId in (".transformListIntoInClause($listPrj).")";
+    $where="idKpiDefinition in (1,2) and refDone=1 and refType='Project' and refId in ".transformListIntoInClause($listPrj); // For organization only done projects are consolidated
     $kpi=new KpiValue();
     $kpiList=$kpi->getSqlElementsFromCriteria(null,false,$where);
     foreach($kpiList as $kpi) {

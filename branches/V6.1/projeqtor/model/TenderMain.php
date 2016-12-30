@@ -308,7 +308,7 @@ class TenderMain extends SqlElement {
   }
 
   
-  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false) {
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
     if ($newClass=='ProjectExpense') {
       if (! $this->plannedAmount) {
         $this->plannedAmount=$this->initialAmount;

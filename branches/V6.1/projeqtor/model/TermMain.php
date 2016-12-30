@@ -170,7 +170,8 @@ class TermMain extends SqlElement {
 
 	public function save() {
 		$this->setCalculatedFromActivities();
-		$result = parent::save();		
+		$result = parent::save();	
+		KpiValue::calculateKpi($this);
 		return $result;
 	}
 	
