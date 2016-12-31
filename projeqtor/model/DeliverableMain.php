@@ -205,5 +205,23 @@ class DeliverableMain extends SqlElement {
     return $colScript;
   }
     
+  public function save() {
+    $old=$this->getOld();
+    $result=parent::save();
+    if ($this->idResource!=$old->idResource and Parameter::getGlobalParameter('updateMilestoneResponsibleFromDeliverable')!='NO') {
+      $link=new Link();
+      $crit=array("ref1Type"=>"Deliverable","ref1Id"=>$this->id,"ref2Type"=>"Milestone");
+      $list=$link->getSqlElementsFromCriteria($crit);
+      foreach ($list as $link) {
+        $mile=new Milestone($link->ref2Id);
+        if ($mile->idResource!=$this->idResource) {
+          $mile->idResource=$this->idResource;
+          $mile->save();
+        }
+      }
+    }
+    KpiValue::calculateKpi($this);
+    return $result;
+  }
 }
 ?>

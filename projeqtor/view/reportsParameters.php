@@ -140,7 +140,15 @@ foreach ($listParam as $param) {
         month=(month.length==1)?'0'+month:month;
         dojo.byId('periodValue').value='' + year + month;
       </script>
-    </div></td>
+    </div>
+    <?php if (!$defaultYear) {?>
+    <div class="roundedVisibleButton roundedButton generalColClass" 
+      style="text-align:center;float:right;margin-right:10px; padding:0px 5px;width:50%;height:16px;" 
+      onclick="dijit.byId('yearSpinner').set('value','<?php echo date('Y');?>');">
+      <?php echo i18n('setToCurrentYear');?>
+    </div>
+    <?php }?>
+    </td>
     </tr>
     <tr>
     <td class="label"><label><?php echo i18n("month");?>&nbsp;:&nbsp;</label></td>
@@ -167,7 +175,15 @@ foreach ($listParam as $param) {
         //dijit.byId('monthSpinner').set('value',month);
         dojo.byId('periodValue').value='' + year + month;
        </script>
-     </div></td>
+     </div>
+     <?php if (!$defaultMonth) {?>
+    <div class="roundedVisibleButton roundedButton generalColClass" 
+      style="text-align:center;float:right;margin-right:10px; padding:0px 5px;width:50%;height:16px;" 
+      onclick="dijit.byId('yearSpinner').set('value','<?php echo date('Y');?>');dijit.byId('monthSpinner').set('value','<?php echo date('m');?>');">
+      <?php echo i18n('setToCurrentMonth');?>
+    </div>
+    <?php }?>
+     </td>
      </tr> 
 <?php    
   } else if ($param->paramType=='year') {
@@ -582,7 +598,14 @@ foreach ($listParam as $param) {
   } else {
     $defaultValue='';
     if ($param->defaultValue) {
-      $defaultValue=$param->defaultValue; 
+      if ($param->defaultValue=='currentOrganization') {
+        $res=new Resource($user->id);
+        if ($res->id and $res->idOrganization) {
+          $defaultValue=$res->idOrganization;
+        }
+      } else {
+        $defaultValue=$param->defaultValue;
+      } 
     }
     $class=(substr($param->paramType,-4,4)=='List')?substr($param->paramType,0,strlen($param->paramType)-4):$param->paramType;
     $class=ucfirst($class);

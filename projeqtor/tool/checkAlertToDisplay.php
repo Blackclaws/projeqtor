@@ -43,6 +43,8 @@ if (count($lst)==0) {
 	return;
 }
 $date=date('Y-m-d H:i:s');
+$cptAlerts=0;
+foreach($lst as $alert) { if ($alert->alertDateTime<=$date) {$cptAlerts++;} }
 foreach($lst as $alert) {
 	if ($alert->alertDateTime<=$date) {
 	  echo '<b>' . htmlEncode($alert->title) . '</b>';
@@ -50,7 +52,7 @@ foreach($lst as $alert) {
 	  echo  $alert->message;
 	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . htmlEncode($alert->id) . ' " ./>';
 	  echo '<input type="hidden" id="alertType" name="alertType" value="' . htmlEncode($alert->alertType) . '" ./>';
-	  echo '<input type="hidden" id="alertCount" name="alertCount" value="' . count($lst) . '" ./>';
+	  echo '<input type="hidden" id="alertCount" name="alertCount" value="' . $cptAlerts . '" ./>';
 	  return;
 	}
 }

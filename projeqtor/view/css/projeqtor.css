@@ -942,13 +942,16 @@ label, .label, .smallLabel {
   padding: 0px 3px 0px 3px;
   background: url(images/titleBar.png) #DDDDDD top repeat-x;
 }
-.reportTableData {
+.reportTableData, .reportTableDataSpanned {
   border: 1px solid #AAAAAA;
   vertical-align: middle;
   text-align: center;
   font-weight: normal;
   padding: 0px 1px 0px 1px;
   background: #FFFFFF;
+}
+.reportTableDataSpanned {
+  padding: 3px 5px;  
 }
 .reportTableDataBorderRight {
   border-right: 1px solid #AAAAAA;
