@@ -110,6 +110,7 @@ class KpiValue extends SqlElement {
             $kv->kpiValue=$obj->plannedDuration/$obj->validatedDuration;
           }
           $kv->save();
+          self::consolidate($obj->refType,$obj->refId);
         }
       }
       if (isset($kpiListToCalculate['workload'])) {
@@ -125,11 +126,10 @@ class KpiValue extends SqlElement {
           $kv->setDates();
           $kv->kpiValue=$obj->plannedWork/$obj->validatedWork;
           $kv->save();
+          self::consolidate($obj->refType,$obj->refId);
         }
       }
-      self::consolidate($obj->refType,$obj->refId);
     } else if ($class=='Term') {
-      debugLog("OK Kpi to calculate for term");
       if (isset($kpiListToCalculate['term'])) {
         $idP=$obj->idProject;
         $real=0;
@@ -137,7 +137,6 @@ class KpiValue extends SqlElement {
         $list=$obj->getSqlElementsFromCriteria(array('idProject'=>$idP),false,null,null,false,false);
         foreach ($list as $term) {
           $term->setCalculatedFromActivities();
-          debugLog($term);
           $real+=$term->amount;
           $validated+=$term->validatedAmount;
         } 
@@ -155,6 +154,52 @@ class KpiValue extends SqlElement {
           $kv->save();
         }
       }
+    } else if ($class=='Deliverable' or $class=='Incoming') {
+      if (isset($kpiListToCalculate[strtolower($class)])) {
+        $idP=$obj->idProject;
+        $ppe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement',array('refType'=>'Project', 'refId'=>$idP));
+        $classWeight=$class.'Weight';
+        $classStatus=$class.'Status';
+        $listWeight=SqlList::getList($classWeight,'value');
+        $listStatus=SqlList::getList($classStatus,'value');
+        $maxStatus=0;
+        foreach ($listStatus as $value) { if ($value>$maxStatus) {$maxStatus=$value;} }
+        $quality=0;
+        $maxQuality=0;
+        $list=$obj->getSqlElementsFromCriteria(array('idProject'=>$idP),false,null,null,false,false);
+        foreach ($list as $item) {
+          $fldS='id'.$class.'Status';
+          $fldW='id'.$class.'Weight';
+          if ($item->$fldW and $item->$fldS) {
+            if (! isset($listWeight[$item->$fldW])) {
+              $weight=new $classWeight($item->$fldW);
+              $listWeight[$item->$fldW]=$weight->value;
+            }
+            if (! isset($listStatus[$item->$fldS])) {
+              $status=new $classStatus($item->$fldS);
+              $listStatus[$item->$fldS]=$status->value;
+            }
+            $weight=$listWeight[$item->$fldW];
+            $status=$listStatus[$item->$fldS];
+            $quality+=$weight*$status;
+            $maxQuality+=$weight*$maxStatus;
+          }
+        }
+        if ($maxQuality!=0) {
+          $kpi=$kpiListToCalculate[strtolower($class)];
+          $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>'Project','refId'=>$idP,'idKpiDefinition'=>$kpi->id));
+          $kv->idKpiDefinition=$kpi->id;
+          $kv->refType='Project';
+          $kv->refId=$idP;
+          $kv->kpiType=($class=='Deliverable')?'O':'I';
+          $kv->weight=1;
+          $kv->refDone=($ppe->realDuration)?1:0;
+          $kv->setDates();
+          $kv->kpiValue=$quality/$maxQuality;
+          $kv->save();
+          self::consolidate('Project',$idP);
+        }
+      }
     }
   }
   
@@ -165,9 +210,10 @@ class KpiValue extends SqlElement {
     if (! property_exists($obj,'idOrganization') or ! $obj->idOrganization) return;
     $consolidatedList=self::consolidateOrganization($obj->idOrganization);
     foreach ($consolidatedList as $id=>$consolidated) {
-      $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>'Category','refId'=>$obj->idOrganization,'idKpiDefinition'=>$id));
+      $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>'Organization','refId'=>$obj->idOrganization,'idKpiDefinition'=>$id));
+      if ($kv->id and $kv->kpiValue==$consolidated['value']) continue;
       $kv->idKpiDefinition=$id;
-      $kv->refType='Category';
+      $kv->refType='Organization';
       $kv->refId=$obj->idOrganization;
       $kv->kpiType=$consolidated['type'];
       $kv->weight=$consolidated['weight'];
@@ -181,7 +227,7 @@ class KpiValue extends SqlElement {
     $result=array();
     $crit=array('idOrganization'=>$id);
     $listPrj=SqlList::getListWithCrit('Project', $crit);
-    $where="idKpiDefinition in (1,2) and refDone=1 and refType='Project' and refId in ".transformListIntoInClause($listPrj); // For organization only done projects are consolidated
+    $where="idKpiDefinition in (1,2,4,5) and refDone=1 and refType='Project' and refId in ".transformListIntoInClause($listPrj); // For organization only done projects are consolidated
     $kpi=new KpiValue();
     $kpiList=$kpi->getSqlElementsFromCriteria(null,false,$where);
     foreach($kpiList as $kpi) {

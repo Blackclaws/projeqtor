@@ -214,7 +214,33 @@ class MilestoneMain extends SqlElement {
       $this->MilestonePlanningElement->wbs=null;
       $this->MilestonePlanningElement->wbsSortable=null;
     }
-    return parent::save();
+    $result=parent::save();
+    
+    if ($this->idResource!=$old->idResource and Parameter::getGlobalParameter('updateIncomingResponsibleFromMilestone')!='NO') {
+      $link=new Link();
+      $crit=array("ref2Type"=>"Milestone","ref2Id"=>$this->id,"ref1Type"=>"Incoming");
+      $list=$link->getSqlElementsFromCriteria($crit);
+      foreach ($list as $link) {
+        $incom=new Incoming($link->ref1Id);
+        if ($incom->idResource!=$this->idResource) {
+          $incom->idResource=$this->idResource;
+          $incom->save();
+        }
+      }
+    }
+    if ($this->idResource!=$old->idResource and Parameter::getGlobalParameter('updateDeliverableResponsibleFromMilestone')!='NO') {
+      $link=new Link();
+      $crit=array("ref2Type"=>"Milestone","ref2Id"=>$this->id,"ref1Type"=>"Deliverable");
+      $list=$link->getSqlElementsFromCriteria($crit);
+      foreach ($list as $link) {
+        $deliv=new Deliverable($link->ref1Id);
+        if ($deliv->idResource!=$this->idResource) {
+          $deliv->idResource=$this->idResource;
+          $deliv->save();
+        }
+      }
+    }
+    return $result;
   }
   
 /** =========================================================================

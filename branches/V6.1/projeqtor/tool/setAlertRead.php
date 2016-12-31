@@ -42,10 +42,13 @@ if ($idAlert=='*') {
   $crit=array('idUser'=>$user->id,'readFlag'=>'0', 'idle'=>'0');
   $alert=new Alert();
   $lst=$alert->getSqlElementsFromCriteria($crit, false, null, 'id asc');
+  $date=date('Y-m-d H:i:s');
   foreach ($lst as $alert) {
-    $alert->readFlag='1';
-    $alert->alertReadDateTime=date('Y-m-d H:i:s');
-    $result=$alert->save();
+    if ($alert->alertDateTime<=$date) {
+      $alert->readFlag='1';
+      $alert->alertReadDateTime=date('Y-m-d H:i:s');
+      $result=$alert->save();
+    }
   }
 } else {
   $idAlert=Security::checkValidId($idAlert);
