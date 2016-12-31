@@ -77,6 +77,10 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `hasCsv
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
 (913, 63, 'idActivity', 'activityList', 20, 0, NULL, 0),
 (912, 63, 'idProject', 'projectList', 10, 0, 'currentProject', 0);
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
+(1,63,1),
+(2,63,1),
+(3,63,1);
 
 -- PAPJUL ADDITION FOR JOBS (END)
 -- ==============================
@@ -284,3 +288,21 @@ INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUE
 UPDATE `${prefix}linkable` set `idDefaultLinkable`=21 WHERE id=9;
 
 DELETE FROM `${prefix}type` where scope='Invoice';
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `orientation`) VALUES 
+(64, 'reportKpiDurationProject', 10, 'kpiDuration.php?scope=Project', 1110, 'L'),
+(65, 'reportKpiDurationOrganization', 10, 'kpiDuration.php?scope=Organization', 1120, 'L');
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(64, 'idProject', 'projectList', 10, 'currentProject'),
+(64, 'month', 'month', 20, null),
+(65, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
+(65, 'idProjectType', 'projectTypeList', 20, null),
+(65, 'month', 'month', 30, null);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
+(1,64,1),
+(2,64,1),
+(3,64,1),
+(1,65,1),
+(2,65,1);

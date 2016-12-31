@@ -5055,6 +5055,7 @@ function customMenuRemoveItem() {
 // ====================================================================================
 //
 // var alertDisplayed=false;
+var checkAlertDisplayQuick=false;
 function checkAlert() {
   // if (alertDisplayed) return;
   dojo.xhrGet({
@@ -5096,6 +5097,8 @@ function checkAlertRetour(data) {
       if (dojo.byId('alertType') && dojo.byId('alertType').value == 'INFO') {
         toColor='#CCCCFF';
       }
+      var duration=2000;
+      if (checkAlertDisplayQuick) duration=200;
       dojo.animateProperty({
         node : dialogReminder,
         properties : {
@@ -5109,11 +5112,17 @@ function checkAlertRetour(data) {
             end : toColor
           }
         },
-        duration : 2000
+        duration : duration
       }).play();
     }
   } else {
     if (alertCheckTime>0) setTimeout('checkAlert();', alertCheckTime * 1000);
+  }
+  checkAlertDisplayQuick=false;
+  if (dojo.byId("alertCount")) {
+    if (dojo.byId("alertCount").value>1) {
+      checkAlertDisplayQuick=true;
+    }
   }
 }
 function setAlertReadMessage() {
@@ -5125,6 +5134,7 @@ function setAlertReadMessage() {
 }
 function setAllAlertReadMessage() {
   // alertDisplayed=false;
+  checkAlertDisplayQuick=false;
   closeAlertBox();
   setAlertRead('*');
 }
@@ -5149,16 +5159,18 @@ function setAlertRead(id, remind) {
     url : url,
     handleAs : "text",
     load : function(data, args) {
-      setTimeout('checkAlert();', 1000);
+      setTimeout('checkAlert();', 100);
     },
     error : function() {
-      setTimeout('checkAlert();', 1000);
+      setTimeout('checkAlert();', 100);
     }
   });
 }
 
 function closeAlertBox() {
   var dialogReminder=dojo.byId('dialogReminder');
+  var duration=900;
+  if (checkAlertDisplayQuick) duration=90;
   dojo.animateProperty({
     node : dialogReminder,
     properties : {
@@ -5167,7 +5179,7 @@ function closeAlertBox() {
         end : -200
       }
     },
-    duration : 900,
+    duration : duration,
     onEnd : function() {
       dojo.style(dialogReminder, {
         visibility : 'hidden',
@@ -5282,7 +5294,7 @@ function adminSetApplicationTo(newStatus) {
     form : "adminForm",
     handleAs : "text",
     load : function(data, args) {
-      loadContent("../view/admin.php", "centerDiv")
+      loadContent("../view/admin.php", "centerDiv");
     },
     error : function() {
     }

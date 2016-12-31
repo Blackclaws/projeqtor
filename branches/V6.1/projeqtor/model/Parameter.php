@@ -257,7 +257,9 @@ class Parameter extends SqlElement {
             'YES'=>i18n('displayYes')); 
         break;
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
-      case 'dependencyStrictMode' : 
+      case 'dependencyStrictMode': 
+      case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
+      case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -576,6 +578,10 @@ class Parameter extends SqlElement {
       	                       'setResponsibleIfNeeded'=>'list',  
       	                       'realWorkOnlyForResponsible'=>'list',
       	                       'responsibleFromProduct'=>'list',
+      	                       'updateMilestoneResponsibleFromDeliverable'=>'list',
+      	                       'updateMilestoneResponsibleFromIncoming'=>'list',
+      	                       'updateDeliverableResponsibleFromMilestone'=>'list',
+      	                       'updateIncomingResponsibleFromMilestone'=>'list',
       	                     'sectionUserAndPassword'=>'section',
       	                       'defaultProfile'=>'list', 
       	                     //'sectionPassword'=>'section',
