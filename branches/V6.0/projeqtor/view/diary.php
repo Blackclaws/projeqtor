@@ -341,7 +341,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				
 				$result[$date]["$class#$id"]=array(
 						'class'=>$class,
-						'id'=>$o->id,
+						'id'=>$id,
 						'work'=>0,
 				    'real'=>false,
 						'name'=>$name,
