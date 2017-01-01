@@ -30,6 +30,8 @@ include("../external/pChart2/class/pData.class.php");
 include("../external/pChart2/class/pDraw.class.php");
 include("../external/pChart2/class/pImage.class.php");
 
+$kpiColoFull=false; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
+
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
@@ -152,8 +154,10 @@ echo '<td class="reportTableHeader" style="width:10%">' . i18n('colRealEndDate')
 echo '<td class="reportTableHeader" style="width:20%">' . htmlEncode($kpi->name) . '</td>';
 echo '</tr>';
 echo '<tr>';
+$arrayProj=array();
 foreach($listProjects as $prj) {
-  if (! array_key_exists($prj->id, $visibleProjects)) continue;
+  $arrayProj[$prj->id]=$prj->name;
+  if (! array_key_exists($prj->id, $visibleProjects)) continue; // Will avoid to display projects not visible to user
   echo '<tr>';
   echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode($prj->name) . '</td>';
   echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode(SqlList::getNameFromId('Client', $prj->idClient)) . '</td>';
@@ -177,133 +181,82 @@ foreach($listProjects as $prj) {
       break;
     }
   }
-  echo '<td class="reportTableDataSpanned" style="width:20%">' . (($kpiValue->kpiValue)?htmlDisplayColored($kpiValue->kpiValue, $color):'') . '</td>';
+  if ($kpiColoFull) {
+    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.'">' . (($kpiValue->kpiValue)?htmlDisplayColoredFull($kpiValue->kpiValue, $color):'') . '</td>';
+  } else {
+    echo '<td class="reportTableDataSpanned" style="width:20%;">' . (($kpiValue->kpiValue)?htmlDisplayColored($kpiValue->kpiValue, $color):'') . '</td>';
+  }
   echo '</tr>';
 }
 echo '</table>';
-exit;
+
 // Graph
 if (! testGraphEnabled()) { return;}
 
-$user=getSessionUser();
-$proj=new Project($idProject);
-$baseline=new Baseline($idBaseline);
-if ($baseline->idProject!=$idProject) {
-  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
-  echo i18n('messageNoData',array(i18n('colIdBaselineSelect'))); // TODO i18n message
-  echo '</div>';
-  exit;
-}
-
-$start="";
-$end="";
-// constitute query and execute for planned post $end (last real work day)
-$w=new Work();
-$wTable=$w->getDatabaseTableName();
-$querySelect= "select sum(w.work) as work, w.workDate as day ";
-$queryFrom=   " from $wTable w";
-$proj=new Project($idProject);
-$queryWhere= " where w.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
-$queryWhere.= " and w.idProject in ".transformListIntoInClause($user->getVisibleProjects(false));
-$queryOrder= "  group by w.workDate";
-$query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
-$resultReal=Sql::query($query);
-$tableReal=array();
-//$tableRealSum=array();
-//$sumReal=0;
-$endACWP="";
-$today=date('Y-m-d');
-while ($line = Sql::fetchLine($resultReal)) {
-  $day=$line['day'];
-  $real=$line['work'];
-  $tableReal[$day]=$real;
-  //$sumReal+=$real;
-  //$tableRealSum[$day]=$sumReal;
-  if ( ($start=="" or $start>$day) and $day<=$today) {$start=$day;}
-  if ( ($end=="" or $end<$day) and $day<=$today) { $end=$day;}
-  if ( $endACWP="" or $endACWP<$day) {$endACWP=$day;}
-}
-if (!$end) $end=$today;
-if (!$start) $start=$today;
-$endReal=$end;
+$scale='month';
 
 // constitute query and execute for planned post $end (last real work day)
-$pw=new PlannedWork();
-$pwTable=$pw->getDatabaseTableName();
-$querySelect= "select sum(pw.work) as work, pw.workDate as day ";
-$queryFrom=   " from $pwTable pw";
-$queryWhere=  " where pw.workDate>'$endReal'";
-$proj=new Project($idProject);
-$queryWhere.= " and pw.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
-$queryWhere.= " and pw.idProject in ".transformListIntoInClause($user->getVisibleProjects(false));
-$queryOrder= "  group by pw.workDate";
-$query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
-$resultPlanned=Sql::query($query);
-$tablePlanned=array();
-//$tablePlannedSum=array();
-//$sumPlanned=$sumReal; // We start left sum at real
-while ($line = Sql::fetchLine($resultPlanned)) {
-  $day=$line['day'];
-  $planned=$line['work'];
-  //$sumPlanned+=$planned;
-  $tablePlanned[$day]=$planned;
-  //$tablePlannedSum[$day]=$sumPlanned;
-  if ($start>$day) {$start=$day;}
-  if ($end<$day) { $end=$day;}
-  if ( $endACWP="" or $endACWP<$day) {$endACWP=$day;}
+$h=new KpiHistory();
+$hTable=$h->getDatabaseTableName();
+$query = "select AVG(prj.valueP) as value, prj.periodP as period";
+$query.= " from (select MAX(h.kpiValue) as valueP, h.$scale as periodP, h.refId as idP";
+$query.= " from $hTable h";
+$query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
+$query.= " group by h.$scale, h.refId) prj ";
+$query.= " group by periodP";
+
+echo  $query;
+$result=Sql::query($query);
+
+$end='';
+$start='';
+$valArray=array();
+foreach ($result as $line) {
+  if ($end=='' or $line['period']>$end) $end=$line['period'];
+  if ($start=='' or $line['period']<$start) $start=$line['period'];
+  $arrValues[$line['period']]=$line['value'];
 }
 
-// constitute query and execute for baseline
-$pwb=new PlannedWorkBaseline();
-$pwbTable=$pwb->getDatabaseTableName();
-$querySelect= "select sum(pwb.work) as work, pwb.workDate as day ";
-$queryFrom=   " from $pwbTable pwb";
-$queryWhere=  " where pwb.idBaseline=".Sql::fmtId($idBaseline);
-$proj=new Project($idProject);
-$queryWhere.= " and pwb.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
-$queryWhere.= " and pwb.idProject in ".transformListIntoInClause($user->getVisibleProjects(false));
-$queryOrder= "  group by pwb.workDate";
-$query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
-$resultBaseline=Sql::query($query);
-$tableBaseline=array();
-$endBCWS="";
-while ($line = Sql::fetchLine($resultBaseline)) {
-  $day=$line['day'];
-  $planned=$line['work'];
-  $tableBaseline[$day]=$planned;
-  if ($start>$day) {$start=$day;}
-  if ($end<$day) { $end=$day;}
-  if ( $endBCWS="" or $endBCWS<$day) {$endBCWS=$day;}
-}
 
-if (checkNoData(array_merge($tablePlanned,$tableReal,$tableBaseline))) exit;
-
-$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'Project', 'refId'=>$idProject));
-if (trim($pe->realStartDate) and $pe->realStartDate<$start) $start=$pe->realStartDate;
-if (trim($pe->realEndDate) and $pe->realEndDate>$end) $end=$pe->realEndDate;
-if (trim($pe->validatedEndDate) and $pe->validatedEndDate>$end) $end=$pe->validatedEndDate;
-$arrDates=array();
-$date=$start;
 if (!$start or !$end) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData'); 
   echo '</div>';
   exit;
 }
+$lastValue=VOID;
+$arrDates=array();
+$date=$start;
 while ($date<=$end) {
-  if ($scale=='week') { 
+  if (isset($arrValues[$date])) {
+    $lastValue=$arrValues[$date];
+  } else {
+    $arrValues[$date]=$lastValue;
+  }
+  $arrDates[$date]=$date;
+  if ($scale=='day') {
+    $day=substr($date,0,4).'-'.substr($date,4,2).'-'.substr($date,6,2);
+    $day=addDaysToDate($day, 1);
+    $date=str_replace('-','',$day);
+  } else if ($scale=='week') { 
+    $week=substr($date,4,2);
+    $year=substr($date,0,4);
+    $week++;
+    if ($week<10) $week='0'.intval($week);
+    $lastDay=$year.'-12-31';
     $arrDates[$date]=weekFormat($date); 
   } else if ($scale=='month') { 
     $arrDates[$date]=date('Y-m',strtotime($date));  
-  } else if ($scale=='quarter') { 
+  } else if ($scale=='year') { 
     $year=date('Y',strtotime($date));
     $month=date('m',strtotime($date));
     $quarter=1+intval(($month-1)/3);
-    $arrDates[$date]=$year.'-Q'.$quarter;  }
+    $arrDates[$date]=$year.'-Q'.$quarter;  
+  }
   else { 
     $arrDates[$date]=$date;
   }
-  $date=addDaysToDate($date, 1);
+  
 }
 $resReal=array();
 $sumReal=0;
