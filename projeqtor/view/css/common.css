@@ -2140,6 +2140,9 @@ table.dijitCalendarContainer {
   border-width: 0 1px 0 0 !important;
 }
 
+.dijitSpinnerButtonContainer {
+	min-height:16px;
+}
 .dijitRtl .dijitSpinnerButtonContainer {
   float: left;
 }
@@ -2752,7 +2755,7 @@ table.dijitCalendarContainer {
 	position: absolute !important;
 	right: 0;
 	float: none;
-	height: 50%;
+	height: 40%;
 	width: 100%;
 	bottom: auto;
 	left: 0;

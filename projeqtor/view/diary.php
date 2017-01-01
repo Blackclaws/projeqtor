@@ -199,7 +199,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		echo '<div style="width:100%;height:24px;float:left;position:relative;left:-18px;padding-top:2px">';
 		echo '   <div style="float:left;min-width:22px;height:22px;position:relative;margin-top:5px;">#'.$item['id'].'</div>';
 		echo '   <div style="float:left;width:22px;height:22px;position:relative;padding-left:5px;">'.formatColorThumb("idPriority",$item['priorityId'], 22, 'left', i18n('colIdPriority').' : '.$item['priorityName']).'</div>';
-		echo '   <div style="float:left;padding-left:5px;width:22px;height:22px;position:relative;" id="userThumbMilestone'.$item['id'].'">'.formatUserThumb($item['responsibleId'], i18n('colResponsible').' : '.$item['responsibleName'], "", 22, 'left', false).'</div>';
+		echo '   <div style="float:left;padding-left:5px;width:22px;height:22px;position:relative;" id="userThumb'.$item['id'].'">'.formatUserThumb($item['responsibleId'], i18n('colResponsible').' : '.$item['responsibleName'], "", 22, 'left', false).'</div>';
 		echo '   <div style="float:left;max-width:100px;height:22px;position:relative;padding-left:5px;top:-1px">'.colorNameFormatter($item['statusName'].'#split#'.SqlList::getFieldFromId('Status', $item['statusId'], 'color')).'</div>';
 		echo '</div>';
 		echo '</div>';
@@ -256,7 +256,10 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				$critWhere=" refType='MileStone' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
 				$critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
 			} else {
-				$critWhere="1=0";
+				$critWhere=" refType='MileStone' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
+				$critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
+				$lstMile=SqlList::getListWithCrit('Milestone', array('idResource'=>$ress));
+				$critWhere.=" and refId in ".transformListIntoInClause($lstMile);
 			}
 	  } else {
 	  	$critWhere.=" and 1=0";
@@ -341,7 +344,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				
 				$result[$date]["$class#$id"]=array(
 						'class'=>$class,
-						'id'=>$o->id,
+						'id'=>$id,
 						'work'=>0,
 				    'real'=>false,
 						'name'=>$name,
