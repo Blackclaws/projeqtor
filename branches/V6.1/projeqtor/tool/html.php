@@ -1097,6 +1097,16 @@ function htmlDisplayColored($value,$color) {
       .$value.'</div>';
   return $result;
 }
+function htmlDisplayColoredFull($value,$color) {
+  global $print, $outMode;
+  $result= "";
+  $foreColor=htmlForeColorForBackgroundColor($color);
+  $result.='<div style="vertical-align:middle;padding: 0px;clear: both;border:0px;text-align: center;'
+      .(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'')
+      . 'background-color: ' . $color . '; color:' . $foreColor . ';">'
+          .$value.'</div>';
+  return $result;
+}
 
 function htmlForeColorForBackgroundColor($color) {
   $foreColor='#000000';
