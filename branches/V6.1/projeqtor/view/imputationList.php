@@ -39,6 +39,10 @@ $currentYear=strftime("%Y") ;
 if ($currentWeek==1 and strftime("%m")>10 ) {
 	$currentYear+=1;
 }
+if ($currentWeek>50 and strftime("%m")==1 ) {
+  $currentYear-=1;
+}
+
 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));
 $rangeValue=$currentYear . $currentWeek;
 

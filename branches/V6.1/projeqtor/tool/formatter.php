@@ -356,7 +356,16 @@ function getMonthName($month,$maxLength=0) {
       i18n("October"),i18n("November"),i18n("December"));
   }
   $dispMonth=$monthArray[$month-1];
-  if ($maxLength) $dispMonth=substr($dispMonth,0,$maxLength);
+  if ($maxLength) {
+    if ($maxLength=='auto') {
+      $dispMonth=substr($dispMonth,0,4);
+      if (strpos('aàeéèêiîïoôuù',substr($dispMonth,-1))!==false) {
+        $dispMonth=substr($dispMonth,0,3);
+      }
+    } else {
+      $dispMonth=substr($dispMonth,0,$maxLength);
+    }
+  }
   return $dispMonth;
 }
 
