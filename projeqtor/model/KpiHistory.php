@@ -43,6 +43,8 @@ class KpiHistory extends SqlElement {
   public $month;
   public $year;
   public $kpiValue;
+  public $weight;
+  public $refDone;
   public $_noHistory=true; // Will never save history for this object
   
    /** ==========================================================================

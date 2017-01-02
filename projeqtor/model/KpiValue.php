@@ -72,9 +72,9 @@ class KpiValue extends SqlElement {
   public function save() {
     $old=$this->getOld();
     $result=parent::save();
-    if ($this->kpiValue!=$old->kpiValue) {
+    //if ($this->kpiValue!=$old->kpiValue) { // Will store every value
       $this->storeHistory();
-    }
+    //}
     return $result;
   }
   
