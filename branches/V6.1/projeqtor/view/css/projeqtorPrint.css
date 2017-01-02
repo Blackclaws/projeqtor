@@ -242,14 +242,14 @@ label, .label {
   border: 0px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: url() #DDDDDD top repeat-x;
 }
 .reportTableHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
   padding: 12px 5px 12px 5px;
-  background: url(images/titleBarDark.png) #909090 top repeat-x;
+  background: url() #909090 top repeat-x;
   color: #FFFFFF;
   text-shadow: 1px 1px #505050;
 }

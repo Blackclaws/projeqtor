@@ -251,6 +251,25 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php    
+  } else if ($param->paramType=='periodScaleYear') {
+    $defaultValue=$param->defaultValue;
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+    <?php echo autoOpenFilteringSelect();?>
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <option value="year" <?php echo ($defaultValue=='quarter')?'SELECTED':'';?> ><?php echo i18n('year'); ?> </option>
+       <option value="month" <?php echo ($defaultValue=='month')?'SELECTED':'';?> ><?php echo i18n('month'); ?> </option>
+       <option value="week" <?php echo ($defaultValue=='month')?'SELECTED':'';?> ><?php echo i18n('week'); ?> </option>
+       
+     </select>
+    </td>
+    </tr>
+<?php    
   } else if ($param->paramType=='boolean') {
     $defaultValue=($param->defaultValue=='true' or $param->defaultValue=='1')?true:false;
 ?>

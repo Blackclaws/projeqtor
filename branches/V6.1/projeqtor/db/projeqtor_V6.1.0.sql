@@ -290,19 +290,49 @@ UPDATE `${prefix}linkable` set `idDefaultLinkable`=21 WHERE id=9;
 DELETE FROM `${prefix}type` where scope='Invoice';
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `orientation`) VALUES 
-(64, 'reportKpiDurationProject', 10, 'kpiDuration.php?scope=Project', 1110, 'L'),
-(65, 'reportKpiDurationOrganization', 10, 'kpiDuration.php?scope=Organization', 1120, 'L');
+(64, 'reportKpiDurationProject', 10, 'kpiDuration.php?scope=Project', 970, 'P'),
+(65, 'reportKpiDurationOrganization', 10, 'kpiDuration.php?scope=Organization', 975, 'P'),
+(66, 'reportKpiWorkloadProject', 10, 'kpiWorkload.php?scope=Project', 830, 'P'),
+(67, 'reportKpiWorkloadOrganization', 10, 'kpiWorkload.php?scope=Organization', 840, 'P');
+
+--INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+--(64, 'idProject', 'projectList', 10, 'currentProject'),
+--(64, 'month', 'month', 20, null),
+--(64, 'format', 'periodScaleYear', 30, 'month'),
+--(64, 'showThreshold', 'boolean', 40, true),
+--(65, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
+--(65, 'idProjectType', 'projectTypeList', 20, null),
+--(65, 'month', 'month', 30, 'currentYear'),
+--(65, 'format', 'periodScaleYear', 40, 'month'),
+--(65, 'showThreshold', 'boolean', 50, true),
+--(65, 'onlyFinished', 'boolean', 60, true);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (64, 'idProject', 'projectList', 10, 'currentProject'),
-(64, 'month', 'month', 20, null),
+(64, 'showThreshold', 'boolean', 20, true),
 (65, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
 (65, 'idProjectType', 'projectTypeList', 20, null),
-(65, 'month', 'month', 30, null);
+(65, 'month', 'month', 30, 'currentYear'),
+(65, 'showThreshold', 'boolean', 40, true),
+(65, 'onlyFinished', 'boolean', 50, true);
+(66, 'idProject', 'projectList', 10, 'currentProject'),
+(66, 'showThreshold', 'boolean', 20, true),
+(67, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
+(67, 'idProjectType', 'projectTypeList', 20, null),
+(67, 'idCategory', 'categoryList', 30, null),
+(67, 'month', 'month', 40, 'currentYear'),
+(67, 'showThreshold', 'boolean', 50, true),
+(67, 'onlyFinished', 'boolean', 60, true);
+
 
 INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
 (1,64,1),
 (2,64,1),
 (3,64,1),
 (1,65,1),
-(2,65,1);
+(2,65,1),
+(1,66,1),
+(2,66,1),
+(3,66,1),
+(1,67,1),
+(2,67,1);
