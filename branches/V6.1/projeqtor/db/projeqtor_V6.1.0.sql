@@ -73,7 +73,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1,162,1);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `hasCsv`, `sortOrder`, `idle`, `orientation`) VALUES 
-(63, 'reportMacroJoblist', 1, 'joblist.php', 1, 99, 0, 'L');
+(63, 'reportMacroJoblist', 1, 'joblist.php', 1, 195, 0, 'L');
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
 (913, 63, 'idActivity', 'activityList', 20, 0, NULL, 0),
 (912, 63, 'idProject', 'projectList', 10, 0, 'currentProject', 0);
@@ -289,11 +289,21 @@ UPDATE `${prefix}linkable` set `idDefaultLinkable`=21 WHERE id=9;
 
 DELETE FROM `${prefix}type` where scope='Invoice';
 
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES 
+(11,'reportCategoryKpi',27); 
+UPDATE `${prefix}report` set idReportCategory=9, sortOrder=sortOrder+400 WHERE idReportCategory=5;
+DELETE FROM `${prefix}reportcategory` WHERE `id`=5;
+
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `orientation`) VALUES 
-(64, 'reportKpiDurationProject', 10, 'kpiDuration.php?scope=Project', 970, 'P'),
-(65, 'reportKpiDurationOrganization', 10, 'kpiDuration.php?scope=Organization', 975, 'P'),
-(66, 'reportKpiWorkloadProject', 10, 'kpiWorkload.php?scope=Project', 830, 'P'),
-(67, 'reportKpiWorkloadOrganization', 10, 'kpiWorkload.php?scope=Organization', 840, 'P');
+(64, 'reportKpiDurationProject', 11, 'kpiDuration.php?scope=Project', 1110, 'P'),
+(65, 'reportKpiDurationOrganization', 11, 'kpiDuration.php?scope=Organization', 1115, 'P'),
+(66, 'reportKpiWorkloadProject', 11, 'kpiWorkload.php?scope=Project', 1120, 'P'),
+(67, 'reportKpiWorkloadOrganization', 11, 'kpiWorkload.php?scope=Organization', 1125, 'P'),
+(68, 'reportKpiTerm', 11, 'kpiTerm.php', 1150, 'P'),
+(69, 'reportKpiDeliverableProject', 11, 'kpiDeliverable.php?scope=Project', 1130, 'P'),
+(70, 'reportKpiDeliverableOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1135, 'P'),
+(71, 'reportKpiIncomingProject', 11, 'kpiIncoming.php?scope=Project', 1140, 'P'),
+(72, 'reportKpiIncomingOrganization', 11, 'kpiIncoming.php?scope=Organization', 1145, 'P');
 
 --INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 --(64, 'idProject', 'projectList', 10, 'currentProject'),
@@ -314,7 +324,7 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (65, 'idProjectType', 'projectTypeList', 20, null),
 (65, 'month', 'month', 30, 'currentYear'),
 (65, 'showThreshold', 'boolean', 40, true),
-(65, 'onlyFinished', 'boolean', 50, true);
+(65, 'onlyFinished', 'boolean', 50, true),
 (66, 'idProject', 'projectList', 10, 'currentProject'),
 (66, 'showThreshold', 'boolean', 20, true),
 (67, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
@@ -322,8 +332,22 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (67, 'idCategory', 'categoryList', 30, null),
 (67, 'month', 'month', 40, 'currentYear'),
 (67, 'showThreshold', 'boolean', 50, true),
-(67, 'onlyFinished', 'boolean', 60, true);
-
+(67, 'onlyFinished', 'boolean', 60, true),
+(68, 'idProject', 'projectList', 10, 'currentProject'),
+(69, 'idProject', 'projectList', 10, 'currentProject'),
+(69, 'showThreshold', 'boolean', 20, true),
+(70, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
+(70, 'idProjectType', 'projectTypeList', 20, null),
+(70, 'month', 'month', 30, 'currentYear'),
+(70, 'showThreshold', 'boolean', 40, true),
+(70, 'onlyFinished', 'boolean', 50, true),
+(71, 'idProject', 'projectList', 10, 'currentProject'),
+(71, 'showThreshold', 'boolean', 20, true),
+(72, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
+(72, 'idProjectType', 'projectTypeList', 20, null),
+(72, 'month', 'month', 30, 'currentYear'),
+(72, 'showThreshold', 'boolean', 40, true),
+(72, 'onlyFinished', 'boolean', 50, true);
 
 INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
 (1,64,1),
@@ -335,4 +359,17 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (2,66,1),
 (3,66,1),
 (1,67,1),
-(2,67,1);
+(2,67,1),
+(1,68,1),
+(2,68,1),
+(3,68,1),
+(1,69,1),
+(2,69,1),
+(3,69,1),
+(1,70,1),
+(2,70,1),
+(1,71,1),
+(2,71,1),
+(3,71,1),
+(1,72,1),
+(2,72,1);

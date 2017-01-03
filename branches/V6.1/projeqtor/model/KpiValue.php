@@ -89,11 +89,11 @@ class KpiValue extends SqlElement {
     $h->save();
   }
   
-  public static function calculateKpi($obj) {
+  public static function calculateKpi($obj,$restrictToKpi=null, $date=null) {
     $class=get_class($obj);
     $kpiListToCalculate=KpiDefinition::getKpiDefinitionList();
     if ($class=='ProjectPlanningElement' or ($class=='PlanningElement' and $obj->refType=='Project') ) {
-      if (isset($kpiListToCalculate['duration'])) {
+      if (isset($kpiListToCalculate['duration']) and ($restrictToKpi==null or $restrictToKpi='duration')) {
         if ($obj->validatedDuration and $obj->validatedDuration!=0) {
           $kpi=$kpiListToCalculate['duration'];
           $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>$obj->refType,'refId'=>$obj->refId,'idKpiDefinition'=>$kpi->id));
@@ -103,7 +103,7 @@ class KpiValue extends SqlElement {
           $kv->kpiType='D';
           $kv->weight=1;
           $kv->refDone=($obj->realDuration)?1:0;
-          $kv->setDates();
+          $kv->setDates($date);
           if ($obj->realDuration) {
             $kv->kpiValue=$obj->realDuration/$obj->validatedDuration;
           } else {
@@ -113,7 +113,7 @@ class KpiValue extends SqlElement {
           self::consolidate($obj->refType,$obj->refId);
         }
       }
-      if (isset($kpiListToCalculate['workload'])) {
+      if (isset($kpiListToCalculate['workload']) and ($restrictToKpi==null or $restrictToKpi='workload')) {
         if ($obj->validatedWork and $obj->validatedWork!=0) {  
           $kpi=$kpiListToCalculate['workload'];
           $kv=SqlElement::getSingleSqlElementFromCriteria('KpiValue',array('refType'=>$obj->refType,'refId'=>$obj->refId,'idKpiDefinition'=>$kpi->id));
@@ -123,14 +123,14 @@ class KpiValue extends SqlElement {
           $kv->kpiType='W';
           $kv->weight=$obj->validatedWork;
           $kv->refDone=($obj->realDuration)?1:0;
-          $kv->setDates();
+          $kv->setDates($date);
           $kv->kpiValue=$obj->plannedWork/$obj->validatedWork;
           $kv->save();
           self::consolidate($obj->refType,$obj->refId);
         }
       }
     } else if ($class=='Term') {
-      if (isset($kpiListToCalculate['term'])) {
+      if (isset($kpiListToCalculate['term']) and ($restrictToKpi==null or $restrictToKpi='term')) {
         $idP=$obj->idProject;
         $real=0;
         $validated=0;
@@ -149,13 +149,13 @@ class KpiValue extends SqlElement {
           $kv->kpiType='T';
           $kv->weight=1;
           $kv->refDone=0;
-          $kv->setDates();
+          $kv->setDates($date);
           $kv->kpiValue=$real/$validated;
           $kv->save();
         }
       }
     } else if ($class=='Deliverable' or $class=='Incoming') {
-      if (isset($kpiListToCalculate[strtolower($class)])) {
+      if (isset($kpiListToCalculate[strtolower($class)]) and ($restrictToKpi==null or $restrictToKpi=$class)) {
         $idP=$obj->idProject;
         $ppe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement',array('refType'=>'Project', 'refId'=>$idP));
         $classWeight=$class.'Weight';
@@ -194,7 +194,7 @@ class KpiValue extends SqlElement {
           $kv->kpiType=($class=='Deliverable')?'O':'I';
           $kv->weight=1;
           $kv->refDone=($ppe->realDuration)?1:0;
-          $kv->setDates();
+          $kv->setDates($date);
           $kv->kpiValue=$quality/$maxQuality;
           $kv->save();
           self::consolidate('Project',$idP);
@@ -252,6 +252,48 @@ class KpiValue extends SqlElement {
     $this->month=$gw->month;
     $this->year=$gw->year;
     $this->week=$gw->week;
+  }
+  
+  /**  
+   * Regeneration of all Kpi Values for existing projects
+   * To be used only for migration purpose
+   * $idKpi = id for KpiDefinition, to restrict generation for this given Kpi // TODO (not taken into account yet)
+   */
+  public static function regenerateKpiValues($idKpi=null) {
+    // Controls to avoid erroneous calculation
+    $user=getSessionUser();
+    $profile=new Profile($user->getProfile());
+    if ($profile->profileCode!='ADM') { errorLog("call for KpiValue::regenerateKpiValues() by non admin user"); return; }
+    global $maintenance;
+    if ($maintenance!=true) { errorLog("call for KpiValue::regenerateKpiValues() out of maintenance feature"); return; }
+    
+    $kpi=new KpiDefinition($idKpi);
+    $kpiCode=$kpi->code;
+    traceLog("Regeneration of Kpi history for Kpi = ".(($kpiCode)?$kpiCode:'all'));
+    
+    projeqtor_set_time_limit(0);
+    $phList=(new ProjectHistory())->getSqlElementsFromCriteria(null,false,null, "idProject asc, day asc");
+    $proj=new Project();
+    $cpt=0;
+    Sql::beginTransaction();
+    $pe=new ProjectPlanningElement();
+    foreach ($phList as $ph) {
+      $cpt++;
+      if ($pe->refId != $ph->idProject) {
+        $pe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement',array('refType'=>'Project','refId'=>$ph->idProject));
+      }
+      $pe->realWork=$ph->realWork;
+      $pe->leftWork=$ph->leftWork;
+      $pe->plannedWork=$ph->realWork+$ph->leftWork;
+      self::calculateKpi($pe,'workload', substr($ph->day,0,4).'-'.substr($ph->day,4,2).'-'.substr($ph->day,6,2));
+      if ($cpt % 100 == 0) {
+        Sql::commitTransaction();
+        traceLog("$cpt ProjectHistory elements treated");
+        Sql::beginTransaction();
+      }
+    }
+    Sql::commitTransaction();
+    traceLog("$cpt ProjectHistory elements treated");
   }
 }
 ?>

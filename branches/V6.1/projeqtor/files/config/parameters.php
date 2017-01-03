@@ -22,6 +22,7 @@ $logLevel='3';                    // "1"=Errors, "2"=Trace, "3"=Debug, "4"=Scrip
 //$flashReport=true;               // Specific evolution Parameter
 $enforceUTF8 = '1';                // Positionned by default for new installs since V4.4.0
 $paramSupportEmail="support@projeqtor.org"; // Email displayed as support mail
+$pdfNamePrefix="ProjeQtOr - ";
 
 // ========== Debugging configuration ====================================================
 $debugQuery=false;                 // Debug all queries : trace Query and running time for each query
