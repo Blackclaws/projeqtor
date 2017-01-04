@@ -1795,6 +1795,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           //if (isIE() and ! $val) $val='<div></div>';
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
           $ckEditorNumber++;
+          //gautier
+          $ckeDivheight=Parameter::getUserParameter('ckeditorHeight'.$classObj.$extName);
+          $ckeDivheight=($ckeDivheight)?$ckeDivheight.'px':'200px';
           echo '<textarea style="height:300px"'; // Important to set big height to retreive correct scroll position after save
           echo ' name="'.$col.$extName.'" ';
           echo ' id="'.$col.$extName.'" ';
@@ -1810,7 +1813,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'ReadOnly" value="true" />';
           }
           echo '<input type="hidden" id="ckeditorType" value="'.getEditorType().'" />';
-          
+          echo '<input type="hidden" id="ckeditorHeight'.$ckEditorNumber.'" value="'.$ckeDivheight.'" />';
         }else {
           $val=str_replace("\n","",$val);
           echo '<textarea style="display:none; visibility:hidden;" ';
