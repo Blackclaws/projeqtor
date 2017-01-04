@@ -3665,6 +3665,9 @@ var maxEditorHeight = Math.round(screen.height * 0.6);
 
 function ckEditorReplaceEditor(editorName, numEditor) {
   var height = 200;
+  if (dojo.byId("ckeditorHeight"+numEditor)) {
+    height=dojo.byId("ckeditorHeight"+numEditor).value;
+  }
   if (editorName == 'noteNote')
     height = maxEditorHeight - 150;
   var readOnly = false;

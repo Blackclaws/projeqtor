@@ -330,7 +330,7 @@ $graph->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>L
 $graph->drawText($graphWidth/2,20,i18n("report45DegreeChart"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Render the picture (choose the best way) */
-$imgName=getGraphImgName("scurvechart");
+$imgName=getGraphImgName("fortyfivedegreechart");
 $graph->Render($imgName);
 
 echo '<table width="95%" align="center"><tr><td align="center">';

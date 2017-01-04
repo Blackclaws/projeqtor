@@ -38,6 +38,14 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
   $idProject=trim($_REQUEST['idProject']);
   $idProject = Security::checkValidId($idProject);
 }
+$scale='month';
+if (array_key_exists('format',$_REQUEST)) {
+  $scale=$_REQUEST['format'];
+}
+$showThreshold=false;
+if (array_key_exists('showThreshold',$_REQUEST)) {
+  $showThreshold=true;
+}
 
 $headerParameters="";
 if ($idProject!="") {
@@ -88,6 +96,7 @@ foreach($listProjects as $prj) {
   if (! array_key_exists($prj->id, $visibleProjects)) continue; // Will avoid to display projects not visible to user
   $cptProjectsDisplayed++;
   $lstTerms=(new Term() )->getSqlElementsFromCriteria(array('idProject'=>$prj->id));
+  if (count($lstTerms)==0) $lstTerms[]=new Term();
   $nbTerms=count($lstTerms);
   echo '<tr>';
   echo '<td class="reportTableDataSpanned" rowspan="'.$nbTerms.'" style="width:20%;text-align:left">' . htmlEncode($prj->name) . '</td>';
@@ -95,6 +104,7 @@ foreach($listProjects as $prj) {
   $cptTerms=0;
   foreach ($lstTerms as $term) {
     $cptTerms++;
+    $term->setCalculatedFromActivities();
     $validated=$term->validatedAmount;
     $real=$term->amount;
     $left=($real>0)?0:$validated;
@@ -109,12 +119,16 @@ foreach($listProjects as $prj) {
       $critKpi=array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$prj->id);
       $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
       if (!$kpiValue) $kpiValue=new KpiValue();
-      $color='#ffffff';
+      $compareValue=($prj->ProjectPlanningElement->progress/100)-$kpiValue->kpiValue;
+      $color='';
       foreach ($thresholds as $th) {
-        if ($kpiValue->kpiValue>$th->thresholdValue) {
+        if ($compareValue>$th->thresholdValue) {
           $color=$th->thresholdColor;
           break;
         }
+      }
+      if (!$color and $th and $term->id) {
+        $color=$th->thresholdColor;
       }
       $dispValue=$kpiValue->kpiValue;
       if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
@@ -127,7 +141,10 @@ foreach($listProjects as $prj) {
     echo '</tr>';
     echo '<tr>';
   }
-  echo '<td class="reportTableHeader" colspan="3" style="width:55%">' . i18n('sum') . '</td>';
+  $dispValue=$prj->ProjectPlanningElement->progress/100;
+  if ($dispValue!==null and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
+  echo '<td class="reportTableHeader" style="width:20%;text-align:left"><i>' . i18n('colProgress').' : '. $dispValue. '</i></td>';
+  echo '<td class="reportTableHeader" colspan="2" style="width:35%">' . i18n('sum') . '</td>';
   echo '<td class="reportTableHeader" style="width:10%">' . htmlDisplayCurrency($sumValidated,true) . '</td>';
   echo '<td class="reportTableHeader" style="width:10%">' . htmlDisplayCurrency($sumReal,true) . '</td>';
   echo '<td class="reportTableHeader" style="width:10%">' . htmlDisplayCurrency($sumLeft,true) . '</td>';
@@ -138,27 +155,89 @@ echo '</table>';
 // Graph
 if (! testGraphEnabled()) { return;}
 
-return;
+// ==========================================================================================================
+// 1st Graph comparing real VS validated 
+$currency=Parameter::getGlobalParameter('currency');
+if ($sumValidated>9000000 or $sumReal>9000000) {
+  $sumValidated=$sumValidated/1000000;
+  $sumReal=$sumReal/1000000;
+  $currency='M'.$currency;
+} else if ($sumValidated>90000 or $sumReal>90000) {
+  $sumValidated=$sumValidated/1000;
+  $sumReal=$sumReal/1000;
+  $currency='K'.$currency;
+}
+$dataSet = new pData();
+$arrayValidated=array($sumValidated);
+$arrayReal=array($sumReal);
+$arrayDates=array(htmlFormatDate(date('Y-m-d')));
+$graphWidth=500;
+$graphHeight=300;
+$dataSet->addPoints($arrayReal,"real");
+$dataSet->addPoints($arrayValidated,"validated");
+$dataSet->addPoints($arrayDates,"dates");
+$dataSet->setSerieOnAxis("real",0);
+$dataSet->setSerieOnAxis("validated",0);
+$dataSet->setAbscissa("dates");
+$dataSet->setSerieDescription("real",i18n("realTerms")." (".$currency.")  \n");
+$dataSet->setSerieDescription("validated",i18n("validatedTerms")." (".$currency.")  \n");
 
-// constitute query and execute for planned post $end (last real work day)
+$graph = new pImage($graphWidth,$graphHeight,$dataSet);
+/* Draw the background */
+$graph->Antialias = FALSE;
+$Settings = array("R"=>255, "G"=>255, "B"=>255, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
+/* Add a border to the picture */
+$graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
+/* Set the default font */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
+/* Draw the scale */
+$dataSet->setAxisUnit(0,' '.$currency.' ');
+$graph->setGraphArea(70,50,$graphWidth-200,$graphHeight-30);
+$graph->drawFilledRectangle(70,50,$graphWidth-200,$graphHeight-30,array("R"=>230,"G"=>230,"B"=>230));
+$formatGrid=array("Mode"=>SCALE_MODE_START0 , "GridTicks"=>0,
+    "DrawYLines"=>false, "DrawXLines"=>false,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>0, "GridR"=>150,"GridG"=>150,"GridB"=>150);
+$graph->drawScale($formatGrid);
+$dataSet->setSerieDrawable("real",true);
+$dataSet->setSerieDrawable("validated",true);
+$dataSet->setPalette("real",array("R"=>120,"G"=>140,"B"=>250,"Alpha"=>255));
+$dataSet->setPalette("validated",array("R"=>255,"G"=>255,"B"=>255,"Alpha"=>255));
+$format=array( "BorderR"=>0,"BorderG"=>0,"BorderB"=>0);
+$graph->drawBarChart($format);
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>12,"R"=>50,"G"=>50,"B"=>50));
+$name=$kpi->name;
+if ($idProject) {
+  $prj=new Project($idProject,true);
+  $name.=' - '.$prj->name;
+}
+$name=wordwrap($name,50);
+$graph->drawText($graphWidth/2,25,$name,array("FontSize"=>12,"Align"=>TEXT_ALIGN_MIDDLEMIDDLE));
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
+$graph->drawLegend($graphWidth-180,55,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+    "Margin"=>5));
+$imgName=getGraphImgName("kpitermsummary");
+$graph->Render($imgName);
+echo '<br/><br/><br/>';
+echo '<table width="95%" align="center"><tr><td align="center">';
+echo '<img style="width:'.$graphWidth.'px;height:'.$graphHeight.'" src="' . $imgName . '" />';
+echo '</td></tr></table>';
+echo '<br/>';
+
+// ==========================================================================================================
+
+// 2nd graph from KPI history
 $h=new KpiHistory();
 $hTable=$h->getDatabaseTableName();
 $query = "select AVG(prj.valueP) as value, prj.periodP as period";
 $query.= " from (select MAX(h.kpiValue) as valueP, h.$scale as periodP, h.refId as idP";
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
-if ($done) {$query.= " and h.refDone=1";}
-if ($year) {
-  if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
-    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
-  } else {
-    $query.= " and h.year='$year'";
-  }
-}
 $query.= " group by h.$scale, h.refId) prj ";
 $query.= " group by periodP";
 $result=Sql::query($query);
-
 
 $end='';
 $start='';
@@ -271,9 +350,6 @@ $dataSet->setAxisUnit(0,($displayAsPct)?"%  ":"  ");
 $graph->setGraphArea(55,70,$graphWidth-20,$graphHeight-60);
 $graph->drawFilledRectangle(55,70,$graphWidth-20,$graphHeight-60,array("R"=>230,"G"=>230,"B"=>230));
 
-
-
-
 $graph->Antialias = TRUE;
 if ($showThreshold) {
   $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
@@ -319,14 +395,6 @@ if ($idProject) {
   $prj=new Project($idProject,true);
   $name.=' - '.$prj->name;
 } 
-if ($idOrganization) {
-  $org=new Organization($idOrganization,true);
-  $name.=' - '.$org->name;
-}
-if ($idProjectType) {
-  $typ=new ProjectType($idProjectType,true);
-  $name.=' - '.$typ->name;
-}
 $name=wordwrap($name,50); 
 $graph->drawText($graphWidth/2,35,$name,array("FontSize"=>18,"Align"=>TEXT_ALIGN_MIDDLEMIDDLE));
 

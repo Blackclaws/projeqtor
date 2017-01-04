@@ -30,7 +30,7 @@ include("../external/pChart2/class/pData.class.php");
 include("../external/pChart2/class/pDraw.class.php");
 include("../external/pChart2/class/pImage.class.php");
 
-$kpiColoFull=false; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
+$kpiColoFull=true; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
 $displayAsPct=true;
 
 $idProject="";
@@ -465,7 +465,7 @@ $name=wordwrap($name,50);
 $graph->drawText($graphWidth/2,35,$name,array("FontSize"=>18,"Align"=>TEXT_ALIGN_MIDDLEMIDDLE));
 
 /* Render the picture (choose the best way) */
-$imgName=getGraphImgName("scurvechart");
+$imgName=getGraphImgName("kpidurationchart");
 $graph->Render($imgName);
 echo '<br/><br/><br/>';
 echo '<table width="95%" align="center"><tr><td align="center">';
