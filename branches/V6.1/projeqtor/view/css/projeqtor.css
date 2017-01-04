@@ -1284,6 +1284,23 @@ label, .label, .smallLabel {
   text-shadow: 1px 1px #FFFFFF  ;
 }
 
+.pseudoButtonFullScreen {
+  background: transparent;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ffffff;
+  border-radius:5px;
+  z-index:3000;
+  color: #000000;
+  text-shadow: 1px 1px #FFFFFF  ;
+  cursor:pointer;
+  height: 26px;
+  margin-left:346px;
+}
+.pseudoButtonFullScreen:hover {
+  background: rgba(255,255,255,1);
+  color: #000000;
+  text-shadow: 1px 1px #FFFFFF  ;
+}
 
 .directAttachment .dijitButtonText {
   margin:auto;

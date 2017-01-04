@@ -105,7 +105,7 @@ if($copyType=="copyObjectTo"){
                 required="required"
                 style="width: 400px;"
                 trim="true" maxlength="100" class="input"
-                value="<?php echo $toCopy->name;?>">
+                value="<?php echo str_replace('"', '&quot;', $toCopy->name);?>">
                </div>     
              </td>
            </tr>

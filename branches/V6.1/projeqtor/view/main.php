@@ -725,6 +725,19 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
+          
+          <!--           KROWRY -->      
+         <td width="20%">
+            <div  class="pseudoButtonFullScreen" style="width:28px;"onclick="toggleFullScreen()">
+              <table>
+                <tr>
+                  <td style="width:28px">
+                    <?php echo formatIcon('FullScreen', 32);?>
+                  </td>
+                </tr>
+              </table>
+            </div>
+         </td> 
           <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
@@ -738,6 +751,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   </tr>
                 </table>
             </a></div>            
+          </td>
+            </div>
           </td>
         </tr>
       </table>  

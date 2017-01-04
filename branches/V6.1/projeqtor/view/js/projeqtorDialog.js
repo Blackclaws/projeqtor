@@ -7546,3 +7546,36 @@ function removeKpiThreshold(idKpiThreshold) {
   msg=i18n('confirmDelete', new Array(i18n('KpiThreshold'), idKpiThreshold));
   showConfirm(msg, actionOK);
 }
+
+function toggleFullScreen() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {
+      document.documentElement.requestFullScreen();  
+    } else if (document.documentElement.mozRequestFullScreen) {  
+      document.documentElement.mozRequestFullScreen();  
+    } else if (document.documentElement.webkitRequestFullScreen) {  
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+    }
+    if (menuHidden==false){
+      hideShowMenu();
+    }
+    if(switchedMode==false){
+      switchMode();
+    }
+  } else { 
+    if (document.cancelFullScreen ) {
+      document.cancelFullScreen(); 
+    } else if (document.mozCancelFullScreen) {  
+      document.mozCancelFullScreen(); 
+    } else if (document.webkitCancelFullScreen) {  
+      document.webkitCancelFullScreen(); 
+    }
+    if(menuHidden==true){
+      hideShowMenu();
+    }
+    if(switchedMode==true){
+      switchMode();
+    }
+  }
+}

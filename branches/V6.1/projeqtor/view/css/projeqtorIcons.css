@@ -369,6 +369,10 @@
 .iconFollowup22 { background-image: url(images/iconFollowup22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconFollowup16 { background-image: url(images/iconFollowup16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconFullScreen32 { background-image: url(images/iconFullScreen.png);  background-repeat: no-repeat; width: 28px; height: 28px;  background-size: 28px 28px; }
+.iconFullScreen22 { background-image: url(images/iconFullScreen.png);  background-repeat: no-repeat; width: 22px; height: 22px;  background-size: 22px 22px; }
+.iconFullScreen16 { background-image: url(images/iconFullScreen.png);  background-repeat: no-repeat; width: 16px; height: 16px;  background-size: 16px 16px; }
+
 .iconGallery32 { background-image: url(images/iconGallery32.png); background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconGallery22 { background-image: url(images/iconGallery22.png); background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconGallery16 { background-image: url(images/iconGallery16.png); background-repeat: no-repeat; width: 16px; height: 16px; }

@@ -89,16 +89,38 @@ CREATE TABLE `${prefix}kpidefinition` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `code` varchar(100) DEFAULT NULL,
+  `description` mediumtext,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `kpidefinitionCode` ON `${prefix}kpidefinition` (`code`);
-INSERT INTO `${prefix}kpidefinition` (`id`, `name`, `code`, `idle`) VALUES 
-(1, 'project duration KPI', 'duration', 0),
-(2, 'project workload KPI', 'workload', 0),
-(3, 'project terms KPI', 'term', 0),
-(4, 'project deliverables quality KPI', 'deliverable', 0),
-(5, 'project incomings quality KPI', 'incoming', 0);  
+INSERT INTO `${prefix}kpidefinition` (`id`, `name`, `code`, `idle`,`description`) VALUES 
+(1, 'project duration KPI', 'duration', 0, '
+<b>KPI for not ended project = [project planned duration] / [project validated duration]</b><br/>
+<b>KPI for ended project = [project real duration] / [project validated duration]</b><br/>
+<br/>
+KPI < 1 => project is shorter than expected<br/>
+KPI = 1 => project is exactly as long as expected<br/>
+KPI > 1 => project is longer than expected<br/>
+<br/>
+This indicator is consolidated amongst projects (for organization) without weighting.'),
+(2, 'project workload KPI', 'workload', 0, '
+<b>KPI for project = ( [project real work] + [project left work] / [project validated work]</b><br/>
+<br/>
+KPI < 1 => project workload is less than expected<br/>
+KPI = 1 => project workload is conform to expected<br/>
+KPI > 1 => project workload is more than expected<br/>
+<br/>
+This indicator is consolidated amongst projects (for organization) with weighting on [project validated work].'),
+(3, 'project terms KPI', 'term', 0, '
+<b>KPI for project = [sum of real amount for all project terms] / [sum of validated amount for all project terms]</b><br/>
+<br/>
+This indicator has no intrinsic meaning but has some compared to project progress.<br/>
+So for this indicator, thresholds will not be compared to KPI value directly but to : [project progress] - [KPI value] <br/>(that should then be as small as possible).<br/>
+<br/>
+This indicator is not consolidated amongst projects (for organization).'),
+(4, 'project deliverables quality KPI', 'deliverable', 0, ''),
+(5, 'project incomings quality KPI', 'incoming', 0, '');  
 
 CREATE TABLE `${prefix}kpithreshold` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

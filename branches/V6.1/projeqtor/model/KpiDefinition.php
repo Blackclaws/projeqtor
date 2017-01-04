@@ -36,6 +36,7 @@ class KpiDefinition extends SqlElement {
   public $name;
   public $code;
   public $idle;
+  public $description;
   public $_sec_thresholds;
   public $_spe_thresholds;
   public $_noDelete=true;
