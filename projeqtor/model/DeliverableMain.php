@@ -38,6 +38,7 @@ class DeliverableMain extends SqlElement {
   public $name;
   public $idDeliverableType;
   public $idProject;
+  public $externalReference;
   public $idUser;
   public $creationDateTime;
   public $description;
@@ -47,6 +48,7 @@ class DeliverableMain extends SqlElement {
   public $idResource;
   public $plannedDate;
   public $realDate;
+  public $validationDate;
   public $idle;
   public $result;
   public $_sec_Link;

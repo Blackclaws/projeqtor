@@ -30,7 +30,7 @@ include("../external/pChart2/class/pData.class.php");
 include("../external/pChart2/class/pDraw.class.php");
 include("../external/pChart2/class/pImage.class.php");
 
-$kpiColoFull=true; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
+$kpiColorFull=true; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
 $displayAsPct=true;
 
 $idProject="";
@@ -132,7 +132,7 @@ foreach($listProjects as $prj) {
       }
       $dispValue=$kpiValue->kpiValue;
       if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
-      if ($kpiColoFull) {
+      if ($kpiColorFull) {
         echo '<td class="reportTableData" rowspan="'.($nbTerms+1).'" style="width:15%;background-color:'.$color.';text-align:left">' . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') . '</td>';
       } else {
         echo '<td class="reportTableDataSpanned" rowspan="'.($nbTerms+1).'" style="width:15%;text-align:left">' . (($dispValue)?htmlDisplayColored($dispValue, $color):'') . '</td>';
