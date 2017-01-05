@@ -38,6 +38,7 @@ public $_sec_description;
   public $name;
   public $idIncomingType;
   public $idProject;
+  public $externalReference;
   public $idUser;
   public $creationDateTime;
   public $description;
@@ -47,6 +48,12 @@ public $_sec_description;
   public $idResource;
   public $plannedDate;
   public $realDate;
+  public $validationDate;
+  public $_tab_3_1=array('work','duration','cost','impact');
+  public $impactWork;
+  public $impactDuration;
+  public $impactCost;
+  public $_spe_impactEstimate;
   public $idle;
   public $result;
   public $_sec_Link;
@@ -231,6 +238,19 @@ public $_sec_description;
       }
     }
     KpiValue::calculateKpi($this);
+    return $result;
+  }
+  
+  public function drawSpecificItem($item) {
+    global $print, $comboDetail;
+    $result = "";
+    if ($item == 'impactEstimate') {
+      $result .= "<table><tr><td class='label' valign='top'><label>&nbsp;</label>";
+			$result .= "</td><td style='font-size:90%;color:#a0a0a0;'><i>(";
+			$result .=i18n('impactEstimate');
+			$result .= ")</i></td></tr></table>"; 
+      
+    }
     return $result;
   }
 }

@@ -119,8 +119,26 @@ This indicator has no intrinsic meaning but has some compared to project progres
 So for this indicator, thresholds will not be compared to KPI value directly but to : [project progress] - [KPI value] <br/>(that should then be as small as possible).<br/>
 <br/>
 This indicator is not consolidated amongst projects (for organization).'),
-(4, 'project deliverables quality KPI', 'deliverable', 0, ''),
-(5, 'project incomings quality KPI', 'incoming', 0, '');  
+(4, 'project deliverables quality KPI', 'deliverable', 0, '
+<b>KPI for deliverable = [Estimated quality value of deliverable] / [Nominal (max) quality value for deliverables]</b><br/>
+Quality value is defined in the deliverable status list, that will be selected on the deliverable.<br/>
+Nominal quality value is the max of the values defined in the deliverable status list.<br/>
+<b>KPI consolidated on project = Sum of ([Estimated quality value of deliverables]*[Weighting of deliverable]) / Sum([Nominal (max) quality value of deliverables]*[Weighting of deliverable])</b><br/>
+Weigting value of deliverable is defined in the deliverable weighting list, that will be selected on the deliverable.<br/>
+Consolidated value may not be calculated if all deliverables have zero weight.<br/>
+Unitary value of KPI for single deliverable is not stored in KPI history. Only consolidated value for project is stored is KPI history.<br/>
+<br/>
+This indicator is consolidated amongst projects (for organization) with weighting on global weight of deliverables on each project.'),
+(5, 'project incomings quality KPI', 'incoming', 0, '
+<b>KPI for incoming = ( [Estimated Quality value of incoming] / [Nominal (max) Quality value for incomings]</b><br/>
+Quality value is defined in the incoming Status list, that will be selected on the incoming.<br/>
+Nominal Quality value is the max of the values defined in the incoming Status list.<br/>
+<b>KPI consolidated on project = ( Sum of ([Estimated Quality value of incomings]*[Weighting of incoming]) / Sum([Nominal (max) Quality value of incomings]*[Weighting of incoming])</b><br/>
+Weigting value of incoming is defined in the incoming Weighting list, that will be selected on the incoming.<br/>
+Consolidated value may not be calculated if all incomings have zero weight.<br/>
+Unitary value of KPI for single incoming is not stored in KPI history. Only consolidated value for project is stored is KPI history.<br/>
+<br/>
+This indicator is consolidated amongst projects (for organization) with weighting on global weight of incomings on each project.');  
 
 CREATE TABLE `${prefix}kpithreshold` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -189,6 +207,7 @@ CREATE TABLE `${prefix}deliverable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT NULL,
   `reference` varchar(100) DEFAULT NULL,
+  `externalReference` varchar(256) DEFAULT NULL,
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `idDeliverableType` int(12) unsigned DEFAULT NULL,
@@ -200,6 +219,10 @@ CREATE TABLE `${prefix}deliverable` (
   `externalReference` varchar(100),
   `plannedDate` date DEFAULT NULL,
   `realDate` date DEFAULT NULL,
+  `validationDate` date DEFAULT NULL,
+  `impactWork` decimal(5) DEFAULT NULL,
+  `impactDuration` int(5) DEFAULT NULL,
+  `impactCost` decimal(9) DEFAULT null,
   `idDeliverableWeight` int(12) unsigned DEFAULT NULL,
   `idDeliverableStatus` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
@@ -240,11 +263,11 @@ CREATE TABLE `${prefix}deliverableStatus` (
 INSERT INTO `${prefix}deliverableStatus` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
 (1, 'Deliverable', 'not done', 0, 10, '#ff0000', '0'),
 (2, 'Deliverable', 'delivery refused (major reservations)', 1, 20, '#ff8c00', '0'),
-(3, 'Deliverable', 'accepted with minor reservations', 2, 30, '#afeeee', '0'),
+(3, 'Deliverable', 'accepted with minor reservations', 2, 30, '#ffff00', '0'),
 (4, 'Deliverable', 'accepted without reservations', 3, 40, '#7fff00', '0'),
 (5, 'Incoming', 'not provided', 0, 10, '#ff0000', '0'),
 (6, 'Incoming', 'not conform', 1, 20, '#ff8c00', '0'),
-(7, 'Incoming', 'accepted with minor reservations', 2, 30, '#afeeee', '0'),
+(7, 'Incoming', 'accepted with minor reservations', 2, 30, '#ffff00', '0'),
 (8, 'Incoming', 'accepted without reservations', 3, 40, '#7fff00', '0');
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `code`) VALUES 
@@ -322,10 +345,10 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (66, 'reportKpiWorkloadProject', 11, 'kpiWorkload.php?scope=Project', 1120, 'P'),
 (67, 'reportKpiWorkloadOrganization', 11, 'kpiWorkload.php?scope=Organization', 1125, 'P'),
 (68, 'reportKpiTerm', 11, 'kpiTerm.php', 1150, 'P'),
-(69, 'reportKpiDeliverableProject', 11, 'kpiDeliverable.php?scope=Project', 1130, 'P'),
+(69, 'reportKpiDeliverableProject', 11, 'kpiDeliverable.php?class=Deliverable&scope=Project', 1130, 'P'),
 (70, 'reportKpiDeliverableOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1135, 'P'),
-(71, 'reportKpiIncomingProject', 11, 'kpiIncoming.php?scope=Project', 1140, 'P'),
-(72, 'reportKpiIncomingOrganization', 11, 'kpiIncoming.php?scope=Organization', 1145, 'P');
+(71, 'reportKpiIncomingProject', 11, 'kpiDeliverable.php?class=Incoming&scope=Project', 1140, 'P'),
+(72, 'reportKpiIncomingOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1145, 'P');
 
 --INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 --(64, 'idProject', 'projectList', 10, 'currentProject'),

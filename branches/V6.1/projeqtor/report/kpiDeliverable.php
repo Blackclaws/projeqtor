@@ -48,11 +48,6 @@ if (array_key_exists('idProjectType',$_REQUEST) and trim($_REQUEST['idProjectTyp
   $idProjectType=trim($_REQUEST['idProjectType']);
   $idProjectType = Security::checkValidId($idProjectType);
 }
-$idCategory="";
-if (array_key_exists('idCategory',$_REQUEST) and trim($_REQUEST['idCategory'])!="") {
-  $idCategory=trim($_REQUEST['idCategory']);
-  $idCategory = Security::checkValidId($idCategory);
-}
 $year="";
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $year=trim($_REQUEST['yearSpinner']);
@@ -76,6 +71,10 @@ $scale='month';
 if (array_key_exists('format',$_REQUEST)) {
   $scale=$_REQUEST['format'];
 }
+$class='Deliverable';
+if (array_key_exists('class',$_REQUEST)) {
+  $class=$_REQUEST['class'];
+}
 
 $headerParameters="";
 if ($idProject!="") {
@@ -86,9 +85,6 @@ if ($idOrganization!="") {
 }
 if ($idProjectType!="") {
   $headerParameters.= i18n("colIdProjectType") . ' : ' . htmlEncode(SqlList::getNameFromId('ProjectType',$idProjectType)) . '<br/>';
-}
-if ($idCategory!="") {
-  $headerParameters.= i18n("colIdCategory") . ' : ' . htmlEncode(SqlList::getNameFromId('Category',$idCategory)) . '<br/>';
 }
 if ($year!="") {
   $headerParameters.= i18n("year") . ' : ' . htmlFormatDate($year) . '<br/>';
@@ -129,8 +125,19 @@ if ($scope=='Project') {
   echo i18n('error : scope is not defined'); 
   echo '</div>';
 }
-
-$kpi=new KpiDefinition(2);
+$idKpi=0;
+$nbCols=0;
+If ($class=='Deliverable') {
+  $idKpi=4;
+  $nbCols=8;
+} else if ($class=='Incoming') {
+  $idKpi=5;
+  $nbCols=9;
+} else {
+  errorLog("Incorrect Class '$class' for kpiDeliverable report");
+  exit;
+}
+$kpi=new KpiDefinition($idKpi);
 
 $user=getSessionUser();
 $listProjects=array();
@@ -144,9 +151,6 @@ if ($idProject) {
   }
   if ($idProjectType) {
     $where.=" and idProjectType='$idProjectType'";
-  }
-  if ($idCategory) {
-    $where.=" and idCategory='$idCategory'";
   }
   if (! $idOrganization and !$idProjectType) {
     $where.='and id in '.transformListIntoInClause($visibleProjects);
@@ -190,100 +194,159 @@ if ($month) {
 }
 
 $thresholds=(new KpiThreshold())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
-echo '<table width="90%" align="center">';
-echo '<tr>';
-echo '<td class="reportTableHeader" style="width:20%">' . i18n('Project') . '</td>';
-echo '<td class="reportTableHeader" style="width:20%">' . i18n('Client') . '</td>';
-echo '<td class="reportTableHeader" style="width:10%">' . i18n('colValidatedWork') . '</td>';
-echo '<td class="reportTableHeader" style="width:10%">' . i18n('colRealWork') . '</td>';
-echo '<td class="reportTableHeader" style="width:10%">' . i18n('colLeftWork') . '</td>';
-echo '<td class="reportTableHeader" style="width:10%">' . i18n('colPlannedWork') . '</td>';
-echo '<td class="reportTableHeader" style="width:20%">' . htmlEncode($kpi->name) . '</td>';
-echo '</tr>';
-$arrayProj=array();
-$cptProjectsDisplayed=0;
-$sumValues=0;
-$sumWeight=0;
-foreach($listProjects as $prj) {
-  $arrayProj[$prj->id]=$prj->name;
-  if (! array_key_exists($prj->id, $visibleProjects)) continue; // Will avoid to display projects not visible to user
-  if ($done and ! $prj->ProjectPlanningElement->realEndDate) continue;
-  if ($done and isset($start) and isset($end)) {
-    if ($prj->ProjectPlanningElement->realEndDate<$start or $prj->ProjectPlanningElement->realEndDate>$end) {continue;}
-  }
-  $cptProjectsDisplayed++;
-  echo '<tr>';
-  echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode($prj->name) . '</td>';
-  echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode(SqlList::getNameFromId('Client', $prj->idClient)) . '</td>';
-  echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->validatedWork) . '</td>';
-  echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->realWork) . '</td>';
-  echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->leftWork) . '</td>';
-  echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->plannedWork) . '</td>';
-  $critKpi=array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$prj->id);
-  if (!$period) { // Added if (1) as value displayed in table is always the actual value, 
-    $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
-  } else {
-    $critKpi[$period]=$periodValue;
-    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
-    $kpiValue=reset($lstKpi);
-  }
-  if (!$kpiValue) $kpiValue=new KpiValue();
-  $color='#ffffff';
-  foreach ($thresholds as $th) {
-    if ($kpiValue->kpiValue>$th->thresholdValue) {
-      $color=$th->thresholdColor;
-      break;
-    }
-  }
-  $dispValue=$kpiValue->kpiValue;
-  if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
-  if ($kpiColorFull) {
-    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' 
-        . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') 
-        . '</td>';
-  } else {
-    echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' 
-        . (($dispValue)?htmlDisplayColored($dispValue, $color):'') . '</td>';
-  }
-  if ($kpiValue->kpiValue) {
-    $sumValues+=$kpiValue->kpiValue*$kpiValue->weight;
-    $sumWeight+=$kpiValue->weight;
-  }
-  echo '</tr>';
+$maxKpiValue=0;
+$listKpiValue=SqlList::getList($class.'Status','value',true);
+foreach ($listKpiValue as $kpiValue) {
+  if ($kpiValue>$maxKpiValue) $maxKpiValue=$kpiValue;
 }
-if ($cptProjectsDisplayed>0 and $scope=='Organization') {
-  echo '<tr>';
-  $name=$kpi->name;
-  if ($idOrganization) {
-    $org=new Organization($idOrganization,true);
-    $name.=' - '.$org->name;
-  }
-  if ($idProjectType) {
-    $typ=new ProjectType($idProjectType,true);
-    $name.=' - '.$typ->name;
-  }
-  if ($done) {
-    $name.=' ('.i18n("colOnlyFinished").')';
-  }
-  echo '<td class="reportTableHeader" style="width:80%;text-align:left" colspan="6">' . $name . '</td>';
-  $consolidated=($sumWeight)?round($sumValues/$sumWeight,2):null;
-  $color='#ffffff';
-  foreach ($thresholds as $th) {
-    if ($consolidated>$th->thresholdValue) {
-      $color=$th->thresholdColor;
-      break;
-    }
-  }
-  if ($consolidated and $displayAsPct) $consolidated=htmlDisplayPct($consolidated*100);
-  if ($kpiColorFull) {
-    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' . (($consolidated)?htmlDisplayColoredFull($consolidated, $color):'') . '</td>';
-  } else {
-    echo '<td class="reportTableDataSpanned" style="width:20%;font-weight:bold;text-align:left">' . (($consolidated)?htmlDisplayColored($consolidated, $color):'') . '</td>';
-  }
-  echo '</tr>';
-}
-echo '</table>';
 
+if ($idProject) {
+  echo '<table width="90%" align="center">';
+  echo '<tr>';
+  echo '<td class="reportTableHeader" colspan="'.$nbCols.'"style="width:100%">' .$listProjects[$idProject]->name. '</td>';
+  echo '</tr>';
+  echo '<tr>';
+  echo '<td class="reportTableHeader" style="width:'.(($nbCols==8)?'20':'15').'%">' . i18n('colReference') . '</td>';
+  echo '<td class="reportTableHeader" style="width:'.(($nbCols==8)?'20':'15').'%">' . i18n('col'.$class.'Name') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colId'.$class.'Status') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colPlannedDate') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colRealDate') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colValidationDate') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colId'.$class.'Weight') . '</td>';
+  if ($class=='Incoming') {
+    echo '<td class="reportTableHeader" style="width:10%">' . i18n('colImpact')
+    .'<br/><span style="font-weight:normal">('.i18n('colWork').', <i>'.i18n('colDuration').'</i>, <b>'.i18n('colCost'). '</b>)</td>';
+  }
+  echo '<td class="reportTableHeader" style="width:10%">' . htmlEncode($kpi->name) . '</td>';
+  echo '</tr>';
+  $itemList=(new $class())->getSqlElementsFromCriteria(array('idProject'=>$idProject),false,null,'plannedDate asc');
+  foreach ($itemList as $item) {
+    echo '<tr>';
+    echo '<td class="reportTableDataSpanned" style="width:'.(($nbCols==8)?'20':'15').'%">' . htmlEncode($item->externalReference) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:'.(($nbCols==8)?'20':'15').'%">' . htmlEncode($item->name) . '</td>';
+    $fldStatus='id'.$class.'Status';
+    $color=SqlList::getFieldFromId($class.'Status',$item->$fldStatus,'color');
+    $value=SqlList::getNameFromId($class.'Status',$item->$fldStatus);
+    if ($kpiColorFull) {
+      echo '<td class="reportTableData" style="width:10%;background-color:'.$color.';text-align:left">' . htmlDisplayColoredFull($value, $color).'</td>';
+    } else {
+      echo '<td class="reportTableDataSpanned" style="width:10%;font-weight:bold;text-align:left">' . htmlDisplayColored($value, $color). '</td>';
+    }
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlFormatDate($item->plannedDate) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlFormatDate($item->realDate) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' .htmlFormatDate($item->validationDate) . '</td>';
+    $fldWeight='id'.$class.'Weight';
+    $value=SqlList::getNameFromId($class.'Weight',$item->$fldWeight);
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlEncode($value) . '</td>';
+    if ($class=='Incoming') {
+      $value='';
+      $value.=($item->impactWork)?Work::displayWorkWithUnit($item->impactWork).'<br/>':'';
+      $value.=($item->impactDuration)?'<i>'.$item->impactDuration.'&nbsp;'.i18n("shortDay").'</i><br/>':'';
+      $value.=($item->impactCost)?'<b>'.htmlDisplayCurrency($item->impactCost,true).'</b>':'';
+      echo '<td class="reportTableDataSpanned" style="width:10%">' . $value.  '</td>';
+    }
+    $value=(isset($listKpiValue[$item->$fldStatus]))?$listKpiValue[$item->$fldStatus]:null;
+    $dispValue=($maxKpiValue!=0 and $value!==null)?(round($value/$maxKpiValue,2)):null;
+    if ($dispValue!==null and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . $dispValue . '</td>';
+    echo '</tr>';
+  }
+} else {
+  echo '<table width="90%" align="center">';
+  echo '<tr>';
+  echo '<td class="reportTableHeader" style="width:20%">' . i18n('Project') . '</td>';
+  echo '<td class="reportTableHeader" style="width:20%">' . i18n('Client') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colValidatedWork') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colRealWork') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colLeftWork') . '</td>';
+  echo '<td class="reportTableHeader" style="width:10%">' . i18n('colPlannedWork') . '</td>';
+  echo '<td class="reportTableHeader" style="width:20%">' . htmlEncode($kpi->name) . '</td>';
+  echo '</tr>';
+  $arrayProj=array();
+  $cptProjectsDisplayed=0;
+  $sumValues=0;
+  $sumWeight=0;
+  foreach($listProjects as $prj) {
+    $arrayProj[$prj->id]=$prj->name;
+    if (! array_key_exists($prj->id, $visibleProjects)) continue; // Will avoid to display projects not visible to user
+    if ($done and ! $prj->ProjectPlanningElement->realEndDate) continue;
+    if ($done and isset($start) and isset($end)) {
+      if ($prj->ProjectPlanningElement->realEndDate<$start or $prj->ProjectPlanningElement->realEndDate>$end) {continue;}
+    }
+    $cptProjectsDisplayed++;
+    echo '<tr>';
+    echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode($prj->name) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' . htmlEncode(SqlList::getNameFromId('Client', $prj->idClient)) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->validatedWork) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->realWork) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->leftWork) . '</td>';
+    echo '<td class="reportTableDataSpanned" style="width:10%">' . Work::displayWorkWithUnit($prj->ProjectPlanningElement->plannedWork) . '</td>';
+    $critKpi=array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$prj->id);
+    if (!$period) { // Added if (1) as value displayed in table is always the actual value, 
+      $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
+    } else {
+      $critKpi[$period]=$periodValue;
+      $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
+      $kpiValue=reset($lstKpi);
+    }
+    if (!$kpiValue) $kpiValue=new KpiValue();
+    $color='#ffffff';
+    foreach ($thresholds as $th) {
+      if ($kpiValue->kpiValue>$th->thresholdValue) {
+        $color=$th->thresholdColor;
+        break;
+      }
+    }
+    $dispValue=$kpiValue->kpiValue;
+    if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
+    if ($kpiColorFull) {
+      echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' 
+          . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') 
+          . '</td>';
+    } else {
+      echo '<td class="reportTableDataSpanned" style="width:20%;text-align:left">' 
+          . (($dispValue)?htmlDisplayColored($dispValue, $color):'') . '</td>';
+    }
+    if ($kpiValue->kpiValue) {
+      $sumValues+=$kpiValue->kpiValue*$kpiValue->weight;
+      $sumWeight+=$kpiValue->weight;
+    }
+    echo '</tr>';
+  }
+  if ($cptProjectsDisplayed>0 and $scope=='Organization') {
+    echo '<tr>';
+    $name=$kpi->name;
+    if ($idOrganization) {
+      $org=new Organization($idOrganization,true);
+      $name.=' - '.$org->name;
+    }
+    if ($idProjectType) {
+      $typ=new ProjectType($idProjectType,true);
+      $name.=' - '.$typ->name;
+    }
+    if ($done) {
+      $name.=' ('.i18n("colOnlyFinished").')';
+    }
+    echo '<td class="reportTableHeader" style="width:80%;text-align:left" colspan="6">' . $name . '</td>';
+    $consolidated=($sumWeight)?round($sumValues/$sumWeight,2):null;
+    $color='#ffffff';
+    foreach ($thresholds as $th) {
+      if ($consolidated>$th->thresholdValue) {
+        $color=$th->thresholdColor;
+        break;
+      }
+    }
+    if ($consolidated and $displayAsPct) $consolidated=htmlDisplayPct($consolidated*100);
+    if ($kpiColorFull) {
+      echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' . (($consolidated)?htmlDisplayColoredFull($consolidated, $color):'') . '</td>';
+    } else {
+      echo '<td class="reportTableDataSpanned" style="width:20%;font-weight:bold;text-align:left">' . (($consolidated)?htmlDisplayColored($consolidated, $color):'') . '</td>';
+    }
+    echo '</tr>';
+  }
+  echo '</table>';
+}
+exit;
 // Graph
 if (! testGraphEnabled()) { return;}
 
