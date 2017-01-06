@@ -204,6 +204,7 @@ echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" width=50px;>' . i18n('colNotPlannedWork'). '</td>';
 echo '</tr><tr>';
 $days=array();
 for($i=1; $i<=$nbDays;$i++) {
@@ -267,6 +268,7 @@ foreach ($projects as $idP=>$nameP) {
     if (array_key_exists($idR, $resources)) {
       echo '<td class="reportTableData" style="width:100px; text-align: left;">' . htmlEncode($resources[$idR]) . '</td>';
       $lineSum='';
+      $sumNpw=0;
       for ($i=1; $i<=$nbDays;$i++) {
         $day=$startDate+$i-1;
         $style="";
@@ -292,6 +294,12 @@ foreach ($projects as $idP=>$nameP) {
         echo '</td>';
       }
       echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
+      //Krowry #2129
+      $ass= new Assignment();
+      $crit=array('idResource'=>$idR, 'idProject'=>$idP);
+      $npw=$ass->sumSqlElementsFromCriteria('notPlannedWork',$crit);
+      $sumNpw+=$npw;
+      echo '<td class="reportTableData">'.Work::displayWork($npw).'</td>';
       echo '</tr><tr>';
     }
   }
@@ -307,6 +315,7 @@ foreach ($projects as $idP=>$nameP) {
     $lineSum+=$sum[$startDate+$i-1];
   }
   echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
+  echo '<td class="reportTableHeader">' . Work::displayWork($sumNpw) . '</td>';
   echo '</tr>';
   
 }
