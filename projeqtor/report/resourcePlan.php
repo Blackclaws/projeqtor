@@ -190,6 +190,14 @@ foreach ($lstPlanWork as $work) {
   }
 }
 
+// $arrayNpw = array();
+// $assign= new Assignment();
+// $crit=array('idResource'=>$assign->idResource, 'idProject'=>$assign->idProject);
+// $lstNotPlanWork=$assign->getSqlElementsFromCriteria($crit);
+// foreach ($lstNotPlanWork as $ass) {
+//   $arrayNpw[$ass->idProject][$ass->idResource]+=$ass->notPlannedWork;
+// }
+
 if ($periodType=='month') {
   $startDate=$periodValue. "01";
   $time=mktime(0, 0, 0, $paramMonth, 1, $paramYear);
@@ -225,6 +233,7 @@ echo '<tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
 echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" width=50px;>' . i18n('colNotPlannedWork'). '</td>';
 echo '</tr>';
 echo '<tr>';
 $days=array();
@@ -243,13 +252,13 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 echo '<td class="reportTableHeader" >' . i18n('sum'). '</td>';
 echo '</tr>';
-
 $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {
   $globalSum[$startDate+$i-1]='';
 }
 asort($resources);
 foreach ($resources as $idR=>$nameR) {
+  $sumNpw=0;
 	if ($paramTeam) {
     $res=new Resource($idR);
   }
@@ -286,7 +295,7 @@ foreach ($resources as $idR=>$nameR) {
 	            $style=$plannedStyle;
 	            $ital=true;
 	          }
-	        }
+	        }	    
 	        echo '<td class="reportTableData" ' . $style . ' valign="top">';
 	        if (array_key_exists($day,$result[$idR][$idP])) {
 	          echo ($ital)?'<i>':'';
@@ -298,7 +307,16 @@ foreach ($resources as $idR=>$nameR) {
 	        }
 	        echo '</td>';
 	      }
+
+
+	      
 	      echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
+	      //Krowry #2129
+	      $ass= new Assignment();
+	      $crit=array('idResource'=>$idR, 'idProject'=>$idP);
+	      $npw=$ass->sumSqlElementsFromCriteria('notPlannedWork',$crit);
+	      $sumNpw+=$npw;
+	      echo '<td class="reportTableData">'.Work::displayWork($npw).'</td>';
 	      echo '</tr><tr>';
 	    }
 	  }
@@ -312,9 +330,11 @@ foreach ($resources as $idR=>$nameR) {
 	    }
 	    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . Work::displayWork($sum[$startDate+$i-1]) . '</td>';
 	    $lineSum+=$sum[$startDate+$i-1];
-	  }
+	  	}
 	  echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
+	  echo '<td class="reportTableHeader">' . Work::displayWork($sumNpw) . '</td>';
 	  echo '</tr>';
+	  
   }
 }
 
@@ -329,6 +349,7 @@ for ($i=1; $i<=$nbDays;$i++) {
   }
   echo '<td class="reportTableHeader" ' . $style . '>' . Work::displayWork($globalSum[$startDate+$i-1]) . '</td>';
   $lineSum+=$globalSum[$startDate+$i-1];
+  
 }
 echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
 echo '</tr>';

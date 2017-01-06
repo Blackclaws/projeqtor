@@ -180,6 +180,7 @@ echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('colCapacity') . '</td>';
 echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" width=50px;>' . i18n('colNotPlannedWork'). '</td>';
 echo '</tr><tr>';
 $days=array();
 for($i=1; $i<=$nbDays;$i++) {
@@ -249,6 +250,11 @@ foreach ($resources as $idR=>$nameR) {
 	  	}
 	  }
 	  echo '<td class="reportTableColumnHeader" style="width:5%">' . Work::displayWork($sum) . '</td>';
+	  //Krowry #2129
+	  $ass= new Assignment();
+	  $crit=array('idResource'=>$idR);
+	  $npw=$ass->sumSqlElementsFromCriteria('notPlannedWork',$crit);
+	  echo '<td class="reportTableData">'.Work::displayWork($npw).'</td>';
 	  echo '</tr>';
   }
 }
