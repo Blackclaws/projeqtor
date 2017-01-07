@@ -86,6 +86,7 @@ foreach($affLst as $aff){
     $resources[$ress->id]=htmlEncode($ress->name);
     $resourceCalendar[$ress->id]=$ress->idCalendarDefinition;
 	}
+	asort($resources);
 }
 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
