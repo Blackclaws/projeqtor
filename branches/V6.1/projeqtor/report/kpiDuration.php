@@ -31,7 +31,7 @@ include("../external/pChart2/class/pDraw.class.php");
 include("../external/pChart2/class/pImage.class.php");
 
 $kpiColorFull=true; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
-$displayAsPct=true;
+$displayAsPct=false;
 
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -210,11 +210,15 @@ foreach($listProjects as $prj) {
   echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlFormatDate($prj->ProjectPlanningElement->plannedEndDate) . '</td>';
   echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlFormatDate($prj->ProjectPlanningElement->realEndDate) . '</td>';
   $critKpi=array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$prj->id);
-  if (!$period) { // Added if (1) as value displayed in table is always the actual value, 
+  if (! $period) { // Added if (1) as value displayed in table is always the actual value, 
     $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
   } else {
     $critKpi[$period]=$periodValue;
-    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
+    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
+    if (count($lstKpi)==0) {
+    	$where="idKpiDefinition=$kpi->id and refType='Project' and refId=$prj->id and $period<=$periodValue";
+    	$lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiValue desc');
+    }
     $kpiValue=reset($lstKpi);
   }
   if (!$kpiValue) $kpiValue=new KpiValue();
@@ -267,8 +271,8 @@ if ($cptProjectsDisplayed>0 and $scope=='Organization') {
   } else {
     echo '<td class="reportTableDataSpanned" style="width:20%;font-weight:bold;text-align:left">' . (($consolidated)?htmlDisplayColored($consolidated, $color):'') . '</td>';
   }
-  echo '</tr>';
-}
+  echo '</tr>'; 
+} 
 echo '</table>';
 
 // Graph
@@ -282,12 +286,14 @@ $query.= " from (select MAX(h.kpiValue) as valueP, h.$scale as periodP, h.refId 
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
 if ($done) {$query.= " and h.refDone=1";}
-if ($year) {
-  if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
-    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
-  } else {
-    $query.= " and h.year='$year'";
-  }
+if (! $idProject) {
+	if ($year) {
+	  if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
+	    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
+	  } else {
+	    $query.= " and h.year='$year'";
+	  }
+	}
 }
 $query.= " group by h.$scale, h.refId) prj ";
 $query.= " group by periodP";

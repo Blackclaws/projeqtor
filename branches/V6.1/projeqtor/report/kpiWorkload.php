@@ -31,7 +31,7 @@ include("../external/pChart2/class/pDraw.class.php");
 include("../external/pChart2/class/pImage.class.php");
 
 $kpiColorFull=true; // decide how kpi color is displayed correspondng on threshold : false will display rounded badge, true will fill the cell 
-$displayAsPct=true;
+$displayAsPct=false;
 
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
