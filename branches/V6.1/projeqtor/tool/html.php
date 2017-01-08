@@ -1101,10 +1101,10 @@ function htmlDisplayColoredFull($value,$color) {
   global $print, $outMode;
   $result= "";
   $foreColor=htmlForeColorForBackgroundColor($color);
-  $result.='<div style="vertical-align:middle;padding: 0px;clear: both;border:0px;text-align: center;'
-      .(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'')
+  $result.='<span style="display:block;vertical-align:middle;padding: 0px;text-align: center;'
+      .(($print and $outMode=='pdf')?'width:10px;min-height:18px':'')
       . 'background-color: ' . $color . '; color:' . $foreColor . ';">'
-          .$value.'</div>';
+          .$value.'</span>';
   return $result;
 }
 
