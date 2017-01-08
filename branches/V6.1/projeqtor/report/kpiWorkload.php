@@ -102,6 +102,8 @@ if ($done) {
 
 include "header.php";
 
+if ($month and $month<10) $month='0'.intval($month);
+
 $scope=$_REQUEST['scope'];
 if ($scope=='Project') {
   if (!$idProject) {
@@ -176,7 +178,7 @@ if ($idProject) {
   $listProjects=$prj->getSqlElementsFromCriteria(null,false,$where);
 }
 
-if (checkNoData($listProjects)) exit;
+//if (checkNoData($listProjects)) exit;
 
 $period=null;
 $periodValue='';
@@ -224,7 +226,11 @@ foreach($listProjects as $prj) {
     $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
   } else {
     $critKpi[$period]=$periodValue;
-    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
+    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
+    if (count($lstKpi)==0) {
+      $where="idKpiDefinition=$kpi->id and refType='Project' and refId=$prj->id and $period<=$periodValue";
+      $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
+    }
     $kpiValue=reset($lstKpi);
   }
   if (!$kpiValue) $kpiValue=new KpiValue();
@@ -238,7 +244,7 @@ foreach($listProjects as $prj) {
   $dispValue=$kpiValue->kpiValue;
   if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
   if ($kpiColorFull) {
-    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' 
+    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:center;">' 
         . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') 
         . '</td>';
   } else {
@@ -276,7 +282,7 @@ if ($cptProjectsDisplayed>0 and $scope=='Organization') {
   }
   if ($consolidated and $displayAsPct) $consolidated=htmlDisplayPct($consolidated*100);
   if ($kpiColorFull) {
-    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:left">' . (($consolidated)?htmlDisplayColoredFull($consolidated, $color):'') . '</td>';
+    echo '<td class="reportTableData" style="width:20%;background-color:'.$color.';text-align:center;">' . (($consolidated)?htmlDisplayColoredFull($consolidated, $color):'') . '</td>';
   } else {
     echo '<td class="reportTableDataSpanned" style="width:20%;font-weight:bold;text-align:left">' . (($consolidated)?htmlDisplayColored($consolidated, $color):'') . '</td>';
   }
@@ -295,11 +301,13 @@ $query.= " from (select MAX(h.kpiValue*h.weight) as valueP, MIN(h.weight) as wei
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
 if ($done) {$query.= " and h.refDone=1";}
-if ($year) {
-  if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
-    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
-  } else {
-    $query.= " and h.year='$year'";
+if (! $idProject) {
+  if ($year) {
+    if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
+      $query.= " and (h.year='$year' or h.year='".($year-1)."')";
+    } else {
+      $query.= " and h.year='$year'";
+    }
   }
 }
 $query.= " group by h.$scale, h.refId) prj ";
@@ -315,7 +323,8 @@ foreach ($result as $line) {
   $arrValues[$line['period']]=round($line['value'],2)*(($displayAsPct)?100:1);
 }
 
-if ($cptProjectsDisplayed==0 and (!$start or !$end)) {
+//if ($cptProjectsDisplayed==0 and (!$start or !$end)) {
+if ($cptProjectsDisplayed==0 or (!$start or !$end)) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData'); 
   echo '</div>';

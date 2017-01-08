@@ -4559,20 +4559,40 @@ abstract class SqlElement {
 	}
 	public function getExtraHiddenFields($newType="", $newStatus="", $newProfile="") {
 	  $class=get_class($this);
+	  $testObj=$this;
+	  $testClass=$class;
 	  $typeFld='id'.$class."Type";
+	  if (SqlElement::is_a($this, 'PlanningElement')) {
+	    if ($this->refType) {
+	      $testClass=$this->refType;
+	    } else {
+	      $testClass=str_replace('PlanningElement','',$class);
+	    }
+	    $testObj=new $testClass($this->refId,true);
+	  } else if ($class=='WorkElement') {
+	   if ($this->refType) {
+	      $testClass=$this->refType;
+	    } else {
+	      $testClass='Ticket';
+	    }
+	    $testObj=new $testClass($this->refId,true);
+	  }
+	  $typeClass=$testClass.'Type';
+	  $typeFld='id'.$typeClass;
 	  if ($class=='TicketSimple') $typeFld='idTicketType';
 	  $list=self::getExtraHiddenFieldsFullList();
 	  $listType=array();
 	  $listStatus=array();
 	  $listProfile=array();
-	  if (property_exists($this,$typeFld) and $newType!='*') { 
-	    $type=($newType)?$newType:$this->$typeFld;
+	  if (property_exists($testObj,$typeFld) and $newType!='*') { 
+	    $type=($newType)?$newType:$testObj->$typeFld;
 	    if (isset($list['Type']) and isset($list['Type'][$class]) and isset($list['Type'][$class][$type]) ) {
 	      $listType=$list['Type'][$class][$type];
 	    }
 	  }
-	  if (property_exists($this,'idStatus') and $newStatus!='*') {
-	    $status=($newStatus)?$newStatus:$this->idStatus;
+	  if (property_exists($testObj,'idStatus') and $newStatus!='*') {
+	    $status=($newStatus)?$newStatus:$testObj->idStatus;
+	    debugLog($list['Status']);
 	    if (isset($list['Status']) and isset($list['Status'][$class]) and isset($list['Status'][$class][$status]) ) {
 	      $listStatus=$list['Status'][$class][$status];
 	    }

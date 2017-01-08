@@ -348,7 +348,7 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (69, 'reportKpiDeliverableProject', 11, 'kpiDeliverable.php?class=Deliverable&scope=Project', 1130, 'P'),
 (70, 'reportKpiDeliverableOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1135, 'P'),
 (71, 'reportKpiIncomingProject', 11, 'kpiDeliverable.php?class=Incoming&scope=Project', 1140, 'P'),
-(72, 'reportKpiIncomingOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1145, 'P');
+(72, 'reportKpiIncomingOrganization', 11, 'kpiDeliverable.php?class=Incoming&scope=Organization', 1145, 'P');
 
 --INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 --(64, 'idProject', 'projectList', 10, 'currentProject'),
