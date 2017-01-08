@@ -38,6 +38,17 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
   $idProject=trim($_REQUEST['idProject']);
   $idProject = Security::checkValidId($idProject);
 }
+$year="";
+if (array_key_exists('yearSpinner',$_REQUEST)) {
+  $year=trim($_REQUEST['yearSpinner']);
+  $year = Security::checkValidYear($year);
+}
+$month="";
+if (array_key_exists('monthSpinner',$_REQUEST)) {
+  $month=trim($_REQUEST['monthSpinner']);
+  $month = Security::checkValidMonth($month);
+  if ($month and !$year) $year=date('Y');
+}
 $scale='month';
 if (array_key_exists('format',$_REQUEST)) {
   $scale=$_REQUEST['format'];
@@ -51,8 +62,16 @@ $headerParameters="";
 if ($idProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project',$idProject)) . '<br/>';
 }
+if ($year!="") {
+  $headerParameters.= i18n("year") . ' : ' . htmlFormatDate($year) . '<br/>';
+}
+if ($month!="") {
+  $headerParameters.= i18n("month") . ' : ' . htmlFormatDate($month) . '<br/>';
+}
 
 include "header.php";
+
+if ($month and $month<10) $month='0'.intval($month);
 
 if (!$idProject) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
@@ -70,7 +89,17 @@ if ($idProject) {
   $listProjects[$idProject]=new Project($idProject);
 }
 
-if (checkNoData($listProjects)) exit;
+//if (checkNoData($listProjects)) exit;
+$period=null;
+$periodValue='';
+if ($month) {
+  $period='month';
+  if ($month<10) $month='0'.intval($month);
+  $periodValue=$year.$month;
+} else if ($year) {
+  $period='year';
+  $periodValue=$year;
+}
 
 $thresholds=(new KpiThreshold())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
 echo '<table width="90%" align="center">';
@@ -117,23 +146,37 @@ foreach($listProjects as $prj) {
     echo '<td class="reportTableDataSpanned" style="width:10%">' . htmlDisplayCurrency($left,true) . '</td>';
     if ($cptTerms==1) {
       $critKpi=array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$prj->id);
-      $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
-      if (!$kpiValue) $kpiValue=new KpiValue();
-      $compareValue=($prj->ProjectPlanningElement->progress/100)-$kpiValue->kpiValue;
+      if (!$period) { // Added if (1) as value displayed in table is always the actual value,
+        $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
+      } else {
+        $critKpi[$period]=$periodValue;
+        $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
+        if (count($lstKpi)==0) {
+          $where="idKpiDefinition=$kpi->id and refType='Project' and refId=$prj->id and $period<=$periodValue";
+          $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
+        }
+        $kpiValue=reset($lstKpi);
+      }
+      if (!$kpiValue) {
+        $kpiValue=new KpiValue();
+        $compareValue=null;
+      } else {
+        $compareValue=($prj->ProjectPlanningElement->progress/100)-$kpiValue->kpiValue;
+      }
       $color='';
       foreach ($thresholds as $th) {
-        if ($compareValue>$th->thresholdValue) {
+        if ($compareValue!=null and $compareValue>$th->thresholdValue) {
           $color=$th->thresholdColor;
           break;
         }
       }
-      if (!$color and $th and $term->id) {
+      if (!$color and $compareValue!=null and $th and $term->id) {
         $color=$th->thresholdColor;
       }
       $dispValue=$kpiValue->kpiValue;
       if ($dispValue and $displayAsPct) $dispValue=htmlDisplayPct($dispValue*100);
       if ($kpiColorFull) {
-        echo '<td class="reportTableData" rowspan="'.($nbTerms+1).'" style="width:15%;background-color:'.$color.';text-align:left">' . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') . '</td>';
+        echo '<td class="reportTableData" rowspan="'.($nbTerms+1).'" style="width:15%;background-color:'.$color.';text-align:center;">' . (($dispValue)?htmlDisplayColoredFull($dispValue, $color):'') . '</td>';
       } else {
         echo '<td class="reportTableDataSpanned" rowspan="'.($nbTerms+1).'" style="width:15%;text-align:left">' . (($dispValue)?htmlDisplayColored($dispValue, $color):'') . '</td>';
       }
