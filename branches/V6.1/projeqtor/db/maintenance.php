@@ -228,7 +228,7 @@ if (beforeVersion($currVersion,"V3.0.0")) {
 }
 if (afterVersion($currVersion,"V3.0.0") and beforeVersion($version,"V3.1.3") 
 and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') { 
-  traceLog("rename table workPeriod to workperiod [V3.1.3");
+  traceLog("rename table workPeriod to workperiod [V3.1.3]");
 	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
 	$query="RENAME TABLE `".$paramDbPrefix."workPeriod` TO `".$paramDbPrefix."workperiod`;";
 	$query=trim(formatForDbType($query));
@@ -538,8 +538,12 @@ if ($nbErrors==0) {
   echo $nbErrors . " ERRORS DURING UPDATE <BR/>TO VERSION " . $version . "<br/>";
   echo "(details of errors in log file)";
 }
+
 traceLog("");
 traceLog("=====================================");
 traceLog("");
 echo "<br/>__________________________________<br/><br/>";
 echo '</div>';
+
+// Check if installed plugins are compatible with new ProjeQtOr plugin
+Plugin::checkPluginCompatibility($version);

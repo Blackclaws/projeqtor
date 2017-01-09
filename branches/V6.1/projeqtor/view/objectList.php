@@ -198,6 +198,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
               <td width="5px">
                 <select title="<?php echo i18n('filterOnClient')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
+                data-dojo-props="queryExpr: '*${0}*',autoComplete:false"
                 id="listClientFilter" name="listClientFilter" style="width:140px">
                   <?php htmlDrawOptionForReference('idClient', $objectClient, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
