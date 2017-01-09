@@ -3258,7 +3258,7 @@ color : #404952;
   border-left: 3px solid #FF0000;
 }
 /* CKE */
-.cke_toolgroup {
+/* .cke_toolgroup {
   margin: 0px 4px 4px 0px !important;
 }
 .cke_top {
@@ -3277,7 +3277,7 @@ a.cke_combo_button {
 .cke_dialog_ui_input_file {
   height: auto !important;
   padding-top: 3px !important;
-}
+}*/
 p {
  font-size: 1em;
  margin-top: 0 !important;

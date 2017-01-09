@@ -373,13 +373,13 @@ body .ProjeQtOrFlatBlue {
   background-image: url();
   
 }
-.ProjeQtOrFlatBlue a.cke_button, .ProjeQtOrFlatBlue a.cke_combo_button {
+/*.ProjeQtOrFlatBlue a.cke_button, .ProjeQtOrFlatBlue a.cke_combo_button {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
-}
+}*/
 .ProjeQtOrFlatBlue a.cke_button:hover, .ProjeQtOrFlatBlue a.cke_combo_button:hover {
   background: #a6a0bc !important;
   background-image: url();
@@ -1553,17 +1553,17 @@ body .ProjeQtOrFlatRed {
   background-image: url();
 }
 .ProjeQtOrFlatRed .cke_toolgroup, .ProjeQtOrFlatRed a.cke_combo_button {
-  background: #dcdae6 !important;
+  background: #e6dcda !important;
   background-image: url();
   
 }
-.ProjeQtOrFlatRed a.cke_button, .ProjeQtOrFlatRed a.cke_combo_button {
+/*.ProjeQtOrFlatRed a.cke_button, .ProjeQtOrFlatRed a.cke_combo_button {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
-}
+}*/
 .ProjeQtOrFlatRed a.cke_button:hover, .ProjeQtOrFlatRed a.cke_combo_button:hover {
   background: #bda1a6 !important;
   background-image: url();
@@ -2695,17 +2695,17 @@ body .ProjeQtOrFlatGreen {
   background-image: url();
 }
 .ProjeQtOrFlatGreen .cke_toolgroup, .ProjeQtOrFlatGreen a.cke_combo_button {
-  background: #dcdae6 !important;
+  background: #dce6da !important;
   background-image: url();
   
 }
-.ProjeQtOrFlatGreen a.cke_button, .ProjeQtOrFlatGreen a.cke_combo_button {
+/*.ProjeQtOrFlatGreen a.cke_button, .ProjeQtOrFlatGreen a.cke_combo_button {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
-}
+}*/
 .ProjeQtOrFlatGreen a.cke_button:hover, .ProjeQtOrFlatGreen a.cke_combo_button:hover {
   background: #86a790 !important;
   background-image: url();
@@ -3838,17 +3838,16 @@ body .ProjeQtOrFlatGrey {
   background-image: url();
 }
 .ProjeQtOrFlatGrey .cke_toolgroup, .ProjeQtOrFlatGrey a.cke_combo_button {
-  background: #dcdae6 !important;
+  background: #ececec !important;
   background-image: url();
-  
 }
-.ProjeQtOrFlatGrey a.cke_button, .ProjeQtOrFlatGrey a.cke_combo_button {
+/*.ProjeQtOrFlatGrey a.cke_button, .ProjeQtOrFlatGrey a.cke_combo_button {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
-}
+}*/
 .ProjeQtOrFlatGrey a.cke_button:hover, .ProjeQtOrFlatGrey a.cke_combo_button:hover {
   background: #AEAEAE !important;
   background-image: url();
