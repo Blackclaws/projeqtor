@@ -2018,6 +2018,7 @@ pluginErrorMove: "Datoteka '${1}' se nakon kopiranja za plugin '${2}'ne može se
 pluginFileUploaded: "plugin datoteka prenesena",
 pluginInstalled: "instalirani dodaci",
 pluginNameIncompatibility: "naziv Plugin '${1}'nije kompatibilan s prefiksom' ${2}'filename' ${3}'",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "plugin deskriptor datoteke '${1}' u telefonskom imeniku '${2}'za plug-in' ${3}'nije pronađena.",
 pluginSqlFileError: "može SQL datoteku '${1}'za plug-in' ${2}' nije pronađen.",
 pluginUnzipFail: "Ne mogu otpakirati datoteku ${1}.<br/> napisati PHP korisnički provjeru datoteke i imenik ${2}.",

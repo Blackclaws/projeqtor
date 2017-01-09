@@ -2018,6 +2018,7 @@ pluginErrorMove: "Impossible de supprimer le fichier '${1}' après l'avoir copi�
 pluginFileUploaded: "Fichier du module d'extension téléchargé",
 pluginInstalled: "Modules d'extension installés",
 pluginNameIncompatibility: "Le nom du module d'extension '${1}' est incompatible avec le préfixe  '${2}' du nom de fichier '${3}",
+pluginNotCompatibleWithCurrentVersion: "La version ${2} de l'extension '${1}' n'est pas compatible avec ProjeQtOr ${3}.<br/>Veuillez installer la version ${4}( ou supérieure) de cette extension ",
 pluginNoXmlDescriptor: "Impossible de trouver le fichier de description '${1}' dans le répertoire '${2}' pour le module d'extension '${3}'",
 pluginSqlFileError: "Impossible de trouver le fichier SQL '${1}' pour  le module d'extension '${2}'",
 pluginUnzipFail: "Impossible de décompresser le fichier ${1}.<br/>Vérifiez que l'utilisateur lançant PHP a des droits en écriture sur ce fichier et plus globalement sur le répertoire ${2}.",
