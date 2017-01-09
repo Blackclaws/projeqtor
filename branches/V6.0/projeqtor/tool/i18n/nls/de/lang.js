@@ -2018,6 +2018,7 @@ pluginErrorMove: "Datei '${1}' kann nach dem Kopieren für Plugin '${2}' nicht g
 pluginFileUploaded: "Plugin Datei hochgeladen",
 pluginInstalled: "Installierte Plugins",
 pluginNameIncompatibility: "Plugin Name '${1}' ist nicht kompatibel mit Prefix '${2}' des Dateinamens '${3}'",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "Plugin Descriptor Datei '${1}' im Verzeichnis '${2}' für Plugin '${3}' nicht gefunden.",
 pluginSqlFileError: "Kann Sql Datei '${1}' für Plugin '${2}' nicht finden.",
 pluginUnzipFail: "Kann Datei ${1} nicht entpacken.<br/>Bitte Schreibzugriff des PHP Nutzers auf die Datei und das Verzeichnis ${2} prüfen.",

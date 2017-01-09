@@ -2018,6 +2018,7 @@ pluginErrorMove: "プラグイン「${2}」をコピー後にファイル「${1}
 pluginFileUploaded: "プラグインファイルがアップロードされました。",
 pluginInstalled: "インストール済みのプラグイン",
 pluginNameIncompatibility: "プラグイン「${1}」は接頭辞「${2}」のファイル「${3}」と互換性がありません。",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "プラグイン「${3}」のファイル「${1}」がディレクトリ「${2}」に見つかりません。",
 pluginSqlFileError: "プラグイン「${2}」のSQLファイル「${1}」が見つかりません。",
 pluginUnzipFail: "「${1}」を解凍できません。<br/>PHPの実行ユーザがフォルダ「${2}」への書き込みアクセス権を持っているか確認してください。",

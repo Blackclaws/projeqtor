@@ -38,6 +38,9 @@ class Plugin extends SqlElement {
     public $idle;
     
     private static $_triggeredEventList;
+    public static $pluginRequiredVersion=array(
+        "V6.0.6"=>array("screenCustomization"=>"3.1")
+    );
     
     function __construct() {
     }
@@ -59,6 +62,14 @@ class Plugin extends SqlElement {
       $this->zipFile=$file['path'];
       $plugin=$this->name;
       
+      $metaData=$this->getMetadata($this->zipFile);
+      $this->pluginVersion=$metaData['pluginVersion'];
+      $checkCompatibility=$this->checkProjeQtOrCompatibility();
+      if ($checkCompatibility!='OK') {
+        $result=$checkCompatibility;
+        traceLog("Plugin::load() : $result");
+        return $result;
+      }
       $result="OK";
       // unzip plugIn files
       $zip = new ZipArchive;
@@ -473,7 +484,56 @@ class Plugin extends SqlElement {
       }
       setSessionValue('triggeredEventList', self::$_triggeredEventList); // save to session for quick access
     }
+    public static function checkPluginCompatibility($version) {
+      // CHECK PLUGIN COMPATIBILITY
+      foreach (self::$pluginRequiredVersion as $versTest=>$plugins) {
+        if (self::afterVersion($version,$versTest)) {
+          foreach ($plugins as $namePlg=>$versPlgRequired) {
+            $plg=SqlElement::getSingleSqlElementFromCriteria('Plugin', array('name'=>$namePlg, 'idle'=>'0'));
+            if ($plg and $plg->id and self::beforeVersion($plg->pluginVersion,$versPlgRequired)) {
+              $plg->idle=1;
+              $plg->save();
+              echo '<div class="messageWARNING">';
+              traceLog("=== PLUGIN COMPATIBILITY ISSUE =====================================");
+              echo "Plugin $namePlg version $plg->pluginVersion<br/>is not compatible with ProjeQtOr $version.<br/>";
+              traceLog("Plugin $namePlg version $plg->pluginVersion is not compatible with ProjeQtOr $version.");
+              echo "It has been desactivated.<br/>Please install version $versPlgRequired or over.";
+              traceLog("It has been desactivated. Please install version $versPlgRequired or over.");
+              echo '</div>';
+            }
+          }
+        }
+      }
+    }
     
+    public function checkProjeQtOrCompatibility() {
+      $version=Sql::getDbVersion();
+      $plgName=$this->name;
+      $plgVersion=$this->pluginVersion;
+      foreach (self::$pluginRequiredVersion as $versTest=>$plugins) {
+        if (self::afterVersion($version,$versTest)) {
+          foreach ($plugins as $compPlgName=>$compPlgVersion) {
+            if ($compPlgName==$plgName) {
+              if (beforeVersion($plgVersion, $compPlgVersion)) {
+                return i18n("pluginNotCompatibleWithCurrentVersion",array($plgName,$plgVersion,$version,$compPlgVersion));
+              }
+            }
+          }
+        }
+      }
+      return "OK";
+    }
     
+    private static function beforeVersion($V1,$V2) {
+      $V1=ltrim($V1,'V');
+      $V2=ltrim($V2,'V');
+      return(version_compare($V1, $V2,"<"));
+    }
+    
+    private static function afterVersion($V1,$V2) {
+      $V1=ltrim($V1,'V');
+      $V2=ltrim($V2,'V');
+      return(version_compare($V1, $V2,">="));
+    }
 }
- 
+    

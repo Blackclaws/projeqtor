@@ -2018,6 +2018,7 @@ pluginErrorMove: "Impossibile eliminare il file '$ {1}' dopo averlo copiato per 
 pluginFileUploaded: "file del plugin file caricato",
 pluginInstalled: "plug-ins installati",
 pluginNameIncompatibility: "il nome del plugin '$ {1}' non è compatibile con il prefisso '$ {2}' del nome del file '$ {3}'",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "Impossibile trovare il file '$ {1}' descrittore del plugin nella directory '$ {2}' per il plugin '$ {3}'",
 pluginSqlFileError: "impossibile trovare il file Sql '${1}' per il plugin '${2}'",
 pluginUnzipFail: "Non in grado di decomprimere il file $ {1}. <br/> Verificare che l'utente PHP ha i diritti di accesso in scrittura ai file e a livello globale alla cartella $ {2}.",
