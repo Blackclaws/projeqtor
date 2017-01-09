@@ -2018,6 +2018,7 @@ pluginErrorMove: "Kan het bestand '${1}' niet verwijderen na het kopiëren voor 
 pluginFileUploaded: "plug-in bestand geüpload",
 pluginInstalled: "geïnstalleerde plug-ins",
 pluginNameIncompatibility: "plug-in naam '${1}' is niet compatible met voorvoegsel '${2}' van bestandsnaam '${3}'",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "kan plug-in beschrijvingsbestand niet vinden '${1}' in de map '${2}' voor plug-in '${3}'",
 pluginSqlFileError: "kan Sql bestand '${1}' niet vinden voor plugin '${2}'",
 pluginUnzipFail: "Niet in staat om het bestand ${1} uit te pakken.<br/>Controleer of de PHP gebruiker schrijfrechten heeft voor het bestand en globaal voor de map ${2}.",

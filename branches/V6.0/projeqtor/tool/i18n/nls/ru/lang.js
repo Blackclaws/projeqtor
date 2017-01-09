@@ -2018,6 +2018,7 @@ pluginErrorMove: "Не могу удалить файл '${1}' после его
 pluginFileUploaded: "файл плагина загружен",
 pluginInstalled: "установленные плагины",
 pluginNameIncompatibility: "имя плагина '${1}' не совместимо с префиксом '${2}' имени файла '${3}'",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "не могу найти файл-дескриптор '${1}' плагина в директории '${2}' для плагина '${3}'",
 pluginSqlFileError: "не могу найти Sql-файл '${1}' для плагина '${2}'",
 pluginUnzipFail: "Не могу извлечь файл ${1}.<br/>Проверьте что PHP-пользователь имеет права на запись файла и глобально в папку ${2}.",

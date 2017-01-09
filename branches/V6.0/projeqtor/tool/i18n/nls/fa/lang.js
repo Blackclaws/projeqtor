@@ -2018,6 +2018,7 @@ pluginErrorMove: "[Cannot delete file '${1}' after copying it for plu-ing '${2}'
 pluginFileUploaded: "[plugin file uploaded]",
 pluginInstalled: "[installed plug-ins]",
 pluginNameIncompatibility: "[plugin name '${1}' is not compatible with prefix '${2}' of file name '${3}']",
+pluginNotCompatibleWithCurrentVersion: "[The version ${2} of plug-in '${1}' is not compatible with ProjeQtOr ${3}.<br/>Please install version ${4} (or over) of this plug-in. ]",
 pluginNoXmlDescriptor: "[cannot find plugin descriptor file '${1}' in directory '${2}' for plugin '${3}']",
 pluginSqlFileError: "[cannot find Sql file '${1}' for plugin '${2}']",
 pluginUnzipFail: "[Not able to unzip file ${1}.<br/>Check that PHP user has write access rights to file and globally to folder ${2}.]",

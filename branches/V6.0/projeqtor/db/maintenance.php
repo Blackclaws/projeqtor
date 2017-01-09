@@ -543,3 +543,6 @@ traceLog("=====================================");
 traceLog("");
 echo "<br/>__________________________________<br/><br/>";
 echo '</div>';
+
+// Check if installed plugins are compatible with new ProjeQtOr plugin
+Plugin::checkPluginCompatibility($version);
