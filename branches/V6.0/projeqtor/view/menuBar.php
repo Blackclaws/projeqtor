@@ -98,8 +98,8 @@
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
           <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
-           id="listFavoriteReports" name="listFavoriteReports" style="position:relative;top:-10px;left:-10px;">
-            <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="display:none;"
+           id="listFavoriteReports" name="listFavoriteReports" style="position:relative;top:-10px;left:-10px;height: 0px; overflow: hidden; ">
+            <div dojoType="dijit.TooltipDialog" id="favoriteReports" style="position:absolute;"
               href="../tool/refreshFavoriteReportList.php"
               onMouseEnter="clearTimeout(closeFavoriteReportsTimeout);"
               onMouseLeave="hideReportFavoriteTooltip(200)"
@@ -289,4 +289,3 @@
   </tr></table>
   <div class="customMenuAddRemove"  id="customMenuAdd" onClick="customMenuAddItem();"><?php echo i18n('customMenuAdd');?></div>
   <div class="customMenuAddRemove"  id="customMenuRemove" onClick="customMenuRemoveItem();"><?php echo i18n('customMenuRemove');?></div>
-      

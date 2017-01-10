@@ -554,6 +554,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         if ($arrStart>=$arrStop) break;
         if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_' or substr($arrCol,0,8)=='_button_') { continue; }
         if ($obj->isAttributeSetToField($arrCol, "hidden")) continue;
+        if (in_array($arrCol,$extraHiddenFields)) continue;
         $indCol=$arrStart%$internalTableCols;
         $indLin=floor($arrStart/$internalTableCols);
         $arrTab['rows'][$indLin]++;
