@@ -423,3 +423,5 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (3,71,1),
 (1,72,1),
 (2,72,1);
+
+ALTER TABLE `${prefix}type` ADD `lockNoLeftOnDone` int(1) unsigned default '0';

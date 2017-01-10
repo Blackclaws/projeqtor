@@ -395,6 +395,7 @@ abstract class SqlElement {
     "Document" =>           array("DocumentVersion"=>"cascade"),
     "DocumentDirectory" =>  array("Document"=>"control",
                                   "DocumentDirectory"=>"control"),
+    "PeriodicMeeting" =>     array("Meeting"=>"control"),
     "Product" =>            array("Version"=>"control",
                                   "Requirement"=>"confirm",
                                   "TestCase"=>"confirm",
