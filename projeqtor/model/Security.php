@@ -95,13 +95,12 @@ class Security
     $len=strlen($dateTime);
     if ($len<5 or $len>19) {
       if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : only 5 to 19 characters length possible");
-      $dateTime=null;
+      return null;
     }
     $date=""; $time="";
     if ($len<10) {
       $time=$dateTime;
-    }
-    if ($len==10) {
+    } else if ($len==10) {
       $date=$dateTime;
     } else { // $len > 10
       $split=explode(' ',$dateTime);
@@ -110,7 +109,7 @@ class Security
       }
       if (count($split)!=2) {
         if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : date / time not separated by space");
-        $dateTime=null;
+        return null;
       }
       $date=$split[0];
       $time=(count($split)>1)?$split[1]:null;
@@ -118,7 +117,7 @@ class Security
     if ($date) {
       if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date)) != true) {
         if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : date expected format is YYYY-MM-DD");
-        $dateTime=null;
+        return null;
         //exit; // Not reached, traceHack exits script
       }
     }
@@ -126,7 +125,7 @@ class Security
       if (preg_match('/^\d{2}:\d{2}:\d{2}$/', trim($time)) != true 
       and preg_match('/^\d{2}:\d{2}$/', trim($time)) != true) {
         if($activeTraceHack)traceHack("Invalid dateTime format for '$dateTime' : time expected format is HH:MN or HH:MN:SS");
-        $dateTime=null;
+        return null;
         //exit; // Not reached, traceHack exits script
       }
     }
