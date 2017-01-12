@@ -17,7 +17,7 @@ if (isset($_REQUEST['scale'])) {
   $scale=$_REQUEST['scale'];
 }
 if ($scale!='day' and $scale!='week') {
-  echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('ganttDetailScaleError')."</div>";
+  echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;height:20px;">'.i18n('ganttDetailScaleError')."</div>";
   return;
 }
 
@@ -30,7 +30,7 @@ $crit=array('refType'=>$class,'refId'=>$id);
 
 $pe=SqlElement::getSingleSqlElementFromCriteria($class.'PlanningElement', $crit);
 if ($pe->assignedWork==0 and $pe->leftWork==0 and $pe->realWork==0) {
-  echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay')."</div>";
+  echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;height:20px;">'.i18n('noDataToDisplay')."</div>";
   return;
 }
 
@@ -73,7 +73,7 @@ while ($dt<=$end) {
 ksort($dates);
 
 $width=20;
-echo '<table id="planningBarDetailTable" style="background-color:#FFFFFF;border-collapse: collapse;marin:0;padding:0">';
+echo '<table id="planningBarDetailTable" style="height:'.(count($work)*22).'px;background-color:#FFFFFF;border-collapse: collapse;marin:0;padding:0">';
 foreach ($work as $res) {
   echo '<tr style="height:20px;border:1px solid #505050;">';
   foreach ($dates as $dt) {
