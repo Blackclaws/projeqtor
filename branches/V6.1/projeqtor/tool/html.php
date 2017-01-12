@@ -115,6 +115,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     $critArray=array($critFld=>$critVal);
+    $limitPlanning=Parameter::getGlobalParameter('limitPlanningActivity');
+    if($obj!=null){
+      $class=get_class($obj);
+    }  
+    if($listType=="Activity" and $class=='Ticket' and $limitPlanning=="YES"){
+      $critArray['isPlanningActivity']=1;
+    }    
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($selection) {
       $refTable=substr($col,2);
