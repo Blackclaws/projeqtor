@@ -466,6 +466,12 @@ class Parameter extends SqlElement {
           '3#Product#Component#'=>i18n("menuProduct").', '.i18n("menuComponent"),
           '4#Product#Component#ProductVersion#ComponentVersion#'=>i18n("menuProduct").', '.i18n("menuComponent").', '.i18n("menuVersion")) ;
         break;
+      
+      case 'limitPlanningActivity':
+          $list=array('YES'=>i18n('displayYes'),
+                      'NO'=>i18n('displayNo'));
+      break;
+        
       case 'imputationAlertGenerationDay': 
         $list=array(
           'NEVER'=>i18n('never'),
@@ -631,6 +637,7 @@ class Parameter extends SqlElement {
       	                       "editor"=>'list',
       	                       'allowTypeRestrictionOnProject'=>'list',
       	                       'showTendersOnVersions'=>'list',
+      	                       'limitPlanningActivity'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  

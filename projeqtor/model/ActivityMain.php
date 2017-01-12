@@ -57,7 +57,6 @@ class ActivityMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $isPlanningActivity;
   public $result;
   public $_sec_productComponent;
   public $idProduct;
@@ -68,7 +67,7 @@ class ActivityMain extends SqlElement {
   public $_Assignment=array();
   public $_sec_Progress;
   public $ActivityPlanningElement; // is an object
-
+  public $isPlanningActivity;
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
@@ -129,6 +128,10 @@ class ActivityMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if (Parameter::getGlobalParameter('limitPlanningActivity')!="YES"){
+      self::$_fieldsAttributes['isPlanningActivity']='hidden';      
+    }   
+      
   }
 
    /** ==========================================================================
@@ -376,6 +379,5 @@ class ActivityMain extends SqlElement {
     }
     return $result;
   }
-
 }
 ?>

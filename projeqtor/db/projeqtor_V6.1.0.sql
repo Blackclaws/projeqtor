@@ -425,3 +425,12 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (2,72,1);
 
 ALTER TABLE `${prefix}type` ADD `lockNoLeftOnDone` int(1) unsigned default '0';
+
+INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES 
+(1,'changeValidatedData','1'),
+(2,'changeValidatedData','1'),
+(3,'changeValidatedData','1'),
+(4,'changeValidatedData','2'),
+(6,'changeValidatedData','2'),
+(7,'changeValidatedData','2'),
+(5,'changeValidatedData','2');
