@@ -90,7 +90,6 @@ class Attachment extends SqlElement {
         $resObj=$obj->saveForced();
       }
     }
-    return $result;
     // End Gautier Add
     $paramPathSeparator = Parameter::getGlobalParameter ( 'paramPathSeparator' );
     $paramAttachmentDirectory = Parameter::getGlobalParameter ( 'paramAttachmentDirectory' );
@@ -108,6 +107,7 @@ class Attachment extends SqlElement {
       rmdir ( $subDirectory );
     }
     disableCatchErrors ();
+    return $result;
   }
   
   public function save() {

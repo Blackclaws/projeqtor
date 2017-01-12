@@ -73,7 +73,7 @@ while ($dt<=$end) {
 ksort($dates);
 
 $width=20;
-echo '<table id="planningBarDetailTable" style="background-color:#FFFFFF;border-collapse: collapse;marin:0;padding:0">';
+echo '<table id="planningBarDetailTable" style="height:'.(count($work)*22).'px;background-color:#FFFFFF;border-collapse: collapse;marin:0;padding:0">';
 foreach ($work as $res) {
   echo '<tr style="height:20px;border:1px solid #505050;">';
   foreach ($dates as $dt) {
