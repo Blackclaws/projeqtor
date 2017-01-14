@@ -322,6 +322,7 @@ class UserMain extends SqlElement {
     if ($obj) {
       $profile=$this->getProfile($obj);
     }
+    debugLog($profile);
     if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {       
       return $this->_accessControlRights[$profile];
     }        
@@ -492,6 +493,8 @@ class UserMain extends SqlElement {
       $crit["idle"]='0';
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
+    debugLog("affList");
+    debugLog($affList);
     $today=date('Y-m-d');
     foreach ($affList as $aff) {
       if ( (! $aff->startDate or $aff->startDate<=$today) and (! $aff->endDate or $aff->endDate>=$today)) {
@@ -635,6 +638,8 @@ class UserMain extends SqlElement {
       return ($this->idProfile)?$this->idProfile:0;
     }
     $specificProfiles=$this->getSpecificAffectedProfiles();
+    debugLog("specificProfiles");
+    debugLog($specificProfiles);  
     if (isset($specificProfiles[$idProject])) {
       return $specificProfiles[$idProject];
     } else {
