@@ -1293,6 +1293,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
   
   public function getListOfPlannableProjects() {
     $rightsList=$this->getAllSpecificRightsForProfiles('planning'); // Get planning rights for all user profiles
+    debugLog($rightsList);
     $affProjects=$this->getSpecificAffectedProfiles();              // Affected projects, with profile
     $result=array();
     $defProfile=$this->idProfile;
