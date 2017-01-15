@@ -638,6 +638,8 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $this->ProjectPlanningElement->wbs=null;
       $this->ProjectPlanningElement->wbsSortable=null;
       $this->sortOrder=null;
+    } else if (! $this->sortOrder and $this->ProjectPlanningElement->wbsSortable) {
+      $this->sortOrder=$this->ProjectPlanningElement->wbsSortable;
     }
     
     // Organization
