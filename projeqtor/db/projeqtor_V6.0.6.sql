@@ -12,3 +12,5 @@ group by scope, idType, field
 having count(*) >1 or scope not like '%#%');
 
 delete from `${prefix}extrahiddenfield` where id in (select id from `${prefix}tempupdate`);
+
+ALTER TABLE `${prefix}plannedworkbaseline` ADD `isRealWork` int(1) UNSIGNED DEFAULT 0;
