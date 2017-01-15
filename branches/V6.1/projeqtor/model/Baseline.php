@@ -106,6 +106,14 @@ class Baseline extends SqlElement {
         ."SELECT $colList $idBaseline FROM $tableFrom \n"
         ." where idProject in ".transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     $res=SqlDirectElement::execute($query);
+    if ($itemFrom=='PlannedWork') { // Also include existing real work
+      $objFrom=new Work();
+      $tableFrom=$objFrom->getDatabaseTableName();
+      $query="INSERT INTO $tableTo ($colList idBaseline, isRealWork)\n"
+      ."SELECT $colList $idBaseline, 1 FROM $tableFrom \n"
+      ." where idProject in ".transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
+      $res=SqlDirectElement::execute($query);
+    }
   }
   
 }
