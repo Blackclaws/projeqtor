@@ -78,7 +78,10 @@ class ProfileMain extends SqlElement {
   public function deleteControl() {
     $result="";
     if ($this->profileCode=='ADM' or $this->profileCode=='PL') {    
-      $result="<br/>" . i18n("msgCannotDeleteProfile");
+      $cpt=$this->countSqlElementsFromCriteria(array('profileCode'=>$this->profileCode));
+      if ($cpt<2) {
+        $result="<br/>" . i18n("msgCannotDeleteProfile");
+      }
     }
     if (! $result) {  
       $result=parent::deleteControl();
@@ -103,6 +106,9 @@ class ProfileMain extends SqlElement {
   }
   
   public function copy() {
+    if ($this->profileCode=='ADM' or $this->profileCode=='PL') {
+      $this->profileCode='';
+    }
     $result=parent::copy();
     $new=$result->id;
     $toCopy=array('AccessRight', 'Habilitation', 'HabilitationOther', 'HabilitationReport', 'WorkflowStatus');
