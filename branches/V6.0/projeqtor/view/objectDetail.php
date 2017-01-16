@@ -1966,7 +1966,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
 }
 
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null) {
-  scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
+  scriptLog("startTitlePane(classObj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn;
   if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
