@@ -168,7 +168,7 @@ class ProductMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    global $print;
+    global $print, $showClosedItems;
     $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
       $result .="<table><tr>";
@@ -176,7 +176,11 @@ class ProductMain extends ProductOrComponent {
       $result .="<td>";
       if ($this->id) {
         $vers=new ProductVersion();
-        $crit=array('idProduct'=>$this->id);
+        if(!$showClosedItems){
+          $crit=array('idProduct'=>$this->id,'idle'=>'0');
+        }else{
+          $crit=array('idProduct'=>$this->id);
+        }
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result .="</td></tr></table>";

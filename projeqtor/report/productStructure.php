@@ -48,13 +48,21 @@ if (array_key_exists('showVersionsForAll', $_REQUEST)){
     $showVersionsForAll=true;
   }
 }
+
 $showProjectsLinked=true;
 if (array_key_exists('showProjectsLinked', $_REQUEST)){
   if ($_REQUEST['showProjectsLinked']=='0') {
-    $showProjectsLinked=false;
+    $showProjectsLinked=false;  
   }
 }
-
+//gautier #2442
+$showClosedItems=false;
+if (array_key_exists('showClosedItems', $_REQUEST)){
+  if ($_REQUEST['showClosedItems']!='0') {
+    $showClosedItems=true;
+  }
+}
+//end 
 $item=new $objectClass($objectId);
 $canRead=securityGetAccessRightYesNo('menu' . $objectClass, 'read', $item)=="YES";
 if (!$canRead) exit;
@@ -72,7 +80,6 @@ foreach ($parentProducts as $parentId=>$parentName) {
 $level++;
 showProduct($objectClass,$item->id,$item->name,$level,'current');
 showSubItems('Product',$subProducts,$level+1);
-
 function showSubItems($class,$subItems,$level){
   if (!$subItems) return;
   foreach ($subItems as $item) {
@@ -84,7 +91,7 @@ function showSubItems($class,$subItems,$level){
 }
 
 function showProduct($class,$id,$name,$level,$position) {
-  global $showVersionsForAll, $showProjectsLinked;
+  global $showVersionsForAll, $showProjectsLinked, $showClosedItems;
   $padding=30;
   $name="#$id - $name";
   $style="";
@@ -96,20 +103,28 @@ function showProduct($class,$id,$name,$level,$position) {
       .'<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:25px;" class="icon'.$class.'16" />&nbsp;&nbsp;&nbsp;</td>'
       .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>'
       .'</td>';
+  
   if ($showVersionsForAll or $current) {
     echo '<td style="padding-top:5px;">';
     echo $item->drawSpecificItem('versions'.(($showProjectsLinked)?'WithProjects':''));
     echo "</td>";
   }
+
   echo'</tr>';
   echo'</table></div>';
   if ($position!='top') {
     $compList=$item->getComposition(true,false);
     foreach ($compList as $compId=>$compName) {
       //echo '<tr><td></td><td>';
-      showProduct('Component',$compId,$compName,$level+1,'sub');
+      $compo = new Component($compId);
+      if(!$showClosedItems){
+        if($compo->idle == 0){
+          showProduct('Component',$compId,$compName,$level+1,'sub');
+        }
+      }else{
+        showProduct('Component',$compId,$compName,$level+1,'sub');
+      }
       //echo '</td></tr>';
     }
   }
-  
 }

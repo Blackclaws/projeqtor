@@ -216,6 +216,7 @@ class ProductOrComponent extends SqlElement {
     global $print;
     $showVersionsForAll=(Parameter::getUserParameter('strucutreShowVersionsForAll')!='0')?true:false;
     $showProjectsLinked=(Parameter::getUserParameter('strucutreShowProjectsLinked')!='0')?true:false;
+    $showClosedItems=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
     if ($print) return "";
     $result='<br/><table>';
     $result.='<tr>';
@@ -234,6 +235,7 @@ class ProductOrComponent extends SqlElement {
     $result.="var url='$page';";
     $result.='url+="&showVersionsForAll="+((dijit.byId("showVersionsForAll").get("checked"))?"1":"0");';
     $result.='url+="&showProjectsLinked="+((dijit.byId("showProjectsLinked").get("checked"))?"1":"0");';
+    $result.='url+="&showClosedItems="+((dijit.byId("showClosedItems").get("checked"))?"1":"0");';
     $result.='showPrint(url, null, null, "html", "P");';
     $result.='</script>';
     $result.='</button>';
@@ -244,6 +246,7 @@ class ProductOrComponent extends SqlElement {
     $result.='<script type="dojo/connect" event="onClick" args="evt">';
     $page="../report/productFlatStructure.php?objectClass=$class&objectId=$id";
     $result.="var url='$page';";
+    $result.='url+="&showClosedItems="+((dijit.byId("showClosedItems").get("checked"))?"1":"0");';
     $result.='url+="&format=print";';
     $result.='showPrint(url, null, null, "html", "P");';
     $result.='</script>';
@@ -264,6 +267,16 @@ class ProductOrComponent extends SqlElement {
     $result.=' saveUserParameter("strucutreShowProjectsLinked",((this.checked)?"1":"0"));';
     $result.='</script>';
     $result.='</div></td>';
+    //gautier #2442
+    $result.='<tr>';
+    $result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedItems" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+    $result.='<div id="showClosedItems" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedItems)?'checked':'').' >';
+    $result.='<script type="dojo/connect" event="onChange" args="evt">';
+    $result.=' saveUserParameter("structureShowClosedItems",((this.checked)?"1":"0"));';
+    $result.='</script>';
+    $result.='</div></td>';
+    $result.='</tr></table>';
+    //end
     $result.='</tr></table>';
     return $result;
   }

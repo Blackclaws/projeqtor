@@ -1812,6 +1812,7 @@ noDataToDisplay: "Δεν υπάρχουν δεδομένα για εμφάνισ
 noEmailReceiver: "[No email receiver could be determined]",
 noFilterClause: "κανένα φίλτρο",
 noItemSelected: "Δεν επιλέχθηκε στοιχείο",
+NoLeftOnDone: "[Left work is not null&#44; delete left work  before passing this element in a done state.]",
 noMailSent: "Δεν ήταν δυνατό να σταλεί mail σε  '${1}'. ${2}",
 noPluginAvailable: "[no plugin available]",
 noStoredFilter: "κανένα αποθηκευμένο φίλτρο",

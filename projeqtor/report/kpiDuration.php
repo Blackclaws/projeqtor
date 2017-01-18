@@ -289,15 +289,17 @@ $query.= " from (select MAX(h.kpiValue) as valueP, h.$scale as periodP, h.refId 
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
 if ($done) {$query.= " and h.refDone=1";}
-if (! $idProject) {
+//if (! $idProject) {
 	if ($year) {
-	  if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
+		if ($month) {
+			$query.= " and h.month='$year$month'";
+		} else if ($year==date('Y') and date('m')==1) {
 	    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
 	  } else {
 	    $query.= " and h.year='$year'";
 	  }
 	}
-}
+//}
 $query.= " group by h.$scale, h.refId) prj ";
 $query.= " group by periodP";
 $result=Sql::query($query);
@@ -314,9 +316,9 @@ foreach ($result as $line) {
 
 //if ($cptProjectsDisplayed==0 and (!$start or !$end)) {
 if ($cptProjectsDisplayed==0 or (!$start or !$end)) {
-  //echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
-  //echo i18n('reportNoData'); 
-  //echo '</div>';
+  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+  echo i18n('reportNoData'); 
+  echo '</div>';
   return;
 }
 $lastValue=VOID;
@@ -414,9 +416,6 @@ $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.t
 $dataSet->setAxisUnit(0,($displayAsPct)?"%  ":"  ");
 $graph->setGraphArea(55,70,$graphWidth-20,$graphHeight-60);
 $graph->drawFilledRectangle(55,70,$graphWidth-20,$graphHeight-60,array("R"=>230,"G"=>230,"B"=>230));
-
-
-
 
 $graph->Antialias = TRUE;
 if ($showThreshold) {

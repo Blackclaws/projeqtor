@@ -60,6 +60,7 @@ class TicketType extends Type {
   public $_lib_statusMustChangeCancelled;
   public $showInFlash;
   public $internalData;
+
   // Define the layout that will be used for lists
   private static $_fieldsAttributes=array("name"=>"required",
       "idWorkflow"=>"required",
@@ -73,7 +74,9 @@ class TicketType extends Type {
       "lockIdle"=>"nobr",
       "lockCancelled"=>"nobr",
       "internalData"=>"hidden",
-      "showInFlash"=>"hidden");
+      "showInFlash"=>"hidden",
+      "lockNoLeftOnDone"=>"nobr",
+      "_lib_statusMustChangeLeftDone"=>"nobr" );
   private static $_databaseCriteria = array('scope'=>'Ticket');
   
    /** ==========================================================================

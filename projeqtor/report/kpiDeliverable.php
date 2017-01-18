@@ -232,7 +232,17 @@ if ($idProject) {
   }
   echo '<td class="reportTableHeader" style="width:10%">' . htmlEncode($kpi->name) . '</td>';
   echo '</tr>';
-  $itemList=(new $class())->getSqlElementsFromCriteria(array('idProject'=>$idProject),false,null,'plannedDate asc');
+  $query="idProject=$idProject";
+	if ($year) {
+		if ($month) {
+			$query.= " and h.month='$year$month'";
+		} else if ($year==date('Y') and date('m')==1) {
+	    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
+	  } else {
+	    $query.= " and h.year='$year'";
+	  }
+	}
+  $itemList=(new $class())->getSqlElementsFromCriteria(null,false,$query,'plannedDate asc');
   $itemListInClause='(0';
   $arrayHist=array('last'=>array());
   foreach ($itemList as $item) {
@@ -272,7 +282,12 @@ if ($idProject) {
   }
   $itemListInClause.=')';
   echo '</table><br/><br/>';
-  
+  if (count($itemList)==0) {
+  	echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+  	echo i18n('reportNoData');
+  	echo '</div>';
+  	return;
+  }
   // retreive history of status value (Deliverable or Incoming)
   $whereHist="refType='$class' and refId in $itemListInClause and ( (operation='update' and colName='id".$class."Status') or operation='insert' or operation='delete')";
   $histList=(new History())->getSqlElementsFromCriteria(null,null,$whereHist, 'refId asc, operationDate desc');

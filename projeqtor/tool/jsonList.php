@@ -227,7 +227,6 @@
         $object=SqlElement::getCurrentObject(null,null,true,false);
         $typeClass=get_class($object);
         $limitPlanning=Parameter::getGlobalParameter('limitPlanningActivity');
-        debugLog($limitPlanning);
         if($class=="Activity" and $typeClass=="Ticket" and $limitPlanning=="YES"){
           $crit['isPlanningActivity']=1;
         }
