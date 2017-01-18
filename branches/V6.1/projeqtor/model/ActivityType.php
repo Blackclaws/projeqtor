@@ -73,7 +73,9 @@ class ActivityType extends Type {
   										                    "internalData"=>"hidden",
                                           "showInFlash"=>"hidden",
                                           "idPlanningMode"=>"hidden",
-                                          "idActivityPlanningMode"=>"required");
+                                          "idActivityPlanningMode"=>"required",
+                                          "lockNoLeftOnDone"=>"nobr",
+                                          "_lib_statusMustChangeLeftDone"=>"nobr" );
   private static $_colCaptionTransposition = array('idActivityPlanningMode'=>'defaultPlanningMode');
   private static $_databaseColumnName = array('idActivityPlanningMode'=>'idPlanningMode');
   private static $_databaseCriteria = array('scope'=>'Activity');

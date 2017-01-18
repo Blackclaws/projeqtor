@@ -77,7 +77,7 @@ if (!$idProject) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('messageNoData',array(i18n('Project'))); 
   echo '</div>';
-  exit;
+  return;
 }
 
 $kpi=new KpiDefinition(3);
@@ -278,6 +278,15 @@ $query = "select AVG(prj.valueP) as value, prj.periodP as period";
 $query.= " from (select MAX(h.kpiValue) as valueP, h.$scale as periodP, h.refId as idP";
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
+if ($year) {
+	if ($month) {
+		$query.= " and h.month='$year$month'";
+	} else if ($year==date('Y') and date('m')==1) {
+    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
+  } else {
+    $query.= " and h.year='$year'";
+  }
+}
 $query.= " group by h.$scale, h.refId) prj ";
 $query.= " group by periodP";
 $result=Sql::query($query);
@@ -304,11 +313,8 @@ while ($date<=$end) {
   if (isset($arrValues[$date])) {
     $lastValue=$arrValues[$date];
   } else {
-    if ($done) {
-      $arrValues[$date]=VOID;
-    } else {
-      $arrValues[$date]=$lastValue;
-    }
+    //$arrValues[$date]=VOID;
+    $arrValues[$date]=$lastValue;
   }
   $arrDates[$date]=$date;
   if ($scale=='day') {

@@ -52,6 +52,8 @@ class ProjectType extends SqlElement {
   public $_lib_statusMustChangeIdle;
   public $lockCancelled;
   public $_lib_statusMustChangeCancelled;
+  public $lockNoLeftOnDone;
+  public $_lib_statusMustChangeLeftDone;
   public $_sec_restrictTypes;
   public $_spe_restrictTypes;
 
@@ -73,7 +75,9 @@ class ProjectType extends SqlElement {
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
                                           "lockCancelled"=>"nobr",
-                                          "internalData"=>"hidden");
+                                          "lockNoLeftOnDone"=>"nobr",
+                                          "internalData"=>"hidden",
+                                          "_lib_statusMustChangeLeftDone"=>"nobr" );
    
    private static $_databaseColumnName = array();
    

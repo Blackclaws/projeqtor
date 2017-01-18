@@ -120,6 +120,7 @@ if ($type=='habilitation') {
 									 'joblist'=>i18n('joblistAccess'),
                                      'planning'=>i18n('planningRight'),
   																	 'resourcePlanning'=>i18n('resourcePlanningRight'),
+                                     'changeValidatedData'=>('changeValidatedData'),
                                      'document'=>i18n('documentUnlockRight'),
                                      'requirement'=>i18n('requirementUnlockRight'),
                                      'reportResourceAll'=>i18n('reportResourceAll'),
@@ -151,6 +152,13 @@ if ($type=='habilitation') {
         }
       }
     }
+    $crit=array('idProfile'=>$user->idProfile, 'scope'=>'changeValidatedData');
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    $act=new ActivityMain();
+    if ($habil and $habil->id and $habil->rightAccess=='1') {
+      //$canChangeResource=true;
+    }
+    
   }
 } else if ($type=='accessRight') {
   $crosTable=htmlGetCrossTable('menuProject', 'profile', 'accessRight') ;

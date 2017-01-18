@@ -47,7 +47,14 @@ $format="print";
 if (array_key_exists('format', $_REQUEST)){
   $format=trim($_REQUEST['format']);
 }
-
+//gautier #2442
+$showClosedItems=false;
+if (array_key_exists('showClosedItems', $_REQUEST)){
+  if ($_REQUEST['showClosedItems']!='0') {
+    $showClosedItems=true;
+  }
+}
+//end
 $item=new $objectClass($objectId);
 $canRead=securityGetAccessRightYesNo('menu' . $objectClass, 'read', $item)=="YES";
 if (!$canRead) exit;
@@ -94,6 +101,7 @@ if ($format=='print') {
 }
 
 function getSubItems($item,$result){
+  global $showClosedItems;
   if (get_class($item)=='Product') {
     $crit=array('idProduct'=>$item->id);
     $lst=$item->getSqlElementsFromCriteria($crit);
@@ -106,9 +114,16 @@ function getSubItems($item,$result){
   $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$item->id));
   foreach ($psList as $ps) {
     $comp=new Component($ps->idComponent);
-    $result[$ps->idComponent]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
-    $result=getSubItems($comp,$result);
-  }
+      if(!$showClosedItems){
+        if($comp->idle == 0){
+          $result[$ps->idComponent]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
+          $result=getSubItems($comp,$result);
+        }
+      }else{
+        $result[$ps->idComponent]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
+        $result=getSubItems($comp,$result);
+      }
+    }
   return $result;
 }
 

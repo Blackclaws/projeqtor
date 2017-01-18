@@ -494,7 +494,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $nbLineSection=0;
   
   if (SqlElement::is_subclass_of($obj, 'PlanningElement')) {
-    $obj->setVisibility();
+  	debugLog("Before Call SetVisibility");
+  	debugLog($obj);
+  	$obj->setVisibility();
+    debugLog("After Call SetVisibility");
+    debugLog($obj);
     $workVisibility=$obj->_workVisibility;
     $costVisibility=$obj->_costVisibility;
     if (get_class($obj) == "MeetingPlanningElement" or get_class($obj) == "PeriodicMeetingPlanningElement") {
