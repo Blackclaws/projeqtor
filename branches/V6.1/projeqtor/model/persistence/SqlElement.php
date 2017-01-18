@@ -3275,6 +3275,61 @@ abstract class SqlElement {
 				}
 			}
 		}
+   
+  //Gautier #1816
+  if(get_class($this)=='Activity' or get_class($this)=='Project' or get_class($this)=='Milestones' or get_class($this)=='Meeting' or get_class($this)=='TestSession'){
+    $classe = get_class($this);
+    $classeType = $classe.'Type';
+    $idClasseType = 'id'.$classeType;
+    $obj=get_class($this)."PlanningElement";
+    $type1 = new $classe($this->id);
+    //passing to done
+    $old = $this->getOld();
+    if($this->done and !$old->done){
+      $type2 = new $classeType ($type1->$idClasseType);
+      //checkbox lockNoLeftOnDone checked
+      if($type2->lockNoLeftOnDone == 1){
+        $pe=new $obj();
+        $crit=array('refType'=>$classe,'refId'=>$this->id);
+        $peLst=$pe->getSqlElementsFromCriteria($crit);
+        foreach ($peLst as $pe){
+            //left work
+            if($pe->leftWork != 0){
+              //error message
+              $result.='<br/>' . i18n("NoLeftOnDone");
+            }
+        }
+      }
+    }
+  }
+  // Particular case for Ticket
+  if(get_class($this)=='Ticket'){
+    $classe = 'Ticket';
+    $classeType = 'TicketType';
+    $idClasseType = 'id'.$classeType;
+    $obj="WorkElement";
+    $type1 = new $classe($this->id);
+    //passing to done
+    $old = $this->getOld();
+    if($this->done and !$old->done){
+      $type2 = new $classeType ($type1->$idClasseType);
+      //checkbox lockNoLeftOnDone checked
+      if($type2->lockNoLeftOnDone == 1){
+       $we = new WorkElement();
+       $crit=array('refType'=>$classe,'refId'=>$this->id);
+       $weLst=$we->getSqlElementsFromCriteria($crit);
+       foreach ($weLst as $we){
+         //left work
+         if($we->leftWork != 0){
+           //error message
+           $result.='<br/>' . i18n("NoLeftOnDone");
+         } 
+       }
+      }
+    }
+  } //end #1816
+ 
+			
 		// Control for Closed item that all items are closed
 		if (property_exists($this,'idle') and $this->idle and $this->id) { // #1690 : should be possible to import closed items
 			$relationShip=self::$_closeRelationShip;
@@ -4591,7 +4646,6 @@ abstract class SqlElement {
 	  }
 	  if (property_exists($testObj,'idStatus') and $newStatus!='*') {
 	    $status=($newStatus)?$newStatus:$testObj->idStatus;
-	    debugLog($list['Status']);
 	    if (isset($list['Status']) and isset($list['Status'][$class]) and isset($list['Status'][$class][$status]) ) {
 	      $listStatus=$list['Status'][$class][$status];
 	    }

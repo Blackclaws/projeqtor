@@ -151,6 +151,7 @@ class PlanningElement extends SqlElement {
   function __destruct() {
     parent::__destruct();
   }
+  
 
 // ============================================================================**********
 // GET VALIDATION SCRIPT
@@ -1195,6 +1196,25 @@ class PlanningElement extends SqlElement {
       $user=getSessionUser();
       $profile=$user->getProfile($this->idProject);
     }
+    
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',array('idProfile'=>$profile,'scope'=>'changeValidatedData'));
+    //debugLog("COnstruct de PlanningElement,getProfile pour idProject = ".$this->idProject." => ".$profile);
+    if ($habil and $habil->rightAccess == 2) {
+      self::$_fieldsAttributes['validatedStartDate']='readonly';
+      self::$_fieldsAttributes['validatedEndDate']='readonly';    
+      self::$_fieldsAttributes['validatedWork']='readonly';
+      self::$_fieldsAttributes['validatedDuration']='readonly';
+      self::$_fieldsAttributes['validatedCost']='readonly';
+      self::$_fieldsAttributes['priority']='readonly';
+    }else{
+      self::$_fieldsAttributes['validatedStartDate']='';
+      self::$_fieldsAttributes['validatedEndDate']='';
+      self::$_fieldsAttributes['validatedWork']='';
+      self::$_fieldsAttributes['validatedDuration']='';
+      self::$_fieldsAttributes['validatedCost']='';
+      self::$_fieldsAttributes['priority']='';
+    }
+    
     if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
     and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
       $this->_costVisibility=self::$staticCostVisibility[$profile];

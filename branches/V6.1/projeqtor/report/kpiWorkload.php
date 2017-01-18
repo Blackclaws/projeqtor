@@ -110,7 +110,7 @@ if ($scope=='Project') {
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('messageNoData',array(i18n('Project'))); 
     echo '</div>';
-    exit;
+    return;
   }
 } else if ($scope=='Organization') {
   $projectVisibility=securityGetAccessRight('menuProject','read');
@@ -118,13 +118,13 @@ if ($scope=='Project') {
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('messageNoData',array(i18n('colIdOrganization').' / '.i18n('colIdProjectType'))); 
     echo '</div>';
-    exit;
+    return;
   }
   if (!$year) {
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('messageNoData',array(i18n('year')));
     echo '</div>';
-    exit;
+    return;
   }
 } else {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
@@ -301,15 +301,17 @@ $query.= " from (select MAX(h.kpiValue*h.weight) as valueP, MIN(h.weight) as wei
 $query.= " from $hTable h";
 $query.= " where h.idKpiDefinition=$kpi->id and h.refType='Project' and h.refId in " . transformListIntoInClause($arrayProj);
 if ($done) {$query.= " and h.refDone=1";}
-if (! $idProject) {
-  if ($year) {
-    if ($month==1 or (!$month and $year==date('Y') and date('m')==1)) {
-      $query.= " and (h.year='$year' or h.year='".($year-1)."')";
-    } else {
-      $query.= " and h.year='$year'";
-    }
-  }
-}
+//if (! $idProject) {
+	if ($year) {
+		if ($month) {
+			$query.= " and h.month='$year$month'";
+		} else if ($year==date('Y') and date('m')==1) {
+	    $query.= " and (h.year='$year' or h.year='".($year-1)."')";
+	  } else {
+	    $query.= " and h.year='$year'";
+	  }
+	}
+//}
 $query.= " group by h.$scale, h.refId) prj ";
 $query.= " group by periodP";
 $result=Sql::query($query);
@@ -328,7 +330,7 @@ if ($cptProjectsDisplayed==0 or (!$start or !$end)) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData'); 
   echo '</div>';
-  exit;
+  return;
 }
 $lastValue=VOID;
 $arrDates=array();

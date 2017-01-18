@@ -72,7 +72,9 @@ class TestSessionType extends Type {
       "internalData"=>"hidden",
       "showInFlash"=>"hidden",
       "idPlanningMode"=>"hidden",
-      "idTestSessionPlanningMode"=>"required");
+      "idTestSessionPlanningMode"=>"required",
+      "lockNoLeftOnDone"=>"nobr",
+      "_lib_statusMustChangeLeftDone"=>"nobr" );
   private static $_colCaptionTransposition = array('idTestSessionPlanningMode'=>'defaultPlanningMode');
   private static $_databaseColumnName = array('idTestSessionPlanningMode'=>'idPlanningMode');
   private static $_databaseCriteria = array('scope'=>'TestSession');
