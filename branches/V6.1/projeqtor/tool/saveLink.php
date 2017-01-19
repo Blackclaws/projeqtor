@@ -51,6 +51,12 @@ if (! array_key_exists('linkRef2Id',$_REQUEST)) {
 }
 $ref2Id=$_REQUEST['linkRef2Id'];
 
+if (! array_key_exists('copyLinksofLinked',$_REQUEST)) {
+  throwError('copyLinksofLinked parameter not found in REQUEST');
+}
+
+$copyLinksofLinked=$_REQUEST['copyLinksofLinked'];
+
 if ($ref2Type=='Document') {
   if (array_key_exists('linkDocumentVersion',$_REQUEST)) {
     $version=$_REQUEST['linkDocumentVersion'];
@@ -77,7 +83,21 @@ if (is_array($ref2Id)) {
 Sql::beginTransaction();
 $result="";
 // get the modifications (from request)
+
+
+
+$Lnk=new Link();
+
 foreach ($arrayId as $ref2Id) {
+  debugLog($ref1Type);
+  debugLog($ref1Id);
+  
+  $crit1=array('ref1Type'=>$ref2Type,'ref1Id'=>intval($ref2Id));
+  $list1=$Lnk->getSqlElementsFromCriteria($crit1);
+  
+  $crit2=array('ref2Type'=>$ref2Type,'ref2Id'=>intval($ref2Id));
+  $list2=$Lnk->getSqlElementsFromCriteria($crit2);
+
 	$link=new Link($linkId);
 	$link->ref1Id=$ref1Id;
 	$link->ref1Type=$ref1Type;
@@ -87,6 +107,24 @@ foreach ($arrayId as $ref2Id) {
   $link->idUser=$user->id;
   $link->creationDate=date("Y-m-d H:i:s"); 
   $res=$link->save();
+
+  if ($copyLinksofLinked=='on'){
+    foreach ($list1 as $link){
+      $link->id=null;
+      $link->ref1Type=$ref1Type;
+      $link->ref1Id=$ref1Id;
+      $link->save();
+      debugLog($list1);
+      
+    }
+    foreach($list2 as $link){
+      $link->id=null;
+      $link->ref2Type=$ref1Type;
+      $link->ref2Id=$ref1Id;
+      $link->save();
+    }
+  }
+  
   if (!$result) {
     $result=$res;
   } else if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {

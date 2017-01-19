@@ -33,6 +33,7 @@ require_once "../tool/projeqtor.php";
          <input id="linkId" name="linkId" type="hidden" value="" />
          <input id="linkRef1Type" name="linkRef1Type" type="hidden" value="" />
          <input id="linkRef1Id" name="linkRef1Id" type="hidden" value="" />
+         <input id="copyLinksofLinked" name="copyLinksofLinked" type="hidden" value="" />
          <table>
            <tr>
              <td class="dialogLabel"  >
@@ -104,7 +105,16 @@ require_once "../tool/projeqtor.php";
                </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>        
+         <table>    
+            <td class="dialogLabel"  >
+               <label for="copyLinksofLinked" ><?php echo i18n("copyLinkFromOriginalElement") ?>&nbsp;:&nbsp;</label>
+             </td>     
+          <td>
+             <input dojoType="dijit.form.CheckBox" name="copyLinksofLinked" id="copyLinksofLinked" checked=false />
+          </td>
          </table>
+         
         </form>
       </td>
     </tr>

@@ -4858,6 +4858,16 @@ function copyObject(objectClass) {
       dojo.byId('id').value)), action);
 }
 
+function copyLinkTo(objectClass) {
+  dojo.byId("copyButton").blur();
+  action=function() {
+    unselectAllRows('objectGrid');
+    loadContent("../tool/copyObject.php", "linkRef2Id", 'objectForm', true);
+  };
+  showConfirm(i18n("confirmCopy", new Array(i18n(objectClass),
+      dojo.byId('id').value)), action);
+}
+
 function copyObjectToShowStructure() {
   if (dojo.byId('copyClass').value == 'Activity'
       && copyableArray[dijit.byId('copyToClass').get('value')] == 'Activity') {

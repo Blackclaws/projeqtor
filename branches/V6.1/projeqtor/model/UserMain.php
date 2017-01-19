@@ -315,6 +315,7 @@ class UserMain extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function getAccessControlRights($obj=null) {
+    scriptLog("getAccessControlRights(obj=".debugDisplayObj($obj).")");
     // _accessControlRights fetched yet, just return it
     SqlElement::$_cachedQuery['AccessProfile']=array();
     
@@ -322,7 +323,7 @@ class UserMain extends SqlElement {
     if ($obj) {
       $profile=$this->getProfile($obj);
     }
-    //debugLog($profile);
+    //debugLog("profile=$profile");
     if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {       
       return $this->_accessControlRights[$profile];
     }        
@@ -471,7 +472,7 @@ class UserMain extends SqlElement {
    * @return a list of projects id
    */
   public function getVisibleProjects($limitToActiveProjects=true) {
-//scriptLog("getVisibleProjects()");
+    scriptLog("UserMain::getVisibleProjects(limitToActiveProjects=$limitToActiveProjects)");
     if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;
     }
@@ -493,8 +494,6 @@ class UserMain extends SqlElement {
       $crit["idle"]='0';
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
-    //debugLog("affList");
-    //debugLog($affList);
     $today=date('Y-m-d');
     foreach ($affList as $aff) {
       if ( (! $aff->startDate or $aff->startDate<=$today) and (! $aff->endDate or $aff->endDate>=$today)) {
@@ -623,6 +622,7 @@ class UserMain extends SqlElement {
   }
   
   public function getProfile($objectOrIdProject=null) {
+    scriptLog("getProfile(objectOrIdProject=".debugDisplayObj($objectOrIdProject).")");
     if (is_object($objectOrIdProject)) {
       if (get_class($objectOrIdProject)=='Project') {
         $idProject=$objectOrIdProject->id;
@@ -638,8 +638,6 @@ class UserMain extends SqlElement {
       return ($this->idProfile)?$this->idProfile:0;
     }
     $specificProfiles=$this->getSpecificAffectedProfiles();
-    //debugLog("specificProfiles");
-    //debugLog($specificProfiles);  
     if (isset($specificProfiles[$idProject])) {
       return $specificProfiles[$idProject];
     } else {

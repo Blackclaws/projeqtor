@@ -3162,15 +3162,16 @@ abstract class SqlElement {
 		  $right='YES';
 		}
 		if ($right!='YES' and get_class($this)=='Project') {
-		  if ($this->idProject) {
-		    $proj=new Project($this->idProject,true);
-		    $right=securityGetAccessRightYesNo('menuProject', 'update', $proj);
+		  if ($this->id) {
+		    $right=securityGetAccessRightYesNo('menu' . get_class($this), 'update', $this);
 		  } else {
-		    //  $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this); // This shoulod be applied to avoid creation at root
-		    if ($this->id) {
-		      $right=securityGetAccessRightYesNo('menu' . get_class($this), 'update', $this);
-		    } else {
-          $right=securityGetAccessRightYesNo('menu' . get_class($this), 'create');
+        $right=securityGetAccessRightYesNo('menu' . get_class($this), 'create');
+		  }
+		  if ($right=="YES" and $this->idProject) {
+		    $old=new Project($this->id,true);
+		    if ($old->idProject!=$this->idProject) { // Can change project only if has management rights to new one
+  		    $proj=new Project($this->idProject,true);
+  		    $right=securityGetAccessRightYesNo('menuProject', 'update', $proj);
 		    }
 		  }
 		} else if ($right!='YES' and get_class($this)=='Affectation') {

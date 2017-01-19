@@ -524,5 +524,6 @@ function listFieldsForFilter ($obj,$nbRows, $included=false) {
   	$nbRows++;
   }  
   return $nbRows;
+  
 }
 ?>
