@@ -93,6 +93,16 @@ function checkPrerequisites($showOK=false,$dbType=null) {
     $checkOK++;
   }
   
+//  This method was too old.
+//   // DOMDocument is required
+//   if(!function_exists('domxml_open_file')){
+//     showError("Module DOMDocument is not available - check your php configuration (php.ini)");
+//     $checkErrors++;
+//   } else {
+//     if ($showOK) showMessage("Module DOMDocument is available : OK");
+//     $checkOK++;
+//   }
+  
   // safe_mode should be disabled
   if (ini_get ( 'safe_mode' )) {
     showWarning("PHP safe_mode is enabled, it should be disabled as it may lead to unexpected behaviors.<br/>Notice that safe_mode is deprecated in PHP 5.3 and removed in PHP 5.4.");

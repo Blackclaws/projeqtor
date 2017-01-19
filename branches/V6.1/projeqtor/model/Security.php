@@ -99,7 +99,11 @@ class Security
     }
     $date=""; $time="";
     if ($len<10) {
-      $time=ltrim($dateTime,'T');
+      if (substr($dateTime,0,1)=='T') {
+        $time=substr($dateTime,1);
+      } else {
+        $time=$dateTime;
+      }
     } else if ($len==10) {
       $date=$dateTime;
     } else { // $len > 10

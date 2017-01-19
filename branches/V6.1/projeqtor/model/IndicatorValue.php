@@ -504,8 +504,9 @@ class IndicatorValue extends SqlElement {
 	            }
 	          }
           }
-          if (($def->mailToLeader or $def->alertToLeader) and $resource->idProfile) {
-            $prf=new Profile($resource->idProfile);
+          if (($def->mailToLeader or $def->alertToLeader) and ($aff->idProfile or $resource->idProfile)) {
+            $profile=($aff->idProfile)?$aff->idProfile:$resource->idProfile;
+						$prf=new Profile($profile);
             if ($prf->profileCode=='PL') {
             	if ($def->alertToLeader) {
             		$arrayAlertDest[$resource->id]=$resource->name;
