@@ -43,7 +43,7 @@ if ( is_session_started() === FALSE ) {
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
 $version = "V6.1.0"; // Version of application : Major / Minor / Release
-$build = "0156"; // Build number. To be increased on each release
+$build = "0158"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -1526,6 +1526,15 @@ function envLog() {
   }
 }
 
+function debugDisplayObj($obj) {
+  if (is_object($obj)) {
+    return get_class($obj).' #'.$obj->id;
+  } else if (is_array($obj)) {
+    retrun ("array(".count($obj).")");    
+  } else {
+    return $obj;
+  }
+}
 /**
  * ===========================================================================
  * Get the IP of the Client
@@ -1560,7 +1569,7 @@ function getIP() {
  *         'ALL' => any element
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
-//scriptLog("securityGetAccessRight($menuName, $accessType, ".(($obj)?get_class($obj).' #'.$obj->id:'').",". (($user)?'User #'.$user->id:'').")");  
+  scriptLog("securityGetAccessRight(menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=". debugDisplayObj($user).")");
   if (! $user) {
     $user = getSessionUser();
   }
@@ -1589,10 +1598,11 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
  * @return the right as Yes or No (depending on object properties)
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
+  scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
   if (substr ( $menuName, 4 )=='Admin') return 'YES';
   if (! SqlElement::class_exists ( substr ( $menuName, 4 ) )) {
-    errorLog ( "securityGetAccessRightYesNo : '" . substr ( $menuName, 4 ) . "' is not an existing object class" );
-    errorLog("securityGetAccessRightYesNo($menuName, $accessType, ".(($obj)?get_class($obj).' #'.$obj->id:'').", ".(($user)?'User #'.$user->id:'').")");
+    errorLog("securityGetAccessRightYesNo : '" . substr ( $menuName, 4 ) . "' is not an existing object class" );
+    errorLog("securityGetAccessRightYesNo($menuName, $accessType, ".debugDisplayObj($obj).", ".debugDisplayObj($user).")");
     debugPrintTraceStack();
   }
   if ($obj and property_exists($obj, 'isPrivate') and $obj->isPrivate==1 and $obj->idUser!=getSessionUser()->id) {
@@ -1621,7 +1631,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-  //debugLog("securityGetAccessRight ( $menuName, $accessType, ".(($obj)?get_class($obj).' #'.$obj->id:'').", ".(($user)?'User #'.$user->id:'')." )=$accessRight");
+  debugLog("result for securityGetAccessRight ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user)." )=$accessRight");
   if ($accessType == 'create') {  
     if ((!$obj or (property_exists(substr($menuName,4), 'name') and !$obj->name)) and property_exists(substr($menuName,4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
       foreach ($user->getAllProfiles() as $prf) {

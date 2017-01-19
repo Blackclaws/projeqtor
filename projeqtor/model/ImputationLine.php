@@ -433,7 +433,6 @@ class ImputationLine {
         $result=self::getParent($top, $result, $direct=false, $accessRight);
       }
     }
-    scriptLog("      => ImputationLine->getParent()-exit");
     return $result;
   }
 
