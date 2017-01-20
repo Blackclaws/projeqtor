@@ -201,8 +201,7 @@ class Audit extends SqlElement {
 			// $audit->duration=$duration->format('%H%I%S');
 			$audit->idle = 1;
 			if($audit->idle== 1){
-			  $audit->sessionId=$audit->sessionId.'_'.date('Y-m-d');
-			  debugLog($audit->sessionId);
+			  $audit->sessionId=$audit->sessionId.'_'.date('YmdHis');
 			}
 			$audit->save ();
 		}
@@ -228,7 +227,6 @@ class Audit extends SqlElement {
 		}
 		disableCatchErrors();
 		disableSilentErrors();
-
 	}
 	static function getBrowser() {
 		$u_agent = $_SERVER ['HTTP_USER_AGENT'];

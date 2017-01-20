@@ -717,16 +717,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   </tr>
                 </table>    
               </div>
-              </td></tr></table>               
-            </div>
-          </td>
-          <td width="40%" style="vertical-align: middle;" >
-            <div id="statusBarMessageDiv" style="text-align: left">
-              <?php htmlDisplayDatabaseInfos();?>
-            </div>
-          </td>
-          
-          <!--           KROWRY -->      
+               <!--           KROWRY -->      
          <td width="20%">
             <div  class="pseudoButtonFullScreen" style="width:28px;"onclick="toggleFullScreen()">
               <table>
@@ -738,6 +729,14 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               </table>
             </div>
          </td> 
+              </td></tr></table>               
+            </div>
+          </td>
+          <td width="40%" style="vertical-align: middle;" >
+            <div id="statusBarMessageDiv" style="text-align: left">
+              <?php htmlDisplayDatabaseInfos();?>
+            </div>
+          </td>
           <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
