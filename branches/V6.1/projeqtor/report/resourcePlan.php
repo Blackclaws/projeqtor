@@ -65,7 +65,6 @@ if (array_key_exists('periodValue',$_REQUEST))
 	$periodValue=Security::checkValidPeriod($periodValue);
 }
 
-
 // Header
 $headerParameters="";
 if ($paramProject!="") {
@@ -88,6 +87,8 @@ $nbMonths=1;
 if ($periodType=='month' and isset($_REQUEST['includeNextMonth'])) {
   $nbMonths=2;
   $headerParameters.= i18n("colIncludeNextMonth").'<br/>';
+
+  debugLog($_REQUEST['includeNextMonth']);
 }
 
 include "header.php";
@@ -211,7 +212,8 @@ $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
-if (checkNoData($result)) exit;
+$month=$paramMonth;
+if (checkNoData($result,$month)) continue;
 
 echo "<table width='95%' align='center'>";
 echo "<tr><td><table  width='100%' align='left'><tr>";

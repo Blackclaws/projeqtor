@@ -51,11 +51,12 @@ if (! array_key_exists('linkRef2Id',$_REQUEST)) {
 }
 $ref2Id=$_REQUEST['linkRef2Id'];
 
-if (! array_key_exists('copyLinksofLinked',$_REQUEST)) {
-  throwError('copyLinksofLinked parameter not found in REQUEST');
+$copyLinksofLinked=false;
+if (array_key_exists('copyLinksofLinked', $_REQUEST)){
+  if ($_REQUEST['copyLinksofLinked']!='0') {
+    $copyLinksofLinked=true;
+  }
 }
-
-$copyLinksofLinked=$_REQUEST['copyLinksofLinked'];
 
 if ($ref2Type=='Document') {
   if (array_key_exists('linkDocumentVersion',$_REQUEST)) {
@@ -88,10 +89,7 @@ $result="";
 
 $Lnk=new Link();
 
-foreach ($arrayId as $ref2Id) {
-  debugLog($ref1Type);
-  debugLog($ref1Id);
-  
+foreach ($arrayId as $ref2Id) {  
   $crit1=array('ref1Type'=>$ref2Type,'ref1Id'=>intval($ref2Id));
   $list1=$Lnk->getSqlElementsFromCriteria($crit1);
   
@@ -114,7 +112,6 @@ foreach ($arrayId as $ref2Id) {
       $link->ref1Type=$ref1Type;
       $link->ref1Id=$ref1Id;
       $link->save();
-      debugLog($list1);
       
     }
     foreach($list2 as $link){

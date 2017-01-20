@@ -185,7 +185,8 @@ $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
 $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 
-if (checkNoData($result)) exit;
+$month=$paramMonth;
+if (checkNoData($result,$month)) continue;
 
 echo '<table width="95%" align="center">';
 echo '<tr><td>';
