@@ -1036,7 +1036,7 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col),'stipAllTags').'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;">';
-          $val=htmlEncode($val,'formatted');
+          if (isTextFieldHtmlFormatted($val)) $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
             if ($preseveHtmlFormatingForPDF) {
               $val='<div>'.$val.'</div>';
@@ -1765,9 +1765,13 @@ scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentRe
         echo ' maxlength="' . $dataLength . '" ';
         // echo ' maxSize="4" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
-        $text=new Html2Text($val);
-        $val=$text->getText();
-        echo htmlEncode($val);
+      if (isTextFieldHtmlFormatted($val)) {
+          $text=new Html2Text($val);
+          $val=$text->getText();
+          echo htmlEncode($val);
+        } else {
+        	echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
+        } 
         // echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';
       } else if ($dataLength > 4000) {
@@ -2433,6 +2437,9 @@ function drawNotesFromObject($obj, $refresh=false) {
       if ($print and $outMode=='pdf') {
         $strDataHTML=str_replace(array('<div>','</div>'),array('<br/>',''), $strDataHTML);
         $strDataHTML=strip_tags($strDataHTML,'<br><br/><font><b>');
+      }
+      if (! isTextFieldHtmlFormatted($strDataHTML)) {
+      	$strDataHTML=htmlEncode($strDataHTML,'plainText');
       }
       echo $strDataHTML;
       if (! $print) echo '</div>';

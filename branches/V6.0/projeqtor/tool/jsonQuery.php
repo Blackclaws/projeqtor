@@ -608,8 +608,10 @@
     					}
     				}
     				if ($dataLength[$id]>4000 and !$exportHtml) {
-    				  $text=new Html2Text($val);
-    				  $val=$text->getText();
+    				  if (isTextFieldHtmlFormatted($val)) {
+	    				  $text=new Html2Text($val);
+	    				  $val=$text->getText();
+    					}
     				}
     				$val=encodeCSV($val);
     				if ($csvQuotedText) {
