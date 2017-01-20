@@ -785,6 +785,8 @@ function htmlEncode($val,$context="default") {
   } else if ($context=='protectQuotes') {
     $str=str_replace(array("'",'"'), array('\\'."'",'\\'.'"'), $val);
     return htmlspecialchars($str,ENT_QUOTES,'UTF-8');    
+  } else if ($context=='plainText') {
+  	return nl2br(htmlentities(str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val)));
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
