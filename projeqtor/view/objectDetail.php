@@ -494,11 +494,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $nbLineSection=0;
   
   if (SqlElement::is_subclass_of($obj, 'PlanningElement')) {
-  	debugLog("Before Call SetVisibility");
-  	debugLog($obj);
-  	$obj->setVisibility();
-    debugLog("After Call SetVisibility");
-    debugLog($obj);
+//   	debugLog("Before Call SetVisibility");
+//   	debugLog($obj);
+   	$obj->setVisibility();
+//     debugLog("After Call SetVisibility");
+//     debugLog($obj);
     $workVisibility=$obj->_workVisibility;
     $costVisibility=$obj->_costVisibility;
     if (get_class($obj) == "MeetingPlanningElement" or get_class($obj) == "PeriodicMeetingPlanningElement") {
@@ -1058,7 +1058,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col),'stipAllTags').'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;">';
-          $val=htmlEncode($val,'formatted');
+          if (isTextFieldHtmlFormatted($val)) $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
             if ($preseveHtmlFormatingForPDF) {
               $val='<div>'.$val.'</div>';
@@ -1785,12 +1785,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-        // echo ' maxSize="4" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
-        $text=new Html2Text($val);
-        $val=$text->getText();
-        echo htmlEncode($val);
-        // echo $colScript; // => this leads to the display of script in textarea
+        if (isTextFieldHtmlFormatted($val)) {
+          $text=new Html2Text($val);
+          $val=$text->getText();
+          echo htmlEncode($val);
+        } else {
+        	echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
+        } 
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -2446,11 +2448,11 @@ function drawNotesFromObject($obj, $refresh=false) {
       }
       echo '<td class="noteData">#' . htmlEncode($note->id) . '</td>';
       echo '<td class="noteData">';
-      if (!$print) {
+      /*if (!$print) {
         echo '<div style="display:none" type="hidden" id="note_' . htmlEncode($note->id) . '">';
         echo $note->note;
         echo '</div>';
-      }
+      }*/
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, $updateDate);
       echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
@@ -2464,6 +2466,10 @@ function drawNotesFromObject($obj, $refresh=false) {
         $strDataHTML=str_replace(array('<div>','</div>'),array('<br/>',''), $strDataHTML);
         $strDataHTML=strip_tags($strDataHTML,'<br><br/><font><b>');
       }
+      if (! isTextFieldHtmlFormatted($strDataHTML)) {
+      	$strDataHTML=htmlEncode($strDataHTML,'plainText');
+      }
+      debugLog($strDataHTML);
       echo $strDataHTML;
       if (! $print) echo '</div>';
       // END ADDED BRW

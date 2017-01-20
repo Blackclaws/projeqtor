@@ -33,7 +33,6 @@ require_once "../tool/projeqtor.php";
          <input id="linkId" name="linkId" type="hidden" value="" />
          <input id="linkRef1Type" name="linkRef1Type" type="hidden" value="" />
          <input id="linkRef1Id" name="linkRef1Id" type="hidden" value="" />
-         <input id="copyLinksofLinked" name="copyLinksofLinked" type="hidden" value="" />
          <table>
            <tr>
              <td class="dialogLabel"  >

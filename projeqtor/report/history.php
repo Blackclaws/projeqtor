@@ -203,8 +203,8 @@ foreach($historyList as $hist) {
       $oldValue = Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
       $newValue = Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
     } else if ($dataType=='varchar' and $dataLength>4000) {
-      $oldValue=htmlEncode($oldValue,'formatted');
-      $newValue=htmlEncode($newValue,'formatted');
+      if (isTextFieldHtmlFormatted($oldValue)) $oldValue=htmlEncode($oldValue,'formatted');
+      if (isTextFieldHtmlFormatted($newValue)) $newValue=htmlEncode($newValue,'formatted');
     } else {
       $oldValue=htmlEncode($oldValue,'print');
       $newValue=htmlEncode($newValue,'print');

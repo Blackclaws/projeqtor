@@ -2871,3 +2871,10 @@ function formatBigButton($class) {
   $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
   return $result;
 }
+function isTextFieldHtmlFormatted($val) {
+	if (strtolower(substr($val,0,5))=='<div>' and strtolower(substr($val,-6))=='</div>') {
+		return true;
+	} else {
+		return false;
+	}
+}

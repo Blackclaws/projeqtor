@@ -1294,7 +1294,8 @@ label, .label, .smallLabel {
   text-shadow: 1px 1px #FFFFFF  ;
   cursor:pointer;
   height: 26px;
-  margin-left:346px;
+  margin-left:3px;
+  float:left;
 }
 .pseudoButtonFullScreen:hover {
   background: rgba(255,255,255,1);

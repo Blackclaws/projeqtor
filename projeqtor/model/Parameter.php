@@ -471,6 +471,13 @@ class Parameter extends SqlElement {
           $list=array('YES'=>i18n('displayYes'),
                       'NO'=>i18n('displayNo'));
       break;
+      
+      case 'displayHistory':
+        $list=array('NO'=>i18n('displayNo'),
+        'YES'=>i18n('displayYes'),
+        'YESW'=>i18n('displayYesWithWork'),
+        'REQ'=>i18n('displayOnRequest') );
+        break;
         
       case 'imputationAlertGenerationDay': 
         $list=array(
@@ -647,6 +654,7 @@ class Parameter extends SqlElement {
       	                       'defaultTheme'=>'list',
       	                       'startPage'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
+      	                       'displayHistory'=>'list',
       	                     'sectionFiles'=>'section',
       	                       'paramAttachmentDirectory'=>'text',
       	                       'paramAttachmentMaxSize'=>'longnumber',

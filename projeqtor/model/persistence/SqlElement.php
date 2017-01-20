@@ -1040,7 +1040,7 @@ abstract class SqlElement {
 				  if (trim($oldText)==trim($col_new_value)) {
 				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
 				  } else {
-				    if (substr($col_new_value,0,4)!='<div') $col_new_value=nl2br($col_new_value);
+				    if (! isTextFieldHtmlFormatted($col_new_value)) $col_new_value=nl2br($col_new_value);
 				  }
 				}
 				// !!! do not insert query for last update date time unless some change is detected
@@ -3233,17 +3233,13 @@ abstract class SqlElement {
 				}
 			}
 			if ($dataLength>4000) {
-			  // Remove "\n" that have no use here
-			  //$this->$col=str_replace( array("\n",'<div></div>'),
-			  //                         array(' ', ''           ),
-			  //    $val );
 			  if ($val=='<div></div>') $val=null;
 			  try {
-			    $test=strip_tags($val);
+			  	if (isTextFieldHtmlFormatted($val)) $test=strip_tags($val);
 			  } catch (Exception $e) {
 			    $result.='<br/>' . i18n('messageInvalidHTML',array(i18n('col' . ucfirst($col))));
 			  }
-			  $val=htmlEncode($val,'formatted'); // Erase <script tags and erase value if messy tags
+			  if (isTextFieldHtmlFormatted($val)) $val=htmlEncode($val,'formatted'); // Erase <script tags and erase value if messy tags
 			}
 		}
 		$idType='id'.((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
