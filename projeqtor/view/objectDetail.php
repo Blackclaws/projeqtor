@@ -1812,7 +1812,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           //echo $name.' '.$attributes;
           echo ' maxlength="' . $dataLength . '"';
           echo '>';
-          echo htmlspecialchars($val);
+          if (!isTextFieldHtmlFormatted($val)) {
+          	echo formatPlainTextForHtmlEditing($val);
+          } else {
+          	echo htmlspecialchars($val);
+          }
           echo '</textarea>';
           //echo  str_replace( "\n", '<br/>', $val );
           echo '<input type="hidden" id="ckeditor'.$ckEditorNumber.'" value="'. $col . $extName.'" />';
@@ -1828,7 +1832,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo $name;
           echo $attributes;
           echo '>';
-          echo htmlspecialchars($val);
+          if (!isTextFieldHtmlFormatted($val)) {
+          	echo formatPlainTextForHtmlEditing($val,'single');
+          } else {
+          	echo ($val);
+          }
           echo '</textarea>';
           if (isIE() and ! $val) $val='<div></div>'; 
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
@@ -1899,7 +1907,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
           //echo '   alert("OK");';
           //echo '  </script>';
-          echo  str_replace( "\n", '<br/>', $val );
+          if (!isTextFieldHtmlFormatted($val)) {
+          	echo formatPlainTextForHtmlEditing($val,'single');
+          } else {
+          	echo ($val);
+          }
           //echo $val;
           echo '</div>';
         }
@@ -2392,7 +2404,7 @@ function drawHistoryFromObjects($refresh=false) {
 }
 
 function drawNotesFromObject($obj, $refresh=false) {
-  global $cr, $print, $outMode, $user, $comboDetail, $displayWidth, $printWidth;
+  global $cr, $print, $outMode, $user, $comboDetail, $displayWidth, $printWidth,$preseveHtmlFormatingForPDF;
   $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
   $widthPctNote=((substr($widthPct,0,strlen($widthPct)-2)*0.85)-45).'px';
   if ($comboDetail) {
@@ -2462,14 +2474,19 @@ function drawNotesFromObject($obj, $refresh=false) {
       $strDataHTML=$note->note;
       //$strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
       //$strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
-      if ($print and $outMode=='pdf') {
-        $strDataHTML=str_replace(array('<div>','</div>'),array('<br/>',''), $strDataHTML);
-        $strDataHTML=strip_tags($strDataHTML,'<br><br/><font><b>');
+      if ($print and $outMode=="pdf") { // Must purge data, otherwise will never be generated
+      	if ($preseveHtmlFormatingForPDF) {
+      		//$strDataHTML='<div>'.$strDataHTML.'</div>';
+      	} else {
+      		$strDataHTML=htmlEncode($strDataHTML,'pdf'); // remove all tags but line breaks
+      	}
+      } else {
+	      if (! isTextFieldHtmlFormatted($strDataHTML)) {
+	      	$strDataHTML=htmlEncode($strDataHTML,'plainText');
+	      } else {
+	      	$strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+	      }
       }
-      if (! isTextFieldHtmlFormatted($strDataHTML)) {
-      	$strDataHTML=htmlEncode($strDataHTML,'plainText');
-      }
-      debugLog($strDataHTML);
       echo $strDataHTML;
       if (! $print) echo '</div>';
       // END ADDED BRW

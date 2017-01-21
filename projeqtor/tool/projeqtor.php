@@ -1631,7 +1631,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-  debugLog("result for securityGetAccessRight ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user)." )=$accessRight");
+  //debugLog("result for securityGetAccessRight ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user)." )=$accessRight");
   if ($accessType == 'create') {  
     if ((!$obj or (property_exists(substr($menuName,4), 'name') and !$obj->name)) and property_exists(substr($menuName,4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
       foreach ($user->getAllProfiles() as $prf) {
@@ -2872,9 +2872,19 @@ function formatBigButton($class) {
   return $result;
 }
 function isTextFieldHtmlFormatted($val) {
-	if (strtolower(substr($val,0,5))=='<div>' and strtolower(substr($val,-6))=='</div>') {
+	if (strtolower(substr($val,0,5))=='<div>' and strtolower(substr(rtrim($val,"\r\n"),-6))=='</div>') {
 		return true;
 	} else {
 		return false;
 	}
+}
+// Replace nl to <br/> : will remove nl, what nl2br does not do
+function nl2brForPlainText($val) {
+	if (isTextFieldHtmlFormatted($val)) return $val;
+	return str_replace(array("\r\n","\r","\n"),'',nl2br($val));
+}
+function formatPlainTextForHtmlEditing($val,$mode="full") {
+	if ($mode=='full') return nl2br(htmlspecialchars(htmlEncode(str_replace(array('<br>','<br/>','<br />'),"\n",$val))));
+	else if ($mode=='single') return nl2br(htmlEncode(str_replace(array('<br>','<br/>','<br />'),"\n",$val)));
+	else return $val;
 }

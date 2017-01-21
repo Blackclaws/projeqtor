@@ -1225,7 +1225,7 @@ function finalizeMessageDisplay(destination, validationType) {
           //gautier
           if(dojo.byId("buttonDivObjectName") && dijit.byId('name')){
               if(dijit.byId('name').get("value")){
-                dojo.byId("buttonDivObjectName").innerHTML=" - "+dijit.byId('name').get("value");
+                dojo.byId("buttonDivObjectName").innerHTML="&nbsp;-&nbsp;"+dijit.byId('name').get("value");
             }
           }
           if (dojo.byId('buttonDivCreationInfo')) {
