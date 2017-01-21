@@ -597,7 +597,7 @@ class Cron {
   		  $note->refType=$class;
   		  $note->refId=$id;
   		  $note->idPrivacy=1;
-  		  $note->note=nl2br($msg);
+  		  $note->note=nl2brForPlainText($msg);
   		  $note->idUser=$senderId;
   		  $note->creationDate=date('Y-m-d H:i:s');
   		  $note->fromEmail=1;
