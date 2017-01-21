@@ -836,7 +836,7 @@ abstract class SqlElement {
 						}
 					}
 					if ($dataLength>4000 and getEditorType()=='text') {
-					  $col_value=nl2br($col_value);
+					  $col_value=nl2brForPlainText($col_value);
 					}
 					if ($col_value != NULL and $col_value != '' and $col_value != ' '
 					and ($col_name != 'id' or $forceInsert)
@@ -1040,7 +1040,7 @@ abstract class SqlElement {
 				  if (trim($oldText)==trim($col_new_value)) {
 				    $col_new_value=$col_old_value; // Was not changed : preserve formatting
 				  } else {
-				    if (! isTextFieldHtmlFormatted($col_new_value)) $col_new_value=nl2br($col_new_value);
+				  	$col_new_value=nl2brForPlainText($col_new_value);
 				  }
 				}
 				// !!! do not insert query for last update date time unless some change is detected

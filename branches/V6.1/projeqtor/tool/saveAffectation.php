@@ -97,7 +97,7 @@ if (! $idTeam) {
 	$affectation->endDate=$endDate;
 	$affectation->idProfile=$profile;
 	if (! $affectation->id or $description!=htmlTransformRichtextToPlaintext($affectation->description)) {
-	  $affectation->description=nl2br($description);
+	  $affectation->description=nl2brForPlainText($description);
 	}
 	$result=$affectation->save();
 } else {

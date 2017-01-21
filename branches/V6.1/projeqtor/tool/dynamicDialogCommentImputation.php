@@ -151,7 +151,7 @@ if(trim($commentImputation)==''){
     $note->creationDate=date("Y-m-d H:i:s");
     $note->refId=$refId;
     $note->refType=$refType;
-    $note->note=nl2br($finalComment);
+    $note->note=nl2brForPlainText($finalComment);
     $note->idPrivacy=1;
     $note->save();
   }
