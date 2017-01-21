@@ -75,7 +75,6 @@
       		echo '<tr><td colspan="2" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
       		break;
       	}
-        //echo'<br />';
         $type=new MessageType($msg->idMessageType);
         echo '<tr><td class="messageHeader" style="color:' . htmlEncode($type->color) . ';">' . htmlEncode($msg->name) . '</td></tr>';
         echo '<tr><td class="messageData" >' . htmlEncode($msg->description,'formatted') . '</td></tr>';

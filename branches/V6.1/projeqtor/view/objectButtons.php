@@ -65,16 +65,15 @@
   <td style="z-index:-1;width:40%;white-space:nowrap;">  
     <div style="width:100%;height:100%;">
       <table style="width:100%;height:100%;">
-        <tr>
-          <td style="width:43px;height:100%;">&nbsp;
+        <tr style="height:35px;">
+          <td style="width:43px;">&nbsp;
             <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
             <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
           </td>
           <td class="title" style="width:10%;">
             &nbsp;<?php echo i18n($_REQUEST['objectClass']);?><span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?>&nbsp;</span>
           </td>
-          <td class="title" style="height:100%;">
-          
+          <td class="title" style="height:35px;">
             <div style="width:100%;height:100%;position:relative;">
             <div id="buttonDivObjectName" style="width:100%;position:absolute;top:8px;text-overflow:ellipsis;overflow:hidden;">
                  <?php  if (property_exists($obj,'name')){ echo ($obj->name)?'&nbsp;-&nbsp;'.$obj->name:''; }?>

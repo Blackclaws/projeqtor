@@ -32,9 +32,8 @@ require_once "../tool/projeqtor.php";
 $id=$_REQUEST['id'];
 $txt=new PredefinedNote($id); // validated to be numeric value in SqlElement base constructor.
 if (getEditorType()=="text"){
-  $text=new Html2Text($txt->text);
+	$text=new Html2Text($txt->text);
   echo $text->getText();
 } else  {
-  //echo nl2br($txt->text);
   echo $txt->text;
 }
