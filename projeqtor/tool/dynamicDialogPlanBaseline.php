@@ -84,9 +84,9 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                      handleAs : "text",
                      load : function(data) {
                         if (parseInt(data)>0) {
-                           disableWidget('datePlanBaseline');
+                           dijit.byId('datePlanBaseline').set('readonly',true);
                          } else {
-                           enableWidget('datePlanBaseline');
+                           dijit.byId('datePlanBaseline').set('readonly',false);
                          }
                      }
                    });                   

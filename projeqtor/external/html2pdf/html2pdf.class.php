@@ -1637,6 +1637,7 @@ class HTML2PDF
 
             // get the size of the image
             // WARNING : if URL, "allow_url_fopen" must turned to "on" in php.ini
+			if (! file_exists($iName) and file_exists("css/$iName")) $iName="css/$iName";
             $imageInfos=@getimagesize($iName);
 
             // if the image can not be loaded

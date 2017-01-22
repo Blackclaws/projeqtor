@@ -154,6 +154,7 @@ $treatedObjects=array();
 
 $displayWidth='98%';
 if ($print and isset($outMode) and $outMode == 'pdf') {
+  $reorg=false;
   if (isset($orientation) and $orientation=='L')
     $printWidth=1080;
   else
