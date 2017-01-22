@@ -2838,6 +2838,8 @@ function debugPrintTraceStack() {
 
 function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   //if ($size=="22") $size==24;
+  global $print, $outMode;
+  if (isset($outMode) and $outMode=='pdf') return '';
   $result='';
   if ($withHighlight) {
     if ($size==32) {

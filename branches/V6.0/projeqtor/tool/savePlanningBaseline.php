@@ -40,7 +40,6 @@ if (! array_key_exists('namePlanBaseline',$_REQUEST)) {
 }
 $name=$_REQUEST['namePlanBaseline']; // validated to be numeric in SqlElement base constructor
 $name=htmlEncode($name);
-
 if (! array_key_exists('datePlanBaseline',$_REQUEST)) {
   throwError('datePlanBaseline parameter not found in REQUEST');
 }
