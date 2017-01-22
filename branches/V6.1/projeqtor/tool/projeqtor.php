@@ -2847,6 +2847,7 @@ function debugPrintTraceStack() {
 
 function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   //if ($size=="22") $size==24;
+  global $print, $outMode;
   $result='';
   if ($withHighlight) {
     if ($size==32) {
@@ -2856,7 +2857,12 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
     }
   }
   $position=($withHighlight)?'position:absolute;'.(($size=='32')?'top:0;left:5px;':''):'';
-  $result.="<div class='icon$class$size' style='z-index:500;width:".$size."px;height:".$size."px;$position;' title='$title'>&nbsp;</div>"; 
+  if (isset($outMode) and $outMode=='pdf') {
+    $result.="<div style='z-index:500;width:".$size."px;height:".$size."px;$position;'>"
+        ."<img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></div>";
+  } else {
+    $result.="<div class='icon$class$size' style='z-index:500;width:".$size."px;height:".$size."px;$position;' title='$title'>&nbsp;</div>";
+  } 
   return $result;
 }
 function formatSmallButton($class) {
