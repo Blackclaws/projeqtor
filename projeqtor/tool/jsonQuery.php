@@ -317,7 +317,12 @@
     $arrayWidth=array();
     if ($outMode=='csv') {
     	$obj=new $objectClass();
-    	$clause=$obj->buildSelectClause(false,$hiddenFields);
+    	$arrayDependantObjects=array('Document'=>array('_DocumentVersion'=>new DocumentVersion()));
+    	$arrayDep=array();
+    	if (isset($arrayDependantObjects[$objectClass]) ) {
+    	  $arrayDep=$arrayDependantObjects[$objectClass];
+    	}
+    	$clause=$obj->buildSelectClause(false,$hiddenFields,$arrayDep);
     	$querySelect .= ($querySelect=='')?'':', ';
     	$querySelect .= $clause['select'];
     	//$queryFrom .= ($queryFrom=='')?'':', ';
@@ -581,6 +586,16 @@
 	    					$colId=$arrayFields[$id];
 	    				}
 	    				$val=encodeCSV($obj->getColCaption($colId));
+	    				if (strpos($colId,'_')!==null and isset($arrayDependantObjects[$objectClass])) {
+	    				  $split=explode('_',$colId);
+	    				  foreach ($arrayDependantObjects[$objectClass] as $incKey=>$incVal) {
+	    				    $incKey=ltrim($incKey,'_');
+	    				    if (strtolower($incKey)==$split[0] and SqlElement::class_exists($incKey)) {
+	    				      $val=encodeCSV($incVal->getColCaption($split[1]).' ('.i18n($incKey).')');    				      
+	    				      break;
+	    				    }
+	    				  }
+	    				}
 	    				if (substr($id,0,9)=='idContext' and strlen($id)==10) {
                 $ctx=new ContextType(substr($id,-1));
                 $val=encodeCSV($ctx->name);

@@ -4244,41 +4244,65 @@ abstract class SqlElement {
 		return array('level'=>$level,'description'=>$desc);
 	}
 
-	public function buildSelectClause($included=false,$hidden=array()){	
-		$table=$this->getDatabaseTableName();
+	public function buildSelectClause($included=false,$hidden=array(),$dep=array(),$parent=null){	
+	  $table=$this->getDatabaseTableName();
 		$select="";
 		$from="";
 		if (self::is_subclass_of($this,'PlanningElement')) {
 			$this->setVisibility();
 		}
 		foreach ($this as $col=>$val) {		
-			$firstCar=substr($col,0,1);
+		  $firstCar=substr($col,0,1);
 			$threeCars=substr($col,0,3);
-			if ( ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') )
+			if ( ! isset($dep[$col]) and !$included and (
+			   ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') )
 			or ($firstCar=='_')
 			or ( strpos($this->getFieldAttributes($col), 'hidden')!==false and strpos($this->getFieldAttributes($col), 'forceExport')===false )
 			or ($col=='password')
 			or (isset($hidden[$col]))
 			or (strpos($this->getFieldAttributes($col), 'noExport')!==false)
-			or (strpos($this->getFieldAttributes($col), 'calculated')!==false)
+			or (strpos($this->getFieldAttributes($col), 'calculated')!==false) 
 			//or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
 			//or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
 			// or calculated field : not to be fetched
-			) {
+			) ) {
 				// Here are all cases of not dispalyed fields
-			} else if ($firstCar==ucfirst($firstCar)) {
-				$ext=new $col();
-				$from.=' left join ' . $ext->getDatabaseTableName() .
-              ' on ' . $table . ".id" .  
-              ' = ' . $ext->getDatabaseTableName() . '.refId' .
-  				    ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
-				$extClause=$ext->buildSelectClause(true,$hidden);
-				if (trim($extClause['select'])) {
-				  $select.=', '.$extClause['select'];
+			} else if ( $included and (
+			   (isset($dep['root']) and isset($hidden[$dep['root'].$col]))
+			or ($parent and ($col=='refType' or $col=='refId' or $col=='id'.$parent))
+			) ) {
+			  //
+			} else if ($firstCar==ucfirst($firstCar) or isset($dep[$col])) {
+			  $classDep=ltrim($col,'_');
+			  if (!SqlElement::class_exists($classDep)) continue;
+				$ext=new $classDep();
+				if (isset($dep[$col])) {
+				  $cpt=0;
+				  foreach($ext as $tstCol=>$tstVal) {
+				    if (! isset($hidden[$classDep.'_'.$tstCol]) and substr($tstCol,0,1)!='_' and $tstCol!='refType' and $tstCol!='refId' and $tstCol!='id'.get_class($this)) {
+				      $cpt++;
+				    }
+				  } 
+				  if ($cpt==0) continue;
+				}
+				if ( (property_exists($classDep, 'refType') and property_exists($classDep, 'refId')) or property_exists($classDep, 'id'.get_class($this))) {
+  				$from.=' left join ' . $ext->getDatabaseTableName();
+  				if (property_exists($classDep, 'refType') and property_exists($classDep, 'refId')) {
+            $from.=' on ' . $table . ".id" .  
+                   ' = ' . $ext->getDatabaseTableName() . '.refId' .
+    				       ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
+  				} else if (property_exists($classDep, 'id'.get_class($this)) ) {
+  				  $from.=" on $table.id=".$ext->getDatabaseTableName().".id".get_class($this);
+  				}			
+  				$extClause=$ext->buildSelectClause(true,$hidden,array('root'=>$classDep.'_'),get_class($this));
+  				if (trim($extClause['select'])) {
+  				  $select.=', '.$extClause['select'];
+  				}
 				}
 			} else {
 				$select .= ($select=='')?'':', ';
-				$select .= $table . '.' . $this->getDatabaseColumnName($col) . ' as ' . $col;
+				$root=($included and isset($dep['root']))?strtolower($dep['root']):'';				  
+				$select .= $table . '.' . $this->getDatabaseColumnName($col) . ' as '.$root.$col;
 			}
 		}
 		return array('select'=>$select,'from'=>$from);
