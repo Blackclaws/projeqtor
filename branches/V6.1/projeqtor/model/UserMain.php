@@ -323,7 +323,6 @@ class UserMain extends SqlElement {
     if ($obj) {
       $profile=$this->getProfile($obj);
     }
-    //debugLog("profile=$profile");
     if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {       
       return $this->_accessControlRights[$profile];
     }        
