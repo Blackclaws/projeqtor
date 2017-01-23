@@ -87,8 +87,6 @@ $nbMonths=1;
 if ($periodType=='month' and isset($_REQUEST['includeNextMonth'])) {
   $nbMonths=2;
   $headerParameters.= i18n("colIncludeNextMonth").'<br/>';
-
-  debugLog($_REQUEST['includeNextMonth']);
 }
 
 include "header.php";

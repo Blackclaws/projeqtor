@@ -42,6 +42,7 @@ foreach ($csList as $cs) {
 		$hiddenFields[$cs->field]=true;
 	}
 }
+$arrayDependantObjects=array('Document'=>array('_DocumentVersion'=>'withSection'));
 $htmlresult='<td valign="top">';
 $FieldsArray=$obj->getFieldsArray(true);
 foreach($FieldsArray as $key => $val) {
@@ -55,16 +56,40 @@ foreach($FieldsArray as $key => $val) {
 			if ($section=='Assignment' or $section=='Affectations' or substr($section,0,14)=='Versionproject'
        or $section=='Subprojects' or $section=='Approver' or $section=='ExpenseDetail' 
        or $section=='predecessor' or $section=='successor' or $section =='TestCaseRun'
-       or $section=='Projects') {
+       or $section=='Projects' or $section=='Link' or $section=='Note' or $section=='Attachment') {
 			  unset($FieldsArray[$key]);
 			  continue;
 			}
 			$FieldsArray[$key]=i18n('section' . ucfirst($section));
 		}
+  } else if (substr($key,0,1)=='_' or strtoupper(substr($key,0,1))==substr($key,0,1) ){ // Object
+    if (isset($arrayDependantObjects[$objectClass]) and isset($arrayDependantObjects[$objectClass][$key])) {
+      $included=ltrim($key,'_');
+      if (SqlElement::class_exists($included)) {
+        $crit=array('scope'=>'export','objectClass'=>$included, 'idUser'=>$user->id);
+        $csList=$cs->getSqlElementsFromCriteria($crit);
+        foreach ($csList as $cs) {
+          if ($cs->hidden) {
+            $hiddenFields[$included.'_'.$cs->field]=true;
+          }
+        }
+        if ($arrayDependantObjects[$objectClass][$key]=='withSection') {   
+          $FieldsArray['_sec_'.$included]=i18n('_sec_'.$included);//i18n('section' . ltrim($key,'_'));
+        }
+        $incObj=new $included();
+        foreach ($incObj as $incKey=>$incVal) {
+          if (substr($incKey,0,1)=='_') continue;
+          if ($incKey=='refType' or $incKey=='refId' or $incKey=='id'.$objectClass) continue;
+          $FieldsArray[$included.'_'.$incKey]=i18n('col'.ucfirst($incKey));
+        }
+      }
+    }
+    unset($FieldsArray[$key]);
+    continue;
 	} else {
 	  $FieldsArray[$key]=$obj->getColCaption($val);
 	}
-	if(substr($FieldsArray[$key],0,1)=="["){
+	if(isset($FieldsArray[$key]) and substr($FieldsArray[$key],0,1)=="["){
 		unset($FieldsArray[$key]);
 		continue;
 	}

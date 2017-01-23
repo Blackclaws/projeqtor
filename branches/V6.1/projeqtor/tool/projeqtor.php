@@ -1631,7 +1631,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   } 
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-  //debugLog("result for securityGetAccessRight ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user)." )=$accessRight");
   if ($accessType == 'create') {  
     if ((!$obj or (property_exists(substr($menuName,4), 'name') and !$obj->name)) and property_exists(substr($menuName,4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
       foreach ($user->getAllProfiles() as $prf) {
