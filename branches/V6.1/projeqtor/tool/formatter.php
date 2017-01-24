@@ -340,7 +340,7 @@ function formatCommentThumb($comment) {
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
 
-  $res.='<span onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+  $res.='<span onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();" >';
   $res.= formatSmallButton('Comment');
   $res.= '</span>';
   return $res;
