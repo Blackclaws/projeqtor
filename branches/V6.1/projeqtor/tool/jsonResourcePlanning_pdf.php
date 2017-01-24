@@ -272,8 +272,8 @@ if (Sql::$lastQueryNbRows > 0) {
 		  $ref=$line['reftype'];
 		  $type='id'.$ref.'Type';
 		  $item=new $ref($line['refid'],true);
-		  $line["status"]=SqlList::getNameFromId('Status',$item->idStatus);
-		  $line["type"]=SqlList::getNameFromId('Type',$item->$type);
+      $line["status"]=(property_exists($item,'idStatus'))?SqlList::getNameFromId('Status',$item->idStatus):null;
+      $line["type"]=(property_exists($item,$type))?SqlList::getNameFromId('Type',$item->$type):null;
 		}
 		$line["topid"]=($showProject)?$idProj:$idRes;
 		if ($line["leftwork"]>0) {
