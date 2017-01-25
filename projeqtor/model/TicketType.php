@@ -72,6 +72,7 @@ class TicketType extends Type {
       "lockSolved"=>"nobr",
       "lockIdle"=>"nobr",
       "lockCancelled"=>"nobr",
+      "scope"=>"hidden",
       "internalData"=>"hidden",
       "showInFlash"=>"hidden");
   private static $_databaseCriteria = array('scope'=>'Ticket');
