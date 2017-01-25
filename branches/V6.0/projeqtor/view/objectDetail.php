@@ -187,7 +187,9 @@ if ($print) {
 
 if ($print) {
   echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
+  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) 
+  . ( (property_exists($objClass, 'name') and $obj->name) ? '&nbsp;-&nbsp;'.$obj->name:'' )
+  . '</div>';
   echo '<br/>';
 }
 

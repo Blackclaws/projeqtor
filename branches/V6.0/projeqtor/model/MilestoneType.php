@@ -71,6 +71,7 @@ class MilestoneType extends Type {
       "lockCancelled"=>"nobr",
       "internalData"=>"hidden",
       "showInFlash"=>"hidden",
+      "scope"=>"hidden",
       "idPlanningMode"=>"hidden",
       "idMilestonePlanningMode"=>"required");
   private static $_colCaptionTransposition = array('idMilestonePlanningMode'=>'defaultPlanningMode');
