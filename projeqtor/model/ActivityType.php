@@ -73,6 +73,7 @@ class ActivityType extends Type {
   										                    "internalData"=>"hidden",
                                           "showInFlash"=>"hidden",
                                           "idPlanningMode"=>"hidden",
+                                          "scope"=>"hidden",
                                           "idActivityPlanningMode"=>"required",
                                           "lockNoLeftOnDone"=>"nobr",
                                           "_lib_statusMustChangeLeftDone"=>"nobr" );

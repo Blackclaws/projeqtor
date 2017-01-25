@@ -59,6 +59,7 @@ class ShortType extends SqlElement {
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
                                           "lockIdle"=>"nobr",
+                                          "scope"=>"hidden",
                                           "lockCancelled"=>"nobr"
     );
   

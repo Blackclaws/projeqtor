@@ -80,6 +80,7 @@
     
     // --- Quick search criteria (textual search in any text field, including notes)
     if ($quickSearch) {
+      $quickSearch=str_replace(array('*','.'),array('%','_'),$quickSearch);
     	$queryWhere.= ($queryWhere=='')?'':' and ';
     	$queryWhere.="( 1=2 ";
     	$note=new Note();
