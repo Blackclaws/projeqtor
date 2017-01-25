@@ -179,7 +179,9 @@ if ($print) {
 
 if ($print) {
   echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
+  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) 
+  . ( (property_exists($objClass, 'name') and $obj->name) ? '&nbsp;-&nbsp;'.$obj->name:'' )
+  . '</div>';
   echo '<br/>';
 }
 
@@ -1467,7 +1469,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             if ($obj->id) {
               $critFld='idProject';
               $critVal=$obj->idProject;
-            } else if ($obj->isAttributeSetToField('idProject', 'required')) {
+            } else if ($obj->isAttributeSetToField('idProject', 'required') or (array_key_exists('project', $_SESSION) and $_SESSION ['project'] != '*')) {
               if (array_key_exists('project', $_SESSION) and $_SESSION ['project'] != '*') {
                 $critFld='idProject';
                 $critVal=$_SESSION ['project'];
