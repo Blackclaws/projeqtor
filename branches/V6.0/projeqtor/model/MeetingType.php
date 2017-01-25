@@ -46,6 +46,7 @@ class MeetingType extends Type {
                                           "lockCancelled"=>"nobr",
   										                    "internalData"=>"hidden",
                                           "showInFlash"=>"hidden",
+                                          "scope"=>"hidden",
                                           "idPlanningMode"=>"hidden");
   private static $_databaseCriteria = array('scope'=>'Meeting');
   

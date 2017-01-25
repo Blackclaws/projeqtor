@@ -71,6 +71,7 @@ class TestSessionType extends Type {
       "lockCancelled"=>"nobr",
       "internalData"=>"hidden",
       "showInFlash"=>"hidden",
+      "scope"=>"hidden",
       "idPlanningMode"=>"hidden",
       "idTestSessionPlanningMode"=>"required");
   private static $_colCaptionTransposition = array('idTestSessionPlanningMode'=>'defaultPlanningMode');

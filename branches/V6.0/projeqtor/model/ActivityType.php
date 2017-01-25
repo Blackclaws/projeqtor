@@ -72,6 +72,7 @@ class ActivityType extends Type {
                                           "lockCancelled"=>"nobr",
   										                    "internalData"=>"hidden",
                                           "showInFlash"=>"hidden",
+                                          "scope"=>"hidden",
                                           "idPlanningMode"=>"hidden",
                                           "idActivityPlanningMode"=>"required");
   private static $_colCaptionTransposition = array('idActivityPlanningMode'=>'defaultPlanningMode');
