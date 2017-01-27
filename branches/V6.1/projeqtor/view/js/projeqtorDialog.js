@@ -1542,7 +1542,7 @@ function removeOtherVersion(id, name, type) {
     loadContent("../tool/removeOtherVersion.php", "resultDiv",
         "otherVersionForm", true, 'otherVersion');
   };
-  msg=i18n('confirmDeleteOtherVersion', new Array(name, i18n('col' + type)));
+  msg=i18n('confirmDeleteOtherVersion', new Array(name, i18n('colId' + type)));
   showConfirm(msg, actionOK);
 }
 

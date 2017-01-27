@@ -2865,9 +2865,14 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   return $result;
 }
 function formatSmallButton($class) {
+  global $print, $outMode;
   $size="16";
   $result='';
-  $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
+  if (isset($outMode) and $outMode=='pdf') {
+    $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></span>"; 
+  } else {
+    $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
+  }
   return $result;
 }
 function formatBigButton($class) {
@@ -2877,7 +2882,8 @@ function formatBigButton($class) {
   return $result;
 }
 function isTextFieldHtmlFormatted($val) {
-	if (strtolower(substr($val,0,5))=='<div>' and strtolower(substr(rtrim($val,"\r\n"),-6))=='</div>') {
+  $test=strtolower(substr(ltrim($val),0,10));
+	if (substr($test,0,5)=='<div>' or substr($test,0,4)=='<ul>' or substr($test,0,4)=='<ol>') {
 		return true;
 	} else {
 		return false;

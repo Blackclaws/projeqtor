@@ -528,17 +528,18 @@ class ImputationLine {
     }
     echo ' </TR>';
     echo '</table>';
+    
     if (!$print) {
       echo '<input type="hidden" id="resourceCapacity" value="' . $capacity . '" />';
-    }
     
-    echo '<script type="dojo/connect" event="resize" args="evt">
-            var valueHeight=parseInt(dojo.byId(\'topRegionImputation\').offsetHeight)-5;
-            dojo.byId(\'imputationComment\').style.height=valueHeight+\'px\';
-            dojo.byId(\'imputationComment\').style.maxHeight=valueHeight+\'px\';
-            dojo.byId(\'imputationComment\').style.minHeight=valueHeight+\'px\';
-            </script>';
-    echo '</div>';
+      echo '<script type="dojo/connect" event="resize" args="evt">
+        var valueHeight=parseInt(dojo.byId(\'topRegionImputation\').offsetHeight)-5;
+        dojo.byId(\'imputationComment\').style.height=valueHeight+\'px\';
+        dojo.byId(\'imputationComment\').style.maxHeight=valueHeight+\'px\';
+        dojo.byId(\'imputationComment\').style.minHeight=valueHeight+\'px\';
+        </script>';
+      echo '</div>';
+    }
     
     echo '<div style="position:relative;overflow-y:scroll;" dojoType="dijit.layout.ContentPane" region="top">';
     echo '<table class="imputationTable" style="width:' . (($outMode == 'pdf')?'68':'100') . '%">';
@@ -803,7 +804,7 @@ class ImputationLine {
 
       echo '<td '; echo 'onclick="loadDialog(\'dialogCommentImputation\', function(){commentImputationTitlePopup(\'add\');}, true, \'&year=' . $currentYear . '&week=' . $currentWeek . '&idAssignment=' . $line->idAssignment . '&refIdComment=' . $line->refId .
       '&refTypeComment=' . $line->refType . '\', true);"title="' . i18n('commentImputationAdd') .'"'; echo '>';
-      echo formatSmallButton('AddComment');
+      if (!$print) echo formatSmallButton('AddComment');
       echo '</td>';}
 
       
@@ -1056,12 +1057,12 @@ if (!$print and count($tab) > 20) {
 }
 
 echo '  <TD ' . $colSpanFooter . ' class="ganttLeftTitle" style="width: 132px;><span class="nobr" ><div id="totalWork" type="text" trim="true" disabled="true" dojoType="dijit.form.NumberTextBox" style="font-weight:bold;width: 95%; text-align: center; color: #000000 !important;" class="' .
-     $classTotalWork . ' imputation" value="' . $totalWork . '"</div></span></TD>';
+     $classTotalWork . ' imputation" value="' . $totalWork . '"></div></span></TD>';
 
 echo '</TR>';
 echo '</table>';
-if (!$print) {
   echo '</div>';
+if (!$print) {
   echo '</div>';
 }
 }
