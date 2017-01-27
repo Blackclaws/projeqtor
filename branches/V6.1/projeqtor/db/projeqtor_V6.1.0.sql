@@ -433,3 +433,14 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (6,'changeValidatedData','2'),
 (7,'changeValidatedData','2'),
 (5,'changeValidatedData','2');
+
+UPDATE `${prefix}menu` SET sortOrder=395 WHERE id=11;
+DELETE FROM `${prefix}menu` WHERE id=12;
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(173,'menuConfiguration', 0, 'menu', 380, null, 0, 'Work Meeting EnvironmentalParameter');
+
+UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=382, idMenu=173 WHERE id=86;
+UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=384, idMenu=173 WHERE id=87;
+UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=386, idMenu=173 WHERE id=141;
+UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=388, idMenu=173 WHERE id=142;

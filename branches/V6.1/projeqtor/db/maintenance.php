@@ -525,6 +525,7 @@ Habilitation::correctUpdates();
 Habilitation::correctUpdates();
 deleteDuplicate();
 Sql::saveDbVersion($version);
+Parameter::clearGlobalParameters();
 traceLog('=====================================');
 traceLog("");
 echo '<div class="message'.(($nbErrors==0)?'OK':'WARNING').'">';
