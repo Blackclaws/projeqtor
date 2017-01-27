@@ -222,7 +222,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $typeClass=$class . 'Type';
       if (property_exists($obj,$idType) ) {
       	reset($table);
-        $fisrtKey=key($table);
+        $firstKey=key($table);
         $firstName=current($table);
         // look for workflow
         if ($obj->$idType and $obj->idStatus) {
@@ -242,13 +242,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
             $table=array_intersect_key($table,$compTable);
           }
         } else {
-           $table=array($fisrtKey=>$firstName);
+           $table=array($firstKey=>$firstName);
         }
       }
       if ($selection) {
         $selStatus=new Status($selection,true);
-        if ($selStatus->isCopyStatus) {
-        	$table[$fisrtKey]=$firstName;
+        if ($selStatus->isCopyStatus and isset($firstKey)) {
+        	$table[$firstKey]=$firstName;
         }
       }
     } else if (($col=='idProduct' or $col=='idComponent' or  $col=='idProductOrComponent') and $critFld=='idProject' and $critVal) {
