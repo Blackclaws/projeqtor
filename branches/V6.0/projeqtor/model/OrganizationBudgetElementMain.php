@@ -77,8 +77,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
   private static $_fieldsAttributes=array(
       "id"=>"hidden",
       "year"=>"hidden",
-      "budgetWork"=>"hidden",
-      "budgetCost"=>"hidden",
       "refType"=>"hidden",
       "refId"=>"hidden",
       "refName"=>"hidden",
