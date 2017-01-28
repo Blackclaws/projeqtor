@@ -77,7 +77,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
+    $today=date('Y-m-d');
     $where="idProject in " . $in; 
+    $where.=" and idle=0";
+    $where.=" and (startDate is null or startDate<='$today')";
+    $where.=" and (endDate is null or endDate>='$today')";
     $aff=new Affectation();
     $list=$aff->getSqlElementsFromCriteria(null,null, $where);
     $nbRows=0;

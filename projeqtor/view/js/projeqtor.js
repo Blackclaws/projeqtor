@@ -1017,9 +1017,9 @@ function finalizeMessageDisplay(destination, validationType) {
     } else {
       consoleTraceLog("lastOperation=" + lastOperation.value);
     }
+    hideWait();
     showError(i18n("errorFinalizeMessage",
         new Array(destination, returnMessage)));
-    hideWait();
     return;
   }
   if (!contentWidget) {
