@@ -22,6 +22,8 @@ Exemple de requête à faire pour ajouter dans la table Habilitation :
  
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES (1,162,1);
 
+.. warning:: L'id à remplir dans la table "Habilitation" n'est pas le idMenu de la table "Menu" mais le id de la table "Menu"
+
 Ce qui donne en table : 
 
 .. figure:: /images/GUI/bdd.png
@@ -38,6 +40,13 @@ Ce qui donne en table :
 
 .. seealso:: Reporter vous à la rubrique :ref:`internationalization`
 
+- Créer des valeurs par défaut dans notre écran
+
+Pour créer des valeurs par défault dans l'écran , il y a seulement besoin d'ajouter des champs dans notre table . Par exemple , si je veux rajouter 'Build' et 'Run' dans une table à trois champs , je ferai 
+
+INSERT INTO `${prefix}category` (`id`, `name`, `idle`) VALUES 
+(1, 'Build', 0),
+(2, 'Run', 0);
 
 
 
