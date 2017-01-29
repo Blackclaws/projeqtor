@@ -444,3 +444,7 @@ UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', so
 UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=384, idMenu=173 WHERE id=87;
 UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=386, idMenu=173 WHERE id=141;
 UPDATE `${prefix}menu` SET `menuClass`='Work Meeting EnvironmentalParameter', sortOrder=388, idMenu=173 WHERE id=142;
+
+INSERT INTO `${prefix}importable` ( `name`, `idle`) VALUES 
+('User', '0'),
+('DocumentVersion', '0');
