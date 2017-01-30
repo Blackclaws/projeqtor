@@ -101,6 +101,11 @@ class DocumentVersionMain extends SqlElement {
     if (count($lst)>0) {
         $result.='<br/>' . i18n('errorDuplicateDocumentVersion',array($this->name));
     }
+    if (isset($this->importFile)) {
+      if (! file_exists($this->importFile)) {
+        $result.='<br/>' . i18n('errorNotFoundFile'). ' : '.$this->importFile;
+      }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -133,6 +138,12 @@ class DocumentVersionMain extends SqlElement {
   	  $this->fullName.=substr($this->fileName,$pos);
   	}
   	$this->fullName=substr($this->fullName,0,$this->getDataLength('fullName'));
+  	if (isset($this->importFile)) {
+  	  $resultFileImport=$this->storeImportFile();
+  	  if ($resultFileImport!='OK') {
+  	    return $resultFileImport;
+  	  }
+  	}
   	
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
@@ -164,6 +175,7 @@ class DocumentVersionMain extends SqlElement {
     	$doc->idle=$st->setIdleStatus;
       $saveDoc=true;
     }
+    
     if ($saveDoc and !$fromDoc) {
       $doc->save();
     }
@@ -263,6 +275,27 @@ class DocumentVersionMain extends SqlElement {
   
   public function isThumbable() {
     return isThumbable($this->fileName);
+  }
+  
+  private function storeImportFile() {
+    //$this->importFile
+    $this->fileName=basename($this->importFile);
+    $uploadfile = $this->getUploadFileName();
+    $split=explode($pathSeparator,$uploadfile);
+    unset($split[count($split)-1]);
+    $dir='';
+    foreach ($split as $dirElt) {
+      $dir.=$dirElt.$pathSeparator;
+      if (! file_exists($dir)) {
+        mkdir($dir,0777,true);
+      }
+    }
+    if ( ! rename($this->importFile,$uploadfile) ) {
+      $error=htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
+      errorLog(i18n('errorUploadFile','hacking ?'));
+      return $error;
+    }
+    return 'OK';
   }
 }
 ?>
