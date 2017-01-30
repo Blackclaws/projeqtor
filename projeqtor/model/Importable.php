@@ -151,7 +151,45 @@ class Importable extends SqlElement {
 			self::stopImport();
 			return "ERROR";
 		}
+		switch($extension){
+		  case "csv":
+		    $data=Importable::importCSV($fileName);
+		    break;
+		  case "xlsx":
+		    $data=Importable::importXLSX($fileName);
+		    date_default_timezone_set('UTC');
+		    break;
+		  default:
+		    errorLog("ERROR - File Type not recognized");
+		    errorLog("File Name : ".$fileName);
+		    $msg='<b>ERROR - File Type not recognized</b><br/>Import aborted<br/>Contact your administrator';
+		    self::$importResult=$msg;
+		    self::stopImport();
+		    return $msg;
+		    break;
+		}
+		//debugLog($class);
+		$documentAndVersion=false;
+		if ($class=='DocumentVersion' or $class=='Document') {
+		  $firstLine=reset($data);
+		  foreach ($firstLine as $idx=>$caption) {
+		    if (strpos($caption,'(DocumentVersion)')>0) {
+		      $documentAndVersion='(DocumentVersion)';
+		      break;
+		    } else if (strpos($caption,'('.i18n('DocumentVersion').')')>0) {
+		      $documentAndVersion='('.i18n('DocumentVersion').')';
+		      break;
+		    }
+		  }
+		  if ($documentAndVersion) {
+		    $class='Document';
+		  }
+		}
+		//debugLog("documentAndVersion=$documentAndVersion");
 		$obj=new $class();
+		if ($documentAndVersion) {
+		  $obj->DocumentVersion=new DocumentVersion();
+		}
 		$captionArray=array();
 		$captionObjectArray=array();
 		$objectArray=array();
@@ -163,7 +201,10 @@ class Importable extends SqlElement {
 				$objectArray[$fld]=$val;
 				foreach ($val as $subfld=>$subval){
 					$capt=trim($val->getColCaption($subfld));
-					if ($subfld!='id' and substr($capt,0,1)!='[' and ! isset($captionArray[$capt]) ) {
+					if ($documentAndVersion) {
+					  $capt=$capt.' '.$documentAndVersion;
+					}
+					if ( ($subfld!='id' or $documentAndVersion) and substr($capt,0,1)!='[' and ! isset($captionArray[$capt]) ) {
 						$captionArray[$capt]=$subfld;
 						$captionObjectArray[$capt]=$fld;
 					}
@@ -179,22 +220,17 @@ class Importable extends SqlElement {
 				}
 			}
 		}
-		switch($extension){
-			case "csv":
-				$data=Importable::importCSV($fileName);
-				break;
-			case "xlsx":
-				$data=Importable::importXLSX($fileName);
-				date_default_timezone_set('UTC');
-				break;
-			default:
-				errorLog("ERROR - File Type not recognized");
-				errorLog("File Name : ".$fileName);
-				$msg='<b>ERROR - File Type not recognized</b><br/>Import aborted<br/>Contact your administrator';
-				self::$importResult=$msg;
-				self::stopImport();
-				return $msg;
-				break;
+		if ($documentAndVersion) {
+		  $dv=new DocumentVersion();
+		  $subObj=$dv;
+		  $objectArray['DocumentVersion']=$dv;
+		  foreach ($dv as $subfld=>$subval){
+		    $capt=trim($dv->getColCaption($subfld)).' ('.i18n('DocumentVersion').')';
+		    if (substr($capt,0,1)!='[' and ! isset($captionArray[$capt]) ) {
+		      //$captionArray[$capt]=$subfld.' (DocumentVersion)';
+		      //$captionObjectArray[$capt]=$objectArray['DocumentVersion'];
+		    }
+		  }
 		}
 		$title=null;
 		$idxId=-1;
@@ -204,6 +240,8 @@ class Importable extends SqlElement {
 			if($nbl==0){
 				$htmlResult.= "<TR>";
 				$obj=new $class();
+				$otherObj=null;
+				if ($documentAndVersion) $otherObj=new DocumentVersion();
 				foreach ($fields as $idx=>$caption) {
 					$title[$idx]=trim($caption);
 					$title[$idx]=str_replace(chr(13),'',$title[$idx]);
@@ -216,19 +254,19 @@ class Importable extends SqlElement {
 					$testCaption=$title[$idx];
 					$testIdClassTitle='id'.$class.ucfirst($testTitle);
 					if (property_exists($obj,$testTitle)) { // Title is directly field id
-						$title[$idx]=$testTitle;
+					  $title[$idx]=$testTitle;
 						$color="#000000";
 						$colCaption=$obj->getColCaption($title[$idx]);
 						if ($title[$idx]=='id') {
 							$idxId=$idx;
 						}
 					} else if (property_exists($obj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
-						$title[$idx]=$testIdTitle;
+					  $title[$idx]=$testIdTitle;
 						$idArray[$idx]=true;
 						$color="#000000";
 						$colCaption=$obj->getColCaption($title[$idx]);
 					} else if (array_key_exists($testCaption,$captionArray) or array_key_exists(strtolower($testCaption),$captionArray)) {
-						$color="#000000";
+					  $color="#000000";
 						$colCaption=$testCaption;
 						if (array_key_exists(strtolower($testCaption),$captionArray)) {$testCaption=strtolower($testCaption);}
 						$title[$idx]=$captionArray[$testCaption];
@@ -236,14 +274,21 @@ class Importable extends SqlElement {
 							$titleObject[$idx]=$captionObjectArray[$testCaption];
 						}
 					} else {
-						foreach ($objectArray as $fld=>$subObj) {
-							if (property_exists($subObj,$testTitle)) { // Title is directly field id
-								$title[$idx]=$testTitle;
+					  foreach ($objectArray as $fld=>$subObj) {
+						  if ($documentAndVersion) {
+						    $testTitle=trim(str_replace($documentAndVersion,'',$title[$idx]));
+						    $testTitle=str_replace(' ', '', $testTitle);
+						    $testIdTitle='id'.ucfirst($testTitle);
+						    $testCaption=$title[$idx];
+						    $testIdClassTitle='id'.$class.ucfirst($testTitle);
+						  }
+						  if (property_exists($subObj,$testTitle)) { // Title is directly field id
+								if (!$documentAndVersion) $title[$idx]=$testTitle;
 								$color="#000000";
 								$titleObject[$idx]=$fld;
 								$colCaption=$subObj->getColCaption($title[$idx]);							
 							} else if (property_exists($subObj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
-								$title[$idx]=$testIdTitle;
+								if (!$documentAndVersion) $title[$idx]=$testIdTitle;
 								$idArray[$idx]=true;
 								$color="#000000";
 								$titleObject[$idx]=$fld;
@@ -254,7 +299,7 @@ class Importable extends SqlElement {
 								if (array_key_exists(strtolower($testCaption),$captionArray)) {
 									$testCaption=strtolower($testCaption);
 								}
-								$title[$idx]=$captionArray[$testCaption];
+								if (!$documentAndVersion) $title[$idx]=$captionArray[$testCaption];
 								if (isset($captionObjectArray[$testCaption])) {
 									$titleObject[$idx]=$captionObjectArray[$testCaption];
 								}
@@ -373,7 +418,22 @@ class Importable extends SqlElement {
 					}
 					$field = str_replace('""', '"', $field);
 					$fldName=$title[$idx];
-					if (property_exists($obj, $title[$idx])) {
+					if (isset($titleObject[$idx])) {
+					  $subClass = $titleObject[$idx];
+					  if (!isset($obj->$subClass) or !is_object($obj->$subClass)) {
+					    $obj->$subClass = new $subClass();
+					  }
+					  $sub = $obj->$subClass;
+					  if (property_exists($subClass, $fldName)) {
+					    if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
+					      $obj->$subClass->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
+					    } else {
+					      $obj->$subClass->$fldName = $field;
+					    }
+					    $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
+					    continue;
+					  }
+					} else if (property_exists($obj, $title[$idx])) {
 						if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
 							if ($fldName=='idProject' or $fldName=='idActivity') {
 							  $crit=array('name'=>$field);
@@ -395,22 +455,7 @@ class Importable extends SqlElement {
 						$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 						continue;
 					}
-					if (isset($titleObject[$idx])) {
-						$subClass = $titleObject[$idx];
-						if (!is_object($obj->$subClass)) {
-							$obj->$subClass = new $subClass();
-						}
-						$sub = $obj->$subClass;
-						if (property_exists($subClass, $fldName)) {
-							if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
-								$obj->$subClass->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
-							} else {
-								$obj->$subClass->$fldName = $field;
-							}
-							$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
-							continue;
-						}
-					}
+					
 					$htmlResult.= '<td class="messageData" style="color:#A0A0A0;border:1px solid black;">' . htmlEncode($field) . '</td>';
 					continue;
 				}
@@ -425,6 +470,10 @@ class Importable extends SqlElement {
 					}
 				}
 				Sql::beginTransaction();
+				if (isset($obj->DocumentVersion)) {
+				  $documentVersionObj=$obj->DocumentVersion;
+				  unset($obj->DocumentVersion);
+				}
 				if ($class=="Work") {
 				  $result = $obj->saveWork(); // Specific save method for import and API
 				} else if ($forceInsert) { // object with defined id was not found : force insert
@@ -432,6 +481,29 @@ class Importable extends SqlElement {
 				} else {
 					$result = $obj->save();
 				}
+				if (isset($documentVersionObj)) {
+				  $documentVersionObj->idDocument=$obj->id;
+				  $resultSub=$documentVersionObj->save();
+				  $statusMain=getLastOperationStatus($result);
+				  $statusSub=getLastOperationStatus($resultSub);
+				  if ($statusMain=="ERROR") {
+				    // Will rollback
+				  } else if ($statusMain=="OK") {
+				    if ($statusSub=="ERROR") {
+				      $result=$resultSub; // Will rollback
+				    } else if ($statusSub=="OK") {
+				      $pos=strpos($resultSub,'<input type="hidden" id="lastSaveId"');
+				      if ($pos) {
+				        $result=str_replace('<input type="hidden" id="lastSaveId"', '<br/>'.substr($resultSub,0,$pos).'<input type="hidden" id="lastSaveId"', $result);
+				      }
+				    }
+				  } else  {
+				    if ($statusSub=="ERROR" or $statusSub=="OK") {
+				      $result=$resultSub;
+				    }
+				  }
+				}
+				debugLog($result);
 				if (stripos($result, 'id="lastOperationStatus" value="ERROR"') > 0) {
 					Sql::rollbackTransaction();
 					$htmlResult.= '<div class="messageERROR" >' . $result . '</div>';
