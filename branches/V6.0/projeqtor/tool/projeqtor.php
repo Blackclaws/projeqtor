@@ -43,8 +43,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V6.0.7"; // Version of application : Major / Minor / Release
-$build = "0158"; // Build number. To be increased on each release
+$version = "V6.0.8"; // Version of application : Major / Minor / Release
+$build = "0159"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -2875,7 +2875,7 @@ function formatBigButton($class) {
 }
 function isTextFieldHtmlFormatted($val) {
   $test=strtolower(substr(ltrim($val),0,10));
-	if (substr($test,0,5)=='<div>' or substr($test,0,4)=='<ul>' or substr($test,0,4)=='<ol>') {
+	if (substr($test,0,1)=='<') {
 		return true;
 	} else {
 		return false;
