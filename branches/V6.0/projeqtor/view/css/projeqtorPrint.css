@@ -52,7 +52,9 @@ table {
 
 tr {
    /*border: 2px solid #0000FF;  padding: 3px !important; margin: 3px !important; /* for debug purpose */
-   height:25px;
+}
+tr .defaultHeight {
+	height: 25px;
 }
 
 .menuTree {
