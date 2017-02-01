@@ -510,5 +510,5 @@ div .scrollRightTop {
     white-space: nowrap;
 }
 tr {
-  height: 10px !important;
+  /* height: 10px !important; */  
 }

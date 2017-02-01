@@ -94,11 +94,11 @@ if ($we->realWork!=$total) {
 $arrayResourceDate=array();
 foreach ($dateList as $idx=>$date) {
   if ($error) break;
-  if ( ($date and isset($resourceList[$idx]) and $resourceList[$idx]) or (isset($workIdList[$idx]) and $workIdList[$idx]) ) {
+  if ( (trim($date) and isset($resourceList[$idx]) and trim($resourceList[$idx])) or (isset($workIdList[$idx]) and $workIdList[$idx]) ) {
     $id=(isset($workIdList[$idx]))?$workIdList[$idx]:null;
     $work=new Work($id);
-    $work->setDates($date);
-    $work->idResource=$resourceList[$idx];
+    if (trim($date)) $work->setDates($date);
+    if (isset($resourceList[$idx]) and trim($resourceList[$idx])) $work->idResource=$resourceList[$idx];
     $work->idProject=$obj->idProject;
     if (! $work->refType) {
       if (property_exists($refType, 'idActivity') and $obj->idActivity) {
