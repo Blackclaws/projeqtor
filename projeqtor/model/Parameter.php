@@ -260,6 +260,7 @@ class Parameter extends SqlElement {
       case 'dependencyStrictMode': 
       case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
       case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
+      case 'scaytAutoStartup':
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -527,6 +528,7 @@ class Parameter extends SqlElement {
                            "paramConfirmQuit"=>"list",
                            "startPage"=>"list",
                            "editor"=>'list',
+                           "scaytAutoStartup"=>'list',
                            "maxColumns"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
@@ -642,6 +644,7 @@ class Parameter extends SqlElement {
       	                       'paramMemoryLimitForPDF'=>'number',
       	                       'fontForPDF'=>'list',
       	                       "editor"=>'list',
+      	                       "scaytAutoStartup"=>'list',
       	                       'allowTypeRestrictionOnProject'=>'list',
       	                       'showTendersOnVersions'=>'list',
       	                       'limitPlanningActivity'=>'list',

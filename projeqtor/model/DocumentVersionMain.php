@@ -51,10 +51,16 @@ class DocumentVersionMain extends SqlElement {
   public $description;
   public $isRef;
   public $approved;
+  public $importFile;
+  public $target;
   public $idle;
   
   private static $_colCaptionTransposition = array('name'=>'nextDocumentVersion', 
       'fullName'=>'name');
+  private static $_fieldsAttributes=array(
+  		"importFile"=>"hidden,noExport,calculated",
+  		"target"=>"hidden,noExport,calculated"
+  );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -84,7 +90,9 @@ class DocumentVersionMain extends SqlElement {
   protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
   }
-  
+  protected function getStaticFieldsAttributes() {
+  	return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
+  }
   /** =========================================================================
    * control data corresponding to Model constraints
    * @param void
@@ -102,7 +110,7 @@ class DocumentVersionMain extends SqlElement {
         $result.='<br/>' . i18n('errorDuplicateDocumentVersion',array($this->name));
     }
     if (isset($this->importFile)) {
-      if (! file_exists($this->importFile)) {
+    	if (! file_exists($this->importFile)) {
         $result.='<br/>' . i18n('errorNotFoundFile'). ' : '.$this->importFile;
       }
     }
@@ -133,20 +141,27 @@ class DocumentVersionMain extends SqlElement {
   	} else {
   		$this->fullName=$doc->name;
   	}
+  	if ($this->importFile) {
+  		$this->fileName=basename($this->importFile);
+  	}
   	$pos=strrpos($this->fileName,'.');
   	if ($pos) {
   	  $this->fullName.=substr($this->fileName,$pos);
   	}
   	$this->fullName=substr($this->fullName,0,$this->getDataLength('fullName'));
-  	if (isset($this->importFile)) {
-  	  $resultFileImport=$this->storeImportFile();
-  	  if ($resultFileImport!='OK') {
-  	    return $resultFileImport;
-  	  }
-  	}
   	
   	$result=parent::save();
-    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+  	
+  	$resultStatus=getLastOperationStatus($result);
+  	
+  	if ($resultStatus!='ERROR' and $resultStatus!='INVALID' and isset($this->importFile)) {
+  		$resultFileImport=$this->storeImportFile();
+  		if ($resultFileImport!='OK') {
+  			return $resultFileImport;
+  		}
+  	}
+  	
+  	if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
     if ( ($doc->version==null) 
@@ -278,6 +293,7 @@ class DocumentVersionMain extends SqlElement {
   }
   
   private function storeImportFile() {
+  	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
     //$this->importFile
     $this->fileName=basename($this->importFile);
     $uploadfile = $this->getUploadFileName();
@@ -290,11 +306,22 @@ class DocumentVersionMain extends SqlElement {
         mkdir($dir,0777,true);
       }
     }
-    if ( ! rename($this->importFile,$uploadfile) ) {
+    enableCatchErrors();
+    if ( ! copy($this->importFile,$uploadfile) ) {
       $error=htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
       errorLog(i18n('errorUploadFile','hacking ?'));
       return $error;
     }
+    if ($this->target=='DELETE') {
+    	@kill($this->importFile);
+    } else if ($this->target) {
+    	if (file_exists($this->target) and is_dir($this->target)) {
+    		@rename($this->importFile,$this->target.$pathSeparator.basename($this->importFile));
+    	} else {
+    		traceLog(i18n('errorUploadFile',array(' could not move import file to '.$this->target)));
+    	}
+    }
+    disableCatchErrors();
     return 'OK';
   }
 }

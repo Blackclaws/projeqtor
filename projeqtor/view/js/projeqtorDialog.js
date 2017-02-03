@@ -6084,10 +6084,14 @@ function executeExport(obj, idUser) {
       }
     }
   }
+  if (dijit.byId('documentVersionLastOnly') && dijit.byId('documentVersionLastOnly').get('checked')) {
+	  toExport+='documentVersionAll';
+  }
   if (verif == 1) {
     if (ExportType == 'csv') {
-      showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml+
-          "&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport, 'list', null,
+      showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml
+    		  +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport
+    		  , 'list', null,
           'csv');
     }
     saveCheckboxExport(obj, idUser);
@@ -7202,6 +7206,13 @@ function getLocalLocation(){
     return dojo.locale+"_"+dojo.locale.toUpperCase();
   }else{
     return dojo.locale.split('-')[0]+"_"+dojo.locale.split('-')[1].toUpperCase();
+  }
+}
+function getLocalScaytAutoStartup() {
+  if (typeof scaytAutoStartup == "undefined" || scaytAutoStartup===null || scaytAutoStartup==='') {
+    return true;
+  } else {
+    return scaytAutoStartup;
   }
 }
 
