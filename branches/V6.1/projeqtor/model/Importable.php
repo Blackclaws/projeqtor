@@ -168,7 +168,6 @@ class Importable extends SqlElement {
 		    return $msg;
 		    break;
 		}
-		//debugLog($class);
 		$documentAndVersion=false;
 		if ($class=='DocumentVersion' or $class=='Document') {
 		  $firstLine=reset($data);
@@ -185,7 +184,6 @@ class Importable extends SqlElement {
 		    $class='Document';
 		  }
 		}
-		//debugLog("documentAndVersion=$documentAndVersion");
 		$obj=new $class();
 		if ($documentAndVersion) {
 		  $obj->DocumentVersion=new DocumentVersion();
@@ -486,10 +484,10 @@ class Importable extends SqlElement {
 				  $resultSub=$documentVersionObj->save();
 				  $statusMain=getLastOperationStatus($result);
 				  $statusSub=getLastOperationStatus($resultSub);
-				  if ($statusMain=="ERROR") {
+				  if ($statusMain=="ERROR" or $statusMain=="INVALID") {
 				    // Will rollback
 				  } else if ($statusMain=="OK") {
-				    if ($statusSub=="ERROR") {
+				    if ($statusSub=="ERROR" or $statusSub=="INVALID") {
 				      $result=$resultSub; // Will rollback
 				    } else if ($statusSub=="OK") {
 				      $pos=strpos($resultSub,'<input type="hidden" id="lastSaveId"');
@@ -498,12 +496,11 @@ class Importable extends SqlElement {
 				      }
 				    }
 				  } else  {
-				    if ($statusSub=="ERROR" or $statusSub=="OK") {
+				    if ($statusSub=="ERROR" or $statusSub=="INVALID" or $statusSub=="OK") {
 				      $result=$resultSub;
 				    }
 				  }
 				}
-				debugLog($result);
 				if (stripos($result, 'id="lastOperationStatus" value="ERROR"') > 0) {
 					Sql::rollbackTransaction();
 					$htmlResult.= '<div class="messageERROR" >' . $result . '</div>';

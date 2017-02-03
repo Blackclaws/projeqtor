@@ -80,6 +80,7 @@ foreach($FieldsArray as $key => $val) {
         foreach ($incObj as $incKey=>$incVal) {
           if (substr($incKey,0,1)=='_') continue;
           if ($incKey=='refType' or $incKey=='refId' or $incKey=='id'.$objectClass) continue;
+          if ($incObj->isAttributeSetToField($incKey,'noExport')) continue;
           $FieldsArray[$included.'_'.$incKey]=i18n('col'.ucfirst($incKey));
         }
       }
@@ -102,9 +103,22 @@ $allChecked="checked";
 foreach($FieldsArray as $key => $val){
 	if(substr($key,0,5)=="_sec_"){
 		if($val!=$last_key) {
-			$htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">'
-			.'<div class="section" style="width:90%"><b>'.$val.'</b></div><br/>';
+			$htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">';
+			$htmlresult.='<div class="section" style="width:90%"><b>'.$val.'</b>';
+			
+			$htmlresult.='</div><br/>';
+			if ($key=='_sec_DocumentVersion') {
+				$htmlresult.='<div class="noteHeader" style="width:94%">';
+				$htmlresult.= '<table style="width:100%"><tr>';
+				$htmlresult.='<td><input type="checkbox" dojoType="dijit.form.CheckBox" id="documentVersionAll" name="documentVersionAll" 
+						onChange="dijit.byId(\'documentVersionLastOnly\').set(\'checked\',!this.checked);" />'.i18n('all').'</td>';
+				$htmlresult.='<td><input type="checkbox" dojoType="dijit.form.CheckBox" id="documentVersionLastOnly" name="documentVersionLastOnly" 
+						onChange="dijit.byId(\'documentVersionAll\').set(\'checked\',!this.checked);" checked=checked />'.i18n('colCurrentDocumentVersion').'</td>';
+				$htmlresult.= '</tr></table>';
+				$htmlresult.='</div><br/>';
+			}
 		}
+		
 	} else if(substr($key,0,5)=="input"){
 	}else {
 		$checked='checked';
@@ -116,7 +130,7 @@ foreach($FieldsArray as $key => $val){
       $ctx=new ContextType(substr($key,-1));
       $val=$ctx->name;
     } 
-		$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.'" '.$checked.'>';
+		$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.'" '.$checked.' />';
 		$htmlresult.='<label for="column'.$index.'" class="checkLabel">'.$val.'</label><br/>';
 		$index++;
 	}

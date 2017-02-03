@@ -32,4 +32,5 @@ $debugReport=true;                 // Displays report file name on report header
 $i18nNocache=true;                 // Will not cache i18n table, so that new values are automatically displayed without needing disconnection
 $debugIEcompatibility=false;       // If set to true, will allow compatibility mode (mode IE9 on IE11), otherwise, edge mode is forced
 $pdfPlanningBeta='true';           // Force new PDF Export planning with all browsers (by default it only works on Chrome)
+$scaytAutoStartup='YES';
 //======= END
