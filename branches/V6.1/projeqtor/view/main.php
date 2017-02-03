@@ -203,6 +203,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
     var pdfInNewWindow=<?php echo (getPrintInNewWindow('pdf'))?'true':'false';?>;
     var alertCheckTime='<?php echo Parameter::getGlobalParameter('alertCheckTime');?>';
+    var scaytAutoStartup=<?php echo (Parameter::getUserParameter('scaytAutoStartup')=='NO')?'false':'true';?>;
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
     var defaultOffDays=new Array();

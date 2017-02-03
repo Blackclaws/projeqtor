@@ -4253,7 +4253,7 @@ abstract class SqlElement {
 			$this->setVisibility();
 		}
 		foreach ($this as $col=>$val) {		
-		  $firstCar=substr($col,0,1);
+			$firstCar=substr($col,0,1);
 			$threeCars=substr($col,0,3);
 			if ( ! isset($dep[$col]) and ! isset($dep['root']) and (
 			   ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') )
@@ -4272,6 +4272,8 @@ abstract class SqlElement {
 			   (isset($dep['root']) and isset($hidden[$dep['root'].$col]))
 			or ($parent and ($col=='refType' or $col=='refId' or $col=='id'.$parent))
 			) ) {
+				//
+			} else if ($this->isAttributeSetToField($col,'noExport') or $this->isAttributeSetToField($col,'calculated')) {
 			  //
 			} else if ($firstCar==ucfirst($firstCar) or isset($dep[$col])) {
 			  $classDep=ltrim($col,'_');
@@ -4294,6 +4296,9 @@ abstract class SqlElement {
     				       ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
   				} else if (property_exists($classDep, 'id'.get_class($this)) ) {
   				  $from.=" on $table.id=".$ext->getDatabaseTableName().".id".get_class($this);
+  				  if ($classDep=='DocumentVersion' and isset($hidden['documentVersionAll'])) {
+  				  	$from.=" and $table.idDocumentVersion=".$ext->getDatabaseTableName().".id";
+  				  }
   				}			
   				if (isset($dep[$col])) {
   				  $extClause=$ext->buildSelectClause(true,$hidden,array('root'=>$classDep.'_'),get_class($this));

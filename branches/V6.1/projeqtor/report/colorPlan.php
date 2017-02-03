@@ -185,7 +185,7 @@ $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
 $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 
-$month=$paramMonth;
+$month=$paramYear.'-'.$paramMonth;
 if (checkNoData($result,$month)) continue;
 
 echo '<table width="95%" align="center">';

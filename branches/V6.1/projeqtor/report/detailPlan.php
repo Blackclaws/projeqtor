@@ -213,7 +213,7 @@ $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
-$month=$paramMonth;
+$month=$paramYear.'-'.$paramMonth;
 if (checkNoData($result,$month)) continue;
 
 echo "<table width='95%' align='center'>";
