@@ -175,7 +175,8 @@ class ComponentMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    $result="";
+  	global $showClosedItems;
+  	$result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
       $result .="<table><tr>";
       //echo "<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
@@ -183,6 +184,7 @@ class ComponentMain extends ProductOrComponent {
       if ($this->id) {
         $vers=new ComponentVersion();
         $crit=array('idComponent'=>$this->id);
+        if (! $showClosedItems) $crit['idle']='0';
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result .="</td></tr></table>";
