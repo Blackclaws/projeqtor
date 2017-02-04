@@ -694,9 +694,10 @@ function loadContent(page, destination, formName, isResultMessage,
           if (destination == "detailDiv" && dojo.byId('objectClass')
               && dojo.byId('objectClass').value && dojo.byId('objectId')
               && dojo.byId('objectId').value) {
+            console.log("sur select element");
             stockHistory(dojo.byId('objectClass').value,
                 dojo.byId('objectId').value);
-          }
+          } 
           if (dojo.byId('formDiv') && formDivPosition >= 0) {
             dojo.byId('formDiv').scrollTop = formDivPosition;
           }

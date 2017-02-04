@@ -272,7 +272,7 @@ function addTab($param){
     echo "<table width=\"95%\" class=\"tabDashboardTicketMain\">";
     echo '<tr><td class="titleTabTicket">'.i18n($param["title"]).'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnCount").'</td><td class="titleTabTicket">'.i18n("dashboardTicketMainColumnPourcent")."</td></tr>";
     foreach ($res as $idSort=>$nbline){
-      $name='<a href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&val='.$nbline['id'].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.$nbline["name"].'</a>';
+      $name='<a href="#" onclick="stockHistory(\'Ticket\',null,\'object\');loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&val='.$nbline['id'].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.$nbline["name"].'</a>';
       $addColor=$name;
       if(isset($nbline["color"])){
         $addColor="<div style=\"background-color:".$nbline["color"].";border:1px solid #AAAAAA;border-radius:50%;width:20px;height:18px;float:left;\">&nbsp;</div><div style=\"color:".$nbline["color"].";radius:50%;width:10px;height:10px;float:left;\">&nbsp;</div>"
