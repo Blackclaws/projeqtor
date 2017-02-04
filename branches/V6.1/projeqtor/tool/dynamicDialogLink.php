@@ -104,16 +104,16 @@ require_once "../tool/projeqtor.php";
                </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-         </table>        
-         <table>    
+   
             <td class="dialogLabel"  >
-               <label for="copyLinksofLinked" ><?php echo i18n("copyLinkFromOriginalElement") ?>&nbsp;:&nbsp;</label>
+               
              </td>     
           <td>
              <input dojoType="dijit.form.CheckBox" name="copyLinksofLinked" id="copyLinksofLinked" checked=false />
+             <label style="float:none" for="copyLinksofLinked" ><?php echo i18n("copyLinkFromOriginalElement") ?></label>
           </td>
-         </table>
-         
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>         
         </form>
       </td>
     </tr>

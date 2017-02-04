@@ -4655,6 +4655,7 @@ function listClick() {
 }
 
 function consoleLogHistory(msg) {
+  //KROWRY
   consoleTraceLog('====='+msg+'==== ('+historyTable.length+')');
   if (historyTable.length==0) {
     consoleTraceLog(msg+' => Empty');
@@ -4666,7 +4667,7 @@ function consoleLogHistory(msg) {
 }
 
 function stockHistory(curClass, curId, currentScreen) {
-  //consoleLogHistory("before");
+  consoleLogHistory("before");
   if (!currentScreen) {
     currentScreen="object";
     if (dojo.byId("objectClassManual")){
@@ -4690,6 +4691,7 @@ function stockHistory(curClass, curId, currentScreen) {
     disableWidget('menuBarRedoButton');
   }
   consoleLogHistory("after");
+  consoleLogHistory(currentScreen);
 }
 
 
@@ -4725,6 +4727,8 @@ function getTargetFromCurrentScreen(currentScreen){
     target="admin.php";
   } else if (currentScreen=="Import" || currentScreen=="ImportData"){ 
     target="importData.php";
+  } else if (currentScreen=="DashboardTicket") {
+    target="dashboardTicketMain.php";
   } else if (currentScreen=="Plugin"){ 
     target="pluginManagement.php";
   } else if (currentScreen=="Today"){ 
