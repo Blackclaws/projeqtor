@@ -71,7 +71,7 @@ if (array_key_exists('screenHeight',$_SESSION)) {
          <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $note->refType;?>" />
          <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $note->refId;?>" />
          <input id="noteEditorType" name="noteEditorType" type="hidden" value="<?php echo getEditorType();?>" />
-         <?php if (getEditorType()=="CK") {?> 
+         <?php if (getEditorType()=="CK" or getEditorType()=="CKInline") {?> 
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
           name="noteNote" id="noteNote"><?php
           if (!isTextFieldHtmlFormatted($note->note)) {

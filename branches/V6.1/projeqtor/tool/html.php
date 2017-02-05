@@ -771,8 +771,13 @@ function htmlEncode($val,$context="default") {
   	$str=str_replace('"',"''",$val);
   	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
   } else if ($context=="title") {
-    $str=$val;
-    $str=htmlspecialchars(htmlspecialchars($str,ENT_QUOTES,'UTF-8'),ENT_QUOTES,'UTF-8');
+    //$str=$val;
+    $str=br2nl($val);
+    if (isTextFieldHtmlFormatted($str)) {
+      $str=htmlspecialchars($str,ENT_QUOTES,'UTF-8');
+    } else {
+      $str=htmlspecialchars(htmlspecialchars($str,ENT_QUOTES,'UTF-8'),ENT_QUOTES,'UTF-8');
+    }
     $str=str_replace( array("\r\n","\n","\r"), array('<br/>','<br/>','<br/>'),$str);
     return $str;
   } else if ($context=="formatted") { // For long text, html format must be preserved but <script> must be removed (Mandatory for Editor fields)

@@ -863,7 +863,7 @@ function addNote() {
   }
   var callBack=function() {
     var editorType=dojo.byId("noteEditorType").value;
-    if (editorType=="CK") { // CKeditor type
+    if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
     } else if (editorType=="text") {
       dijit.byId("noteNote").focus();
@@ -914,7 +914,7 @@ function editNote(noteId, privacy) {
   var callBack=function() {
     //dijit.byId('notePrivacyPublic').set('checked', 'true');
     var editorType=dojo.byId("noteEditorType").value;
-    if (editorType=="CK") { // CKeditor type
+    if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
       ckEditorReplaceEditor("noteNote",999);
     } else if (editorType=="text") { 
       dijit.byId("noteNote").focus();
@@ -1840,12 +1840,21 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
       dojo.number.format(realWork / 100));
   dijit.byId("assignmentLeftWork").set('value',
       dojo.number.format(leftWork / 100));
-  var comment=dojo.byId('comment_assignment_' + assignmentId);
+  /*var comment=dojo.byId('comment_assignment_' + assignmentId);
   if (comment) {
     dijit.byId("assignmentComment").set('value', comment.innerHTML);
   } else {
     dijit.byId("assignmentComment").set('value', '');
-  }
+  }*/
+  disableWidget('assignmentComment');
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=assignmentDescription&idAssignment='+assignmentId,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('assignmentComment').set('value', data);
+      enableWidget("assignmentComment");
+    }
+  });
   dojo.byId("assignmentPlannedUnit").value=unit;
   dojo.byId("assignmentLeftUnit").value=unit;
   dojo.byId("assignmentRealUnit").value=unit;
@@ -4667,7 +4676,6 @@ function consoleLogHistory(msg) {
 }
 
 function stockHistory(curClass, curId, currentScreen) {
-  consoleLogHistory("before");
   if (!currentScreen) {
     currentScreen="object";
     if (dojo.byId("objectClassManual")){
@@ -4690,8 +4698,6 @@ function stockHistory(curClass, curId, currentScreen) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
-  consoleLogHistory("after");
-  consoleLogHistory(currentScreen);
 }
 
 

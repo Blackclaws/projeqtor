@@ -27,7 +27,7 @@ CKEDITOR.editorConfig = function( config ) {
   //gautier
   if (dojo.byId('ckeditorType')){
     var cktype=dojo.byId('ckeditorType').value;
-    if (cktype != 'CK') {
+    if (cktype != 'CK' && ! currentEditorIsNote) {
       config.extraPlugins += ',staticspace';
       config.staticSpacePriority=1;
       config.removePlugins += ',elementspath';

@@ -293,7 +293,7 @@ function addTab($param){
     if($total-$totT>0){
       echo "  <tr>";
       echo "    <td width=\"50%\">";
-      echo '<a class="styleUDashboard" href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&undefined=true\', \'centerDiv\', \'dashboardTicketMainForm\');">'.i18n("undefinedValue").'</a>';
+      echo '<a class="styleUDashboard" href="#" onclick="stockHistory(\'Ticket\',null,\'object\');loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'&undefined=true\', \'centerDiv\', \'dashboardTicketMainForm\');">'.i18n("undefinedValue").'</a>';
       echo "    </td>";
       echo "    <td width=\"10%\">";
       echo '<span>'.($total-$totT).'</span>';
@@ -305,7 +305,7 @@ function addTab($param){
     }
     echo "  <tr>";
     echo "    <td width=\"50%\">";
-    echo '<a class="styleADashboard" href="#" onclick="loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.i18n("dashboardTicketMainAllIssues").'</a>';
+    echo '<a class="styleADashboard" href="#" onclick="stockHistory(\'Ticket\',null,\'object\');loadContent(\'dashboardTicketMain.php?goToTicket='.$param["groupBy"].'\', \'centerDiv\', \'dashboardTicketMainForm\');">'.i18n("dashboardTicketMainAllIssues").'</a>';
     echo "    </td>";
     echo "    <td width=\"10%\">";
     echo '<span style="font-weight: bold;">'.$total.'</span>';

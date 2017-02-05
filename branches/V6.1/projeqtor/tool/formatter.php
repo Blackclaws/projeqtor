@@ -333,19 +333,22 @@ function formatPrivacyThumb($privacy, $team) {
   }
 }
 
-function formatCommentThumb($comment) {
+function formatCommentThumb($comment,$img=null) {
   global $print;
   if ($print) return "";//$userName;
   $res='';
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
-
   $res.='<span onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();" >';
-  $res.= formatSmallButton('Comment');
+  if ($img) {
+    $res.='<img src="'.$img.'" />';
+  } else {
+    $res.= formatSmallButton('Comment');
+  }
   $res.= '</span>';
   return $res;
-
 }
+
 function getMonthName($month,$maxLength=0) {
   global $monthArray;
   if (! $month or $month==0) return '';
