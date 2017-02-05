@@ -87,7 +87,11 @@
     } else if ($type=='affectationDescription') {
       $idAffectation=$_REQUEST['idAffectation'];
       $aff=new Affectation($idAffectation);
-      echo htmlTransformRichtextToPlaintext($aff->description);
+      echo formatAnyTextToPlainText($aff->description,false);
+    } else if ($type=='assignmentDescription') {
+        $idAssignment=$_REQUEST['idAssignment'];
+        $ass=new Assignment($idAssignment);
+        echo formatAnyTextToPlainText($ass->comment,false);
     } else if ($type=='responsible') {
       $responsibleFromProduct=Parameter::getGlobalParameter('responsibleFromProduct');
     	if (!$responsibleFromProduct) $responsibleFromProduct='always';
