@@ -2881,6 +2881,12 @@ function formatBigButton($class) {
   $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
   return $result;
 }
+
+// ===============================================================================================================================
+// Text formating for long fields, to preserve or not html tags depending on text type (html formatted or plain text)
+// This is needed to preserve compatibility between texts entered in Plan Text Editor and Rich Html Editor (CK or Dojo)
+// ===============================================================================================================================
+
 function isTextFieldHtmlFormatted($val) {
   $test=strtolower(substr(ltrim($val),0,10));
 	if (substr(ltrim($val),0,1)=='<') {
@@ -2898,4 +2904,18 @@ function formatPlainTextForHtmlEditing($val,$mode="full") {
 	if ($mode=='full') return nl2br(htmlspecialchars(htmlEncode(str_replace(array('<br>','<br/>','<br />'),"\n",$val))));
 	else if ($mode=='single') return nl2br(htmlEncode(str_replace(array('<br>','<br/>','<br />'),"\n",$val)));
 	else return $val;
+}
+function formatAnyTextToPlainText($val,$removeNl=true) {
+  if (isTextFieldHtmlFormatted($val)) {
+    $text=new Html2Text($val);
+    $val=$text->getText();
+    echo htmlEncode($val);
+  } else if ($removeNl) {
+    echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
+  } else {
+    echo str_replace(array('<br>','<br/>','<br />'),array("\n","\n","\n"),$val);
+  }
+}
+function br2nl($val) {
+  return str_replace(array('<br>','<br/>','<br />'),array("\n","\n","\n"),$val);
 }

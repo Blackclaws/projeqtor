@@ -1785,13 +1785,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
-        if (isTextFieldHtmlFormatted($val)) {
+        /*if (isTextFieldHtmlFormatted($val)) {
           $text=new Html2Text($val);
           $val=$text->getText();
           echo htmlEncode($val);
         } else {
         	echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
-        } 
+        }*/
+        echo formatAnyTextToPlainText($val);
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -2457,8 +2458,8 @@ function drawNotesFromObject($obj, $refresh=false) {
         }
         echo '</td>';
       }
-      echo '<td class="noteData">#' . htmlEncode($note->id) . '</td>';
-      echo '<td class="noteData">';
+      echo '<td class="noteData" style="width:5%">#' . htmlEncode($note->id) . '</td>';
+      echo '<td class="noteData" style="width:' . (($print)?'95':'85') . '%">';
       /*if (!$print) {
         echo '<div style="display:none" type="hidden" id="note_' . htmlEncode($note->id) . '">';
         echo $note->note;
@@ -3755,7 +3756,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
       }*/
       echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>';
       if ($aff->description and !$print) {
-        echo formatCommentThumb(htmlTransformRichtextToPlaintext($aff->description));
+        echo '<div style="float:right">'.formatCommentThumb($aff->description).'</div>';
       }
       echo htmlEncode($name);
       echo '</td>';
@@ -3861,15 +3862,18 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {
-        echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
+        echo formatCommentThumb('<b>'.i18n('colDescription') . ":</b>\n\n" . $tc->description,'../view/css/images/description.png');
+        //echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
         echo '&nbsp;';
       }
       if ($tc->result) {
-        echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result) . '" alt="desc" />';
+        echo formatCommentThumb('<b>'.i18n('colExpectedResult') . ":</b>\n\n" . $tc->result,'../view/css/images/result.png');
+        //echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result,'protectQuotes') . '" alt="desc" />';
         echo '&nbsp;';
       }
       if (isset($tc->prerequisite) and $tc->prerequisite) {
-        echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite) . '" alt="desc" />';
+        echo formatCommentThumb('<b>'.i18n('colPrerequisite') . ":</b>\n\n" . $tc->prerequisite,'../view/css/images/prerequisite.png');
+        //echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite,'protectQuotes') . '" alt="desc" />';
       }
       echo '</td>';
     }

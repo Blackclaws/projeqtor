@@ -292,7 +292,11 @@ class PlannedWork extends GeneralWork {
           //if ($prec->refType!='Milestone') {
             $startPossible=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77
           } else {
-            $startPossible=addWorkDaysToDate($precEnd,1+$precVal);
+            if ($prec->refType=='Milestone') {
+              $startPossible=addWorkDaysToDate($precEnd,$precVal);
+            } else {
+              $startPossible=addWorkDaysToDate($precEnd,1+$precVal);
+            }
           }
           $startPossibleFraction=0;
         } else {
@@ -337,6 +341,7 @@ class PlannedWork extends GeneralWork {
         }
         if ($profile=="FIXED") { // We are on Milestone ;)
         	$plan->plannedEndDate=$plan->validatedEndDate;
+        	$plan->plannedEndFraction=$plan->plannedStartFraction;
         	$plan->plannedDuration=0;
           //$plan->save();
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);

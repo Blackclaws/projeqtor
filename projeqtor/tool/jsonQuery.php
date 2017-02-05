@@ -256,7 +256,15 @@
             if ($sortIndex and $sortIndex==$numField) {
               $queryOrderBy .= ($queryOrderBy=='')?'':', ';
               //if (Sql::isPgsql()) $fld='"'.$fld.'"';
-              $queryOrderBy .= " " . $fld . " " . $sortWay;
+              if (property_exists($obj, $fld)) {
+                $queryOrderBy .= " " . $obj->getDatabaseTableName().".".$fld . " " . $sortWay;
+              } else if (property_exists($obj,$objectClass.'PlanningElement') and property_exists($objectClass.'PlanningElement',$fld) ) {
+                $queryOrderBy .= " planningelement.".$fld . " " . $sortWay;
+              } else if (property_exists($obj,'WorkElement') and property_exists('WorkElement',$fld)) {
+                $queryOrderBy .= " workelement.".$fld . " " . $sortWay;
+              } else {
+                $queryOrderBy .= " " . $fld . " " . $sortWay;
+              }
             }
           }
         }
@@ -277,7 +285,7 @@
 	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
 	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-            $queryOrderBy .= " " . $externalTableAlias . '.' . $split[1] 
+            $queryOrderBy .= " " . $externalTableAlias . '.' . (($split[1]=='wbs' and property_exists($externalObj, 'wbsSortable'))?'wbsSortable':$split[1]) 
             . " " . $crit['sql']['value'];
 	          $doneSort=true;
           }
