@@ -73,6 +73,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="../external/dojox/form/resources/CheckedMultiSelect.css" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   
   <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
@@ -131,6 +132,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dijit.Fieldset");
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.CheckBox");
+    dojo.require("dojox.form.CheckedMultiSelect");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dijit.form.FilteringSelect");

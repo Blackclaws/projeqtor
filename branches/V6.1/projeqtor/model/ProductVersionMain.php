@@ -53,7 +53,7 @@ class ProductVersionMain extends Version {
   public $realEndDate;
   public $idle;
   public $description;
-  public $_sec_Versionproject_projects;
+  public $_sec_VersionprojectProjects;
   public $_VersionProject=array();
   public $_sec_ProductVersionComposition;
   public $_productVersionComposition=array();

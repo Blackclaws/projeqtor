@@ -39,7 +39,14 @@
         return;
       }
       if (substr($field,0,2)=='id' and substr($field,2,1)==strtoupper(substr($field,2,1))) {
-        Security::checkValidId($_REQUEST['critValue']);
+        if(isset($_REQUEST['critArray'])) {
+          $_REQUEST['critValue'] = explode(',', $_REQUEST['critValue']);
+          foreach($_REQUEST['critValue'] as $v) {
+            Security::checkValidId($v);
+          }
+        } else {
+          Security::checkValidId($_REQUEST['critValue']);
+        }
       } 
     } else if (isset($_REQUEST['critValue'])) {
       errorLog("incorrect query jonList : critValue is set but critField is not set");
@@ -224,11 +231,12 @@
             $crit[$_REQUEST['critField1']]=$_REQUEST['critValue1'];
           }
         }
-        $object=SqlElement::getCurrentObject(null,null,true,false);
-        $typeClass=get_class($object);
         $limitPlanning=Parameter::getGlobalParameter('limitPlanningActivity');
-        if($class=="Activity" and $typeClass=="Ticket" and $limitPlanning=="YES"){
-          $crit['isPlanningActivity']=1;
+        if ($class=="Activity" and $limitPlanning=="YES") {
+          $object=SqlElement::getCurrentObject(null,null,true,false);
+          if ($object and get_class($object)=="Ticket") {
+            $crit['isPlanningActivity']=1;
+          }
         }
         $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
       } else {
@@ -247,7 +255,7 @@
       if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
       $nbRows=0;
       // return result in json format
-      if (! array_key_exists('required', $_REQUEST)) {
+      if (! array_key_exists('required', $_REQUEST) and ! isset($_REQUEST['critArray']) ) {
       	echo '{id:" ", name:""}';
         $nbRows+=1;
       }

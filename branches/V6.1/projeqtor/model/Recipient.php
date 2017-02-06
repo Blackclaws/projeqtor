@@ -59,6 +59,7 @@ class Recipient extends SqlElement {
   //public $_spe_projects;
   //public $_sec_Contacts;
   //public $_spe_contacts;
+  public $_nbColMax=3;
   
   // Define the layout that will be used for lists
   private static $_layout='

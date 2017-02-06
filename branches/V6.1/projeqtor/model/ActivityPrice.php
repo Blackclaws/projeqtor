@@ -44,12 +44,14 @@ class ActivityPrice extends SqlElement {
   //public $idTeam;
   public $sortOrder=0;
   public $idle;
-  public $_sec_void;
+  //public $_sec_void;
   //public $_sec_Abacus;
   //public $isRef;
   //public $pct;
-  
+  public $_Attachment=array();
+  public $_Note=array();
   public $_noCopy;
+  //public $_nbColMax=3;
 
   
   private static $_fieldsAttributes=array("idActivity"=>"required",

@@ -29,6 +29,7 @@ dependencies = {
 			    "dijit._editor.plugins.TextColor",
 			    "dijit.form.Button",
 			    "dijit.form.CheckBox",
+			    "dojox.form.CheckedMultiSelect",
 			    "dijit.form.ComboBox",
 			    "dijit.form.DateTextBox",
 			    "dijit.form.FilteringSelect",

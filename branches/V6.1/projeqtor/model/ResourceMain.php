@@ -59,6 +59,7 @@ class ResourceMain extends SqlElement {
   public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   public $password;
+  public $_nbColMax=3;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
