@@ -23,7 +23,6 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
 include_once '../tool/projeqtor.php';
 $print = false;
 if (array_key_exists('print', $_REQUEST)) {
@@ -38,7 +37,6 @@ if (array_key_exists('idActivity', $_REQUEST)) {
 if (array_key_exists('idProject', $_REQUEST)) {
     $paramProject = trim($_REQUEST['idProject']);
 }
-
 // Header
 $headerParameters = "";
 if ($paramProject != '') {
@@ -50,51 +48,41 @@ if ($paramActivity != "") {
 if ($paramActivity == '' && $paramProject == '') {
     exit('Project or activity parameter is missing');
 }
-
 if (array_key_exists('outMode', $_REQUEST) && $_REQUEST['outMode'] == 'csv') {
     $outMode = 'csv';
 } else {
     $outMode = 'html';
 }
-
 if ($outMode == 'csv') {
     include_once "headerFunctions.php";
 } else {
     include "header.php";
 }
-
 // All activities
 $where = getAccesRestrictionClause('Activity', false);
-if (trim($paramActivity) != '') {
+if ($paramActivity != '') {
     $where .= " and idActivity = " . $paramActivity;
-} else if (trim($paramProject) != '') {
+} elseif ($paramProject != '') {
     $where .= " and idProject = " . $paramProject;
-    //$where .= " and idActivity IS NOT NULL";
+    $where .= " and idActivity IS NOT NULL";
 }
-
 $lstActivity = (new Activity())->getSqlElementsFromCriteria(null, false, $where, null);
-
 if (checkNoData($lstActivity))
     exit;
-
 // Joblist definition
 $where = getAccesRestrictionClause('JoblistDefinition', false);
 $where .= "and nameChecklistable = 'Activity' ";
 $where .= "and idType = " . $lstActivity[0]->idActivityType;
 $joblist = (new JoblistDefinition())->getSqlElementsFromCriteria(null, false, $where, null);
-
 if (checkNoData($joblist))
     exit;
-
 // Job definition
 $where = getAccesRestrictionClause('JobDefinition', false);
 $where .= "and idJoblistDefinition = " . $joblist[0]->id;
 $orderBy = " sortOrder ASC";
 $jobDefinitions = (new JobDefinition())->getSqlElementsFromCriteria(null, false, $where, $orderBy);
-
 if (checkNoData($jobDefinitions))
     exit;
-
 $aDefLines = array();
 foreach ($jobDefinitions as $jobDef) {
     if (!array_key_exists($jobDef->id, $aDefLines)) {
@@ -104,18 +92,15 @@ foreach ($jobDefinitions as $jobDef) {
             'nbcheck' => 0);
     }
 }
-
 // Get list of checkboxes of activities
 $where = getAccesRestrictionClause('Job', false);
 $where .= " and refType = 'Activity' ";
 $where .= " and idJoblistDefinition = " . $joblist[0]->id;
 $lstJobs = (new Job())->getSqlElementsFromCriteria(null, false, $where, null);
-
 $result = array(); // Preparation of result lines
 foreach ($lstJobs as $oJob) {
     $result[$oJob->refId][$oJob->idJobDefinition] = $oJob;
 }
-
 // title
 if ($outMode == 'csv') {
     echo chr(239) . chr(187) . chr(191); // Microsoft Excel requirement
@@ -137,13 +122,10 @@ if ($outMode == 'csv') {
     echo '<td class="reportTableHeader">' . i18n('colGeneralComment') . '</td>';
     echo '</tr>';
 }
-
 function compareWbs($a, $b) {
     return version_compare($a->ActivityPlanningElement->wbs, $b->ActivityPlanningElement->wbs);
 }
-
 usort($lstActivity, 'compareWbs');
-
 $status = array('done' => '#a5eda5',
     'warning' => '#edb584',
     'alert' => '#eda5a5',
@@ -209,7 +191,6 @@ foreach ($lstActivity as $activity) {
                         $title .= "————————\n" . $result[$activity->id][$sKey]->comment;
                     }
                 }
-
                 echo '<td class="reportTableData" style="background-color: ' . $color . '" title="' . $title . '">' . ((isset($result[$activity->id][$sKey]) && !is_null($result[$activity->id][$sKey]->comment) && !empty($result[$activity->id][$sKey]->comment)) ? '<big>*</big>' : '&nbsp;') . '</td>';
             }
         }
@@ -245,7 +226,6 @@ foreach ($lstActivity as $activity) {
         echo '</tr>';
     }
 }
-
 if ($outMode == 'csv') {
     echo i18n('colTotal') . ';';
     foreach ($aDefLines as $aLine) {

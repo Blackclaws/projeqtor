@@ -54,6 +54,16 @@ class ProjectMain extends SqlElement {
   public $creationDate;
   public $lastUpdateDateTime;
   public $color;
+ 
+  public $longitude;
+  public $latitude;
+  public $description;
+  public $objectives;
+  public $_sec_Progress;
+  public $ProjectPlanningElement; // is an object
+  public $_sec_Affectations;
+  public $_spe_affectations;
+  public $_sec_treatment;
   public $idStatus;
   public $idHealth;
   public $idQuality;
@@ -67,18 +77,11 @@ class ProjectMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $longitude;
-  public $latitude;
-  public $description;
-  public $objectives;
-  public $_sec_Progress;
-  public $ProjectPlanningElement; // is an object
-  public $_sec_Affectations;
-  public $_spe_affectations;
-  public $_sec_Productproject_products;
+
+  public $_sec_ProductprojectProducts;
   public $_ProductProject=array();
   
-  public $_sec_Versionproject_versions;
+  public $_sec_VersionprojectVersions;
   public $_VersionProject=array();
   
   public $_sec_Subprojects;

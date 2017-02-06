@@ -61,7 +61,7 @@ class TestCaseMain extends SqlElement {
   public $_lib_cancelled;
   public $prerequisite;
   public $result;
-  public $_sec_TestCaseRun;
+  public $_sec_TestCaseRunSummary;
   public $_calc_runStatus;
   public $idRunStatus;
   public $_TestCaseRun=array();

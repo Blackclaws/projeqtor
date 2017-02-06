@@ -153,6 +153,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
 $treatedObjects=array();
 
 $displayWidth='98%';
+if ($print) $reorg=false;
 if ($print and isset($outMode) and $outMode == 'pdf') {
   $reorg=false;
   if (isset($orientation) and $orientation=='L')
@@ -389,7 +390,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
-   $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF;
+   $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF,
+   $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax, $section, $beforeAllPanes;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
@@ -492,10 +494,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
     }
   }
+  //if ($included) return;
   $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
-  $section='';
+  if (!$included) $section='';
   $nbLineSection=0;
-  
+
   if (SqlElement::is_subclass_of($obj, 'PlanningElement')) {
    	$obj->setVisibility();
     $workVisibility=$obj->_workVisibility;
@@ -630,7 +633,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section=substr($col, 5);
       } else {
         $section='';
-      }    
+      }   
       // Determine number of items to be displayed in Header
       $sectionField='_'.$section;
       $sectionFieldDep='_Dependency_'.ucfirst($section);
@@ -671,6 +674,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
       if ($col=='_sec_void') {
+        //endBuffering($prevSection, $included);
         if ($prevSection) {
           echo '</table>';
           if (!$print) {
@@ -685,7 +689,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<table>';
         }
       } else {
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt);
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt,$included);
       }
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr($col, 5);
@@ -779,7 +783,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $cpt++;
           }
         }
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt);
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt,$included);
         drawAttachmentsFromObject($obj, false);
       }
     } else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
@@ -792,7 +796,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $cpt++;
         }
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt,$included);
       drawNotesFromObject($obj, false);
     } else if ($col== '_BillLine') {
       $prevSection=$section;
@@ -802,7 +806,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $colSpan=$obj->$colSpanSection;
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val),$included);
       drawBillLinesFromObject($obj, false);
     } else if (substr($col, 0, 1) == '_' and 
     substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
@@ -1987,8 +1991,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       // echo '</td></tr></table>';
     }
   }
-  endBuffering();
-  finalizeBuffering();
+  if (!$included) endBuffering($section,$included);
+  if (!$included) finalizeBuffering();
   if ($outMode == 'pdf') {
     $cpt=0;
     foreach ( $obj as $col => $val ) {
@@ -2008,9 +2012,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
 }
 
-function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null) {
+function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null) {
   scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
-  global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane;
+  global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
   if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
@@ -2023,7 +2027,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       echo '<br/>';
     }
   }
-  endBuffering();
+  endBuffering($prevSection,$included);
   if (!$print) {
     
     $arrayPosition=array(
@@ -2062,9 +2066,15 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       $float='right';
       $clear='right';
     }
+    if ($reorg) {
+      $float='left';
+      $clear='none';
+    }
     $titlePane=$classObj . "_" . $section;
-    startBuffering();
-    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
+    startBuffering($included);
+    $sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
+    
+    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($sectionName)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
     echo ' style="display:inline-block;position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
@@ -2529,7 +2539,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   }
   if (!$print) {
     echo '<input type="hidden" id="billLineIdle" value="' . htmlEncode($obj->idle) . '" />';
-    echo '<table width="100%">'; 
+    //echo '<table width="100%">'; 
   }
   echo '<tr>';
   $billingType='M';
@@ -2600,7 +2610,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
   if (!$print) {
-    echo '</table>';
+    //echo '</table>';
   }
 }
 
@@ -2634,7 +2644,7 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
   foreach ( $lines as $line ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="noteData" style="text-align:center;">';
+      echo '<td class="noteData" style="width:5%;text-align:center;">';
       if ($canUpdate) {
         echo ' <a onClick="editChecklistDefinitionLine(' . htmlEncode($obj->id) . ',' . htmlEncode($line->id) . ');"' 
             . ' title="' . i18n('editLine') . '" > '.formatSmallButton('Edit').'</a>';
@@ -2643,11 +2653,11 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     if ($line->check01) {
-      echo '<td class="noteData" style="border-right:0; text-align:right" title="' . htmlEncode($line->title) . '">' 
+      echo '<td class="noteData" style="width:30%;border-right:0; text-align:right" title="' . htmlEncode($line->title) . '">' 
         . '<div style="position: relative;">'  
         . htmlEncode($line->name) . '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">' . htmlEncode($line->sortOrder) . '</div>' . ' : '
         . '</div></td>';
-      echo '<td class="noteData" style="border-left:0;">';
+      echo '<td class="noteData" style="width:'.(($print)?'65':'60').'%;border-left:0;">';
       echo '<table witdh="100%"><tr>';
       for ($i=1; $i <= 5; $i++) {
         $check='check0' . $i;
@@ -2660,9 +2670,9 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
       }
       echo '</tr></table>';
       echo '</td>';
-      echo '<td class="noteData">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
+      echo '<td class="noteData" style="width:5%">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
     } else {
-      echo '<td class="reportTableHeader" colspan="3" style="text-align:center" title="' . htmlEncode($line->title) . '">' . htmlEncode($line->name) . '</td>';
+      echo '<td class="reportTableHeader" colspan="3" style="width:'.(($print)?'100':'95').'%,text-align:center" title="' . htmlEncode($line->title) . '">' . htmlEncode($line->name) . '</td>';
     }
     echo '</tr>';
   }
@@ -3266,7 +3276,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   if ($habil and $habil->rightAccess != 1) {
     return;
   }
-  $section='Assignment';
+  // $section='Assignment';
   // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes", $nbCol);
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentEdit'));
@@ -3343,9 +3353,6 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       echo '</td>';
     }
     echo '</tr></table>';
-    
-
-
     echo '</td>';
     echo '<td class="assignData" align="center">' . htmlEncode($assignment->rate) . '</td>';
     if ($workVisible) {
@@ -4022,16 +4029,108 @@ function startBuffering() {
   ob_start();
 }
 
-function endBuffering() {
-  global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax,$section;
+
+function endBuffering($prevSection,$included) {
+  global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax, $section, $beforeAllPanes;
+  $sectionPosition=array(
+      'approver'                    =>array('2'=>'right',   '3'=>'extra'),
+      'assignment'                  =>array('2'=>'left',   '3'=>'extra'),
+      'attachment'                  =>array('2'=>'bottom',   '3'=>'extra'),
+      'attendees'                   =>array('2'=>'right',   '3'=>'extra'),
+      'billline'                    =>array('2'=>'bottom',  '3'=>'bottom'),
+      'calendar'                    =>array('2'=>'bottom',  '3'=>'bottom'),
+      'description'                 =>array('2'=>'left',    '3'=>'left'),
+      'evaluation'                  =>array('2'=>'left',   '3'=>'extra'),
+      'evaluationcriteria'          =>array('2'=>'right',   '3'=>'extra'),
+      'expensedetail'               =>array('2'=>'bottom',  '3'=>'bottom'),
+      'iban'                        =>array('2'=>'right',   '3'=>'extra'),
+      'internalalert'               =>array('2'=>'right',   '3'=>'extra'),
+      'link'                        =>array('2'=>'bottom',   '3'=>'extra'),
+      'lock'                        =>array('2'=>'left',   '3'=>'left'),
+      'mailtext'                    =>array('2'=>'bottom',  '3'=>'bottom'),      
+      'miscellaneous'               =>array('2'=>'right',   '3'=>'extra'),
+      'note'                        =>array('2'=>'bottom',   '3'=>'extra'),
+      'progress'                    =>array('2'=>'right',   '3'=>'extra'),
+      'progress_left'               =>array('2'=>'left',   '3'=>'extra'),
+      'resourcecost'                =>array('2'=>'right',   '3'=>'extra'),
+      'submissions'                 =>array('2'=>'right',   '3'=>'extra'),
+      'testcaserun'                 =>array('2'=>'bottom',  '3'=>'bottom'),
+      'testcaserunsummary'          =>array('2'=>'left',   '3'=>'extra'),
+      'testcasesummary'             =>array('2'=>'right',   '3'=>'extra'),
+      'productcomponent'            =>array('2'=>'left',  '3'=>'extra'),    
+      'predecessor'                 =>array('2'=>'bottom',  '3'=>'bottom'),
+      'successor'                   =>array('2'=>'bottom',  '3'=>'bottom'),
+      'void'                        =>array('2'=>'right',   '3'=>'right')
+  );
   if (!$reorg) return;
   $display=ob_get_clean();
-  echo $display; // firt test !!!
+  if (!$prevSection and !$included) {
+    $beforeAllPanes=$display;
+    return;
+  }
+  if ($nbColMax==1) {
+    $leftPane.=$display;
+  } else {
+    $position='right'; // Not placed sections are located right (default)
+    $sectionName=strtolower($prevSection);
+    if (isset($sectionPosition[$sectionName]) and isset($sectionPosition[$sectionName][$nbColMax])) {
+      $position=$sectionPosition[$sectionName][$nbColMax];
+    }
+    if ($position=='extra') {
+      $extraPane.=$display;
+    } else if ($position=='bottom') {
+      $bottomPane.=$display;
+    } else if ($position=='right') {
+      $rightPane.=$display;
+    } else if ($position=='left') {
+      $leftPane.=$display;
+    } else {
+      traceLog("ERROR at endBuffering() : '$position' is not an expected position");
+    }
+  }
+  //echo $display; // firt test !!!
 }
 function finalizeBuffering() {
-  global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax,$section;
+  global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax, $section, $beforeAllPanes;
   if (!$reorg) return;
-  
+  /*debugLog("======================= LEFT ==========================");
+  debugLog($leftPane);
+  debugLog("======================= RIGHT ==========================");
+  debugLog($rightPane);
+  debugLog("======================= EXTRA ==========================");
+  debugLog($extraPane);
+  debugLog("======================= BOTTOM ==========================");
+  debugLog($bottomPane);*/
+  if (!$leftPane and $rightPane) {
+    $leftPane=$rightPane;
+    $rightPane='';
+  }
+  //$leftPane="";$rightPane="";$extraPane="";$bottomPane="";
+  echo $beforeAllPanes;
+  echo '<table style="width=100%">';
+  $showBorders=false;
+  if ($nbColMax==1) {
+    echo '<tr><td style="width:100%;vertical-align: top;'.(($showBorders)?'border:1px solid red':'').'">'.$leftPane.'</td></tr>';
+    if ($rightPane) { echo '<tr><td style="width:100%;vertical-align: top;'.(($showBorders)?'border:1px solid green':'').'">'.$rightPane.'</td></tr>'; }
+    if ($bottomPane) { echo '<tr><td style="width:100%;vertical-align: top;'.(($showBorders)?'border:1px solid yellow':'').'">'.$bottomPane.'</td></tr>'; }
+    if ($extraPane) { echo '<tr><td style="width:100%;vertical-align: top;'.(($showBorders)?'border:1px solid blue':'').'">'.$extraPane.'</td></tr>'; }
+  } else if ($nbColMax==2) {
+    echo '<tr><td style="width:50%;vertical-align: top;'.(($showBorders)?'border:1px solid red':'').'">'.$leftPane.'</td>'
+            .'<td style="width:50%;vertical-align: top;'.(($showBorders)?'border:1px solid green':'').'">'.$rightPane.'</td>'
+        .'</tr>';
+    echo '<tr><td colspan="2" style="width:100%;vertical-align: top;'.(($showBorders)?'border:1px solid yellow':'').'">'.$bottomPane.'</td></tr>';
+    if ($extraPane) { echo '<tr><td colspan="2" style="vertical-align: top;'.(($showBorders)?'border:1px solid blue':'').'">'.$extraPane.'</td></tr>'; }
+  } else if ($nbColMax==3) {
+    echo '<tr style="height:10px">'
+           .'<td style="width:33%;vertical-align: top;'.(($showBorders)?'border:1px solid red':'').'">'.$leftPane.'</td>'
+           .'<td style="width:33%;vertical-align: top;'.(($showBorders)?'border:1px solid green':'').'">'.$rightPane.'</td>'
+           .'<td rowspan="2" style="width:34%;vertical-align: top;'.(($showBorders)?'border:1px solid blue':'').'">'.$extraPane.'</td>'
+        .'</tr>';
+    echo '<tr><td colspan="2" style="width:66%;vertical-align: top;'.(($showBorders)?'border:1px solid yellow':'').'">'.$bottomPane.'</td></tr>';
+  } else {
+    traceLog("ERROR at finalizeBuffering() : '$nbColMax' is not an expected max column count");
+  }
+  echo '</table>';
 }
 
 function drawJobDefinitionFromObject($obj, $refresh=false) {

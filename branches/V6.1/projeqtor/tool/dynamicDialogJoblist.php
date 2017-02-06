@@ -175,13 +175,13 @@ $status = array('done' => '#a5eda5',
     <?php } else { ?>
         <table style="width:<?php echo $printWidthDialog; ?>;">
             <tr><td>&nbsp;</td></tr>
-            <tr><td class="section"><?php echo i18n("Joblist"); ?></td></tr>
+            <tr><td class="section"><?php echo i18n("sectionJoblist"); ?></td></tr>
             <tr style="height:0.5em;font-size:80%"><td>&nbsp;</td></tr>
         </table>
     <?php } ?>
     <table style="width:<?php echo $printWidthDialog; ?>;">
         <tr>
-            <td class="notedata" style="width:<?php echo $printWidthDialog; ?>">
+            <td class="notedata" style="width:600px">
                 <table style="width:<?php echo $printWidthDialog; ?>; border: 1px solid #AAA" >
                     <?php
                     foreach ($defLines as $line) {
@@ -217,7 +217,7 @@ $status = array('done' => '#a5eda5',
                               echo 'width: 18px; height: 18px;border-radius:9px; text-align: center">&nbsp;</div>';
                               ?>
                             </td>
-                            <td class="notedata" title="<?php echo ($print) ? '' : $line->title; ?>" >
+                            <td style="width:<?php echo ($print) ? '500px' : '300px;min-width:300px'; ?>;" title="<?php echo ($print) ? '' : $line->title; ?>" >
                                 <?php
                                     $checkName = "job_" . $line->id."_check";
                                     if ($print) {
@@ -244,7 +244,7 @@ $status = array('done' => '#a5eda5',
                             <?php if (!$print) { ?>
                                 <td >&nbsp;</td>
                             <?php } ?>
-                            <td style="white-space:nowrap;text-align:right; width:<?php echo ($print) ? '0px' : '100px;min-width:100px'; ?>; color: #A0A0A0;white-space:nowrap">
+                            <td style="text-align:right; width:<?php echo ($print) ? '15px' : '100px;min-width:100px'; ?>; color: #A0A0A0;white-space:nowrap">
                                 <?php
                                 //if ($lineVal->checkTime and ! $print) {
                                   if (!$print) {

@@ -2960,3 +2960,12 @@ table.dijitCalendarContainer {
   cursor: auto;
   font-weight: bold;
 }
+
+/* Fix for multi select checkboxed on report parameters */
+.dojoxMultiSelectItem {
+ width: 200px;
+}
+
+.dojoxCheckedMultiSelect .dojoxCheckedMultiSelectWrapper {
+ height: inherit!important;
+}

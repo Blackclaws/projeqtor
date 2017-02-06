@@ -31,7 +31,6 @@ require_once('_securityCheck.php');
 class TicketMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  // List of fields that will be exposed in general user interface
   public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
@@ -49,7 +48,6 @@ class TicketMain extends SqlElement {
   public $idContext1;
   public $idContext2;
   public $idContext3;
-  
   public $description;
   public $_sec_treatment;
   public $idActivity;
@@ -135,9 +133,7 @@ class TicketMain extends SqlElement {
                                                    'idTicket'=>'duplicateTicket',
                                                    'idContext1'=>'idContext');
   
-  //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
-  //private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
     
    /** ==========================================================================
    * Constructor

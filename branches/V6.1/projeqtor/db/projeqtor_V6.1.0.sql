@@ -73,7 +73,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1,162,1);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `hasCsv`, `sortOrder`, `idle`, `orientation`) VALUES 
-(63, 'reportMacroJoblist', 1, 'joblist.php', 1, 195, 0, 'L');
+(63, 'reportMacroJoblist', 4, 'joblist.php', 1, 460, 0, 'L');
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
 (913, 63, 'idActivity', 'activityList', 20, 0, NULL, 0),
 (912, 63, 'idProject', 'projectList', 10, 0, 'currentProject', 0);
@@ -81,6 +81,14 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (1,63,1),
 (2,63,1),
 (3,63,1);
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
+(1, 'joblist', 1),
+(2, 'joblist', 1),
+(3, 'joblist', 1),
+(4, 'joblist', 1),
+(6, 'joblist', 2),
+(7, 'joblist', 2),
+(5, 'joblist', 2); 
 
 -- PAPJUL ADDITION FOR JOBS (END)
 -- ==============================
