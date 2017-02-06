@@ -50,7 +50,9 @@ class PaymentMain extends SqlElement {
   public $idRecipient;
   public $billAmount;
   public $idle;
-  
+  public $_Attachment=array();
+  public $_Note=array();
+  public $_nbColMax=3;
  
   
   // Define the layout that will be used for lists

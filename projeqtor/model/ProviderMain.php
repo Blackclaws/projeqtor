@@ -53,6 +53,7 @@ class ProviderMain extends SqlElement {
   public $_spe_contacts;
   public $_Attachment=array();
   public $_Note=array();
+  public $_nbColMax=3;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>

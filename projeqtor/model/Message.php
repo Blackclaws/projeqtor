@@ -35,14 +35,13 @@ class Message extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idMessageType;
+  public $description;
+  public $_sec_treatment;
   public $idProfile;
   public $idProject;
   public $idAffectable;
   public $showOnLogin;
   public $idle;
-  public $_sec_Message;
-  public $description;
-  
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="40%">${title}</th>

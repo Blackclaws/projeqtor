@@ -94,14 +94,14 @@ if ($format=='print') {
 }
 
 function getSubItems($item,$result){
-  if (get_class($item)=='ProductVersion') {
+  /*if (get_class($item)=='ProductVersion') {
     $crit=array('idProductVersion'=>$item->id);
     $lst=$item->getSqlElementsFromCriteria($crit);
     foreach ($lst as $prd) {
       $result[$prd->id]=array('class'=>'Product','id'=>$prd->id,'name'=>$prd->name);
       $result=getSubItems($prd,$result);
     }
-  }
+  }*/
   $ps=new ProductVersionStructure();
   $psList=$ps->getSqlElementsFromCriteria(array('idProductVersion'=>$item->id));
   foreach ($psList as $ps) {

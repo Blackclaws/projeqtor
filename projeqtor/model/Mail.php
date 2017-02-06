@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Mail extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_sec_MailDescription;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idUser;
   public $mailDateTime;

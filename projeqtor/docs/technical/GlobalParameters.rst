@@ -3,7 +3,7 @@
 .. title:: GlobalParameters
 
 Paramètres Globaux
--------------------------
+------------------
 .. warning:: L'accès à l'écran des paramètres globaux doit être restreint aux administrateurs.
              Les paramètres globaux doivent être enregistrés avant de quitter l'écran
 
@@ -12,6 +12,9 @@ Paramètres Globaux
 .. figure:: /images/GUI/globalparameters.png
 
 .. figure:: /images/GUI/ldap.png
+   Pour accéder à un serveur AD (Microsoft Active Directory), le paramétrage est un peu spécifique et surtout différent du paramétrage standard LDAP.
+   user ldap : ne pas ajouter la chiane de connexion LDAP, seul le nom d'utilisateur, avec éventuellement le nom de domaine Domaien\User
+   search string : sAMAccountName=%username%  
 
 .. figure:: /images/GUI/filedirectory.png
 

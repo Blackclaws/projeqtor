@@ -893,7 +893,7 @@ function getTheme() {
  *          main body of the message
  * @return unknown_type
  */
-function sendMail($to, $subject, $messageBody, $object = null, $headers = null, $sender = null, $attachmentsArray = null, $boundary = null) {
+function sendMail($to, $subject, $messageBody, $object = null, $headers = null, $sender = null, $attachmentsArray = null, $boundary = null, $references = null) {
   // Code that caals sendMail :
   // + SqlElement::sendMailIfMailable() : sendMail($dest, $title, $message, $this)
   // + Cron::checkImport() : sendMail($to, $title, $message, null, null, null, $attachmentsArray, $boundary); !!! with attachments
@@ -909,12 +909,12 @@ function sendMail($to, $subject, $messageBody, $object = null, $headers = null, 
   $paramMailerType = strtolower ( Parameter::getGlobalParameter ( 'paramMailerType' ) );
   if (! isset ( $paramMailerType ) or $paramMailerType == '' or $paramMailerType == 'phpmailer') {
     // Cute method using PHPMailer : should work on all situations / First implementation on V4.0
-    return sendMail_phpmailer ( $to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray );
+    return sendMail_phpmailer ( $to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray, $references );
   } else {
     $messageBody = wordwrap ( $messageBody, 70 );
     if ((isset ( $paramMailerType ) and $paramMailerType == 'mail') or ! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
       // Standard method using php mail function : do not take authentication into account
-      return sendMail_mail ( $to, $subject, $messageBody, $object, $headers, $sender, $boundary );
+      return sendMail_mail ( $to, $subject, $messageBody, $object, $headers, $sender, $boundary, $references );
     } else {
       // Authentified method using sockets : cannot send vCalendar or mails with attachments
       return sendMail_socket ( $to, $subject, $messageBody, $object, $headers, $sender, $boundary );
@@ -922,7 +922,7 @@ function sendMail($to, $subject, $messageBody, $object = null, $headers = null, 
   }
 }
 
-function sendMail_phpmailer($to, $title, $message, $object = null, $headers = null, $sender = null, $attachmentsArray = null) {
+function sendMail_phpmailer($to, $title, $message, $object = null, $headers = null, $sender = null, $attachmentsArray = null, $references = null) {
   scriptLog ( 'sendMail_phpmailer' );
   global $logLevel;
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
@@ -1014,6 +1014,9 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   }else{
   $phpmailer->Body = $message; //
   }
+  if ($references) {
+    $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
+  } 
   $phpmailer->CharSet = "UTF-8";
   if ($attachmentsArray) { // attachments
     if (! is_array ( $attachmentsArray )) {
@@ -1266,7 +1269,7 @@ function quit($sock) {
   }
 }
 
-function sendMail_mail($to, $title, $message, $object = null, $headers = null, $sender = null, $boundary = null) {
+function sendMail_mail($to, $title, $message, $object = null, $headers = null, $sender = null, $boundary = null, $references = null) {
   scriptLog ( 'sendMail_mail' );
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
@@ -1311,7 +1314,10 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
     $headers .= 'From: ' . (($sender) ? $sender : $paramMailSender) . $eol;
     $headers .= 'Reply-To: ' . (($sender) ? $sender : $paramMailReplyTo) . $eol;
     $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;
-    $headers .= 'X-Mailer: PHP/' . phpversion ();
+    $headers .= 'X-Mailer: PHP/' . phpversion () . $eol;
+  }
+  if ($references) {
+    $headers .= 'References: <' . $references . '.' . $paramMailSender . '>' . $eol;
   }
   if (isset ( $paramMailSmtpServer ) and $paramMailSmtpServer) {
     ini_set ( 'SMTP', $paramMailSmtpServer );

@@ -234,6 +234,11 @@ class SqlList {
         if ($val and $val!='*') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idProject') . ' in ' . getVisibleProjectsList(true,$val);
         }
+      } else if (is_array($val)) {
+        foreach ($val as $k => $v) {
+          $val[$k] = Sql::str($v);
+        }
+        $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . ' IN (' . implode(',', $val) . ')';
       } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";

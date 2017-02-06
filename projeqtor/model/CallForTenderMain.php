@@ -61,7 +61,7 @@ class CallForTenderMain extends SqlElement {
   public $_lib_cancelled;
   public $result;
   
-  public $_sec_productComponent;
+  public $_sec_productComponent_right;
   public $idProduct;
   public $idComponent;
   public $idProductVersion;

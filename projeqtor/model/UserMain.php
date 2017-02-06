@@ -64,6 +64,7 @@ class UserMain extends SqlElement {
   public $crypto;
   public $cookieHash;
   public $passwordChangeDate;
+  public $_nbColMax=3;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>

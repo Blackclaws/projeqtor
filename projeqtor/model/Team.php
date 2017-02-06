@@ -40,6 +40,9 @@ class Team extends SqlElement {
   public $_sec_members;
   public $_spe_members;
   public $_spe_affectMembers;
+  public $_Attachment=array();
+  public $_Note=array();
+  public $_nbColMax=3;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>

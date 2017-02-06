@@ -58,16 +58,16 @@ class ActivityMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   public $result;
-  public $_sec_productComponent;
-  public $idProduct;
-  public $idComponent;
-  public $idTargetProductVersion;
-  public $idTargetComponentVersion;
   public $_sec_Assignment;
   public $_Assignment=array();
   public $_sec_Progress;
   public $ActivityPlanningElement; // is an object
   public $isPlanningActivity;
+  public $_sec_productComponent;
+  public $idProduct;
+  public $idComponent;
+  public $idTargetProductVersion;
+  public $idTargetComponentVersion;
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
