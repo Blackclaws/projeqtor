@@ -2,7 +2,6 @@
 // =======================================================================================
 // PARAMETERS
 // =======================================================================================
-$paramReorg=true;
 // ========== Database configuration =====================================================
 // --- MySql Degfault
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
@@ -33,5 +32,5 @@ $i18nNocache=true;                 // Will not cache i18n table, so that new val
 $debugIEcompatibility=false;       // If set to true, will allow compatibility mode (mode IE9 on IE11), otherwise, edge mode is forced
 $pdfPlanningBeta='true';           // Force new PDF Export planning with all browsers (by default it only works on Chrome)
 $scaytAutoStartup='YES';
-$paramReorg=true;
+//$paramReorg=false;
 //======= END

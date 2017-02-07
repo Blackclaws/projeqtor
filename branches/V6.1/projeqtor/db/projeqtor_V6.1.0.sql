@@ -157,7 +157,7 @@ CREATE TABLE `${prefix}kpithreshold` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `kpithresholdKpiDefinition` ON `${prefix}kpithreshold` (`idKpiDefinition`);
-INSERT INTO `${prefix}kpiThreshold` (`id`, `name`, `idKpiDefinition`, `thresholdValue`, `thresholdColor`) VALUES 
+INSERT INTO `${prefix}kpithreshold` (`id`, `name`, `idKpiDefinition`, `thresholdValue`, `thresholdColor`) VALUES 
 (1, 'good', 1, 0, '#98fb98'),
 (2, 'acceptable', 1, 1.2, '#f4a460'),
 (3, 'not acceptable', 1, 1.5, '#f08080'),
@@ -239,7 +239,7 @@ CREATE INDEX `deliverableType` ON `${prefix}deliverable` (`idDeliverableType`);
 CREATE INDEX `deliverableStatus` ON `${prefix}deliverable` (`idDeliverableStatus`);
 CREATE INDEX `deliverableProject` ON `${prefix}deliverable` (`idProject`);
 
-CREATE TABLE `${prefix}deliverableWeight` (
+CREATE TABLE `${prefix}deliverableweight` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
@@ -249,7 +249,7 @@ CREATE TABLE `${prefix}deliverableWeight` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `${prefix}deliverableWeight` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
+INSERT INTO `${prefix}deliverableweight` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
 (1, 'Deliverable', 'low', 0, 10, '#d3d3d3', '0'),
 (2, 'Deliverable', 'medium', 0, 20, '#d3d3d3', '0'),
 (3, 'Deliverable', 'high', 1, 30, '#ffc0cb', '0'),
@@ -257,7 +257,7 @@ INSERT INTO `${prefix}deliverableWeight` (`id`, `scope`, `name`, `value`, `sortO
 (5, 'Incoming', 'medium', 0, 20, '#d3d3d3', '0'),
 (6, 'Incoming', 'high', 1, 30, '#ffc0cb', '0');
 
-CREATE TABLE `${prefix}deliverableStatus` (
+CREATE TABLE `${prefix}deliverablestatus` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
@@ -267,7 +267,7 @@ CREATE TABLE `${prefix}deliverableStatus` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `${prefix}deliverableStatus` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
+INSERT INTO `${prefix}deliverablestatus` (`id`, `scope`, `name`, `value`, `sortOrder`, `color`, `idle`) VALUES 
 (1, 'Deliverable', 'not done', 0, 10, '#ff0000', '0'),
 (2, 'Deliverable', 'delivery refused (major reservations)', 1, 20, '#ff8c00', '0'),
 (3, 'Deliverable', 'accepted with minor reservations', 2, 30, '#ffff00', '0'),
