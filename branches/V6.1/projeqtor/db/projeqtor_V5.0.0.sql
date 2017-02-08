@@ -169,9 +169,9 @@ UPDATE `${prefix}document` set idUser=idAuthor;
 
 UPDATE `${prefix}history` set refTYpe='Attachment' where refType='Attachement';
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
-(167,38,'showDoneVersions','boolean',850,0,null),
-(168,39,'showDoneVersions','boolean',850,0,null);
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
+(38,'showDoneVersions','boolean',850,0,null),
+(39,'showDoneVersions','boolean',850,0,null);
 
 ALTER TABLE `${prefix}assignment` ADD `plannedStartFraction` DECIMAL(6,5) default 0,
 ADD `plannedEndFraction` DECIMAL(6,5) default 1;
