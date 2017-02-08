@@ -74,9 +74,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `hasCsv`, `sortOrder`, `idle`, `orientation`) VALUES 
 (63, 'reportMacroJoblist', 4, 'joblist.php', 1, 460, 0, 'L');
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
-(913, 63, 'idActivity', 'activityList', 20, 0, NULL, 0),
-(912, 63, 'idProject', 'projectList', 10, 0, 'currentProject', 0);
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
+(63, 'idActivity', 'activityList', 20, 0, NULL, 0),
+(63, 'idProject', 'projectList', 10, 0, 'currentProject', 0);
 INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
 (1,63,1),
 (2,63,1),
@@ -236,7 +236,7 @@ CREATE TABLE `${prefix}deliverable` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `deliverableType` ON `${prefix}deliverable` (`idDeliverableType`);
-CREATE INDEX `deliverableStatus` ON `${prefix}deliverable` (`idDeliverableStatus`);
+CREATE INDEX `deliverableStatusIdx` ON `${prefix}deliverable` (`idDeliverableStatus`);
 CREATE INDEX `deliverableProject` ON `${prefix}deliverable` (`idProject`);
 
 CREATE TABLE `${prefix}deliverableweight` (
@@ -356,18 +356,6 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (70, 'reportKpiDeliverableOrganization', 11, 'kpiDeliverable.php?scope=Organization', 1135, 'P'),
 (71, 'reportKpiIncomingProject', 11, 'kpiDeliverable.php?class=Incoming&scope=Project', 1140, 'P'),
 (72, 'reportKpiIncomingOrganization', 11, 'kpiDeliverable.php?class=Incoming&scope=Organization', 1145, 'P');
-
---INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
---(64, 'idProject', 'projectList', 10, 'currentProject'),
---(64, 'month', 'month', 20, null),
---(64, 'format', 'periodScaleYear', 30, 'month'),
---(64, 'showThreshold', 'boolean', 40, true),
---(65, 'idOrganization', 'organizationList', 10, 'currentOrganization'),
---(65, 'idProjectType', 'projectTypeList', 20, null),
---(65, 'month', 'month', 30, 'currentYear'),
---(65, 'format', 'periodScaleYear', 40, 'month'),
---(65, 'showThreshold', 'boolean', 50, true),
---(65, 'onlyFinished', 'boolean', 60, true);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (64, 'idProject', 'projectList', 10, 'currentProject'),

@@ -18,16 +18,16 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (55, 'reportWorkMonthlyResource', 1, 'work.php',180),
 (56, 'reportWorkYearlyResource', 1, 'work.php', 190);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`,`defaultValue`) VALUES 
-(158, 54, 'week', 'week', 30, 'currentWeek'),
-(159, 55, 'month', 'month', 30, 'currentMonth'),
-(160, 56, 'year', 'year', 30,  'currentYear'),
-(161,54,'idProject', 'projectList', 10, 'currentProject'),
-(162,55,'idProject', 'projectList', 10, 'currentProject'),
-(163,56,'idProject', 'projectList', 10, 'currentProject'),
-(164,54,'idResource', 'resourceList', 20, 'currentResource'),
-(165,55,'idResource', 'resourceList', 20, 'currentResource'),
-(166,56,'idResource', 'resourceList', 20, 'currentResource');
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`,`defaultValue`) VALUES 
+(54, 'week', 'week', 30, 'currentWeek'),
+(55, 'month', 'month', 30, 'currentMonth'),
+(56, 'year', 'year', 30,  'currentYear'),
+(54,'idProject', 'projectList', 10, 'currentProject'),
+(55,'idProject', 'projectList', 10, 'currentProject'),
+(56,'idProject', 'projectList', 10, 'currentProject'),
+(54,'idResource', 'resourceList', 20, 'currentResource'),
+(55,'idResource', 'resourceList', 20, 'currentResource'),
+(56,'idResource', 'resourceList', 20, 'currentResource');
 
 INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
 (1,54,1),
