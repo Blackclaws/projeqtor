@@ -53,7 +53,7 @@ $statusColorList=SqlList::getList('Status', 'color');
   ?>
 		    <tr style="height:20px;border:2px solid <?php echo $statusColorList[$idStatus];?>">
 		      
-			    <td style="width:50px">&nbsp;&nbsp;
+			    <td style="width:350px">&nbsp;&nbsp;
 			      <div dojoType="dijit.form.CheckBox" type="checkbox"
 						  name="dialogWorkflowParameterCheckStatusId_<?php echo $idStatus;?>" 
 						  id="dialogWorkflowParameterCheckStatusId_<?php echo $idStatus;?>"

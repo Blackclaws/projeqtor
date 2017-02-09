@@ -57,7 +57,7 @@ if ($line->id) {
 <input type="hidden" name="joblistDefinitionId" value="<?php echo $checkId;?>" />
 <table style="width: 100%;">
   <tr>
-    <td class="dialogLabel" ><label><?php echo i18n('colName');?> : </label></td>
+    <td class="dialogLabel" ><label style="width:200px"><?php echo i18n('colName');?> : </label></td>
     <td><input type="text" dojoType="dijit.form.TextBox"
       id="dialogJobDefinitionName"
       name="dialogJobDefinitionName"
@@ -77,7 +77,7 @@ if ($line->id) {
     </td>
   </tr>
   <tr>
-    <td class="dialogLabel" ><label><?php echo i18n('colSortOrder');?> : </label></td>
+    <td class="dialogLabel" ><label style="width:200px"><?php echo i18n('colSortOrder');?> : </label></td>
     <td><input type="text" dojoType="dijit.form.TextBox"
       id="dialogJobDefinitionSortOrder"
       name="dialogJobDefinitionSortOrder"
@@ -86,12 +86,12 @@ if ($line->id) {
     </td>
   </tr>
   <tr>
-    <td class="dialogLabel" ><label><?php echo i18n('colDaysBeforeWarning');?> : </label></td>
+    <td class="dialogLabel" ><label style="width:200px"><?php echo i18n('colDaysBeforeWarning');?> : </label></td>
     <td><input type="text" dojoType="dijit.form.TextBox"
       id="dialogJobDefinitionDaysBeforeWarning"
       name="dialogJobDefinitionDaysBeforeWarning"
       value="<?php echo $line->daysBeforeWarning;?>"
-      style="width: 30px;" maxlength="3" class="input" /> d
+      style="width: 30px;" maxlength="3" class="input" />&nbsp;<?php echo i18n("shortDay");?>
     </td>
   </tr>
  <tr><td colspan="2">&nbsp;</td></tr>
