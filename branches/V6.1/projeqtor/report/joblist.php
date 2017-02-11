@@ -66,21 +66,24 @@ if ($paramActivity != '') {
     $where .= " and idProject = " . $paramProject;
     $where .= " and idActivity IS NOT NULL";
 }
-$lstActivity = (new Activity())->getSqlElementsFromCriteria(null, false, $where, null);
+$lstAct = new Activity();
+$lstActivity =$lstAct->getSqlElementsFromCriteria(null, false, $where, null);
 if (checkNoData($lstActivity))
     exit;
 // Joblist definition
 $where = getAccesRestrictionClause('JoblistDefinition', false);
 $where .= "and nameChecklistable = 'Activity' ";
 $where .= "and idType = " . $lstActivity[0]->idActivityType;
-$joblist = (new JoblistDefinition())->getSqlElementsFromCriteria(null, false, $where, null);
+$joblistDef = new JoblistDefinition();
+$joblist = $joblistDef->getSqlElementsFromCriteria(null, false, $where, null);
 if (checkNoData($joblist))
     exit;
 // Job definition
 $where = getAccesRestrictionClause('JobDefinition', false);
 $where .= "and idJoblistDefinition = " . $joblist[0]->id;
 $orderBy = " sortOrder ASC";
-$jobDefinitions = (new JobDefinition())->getSqlElementsFromCriteria(null, false, $where, $orderBy);
+$newjobDef = new JobDefinition();
+$jobDefinitions = $newjobDef->getSqlElementsFromCriteria(null, false, $where, $orderBy);
 if (checkNoData($jobDefinitions))
     exit;
 $aDefLines = array();
@@ -96,7 +99,8 @@ foreach ($jobDefinitions as $jobDef) {
 $where = getAccesRestrictionClause('Job', false);
 $where .= " and refType = 'Activity' ";
 $where .= " and idJoblistDefinition = " . $joblist[0]->id;
-$lstJobs = (new Job())->getSqlElementsFromCriteria(null, false, $where, null);
+$newJob = new Job();
+$lstJobs = $newJob ->getSqlElementsFromCriteria(null, false, $where, null);
 $result = array(); // Preparation of result lines
 foreach ($lstJobs as $oJob) {
     $result[$oJob->refId][$oJob->idJobDefinition] = $oJob;
