@@ -200,8 +200,8 @@ if ($month) {
   $period='year';
   $periodValue=$year;
 }
-
-$thresholds=(new KpiThreshold())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
+$newKpiThresh = new KpiThreshold();
+$thresholds= $newKpiThresh->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
 $maxKpiValue=0;
 $listKpiStatus=SqlList::getList($class.'Status','name',false);
 $listKpiStatusValue=SqlList::getList($class.'Status','value',true);
@@ -242,7 +242,8 @@ if ($idProject) {
 	    $query.= " and h.year='$year'";
 	  }
 	}
-  $itemList=(new $class())->getSqlElementsFromCriteria(null,false,$query,'plannedDate asc');
+	$newClass = new $class();
+  $itemList= $newClass->getSqlElementsFromCriteria(null,false,$query,'plannedDate asc');
   $itemListInClause='(0';
   $arrayHist=array('last'=>array());
   foreach ($itemList as $item) {
@@ -290,7 +291,8 @@ if ($idProject) {
   }
   // retreive history of status value (Deliverable or Incoming)
   $whereHist="refType='$class' and refId in $itemListInClause and ( (operation='update' and colName='id".$class."Status') or operation='insert' or operation='delete')";
-  $histList=(new History())->getSqlElementsFromCriteria(null,null,$whereHist, 'refId asc, operationDate desc');
+  $newHistory = new History();
+  $histList= $newHistory->getSqlElementsFromCriteria(null,null,$whereHist, 'refId asc, operationDate desc');
   
   foreach ($histList as $hist) {
     $key=$hist->refId;
@@ -377,7 +379,8 @@ if ($idProject) {
     foreach ($listKpiStatus as $idK=>$nameK) {
       echo '<td class="reportTableDataSpanned" style="width:'.$pctWidth.'%">' . $cptArray[$idK] . '</td>';
     }
-    $lstKpiVal=(new KpiHistory())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$idProject,$scaleHist=>str_replace('-','',$p)),false,null,'kpiDate desc');
+    $newKpiHist = new KpiHistory();
+    $lstKpiVal= $newKpiHist->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id,'refType'=>'Project','refId'=>$idProject,$scaleHist=>str_replace('-','',$p)),false,null,'kpiDate desc');
     $kpiDispValue='';
     $color='#ffffff';
     if (count($lstKpiVal)) {
@@ -437,7 +440,8 @@ if ($idProject) {
       $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
     }*/
     $where="idKpiDefinition=$kpi->id and refType='Project' and refId=$idProject and $period<=$periodValue";
-    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
+    $newKpiHis = new KpiHistory();
+    $lstKpi=$newKpiHis->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
     $kpiDispValue='';
     $dispValue='';
     $color='#ffffff';
@@ -491,7 +495,8 @@ if ($idProject) {
       $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
     } else {
       $critKpi[$period]=$periodValue;
-      $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
+      $newHistKpi = new KpiHistory();
+      $lstKpi=$newHistKpi->getSqlElementsFromCriteria($critKpi,false,null,'kpiDate desc');
       $kpiValue=reset($lstKpi);
     }
     if (!$kpiValue) $kpiValue=new KpiValue();
