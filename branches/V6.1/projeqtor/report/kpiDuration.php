@@ -181,8 +181,8 @@ if ($month) {
   $periodValue=$year;
 }
 
-
-$thresholds=(new KpiThreshold())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
+$KpiTreshold = new KpiThreshold();
+$thresholds= $KpiTreshold->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
 echo '<table width="90%" align="center">';
 echo '<tr>';
 echo '<td class="reportTableHeader" style="width:20%">' . i18n('Project') . '</td>';
@@ -217,10 +217,12 @@ foreach($listProjects as $prj) {
     $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
   } else {
     $critKpi[$period]=$periodValue;
-    $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
+    $newKpiHistory = new KpiHistory();
+    $lstKpi= $newKpiHistory->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
     if (count($lstKpi)==0) {
     	$where="idKpiDefinition=$kpi->id and refType='Project' and refId=$prj->id and $period<=$periodValue";
-    	$lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
+    	$newKpiHist = new KpiHistory();
+    	$lstKpi= $newKpiHist->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
     }
     $kpiValue=reset($lstKpi);
   }

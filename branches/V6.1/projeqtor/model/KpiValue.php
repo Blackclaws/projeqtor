@@ -280,7 +280,8 @@ class KpiValue extends SqlElement {
     traceLog("Regeneration of Kpi history for Kpi = ".(($kpiCode)?$kpiCode:'all'));
     
     projeqtor_set_time_limit(0);
-    $phList=(new ProjectHistory())->getSqlElementsFromCriteria(null,false,null, "idProject asc, day asc");
+    $ph=new ProjectHistory();
+    $phList=$ph->getSqlElementsFromCriteria(null,false,null, "idProject asc, day asc");
     $proj=new Project();
     $cpt=0;
     Sql::beginTransaction();

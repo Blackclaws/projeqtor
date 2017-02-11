@@ -100,8 +100,8 @@ if ($month) {
   $period='year';
   $periodValue=$year;
 }
-
-$thresholds=(new KpiThreshold())->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
+$newTreshOld = new KpiThreshold();
+$thresholds= $newTreshOld->getSqlElementsFromCriteria(array('idKpiDefinition'=>$kpi->id),false,null,'thresholdValue desc');
 echo '<table width="90%" align="center">';
 echo '<tr>';
 echo '<td class="reportTableHeader" rowspan="2" style="width:20%">' . i18n('Project') . '</td>';
@@ -124,7 +124,8 @@ foreach($listProjects as $prj) {
   $arrayProj[$prj->id]=$prj->name;
   if (! array_key_exists($prj->id, $visibleProjects)) continue; // Will avoid to display projects not visible to user
   $cptProjectsDisplayed++;
-  $lstTerms=(new Term() )->getSqlElementsFromCriteria(array('idProject'=>$prj->id));
+  $newTerm  = new Term();
+  $lstTerms= $newTerm->getSqlElementsFromCriteria(array('idProject'=>$prj->id));
   if (count($lstTerms)==0) $lstTerms[]=new Term();
   $nbTerms=count($lstTerms);
   echo '<tr>';
@@ -150,10 +151,12 @@ foreach($listProjects as $prj) {
         $kpiValue=SqlElement::getSingleSqlElementFromCriteria('KpiValue', $critKpi);
       } else {
         $critKpi[$period]=$periodValue;
-        $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
+        $newKpiHistory = new KpiHistory();
+        $lstKpi= $newKpiHistory->getSqlElementsFromCriteria($critKpi,false,null,'kpiValue desc');
         if (count($lstKpi)==0) {
           $where="idKpiDefinition=$kpi->id and refType='Project' and refId=$prj->id and $period<=$periodValue";
-          $lstKpi=(new KpiHistory())->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
+          $newKpiHist = new KpiHistory();
+          $lstKpi= $newKpiHist->getSqlElementsFromCriteria(null,false,$where,'kpiDate desc');
         }
         $kpiValue=reset($lstKpi);
       }
