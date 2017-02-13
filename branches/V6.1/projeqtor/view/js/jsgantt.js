@@ -78,7 +78,7 @@ var planningFieldsDescription=new Array(
     {name:"LeftCost",       show:false,  order:14, width:100, showSpecif:true},
     {name:"PlannedCost",    show:false,  order:15, width:100, showSpecif:true},
     {name:"Priority",       show:false,  order:16, width:100, showSpecif:true},
-    {name:"PlanningMode",   show:false,  order:17, width:100, showSpecif:true},
+    {name:"IdPlanningMode",   show:false,  order:17, width:100, showSpecif:true},
     {name:"Progress",       show:false,  order:18, width:100, showSpecif:true},
     {name:"IdStatus",       show:false,  order:19, width:100, showSpecif:true},
     {name:"Type",         show:false,  order:20, width:100}
@@ -210,7 +210,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
     else if (pField=='LeftWork') return vLeftWork;
     else if (pField=='PlannedWork') return vPlannedWork;
     else if (pField=='Priority') return vPriority;
-    else if (pField=='PlanningMode') return vPlanningMode;
+    else if (pField=='IdPlanningMode') return vPlanningMode;
     else if (pField=='IdStatus') return vStatus;
     else if (pField=='ValidatedCost') return vValidatedCost;
     else if (pField=='AssignedCost') return vAssignedCost;
@@ -1221,6 +1221,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + ' onmouseup=JSGantt.endLink('+i+'); '
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
               + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+              + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
             	+ ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>'
                 + ' </div>'; 
   	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
