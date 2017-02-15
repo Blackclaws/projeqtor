@@ -237,6 +237,9 @@ foreach ($arrDates as $date => $period) {
   if (isset($tablePlanned[$date])) {
     $sumPlanned+=$tablePlanned[$date];
   }
+  if (isset($tableReal[$date]) and $date>$today) {
+  	$sumPlanned+=$tableReal[$date];
+  }
   if (isset($tableBaseline[$date])) {
     $sumBaseline+=$tableBaseline[$date];
   }
