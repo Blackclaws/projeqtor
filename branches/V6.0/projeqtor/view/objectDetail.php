@@ -184,6 +184,7 @@ if (array_key_exists('destinationWidth', $_REQUEST)) {
 if ($print) {
   $displayWidth=$printWidth . 'px'; // must match iFrame size (see main.php)
 }
+$colWidth=intval($displayWidth); // Initialized to be sure...
 
 if ($print) {
   echo '<br/>';
