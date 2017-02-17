@@ -80,7 +80,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $today=date('Y-m-d');
     $where="idProject in " . $in; 
     $where.=" and idle=0";
-    $where.=" and (startDate is null or startDate<='$today')";
+    //$where.=" and (startDate is null or startDate<='$today')";
     $where.=" and (endDate is null or endDate>='$today')";
     $aff=new Affectation();
     $list=$aff->getSqlElementsFromCriteria(null,null, $where);
