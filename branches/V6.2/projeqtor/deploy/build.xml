@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<project name="ProjeQtOr V6.1" default="buildFull">
+
+  <property name="drive"       value="D:" />
+  <property name="version"       value="V6.1.1" />
+  <property name="projName"       value="projeqtor" />
+  <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
+  <property name="deploy.dir"    value="${setup.dir}/${projName}" />
+  <property name="src.dir"       value="${drive}/www/projeqtorV6.1" />
+  
+  <target name="clean">
+     <delete dir="${deploy.dir}"/>
+     <delete file="${setup.dir}/projeqtor${version}.zip"/>
+  </target>
+  
+  <target name="copyDb">
+     <copy todir="${deploy.dir}/db">
+       <fileset dir="${src.dir}/db"/>
+     </copy>
+  </target>
+  
+  <target name="copyExternal">
+     <copy todir="${deploy.dir}/external/dijit">
+       <fileset dir="${src.dir}/external/dijit"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/dojo">
+       <fileset dir="${src.dir}/external/dojo"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/dojox">
+       <fileset dir="${src.dir}/external/dojox"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/pChart">
+       <fileset dir="${src.dir}/external/pChart"/>
+     </copy>
+  	 <copy todir="${deploy.dir}/external/pChart2">
+  	   <fileset dir="${src.dir}/external/pChart2"/>
+  	 </copy>
+     <copy todir="${deploy.dir}/external/html2pdf">
+       <fileset dir="${src.dir}/external/html2pdf">
+         <exclude name="**/exemples/"/>
+         <exclude name="**/_tcpdf/examples/"/>
+         <exclude name="**/_tcpdf/cache/*.*"/>
+         <exclude name="**/_tcpdf/fonts/"/>
+      </fileset>
+      <fileset dir="${src.dir}/external/html2pdf">
+         <include name="**/_tcpdf/fonts/freesans.*"/>
+         <include name="**/_tcpdf/fonts/helvetica.*"/>
+      </fileset>
+     </copy>
+     <copy todir="${deploy.dir}/external/PHPMailer">
+       <fileset dir="${src.dir}/external/PHPMailer"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/XLSXReader">
+       <fileset dir="${src.dir}/external/XLSXReader"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/CryptoJS">
+       <fileset dir="${src.dir}/external/CryptoJS"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/phpAES">
+       <fileset dir="${src.dir}/external/phpAES"/>
+     </copy>
+     <copy todir="${deploy.dir}/external">
+       <fileset dir="${src.dir}/external">
+         <include name="../*.version"/>
+         <include name="../*.php"/>
+       </fileset>
+       <fileset dir="${src.dir}/external">
+         <include name="*.php"/>
+       </fileset>
+     </copy>
+     <copy todir="${deploy.dir}/external/diff">
+       <fileset dir="${src.dir}/external/diff"/>
+     </copy>
+  	 <copy todir="${deploy.dir}/external/ckeditor">
+  	   <fileset dir="${src.dir}/external/ckeditor"/>
+  	 </copy>
+  	<copy todir="${deploy.dir}/external/html2canvas">
+  	   <fileset dir="${src.dir}/external/html2canvas"/>
+  	</copy>
+  	<copy todir="${deploy.dir}/external/pdfmake">
+  	   <fileset dir="${src.dir}/external/pdfmake"/>
+  	</copy>
+  </target>
+  
+  <target name="copyFiles">
+    <mkdir dir="${deploy.dir}/files/attach"/>
+  	<mkdir dir="${deploy.dir}/files/attach/import"/>
+    <mkdir dir="${deploy.dir}/files/thumbs"/>
+    <mkdir dir="${deploy.dir}/files/config"/>
+  	<mkdir dir="${deploy.dir}/files/images"/>
+    <mkdir dir="${deploy.dir}/files/logs"/>
+    <mkdir dir="${deploy.dir}/files/report"/>
+    <mkdir dir="${deploy.dir}/files/cron"/>
+    <copy todir="${deploy.dir}/files/cron" file="${src.dir}/deploy/DEPLOY" />
+    <mkdir dir="${deploy.dir}/files/import"/>
+    <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
+  	<copy todir="${deploy.dir}/files/attach/import" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/logs" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/report" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/cron" file="${src.dir}/files/index.php" />
+  </target>
+  
+  <target name="copyManual">
+    <copy todir="${deploy.dir}/manual">
+      <fileset dir="${src.dir}/manual">
+        <exclude name="**/*.ppt"/>
+        <exclude name="**/*.xls"/>
+        <exclude name="**/slides/*.html"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copyDocsUser">
+      <copy todir="${deploy.dir}/docs/user/html_en">
+        <fileset dir="${src.dir}/docs/user/html_en">
+        </fileset>
+      </copy>
+  </target>
+  
+  <target name="copyModel">
+    <copy todir="${deploy.dir}/model">
+      <fileset dir="${src.dir}/model">
+        <include name="**" />
+        <exclude name="**/custom/*.*"/>
+      </fileset>
+    </copy>
+    <copy todir="${deploy.dir}/model/custom">
+      <fileset dir="${src.dir}/model/custom">
+         <include name="**/_securityCheck.php"/>
+      </fileset>
+    </copy>
+  </target>
+	
+	<target name="copyPlugin">
+	    <copy todir="${deploy.dir}/plugin">
+	      <fileset dir="${src.dir}/plugin">
+	        <include name="*.*" />
+	      	<exclude name="*.zip" />
+	      </fileset>
+	    </copy>
+	    <copy todir="${deploy.dir}/plugin/nls">
+	      <fileset dir="${src.dir}/plugin/nls">
+	         <include name="lang.js"/>
+	      </fileset>
+	    </copy>
+	  </target>
+
+  <target name="copyApi">
+      <copy todir="${deploy.dir}/api">
+        <fileset dir="${src.dir}/api">
+        	<include name="*.*" />
+        	<exclude name=".htpasswd" />
+        </fileset>
+      </copy>
+    </target>
+  
+  <target name="copyReport">
+    <copy todir="${deploy.dir}/report">
+      <fileset dir="${src.dir}/report">
+        <exclude name="**/object/*.*"/>
+        <exclude name="projectFlashReport.php"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copyTool">
+    <copy todir="${deploy.dir}/tool">
+      <fileset dir="${src.dir}/tool">
+        <exclude name="**/i18n/nls/lang.xls"/>
+        <exclude name="**/parametersLocation.php"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copyView">
+    <copy todir="${deploy.dir}/view">
+      <fileset dir="${src.dir}/view"/>
+    </copy>
+  </target>
+
+  <target name="copyTop">
+    <copy todir="${deploy.dir}" file="${src.dir}/index.php" />
+    <copy todir="${deploy.dir}" file="${src.dir}/deploy/readme.txt" />
+    <copy todir="${deploy.dir}" file="${src.dir}/deploy/license.txt" />
+  </target>
+  
+  <target name="copyMisc">
+    <copy todir="${setup.dir}" file="${src.dir}/tool/i18n/nls/lang.xls" />
+    <copy todir="${setup.dir}" file="${src.dir}/manual/ProjeQtOr.ppt" />
+  </target>
+  
+  <target name="zipVersion">
+    <zip destfile="${setup.dir}/${projName}${version}.zip" update="true">
+      <zipfileset dir="${deploy.dir}" prefix="${projName}"/>
+    </zip>
+  </target>
+  
+  <target name="buildFull">
+    <antcall target="clean"/>
+    <antcall target="_sphinxBuildUserManual_HTML_windows"/>
+    <antcall target="copyDb"/>
+    <antcall target="copyExternal"/>
+    <antcall target="copyFiles"/>
+    <antcall target="copyDocsUser"/>
+    <antcall target="copyModel"/>
+    <antcall target="copyPlugin"/>
+    <antcall target="copyReport"/>
+    <antcall target="copyTool"/>
+    <antcall target="copyView"/>
+    <antcall target="copyTop"/>
+    <antcall target="copyMisc"/>
+    <antcall target="copyApi"/>
+    <antcall target="zipVersion"/>                  
+  </target>
+  
+  <target name="buildQuick">
+    <antcall target="copyDb"/>
+    <antcall target="copyFiles"/>
+    <antcall target="copyDocsUser"/>
+    <antcall target="copyModel"/>
+  	<antcall target="copyPlugin"/>
+    <antcall target="copyReport"/>
+    <antcall target="copyTool"/>
+    <antcall target="copyView"/>
+    <antcall target="copyTop"/>
+    <antcall target="copyMisc"/>
+    <antcall target="copyApi"/>
+    <antcall target="zipVersion"/>                             
+  </target>
+
+<!-- ==============================================================================================
+     ==============================================================================================
+     ==== BUILD A NEW DOJO RELEASE                                                              ===
+     ==============================================================================================
+     ============================================================================================== --> 
+<!-- Full  : 56,2 Mo -->
+<!-- Build : 21,4 Mo -->
+<!-- Clean : 3,56 Mo -->
+  
+  <property name="dojo.version" value="1.11.3"/>
+  <property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-${dojo.version}-src"/>
+  <property name="build.name" value="external-${dojo.version}"/> 
+  <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
+  <property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
+
+  <target name="_dojoBuildFull">
+      <antcall target="_dojoPackaging"/>
+      <antcall target="_dojoPackagingMobile"/>
+      <antcall target="_dojoOptimisation"/>
+  </target>
+    
+  <target name="_dojoPackaging" depends="" description="Build du projet">        
+    <java classname="org.mozilla.javascript.tools.shell.Main"
+          dir="${buildscripts.dir}"
+          fork="true"
+          failonerror="true"
+          maxmemory="256m" >
+        <arg value="../../dojo/dojo.js"/>
+        <arg value="baseUrl=../../dojo"/>
+        <arg value="load=build"/>
+        <arg value="version=${dojo.version}"/>
+        <arg value="profileFile=../../../projeqtor.profile.js"/>
+        <arg value="action=release"/>
+        <arg value="releaseDir=../../../"/>
+        <arg value="releaseName=${build.name}" />
+        <arg value="optimize=shrinksafe"/>
+        <arg value="cssOptimize=comments.keepLines"/>
+      <classpath>
+        <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+        <pathelement location="${dojo.build.util.dir}\..\closureCompiler\compiler.jar"/>
+        <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>     
+    </java>
+  </target>
+  
+   <target name="_dojoPackagingMobile" depends="" description="Build du projet mobile">        
+      <java classname="org.mozilla.javascript.tools.shell.Main"
+            dir="${buildscripts.dir}"
+            fork="true"
+            failonerror="true"
+            maxmemory="512m" >
+          <arg value="../../dojo/dojo.js"/>
+          <arg value="baseUrl=../../dojo"/>
+          <arg value="load=build"/>
+          <arg value="version=${dojo.version}"/>
+          <arg value="profileFile=../../../projeqtorMobile.profile.js"/>
+          <arg value="action=release"/>
+          <arg value="releaseDir=../../../"/>
+          <arg value="releaseName=${build.name}" />
+          <arg value="optimize=shrinksafe"/>
+          <arg value="cssOptimize=comments.keepLines"/>
+        <classpath>
+          <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+          <pathelement location="${dojo.build.util.dir}\..\closureCompiler\compiler.jar"/>
+          <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
+          <pathelement path="${java.class.path}"/>
+        </classpath>     
+      </java>
+    </target>
+      
+  <target name="_dojoOptimisation" description="optimisation de la release">          
+    <delete>
+      <fileset dir="${release.dir}" includes="**/*.uncompressed.js"/>
+    </delete>
+    <delete includeemptydirs="true">
+      <fileset dir="${release.dir}/dojox" >
+        <include name="**/*"/>
+        <exclude name="*.js"/>
+        <exclude name="LICENSE/*.*"/>
+        <exclude name="data/*.js"/>
+        <exclude name="form/*.js"/>
+        <exclude name="form/nls/*.js"/>
+        <exclude name="form/nls/*/*.js"/>
+        <exclude name="form/uploader/*.js"/>
+        <exclude name="form/uploader/plugin/*.js"/>
+        <exclude name="grid/*.js"/>
+        <exclude name="mobile/*.*"/>
+        <exclude name="mobile/**/*"/>
+        <exclude name="fx/*.js"/>
+        <exclude name="image/*.js"/>
+      </fileset>
+    </delete>  
+  </target>
+
+  <!-- ==============================================================================================
+       ==============================================================================================
+       ==== BUILD MANUAL (SPHINX DOC)                                                              ===
+       ==============================================================================================
+       ============================================================================================== --> 
+  <target name="_sphinxBuildUserManual_HTML_windows">
+    <echo>Build HTML User Manual.</echo>
+      <exec dir="../docs/user" executable="cmd" >
+        <arg line="/c make.bat html"/>
+      </exec>
+  </target>
+  <target name="_sphinxBuildUserManual_PDF_windows">
+    <echo>Build PDF User Manual.</echo>
+      <exec dir="../docs/user" executable="cmd" >
+        <arg line="/c make.bat latexpdf"/>
+      </exec>
+  </target>
+	<target name="_sphinxBuildTechnicalManual_HTML_windows">
+	    <echo>Build HTML User Manual.</echo>
+	      <exec dir="../docs/technical" executable="cmd" >
+	        <arg line="/c make.bat html"/>
+	      </exec>
+	</target>
+	<target name="_sphinxBuildTechnicalManual_PDF_windows">
+	    <echo>Build HTML User Manual.</echo>
+	      <exec dir="../docs/technical" executable="cmd" >
+	        <arg line="/c make.bat latexpdf"/>
+	      </exec>
+	</target>
+  
+</project>

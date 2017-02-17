@@ -1,0 +1,46 @@
+< !DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf8">
+<title></title>
+</head>
+<body lang="fr-FR" dir="LTR">
+<p>../view/img/logoSmall.png</p>
+<p><br /></p>
+<p>Coordonnée de livraison :</p>
+<p>M. DUCHMOLL Charle-Antoine</p>
+<p>99 rue du pont à l'huile</p>
+<p>75001</p>
+<p>PARIS</p>
+</body>
+</html>< !DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf8">
+<title></title>
+</head>
+<body lang="fr-FR" dir="LTR">
+<p>../view/img/logoSmall.png</p>
+<p><br /></p>
+<p>Coordonnée de livraison :</p>
+<div style="font-weight:bold; color:#545381">M. DUCHMOLL Charle-Antoine</div>
+<p>99 rue du pont à l'huile</p>
+<p>75001</p>
+<p>PARIS</p>
+</body>
+</html>< !DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf8">
+<title></title>
+</head>
+<body lang="fr-FR" dir="LTR">
+<p>../view/img/logoSmall.png</p>
+<p><br /></p>
+<p>Coordonnée de livraison :</p>
+<p style="font-weight:bold; color:#545381">M. DUCHMOLL Charle-Antoine</p>
+<p>99 rue du pont à l'huile</p>
+<p>75001</p>
+<p>PARIS</p>
+</body>
+</html>
