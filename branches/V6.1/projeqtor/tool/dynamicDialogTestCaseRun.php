@@ -108,7 +108,7 @@ if (count($listTcr)) {
                       ondblclick="saveTestCaseRun();" >                    
                      <?php
                      foreach ($list as $lstObj) {
-                       echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
+                       //echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
                      }?>
                      <?php htmlDrawOptionForReference('idTestCase',1, null, true); ?>
                     </select>

@@ -278,7 +278,6 @@ class ProductOrComponent extends SqlElement {
     $result.='</tr></table>';
     //end
     //$result.='</tr></table>';
-    debugLog($result);
     return $result;
   }
 

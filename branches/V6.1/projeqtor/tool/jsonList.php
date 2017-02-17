@@ -309,7 +309,7 @@
 	      $today=date('Y-m-d');
 	      $in=transformValueListIntoInClause($lstTopPrj);
 	      $where="idle=0 and idProject in " . $in; 
-	      $where.=" and (startDate is null or startDate<='$today')";
+	      //$where.=" and (startDate is null or startDate<='$today')";
 	      $where.=" and (endDate is null or endDate>='$today')";
 	      if (isset($_REQUEST['objectClass']) and $_REQUEST['objectClass']=='IndividualExpense') {
 	        if (securityGetAccessRight('menuIndividualExpense', 'read', null, getSessionUser() )=='OWN') {
