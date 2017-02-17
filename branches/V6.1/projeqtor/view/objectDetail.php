@@ -4099,14 +4099,6 @@ function endBuffering($prevSection,$included) {
 function finalizeBuffering() {
   global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax, $section, $beforeAllPanes;
   if (!$reorg) return;
-  /*debugLog("======================= LEFT ==========================");
-  debugLog($leftPane);
-  debugLog("======================= RIGHT ==========================");
-  debugLog($rightPane);
-  debugLog("======================= EXTRA ==========================");
-  debugLog($extraPane);
-  debugLog("======================= BOTTOM ==========================");
-  debugLog($bottomPane);*/
   if (!$leftPane and $rightPane) {
     $leftPane=$rightPane;
     $rightPane='';

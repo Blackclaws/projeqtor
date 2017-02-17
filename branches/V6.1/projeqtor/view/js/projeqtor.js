@@ -826,6 +826,8 @@ function loadContent(page, destination, formName, isResultMessage,
             console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
           } else {
+            enableWidget('saveButton');
+            enableWidget('undoButton');  
             console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             showError(i18n('errorXhrPostMessage'));
           }
