@@ -631,10 +631,14 @@
     						}
     					}
     				}
-    				if ($dataLength[$id]>4000 and !$exportHtml) {
+    				if ($dataLength[$id]>4000 ) {
     					if (isTextFieldHtmlFormatted($val)) {
-	    				  $text=new Html2Text($val);
-	    				  $val=$text->getText();
+	    				  if (!$exportHtml) {
+    							$text=new Html2Text($val);
+	    				  	$val=$text->getText();
+	    				  }
+    					} else {
+    				    $val=br2nl($val);
     					}
     				}
     				$val=encodeCSV($val);
