@@ -3940,7 +3940,7 @@ function drawChecklistFromObject($obj) {
   global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
   if (!$obj or !$obj->id) return; // Don't try and display checklist for non existant objects
   $displayChecklist='NO';
-  $crit="nameChecklistable='".get_class($obj)."'";
+  $crit="nameChecklistable='".get_class($obj)."' and idle=0";
   $type='id'.get_class($obj).'Type';
   if (property_exists($obj,$type) ) {
     $crit.=' and (idType is null ';
@@ -4192,7 +4192,7 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
 function drawJoblistFromObject($obj) {
   global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
   if (!$obj or !$obj->id) return; // Don't try and display joblist for non existing objects
-  $crit="nameChecklistable='".get_class($obj)."'";
+  $crit="nameChecklistable='".get_class($obj)."' and idle=0";
   $type='id'.get_class($obj).'Type';
   if (property_exists($obj,$type) ) {
     $crit.=' and (idType is null ';
