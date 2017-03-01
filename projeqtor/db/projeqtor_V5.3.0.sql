@@ -28,13 +28,12 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (58, 'reportPlanProjectDetailPerResource', 2, 'activityPlan.php', 257);
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (58, 'month', 'month', 20, 'currentMonth'),
-(175, 58, 'idResource', 'resourceList', 10, 'currentResource');
+(58, 'idResource', 'resourceList', 10, 'currentResource');
 INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
 (1,58,1),
 (2,58,1),
 (3,58,1),
 (4,58,1);
-
 
 CREATE TABLE `${prefix}menucustom` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
