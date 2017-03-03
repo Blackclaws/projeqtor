@@ -549,6 +549,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     }
     if (substr($col,0,5)=='_lib_') {
       $attFld=substr($col,5);
+      if ( substr($attFld,0,3)=='col' and substr($attFld,3,1)==strtoupper(substr($attFld,3,1)) ) $attFld=lcfirst(substr($attFld,3));
       if (substr($attFld,0,3)=='col' and ucfirst(substr($attFld,3,1))==substr($attFld,3,1)) $attFld=substr($attFld,3);
       if (property_exists(get_class($obj), $attFld) and $obj->isAttributeSetToField($attFld, "hidden")) {
         $hide=true;

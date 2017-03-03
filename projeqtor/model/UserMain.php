@@ -504,7 +504,7 @@ class UserMain extends SqlElement {
     $accessRightRead=securityGetAccessRight('menuProject', 'read');
     // For ALL, by default can have access to all projects
     if ($accessRightRead=="ALL") {
-    	$listAllProjects=SqlList::getList('Project');
+    	$listAllProjects=SqlList::getList('Project','name', null, true);
     	foreach($listAllProjects as $idPrj=>$namePrj) {
     		$result[$idPrj]=$namePrj;
     	}
