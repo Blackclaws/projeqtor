@@ -243,7 +243,7 @@
     }
     // --- 2) sort from index checked in List Header (only used for printing, as direct filter is done on client side)
     $sortIndex=null;   
-    if ($print) {
+    if ($print and $outMode!='csv') {
       if (array_key_exists('sortIndex', $_REQUEST)) {
         $sortIndex=$_REQUEST['sortIndex']+1;
         $sortWay=(array_key_exists('sortWay', $_REQUEST))?$_REQUEST['sortWay']:'asc';
