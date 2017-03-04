@@ -342,6 +342,7 @@ class PeriodicMeetingMain extends SqlElement {
   public function delete() {
   	
   	// The delete cascades delete of meetings, so PlanningElement will not correctly be destroyed.
+  	projeqtor_set_time_limit(600); // Set time limit to 10mn
   	$meet=new Meeting();
   	$lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->id));
   	foreach ($lstMeet as $meet) {

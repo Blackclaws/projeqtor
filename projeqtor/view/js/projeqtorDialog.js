@@ -3864,43 +3864,42 @@ function saveProductProject() {
 //=============================================================================
 
 function addTestCaseRun() {
-if (checkFormChangeInProgress()) {
- showAlert(i18n('alertOngoingChange'));
- return;
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+   //disableWidget('dialogTestCaseRunSubmit');  
+  var params="&testSessionId="+dijit.byId('id').get('value');
+  loadDialog('dialogTestCaseRun', null, true, params);
 }
- //disableWidget('dialogTestCaseRunSubmit');  
-var params="&testSessionId="+dijit.byId('id').get('value');
-loadDialog('dialogTestCaseRun', null, true, params);
 
-}
 function refreshTestCaseRunList(selected) {
-disableWidget('dialogTestCaseRunSubmit');
-var url='../tool/dynamicListTestCase.php';
-url+='?idProject='+dijit.byId('idProject').get('value');
-if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
-else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
-else if (dijit.byId('idComponent')) url+='&idComponent='+dijit.byId('idComponent').get('value');
-if (selected) {
- url+='&selected=' + selected;
-}
-loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
+  disableWidget('dialogTestCaseRunSubmit');
+  var url='../tool/dynamicListTestCase.php';
+  url+='?idProject='+dijit.byId('idProject').get('value');
+  if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
+  else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
+  else if (dijit.byId('idComponent')) url+='&idComponent='+dijit.byId('idComponent').get('value');
+  if (selected) {
+    url+='&selected=' + selected;
+  }
+  loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
 }
 
 function editTestCaseRun(testCaseRunId, idRunStatus, callback) {
-if (checkFormChangeInProgress()) {
- showAlert(i18n('alertOngoingChange'));
- return;
-}
-var testSessionId = dijit.byId('id').get('value');
-var params="&testCaseRunId=" + testCaseRunId + "&testSessionId=" + testSessionId;
-if (idRunStatus) params+="&runStatusId="+idRunStatus;
-loadDialog('dialogTestCaseRun', callback, ((callback)?false:true), params);
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var testSessionId = dijit.byId('id').get('value');
+  var params="&testCaseRunId=" + testCaseRunId + "&testSessionId=" + testSessionId;
+  if (idRunStatus) params+="&runStatusId="+idRunStatus;
+  loadDialog('dialogTestCaseRun', callback, ((callback)?false:true), params);
 }
 
 function passedTestCaseRun(idTestCaseRun) {
   var callback=function() { 
-    saveTestCaseRun(); 
-    dijit.byId('dialogTestCaseRun').hide();
+    if (saveTestCaseRun()) dijit.byId('dialogTestCaseRun').hide();
   };
   editTestCaseRun(idTestCaseRun, '2', callback);
 }
@@ -3911,8 +3910,7 @@ function failedTestCaseRun(idTestCaseRun) {
 
 function blockedTestCaseRun(idTestCaseRun) {
   var callback=function() { 
-    saveTestCaseRun(); 
-    dijit.byId('dialogTestCaseRun').hide();
+    if (saveTestCaseRun()) dijit.byId('dialogTestCaseRun').hide();
   };
   editTestCaseRun(idTestCaseRun, '4', callback);
 }
@@ -3963,9 +3961,11 @@ function saveTestCaseRun() {
   if (formVar.validate()) {
    loadContent("../tool/saveTestCaseRun.php", "resultDiv", "testCaseRunForm", true, 'testCaseRun');
    dijit.byId('dialogTestCaseRun').hide();
+   return true;
   } else {
    dijit.byId("dialogTestCaseRun").show();
    showAlert(i18n("alertInvalidForm"));
+   return false;
   }
 }
 
