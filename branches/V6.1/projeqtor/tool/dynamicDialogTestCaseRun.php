@@ -110,7 +110,7 @@ if (count($listTcr)) {
                      foreach ($list as $lstObj) {
                        //echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
                      }?>
-                     <?php htmlDrawOptionForReference('idTestCase',1, null, true); ?>
+                     <?php htmlDrawOptionForReference('idTestCase',null, null, true); ?>
                     </select>
 	               </div>
 	             </td>
@@ -180,8 +180,7 @@ if (count($listTcr)) {
 		               <select dojoType="dijit.form.FilteringSelect" 
 		               <?php echo autoOpenFilteringSelect();?>
 		                id="testCaseRunTicket" name="testCaseRunTicket"
-		                class="input"><?php echo $testCaseRun->idTicket;?>
-		                <?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, true); ?>
+		                class="input"><?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false); ?>
 		               </select>
 		             </td>
                  <td style="vertical-align: top">
