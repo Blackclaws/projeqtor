@@ -234,6 +234,17 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
     var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;
     dojo.addOnLoad(function(){
+     // FIX IE11 not recognized as IE
+      if( !dojo.isIE ) {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var IEReg = /(msie\s|trident.*rv:)([\w.]+)/;
+        var match = IEReg.exec(userAgent);
+        if( match )
+          dojo.isIE = match[2] - 0;
+        else
+          dojo.isIE = undefined;
+      }
+            
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
       if (array_key_exists('project',$_SESSION)) {
@@ -952,7 +963,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
 </div>
 
-<div id="dialogShowHtml" dojoType="dijit.Dialog" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
+<div id="dialogShowHtml" dojoType="dijit.Dialog" data-dojo-props="" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
   <?php 
     $printHeight=600;
     $printWidth=1010;
