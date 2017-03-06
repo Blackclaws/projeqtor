@@ -376,6 +376,7 @@ class WorkElementMain extends SqlElement {
 		}
 		$ass->leftWork -= $diff;
 		$ass->realWork += $diff;
+		$ass->realCost += $diff * $work->dailyCost;
 		if ($ass->leftWork < 0 or $ass->leftWork == null) {
 			$ass->leftWork = 0;
 		}

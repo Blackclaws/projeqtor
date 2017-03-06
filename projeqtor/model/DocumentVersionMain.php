@@ -143,6 +143,7 @@ class DocumentVersionMain extends SqlElement {
   	}
   	if ($this->importFile) {
   		$this->fileName=basename($this->importFile);
+  		$this->fileSize=filesize($this->importFile);
   	}
   	$pos=strrpos($this->fileName,'.');
   	if ($pos) {
