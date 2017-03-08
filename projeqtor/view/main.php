@@ -963,7 +963,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
 </div>
 
-<div id="dialogShowHtml" dojoType="dijit.Dialog" data-dojo-props="" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
+<div id="dialogShowHtml" dojoType="dijit.Dialog" data-dojo-props="" onHide="if (window.frames['showHtmlFrame']) window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
   <?php 
     $printHeight=600;
     $printWidth=1010;
