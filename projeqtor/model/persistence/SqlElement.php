@@ -3203,7 +3203,7 @@ abstract class SqlElement {
 				} else {
 					// check if required
 					if (strpos($this->getFieldAttributes($col), 'required')!==false and !$isCopy) {
-						if (!$val) {
+						if (!$val and $val!==0) {
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
 						} else if (trim($val)==''){
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
