@@ -607,9 +607,9 @@ abstract class SqlElement {
 				}
 			}
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
-			and property_exists($this, 'WorkElement') and self::is_a($this,'WorkElement')) {
-			  $we=$this->WorkElement;
-			  $controlWe=$we->control();
+		  and property_exists($this, 'WorkElement') and self::is_a($this,'WorkElement')) {
+			  $we='WorkElement';
+			  $controlWe=$this->$we->control();
 			  if ($controlWe!='OK') {
 			    $control=$controlWe;
 			  }
@@ -910,8 +910,8 @@ abstract class SqlElement {
 	    }
 	  }
 	  if ( isset($_REQUEST['directAccessIndex'])) {
-	    if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':'')]) ) {
-  	    $testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':'')];
+	    if ( sessionTableValueExist('directAccessIndex', $_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':'')) ) {
+  	    $testObject=getSessionTableValue('directAccessIndex', $_REQUEST['directAccessIndex'].(($isComboDetail)?'_comboDetail':''));
   	    if (!$objectClass or get_class($testObject)==$objectClass) {
   	      $oldObject=$testObject;
   	    } else if ($throwError) {
@@ -922,8 +922,8 @@ abstract class SqlElement {
 	      throwError('currentObject parameter not found in SESSION');
 	      return null;
 	    }
-	  } else if (array_key_exists('currentObject'.(($isComboDetail)?'_comboDetail':''),$_SESSION)) {
-	    $testObject = $_SESSION['currentObject'.(($isComboDetail)?'_comboDetail':'')];
+	  } else if (sessionValueExists('currentObject'.(($isComboDetail)?'_comboDetail':'')) ) {
+	    $testObject = getSessionValue('currentObject'.(($isComboDetail)?'_comboDetail':''));
 	    if (!$objectClass or get_class($testObject)==$objectClass) {
 	      $oldObject=$testObject;
 	    } else if ($throwError) {
@@ -938,25 +938,27 @@ abstract class SqlElement {
 	}
 	public static function setCurrentObject ($obj, $isComboDetail=false) {
 	  if (isset($_REQUEST ['directAccessIndex'])) {
-	    if (!isset($_SESSION ['directAccessIndex'])) $_SESSION ['directAccessIndex']=array();
+	    if (!sessionValueExists('directAccessIndex')) {
+	      setSessionValue('directAccessIndex', array());
+	    }
 	    if ($isComboDetail) {
-	      $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex'].'_comboDetail']=$obj;
+	      setSessionTableValue('directAccessIndex', $_REQUEST ['directAccessIndex'].'_comboDetail', $obj);
 	    } else {
-	      $_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]=$obj;
+	      setSessionTableValue('directAccessIndex', $_REQUEST ['directAccessIndex'], $obj);
 	    }
 	  } else {
 	    if ($isComboDetail) {
-	      $_SESSION ['currentObject_comboDetail']=$obj;
+	      setSessionValue('currentObject_comboDetail', $obj);
 	    } else {
-	      $_SESSION ['currentObject']=$obj;
+	      setSessionValue('currentObject', $obj);
 	    }
 	  }
 	}
 	public static function unsetCurrentObject () {
-	  if (isset($_REQUEST ['directAccessIndex']) and isset($_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']])) {
-	    unset($_SESSION ['directAccessIndex'][$_REQUEST ['directAccessIndex']]);
-	  } else if (isset($_SESSION ['currentObject'])){
-	    unset($_SESSION ['currentObject']);
+	  if (isset($_REQUEST ['directAccessIndex']) and  sessionTableValueExist('directAccessIndex', $_REQUEST ['directAccessIndex'])) {
+	    unsetSessionTable('directAccessIndex', $_REQUEST ['directAccessIndex']);
+	  } else if (sessionValueExists('currentObject')){
+	    unsetSessionValue('currentObject');
 	  }
 	}
 	/** =========================================================================
@@ -3093,6 +3095,35 @@ abstract class SqlElement {
 			$colScript .= '  formChanged();';
 			$colScript .= '</script>';
 		}
+    
+		//debugLog Krowry
+		if(substr($colName, -9)=="StartDate"){ // If change start date
+		  $end = str_replace('StartDate', 'EndDate', $colName);
+		  $start=$colName;
+		  if (property_exists($this, $end)){
+		  	if (self::is_subclass_of($this,'PlanningElement')) {
+		  		$end=get_class($this).'_'.$end;
+		  		$start=get_class($this).'_'.$start;
+		  		$duration=get_class($this).'_'.str_replace('StartDate', 'Duration', $colName);
+		  	}
+		    $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+		    $colScript .= "if(this.value){";
+		    $colScript .= "  var end = dijit.byId('$end');"; // $end will be replaced by value as enclosed by "
+		    $colScript .= "  if(end){";
+		    $colScript .= "    var dtStart = dijit.byId('$start').get('value'); "; // => rÃ©cupÃ©rer la date de this, qui est en string, au format Date javascrpit
+		    $colScript .= "    end.constraints.min=dtStart;";
+		    $colScript .= "    if (! end.get('value') ) {";
+		    $colScript .= "      end.set('value',dtStart);";
+		    $colScript .= "      if (dijit.byId('$duration')) {";
+		    $colScript .= "        dijit.byId('$duration').set('value',1);";
+		    $colScript .= "      }";
+		    $colScript .= "    }";
+		    $colScript .= " }";
+		    $colScript .= "}";
+		    $colScript .= '</script>';
+		  }
+		}
+		
 		return $colScript;
 	}
 
@@ -3203,7 +3234,7 @@ abstract class SqlElement {
 				} else {
 					// check if required
 					if (strpos($this->getFieldAttributes($col), 'required')!==false and !$isCopy) {
-						if (!$val) {
+						if (!$val and $val!==0) {
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
 						} else if (trim($val)==''){
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));

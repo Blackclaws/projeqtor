@@ -309,7 +309,7 @@
 	      $today=date('Y-m-d');
 	      $in=transformValueListIntoInClause($lstTopPrj);
 	      $where="idle=0 and idProject in " . $in; 
-	      //$where.=" and (startDate is null or startDate<='$today')";
+	      //.$where.=" and (startDate is null or startDate<='$today')";
 	      $where.=" and (endDate is null or endDate>='$today')";
 	      if (isset($_REQUEST['objectClass']) and $_REQUEST['objectClass']=='IndividualExpense') {
 	        if (securityGetAccessRight('menuIndividualExpense', 'read', null, getSessionUser() )=='OWN') {
@@ -371,11 +371,6 @@
 	      }
 	    } else if ($type=='listTermProject') {
 	    	if(!isset($_REQUEST['selected']))	{
-	    	  /*if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
-            $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-          } else {
-          	$obj=$_SESSION['currentObject'];
-          }*/
 	    	  $obj=SqlElement::getCurrentObject(null,null,false,false); // V5.2
 	        $idPrj=$_REQUEST['idProject'];
 	        $prj=new Project($obj->idProject);
@@ -466,11 +461,6 @@
         }
       }
     } else if ($type=='listStatusDocumentVersion') {
-      /*if (isset($_REQUEST['directAccessIndex']) and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
-        $doc=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
-      } else {
-        $doc=$_SESSION['currentObject'];
-      }*/
       $doc=SqlElement::getCurrentObject(null,null,false,false); // V5.2
     	$idDocumentVersion=$_REQUEST['idDocumentVersion'];
       $docVers=new documentVersion($idDocumentVersion);

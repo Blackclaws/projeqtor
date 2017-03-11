@@ -360,6 +360,14 @@ class ProductVersionMain extends Version {
     return $result;
   }
   public function copy() {
+  	$this->initialEisDate=null;
+  	$this->plannedEisDate=null;
+  	$this->realEisDate=null;
+  	$this->isEis=null;
+  	$this->initialEndDate=null;
+  	$this->plannedEndDate=null;
+  	$this->realEndDate=null;
+  	$this->idle=null;
     $result=parent::copy(); 
     $pp=new VersionProject();
     $crit=array('idVersion'=>$this->id);

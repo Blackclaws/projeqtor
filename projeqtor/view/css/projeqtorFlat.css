@@ -539,7 +539,6 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconBillType16 { background-image: url(customIcons/blue/iconBillType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* C */
-
 .ProjeQtOrFlatBlue .iconCalendar32 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconCalendar22 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconCalendar16 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -547,6 +546,14 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconCalendarDefinition32 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconCalendarDefinition22 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconCalendarDefinition16 { background-image: url(customIcons/blue/iconCalendar.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatBlue .iconCatalog32 { background-image: url(customIcons/blue/iconCatalog.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconCatalog22 { background-image: url(customIcons/blue/iconCatalog.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconCatalog16 { background-image: url(customIcons/blue/iconCatalog.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatBlue .iconCatalogType32 { background-image: url(customIcons/blue/iconCatalogType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconCatalogType22 { background-image: url(customIcons/blue/iconCatalogType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconCatalogType16 { background-image: url(customIcons/blue/iconCatalogType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatBlue .iconCategory32 { background-image: url(customIcons/blue/iconCategory.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconCategory22 { background-image: url(customIcons/blue/iconCategory.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -1693,6 +1700,14 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconCalendarDefinition32 { background-image: url(customIcons/red/iconCalendar.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconCalendarDefinition22 { background-image: url(customIcons/red/iconCalendar.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconCalendarDefinition16 { background-image: url(customIcons/red/iconCalendar.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconCatalog32 { background-image: url(customIcons/red/iconCatalog.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconCatalog22 { background-image: url(customIcons/red/iconCatalog.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconCatalog16 { background-image: url(customIcons/red/iconCatalog.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconCatalogType32 { background-image: url(customIcons/red/iconCatalogType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconCatalogType22 { background-image: url(customIcons/red/iconCatalogType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconCatalogType16 { background-image: url(customIcons/red/iconCatalogType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatRed .iconCategory32 { background-image: url(customIcons/red/iconCategory.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconCategory22 { background-image: url(customIcons/red/iconCategory.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -2841,6 +2856,14 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconCalendarDefinition22 { background-image: url(customIcons/green/iconCalendar.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconCalendarDefinition16 { background-image: url(customIcons/green/iconCalendar.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGreen .iconCatalog32 { background-image: url(customIcons/green/iconCatalog.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconCatalog22 { background-image: url(customIcons/green/iconCatalog.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconCatalog16 { background-image: url(customIcons/green/iconCatalog.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGreen .iconCatalogType32 { background-image: url(customIcons/green/iconCatalogType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconCatalogType22 { background-image: url(customIcons/green/iconCatalogType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconCatalogType16 { background-image: url(customIcons/green/iconCatalogType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatGreen .iconCategory32 { background-image: url(customIcons/green/iconCategory.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconCategory22 { background-image: url(customIcons/green/iconCategory.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconCategory16 { background-image: url(customIcons/green/iconCategory.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -3986,6 +4009,14 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconCalendarDefinition32 { background-image: url(customIcons/grey/iconCalendar.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconCalendarDefinition22 { background-image: url(customIcons/grey/iconCalendar.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconCalendarDefinition16 { background-image: url(customIcons/grey/iconCalendar.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconCatalog32 { background-image: url(customIcons/grey/iconCatalog.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconCatalog22 { background-image: url(customIcons/grey/iconCatalog.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconCatalog16 { background-image: url(customIcons/grey/iconCatalog.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconCatalogType32 { background-image: url(customIcons/grey/iconCatalogType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconCatalogType22 { background-image: url(customIcons/grey/iconCatalogType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconCatalogType16 { background-image: url(customIcons/grey/iconCatalogType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGrey .iconCategory32 { background-image: url(customIcons/grey/iconCategory.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconCategory22 { background-image: url(customIcons/grey/iconCategory.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

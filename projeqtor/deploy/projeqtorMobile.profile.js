@@ -21,12 +21,16 @@
     		"dojox/mobile/RoundRectCategory",
     		"dojox/mobile/FormLayout",
     		"dojox/mobile/TextBox",
+    		"dojox/mobile/ComboBox",
     		"dojox/mobile/TextArea",
     		"dojox/mobile/Button",
     		"dojox/mobile/ToolBarButton",
     		"dojox/mobile/ProgressIndicator",
     		"dojox/mobile/ContentPane",
-    		"dojox/mobile/Badge"
+    		"dojox/mobile/Badge",
+        "dojo/data/ItemFileReadStore",
+        "dojo/store/DataStore",
+        "dijit/form/DataList"
 			]
 		}
 	],

@@ -79,15 +79,17 @@ if (count($checklistList)>0) {
 if (!isset($checklist) or !$checklist or !$checklist->id) {
 	$checklist=new Checklist();
 }
-
 if (!$checklistDefinition or ! $checklistDefinition->id) {
 	if (property_exists($obj,$type)) {
-		$crit=array('nameChecklistable'=>$objectClass, 'idType'=>$obj->$type);
+		$crit=array('nameChecklistable'=>$objectClass, 'idType'=>$obj->$type, 'idle'=>'0');
   	$checklistDefinition=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
 	}
 	if (!$checklistDefinition or !$checklistDefinition->id) {
-		$crit=array('nameChecklistable'=>$objectClass);
-		$checklistDefinition=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
+		$crit="nameChecklistable='$objectClass' and idle=0";
+		if (property_exists($obj,$type)) {$crit.=" and idType is null ";}
+		$cd=new ChecklistDefinition();
+		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
+		$checklistDefinition=reset($cdList);
 	}
 }
 if (!$checklistDefinition or !$checklistDefinition->id) {

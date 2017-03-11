@@ -64,6 +64,10 @@ $comment="";
 if (array_key_exists('productVersionStructureComment',$_REQUEST)) {
     $comment=$_REQUEST['productVersionStructureComment'];
 }
+$strId=null;
+if (array_key_exists('productVersionStructureId',$_REQUEST)) {
+	$strId=$_REQUEST['productVersionStructureId'];
+}
 
 $arrayId=array();
 if (is_array($listId)) {
@@ -75,7 +79,7 @@ Sql::beginTransaction();
 $result="";
 // get the modifications (from request)
 foreach ($arrayId as $id) {
-	$str=new ProductVersionStructure();
+	$str=new ProductVersionStructure($strId);
 	if ($way=='composition') {
 	  $str->idProductVersion=$objectId;
 	  $str->idComponentVersion=$id;

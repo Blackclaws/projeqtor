@@ -827,7 +827,7 @@ function loadContent(page, destination, formName, isResultMessage,
             loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
           } else {
             enableWidget('saveButton');
-            enableWidget('undoButton');  
+            enableWidget('undoButton');
             console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             showError(i18n('errorXhrPostMessage'));
           }
@@ -3740,6 +3740,22 @@ function setDefaultPlanningMode(typeValue) {
       var objClass = dojo.byId('objectClass').value;
       var planningMode = objClass + "PlanningElement_id" + objClass
           + "PlanningMode";
+      dijit.byId(planningMode).set('value', data);
+    }
+  });
+}
+
+function setDefaultPriority(typeValue) {
+  url='../tool/getSingleData.php?dataType=defaultPriority&idType='
+    + typeValue + "&objectClass=" + dojo.byId('objectClass').value;
+  console.log(url);
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      var objClass = dojo.byId('objectClass').value;
+      var planningMode = objClass + "PlanningElement_priority" ;
+      console.log(planningMode);
       dijit.byId(planningMode).set('value', data);
     }
   });

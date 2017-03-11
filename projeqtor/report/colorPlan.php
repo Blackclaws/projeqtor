@@ -250,13 +250,35 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 
 echo '</tr>';
+//gautier
+$resourcesFull = array();
+$resources2 = array();
+//no parameters
+if(!$paramProject && !$paramTeam){
+  $resourcesFull =SqlList::getList('Resource');
+}
+// if($paramProject){
+//   $resources2 = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject));
+// }
+//team
+if($paramTeam){
+  $resourcesFull =SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
+}
+$resources2 = array_diff($resourcesFull, $resources);
+$resources = $resources + $resources2;
+
 asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
-  	$capacity=$resourceCapacity[$idR];
+    //gautier
+    if(array_key_exists($resources[$idR],$resourceCapacity)){
+  	 $capacity=$resourceCapacity[$idR];
+    }else{
+      $capacity=0;
+    }
 	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
 	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.$capacity.'</div>';
 	  echo '</td>';
@@ -267,7 +289,8 @@ foreach ($resources as $idR=>$nameR) {
 	      $style=$weekendStyle;
 	    }
 	    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
-	    
+	    // test day and result
+	    if (array_key_exists($resources[$idR],$result) and array_key_exists($resources[$idR],$days )){
 	    if (array_key_exists($day,$result[$idR])) {
 	      echo "<div style='position:relative;'>";
 	      $real=false;
@@ -286,6 +309,7 @@ foreach ($resources as $idR=>$nameR) {
 	      echo "</div>";
 	    
 	    }
+	  }
 	    echo '</td>';
 	  }
 	  echo '</tr>';

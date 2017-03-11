@@ -126,7 +126,14 @@ if (array_key_exists('billLineBillingType',$_REQUEST)) {
   $billingType=$_REQUEST['billLineBillingType'];
   Security::checkValidAlphanumeric($billingType);
 }
-
+//gautier
+$catalogSpecification = "";
+$boolCatalog = false;
+if (array_key_exists('billLineIdCatalog',$_REQUEST)) {
+  $boolCatalog = true;
+  $catalog=new Catalog($_REQUEST['billLineIdCatalog']);
+  $catalogSpecification = $catalog->specification;
+}//end 
 
 Sql::beginTransaction();
 $line=new BillLine($lineId);
@@ -145,7 +152,32 @@ $line->price=$price;
 $line->idMeasureUnit=$unit;
 $line->extra=$extra;
 $line->billingType=$billingType;
+//gautier #2516
+if($boolCatalog){
+  if($line->refType=="Bill"){
+    $bill=new Bill($line->refId);
+    if(!$bill->description or strpos($bill->description,$catalogSpecification )=== FALSE){ 
+      $bill->description .= $catalogSpecification;
+    }
+    $bill->save();
+  }
+  if($line->refType=="Quotation"){
+    $quot=new Quotation($line->refId);
+    if(!$quot->comment or strpos($quot->comment,$catalogSpecification )=== FALSE){ 
+      $quot->comment .= $catalogSpecification;
+    }
+    $quot->save();
+  }
+  if($line->refType=="Command"){
+    $order=new Command($line->refId);
+    if(!$order->comment or strpos($order->comment,$catalogSpecification )=== FALSE){ 
+      $order->comment .= $catalogSpecification;
+    }
+    $order->save();
+  }
+}//end
 $result=$line->save();
+
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

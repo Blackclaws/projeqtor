@@ -263,7 +263,7 @@ if ($type=='habilitation') {
       $obj->idProject=null;
       $result=$obj->save();
       $paramCode='globalParameter_'.$fld;
-      $_SESSION[$paramCode]=$val;
+      setSessionValue($paramCode, $val);
       $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
       $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
       if ($isSaveNO_CHANGE===false) {

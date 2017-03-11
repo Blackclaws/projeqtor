@@ -23,11 +23,10 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
-$showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+$showIdle=(sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
 $displayMode="standard";
-if (isset($_SESSION['projectSelectorDisplayMode'])) {
-  $displayMode=$_SESSION['projectSelectorDisplayMode'];
+if (sessionValueExists('projectSelectorDisplayMode')) {
+  $displayMode=getSessionValue('projectSelectorDisplayMode');
 }
 ?>
 <table style="width:100%">

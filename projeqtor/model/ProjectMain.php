@@ -732,6 +732,13 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     	 	 }
     	 }
     }
+    //gautier #2486
+    if(($this->idle)==1){
+      $plw=new PlannedWork();
+      $clause=('idProject ='.$this->id);
+      $purg=$plw->purge($clause);
+    }
+    
     //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 
 

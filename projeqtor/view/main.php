@@ -234,24 +234,35 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
     var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;
     dojo.addOnLoad(function(){
+      // FIX IE11 not recognized as IE
+      if( !dojo.isIE ) {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var IEReg = /(msie\s|trident.*rv:)([\w.]+)/;
+        var match = IEReg.exec(userAgent);
+        if( match )
+          dojo.isIE = match[2] - 0;
+        else
+          dojo.isIE = undefined;
+      }
+         
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
-      if (array_key_exists('project',$_SESSION)) {
-        $proj=$_SESSION['project'];
+      if (sessionValueExists('project')) {
+        $proj=getSessionValue('project');
       } else {
         $proj="*";
       }
       echo "currentSelectedProject='$proj';";
-      if (isset($_SESSION['hideMenu'])) {
-        if ($_SESSION['hideMenu']!='NO') {
+      if (sessionValueExists('hideMenu')) {
+        if (getSessionValue('hideMenu')!='NO') {
           echo "menuHidden=true;";
-          echo "menuShowMode='" . $_SESSION['hideMenu'] . "';";
+          echo "menuShowMode='" . getSessionValue('hideMenu') . "';";
         }
       }
-      if (isset($_SESSION['switchedMode'])) {
-        if ($_SESSION['switchedMode']!='NO') {
+      if (sessionValueExists('switchedMode')) {
+        if (getSessionValue('switchedMode')!='NO') {
           echo "switchedMode=true;";
-          echo "switchListMode='" . $_SESSION['switchedMode'] . "';";
+          echo "switchListMode='" . getSessionValue('switchedMode'). "';";
         }
       }     
       ?>
@@ -341,15 +352,15 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         }
         if (array_key_exists('directAccess', $_REQUEST)) {
         	echo "noDisconnect=true;";
-        	if (isset($_SESSION['directAccessIndex'])) {
-        		$directAccessIndex=$_SESSION['directAccessIndex'];
+        	if (sessionValueExists('directAccessIndex')) {
+        		$directAccessIndex=getSessionValue('directAccessIndex');
         	}	else { 
         	  $directAccessIndex=array();
           }
           $index=count($directAccessIndex)+1;
           if ($class) $directAccessIndex[$index]=new $class($id);
           else $directAccessIndex[$index]='';
-          $_SESSION['directAccessIndex']=$directAccessIndex;
+          setSessionValue('directAccessIndex', $directAccessIndex);
         	echo "directAccessIndex=$index;";
         }
         if ($class=="Today") {
@@ -530,8 +541,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           </script>
           <?php 
             $width=300;
-            if (array_key_exists('screenWidth',$_SESSION)) {
-              $width = $_SESSION['screenWidth'] * 0.2;
+            if (sessionValueExists('screenWidth')){
+              $width = getSessionValue('screenWidth') * 0.2;
             }
             $zoom=round($width/300*100, 0);  
           ?>
@@ -711,7 +722,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                     </td>
                     <td id="buttonSwitchModeLabel">
                       <?php 
-                      if (isset($_SESSION['switchedMode']) and $_SESSION['switchedMode']!='NO') {
+                      if (sessionValueExists('switchedMode') and getSessionValue('switchedMode')!='NO') {
                         echo i18n("buttonStandardMode");
                       } else {
                         echo i18n("buttonSwitchedMode");
@@ -911,14 +922,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <?php 
     $printHeight=600;
     $printWidth=1010;
-    //if (array_key_exists('screenWidth',$_SESSION)) {
-    //   $printWidth = $_SESSION['screenWidth'] * 0.8;
-    //}
-    if (array_key_exists('screenHeight',$_SESSION)) {
-      $printHeight=round($_SESSION['screenHeight']*0.65);
+    if (sessionValueExists('screenHeight')) {
+      $printHeight=round(getSessionValue('screenHeight')*0.65);
     }
-    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1160) {
-      $printWidth=round($_SESSION['screenWidth']*0.87);
+    if (sessionValueExists('screenWidth') and getSessionValue('screenWidth')<1160) {
+      $printWidth=round(getSessionValue('screenWidth')*0.87);
     }
   ?> 
   <div style="widht:100%" id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
@@ -952,12 +960,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
 </div>
 
-<div id="dialogShowHtml" dojoType="dijit.Dialog" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
+<div id="dialogShowHtml" dojoType="dijit.Dialog" onHide="if (window.frames['showHtmlFrame']) window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
   <?php 
     $printHeight=600;
     $printWidth=1010;
-    if (array_key_exists('screenHeight',$_SESSION)) {
-      $printHeight=round($_SESSION['screenHeight']*0.50);
+    if (sessionValueExists('screenHeight')) {
+      $printHeight=round(getSessionValue('screenHeight')*0.50);
     }
   ?> 
   <div style="widht:100%" id="showHtmlLink" dojoType="dijit.layout.ContentPane" region="center">
@@ -977,11 +985,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <?php 
     $detailHeight=600;
     $detailWidth=1010;
-    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1160) {
-       $detailWidth = $_SESSION['screenWidth'] * 0.87;
+    if ( sessionValueExists('screenWidth') and getSessionValue('screenWidth')<1160) {
+       $detailWidth = getSessionValue('screenWidth') * 0.87;
     }
-    if (array_key_exists('screenHeight',$_SESSION)) {
-      $detailHeight=round($_SESSION['screenHeight']*0.65);
+    if ( sessionValueExists('screenHeight')) {
+      $detailHeight=round(getSessionValue('screenHeight')*0.65);
     }
   ?> 
   <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="background">
@@ -1578,8 +1586,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 class="input" value=" " >
                  <?php 
                     $proj=null; 
-                    if (array_key_exists('project',$_SESSION)) {
-                        $proj=$_SESSION['project'];
+                    if (sessionValueExists('project')) {
+                        $proj=getSessionValue('project');
                     }
                     if ($proj=="*" or ! $proj) $proj=null;
                     $user=getSessionUser();

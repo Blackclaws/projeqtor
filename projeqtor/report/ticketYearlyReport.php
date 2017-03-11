@@ -242,9 +242,7 @@ $dataSet->SetAbsciseLabelSerie("months");
   
 // Initialise the graph  
 $width=700;
-//if (array_key_exists('screenWidth',$_SESSION)) {
-//  $width = round(($_SESSION['screenWidth'] * 0.8  ) - 15) ; // 80% of screen - split barr - padding (x2)
-//}
+
 $graph = new pChart($width,230);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 //$graph->drawFilledRoundedRectangle(7,7,$width-7,223,5,240,240,240);  

@@ -27,7 +27,7 @@
 /** ===========================================================================
  * Save the current object : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
- * The old values are fetched in $currentObject of $_SESSION
+ * The old values are fetched in $currentObject of SESSION
  * Only changed values are saved. 
  * This way, 2 users updating the same object don't mess.
  */
@@ -122,6 +122,7 @@ $actualDueTime="";
 if (array_key_exists('actualDueTime',$_REQUEST)) {
 	$actualDueTime=trim($_REQUEST['actualDueTime']);
 }
+
 $pe=$className.'PlanningElement';
 $pe_validatedStartDate="";
 if (array_key_exists($pe.'_validatedStartDate',$_REQUEST)) {
@@ -131,6 +132,17 @@ $pe_validatedEndDate="";
 if (array_key_exists($pe.'_validatedEndDate',$_REQUEST)) {
 	$pe_validatedEndDate=trim($_REQUEST[$pe.'_validatedEndDate']);
 }
+
+$pe_validatedWork="";
+if (array_key_exists($pe.'_validatedWork',$_REQUEST)) {
+  $pe_validatedWork=trim($_REQUEST[$pe.'_validatedWork']);
+}
+
+$pe_validatedCost="";
+if (array_key_exists($pe.'_validatedCost',$_REQUEST)) {
+  $pe_validatedCost=trim($_REQUEST[$pe.'_validatedCost']);
+}
+
 $pm='id'.$className.'PlanningMode';
 $pe_pm="";
 if (array_key_exists($pe.'_'.$pm,$_REQUEST)) {
@@ -153,7 +165,6 @@ if (array_key_exists($pe.'_priority',$_REQUEST)) {
   $pe_priority=trim($_REQUEST[$pe.'_priority']);
 }
 
-//unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 SqlElement::unsetCurrentObject();
 
 $cptOk=0;
@@ -221,6 +232,7 @@ foreach ($selectList as $id) {
   if ($actualEndDate and property_exists($item,'actualEndDate')) {
   	$item->actualEndDate=$actualEndDate;
   }
+
   if ($initialDueDate and $initialDueTime and property_exists($item,'initialDueDateTime')) {
   	$item->initialDueDateTime=$initialDueDate.' '.substr($initialDueTime,1);
   }
@@ -246,6 +258,13 @@ foreach ($selectList as $id) {
     if ($pe_priority and property_exists($item->$pe,'priority')) {
   		$item->$pe->priority=$pe_priority;
   	} 
+  	// KROWRY DEBUGLOG
+  	if ($pe_validatedCost and property_exists($item->$pe,'validatedCost')) {
+  	  $item->$pe->validatedCost=$pe_validatedCost;
+  	}
+  	if ($pe_validatedWork and property_exists($item->$pe,'validatedWork')) {
+  	  $item->$pe->validatedWork=$pe_validatedWork;
+  	}
   }
   $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {

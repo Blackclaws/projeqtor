@@ -26,16 +26,16 @@
 
 include_once("../tool/projeqtor.php");
 $proj='*'; 
-if (array_key_exists('project',$_SESSION)) {
-  $proj=$_SESSION['project'];
+if(sessionValueExists('project')){
+  $proj=getSessionValue('project');
 } else {
-  $_SESSION['project']="*";
+  setSessionValue('project', "*");
 }
 $prj=new Project();
 $prj->id='*';
 //$cpt=$prj->countMenuProjectsList();
 $limitToActiveProjects=true;
-if (isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1) {
+if (sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1) {
   $limitToActiveProjects=false;
 }
 $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, $limitToActiveProjects);     
@@ -43,10 +43,10 @@ $cpt=substr_count($subProjectsToDraw,'<tr>');
 $displayMode="standard";
 $paramDisplayMode=Parameter::getUserParameter('projectSelectorDisplayMode');
 if ($paramDisplayMode) {
-  $_SESSION['projectSelectorDisplayMode']=$paramDisplayMode;
+  setSessionValue('projectSelectorDisplayMode', $paramDisplayMode);
 }
-if (isset($_SESSION['projectSelectorDisplayMode'])) {
-  $displayMode=$_SESSION['projectSelectorDisplayMode'];
+if (sessionValueExists('projectSelectorDisplayMode')) {
+  $displayMode=getSessionValue('projectSelectorDisplayMode');
 }
 ?>
 <?php if ($displayMode=='standard') {?>

@@ -59,16 +59,16 @@
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
-      if (isset($_SESSION['hideMenu'])) {
-        if ($_SESSION['hideMenu']!='NO') {
+      if (sessionValueExists('hideMenu')) {
+        if (getSessionValue('hideMenu')!='NO') {
           echo "menuHidden=true;";
-          echo "menuShowMode='" . $_SESSION['hideMenu'] . "';";
+          echo "menuShowMode='" . getSessionValue('hideMenu') . "';";
         }
       }
-      if (isset($_SESSION['switchedMode'])) {
-        if ($_SESSION['switchedMode']!='NO') {
+      if (sessionValueExists('switchedMode')) {
+        if (getSessionValue('switchedMode')!='NO') {
           echo "switchedMode=true;";
-          echo "switchListMode='" . $_SESSION['switchedMode'] . "';";
+          echo "switchListMode='" . getSessionValue('switchedMode') . "';";
         }
       }
       ?>

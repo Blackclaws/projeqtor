@@ -203,8 +203,9 @@ class ActivityMain extends SqlElement {
     } else if ($colName=="idActivityType") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  setDefaultPlanningMode(this.value);';
+      $colScript .= '  setDefaultPriority(this.value);';
       $colScript .= '</script>';
-    }
+    } 
     return $colScript;
   }
 

@@ -122,9 +122,8 @@ class KpiDefinition extends SqlElement {
       self::$_kpiDefinitionList=$sessionList;
       return self::$_kpiDefinitionList;
     }
-    //$list=(new KpiDefinition())->getSqlElementsFromCriteria(array('idle'=>'0'));
-    $kd=new KpiDefinition();
-    $list=$kd->getSqlElementsFromCriteria(array('idle'=>'0'));
+    $tmp_kd=new KpiDefinition();
+    $list=$tmp_kd->getSqlElementsFromCriteria(array('idle'=>'0'));
     self::$_kpiDefinitionList=array();
     foreach ($list as $kd) {
       self::$_kpiDefinitionList[$kd->code]=$kd;

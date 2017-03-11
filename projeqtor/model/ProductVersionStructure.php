@@ -144,10 +144,10 @@ class ProductVersionStructure extends SqlElement {
    */
   public function control(){
     $result="";
-    $checkCrit=array('idProductVersion'=>$this->idProductVersion,
-                     'idComponentVersion'=>$this->idComponentVersion);
+    $checkCrit="idProductVersion=$this->idProductVersion and idComponentVersion=$this->idComponentVersion";
+    if ($this->id) $checkCrit.=" and id!=$this->id";
     $comp=new ProductVersionStructure();
-    $check=$comp->getSqlElementsFromCriteria($checkCrit);
+    $check=$comp->getSqlElementsFromCriteria(null, false,$checkCrit);
     if (count($check)>0) {
       $result.='<br/>' . i18n('errorDuplicateLink');
     } 

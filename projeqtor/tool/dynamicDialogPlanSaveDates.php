@@ -43,8 +43,8 @@
                 class="input" value="" >
                  <?php 
                     $proj=null; 
-                    if (array_key_exists('project',$_SESSION)) {
-                        $proj=$_SESSION['project'];
+                    if (sessionValueExists('project')){
+                        $proj= getSessionValue('project');
                     }
                     if ($proj=="*" or ! $proj) $proj=null;
                     htmlDrawOptionForReference('idProject', $proj, null, false);
