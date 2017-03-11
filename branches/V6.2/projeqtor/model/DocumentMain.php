@@ -122,8 +122,8 @@ class DocumentMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if (!$this->id and array_key_exists('Directory',$_SESSION)) {
-    	$this->idDocumentDirectory=$_SESSION['Directory'];
+    if (!$this->id and sessionValueExists('Directory')) {
+    	$this->idDocumentDirectory=getSessionValue('Directory');
     	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
     	$dir=new DocumentDirectory($this->idDocumentDirectory);
     	$this->idDocumentType=$dir->idDocumentType;

@@ -251,8 +251,11 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
             'REQ'=>i18n('displayOnRequest'));
         break;
-      case 'printHistory': case 'csvExportUTF8': case 'allowTypeRestrictionOnProject' :
-      case 'versionNameAutoformat' :
+      case 'printHistory': 
+      case 'csvExportUTF8': 
+      case 'allowTypeRestrictionOnProject' :
+      case 'versionNameAutoformat' : 
+      case 'directAccessToComponentList' :
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -410,7 +413,8 @@ class Parameter extends SqlElement {
       	if (securityCheckDisplayMenu(null,'Planning')) {$list['planningMain.php']=i18n('menuPlanning');}
       	if (securityCheckDisplayMenu(null,'PortfolioPlanning')) {$list['portfolioPlanningMain.php']=i18n('menuPortfolioPlanning');}
       	if (securityCheckDisplayMenu(null,'ResourcePlanning')) {$list['resourcePlanningMain.php']=i18n('menuResourcePlanning');}
-      	$arrayItem=array('Project','Document','Ticket','TicketSimple','Activity','Action');
+        if (securityCheckDisplayMenu(null,'Kanban')) {$list['../plugin/kanban/kanbanViewMain.php']=i18n('menuKanban');}
+      	$arrayItem=array('Project','Document','Ticket','TicketSimple','Activity','Action','Requirement','ProductVersion','ComponentVersion');
       	foreach  ($arrayItem as $item) {
       		if (securityCheckDisplayMenu(null,$item)) {$list['objectMain.php?objectClass='.$item]=i18n('menu'.$item);}
       	}
@@ -530,6 +534,7 @@ class Parameter extends SqlElement {
                            "editor"=>'list',
                            "scaytAutoStartup"=>'list',
                            "maxColumns"=>'list',
+                           "directAccessToComponentList"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
@@ -647,6 +652,7 @@ class Parameter extends SqlElement {
       	                       "scaytAutoStartup"=>'list',
       	                       'allowTypeRestrictionOnProject'=>'list',
       	                       'showTendersOnVersions'=>'list',
+      	                       "directAccessToComponentList"=>'list',
       	                       'limitPlanningActivity'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
@@ -785,28 +791,28 @@ class Parameter extends SqlElement {
       }
       return $nl;
     }
-  	if (!isset($_SESSION['globalParamatersArray'])) {
-      $_SESSION['globalParamatersArray']=array();
+  	if (!sessionValueExists('globalParamatersArray')) {
+  	  setSessionValue('globalParamatersArray', array());
       $p=new Parameter();
       $crit=" (idUser is null and idProject is null)";
       $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
       foreach ($lst as $param) {
-        $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
+        setSessionTableValue('globalParamatersArray', $param->parameterCode, $param->parameterValue);
       }
   	}
-  	if (isset($_SESSION['globalParamatersArray'][$code])) {
-  		return $_SESSION['globalParamatersArray'][$code];
+  	if (sessionTableValueExist('globalParamatersArray', $code)) {
+  		return getSessionTableValue('globalParamatersArray', $code);
   	} else {
-      	return '';
+      return '';
     }
   }
 
   static public function getUserParameter($code) {
-  	if (!array_key_exists('userParamatersArray',$_SESSION)) {
-      $_SESSION['userParamatersArray']=array();
+  	if (!sessionValueExists('userParamatersArray')) {
+      setSessionValue('userParamatersArray', array());
     }
-    if (array_key_exists($code,$_SESSION['userParamatersArray'])) {
-      return $_SESSION['userParamatersArray'][$code];
+    if (sessionTableValueExist('userParamatersArray', $code)) {
+      return getSessionTableValue('userParamatersArray', $code);
     } 
     $p=new Parameter();
     $user=getSessionUser();
@@ -823,7 +829,7 @@ class Parameter extends SqlElement {
       $val=self::getGlobalParameter($code);
     }
     if ($user->id) {
-      $_SESSION['userParamatersArray'][$code]=$val;
+      setSessionTableValue('userParamatersArray', $code, $val);
     }
     return $val;
   }
@@ -840,10 +846,10 @@ class Parameter extends SqlElement {
   	}
     $param->parameterValue=$value;
   	$param->save();
-  	if (!array_key_exists('userParamatersArray',$_SESSION)) {
-  		$_SESSION['userParamatersArray']=array();
+  	if (!sessionValueExists('userParamatersArray')) {
+  	  setSessionValue('userParamatersArray', array());
   	}
-  	$_SESSION['userParamatersArray'][$code]=$value;
+    setSessionTableValue('userParamatersArray', $code, $value);
   }
   static function storeGlobalParameter($code,$value) {
     $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>null,'parameterCode'=>$code));
@@ -854,10 +860,10 @@ class Parameter extends SqlElement {
     }
     $param->parameterValue=$value;
     $param->save();
-    if (!array_key_exists('globalParamatersArray',$_SESSION)) {
-      $_SESSION['globalParamatersArray']=array();
+    if (!sessionValueExists('globalParamatersArray')) {
+      setSessionValue('globalParamatersArray', array());
     }
-    $_SESSION['globalParamatersArray'][$code]=$value;
+    setSessionTableValue('globalParamatersArray', $code, $value);
   }
   
   static public function getPlanningColumnOrder($all=false) {
@@ -1067,7 +1073,7 @@ class Parameter extends SqlElement {
   
   static public function clearGlobalParameters() {
   	// This function is call on most of admin functionalities or global parameters update, to force refresh of parameters
-  	unset($_SESSION['globalParamatersArray']);
+  	unsetSessionValue('globalParamatersArray');
     $aut=new Audit();
     $table=$aut->getDatabaseTableName();
     $sessionId=session_id();
@@ -1078,7 +1084,7 @@ class Parameter extends SqlElement {
   static public function refreshParameters() {
 scriptLog('refreshParameters()');
   	// This function is call when refresh of parameters is requested
-  	unset($_SESSION['globalParamatersArray']);
+  	unsetSessionValue('globalParamatersArray');
   }
   
   static public function getLangList() {

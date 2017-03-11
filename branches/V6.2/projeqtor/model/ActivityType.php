@@ -36,6 +36,7 @@ class ActivityType extends Type {
   public $code;
   public $idWorkflow;
   public $idActivityPlanningMode;
+  public $priority;
   public $sortOrder=0;
   public $idle;
   public $description;
@@ -132,6 +133,5 @@ class ActivityType extends Type {
   protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
   }
-  
 }
 ?>

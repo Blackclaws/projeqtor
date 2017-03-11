@@ -124,6 +124,21 @@ if ($line->line) {
          <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo htmlEncode($refId);?>" />
          <input id="billLineBillingType" name="billLineBillingType" type="hidden" value="<?php echo htmlEncode($billingType);?>" />
        	 <table>
+       	     <tr>
+             <td class="dialogLabel"  >
+               <label for="billLineIdCatalog" ><?php echo i18n("colIdCatalog") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect"
+              <?php echo autoOpenFilteringSelect();?>
+                id="billLineIdCatalog" name="billLineIdCatalog"
+                class="input" value="" 
+                onChange="billLineChangeCatalog();"
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdCatalog')));?>" >
+                 <?php htmlDrawOptionForReference('idCatalog', null, null, false); ?>
+               </select> 
+             </td>
+           </tr>    	      	 
            <tr>
              <td class="dialogLabel" >
               <label for="billLineLine" ><?php echo i18n("colLineNumber");?>&nbsp;:&nbsp;</label>
@@ -202,7 +217,7 @@ if ($line->line) {
                <?php echo autoOpenFilteringSelect();?>
                 id="billLineIdActivityPrice" name="billLineIdActivityPrice"
                 missingMessage="<?php echo i18n('mandatory');?>"
-                class="input" value="<?php echo $line->idActivityPrice;?>" >
+                class="input" value="" onChange="billLineChangeCatalog" >
                 <?php 
                    htmlDrawOptionForReference('idActivityPrice', $line->idActivityPrice,null,false,'idProject',$obj->idProject)
                    // no use : will be updated on dialog opening;

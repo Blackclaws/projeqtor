@@ -50,7 +50,7 @@
   $costVisibility=$pe->_costVisibility;
   
   if (array_key_exists('refreshProjects',$_REQUEST)) {
-    $_SESSION['todayCountScope']=(array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo';
+    setSessionValue('todayCountScope', (array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo');
     showProjects();
     exit;
   } 
@@ -107,8 +107,8 @@
     $showIdle=false;
     $showDone=false;
     $countScope='todo';
-    if (array_key_exists('todayCountScope',$_SESSION)) {
-      $countScope=$_SESSION['todayCountScope'];
+    if (sessionValueExists('todayCountScope')) {
+      $countScope= getSessionValue('todayCountScope');
     }
     if (count($prjLst)>0) {
     	echo '<div style="width:100%; overflow-x:auto">';

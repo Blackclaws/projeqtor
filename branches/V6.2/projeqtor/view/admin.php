@@ -138,8 +138,8 @@
                 <td class="label"><?php echo i18n("colSendDate"). "&nbsp;:&nbsp;";?></td>
                 <td>
                   <div dojoType="dijit.form.DateTextBox" name="alertSendDate" id="alertSendDate"
-	                  <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-											echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+	                  <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+											echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 										}?>
                     invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
                     type="text" maxlength="10"

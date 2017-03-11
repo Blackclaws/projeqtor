@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<project name="ProjeQtOr V6.1" default="buildFull">
+<project name="ProjeQtOr V6.2" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V6.1.1" />
+  <property name="version"       value="V6.2.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="${drive}/www/projeqtorV6.1" />
+  <property name="src.dir"       value="${drive}/www/projeqtorV6.2" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -239,7 +239,7 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
   
-  <property name="dojo.version" value="1.11.3"/>
+  <property name="dojo.version" value="1.12.1"/>
   <property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-${dojo.version}-src"/>
   <property name="build.name" value="external-${dojo.version}"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 

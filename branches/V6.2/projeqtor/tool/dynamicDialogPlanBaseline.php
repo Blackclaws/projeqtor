@@ -27,8 +27,8 @@
 $base=new Baseline();
 $crit=array("idUser"=>getSessionUser()->id);
 $proj=null;
-if (array_key_exists('project',$_SESSION)) {
-  $proj=$_SESSION['project'];
+if(sessionValueExists('project')){
+  $proj=getSessionValue('project');;
 }
 $mode="add";
 $idBaseline=null;

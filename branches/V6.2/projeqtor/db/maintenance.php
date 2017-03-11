@@ -39,7 +39,7 @@ $versionHistory = array(
   "V4.0.0", "V4.0.1",  "V4.1.-",  "V4.1.0",  "V4.2.0",  "V4.2.1",  "V4.3.0.a","V4.3.0",  "V4.3.2",  "V4.4.0",  "V4.5.0", "V4.5.3", "V4.5.6",
   "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.2.5", "V5.3.0.a", "V5.3.0", "V5.3.2", "V5.3.3", 
   "V5.4.0", "V5.4.2", "V5.4.3", "V5.4.4", "V5.4.5", "V5.5.0", "V5.5.2", "V5.5.3", 
-  "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1");
+  "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1", "V6.1.3");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -517,6 +517,34 @@ if ($currVersion=="V6.0.0" or $currVersion=="V6.0.1" ) {
     }
   }
   disableCatchErrors();
+}
+
+if (beforeVersion($currVersion,"V6.1.2") and $currVersion!='V0.0.0') {
+	traceLog("update assignment were cost is null [6.1.0]");
+	setSessionUser(new User());
+	$ass=new Assignment();
+	$assList=$ass->getSqlElementsFromCriteria(null,false, "realCost is null and realWork is not null and newDailyCost is not null");
+	$cpt=0;
+	$cptCommit=100;
+	Sql::beginTransaction();
+	traceLog("   => ".count($assList)." to update");
+	if (count($assList)<100) {
+		projeqtor_set_time_limit(1500);
+	} else {
+		traceLog("   => setting unlimited execution time for script (more than 100 assignments to update)");
+		projeqtor_set_time_limit(0);
+	}
+	foreach($assList as $ass) {
+		$res=$ass->saveWithRefresh();
+		$cpt++;
+		if ( ($cpt % $cptCommit) == 0) {
+			Sql::commitTransaction();
+			traceLog("   => $cpt assignments done...");
+			Sql::beginTransaction();
+		}
+	}
+	Sql::commitTransaction();
+	traceLog("   => $cpt assignments updated");
 }
 
 // To be sure, after habilitations updates ...

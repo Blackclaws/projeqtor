@@ -83,7 +83,9 @@ class Security
     if (! $boolean or $boolean==false or trim($boolean)=='') return 0;
     if ($boolean==-1 or $boolean===true) return 1;
     if ($boolean=='on') return 1;
+    if ($boolean=='true') return 1;
     if ($boolean=='off') return 0;
+    if ($boolean=='false') return 0;
     if ($boolean!==0 and $boolean!==1) {
       if($activeTraceHack)traceHack("the value '$boolean' is not a boolean");
       $boolean=null;

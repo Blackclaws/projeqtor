@@ -87,8 +87,8 @@ function drawTableFromObjectList($objectList) {
 	  $displayWidth=$width . 'px';
 	  $longTextWidth=($displayWidth-30-300).'px';
 	} else {
-	  if (array_key_exists('screenWidth',$_SESSION)) {
-	    $detailWidth = round(($_SESSION['screenWidth'] * 0.8) - 15) ; // 80% of screen - split barr - padding (x2)
+	  if (sessionValueExists('screenWidth')) {
+	    $detailWidth = round((getSessionValue('screenWidth') * 0.8) - 15) ; // 80% of screen - split barr - padding (x2)
 	  } else {
 	    $displayWidth='98%';
 	  }
@@ -112,8 +112,8 @@ function drawTableFromObjectList($objectList) {
 		  $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $criteria);
 		}
 		if ($type=='userParameter') { // user parameters may be stored in session
-			if (array_key_exists($code,$_SESSION) ) {
-				$obj->parameterValue=$_SESSION[$code];
+		  if (sessionValueExists($code)) {
+				$obj->parameterValue=getSessionValue($code);
 			}
 		}
 		if ($format=='newColumn') {

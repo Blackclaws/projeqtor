@@ -218,7 +218,7 @@ class Audit extends SqlElement {
 			setcookie ( session_name (), '', time ()- 42000, $params ["path"], $params ["domain"], $params ["secure"], $params ["httponly"] );
 		}
 		try {
-			$_SESSION=array();
+			resetSession();
 			error_reporting(0);
       //session_write_close();
 			@session_destroy();

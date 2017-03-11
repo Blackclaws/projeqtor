@@ -86,23 +86,27 @@ class Link extends SqlElement {
       $ts=new TestSession($this->ref1Id);
       $ts->updateDependencies();
     }
-    // gautier add
-    $class1 = $this->ref1Type;
-    $id1 = $this->ref1Id;
-    $obj = new $class1( $id1 );
-    if (property_exists ( $class1, 'lastUpdateDateTime' )) {
-      $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
-      $resObj=$obj->saveForced();
+    if(SqlElement::class_exists($this->ref1Type)){
+      // gautier add
+      $class1 = $this->ref1Type;
+      $id1 = $this->ref1Id;
+      $obj = new $class1( $id1 );
+      if (property_exists ( $class1, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
     }
     
-    $class2 = $this->ref2Type;
-    $id2 = $this->ref2Id;
-    $obj = new $class2( $id2 );
-    if (property_exists ( $class2, 'lastUpdateDateTime' )) {
-      $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
-      $resObj=$obj->saveForced();
+    if(SqlElement::class_exists($this->ref2Type)){
+      $class2 = $this->ref2Type;
+      $id2 = $this->ref2Id;
+      $obj = new $class2( $id2 );
+      if (property_exists ( $class2, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
+      // end gautier 
     }
-    // end gautier 
     return $result;
   }
   
@@ -120,24 +124,26 @@ class Link extends SqlElement {
     }
     
     // gautier add
-    $class1 = $this->ref1Type;
-    $id1 = $this->ref1Id;
-    $obj = new $class1( $id1 );
-    if (property_exists ( $class1, 'lastUpdateDateTime' )) {
-      $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
-      $resObj=$obj->saveForced();
+    if(SqlElement::class_exists($this->ref1Type)){
+      $class1 = $this->ref1Type;
+      $id1 = $this->ref1Id;
+      $obj = new $class1( $id1 );
+      if (property_exists ( $class1, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
     }
     
-    $class2 = $this->ref2Type;
-    $id2 = $this->ref2Id;
-    $obj = new $class2( $id2 );
-    if (property_exists ( $class2, 'lastUpdateDateTime' )) {
-      $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
-      $resObj=$obj->saveForced();
+    if(SqlElement::class_exists($this->ref1Type)){
+      $class2 = $this->ref2Type;
+      $id2 = $this->ref2Id;
+      $obj = new $class2( $id2 );
+      if (property_exists ( $class2, 'lastUpdateDateTime' )) {
+        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+        $resObj=$obj->saveForced();
+      }
     }
     // end gautier add
-    
-    
     return $result;
   }
   /** ==========================================================================

@@ -48,10 +48,17 @@
       <div id="buttonDivContainer" dojoType="dijit.layout.ContentPane" region="left">
         <table width="100%" class="listTitle" >
           <tr valign="middle" height="32px"> 
-            <td width="50px" align="center" >
-              <img style="position: absolute; top: 0px; left: 0px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
-              <img style="position: absolute; top: 5px; left: 5px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
-              <img style="position: absolute; top: 10px; left: 10px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
+            <td width="50px" align="center" class="iconHighlight" >
+<!--               //krowry debug doesn't work in size 22 -->
+              <div style="position: absolute; top: 0px; left: 2px">
+              <?php echo formatIcon($objectClass, 22,null,false);?> 
+              </div>
+              <div style="position: absolute; top: 5px; left: 14px">
+              <?php echo formatIcon($objectClass, 22,null,false);?> 
+              </div>
+              <div style="position: absolute; top: 10px; left: 26px">
+              <?php echo formatIcon($objectClass, 22,null,false);?> 
+              </div>    
             </td>
             <td valign="middle"><span class="title"><?php echo i18n('labelMultipleMode');?></span></td>
             <td width="15px">&nbsp;</td>
@@ -350,8 +357,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
-                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                	<?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
@@ -363,8 +370,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
@@ -376,8 +383,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialEndDate" id="initialEndDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
@@ -389,8 +396,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualEndDate" id="actualEndDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
@@ -402,8 +409,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDateTime');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
                 <div dojoType="dijit.form.TimeTextBox" name="initialDueTime" id="initialDueTime"
@@ -417,8 +424,8 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDateTime');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
                 <div dojoType="dijit.form.TimeTextBox" name="actualDueTime" id="actualDueTime"
@@ -432,9 +439,9 @@
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedStartDate');?>&nbsp;:&nbsp;</td>
               <td>
-                <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <div dojoType="dijit.form.FilteringSelect" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
@@ -447,10 +454,33 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedEndDate" id="<?php echo $pe;?>_validatedEndDate"
-                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                  style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+     // validatedCost and validatedWork krowry debug
+            $pe=get_class($obj).'PlanningElement';
+            if (isDisplayable($obj,'priority', true)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colValidatedWork');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="<?php echo $pe;?>_validatedWork" id="<?php echo $pe;?>_validatedWork"
+                 rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php }
+     // validatedCost and validatedWork krowry debug
+            $pe=get_class($obj).'PlanningElement';
+            if (isDisplayable($obj,'priority', true)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colValidatedCost');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="<?php echo $pe;?>_validatedCost" id="<?php echo $pe;?>_validatedCost"
+                 rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+                 <?php echo '$';?>
               </td>
             </tr>
             <?php }

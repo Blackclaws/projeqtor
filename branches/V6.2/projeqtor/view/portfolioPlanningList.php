@@ -69,8 +69,8 @@ if ($saveShowClosed) {
 }
 
 $proj=null;
-if (array_key_exists('project',$_SESSION)) {
-  $proj=$_SESSION['project'];
+if (sessionValueExists('project')) {
+  $proj=getSessionValue('project');
 }
 if ($proj=='*' or !$proj) {
   $proj=null;
@@ -119,8 +119,8 @@ if ($proj=='*' or !$proj) {
                     <tr>
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
                         <div dojoType="dijit.form.DateTextBox"
-	                        <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-														echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+														echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 													}?>
                            id="startDatePlanView" name="startDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
@@ -138,8 +138,8 @@ if ($proj=='*' or !$proj) {
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td>
                       <td>
                         <div dojoType="dijit.form.DateTextBox"
-	                        <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-														echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+														echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 													}?>
                            id="endDatePlanView" name="endDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"

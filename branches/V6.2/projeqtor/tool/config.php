@@ -383,8 +383,8 @@ $requi['logLevel'] = true;
       dijit.Tooltip.defaultPosition=["below","right"];
       //dojo.byId('login').focus();
       <?php 
-      if (array_key_exists('theme',$_SESSION) ) {
-        echo "dojo.byId('body').className='" . $_SESSION['theme'] . "';";
+      if (sessionValueExists('theme')){
+        echo "dojo.byId('body').className='" . getSessionValue('theme') . "';";
       }
       ?>
       var changePassword=false;

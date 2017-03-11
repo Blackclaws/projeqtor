@@ -76,8 +76,8 @@ $defaultIdTypeValue = '';
                     <div style="width:100px; text-align: center; color: #000000;" 
                          dojoType="dijit.form.DateTextBox" 
                          <?php
-                         if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-                             echo ' constraints="{datePattern:\'' . $_SESSION['browserLocaleDateFormatJs'] . '\'}" ';
+                         if (sessionValueExists('browserLocaleDateFormatJs')) {
+                             echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\'}" ';
                          }
                          ?>
                          invalidMessage="<?php echo i18n('messageInvalidDate'); ?>" 
@@ -90,8 +90,8 @@ $defaultIdTypeValue = '';
                     <div style="width:100px; text-align: center; color: #000000;" 
                          dojoType="dijit.form.DateTextBox" 
                          <?php
-                         if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-                             echo ' constraints="{datePattern:\'' . $_SESSION['browserLocaleDateFormatJs'] . '\'}" ';
+                         if (sessionValueExists('browserLocaleDateFormatJs')) {
+                             echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\'}" ';
                          }
                          ?>
                          invalidMessage="<?php echo i18n('messageInvalidDate'); ?>" 

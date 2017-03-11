@@ -23,6 +23,8 @@ Il y a trois lignes de codes car on permet d'avoir l'image en trois taille ( 16p
 
 Inclure donc l'image dans chaques couleurs (ProjeQtOrFlatBlue,ProjeQtOrFlatGreen,ProjeQtOrFlatRed,ProjeQtOrFlatGrey)et l'inclure aussi en standard dans "www/projeqtorV6.1/view/css/projeqtorIcons.css".
 
+.. seealso:: Si vous appelez l'icône avec le même nom que votre classe , elle sera automatiquement détecté sans utiliser de fonctiion. Exemple : iconAction32 sera automatiquement détecté car il existe une classe "Action".
+
 - Derniére choses à savoir , utilisez trois fonctions pour afficher les images. 
   
   - formatSmallButton => Pour les petites icônes en 16px.

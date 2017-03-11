@@ -47,7 +47,7 @@ if (! function_exists('mb_check_encoding')) {
 $crit=array('name'=>$username);
 $user=SqlElement::getSingleSqlElementFromCriteria('User', $crit);
 $sessionSalt=md5("projeqtor".date('YmdHis'));
-$_SESSION['sessionSalt']=$sessionSalt;
+setSessionValue('sessionSalt', $sessionSalt);
 if (isset($user->crypto) and ! $user->isLdap) {
   echo $user->crypto.";".$user->salt.";".$sessionSalt;
 } else {

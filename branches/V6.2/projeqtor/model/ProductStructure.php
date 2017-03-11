@@ -117,10 +117,10 @@ class ProductStructure extends SqlElement {
     $result="";
     
     // Duplicate
-    $checkCrit=array('idProduct'=>$this->idProduct,
-                     'idComponent'=>$this->idComponent);
+    $checkCrit="idProduct=$this->idProduct and idComponent=$this->idComponent";
+    if ($this->id) $checkCrit.=" and id!=$this->id";
     $comp=new ProductStructure();
-    $check=$comp->getSqlElementsFromCriteria($checkCrit);
+    $check=$comp->getSqlElementsFromCriteria(null, false,$checkCrit);
     if (count($check)>0) {
       $result.='<br/>' . i18n('errorDuplicateLink');
     } 

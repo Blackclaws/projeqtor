@@ -60,11 +60,11 @@ class NumberFormatter52  {
       }
     }
     setlocale(LC_NUMERIC, 'C');
-    if (array_key_exists('browserLocaleDecimalPoint', $_SESSION)) {
-      $this->decimalSeparator=$_SESSION['browserLocaleDecimalPoint'];
+    if (sessionValueExists('browserLocaleDecimalPoint')) {
+      $this->decimalSeparator=getSessionValue('browserLocaleDecimalPoint');
     }
-    if (array_key_exists('browserLocaleThousandSeparator', $_SESSION)) {
-      $this->thouthandSeparator=$_SESSION['browserLocaleThousandSeparator'];
+    if (sessionValueExists('browserLocaleThousandSeparator')) {
+      $this->thouthandSeparator=getSessionValue('browserLocaleThousandSeparator');
     }
     if (ord($this->thouthandSeparator)>127) {
       $this->thouthandSeparator=" ";

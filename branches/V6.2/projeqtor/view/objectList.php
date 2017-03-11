@@ -51,9 +51,9 @@ if (array_key_exists('objectElementable',$_REQUEST)) {
 $obj=new $objectClass;
 
 if (array_key_exists('Directory', $_REQUEST)) {
-	$_SESSION['Directory']=$_REQUEST['Directory'];
+	setSessionValue('Directory', $_REQUEST['Directory']);
 } else {
-	unset($_SESSION['Directory']);
+  unsetSessionValue('Directory');
 }
 $multipleSelect=false;
 if (array_key_exists('multipleSelect', $_REQUEST)) {
@@ -61,7 +61,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 		$multipleSelect=true;
 	}
 }
-$showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+$showIdle=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
 if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
   if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
     $arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
@@ -205,6 +205,24 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                     refreshJsonList('<?php echo $objectClass;?>');
                   </script>
                 </select>
+              </td>
+              <?php }?> 
+              <?php if ( property_exists($obj,'isEis') ) { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("hideInService");?>
+                &nbsp;</span>
+              </td>
+              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">
+                <?php $hideInService=Parameter::getUserParameter('hideInService');?>
+                <div title="<?php echo i18n('hideInService')?>" dojoType="dijit.form.CheckBox" 
+                class="whiteCheck" <?php if ($hideInService=='true') echo " checked ";?>
+                type="checkbox" id="hideInService" name="hideInService">
+                <script type="dojo/method" event="onChange" >
+                  saveDataToSession('hideInService',((this.checked)?true:false),true);
+                  setTimeout("refreshJsonList('<?php echo $objectClass;?>');",50);
+                </script>
+              </div>&nbsp;
               </td>
               <?php }?> 
               <?php 

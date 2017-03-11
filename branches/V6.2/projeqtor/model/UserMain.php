@@ -504,7 +504,7 @@ class UserMain extends SqlElement {
     $accessRightRead=securityGetAccessRight('menuProject', 'read');
     // For ALL, by default can have access to all projects
     if ($accessRightRead=="ALL") {
-    	$listAllProjects=SqlList::getList('Project');
+    	$listAllProjects=SqlList::getList('Project','name', null, true);
     	foreach($listAllProjects as $idPrj=>$namePrj) {
     		$result[$idPrj]=$namePrj;
     	}
@@ -743,7 +743,7 @@ class UserMain extends SqlElement {
     } else {
     	$user->resetVisibleProjects();
       setSessionUser($user);
-      unset($_SESSION['visibleProjectsList']);
+      unsetSessionValue('visibleProjectsList');
     }
   }
 
@@ -901,21 +901,21 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 		if ($this->isLdap == 0) {
 			if ($this->crypto=='sha256') {
 			  debugTraceLog("User->authenticate : sha256 encryption");
-        $expected=$this->password.$_SESSION['sessionSalt'];
+        $expected=$this->password.getSessionValue('sessionSalt');
         $expected=hash("sha256", $expected);
       } else if ($this->crypto=='md5') {
         debugTraceLog("User->authenticate : md5 encryption");
-				$expected=$this->password.$_SESSION['sessionSalt'];
+				$expected=$this->password.getSessionValue('sessionSalt');
 				$expected=md5($expected);				
 			} else if ($this->crypto=='old') {
 			  debugTraceLog("User->authenticate : migration, no encryption");
         // Migrating to V4.0.0 : $parampassword is not MD5 unencrypted, but User->password is
         $expected=$this->password; // is MD5 encrypted
-        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength')));
+        $parampassword=md5(AesCtr::decrypt($parampassword, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength')));
       } else { // no crypto
         debugTraceLog("User->authenticate : no encryption");
 				$expected=$this->password;
-				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
+				$parampassword=AesCtr::decrypt($parampassword, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength'));
 			}
 			if ( $expected <> $parampassword) {
 				$this->unsuccessfullLogin();
@@ -930,7 +930,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 	    debugTraceLog("User->authenticate : LDAP authenticate");
 	  	disableCatchErrors();
 	  	// Decode password
-	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], Parameter::getGlobalParameter('aesKeyLength'));
+	  	$parampassword=AesCtr::decrypt($parampassword, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength'));
 	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        
@@ -1114,7 +1114,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
    */
   public function finalizeSuccessfullConnection($rememberMe) {
     setSessionUser($this);
-    $_SESSION['appRoot']=getAppRoot();
+    setSessionValue('appRoot', getAppRoot());
     $crit=array();
     $crit['idUser']=$this->id;
     $crit['idProject']=null;
@@ -1123,14 +1123,14 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
     //$this->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
     foreach($objList as $obj) {
       if ($obj->parameterCode=='lang' and $obj->parameterValue) {
-        $_SESSION['currentLocale']=$obj->parameterValue;
+        setSessionValue('currentLocale', $obj->parameterValue);
         $i18nMessages=null;
       } else if ($obj->parameterCode=='defaultProject') {
         $prj=new Project($obj->parameterValue);
         if ($prj->name!=null and $prj->name!='') {
-          $_SESSION['project']=$obj->parameterValue;
+          setSessionValue('project', $obj->parameterValue);
         } else {
-          $_SESSION['project']='*';
+          setSessionValue('project', '*');
         }
       } else if (substr($obj->parameterCode,0,6)=='Filter') {
         if (! $this->_arrayFilters) {
@@ -1156,7 +1156,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
         $this->_arrayFilters[$filterObjectClass]=$filterArray;
         $this->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
       } else {
-        $_SESSION[$obj->parameterCode]=$obj->parameterValue;
+        setSessionValue($obj->parameterCode, $obj->parameterValue);
       }
     }
     traceLog("NEW CONNECTED USER '" . $this->name . "'".(($rememberMe)?' (using remember me feature)':''));

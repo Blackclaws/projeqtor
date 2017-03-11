@@ -112,14 +112,14 @@ if ( array_key_exists('report',$_REQUEST) ) {
 	include "../report/header.php";
 }
 if (! isset($outMode)) { $outMode=""; }
-$showIdleProjects=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+$showIdleProjects=(sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
   $showIdle=true;
   if (array_key_exists('idle',$_REQUEST)) {
     $showIdle=true;
   }
 
 $accessRightRead=securityGetAccessRight('menuActivity', 'read');
-if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*'))
+if ( ! ( $accessRightRead!='ALL' or (sessionValueExists('project') and getSessionValue('project')!='*'))
 and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
 	$listProj=explode(',',getVisibleProjectsList(! $showIdleProjects));
 	// #720

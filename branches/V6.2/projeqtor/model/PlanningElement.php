@@ -191,10 +191,14 @@ class PlanningElement extends SqlElement {
     if ($name=="StartDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (testAllowedChange(this.value)) {';
-      $colScript .= '    var startDate=this.value;';
-      $colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").value;';
-      $colScript .= '    var duration=workDayDiffDates(startDate, endDate);';
-      $colScript .= '    if (duration) dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",duration);';
+      $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").get("value");';
+      //$colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").value;';
+      //$colScript .= '    var duration=workDayDiffDates(startDate, endDate);';
+      //$colScript .= '    if (duration) dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",duration);';
+      $colScript .= '    var duration=dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").get("value");';
+      $colScript .= '    var endDate=addWorkDaysToDate(startDate,duration);';
+      $colScript .= '    if (endDate) dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").set("value",endDate);';
+      $colScript .= '    if (!duration) dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",1);';
       $colScript .= '    terminateChange();';
       $colScript .= '    formChanged();';
       $colScript .= '  }';

@@ -69,8 +69,8 @@
                 $currentYear=strftime("%Y") ;
                 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));?> 
                 <div dojoType="dijit.form.DateTextBox"
-                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                	<?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                   id="dateSelector" name=""dateSelector""
                   invalidMessage="<?php echo i18n('messageInvalidDate')?>"

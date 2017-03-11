@@ -34,7 +34,7 @@
    }
    header ('Content-Type: text/html; charset=UTF-8');
    scriptLog('   ->/view/login.php');
-   $_SESSION['application']="PROJEQTOR";
+   setSessionValue('application', "PROJEQTOR");
    if (getSessionValue('setup', null, true) or version_compare(ltrim(Sql::getDbVersion(),'V'), '5.0.0',"<") ) {
      $msgList=array();
    } else {

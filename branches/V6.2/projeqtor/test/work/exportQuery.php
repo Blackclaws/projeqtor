@@ -34,8 +34,8 @@
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.=  $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects()) ;
     } 
-    if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
-        if ($_SESSION['project']!='*') {
+    if (property_exists($obj, 'idProject') and sessionValueExists('project')) {
+        if (getSessionValue('project')!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           $queryWhere.=  '(' . $table . ".idProject in " . getVisibleProjectsList() ;
           $queryWhere.= ' or ' . $table . '.id in ' . getVisibleProjectsList() . ')';

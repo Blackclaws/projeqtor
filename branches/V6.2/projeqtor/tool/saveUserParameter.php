@@ -35,9 +35,7 @@ Sql::beginTransaction();
  $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
  $obj->parameterValue=$_REQUEST['value'];
  $result=$obj->save();
- if (!array_key_exists('userParamatersArray',$_SESSION)) {
-   $_SESSION['userParamatersArray']=array();
- }
- $_SESSION['userParamatersArray'][$_REQUEST['parameter']]=$_REQUEST['value'];
+ setSessionTableValue('userParamatersArray', $_REQUEST['parameter'], $_REQUEST['value']);
+ 
 Sql::commitTransaction();
  ?>

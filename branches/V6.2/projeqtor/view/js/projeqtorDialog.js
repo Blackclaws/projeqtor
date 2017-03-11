@@ -672,6 +672,10 @@ function selectDetailItem(selectedValue, lastSavedName) {
     combo.set("value", idFldVal);
   }
   hideDetail();
+  if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true' && dojo.byId('directAccessToListButton')) {
+    var idButton = dojo.byId('directAccessToListButton').value;
+    setTimeout("dijit.byId('" + idButton + "').onClick();", 20);
+  }
 }
 
 function displaySearch(objClass) {
@@ -1354,6 +1358,26 @@ function addProductStructure(way) {
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
   var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
+  console.log("OK");
+  var callBackFunc=function() {
+    console.log(dojo.byId('directAccessToList'));
+    if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true') {
+      showDetail('productStructureListId', 1, 'Component', true); // TODO Retreive can create
+    } else {
+      dijit.byId('dialogProductStructure').show();
+    }
+  }
+  loadDialog('dialogProductStructure',callBackFunc, false, param, true);
+}
+function editProductStructure(way,productStructureId) {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  
+  var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way+"&structureId="+productStructureId;
   loadDialog('dialogProductStructure',null, true, param, true);
 }
 
@@ -1423,6 +1447,40 @@ function addProductVersionStructure(way) {
   var objectId=dojo.byId("objectId").value;
   var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
   loadDialog('dialogProductVersionStructure',null, true, param, true);
+}
+
+function editProductVersionStructure(way, productVersionStructureId) {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way+"&structureId="+productVersionStructureId;
+  loadDialog('dialogProductVersionStructure',null, true, param, true);
+}
+
+function upgradeProductVersionStructure() {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  var params="&objectClass="+objectClass+"&objectId="+objectId;
+  dojo.xhrGet({
+    url : "../tool/upgradeProductVersionStructure.php?confirm=false"+params,
+    handleAs : "text",
+    load : function(data) {
+      actionOK=function() {
+        var objectClass=dojo.byId("objectClass").value;
+        var objectId=dojo.byId("objectId").value;
+        var params="&objectClass="+objectClass+"&objectId="+objectId;
+        loadContent("../tool/upgradeProductVersionStructure.php?confirm=true"+params, "resultDiv", null, true, 'ProductVersionStructure');
+      };
+      showConfirm(data, actionOK);
+    }
+  });
 }
 
 function refreshProductVersionStructureList(selected,newName) {
@@ -2013,6 +2071,22 @@ function assignmentChangeRole() {
     }
   });
 }
+//gautier #2516
+function billLineChangeCatalog(){
+  var idCatalog=dijit.byId("billLineIdCatalog").get("value");
+  dojo.xhrGet({
+    url : '../tool/getSingleData.php?dataType=catalogBillLine&idCatalog='+idCatalog,
+    handleAs : "text",
+    load : function(data) {
+      arrayData=data.split('#!#!#!#!#!#');
+      dijit.byId('billLineDescription').set('value',arrayData[0]);
+      dijit.byId('billLineDetail').set('value',arrayData[1]);
+      dijit.byId('billLinePrice').set('value',parseFloat(arrayData[2]));
+      dijit.byId('billLineUnit').set('value',arrayData[3]);
+    }
+  });
+}
+//end
 
 // =============================================================================
 // = ExpenseDetail
@@ -3864,43 +3938,42 @@ function saveProductProject() {
 //=============================================================================
 
 function addTestCaseRun() {
-if (checkFormChangeInProgress()) {
- showAlert(i18n('alertOngoingChange'));
- return;
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+   //disableWidget('dialogTestCaseRunSubmit');  
+  var params="&testSessionId="+dijit.byId('id').get('value');
+  loadDialog('dialogTestCaseRun', null, true, params);
 }
- //disableWidget('dialogTestCaseRunSubmit');  
-var params="&testSessionId="+dijit.byId('id').get('value');
-loadDialog('dialogTestCaseRun', null, true, params);
 
-}
 function refreshTestCaseRunList(selected) {
-disableWidget('dialogTestCaseRunSubmit');
-var url='../tool/dynamicListTestCase.php';
-url+='?idProject='+dijit.byId('idProject').get('value');
-if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
-else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
-else if (dijit.byId('idComponent')) url+='&idComponent='+dijit.byId('idComponent').get('value');
-if (selected) {
- url+='&selected=' + selected;
-}
-loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
+  disableWidget('dialogTestCaseRunSubmit');
+  var url='../tool/dynamicListTestCase.php';
+  url+='?idProject='+dijit.byId('idProject').get('value');
+  if (dijit.byId('idProduct')) url+='&idProduct='+dijit.byId('idProduct').get('value');
+  else if (dijit.byId('idProductOrComponent')) url+='&idProduct='+dijit.byId('idProductOrComponent').get('value');
+  else if (dijit.byId('idComponent')) url+='&idComponent='+dijit.byId('idComponent').get('value');
+  if (selected) {
+    url+='&selected=' + selected;
+  }
+  loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
 }
 
 function editTestCaseRun(testCaseRunId, idRunStatus, callback) {
-if (checkFormChangeInProgress()) {
- showAlert(i18n('alertOngoingChange'));
- return;
-}
-var testSessionId = dijit.byId('id').get('value');
-var params="&testCaseRunId=" + testCaseRunId + "&testSessionId=" + testSessionId;
-if (idRunStatus) params+="&runStatusId="+idRunStatus;
-loadDialog('dialogTestCaseRun', callback, ((callback)?false:true), params);
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var testSessionId = dijit.byId('id').get('value');
+  var params="&testCaseRunId=" + testCaseRunId + "&testSessionId=" + testSessionId;
+  if (idRunStatus) params+="&runStatusId="+idRunStatus;
+  loadDialog('dialogTestCaseRun', callback, ((callback)?false:true), params);
 }
 
 function passedTestCaseRun(idTestCaseRun) {
   var callback=function() { 
-    saveTestCaseRun(); 
-    dijit.byId('dialogTestCaseRun').hide();
+    if (saveTestCaseRun()) dijit.byId('dialogTestCaseRun').hide();
   };
   editTestCaseRun(idTestCaseRun, '2', callback);
 }
@@ -3911,8 +3984,7 @@ function failedTestCaseRun(idTestCaseRun) {
 
 function blockedTestCaseRun(idTestCaseRun) {
   var callback=function() { 
-    saveTestCaseRun(); 
-    dijit.byId('dialogTestCaseRun').hide();
+    if (saveTestCaseRun()) dijit.byId('dialogTestCaseRun').hide();
   };
   editTestCaseRun(idTestCaseRun, '4', callback);
 }
@@ -3963,9 +4035,11 @@ function saveTestCaseRun() {
   if (formVar.validate()) {
    loadContent("../tool/saveTestCaseRun.php", "resultDiv", "testCaseRunForm", true, 'testCaseRun');
    dijit.byId('dialogTestCaseRun').hide();
+   return true;
   } else {
    dijit.byId("dialogTestCaseRun").show();
    showAlert(i18n("alertInvalidForm"));
+   return false;
   }
 }
 
@@ -5994,7 +6068,16 @@ function hideBigImage(objectClass, objectId) {
   }
 }
 
+showHtmlContent=null;
 function showLink(link) {
+  if (dojo.isIE) {
+    console.log(window.frames['showHtmlFrame']);
+    if (showHtmlContent==null) {
+      showHtmlContent=dijit.byId("dialogShowHtml").get('content');
+    } else {
+      dijit.byId("dialogShowHtml").set('content',showHtmlContent);
+    }
+  }
   // window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';
   dijit.byId("dialogShowHtml").title=link;
   window.frames['showHtmlFrame'].location.href=link;
@@ -6002,9 +6085,18 @@ function showLink(link) {
   window.frames['showHtmlFrame'].focus();
 }
 function showHtml(id, file, className) {
+  if (dojo.isIE) {
+    console.log(window.frames['showHtmlFrame']);
+    if (showHtmlContent==null) {
+      showHtmlContent=dijit.byId("dialogShowHtml").get('content');
+    } else {
+      dijit.byId("dialogShowHtml").set('content',showHtmlContent);
+    }
+  }
   dijit.byId("dialogShowHtml").title=file;
   window.frames['showHtmlFrame'].location.href='../tool/download.php?class='+className+'&id='
       + id + '&showHtml=true';
+  dijit.byId("dialogShowHtml").clearOnHide=false;
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
 } 

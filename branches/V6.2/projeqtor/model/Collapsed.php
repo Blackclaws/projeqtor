@@ -103,14 +103,14 @@ class Collapsed extends SqlElement {
   }
   
   public static function getCollaspedList() {
-    if (! array_key_exists('collapsed', $_SESSION) ) {
+    if (! sessionValueExists('collapsed') ) {
       self::initialiseCollapsedList();
     }
-    return $_SESSION['collapsed'];
+    return getSessionValue('collapsed');
   }
   
   private static function setCollaspedList($list) { 
-  	$_SESSION['collapsed']=$list;
+  	setSessionValue('collapsed', $list);
   }
   
   private static function initialiseCollapsedList() {

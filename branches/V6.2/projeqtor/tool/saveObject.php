@@ -28,7 +28,7 @@
  * ===========================================================================
  * Save the current object : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
- * The old values are fetched in $currentObject of $_SESSION
+ * The old values are fetched in $currentObject of SESSION
  * Only changed values are saved.
  * This way, 2 users updating the same object don't mess.
  */
@@ -111,11 +111,6 @@ if ($status == "OK" and $className=='Project') {
 }
 if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
-    /*if (isset ( $_REQUEST ['directAccessIndex'] )) {
-      $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = ;
-    } else {
-      $_SESSION ['currentObject'] = new $className ( $newObj->id );
-    }*/
     SqlElement::setCurrentObject(new $className ( $newObj->id ));
   }
 }
