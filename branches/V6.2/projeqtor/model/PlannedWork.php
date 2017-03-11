@@ -734,7 +734,7 @@ class PlannedWork extends GeneralWork {
                     $plan->plannedStartFraction=$fractionStart;
                   }
                   if (! $plan->plannedEndDate or $plan->plannedEndDate<$currentDate) {
-                  	if ($ass->realEndDate && $ass->realEndDate>$currentDate) {
+                    if ($ass->realEndDate && $ass->realEndDate>$currentDate) {
                   		$plan->plannedEndDate=$ass->realEndDate;
                   		$plan->plannedEndFraction=1;
                   	} else {

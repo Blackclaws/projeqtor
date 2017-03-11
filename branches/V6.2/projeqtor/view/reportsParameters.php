@@ -222,8 +222,8 @@ foreach ($listParam as $param) {
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:100px; text-align: center; color: #000000;" 
       dojoType="dijit.form.DateTextBox" 
-      <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-				echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+      <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+				echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
       }?>
       invalidMessage="<?php echo i18n('messageInvalidDate');?>" 
       value="<?php echo $defaultDate;?>"
@@ -286,9 +286,9 @@ foreach ($listParam as $param) {
   } else if ($param->paramType=='projectList') {
     $defaultValue='';
     if ($param->defaultValue=='currentProject') {
-      if (array_key_exists('project',$_SESSION)) {
-        if ($_SESSION['project']!='*') {
-          $defaultValue=$_SESSION['project'];
+      if (sessionValueExists('project')) {
+        if (getSessionValue('project')!='*') {
+          $defaultValue=getSessionValue('project');
         }
       }
     } else if ($param->defaultValue) {

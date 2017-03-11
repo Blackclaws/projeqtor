@@ -38,6 +38,12 @@ if (! array_key_exists('objectId',$_REQUEST)) {
 $objectId=$_REQUEST['objectId'];
 Security::checkValidId($objectId);
 
+$structureId=null;
+if (array_key_exists('structureId',$_REQUEST)) {
+	$structureId=$_REQUEST['structureId'];
+	Security::checkValidId($structureId);
+}
+
 $way=null;
 if (array_key_exists('way',$_REQUEST)) {
   $way=$_REQUEST['way'];
@@ -45,13 +51,19 @@ if (array_key_exists('way',$_REQUEST)) {
 if ($way!='structure' and $way!='composition') {
   throwError("Incorrect value for parameter way='$way'");
 }
+
+$str=new ProductStructure($structureId);
+
 if ($objectClass=='Product') {
   $listClass='Component';
+  $listId=$str->idComponent;
 } else if ($objectClass=='Component') {
   if ($way=='structure') {
     $listClass='ProductOrComponent';
+    $listId=$str->idProduct;
   } else {
     $listClass='Component';
+    $listId=$str->idComponent;
   }
 } else {
   errorLog("Unexpected objectClass $objectClass");
@@ -59,6 +71,15 @@ if ($objectClass=='Product') {
   exit;
 }
 $object=new $objectClass($objectId);
+
+$directAccessToList='false';
+if ($way=='composition') {
+	$paramDirect=Parameter::getUserParameter('directAccessToComponentList');
+	if ($paramDirect=='YES') {
+		$directAccessToList='true';
+	}
+}
+
 ?>
 <table>
   <tr>
@@ -67,7 +88,10 @@ $object=new $objectClass($objectId);
         <input id="productStructureObjectClass" name="productStructureObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productStructureObjectId" name="productStructureObjectId" type="hidden" value="<?php echo $objectId;?>" />
         <input id="productStructureListClass" name="productStructureListClass" type="hidden" value="<?php echo $listClass;?>" />
+        <input id="productStructureId" name="productStructureId" type="hidden" value="<?php echo $structureId;?>" />
         <input id="productStructureWay" name="productStructureWay" type="hidden" value="<?php echo $way;?>" />
+        <input id="directAccessToList" name="directAccessToList" type="hidden" value="<?php echo $directAccessToList;?>" />
+        <input id="directAccessToListButton" name="directAccessToListButton" type="hidden" value="dialogProductStructureSubmit" />
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('section'.ucfirst($way),array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  
@@ -78,8 +102,8 @@ $object=new $objectClass($objectId);
             </td>
             <td>
               <select size="14" id="productStructureListId" name="productStructureListId[]""
-                multiple class="selectList" onchange="enableWidget('dialogProductStructureSubmit');"  ondblclick="saveProductStructure();" value="">
-                  <?php htmlDrawOptionForReference('id'.$listClass, null, null, true);?>
+                <?php if (!$structureId) echo 'multiple';?> class="selectList" onchange="enableWidget('dialogProductStructureSubmit');"  ondblclick="saveProductStructure();" value="">
+                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, null, true);?>
               </select>
             </td>
             <td style="vertical-align: top">
@@ -121,7 +145,7 @@ $object=new $objectClass($objectId);
                 id="productStructureComment" name="productStructureComment"
                 style="width: 400px;"
                 maxlength="4000"
-                class="input"></textarea>
+                class="input"><?php echo $str->comment;?></textarea>
             </td>
           </tr>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -134,7 +158,7 @@ $object=new $objectClass($objectId);
       <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogProductStructure').hide();">
         <?php echo i18n("buttonCancel");?>
       </button>
-      <button class="mediumTextButton" disabled dojoType="dijit.form.Button" type="submit" id="dialogProductStructureSubmit" onclick="protectDblClick(this);saveProductStructure();return false;">
+      <button class="mediumTextButton" <?php if (!$structureId) echo 'disabled';?> dojoType="dijit.form.Button" type="submit" id="dialogProductStructureSubmit" onclick="protectDblClick(this);saveProductStructure();return false;">
         <?php echo i18n("buttonOK");?>
       </button>
     </td>

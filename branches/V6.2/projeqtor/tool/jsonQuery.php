@@ -101,7 +101,7 @@
     }
     
     // --- Should idle projects be shown ?
-    $showIdleProjects=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+    $showIdleProjects=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
     // --- "show idle checkbox is checked ?
     if (! isset($showIdle)) $showIdle=false;
     if (!$showIdle and ! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
@@ -109,6 +109,17 @@
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
     } else {
       $showIdle=true;
+    }
+    // For versions, hide versions in service
+    debugLog("parameter1=".Parameter::getUserParameter('hideInService'));
+    $hideInService=Parameter::getUserParameter('hideInService');
+    debugLog("parameter2=".$hideInService);
+    if (Parameter::getUserParameter('hideInService')=='true' and property_exists($obj, 'isEis') and ! $quickSearch) {
+    	debugLog(" => filter");
+    	$queryWhere.= ($queryWhere=='')?'':' and ';
+    	$queryWhere.= $table . "." . $obj->getDatabaseColumnName('isEis') . "=0";
+    } else {
+    	$showIdle=true;
     }
     
     // --- Direct filter on id (only used for printing, as direct filter is done on client side)
@@ -167,8 +178,8 @@
         $queryWhere.= ')';
     }  
     // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
-    if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
-        if ($_SESSION['project']!='*') {
+    if (property_exists($obj, 'idProject') and sessionValueExists('project')) {
+        if (getSessionValue('project')!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
             $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdleProjects) ;
@@ -221,9 +232,9 @@
     }
     // --- When browsing Docments throught directory view, limit list of Documents to currently selected Directory
     if ($objectClass=='Document') {
-    	if (array_key_exists('Directory',$_SESSION) and ! $quickSearch) {
+    	if (sessionValueExists('Directory') and ! $quickSearch) {
     		$queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idDocumentDirectory') . "='" . $_SESSION['Directory'] . "'";
+        $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idDocumentDirectory') . "='" . getSessionValue('Directory') . "'";
     	}
     }
     
@@ -243,7 +254,7 @@
     }
     // --- 2) sort from index checked in List Header (only used for printing, as direct filter is done on client side)
     $sortIndex=null;   
-    if ($print) {
+    if ($print and $outMode!='csv') {
       if (array_key_exists('sortIndex', $_REQUEST)) {
         $sortIndex=$_REQUEST['sortIndex']+1;
         $sortWay=(array_key_exists('sortWay', $_REQUEST))?$_REQUEST['sortWay']:'asc';
@@ -633,10 +644,14 @@
     				}
     				if ($dataLength[$id]>4000 and !$exportHtml) {
     					if (isTextFieldHtmlFormatted($val)) {
-	    				  $text=new Html2Text($val);
-	    				  $val=$text->getText();
+	    				  if (!$exportHtml) {
+    							$text=new Html2Text($val);
+	    				  	$val=$text->getText();
+	    				  }
+    					} else {
+    				    $val=br2nl($val);
     					}
-    				}
+     				}
     				$val=encodeCSV($val);
     				if ($csvQuotedText) {
     				  $val=str_replace('"','""',$val);	

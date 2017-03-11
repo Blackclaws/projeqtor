@@ -72,8 +72,20 @@
       Security::checkValidClass($className);
       $typeClass=$className.'Type';
       $type=new $typeClass($idType);
-      $planningModeName='id'.$className.'PlanningMode';
+      $planningModeName='id'.$className.'PlanningMode'; //idActivityPlanningMode
       echo $type->$planningModeName;
+    } else if ($type=='defaultPriority') {
+      $idType=$_REQUEST['idType'];
+      $className=$_REQUEST['objectClass'];
+      Security::checkValidClass($className);
+      $typeClass=$className.'Type';
+      $type=new $typeClass($idType);
+      $priorityName='priority'; //idActivityPlanningMode
+      echo $type->$priorityName;
+      if(!$priorityName){
+        $priorityName=500;
+      }
+      //$priority=$_REQUEST['priority'];
     } else if ($type=='restrictedTypeClass') {
       $idProjectType=$_REQUEST['idProjectType'];
       $idProject=$_REQUEST['idProject'];
@@ -136,7 +148,12 @@
       $typeClass=$className.'Type';
       $type=new $typeClass($idType);
       echo $type->idCategory;
-    } else {
+    } else if ($type=='catalogBillLine') { //gautier #2516
+      $idCat=$_REQUEST['idCatalog']; 
+      $r=new Catalog($idCat);
+      $catalog_array = "$r->description#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitPrice#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification";
+      echo $catalog_array;
+    }else {
       debugTraceLog("Unknown type '$type'");          
       echo '';
     } 

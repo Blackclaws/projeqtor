@@ -124,8 +124,8 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
               <td style="width: 200px;text-align: right; align: left;" nowrap="nowrap" colspan="2">
                 <?php echo i18n("colFirstDay");?> 
                 <div dojoType="dijit.form.DateTextBox"
-                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+                	<?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
                   id="dateSelector" name=""dateSelector""
                   invalidMessage="<?php echo i18n('messageInvalidDate')?>"

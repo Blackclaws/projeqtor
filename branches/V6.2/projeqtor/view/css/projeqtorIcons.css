@@ -221,6 +221,14 @@
 .iconCallForTenderType22 { background-image: url(images/iconCallForTenderType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCallForTenderType16 { background-image: url(images/iconCallForTenderType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconCatalog32 { background-image: url(images/iconCatalog.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconCatalog22  { background-image: url(images/iconCatalog.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconCatalog16  { background-image: url(images/iconCatalog.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconCatalogType32 { background-image: url(images/iconCatalogType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconCatalogType22  { background-image: url(images/iconCatalogType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconCatalogType16  { background-image: url(images/iconCatalogType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconCategory32 { background-image: url(images/iconCategory.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconCategory22  { background-image: url(images/iconCategory.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconCategory16  { background-image: url(images/iconCategory.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}

@@ -134,6 +134,7 @@ while ($line = Sql::fetchLine($resultMile)) {
   }
   $arrayMile[$idpe]['dates'][$mpeEndDate]=strtotime($mpeEndDate.$refTime);
   $arrayMile[$idpe]['lastDate']=$mpeEndDate;
+  $arrayMile[$idpe]['real']=($line['realend'])?true:false;
   $existingDates[$mpeEndDate]=$mpeEndDate;
   if ($end=="" or $end<$mpeEndDate) { $end=$mpeEndDate;}
 }
@@ -157,11 +158,13 @@ while ($line = Sql::fetchLine($resultPlanned)) {
   $idpe=$line['idpe'];
   $old=$line['old'];
   $new=$line['new'];
-  $arrayMile[$idpe]['dates'][$day]=strtotime($new.$refTime);
-  if ($day>$arrayMile[$idpe]['lastDate']) { $arrayMile[$idpe]['lastDate']=$day;}
-  if ($start=="" or $start>$day) {$start=$day;}
-  if ($end=="" or $end<$day) { $end=$day;}
-  if ($end<$new) {$end=$new;}
+  if (!$arrayMile[$idpe]['real'] or $day<$arrayMile[$idpe]['lastDate']) { // #2590
+    $arrayMile[$idpe]['dates'][$day]=strtotime($new.$refTime);
+    if ($day>$arrayMile[$idpe]['lastDate']) { $arrayMile[$idpe]['lastDate']=$day;}
+    if ($start=="" or $start>$day) {$start=$day;}
+    if ($end=="" or $end<$day) { $end=$day;}
+    if ($end<$new) {$end=$new;}
+  }
 }
 
 if (checkNoData($arrayMile)) exit;

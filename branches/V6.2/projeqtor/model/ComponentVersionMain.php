@@ -77,7 +77,6 @@ class ComponentVersionMain extends Version {
   private static $_fieldsAttributes=array("name"=>"required", 
       "idComponent"=>"required",
       "idContact"=>"hidden",
-      "idResource"=>"hidden",
       "scope"=>"hidden",
       "idProduct"=>"hidden"
   );   
@@ -339,6 +338,15 @@ class ComponentVersionMain extends Version {
     return $result;
   }
   public function copy() {
+  	
+  	$this->initialEisDate=null;
+  	$this->plannedEisDate=null;
+  	$this->realEisDate=null;
+  	$this->isEis=null;
+  	$this->initialEndDate=null;
+  	$this->plannedEndDate=null;
+  	$this->realEndDate=null;
+  	$this->idle=null;
     $result=parent::copy();
     
     $pvs=new ProductVersionStructure();

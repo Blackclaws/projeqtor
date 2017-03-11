@@ -226,14 +226,14 @@ function getTheme() {
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
-  if ( isset($_SESSION['theme'])) {
-  	$theme=$_SESSION['theme'];
+  if ( sessionValueExists('theme')) {
+  	$theme=getSessionValue('theme');
   }
   if ($theme=="random") {
     $themes=array_keys(Parameter::getList('theme'));
     $rnd=rand(0, count($themes)-2);
     $theme=$themes[$rnd];
-    $_SESSION['theme']=$theme; // keep value in session to have same theme during all session...
+    setSessionValue('theme',$theme); // keep value in session to have same theme during all session...
   }
   return $theme;
 }

@@ -40,6 +40,7 @@ class QuotationMain extends SqlElement {
   public $idUser;
   public $creationDate;
   public $Origin;
+  public $idRecipient;
   public $idClient;
   public $idContact;
   public $description;
@@ -111,7 +112,8 @@ class QuotationMain extends SqlElement {
   								                "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
                                   'taxAmount'=>'calculated,readonly',
-                                  'fullAmount'=>'readonly'
+                                  'fullAmount'=>'readonly',
+                                   
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 

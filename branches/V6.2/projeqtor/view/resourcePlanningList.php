@@ -109,8 +109,8 @@ if ($saveShowClosed) {
                     <tr>
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
                         <div dojoType="dijit.form.DateTextBox"
-	                        <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-														echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+														echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 													}?>
                            id="startDatePlanView" name="startDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
@@ -128,8 +128,8 @@ if ($saveShowClosed) {
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td>
                       <td>
                         <div dojoType="dijit.form.DateTextBox"
-	                        <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
-														echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+														echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 													}?>
                            id="endDatePlanView" name="endDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"

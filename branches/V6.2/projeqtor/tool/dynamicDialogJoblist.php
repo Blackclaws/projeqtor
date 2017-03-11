@@ -81,12 +81,15 @@ if (!isset($job) or ! $job or ! $job->id) {
 
 if (!$joblistDefinition or ! $joblistDefinition->id) {
     if (property_exists($obj, $type)) {
-        $crit = array('nameChecklistable' => $objectClass, 'idType' => $obj->$type);
+        $crit = array('nameChecklistable' => $objectClass, 'idType' => $obj->$type, 'idle'=>'0');
         $joblistDefinition = SqlElement::getSingleSqlElementFromCriteria('JoblistDefinition', $crit);
     }
     if (!$joblistDefinition or ! $joblistDefinition->id) {
-        $crit = array('nameChecklistable' => $objectClass);
-        $joblistDefinition = SqlElement::getSingleSqlElementFromCriteria('JoblistDefinition', $crit);
+    	$crit="nameChecklistable='$objectClass' and idle=0";
+    	if (property_exists($obj,$type)) {$crit.=" and idType is null ";}
+    	$jd=new $joblistDefinition();
+    	$jdList=$jd->getSqlElementsFromCriteria(null,false,$crit);
+    	$joblistDefinition=reset($jdList);
     }
 }
 if (!$joblistDefinition or ! $joblistDefinition->id) {

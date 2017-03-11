@@ -26,8 +26,8 @@
 
 require_once "../tool/projeqtor.php";
 $proj='';
-if (array_key_exists('project',$_SESSION)) {
-  $proj=$_SESSION['project'];
+if (sessionValueExists('project')) {
+  $proj=getSessionValue('project');
 }
 $prj=new Project($proj);
 $lstProjSelect=$prj->getRecursiveSubProjectsFlatList(true,true);

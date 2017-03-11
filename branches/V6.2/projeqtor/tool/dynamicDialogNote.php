@@ -51,11 +51,11 @@ if ($noteId) {
 }
 $detailHeight=600;
 $detailWidth=1010;
-if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']) {
-  $detailWidth = round($_SESSION['screenWidth'] * 0.60);
+if (sessionValueExists('screenWidth') and getSessionValue('screenWidth')) {
+  $detailWidth = round(getSessionValue('screenWidth') * 0.60);
 }
-if (array_key_exists('screenHeight',$_SESSION)) {
-  $detailHeight=round($_SESSION['screenHeight']*0.60);
+if (sessionValueExists('screenHeight')) {
+  $detailHeight=round(getSessionValue('screenHeight')*0.60);
 }
 ?>
 <div >

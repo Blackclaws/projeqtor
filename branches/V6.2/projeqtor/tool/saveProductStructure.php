@@ -66,6 +66,11 @@ if (array_key_exists('productStructureComment',$_REQUEST)) {
     $comment=$_REQUEST['productStructureComment'];
 }
 
+$strId=null;
+if (array_key_exists('productStructureId',$_REQUEST)) {
+	$strId=$_REQUEST['productStructureId'];
+}
+
 $arrayId=array();
 if (is_array($listId)) {
 	$arrayId=$listId;
@@ -76,7 +81,7 @@ Sql::beginTransaction();
 $result="";
 // get the modifications (from request)
 foreach ($arrayId as $id) {
-	$str=new ProductStructure();
+	$str=new ProductStructure($strId);
 	if ($way=='composition') {
 	  $str->idProduct=$objectId;
 	  $str->idComponent=$id;

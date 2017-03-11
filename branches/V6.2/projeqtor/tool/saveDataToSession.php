@@ -40,7 +40,7 @@ if (isset($_REQUEST['idData'])) {
 $ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
     .'|browserLocale(DateFormat|DecimalPoint|ThousandSeparator)?|currentLocale'
     .'|defaultProject|disconnect|(switched|multiple)Mode|project(Selector(DisplayMode|ShowIdle)?)?'
-    .'|screen(Width|Height)?|showWorkHistory|theme'
+    .'|screen(Width|Height)?|showWorkHistory|theme|hideInService'
     .'|defaultProject|(print|pdf)InNewWindow|accordionPane(Top|Bottom)'
     .'|contentPane(Left(DivWidth|BottomDivHeight)|Top(DetailDivHeight(.*)?|(Portfolio|Resource)?PlanningDivHeight))'
     .'|contentPaneBottomLiveMeeting|contentPaneTopLiveMeeting|plgKanbanname|plgKanbanresponsible|plgKanbanstatus|plgKanbantargetProductVersion)';
@@ -66,17 +66,15 @@ if ($id=='disconnect') {
 
 $value=$_REQUEST['value'];
 setSessionValue($id, $value);
-$_SESSION[$id]=$value;
+setSessionValue($id, $value);
 if ($id=='browserLocaleDateFormat') {
-	$_SESSION['browserLocaleDateFormatJs']=str_replace(array('D','Y'), array('d','y'), $value);
+	//setSessionValue('browserLocaleDateFormatJs', str_replace(array('D','Y'), array('d','y'), $value));
 	setSessionValue('browserLocaleDateFormatJs', str_replace(array('D','Y'), array('d','y'), $value));
 }
 
 //$userParamArray=getSessionValue('userParamatersArray');
-if (array_key_exists('userParamatersArray',$_SESSION)) {
-	if (array_key_exists($id,$_SESSION['userParamatersArray'])) {
-		$_SESSION['userParamatersArray'][$id]=$value;
-	}
+if (sessionValueExists('userParamatersArray')) {
+  setSessionTableValue('userParamatersArray', $id, $value);
 }
 
 if (isset($_REQUEST['saveUserParam']) && $_REQUEST['saveUserParam']=='true') {

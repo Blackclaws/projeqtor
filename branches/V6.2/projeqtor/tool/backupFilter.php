@@ -80,8 +80,8 @@ if (array_key_exists('filterName',$_REQUEST)) {
 $filterName='stockFilter' . $filterObjectClass;
 if ($cancel) {
   if (! $comboDetail) {
-		if (array_key_exists($filterName,$_SESSION)) {
-      $user->_arrayFilters[$filterObjectClass]=$_SESSION[$filterName];
+    if (sessionValueExists($filterName)){
+      $user->_arrayFilters[$filterObjectClass]= getSessionValue($filterName);
 	    setSessionUser($user);
 	  } else {
 	    if (array_key_exists($filterObjectClass, $user->_arrayFilters)) {
@@ -90,8 +90,8 @@ if ($cancel) {
 	    }
 	  }
   } else {
-    if (array_key_exists($filterName.'_Detail',$_SESSION)) {
-      $user->_arrayFiltersDetail[$filterObjectClass]=$_SESSION[$filterName.'_Detail'];
+    if (sessionValueExists($filterName.'_Detail')){
+      $user->_arrayFiltersDetail[$filterObjectClass]= getSessionValue($filterName.'_Detail');
       setSessionUser($user);
     } else {
       if (array_key_exists($filterObjectClass, $user->_arrayFiltersDetail)) {
@@ -103,27 +103,27 @@ if ($cancel) {
 } 
 if ($clean or $cancel or $valid) {
 	if ($comboDetail) {
-    if (array_key_exists($filterName,$_SESSION)) {
-      unset($_SESSION[$filterName]);
+    if (sessionValueExists($filterName)) {
+      unsetSessionValue($filterName);
     }
 	} else {
-	  if (array_key_exists($filterName.'_Detail',$_SESSION)) {
-      unset($_SESSION[$filterName.'_Detail']);
+	  if (sessionValueExists($filterName.'_Detail')){
+      unsetSessionValue($filterName.'_Detail');
     }
 	}
 }
 if ( ! $clean and ! $cancel and !$valid) {
 	if (! $comboDetail) {
 	  if (array_key_exists($filterObjectClass,$user->_arrayFilters)) {
-	    $_SESSION[$filterName]=$user->_arrayFilters[$filterObjectClass];
+	   setSessionValue($filterName,$user->_arrayFilters[$filterObjectClass]);
 	  } else {
-	    $_SESSION[$filterName]=array();
+	    setSessionValue($filterName, array());
 	  }
 	} else {
     if (array_key_exists($filterObjectClass,$user->_arrayFiltersDetail)) {
-      $_SESSION[$filterName.'_Detail']=$user->_arrayFiltersDetail[$filterObjectClass];
+      setSessionValue($filterName.'_Detail',$user->_arrayFiltersDetail[$filterObjectClass]);
     } else {
-      $_SESSION[$filterName.'_Detail']=array();
+      setSessionValue($filterName.'_Detail', array());
     }
   }
 	

@@ -168,8 +168,8 @@ if (array_key_exists('destinationWidth', $_REQUEST)) {
   $width-=30;
   $displayWidth=$width . 'px';
 } else {
-  if (array_key_exists('screenWidth', $_SESSION)) {
-    $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
+  if (sessionValueExists('screenWidth')) {
+    $detailWidth=round((getSessionValue('screenWidth') * 0.8) - 15); // 80% of screen - split barr - padding (x2)
   } else {
     $displayWidth='98%';
   }
@@ -444,8 +444,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if (array_key_exists('destinationWidth', $_REQUEST)) {
     $detailWidth=$_REQUEST ['destinationWidth'];
   } else {
-    if (array_key_exists('screenWidth', $_SESSION)) {
-      $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
+    if (sessionValueExists('screenWidth')) {
+      $detailWidth=round((getSessionValue('screenWidth') * 0.8) - 15); // 80% of screen - split barr - padding (x2)
     }
   }
   // Set some king of responsive design : number of display columns depends on screen width
@@ -495,11 +495,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
     }
   }
-  //if ($included) return;
   $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
   if (!$included) $section='';
   $nbLineSection=0;
-
+  
   if (SqlElement::is_subclass_of($obj, 'PlanningElement')) {
    	$obj->setVisibility();
     $workVisibility=$obj->_workVisibility;
@@ -549,6 +548,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     }
     if (substr($col,0,5)=='_lib_') {
       $attFld=substr($col,5);
+      if ( substr($attFld,0,3)=='col' and substr($attFld,3,1)==strtoupper(substr($attFld,3,1)) ) $attFld=lcfirst(substr($attFld,3));
       if (substr($attFld,0,3)=='col' and ucfirst(substr($attFld,3,1))==substr($attFld,3,1)) $attFld=substr($attFld,3);
       if (property_exists(get_class($obj), $attFld) and $obj->isAttributeSetToField($attFld, "hidden")) {
         $hide=true;
@@ -634,7 +634,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section=substr($col, 5);
       } else {
         $section='';
-      }   
+      }    
       // Determine number of items to be displayed in Header
       $sectionField='_'.$section;
       $sectionFieldDep='_Dependency_'.ucfirst($section);
@@ -972,7 +972,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if (is_object($val)) {
         if (!$obj->isAttributeSetToField($col, 'hidden')) {
           if ($col == 'Origin') {
-            drawOrigin($val->originType, $val->originId, $obj, $col, $print);
+            drawOrigin($obj->Origin,$val->originType, $val->originId, $obj, $col, $print);
           } else {
             // Draw an included object (recursive call) =========================== Type Object
             $visibileSubObject=true;
@@ -1299,8 +1299,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
-        if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
-          echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
+        if (sessionValueExists('browserLocaleDateFormatJs')) {       
+          $min='';       
+          $start=str_replace("EndDate", "StartDate", $col);
+          if (property_exists($obj, $start)) {
+            $min=$obj->$start;             
+          } 
+          echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
         }
         echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
@@ -1326,8 +1331,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
         echo ' type="text" maxlength="10" ';
-        if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
-          echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
+        if (sessionValueExists('browserLocaleDateFormatJs')) {
+          echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\'}" ';
         }
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
         echo ' value="' . $valDate . '" ';
@@ -1437,8 +1442,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($col == 'idProject') {
           if ($obj->id == null) {
-            if (array_key_exists('project', $_SESSION) and !$obj->$col) {
-              $val=$_SESSION ['project'];
+            if (sessionValueExists('project') and !$obj->$col ) {
+              $val=getSessionValue('project');
             }
             $accessRight=securityGetAccessRight('menu' . $classObj, 'create'); // TODO : study use of this variable...
           } else {
@@ -1474,10 +1479,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             if ($obj->id) {
               $critFld='idProject';
               $critVal=$obj->idProject;
-            } else if ($obj->isAttributeSetToField('idProject', 'required') or (array_key_exists('project', $_SESSION) and $_SESSION ['project'] != '*')) {
-              if (array_key_exists('project', $_SESSION) and $_SESSION ['project'] != '*') {
+            } else if ($obj->isAttributeSetToField('idProject', 'required') or (sessionValueExists('project') and getSessionValue('project') != '*')) {
+              if (sessionValueExists('project') and getSessionValue('project') != '*') {
                 $critFld='idProject';
-                $critVal=$_SESSION ['project'];
+                $critVal=getSessionValue('project');
               } else {
                 $table=SqlList::getList('Project', 'name', null);
                 $restrictArray=array();
@@ -2073,7 +2078,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     }
     $titlePane=$classObj . "_" . $section;
     startBuffering($included);
-//    $sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
+    //$sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
     $sectionName=$section;
     if (strpos($section, '_')!=0) {
       $split=explode('_',$section);
@@ -2195,7 +2200,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   echo '</table></td></tr>';
 }
 
-function drawOrigin($refType, $refId, $obj, $col, $print) {
+function drawOrigin($list,$refType, $refId, $obj, $col, $print) {
   echo '<tr class="detail"><td class="label" xstyle="width:10%;">';
   echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '&nbsp;:&nbsp;</label>';
   echo '</td>';
@@ -2215,10 +2220,19 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
     }
     echo '</td><td width="5%" xclass="noteData" xvalign="top" style="white-space:nowrap">';
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
-    echo '</td><td xclass="noteData" style="height: 15px">';
-    $orig=new $refType($refId);
-    echo htmlEncode($orig->name);
-    echo '</td></tr></table>';
+    foreach ( $list as $origin ) {
+      $origObj=null;
+      if ($list->originType == get_class($obj) and $list->originId == $obj->id) {
+        $origObj=new $list->refType($list->refId);
+      } else {
+        $origObj=new $list->originType($list->originId);
+      }
+      $gotoE=' onClick="gotoElement(' . "'" . get_class($origObj) . "','" . htmlEncode($origObj->id) . "'" . ');" style="cursor: pointer;" ';
+      echo '</td><td xclass="noteData" '.$gotoE.' style="height: 15px">';
+    }
+      $orig=new $refType($refId);
+      echo htmlEncode($orig->name);
+      echo '</td></tr></table>';      
   } else {
     echo '<table><tr height="20px"><td>';
     if ($obj->id and !$print and $canUpdate) {
@@ -2227,6 +2241,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
     echo '</td></tr></table>';
   }
 }
+
 
 function drawHistoryFromObjects($refresh=false) {
   global $cr, $print, $treatedObjects, $comboDetail;
@@ -2995,6 +3010,8 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
     if (!$print) {
       echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
       if ($canUpdate) {
+      	echo '  <a onClick="editProductStructure(\''.$way.'\',' . htmlEncode($comp->id). ');" '
+      			.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
         echo '  <a onClick="removeProductStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" '
               .'title="' . i18n('removeProductStructure') . '" > '.formatSmallButton('Remove').'</a>';
       }
@@ -3049,6 +3066,9 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id != null and !$print and $canUpdate) {
       echo '<a onClick="addProductVersionStructure(\''.$way.'\');" title="' . i18n('addProductVersionStructure') . '" > '.formatSmallButton('Add').'</a>';
+      if ($way=='composition' and count($list)>0) {
+        echo '<a onClick="upgradeProductVersionStructure(\''.$way.'\');" title="' . i18n('upgradeProductVersionStructure') . '" > '.formatSmallButton('Switch').'</a>';
+      }
     }
     echo '</td>';
   }
@@ -3074,7 +3094,10 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     if (!$print) {
       echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
       if ($canUpdate) {
-        echo '  <a onClick="removeProductVersionStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" '
+      	echo '  <a onClick="editProductVersionStructure(\''.$way.'\',' . htmlEncode($comp->id). ');" '
+      			.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
+      	
+      	echo '  <a onClick="removeProductVersionStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" '
               .'title="' . i18n('removeProductStructure') . '" > '.formatSmallButton('Remove').'</a>';
       }
       echo '</td>';
@@ -3940,7 +3963,7 @@ function drawChecklistFromObject($obj) {
   global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
   if (!$obj or !$obj->id) return; // Don't try and display checklist for non existant objects
   $displayChecklist='NO';
-  $crit="nameChecklistable='".get_class($obj)."'";
+  $crit="nameChecklistable='".get_class($obj)."' and idle=0";
   $type='id'.get_class($obj).'Type';
   if (property_exists($obj,$type) ) {
     $crit.=' and (idType is null ';
@@ -4192,7 +4215,7 @@ function drawJobDefinitionFromObject($obj, $refresh=false) {
 function drawJoblistFromObject($obj) {
   global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
   if (!$obj or !$obj->id) return; // Don't try and display joblist for non existing objects
-  $crit="nameChecklistable='".get_class($obj)."'";
+  $crit="nameChecklistable='".get_class($obj)."' and idle=0";
   $type='id'.get_class($obj).'Type';
   if (property_exists($obj,$type) ) {
     $crit.=' and (idType is null ';

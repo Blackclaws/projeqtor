@@ -229,16 +229,24 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	} else if ($userName) {
 	  $title=htmlEncode($userName,'quotes');
 	}
-	$res='<img '.($idTicket!=-1 ? 'id="responsible'.$idTicket.'"' : '').' valueuser="'.$title.'" style="border: 1px solid #AAA;width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
-	
-	$res.=' src="'.$file.'" ';
+	if ($file=='letter') {
+		$res='<span style="border:1px solid red;color:#555555;font-size:25px;background-color:#ffffff" ';
+	} else {
+	  $res='<img '.($idTicket!=-1 ? 'id="responsible'.$idTicket.'"' : '').' valueuser="'.$title.'" style="border: 1px solid #AAA;width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
+	  $res.=' src="'.$file.'" ';
+	}
 
 	if (! $print and ($known or $alwaysDisplayBigImage)) {
 	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?",false":",true").',\''.$nocache.'\');" onMouseOut="hideBigImage();"';
 	} else if (!$known and $userName) {
 	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\',true,\''.$nocache.'\');" onMouseOut="hideBigImage();"';
 	}
-	$res.='/>';
+	if ($file=='letter') {
+		$res.='>'.substr($userName, 0,1);
+	  $res.='</span>';
+	} else {
+		$res.='/>';
+	}
 	return $res;
 }
 
