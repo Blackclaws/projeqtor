@@ -77,7 +77,7 @@ class ComponentVersionMain extends Version {
   private static $_fieldsAttributes=array("name"=>"required", 
       "idComponent"=>"required",
       "idContact"=>"hidden",
-      "idResource"=>"hidden",
+      //"idResource"=>"hidden",
       "scope"=>"hidden",
       "idProduct"=>"hidden"
   );   
