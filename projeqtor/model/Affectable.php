@@ -178,12 +178,11 @@ class Affectable extends SqlElement {
       if ($nullIfEmpty) {
         return null;
       } else {
-      	return 'letter';
-        /*if ($withoutUrlExtra) {
+        if ($withoutUrlExtra) {
           return "../view/img/Affectable/thumb$size.png";
         } else {
           return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
-        }*/
+        }
       }
     }
   }
