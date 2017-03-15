@@ -106,6 +106,7 @@ The message will be displayed in a color depending on the message type.
      - Description
    * - :term:`Message<Description>`
      - Complete text of the message. 
+     
 
 .. raw:: latex
 
@@ -115,6 +116,7 @@ The message will be displayed in a color depending on the message type.
 .. index:: ! Import data
 
 .. _import-data:
+
 
 Import data
 -----------
@@ -146,6 +148,19 @@ Imports data from CSV or XLSX files.
       * So be sure to keep an operational admin access.
 
 
+.. note:: Importing document versions
+
+    * Two ways to import document versions:       
+        - by describing only the version, with its standard fields.    
+        - by describing the document and the version (the name of the fields of the version will be followed by '(DocumentVersion)', or its translation into the current language).
+
+.. note:: CSV import 
+    
+    * The CSV import file may also include :  
+        - 'importFile' field that will give the link to the version file (this file will have to be reachable by the PHP server).
+        - 'target' field that can be set to 'DELETE' (the file to be imported is deleted after import) or a directory name (the file to be imported is moved to this directory after import) or nothing (the file to be imported is not modified).
+    
+    
 .. raw:: latex
 
     \newpage
