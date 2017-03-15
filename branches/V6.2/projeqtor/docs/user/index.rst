@@ -46,47 +46,33 @@ This section summarizes significant changes made in the user guide document for 
 
 To see complete list of changes made to software, visit the ProjeQtOr web site.
 
-Current version is V6.0.0 
+Current version is V6.1.0 
 
-.. rubric:: Graphical user interface.
+.. rubric:: Review logs.
 
-* Reporting list displayed as menus
+* Management of deliverables
+
+  * See: :ref:`deliverables`
+
+* Management of incomings
   
-  * See: :ref:`report`
-
-.. rubric:: Global Parameters.
-
-* Possibility to define the working days in the company: work basis is no longer in a fixed mode worked from Monday to Friday.
-* Generation of alerts if real work is not entered.
-* Possibility to specify the certificate files for a connection to MySql database in SSL secured mode.
+  * See: :ref:`incomings`
   
-  * See: :ref:`global-parameters`
+.. rubric:: Controls & Automation.
 
-.. rubric:: Management of organizations.
+* Production of indicators on the quality of deliverables
 
-* Definition of the structure of the company in the frame of organizations (Departments, Units, Location, ...)
-
-  * See: :ref:`organization-concept` concept
+  * See: :ref:`kpi-definitions`
   
-  * See: :ref:`Organizations`
-
-.. rubric:: Gantt-Planning.
-
-* Management of planning baselines.
-* Differentiation of activities without assigned work by color.
-* On the Gantt chart, a right click on a bar displays the detail of the work for this bar.
-
-  * See: :ref:`gantt-planning`
+* JobList to detail an Activity or Ticket
   
-.. rubric:: Financial.
-
-* Management of call for tenders.
-
-  * See: :ref:`call-for-tenders`
+  * See: :ref:`jobList`
   
-* Tenders.
+.. rubric:: ConfigurationManagement.
+
+* Grouping of Products, Components, Product Versions and Component Versions in a dedicated "Configuration Management" menu.
   
-  * See: :ref:`tenders`
+  * See: :ref:`ConfigurationManagement`
 
 .. raw:: latex
 
@@ -208,6 +194,14 @@ Financial
    Order   
    Bill
    FinancialGallery
+   
+Configuration Management
+========================
+
+.. toctree::
+   :maxdepth: 1
+
+   ConfigurationManagement
 
 Risk & Issue Management
 =======================

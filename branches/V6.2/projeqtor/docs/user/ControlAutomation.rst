@@ -437,3 +437,111 @@ A description of receivers below.
 * If “other” is checked, an input box is displayed to enter a static mail address list.
 * Several addresses can be entered, separated by semicolon.
 
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! KPI
+
+.. _kpi-definitions:
+
+KPI definitions
+--------------
+
+A performance indicator or key performance indicator (KPI) is a type of performance measurement.
+
+It is possible to define Kpi on incomings and deliverables items.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the KPI.
+   * - Name
+     - Name of the KPI.
+   * - Code
+     - code of the KPI.
+   * - Description
+     - Complete description of the KPI.
+   * - Idle
+     - Statut of the KPI.
+     
+.. warning::
+     
+      * Description integrates the formula used to calculate the KPI.
+
+.. rubric:: Section: Tresholds
+
+It is possible to attributes tresholds lines to KPI.
+
+* Click on |buttonAdd|  to create a new JobList line. 
+* Click on |buttonEdit| to update an existing JobList line.
+* Click on |buttonIconDelete| to delete the corresponding JobList line.
+
+.. figure:: /images/GUI/Kpi_Tresholds.png
+
+.. note::
+     
+      * Keep in mind KPI is an indicator of performance at project level (opposite to indicator which is calculated at item level).
+      * to display the indicator, use Kpi report. See: :ref:`report`
+      .. figure:: /images/GUI/Kpi_report.png
+
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! JobList
+
+.. _jobList:
+
+JobList
+--------------
+
+Management of the JobList can be used for each element but it usually used to detail an Activity or Ticket.
+
+When a Joblist form exists for a given element, the Joblist is available for the element
+
+It is an indicator to follow the respect of dates values.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the KPI..
+   * - IdChecklistable
+     - Unique Id for the Checklistable.
+   * - idType
+     - Type of the elements the joblist applies to.
+   * - Idle
+     - idle.
+
+.. rubric:: Section: JobList lines
+
+A JobList is built from JobList lines.
+
+* Click on |buttonAdd|  to create a new JobList line. 
+* Click on |buttonEdit| to update an existing JobList line.
+* Click on |buttonIconDelete| to delete the corresponding JobList line.
+
+.. figure:: /images/GUI/Joblist.png
+
+.. note::
+
+   * Looking like CheckLists with no choice.
+
