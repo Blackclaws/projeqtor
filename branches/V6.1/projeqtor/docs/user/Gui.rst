@@ -182,7 +182,7 @@ Menu on top bar allows a rapid access to elements.
 
 .. rubric:: 3 - Navigation buttons
 
-* The navigation buttons |buttonIconBackNavigation| |buttonIconForwardNavigation| give access to previous and next items in the history.
+* The navigation buttons |buttonIconBackNavigation| |buttonIconForwardNavigation| give access to previous and next pages in the history.
 
 .. rubric:: 4 - Button «New tab» 
 
@@ -989,6 +989,9 @@ Text editors are available for editing of long text fields like description, res
 
    CK Editor
 
+.. note::
+
+   * Possibility to deactivate the SCAYT spell checker. It can be modified by each user in user parameters.
 
 .. rubric:: Dojo Editor
 
@@ -1312,6 +1315,10 @@ Info bar
 
 * Displays the application version.
 * Click on button to access to ProjeQtOr site.
+
+.. rubric:: 7 - "Full-screen" button
+
+* One-click to displays in full Screen view.
 
 
 .. raw:: latex

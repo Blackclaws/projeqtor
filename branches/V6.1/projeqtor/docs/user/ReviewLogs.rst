@@ -456,7 +456,78 @@ You can link a question to a meeting to rapidly find the minutes where the quest
 **\* Required field**
 
   
+.. raw:: latex
 
+    \newpage
+
+.. _deliverables:
+
+Deliverables
+=========
+
+This section allows to define the list of deliverables items.
+
+This will provide an easy way to organize your due to customers. 
+
+In fact, you can keep track of every deliverables. 
+
+Deliverables links with Milestones.
+
+.. note::
+
+   * If you change the responsible of milestones, the responsible of deliverable will automatically changed, and vice versa. 
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the KPI.
+   * - :term:`Name`
+     - name of the deliverable.
+   * - :term:`IdDeliverableType`
+     - id of the Deliverable Type.
+   * - :term:`IdProject`
+     - id of the Project.
+   * - externalReference
+     - name of the external reference.
+   * - Description
+     - Complete description of the deliverable.
+     
+.. note::
+
+   * You can estimated quality value for deliverable and this will produce a KPI. 
+      
+   * See: :ref:`kpi-definitions`
   
+.. raw:: latex
+
+    \newpage
+    
+.. _incomings:
+
+Incomings
+=========
+
+This section allows to define the list of incomings items from customers.
+
+It can be an indicator to follow if you can begin an action. For example, if you need an item from customer.
+
+Incomings links with Milestones.
+
+.. note::
+
+   * If you change the responsible of milestones, the responsible of Incomings will automatically changed, and vice versa. 
 
 
+.. note::
+
+   * You can estimated quality value for incoming  and this will produce a KPI.
+
+   * See: :ref:`kpi-definitions`
