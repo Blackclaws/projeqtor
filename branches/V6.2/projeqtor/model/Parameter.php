@@ -389,6 +389,11 @@ class Parameter extends SqlElement {
       case 'paramMailEol':
       	 $list=array('CRLF'=>i18n('eolDefault'), 
                      'LF'=>i18n('eolPostfix'));
+      	break;
+      case 'paramMailerType':
+          $list=array('phpmailer'=>i18n('libraryPHPMailer'),
+                      'mail'=>i18n('functionPHPMail'),
+                      'socket'=>i18n('connexionSocket'));
         break; 
       case 'logLevel':
          $list=array('0'=>i18n('debugLevel0'),
@@ -700,6 +705,7 @@ class Parameter extends SqlElement {
 												       'paramMailSmtpPassword'=>'password',
       	                       'paramMailEol'=>'list',
                                'paramMailSendmailPath'=> 'text',
+                               'paramMailerType'=>'list',
                              'connectionSslToBd'=>'section',
                                'SslKey'=>'text',
                                'SslCert'=>'text',

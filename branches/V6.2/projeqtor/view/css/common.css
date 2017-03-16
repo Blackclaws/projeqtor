@@ -2040,6 +2040,7 @@ table.dijitCalendarContainer {
 .dijitButtonIconExit { background-position: -701px;}
 .dijitButtonIconStats { background-position: -726px;}
 .dijitButtonIconValidPlan { background-position: -751px;}
+.dijitButtonIconExtraButtons { background-position: -776px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;

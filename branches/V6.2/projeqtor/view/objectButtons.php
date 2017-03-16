@@ -59,6 +59,14 @@
   }
   $updateRight='YES';
   $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
+  
+  $displayWidthButton="9999";
+  if (isset($_REQUEST ['destinationWidth'])) {
+    $displayWidthButton=$_REQUEST ['destinationWidth'];
+  }
+  $cptButton=0;
+  $showAttachment=($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly )?true:false;
+  $entendedZone=false;
 ?>
 <table style="width:100%;height:100%;">
  <tr style="height:100%";>
@@ -90,8 +98,9 @@
     &nbsp;
   </td>
   <td  style="white-space:nowrap;">
-    <div style="float:left;position:50%;width:45%;white-space:nowrap"> 
+    <div style="float:left;position:relative;width:45%;white-space:nowrap"> 
     <?php if (! $comboDetail ) {?>
+      <?php organizeButtons();?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
        iconClass="dijitButtonIcon dijitButtonIconNew" class="detailButton">
@@ -107,6 +116,7 @@
 	      }
         </script>
       </button>
+      <?php organizeButtons();?>
       <button id="saveButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonSave', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
@@ -115,6 +125,7 @@
 		      saveObject();
         </script>
       </button>
+      <?php organizeButtons();?>
       <button id="printButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonPrint', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -126,6 +137,7 @@
         </script>
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
+     <?php organizeButtons();?>
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -138,6 +150,7 @@
       </button>   
 <?php } 
       if (! (property_exists($_REQUEST['objectClass'], '_noCopy')) ) { ?>
+      <?php organizeButtons();?>
       <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
@@ -148,7 +161,11 @@
           $paramCopy="copyProject";
           if($_REQUEST['objectClass'] != "Project"){
             $copyable=SqlElement::getSingleSqlElementFromCriteria('Copyable', $crit);
-            if ($copyable->id) {
+            //if ($_REQUEST['objectClass']=='ProductVersion' or $_REQUEST['objectClass']=='ComponentVersion') {
+            if ($_REQUEST['objectClass']=='ComponentVersion') {
+            	$paramCopy="copyVersion";
+            	echo "copyObjectBox('$paramCopy');";
+            } else if ($copyable->id) {
               $paramCopy="copyObjectTo";
               echo "copyObjectBox('$paramCopy');";
             }else{
@@ -171,6 +188,7 @@
         </script>
       </button>    
 <?php }?>
+      <?php organizeButtons();?>
       <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndo', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect or 1) {echo "disabled";} ?>
@@ -181,6 +199,7 @@
           formChangeInProgress=false;
         </script>
       </button>    
+      <?php organizeButtons();?>
       <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -200,6 +219,7 @@
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
         </script>
       </button>    
+      <?php organizeButtons();?>
      <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonRefresh', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -215,6 +235,7 @@
     $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>$clsObj));
     if ($mailable and $mailable->id) {
     ?>
+     <?php organizeButtons();?>
      <button id="mailButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMail', array(i18n($clsObj)));?>"
        <?php if ($noselect) {echo "disabled";} ?>
@@ -224,7 +245,8 @@
         </script>
       </button>
     <?php 
-    if (! array_key_exists('planning',$_REQUEST)) {?> 
+    if (! array_key_exists('planning',$_REQUEST)) {?>
+    <?php organizeButtons();?> 
     <span id="multiUpdateButtonDiv" >
     <button id="multiUpdateButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMultiUpdate');?>"
@@ -237,10 +259,11 @@
     <?php }
     //if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {
     ?> 
-    <span id="indentButtonDiv">
+    <?php organizeButtons(2);?>
+    <span id="indentButtonDiv" class="statusBar" style="display:inline-block;height:32px; width:72px;">
      <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('indentDecreaseButton');?>"
-        iconClass="dijitButtonIcon dijitButtonIconDecrease" class="detailButton">
+        iconClass="dijitButtonIcon dijitButtonIconDecrease" class="statusBar detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           indentTask("decrease");  
         </script>
@@ -279,6 +302,7 @@
       }
       //$displayButton=( $buttonCheckListVisible=="visible")?'void':'none';?>
       
+    <?php if ($buttonCheckListVisible!="never") organizeButtons();?>
     <span id="checkListButtonDiv" style="display:<?php echo ($buttonCheckListVisible=='visible')?'inline':'none';?>;">
       <?php if ($buttonCheckListVisible!="never") {?>
       <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
@@ -299,6 +323,7 @@
       }
       if (!$obj->id) $buttonHistoryVisible=false;
     ?>
+    <?php if ($paramHistoryVisible=='REQ') organizeButtons();?>
     <span id="historyButtonDiv" style="display:<?php echo ($buttonHistoryVisible)?'inline':'none';?>;">
       <?php if ($paramHistoryVisible=='REQ') {?>
       <button id="historyButton" dojoType="dijit.form.Button" showlabel="false"
@@ -306,12 +331,13 @@
         iconClass="dijitButtonIcon dijitButtonIconHistory" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           showHistory('<?php echo get_class($obj);?>');  
+          hideExtraButtons('extraButtonsDetail');
         </script>
       </button>
       <?php }?>
       <input type="hidden" id="buttonHistoryVisible" value="<?php echo $paramHistoryVisible;?>" />
     </span>
-    
+    <?php organizeButtonsEnd();?>
     <?php
         }
       ?>
@@ -351,3 +377,34 @@
   </td>
   </tr>
 </table>
+<?php 
+function organizeButtons($nbButton=1) {
+	global $displayWidth, $cptButton,$showAttachment,$entendedZone;
+	$buttonWidth=36;
+	$cptButton+=$nbButton;
+	$requiredWidth=$cptButton*$buttonWidth;
+	if ($showAttachment) {
+		$requiredWidth+=100;
+	}
+	if ($requiredWidth>($displayWidth/2)) {
+		if (! $entendedZone) {
+			$entendedZone=true;
+			echo '<div dojoType="dijit.form.Button" showlabel="false" title="'. i18n('showHistory'). '" '
+          .' iconClass="dijitButtonIcon dijitButtonIconExtraButtons" class="detailButton"'
+ 		      .' id="extraButtonsDetail" onClick="showExtraButtons(\'extraButtonsDetail\')" '
+ 		      .'></div>';
+			echo '<div class="statusBar" id="extraButtonsDetailDiv" style="display:none;position:absolute;width:36px;">';
+		} else {
+			debugLog("OK");
+			echo '<div></div>';
+		}
+	}
+	
+}
+function organizeButtonsEnd() {
+	global $displayWidth, $cptButton,$showAttachment,$entendedZone;
+	if ($entendedZone) {
+		echo '</div>';
+	}
+}
+?>

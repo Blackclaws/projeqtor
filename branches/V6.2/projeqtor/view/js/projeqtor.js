@@ -1112,8 +1112,9 @@ function finalizeMessageDisplay(destination, validationType) {
           needProjectListRefresh = true;
           dojo.byId('objectClass').value = "Project";
         } else {
-          dojo.byId('objectClass').value = copyableArray[dijit.byId(
-              'copyToClass').get('value')];
+          if (dijit.byId('copyToClass') ) {
+            dojo.byId('objectClass').value = copyableArray[dijit.byId('copyToClass').get('value')];
+          }
         }
         var lastSaveId = dojo.byId('lastSaveId');
         var lastSaveClass = dojo.byId('objectClass');
@@ -3806,4 +3807,23 @@ function saveDataToSession(param, value, saveUserParameter) {
       consoleTraceLog("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);
     }
  });;
+}
+
+function showExtraButtons(location) {
+  var btnNode=dojo.byId(location);
+  var divNode=dojo.byId(location+'Div');
+  if (divNode.style.display=='block') {
+    divNode.style.display='none';
+  } else {
+    divNode.style.display='block';
+    console.log(btnNode.offsetLeft);
+    divNode.style.left=(btnNode.offsetLeft-5)+"px";
+  }
+}
+function hideExtraButtons(location) {
+  var btnNode=dojo.byId(location);
+  var divNode=dojo.byId(location+'Div');
+  if (divNode.style.display=='block') {
+    divNode.style.display='none';
+  }
 }

@@ -207,24 +207,6 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 </select>
               </td>
               <?php }?> 
-              <?php if ( property_exists($obj,'isEis') ) { ?>
-              <td style="vertical-align: middle; text-align:right;" width="5px">
-                 <span class="nobr">&nbsp;&nbsp;&nbsp;
-                <?php echo i18n("hideInService");?>
-                &nbsp;</span>
-              </td>
-              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">
-                <?php $hideInService=Parameter::getUserParameter('hideInService');?>
-                <div title="<?php echo i18n('hideInService')?>" dojoType="dijit.form.CheckBox" 
-                class="whiteCheck" <?php if ($hideInService=='true') echo " checked ";?>
-                type="checkbox" id="hideInService" name="hideInService">
-                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('hideInService',((this.checked)?true:false),true);
-                  setTimeout("refreshJsonList('<?php echo $objectClass;?>');",50);
-                </script>
-              </div>&nbsp;
-              </td>
-              <?php }?> 
               <?php 
                  $elementable=null;
                  if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
@@ -430,6 +412,24 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
               </button>
             </td>
 <?php }?>       
+<?php if ( property_exists($obj,'isEis') ) { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("hideInService");?>
+                &nbsp;</span>
+              </td>
+              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">
+                <?php $hideInService=Parameter::getUserParameter('hideInService');?>
+                <div title="<?php echo i18n('hideInService')?>" dojoType="dijit.form.CheckBox" 
+                class="whiteCheck" <?php if ($hideInService=='true') echo " checked ";?>
+                type="checkbox" id="hideInService" name="hideInService">
+                <script type="dojo/method" event="onChange" >
+                  saveDataToSession('hideInService',((this.checked)?true:false),true);
+                  setTimeout("refreshJsonList('<?php echo $objectClass;?>');",50);
+                </script>
+              </div>&nbsp;
+              </td>
+              <?php }?> 
 <?php if (! $comboDetail) {?> 
             <td style="text-align: right; width:10%; min-width:80px;white-space:normal;">
               <?php echo i18n("labelShowIdle");?>

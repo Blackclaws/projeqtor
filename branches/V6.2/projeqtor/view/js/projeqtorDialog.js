@@ -810,7 +810,12 @@ function copyObjectBox(copyType) {
   var callBack=function() {
 
   };
-  if(copyType=="copyObjectTo"){
+  if (copyType=="copyVersion") {
+    console.log("OK 1");
+    callBack=function() {
+      console.log("OK 2");
+    };
+  } else if(copyType=="copyObjectTo"){
     callBack=function() {
       dojo.byId('copyClass').value=dojo.byId("objectClass").value;
       dojo.byId('copyId').value=dojo.byId("objectId").value;

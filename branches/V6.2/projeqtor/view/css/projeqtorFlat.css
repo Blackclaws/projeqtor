@@ -239,6 +239,7 @@
 .ProjeQtOrFlatBlue .dijitButtonIcon {
     background-image: url(customIcons/blue/editorButtonsEnabled.png);
 }
+
 .ProjeQtOrFlatBlue .dijitDisabled .dijitButtonIcon  {
     background-image: url(customIcons/blue/editorButtonsDisabled.png);
 }
