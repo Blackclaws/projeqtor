@@ -40,7 +40,7 @@ if (! array_key_exists('copyType',$_REQUEST)) {
   throwError('Parameter copyType not found in REQUEST');
 }
 $copyType=$_REQUEST['copyType'];
-if($copyType!='copyObjectTo' && $copyType!='copyProject'){
+if($copyType!='copyObjectTo' && $copyType!='copyProject' && $copyType!='copyVersion'){
   traceHack('dynamicDialogCopy: $copyType contains an unexpected valid value');
 } 
 $idClass=SqlList::getIdFromTranslatableName('Copyable', $objectClass);
@@ -241,6 +241,20 @@ if($copyType=="copyObjectTo"){
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
+             <td class="dialogLabel"  >
+               <label for="copyProjectToSubProject" ><?php echo i18n("colIsSubProject") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
+                id="copyProjectToSubProject" name="copyProjectToSubProject"
+                class="input" >
+                <?php htmlDrawOptionForReference('idProject', $toCopy->idProject,null,false);?> 
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyProjectStructure") ?>&nbsp;:&nbsp;</label>
                <div id="copyProjectStructure" name="copyProjectStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
@@ -303,6 +317,118 @@ if($copyType=="copyObjectTo"){
           <?php echo i18n("buttonCancel");?>
         </button>
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="protectDblClick(this);copyProjectToSubmit();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+<?php }
+else if($copyType=="copyVersion"){
+	if ($objectClass=='ComponentVersion') {
+	  $source=new Component($toCopy->idComponent);
+	  $type=$toCopy->idComponentVersionType; 
+	} else if ($objectClass=='ProductVersion') {
+	  $source=new Product($toCopy->idProduct);
+	  $type=$toCopy->idProductVersionType;
+	} else {
+		errorLog("object class $objectClass not taken into account for copy type 'copyVersion'");
+		exit;
+	}
+	$paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+	$paramNameAutoformatSeparator=Parameter::getGlobalParameter('versionNameAutoformatSeparator');
+?>
+  <table>
+    <tr>
+      <td>
+       <form dojoType="dijit.form.Form" id='copyForm' name='copyForm' onSubmit="return false;">
+         <input id="copyClass" name="copyClass" type="hidden" value="<?php echo $objectClass;?>" />
+         <input id="copyToClass" name="copyToClass" type="hidden" value="<?php echo $objectClass;?>" />
+         <input id="copyId" name="copyId" type="hidden" value="<?php echo $objectId;?>" />
+         <input id="copySourceName" name="copySourceName" type="hidden" value="<?php echo $source->name;?>" />
+         <input id="copySourceNameSeparator" name="copySourceNameSeparator" type="hidden" value="<?php echo $paramNameAutoformatSeparator;?>" />
+         <table>
+           <?php if ($paramNameAutoformat=='YES') {?>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="copyToVersionNumber" ><?php echo i18n("colVersionNumber") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyToVersionNumber" name="copyToVersionNumber" dojoType="dijit.form.ValidationTextBox"
+                required="required"
+                style="width: 400px;"
+                trim="true" maxlength="100" class="input"
+                value="<?php echo str_replace('"', '&quot;', $toCopy->versionNumber);?>">
+                  <script type="dojo/connect" event="onChange">
+                    dijit.byId("copyToName").set("value", dojo.byId('copySourceName').value+dojo.byId('copySourceNameSeparator').value+this.value);
+                  </script>
+               </div>     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <?php }?>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="copyToName" ><?php echo i18n("copyToName") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyToName" name="copyToName" dojoType="dijit.form.ValidationTextBox"
+                <?php if ($paramNameAutoformat=='YES') { echo "readonly";} else { echo 'required="required"';}?>
+                style="width: 400px;"
+                trim="true" maxlength="100" class="input"
+                value="<?php echo str_replace('"', '&quot;', $toCopy->name);?>">
+               </div>     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="copyToType" ><?php echo i18n("copyToType") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+               <?php echo autoOpenFilteringSelect();?>
+                id="copyToType" name="copyToType" required
+                class="input">
+                <?php $colName='id'.$objectClass.'Type';
+                      htmlDrawOptionForReference($colName, $toCopy->$colName, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label><?php echo i18n("copyToCopyVersionStructure") ?>&nbsp;:&nbsp;</label>           
+             </td>
+             <td>
+               <table style="width:100%;">
+               <tr><td style="position:relative">
+                 <img style="position: absolute;left:0px; top:0px;height:50px;" src="../view/img/helpCopyVersion.png" 
+                     onmouseenter="this.style.height='200px';this.style.top='-100px';" 
+                     onmouseout="this.style.height='50px';this.style.top='0px';"/>
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureCopy" checked value="Copy"/>
+                 <label for="copyToCopyVersionStructureCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureCopy")?></label>
+               </td></tr><tr><td>
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureNoCopy" value="NoCopy"/> 
+                 <label for="copyToCopyVersionStructureNoCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureNoCopy")?></label>
+               </td></tr><tr><td>
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureReplace" value="Replace"/> 
+                 <label for="copyToCopyVersionStructureReplace" style="width:90%"><?php echo i18n("copyToCopyVersionStructureReplace")?></label>
+               </td></tr>
+               </table>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="copyAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopy').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="protectDblClick(this);copyObjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

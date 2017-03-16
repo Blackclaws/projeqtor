@@ -350,6 +350,7 @@ class ComponentVersionMain extends Version {
     $result=parent::copy();
     
     $pvs=new ProductVersionStructure();
+    // Copy Composition
     $crit=array('idProductVersion'=>$this->id);
     $list=$pvs->getSqlElementsFromCriteria($crit);
     foreach ($list as $pvs) {
@@ -358,13 +359,22 @@ class ComponentVersionMain extends Version {
       $pvs->creationDate=date('Y-m-d');
       $pvs->save();
     }
-    $crit=array('idComponentVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
-    foreach ($list as $pvs) {
-      $pvs->idComponentVersion=$result->id;
-      $pvs->id=null;
-      $pvs->creationDate=date('Y-m-d');
-      $pvs->save();
+    // Copy Structure
+    debugLog("copy strycture : $this->_copyVersionStructure");
+    if (!property_exists($this, '_copyVersionStructure')) {
+    	$this->_copyVersionStructure='Copy';
+    }
+    if ($this->_copyVersionStructure=='Copy' or $this->_copyVersionStructure=='Replace') {
+	    $crit=array('idComponentVersion'=>$this->id);
+	    $list=$pvs->getSqlElementsFromCriteria($crit);
+	    foreach ($list as $pvs) {
+	      $pvs->idComponentVersion=$result->id;
+	      if ($this->_copyVersionStructure=='Copy') {
+	        $pvs->id=null;
+	      }
+	      $pvs->creationDate=date('Y-m-d');
+	      $pvs->save();
+	    }
     }
     return $result;
   }

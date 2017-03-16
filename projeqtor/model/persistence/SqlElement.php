@@ -1505,8 +1505,12 @@ abstract class SqlElement {
 			$newObj->name=i18n('copiedFrom') . ' ' . $newObj->name;
 		}
 		if (is_a($this, 'Version') and $newObj->versionNumber) {
-		  $newObj->versionNumber=$newObj->versionNumber.' ('.i18n('copy').')';
-		  $newObj->name=$newObj->name.' ('.i18n('copy').')';
+			$existWithName=$newObj->countSqlElementsFromCriteria(null, "name='$newObj->name'");
+			debugLog("look for $newObj->name found=$existWithName");
+			if ($existWithName>0) {
+		    $newObj->versionNumber=$newObj->versionNumber.' ('.i18n('copy').')';
+		    $newObj->name=$newObj->name.' ('.i18n('copy').')';
+			}
 		}
 		if (property_exists($newObj,"isCopyStatus")) {
 			$newObj->isCopyStatus=0;
