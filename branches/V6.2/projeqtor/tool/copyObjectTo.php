@@ -49,8 +49,12 @@ if ($className!=get_class($obj)) {
 if (! array_key_exists('copyToClass',$_REQUEST)) {
   throwError('copyToClass parameter not found in REQUEST');
 }
-$toClassNameObj=new Copyable($_REQUEST['copyToClass']); // validates copyToClass is numeric inside SqlElement constructor
-$toClassName=$toClassNameObj->name;
+if (is_numeric($_REQUEST['copyToClass'])) {
+	$toClassNameObj=new Copyable($_REQUEST['copyToClass']); // validates copyToClass is numeric inside SqlElement constructor
+	$toClassName=$toClassNameObj->name;
+} else {
+	$toClassName=$_REQUEST['copyToClass'];
+}
 if (! array_key_exists('copyToName',$_REQUEST)) {
   throwError('copyToName parameter not found in REQUEST');
 }
@@ -95,11 +99,26 @@ $copyAssignments=false;
 if (array_key_exists('copyWithAssignments',$_REQUEST)) {
 	$copyAssignments=true;
 }
+if (array_key_exists('copyToCopyVersionStructure',$_REQUEST)) {
+	$copyVersionStructure=$_REQUEST['copyToCopyVersionStructure'];
+	$obj->_copyVersionStructure=$copyVersionStructure;
+}
+if (array_key_exists('copyToVersionNumber',$_REQUEST)) {
+	$copyToVersionNumber=$_REQUEST['copyToVersionNumber'];
+	$obj->versionNumber=$copyToVersionNumber;
+}
+
 Sql::beginTransaction();
 $error=false;
 // copy from existing object
 Security::checkValidId($toType); // $toType is an id !
-$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments,false,null,null,$copyToWithResult);
+if ($className=='ComponentVersion') {
+	$obj->name=$toName;
+	$obj->idComponentVersionType=$toType;
+	$newObj=$obj->copy();
+} else {
+  $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments,false,null,null,$copyToWithResult);
+}
 $result=$newObj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $error=true;

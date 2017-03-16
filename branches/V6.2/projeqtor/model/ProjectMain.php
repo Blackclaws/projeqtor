@@ -886,7 +886,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   }
   
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
-    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks,$withAssignments, $withAffectations, $toProject);
     if($copyToWithVersionProjects==true){
       $vp=new VersionProject();
       $crit=array('idProject'=>$this->id);

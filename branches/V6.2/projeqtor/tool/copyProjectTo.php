@@ -46,6 +46,13 @@ if (! array_key_exists('copyProjectToType',$_REQUEST)) {
   throwError('copyProjectToName parameter not found in REQUEST');
 }
 $toType=$_REQUEST['copyProjectToType'];
+
+if (! array_key_exists('copyProjectToSubProject',$_REQUEST)) {
+  throwError('copyProjectToSubProject parameter not found in REQUEST');
+}
+$toSubProject=$_REQUEST['copyProjectToSubProject'];
+
+debugLog($_REQUEST);
 $copyStructure=false;
 if (array_key_exists('copyProjectStructure',$_REQUEST)) {
 	$copyStructure=true;
@@ -86,7 +93,7 @@ $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
 Security::checkValidId($toType);
-$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments, false, null, null, false, $copyToWithVersionProjects );
+$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments, false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
 $newProj->projectCode=$codeProject;
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
