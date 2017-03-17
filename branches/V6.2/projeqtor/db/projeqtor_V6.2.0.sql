@@ -19,3 +19,8 @@ CREATE TABLE `${prefix}subscription` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE INDEX `subscriptionAffectable` ON `${prefix}subscription` (`idAffectable`);
 CREATE INDEX `subscriptionReference` ON `${prefix}subscription` (`refType`,`refId`);
+
+INSERT INTO `${prefix}checklistable` (`id`, `name`, `idle`) VALUES 
+(17, 'ProductVersion', '0'),
+(18, 'ComponentVersion', '0'),
+(19, 'Meeting', '0')
