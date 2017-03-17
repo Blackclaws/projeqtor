@@ -79,7 +79,7 @@ class UserMain extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_fieldsAttributes=array("id"=>"nobr",
+  private static $_fieldsAttributes=array("id"=>"",
                                           "name"=>"required, truncatedWidth100",
                                           "resourceName"=>"truncatedWidth100",
   		                                    "email"=>"truncatedWidth100",
@@ -303,9 +303,10 @@ class UserMain extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
     }
-    if ($item=='image' and $this->id){
+    if ($item=='image' and $this->id ){
+      if ($print) return "";
       $result=Affectable::drawSpecificImage(get_class($this),$this->id, $print, $outMode, $largeWidth);
-    	echo $result;
+    	return $result;
     }
   }
 

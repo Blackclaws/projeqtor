@@ -370,7 +370,8 @@
 	            //$querySelect .= ') as "' . $fld .'"';
 	            $querySelect .= ' as "' . $fld .'"'; 
 	          } else {
-	            $querySelect .= 'convert(concat(';
+	            if ($enforceUTF8) $querySelect .= 'convert(';
+	            $querySelect .= 'concat(';
 	            if (property_exists($externalObj,'sortOrder')) {
                 $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
                 $querySelect .=  ",'#split#',";
@@ -378,7 +379,9 @@
 	            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
 	            $querySelect .=  ",'#split#',";
 	            $querySelect .= "COALESCE(".$externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color').",'')";
-	            $querySelect .= ') using utf8) as ' . $fld;
+	            $querySelect .= ")"; // end of concat()
+	            if ($enforceUTF8) $querySelect .= ' using utf8)';
+	            $querySelect .= ' as ' . $fld;
 	          }	          
 	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
