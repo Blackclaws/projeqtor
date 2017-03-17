@@ -30,7 +30,8 @@
  */ 
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/objectButton.php'); 
-
+  
+  global $displayWidthButton;
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
@@ -64,7 +65,12 @@
   if (isset($_REQUEST ['destinationWidth'])) {
     $displayWidthButton=$_REQUEST ['destinationWidth'];
   }
+  debugLog("displayWidthButton=$displayWidthButton");
   $cptButton=0;
+  $isAttachmentEnabled = true; // allow attachment
+  if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
+  	$isAttachmentEnabled = false;
+  }
   $showAttachment=($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly )?true:false;
   $entendedZone=false;
 ?>
@@ -105,15 +111,16 @@
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
        iconClass="dijitButtonIcon dijitButtonIconNew" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
-		  dojo.byId("newButton").blur();
+		      dojo.byId("newButton").blur();
+          hideExtraButtons('extraButtonsDetail');
           id=dojo.byId('objectId');
-	      if (id) { 	
-		    id.value="";
-		    unselectAllRows("objectGrid");
+	        if (id) { 	
+		        id.value="";
+		        unselectAllRows("objectGrid");
             loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
           } else { 
             showError(i18n("errorObjectId"));
-	      }
+	        }
         </script>
       </button>
       <?php organizeButtons();?>
@@ -122,6 +129,7 @@
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
+          hideExtraButtons('extraButtonsDetail');
 		      saveObject();
         </script>
       </button>
@@ -132,6 +140,7 @@
        iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("printButton").blur();
+        hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
         showPrint("<?php echo $printPage;?>", null, null, null, 'P');
         </script>
@@ -144,6 +153,7 @@
        iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
+        hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
         showPrint("<?php echo $printPage;?>", null, null, 'pdf', 'P');
         </script>
@@ -156,6 +166,7 @@
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitButtonIcon dijitButtonIconCopy" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
+          hideExtraButtons('extraButtonsDetail');
           <?php 
           $crit=array('name'=> $_REQUEST['objectClass']);
           $paramCopy="copyProject";
@@ -195,6 +206,7 @@
        iconClass="dijitButtonIcon dijitButtonIconUndo" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
+          hideExtraButtons('extraButtonsDetail');
           loadContent("objectDetail.php", "detailDiv", 'listForm');
           formChangeInProgress=false;
         </script>
@@ -206,16 +218,11 @@
        iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("deleteButton").blur();
+          hideExtraButtons('extraButtonsDetail');
 		      action=function(){
-            //unselectAllRows('objectGrid');
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
           var alsoDelete="";
-		      //if (dojo.byId('nbAttachments')) {
-          //  if (dojo.byId('nbAttachments').value>0) {
-          //    alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachment', new Array(dojo.byId('nbAttachments').value) );
-          //  }
-          //}
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
         </script>
       </button>    
@@ -226,6 +233,7 @@
        iconClass="dijitButtonIcon dijitButtonIconRefresh" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("refreshButton").blur();
+          hideExtraButtons('extraButtonsDetail');
           loadContent("objectDetail.php", "detailDiv", 'listForm');
         </script>
       </button>    
@@ -241,7 +249,8 @@
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitButtonIcon dijitButtonIconEmail" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
-          showMailOptions();  
+          showMailOptions();
+          hideExtraButtons('extraButtonsDetail');  
         </script>
       </button>
     <?php 
@@ -253,26 +262,29 @@
        iconClass="dijitButtonIcon dijitButtonIconMultipleUpdate" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
+          hideExtraButtons('extraButtonsDetail');
         </script>
     </button>
     </span>
     <?php }
     //if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {
-    ?> 
-    <?php organizeButtons(2);?>
+    ?>
+    <?php if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {organizeButtons(2);}?>
     <span id="indentButtonDiv" class="statusBar" style="display:inline-block;height:32px; width:72px;">
      <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('indentDecreaseButton');?>"
         iconClass="dijitButtonIcon dijitButtonIconDecrease" class="statusBar detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           indentTask("decrease");  
+          hideExtraButtons('extraButtonsDetail');
         </script>
       </button>
       <button id="indentIncreaseButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('indentIncreaseButton');?>"
         iconClass="dijitButtonIcon dijitButtonIconIncrease" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
-          indentTask("increase");  
+          indentTask("increase");
+          hideExtraButtons('extraButtonsDetail');  
         </script>
       </button>
     </span>
@@ -301,8 +313,7 @@
         $buttonCheckListVisible="hidden";
       }
       //$displayButton=( $buttonCheckListVisible=="visible")?'void':'none';?>
-      
-    <?php if ($buttonCheckListVisible!="never") organizeButtons();?>
+    <?php if ($buttonCheckListVisible=="visible" and $obj->id) {organizeButtons();}?>
     <span id="checkListButtonDiv" style="display:<?php echo ($buttonCheckListVisible=='visible')?'inline':'none';?>;">
       <?php if ($buttonCheckListVisible!="never") {?>
       <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
@@ -310,6 +321,7 @@
         iconClass="dijitButtonIcon dijitButtonIconChecklist" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           showChecklist('<?php echo get_class($obj);?>');  
+          hideExtraButtons('extraButtonsDetail');
         </script>
       </button>
       <?php }?>
@@ -323,7 +335,7 @@
       }
       if (!$obj->id) $buttonHistoryVisible=false;
     ?>
-    <?php if ($paramHistoryVisible=='REQ') organizeButtons();?>
+    <?php if ($paramHistoryVisible=='REQ' and $obj->id) organizeButtons();?>
     <span id="historyButtonDiv" style="display:<?php echo ($buttonHistoryVisible)?'inline':'none';?>;">
       <?php if ($paramHistoryVisible=='REQ') {?>
       <button id="historyButton" dojoType="dijit.form.Button" showlabel="false"
@@ -344,13 +356,8 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo (!$obj->id)?$createRight:$updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-       <?php $isAttachmentEnabled = true; // allow attachment
-    		if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
-    			$isAttachmentEnabled = false;
-    		} 
-       if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
+       <?php if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly and $obj->id) {?>
 			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id or $comboDetail)?'visibility:hidden;':'';?>">
-		  <?php if (isHtml5()) {?>	
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
 			url="../tool/saveAttachment.php?attachmentRefType=<?php echo get_class($obj);?>&attachmentRefId=<?php echo $obj->id;?>"
@@ -368,25 +375,27 @@
 				<script type="dojo/connect" event="onProgress" args="data">
           saveAttachmentProgress(data);
 	      </script>
-			</div>
-			<?php }?>
+			</div>			
 			</span>
+			<?php } else {?>
+			 <span style="display:inline-block;width:2px"></span>
+			<?php }?>
+      
   </div>
-     
-<?php }?>
   </td>
   </tr>
 </table>
 <?php 
 function organizeButtons($nbButton=1) {
-	global $displayWidth, $cptButton,$showAttachment,$entendedZone;
+	global $displayWidthButton, $cptButton,$showAttachment,$entendedZone, $obj;
 	$buttonWidth=36;
 	$cptButton+=$nbButton;
 	$requiredWidth=$cptButton*$buttonWidth;
-	if ($showAttachment) {
+	if ($showAttachment and $obj->id) {
 		$requiredWidth+=100;
 	}
-	if ($requiredWidth>($displayWidth/2)) {
+	debugLog("requiredWidth=$requiredWidth, displayWidthButton=$displayWidthButton");
+	if ($requiredWidth>($displayWidthButton/2)) {
 		if (! $entendedZone) {
 			$entendedZone=true;
 			echo '<div dojoType="dijit.form.Button" showlabel="false" title="'. i18n('showHistory'). '" '
@@ -395,7 +404,6 @@ function organizeButtons($nbButton=1) {
  		      .'></div>';
 			echo '<div class="statusBar" id="extraButtonsDetailDiv" style="display:none;position:absolute;width:36px;">';
 		} else {
-			debugLog("OK");
 			echo '<div></div>';
 		}
 	}

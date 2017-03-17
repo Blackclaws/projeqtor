@@ -142,7 +142,7 @@ class IndicatorValue extends SqlElement {
       return;  		
   	}
   	$fld="";
-  	$fldVal;
+  	$fldVal=null;
   	$sub="";
     $indVal->idle=$obj->idle;
     if (property_exists($obj, 'handled')) {

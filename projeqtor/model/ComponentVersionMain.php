@@ -360,7 +360,6 @@ class ComponentVersionMain extends Version {
       $pvs->save();
     }
     // Copy Structure
-    debugLog("copy strycture : $this->_copyVersionStructure");
     if (!property_exists($this, '_copyVersionStructure')) {
     	$this->_copyVersionStructure='Copy';
     }

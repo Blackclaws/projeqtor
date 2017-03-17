@@ -1506,7 +1506,6 @@ abstract class SqlElement {
 		}
 		if (is_a($this, 'Version') and $newObj->versionNumber) {
 			$existWithName=$newObj->countSqlElementsFromCriteria(null, "name='$newObj->name'");
-			debugLog("look for $newObj->name found=$existWithName");
 			if ($existWithName>0) {
 		    $newObj->versionNumber=$newObj->versionNumber.' ('.i18n('copy').')';
 		    $newObj->name=$newObj->name.' ('.i18n('copy').')';
@@ -3100,7 +3099,7 @@ abstract class SqlElement {
 			$colScript .= '</script>';
 		}
     
-		//debugLog Krowry
+		// Krowry
 		if(substr($colName, -9)=="StartDate"){ // If change start date
 		  $end = str_replace('StartDate', 'EndDate', $colName);
 		  $start=$colName;
