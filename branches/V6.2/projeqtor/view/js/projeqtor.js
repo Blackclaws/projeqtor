@@ -3806,12 +3806,13 @@ function saveDataToSession(param, value, saveUserParameter) {
     error : function () {
       consoleTraceLog("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);
     }
- });;
+ });
 }
 
 function showExtraButtons(location) {
   var btnNode=dojo.byId(location);
   var divNode=dojo.byId(location+'Div');
+  if (! divNode) return;
   if (divNode.style.display=='block') {
     divNode.style.display='none';
   } else {
@@ -3823,6 +3824,7 @@ function showExtraButtons(location) {
 function hideExtraButtons(location) {
   var btnNode=dojo.byId(location);
   var divNode=dojo.byId(location+'Div');
+  if (! divNode) return;
   if (divNode.style.display=='block') {
     divNode.style.display='none';
   }

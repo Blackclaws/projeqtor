@@ -69,7 +69,6 @@ foreach ($strList as $str) {
 	$lstCompVers=$vers->getSqlElementsFromCriteria(null,false,$crit,'realEisDate desc');
 	if (count($lstCompVers)>0) {
 		$new=reset($lstCompVers);
-		debugLog("id=$new->id, name=$new->name");
 		if ($new->id!=$vers->id) {
 			$change=true;
 			$str->idComponentVersion=$new->id;
