@@ -97,23 +97,10 @@ class VersionProject extends SqlElement {
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
-// ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo frameword)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-    return $colScript;
-  }
   
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  
 
   /** =========================================================================
    * Draw a specific item for the current class.

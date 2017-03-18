@@ -102,16 +102,6 @@ class Job extends SqlElement {
     return $result;
   }
 
-
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo frameword)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-  }
-
-
   /** =========================================================================
    * Overrides SqlElement::delete() function to add specific treatments
    * @see persistence/SqlElement#delete()

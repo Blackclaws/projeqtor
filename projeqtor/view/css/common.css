@@ -2041,6 +2041,9 @@ table.dijitCalendarContainer {
 .dijitButtonIconStats { background-position: -726px;}
 .dijitButtonIconValidPlan { background-position: -751px;}
 .dijitButtonIconExtraButtons { background-position: -776px;}
+.dijitButtonIconStatusChange { background-position: -801px;}
+.dijitButtonIconSubscribe { background-position: -826px;}
+.dijitButtonIconSubscribeValid { background-position: -851px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
