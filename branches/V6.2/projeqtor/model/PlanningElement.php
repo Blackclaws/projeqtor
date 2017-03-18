@@ -777,6 +777,33 @@ class PlanningElement extends SqlElement {
       $pe=new PlanningElement($this->topId);
       $pe->renumberWbs();
     }
+    //krowry debugLog
+    $dep=new Dependency();  
+    $critSuccessor=array( 'successorRefId'=>$this->refId,'successorRefType'=>$this->refType);
+    $lp=$dep->getSqlElementsFromCriteria($critSuccessor);
+    $critPredecessor=array('predecessorRefId'=>$this->refId,'predecessorRefType'=>$this->refType);
+    $ls=$dep->getSqlElementsFromCriteria($critPredecessor);
+    if(count($ls)>0 || count($lp)>0 ){
+      foreach ($lp as $depP){
+        foreach ($ls as $depS){
+          $critElt=array('successorRefId'=>$depS->successorRefId,'successorRefType'=>$depS->successorRefType,'predecessorRefId'=>$depP->predecessorRefId,'predecessorRefType'=>$depP->predecessorRefType);
+          $eltLsLp=$dep->getSqlElementsFromCriteria($critElt);
+          if(!$eltLsLp){
+          $dep->predecessorId=$this->refId;
+          $dep->successorRefId=$depS->successorRefId;
+          $dep->successorRefType=$depS->successorRefType;
+          $dep->predecessorRefId=$depP->predecessorRefId;
+          $dep->predecessorRefType=$depP->predecessorRefType;
+          $dep->save();
+          debugLog($dep);
+          }
+        }
+      }
+    }
+    
+    
+
+
     
     // Dispatch value
     return $result;

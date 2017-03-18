@@ -46,7 +46,7 @@ class MeetingMain extends SqlElement {
   public $_lib_to;
   public $meetingEndTime;
   public $location;
-  //public $_spe_buttonSendMail;
+  public $_spe_buttonSendMail;
   public $idUser;
   public $description;
   public $_sec_treatment;

@@ -101,14 +101,6 @@ class Checklist extends SqlElement {
   	return parent::save();
   }
   
-    /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  public function getValidationScript($colName) {
-  	$colScript = parent::getValidationScript($colName);
-    return $colScript;
-  }
   
   public function control(){
     $result="";

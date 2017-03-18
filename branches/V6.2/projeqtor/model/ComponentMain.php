@@ -149,19 +149,7 @@ class ComponentMain extends ProductOrComponent {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
-// ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo frameword)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-    return $colScript;
-  }
-  
+ 
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
