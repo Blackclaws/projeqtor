@@ -522,7 +522,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
-      $colWidth=round(($displayWidth) / $nbCol); // 3 columns should be displayable
+      $colWidth=round((intval($displayWidth)) / $nbCol); // 3 columns should be displayable
       $maxWidth=$colWidth - $labelWidth; // subtract label width
       if ($maxWidth >= $mediumWidth) {
         $largeWidth=$maxWidth;

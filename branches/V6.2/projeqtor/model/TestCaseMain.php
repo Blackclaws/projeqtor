@@ -174,18 +174,6 @@ class TestCaseMain extends SqlElement {
     return self::$_databaseColumnName;
   }
   
-  // ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-    return $colScript;
-  }
 
 /** =========================================================================
    * control data corresponding to Model constraints

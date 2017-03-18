@@ -857,6 +857,11 @@ function loadContent(page, destination, formName, isResultMessage,
  */
 function loadDiv(page, destinationDiv, formName, callback) {
   var contentNode = dojo.byId(destinationDiv);
+  if (page.indexOf('getObjectCreationInfo')>=0 && dijit.byId('detailDiv') && page.indexOf('destinationWidth')<0) {
+    var destinationWidth = dojo.style(dojo.byId('detailDiv'), "width");
+    // var destinationHeight = dojo.style(dojo.byId('detailDiv'), "height");
+    page+=((page.indexOf('?')>=0)?'&':'?')+'destinationWidth='+destinationWidth;
+  }
   dojo.xhrPost({
     url : page,
     form : dojo.byId(formName),
@@ -1528,6 +1533,8 @@ function finaliseButtonDisplay() {
       enableWidget('saveButton');
       disableWidget('undoButton');
       disableWidget('mailButton');
+      disableWidget('changeStatusButton');
+      disableWidget('subscribeButton');
       if (dijit.byId("objectGrid")) {
         enableWidget('multiUpdateButton');
       } else {
@@ -1541,6 +1548,8 @@ function finaliseButtonDisplay() {
     formLock();
     enableWidget('newButton');
     enableWidget('newButtonList');
+    disableWidget('changeStatusButton');
+    disableWidget('subscribeButton');
     if (dijit.byId("objectGrid")) {
       enableWidget('multiUpdateButton');
     } else {
@@ -1667,6 +1676,13 @@ function formInitialize() {
   enableWidget('deleteButton');
   enableWidget('refreshButton');
   enableWidget('mailButton');
+  if ( (dojo.byId("id") && dojo.byId("id").value != "") || (dojo.byId("lastSaveId") && dojo.byId("lastSaveId")!= "") ) {
+    enableWidget('changeStatusButton');
+    enableWidget('subscribeButton');
+  } else {
+    disableWidget('changeStatusButton');
+    disableWidget('subscribeButton');
+  }
   if (dijit.byId("objectGrid")) {
     enableWidget('multiUpdateButton');
   } else {
@@ -1697,7 +1713,8 @@ function formLock() {
   disableWidget('mailButton');
   disableWidget('multiUpdateButton');
   disableWidget('indentDecreaseButton');
-  disableWidget('indentIncreaseButton');
+  disableWidget('changeStatusButton');
+  disableWidget('subscribeButton');
 }
 
 /**
@@ -1722,6 +1739,8 @@ function buttonRightLock() {
       disableWidget('multiUpdateButton');
       disableWidget('indentDecreaseButton');
       disableWidget('indentIncreaseButton');
+      disableWidget('changeStatusButton');
+      disableWidget('subscribeButton');
     }
   }
   if (deleteRight) {
@@ -3824,6 +3843,25 @@ function showExtraButtons(location) {
 function hideExtraButtons(location) {
   var btnNode=dojo.byId(location);
   var divNode=dojo.byId(location+'Div');
+  if (! divNode) return;
+  if (divNode.style.display=='block') {
+    divNode.style.display='none';
+  }
+}
+
+function showDirectChangeStatus() {
+  var divNode=dojo.byId('directChangeStatusDiv');
+  if (! divNode) return;
+  if (divNode.style.display=='block') {
+    divNode.style.display='none';
+  } else {
+    divNode.style.display='block';
+    //console.log(btnNode.offsetLeft);
+    //divNode.style.left=(btnNode.offsetLeft-5)+"px";
+  }
+}
+function hideDirectChangeStatus() {
+  var divNode=dojo.byId('directChangeStatusDiv');
   if (! divNode) return;
   if (divNode.style.display=='block') {
     divNode.style.display='none';

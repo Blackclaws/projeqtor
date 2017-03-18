@@ -58,7 +58,60 @@ if ($obj->id and $updateRight) {
     }
   }
 }
+$displayWidthButtonCI="9999";
+if (isset($_REQUEST ['destinationWidth'])) {
+	$displayWidthButtonCI=$_REQUEST ['destinationWidth'];
+}
+debugLog("displayWidthButton=$displayWidthButtonCI");
 ?>
+<?php  if (property_exists($obj, 'idStatus') and $displayWidthButtonCI>=1000) {?>
+<div style="float:left;display:table-cell ;width:130px;height:35px;vertical-align:middle;position:relative;z-index:99999;">
+  <div style="width:133px;height:39px;display:table-cell;padding:0px 4px;vertical-align: middle;zoom:0.9;-moz-transform: scale(0.9);overflow:hidden;position:relative;<?php if ($updateRight) echo "cursor:pointer;";?>"
+  <?php if ($updateRight) {?> onClick="showDirectChangeStatus();" title="<?php echo i18n('moveStatusBar');?>" <?php }?> >
+  <?php if ($obj->idStatus) {
+  	$status=new Status($obj->idStatus);
+  	echo colorNameFormatter($status->name."#split#".$status->color);
+  }?>
+  </div>
+  <div class="statusBar" id="directChangeStatusDiv" style="display:none;position:absolute;width:133px;zoom:0.9; -moz-transform: scale(0.9);padding:0px 4px 4px 4px;">
+    <?php 
+  	$idType='id' . get_class($obj) . 'Type';
+  	$typeClass=get_class($obj) . 'Type';
+  	$table=SqlList::getList('Status','name',$obj->idStatus, false );
+  	if (property_exists($obj,$idType) ) {
+  		reset($table);
+  		$firstKey=key($table);
+  		$firstName=current($table);
+  		// look for workflow
+  		if ($obj->$idType and $obj->idStatus) {
+  			$profile="";
+  			if (sessionUserExists()) {
+  				$profile=getSessionUser()->getProfile($obj);
+  			}
+  			$type=new $typeClass($obj->$idType,true);
+  			if (property_exists($type,'idWorkflow') ) {
+  				$ws=new WorkflowStatus();
+  				$crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$obj->idStatus);
+  				$wsList=$ws->getSqlElementsFromCriteria($crit, false);
+  				$compTable=array($obj->idStatus=>'ok');
+  				foreach ($wsList as $ws) {
+  					$compTable[$ws->idStatusTo]="ok";
+  				}
+  				$table=array_intersect_key($table,$compTable);
+  			}
+  		} else {
+  			$table=array($firstKey=>$firstName);
+  		}
+  	}
+  	foreach ($table as $stId=>$stName) {
+  		echo '<div style="padding-top:4px;'.(($stId==$obj->idStatus)?'"':'cursor:pointer;" onClick="dijit.byId(\'idStatus\').set(\'value\','.$stId.');setTimeout(\'saveObject()\',100);" ').' >';
+  	  echo colorNameFormatter($stName."#split#".(($stId==$obj->idStatus)?'transparent':SqlList::getFieldFromId('Status', $stId, 'color')));
+  		echo '</div>';
+  	}
+  	?>
+  </div>
+</div>
+<?php }?>
 <div style="float:left;">
 <?php 
 if (property_exists ( $obj, 'lastUpdateDateTime' ) && $obj->lastUpdateDateTime) {

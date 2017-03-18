@@ -116,21 +116,7 @@ class BudgetElement extends SqlElement {
     $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     return $paramDbPrefix . self::$_databaseTableName;
   }
-// ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
- 
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo frameword)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-   
-    
-    return $colScript;
-  }
-  
+
   /** ==========================================================================
    * Extends save functionality to implement wbs calculation
    * Triggers parent::save() to run defaut functionality in the end.

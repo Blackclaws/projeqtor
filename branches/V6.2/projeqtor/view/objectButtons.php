@@ -65,7 +65,7 @@
   if (isset($_REQUEST ['destinationWidth'])) {
     $displayWidthButton=$_REQUEST ['destinationWidth'];
   }
-  debugLog("displayWidthButton=$displayWidthButton");
+
   $cptButton=0;
   $isAttachmentEnabled = true; // allow attachment
   if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
@@ -96,9 +96,9 @@
         </tr>
       </table>  
     </div> 
-  </td>     
+  </td>
   <td style="width:8%; text-align:right;"  >
-      <div style="width:120px;margin-right:16px;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+      <div style="width:<?php echo (property_exists($obj, 'idStatus') and $displayWidthButton>=1000)?'250':'120';?>px;margin-right:16px;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
   <td style="width:2%;">
     &nbsp;
@@ -253,6 +253,18 @@
           hideExtraButtons('extraButtonsDetail');  
         </script>
       </button>
+      <?php organizeButtons();?>
+      <button id="subscribeButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('showSubscribeOptions');?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="dijitButtonIcon dijitButtonIconSubscribe" class="detailButton">
+        <script type="dojo/connect" event="onClick" args="evt">
+        
+          hideExtraButtons('extraButtonsDetail');
+        
+        
+        </script>
+      </button>   
     <?php 
     if (! array_key_exists('planning',$_REQUEST)) {?>
     <?php organizeButtons();?> 
@@ -394,11 +406,10 @@ function organizeButtons($nbButton=1) {
 	if ($showAttachment and $obj->id) {
 		$requiredWidth+=100;
 	}
-	debugLog("requiredWidth=$requiredWidth, displayWidthButton=$displayWidthButton");
 	if ($requiredWidth>($displayWidthButton/2)) {
 		if (! $entendedZone) {
 			$entendedZone=true;
-			echo '<div dojoType="dijit.form.Button" showlabel="false" title="'. i18n('showHistory'). '" '
+			echo '<div dojoType="dijit.form.Button" showlabel="false" title="'. i18n('extraButtonsBar'). '" '
           .' iconClass="dijitButtonIcon dijitButtonIconExtraButtons" class="detailButton"'
  		      .' id="extraButtonsDetail" onClick="showExtraButtons(\'extraButtonsDetail\')" '
  		      .'></div>';

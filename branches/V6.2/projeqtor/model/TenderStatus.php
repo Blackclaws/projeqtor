@@ -94,34 +94,6 @@ class TenderStatus extends SqlElement {
     return self::$_layout;
   }
   
-    /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-    /*if ($colName=="setIdleStatus") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (! dijit.byId("setDoneStatus").get("checked")) {';
-      $colScript .= '      dijit.byId("setDoneStatus").set("checked", true);';
-      $colScript .= '    }';      
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="setDoneStatus") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (! this.checked) { ';
-      $colScript .= '    if ( dijit.byId("setIdleStatus").get("checked")) {';
-      $colScript .= '      dijit.byId("setIdleStatus").set("checked", false);';
-      $colScript .= '    }';      
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    }*/
-    return $colScript;
-  }
-  
   public function deleteControl() {
     $result="";
     if ($this->isCopyStatus==1) {    
