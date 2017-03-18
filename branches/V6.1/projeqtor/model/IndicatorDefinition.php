@@ -213,8 +213,7 @@ class IndicatorDefinition extends SqlElement {
    * @return the validation javascript (for dojo framework)
    */
   public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-        if ($this->mailToOther=='1') {
+    if ($this->mailToOther=='1') {
       self::$_fieldsAttributes['otherMail']='';
     } else {
       self::$_fieldsAttributes['otherMail']='invisible';
