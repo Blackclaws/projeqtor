@@ -7711,3 +7711,79 @@ function toggleFullScreen() {
     }
   }
 }
+
+/**
+* Subscription
+*
+*/
+function subscribeToItem(objectClass, objectId, userId) {
+  var url="../tool/saveSubscription.php?mode=on";
+  url+="&objectClass="+objectClass;
+  url+="&objectId="+objectId;
+  url+="&userId="+userId;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      var result="KO";
+      var itemLabel="";
+      console.log(data);
+      JSON.parse(data, (key, value) => {
+        if (key=='result') result=value;
+        else if (key=='itemLabel') itemLabel=value;
+      });
+      if (result=='OK') {
+        addMessage(i18n('subscriptionSuccess',new Array(itemLabel)));
+        dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribeValid');
+        enableWidget('subscribeButtonUnsubscribe');
+        disableWidget('subscribeButtonSubscribe');
+      } else {
+        showError(i18n('subscriptionFailed'));
+      }
+    },
+    error : function() {
+      showError(i18n('subscriptionFailed'));
+    }
+  });
+}
+
+function unsubscribeFromItem(objectClass, objectId, userId) {
+  var url="../tool/saveSubscription.php?mode=off";
+  url+="&objectClass="+objectClass;
+  url+="&objectId="+objectId;
+  url+="&userId="+userId;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      var result="KO";
+      var itemLabel="";
+      var message="";
+      console.log(data);
+      JSON.parse(data, (key, value) => {
+        if (key=='result') result=value;
+        else if (key=='itemLabel') itemLabel=value;
+        else if (key=='message') message=value;
+      });
+      if (result=='OK') {
+        addMessage(i18n('unsubscriptionSuccess',new Array(itemLabel)));
+        dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribe');
+        enableWidget('subscribeButtonSubscribe');
+        disableWidget('subscribeButtonUnsubscribe');
+      } else {
+        showError(i18n('subscriptionFailed')+'<br/>'+message);
+      }
+    },
+    error : function() {
+      showError(i18n('subscriptionFailed'));
+    }
+  });
+}
+
+function subscribeForOthers(objectClass, objectId) {
+  
+}
+
+function showSubscriptionList(userId) {
+  
+}
