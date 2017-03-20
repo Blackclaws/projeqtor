@@ -7781,9 +7781,70 @@ function unsubscribeFromItem(objectClass, objectId, userId) {
 }
 
 function subscribeForOthers(objectClass, objectId) {
-  
+  loadDialog('dialogSubscriptionForOthers',null,true,'&objectClass='+objectClass+'&objectId='+objectId,true);
 }
 
 function showSubscriptionList(userId) {
-  
+  loadDialog('dialogSubscriptionList',null,true,'&userId='+userId,true);
+}
+
+function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,key) {
+  var url="../tool/saveSubscription.php?mode="+mode;
+  url+="&objectClass="+objectClass;
+  url+="&objectId="+objectId;
+  url+="&userId="+userId;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      var result="KO";
+      var itemLabel="";
+      var message="";
+      var userName="";
+      JSON.parse(data, (key, value) => {
+        if (key=='result') result=value;
+        else if (key=='itemLabel') itemLabel=value;
+        else if (key=='userName') userName=value;
+        else if (key=='message') message=value;
+      });
+      if (result=='OK') {
+        if (dialog=='list') {
+          addMessage(i18n('unsubscriptionSuccess',new Array(itemLabel)));
+        } else if (dialog=='other') {
+          if (mode=='on') {
+            addMessage(i18n('subscriptionSuccess',new Array(userName)));
+          } else {
+            addMessage(i18n('unsubscriptionSuccess',new Array(userName)));
+          }
+        }
+        if (key) {
+          if (mode=='on') {
+            dojo.byId('subscribtionButton'+key).style.display="none";
+            dojo.byId('unsubscribtionButton'+key).style.display="inline-block";
+          } else {
+            dojo.byId('unsubscribtionButton'+key).style.display="none";
+            dojo.byId('subscribtionButton'+key).style.display="inline-block";
+          }
+        }
+      } else {
+        showError(i18n('subscriptionFailed')+'<br/>'+message);
+      }
+    },
+    error : function() {
+      showError(i18n('subscriptionFailed'));
+    }
+  });
+}
+
+function filterDnDList(search,list) {
+  var searchVal=dojo.byId(search).value;
+  dojo.map(dojo.byId(list).children, function(child){
+    if (search!='' && child.getAttribute('value').indexOf(searchVal)<0) {
+      console.log(child.getAttribute('value')+"=>"+search+"=>"+child.getAttribute('value').indexOf(search));
+      child.style.display="none";
+    } else {
+      console.log(child); 
+      child.style.display="block";
+    }
+  });
 }
