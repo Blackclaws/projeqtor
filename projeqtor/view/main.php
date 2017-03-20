@@ -173,9 +173,18 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         var newStatut=target.id.split('dialogRow')[1];
         var oldStatut=source.id.split('dialogRow')[1];
         sendChangeKanBan(idRow,typeRow,newStatut,target,oldStatut);
-      }
-       if (source.id!=target.id) { return;}
-       if (nodes.length>0 && nodes[0] && target && target.current) {
+      } else if (target.id=='subscriptionAvailable' || target.id=='subscriptionSubscribed') {
+        console.log("OK");
+        if (source.id==target.id) return;
+        for (i=0;i<nodes.length;i++) {
+          var item=nodes[i];
+          var mode=(target.id=='subsriptionAvailable')?'off':'on';
+          console.log(item);
+          changeSubscriptionFromDialog(mode,'other',item.getAttribute('objectclass'),item.getAttribute('objectid'),item.getAttribute('userid'),null)
+        }
+      } else if (source.id!=target.id) { 
+        return;
+      } else if (nodes.length>0 && nodes[0] && target && target.current) {
          var idFrom = nodes[0].id;
          var idTo = target.current.id;                   
          if (target.id=='dndSourceTable') {
