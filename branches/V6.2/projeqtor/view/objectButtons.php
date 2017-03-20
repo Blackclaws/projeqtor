@@ -271,28 +271,28 @@
           iconClass="dijitButtonIcon dijitButtonIconSubscribe" class="detailButton"><div style="width:180px;"><?php echo i18n('subscribeButton')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
             hideExtraButtons('subscribeButton');  
-            subscribeToItem('<?php echo get_class($obj)?>',<?php echo $obj->id;?>,<?php echo $userId;?>);
+            subscribeToItem('<?php echo get_class($obj)?>','<?php echo $obj->id;?>','<?php echo $userId;?>');
           </script>
         </button><br/>
         <button id="subscribeButtonUnsubscribe" dojoType="dijit.form.Button" showlabel="true"  style="" <?php if (! $subscribed) echo 'disabled';?>
           iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton"><div style="width:180px;"><?php echo i18n('unsubscribeButton')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
             hideExtraButtons('subscribeButton');  
-            unsubscribeFromItem('<?php echo get_class($obj)?>',<?php echo $obj->id;?>,<?php echo getSessionUser()->id;?>);
+            unsubscribeFromItem('<?php echo get_class($obj)?>','<?php echo $obj->id;?>','<?php echo getSessionUser()->id;?>');
           </script>
         </button><br/>
         <button id="subscribeButtonSubscribeOthers" dojoType="dijit.form.Button" showlabel="true"
           iconClass="idijitButtonIcon iconTeam22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribeOthersButton')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
             hideExtraButtons('subscribeButton');  
-            subscribeForOthers('<?php echo get_class($obj)?>',<?php echo $obj->id;?>);
+            subscribeForOthers('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
           </script>
         </button><br/> 
         <button id="subscribeButtonSubscribtionList" dojoType="dijit.form.Button" showlabel="true"
           iconClass="dijitButtonIcon iconListOfValues22" class="detailButton"><div style="width:180px"><?php echo i18n('showSubscribedItemsList')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
             hideExtraButtons('subscribeButton');  
-            showSubscriptionList(<?php echo getSessionUser()->id;?>);
+            showSubscriptionList('<?php echo getSessionUser()->id;?>');
           </script>
         </button><br/>        
       </div>
