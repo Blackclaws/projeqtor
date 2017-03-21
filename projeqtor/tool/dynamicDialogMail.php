@@ -124,6 +124,15 @@ if (array_key_exists("objectClass", $_REQUEST)) {
             <?php }?>
             <tr>
               <td class="dialogLabel">
+                <label for="dialogMailToSubscribers"><?php echo i18n("colMailToSubscribers") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToSubscribers" name="dialogMailToSubscribers" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+                <?php echo i18n('colMailToSubscribersDetail');?>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
                 <label for="dialogMailToOther"><?php echo i18n("colMailToOther") ?>&nbsp;:&nbsp;</label>
               </td>
               <td>

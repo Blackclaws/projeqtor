@@ -29,7 +29,6 @@ if (! array_key_exists('dialog', $_REQUEST)) {
 	throwError('dialog parameter not found in REQUEST');
 }
 $dialog=$_REQUEST['dialog'];
-//echo "<br/>".$dialog."<br/>";
 
 $dialog=Security::checkValidAlphanumeric($dialog);
 if (strtolower(substr($dialog,0,6))!='dialog' and strtolower(substr($dialog,0,4))!='list') {

@@ -48,7 +48,6 @@ class IndicatorDefinition extends SqlElement {
   public $codeAlertDelayUnit;
   public $idle;
   public $_sec_SendMail;
-  
   public $mailToContact;
   public $mailToUser;
   public $mailToResource;
@@ -56,17 +55,18 @@ class IndicatorDefinition extends SqlElement {
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;
+  public $mailToSubscribers;
   public $mailToOther;
   public $otherMail;
-  
   public $_sec_InternalAlert;
+  public $alertToContact;
   public $alertToUser;
   public $alertToResource;
   public $alertToProject;
-  public $alertToContact;
   public $alertToLeader;
   public $alertToManager;
   public $alertToAssigned;
+  public $alertToSubscribers;
   
   public $_isNameTranslatable = true;
 
@@ -110,6 +110,7 @@ class IndicatorDefinition extends SqlElement {
                                                      'alertToLeader'=>'mailToLeader',
                                                      'alertToManager'=>'mailToManager',
                                                      'alertToAssigned'=>'mailToAssigned',
+                                                     'alertToSubscribers'=>'mailToSubscribers',
                                                      'otherMail'=>'email');
   
    /** ==========================================================================
