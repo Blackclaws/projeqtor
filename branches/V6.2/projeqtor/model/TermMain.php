@@ -50,6 +50,8 @@ class TermMain extends SqlElement {
   public $_sec_trigger;
   public $_Dependency_Predecessor=array();
   public $_Note=array();
+  public $_sec_Link;
+  public $_Link=array();
   
   public $_nbColMax=3;
   // Define the layout that will be used for lists

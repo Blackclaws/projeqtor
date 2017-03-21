@@ -672,7 +672,21 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     		User::resetAllVisibleProjects(null, null);
     	}
     }
-    
+    //gautier #2577
+    if (Parameter::getGlobalParameter('allocateResponsibleToProject')=="YES") {
+        $crit=array('idProject'=>$this->id, 'idResource'=>$this->idResource);
+        $aff=new Affectation();
+        $affLst=$aff->getSqlElementsFromCriteria($crit, false);
+        if(count($affLst) == 0 ){
+          if($this->idResource != null){
+            $affManag=new Affectation();
+            $affManag->idProject=$this->id;
+            $affManag->idResource=$this->idResource;
+            $affManag->save();
+          }
+        }
+    }
+       
     // Dispatch Organization 
     foreach ($subProj as $sp) {
       if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {

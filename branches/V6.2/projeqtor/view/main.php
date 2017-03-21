@@ -174,13 +174,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         var oldStatut=source.id.split('dialogRow')[1];
         sendChangeKanBan(idRow,typeRow,newStatut,target,oldStatut);
       } else if (target.id=='subscriptionAvailable' || target.id=='subscriptionSubscribed') {
-        console.log("OK");
         if (source.id==target.id) return;
         for (i=0;i<nodes.length;i++) {
           var item=nodes[i];
-          var mode=(target.id=='subsriptionAvailable')?'off':'on';
-          console.log(item);
-          changeSubscriptionFromDialog(mode,'other',item.getAttribute('objectclass'),item.getAttribute('objectid'),item.getAttribute('userid'),null)
+          var mode=(target.id=='subscriptionAvailable')?'off':'on';
+          changeSubscriptionFromDialog(mode,'other',item.getAttribute('objectclass'),item.getAttribute('objectid'),item.getAttribute('userid'),null,item.getAttribute('currentuserid'))
         }
       } else if (source.id!=target.id) { 
         return;

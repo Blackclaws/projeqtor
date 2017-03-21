@@ -811,9 +811,7 @@ function copyObjectBox(copyType) {
 
   };
   if (copyType=="copyVersion") {
-    console.log("OK 1");
     callBack=function() {
-      console.log("OK 2");
     };
   } else if(copyType=="copyObjectTo"){
     callBack=function() {
@@ -1363,9 +1361,7 @@ function addProductStructure(way) {
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
   var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
-  console.log("OK");
   var callBackFunc=function() {
-    console.log(dojo.byId('directAccessToList'));
     if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true') {
       showDetail('productStructureListId', 1, 'Component', true); // TODO Retreive can create
     } else {
@@ -6076,7 +6072,6 @@ function hideBigImage(objectClass, objectId) {
 showHtmlContent=null;
 function showLink(link) {
   if (dojo.isIE) {
-    console.log(window.frames['showHtmlFrame']);
     if (showHtmlContent==null) {
       showHtmlContent=dijit.byId("dialogShowHtml").get('content');
     } else {
@@ -6091,7 +6086,6 @@ function showLink(link) {
 }
 function showHtml(id, file, className) {
   if (dojo.isIE) {
-    console.log(window.frames['showHtmlFrame']);
     if (showHtmlContent==null) {
       showHtmlContent=dijit.byId("dialogShowHtml").get('content');
     } else {
@@ -7727,7 +7721,6 @@ function subscribeToItem(objectClass, objectId, userId) {
     load : function(data) {
       var result="KO";
       var itemLabel="";
-      console.log(data);
       JSON.parse(data, (key, value) => {
         if (key=='result') result=value;
         else if (key=='itemLabel') itemLabel=value;
@@ -7759,7 +7752,6 @@ function unsubscribeFromItem(objectClass, objectId, userId) {
       var result="KO";
       var itemLabel="";
       var message="";
-      console.log(data);
       JSON.parse(data, (key, value) => {
         if (key=='result') result=value;
         else if (key=='itemLabel') itemLabel=value;
@@ -7788,7 +7780,7 @@ function showSubscriptionList(userId) {
   loadDialog('dialogSubscriptionList',null,true,'&userId='+userId,true);
 }
 
-function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,key) {
+function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,key,currentUserId) {
   var url="../tool/saveSubscription.php?mode="+mode;
   url+="&objectClass="+objectClass;
   url+="&objectId="+objectId;
@@ -7801,10 +7793,18 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
       var itemLabel="";
       var message="";
       var userName="";
+      var userId="";
+      var currentUserId="";
+      var objectClass="";
+      var objectId="";
       JSON.parse(data, (key, value) => {
         if (key=='result') result=value;
         else if (key=='itemLabel') itemLabel=value;
         else if (key=='userName') userName=value;
+        else if (key=='userId') userId=value;
+        else if (key=='currentUserId') currentUserId=value;
+        else if (key=='objectClass') objectClass=value;
+        else if (key=='objectId') objectId=value;
         else if (key=='message') message=value;
       });
       if (result=='OK') {
@@ -7826,6 +7826,19 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
             dojo.byId('subscribtionButton'+key).style.display="inline-block";
           }
         }
+        if (userId && currentUserId && userId==currentUserId && objectClass && objectId) {
+          if (dojo.byId('objectClass') && objectClass==dojo.byId('objectClass').value && dojo.byId('objectId') && parseInt(objectId)==parseInt(dojo.byId('objectId').value)) {
+            if (mode=='on') {
+              if (dijit.byId('subscribeButton')) dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribeValid');
+              enableWidget('subscribeButtonUnsubscribe');
+              disableWidget('subscribeButtonSubscribe');
+            } else {
+              if (dijit.byId('subscribeButton')) dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribe');
+              enableWidget('subscribeButtonSubscribe');
+              disableWidget('subscribeButtonUnsubscribe');
+            }
+          }
+        }
       } else {
         showError(i18n('subscriptionFailed')+'<br/>'+message);
       }
@@ -7838,12 +7851,12 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
 
 function filterDnDList(search,list) {
   var searchVal=dojo.byId(search).value;
+  searchVal=searchVal.replace(/\*/gi,'.*');
+  var pattern = new RegExp(searchVal, 'i');
   dojo.map(dojo.byId(list).children, function(child){
-    if (search!='' && child.getAttribute('value').indexOf(searchVal)<0) {
-      console.log(child.getAttribute('value')+"=>"+search+"=>"+child.getAttribute('value').indexOf(search));
+    if (searchVal!='' && ! pattern.test(child.getAttribute('value')) ) {
       child.style.display="none";
     } else {
-      console.log(child); 
       child.style.display="block";
     }
   });

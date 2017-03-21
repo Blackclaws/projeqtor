@@ -109,6 +109,9 @@ table.dojoDndAvatar {
   background: url(images/warning.png) no-repeat left center;
   padding-left: 25px;
 }
+.dojoDndItemSelected, .dojoDndItemAnchor {
+	border-left: 3px solid #E97B2C !important;
+}
 /* ========================== 
  * Layout/ContentPane.css
  * ========================== */

@@ -67,6 +67,7 @@ if ($mode=='on') {
 $itemLabel=i18n($class).' #'.$id;
 $posTag=strpos($message,'<');
 if ($posTag) $message=substr($message,0,$posTag);
-
-echo '{"result":"'.$result.'","itemLabel":"'.$itemLabel.'", "message":"'.$message.'"}';
+$usr=new Affectable($userId);
+$userName=($usr->name)?$usr->name:$usr->userName;
+echo '{"result":"'.$result.'","itemLabel":"'.$itemLabel.'","objectClass":"'.$class.'","objectId":"'.$id.'", "message":"'.$message.'", "userName":"'.$userName.'", "userId":"'.$userId.'","currentUserId":"'.getSessionUser()->id.'"}';
 ?>
