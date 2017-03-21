@@ -789,13 +789,12 @@ class PlanningElement extends SqlElement {
           $critElt=array('successorRefId'=>$depS->successorRefId,'successorRefType'=>$depS->successorRefType,'predecessorRefId'=>$depP->predecessorRefId,'predecessorRefType'=>$depP->predecessorRefType);
           $eltLsLp=$dep->getSqlElementsFromCriteria($critElt);
           if(!$eltLsLp){
-          $dep->predecessorId=$this->refId;
-          $dep->successorRefId=$depS->successorRefId;
-          $dep->successorRefType=$depS->successorRefType;
-          $dep->predecessorRefId=$depP->predecessorRefId;
-          $dep->predecessorRefType=$depP->predecessorRefType;
-          $dep->save();
-          debugLog($dep);
+	          $dep->predecessorId=$this->refId;
+	          $dep->successorRefId=$depS->successorRefId;
+	          $dep->successorRefType=$depS->successorRefType;
+	          $dep->predecessorRefId=$depP->predecessorRefId;
+	          $dep->predecessorRefType=$depP->predecessorRefType;
+	          $dep->save();
           }
         }
       }

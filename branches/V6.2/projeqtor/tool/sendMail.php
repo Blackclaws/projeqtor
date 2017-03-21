@@ -72,6 +72,7 @@
     $mailToLeader=(array_key_exists('dialogMailToLeader', $_REQUEST))?true:false;
     $mailToManager=(array_key_exists('dialogMailToManager', $_REQUEST))?true:false;
     $mailToAssigned=(array_key_exists('dialogMailToAssigned', $_REQUEST))?true:false;
+    $mailToSubscribers=(array_key_exists('dialogMailToSubscribers', $_REQUEST))?true:false;
     $mailToOther=(array_key_exists('dialogMailToOther', $_REQUEST))?true:false;
     $otherMail=(array_key_exists('dialogOtherMail', $_REQUEST))?$_REQUEST['dialogOtherMail']:'';
     $otherMail=str_replace('"','',$otherMail);
@@ -86,6 +87,7 @@
     $directStatusMail->mailToProject=$mailToProject;
     $directStatusMail->mailToLeader=$mailToLeader;
     $directStatusMail->mailToManager=$mailToManager;
+    $directStatusMail->mailToSubscribers=$mailToSubscribers;
     $directStatusMail->mailToOther=$mailToOther;
     $directStatusMail->mailToAssigned=$mailToAssigned;
     $directStatusMail->otherMail=$otherMail;

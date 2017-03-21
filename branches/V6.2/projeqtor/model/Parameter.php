@@ -433,7 +433,7 @@ class Parameter extends SqlElement {
         	$list=array('YES'=>i18n('displayYes'),
         	'NO'=>i18n('displayNo'));
         	break;
-      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
+      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': case 'allocateResponsibleToProject': 
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
         $list=array('NO'=>i18n('displayNo'),
@@ -600,6 +600,7 @@ class Parameter extends SqlElement {
       	                       'dependencyStrictMode'=>'list',                     
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
+      	                       'allocateResponsibleToProject'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
       	                       'realWorkOnlyForResponsible'=>'list',
       	                       'responsibleFromProduct'=>'list',

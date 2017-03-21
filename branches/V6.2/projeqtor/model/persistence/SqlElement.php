@@ -3596,15 +3596,6 @@ abstract class SqlElement {
 			if (! $mailable or ! $mailable->id) {
 				return false; // exit if not mailable object
 			}
-			
-			//if (! property_exists($this, 'idStatus')) { #1977 : item can be mailable even if no status
-				//return false; // exit if object has not idStatus
-			//}
-			//if (! $this->idStatus) { Not valid any more : for instance note add available for document even without status
-			//	return false; // exit if status not set
-			//}
-			//$crit=array();
-			//$crit['idStatus']=$this->idStatus;
 			$crit="idle='0' and idMailable='" . $mailable->id . "' and ( false ";
 			if ($statusChange and property_exists($this,'idStatus') and trim($this->idStatus)) {
 				$crit.="  or idStatus='" . $this->idStatus . "' ";
@@ -3656,7 +3647,8 @@ abstract class SqlElement {
 			}
 			if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
 			and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
-			and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0 and $statusMail->mailToSponsor==0) {
+			and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0 and $statusMail->mailToSubscribers==0
+			and $statusMail->mailToSponsor==0) {
 				continue; // exit not a status for mail sending (or disabled)
 			}
 			if ($statusMail->mailToUser) {
@@ -3762,6 +3754,19 @@ abstract class SqlElement {
 						$dest.= $newDest;
 					}
 				}
+			}
+			if ($statusMail->mailToSubscribers) {
+			  $crit=array('refType'=>get_class($this), 'refId'=>$this->id);
+			  $sub=new Subscription();
+			  $lstSub=$sub->getSqlElementsFromCriteria($crit);
+			  foreach ($lstSub as $sub) {
+			    $resource=new Affectable($sub->idAffectable);
+			    $newDest = "###" . $resource->email . "###";
+			    if ($resource->email and strpos($dest,$newDest)===false) {
+			      $dest.=($dest)?', ':'';
+			      $dest.= $newDest;
+			    }
+			  }
 			}
 			if ($statusMail->mailToOther) {
 				if ($statusMail->otherMail) {

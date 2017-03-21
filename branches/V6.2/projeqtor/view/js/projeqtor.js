@@ -3768,14 +3768,12 @@ function setDefaultPlanningMode(typeValue) {
 function setDefaultPriority(typeValue) {
   url='../tool/getSingleData.php?dataType=defaultPriority&idType='
     + typeValue + "&objectClass=" + dojo.byId('objectClass').value;
-  console.log(url);
   dojo.xhrGet({
     url : url,
     handleAs : "text",
     load : function(data) {
       var objClass = dojo.byId('objectClass').value;
       var planningMode = objClass + "PlanningElement_priority" ;
-      console.log(planningMode);
       dijit.byId(planningMode).set('value', data);
     }
   });
@@ -3836,7 +3834,6 @@ function showExtraButtons(location) {
     divNode.style.display='none';
   } else {
     divNode.style.display='block';
-    console.log(btnNode.offsetLeft);
     divNode.style.left=(btnNode.offsetLeft-5)+"px";
   }
 }
@@ -3856,8 +3853,6 @@ function showDirectChangeStatus() {
     divNode.style.display='none';
   } else {
     divNode.style.display='block';
-    //console.log(btnNode.offsetLeft);
-    //divNode.style.left=(btnNode.offsetLeft-5)+"px";
   }
 }
 function hideDirectChangeStatus() {

@@ -52,7 +52,6 @@ if (! array_key_exists('copyProjectToSubProject',$_REQUEST)) {
 }
 $toSubProject=$_REQUEST['copyProjectToSubProject'];
 
-debugLog($_REQUEST);
 $copyStructure=false;
 if (array_key_exists('copyProjectStructure',$_REQUEST)) {
 	$copyStructure=true;

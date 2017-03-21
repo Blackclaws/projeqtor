@@ -47,6 +47,7 @@ class StatusMail extends SqlElement {
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;
+  public $mailToSubscribers;
   public $mailToOther;
   public $otherMail;
   
@@ -55,18 +56,19 @@ class StatusMail extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameMailable" formatter="translateFormatter" width="12%" >${idMailable}</th>
+    <th field="nameMailable" formatter="translateFormatter" width="14%" >${idMailable}</th>
     <th field="nameType" formatter="nameFormatter" width="9%" >${type}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${newStatus}</th>
     <th field="nameEvent" formatter="translateFormatter" width="10%" >${orOtherEvent}</th>
-    <th field="mailToContact" width="7%" formatter="booleanFormatter" >${mailToContact}</th>    
-    <th field="mailToUser" width="7%" formatter="booleanFormatter" >${mailToUser}</th>
-    <th field="mailToResource" width="7%" formatter="booleanFormatter" >${mailToResource}</th>
-    <th field="mailToProject" width="7%" formatter="booleanFormatter" >${mailToProject}</th>
-    <th field="mailToLeader" width="7%" formatter="booleanFormatter" >${mailToLeader}</th>
-    <th field="mailToManager" width="7%" formatter="booleanFormatter" >${mailToManager}</th>
-    <th field="mailToAssigned" width="7%" formatter="booleanFormatter" >${mailToAssigned}</th>
-    <th field="mailToOther" width="7%" formatter="booleanFormatter" >${mailToOther}</th>
+    <th field="mailToContact" width="6%" formatter="booleanFormatter" >${mailToContact}</th>    
+    <th field="mailToUser" width="6%" formatter="booleanFormatter" >${mailToUser}</th>
+    <th field="mailToResource" width="6%" formatter="booleanFormatter" >${mailToResource}</th>
+    <th field="mailToProject" width="6%" formatter="booleanFormatter" >${mailToProject}</th>
+    <th field="mailToLeader" width="6%" formatter="booleanFormatter" >${mailToLeader}</th>
+    <th field="mailToManager" width="6%" formatter="booleanFormatter" >${mailToManager}</th>
+    <th field="mailToAssigned" width="6%" formatter="booleanFormatter" >${mailToAssigned}</th>
+    <th field="mailToSubscribers" width="6%" formatter="booleanFormatter" >${mailToSubscribers}</th>  
+    <th field="mailToOther" width="6%" formatter="booleanFormatter" >${mailToOther}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 

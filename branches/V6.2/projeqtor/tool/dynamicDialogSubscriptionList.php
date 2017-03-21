@@ -56,11 +56,11 @@ foreach ($list as $sub) {
   echo '<td class="reportTableData" width="5%">'.formatDateThumb($sub->creationDateTime, null).formatUserThumb($sub->idUser, SqlList::getNameFromId('User', $sub->idUser),'').'</td>';
   echo '<td class="reportTableData">';
   echo '<a id="subscribtionButton'.$sub->refType.$sub->refId.'" style="cursor:pointer;display:none;" '
-      .'onClick="changeSubscriptionFromDialog(\'on\',\'list\',\''.$sub->refType.'\',\''.$sub->refId.'\',\''.$userId.'\',\''.$sub->refType.$sub->refId.'\');">';
+      .'onClick="changeSubscriptionFromDialog(\'on\',\'list\',\''.$sub->refType.'\',\''.$sub->refId.'\',\''.$userId.'\',\''.$sub->refType.$sub->refId.'\',\''.$userId.'\');">';
   echo formatSmallButton('Subscribe');
   echo '</a>';
   echo '<a id="unsubscribtionButton'.$sub->refType.$sub->refId.'" style="cursor:pointer;display:inline-block;" '
-      .'onClick="changeSubscriptionFromDialog(\'off\',\'list\',\''.$sub->refType.'\',\''.$sub->refId.'\',\''.$userId.'\',\''.$sub->refType.$sub->refId.'\');">';
+      .'onClick="changeSubscriptionFromDialog(\'off\',\'list\',\''.$sub->refType.'\',\''.$sub->refId.'\',\''.$userId.'\',\''.$sub->refType.$sub->refId.'\',\''.$userId.'\');">';
   echo formatSmallButton('Remove');
   echo '</a>';
   echo '</td>';

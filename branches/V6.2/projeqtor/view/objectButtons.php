@@ -256,7 +256,14 @@
       <?php 
         $userId=getSessionUser()->id;
         $sub=SqlElement::getSingleSqlElementFromCriteria('Subscription', array('refType'=>get_class($obj),'refId'=>$obj->id,'idAffectable'=>$userId));
-        $subscribed=($sub and $sub->id)?true:false;?>
+        $subscribed=($sub and $sub->id)?true:false;
+        $canSubscribeForOthers=true;
+		    $crit=array('scope' => 'subscription','idProfile' => getSessionUser()->idProfile);
+		    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+		    $scope=new AccessScope($habilitation->rightAccess, true);
+		    if (! $scope->accessCode or $scope->accessCode == 'NO') {
+		      $canSubscribeForOthers=false;
+		    }?>
       <?php organizeButtons();?>
       <button id="subscribeButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('showSubscribeOptions');?>"
@@ -281,6 +288,7 @@
             unsubscribeFromItem('<?php echo get_class($obj)?>','<?php echo $obj->id;?>','<?php echo getSessionUser()->id;?>');
           </script>
         </button><br/>
+        <?php if ($canSubscribeForOthers) {?>
         <button id="subscribeButtonSubscribeOthers" dojoType="dijit.form.Button" showlabel="true"
           iconClass="idijitButtonIcon iconTeam22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribeOthersButton')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
@@ -288,6 +296,7 @@
             subscribeForOthers('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
           </script>
         </button><br/> 
+        <?php }?>
         <button id="subscribeButtonSubscribtionList" dojoType="dijit.form.Button" showlabel="true"
           iconClass="dijitButtonIcon iconListOfValues22" class="detailButton"><div style="width:180px"><?php echo i18n('showSubscribedItemsList')?></div>
           <script type="dojo/connect" event="onClick" args="evt">

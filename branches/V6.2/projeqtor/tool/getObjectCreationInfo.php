@@ -62,7 +62,6 @@ $displayWidthButtonCI="9999";
 if (isset($_REQUEST ['destinationWidth'])) {
 	$displayWidthButtonCI=$_REQUEST ['destinationWidth'];
 }
-debugLog("displayWidthButton=$displayWidthButtonCI");
 ?>
 <?php  if (property_exists($obj, 'idStatus') and $displayWidthButtonCI>=1000) {?>
 <div style="float:left;display:table-cell ;width:130px;height:35px;vertical-align:middle;position:relative;z-index:99999;">
