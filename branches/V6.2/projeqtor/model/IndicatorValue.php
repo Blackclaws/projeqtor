@@ -447,10 +447,10 @@ class IndicatorValue extends SqlElement {
     $arrayAlertDest=array();
   	if ($def->mailToUser==0 and $def->mailToResource==0 and $def->mailToProject==0
     and $def->mailToLeader==0  and $def->mailToContact==0 and $def->mailToAssigned==0
-    and $def->mailToManager==0 and $def->mailToOther==0
+    and $def->mailToManager==0 and $def->mailToOther==0 and $def->mailToSubscribers==0
     and $def->alertToUser==0 and $def->alertToResource==0 and $def->alertToProject==0
     and $def->alertToLeader==0  and $def->alertToContact==0 and $def->alertToAssigned==0
-    and $def->alertToManager==0 ) {
+    and $def->alertToManager==0 and $def->alertToSubscribers) {
       return false; // exit not a status for mail sending (or disabled) 
     }
     $dest="";
@@ -529,11 +529,27 @@ class IndicatorValue extends SqlElement {
           $arrayAlertDest[$manager->id]=$manager->name;
         }
         $newDest = "###" . $manager->email . "###";
-        if ($manager->email and strpos($dest,$newDest)===false) {
+        if ($def->mailToManager and $manager->email and strpos($dest,$newDest)===false) {
           $dest.=($dest)?', ':'';
           $dest.= $newDest;
         }
       }
+    }
+    if ($def->mailToSubscribers or $def->alertToSubscribers) {
+    	$crit=array('refType'=>get_class($obj), 'refId'=>$obj->id);
+    	$sub=new Subscription();
+    	$lstSub=$sub->getSqlElementsFromCriteria($crit);
+    	foreach ($lstSub as $sub) {
+    		$resource=new Affectable($sub->idAffectable);
+    		if ($def->alertToSubscribers) {
+    			$arrayAlertDest[$resource->id]=($resource->name)?$resource->name:$resource->userName;
+    		}
+    		$newDest = "###" . $resource->email . "###";
+    		if ($def->mailToSubscribers and $resource->email and strpos($dest,$newDest)===false) {
+    			$dest.=($dest)?', ':'';
+    			$dest.= $newDest;
+    		}
+    	}
     }
     if ($def->mailToAssigned or $def->alertToAssigned) {
       $ass=new Assignment();

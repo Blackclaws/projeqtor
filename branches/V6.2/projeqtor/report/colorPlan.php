@@ -110,7 +110,6 @@ if ($paramProject!='') {
   $where.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;
 }
 $order="";
-//echo $where;
 $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
@@ -119,6 +118,40 @@ $projectsColor=array();
 $resources=array();
 $resourcesTeam=array();
 $resourceCapacity=array();
+//gautier #2441
+$idRessource=getSessionUser()->id;
+$resss=new Resource($idRessource);
+$resourcesFull = array();
+$resourcesAffect= array();
+$resourcesFull2 = array();
+$specific='imputation';
+$commonElement = getListForSpecificRights($specific);
+//$commonElement = $table;
+//no parameters
+if(!$paramProject && !$paramTeam){
+  $resourcesFull =SqlList::getList('Resource');
+  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+}
+//project
+if($paramProject && !$paramTeam ){
+  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
+  $resourcesFull = SqlList::getListWithCrit('Resource', array('id'=>$resourcesAffect));
+  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+}
+//team
+if($paramTeam && !$paramProject){
+  $resourcesFull =SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
+  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+}
+//team and project
+if($paramTeam && $paramProject){
+  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
+  $resourcesFullProject = SqlList::getListWithCrit('Resource', array('id'=>$resourcesAffect));
+  $resourcesFullTeam = SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
+  $resourcesFull = array_intersect($resourcesFullProject,$resourcesFullTeam);
+  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+}
+
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
@@ -227,6 +260,7 @@ foreach($projects as $idP=>$nameP) {
   echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . htmlEncode($nameP) . '</td>';
   echo '<td width="5px">&nbsp;&nbsp;&nbsp;</td>';
 }
+
 echo '<td>&nbsp;</td></tr></table>';
 //echo '<br/>';
 // title
@@ -250,35 +284,20 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 
 echo '</tr>';
-//gautier
-//$resourcesFull = array();
-//$resources2 = array();
-//no parameters
-// if(!$paramProject && !$paramTeam){
-//  $resourcesFull =SqlList::getList('Resource');
-//}
-// if($paramProject){
-//   $resources2 = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject));
-// }
-//team
-// if($paramTeam){
-//  $resourcesFull =SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
-//}
-//$resources2 = array_diff($resourcesFull, $resources);
-//$resources = $resources + $resources2;
 
-asort($resources);
-foreach ($resources as $idR=>$nameR) {
+asort($resourcesFull2);
+//asort($resources);
+foreach ($resourcesFull2 as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
     //gautier
- //   if(array_key_exists($resources[$idR],$resourceCapacity)){
+    if(array_key_exists($idR,$resourceCapacity)){
   	 $capacity=$resourceCapacity[$idR];
- //   }else{
- //     $capacity=0;
- //   }
+    }else{
+      $capacity=0;
+    }
 	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
 	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.$capacity.'</div>';
 	  echo '</td>';
@@ -290,7 +309,8 @@ foreach ($resources as $idR=>$nameR) {
 	    }
 	    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
 	    // test day and result
-	 //   if (array_key_exists($resources[$idR],$result) and array_key_exists($resources[$idR],$days )){
+	  //if (array_key_exists($resources[$idR],$result) and array_key_exists($resources[$idR],$days )){
+	  if($capacity!=0){
 	    if (array_key_exists($day,$result[$idR])) {
 	      echo "<div style='position:relative;'>";
 	      $real=false;
@@ -298,8 +318,10 @@ foreach ($resources as $idR=>$nameR) {
 	        if ($idP=='real') {
 	          $real=true;
 	        } else {
-	          $height=floor(20*$val/$capacity);
-	          echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
+	          if($capacity != 0){
+	            $height=floor(20*$val/$capacity);
+	            echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
+	          }	          
 	        }
 	      }
 	      if ($real) {
@@ -309,7 +331,7 @@ foreach ($resources as $idR=>$nameR) {
 	      echo "</div>";
 	    
 	    }
-	//  }
+	  }
 	    echo '</td>';
 	  }
 	  echo '</tr>';
@@ -319,5 +341,6 @@ echo '</table>';
 echo '</td></tr></table>';
 
 echo '<br/><br/>';
+
 // END OF LOOP ON MONTH
 }

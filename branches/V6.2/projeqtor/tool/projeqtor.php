@@ -2786,6 +2786,53 @@ function sessionUserExists() {
     return true;
   }
 }
+ 
+function getListForSpecificRights($specific){
+  if (!isset($user)) {
+    $user=getSessionUser();
+  }
+  if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'NO')) {
+    $table[$user->id]=' ';
+  } else if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'ALL')) {
+    $table=SqlList::getList('Resource');
+  } else if (($user->allSpecificRightsForProfilesOneOnlyValue($specific,'OWN')
+      or $user->allSpecificRightsForProfilesOneOnlyValue($specific,'RES')) and $user->isResource ) {
+    $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
+  } else  {
+    $table=array();
+    $fullTable=SqlList::getList('Resource');
+    foreach ($user->getAllSpecificRightsForProfiles($specific) as $right=>$profList) {
+      if ( ($right=='OWN' or $right=='RES') and $user->isResource) {
+        $table[$user->id]=SqlList::getNameFromId('Resource', $user->id);
+      } else if ($right=='ALL' and in_array($user->idProfile, $profList)) {
+        $table=$fullTable;
+        break;
+      } else if ($right=='ALL' or $right=='PRO') {
+        $inClause='(0';
+        foreach ($user->getSpecificAffectedProfiles() as $prj=>$prf) {
+          if (in_array($prf, $profList)) {
+            $inClause.=','.$prj;
+          }
+        }
+  
+        $inClause.=')';
+        $crit='idProject in ' . $inClause;
+        $aff=new Affectation();
+        $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
+        foreach ($lstAff as $id=>$aff) {
+          if (array_key_exists($aff->idResource,$fullTable)) {
+            $table[$aff->idResource]=$fullTable[$aff->idResource];
+          }
+        }
+      }
+    }
+  }
+  if (count($table)==0) {
+    $table[$user->id]=' ';
+  }
+  asort($table);
+  return $table;
+}
 
 function formatNumericOutput($val) {
   global $browserLocale;

@@ -288,6 +288,13 @@
             unsubscribeFromItem('<?php echo get_class($obj)?>','<?php echo $obj->id;?>','<?php echo getSessionUser()->id;?>');
           </script>
         </button><br/>
+        <button id="subscribeButtonSubscribers" dojoType="dijit.form.Button" showlabel="true"
+          iconClass="idijitButtonIcon iconMeeting22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribersList')?></div>
+          <script type="dojo/connect" event="onClick" args="evt">
+            hideExtraButtons('subscribeButton');  
+            showSubscribersList('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
+          </script>
+        </button><br/> 
         <?php if ($canSubscribeForOthers) {?>
         <button id="subscribeButtonSubscribeOthers" dojoType="dijit.form.Button" showlabel="true"
           iconClass="idijitButtonIcon iconTeam22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribeOthersButton')?></div>
@@ -303,7 +310,7 @@
             hideExtraButtons('subscribeButton');  
             showSubscriptionList('<?php echo getSessionUser()->id;?>');
           </script>
-        </button><br/>        
+        </button>     
       </div>
     <?php 
     if (! array_key_exists('planning',$_REQUEST)) {?>
