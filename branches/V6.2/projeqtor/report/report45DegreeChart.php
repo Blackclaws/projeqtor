@@ -253,6 +253,21 @@ foreach($arrDates as $date){
 $maxPlotted=30; // max number of point to get plotted lines. If over lines are not plotted/
 
 $dataSet = new pData();
+
+//DEBUGLOG KROWRY
+foreach ($arrayMile as $idx=>$arr){
+  $allVoid=true;
+  foreach($arrayMile[$idx]['periods'] as $idp){
+    if($idp!=VOID){
+	    $allVoid=false;
+	    break;
+    }
+  }
+  if ($allVoid==true){
+    unset($arrayMile[$idx]);
+  }
+}
+
 // Definition of series
 foreach($arrayMile as $idx=>$arr) {
   $dataSet->addPoints($arrayMile[$idx]['periods'],"mile$idx");

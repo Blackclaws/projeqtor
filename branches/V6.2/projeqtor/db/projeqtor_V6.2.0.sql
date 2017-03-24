@@ -45,3 +45,45 @@ ALTER TABLE `${prefix}statusmail` ADD `mailToSubscribers` int(1) unsigned DEFAUL
 
 ALTER TABLE `${prefix}indicatordefinition` ADD `mailToSubscribers` int(1) unsigned DEFAULT 0,
 ADD `alertToSubscribers` int(1) unsigned DEFAULT 0;
+
+CREATE TABLE `${prefix}catalog` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idCatalogType` int(12) unsigned DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(400) DEFAULT NULL,
+  `detail` varchar(400)  DEFAULT NULL,
+  `nomenclature` varchar(100)  DEFAULT NULL,
+  `specification` mediumtext  DEFAULT NULL,
+  `unitPrice` decimal(12,2)  DEFAULT NULL,
+  `idMeasureUnit` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
+  `idProductVersion` int(12) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `${prefix}billline`
+ADD idCatalog int(12) unsigned DEFAULT NULL;
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
+(174, 'menuCatalog', 152, 'object', 286, 'Project', 0, 'Financial'),
+(175, 'menuCatalogType', 79, 'object', 935, 'ReadWriteType', 0, 'Type');
+
+INSERT INTO ${prefix}habilitation (idProfile, idMenu, allowAccess) VALUES 
+(1, 174, 1),
+(1, 175, 1),
+(2, 175, 0),
+(3, 175, 0),
+(4, 175, 0),
+(5, 175, 0),
+(6, 175, 0),
+(7, 175, 0);
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `idle`) VALUES 
+('Catalog', 'Product',0),
+('Catalog', 'Service',0);
+
+ALTER TABLE `${prefix}quotation`
+ADD `idRecipient` int(12) unsigned DEFAULT null;
+
+UPDATE `${prefix}menu` SET `idle`=1 WHERE id=173;

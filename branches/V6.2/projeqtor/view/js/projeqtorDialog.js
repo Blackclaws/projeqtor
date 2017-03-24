@@ -7775,6 +7775,9 @@ function unsubscribeFromItem(objectClass, objectId, userId) {
 function subscribeForOthers(objectClass, objectId) {
   loadDialog('dialogSubscriptionForOthers',null,true,'&objectClass='+objectClass+'&objectId='+objectId,true);
 }
+function showSubscribersList(objectClass, objectId) {
+  loadDialog('dialogSubscribersList',null,true,'&objectClass='+objectClass+'&objectId='+objectId,true);
+}
 
 function showSubscriptionList(userId) {
   loadDialog('dialogSubscriptionList',null,true,'&userId='+userId,true);

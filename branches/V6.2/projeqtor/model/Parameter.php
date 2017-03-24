@@ -549,6 +549,7 @@ class Parameter extends SqlElement {
                            "defaultProject"=>"list",
                            'projectIndentChar'=>'list',
                            'markAlertsAsRead'=>'specific',
+                           'showSubscribedItems'=>'specific',
                          'sectionPhoto'=>'section',
                            'image'=>'photo'
         );
