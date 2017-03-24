@@ -12,10 +12,18 @@ Paramètres Globaux
 .. figure:: /images/GUI/globalparameters.png
 
 .. figure:: /images/GUI/ldap.png
+
    Pour accéder à un serveur AD (Microsoft Active Directory), le paramétrage est un peu spécifique et surtout différent du paramétrage standard LDAP.
    user ldap : ne pas ajouter la chiane de connexion LDAP, seul le nom d'utilisateur, avec éventuellement le nom de domaine Domaien\User
    search string : sAMAccountName=%username%  
 
+   ** TODO : Exemples
+   $paramLdap_user_filter = 'uid=%USERNAME%'; // Standard, marche par défaut pour Open Ldap 
+   $paramLdap_user_filter = 'sAMAccountName=%USERNAME%'; // Pour AD
+   $paramLdap_user_filter = 'cn=%USERNAME%'; // Peut aussi marcher pour AD
+   $paramLdap_user_filter = '(&(objectCategory=person)(objectClass=user)(givenName=*)(sn=*))'; // Autre exemple
+   
+   
 .. figure:: /images/GUI/filedirectory.png
 
 .. figure:: /images/GUI/document.png
