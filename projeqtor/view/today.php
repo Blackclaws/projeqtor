@@ -83,7 +83,12 @@
     }
   }
   
+  
+  
   function showProjects() {
+   
+    //$objectClass=$_REQUEST['goToTicket'];
+    //debugLog($param);
   	global $cptMax, $print, $workVisibility,$templateProjectList;
     $user=getSessionUser();
     $prjVisLst=$user->getVisibleProjects();
@@ -171,6 +176,7 @@
            '</tr>';   
       $cpt=0;
       foreach($prjLst as $sharpid=>$sharpName) {
+        //debugLog($prjLst);
         $cpt++;
         if ($cpt>$cptMax) {
           echo '<tr><td colspan="12" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
@@ -260,15 +266,15 @@
         $cptSubPrj=(isset($cptsubProject[$id]))?$cptsubProject[$id]:0;
         if ($show or $cptSubPrj>0) {
         	$goto="";
+        	$proj=new Project($id);
           if (! $print and $show and securityCheckDisplayMenu(null,'Project') 
           //and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES"
           and array_key_exists($id,$prjVisLst)
           ) {
-            $goto=' onClick="gotoElement(' . "'Project','" . $id . "'" . ');" style="border-right:0px;text-align: left;cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
+            $goto=' onClick="gotoElement(\'Project\',\'' . $id . '\');refreshProjectSelectorList();setSelectedProject(\'' .htmlEnCode($proj->id). '\',\'' .htmlEnCode($proj->name). '\');" style="border-right:0px;text-align: left;cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
           } else {
             $goto=' style="border-right:0px;text-align: left;"';
-          }
-          $proj=new Project($id);
+          }          
           $healthColor=SqlList::getFieldFromId("Health", $proj->idHealth, "color");
           $healthName=SqlList::getNameFromId("Health", $proj->idHealth);
           $healthIcon=SqlList::getFieldFromId("Health", $proj->idHealth, "icon");
@@ -295,16 +301,17 @@
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$margin:'') . '</td>';
           }
-          echo '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbTickets,$nbTicketsAll,$nbTicketsTodo, $nbTicketsDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbActivities,$nbActivitiesAll,$nbActivitiesTodo,$nbActivitiesDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbMilestones,$nbMilestonesAll,$nbMilestonesTodo,$nbMilestonesDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbActions,$nbActionsAll,$nbActionsTodo,$nbActionsDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbRisks,$nbRisksAll,$nbRisksTodo,$nbRisksDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbIssues,$nbIssuesAll,$nbIssuesTodo,$nbIssuesDone):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbQuestions,$nbQuestionsAll,$nbQuestionsTodo,$nbQuestionsDone):'') . '</td>' .
-             '</tr>';   
+
+            echo '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Ticket","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Ticket",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbTickets,$nbTicketsAll,$nbTicketsTodo, $nbTicketsDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Activity","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Activity",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbActivities,$nbActivitiesAll,$nbActivitiesTodo,$nbActivitiesDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Milestone","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Milestone",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbMilestones,$nbMilestonesAll,$nbMilestonesTodo,$nbMilestonesDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Action","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Action",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbActions,$nbActionsAll,$nbActionsTodo,$nbActionsDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Risk","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Risk",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbRisks,$nbRisksAll,$nbRisksTodo,$nbRisksDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Issue","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Issue",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbIssues,$nbIssuesAll,$nbIssuesTodo,$nbIssuesDone):'') . '</td>' .
+               '  <td class="messageDataValue'.($show?'':'Grey').'" onclick=\'gotoElement("Question","'.htmlEnCode($proj->id).'");refreshProjectSelectorList();stockHistory("Question",null,"object");setSelectedProject("'.htmlEnCode($proj->id).'","'.htmlEnCode($proj->name).'");\' style="cursor: pointer;">' . ($show?displayProgress($nbQuestions,$nbQuestionsAll,$nbQuestionsTodo,$nbQuestionsDone):'') . '</td>' .
+               '</tr>';   
         }
       }
       echo '</table>';

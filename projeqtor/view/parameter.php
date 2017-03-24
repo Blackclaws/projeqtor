@@ -199,7 +199,7 @@ function drawTableFromObjectList($objectList) {
 			} else if ($format=='photo') { // for user photo 
 			  echo "</td></tr>";
 			  $user=getSessionUser();
-			  $user->drawSpecificItem('image');
+			  echo $user->drawSpecificItem('image');
 			  echo '<input type="hidden" id="objectId" value="'.htmlEncode($user->id).'"/>';
 			  echo '<input type="hidden" id="objectClass" value="User"/>';
 			  echo '<input type="hidden" id="parameter" value="true"/>';
@@ -227,6 +227,16 @@ function drawTableFromObjectList($objectList) {
 			    echo ' maintenance("read","Alert");';
 			    echo '</script>';
 			    echo '</button>';
+			  } else if ($code=='showSubscribedItems') {
+			    $title=i18n('helpShowSubscribedItems');
+			    echo '<button id="showSubscribedItems" dojoType="dijit.form.Button" showlabel="true"';
+			    echo 'iconClass="dijitButtonIcon iconListOfValues22" ';
+			    echo ' title="' . $title . '" style="vertical-align: middle;">';
+			    echo '<span>' . i18n('showSubscribedItemsList') . '</span>';
+			    echo '<script type="dojo/connect" event="onClick" args="evt">';
+			    echo '  showSubscriptionList("'.getSessionUser()->id.'");';
+			    echo '</script>';
+			    echo '</button>'; 
 			  }
 			}
 			echo '</td></tr>';
