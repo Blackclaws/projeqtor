@@ -48,6 +48,7 @@ $sub=new Subscription();
 $crit=array("refType"=>$objectClass,"refId"=>$objectId);
 $lstSub=$sub->getSqlElementsFromCriteria($crit,false,null,null,false);
 
+
 if (sessionValueExists('screenHeight') and getSessionValue('screenHeight')) {
 	$showHeight = round(getSessionValue('screenHeight') * 0.4)."px";
 } else {
@@ -77,20 +78,26 @@ if (! $scope->accessCode or $scope->accessCode == 'NO') {
 	$lstSub=array(); // Not for other, should not come here
 } else if ($scope->accessCode == 'PRO') {
 	$stockRes=$lstRes;
-	$stockSub=$lstSub;
 	$lstRes=array();
-	$lstSub=array();
 	$crit='idProject in ' . transformListIntoInClause($user->getAffectedProjects(true));
 	$aff=new Affectation(); 
 	$lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true, true);
 	$fullTable=SqlList::getList('Resource');
+	foreach ($lstSub as $id=>$sub) {
+	  $sub->_readOnly=true; // Add readonly
+		$lstSub[$id]=$sub;
+	}
 	foreach ( $lstAff as $id => $aff ) {
 		$key='#'.$aff->idResource;
 		if (isset($stockRes[$key])) {
 		  $lstRes[$key]=$stockRes[$key];
 		}
-		if (isset($stockSub[$key])) {
-			$lstSub[$key]=$stockSub[$key];
+		if (isset($lstSub[$key])) {
+			$sub=$lstSub[$key];
+			if (isset($sub->_readOnly)) {
+				unset($sub->_readOnly);
+				$lstSub[$key]=$sub;
+			}
 		}
 	}
 }
@@ -118,7 +125,7 @@ echo '<input dojoType="dijit.form.TextBox" id="subscriptionSubscribedSearch" cla
 echo '<div style="position:absolute;right:4px;top:3px;" class="iconView"></div>';
 echo '</td></tr>';
 echo '<tr>';
-echo '<td style="position:relative;max-width:200px;vertical-align:top" class="dijitAccordionTitle" >';
+echo '<td style="position:relative;max-width:200px;vertical-align:top;" class="noteHeader" >';
 echo '<div style="position:absolute;bottom:5px;left:5px;width:24px;height:24px;opacity:0.7;" class="dijitButtonIcon dijitButtonIconDelete" ></div>';
 echo '<div style="height:'.$showHeight.';overflow:auto;" id="subscriptionAvailable" dojotype="dojo.dnd.Source" dndType="subsription" withhandles="false" data-dojo-props="accept: [ \'subscription\' ]">';
 foreach($lstRes as $res) {
@@ -127,7 +134,7 @@ foreach($lstRes as $res) {
 echo '</div>';
 echo '</td>';
 echo '<td class="" ></td>';
-echo '<td style="position:relative;max-width:200px;max-height:'.$showHeight.';vertical-align:top" class="dijitAccordionTitle" >';
+echo '<td style="position:relative;max-width:200px;max-height:'.$showHeight.';vertical-align:top;" class="noteHeader" >';
 echo '<div style="position:absolute;bottom:5px;left:5px;width:24px;height:24px;opacity:0.7;" class="dijitButtonIcon dijitButtonIconSubscribe" ></div>';
 echo '<div style="height:'.$showHeight.';overflow:auto;" id="subscriptionSubscribed" dojotype="dojo.dnd.Source" dndType="subsription" withhandles="false" data-dojo-props="accept: [ \'subscription\' ]">';
 foreach($lstSub as $sub) {
@@ -143,7 +150,8 @@ echo'<br/><table style="width: 100%;" ><tr><td style="width: 100%;" align="cente
 function drawResourceTile($res,$dndSource){
   global $objectClass, $objectId;
   $name=($res->name)?$res->name:$res->userName;
-  echo '<div class="dojoDndItem subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" objectclass="'.$objectClass.'" objectid="'.$objectId.'" userid="'.$res->id.'" currentuserid="'.getSessionUser()->id.'" dndType="subscription" style="position:relative;padding: 2px 5px 3px 5px;margin:0px 3px 5px 0px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
+  $canDnD=(isset($res->_readOnly))?false:true;
+  echo '<div class="'.(($canDnD)?'dojoDndItem':'').' subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" objectclass="'.$objectClass.'" objectid="'.$objectId.'" userid="'.$res->id.'" currentuserid="'.getSessionUser()->id.'" dndType="subscription" style="position:relative;padding: 2px 5px 3px 5px;margin:5px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
     .formatUserThumb($res->id, "", "")
     .$name
     .'</div>';

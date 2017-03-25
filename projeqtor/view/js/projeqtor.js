@@ -3678,7 +3678,34 @@ function getExtraHiddenFields(idType,idStatus,idProfile) {
     }
   });
 }
-
+function getExtraReadonlyFields(idType,idStatus,idProfile) {
+  if (!idStatus) {
+    if (dijit.byId('idStatus')) {
+      idStatus=dijit.byId('idStatus').get('value');
+    }
+  }
+  if (!idType) {
+    if (dojo.byId('objectClass')) {
+      var typeName='id'+dojo.byId('objectClass').value+'Type';
+      if (dijit.byId(typeName)) {
+        idType=dijit.byId(typeName).get('value');
+      }
+    }
+  }
+  dojo.xhrGet({
+    url : "../tool/getExtraReadonlyFields.php" + "?type=" + idType+"&status="+idStatus+"&profile="+idProfile
+        + "&objectClass=" + dojo.byId("objectClass").value,
+    handleAs : "text",
+    load : function(data) {
+      var obj = JSON.parse(data);
+      dojo.query(".generalRowClass").style("display", "table-row");
+      dojo.query(".generalColClass").style("display", "inline-block");
+      for (key in obj) {
+        dojo.query("." + obj[key] + "Class").readOnly=true; // ("readonly", "true"); ?
+      }
+    }
+  });
+}
 function intercepPointKey(obj, event) {
   event.preventDefault();
   setTimeout('replaceDecimalPoint("' + obj.id + '");', 1);

@@ -32,6 +32,7 @@ Pre-requisites :
     pdo_pqsql => if database is PostgreSql
     pgsql => if database is PostgreSql
     php-xml => for xml parsing
+    zip => ZipArchive class is mandatory to manage plugins
 
 Set-up :
   - Unzip projeqtorVx.y.z.zip to the web server directory

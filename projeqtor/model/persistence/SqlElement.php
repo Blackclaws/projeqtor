@@ -60,8 +60,11 @@ abstract class SqlElement {
 	// Management of cache for queries : cache is only valid during current script
 	public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array(),'PluginTriggeredEvent'=>array(), 'Plugin'=>array());
 	
-	// Management of extraHiddenFileds per type
+	// Management of extraHiddenFileds per type, status or profile
 	private static $_extraHiddenFields=null;
+	
+	// Management of extraReadonlyFileds per type, status or profile
+	private static $_extraReadonlyFields=null;
 	
 	// All dependencies between objects :
 	//    control => sub-object must not exist to allow deletion
@@ -2906,6 +2909,7 @@ abstract class SqlElement {
 			}	
 		  if ($colName=='id'.get_class($this).'Type') {
 		    $colScript .= '   getExtraHiddenFields(this.value,"","");';
+		    $colScript .= '   getExtraReadonlyFields(this.value,"","");';
 		  }
 			$colScript .= '</script>';
 		}
@@ -4807,6 +4811,90 @@ abstract class SqlElement {
 	  self::$_extraHiddenFields=$result;
 	  setSessionValue('extraHiddenFieldsArray', $result);
 	  return $result;
+	}
+	
+	public function getExtraReadonlyFields($newType="", $newStatus="", $newProfile="") {
+		$class=get_class($this);
+		$testObj=$this;
+		$testClass=$class;
+		$typeFld='id'.$class."Type";
+		if (SqlElement::is_a($this, 'PlanningElement')) {
+			if ($this->refType) {
+				$testClass=$this->refType;
+			} else {
+				$testClass=str_replace('PlanningElement','',$class);
+			}
+			$testObj=new $testClass($this->refId,true);
+		} else if ($class=='WorkElement') {
+			if ($this->refType) {
+				$testClass=$this->refType;
+			} else {
+				$testClass='Ticket';
+			}
+			$testObj=new $testClass($this->refId,true);
+		}
+		$typeClass=$testClass.'Type';
+		$typeFld='id'.$typeClass;
+		if ($class=='TicketSimple') $typeFld='idTicketType';
+		$list=self::getExtraReadonlyFieldsFullList();
+		$listType=array();
+		$listStatus=array();
+		$listProfile=array();
+		if (property_exists($testObj,$typeFld) and $newType!='*') {
+			$type=($newType)?$newType:$testObj->$typeFld;
+			if (isset($list['Type']) and isset($list['Type'][$class]) and isset($list['Type'][$class][$type]) ) {
+				$listType=$list['Type'][$class][$type];
+			}
+		}
+		if (property_exists($testObj,'idStatus') and $newStatus!='*') {
+			$status=($newStatus)?$newStatus:$testObj->idStatus;
+			if (isset($list['Status']) and isset($list['Status'][$class]) and isset($list['Status'][$class][$status]) ) {
+				$listStatus=$list['Status'][$class][$status];
+			}
+		}
+		if ($newProfile!='*') {
+			if ($newProfile) {
+				$profile=$newProfile;
+			} else {
+				$profile=getSessionUser()->getProfile($this);
+			}
+			if (isset($list['Profile']) and isset($list['Profile'][$class]) and isset($list['Profile'][$class][$profile]) ) {
+				$listProfile=$list['Profile'][$class][$profile];
+			}
+		}
+		//if ($newStatus=='*' and $newProfile=='*') return $listType;
+		//if ($newType=='*' and $newProfile=='*') return $listStatus;
+		//if ($newType=='*' and $newStatus=='*') return $listProfile;
+		return array_unique(array_merge($listType,$listStatus,$listProfile));
+	}
+	private static function getExtraReadonlyFieldsFullList() {
+		if (self::$_extraReadonlyFields!=null) {
+			return self::$_extraReadonlyFields;
+		}
+		$sessionList=getSessionValue('extraReadonlyFieldsArray');
+		if ($sessionList) {
+			self::$_extraReadonlyFields=$sessionList;
+			return self::$_extraReadonlyFields;
+		}
+		$extra=new ExtraReadonlyField();
+		$extraList=$extra->getSqlElementsFromCriteria(null); // Get all fields
+		$result=array('Type'=>array(),'Status'=>array(),'Profile'=>array()); // Only scope for Type, Status, Profile
+		foreach ($extraList as $extra) {
+			$sp=explode('#',$extra->scope);
+			if (count($sp)!=2) return array();
+			$scope=$sp[0];
+			$class=$sp[1];
+			if (! isset($result[$scope])) {
+				errorLog("getExtraReadonlyFieldsFullList() : some data has scope '$scope' different from Type, Status, Profile");
+				return array();
+			}
+			if (! isset($result[$scope][$class])) $result[$scope][$class]=array();
+			if (! isset($result[$scope][$class][$extra->idType])) $result[$scope][$class][$extra->idType]=array();
+			$result[$scope][$class][$extra->idType][]=$extra->field;
+		}
+		self::$_extraReadonlyFields=$result;
+		setSessionValue('extraReadonlyFieldsArray', $result);
+		return $result;
 	}
 	
 	// ============================================================

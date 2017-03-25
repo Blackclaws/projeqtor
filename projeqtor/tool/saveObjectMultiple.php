@@ -258,7 +258,7 @@ foreach ($selectList as $id) {
     if ($pe_priority and property_exists($item->$pe,'priority')) {
   		$item->$pe->priority=$pe_priority;
   	} 
-  	// KROWRY DEBUGLOG
+  	// KROWRY 
   	if ($pe_validatedCost and property_exists($item->$pe,'validatedCost')) {
   	  $item->$pe->validatedCost=$pe_validatedCost;
   	}

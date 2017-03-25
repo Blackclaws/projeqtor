@@ -25,27 +25,16 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Subscription is a way to follow an item (some email can be sent to subscribers)
- */  
+ * List of orginable items
+ */ 
 require_once('_securityCheck.php');
-class Subscription extends SqlElement {
+class ExtraReadonlyField extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_sec_Description;
-  public $id;
-  public $idAffectable;
-  public $refType;
-  public $refId;
-  public $idUser;
-  public $creationDateTime;
-  public $comment;
-  
-  //public $_noHistory=true;
-    
-  private static $_fieldsAttributes=array("refType"=>"required", 
-  		 "refId"=>"required"
-  );
-  
+  public $id;    // redefine $id to specify its visible place 
+  public $scope;
+  public $idType;
+  public $field;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -65,14 +54,8 @@ class Subscription extends SqlElement {
   }
 
 // ============================================================================**********
-// GET STATIC DATA FUNCTIONS
+// MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  /** ==========================================================================
-   * Return the specific fieldsAttributes
-   * @return the fieldsAttributes
-   */
-  protected function getStaticFieldsAttributes() {
-  	return self::$_fieldsAttributes;
-  }
+  
 }
 ?>
