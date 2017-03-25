@@ -295,7 +295,6 @@ class Affectable extends SqlElement {
   }
   
   public static function sort($aff1, $aff2) {
-    debugLog($aff1);
     $name1=($aff1->name)?$aff1->name:$aff1->userName;
     $name2=($aff2->name)?$aff2->name:$aff2->userName;
     if ($name1<$name2) {

@@ -54,11 +54,12 @@ CREATE TABLE `${prefix}catalog` (
   `detail` varchar(400)  DEFAULT NULL,
   `nomenclature` varchar(100)  DEFAULT NULL,
   `specification` mediumtext  DEFAULT NULL,
-  `unitPrice` decimal(12,2)  DEFAULT NULL,
+  `unitCost` decimal(10,2)  DEFAULT NULL,
   `idMeasureUnit` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
   `idProductVersion` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
+  `quantity` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -87,3 +88,15 @@ ALTER TABLE `${prefix}quotation`
 ADD `idRecipient` int(12) unsigned DEFAULT null;
 
 UPDATE `${prefix}menu` SET `idle`=1 WHERE id=173;
+
+CREATE TABLE `${prefix}extrareadonlyfield` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `scope` varchar(100),
+  `idType` int(12) unsigned DEFAULT NULL,
+  `field` varchar(100),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
+(27,'Incoming', '0'), 
+(28,'Deliverable', '0');

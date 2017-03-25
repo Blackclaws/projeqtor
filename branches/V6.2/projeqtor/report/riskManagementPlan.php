@@ -51,6 +51,7 @@ if ($paramProject!="") {
 }
 $queryWherePlus.=" and idle=0";
 $clauseOrderBy=" actualEndDate asc";
+$tabAction = array();
 
 echo '<table  width="95%" align="center"><tr><td style="width: 100%" class="section">';
 echo i18n('Risk');
@@ -249,35 +250,50 @@ echo '<td class="largeReportHeader" style="width:5%">' . i18n('colIdStatus') . '
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colLink') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colResult') . '</td>';
 echo '</tr>';
+
+
 foreach ($lst as $action) {
-  echo '<tr>';
-  $done=($action->done)?'Done':'';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'A' . htmlEncode($action->id) . '</td>';
-  echo '<td align="center" class="largeReportData' . $done . '" style="width:10%">' . SqlList::getNameFromId('ActionType', $action->idActionType) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($action->name) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:31%">' . ($action->description) . '</td>';
-  echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $action->idPriority) . '</td>';
-  echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('Resource', $action->idResource) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:6%"><table width="100%">';
-  if ($action->initialDueDate!=$action->actualDueDate) {
-    echo '<tr ><td align="center" style="text-decoration: line-through;">' . htmlFormatDate($action->initialDueDate) . '</td></tr>';
-    echo '<tr><td align="center">' . htmlFormatDate($action->actualDueDate) . '</td></tr>';
-  } else {
-    echo '<tr><td align="center">'. htmlFormatDate($action->initialDueDate) . '</td></tr>';
-    echo '<tr><td align="center">&nbsp;</td></tr>'; 
+  //gautier #2576
+   $bool = false;
+   listLinks($action);
+   foreach ($tabAction as $actiones){
+     if($actiones == 'A' . htmlEncode($action->id) ){
+       $bool = true;
+     }
+   }
+  if($action->isPrivate == false){
+    if ($bool == true){
+      echo '<tr>';
+      $done=($action->done)?'Done':'';
+      echo '<td class="largeReportData' . $done . '" style="width:3%">' . 'A' . htmlEncode($action->id) . '</td>';
+      echo '<td align="center" class="largeReportData' . $done . '" style="width:10%">' . SqlList::getNameFromId('ActionType', $action->idActionType) . '</td>';
+      echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($action->name) . '</td>';
+      echo '<td class="largeReportData' . $done . '" style="width:31%">' . ($action->description) . '</td>';
+      echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $action->idPriority) . '</td>';
+      echo '<td align="center" class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('Resource', $action->idResource) . '</td>';
+      echo '<td class="largeReportData' . $done . '" style="width:6%"><table width="100%">';
+      if ($action->initialDueDate!=$action->actualDueDate) {
+        echo '<tr ><td align="center" style="text-decoration: line-through;">' . htmlFormatDate($action->initialDueDate) . '</td></tr>';
+        echo '<tr><td align="center">' . htmlFormatDate($action->actualDueDate) . '</td></tr>';
+      } else {
+        echo '<tr><td align="center">'. htmlFormatDate($action->initialDueDate) . '</td></tr>';
+        echo '<tr><td align="center">&nbsp;</td></tr>'; 
+      }
+      echo   '<tr><td align="center" style="font-weight: bold">' . htmlFormatDate($action->doneDate) . '</td></tr>';
+      
+      echo '</table></td>';
+      echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $action->idStatus) . '</td>';
+      echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($action) . '</td>';
+      echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($action->result) . '</td>';
+      echo '</tr>';  
+    }       
   }
-  echo   '<tr><td align="center" style="font-weight: bold">' . htmlFormatDate($action->doneDate) . '</td></tr>';
-  
-  echo '</table></td>';
-  echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Status', $action->idStatus) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:3%">' . listLinks($action) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($action->result) . '</td>';
-  echo '</tr>';
 }
 echo '</table><br/>';
 
-function listLinks($obj) {
-  $lst=Link::getLinksAsListForObject($obj);
+function listLinks($objIn) {
+  global $tabAction;
+  $lst=Link::getLinksAsListForObject($objIn);
   $res='<table style="width:100%; margin:0 ; spacing:0 ; padding: 0">';
   foreach ($lst as $link) {
     $obj=new $link['type']($link['id']);
@@ -288,7 +304,16 @@ function listLinks($obj) {
       //$type=substr(i18n($link['type']),0,10);
       $type=substr($link['type'],0,10);
     }
-    $res.='<tr><td '. $style . '>' . $type . $link['id'] . '</td></tr>';
+    //gautier #2576
+    if($link['type']=='Action'){
+     $act = new Action($link['id']);
+     if($act->isPrivate == false){
+       $res.='<tr><td '. $style . '>' . $type . $link['id'] . '</td></tr>'; 
+       $tabAction[$type . $link['id']] =  $type . $link['id'];
+     } 
+    }else{
+      $res.='<tr><td '. $style . '>' . $type . $link['id'] . '</td></tr>';
+    }  
   }
   $res.='</table>';
   return $res;

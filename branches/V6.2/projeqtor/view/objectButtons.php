@@ -258,12 +258,22 @@
         $sub=SqlElement::getSingleSqlElementFromCriteria('Subscription', array('refType'=>get_class($obj),'refId'=>$obj->id,'idAffectable'=>$userId));
         $subscribed=($sub and $sub->id)?true:false;
         $canSubscribeForOthers=true;
+        $canSubscribeForHimself=true;
 		    $crit=array('scope' => 'subscription','idProfile' => getSessionUser()->idProfile);
 		    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
 		    $scope=new AccessScope($habilitation->rightAccess, true);
-		    if (! $scope->accessCode or $scope->accessCode == 'NO') {
+		    if (! $scope->accessCode or $scope->accessCode == 'NO' ) {
 		      $canSubscribeForOthers=false;
-		    }?>
+		      $canSubscribeForHimself=false;
+		    } else if ($scope->accessCode == 'OWN') {
+		    	$canSubscribeForOthers=false;
+		    	$canSubscribeForHimself=true;
+		    } else {
+		    	$canSubscribeForOthers=true;
+		    	$canSubscribeForHimself=true;
+		    }
+		    ?>
+		  <?php if ($canSubscribeForHimself or $canSubscribeForOthers) {?>
       <?php organizeButtons();?>
       <button id="subscribeButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('showSubscribeOptions');?>"
@@ -287,20 +297,21 @@
             hideExtraButtons('subscribeButton');  
             unsubscribeFromItem('<?php echo get_class($obj)?>','<?php echo $obj->id;?>','<?php echo getSessionUser()->id;?>');
           </script>
-        </button><br/>
-        <button id="subscribeButtonSubscribers" dojoType="dijit.form.Button" showlabel="true"
-          iconClass="idijitButtonIcon iconMeeting22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribersList')?></div>
-          <script type="dojo/connect" event="onClick" args="evt">
-            hideExtraButtons('subscribeButton');  
-            showSubscribersList('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
-          </script>
-        </button><br/> 
+        </button><br/>  
         <?php if ($canSubscribeForOthers) {?>
         <button id="subscribeButtonSubscribeOthers" dojoType="dijit.form.Button" showlabel="true"
           iconClass="idijitButtonIcon iconTeam22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribeOthersButton')?></div>
           <script type="dojo/connect" event="onClick" args="evt">
             hideExtraButtons('subscribeButton');  
             subscribeForOthers('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
+          </script>
+        </button><br/> 
+        <?php } else {?>
+        <button id="subscribeButtonSubscribers" dojoType="dijit.form.Button" showlabel="true"
+          iconClass="idijitButtonIcon iconTeam22" class="detailButton"><div style="width:180px"><?php echo i18n('subscribersList')?></div>
+          <script type="dojo/connect" event="onClick" args="evt">
+            hideExtraButtons('subscribeButton');  
+            showSubscribersList('<?php echo get_class($obj)?>','<?php echo $obj->id;?>');
           </script>
         </button><br/> 
         <?php }?>
@@ -312,6 +323,7 @@
           </script>
         </button>     
       </div>
+    <?php }?>
     <?php 
     if (! array_key_exists('planning',$_REQUEST)) {?>
     <?php organizeButtons();?> 
