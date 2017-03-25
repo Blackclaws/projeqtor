@@ -496,6 +496,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     }
   }
   $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
+  $extraReadonlyFields=$obj->getExtraReadonlyFields( ($objType)?$objType->id:null );
   if (!$included) $section='';
   $nbLineSection=0;
   
@@ -544,7 +545,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $hide=true;
       } else if (in_array($attFld,$extraHiddenFields)) {
         $hide=true;
-      }
+      } 
     }
     if (substr($col,0,5)=='_lib_') {
       $attFld=substr($col,5);
@@ -856,6 +857,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       }
       if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
+        $attributes.=' readonly tabindex="-1"';
+        $readOnly=true;
+      } else if (in_array($col,$extraReadonlyFields)) {
         $attributes.=' readonly tabindex="-1"';
         $readOnly=true;
       }

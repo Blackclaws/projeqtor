@@ -777,7 +777,7 @@ class PlanningElement extends SqlElement {
       $pe=new PlanningElement($this->topId);
       $pe->renumberWbs();
     }
-    //krowry debugLog
+    //krowry
     $dep=new Dependency();  
     $critSuccessor=array( 'successorRefId'=>$this->refId,'successorRefType'=>$this->refType);
     $lp=$dep->getSqlElementsFromCriteria($critSuccessor);

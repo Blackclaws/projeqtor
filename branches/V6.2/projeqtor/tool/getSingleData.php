@@ -151,7 +151,7 @@
     } else if ($type=='catalogBillLine') { //gautier #2516
       $idCat=$_REQUEST['idCatalog']; 
       $r=new Catalog($idCat);
-      $catalog_array = "$r->description#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitPrice#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification";
+      $catalog_array = "$r->description#!#!#!#!#!#$r->detail#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitCost#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification#!#!#!#!#!#$r->quantity";
       echo $catalog_array;
     }else {
       debugTraceLog("Unknown type '$type'");          

@@ -41,19 +41,18 @@ class Catalog extends SqlElement {
   public $nomenclature;
   public $specification;
   public $_sec_treatment;
-  public $unitPrice;
+  public $unitCost;
   public $idMeasureUnit;
+  public $quantity;
   public $idProduct;
   public $idProductVersion;
-  
-
   
   // Define the layout
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
     <th field="description" width="30%" >${description}</th>
-    <th field="unitPrice" width="20%" formatter="costFormatter">${unitPrice}</th>
+    <th field="unitCost" width="20%" formatter="costFormatter">${unitCost}</th>
     <th field="idMeasureUnit" width="20%" >${idMeasureUnit}</th>
     ';
   
@@ -62,6 +61,7 @@ class Catalog extends SqlElement {
       "idle"=>"hidden",
       "description"=>"required",
       "idCatalogType"=>"required",
+      "unitCost"=>"nobr",
   );
   /** ==========================================================================
    * Constructor

@@ -93,6 +93,14 @@ function checkPrerequisites($showOK=false,$dbType=null) {
     $checkOK++;
   }
   
+  if (! class_exists('ZipArchive')) {
+  	showWarning("Class ZipArchive is not available - You won't be able to manage plugins - check your php configuration (php.ini)");
+  	$checkErrors++;
+  } else {
+    if ($showOK) showMessage("Class  ZipArchive is available : OK");
+    $checkOK++;
+  }
+  
 //  This method was too old.
 //   // DOMDocument is required
 //   if(!function_exists('domxml_open_file')){

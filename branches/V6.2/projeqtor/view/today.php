@@ -87,9 +87,7 @@
   
   function showProjects() {
    
-    //$objectClass=$_REQUEST['goToTicket'];
-    //debugLog($param);
-  	global $cptMax, $print, $workVisibility,$templateProjectList;
+    global $cptMax, $print, $workVisibility,$templateProjectList;
     $user=getSessionUser();
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
@@ -176,7 +174,6 @@
            '</tr>';   
       $cpt=0;
       foreach($prjLst as $sharpid=>$sharpName) {
-        //debugLog($prjLst);
         $cpt++;
         if ($cpt>$cptMax) {
           echo '<tr><td colspan="12" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';

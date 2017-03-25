@@ -34,19 +34,10 @@ scriptLog('   ->/view/dynamicSubscriptionForOhter.php');
 $objectClass=RequestHandler::getClass('objectClass',true); 
 $objectId=RequestHandler::getId('objectId',true);
 
-$res=new Affectable();
-$scope=Affectable::getVisibilityScope();
 $crit="idle=0";
-if ($scope=='orga') {
-	$crit.=" and idOrganization in (". Organization::getUserOrganisationList().")";
-} else if ($scope=='team') {
-	$aff=new Affectable(getSessionUser()->id,true);
-	$crit.=" and idTeam=".Sql::fmtId($aff->idTeam);
-}
-$lstRes=$res->getSqlElementsFromCriteria(null,false,$crit,'fullName asc, name asc',true);
 $sub=new Subscription();
 $crit=array("refType"=>$objectClass,"refId"=>$objectId);
-$lstSub=$sub->getSqlElementsFromCriteria($crit,false,null,null,false);
+$stockSub=$sub->getSqlElementsFromCriteria($crit,false,null,null,false);
 
 if (sessionValueExists('screenHeight') and getSessionValue('screenHeight')) {
 	$showHeight = round(getSessionValue('screenHeight') * 0.4)."px";
@@ -54,48 +45,12 @@ if (sessionValueExists('screenHeight') and getSessionValue('screenHeight')) {
 	$showHeight="100%";
 }
 
-foreach ($lstSub as $idSub=>$sub) {
-  if (isset($lstRes['#'.$sub->idAffectable])) {
-    $lstSub['#'.$sub->idAffectable]=$lstRes['#'.$sub->idAffectable];
-    unset($lstRes['#'.$sub->idAffectable]);
-  } else {
-    $lstSub['#'.$sub->idAffectable]=new Affectable($sub->idAffectable);
-  }
-  unset($lstSub[$idSub]);
+$lstSub=array();
+foreach ( $stockSub as $id => $sub ) {
+	$key='#'.$sub->idAffectable;
+	$lstSub[$key]=new Affectable($sub->idAffectable);
 }
 
-$crit=array('scope' => 'subscription','idProfile' => getSessionUser()->idProfile);
-$habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-$scope=new AccessScope($habilitation->rightAccess, true);
-if (! $scope->accessCode or $scope->accessCode == 'NO') {
-	$lstRes=array(); // No access to this feature ;)
-	$lstSub=array(); // No access to this feature ;)
-} else if ($scope->accessCode == 'ALL') {
-	// OK
-} else if ($scope->accessCode == 'OWN')  {
-	$lstRes=array(); // Not for other, should not come here
-	$lstSub=array(); // Not for other, should not come here
-} else if ($scope->accessCode == 'PRO') {
-	$stockRes=$lstRes;
-	$stockSub=$lstSub;
-	$lstRes=array();
-	$lstSub=array();
-	$crit='idProject in ' . transformListIntoInClause($user->getAffectedProjects(true));
-	$aff=new Affectation(); 
-	$lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true, true);
-	$fullTable=SqlList::getList('Resource');
-	foreach ( $lstAff as $id => $aff ) {
-		$key='#'.$aff->idResource;
-		if (isset($stockRes[$key])) {
-		  $lstRes[$key]=$stockRes[$key];
-		}
-		if (isset($stockSub[$key])) {
-			$lstSub[$key]=$stockSub[$key];
-		}
-	}
-}
-
-uasort($lstRes,'Affectable::sort');
 uasort($lstSub,'Affectable::sort');
 
 echo '<input type="hidden" id="subscriptionObjectClass" value="'.$objectClass.'" />';
@@ -107,9 +62,9 @@ echo '<input dojoType="dijit.form.TextBox" id="subscriptionSubscribedSearch" cla
 echo '<div style="position:absolute;right:4px;top:3px;" class="iconView"></div>';
 echo '</td></tr>';
 echo '<tr>';
-echo '<td style="position:relative;max-width:200px;max-height:'.$showHeight.';vertical-align:top" class="dijitAccordionTitle" >';
+echo '<td style="position:relative;max-width:200px;max-height:'.$showHeight.';vertical-align:top; padding: 5px" class="noteHeader" >';
 echo '<div style="position:absolute;bottom:5px;left:5px;width:24px;height:24px;opacity:0.7;" class="dijitButtonIcon dijitButtonIconSubscribe" ></div>';
-echo '<div style="height:'.$showHeight.';overflow:auto;" id="subscriptionSubscribed">';
+echo '<div style="height:'.$showHeight.';overflow:auto;cursor:normal;" id="subscriptionSubscribed;">';
 foreach($lstSub as $sub) {
   drawResourceTile($sub);
 }
@@ -123,7 +78,7 @@ echo'<br/><table style="width: 100%;" ><tr><td style="width: 100%;" align="cente
 function drawResourceTile($res){
   global $objectClass, $objectId;
   $name=($res->name)?$res->name:$res->userName;
-  echo '<div class="subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" style="position:relative;padding: 2px 5px 3px 5px;margin:0px 3px 5px 0px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
+  echo '<div class="subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" style="position:relative;padding: 2px 5px 3px 5px;margin:0px 0px 5px 0px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
     .formatUserThumb($res->id, "", "")
     .$name
     .'</div>';

@@ -254,7 +254,7 @@ $maxPlotted=30; // max number of point to get plotted lines. If over lines are n
 
 $dataSet = new pData();
 
-//DEBUGLOG KROWRY
+// KROWRY
 foreach ($arrayMile as $idx=>$arr){
   $allVoid=true;
   foreach($arrayMile[$idx]['periods'] as $idp){
