@@ -3,7 +3,7 @@
 .. title:: Habilitations
 
 Habilitations
------------------
+-------------
 .. index:: Généralités
 
 .. rubric:: Généralités
@@ -127,3 +127,20 @@ Accès aux états
 Affichage contenu des états                 
                                                                                                                                                                                   
 ===============================================    ===================================================================    ================================================= 
+
+.. title:: Habilitations
+
+Mot de passe
+------------
+
+Les mots de passe sont encodés dans la base de données de manière non bijective.
+Il n'est donc pas possible de retrouver un motr de passe.
+Si un utilisateur a perdu son mot de passe, il faut donc que l'administrateur lui réinitialise sont pot de passe à partir de l'écran "utilisateur"
+Le mot de passe est alors réinitialisé avec la valeur indiqué sur l'écrna des paramètres globaux.
+Mais si c'est l'administrateur qui a perdu sont mot de passe c'est plus problématique, a moins de disposer d'un second compte administrateur qui pourra réinitialiser le mot de passe de son collègue.
+Il existe cependant une manière détournée de réinitilaiser un mot de passe en agissant directment sur la base de données :
+
+Dans la table "resource" accéder à la ligne de l'utilisateur concerné (l'administrateur créé par défaut a l'id=1), et modifier :
+ * password => entrer le mot de passe en clair
+ * crypto => mettre ce champ à Null (la valeur Null, pas une chaine contenant "Null")
+Le mot de passe devra alors être modifié à la première connexion pour être encodé. 
