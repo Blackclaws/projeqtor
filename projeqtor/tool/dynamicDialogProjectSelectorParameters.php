@@ -34,7 +34,7 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
     <td style="text-align: right;width:250px">
 	    <?php echo i18n("labelShowIdle");?>&nbsp;:&nbsp;
 	  </td>
-	  <td style="text-align: left; vertical-align: middle;width:250px">
+	  <td style="text-align: left; vertical-align: middle;width:250px" title="<?php echo i18n('helpEnterArchiveMode');?>">
 	     <div title="<?php echo i18n('showIdleElements');?>" dojoType="dijit.form.CheckBox" type="checkbox"
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
@@ -48,6 +48,7 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
            dijit.byId('dialogProjectSelectorParameters').hide();
          </script>
 	     </div>
+	     <?php echo i18n('enterArchiveMode');?>
 	  </td>
   </tr>
   <tr><td></td><td>&nbsp;</td></tr>

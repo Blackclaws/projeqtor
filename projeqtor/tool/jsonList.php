@@ -180,6 +180,12 @@
 	      			$list[$vers->idProduct]=$listProd[$vers->idProduct];	      			
 	      		}
 	      	}
+	      	// Add list of products  directly linked to project (not only through version)
+	      	$pp=new ProductProject();
+	      	$ppList=$pp->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
+	      	foreach ($ppList as $pp) {
+	      	  $list[$pp->idProduct]=$listProd[$pp->idProduct];
+	      	}
       	} else if (trim($_REQUEST['critValue']) and $_REQUEST['critField']=='idProduct') {
       	    $prod=new Product($_REQUEST['critValue']);
       	    $list=$prod->getComposition(true,true);

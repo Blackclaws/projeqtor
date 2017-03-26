@@ -274,6 +274,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$vers=new Version($versProj->idVersion,true);
     		$restrictArray[$vers->idProduct]="OK";
     	}
+    	// Add list of products  directly linked to project (not only through version)
+    	$pp=new ProductProject();
+    	$ppList=$pp->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
+    	foreach ($ppList as $pp) {
+    	  $restrictArray[$pp->idProduct]="OK";
+    	}
     	if ($selection) {
     	  $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
     	}

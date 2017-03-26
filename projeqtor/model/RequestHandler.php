@@ -42,6 +42,9 @@ abstract class RequestHandler {
       }  
     }
   }
+  public static function isCodeSet($code) {
+    return isset($_REQUEST[$code]);
+  }
   
   public static function getClass($code,$required=false,$default=null) {
     $val=self::getValue($code,$required,$default);
