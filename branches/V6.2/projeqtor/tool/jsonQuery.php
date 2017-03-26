@@ -605,7 +605,18 @@
 	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
 	    					$colId=$arrayFields[$id];
 	    				}
-	    				$val=encodeCSV($obj->getColCaption($colId));
+	    				if (property_exists($obj, $colId)) {
+	    				  $val=encodeCSV($obj->getColCaption($colId));
+	    				} else if (property_exists($obj, 'WorkElement') and property_exists('WorkElement', $colId)) {
+	    				  $we=new WorkElement();
+	    				  $val=encodeCSV($we->getColCaption($colId));
+	    				} else if (property_exists($obj, get_class($obj).'PlanningElement') and property_exists(get_class($obj).'PlanningElement', $colId)) {
+	    				    $peClass=get_class($obj).'PlanningElement';
+	    				    $pe=new $peClass();
+	    				    $val=encodeCSV($pe->getColCaption($colId));
+	    				} else {
+	    				  $val=encodeCSV($obj->getColCaption($colId)); // well, in the end, get default.
+	    				}
 	    				if (strpos($colId,'_')!==null and isset($arrayDependantObjects[$objectClass])) {
 	    				  $split=explode('_',$colId);
 	    				  foreach ($arrayDependantObjects[$objectClass] as $incKey=>$incVal) {

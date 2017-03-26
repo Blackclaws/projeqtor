@@ -32,64 +32,49 @@
       ob_clean();  // Important : clean possible extra char before returning data;
     }
     scriptLog('   ->/tool/getSingleData.php');
-    $type=$_REQUEST['dataType']; // checked against constant values
+    $type=RequestHandler::getValue('dataType'); // checked against constant values
     if ($type=='resourceCost') {
-      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
+      $idRes=RequestHandler::getId('idResource'); // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
-      $idRol=$_REQUEST['idRole'];
-      Security::checkValidId($idRol);
+      $idRol=RequestHandler::getId('idRole');
       if (! $idRol) return;
       $r=new Resource($idRes);
       echo $r->getActualResourceCost($idRol);
     } else if ($type=='resourceCostDefault') {
-      $idRol=$_REQUEST['idRole'];
+      $idRol=RequestHandler::getId('idRole');
       if (! $idRol) return;
-      Security::checkValidId($idRol);
       $role=new Role($idRol);
       if ($role->defaultCost) {
         echo $role->defaultCost;
         return;
       }
     } else if ($type=='resourceRole') {
-      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
+      $idRes=RequestHandler::getId('idResource'); // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $r=new Resource($idRes);
       echo $r->idRole;
       return;
     } else if ($type=='resourceProfile') {
-      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
+      $idRes=RequestHandler::getId('idResource'); // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $r=new Affectable($idRes);
       echo $r->idProfile;
     } else if ($type=='resourceCapacity') {
-      $idRes=$_REQUEST['idResource']; // validated to be numeric value in SqlElement base constructor.
+      $idRes=RequestHandler::getId('idResource'); // validated to be numeric value in SqlElement base constructor.
       if (! $idRes) return;
       $r=new Resource($idRes);
       echo $r->capacity;
     } else if ($type=='defaultPlanningMode') {
-      $idType=$_REQUEST['idType'];
-      $className=$_REQUEST['objectClass'];
-      Security::checkValidClass($className);
+      $idType=RequestHandler::getId('idType');
+      $className=RequestHandler::getClass('objectClass');
       $typeClass=$className.'Type';
       $type=new $typeClass($idType);
-      $planningModeName='id'.$className.'PlanningMode'; //idActivityPlanningMode
+      $planningModeName='id'.$className.'PlanningMode';
       echo $type->$planningModeName;
-    } else if ($type=='defaultPriority') {
-      $idType=$_REQUEST['idType'];
-      $className=$_REQUEST['objectClass'];
-      Security::checkValidClass($className);
-      $typeClass=$className.'Type';
-      $type=new $typeClass($idType);
-      $priorityName='priority'; //idActivityPlanningMode
-      echo $type->$priorityName;
-      if(!$priorityName){
-        $priorityName=500;
-      }
-      //$priority=$_REQUEST['priority'];
     } else if ($type=='restrictedTypeClass') {
-      $idProjectType=$_REQUEST['idProjectType'];
-      $idProject=$_REQUEST['idProject'];
-      $idProfile=$_REQUEST['idProfile'];
+      $idProjectType=RequestHandler::getId('idProjectType');
+      $idProject=RequestHandler::getId('idProject');
+      $idProfile=RequestHandler::getId('idProfile');
       $list=Type::getRestrictedTypesClass($idProject,$idProjectType,$idProfile);
       $cpt=0;
       foreach ($list as $cl) {
@@ -97,19 +82,19 @@
         echo (($cpt>1)?', ':'').$cl;
       }
     } else if ($type=='affectationDescription') {
-      $idAffectation=$_REQUEST['idAffectation'];
+      $idAffectation=RequestHandler::getId('idAffectation');
       $aff=new Affectation($idAffectation);
       echo formatAnyTextToPlainText($aff->description,false);
     } else if ($type=='assignmentDescription') {
-        $idAssignment=$_REQUEST['idAssignment'];
+        $idAssignment=RequestHandler::getId('idAssignment');
         $ass=new Assignment($idAssignment);
         echo formatAnyTextToPlainText($ass->comment,false);
     } else if ($type=='responsible') {
       $responsibleFromProduct=Parameter::getGlobalParameter('responsibleFromProduct');
     	if (!$responsibleFromProduct) $responsibleFromProduct='always';
-    	$idC=$_REQUEST['idComponent'];
-    	$idP=$_REQUEST['idProduct'];
-    	$idR=$_REQUEST['idResource'];
+    	$idC=RequestHandler::getId('idComponent');
+    	$idP=RequestHandler::getId('idProduct');
+    	$idR=RequestHandler::getId('idResource');
     	if ($responsibleFromProduct=='always' or ($responsibleFromProduct=='ifempty' and !trim($idR))) { 
     	  $comp=new Component($idC,true);
     	  if ($comp->idResource) {
@@ -122,19 +107,17 @@
     	  }
     	}
     } else if ($type=='dependencyComment') {
-      $idDependency=$_REQUEST['idDependency'];
+      $idDependency=RequestHandler::getId('idDependency');
       $dep=new Dependency($idDependency);
       echo $dep->comment;	  
     } else if ($type=='count') {
-      $class=$_REQUEST['class'];
-      Security::checkValidClass($class);
+      $class=RequestHandler::getClass('class');
       $obj=new $class();
       $cpt=1;
       $crit=array();
-      while (isset($_REQUEST['param'.$cpt]) and isset($_REQUEST['value'.$cpt]) ){
-        $param=$_REQUEST['param'.$cpt];
-        Security::checkValidAlphanumeric($param);
-        $value=$_REQUEST['value'.$cpt];
+      while (RequestHandler::isCodeSet('param'.$cpt) and RequestHandler::isCodeSet('value'.$cpt) ){
+        $param=RequestHandler::getAlphanumeric('param'.$cpt);
+        $value=RequestHandler::getValue('value'.$cpt);
         $value=htmlEncode($value);
         $crit[$param]=$value;
         $cpt++;
@@ -142,18 +125,17 @@
       $val=$obj->countSqlElementsFromCriteria($crit);
       echo $val;
     } else if ($type=='defaultCategory'){
-      $idType=$_REQUEST['idType'];
-      $className=$_REQUEST['objectClass'];
-      Security::checkValidClass($className);
+      $idType=RequestHandler::getId('idType');
+      $className=RequestHandler::getClass('objectClass');
       $typeClass=$className.'Type';
       $type=new $typeClass($idType);
       echo $type->idCategory;
     } else if ($type=='catalogBillLine') { //gautier #2516
-      $idCat=$_REQUEST['idCatalog']; 
+      $idCat=RequestHandler::getId('idCatalog'); 
       $r=new Catalog($idCat);
       $catalog_array = "$r->description#!#!#!#!#!#$r->detail#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitCost#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification#!#!#!#!#!#$r->quantity";
       echo $catalog_array;
-    }else {
+    } else {
       debugTraceLog("Unknown type '$type'");          
       echo '';
     } 
