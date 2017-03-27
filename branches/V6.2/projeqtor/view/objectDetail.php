@@ -3071,7 +3071,7 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     if ($obj->id != null and !$print and $canUpdate) {
       echo '<a onClick="addProductVersionStructure(\''.$way.'\');" title="' . i18n('addProductVersionStructure') . '" > '.formatSmallButton('Add').'</a>';
       if ($way=='composition' and count($list)>0) {
-        echo '<a onClick="upgradeProductVersionStructure(\''.$way.'\');" title="' . i18n('upgradeProductVersionStructure') . '" > '.formatSmallButton('Switch').'</a>';
+        echo '<a onClick="upgradeProductVersionStructure(null,false);" title="' . i18n('upgradeProductVersionStructure') . '" > '.formatSmallButton('Switch').'</a>';
       }
     }
     echo '</td>';
@@ -3103,6 +3103,9 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
       	
       	echo '  <a onClick="removeProductVersionStructure(' . "'" . htmlEncode($comp->id) . "','" . get_class($compObj) . "','" . htmlEncode($compObj->id) . "','" . $classCompName . "'" . ');" '
               .'title="' . i18n('removeProductStructure') . '" > '.formatSmallButton('Remove').'</a>';
+      	if ($way=='composition' ) {
+      		echo '<a onClick="upgradeProductVersionStructure(\''.$comp->id.'\',false);" title="' . i18n('upgradeProductVersionStructureSingle') . '" > '.formatSmallButton('Switch').'</a>';
+      	}
       }
       echo '</td>';
     }

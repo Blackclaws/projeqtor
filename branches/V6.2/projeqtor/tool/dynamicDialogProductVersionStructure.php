@@ -113,7 +113,6 @@ if ($way=='structure') {
             </td>
             <td>
               <select size="14" id="productVersionStructureListId" name="productVersionStructureListId[]"
-                 dojoType="dijit.form.MultiSelect" 
                 <?php if (!$structureId) echo 'multiple';?> class="selectList" onchange="enableWidget('dialogProductVersionStructureSubmit');"  ondblclick="saveProductVersionStructure();" value="">
                   <?php htmlDrawOptionForReference('id'.$listClass, $listId, null, true, 'id'.$critClass, $objectId);?>
               </select>

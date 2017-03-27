@@ -100,3 +100,6 @@ CREATE TABLE `${prefix}extrareadonlyfield` (
 INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
 (27,'Incoming', '0'), 
 (28,'Deliverable', '0');
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES
+(62, 'showIdle', 'boolean', 70, '0');

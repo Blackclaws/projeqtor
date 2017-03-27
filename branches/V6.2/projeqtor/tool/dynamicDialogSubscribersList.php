@@ -58,13 +58,14 @@ echo '<input type="hidden" id="subscriptionObjectClass" value="'.$objectId.'" />
 echo '<table style="width:100%;height:100%;min-height:300px">';
 echo '<tr style="height:20px">';
 echo '<td style="position:relative;">';
-echo '<input dojoType="dijit.form.TextBox" id="subscriptionSubscribedSearch" class="input" style="width:210px" value="" onKeyUp="filterDnDList(\'subscriptionSubscribedSearch\',\'subscriptionSubscribed\',\'div\');" />';
+echo '<input dojoType="dijit.form.TextBox" id="subscriptionSubscribedSearch" class="input" style="width:230px" value="" onKeyUp="filterDnDList(\'subscriptionSubscribedSearch\',\'subscriptionSubscribed\',\'div\');" />';
 echo '<div style="position:absolute;right:4px;top:3px;" class="iconView"></div>';
+
 echo '</td></tr>';
 echo '<tr>';
-echo '<td style="position:relative;max-width:200px;max-height:'.$showHeight.';vertical-align:top; padding: 5px" class="noteHeader" >';
+echo '<td style="position:relative;" class="noteHeader" >';
 echo '<div style="position:absolute;bottom:5px;left:5px;width:24px;height:24px;opacity:0.7;" class="dijitButtonIcon dijitButtonIconSubscribe" ></div>';
-echo '<div style="height:'.$showHeight.';overflow:auto;cursor:normal;" id="subscriptionSubscribed;">';
+echo '<div style="height:'.$showHeight.';overflow:auto;" id="subscriptionSubscribed" dojotype="dojo.dnd.Source" >';
 foreach($lstSub as $sub) {
   drawResourceTile($sub);
 }
@@ -78,7 +79,7 @@ echo'<br/><table style="width: 100%;" ><tr><td style="width: 100%;" align="cente
 function drawResourceTile($res){
   global $objectClass, $objectId;
   $name=($res->name)?$res->name:$res->userName;
-  echo '<div class="subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" style="position:relative;padding: 2px 5px 3px 5px;margin:0px 0px 5px 0px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
+  echo '<div class="subscription" id="subscription'.$res->id.'" value="'.str_replace('"','',$name).'" style="position:relative;padding: 2px 5px 3px 5px;margin:5px;color:#707070;min-height:22px;background-color:#ffffff; border:1px solid #707070" >'
     .formatUserThumb($res->id, "", "")
     .$name
     .'</div>';

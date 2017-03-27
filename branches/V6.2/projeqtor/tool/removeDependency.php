@@ -30,7 +30,7 @@
 
 require_once "../tool/projeqtor.php";
 
-$dependencyId=null;
+/*$dependencyId=null;
 if (array_key_exists('dependencyId',$_REQUEST)) {
   $dependencyId=$_REQUEST['dependencyId']; // validated to be numeric value in SqlElement base constructor.
 }
@@ -40,7 +40,9 @@ if ($dependencyId=='') {
 } 
 if ($dependencyId==null) {
   throwError('dependencyId parameter not found in REQUEST');
-}
+}*/
+$dependencyId=RequestHandler::getId('dependencyId',true);
+
 Sql::beginTransaction();
 $obj=new Dependency($dependencyId);
 $result=$obj->delete();

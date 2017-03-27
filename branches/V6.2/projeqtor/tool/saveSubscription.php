@@ -30,7 +30,7 @@
  */
 require_once "../tool/projeqtor.php";
 
-$mode=RequestHandler::getExpected('mode',array('on','off'));
+$mode=RequestHandler::getExpected('mode',true,array('on','off'));
 $class=RequestHandler::getClass('objectClass',true);
 $id=RequestHandler::getId('objectId',true);
 $userId=RequestHandler::getId('userId',true);

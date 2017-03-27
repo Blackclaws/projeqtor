@@ -405,10 +405,10 @@ else if($copyType=="copyVersion"){
                  <img style="position: absolute;left:0px; top:0px;height:50px;" src="../view/img/helpCopyVersion.png" 
                      onmouseenter="this.style.height='200px';this.style.top='-100px';" 
                      onmouseout="this.style.height='50px';this.style.top='0px';"/>
-               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureCopy" checked value="Copy"/>
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureCopy" value="Copy"/>
                  <label for="copyToCopyVersionStructureCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureCopy")?></label>
                </td></tr><tr><td>
-               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureNoCopy" value="NoCopy"/> 
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureNoCopy" checked value="NoCopy"/> 
                  <label for="copyToCopyVersionStructureNoCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureNoCopy")?></label>
                </td></tr><tr><td>
                <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureReplace" value="Replace"/> 
