@@ -31,31 +31,23 @@
 require_once "../tool/projeqtor.php";
 
 // Get the link info
-if (! array_key_exists('objectClass',$_REQUEST)) {
-  throwError('objectClass parameter not found in REQUEST');
-}
-$objectClass=$_REQUEST['objectClass'];
-Security::checkValidClass($objectClass);
-
-if (! array_key_exists('objectId',$_REQUEST)) {
-  throwError('objectId parameter not found in REQUEST');
-}
-$objectId=$_REQUEST['objectId'];
-Security::checkValidId($objectId);
-
-if (! array_key_exists('confirm',$_REQUEST)) {
-  throwError('confirm parameter not found in REQUEST');
-}
-$confirm=Security::checkValidBoolean($_REQUEST['confirm']);
+$objectClass=RequestHandler::getClass('objectClass',true);
+$objectId=RequestHandler::getId('objectId',true);
+$confirm=(RequestHandler::getAlphanumeric('confirm',true)=='true')?true:false;
+$strId=RequestHandler::getId('strucutreId',false);
 
 $str=new ProductVersionStructure();
-$strList=$str->getSqlElementsFromCriteria(array('idProductVersion'=>$objectId));
+$crit = array('idProductVersion'=>$objectId);
+if ($strId) {
+	$crit=array('id'=>$strId);
+}
+$strList=$str->getSqlElementsFromCriteria($crit);
 Sql::beginTransaction();
 $result="";
 //Retrieve the existing list of versions 
 // and for each version, find the next version for the component
 if (!$confirm) {
-	echo '<b>'.i18n('upgradeProductVersionStructure').'</b><br/><br/>';
+	echo '<b>'.i18n('upgradeProductVersionStructure'.(($strId)?'Single':'')).'</b><br/><br/>';
 	echo '<table style="width:100%">';
 	echo '<tr><td class="noteHeader">'.i18n('colValueBefore').'</td><td class="noteHeader">'.i18n('colValueAfter').'</td></tr>';
 }

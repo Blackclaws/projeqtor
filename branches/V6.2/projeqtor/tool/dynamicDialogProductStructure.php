@@ -85,6 +85,12 @@ if ($way=='composition') {
   <tr>
     <td>
       <form id='productStructureForm' name='productStructureForm' onSubmit="return false;">
+        <?php 
+        $canCreateProduct=securityGetAccessRightYesNo('menuProduct', 'create') == "YES";
+        $canCreateComponent=securityGetAccessRightYesNo('menuComponent', 'create') == "YES";
+        echo "canCreateProduct=$canCreateProduct<br/>";
+        echo "canCreateComponent=$canCreateComponent";
+        ?>
         <input id="productStructureObjectClass" name="productStructureObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productStructureObjectId" name="productStructureObjectId" type="hidden" value="<?php echo $objectId;?>" />
         <input id="productStructureListClass" name="productStructureListClass" type="hidden" value="<?php echo $listClass;?>" />
@@ -92,6 +98,8 @@ if ($way=='composition') {
         <input id="productStructureWay" name="productStructureWay" type="hidden" value="<?php echo $way;?>" />
         <input id="directAccessToList" name="directAccessToList" type="hidden" value="<?php echo $directAccessToList;?>" />
         <input id="directAccessToListButton" name="directAccessToListButton" type="hidden" value="dialogProductStructureSubmit" />
+        <input id="productStructureCanCreateProduct" type="hidden" value="<?php echo $canCreateProduct;?>" />
+        <input id="productStructureCanCreateComponent" type="hidden" value="<?php echo $canCreateComponent;?>" />
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('section'.ucfirst($way),array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  
@@ -113,8 +121,7 @@ if ($way=='composition') {
                 title="<?php echo i18n('showDetail') . ' '. i18n('Product');?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
-                <?php $canCreate=securityGetAccessRightYesNo('menuProduct', 'create') == "YES"; ?>
-                showDetail('productStructureListId', <?php echo $canCreate;?>, 'Product', true);
+                showDetail('productStructureListId', <?php echo $canCreateProduct;?>, 'Product', true);
                 </script>
               </button>
               <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconProduct16.png" />
@@ -125,8 +132,7 @@ if ($way=='composition') {
                 title="<?php echo i18n('showDetail'). ' '. i18n('Component')?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
-                <?php $canCreate=securityGetAccessRightYesNo('menuComponent', 'create') == "YES"; ?>
-                showDetail('productStructureListId', <?php echo $canCreate;?>, 'Component', true);
+                showDetail('productStructureListId', <?php echo $canCreateComponent;?>, 'Component', true);
                 </script>
               </button>
               <img style="position:absolute;right:-5px;top:0px;height:12px;" src="../view/css/images/iconComponent16.png" />

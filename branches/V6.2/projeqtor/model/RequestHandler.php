@@ -87,8 +87,9 @@ abstract class RequestHandler {
     if ($val==$default) return $val;
     return Security::checkValidMonth($val);
   }
-  public static function getExpected($code,$expectedList) {
-    $val=self::getValue($code,true,null);
+  public static function getExpected($code,$required=false,$expectedList) {
+    $val=self::getValue($code,$required,null);
+    if ($val==null and !$required) return null;
     if (in_array($val, $expectedList)) {
       return $val;
     } else {
