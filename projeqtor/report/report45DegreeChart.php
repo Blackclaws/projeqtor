@@ -60,6 +60,12 @@ if (array_key_exists('showBurndownLegendOnTop',$_REQUEST)) {
   $legend="top";
 }
 
+//gautier ticket #2579
+$showIdle=false;
+if (array_key_exists('showIdle',$_REQUEST)) {
+  $showIdle=true;
+}
+
 $headerParameters="";
 if ($idProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project',$idProject)) . '<br/>';
@@ -79,7 +85,9 @@ if ($endDateReport!="") {
 if ($showToday) {
   $headerParameters.= i18n("colShowBurndownToday"). '<br/>';
 }
-
+if($showIdle) {
+  $headerParameters.= i18n("labelShowIdle"). '<br/>';
+}
 include "header.php";
 
 if (!$idProject) {
@@ -105,6 +113,7 @@ $m=new Milestone();
 $mpe=new MilestonePlanningElement();
 $mTable=$m->getDatabaseTableName();
 $mpeTable=$mpe->getDatabaseTableName();
+
 $querySelect= "select mpe.id as idpe, m.name as name, m.id as id, m.idMilestoneType as type, mpe.realEndDate as realend, mpe.plannedEndDate as plannedend ";
 $queryFrom=   " from $mTable m, $mpeTable as mpe";
 $queryWhere=  " where mpe.refType='Milestone' and mpe.refId=m.id";
@@ -113,11 +122,15 @@ $queryWhere.= " and m.idProject in ".transformListIntoInClause($user->getVisible
 if ($type) {
   $queryWhere.= " and m.idMilestoneType = ".Sql::fmtId($type);
 }
+if ($showIdle) {
+  $queryWhere.= " and mpe.idle in (0,1) ";
+}else{
+  $queryWhere.= " and mpe.idle = 0";
+}
 $query=$querySelect.$queryFrom.$queryWhere;
 $resultMile=Sql::query($query);
 $arrayMile=array();
 $existingDates=array();
-
 $listMilePE='(0';
 while ($line = Sql::fetchLine($resultMile)) {
   $id=$line['id'];
@@ -166,9 +179,7 @@ while ($line = Sql::fetchLine($resultPlanned)) {
     if ($end<$new) {$end=$new;}
   }
 }
-
 if (checkNoData($arrayMile)) exit;
-
 if (!$start or !$end) {
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
   echo i18n('reportNoData'); 
@@ -225,8 +236,6 @@ if (count($arrDates)<2) {
   exit;
 }
 
-
-
 $graphWidth=1250;
 $graphHeight=720;
 $indexToday=0;
@@ -270,10 +279,10 @@ foreach ($arrayMile as $idx=>$arr){
 
 // Definition of series
 foreach($arrayMile as $idx=>$arr) {
-  $dataSet->addPoints($arrayMile[$idx]['periods'],"mile$idx");
-  $dataSet->setSerieOnAxis("mile$idx",0);
-  $dataSet->setSerieWeight("mile$idx",1);
-  $dataSet->setSerieDescription("mile$idx",wordwrap($arrayMile[$idx]['name']."\n",25,"\n"));
+    $dataSet->addPoints($arrayMile[$idx]['periods'],"mile$idx");
+    $dataSet->setSerieOnAxis("mile$idx",0);
+    $dataSet->setSerieWeight("mile$idx",1);
+    $dataSet->setSerieDescription("mile$idx",wordwrap($arrayMile[$idx]['name']."\n",25,"\n"));
 }
 $dataSet->addPoints($resBase,"base");
 $dataSet->setSerieOnAxis("base",0);
@@ -289,6 +298,7 @@ foreach ($arrLabel as $idx=>$val) {
     //$arrLabel[$idx]=strtotime($val.$refTime);
   }
 }
+
 $dataSet->addPoints($arrLabel,"dates");
 $dataSet->setAxisDisplay(0,AXIS_FORMAT_DATE);
 $dataSet->setAbscissa("dates");
