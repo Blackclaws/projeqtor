@@ -37,12 +37,12 @@ if (! array_key_exists('replaceAffectationIdAffectation',$_REQUEST)) {
 $id=($_REQUEST['replaceAffectationIdAffectation']); // validated to be numeric value in SqlElement base constructor.
 $aff=new Affectation($id);
 
-if (! array_key_exists('replaceAffectationResource',$_REQUEST) and !$idTeam) {
+if (! array_key_exists('replaceAffectationResource',$_REQUEST) ) {
   throwError('replaceAffectationResource parameter not found in REQUEST');
 }
 $resource=($_REQUEST['replaceAffectationResource']); // escaped before used in DB queries
 
-if (! array_key_exists('replaceAffectationProfile',$_REQUEST) and !$idTeam) {
+if (! array_key_exists('replaceAffectationProfile',$_REQUEST) ) {
   throwError('replaceAffectationProfile parameter not found in REQUEST');
 }
 $profile=($_REQUEST['replaceAffectationProfile']); // escaped before used in DB queries
