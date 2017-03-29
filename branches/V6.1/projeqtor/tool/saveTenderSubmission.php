@@ -86,7 +86,7 @@ Security::checkValidId($tenderStatusId);
 Sql::beginTransaction();
 // get the modifications (from request)
 $tender=new Tender($tenderId);
-$callForTender=new CallForTender($callForTenderId);
+//$callForTender=new CallForTender($callForTenderId);
 $tender->idCallForTender=$callForTenderId;
 $tender->idProvider=$providerId;
 $tender->idContact=$contactId;

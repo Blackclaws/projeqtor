@@ -161,7 +161,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($selection) {
       $refTable=$listType;
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
-      $table[$selection]=SqlList::getNameFromId($refTable, $selection);
+      $table[$selection]=SqlList::getFieldFromId($refTable, $selection,$column);
     } 
   }
   $restrictArray=array();
@@ -862,7 +862,7 @@ function htmlGetWarningMessage($message) {
  * @return formated html mimeType, as an image
  */
 function htmlGetMimeType($mimeType,$fileName, $id=null, $type='Attachment') {
-  $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+  $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
   if (file_exists("../view/img/mime/$ext.png")) {
     $img="../view/img/mime/$ext.png";
   } else {
