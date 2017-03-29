@@ -146,7 +146,7 @@ foreach($arrayWork as $key=>$work) {
  </td>
  <td>&nbsp;</td>
  <td style="word-space:nowrap;width:52px">
-   <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayImputation($work['work'])?>"
+   <div dojoType="dijit.form.NumberTextBox" class="input" style="width:50px;" value="<?php echo Work::displayImputation($work['work']);?>"
     onchange="updateDispatchWorkTotal();" name="dispatchWorkValue[]" 
     <?php if ($readOnly) echo 'readonly';?>
     id="dispatchWorkValue_<?php echo $cpt;?>">

@@ -4670,7 +4670,7 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconWorkflow16 { background-image: url(customIcons/grey/iconWorkflow.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* MISC */
-.ProjeQtOrFlatGrey .iconReportsFavorite { background-image: url( iconReportsFavorite.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconReportsFavorite { background-image: url(customIcons/grey/iconReportsFavorite.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 
 /* =============================================================================== */
 /* ProjeQtOr THEME END                                                             */

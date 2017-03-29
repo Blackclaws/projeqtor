@@ -3121,9 +3121,11 @@ abstract class SqlElement {
 		    $colScript .= "    end.constraints.min=dtStart;";
 		    $colScript .= "    if (! end.get('value') ) {";
 		    $colScript .= "      end.set('value',dtStart);";
+        if(isset($duration)){
 		    $colScript .= "      if (dijit.byId('$duration')) {";
 		    $colScript .= "        dijit.byId('$duration').set('value',1);";
 		    $colScript .= "      }";
+        }
 		    $colScript .= "    }";
 		    $colScript .= " }";
 		    $colScript .= "}";

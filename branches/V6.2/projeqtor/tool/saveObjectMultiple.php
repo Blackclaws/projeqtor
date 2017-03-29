@@ -263,7 +263,7 @@ foreach ($selectList as $id) {
   	  $item->$pe->validatedCost=$pe_validatedCost;
   	}
   	if ($pe_validatedWork and property_exists($item->$pe,'validatedWork')) {
-  	  $item->$pe->validatedWork=$pe_validatedWork;
+  	  $item->$pe->validatedWork=Work::convertWork($pe_validatedWork);
   	}
   }
   $resultSave=$item->save();

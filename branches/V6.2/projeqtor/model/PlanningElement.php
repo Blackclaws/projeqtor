@@ -387,6 +387,10 @@ class PlanningElement extends SqlElement {
     	$this->validatedCalculated=1;
     } 
     
+    if ($this->realEndDate){
+      $this->plannedEndDate=$this->realEndDate;
+    }
+    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
