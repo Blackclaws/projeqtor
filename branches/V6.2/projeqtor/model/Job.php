@@ -119,7 +119,7 @@ class Job extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-  	$this->checkTime=date('Y-m-d H:i:s');
+  	//$this->checkTime=date('Y-m-d H:i:s');
   	$result=parent::save();
   	return $result;
   }

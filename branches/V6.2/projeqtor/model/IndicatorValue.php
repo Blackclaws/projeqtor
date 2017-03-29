@@ -167,7 +167,7 @@ class IndicatorValue extends SqlElement {
   		if ( (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') and property_exists($obj, $sub) ) {
   		  $indVal->targetDateTime=$obj->$sub->$fld;
   		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
-  	    } elseif($ind->code = "YEARLY" && $indVal->targetDateTime) {
+  	  } elseif($ind->code = "YEARLY" && $indVal->targetDateTime) {
 			// Date is already set for a yearly indicator; must be overwritten only if day and month have changed
 			if(substr($indVal->targetDateTime, 5, 5) != substr($obj->$fld, 5, 5)) {
 				$indVal->targetDateTime = $obj->$fld;
@@ -239,6 +239,7 @@ class IndicatorValue extends SqlElement {
   	$this->alertTargetValue=$this->targetValue*$def->alertValue/100;
   	$targetValue=floatval($this->targetValue);
   	$value=floatval($value);
+  	$this->_currentValue=$value;
   	if ($value>$this->warningTargetValue and $targetValue) { // V4.5.0 : raise warning only if target value is set
   		if (! $this->warningSent) {
         $this->sendWarning();
@@ -618,16 +619,19 @@ class IndicatorValue extends SqlElement {
     $target="";
     $warningTarget="";
     $alertTarget="";
-    $value="";
+    $currentValue="";
     if ($this->type=="delay") {
     	$target=htmlFormatDateTime(trim($this->targetDateTime),false,true);
     	$warningTarget=htmlFormatDateTime(trim($this->warningTargetDateTime),false, true);
     	$alertTarget=htmlFormatDateTime(trim($this->alertTargetDateTime),false, true);
+    	$currentValue=htmlFormatDateTime(date('Y-m-d H:i'));
     } else if ($this->type=="percent") {
+    	
     	if (substr($this->code,-1)=='W') {
     	  $target=Work::displayWork($this->targetValue) . ' ' . Work::displayShortWorkUnit();
     	  $warningTarget=Work::displayWork($this->warningTargetValue) . ' ' . Work::displayShortWorkUnit();
     	  $alertTarget=Work::displayWork($this->alertTargetValue) . ' ' . Work::displayShortWorkUnit();
+    	  if (isset($this->_currentValue)) $currentValue=Work::displayWork($this->_currentValue) . ' ' . Work::displayShortWorkUnit();
     	} else {
     		if ($currencyPosition=='before') {
     			$befCur=$currency;
@@ -639,23 +643,24 @@ class IndicatorValue extends SqlElement {
     		$target=$befCur . ' ' . htmlEncode($this->targetValue) . ' ' . $aftCur;
         $warningTarget=$befCur . ' ' . htmlEncode($this->warningTargetValue) . ' ' . $aftCur;
         $alertTarget=$befCur . ' ' . htmlEncode($this->alertTargetValue) . ' ' . $aftCur;
+        if (isset($this->_currentValue)) $currentValue=$befCur . ' ' . htmlEncode($this->_currentValue). ' ' . $aftCur;
     	}
     }
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
     $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
     
-    $message='<table style="margin-top:10px;">';
+    $message='<table style="margin-top:10px;width:100%">';
     $message.='<tr style="margin-top:10px;"><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.htmlEncode($obj->id).');">' . htmlEncode($name) . '</td></tr>';
     //gautier #2297
     if($nameProject!=""){
-      $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdProject') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $nameProject . '</td>';
+      $message.='<tr style="height:20px"><td width="35%" align="right" >' . i18n('colIdProject') . '</td><td >&nbsp;:&nbsp;</td><td >' . $nameProject . '</td>';
     }
-    $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
-    $message.='<tr><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
+    $message.='<tr style="height:20px"><td width="35%" align="right" >' . i18n('colIdIndicator') . '</td><td>&nbsp;:&nbsp;</td><td >' . $indicator . '</td>';
+    $message.='<tr style="height:20px"><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
     $message.=($warningTarget and $type=="WARNING")?'<tr><td width="35%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';
     $message.=($alertTarget and $type=="ALERT")?'<tr><td width="35%" align="right">' . i18n('alertValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $alertTarget . '</td>':'';
-    $message.=($value)?'<tr><td width="30%">' . i18n('value') . '</td><td>&nbsp;:&nbsp;</td><td>' . $value . '</td>':'';
+    $message.=($currentValue)?'<tr style="height:20px"><td width="35%" align="right">' . i18n('currentValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $currentValue . '</td>':'';
     $message.='</table><br/>';
     $messageAlert=$message;
     $message.=$obj->getMailDetail();

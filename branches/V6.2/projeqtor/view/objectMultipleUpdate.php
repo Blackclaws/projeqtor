@@ -469,18 +469,22 @@
               <td>
                 <textarea dojoType="dijit.form.Textarea" name="<?php echo $pe;?>_validatedWork" id="<?php echo $pe;?>_validatedWork"
                  rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+                 <?php echo Work::displayShortWorkUnit();?>
               </td>
             </tr>
             <?php }
      // validatedCost and validatedWork krowry debug
+            $currency=Parameter::getGlobalParameter('currency');
+            $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
             $pe=get_class($obj).'PlanningElement';
             if (isDisplayable($obj,'priority', true)) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colValidatedCost');?>&nbsp;:&nbsp;</td>
               <td>
+                <?php if ($currencyPosition=='before') echo $currency;?>
                 <textarea dojoType="dijit.form.Textarea" name="<?php echo $pe;?>_validatedCost" id="<?php echo $pe;?>_validatedCost"
                  rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
-                 <?php echo '$';?>
+                 <?php if ($currencyPosition=='after') echo $currency;?>
               </td>
             </tr>
             <?php }

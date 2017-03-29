@@ -213,6 +213,11 @@ class DocumentDirectory extends SqlElement {
   public function getLocation() {
   	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$root=Parameter::getGlobalParameter('documentRoot');
+  	if (! $root) { // Document Root not set
+  		errorLog("ERROR in DocumentDirectory::getLocation() : parameter 'paramPathSeparator' is not set");
+  		echo "<span class='messageERROR'>Some parameter is not correctly set. Check for error in log file.</span>";
+  		exit;
+  	}
   	if (substr($root,-1,1)!=$paramPathSeparator) {
   		$root.=$paramPathSeparator;
   	}

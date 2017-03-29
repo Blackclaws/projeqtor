@@ -90,7 +90,15 @@
           <td class="title" style="height:35px;">
             <div style="width:100%;height:100%;position:relative;">
             <div id="buttonDivObjectName" style="width:100%;position:absolute;top:8px;text-overflow:ellipsis;overflow:hidden;">
-                 <?php  if (property_exists($obj,'name')){ echo ($obj->name)?'&nbsp;-&nbsp;'.$obj->name:''; }?>
+                 <?php  
+                  if (property_exists($obj,'name') and $obj->name){ 
+                 	  echo '&nbsp;-&nbsp;';
+                 	  if (isset($obj->_isNameTranslatable) and $obj->_isNameTranslatable) {
+                 	  	echo i18n($obj->name);
+                 	  } else { 
+                 	  	echo $obj->name;
+                    }
+                  }?>
             </div>
           </td>
         </tr>

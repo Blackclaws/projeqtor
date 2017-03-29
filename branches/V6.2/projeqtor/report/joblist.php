@@ -59,33 +59,33 @@ if ($outMode == 'csv') {
     include "header.php";
 }
 // All activities
-$where = getAccesRestrictionClause('Activity', false);
+$where = getAccesRestrictionClause('Activity', null);
 if ($paramActivity != '') {
     $where .= " and idActivity = " . $paramActivity;
 } elseif ($paramProject != '') {
     $where .= " and idProject = " . $paramProject;
-    $where .= " and idActivity IS NOT NULL";
+    //$where .= " and idActivity IS NOT NULL";
 }
+debugLog($where);
 $lstAct = new Activity();
 $lstActivity =$lstAct->getSqlElementsFromCriteria(null, false, $where, null);
+debugLog($lstActivity);
 if (checkNoData($lstActivity))
     exit;
 // Joblist definition
-$where = getAccesRestrictionClause('JoblistDefinition', false);
-$where .= "and nameChecklistable = 'Activity' ";
+//$where = getAccesRestrictionClause('JoblistDefinition', false);
+$where .= "nameChecklistable = 'Activity' ";
 $where .= "and idType = " . $lstActivity[0]->idActivityType;
 $joblistDef = new JoblistDefinition();
 $joblist = $joblistDef->getSqlElementsFromCriteria(null, false, $where, null);
-if (checkNoData($joblist))
-    exit;
+
 // Job definition
 $where = getAccesRestrictionClause('JobDefinition', false);
 $where .= "and idJoblistDefinition = " . $joblist[0]->id;
 $orderBy = " sortOrder ASC";
 $newjobDef = new JobDefinition();
 $jobDefinitions = $newjobDef->getSqlElementsFromCriteria(null, false, $where, $orderBy);
-if (checkNoData($jobDefinitions))
-    exit;
+
 $aDefLines = array();
 foreach ($jobDefinitions as $jobDef) {
     if (!array_key_exists($jobDef->id, $aDefLines)) {

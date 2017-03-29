@@ -153,7 +153,7 @@ class PlannedWork extends GeneralWork {
       $listProj=explode(',',getVisibleProjectsList());
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
         $result=i18n('selectProjectToPlan');
-        $result .= '<input type="hidden" id="lastPlanStatus" value="CONTROL" />';
+        $result .= '<input type="hidden" id="lastPlanStatus" value="INVALID" />';
         return $result;
       }
     }

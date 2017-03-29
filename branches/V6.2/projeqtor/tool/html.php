@@ -868,7 +868,7 @@ function htmlGetWarningMessage($message) {
  * @return formated html mimeType, as an image
  */
 function htmlGetMimeType($mimeType,$fileName, $id=null, $type='Attachment') {
-  $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+  $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
   if (file_exists("../view/img/mime/$ext.png")) {
     $img="../view/img/mime/$ext.png";
   } else {

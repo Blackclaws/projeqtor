@@ -109,7 +109,7 @@ foreach ($dateList as $idx=>$date) {
         $work->refId=$refId;
       }
     }
-    $newWork=Work::convertImputation($valueList[$idx]);   
+    $newWork=Work::convertImputation($valueList[$idx]);
     $diff=$newWork-$work->work;
     $work->work=$newWork;
     $work->idWorkElement=$weId;
