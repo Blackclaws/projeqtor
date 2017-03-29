@@ -41,6 +41,7 @@ class Mutex
  
     function reserve()
     {
+    	if (!$this->lockname) return;
     	if (Sql::isMysql()) {
         $rs = Sql::query("SELECT GET_LOCK('".$this->lockname."', ".$this->timeout.") as mutex");
         $line=Sql::fetchLine($rs);
@@ -58,6 +59,7 @@ class Mutex
  
     function release()
     {
+    	if (!$this->lockname) return;
     	if (Sql::isMysql()) {
         $rs = Sql::query("SELECT RELEASE_LOCK('".$this->lockname."') as mutex");
         $line=Sql::fetchLine($rs);
@@ -71,6 +73,7 @@ class Mutex
  
     function isFree()
     {
+    	if (!$this->lockname) return true;
     	if (Sql::isMysql()) {
         $rs = Sql::query("SELECT IS_FREE_LOCK('".$this->lockname."') as mutex");
         $line=Sql::fetchLine($rs);
