@@ -38,6 +38,10 @@
   		$listHeight='25%';
   	}
   	$topDetailDivHeight=Parameter::getUserParameter('contentPaneTopDetailDivHeight'.$objectClass);
+  	$screenHeight=getSessionValue('screenHeight');
+  	if ($screenHeight and $topDetailDivHeight>$screenHeight-300) {
+  		$topDetailDivHeight=$screenHeight-300;
+  	}
   	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
   }
 ?>

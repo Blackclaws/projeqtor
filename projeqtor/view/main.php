@@ -781,7 +781,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 </div>
 
 <div id="dialogReminder" >
- <div id="reminderDiv" style="width:100%;height: 75%"></div>
+ <div id="reminderDiv" style="width:100%;height: 150px"></div>
   <div style="width:100%; height:15%; text-align:right">
     <?php echo i18n("remindMeIn");?>
    <input type="input" dojoType="dijit.form.TextBox" id="remindAlertTime" name="remindAletTime" value="15" style="width:25px" />
@@ -790,7 +790,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <?php echo i18n("remind");?>
    </button>
  </div>
- <div style="width:100%; height:10%; text-align:right">
+ <div style="width:100%; height:50px; text-align:right">
    <table><tr><td width="80%">
    <span id="markAllAsReadButtonDiv" >
 	 <button  dojoType="dijit.form.Button" id="markAllAsReadButton" onclick="setAllAlertReadMessage();">

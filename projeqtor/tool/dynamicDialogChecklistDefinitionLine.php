@@ -66,7 +66,7 @@ if ($line->id) {
     </td>
   </tr>
   <tr>
-    <td class="dialogLabel" >&nbsp;</td>
+    <td class="dialogLabel" ><label><i>(<?php echo i18n('tooltip');?>)</i><label></td>
     <td><textarea dojoType="dijit.form.Textarea" 
           id="dialogChecklistDefinitionLineTitle" name="dialogChecklistDefinitionLineTitle"
           style="width: 300px;"
@@ -96,7 +96,7 @@ if ($line->id) {
     </td>  
   </tr>
   <tr>
-    <td class="dialogLabel" >&nbsp;</td>
+    <td class="dialogLabel" ><label><i>(<?php echo i18n('tooltip');?>)</i><label></td>
     <td><textarea dojoType="dijit.form.Textarea" 
           id="dialogChecklistDefinitionLineTitle_<?php echo $i?>" 
           name="dialogChecklistDefinitionLineTitle_<?php echo $i?>"

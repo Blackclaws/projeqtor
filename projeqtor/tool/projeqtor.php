@@ -2872,6 +2872,7 @@ function getLastOperationStatus($result) {
   switch ($status) {
     case "OK" :
     case "INVALID" :
+    case "CONTROL" :
     case "ERROR" :
     case "NO_CHANGE" :
     case "INCOMPLETE" :

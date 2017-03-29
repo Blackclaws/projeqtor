@@ -90,7 +90,7 @@ foreach ($lstCustom as $class=>$name) {
 
 if ($status=='ERROR') {
   Sql::rollbackTransaction();
-  echo '<div class="messageERROR" >' . $errors . '</div>';
+  echo '<div class="messageERROR" >' . $result . '</div>';
 } else if ($status=='OK'){
   Sql::commitTransaction();
   Type::clearRestrictTypeCache();
