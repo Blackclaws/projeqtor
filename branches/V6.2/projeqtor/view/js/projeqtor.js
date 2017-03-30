@@ -1056,7 +1056,7 @@ function finalizeMessageDisplay(destination, validationType) {
           loadDiv(url, 'buttonDivCreationInfo', null);
         }
       } else if (validationType == 'attachment') {
-        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Attachment', 'listForm');
+        //loadContent("objectDetail.php?refreshAttachment=true", dojo.byId('objectClass').value+ '_Attachment', 'listForm');
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value 
           + '&objectId='+dojo.byId('objectId').value;
@@ -1075,9 +1075,7 @@ function finalizeMessageDisplay(destination, validationType) {
               'listForm');
           refreshGrid();
         } else {
-          loadContent("objectDetail.php?refreshAttachments=true", dojo
-              .byId('objectClass').value
-              + '_Attachment', 'listForm');
+          loadContent("objectDetail.php?refreshAttachments=true", dojo.byId('objectClass').value+ '_Attachment', 'listForm');
         }
         dojo.style(dojo.byId('downloadProgress'), {
           display : 'none'

@@ -435,7 +435,7 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo (!$obj->id)?$createRight:$updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-       <?php if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly and $obj->id) {?>
+       <?php if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
 			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id or $comboDetail)?'visibility:hidden;':'';?>">
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"

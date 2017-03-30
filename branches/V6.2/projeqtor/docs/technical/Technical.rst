@@ -2,15 +2,17 @@
 
 .. title:: Technical
 
-Technical
------------
-.. rubric:: Facilité d'utilisation
+Principes Techniques
+--------------------
+.. rubric:: Utilisation
+
+Voici la facilité d'installation et de paramétrage de ProjeQtOr : 
 
 - ProjeQtOr propose une interface conviviale.
 
-- Une application internet riche qui s'exécute comme un client léger , dans un navigateur simple.
+- C'est une application internet riche qui s'exécute comme un client léger , dans un navigateur simple.
 
-- Compatible avec de multiples navigateurs (validé sur Internet Explorer 7 à 9 , Firefox 3 à 7 et Chrome 5 à 14).
+- Elle est compatible avec de multiples navigateurs (validé sur Internet Explorer >8 , Firefoxet Chrome).
 
 - Interface conviviale. 
   En utilisant AJAX, l'actualisation de la page est toujours limitée à la zone cible , évitant les pages blanches et le scintillement.
@@ -18,7 +20,7 @@ Technical
     - Menu à gauche
     - Données à droite , divisé en haut comme liste d'article et en bas comme détail pour l'élément sélectionné.
       La sélection d'un élément dans la liste affiche directement son détail.
-- Possibilité d'accéder à l'historique des changements est offert sur chaque élément.
+- La possibilité d'accéder à l'historique des changements est offert sur chaque élément.
 - La gestion des notes permet de joindre des commentaires à n'importe quel élément.
 - Une piéce jointe est proposée pour les éléments les plus importants.
 - Multi-Langue.

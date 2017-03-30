@@ -4,6 +4,9 @@
 
 Structure
 --------------
+
+Ci-dessous la structure générale des valeurs sources de ProjeQtOr: 
+
 .. figure:: /images/GUI/structure.png
 
 .. rubric:: API
