@@ -67,7 +67,7 @@ class ResourceMain extends SqlElement {
     <th field="photo" formatter="thumb32" width="5%">${photo}</th>
     <th field="initials" width="10%">${initials}</th>  
     <th field="nameTeam" width="15%">${team}</th>
-    <th field="capacity" width="10%" >${capacity}</th>
+    <th field="capacity" formatter="decimalFormatter" width="10%" >${capacity}</th>
     <th field="userName" width="20%">${userName}</th> 
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>

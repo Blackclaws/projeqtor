@@ -4363,48 +4363,6 @@ abstract class SqlElement {
 		}
 		return array('select'=>$select,'from'=>$from);
 	}
-
-	/*
-	public function buildSelectClause($included=false,$hidden=array()){
-	  $table=$this->getDatabaseTableName();
-	  $select="";
-	  $from="";
-	  if (self::is_subclass_of($this,'PlanningElement')) {
-	    $this->setVisibility();
-	  }
-	  foreach ($this as $col=>$val) {
-	    $firstCar=substr($col,0,1);
-	    $threeCars=substr($col,0,3);
-	    if ( ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') )
-	        or ($firstCar=='_')
-	        or ( strpos($this->getFieldAttributes($col), 'hidden')!==false and strpos($this->getFieldAttributes($col), 'forceExport')===false )
-	        or ($col=='password')
-	        or (isset($hidden[$col]))
-	        or (strpos($this->getFieldAttributes($col), 'noExport')!==false)
-	        or (strpos($this->getFieldAttributes($col), 'calculated')!==false)
-	        //or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
-	        //or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
-	        // or calculated field : not to be fetched
-	    ) {
-	      // Here are all cases of not dispalyed fields
-	    } else if ($firstCar==ucfirst($firstCar)) {
-	      $ext=new $col();
-	      $from.=' left join ' . $ext->getDatabaseTableName() .
-	      ' on ' . $table . ".id" .
-	      ' = ' . $ext->getDatabaseTableName() . '.refId' .
-	      ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
-	      $extClause=$ext->buildSelectClause(true,$hidden);
-	      if (trim($extClause['select'])) {
-	        $select.=', '.$extClause['select'];
-	      }
-	    } else {
-	      $select .= ($select=='')?'':', ';
-	      $select .= $table . '.' . $this->getDatabaseColumnName($col) . ' as ' . $col;
-	    }
-	  }
-	  return array('select'=>$select,'from'=>$from);
-	}
-	*/
 	
 	public function setReference($force=false, $old=null) {
 		scriptLog('SqlElement::setReference');

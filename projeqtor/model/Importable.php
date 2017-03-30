@@ -442,8 +442,18 @@ class Importable extends SqlElement {
 							  if ($parentObj->id) { // Found and no dupplicate
 							    $obj->$fldName= $parentObj->id;
 							  }
-							} else if ($fldName=='idDocumentDirectory' and in_array('location',$title) and isset($fields[array_search('location',$title)]) and trim($fields[array_search('location',$title)])!='' ) {
-							  $obj->$fldName=null; // For document directory, do not search Parent Directory on name, as there may be dupplicates (on different location). If location is set, use it.
+							} else if ($fldName=='idDocumentDirectory') {
+							  if (in_array('location',$title) and isset($fields[array_search('location',$title)]) and trim($fields[array_search('location',$title)])!='' ) {
+							    $obj->$fldName=null; // For document directory, do not search Parent Directory on name, as there may be dupplicates (on different location). If location is set, use it.
+							  } else {
+							    if (!isset($arrayLocation)) {
+							      $arrayLocation=SqlList::getList('DocumentDirectory','location');
+							    }
+							    $idDD=array_search($field, $arrayLocation);
+							    if ($idDD) {
+							      $obj->$fldName=$idDD;
+							    }
+							  }
 							} else {
 						    $obj->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
 							}

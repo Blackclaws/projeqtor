@@ -406,6 +406,8 @@
 	          	$fieldCalc=str_replace("(","($externalTableAlias.",$fieldCalc);
 	          	//$calculated=true;
 	          	$querySelect .= $fieldCalc . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+	          } else if ($externalClass=='DocumentDirectory') {
+	          	  $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('location') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);	   
 	          } else {
 	          	$querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          }
@@ -649,7 +651,11 @@
     						if ($class=="TargetVersion" or $class=="TargetProductVersion" or $class=="TargetComponentVersion"
     						 or $class=="OriginalVersion" or $class=="OriginalProductVersion" or $class=="OriginalComponentVersion") $class='Version';
     						if ($exportReferencesAs=='name') {
-    					    $val=SqlList::getNameFromId($class, $val);
+    						  if ($id=='idDocumentDirectory') {
+    						    $val=SqlList::getFieldFromId($class, $val,'location');
+    						  } else {
+    					      $val=SqlList::getNameFromId($class, $val);
+    						  }
     						}
     					}
     				}

@@ -130,7 +130,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($selection) {
       $refTable=substr($col,2);
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
-      $table[$selection]=SqlList::getNameFromId($refTable, $selection);
+      $table[$selection]=SqlList::getFieldFromId($refTable, $selection,$column);
     }
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
@@ -161,7 +161,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($selection) {
       $refTable=$listType;
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
-      $table[$selection]=SqlList::getNameFromId($refTable, $selection);
+      $table[$selection]=SqlList::getFieldFromId($refTable, $selection,$column);
     } 
   }
   $restrictArray=array();
