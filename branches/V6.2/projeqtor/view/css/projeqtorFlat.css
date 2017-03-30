@@ -391,6 +391,7 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconButtonDownload16 { background-image: url(customIcons/blue/iconDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonEdit16 { background-image: url(customIcons/blue/iconEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonRemove16 { background-image: url(customIcons/blue/iconRemove.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonRemove32 { background-image: url(customIcons/blue/iconRemove.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconButtonAdd16 { background-image: url(customIcons/blue/iconAdd.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonLink16 { background-image: url(customIcons/blue/iconLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonView16 { background-image: url(customIcons/blue/iconView.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
@@ -402,6 +403,7 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconGoto { background-image: url(customIcons/blue/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonBack32 { background-image: url(customIcons/blue/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconButtonSubscribe16 { background-image: url(customIcons/blue/iconSubscribe.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonSave32 { background-image: url(customIcons/blue/iconButtonSave.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .ProjeQtOrFlatBlue .iconFilter { background-image: url(customIcons/blue/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconActiveFilter { background-image: url(customIcons/blue/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -1598,6 +1600,7 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconGoto { background-image: url(customIcons/red/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonBack32 { background-image: url(customIcons/red/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconButtonSubscribe16 { background-image: url(customIcons/red/iconSubscribe.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonSave32 { background-image: url(customIcons/red/iconButtonSave.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .ProjeQtOrFlatRed .iconFilter { background-image: url(customIcons/red/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconActiveFilter { background-image: url(customIcons/red/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -2753,6 +2756,7 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconGoto { background-image: url(customIcons/green/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonBack32 { background-image: url(customIcons/green/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconButtonSubscribe16 { background-image: url(customIcons/green/iconSubscribe.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonSave32 { background-image: url(customIcons/green/iconButtonSave.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .ProjeQtOrFlatGreen .iconFilter { background-image: url(customIcons/green/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconActiveFilter { background-image: url(customIcons/green/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3907,7 +3911,7 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconGoto { background-image: url(customIcons/grey/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonBack32 { background-image: url(customIcons/grey/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconButtonSubscribe16 { background-image: url(customIcons/grey/iconSubscribe.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
-
+.ProjeQtOrFlatGrey .iconButtonSave32 { background-image: url(customIcons/grey/iconButtonSave.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .ProjeQtOrFlatGrey .iconFilter { background-image: url(customIcons/grey/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconActiveFilter { background-image: url(customIcons/grey/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

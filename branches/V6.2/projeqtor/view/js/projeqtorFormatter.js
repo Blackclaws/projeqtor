@@ -263,6 +263,11 @@ function numericFormatter(value) {
   // result = value.replace(/^0+/g,'');
   return result;
 }
+function decimalFormatter(value) {
+  var roundedValue = dojo.number.format(Math.round(value * 100) / 100);
+  return roundedValue;
+}
+
 
 function durationFormatter(value) {
   return value+' '+i18n('shortDay');
