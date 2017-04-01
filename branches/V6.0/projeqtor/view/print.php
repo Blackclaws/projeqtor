@@ -236,7 +236,9 @@
       $content=str_replace("Ã ","&agrave;",$content);
 //traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
-      ob_end_clean();
+      if (ob_get_length()) {
+        ob_end_clean();
+      }
       $html2pdf->Output($outputFileName);
 //traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
