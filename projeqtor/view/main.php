@@ -554,7 +554,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	    		          else echo 'img/titleWhiteSmall.png';?>); background-repeat: no-repeat; height: 50px; width:100%;max-width:300px" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
-          <div style="position:absolute; right:0; bottom:0px" id="helpbutton" style="text-align:right;" onclick="showHelp();"><div width="32px" height="32px" class="iconHelpTitle" title="<?php echo i18n('help');?>" onclick="showHelp();" />&nbsp;</div></div>
+          <div style="position:absolute; right:0; bottom:0px" id="helpbutton" style="text-align:right;" onclick="showHelp();"><div width="32px" height="32px" class="iconHelpTitle" title="<?php echo i18n('help');?>" onclick="showHelp();" >&nbsp;</div></div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
           <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
