@@ -1422,7 +1422,8 @@ function logTracing($message, $level = 9, $increment = 0) {
     }
     switch ($level) {
       case 1 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ***** ERROR ***** " . $msg;
+        $version=Parameter::getGlobalParameter('dbVersion');
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ***** ERROR ***** [$version] " . $msg;
         break;
       case 2 :
         $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ===== TRACE ===== " . $msg;

@@ -7737,10 +7737,9 @@ function subscribeToItem(objectClass, objectId, userId) {
     load : function(data) {
       var result="KO";
       var itemLabel="";
-      JSON.parse(data, (key, value) => {
-        if (key=='result') result=value;
-        else if (key=='itemLabel') itemLabel=value;
-      });
+      var response=JSON.parse(data);
+      if (response.hasOwnProperty('result')) result=response.result;
+      if (response.hasOwnProperty('itemLabel')) itemLabel=response.itemLabel;
       if (result=='OK') {
         addMessage(i18n('subscriptionSuccess',new Array(itemLabel)));
         dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribeValid');
@@ -7769,11 +7768,10 @@ function unsubscribeFromItem(objectClass, objectId, userId) {
       var result="KO";
       var itemLabel="";
       var message="";
-      JSON.parse(data, (key, value) => {
-        if (key=='result') result=value;
-        else if (key=='itemLabel') itemLabel=value;
-        else if (key=='message') message=value;
-      });
+      var response=JSON.parse(data);
+      if (response.hasOwnProperty('result')) result=response.result;
+      if (response.hasOwnProperty('itemLabel')) itemLabel=response.itemLabel;
+      if (response.hasOwnProperty('message')) message=response.message;
       if (result=='OK') {
         addMessage(i18n('unsubscriptionSuccess',new Array(itemLabel)));
         dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribe');
@@ -7820,16 +7818,15 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
       var currentUserId="";
       var objectClass="";
       var objectId="";
-      JSON.parse(data, (key, value) => {
-        if (key=='result') result=value;
-        else if (key=='itemLabel') itemLabel=value;
-        else if (key=='userName') userName=value;
-        else if (key=='userId') userId=value;
-        else if (key=='currentUserId') currentUserId=value;
-        else if (key=='objectClass') objectClass=value;
-        else if (key=='objectId') objectId=value;
-        else if (key=='message') message=value;
-      });
+      var response=JSON.parse(data);
+      if (response.hasOwnProperty('result')) result=response.result;
+      if (response.hasOwnProperty('itemLabel')) itemLabel=response.itemLabel;
+      if (response.hasOwnProperty('userName')) userName=response.userName;
+      if (response.hasOwnProperty('userId')) userId=response.userId;
+      if (response.hasOwnProperty('currentUserId')) currentUserId=response.currentUserId;
+      if (response.hasOwnProperty('objectClass')) objectClass=response.objectClass;
+      if (response.hasOwnProperty('objectId')) objectId=response.objectId;
+      if (response.hasOwnProperty('message'))  message=response.message;
       if (result=='OK') {
         if (dialog=='list') {
           addMessage(i18n('unsubscriptionSuccess',new Array(itemLabel)));

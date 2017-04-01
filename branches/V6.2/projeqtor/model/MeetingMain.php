@@ -111,6 +111,7 @@ class MeetingMain extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('result'=>'minutes', 
+  'description'=>'meetingAgenda',
   'idResource'=>'responsible', 
   'idActivity'=>'parentActivity',
   'attendees'=>'otherAttendees');

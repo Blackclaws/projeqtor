@@ -94,7 +94,7 @@
         }
         echo '>';
         //echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';
-        echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" /></div>';
+        echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
           <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 

@@ -41,7 +41,6 @@ if (!isset($comboDetail)) {
 }
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
-
 if(false === function_exists('lcfirst')) {
   function lcfirst( $str ) {
     $str[0] = strtolower($str[0]);
