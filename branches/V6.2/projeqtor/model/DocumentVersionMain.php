@@ -142,8 +142,16 @@ class DocumentVersionMain extends SqlElement {
   		$this->fullName=$doc->name;
   	}
   	if ($this->importFile) {
-  		$this->fileName=basename($this->importFile);
-  		$this->fileSize=filesize($this->importFile);
+  	  enableSilentErrors();
+  		$this->fileName=@basename($this->importFile);
+  		$paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+  		$paramFilenameCharsetForImport=Parameter::getGlobalParameter('filenameCharsetForImport');
+  		if ($paramFilenameCharset) {
+  		  $this->importFile=iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$this->importFile);
+  		} else if ($paramFilenameCharsetForImport) {
+  		  $this->importFile=iconv("UTF-8", $paramFilenameCharsetForImport.'//TRANSLIT//IGNORE',$this->importFile);
+  		}
+  		$this->fileSize=@filesize($this->importFile);
   	}
   	$pos=strrpos($this->fileName,'.');
   	if ($pos) {
@@ -296,7 +304,7 @@ class DocumentVersionMain extends SqlElement {
   private function storeImportFile() {
   	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
     //$this->importFile
-    $this->fileName=basename($this->importFile);
+    //$this->fileName=basename($this->importFile); already done, before conversion of importFile to avoid double conversion
     $uploadfile = $this->getUploadFileName();
     $split=explode($pathSeparator,$uploadfile);
     unset($split[count($split)-1]);

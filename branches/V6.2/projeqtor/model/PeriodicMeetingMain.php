@@ -125,6 +125,7 @@ class PeriodicMeetingMain extends SqlElement {
   
   private static $_colCaptionTransposition = array(
     'idResource'=>'responsible',
+    'description'=>'meetingAgenda',
     'idActivity'=>'parentActivity',
     'periodicityStartDate'=>'period',
     'meetingStartTime'=>'time',
