@@ -97,17 +97,19 @@ A project can be billable or not.
 .. _organization-concept:
 
 Organization
-=======
+============
 
 The notion of organization introduces a way to consolidate projects on a different hiererchic structure, apart from projects / sub-projects structure.
 
 .. rubric:: Definition of the structure of the company in the frame of organizations (Departments, Units, Location, ...)
+
 * The organization summarizes the data of the projects in progress for the organization
 
 .. figure:: /images/Organization.png
    :align: center
 
 .. rubric:: Organization link
+
 * Each project can be linked to an organization
 
 .. note::
@@ -164,7 +166,7 @@ A product is a material object or for IT/IS projects is a software application.
 
 .. rubric:: Management of product and component elements 
 
-* See: :ref:`product-component-management`, for detail about management of product and component elements.
+* See: :ref:`ConfigurationManagement`, for detail about management of product and component elements.
 
 .. _product-structure:
 
@@ -250,7 +252,7 @@ Based upon on resource availability and their capacity.
 
     * The resource can be allocated to several projects.
     * Possibility to define allocation period.
-    * More detail, see: :ref:`resource-allocation`
+    * More detail, see: :ref:`resource-allocation-to-project`
 
 .. rubric:: Resource capacity
 
@@ -951,7 +953,7 @@ Allocation to project and user profile are also shared.
 .. _allocation-to-project:
 
 Allocation to project
-===================
+=====================
 
 Allocation to project is used to:
 
@@ -966,7 +968,7 @@ Allocation to project is used to:
 The following sections describe allocation to project, performed for user, resource or contact.
 
 User allocation
-----------------
+---------------
 
 Allocation to project gives data visibility on a project.
 
@@ -1040,7 +1042,7 @@ It is also possible to allocate a team to a project in :ref:`team` screens.
 
 
 Multi-allocation to project
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A resource can be allocated to multiple projects in the same period.
 

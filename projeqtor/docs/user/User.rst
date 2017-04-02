@@ -64,7 +64,7 @@ The user is a person that will be able to connect to the application.
 
 .. sidebar:: Other sections
 
-   * :ref:`Allocations<allocations-section>`   
+   * :ref:`Allocations<allocation-section>`   
 
 .. rubric:: Section: Description
 

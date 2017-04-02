@@ -29,7 +29,7 @@
  */
 
     require_once "../tool/projeqtor.php"; 
-//scriptLog('   ->/tool/jsonList.php');  
+//scriptLog('   ->/tool/jsonList.php'); 
     $type=$_REQUEST['listType']; // Note: checked against constant values.
     if (isset($_REQUEST['critField'])) {
       $field=$_REQUEST['critField'];
@@ -225,7 +225,10 @@
         if ($critField=='idle' and $_REQUEST['critValue']=='all') {
           $showIdle=true;
           $crit=array();
-        } else if (property_exists($class,$critField) or ($critField=='idProjectSub' and property_exists($class,'idProject')) ) {
+        } else if (property_exists($class,$critField) 
+        		or ($critField=='idProjectSub' and property_exists($class,'idProject')) 
+        		or ($class=='Indicator' and $critField=='idIndicatorable') 
+        		or (($class=='WarningDelayUnit' or $class=='AlertDelayUnit') and $critField=='idIndicator') ) {
           $crit=array( $critField => $_REQUEST['critValue']);
         } else {
           $crit=array();

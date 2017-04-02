@@ -62,6 +62,7 @@ if ($type=='file') {
   	$cnt = 0;
   	while(isset($_FILES['uploadedfile'.$cnt])){
   		$uploadedFileArray[]=$_FILES['uploadedfile'.$cnt];
+  		$cnt++;
   	}
   } else if (array_key_exists('attachmentFiles',$_FILES) and array_key_exists('name',$_FILES['attachmentFiles'])) {
     for ($i=0;$i<count($_FILES['attachmentFiles']['name']);$i++) {
