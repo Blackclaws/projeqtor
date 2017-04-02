@@ -463,7 +463,7 @@ You can link a question to a meeting to rapidly find the minutes where the quest
 .. _deliverables:
 
 Deliverables
-=========
+============
 
 This section allows to define the list of deliverables items.
 
@@ -489,11 +489,11 @@ Deliverables links with Milestones.
      - Description
    * - :term:`Id`
      - Unique Id for the KPI.
-   * - :term:`Name`
+   * - **Name**
      - name of the deliverable.
-   * - :term:`IdDeliverableType`
+   * - IdDeliverableType
      - id of the Deliverable Type.
-   * - :term:`IdProject`
+   * - IdProject
      - id of the Project.
    * - externalReference
      - name of the external reference.

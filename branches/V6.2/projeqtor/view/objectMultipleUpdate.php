@@ -265,7 +265,15 @@
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                 <?php echo autoOpenFilteringSelect();?>
                  id="idActivity" name="idActivity">
-                 <?php htmlDrawOptionForReference('idActivity', null, null, false);?>
+                 <?php 
+                 $crtFld=null;
+                 $crtVal=null;
+                 if (sessionValueExists('project') and getSessionValue('project') and getSessionValue('project')!='*') {
+                 	$crtFld='idProject';
+                 	$ctrVal=getSessionValue('project');
+                 }
+                 debugLog("$crtFld=$ctrVal");
+                 htmlDrawOptionForReference('idActivity', null, null, false,$crtFld,$ctrVal);?>
                 </select>
                 <button id="activityButton" dojoType="dijit.form.Button" showlabel="false"
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">
