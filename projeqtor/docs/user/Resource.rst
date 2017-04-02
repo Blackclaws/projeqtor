@@ -45,7 +45,7 @@ Project allocation defines its availability.
 
 .. sidebar:: Other sections
    
-   * :ref:`Allocations<allocations-section>`
+   * :ref:`Allocations<allocation-section>`
 
 .. rubric:: Section: Description
 
@@ -261,7 +261,7 @@ The team is a group of resources gathered on any criteria.
 .. topic:: Button: Allocate all team members of a project
 
    * This button allows to allocate all team members of a project.
-   * The :ref:`allocation dialog box<allocations-box>` will be displayed.
+   * The :ref:`allocation dialog box<allocation-box>` will be displayed.
 
 .. raw:: latex
 

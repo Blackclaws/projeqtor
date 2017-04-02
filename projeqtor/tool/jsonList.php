@@ -219,8 +219,11 @@
         if ($critField=='idle' and $_REQUEST['critValue']=='all') {
           $showIdle=true;
           $crit=array();
-        } else if (property_exists($class,$critField) or ($critField=='idProjectSub' and property_exists($class,'idProject')) ) {
-          $crit=array( $critField => $_REQUEST['critValue']);
+        } else if (property_exists($class,$critField) 
+        		or ($critField=='idProjectSub' and property_exists($class,'idProject')) 
+        		or ($class=='Indicator' and $critField=='idIndicatorable') 
+        		or (($class=='WarningDelayUnit' or $class=='AlertDelayUnit') and $critField=='idIndicator') ) {
+                  $crit=array( $critField => $_REQUEST['critValue']);
         } else {
           $crit=array();
         }

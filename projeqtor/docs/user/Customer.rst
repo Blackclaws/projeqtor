@@ -105,7 +105,7 @@ A contact can be the contact person for contracts, sales and billing.
 
 .. sidebar:: Other sections
 
-   * :ref:`Allocations<allocations-section>`
+   * :ref:`Allocations<allocation-section>`
 
 .. rubric:: Section: Description
 
