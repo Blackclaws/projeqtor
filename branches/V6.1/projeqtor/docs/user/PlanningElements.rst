@@ -82,7 +82,7 @@ It is also the top-level of visibility, depending on profiles.
 .. sidebar:: Other sections
 
    * :ref:`Progress<progress-section-activity>`
-   * :ref:`Allocations<allocations-section>`
+   * :ref:`Allocations<allocation-section>`
    * :ref:`Versions linked to this project<Link-version-project-section>`  
    * :ref:`Types restrictions<type-restriction-section>`  
    * :ref:`Predecessor and Sucessor element<predSuces-element-section>`
