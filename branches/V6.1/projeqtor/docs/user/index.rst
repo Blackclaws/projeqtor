@@ -225,8 +225,7 @@ Environmental parameters
 .. toctree::
    :maxdepth: 1
 
-   ProductVersion
-   Allocation
+   Affectation
    User
    Resource
    Customer
