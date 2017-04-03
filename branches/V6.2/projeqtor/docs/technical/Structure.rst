@@ -11,63 +11,67 @@ Ci-dessous la structure générale des valeurs sources de ProjeQtOr:
 
 .. rubric:: API
 
-Fonction de l'API Rest.
+Voici la rubrique avec les fonctions de l'API Rest.
+Dans cette rubrique on retrouve le .htaccess.
 
 .. rubric:: Db
 
-Scripts de mise à jour incrémentale.
+Les différents scripts de mise à jour incrémentale.
+Par exemple : projeqtor_V6.2.0.
 
 .. rubric:: Deploy
 
-Eléments de déploiement (scripts ant , bases de tests)
-Non déployé dans le zip d'installation
+On y retrouve les eléments de déploiement (scripts ant , bases de tests) qui ne sont pas déployé dans le zip d'installation.
 
 .. rubric:: Docs
 
-Manuel en ligne.
+Les deux dossiers de documentation sont présent dans cette rubrique.
+Les deux documents sont la documentation technique et la documentation utilisateur.
 
 .. rubric:: External
 
-Librairies tiérces
+Dans cette rubrique on y retrouve les librairies externe à Projeqtor.
+Par exemple , les bibliothéques externes comme Dojo ou ckeditor y sont stockées.
 
 .. rubric:: Files
 
-Répertoire de travail de l'application
+Ici on retrouve le répertoire de travail de l'application.
+Différents dossiers y sont compris comme config ou les logs par exemple.
 
 .. rubric:: Manuel
 
-Ancien manuel en ligne (version <= 5.0)
-Non déployè dans le zip d'installation
+L'ancien manuel en ligne (version <= 5.0)
+Il n'est pas déployè dans le zip d'installation
 
 .. rubric:: Mobile
 
-POC d'interface mobile
-Non déployè dans le zip d'installation
+Voici le dossier qui comporte le plugin Mobile.
+Il n'est pas déployè dans le zip d'installation.
 
 .. rubric:: Model
 
-Classes
-Le modèle dans une architecture MVC
+La rubrique Model comporte toutes les classes de l'application.
+Le modèle est dans une architecture MVC ( modéle vue controller ).
 
 .. rubric:: Plugins
 
-Plugins
+La rubrique qui comporte les dossiers pour les plugins.
 
 .. rubric:: Reports
 
-Rapports
+On retrouve dans la rubrique Reports les différents fichiers qui gére les rapports dans ProjeQtOr.
 
 .. rubric:: Test
 
-Scripts de test
-Non dèployé dans le zip d'installation
+Les scripts de test sont dans la rubrique Test.
+Il n'est pas dèployé dans le zip d'installation.
 
 .. rubric:: Tool
 
-Les fonctions de contrôle et de mise à jour
-Les Contrôleurs dans une architecture MVC 1
+Les fonctions de contrôle et de mise à jour sont dans cette rubrique. 
+Les Contrôleurs sont dans une architecture MVC 1.
 
 .. rubric:: View
 
-Les fonctions d'affichage
-La vue dans une architecture MVC 1
+Dans la rubrique View on y retrouve les fonctions d'affichage .
+La vue est dans une architecture MVC 1.
