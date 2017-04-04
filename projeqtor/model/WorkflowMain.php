@@ -483,7 +483,9 @@ class WorkflowMain extends SqlElement {
     $firstStatusName=current($statusList);
     $firstStatusFound=false;
     $search = 'val_' . $firstStatus . '_';
-    foreach ($_REQUEST as $field=>$value) { // The first status (default=recorded) is seached in the workflow definition 
+    
+    // V6.2 control on existing way to exit first status (recorded) more annoying than real use : REMOVED
+    /*foreach ($_REQUEST as $field=>$value) { // The first status (default=recorded) is seached in the workflow definition 
       if (substr($field,0,strlen($search))==$search) {
         $firstStatusFound=true;
         break;
@@ -491,7 +493,7 @@ class WorkflowMain extends SqlElement {
     }    
     if (!$firstStatusFound) { // First status is not found : so it will never be possible to quit this workflow ...
         $result.='<br/>' . i18n('msgFirstStatusMandatoryInWorkflow',array($firstStatusName)); 
-    }
+    }*/ 
     
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

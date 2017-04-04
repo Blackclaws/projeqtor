@@ -1201,12 +1201,12 @@ function removeAttachment(attachmentId) {
  */
 var noRefreshLink=false;
 function addLink(classLink, defaultLink) {
+  /*if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }*/
   loadDialog('dialogLink',function(){
     noRefreshLink=true;
-    if (checkFormChangeInProgress()) {
-      showAlert(i18n('alertOngoingChange'));
-      return;
-    }
     var objectClass=dojo.byId("objectClass").value;
     var objectId=dojo.byId("objectId").value;
     var message=i18n("dialogLink");
@@ -4125,7 +4125,7 @@ function removeAffectation(id,own) {
         "affectationForm", true, 'affectation');
   };
   if (own) {
-    msg=i18n('confirmDeleteOwnAffectation', new Array(id));
+    msg='<span style="color:red;font-weight:bold;">'+i18n('confirmDeleteOwnAffectation', new Array(id))+'</span>';
   } else {
     msg=i18n('confirmDeleteAffectation', new Array(id));
   }
@@ -6459,7 +6459,7 @@ function diaryDisplayDay(day) {
 // ********************************************************************************************
 // WORKFLOW PARAMETERS (selection of status)
 // ********************************************************************************************
-
+var workflowParameterAllChecked=true;
 function showWorkflowParameter(id) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
@@ -6467,6 +6467,7 @@ function showWorkflowParameter(id) {
   }
   callBack=function() {
   };
+  workflowParameterAllChecked=true;
   var params='&idWorkflow=' + id;
   loadDialog('dialogWorkflowParameter', callBack, true, params);
 }
@@ -6475,6 +6476,18 @@ function saveWorkflowParameter() {
   loadContent("../tool/saveWorkflowParameter.php", "resultDiv",
       "dialogWorkflowParameterForm", true);
   dijit.byId('dialogWorkflowParameter').hide();
+}
+
+function dialogWorkflowParameterUncheckAll() {
+  console.log('dialogWorkflowParameterUncheckAll');
+  dojo.query(".workflowParameterCheckbox").forEach(function(node, index, nodelist) {
+    var id=node.getAttribute('widgetid');
+    console.log (id);
+    if (dijit.byId(id) ) {
+      dijit.byId(id).set('checked',!workflowParameterAllChecked);
+    }
+  });
+  workflowParameterAllChecked=!workflowParameterAllChecked;
 }
 
 function changeCreationInfo() {

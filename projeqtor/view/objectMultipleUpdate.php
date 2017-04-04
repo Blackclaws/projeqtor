@@ -266,14 +266,13 @@
                 <?php echo autoOpenFilteringSelect();?>
                  id="idActivity" name="idActivity">
                  <?php 
-                 $crtFld=null;
-                 $crtVal=null;
+                 $critFld=null;
+                 $critVal=null;
                  if (sessionValueExists('project') and getSessionValue('project') and getSessionValue('project')!='*') {
-                 	$crtFld='idProject';
-                 	$ctrVal=getSessionValue('project');
+                 	$critFld='idProject';
+                 	$critVal=getSessionValue('project');
                  }
-                 debugLog("$crtFld=$ctrVal");
-                 htmlDrawOptionForReference('idActivity', null, null, false,$crtFld,$ctrVal);?>
+                 htmlDrawOptionForReference('idActivity', null, null, false,$critFld,$critVal);?>
                 </select>
                 <button id="activityButton" dojoType="dijit.form.Button" showlabel="false"
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">
@@ -291,7 +290,13 @@
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                 <?php echo autoOpenFilteringSelect();?>
                  id="idStatus" name="idStatus">
-                 <?php htmlDrawOptionForReference('idStatus', null, null, false);?>
+                 <option value=''></option>
+                 <?php 
+                 $list=SqlList::getStatusList($objectClass);
+                 foreach ($list as $idS=>$nameS) {
+                 	 echo "<option value='$idS'>$nameS</option>";
+                 }
+                 ?>
                 </select>
                 <button id="statusButton" dojoType="dijit.form.Button" showlabel="false"
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">

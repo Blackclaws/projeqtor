@@ -436,6 +436,7 @@ class Parameter extends SqlElement {
       case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': case 'allocateResponsibleToProject': 
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
+      case 'limitPlanningActivity' :
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
@@ -475,13 +476,7 @@ class Parameter extends SqlElement {
           '2#Product#ProductVersion#'=>i18n("menuProduct").', '.i18n("menuVersion"),
           '3#Product#Component#'=>i18n("menuProduct").', '.i18n("menuComponent"),
           '4#Product#Component#ProductVersion#ComponentVersion#'=>i18n("menuProduct").', '.i18n("menuComponent").', '.i18n("menuVersion")) ;
-        break;
-      
-      case 'limitPlanningActivity':
-          $list=array('YES'=>i18n('displayYes'),
-                      'NO'=>i18n('displayNo'));
-      break;
-      
+        break;    
       case 'displayHistory':
         $list=array('NO'=>i18n('displayNo'),
         'YES'=>i18n('displayYes'),

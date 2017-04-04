@@ -55,9 +55,10 @@ $statusColorList=SqlList::getList('Status', 'color');
 		      
 			    <td style="width:350px">&nbsp;&nbsp;
 			      <div dojoType="dijit.form.CheckBox" type="checkbox"
+			        
 						  name="dialogWorkflowParameterCheckStatusId_<?php echo $idStatus;?>" 
 						  id="dialogWorkflowParameterCheckStatusId_<?php echo $idStatus;?>"
-						  <?php if (! $canUpdate) echo 'readonly';?>
+						  <?php if (! $canUpdate) {echo 'readonly';} else {echo ' class="workflowParameterCheckbox"';}?>
 				      <?php if ($checked) { echo 'checked'; }?> >
 				    </div>
 						<span style="cursor:pointer;" 
@@ -73,6 +74,9 @@ $statusColorList=SqlList::getList('Status', 'color');
     <tr><td style="width: 100%;">&nbsp;</td></tr>
     <tr>
       <td style="width: 100%;" align="center">
+        <button dojoType="dijit.form.Button" type="button" onclick="dialogWorkflowParameterUncheckAll();">
+        <?php echo i18n("checkUncheckAll");?>
+        </button>
         <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogWorkflowParameter').hide();">
         <?php echo i18n("buttonCancel");?>
         </button>
