@@ -137,7 +137,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }
-
   } else if ($col=='idBill') {
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
@@ -155,6 +154,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     foreach($arrayToDel as $key)unset($table[$key]);
+  } else if ($col=='idActivity' or $col=='idTicket') { // List Activity or ticket without a criteria
+  	$cls=substr($col,2);
+  	$table=SqlList::getList($cls,'name',$selection,false,true);
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 

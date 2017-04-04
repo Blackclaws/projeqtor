@@ -51,13 +51,14 @@ class SqlList {
   	self::$list=array();
   }
   
-  public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
+  public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false, $applyRestrictionClause=false) {
     $listName=$listType . "_" . $displayCol;
     if ($showIdle) { $listName .= '_all'; }
+    if ($applyRestrictionClause) {$listName.='_restrict';}
     if (array_key_exists($listName, self::$list)) {
       return self::$list[$listName];
     } else {
-      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle, true);
+      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle, true, $applyRestrictionClause);
     }
   }
   
@@ -81,7 +82,7 @@ class SqlList {
    * @param $listType the name of the table containing the data
    * @return an array containing the list of references
    */
-  private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true) {
+  private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true,$applyRestrictionClause=false) {
 //scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
     $res=array();
     $obj=new $listType();
@@ -105,6 +106,9 @@ class SqlList {
     	} else {
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
     	}
+    }
+    if ($applyRestrictionClause) {
+    	$query.=' and '.getAccesRestrictionClause($listType,null,true);
     }
     $query .=')';
     if ($selectedValue) {
