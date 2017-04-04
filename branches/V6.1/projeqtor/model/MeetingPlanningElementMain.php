@@ -82,7 +82,8 @@ class MeetingPlanningElementMain extends PlanningElement {
     "plannedStartFraction"=>"hidden",
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
-    "validatedEndFraction"=>"hidden"
+    "validatedEndFraction"=>"hidden",
+    "priority"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
