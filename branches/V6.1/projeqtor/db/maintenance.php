@@ -553,6 +553,8 @@ Habilitation::correctUpdates();
 deleteDuplicate();
 Sql::saveDbVersion($version);
 Parameter::clearGlobalParameters();
+unsetSessionValue('_tablesFormatList');
+
 traceLog('=====================================');
 traceLog("");
 echo '<div class="message'.(($nbErrors==0)?'OK':'WARNING').'">';
