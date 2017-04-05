@@ -483,7 +483,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vDepId = 1;
   };
   
-  this.sLine = function(x1,y1,x2,y2,color,temp) {
+  this.sLine = function(x1,y1,x2,y2,color,temp,keyDep) {
     vLeft = Math.min(x1,x2);
     vTop  = Math.min(y1,y2);
     vWid  = Math.abs(x2-x1) + 1;
@@ -497,6 +497,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
     oDiv.style.zIndex = 50000;
+    oDiv.className="dependencyLine"+keyDep;
     if (!color) color="#000000";
     color="#000000";
     oDiv.style.backgroundColor = color;
@@ -505,6 +506,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.width = vWid + "px";
     oDiv.style.height = vHgt + "px";
     oDiv.style.visibility = "visible";
+    oDiv.addEventListener('mouseenter', highlightDependency, false);
     vDoc.appendChild(oDiv);
   };
   this.dLine = function(x1,y1,x2,y2,color) {
@@ -524,40 +526,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       y += dy;
     };
   };
-  this.drawDependency =function(x1,y1,x2,y2,color,temp) {
+  this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep) {
     if (x1 <= x2+4) {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x2+4,y1,color,temp);
-        this.sLine(x2+4,y1,x2+4,y2-6,color,temp);
-        this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp);
-        this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp);
-        this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp);
+        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep);
+        this.sLine(x2+4,y1,x2+4,y2-6,color,temp,keyDep);
+        this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp,keyDep);
+        this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp,keyDep);
+        this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp,keyDep);
       } else {
-        this.sLine(x1,y1,x2+4,y1,color,temp);
-        this.sLine(x2+4,y1,x2+4,y2+6,color,temp);
-        this.sLine(x2+1, y2+9, x2+7, y2+9,color,temp);
-        this.sLine(x2+2, y2+8, x2+6, y2+8,color,temp);
-        this.sLine(x2+3, y2+7, x2+5, y2+7,color,temp);
+        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep);
+        this.sLine(x2+4,y1,x2+4,y2+6,color,temp,keyDep);
+        this.sLine(x2+1, y2+9, x2+7, y2+9,color,temp,keyDep);
+        this.sLine(x2+2, y2+8, x2+6, y2+8,color,temp,keyDep);
+        this.sLine(x2+3, y2+7, x2+5, y2+7,color,temp,keyDep);
       }
     } else {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x1+4,y1,color,temp);
-        this.sLine(x1+4,y1,x1+4,y2-8,color,temp);
-        this.sLine(x1+4,y2-8,x2-8,y2-8,color,temp);
-        this.sLine(x2-8,y2-8,x2-8,y2,color,temp);
-        this.sLine(x2-8,y2,x2,y2,color,temp);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp);
+        this.sLine(x1,y1,x1+4,y1,color,temp,keyDep);
+        this.sLine(x1+4,y1,x1+4,y2-8,color,temp,keyDep);
+        this.sLine(x1+4,y2-8,x2-8,y2-8,color,temp,keyDep);
+        this.sLine(x2-8,y2-8,x2-8,y2,color,temp,keyDep);
+        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep);
       } else {
-    	this.sLine(x1,y1,x1+4,y1,color,temp);
-        this.sLine(x1+4,y1,x1+4,y2+8,color,temp);
-        this.sLine(x1+4,y2+8,x2-8,y2+8,color,temp);
-        this.sLine(x2-8,y2+8,x2-8,y2,color,temp);
-        this.sLine(x2-8,y2,x2,y2,color,temp);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp);
+    	this.sLine(x1,y1,x1+4,y1,color,temp,keyDep);
+        this.sLine(x1+4,y1,x1+4,y2+8,color,temp,keyDep);
+        this.sLine(x1+4,y2+8,x2-8,y2+8,color,temp,keyDep);
+        this.sLine(x2-8,y2+8,x2-8,y2,color,temp,keyDep);
+        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep);
       }
     }
   };
@@ -575,7 +577,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           var vTask = this.getArrayLocationByID(vDepList[k]);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
-                            vList[i].getStartY(),"#"+vList[vTask].getColor());
+                            vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k);
           }
         }
       }
@@ -974,6 +976,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + '<TABLE class="rightTableLine" style="width: ' + (vChartWidth) + 'px; " >' 
             + '<TR id=childrow_' + vID + ' class="ganttTaskmile" style="height: 21px;"'
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
+            + ' oncontextmenu="return false;"'
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
           var vBaselineTopTitle="";
@@ -2087,4 +2090,18 @@ function resizeJsHeader(event) {
   dojo.byId('jsGanttHeader'+jsHeaderResizeField).style.width=newWidth;
   dojo.byId('jsGanttHeaderTD'+jsHeaderResizeField).style.width=newWidth;
   jsHeaderResizePos=event.clientX;
+}
+
+function highlightDependency(event) {
+  var className=event.srcElement.getAttribute('class');
+  dojo.query("."+className).forEach(function(node, index, nodelist) {
+    if (node.style.width=='1px') {
+      node.style.width='3px';
+      node.style.backgroundColor="#E97B2D";
+    } else if (node.style.height=='1px') {
+      node.style.height='3px';
+      node.style.backgroundColor="#E97B2C";
+    }
+  });
+  
 }
