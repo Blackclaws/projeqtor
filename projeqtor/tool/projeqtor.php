@@ -924,8 +924,12 @@ function sendMail($to, $subject, $messageBody, $object = null, $headers = null, 
 
 function sendMail_phpmailer($to, $title, $message, $object = null, $headers = null, $sender = null, $attachmentsArray = null, $references = null) {
   scriptLog ( 'sendMail_phpmailer' );
-  global $logLevel;
+  global $logLevel;  
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
+  // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
+  $user=getSessionUser();
+  $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
+  $paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   $paramMailSmtpServer = Parameter::getGlobalParameter ( 'paramMailSmtpServer' );
   $paramMailSmtpPort = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );
@@ -1055,6 +1059,10 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
 function sendMail_socket($to, $subject, $messageBody, $object = null, $headers = null, $sender = null, $boundary = null) {
   scriptLog ( 'sendMail_socket' );
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
+  // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
+  $user=getSessionUser();
+  $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
+  $paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   error_reporting ( E_ERROR );
   $debug = false; // set to FALSE in production code
@@ -1272,6 +1280,10 @@ function quit($sock) {
 function sendMail_mail($to, $title, $message, $object = null, $headers = null, $sender = null, $boundary = null, $references = null) {
   scriptLog ( 'sendMail_mail' );
   $paramMailSender = Parameter::getGlobalParameter ( 'paramMailSender' );
+  // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
+  $user=getSessionUser();
+  $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
+  $paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   $paramMailSmtpServer = Parameter::getGlobalParameter ( 'paramMailSmtpServer' );
   $paramMailSmtpPort = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );

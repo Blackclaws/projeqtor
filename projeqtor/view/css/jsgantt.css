@@ -509,3 +509,8 @@ div .scrollRightTop {
 .nobr {
     white-space: nowrap;
 }
+
+.dependencyLine:hover {
+	width:3px !important;
+	background-color: #0000ff !important;
+}
