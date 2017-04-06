@@ -3762,7 +3762,20 @@ function ckEditorReplaceEditor(editorName, numEditor) {
     evt.editor.updateElement();
     // formChanged();
   });
-
+  //gautier
+  editorArray[numEditor].on('resize', function(evt) {
+    var tempResizeCK = null;
+    if(tempResizeCK){
+      clearTimeOut(tempResizeCK);
+    }
+    var CkHeight = this.ui.editor.container.$.clientHeight;
+    tempResizeCK = setTimeout(CKeEnd(CkHeight),100);
+  }); 
+  function CKeEnd(CkHeight) {
+    var ckeObj = dojo.byId('ckeditorObj'+numEditor).value;
+    ckeObj = 'ckeditorHeight'+ckeObj;
+    saveDataToSession(ckeObj,CkHeight,true);
+  }
   
   editorArray[numEditor].on('key', function(evt) {
     onKeyDownCkEditorFunction(evt, this);

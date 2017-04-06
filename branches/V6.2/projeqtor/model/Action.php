@@ -23,7 +23,7 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
+//test
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
