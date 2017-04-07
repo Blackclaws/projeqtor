@@ -7,7 +7,7 @@
 Bienvenue
 =========
 
-ProjeQtOr est un organisatieur de projets orienté qualité, sous la forme d'une applicatoin web.
+ProjeQtOr est un organisateur de projets orienté qualité, sous la forme d'une application web.
 
 ProjeQtOr est devenu très populaire grâce à sa complétude du périmètre de la gestion de projet 
 et sa grande paramétrabilité.
