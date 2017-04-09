@@ -91,6 +91,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/ckeditor/ckeditor.js"></script>
+   
+ <script type="text/javascript" src="../external/promise/es6-promise.min.js"></script>
+ <script type="text/javascript" src="../external/promise/es6-promise.auto.min.js"></script>
+ 
   <script type="text/javascript">
         var dojoConfig = {
             modulePaths: {"i18n":"../../tool/i18n",
@@ -528,7 +532,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
-     $leftWidth=($leftWidth)?$leftWidth.'px':'20%';?>
+     $leftWidth=($leftWidth and $leftWidth>20)?$leftWidth.'px':'20%';?>
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
       <script type="dojo/connect" event="resize" args="evt">
@@ -539,7 +543,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               +"&value="+dojo.byId("leftDiv").offsetWidth
          });;
       </script>
-     <div id="menuBarShow" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');"><div id="menuBarIcon" valign="middle"></div></div>       
+      <div id="menuBarShow" class="dijitAccordionTitle" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');">
+        <div id="menuBarIcon" valign="middle"></div>
+      </div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
@@ -581,12 +587,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             </div>
             <?php if (securityCheckDisplayMenu(null,'Document')) {?>
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>" <?php if ($selectedAccordionTop=='document') echo 'selected="true"';?>>
-              <div dojoType="dojo.data.ItemFileReadStore" id="directoryStore" jsId="directoryStore" url="../tool/jsonDirectory.php">
+              <div dojoType="dojo.data.ItemFileReadStore" id="directoryStore" jsId="directoryStore" url="../tool/jsonDirectory.php"></div>
               <div style="position: absolute; float:right; right: 5px; cursor:pointer;"
                 title="<?php echo i18n("menuDocumentDirectory");?>"
                 onclick="if (checkFormChangeInProgress()){return false;};loadContent('objectMain.php?objectClass=DocumentDirectory','centerDiv');"
                 class="iconDocumentDirectory22">
-              </div>
               </div>
               <div dojoType="dijit.tree.ForestStoreModel" id="directoryModel" jsId="directoryModel" store="directoryStore"
                query="{id:'*'}" rootId="directoryRoot" rootLabel="Documents"
@@ -658,9 +663,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom" style="height:28px; position:absolute; bottom:0px;">
       <table width="100%">
         <tr>
-          <td width="5%"  >
-            <div class="pseudoButton disconnectTextClass" style="min-width:100px" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
-              <table >
+          <td width="5%;"  >
+            <div class="pseudoButton disconnectTextClass" style="min-width:100px;" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
+              <table style="width:100%">
                 <tr>
                   <td>
                     <div class="disconnectClass">&nbsp;</div>
@@ -672,6 +677,19 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               </table>    
             </div>
           </td>
+          <td width="1px">&nbsp;</td>
+          <!--           KROWRY -->      
+          <td width="1px">
+            <div  class="pseudoButtonFullScreen" style="width:28px;" onclick="toggleFullScreen()">
+              <table>
+                <tr>
+                  <td style="width:28px">
+                    <?php echo formatIcon('FullScreen', 32);?>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td> 
           <td width="1px">&nbsp;</td>
           <td width="5%">
             <?php 
@@ -688,79 +706,64 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                     <img style="border-radius:13px;height:26px" src="<?php echo $imgUrl; ?>" />
                   </td>
                 <?php } else {?>
-                    <td style="width:24px;padding-top:2px;">
-                      <div class="iconUserParameter22">&nbsp;</div> 
-                    </td>
+                  <td style="width:24px;padding-top:2px;">
+                    <div class="iconUserParameter22">&nbsp;</div> 
+                  </td>
                 <?php }?>
                   <td style="vertical-align:middle;">&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
                 </tr>
               </table>      
             </div>
             <?php } else {?>
+            <table >
+              <tr>
+                <td>
+                  <img style="height:24px" src="css/images/iconUser22.png" />
+                </td>
+                <td>&nbsp;<?php echo getSessionUser()->name; ?>&nbsp;&nbsp;</td>
+              </tr>
+            </table>    
+            <?php }?>
+          </td> 
+          <td width="1px">&nbsp;</td>
+          <td width="5%" style="vertical-align: top;">  
+            <div class="pseudoButton" onclick="hideShowMenu();" style="width:150px">
               <table >
                 <tr>
-                  <td>
-                    <img style="height:24px" src="css/images/iconUser22.png" />
+                  <td style="width:40px">
+                    <div class="dijitButtonIcon dijitButtonIconHideMenu"></div>
                   </td>
-                  <td>&nbsp;<?php echo getSessionUser()->name; ?>&nbsp;&nbsp;</td>
+                  <td id="buttonHideMenuLabel"><?php echo i18n("buttonHideMenu");?></td>
                 </tr>
               </table>    
-            <?php }?>
-          <td width="1px">&nbsp;</td>
-          <td width="30%" style="vertical-align: top;">
-            <div id="statusBarProgressDiv" style="text-align: left;color: #000000">
-              <table><tr><td>
-              <div class="pseudoButton" onclick="hideShowMenu();" style="width:150px">
-                <table >
-                  <tr>
-                    <td style="width:40px">
-                      <div class="dijitButtonIcon dijitButtonIconHideMenu"></div>
-                    </td>
-                    <td id="buttonHideMenuLabel"><?php echo i18n("buttonHideMenu");?></td>
-                  </tr>
-                </table>    
-              </div>
-              </td>
-              <td width="1px">&nbsp;</td>
-              <td>
-              <div class="pseudoButton" onclick="switchMode();" style="width:150px">
-                <table >
-                  <tr>
-                    <td style="width:40px">
-                      <div class="dijitButtonIcon dijitButtonIconSwitchMode"></div>
-                    </td>
-                    <td id="buttonSwitchModeLabel">
-                      <?php 
-                      if (sessionValueExists('switchedMode') and getSessionValue('switchedMode')!='NO') {
-                        echo i18n("buttonStandardMode");
-                      } else {
-                        echo i18n("buttonSwitchedMode");
-                      }?>
-                    </td>
-                  </tr>
-                </table>    
-              </div>
-               <!--           KROWRY -->      
-         <td width="20%">
-            <div  class="pseudoButtonFullScreen" style="width:28px;"onclick="toggleFullScreen()">
-              <table>
-                <tr>
-                  <td style="width:28px">
-                    <?php echo formatIcon('FullScreen', 32);?>
-                  </td>
-                </tr>
-              </table>
-            </div>
-         </td> 
-              </td></tr></table>               
             </div>
           </td>
-          <td width="40%" style="vertical-align: middle;" >
+          <td width="1px">&nbsp;</td>
+          <td width="5%" style="vertical-align: top;">  
+            <div class="pseudoButton" onclick="switchMode();" style="width:150px">
+              <table >
+                <tr>
+                  <td style="width:40px">
+                    <div class="dijitButtonIcon dijitButtonIconSwitchMode"></div>
+                  </td>
+                  <td id="buttonSwitchModeLabel">
+                    <?php 
+                    if (sessionValueExists('switchedMode') and getSessionValue('switchedMode')!='NO') {
+                      echo i18n("buttonStandardMode");
+                    } else {
+                      echo i18n("buttonSwitchedMode");
+                    }?>
+                  </td>
+                </tr>
+              </table>    
+            </div>
+          </td>  
+          <td width="64%" style="vertical-align: middle;" >
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
-          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
+          <td width="10%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
                   <tr>
@@ -773,8 +776,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   </tr>
                 </table>
             </a></div>            
-          </td>
-            </div>
           </td>
         </tr>
       </table>  

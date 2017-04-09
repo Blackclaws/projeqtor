@@ -753,7 +753,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var levl=vTaskList[i].getLevel();
         var levlWidth = (levl-1) * 16;
         vLeftTable +='<table><tr><td>';
-        vLeftTable += '<div style="width:' + levlWidth + 'px;">&nbsp;</div>';
+        vLeftTable += '<div style="width:' + levlWidth + 'px;">';
+        if (vTaskList[i].getGroup()) {
+          vLeftTable += '<div style="margin-left:3px;width:8px;">&nbsp</div>';
+        } else {
+          vLeftTable += '<div style="margin-left:3px;width:8px;background-color:#'+vTaskList[i].getColor()+'">&nbsp</div>';
+        }
+        vLeftTable += '</div>';
         vLeftTable +='</td><td>';
         if( vTaskList[i].getGroup()) {
           if( vTaskList[i].getOpen() == 1) {

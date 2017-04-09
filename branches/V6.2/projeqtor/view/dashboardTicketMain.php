@@ -36,12 +36,12 @@
     if(!is_numeric($nbDay))$nbDay=7;
     Parameter::storeUserParameter("dashboardTicketMainNumberDay", $nbDay);
   }
-  if(Parameter::getUserParameter("dashboardTicketMainNumberDay")!=null){
+  if(Parameter::getUserParameter("dashboardTicketMainNumberDay")){
     $nbDay=Parameter::getUserParameter("dashboardTicketMainNumberDay");
   }else{
     Parameter::storeUserParameter("dashboardTicketMainNumberDay", $nbDay);
   }
-  if(Parameter::getUserParameter("dashboardTicketMainTabPosition")!=null){
+  if(Parameter::getUserParameter("dashboardTicketMainTabPosition")){
     $tabPosition=Parameter::getUserParameter("dashboardTicketMainTabPosition");
   }else{
     $tabPosition='
