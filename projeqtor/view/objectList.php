@@ -450,7 +450,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
     </td>
   </tr>
 </table>
-<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');">
+<div id="listBarShow" class="dijitAccordionTitle" onMouseover="showList('mouse')" onClick="showList('click');">
   <div id="listBarIcon" align="center"></div>
 </div>
 </div>

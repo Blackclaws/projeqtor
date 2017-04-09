@@ -127,7 +127,7 @@
       	echo '<div class="'.$menuClass.'" style="'.$style.'" id="'.$class.'" ';
       	echo 'oncontextmenu="event.preventDefault();customMenuManagement(\''.$class.'\');" ';
       	echo 'onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
-      	echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" /></div>';
+      	echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
       	//echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" />';
       	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
       	echo '</div>';

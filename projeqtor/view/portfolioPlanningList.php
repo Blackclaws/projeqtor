@@ -182,7 +182,7 @@ if ($proj=='*' or !$proj) {
                          iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton"  showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
                           var paramPdf='<?php echo Parameter::getGlobalParameter("pdfPlanningBeta");?>';
-                          if(paramPdf!='false' && (dojo.isChrome || paramPdf=='true') ) planningPDFBox();
+                          if(paramPdf!='false') planningPDFBox();
                           else showPrint("../tool/jsonPlanning_pdf.php?portfolio=true", 'planning', null, 'pdf');
                           </script>
                         </button>
@@ -323,7 +323,7 @@ if ($proj=='*' or !$proj) {
 		    </td>
 		  </tr>
 		</table>
-		<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');">
+		<div id="listBarShow" class="dijitAccordionTitle"  onMouseover="showList('mouse')" onClick="showList('click');">
 		  <div id="listBarIcon" align="center"></div>
 		</div>
 	

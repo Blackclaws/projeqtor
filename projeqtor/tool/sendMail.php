@@ -32,7 +32,6 @@
   $title="";
   $msg="";
   $dest="";
-  debugLog($_REQUEST);
   $typeSendMail=""; 
   if (array_key_exists('className',$_REQUEST)) {
     $typeSendMail=$_REQUEST['className'];
@@ -44,8 +43,6 @@
     $login=$_REQUEST['name'];
     $dest=$_REQUEST['email'];
     $userMail=SqlElement::getSingleSqlElementFromCriteria('User', array('name'=>$login));
-    debugLog('voici le userMail');
-    debugLog($userMail);
     $title=$userMail->parseMailMessage(Parameter::getGlobalParameter('paramMailTitleUser'));  
     $msg=$userMail->parseMailMessage(Parameter::getGlobalParameter('paramMailBodyUser'));
     // Format title and message
