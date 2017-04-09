@@ -127,7 +127,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if($listType=="Activity" and $class=='Ticket' and $limitPlanning=="YES"){
       $critArray['isPlanningActivity']=1;
     }    
-    debugLog($critArray);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($selection) {
       $refTable=substr($col,2);

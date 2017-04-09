@@ -52,6 +52,9 @@
    <?php include 'planningList.php'?>
   </div>
   <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+    <div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');">
+      <div id="detailBarIcon" align="center"></div>
+    </div>
    <?php $noselect=true; //include 'objectDetail.php'; ?>
   </div>
 </div>  

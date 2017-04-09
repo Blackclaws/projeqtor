@@ -4577,7 +4577,9 @@ function hideShowMenu(noRefresh) {
     menuActualStatus='visible';
   }
   setTimeout('dijit.byId("globalContainer").resize();', duration + 10);
-  if (!noRefresh && !formChangeInProgress && dojo.byId('id') && dojo.byId('id').value) {
+  var detailHidden=false;
+  if (dojo.byId('detailBarShow') && dojo.byId('detailBarShow').style.display=='block') detailHidden=true;
+  if (!noRefresh && !formChangeInProgress && dojo.byId('id') && dojo.byId('id').value && !detailHidden) {
     setTimeout('loadContent("objectDetail.php", "detailDiv", "listForm");',
         duration + 50);
   }
@@ -6479,10 +6481,8 @@ function saveWorkflowParameter() {
 }
 
 function dialogWorkflowParameterUncheckAll() {
-  console.log('dialogWorkflowParameterUncheckAll');
   dojo.query(".workflowParameterCheckbox").forEach(function(node, index, nodelist) {
     var id=node.getAttribute('widgetid');
-    console.log (id);
     if (dijit.byId(id) ) {
       dijit.byId(id).set('checked',!workflowParameterAllChecked);
     }

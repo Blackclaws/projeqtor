@@ -171,7 +171,7 @@ if ($saveShowClosed) {
                          iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
                           var paramPdf='<?php echo Parameter::getGlobalParameter("pdfPlanningBeta");?>';
-                          if(paramPdf!='false' && (dojo.isChrome || paramPdf=='true') ) planningPDFBox();
+                          if(paramPdf!='false') planningPDFBox();
                           else showPrint("../tool/jsonResourcePlanning_pdf.php", 'planning', null, 'pdf');
                           </script>
                         </button>
@@ -327,7 +327,7 @@ if ($saveShowClosed) {
 		    </td>
 		  </tr>
 		</table>
-		<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');">
+		<div id="listBarShow" class="dijitAccordionTitle" onMouseover="showList('mouse')" onClick="showList('click');">
 		  <div id="listBarIcon" align="center"></div>
 		</div>
 	

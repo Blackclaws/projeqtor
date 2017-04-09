@@ -251,6 +251,27 @@
       } else {
         $list=SqlList::getList($class);     
       }
+      if ($dataType=='idResource') {
+        $scope=Affectable::getVisibilityScope();
+        if ($scope!="all") {
+          $list=array();
+          $res=new Resource();
+          if ($scope=='orga') {
+            $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+          } else if ($scope=='team') {
+            $aff=new Affectable(getSessionUser()->id,true);
+            $crit="idTeam='$aff->idTeam'";
+          } else {
+            traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
+            $crit=array('id'=>'0');
+          }
+          $listRestrict=$res->getSqlElementsFromCriteria(null,false,$crit);
+          foreach ($listRestrict as $res) {
+            $list[$res->id]=$res->name;
+          }
+          asort($list);
+        }
+      }
       if ($selected) {
       	$name=SqlList::getNameFromId($class, $selected);
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
