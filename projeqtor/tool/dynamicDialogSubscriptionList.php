@@ -53,7 +53,7 @@ foreach ($list as $sub) {
   } else {
   	$objStatus=new Status();
   }
-  
+  if (property_exists($item, 'idle') and $item->idle) continue;
   echo '<tr>';
   echo '<td class="reportTableData" width="10%" style="text-align:left;padding:0px 5px;white-space:nowrap;">'
       .'<table><tr><td>'.formatIcon($sub->refType,16).'</td><td>&nbsp;</td><td>'.i18n($sub->refType).' #'.$sub->refId.'</td></tr></table></td>';

@@ -10,8 +10,8 @@ Gestion des paramètres
 Databasetype                                       | Le type de base de données.Les valeurs
                                                    | possible sont 'mysql' et 'pgsql'                                     $paramDbType
                        
-DatabaseHost                                       | Nom du serveur MySql ou PostgreSql('localhost' par défault).
-                                                   | Si votre base de donnée n'écoute pas le port par défault,
+DatabaseHost                                       | Nom du serveur MySql ou PostgreSql ('localhost' par défaut).
+                                                   | Si votre base de données n'écoute pas le port par défaut,
                                                    | il suffit de l'indiquer ici 'myServer:myPort'.                       $paramDbHost
 
 Database user to connect                           | Utilisateur valide de base de données (par défaut 'root')           $paramDbUser       

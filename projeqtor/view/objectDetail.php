@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -205,7 +205,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
     <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
       style="display: none;z-index:99999;"></div>
 		<?php  include 'objectButtons.php'; ?>
-		<div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');">
+		<div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');"
+		 <?php if (RequestHandler::isCodeSet('switchedMode') and RequestHandler::getValue('switchedMode')=='on') echo ' style="display:block;"'?>>
       <div id="detailBarIcon" align="center"></div>
     </div>
 	</div>
@@ -690,7 +691,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<table>';
         }
       } else {
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt,$included);
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt,$included,$obj);
       }
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr($col, 5);
@@ -784,7 +785,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $cpt++;
           }
         }
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt,$included);
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt,$included,$obj);
         drawAttachmentsFromObject($obj, false);
       }
     } else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
@@ -797,7 +798,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $cpt++;
         }
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt,$included);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt,$included,$obj);
       drawNotesFromObject($obj, false);
     } else if ($col== '_BillLine') {
       $prevSection=$section;
@@ -807,7 +808,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $colSpan=$obj->$colSpanSection;
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val),$included);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val),$included,$obj);
       drawBillLinesFromObject($obj, false);
     } else if (substr($col, 0, 1) == '_' and 
     substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
@@ -2025,7 +2026,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
 }
 
-function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null) {
+function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null,$obj=null) {
   scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
   if (!$currentColumn) $currentColumn=0;
@@ -2041,8 +2042,13 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     }
   }
   endBuffering($prevSection,$included);
+  $sectionName=$section;
+  if (strpos($sectionName, '_')!=0) {
+  	$split=explode('_',$sectionName);
+  	$sectionName=$split[0];
+  }
+  if (!$obj) $obj=new $classObj();
   if (!$print) {
-    
     $arrayPosition=array(
          'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
          'progress'=>      array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')),
@@ -2086,26 +2092,24 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     $titlePane=$classObj . "_" . $section;
     startBuffering($included);
     //$sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
-    $sectionName=$section;
-    if (strpos($sectionName, '_')!=0) {
-      $split=explode('_',$sectionName);
-      $sectionName=$split[0];
-    }
-    
+    $display='inline-block';
+    if ($obj->isAttributeSetToField('_sec_'.$section,'hidden')) $display='none';
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($sectionName)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    echo ' style="display:inline-block;position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
+    echo ' style="display:'.$display.';position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
-    echo '<table class="detail" style="width:' . $widthPct . ';" >';
+  	$display='';
+  	if ($obj->isAttributeSetToField('_sec_'.$section,'hidden')) $display='display:none;';
+    echo '<table class="detail" style="width:' . $widthPct . ';'.$display.'" >';
     echo '<tr><td class="section">' . i18n('section' . ucfirst($sectionName)) . '</td></tr>';
     echo '<tr class="detail" style="height:2px;font-size:2px;">';
     echo '<td class="detail" >&nbsp;</td>';
     echo '</tr>';
-    echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
+    echo '</table><table class="detail" style="width:' . $widthPct . ';'.$display.'" >'; // For PDF
     //echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
   }
 }

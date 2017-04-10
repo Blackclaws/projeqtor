@@ -1,7 +1,7 @@
 /*******************************************************************************
  * COPYRIGHT NOTICE *
  * 
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  * 
  * This file is part of ProjeQtOr.
@@ -855,11 +855,9 @@ function loadContent(page, destination, formName, isResultMessage,
  * @param formName
  *          nale of form to post (optional)
  */
-var currentDivToParse=null;
-function loadDiv(page, destinationDiv, formName, callback, parseDiv) {
+
+function loadDiv(page, destinationDiv, formName, callback) {
   var contentNode = dojo.byId(destinationDiv);
-  currentDivToParse=null;
-  if (parseDiv) currentDivToParse=destinationDiv;
   if (page.indexOf('getObjectCreationInfo')>=0 && dijit.byId('detailDiv') && page.indexOf('destinationWidth')<0) {
     var destinationWidth = dojo.style(dojo.byId('detailDiv'), "width");
     // var destinationHeight = dojo.style(dojo.byId('detailDiv'), "height");
@@ -871,7 +869,6 @@ function loadDiv(page, destinationDiv, formName, callback, parseDiv) {
     handleAs : "text",
     load : function(data, args) {
       contentNode.innerHTML = data;
-      if (currentDivToParse) dojo.parser.parse(currentDivToParse);
       if (callback)
         setTimeout(callback, 10);
     }

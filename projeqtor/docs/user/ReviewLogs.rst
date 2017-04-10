@@ -459,6 +459,8 @@ You can link a question to a meeting to rapidly find the minutes where the quest
 .. raw:: latex
 
     \newpage
+    
+.. index:: ! Deliverable
 
 .. _deliverables:
 
@@ -509,6 +511,8 @@ Deliverables links with Milestones.
 .. raw:: latex
 
     \newpage
+
+.. index:: ! Incoming
     
 .. _incomings:
 
