@@ -491,12 +491,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vDoc = JSGantt.findObj('rightGanttChartDIV');
     var oDiv = document.createElement('div');
     oDiv.id = ((temp)?"temp":"")+"line"+vDepId++;
+    oDiv.addEventListener("contextmenu", dependencyRightClick,true);
     oDiv.style.position = "absolute";
     oDiv.style.margin = "0px";
     oDiv.style.padding = "0px";
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
+    oDiv.setAttribute('dependencyid','test');
     oDiv.style.zIndex = 50000;
+    oDiv.style.cursor = "pointer";
     oDiv.className="dependencyLine"+keyDep;
     if (!color) color="#000000";
     color="#000000";
@@ -507,6 +510,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.height = vHgt + "px";
     oDiv.style.visibility = "visible";
     oDiv.addEventListener('mouseenter', highlightDependency, false);
+    oDiv.addEventListener('mouseout', outHighlightDependency, false);
     vDoc.appendChild(oDiv);
   };
   this.dLine = function(x1,y1,x2,y2,color) {
@@ -574,7 +578,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var vDepList = vDependStr.split(',');
         var n = vDepList.length;
         for(var k=0;k<n;k++) {
-          var vTask = this.getArrayLocationByID(vDepList[k]);
+          var depListSplit=vDepList[k].split("#");
+          dojo.byId("rightClickDependencyId").value=depListSplit[1];
+          var vTask = this.getArrayLocationByID(depListSplit[0]);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
                             vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k);
@@ -641,6 +647,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var ffSpecificHeight=(dojo.isFF<16)?' class="ganttHeight"':'';
     var vLeftTable="";
     var vRightTable="";
+    var specificRightClickDiv="";
     var vTopRightTable="";
     if(vTaskList.length > 0) {
       JSGantt.processRows(vTaskList, 0, -1, 1, 1);
@@ -1092,6 +1099,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;">' 
               + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" style="height: 21px;"'
               + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
+              + ' oncontextmenu="return false;"'
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
             var vBaselineTopTitle="";
             if (vTaskList[i].getBaseTopStart() && vTaskList[i].getBaseTopEnd()) {              
@@ -1181,6 +1189,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               +'<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;" >' 
               +'<TR id=childrow_' + vID + ' class="ganttTaskrow" style="height: 21px;"  '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
+              + ' oncontextmenu="return false;"'
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
             if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
   	          vBardivName='bardiv_' + vID;
@@ -1281,13 +1290,20 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vRightTable += '</DIV>';
       }
       vRightTable+=vHighlightSpecificDays;
+
+      var editDependencyDiv='<div style="position:fixed;width:40px;height:70px;display:none;z-index:99999;" id="editDependencyDiv" class="editDependencyDiv">';    
+      editDependencyDiv+='</div>';      
+      editDependencyDiv+='<input type="hidden" name="rightClickDependencyId" id="rightClickDependencyId" />';
+  
+      vRightTable+=editDependencyDiv;
+    
       //vRightTable+=vHighlightToday;  
         //vRightTable+='<div class="ganttUnselectable" style="position: absolute; z-index:25; opacity:0.1; filter: alpha(opacity=10); width: 200px; height: 200px; left: 0px; top:0px; background-color: red"></div>';
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
-      dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer"><div id="rightTableBarDetail">&nbsp;</div>'+vRightTable+'</div>';
+      dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer" style="position:relative;"><div id="rightTableBarDetail">&nbsp;</div>'+vRightTable+'</div>';
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
       dojo.parser.parse('leftGanttChartDIV');
-      //dojo.parser.parse('rightGanttChartDIV');
+      dojo.parser.parse('editDependencyDiv');
       //dojo.parser.parse('topGanttChartDIV');
       dojo.byId('rightside').style.left='-'+(dojo.byId('rightGanttChartDIV').scrollLeft+1)+'px';
       dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
@@ -2098,8 +2114,61 @@ function resizeJsHeader(event) {
   jsHeaderResizePos=event.clientX;
 }
 
-function highlightDependency(event) {
-  var className=event.srcElement.getAttribute('class');
+function dependencyRightClick(evt){ 
+  /*if (dojo.byId("rightClickDependencyId")) {
+    id=dojo.byId("rightClickDependencyId").value;
+  }*/
+  console.log(evt);
+  depNode=evt.target;
+  id=depNode.getAttribute('dependencyid');
+  console.log('id='+id);
+  console.log(dojo.byId("rightClickDependencyId").value);
+  var divNode=dojo.byId("editDependencyDiv");
+  divNode.style.display="block";
+  divNode.style.left=((evt.pageX)+7)+"px";
+  divNode.style.top=evt.pageY+"px";
+  var url = '../tool/dynamicDialogDependency.php?id='+ id;
+  console.log(url);
+  loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',false,true);
+  evt.preventDefault();
+}
+
+
+function removeDependencyRightClick(dependencyId){
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  dependencyId=dojo.byId('dependencyRightClickId').value;
+  console.log("voici le dependencyid de la function remove : "+dependencyId);
+    loadContent("../tool/removeDependency.php?dependencyId=" + dependencyId, "planResultDiv", "",
+        true, 'dependency');
+
+}
+
+function saveDependencyRightClick() {
+//    var formVar=dijit.byId('dynamicDependencyForm');
+//    if (!formVar) {
+//      showAlert(i18n("alertInvalidForm"));
+//      return;
+//    }
+    if (!dojo.byId('delayDependency').value
+        && !dojo.byId('commentDependency').value)
+      return;
+
+  loadContent("../tool/saveDependencyRightClick.php", "planResultDiv", "dynamicRightClickDependencyForm",
+      true, 'dependency');
+  dijit.byId('dialogDependency').hide();
+}
+
+function highlightDependency(event) { 
+  var className=null;
+  f = navigator.userAgent.search("Firefox");
+  if(f > -1){
+    className=event.target.getAttribute('class');
+  }else{
+    className=event.srcElement.getAttribute('class');
+  }
   dojo.query("."+className).forEach(function(node, index, nodelist) {
     if (node.style.width=='1px') {
       node.style.width='3px';
@@ -2109,5 +2178,28 @@ function highlightDependency(event) {
       node.style.backgroundColor="#E97B2C";
     }
   });
-  
+}
+
+function outHighlightDependency(event){
+  var className=null;
+  f = navigator.userAgent.search("Firefox");
+  if(f > -1){
+    className=event.target.getAttribute('class');
+  }else{
+    className=event.srcElement.getAttribute('class');
+  }
+  dojo.query("."+className).forEach(function(node, index, nodelist) {
+    if (node.style.backgroundColor=="rgb(233, 123, 45)" || node.style.backgroundColor=="#E97B2D" )  {
+      node.style.width='1px';
+      node.style.backgroundColor="#000000";
+    } else if (node.style.backgroundColor=="rgb(233, 123, 44)" || node.style.backgroundColor=="#E97B2C" ) {
+      node.style.height='1px';
+      node.style.backgroundColor="#000000";
+    }
+  });
+}
+
+function hideDependencyRightClick(){
+  var divNode=dojo.byId("editDependencyDiv");
+  divNode.style.display="none";
 }

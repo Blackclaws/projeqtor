@@ -14,7 +14,7 @@ Paramètres Globaux
 .. figure:: /images/GUI/ldap.png
    
    Pour accéder à un serveur AD (Microsoft Active Directory), le paramétrage est un peu spécifique et surtout différent du paramétrage standard LDAP.
-   user ldap : ne pas ajouter la chiane de connexion LDAP, seul le nom d'utilisateur, avec éventuellement le nom de domaine Domaien\User
+   user ldap : ne pas ajouter la chaîne de connexion LDAP, seul le nom d'utilisateur, avec éventuellement le nom de domaine Domaine\User
    search string : sAMAccountName=%username%  
    
    ** TODO : Exemples
@@ -32,16 +32,16 @@ Paramètres Globaux
 .. figure:: /images/GUI/email.png
 
 
-Jusqu'à V3.4.4, il existe deux façons d'envoyer des mails:
+Jusqu'à V3.4.4, il existe deux façons d'envoyer des mails :
     
-    - Utilisation de la fonction php mail: cette fonction permet uniquement la connexion anonyme
+    - Utilisation de la fonction php mail : cette fonction permet uniquement la connexion anonyme
     
-    - En utilisant une connexion socket spécifique: cette méthode permet des connexions authentifiées
-      Depuis V4.0.0 une nouvelle méthode a été introduite:
+    - En utilisant une connexion socket spécifique : cette méthode permet des connexions authentifiées.
+      Depuis V4.0.0 une nouvelle méthode a été introduite :
       
-      - À l'aide de la bibliothèque PHPMailer: cette méthode avancée permet des connexions anonymes et authentifiées
+      - À l'aide de la bibliothèque PHPMailer : cette méthode avancée permet des connexions anonymes et authentifiées
       
-Vous pouvez sélectionner la méthode en ajoutant simplement $ paramMailerType dans votre fichier parameters.php:
+Vous pouvez sélectionner la méthode en ajoutant simplement $paramMailerType dans votre fichier parameters.php :
 
     - $paramMailerType = 'mail' utilisant la fonction php mail
     

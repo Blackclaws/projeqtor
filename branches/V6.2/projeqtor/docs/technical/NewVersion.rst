@@ -25,5 +25,5 @@ Mais aussi :
 
 .. warning:: Il est fortement recommandé de sauvegarder votre base de données avant de passer à la nouvelle version, pour pouvoir revenir à la version précédente.
 
-.. seealso:: Vous pouvez mettre à jour deux fois (si nécessaire): mettre à jour la table "parameter" , réinitialiser la valeur de la ligne où parameterCode = 'dbVersion' au numéro de version précédente et se connecter à nouveau. 
+.. seealso:: Vous pouvez mettre à jour deux fois (si nécessaire) : mettre à jour la table "parameter", réinitialiser la valeur de la ligne où parameterCode = 'dbVersion' au numéro de version précédente et se connecter à nouveau. 
              Si vous constatez alors que certains éléments de menu ont disparu, vérifiez les entrées doubles dans la table d'habilitation (dernières lignes) et supprimez-les (cela ne devrait pas se produire depuis V1.5.0).

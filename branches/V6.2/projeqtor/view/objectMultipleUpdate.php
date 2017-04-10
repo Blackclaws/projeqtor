@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -111,6 +111,11 @@
             </td>
           </tr>
         </table>
+
+    </div>
+   <div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');">
+     <div id="detailBarIcon" align="center">
+   </div>
       </div>
       <div dojoType="dijit.layout.ContentPane" region="center" 
        style="z-index: 3; height: 35px; position: absolute !important; overflow: visible !important;">

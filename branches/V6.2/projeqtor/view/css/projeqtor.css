@@ -1,6 +1,6 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -3361,4 +3361,12 @@ p {
   background:transparent;
   left:40px;
   width:470px;
+}
+
+.contextMenuDiv{
+	background-color: white;
+	border:2px solid black;
+	border-radius:5px;
+	border-color:#656565;
+	width:190px;
 }

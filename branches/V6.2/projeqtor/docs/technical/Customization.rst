@@ -4,7 +4,7 @@
 
 Customisation
 ----------------
-.. rubric:: Custimiser une classe
+.. rubric:: Customiser une classe
 
 .. rubric:: Créer un rapport spécifique pour une classe
 

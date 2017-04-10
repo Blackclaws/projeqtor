@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -334,10 +334,16 @@ function formatPrivacyThumb($privacy, $team) {
   // privacy=1 => public 
   if ($privacy == 3) {
     $title=htmlEncode(i18n('private'),'quotes');
-    echo '<img style="float:right;padding-right:3px" src="img/private.png" />';
+    //echo '<img style="float:right;padding-right:3px" src="img/private.png" />';
+    echo '<span style="float:right;padding-right:3px">';
+    echo formatIcon('Fixed',22,$title,false);
+    echo '</span>';
   } else if ($privacy == 2) {
     $title=htmlEncode(i18n('team')." : ".SqlList::getNameFromId ('Team',$team ),'quotes');
-    echo '<img title="'.$title.'" style="float:right;padding-right:3px" src="img/team.png" />';
+    //echo '<img title="'.$title.'" style="float:right;padding-right:3px" src="img/team.png" />';
+    echo '<span style="float:right;padding-right:3px">';
+    echo formatIcon('Team',22,$title,false);
+    echo '</span>';
   }
 }
 

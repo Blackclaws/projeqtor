@@ -21,17 +21,17 @@ Par exemple : projeqtor_V6.2.0.
 
 .. rubric:: Deploy
 
-On y retrouve les eléments de déploiement (scripts ant , bases de tests) qui ne sont pas déployé dans le zip d'installation.
+On y retrouve les éléments de déploiement (scripts ant , bases de tests) qui ne sont pas déployés dans le zip d'installation.
 
 .. rubric:: Docs
 
-Les deux dossiers de documentation sont présent dans cette rubrique.
+Les deux dossiers de documentation sont présents dans cette rubrique.
 Les deux documents sont la documentation technique et la documentation utilisateur.
 
 .. rubric:: External
 
-Dans cette rubrique on y retrouve les librairies externe à Projeqtor.
-Par exemple , les bibliothéques externes comme Dojo ou ckeditor y sont stockées.
+Dans cette rubrique on y retrouve les librairies externes à Projeqtor.
+Par exemple, les bibliothèques externes comme Dojo ou ckeditor y sont stockées.
 
 .. rubric:: Files
 
@@ -41,17 +41,17 @@ Différents dossiers y sont compris comme config ou les logs par exemple.
 .. rubric:: Manuel
 
 L'ancien manuel en ligne (version <= 5.0)
-Il n'est pas déployè dans le zip d'installation
+Il n'est pas déployé dans le zip d'installation
 
 .. rubric:: Mobile
 
 Voici le dossier qui comporte le plugin Mobile.
-Il n'est pas déployè dans le zip d'installation.
+Il n'est pas déployé dans le zip d'installation.
 
 .. rubric:: Model
 
 La rubrique Model comporte toutes les classes de l'application.
-Le modèle est dans une architecture MVC ( modéle vue controller ).
+Le modèle est dans une architecture MVC ( modèle vue contrôleur ).
 
 .. rubric:: Plugins
 
@@ -59,12 +59,12 @@ La rubrique qui comporte les dossiers pour les plugins.
 
 .. rubric:: Reports
 
-On retrouve dans la rubrique Reports les différents fichiers qui gére les rapports dans ProjeQtOr.
+On retrouve dans la rubrique Reports les différents fichiers qui gèrent les rapports dans ProjeQtOr.
 
 .. rubric:: Test
 
 Les scripts de test sont dans la rubrique Test.
-Il n'est pas dèployé dans le zip d'installation.
+Il n'est pas déployé dans le zip d'installation.
 
 .. rubric:: Tool
 

@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -3036,7 +3036,12 @@ function formatBigButton($class) {
   $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
   return $result;
 }
-
+function formatMediumButton($class) {
+  $size="24";
+  $result='';
+  $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
+  return $result;
+}
 // ===============================================================================================================================
 // Text formating for long fields, to preserve or not html tags depending on text type (html formatted or plain text)
 // This is needed to preserve compatibility between texts entered in Plan Text Editor and Rich Html Editor (CK or Dojo)
