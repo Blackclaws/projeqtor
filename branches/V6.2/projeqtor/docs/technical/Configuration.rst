@@ -16,7 +16,7 @@ Lorsque vous ouvrez une session, le processus normal doit être:
     
     - Un spinner est affiché.
     
-    - Le spinner disparaît : à ce moment ,vous devriez voir un message et un nouveau bouton "Continuer" sous le bouton "OK".
+    - Le spinner disparaît : à ce moment, vous devriez voir un message et un nouveau bouton "Continuer" sous le bouton "OK".
     
     - Vous cliquez sur le bouton "Continuez"
     
@@ -24,13 +24,13 @@ Lorsque vous ouvrez une session, le processus normal doit être:
     
     - Vous entrez la connexion par défault : admin/admin et cliquez sur le bouton "OK".
     
-    - Un spinner est affiché: cette étape peut prendre un certain temps(environ 1 minutes) car toute la structure de la base de données est créé.
+    - Un spinner est affiché: cette étape peut prendre un certain temps(environ 1 minute) car toute la structure de la base de données est créée.
     
-    - Le spinner disparaît et un message court indique le résultat de la création de la base de données ( le détail de cette étape est écrit dans le fichier log).
+    - Le spinner disparaît et un message court indique le résultat de la création de la base de données (le détail de cette étape est écrit dans le fichier log).
     
     - Cliquez de nouveau sur "OK" et vous êtes dans l'application ! 
     
-Si tout cela ne fonctionne pas , essayez cette solution:
+Si tout cela ne fonctionne pas, essayez cette solution :
 
     - Supprimer le fichier "/tool/parametersLocation.php" pour refaire l'installation.
     

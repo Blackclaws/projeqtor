@@ -1,7 +1,7 @@
 <?PHP
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -394,7 +394,7 @@
         $depList=$d->getSqlElementsFromCriteria($crit,false);
         foreach ($depList as $dep) {
           $listPred.=($listPred!="")?',':'';
-          $listPred.=$dep->predecessorId;
+          $listPred.="$dep->predecessorId#$dep->id#$dep->successorRefType";
         }
         echo ', "depend":"' . $listPred . '"';
         echo '}';

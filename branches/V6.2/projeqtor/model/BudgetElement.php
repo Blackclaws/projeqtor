@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2016 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  *
  * This file is part of ProjeQtOr.
  * 

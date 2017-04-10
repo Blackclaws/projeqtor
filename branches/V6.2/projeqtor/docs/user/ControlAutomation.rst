@@ -447,7 +447,7 @@ A description of receivers below.
 .. _kpi-definitions:
 
 KPI definitions
---------------
+---------------
 
 A performance indicator or key performance indicator (KPI) is a type of performance measurement.
 
@@ -504,7 +504,7 @@ It is possible to attributes tresholds lines to KPI.
 .. _jobList:
 
 JobList
---------------
+-------
 
 Management of the JobList can be used for each element but it usually used to detail an Activity or Ticket.
 
