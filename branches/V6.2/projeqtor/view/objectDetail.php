@@ -839,7 +839,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $specificStyle.=' display:none';
         if ($print) $hide=true;
       }
-      if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' || $col=='lastUpdateDateTime') and !$print) {
+      if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
         $hide=true;
       }
       if (strpos($obj->getFieldAttributes($col), 'nobr') !== false) {
@@ -2048,6 +2048,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   	$sectionName=$split[0];
   }
   if (!$obj) $obj=new $classObj();
+  $extraHiddenFields=$obj->getExtraHiddenFields();
   if (!$print) {
     $arrayPosition=array(
          'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
@@ -2093,17 +2094,22 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     startBuffering($included);
     //$sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
     $display='inline-block';
-    if ($obj->isAttributeSetToField('_sec_'.$section,'hidden')) $display='none';
+    if ($obj->isAttributeSetToField('_sec_'.$section,'hidden') or in_array('_sec_'.$section,$extraHiddenFields)) {
+    	$display='none';
+    }
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($sectionName)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
+    echo ' class="generalColClass _sec_'.$section.'Class" ';
     echo ' style="display:'.$display.';position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
   	$display='';
-  	if ($obj->isAttributeSetToField('_sec_'.$section,'hidden')) $display='display:none;';
+  	if ($obj->isAttributeSetToField('_sec_'.$section,'hidden') or in_array('_sec_'.$section,$extraHiddenFields)) {
+  		$display='display:none;';
+  	}
     echo '<table class="detail" style="width:' . $widthPct . ';'.$display.'" >';
     echo '<tr><td class="section">' . i18n('section' . ucfirst($sectionName)) . '</td></tr>';
     echo '<tr class="detail" style="height:2px;font-size:2px;">';
@@ -3394,6 +3400,12 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if ($assignment->comment and !$print) {
       echo '<td>';
       echo formatCommentThumb($assignment->comment);
+      echo '</td>';
+    }
+    //gautier #1702
+    if (! $assignment->optional and (get_class($obj)== 'Meeting' or get_class($obj)== 'PeriodicMeeting' ) ) {
+      echo '<td>';
+      echo '<a style="float:right";> '.formatIcon('Favorite',16,i18n('mandatoryAttendant')).'</a>';
       echo '</td>';
     }
     echo '</tr></table>';

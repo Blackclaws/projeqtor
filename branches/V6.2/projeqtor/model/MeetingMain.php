@@ -575,8 +575,7 @@ class MeetingMain extends SqlElement {
       $newAss->assignedWork = $ass->assignedWork;
       $newAss->idProject = $ass->idProject;
       $newAss->save();
-    }
-   
+    } 
     return $result;
   }
 }

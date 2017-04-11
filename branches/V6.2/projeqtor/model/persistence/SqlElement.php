@@ -3104,8 +3104,8 @@ abstract class SqlElement {
 		}
     
 		// Krowry
-		if(substr($colName, -9)=="StartDate"){ // If change start date
-		  $end = str_replace('StartDate', 'EndDate', $colName);
+		if(substr($colName, -9)=="StartDate" or substr($colName, -7)=="EisDate"){ // If change start date
+		  $end = str_replace(array('EisDate','StartDate'), array('EndDate','EndDate'), $colName);
 		  $start=$colName;
 		  if (property_exists($this, $end)){
 		  	if (self::is_subclass_of($this,'PlanningElement')) {
@@ -3120,7 +3120,7 @@ abstract class SqlElement {
 		    $colScript .= "    var dtStart = dijit.byId('$start').get('value'); "; // => rÃ©cupÃ©rer la date de this, qui est en string, au format Date javascrpit
 		    $colScript .= "    end.constraints.min=dtStart;";
 		    $colScript .= "    if (! end.get('value') ) {";
-		    $colScript .= "      end.set('value',dtStart);";
+		    if (!substr($colName, -7)=="EisDate") $colScript .= "      end.set('value',dtStart);";
         if(isset($duration)){
 		    $colScript .= "      if (dijit.byId('$duration')) {";
 		    $colScript .= "        dijit.byId('$duration').set('value',1);";

@@ -31,11 +31,10 @@
 require_once "../tool/projeqtor.php";
 // Get the link info
 debugLog("coucou voici le debug du save");
-debugLog($_REQUEST);
-debugLog("coucou");
+
 $dependencyDelay=RequestHandler::getNumeric('delayDependency',true);
 debugLog($dependencyDelay);
-$dependencyComment=RequestHandler::getAlphanumeric('commentDependency',true);
+$dependencyComment=RequestHandler::getValue('commentDependency',true);
 $id=RequestHandler::getId('dependencyRightClickId',true);
 
 Sql::beginTransaction();
@@ -45,4 +44,5 @@ Sql::beginTransaction();
   $dep->comment=$dependencyComment;
   $result=$dep->save();
   displayLastOperationStatus($result);
+
 ?>

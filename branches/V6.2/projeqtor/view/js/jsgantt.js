@@ -483,7 +483,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vDepId = 1;
   };
   
-  this.sLine = function(x1,y1,x2,y2,color,temp,keyDep) {
+  this.sLine = function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
     vLeft = Math.min(x1,x2);
     vTop  = Math.min(y1,y2);
     vWid  = Math.abs(x2-x1) + 1;
@@ -492,12 +492,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var oDiv = document.createElement('div');
     oDiv.id = ((temp)?"temp":"")+"line"+vDepId++;
     oDiv.addEventListener("contextmenu", dependencyRightClick,true);
+    oDiv.addEventListener("click", dependencyRightClick,true);
     oDiv.style.position = "absolute";
     oDiv.style.margin = "0px";
     oDiv.style.padding = "0px";
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
-    oDiv.setAttribute('dependencyid','test');
+    oDiv.setAttribute('dependencyid',dependencyKey);
     oDiv.style.zIndex = 50000;
     oDiv.style.cursor = "pointer";
     oDiv.className="dependencyLine"+keyDep;
@@ -530,40 +531,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       y += dy;
     };
   };
-  this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep) {
+  this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
     if (x1 <= x2+4) {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep);
-        this.sLine(x2+4,y1,x2+4,y2-6,color,temp,keyDep);
-        this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp,keyDep);
-        this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp,keyDep);
-        this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp,keyDep);
+        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+4,y1,x2+4,y2-6,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp,keyDep,dependencyKey);
       } else {
-        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep);
-        this.sLine(x2+4,y1,x2+4,y2+6,color,temp,keyDep);
-        this.sLine(x2+1, y2+9, x2+7, y2+9,color,temp,keyDep);
-        this.sLine(x2+2, y2+8, x2+6, y2+8,color,temp,keyDep);
-        this.sLine(x2+3, y2+7, x2+5, y2+7,color,temp,keyDep);
+        this.sLine(x1,y1,x2+4,y1,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+4,y1,x2+4,y2+6,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+1, y2+9, x2+7, y2+9,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+2, y2+8, x2+6, y2+8,color,temp,keyDep,dependencyKey);
+        this.sLine(x2+3, y2+7, x2+5, y2+7,color,temp,keyDep,dependencyKey);
       }
     } else {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x1+4,y1,color,temp,keyDep);
-        this.sLine(x1+4,y1,x1+4,y2-8,color,temp,keyDep);
-        this.sLine(x1+4,y2-8,x2-8,y2-8,color,temp,keyDep);
-        this.sLine(x2-8,y2-8,x2-8,y2,color,temp,keyDep);
-        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep);
+        this.sLine(x1,y1,x1+4,y1,color,temp,keyDep,dependencyKey);
+        this.sLine(x1+4,y1,x1+4,y2-8,color,temp,keyDep,dependencyKey);
+        this.sLine(x1+4,y2-8,x2-8,y2-8,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-8,y2-8,x2-8,y2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep,dependencyKey);
       } else {
-    	this.sLine(x1,y1,x1+4,y1,color,temp,keyDep);
-        this.sLine(x1+4,y1,x1+4,y2+8,color,temp,keyDep);
-        this.sLine(x1+4,y2+8,x2-8,y2+8,color,temp,keyDep);
-        this.sLine(x2-8,y2+8,x2-8,y2,color,temp,keyDep);
-        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep);
+    	this.sLine(x1,y1,x1+4,y1,color,temp,keyDep,dependencyKey);
+        this.sLine(x1+4,y1,x1+4,y2+8,color,temp,keyDep,dependencyKey);
+        this.sLine(x1+4,y2+8,x2-8,y2+8,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-8,y2+8,x2-8,y2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-8,y2,x2,y2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep,dependencyKey);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep,dependencyKey);
       }
     }
   };
@@ -573,17 +574,19 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
-      if(vDepend) {
+      if(vDepend) {       
         var vDependStr = vDepend + '';
+        console.log(vDependStr);
         var vDepList = vDependStr.split(',');
         var n = vDepList.length;
         for(var k=0;k<n;k++) {
           var depListSplit=vDepList[k].split("#");
+          dependencyKey=depListSplit[1];
           dojo.byId("rightClickDependencyId").value=depListSplit[1];
           var vTask = this.getArrayLocationByID(depListSplit[0]);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
-                            vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k);
+                            vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
           }
         }
       }
@@ -2118,11 +2121,11 @@ function dependencyRightClick(evt){
   /*if (dojo.byId("rightClickDependencyId")) {
     id=dojo.byId("rightClickDependencyId").value;
   }*/
-  console.log(evt);
+
   depNode=evt.target;
   id=depNode.getAttribute('dependencyid');
   console.log('id='+id);
-  console.log(dojo.byId("rightClickDependencyId").value);
+
   var divNode=dojo.byId("editDependencyDiv");
   divNode.style.display="block";
   divNode.style.left=((evt.pageX)+7)+"px";
@@ -2134,7 +2137,7 @@ function dependencyRightClick(evt){
 }
 
 
-function removeDependencyRightClick(dependencyId){
+function removeDependencyRightClick(dependencyId,evt){
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
