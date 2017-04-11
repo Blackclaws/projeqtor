@@ -27,22 +27,21 @@
 /** ===========================================================================
  * Acknowledge an operation
  */
- 
+ require_once ('../tool/projeqtor.php');
  if($_SERVER['REQUEST_METHOD'] != 'POST') {
 	require_once '../tool/projeqtor.php';
 	traceHack("ack.php without POST method == XSS hacking attempt" );
 	exit;
  }
- 
 // TODO (SECURITY) : Check protection of Result (but not htmlentities as it contains expected divs)
-if (array_key_exists('resultAck',$_REQUEST)) {
-  $result=$_REQUEST['resultAck'];
+if (RequestHandler::isCodeSet('resultAck')) {
+  $result=RequestHandler::getValue('resultAck');
   //$result=preg_replace('//','',$result); // TODO (SECURITY) : To be checked
   $result=str_replace('\"','"',$result);
   $result=str_replace("\'","'",$result);
   echo $result;
-} else if (array_key_exists('resultAckDocumentVersion',$_REQUEST)) {
-  $result=$_REQUEST['resultAckDocumentVersion'];
+} else if (RequestHandler::isCodeSet('resultAckDocumentVersion')) {
+  $result=RequestHandler::getValue('resultAckDocumentVersion');
   $result=str_replace('\"','"',$result);
   $result=str_replace("\'","'",$result);
   echo $result;

@@ -24,17 +24,9 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-if (! array_key_exists('checkId',$_REQUEST)) {
-  throwError('objectClass checkId not found in REQUEST');
-}
-$checkId=null;
-if ( array_key_exists('checkId',$_REQUEST) ) {
-  $checkId=$_REQUEST['checkId'];
-}
-$lineId=0;
-if ( array_key_exists('lineId',$_REQUEST)) {
-	$lineId=$_REQUEST['lineId'];
-}
+$checkId=RequestHandler::getId('checkId',true,null);
+$lineId=RequestHandler::getId('lineId',null,0);
+
 $line=new JobDefinition($lineId);
 if ($line->id) {
 	$checkId=$line->idJoblistDefinition;

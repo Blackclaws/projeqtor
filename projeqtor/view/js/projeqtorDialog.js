@@ -1833,6 +1833,12 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
 
   dojo.byId("assignmentId").value="";
   dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+  /*gautier #1702*/
+  if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
+    dojo.byId('optional').style.display='block';
+  }else{
+    dojo.byId('optional').style.display='none';
+  } 
   dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
   dijit.byId("assignmentIdRole").reset();
   dijit.byId("assignmentDailyCost").reset();
@@ -1900,6 +1906,11 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   dijit.byId("assignmentIdRole").set("value", idRole);
   dojo.byId("assignmentId").value=assignmentId;
   dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+  if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
+    dojo.byId('optional').style.display='block';
+  }else{
+    dojo.byId('optional').style.display='none';
+  } 
   dojo.byId("assignmentRefId").value=dojo.byId("id").value;
   dijit.byId("assignmentDailyCost")
       .set('value', dojo.number.format(cost / 100));
@@ -6515,40 +6526,43 @@ function changeCreationInfo() {
   }
 
   if (dijit.byId('creationDate')) {
+    console.log("1:"+dijit.byId('creationDate').get('value'));
     dijit.byId('dialogCreationInfoDate').set('value',
         dijit.byId('creationDate').get('value'));
     dojo.byId('dialogCreationInfoDateLine').style.display='inline';
     dojo.byId('dialogCreationInfoTimeLine').style.display='none';
     toShow=true;
   } else if (dojo.byId('creationDate')) {
+    console.log("2:"+dojo.byId('creationDate').value);
     dijit.byId('dialogCreationInfoDate').set('value',
         dojo.byId('creationDate').value);
     dojo.byId('dialogCreationInfoDateLine').style.display='inline';
     dojo.byId('dialogCreationInfoTimeLine').style.display='none';
     toShow=true;
+  } else if (dijit.byId('creationDateTime')) {
+    console.log("3:"+dijit.byId('creationDateTime').get('value'));
+    val=dijit.byId('creationDateTime').get('value');
+    valDate=val.substr(0, 10);
+    valTime='T' + val.substr(11, 8);
+    dijit.byId('dialogCreationInfoDate').set('value', valDate);
+    dijit.byId('dialogCreationInfoTime').set('value', valTime);
+    dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+    dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
+    toShow=true;
+  } else if (dojo.byId('creationDateTime')) {
+    console.log("4:"+dojo.byId('creationDateTime').value);
+    val=dojo.byId('creationDateTime').value;
+    valDate=val.substr(0, 10);
+    valTime=val.substr(11, 8);
+    dijit.byId('dialogCreationInfoDate').set('value', valDate);
+    dijit.byId('dialogCreationInfoTime').set('value', valTime);
+    dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+    dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
+    toShow=true;
   } else {
-    if (dijit.byId('creationDateTime')) {
-      val=dijit.byId('creationDateTime').get('value');
-      valDate=val.substr(0, 10);
-      valTime='T' + val.substr(11, 8);
-      dijit.byId('dialogCreationInfoDate').set('value', valDate);
-      dijit.byId('dialogCreationInfoTime').set('value', valTime);
-      dojo.byId('dialogCreationInfoDateLine').style.display='inline';
-      dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
-      toShow=true;
-    } else if (dojo.byId('creationDateTime')) {
-      val=dojo.byId('creationDateTime').value;
-      valDate=val.substr(0, 10);
-      valTime=val.substr(11, 8);
-      dijit.byId('dialogCreationInfoDate').set('value', valDate);
-      dijit.byId('dialogCreationInfoTime').set('value', valTime);
-      dojo.byId('dialogCreationInfoDateLine').style.display='inline';
-      dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
-      toShow=true;
-    } else {
-      dojo.byId('dialogCreationInfoDateLine').style.display='none';
-      dojo.byId('dialogCreationInfoTimeLine').style.display='none';
-    }
+    console.log("5");
+    dojo.byId('dialogCreationInfoDateLine').style.display='none';
+    dojo.byId('dialogCreationInfoTimeLine').style.display='none';
   }
   if (toShow) {
     dijit.byId('dialogCreationInfo').show();
