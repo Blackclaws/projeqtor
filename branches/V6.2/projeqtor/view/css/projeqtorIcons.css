@@ -26,6 +26,8 @@
 /* =============================================================================== */
 /* BUTTONS                                                                         */
 /* =============================================================================== */
+
+
 .iconView { background-image: url(images/iconView.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
 .iconGoto { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
 .iconAdd { background-image: url(images/buttonAdd16.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
@@ -42,6 +44,7 @@
 .iconColumnSelector { background-image: url(images/iconColumnSelector16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconColumnSelector { background-image: url(images/iconColumnSelector16Disabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
+.iconFavorite16 { background-image: url(images/iconFavorite16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconFlashPdf { background-image: url(images/flashPdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconFlash { background-image: url(images/flash.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 

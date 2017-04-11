@@ -3697,10 +3697,8 @@ function getExtraReadonlyFields(idType,idStatus,idProfile) {
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);
-      dojo.query(".generalRowClass").style("display", "table-row");
-      dojo.query(".generalColClass").style("display", "inline-block");
       for (key in obj) {
-        dojo.query("." + obj[key] + "Class").readOnly=true; // ("readonly", "true"); ?
+        if (dijit.byId(obj[key])) dijit.byId(obj[key]).set('readOnly',true); // ("readonly", "true"); ?
       }
     }
   });

@@ -105,6 +105,15 @@ Security::checkValidNumeric($plannedWork);
 if (! array_key_exists('assignmentComment',$_REQUEST)) {
   throwError('assignmentComment parameter not found in REQUEST');
 }
+
+//gautier #1742
+if (array_key_exists('attendantIsOptional',$_REQUEST)) {
+  $optional = $_REQUEST['attendantIsOptional'];
+  if($optional == 'on'){
+    $optional = 1;
+  }
+}
+
 //$comment=htmlEncode($_REQUEST['assignmentComment']);
 $comment=$_REQUEST['assignmentComment']; // Must not escape : will be done on display
 
@@ -148,7 +157,9 @@ if (! $oldCost and $cost and $assignment->realWork) {
 	}
 	$assignment->realCost=$assignment->realWork*$assignment->dailyCost;
 }
-
+if(isset($optional)){
+  $assignment->optional=$optional;
+}
 $result=$assignment->save();
 
 

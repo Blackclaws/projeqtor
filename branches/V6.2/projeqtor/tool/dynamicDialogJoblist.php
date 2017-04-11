@@ -201,12 +201,23 @@ $status = array('done' => '#a5eda5',
 														<td style="width:3px;">&nbsp;</td>
                             <td style="width:25px;">
                               <?php
+                              $creationDate=$lineVal->creationDate;
+                              if (!$creationDate) { // Will determine expected target date from other data
+                              	$pe=$objectClass.'PlanningElement';
+                              	if (property_exists($obj, $pe) and property_exists($obj->$pe, 'plannedEndDate')) {
+                              		$creationDate=$obj->$pe->plannedEndDate;
+                              	} else if (property_exists($obj, 'actualDueDate')){
+                              		$creationDate=$obj->actualDueDate;
+                              	} else if (property_exists($obj, 'actualDueDateTime')){
+                              		$creationDate=substr($obj->actualDueDateTime,0,10);
+                              	}
+                              }
                               if($lineVal->value) {
                                   $color = $status['done'];
-                              } elseif(!is_null($lineVal->creationDate) && $lineVal->creationDate < $dToday->format('Y-m-d')) {
+                              } elseif(!is_null($creationDate) && $creationDate < $dToday->format('Y-m-d')) {
                                   $color = $status['alert'];
-                              } elseif(!is_null($lineVal->creationDate) && $line->daysBeforeWarning > 0) {
-                                  $warningDate = new DateTime($lineVal->creationDate);
+                              } elseif(!is_null($creationDate) && $line->daysBeforeWarning > 0) {
+                                  $warningDate = new DateTime($creationDate);
                                   $warningDate->modify('-'.$line->daysBeforeWarning.' days');
                                   if($warningDate->format('Y-m-d') < $dToday->format('Y-m-d')) {
                                       $color = $status['warning'];

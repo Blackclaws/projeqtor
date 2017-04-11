@@ -540,8 +540,11 @@ class PlannedWork extends GeneralWork {
             if ($profile=='FIXED' and $currentDate>$plan->validatedEndDate) {
               $changedAss=true;
               $ass->notPlannedWork=$left;
-              $plan->notPlannedWork+=$left;
-              $arrayNotPlanned[$ass->id]=$left;
+              if ($ass->optional==0) {
+                $plan->notPlannedWork+=$left;
+                $arrayNotPlanned[$ass->id]=$left;
+              }
+              
               $left=0;
               break;
             }
@@ -819,7 +822,7 @@ class PlannedWork extends GeneralWork {
    	  $pe->simpleSave();
     }
     
-    
+    $messageOn = false;
     $endTime=time();
     $endMicroTime=microtime(true);
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
@@ -830,7 +833,8 @@ class PlannedWork extends GeneralWork {
     		$ass=new Assignment($assId,true);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
-    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName; 
+    		  //$messageOn = true;
+    		  $result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName; 
     	}	
     	//$result.='</div>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';

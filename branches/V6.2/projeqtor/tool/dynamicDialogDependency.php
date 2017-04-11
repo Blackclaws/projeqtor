@@ -24,23 +24,19 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 include_once ("../tool/projeqtor.php");
-
 $id=RequestHandler::getId('id',true);
 $dep=new Dependency($id);
 $delayDep=$dep->dependencyDelay;
-debugLog($delayDep);
 $commentDep=$dep->comment;
-debugLog("voici le commentdep $commentDep");
-$typeDep=$dep->successorRefType;
 
 
 ?>
-<div class="contextMenuDiv">
+<div class="contextMenuDiv" style="height:152px;">
   <table >
     <tr>
       <td>
         <span>
-        <div class="section" style="width:180px;border-radius:5px 5px 0px 0px;">
+        <div class="section" style="width:180px;border-radius:1px 1px 0px 0px;">
           <p  style="text-align:center;color:white;height:20px;font-size:15px;"><?php echo i18n("operationUpdate");?></p>
         </div>
 			     <form dojoType="dijit.form.Form" id='dynamicRightClickDependencyForm' 
@@ -52,7 +48,7 @@ $typeDep=$dep->successorRefType;
                    constraints="{min:-999, max:999}" 
 	                 style="width:25px; text-align: right;display:inline-block;margin-left:-23px;" 
 						       value="<?php echo $delayDep;?>" />
-						   <div style="display:inline-block;margin-left:20px;">
+						   <div style="display:inline-block;margin-left:38px;">
 				          <a onclick="saveDependencyRightClick(<?php $typeDep;?>);">
                       <?php echo formatMediumButton('Save') ;?>
                   </a> 
@@ -63,26 +59,26 @@ $typeDep=$dep->successorRefType;
 
                              
 				   </form>
-				 <div class="section" style="width:180px;border-radius:5px 5px 0px 0px;"> 
-			     <p style="text-align:center;color:white;height:20px;font-size:15px;"><?php echo i18n("deleteButton");echo "&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";echo i18n("close");?></p>
-			   </div>
+
+				  <div style="width:180px;height:25px;"> 
+				    <div class="section" style="display: inline-block;width:50%;margin-left:6px;">
+			       <p style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("deleteButton");?>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a>                 		      
+			      </div>			      
+			      <div div class="section" style="display: inline-block;width:50%;margin-top:2px;margin-left:6px;"> 
+			       <p style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("close");?></a>		       	    
+	          </div>
+	          <div style="width:60px;float:right;margin-top:-25px;margin-right:-19px;">		    
+	           <a style="margin-left:25%;"><?php echo formatMediumButton('Remove') ;?></a>	
+	           <a style="margin-left:25%;"><?php echo formatMediumButton('Mark') ;?></a>
+	          </div>
+			    </div> 
+			    	
+			    
+			    
 			 </span>
 			</td>
 		</tr>
     <span></span>
-		<tr>
-			<td align="center"><input type="hidden" id="dependencyRightClick">
-			<div style="display:inline-block;">
-				<a style="width:50px;height:50px;margin-left:-50px;" onclick="removeDependencyRightClick(<?php $id;?>);">
-          <?php echo formatMediumButton('Remove') ;?>
-        </a>
-      </div>
-      <div style="display:inline-block;">
-				<a style="width:50px;height:50px;margin-right:-65px;" onclick="hideDependencyRightClick();">
-          <?php echo formatMediumButton('Mark') ;?>
-        </a> 
-      </div>     
-      </td>
-		</tr>
+
   </table>
 </div>
