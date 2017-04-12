@@ -62,6 +62,7 @@ Nous allons présenter dans ce document :
 
 .. raw:: latex
 
+    \newpage
 
 Les nouveautés
 ==============
@@ -70,8 +71,10 @@ Ceci est la première version du document.
 
 .. raw:: latex
 
+    \newpage
+    
 Modèle Vue Contrôleur(MVC)
-===========================
+==========================
  
 .. toctree::
    :maxdepth: 1
@@ -87,7 +90,7 @@ Structure du code
    Structure
    
 Technique
-=================
+=========
 
 .. toctree::
    :maxdepth: 1
@@ -95,7 +98,7 @@ Technique
    Technical
 
 Installation
-=================
+============
  
 .. toctree::
    :maxdepth: 1
@@ -103,7 +106,7 @@ Installation
    Installation
    
 Configuration
-=================
+=============
 
 .. toctree::
    :maxdepth: 1
@@ -143,20 +146,20 @@ Customisation
    Customization
 
 Créer nouvel écran
+==================
+   
+.. toctree::
+   :maxdepth: 1
+   
+   NewScreen
+  
+Modifier des icônes
 ===================
    
 .. toctree::
    :maxdepth: 1
    
-  NewScreen
-  
-Modifier des icônes
-============================
-   
-.. toctree::
-   :maxdepth: 1
-   
-  CreateIcon
+   CreateIcon
    
 Habilitations
 =============
@@ -199,7 +202,7 @@ Installer nouvelle version
    NewVersion
 
 Import
-==========================
+======
 
 .. toctree::
    :maxdepth: 1
@@ -207,7 +210,7 @@ Import
    Import
 
 Automatique Import
-==========================
+==================
  
 .. toctree::
    :maxdepth: 1
@@ -215,7 +218,7 @@ Automatique Import
    ImportAutomatic
 
 Paramètres Globaux
-==========================
+==================
  
 .. toctree::
    :maxdepth: 1
@@ -223,7 +226,7 @@ Paramètres Globaux
    GlobalParameters
 
 Backup / Restore
-==========================
+================
 
 .. toctree::
    :maxdepth: 1

@@ -5,6 +5,9 @@
 Pre-requisites :
   - http server
   - PHP server (5.2 or over)
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !! WARNING : ProjeQtOr is not compatible with PHP 7.1 !!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   - MySQL database (5 or over) or PostgreSql database (V9.1 or over)
   
   For instance, you may try to set-up an EasyPHP server, including all required elements.

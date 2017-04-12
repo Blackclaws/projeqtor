@@ -1454,10 +1454,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            </tr>
          </table>       
          
-       <div id="optional">
+       <div id="optionalAssignmentDiv">
         <table style="margin-left:143px;">
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-            <td class="dialogLabel"></td>     
+            <td class="dialogLabel">&nbsp;</td>     
             <td>
               <input dojoType="dijit.form.CheckBox" name="attendantIsOptional" id="attendantIsOptional" checked=false />
               <label style="float:none" for="attendantIsOptional" ><?php echo i18n("attendantIsOptional"); ?></label>

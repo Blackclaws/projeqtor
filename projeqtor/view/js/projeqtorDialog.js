@@ -1834,10 +1834,11 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
   dojo.byId("assignmentId").value="";
   dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
   /*gautier #1702*/
+  dijit.byId('attendantIsOptional').set('checked',false);
   if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
-    dojo.byId('optional').style.display='block';
+    dojo.byId('optionalAssignmentDiv').style.display='block';
   }else{
-    dojo.byId('optional').style.display='none';
+    dojo.byId('optionalAssignmentDiv').style.display='none';
   } 
   dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
   dijit.byId("assignmentIdRole").reset();
@@ -1886,7 +1887,7 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
 
 var editAssignmentLoading=false;
 function editAssignment(assignmentId, idResource, idRole, cost, rate,
-    assignedWork, realWork, leftWork, unit) {
+    assignedWork, realWork, leftWork, unit, optional) { 
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
@@ -1907,9 +1908,11 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   dojo.byId("assignmentId").value=assignmentId;
   dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
   if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
-    dojo.byId('optional').style.display='block';
+    dojo.byId('optionalAssignmentDiv').style.display='block';
+    dijit.byId('attendantIsOptional').set('checked',(optional==1)?true:false);
   }else{
-    dojo.byId('optional').style.display='none';
+    dojo.byId('optionalAssignmentDiv').style.display='none';
+    dijit.byId('attendantIsOptional').set('checked',false);
   } 
   dojo.byId("assignmentRefId").value=dojo.byId("id").value;
   dijit.byId("assignmentDailyCost")

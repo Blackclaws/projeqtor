@@ -247,10 +247,12 @@ foreach ($selectList as $id) {
   }
   if (property_exists($item,$pe) and is_object($item->$pe)) {
   	if ($pe_validatedStartDate and property_exists($item->$pe,'validatedStartDate')) {
-  	  $item->$pe->validatedStartDate=$pe_validatedStartDate;
+  		if (strtolower($pe_validatedStartDate)=='null') $item->$pe->validatedStartDate=null;
+  		else $item->$pe->validatedStartDate=$pe_validatedStartDate;
   	}
   	if ($pe_validatedEndDate and property_exists($item->$pe,'validatedEndDate')) {
-  		$item->$pe->validatedEndDate=$pe_validatedEndDate;
+  		if (strtolower($pe_validatedEndDate)=='null') $item->$pe->validatedEndDate=null;
+  		else $item->$pe->validatedEndDate=$pe_validatedEndDate;
   	}
   	if ($pe_pm and property_exists($item->$pe,$pm)) {
   		$item->$pe->$pm=$pe_pm;
@@ -260,10 +262,12 @@ foreach ($selectList as $id) {
   	} 
   	// KROWRY 
   	if ($pe_validatedCost and property_exists($item->$pe,'validatedCost')) {
-  	  $item->$pe->validatedCost=$pe_validatedCost;
+  	  if (strtolower($pe_validatedCost)=='null') $item->$pe->validatedCost=null;
+  		else $item->$pe->validatedCost=$pe_validatedCost;
   	}
   	if ($pe_validatedWork and property_exists($item->$pe,'validatedWork')) {
-  	  $item->$pe->validatedWork=Work::convertWork($pe_validatedWork);
+  	  if (strtolower($pe_validatedWork)=='null') $item->$pe->validatedWork=null;
+  		else $item->$pe->validatedWork=Work::convertWork($pe_validatedWork);
   	}
   }
   $resultSave=$item->save();

@@ -1307,9 +1307,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if (substr($col,-7)=="EndDate"){    
             $min='';
             $start=str_replace("EndDate", "StartDate", $col);
-            if (property_exists($obj, $start)) {
-              $min=$obj->$start;        
-            } 
+            if (property_exists($obj, $start)&& property_exists($obj->refType, "Milestone"))  {
+              $min=$obj->$start;      
+            }else{
+              $start=str_replace("EndDate", "EisDate", $col);
+              if (property_exists($obj, $start))  {
+                $min=$obj->$start;
+              }
+            }
             echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
           }
         }
@@ -3373,7 +3378,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="text-align:center;white-space:nowrap;">';
       if ($canUpdate and !$print and $workVisible) {
         echo '  <a onClick="editAssignment(' . "'" . htmlEncode($assignment->id) . "'" . ",'" . htmlEncode($assignment->idResource) . "'" . ",'" . htmlEncode($assignment->idRole) . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . htmlEncode($assignment->rate) . "'" . ",'" .
-             Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .
+             Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ",".$assignment->optional.');" ' . 'title="' . i18n('editAssignment') .
              '" > '.formatSmallButton('Edit').'</a>';
         echo '<textarea style="display:none" id="comment_assignment_' . htmlEncode($assignment->id) . '" >'.htmlEncode($assignment->comment)."</textarea>";
       }
