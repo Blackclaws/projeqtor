@@ -53,6 +53,7 @@
 .iconMenuBarItem32 { background-image: url(../img/logoSmall.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
 
 .iconMenuBarCustom16 { background-image: url(images/iconMenuBarCustom16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.iconButtonMark16 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
 .iconCollapse {

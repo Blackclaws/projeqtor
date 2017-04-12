@@ -39,7 +39,7 @@
   $listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Planning" />
-<div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer">
+<div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer" onclick="hideDependencyRightClick();">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
     <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
