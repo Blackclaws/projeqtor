@@ -2433,7 +2433,7 @@ function runScriptContextMenu(refType, refId, id) {
       detail.style.display="block";
       detail.style.width=(parseInt(bar.style.width)+202)+'px';
       detail.style.left=(bar.offsetLeft-1)+"px";
-      if ( dojo.byId('rightTableContainer').offsetHeight + dojo.byId('planningBarDetailTable').offsetHeight > (dojo.byId('rightGanttChartDIV').offsetHeight) && (line.offsetTop+25)> dojo.byId('rightTableContainer').offsetHeight ) {
+      if ( dojo.byId('planningBarDetailTable') && dojo.byId('rightTableContainer').offsetHeight + dojo.byId('planningBarDetailTable').offsetHeight > (dojo.byId('rightGanttChartDIV').offsetHeight) && (line.offsetTop+25)> dojo.byId('rightTableContainer').offsetHeight ) {
         detail.style.top=(line.offsetTop-dojo.byId('planningBarDetailTable').offsetHeight+1)+"px";  
       } else {
         detail.style.top=(line.offsetTop+22)+"px";

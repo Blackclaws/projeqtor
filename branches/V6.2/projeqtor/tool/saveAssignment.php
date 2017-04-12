@@ -107,6 +107,7 @@ if (! array_key_exists('assignmentComment',$_REQUEST)) {
 }
 
 //gautier #1742
+$optional=0;
 if (array_key_exists('attendantIsOptional',$_REQUEST)) {
   $optional = $_REQUEST['attendantIsOptional'];
   if($optional == 'on'){

@@ -1294,7 +1294,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vRightTable+=vHighlightSpecificDays;
 
-      var editDependencyDiv='<div style="position:fixed;width:40px;height:70px;display:none;z-index:99999;" id="editDependencyDiv" class="editDependencyDiv">';    
+      var editDependencyDiv='<div style="position:fixed;width:40px;height:70px;display:none;z-index:99999999999;" id="editDependencyDiv" class="editDependencyDiv">';    
       editDependencyDiv+='</div>';      
       editDependencyDiv+='<input type="hidden" name="rightClickDependencyId" id="rightClickDependencyId" />';
   
@@ -1304,6 +1304,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         //vRightTable+='<div class="ganttUnselectable" style="position: absolute; z-index:25; opacity:0.1; filter: alpha(opacity=10); width: 200px; height: 200px; left: 0px; top:0px; background-color: red"></div>';
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML='<div id="rightTableContainer" style="position:relative;"><div id="rightTableBarDetail">&nbsp;</div>'+vRightTable+'</div>';
+      dojo.byId('editDependencyDiv').addEventListener('click',function(evt){evt.stopPropagation();});
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
       dojo.parser.parse('leftGanttChartDIV');
       dojo.parser.parse('editDependencyDiv');
@@ -2121,7 +2122,6 @@ function dependencyRightClick(evt){
   /*if (dojo.byId("rightClickDependencyId")) {
     id=dojo.byId("rightClickDependencyId").value;
   }*/
-
   depNode=evt.target;
   id=depNode.getAttribute('dependencyid');
   console.log('id='+id);
@@ -2132,8 +2132,9 @@ function dependencyRightClick(evt){
   divNode.style.top=evt.pageY+"px";
   var url = '../tool/dynamicDialogDependency.php?id='+ id;
   console.log(url);
-  loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',false,true);
+  loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',null,null);
   evt.preventDefault();
+  evt.stopPropagation();
 }
 
 
@@ -2146,7 +2147,7 @@ function removeDependencyRightClick(dependencyId,evt){
   console.log("voici le dependencyid de la function remove : "+dependencyId);
     loadContent("../tool/removeDependency.php?dependencyId=" + dependencyId, "planResultDiv", "",
         true, 'dependency');
-
+  hideDependencyRightClick();
 }
 
 function saveDependencyRightClick() {
@@ -2162,6 +2163,7 @@ function saveDependencyRightClick() {
   loadContent("../tool/saveDependencyRightClick.php", "planResultDiv", "dynamicRightClickDependencyForm",
       true, 'dependency');
   dijit.byId('dialogDependency').hide();
+  hideDependencyRightClick();
 }
 
 function highlightDependency(event) { 
