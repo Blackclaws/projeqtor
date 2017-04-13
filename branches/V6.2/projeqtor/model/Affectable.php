@@ -178,6 +178,7 @@ class Affectable extends SqlElement {
       if ($nullIfEmpty) {
         return null;
       } else {
+      	return 'letter#'.$affId;
         if ($withoutUrlExtra) {
           return "../view/img/Affectable/thumb$size.png";
         } else {

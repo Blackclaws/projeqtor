@@ -33,6 +33,8 @@ class PlanningElementBaseline extends PlanningElement {
   public $idBaseline;
   public $_noHistory;
   
+  private static $_fieldsAttributes=array();
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -147,7 +149,7 @@ class PlanningElementBaseline extends PlanningElement {
    */
   public function save() {  	
   	// Get old element (stored in database) : must be fetched before saving
-    $old=new PlanningElement($this->id);
+    $old=new PlanningElementBaseline($this->id);
     if (! $this->idProject) {
       if ($this->refType=='Project') {
         $this->idProject=$this->refId;
@@ -197,7 +199,7 @@ class PlanningElementBaseline extends PlanningElement {
     $topElt=null;
     if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
       $crit=array("refType"=>$this->topRefType, "refId"=>$this->topRefId);
-      $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+      $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline',$crit);
       if ($topElt) {
         $this->topId=$topElt->id;
         $topElt->elementary=0;        
@@ -212,7 +214,7 @@ class PlanningElementBaseline extends PlanningElement {
       $wbs="";
       //if ( $this->topId and trim($this->topId)!='') {
       if ($topElt) {
-        //$elt=new PlanningElement($this->topId);
+        //$elt=new PlanningElementBaseline($this->topId);
         $wbs=$topElt->wbs . ".";
         $crit=" topId=" . Sql::fmtId($this->topId);
       } else {
@@ -300,7 +302,7 @@ class PlanningElementBaseline extends PlanningElement {
     
     // update topObject
     if ($topElt) {
-      if ($topElt->refId) {
+      if ($topElt->refId and $topElt->refType) {
         if (! self::$_noDispatch) {
           $topElt->save();   
       	} else {
@@ -325,8 +327,10 @@ class PlanningElementBaseline extends PlanningElement {
     	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
-        $refObj->sortOrder=$this->wbsSortable;
-        $subRes=$refObj->saveForced(true);
+        if ($refObj and $refObj->id) {
+          $refObj->sortOrder=$this->wbsSortable;
+          $subRes=$refObj->saveForced(true);
+        }
       }
     }
     // remove existing planned work (if any)
@@ -346,7 +350,7 @@ class PlanningElementBaseline extends PlanningElement {
       $this->setDoneOnNoLeftWork('save');
     }
     if ($old->topId!=$this->topId  and ! self::$_noDispatch) { // This renumbering is to avoid holes in numbering
-    	$pe=new PlanningElement($old->topId);
+    	$pe=new PlanningElementBaseline($old->topId);
     	$pe->renumberWbs();
     }
     return $result;
@@ -537,12 +541,12 @@ class PlanningElementBaseline extends PlanningElement {
         $plannedEndDate=$ass->plannedEndDate;
       }      
     }
-    // Add data from other planningElements dependant from this one
+    // Add data from other PlanningElementBaselines dependant from this one
     if (! $this->elementary) {
       $critPla=array("topId"=>$this->id);
-      $planningElement=new PlanningElement();
-      $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
-      // Add data from other planningElements dependant from this one    
+      $PlanningElementBaseline=new PlanningElementBaseline();
+      $plaList=$PlanningElementBaseline->getSqlElementsFromCriteria($critPla, false);
+      // Add data from other PlanningElementBaselines dependant from this one    
       foreach ($plaList as $pla) {
         $assignedWork+=$pla->assignedWork;
         $leftWork+=$pla->leftWork;
@@ -618,28 +622,7 @@ class PlanningElementBaseline extends PlanningElement {
 	    }
     }
   }
-  
-   /** =========================================================================
-   * Update the synthesis Data (work).
-   * Called by sub-element (assignment, ...) 
-   * @param $col the nale of the property
-   * @return a boolean 
-   */
-  public static function updateSynthesis ($refType, $refId) { 
-    $crit=array("refType"=>$refType, "refId"=>$refId);
-    $obj=SqlElement::getSingleSqlElementFromCriteria($refType.'PlanningElement', $crit);
-    if (! $obj or ! $obj->id) {
-      $obj=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-    }
-    if ($obj) {
-    	$method='updateSynthesis'.$refType;
-    	if (method_exists($obj,$method )) {
-    		return $obj->$method();
-    	} else {
-        return $obj->updateSynthesisObj();
-    	}
-    }
-  } 
+   
   
     /**
    * Delete object 
@@ -655,7 +638,7 @@ class PlanningElementBaseline extends PlanningElement {
     $topElt=null;
     if ( $refId and trim($refId)!='') {
       $crit=array("refType"=>$refType, "refId"=>$refId);
-      $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+      $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline',$crit);
       if ($topElt  and $topElt->id) {
       	if ($topElt->refId) {
           $topElt->save();
@@ -664,7 +647,7 @@ class PlanningElementBaseline extends PlanningElement {
       }
     }
     if ($this->topId) { // This renumbering is to avoid holes in numbering
-      $pe=new PlanningElement($this->topId);
+      $pe=new PlanningElementBaseline($this->topId);
       $pe->renumberWbs();
     }
     
@@ -724,7 +707,7 @@ class PlanningElementBaseline extends PlanningElement {
   
   public function controlHierarchicLoop($parentType, $parentId) {
     $result="";
-    $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>$parentType,'refId'=>$parentId));
+    $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline',array('refType'=>$parentType,'refId'=>$parentId));
     $parentList=$parent->getParentItemsArray();
     if (array_key_exists('#' . $this->id,$parentList)) {
       $result='<br/>' . i18n('errorHierarchicLoop');
@@ -752,7 +735,7 @@ class PlanningElementBaseline extends PlanningElement {
     // V2.1 refactoring of function
     $result=array();
     if ($this->topId) {
-      $parent=new PlanningElement($this->topId);
+      $parent=new PlanningElementBaseline($this->topId);
       $result=$parent->getParentItemsArray();
       $result['#' . $parent->id]=$parent;
     }
@@ -784,7 +767,7 @@ class PlanningElementBaseline extends PlanningElement {
     $dep=new Dependency();
     $depList=$dep->getSqlElementsFromCriteria($crit, false);
     foreach ($depList as $dep) {
-      $elt=new PlanningElement($dep->predecessorId);
+      $elt=new PlanningElementBaseline($dep->predecessorId);
       if ($elt->id and ! array_key_exists('#' . $elt->id, $result)) {
         $result['#' . $elt->id]=$elt;
         $resultPredecessor=$elt->getPredecessorItemsArray();
@@ -805,10 +788,10 @@ class PlanningElementBaseline extends PlanningElement {
       return $dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false);
     }
     // Include parents successsors
-    $testParent=new PlanningElement($idCurrent);
+    $testParent=new PlanningElementBaseline($idCurrent);
     $resultList=$dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false,null, null, true);
     while ($testParent->topId) {
-      $testParent=new PlanningElement($testParent->topId);
+      $testParent=new PlanningElementBaseline($testParent->topId);
       $list=$dep->getSqlElementsFromCriteria(array("successorId"=>$testParent->id),false,null, null, true);
       $resultList=array_merge($resultList,$list);
     }
@@ -841,7 +824,7 @@ class PlanningElementBaseline extends PlanningElement {
     $dep=new Dependency();
     $depList=$dep->getSqlElementsFromCriteria($crit, false);
     foreach ($depList as $dep) {
-      $elt=new PlanningElement($dep->successorId);
+      $elt=new PlanningElementBaseline($dep->successorId);
       if ($elt->id and ! array_key_exists('#' . $elt->id, $result)) {
         $result['#' . $elt->id]=$elt;
         $resultSuccessor=$elt->getSuccessorItemsArray();
@@ -858,7 +841,7 @@ class PlanningElementBaseline extends PlanningElement {
     $task=null;
     
     $checkClass=get_class($this);
-    if (SqlElement::is_a($this, 'PlanningElement')) {
+    if (SqlElement::is_a($this, 'PlanningElementBaseline')) {
       $checkClass=$this->refType;
     }
     $right=securityGetAccessRightYesNo('menu' . $checkClass, 'update', $this);
@@ -870,7 +853,7 @@ class PlanningElementBaseline extends PlanningElement {
       return $returnValue;
     }
     
-    $dest=new PlanningElement($destId);
+    $dest=new PlanningElementBaseline($destId);
     if ($dest->topRefType!=$this->topRefType
     or $dest->topRefId!=$this->topRefId) {
       $objectClass=$this->refType;
@@ -937,7 +920,7 @@ class PlanningElementBaseline extends PlanningElement {
     if ($status=="OK" and $task and !$recursive) {
     	$resultTask=$task->save();
     	if (stripos($resultTask,'id="lastOperationStatus" value="OK"')>0 ) {
-    		$pe=new PlanningElement($this->id);
+    		$pe=new PlanningElementBaseline($this->id);
     		$pe->moveTo($destId,$mode,true);
     		$returnValue=i18n('moveDone');
       } else {
@@ -979,9 +962,9 @@ class PlanningElementBaseline extends PlanningElement {
   			$status="OK";
   		}
   		if ($top and $status=="OK") {
-  			$pe=new PlanningElement($this->id);
+  			$pe=new PlanningElementBaseline($this->id);
   			$crit=array('refType'=>get_class($top),'refId'=>$top->id);
-  			$peTop=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+  			$peTop=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline', $crit);
   			echo $pe->moveTo($peTop->id,"after");
   		}
   	} else { // $way=="increase"
@@ -1043,14 +1026,14 @@ class PlanningElementBaseline extends PlanningElement {
   
   public static function getWorkVisibiliy($profile) {
     if (! self::$staticWorkVisibility or ! isset(self::$staticWorkVisibility[$profile]) ) {
-      $pe=new PlanningElement();
+      $pe=new PlanningElementBaseline();
       $pe->setVisibility($profile);
     }
     return self::$staticWorkVisibility[$profile];
   }
   public static function getCostVisibiliy($profile) {
     if (! self::$staticCostVisibility or ! isset(self::$staticCostVisibility[$profile]) ) {
-      $pe=new PlanningElement();
+      $pe=new PlanningElementBaseline();
       $pe->setVisibility($profile);
     }
     return self::$staticCostVisibility[$profile];
@@ -1163,7 +1146,7 @@ class PlanningElementBaseline extends PlanningElement {
       $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false, 
       $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
     self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
-    $pe=new PlanningElement();
+    $pe=new PlanningElementBaseline();
     $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
     foreach ($list as $pe) { // each planning element corresponding to item to copy
       if ($pe->refType!='Activity' and $pe->refType!='Project' and $pe->refType!='Milestone') continue;
@@ -1207,7 +1190,7 @@ class PlanningElementBaseline extends PlanningElement {
   static function copyStructureFinalize() {
     self::$_noDispatch=false;
     // Update synthesys for non elementary item (will just be done once ;)
-    foreach (PlanningElement::$_noDispatchArray as $pe) {
+    foreach (PlanningElementBaseline::$_noDispatchArray as $pe) {
       $method='updateSynthesis'.$pe->refType;
       if (method_exists($pe,$method )) {
         $res=$pe->$method();
@@ -1235,7 +1218,7 @@ class PlanningElementBaseline extends PlanningElement {
         $dep->predecessorRefType=get_class($to);
         $dep->predecessorRefId=$to->id;
         $crit=array('refType'=>get_class($to), 'refId'=>$to->id);
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline', $crit);
         $dep->predecessorId=$pe->id;
       }
       if (array_key_exists($dep->successorRefType . "#" . $dep->successorRefId, self::$_copiedItems) ) {
@@ -1243,7 +1226,7 @@ class PlanningElementBaseline extends PlanningElement {
         $dep->successorRefType=get_class($to);
         $dep->successorRefId=$to->id;
         $crit=array('refType'=>get_class($to), 'refId'=>$to->id);
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElementBaseline', $crit);
         $dep->successorId=$pe->id;
       }
       $dep->id=null;

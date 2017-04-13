@@ -230,7 +230,7 @@ class OpportunityMAin extends SqlElement {
   public function save() {
     if ($this->impactCost and $this->idLikelihood) {
       $likelihood=new Likelihood($this->idLikelihood);
-      $this->projectReserveAmount=round($this->impactCost*$likelihood->valuePct/100,2);
+      $this->projectReserveAmount=round($this->impactCost*$likelihood->valuePct/100,0);
     } else {
       $this->projectReserveAmount=0;
     }

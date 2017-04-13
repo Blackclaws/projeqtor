@@ -71,6 +71,14 @@
       $type=new $typeClass($idType);
       $planningModeName='id'.$className.'PlanningMode';
       echo $type->$planningModeName;
+      debugLog($planningModeName);
+    } else if ($type=='defaultPriority') {
+      $idType=RequestHandler::getId('idType');
+      $className=RequestHandler::getClass('objectClass');
+      $typeClass=$className.'Type';
+      $type=new $typeClass($idType);
+      $planningPriority='priority';
+      echo $type->$planningPriority;
     } else if ($type=='restrictedTypeClass') {
       $idProjectType=RequestHandler::getId('idProjectType');
       $idProject=RequestHandler::getId('idProject');

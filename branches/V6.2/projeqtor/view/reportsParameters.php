@@ -274,7 +274,7 @@ foreach ($listParam as $param) {
     $defaultValue=($param->defaultValue=='true' or $param->defaultValue=='1')?true:false;
 ?>
     <tr>
-    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label style="white-space:nowrap"><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <div dojoType="dijit.form.CheckBox" type="checkbox" 
       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"

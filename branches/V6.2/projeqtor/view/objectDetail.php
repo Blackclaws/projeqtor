@@ -1307,7 +1307,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if (substr($col,-7)=="EndDate"){    
             $min='';
             $start=str_replace("EndDate", "StartDate", $col);
-            if (property_exists($obj, $start)&& property_exists($obj->refType, "Milestone"))  {
+            if (property_exists($obj, $start)&& property_exists($obj,'refType') && $obj->refType!="Milestone")  {
               $min=$obj->$start;      
             }else{
               $start=str_replace("EndDate", "EisDate", $col);
