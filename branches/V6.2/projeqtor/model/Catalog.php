@@ -62,6 +62,7 @@ class Catalog extends SqlElement {
       "description"=>"required",
       "idCatalogType"=>"required",
       "unitCost"=>"nobr",
+  		"idMeasureUnit"=>""
   );
   /** ==========================================================================
    * Constructor

@@ -9,7 +9,7 @@ Gestion des paramètres
 **Caption**                                        | **Description**                                                      **Variable name**     
                
 Databasetype                                       | Le type de base de données.Les valeurs
-                                                   | possible sont 'mysql' et 'pgsql'                                     $paramDbType
+                                                   | possibles sont 'mysql' et 'pgsql'                                     $paramDbType
                        
 DatabaseHost                                       | Nom du serveur MySql ou PostgreSql ('localhost' par défaut).
                                                    | Si votre base de données n'écoute pas le port par défaut,

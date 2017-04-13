@@ -55,7 +55,7 @@ class CronExecution extends SqlElement {
   }
 
   public function save($withRelaunch=true) {
-    parent::save();
+    return parent::save();
   }
   
   public function calculNextTime(){

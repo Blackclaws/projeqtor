@@ -22,7 +22,11 @@ CREATE INDEX `subscriptionReference` ON `${prefix}subscription` (`refType`,`refI
 
 INSERT INTO `${prefix}checklistable` (`id`, `name`, `idle`) VALUES 
 (17, 'ProductVersion', '0'),
-(18, 'ComponentVersion', '0');
+(18, 'ComponentVersion', '0'),
+(19, 'Product', '0'),
+(20, 'Component', '0'),
+(21, 'Incoming', '0'), 
+(22, 'Deliverable', '0');
 
 INSERT INTO `${prefix}linkable` (`id`, `name`, `idle`, `idDefaultLinkable`) VALUES 
 (23, 'Bill', '0', '18');
@@ -34,10 +38,10 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (1,'subscription','4'),
 (3,'subscription','3');
 
-ALTER TABLE `${prefix}accessscope` ADD `specific` int(1) unsigned DEFAULT 1;
+ALTER TABLE `${prefix}accessscope` ADD `isSpecific` int(1) unsigned DEFAULT 1;
 ALTER TABLE `${prefix}accessscope` ADD `nameSpecific` varchar(100) DEFAULT null;
-UPDATE `${prefix}accessscope` set `specific`=0 WHERE accessCode='RES';
-UPDATE `${prefix}accessscope` set `nameSpecific`=replace(`name`,'accessScope','accessScopeSpecific') WHERE `specific`=1;
+UPDATE `${prefix}accessscope` set `isSpecific`=0 WHERE accessCode='RES';
+UPDATE `${prefix}accessscope` set `nameSpecific`=replace(`name`,'accessScope','accessScopeSpecific') WHERE `isSpecific`=1;
 UPDATE `${prefix}habilitationother` set `rightAccess`=2 WHERE `rightAccess`=5 and `scope` in ('imputation','workValid','diary');
 
 ALTER TABLE `${prefix}statusmail` ADD `mailToSubscribers` int(1) unsigned DEFAULT 0;
@@ -67,7 +71,7 @@ ADD idCatalog int(12) unsigned DEFAULT NULL;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
 (174, 'menuCatalog', 152, 'object', 286, 'Project', 0, 'Financial'),
-(175, 'menuCatalogType', 79, 'object', 935, 'ReadWriteType', 0, 'Type');
+(175, 'menuCatalogType', 79, 'object', 858, 'ReadWriteType', 0, 'Type');
 
 INSERT INTO ${prefix}habilitation (idProfile, idMenu, allowAccess) VALUES 
 (1, 174, 1),
@@ -109,3 +113,17 @@ ALTER TABLE `${prefix}project` CHANGE `creationDate` `creationDate` date;
 ALTER TABLE `${prefix}callfortender` CHANGE `creationDate` `creationDate` date;
 ALTER TABLE `${prefix}tender` CHANGE `creationDate` `creationDate` date;
 ALTER TABLE `${prefix}organization` CHANGE `creationDate` `creationDate` date;
+
+ALTER TABLE `${prefix}planningelement` CHANGE `totalAssignedCost` `totalAssignedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}planningelement` CHANGE `totalPlannedCost` `totalPlannedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}planningelement` CHANGE `totalRealCost` `totalRealCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}planningelement` CHANGE `totalLeftCost` `totalLeftCost`DECIMAL(12,2);
+ALTER TABLE `${prefix}planningelement` CHANGE `totalValidatedCost` `totalValidatedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}planningelement` CHANGE `reserveAmount` `reserveAmount` DECIMAL(12,2) DEFAULT 0;
+
+ALTER TABLE `${prefix}budgetelement` CHANGE `totalAssignedCost` `totalAssignedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}budgetelement` CHANGE `totalPlannedCost` `totalPlannedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}budgetelement` CHANGE `totalRealCost` `totalRealCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}budgetelement` CHANGE `totalLeftCost` `totalLeftCost`DECIMAL(12,2);
+ALTER TABLE `${prefix}budgetelement` CHANGE `totalValidatedCost` `totalValidatedCost` DECIMAL(12,2);
+ALTER TABLE `${prefix}budgetelement` CHANGE `reserveAmount` `reserveAmount` DECIMAL(12,2) DEFAULT 0;

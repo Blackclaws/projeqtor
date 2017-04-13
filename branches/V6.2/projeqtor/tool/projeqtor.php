@@ -929,7 +929,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
   $user=getSessionUser();
   $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
-  $paramMailSender = $senderMailAdmin;
+  //$paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   $paramMailSmtpServer = Parameter::getGlobalParameter ( 'paramMailSmtpServer' );
   $paramMailSmtpPort = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );
@@ -1062,7 +1062,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
   // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
   $user=getSessionUser();
   $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
-  $paramMailSender = $senderMailAdmin;
+  //$paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   error_reporting ( E_ERROR );
   $debug = false; // set to FALSE in production code
@@ -1283,7 +1283,7 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
   // The user is stored in session , if you try to changed email of the admin , you need to disconnect/reconnect for have the new email in sender
   $user=getSessionUser();
   $senderMailAdmin=($user->email)?$user->email:$paramMailSender;
-  $paramMailSender = $senderMailAdmin;
+  //$paramMailSender = $senderMailAdmin;
   $paramMailReplyTo = Parameter::getGlobalParameter ( 'paramMailReplyTo' );
   $paramMailSmtpServer = Parameter::getGlobalParameter ( 'paramMailSmtpServer' );
   $paramMailSmtpPort = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );

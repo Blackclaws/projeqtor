@@ -35,12 +35,12 @@ class AccessScopeSpecific extends AccessScope {
   public $name;
   public $nameNonSpecific;
   public $accessCode;
-  public $specific;
+  public $isSpecific;
   public $sortOrder=0;
   public $idle;
   
   public $_isNameTranslatable = true;
-  private static $_databaseCriteria = array('specific'=>'1');
+  private static $_databaseCriteria = array('isSpecific'=>'1');
   private static $_databaseTableName = 'accessscope';
   private static $_databaseColumnName = array('name'=>'nameSpecific','nameNonSpecific'=>'name');
 
