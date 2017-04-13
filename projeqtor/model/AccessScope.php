@@ -34,7 +34,7 @@ class AccessScope extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $accessCode;
-  public $specific;
+  public $isSpecific;
   public $sortOrder=0;
   public $idle;
   

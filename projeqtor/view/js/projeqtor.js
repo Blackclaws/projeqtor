@@ -2834,6 +2834,9 @@ function globalSave() {
   } else if (dijit.byId('dialogRestrictTypes')
       && dijit.byId('dialogRestrictTypes').open) {
     var button = dijit.byId('dialogRestrictTypesSubmit');
+  } else if (dojo.byId("editDependencyDiv") && dojo.byId("editDependencyDiv").style.display=="block") {
+    dojo.byId("dependencyRightClickSave").click();
+    return;
   } else {
     dojo.query(".projeqtorDialogClass").forEach(
         function(node, index, nodelist) {
@@ -3810,8 +3813,8 @@ function setDefaultPriority(typeValue) {
     handleAs : "text",
     load : function(data) {
       var objClass = dojo.byId('objectClass').value;
-      var planningMode = objClass + "PlanningElement_priority" ;
-      dijit.byId(planningMode).set('value', data);
+      var planningPriority = objClass + "PlanningElement_priority" ;
+      dijit.byId(planningPriority).set('value', data);
     }
   });
 }

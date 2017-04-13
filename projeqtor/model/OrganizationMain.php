@@ -256,8 +256,13 @@ class OrganizationMain extends SqlElement {
         $bec->totalLeftCost-=$sub->totalLeftCost;
         $bec->totalPlannedCost-=$sub->totalPlannedCost;
       }
+      
     }
-
+    if ($bec->expenseValidatedAmount<0) $bec->expenseValidatedAmount=0;
+    if ($bec->expenseAssignedAmount<0) $bec->expenseAssignedAmount=0;
+    if ($bec->expenseRealAmount<0) $bec->expenseRealAmount=0;
+    if ($bec->expenseLeftAmount<0) $bec->expenseLeftAmount=0;
+    if ($bec->expensePlannedAmount<0) $bec->expensePlannedAmount=0;
     $bec->save();
   }
   

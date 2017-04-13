@@ -43,7 +43,7 @@ if (is_dir($classDir)) {
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
         and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType' and $class!='Security'
-        and substr($class,-4)!='Main' and $class!='_securityCheck'
+        and substr($class,-4)!='Main' and $class!='_securityCheck' and $class!='RequestHandler'
         //and $class>='Ti' // and $class<'B' 
         ){
           debugTraceLog("Test for class $class");
@@ -61,46 +61,53 @@ testSummary();
 
 function testObject($obj) {
 	testTitle(get_class($obj));
+	$arrayUpdateOnly=array('KpiDefinition');
  //return;
 	//Sql::beginTransaction();
 	
-	testSubTitle('Create');
-	$obj=fillObj($obj);
-	$res=$obj->save();
-	testResult($res, testCheck($res,'insert'));
+	if (! in_array(get_class($obj),$arrayUpdateOnly)) {
+		testSubTitle('Create');
+	  $obj=fillObj($obj);
+	  $res=$obj->save();
+	  testResult($res, testCheck($res,'insert'));
+	} 
 	
 	testSubTitle('Update');
-	$obj=fillObj($obj);
+	if (! in_array(get_class($obj),$arrayUpdateOnly)) {
+	  $obj=fillObj($obj);
+	} else {
+		$cls=get_class($obj);
+		$obj=new $cls(1);
+		$obj->name="x".substr($obj->name,0,99);
+	}
 	$res=$obj->save();
   testResult($res, testCheck($res,'update'));
 	
-	testSubTitle('Delete');
-	if (get_class($obj)=='Activity') {
-		$ass=new Assignment();
-		Sql::query("DELETE FROM ".$ass->getDatabaseTableName()." where refType='Activity' and refId=".$obj->id);
+  if (! in_array(get_class($obj),$arrayUpdateOnly)) {
+		testSubTitle('Delete');
+		if (get_class($obj)=='Activity') {
+			$ass=new Assignment();
+			Sql::query("DELETE FROM ".$ass->getDatabaseTableName()." where refType='Activity' and refId=".$obj->id);
+		}
+		
+	  $res=$obj->delete();
+    testResult($res, testCheck($res,'delete'));
 	}
-	$res=$obj->delete();
-  testResult($res, testCheck($res,'delete'));
-	
 	//Sql::commitTransaction();
 }
 
 function fillObj($obj) {
   $dbCrit=$obj->getDatabaseCriteria();
+  $id=($obj->id)?2:1;
 	foreach($obj as $fld=>$val){
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
 		$num=(substr($fld,0,4)=='real' and substr(get_class($obj),-7)!='Expense')?0:(($obj->id)?2:1);
-		$bool=($obj->id)?0:1;
-		$id=($obj->id)?2:1;
+		$bool=($obj->id)?0:1;	
 		for ($i=1;$i<=4;$i++) {$var.=$var;}
 		$dbType=$obj->getDataType($fld);
 		$dbLength=$obj->getDataLength($fld);		
 		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase') {
 			// Nothing => would lead to invalid controls
-		} else if (isset($dbCrit[$fld])) {
-			// Nothing : field is a database criteria : will be set automatically	
-		} else if (substr($fld,0,1)=='_') {
-			// Nothing
 		} else if ($fld=='refType' or $fld=='originType') {
 			$pos=strpos(get_class($obj),'PlanningElement');
 			if ($pos>0) {
@@ -108,6 +115,10 @@ function fillObj($obj) {
 			} else {
 			  $obj->$fld='Project';
 			}
+		} else if (isset($dbCrit[$fld])) {
+			// Nothing : field is a database criteria : will be set automatically	
+		} else if (substr($fld,0,1)=='_') {
+			// Nothing
 		} else if ($fld=='refId') {
 			$obj->$fld='3999999999';
 		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
@@ -120,6 +131,8 @@ function fillObj($obj) {
 			}
 		} else if ($obj->id and $fld=='idBill') {
 			$obj->$fld=null;
+	  } else if ($obj->id and $fld=='done' and (get_class($obj)=='Bill' or get_class($obj)=='BillNotPaid')) {
+				$obj->$fld=0;	
 		} else if ($fld=='wbs' or $fld=='wbsSortable') {
 			$obj->$fld=null;
 		} else if ($fld=='predecessorRefType') {
@@ -132,6 +145,11 @@ function fillObj($obj) {
 			$obj->$fld=0;
 		} else if ($dbType=='int' and $dbLength==12 and substr($fld,0,2)=='id' and $fld!='id') {
       $obj->$fld=$id;
+      if (substr(get_class($obj),-9)=='Structure') $id++;
+      if ($fld=='idBill' and get_class($obj)=='Payment') $obj->$fld=null;
+      if ($fld=='idTicket') $obj->$fld=null;
+      if ($fld=='idTestSession') $obj->$fld=null;
+      if (get_class($obj)=='VersionProject') $obj->$fld+=99;
 		} else if (($dbType=='int' or $dbType=='decimal') and $fld!='id') {
       $obj->$fld=($dbLength=='1')?$bool:$num;
     } else if (($dbType=='date' )) {
@@ -139,6 +157,7 @@ function fillObj($obj) {
     } else if (($dbType=='datetime' ) || ($dbType=='timestamp' )) {
       $obj->$fld=date('Y-m-d H:i:s');
 		}
+		if (substr($fld,-6)=='Amount' and $obj->$fld<0) $obj->$fld=0;
 	}
 	return $obj;
 }

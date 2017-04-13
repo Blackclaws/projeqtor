@@ -31,7 +31,7 @@ $commentDep=$dep->comment;
 
 
 ?>
-<div class="contextMenuDiv" style="height:135px;">
+<div class="contextMenuDiv" style="height:135px;z-index:99999999999;">
   <table >
     <tr>
       <td>
@@ -59,21 +59,17 @@ $commentDep=$dep->comment;
 	                 style="width:25px; text-align: right;display:inline-block;margin-left:-23px;" 
 						       value="<?php echo $delayDep;?>" />
 						   <div style="display:inline-block;margin-left:38px;">
-				          <a onclick="saveDependencyRightClick(<?php $typeDep;?>);">
+				          <a id="dependencyRightClickSave" onclick="saveDependencyRightClick(<?php $typeDep;?>);">
                       <?php echo formatMediumButton('Save') ;?>
                   </a> 
                </div>   
 					     <label for="commentDependency" style="text-align: left;"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
 					     <input id="commentDependency" name="commentDependency"  dojoType="dijit.form.Textarea"
-						             value="<?php echo $commentDep;?>" />
-
-                             
+						             value="<?php echo $commentDep;?>" />                        
 				   </form>
 
 				  <div style="width:180px;height:25px;"> 
-				    <div class="section" style="display: inline-block;width:70%;margin-left:6px;">
-			       <p style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("deleteButton");?></a>                 		      
-			      </div>			 
+				     <label for="commentDependency" style="height:25px;margin-top:7px;"><?php echo i18n("deleteButton");?>&nbsp;:&nbsp;</label>               		      		 
 	          <div style="float:right;>		 
 	           <ul>   
 	             <li style="list-style: none;">

@@ -503,7 +503,6 @@ class MeetingMain extends SqlElement {
     $vcal .= "END:VALARM\r\n";*/
     $vcal .= "END:VEVENT\r\n";
     $vcal .= "END:VCALENDAR\r\n";
-    //$sender=($user->email)?$user->email:$paramMailSender;
     $sender=$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
     $headers = "From: $sender\r\n";

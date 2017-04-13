@@ -751,11 +751,15 @@
                   $size=substr($formatter[$numField],9);
                   $radius=round($size/2,0);
                   $thumbUrl=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$numField],9),false, ($outMode=='pdf')?true:false);
-                  $disp='<div style="text-align:left;">';
-                  $disp.='<img style="border-radius:'.$radius.'px;height:'.$size.'px;float:left" src="'.$thumbUrl.'"';
-                  $disp.='/>';
-                  $disp.='<div style="margin-left:'.($size+2).'px;">'.$val.'</div>';
-                  $disp.='</div>';
+                  if (substr($thumbUrl,0,6)=='letter') {
+                    $disp.=formatLetterThumb($line['id'.$nameClass],$size).'&nbsp;'.$val;
+                  } else {
+	                  $disp='<div style="text-align:left;">';
+	                  $disp.='<img style="border-radius:'.$radius.'px;height:'.$size.'px;float:left" src="'.$thumbUrl.'"';
+	                  $disp.='/>';
+	                  $disp.='<div style="margin-left:'.($size+2).'px;">'.$val.'</div>';
+	                  $disp.='</div>';
+                  }
                 } else {
                   $disp="";
                 }
@@ -834,7 +838,7 @@
             	    $val="####$val";
             	  }  	  
             	} else if (Affectable::isAffectable($objectClass)) {
-            		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val);
+            		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val).'##'.strtoupper(substr(SqlList::getNameFromId('Affectable', $line['id']),0,1));
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
 	              if ($image->id and $image->isThumbable()) {

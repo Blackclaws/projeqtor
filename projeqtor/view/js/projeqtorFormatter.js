@@ -455,6 +455,7 @@ function thumbName64(value) {
   return thumb(value, 64);
 }
 function thumb(value, size) {
+  console.log(value,size);
   if (value == "##" || value == "####")
     return "";
   if (!size)
@@ -479,18 +480,37 @@ function thumb(value, size) {
   var radius=Math.round(size/2);
   var result = '';
   if (filePath) {
-    result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
-    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
-    if (filePath.substr(0,23) != '../view/img/Affectable/') {
-      result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this,null,null,\''+nocache+'\');"';
-      result+=' onMouseOut="hideBigImage();"';
+    if (filePath=='letter') {
+      var arrayColors=new Array('#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#99CC00', '#e74c3c', '#95a5a6', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d');
+      var ind=tab[1]%arrayColors.length;
+      var bgColor=arrayColors[ind]; // TODO : test if is set
+      var fontSize=(size==32)?24:((size==16)?10:15);
+      var name=tab[2];
+      var initial=tab[2].substr(0,1).toUpperCase();
+      if (tab.length>=4) initial=tab[3].toUpperCase();
+      
+      result+='<div style="line-height:24px;">';
+      result+='<span style="position:relative;line-height:20px;color:#ffffff;background-color:'+bgColor+';display:block;';
+      if (name) result+='float:left;';
+      result+='font-size:'+fontSize+'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'+(size-2)+'px;width:'+(size-2)+'px; top:1px;" >';
+      result+=initial;
+      result+='</span>';
+      result+=name;
+    } else {
+      result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
+      result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
+      if (filePath.substr(0,23) != '../view/img/Affectable/') {
+        result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this,null,null,\''+nocache+'\');"';
+        result+=' onMouseOut="hideBigImage();"';
+      }
+      result+='/>';
+      if (thumbName) {
+        // text-shadow:1px 1px #FFFFFF; Can ease view when test is over thumb, but is ugly when line is selected (when text color is white)
+        result+='<div style="margin-left:'+(size+2)+'px;line-height:20px;">'+thumbName+'</div>';
+      }
+      result+='</div>';
+      result+='</div>';
     }
-    result+='/>';
-    if (thumbName) {
-      // text-shadow:1px 1px #FFFFFF; Can ease view when test is over thumb, but is ugly when line is selected (when text color is white)
-      result+='<div style="margin-left:'+(size+2)+'px;">'+thumbName+'</div>';
-    }
-    result+='</div>';
   } else {
     result=thumbName;
   }

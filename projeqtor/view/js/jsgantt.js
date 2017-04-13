@@ -576,7 +576,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vDepend = vList[i].getDepend();
       if(vDepend) {       
         var vDependStr = vDepend + '';
-        console.log(vDependStr);
         var vDepList = vDependStr.split(',');
         var n = vDepList.length;
         for(var k=0;k<n;k++) {
@@ -2119,24 +2118,17 @@ function resizeJsHeader(event) {
 }
 
 function dependencyRightClick(evt){ 
-  /*if (dojo.byId("rightClickDependencyId")) {
-    id=dojo.byId("rightClickDependencyId").value;
-  }*/
   depNode=evt.target;
   id=depNode.getAttribute('dependencyid');
-  console.log('id='+id);
-
   var divNode=dojo.byId("editDependencyDiv");
   divNode.style.display="block";
   divNode.style.left=((evt.pageX)+7)+"px";
   divNode.style.top=evt.pageY+"px";
   var url = '../tool/dynamicDialogDependency.php?id='+ id;
-  console.log(url);
   loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',null,null);
   evt.preventDefault();
   evt.stopPropagation();
 }
-
 
 function removeDependencyRightClick(dependencyId,evt){
   if (checkFormChangeInProgress()) {
@@ -2144,7 +2136,6 @@ function removeDependencyRightClick(dependencyId,evt){
     return;
   }
   dependencyId=dojo.byId('dependencyRightClickId').value;
-  console.log("voici le dependencyid de la function remove : "+dependencyId);
     loadContent("../tool/removeDependency.php?dependencyId=" + dependencyId, "planResultDiv", "",
         true, 'dependency');
   hideDependencyRightClick();

@@ -130,8 +130,8 @@ class PlanningElement extends SqlElement {
   
   private static $predecessorItemsArray = array();
 
-  private static $staticCostVisibility=null;
-  private static $staticWorkVisibility=null;
+  protected static $staticCostVisibility=null;
+  protected static $staticWorkVisibility=null;
   public static $_noDispatch=false;
   public static $_noDispatchArray=array();
   public static $_copiedItems=array();
@@ -390,7 +390,6 @@ class PlanningElement extends SqlElement {
     if ($this->realEndDate){
       $this->plannedEndDate=$this->realEndDate;
     }
-    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -411,7 +410,7 @@ class PlanningElement extends SqlElement {
     
     // update topObject
     if ($topElt) {
-      if ($topElt->refId) {
+      if ($topElt->refId and $topElt->refType) {
         if (! self::$_noDispatch) {
           $topElt->save();   
       	} else {
@@ -421,7 +420,6 @@ class PlanningElement extends SqlElement {
       	}
       }
     }
-    
     //if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
@@ -436,8 +434,10 @@ class PlanningElement extends SqlElement {
     	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
-        $refObj->sortOrder=$this->wbsSortable;
-        $subRes=$refObj->saveForced(true);
+        if ($refObj and $refObj->id) {
+        	$refObj->sortOrder=$this->wbsSortable;
+        	$subRes=$refObj->saveForced(true);
+        }
       }
     }
     // remove existing planned work (if any)
@@ -740,12 +740,13 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   public static function updateSynthesis ($refType, $refId) { 
+  	if (!$refType or !$refId) return;
     $crit=array("refType"=>$refType, "refId"=>$refId);
     $obj=SqlElement::getSingleSqlElementFromCriteria($refType.'PlanningElement', $crit);
     if (! $obj or ! $obj->id) {
       $obj=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
     }
-    if ($obj) {
+    if ($obj and $obj->id) {
     	$method='updateSynthesis'.$refType;
     	if (method_exists($obj,$method )) {
     		return $obj->$method();
@@ -782,27 +783,32 @@ class PlanningElement extends SqlElement {
       $pe->renumberWbs();
     }
     //krowry
-    $dep=new Dependency($this->id);  
-    $critSuccessor=array( 'successorRefId'=>$this->refId,'successorRefType'=>$this->refType);
-    $lp=$dep->getSqlElementsFromCriteria($critSuccessor);
-    $critPredecessor=array('predecessorRefId'=>$this->refId,'predecessorRefType'=>$this->refType);
-    $ls=$dep->getSqlElementsFromCriteria($critPredecessor);
+    $dep=new Dependency();  
+    $critPredecessor=array('successorRefId'=>$this->refId,'successorRefType'=>$this->refType);
+    //$critPredecessor=array('successorId'=>$this->id); // Alternative
+    $lp=$dep->getSqlElementsFromCriteria($critPredecessor);
+    $critSuccessor=array('predecessorRefId'=>$this->refId,'predecessorRefType'=>$this->refType);
+    //$critSuccessor=array('predecessorId'=>$this->id); // Alternative
+    $ls=$dep->getSqlElementsFromCriteria($critSuccessor);
     if(count($ls)>0 || count($lp)>0 ){
       foreach ($lp as $depP){
         foreach ($ls as $depS){
-          $critElt=array('successorRefId'=>$depS->successorRefId,'successorRefType'=>$depS->successorRefType,'predecessorRefId'=>$depP->predecessorRefId,'predecessorRefType'=>$depP->predecessorRefType);
+          $critElt=array('successorRefType'=>$depS->successorRefType,'successorRefId'=>$depS->successorRefId,'predecessorRefType'=>$depP->predecessorRefType,'predecessorRefId'=>$depP->predecessorRefId);
           $eltLsLp=$dep->getSqlElementsFromCriteria($critElt);
-          if(!$eltLsLp){
-	          $dep->predecessorId=$depP->predecessorId;
-	          $dep->predecessorRefId=$depP->predecessorRefId;
-	          $dep->predecessorRefType=$depP->predecessorRefType;
-	          $dep->successorId=$depS->successorId;
-	          $dep->successorRefId=$depS->successorRefId;
-	          $dep->successorRefType=$depS->successorRefType;
-	          if($depS->dependencyType='E-S' && $depP->dependencyType='E-S'){
-	          $dep->dependencyType='E-S';
-	          }
-	          $dep->save();
+          //$eltLsLp=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $eltLsLp); // Alternative
+          if(count($eltLsLp)==0){
+          //if (! $eltLsLp->id) { // Alternative
+          	if($depS->dependencyType='E-S' && $depP->dependencyType='E-S'){
+          		$dp=new Dependency();
+			        $dp->predecessorId=$depP->predecessorId;
+		          $dp->predecessorRefId=$depP->predecessorRefId;
+		          $dp->predecessorRefType=$depP->predecessorRefType;
+		          $dp->successorId=$depS->successorId;
+		          $dp->successorRefId=$depS->successorRefId;
+		          $dp->successorRefType=$depS->successorRefType;
+	            $dp->dependencyType='E-S';
+	            $dp->save();
+	          }	         
           }
         }
       }
