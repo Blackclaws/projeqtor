@@ -1293,7 +1293,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vRightTable+=vHighlightSpecificDays;
 
-      var editDependencyDiv='<div style="position:fixed;width:40px;height:70px;display:none;z-index:99999999999;" id="editDependencyDiv" class="editDependencyDiv">';    
+      var editDependencyDiv='<div style="position:fixed;width:193px;height:138px;display:none;z-index:99999999999;" id="editDependencyDiv" class="editDependencyDiv">';    
       editDependencyDiv+='</div>';      
       editDependencyDiv+='<input type="hidden" name="rightClickDependencyId" id="rightClickDependencyId" />';
   
@@ -2117,13 +2117,29 @@ function resizeJsHeader(event) {
   jsHeaderResizePos=event.clientX;
 }
 
-function dependencyRightClick(evt){ 
+function dependencyRightClick(evt){
+  var divRightGanttChart=dojo.byId('rightGanttChartDIV');
+  var divRightGanttChartHeight=parseInt(divRightGanttChart.style.height);
+  var screenWidth = document.body.getBoundingClientRect().width;
+  var divRightGanttChartTop=parseInt(divRightGanttChart.offsetTop)+115;
   depNode=evt.target;
   id=depNode.getAttribute('dependencyid');
   var divNode=dojo.byId("editDependencyDiv");
+  var editDependencyDivHeight=parseInt(divNode.style.height);
+  var editDependencyDivWidth=parseInt(divNode.style.width);
   divNode.style.display="block";
   divNode.style.left=((evt.pageX)+7)+"px";
   divNode.style.top=evt.pageY+"px";
+  if(evt.pageY>divRightGanttChartHeight+divRightGanttChartTop-editDependencyDivHeight){
+    divNode.style.top=(divRightGanttChartHeight+divRightGanttChartTop-editDependencyDivHeight)+"px";
+  }else{
+    divNode.style.top=evt.pageY+"px";
+  }
+  if (evt.pageX+editDependencyDivWidth>screenWidth-10){
+    divNode.style.left=(screenWidth-10-editDependencyDivWidth)+"px";
+  } else{
+    divNode.style.left=((evt.pageX)+7)+"px";
+  }
   var url = '../tool/dynamicDialogDependency.php?id='+ id;
   loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',null,null);
   evt.preventDefault();

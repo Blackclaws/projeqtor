@@ -30,10 +30,7 @@
 */
 require_once "../tool/projeqtor.php";
 // Get the link info
-debugLog("coucou voici le debug du save");
-
 $dependencyDelay=RequestHandler::getNumeric('delayDependency',true);
-debugLog($dependencyDelay);
 $dependencyComment=RequestHandler::getValue('commentDependency',true);
 $id=RequestHandler::getId('dependencyRightClickId',true);
 

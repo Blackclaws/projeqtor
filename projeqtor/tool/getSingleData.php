@@ -71,7 +71,6 @@
       $type=new $typeClass($idType);
       $planningModeName='id'.$className.'PlanningMode';
       echo $type->$planningModeName;
-      debugLog($planningModeName);
     } else if ($type=='defaultPriority') {
       $idType=RequestHandler::getId('idType');
       $className=RequestHandler::getClass('objectClass');
