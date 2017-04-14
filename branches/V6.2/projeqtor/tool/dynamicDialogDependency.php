@@ -31,7 +31,7 @@ $commentDep=$dep->comment;
 
 
 ?>
-<div class="contextMenuDiv" style="height:135px;z-index:99999999999;">
+<div class="contextMenuDiv" id="contextMenuDiv" style="height:135px;z-index:99999999999;">
   <table >
     <tr>
       <td>

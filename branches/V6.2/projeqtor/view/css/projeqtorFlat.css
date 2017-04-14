@@ -4109,6 +4109,10 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconConfirm22 { background-image: url(customIcons/grey/iconConfirm.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconConfirm16 { background-image: url(customIcons/grey/iconConfirm.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGrey .iconContext32 { background-image: url(customIcons/grey/iconContext.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconContext22 { background-image: url(customIcons/grey/iconContext.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconContext16 { background-image: url(customIcons/grey/iconContext.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatGrey .iconContextType32 { background-image: url(customIcons/grey/iconContextType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconContextType22 { background-image: url(customIcons/grey/iconContextType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconContextType16 { background-image: url(customIcons/grey/iconContextType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }

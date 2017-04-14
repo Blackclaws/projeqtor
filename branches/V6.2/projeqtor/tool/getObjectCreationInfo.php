@@ -64,7 +64,7 @@ if (isset($_REQUEST ['destinationWidth'])) {
 }
 ?>
 <?php  if (property_exists($obj, 'idStatus') and $displayWidthButtonCI>=1000) {?>
-<div style="float:left;display:table-cell ;width:130px;height:35px;vertical-align:middle;position:relative;z-index:99999;">
+<div style="float:left;display:table-cell ;width:130px;height:35px;vertical-align:middle;position:relative;z-index:99998;">
   <div style="width:133px;height:39px;display:table-cell;padding:0px 4px;vertical-align: middle;zoom:0.9;-moz-transform: scale(0.9);overflow:hidden;position:relative;<?php if ($updateRight) echo "cursor:pointer;";?>"
   <?php if ($updateRight) {?> onClick="showDirectChangeStatus();" title="<?php echo i18n('moveStatusBar');?>" <?php }?> >
   <?php if ($obj->idStatus) {
@@ -97,6 +97,10 @@ if (isset($_REQUEST ['destinationWidth'])) {
   					$compTable[$ws->idStatusTo]="ok";
   				}
   				$table=array_intersect_key($table,$compTable);
+  			}
+  			$current=new Status($obj->idStatus,true);
+  			if ($current->isCopyStatus and isset($firstKey)) {
+  				$table[$firstKey]=$firstName;
   			}
   		} else {
   			$table=array($firstKey=>$firstName);

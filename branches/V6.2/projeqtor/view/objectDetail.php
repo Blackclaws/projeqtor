@@ -1307,7 +1307,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if (substr($col,-7)=="EndDate"){    
             $min='';
             $start=str_replace("EndDate", "StartDate", $col);
-            if (property_exists($obj, $start)&& property_exists($obj,'refType') && $obj->refType!="Milestone")  {
+            if (property_exists($obj, $start) && property_exists($obj, 'refType') && $obj->refType!="Milestone")  {
               $min=$obj->$start;      
             }else{
               $start=str_replace("EndDate", "EisDate", $col);
@@ -1711,6 +1711,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $isWork=false;
         $isDuration=false;
         $isPercent=false;
+        if (SqlElement::is_a($obj,'PlanningElement')) {
+          if ($col=='priority' and !$obj->id and $objType) {        
+            if (property_exists($objType,'priority') && $objType->priority ) {
+              $obj->priority=$objType->priority;
+              $val=$obj->priority;
+            }
+          }
+        }
         if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
           $isCost=true;
           $fieldWidth=$smallWidth;
