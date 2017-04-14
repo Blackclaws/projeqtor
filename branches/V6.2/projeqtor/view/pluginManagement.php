@@ -193,7 +193,7 @@ function displayPluginList($location) {
       echo '<td></td>';
       echo '<td class="noteData" style="text-align:center;white-space:nowrap"  >';
       echo ' <a onClick="installPlugin(\''.$file['name'].'\');" title="' . i18n('installPlugin') . '" /> '.formatSmallButton('Add').'</a>';
-      echo ' <a onClick="loadDialog(\'dialogPluginInfo\', null, true, \'&filename='.$file['name'].'\', true);" title="' . i18n('installPlugin') . '" /> '.formatSmallButton('Edit').'</a>';
+      echo ' <a onClick="loadDialog(\'dialogPluginInfo\', null, true, \'&filename='.$file['name'].'\', true);" title="' . i18n('dialogPluginInfo') . '" /> '.formatSmallButton('View').'</a>';
       echo ' <a onClick="deletePlugin(\''.$file['name'].'\');" title="' . i18n('buttonDeletePluginFile') . '"  /> '.formatSmallButton('Remove').'</a>';
       
 //      

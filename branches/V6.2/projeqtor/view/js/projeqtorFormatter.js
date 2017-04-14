@@ -488,27 +488,38 @@ function thumb(value, size) {
       var name=tab[2];
       var initial=tab[2].substr(0,1).toUpperCase();
       if (tab.length>=4) initial=tab[3].toUpperCase();
-      
-      result+='<div style="line-height:24px;">';
-      result+='<span style="position:relative;line-height:20px;color:#ffffff;background-color:'+bgColor+';display:block;';
+      if (name){
+        result+= '<div style="text-align:left">';
+      } else {
+        result+= '<div style="text-align:center">';   
+      }
+      result+='<table style="width:100%;height:100%;"><tr style="height:100%">';
+      result+='<td style="width:10px;vertical-align:middle;"><span style="position:relative;color:#ffffff;background-color:'+bgColor+';display:inline-block;';
       if (name) result+='float:left;';
       result+='font-size:'+fontSize+'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'+(size-2)+'px;width:'+(size-2)+'px; top:1px;" >';
       result+=initial;
-      result+='</span>';
-      result+=name;
+      result+='</span></td>';
+      if (name){
+        result+='<td style="width:1px">&nbsp;</td><td style="vertical-align:middle;">';
+        result+=name;
+        result+='</td>';
+      }
+      result+='</tr></table>';
+      result+='</div>';
     } else {
       result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
-      result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
+      result+='<table style="width:100%;height:100%;"><tr style="height:100%">';
+      result+='<td style="width:10px;vertical-align:middle;"><img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
       if (filePath.substr(0,23) != '../view/img/Affectable/') {
         result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this,null,null,\''+nocache+'\');"';
         result+=' onMouseOut="hideBigImage();"';
       }
-      result+='/>';
+      result+=' /></td>';
       if (thumbName) {
         // text-shadow:1px 1px #FFFFFF; Can ease view when test is over thumb, but is ugly when line is selected (when text color is white)
-        result+='<div style="margin-left:'+(size+2)+'px;line-height:20px;">'+thumbName+'</div>';
-      }
-      result+='</div>';
+        result+='<td style="width:1px">&nbsp;</td><td style="vertical-align:middle;">'+thumbName+'</td>';
+      } 
+      result+='</tr></table>';
       result+='</div>';
     }
   } else {

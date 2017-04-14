@@ -1419,6 +1419,8 @@ function finalizeMessageDisplay(destination, validationType) {
       formInitialize();
     }
   } else {
+    var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
+    loadDiv(url, 'buttonDivCreationInfo', null);
     if (validationType != 'note' && validationType != 'attachment') {
       formInitialize();
     }
@@ -3814,7 +3816,9 @@ function setDefaultPriority(typeValue) {
     load : function(data) {
       var objClass = dojo.byId('objectClass').value;
       var planningPriority = objClass + "PlanningElement_priority" ;
-      dijit.byId(planningPriority).set('value', data);
+      if(data){
+        dijit.byId(planningPriority).set('value', data);
+      }
     }
   });
 }
