@@ -72,6 +72,41 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
     }
   }
 } 
+
+$displayWidthList="9999";
+if (RequestHandler::isCodeSet('destinationWidth')) {
+  $displayWidthList=RequestHandler::getNumeric('destinationWidth');
+}
+debugLog($displayWidthList);
+
+$hideTypeSearch=false;
+$hideClientSearch=false;
+$hideNameSearch=false;
+$hideIdSearch=false;
+$hideShowIdleSearch=false;
+$referenceWidth=50;
+if ($displayWidthList<1400) {
+  $referenceWidth=40;
+  if ($displayWidthList<1200) {
+    $referenceWidth=30;
+    if ($displayWidthList<1100) {
+      $hideClientSearch=true;
+      if ($displayWidthList<900) {
+        $hideTypeSearch=true;
+        if ($displayWidthList<700) {
+          $hideIdSearch=true;
+          if ($displayWidthList<650) {
+            $hideShowIdleSearch=true;
+            if ($displayWidthList<550) {
+              $hideNameSearch=true;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
@@ -140,24 +175,26 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
         <script type="dojo/method" event="onSubmit" >
           return false;        
         </script>
+        <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
+        <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo htmlEncode($_REQUEST['objectId']);}?>" />
         <table style="width: 100%; height: 27px;">
           <tr>
+          <?php if ( ! $hideIdSearch ) { ?>
             <td style="text-align:right;" width="5px">
-              <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
-              <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo htmlEncode($_REQUEST['objectId']);}?>" />
               <span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;
               <?php echo i18n("colId");?>
               &nbsp;</span> 
             </td>
             <td width="5px">
-              <div title="<?php echo i18n('filterOnId')?>" style="width:40px" class="filterField rounded" dojoType="dijit.form.TextBox" 
+              <div title="<?php echo i18n('filterOnId')?>" style="width:<?php echo $referenceWidth;?>px" class="filterField rounded" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
 				          setTimeout("filterJsonList()",10);
                 </script>
               </div>
             </td>
-              <?php if ( property_exists($obj,'name')) { ?>
+            <?php }?>
+              <?php if ( ! $hideNameSearch and property_exists($obj,'name')) { ?>
               <td style="text-align:right;" width="5px">
                 <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colName");?>
@@ -165,14 +202,14 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
               </td>
               <td width="5px">
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
-                id="listNameFilter" name="listNameFilter" style="width:120px">
+                id="listNameFilter" name="listNameFilter" style="width:<?php echo $referenceWidth*2;?>px">
                   <script type="dojo/method" event="onKeyUp" >
                   setTimeout("filterJsonList()",10);
                 </script>
                 </div>
               </td>
               <?php }?>              
-              <?php if ( property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
+              <?php if ( !$hideTypeSearch and property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
                  <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colType");?>
@@ -181,7 +218,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
               <td width="5px">
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
-                id="listTypeFilter" name="listTypeFilter" style="width:140px">
+                id="listTypeFilter" name="listTypeFilter" style="width:<?php echo $referenceWidth*4;?>px">
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');
@@ -189,7 +226,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 </select>
               </td>
               <?php }?>   
-              <?php if ( property_exists($obj,'idClient') ) { ?>
+              <?php if ( !$hideClientSearch and property_exists($obj,'idClient') ) { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
                  <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colClient");?>
@@ -199,7 +236,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
                 <select title="<?php echo i18n('filterOnClient')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
                 data-dojo-props="queryExpr: '*${0}*',autoComplete:false"
-                id="listClientFilter" name="listClientFilter" style="width:140px">
+                id="listClientFilter" name="listClientFilter" style="width:<?php echo $referenceWidth*4;?>px">
                   <?php htmlDrawOptionForReference('idClient', $objectClient, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');
@@ -430,8 +467,8 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
               </div>&nbsp;
               </td>
               <?php }?> 
-<?php if (! $comboDetail) {?> 
-            <td style="text-align: right; width:10%; min-width:80px;white-space:normal;">
+<?php if (! $hideShowIdleSearch and ! $comboDetail) {?> 
+            <td style="text-align: right; width:10%; min-width:80px;width:150px;white-space:normal;">
               <?php echo i18n("labelShowIdle");?>
             </td>
             <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
