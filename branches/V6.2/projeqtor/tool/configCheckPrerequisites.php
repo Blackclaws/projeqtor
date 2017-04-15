@@ -101,15 +101,14 @@ function checkPrerequisites($showOK=false,$dbType=null) {
     $checkOK++;
   }
   
-//  This method was too old.
-//   // DOMDocument is required
-//   if(!function_exists('domxml_open_file')){
-//     showError("Module DOMDocument is not available - check your php configuration (php.ini)");
-//     $checkErrors++;
-//   } else {
-//     if ($showOK) showMessage("Module DOMDocument is available : OK");
-//     $checkOK++;
-//   }
+  // DOMDocument is required (XML)
+  if(! class_exists('DOMDocument')){
+    showError("Module DOMDocument is not available - check your php configuration (php.ini)");
+    $checkErrors++;
+  } else {
+    if ($showOK) showMessage("Module DOMDocument is available : OK");
+    $checkOK++;
+  }
   
   // safe_mode should be disabled
   if (ini_get ( 'safe_mode' )) {

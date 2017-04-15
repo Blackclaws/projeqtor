@@ -3006,16 +3006,16 @@ abstract class SqlElement {
 				$colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
 				$colScript .= '    }';
 			}
-			if (property_exists($this, 'done')) {
+			/*if (property_exists($this, 'done')) { // Removed : this is now driven by status
 				$colScript .= '    if (! dijit.byId("done").get("checked")) {';
 				$colScript .= '      dijit.byId("done").set("checked", true);';
 				$colScript .= '    }';
-			}
-			if (property_exists($this, 'handled')) {
+			}*/
+			/* if (property_exists($this, 'handled')) { // Removed : this is now driven by status
 				$colScript .= '    if (! dijit.byId("handled").get("checked")) {';
 				$colScript .= '      dijit.byId("handled").set("checked", true);';
 				$colScript .= '    }';
-			}
+			}*/
 			$colScript .= '  } else {';
 			if (property_exists($this, 'idleDateTime')) {
 				$colScript .= '    dijit.byId("idleDateTime").set("value", null); ';

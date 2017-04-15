@@ -360,12 +360,14 @@ class IndicatorValue extends SqlElement {
 		}*/
 		break;
   	}
-    if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime and !$this->done) {
+  	$cancelled=false;
+  	if ($obj and property_exists($obj, 'cancelled') and $obj->cancelled) $cancelled=true;
+    if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime and !$this->done and !$cancelled) {
       if (! $this->warningSent ) {
         $this->sendWarning();
       }
       $this->warningSent='1';
-    } else if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime and $this->done) {
+    } else if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime and $this->done and !$cancelled) {
       if (! $this->warningSent) {
         $this->sendWarning();
       }
@@ -373,12 +375,12 @@ class IndicatorValue extends SqlElement {
     } else {
       $this->warningSent='0';
     }
-    if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime and !$this->done) {
+    if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime and !$this->done and !$cancelled) {
       if (! $this->alertSent) {
         $this->sendAlert();
       }
       $this->alertSent='1';
-    } else if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime and $this->done) {
+    } else if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime and $this->done and !$cancelled) {
       if (! $this->alertSent) {
         $this->sendAlert();
       }
