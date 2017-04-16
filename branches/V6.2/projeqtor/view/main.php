@@ -1116,6 +1116,54 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </table>
 </div>
 
+<!-- ADD BY Marc TABARY - 2017-02-23 - CHOICE OBJECTS LINKED BY ID TO MAIN OBJECT -->
+<!-- DIALOG - What is show on Add submit -->
+<div id="dialogObject" dojoType="dijit.Dialog" title="<?php echo i18n("dialogObject");?>">
+  <table>
+    <tr>
+      <td>
+        <!-- FORM -->
+        <form id='objectForm' name='objectForm' onSubmit="return false;">
+          <!-- Store the class name of the main object -->  
+          <input id="mainObjectClass" name="mainObjectClass" type="hidden" value="" />
+          <!-- Store the id of the instance of the main object -->            
+          <input id="idInstanceOfMainClass" name="idInstanceOfMainClass" type="hidden" value="" />
+          <!-- Store the linked object class Name -->  
+          <input id="linkObjectClassName" name="linkObjectClassName" type="hidden" value="" />
+         <table>
+            <tr>
+              <td class="dialogLabel" >
+                <label for="dialogObjectList" ><?php echo i18n("item") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <table><tr><td>
+                  <div id="dialogObjectList" dojoType="dijit.layout.ContentPane" region="center">
+                    <!-- Place of select construct dynamicaly by (dymanicListObject) -->  
+                    <input id="linkedObjectId" name="linkedObjectId" type="hidden" value="" />
+                  </div>
+                </td></tr></table>
+              </td>
+            </tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </table>
+         </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="objectAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogObject').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogObjectSubmit" onclick="protectDblClick(this);saveLinkObject();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- END ADD BY Marc TABARY - 2017-02-23 - CHOICE OBJECTS LINKED BY ID TO MAIN OBJECT -->
+
 <div id="dialogApprover" dojoType="dijit.Dialog" title="<?php echo i18n("dialogApprover");?>">
   <table>
     <tr>

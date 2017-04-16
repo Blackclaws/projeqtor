@@ -249,14 +249,24 @@
         }
         $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
       } else {
-        $list=SqlList::getList($class);     
+        $list=SqlList::getList($class);   
+        // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
+        // Special case for idResource, idLocker, idResponsive
+        // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
+        if ($class == 'Resource') {
+          $listVisibleRes = getUserVisibleResourcesList(true);
+          $list = array_intersect_key($list, $listVisibleRes);
+        }
+        // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
       }
-      if ($dataType=='idResource') {
+      /*if ($dataType=='idResource') {
         $scope=Affectable::getVisibilityScope();
         if ($scope!="all") {
           $list=array();
           $res=new Resource();
           if ($scope=='orga') {
+            $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+          } else if  ($scope=='orga') {
             $crit="idOrganization in (". Organization::getUserOrganisationList().")";
           } else if ($scope=='team') {
             $aff=new Affectable(getSessionUser()->id,true);
@@ -271,7 +281,8 @@
           }
           asort($list);
         }
-      }
+        $list = getUserVisibleResourcesList(true); // Try ?
+      }*/
       if ($selected) {
       	$name=SqlList::getNameFromId($class, $selected);
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
@@ -353,32 +364,49 @@
 	      if (array_key_exists('selected', $_REQUEST)) {
 	        $lstRes[$_REQUEST['selected']]=SqlList::getNameFromId('Affectable', $_REQUEST['selected']);
 	      }
-	      $restrictArray=array();
-	      $scope=Affectable::getVisibilityScope();
-	      if ($scope!="all") {
-	        $res=new Resource();
-	        if ($scope=='orga') {
-	          $crit="idOrganization in (". Organization::getUserOrganisationList().")";
-	        } else if ($scope=='team') {
-	          $aff=new Affectable(getSessionUser()->id,true);
-	          $crit="idTeam='$aff->idTeam'";
-	        } else {
-	          traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
-	          $crit=array('id'=>'0');
-	        }
-	        $listRestrict=$res->getSqlElementsFromCriteria(null,false,$crit);
-	        foreach ($listRestrict as $res) {
-	          $restrictArray[$res->id]=$res->name;
-	        }
-	      }
+// CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP              
+	      $restrictArray = getUserVisibleResourcesList(TRUE);
+              // Old
+//	      $restrictArray=array();
+// END CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP              
+// COMMENT BY Marc TABARY - 2017-02-21 - GENEREIC FUNCTION IN PROJEQTOR.PHP              
+//	      $scope=Affectable::getVisibilityScope();
+//	      if ($scope!="all") {
+//	        $res=new Resource();
+//	        if ($scope=='orga') {
+//	          $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+//	        } else if ($scope=='team') {
+//	          $aff=new Affectable(getSessionUser()->id,true);
+//	          $crit="idTeam='$aff->idTeam'";
+//	        } else {
+//	          traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
+//	          $crit=array('id'=>'0');
+//	        }
+//	        $listRestrict=$res->getSqlElementsFromCriteria(null,false,$crit);
+//	        foreach ($listRestrict as $res) {
+//	          $restrictArray[$res->id]=$res->name;
+//	        }
+//	      }
+// END COMMENT BY Marc TABARY - 2017-02-21 - GENEREIC FUNCTION IN PROJEQTOR.PHP              
 	      foreach ($list as $aff) {
 	        if (! array_key_exists($aff->idResource, $lstRes)) {
 	        	$id=$aff->idResource;
 	        	$name=SqlList::getNameFromId('Resource', $id);
 	        	if ($name!=$id) {
-	        	  if ($scope=="all" or isset($restrictArray[$id])) {
+// COMMENT BY Marc TABARY - 2017-03-07 - BUG Undefined variable: scope
+// Not needed because now
+//       - $scope is retrieve in getUserVisibleResourceList
+//       - $restrictArray is set by getUserVisibleResourceList
+//	        	  if ($scope=="all" or isset($restrictArray[$id])) {
+//	              $lstRes[$id]=$name;
+//	        	  }
+// END COMMENT BY Marc TABARY - 2017-03-07 - BUG Undefined variable: scope
+// ADD BY Marc TABARY - 2017-03-07 - BUG Undefined variable: scope
+                      // Apply realy the restriction      
+              if(array_key_exists($aff->idResource, $restrictArray)) {      
 	              $lstRes[$id]=$name;
 	        	  }
+// END ADD BY Marc TABARY - 2017-03-07 - BUG Undefined variable: scope
 	        	}
 	        }
 	      }
@@ -526,6 +554,9 @@ function listFieldsForFilter ($obj,$nbRows, $included=false) {
     and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
     and ! $obj->isAttributeSetToField($col,'hidden')
     and ! $obj->isAttributeSetToField($col,'calculated')
+// ADD BY Marc TABARY - 2017-03-20 - FIELD NOT PRESENT FOR FILTER
+    and ! $obj->isAttributeSetToField($col,'notInFilter')
+// END ADD BY Marc TABARY - 2017-03-20 - FIELD NOT PRESENT FOR FILTER    
     and (!$included or ($col!='id' and $col!='refType' and $col!='refId' and $col!='idle')  )) { 
       if ($nbRows>0) echo ', ';
       $dataType = $obj->getDataType($col);

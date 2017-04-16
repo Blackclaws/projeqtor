@@ -305,7 +305,15 @@ if($copyType=="copyObjectTo"){
                </div>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
+<!-- ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT -->
+            <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithActivityPrice" style="width:90%;text-align: right;"><?php echo i18n("copyToWithActivityPrice") ?>&nbsp;:&nbsp;</label>
+               <div id="copyToWithActivityPrice" name="copyToWithActivityPrice" dojoType="dijit.form.CheckBox" type="checkbox">
+               </div>
+             </td>
+           </tr>
+<!-- END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT -->           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
          </table>
         </form>
       </td>

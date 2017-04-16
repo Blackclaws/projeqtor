@@ -128,25 +128,155 @@ class MeetingPlanningElementMain extends PlanningElement {
     //self::$_fieldsAttributes['priority']='';
   }
   
-  public function setAttributes($workVisibility, $costVisibility) {
-  	//global $workVisibility,$costVisibility;
-    if (! $this->id) {
-      //$this->hideWorkCost();
-    } else {
-      if ($workVisibility!='ALL' or $costVisibility!='ALL') {
-        $this->hideWorkCost();
-      } else {
-        /*$ass=new Assignment();
-        $cptAss=$ass->countSqlElementsFromCriteria(array('refType'=>$this->refType, 'refId'=>$this->refId));
-        if ($cptAss>0) {*/
-          $this->showWorkCost();
-        /*} else {
-          $this->hideWorkCost();
-        } */
-      }
-    }
+  // ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+  private function showValidated() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';    
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
   }
-  /** ==========================================================================
+
+  private function showOnlyWork() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='';
+    self::$_fieldsAttributes['assignedWork']='readonly';
+    self::$_fieldsAttributes['realWork']='readonly';
+    self::$_fieldsAttributes['leftWork']='readonly';    
+    self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+  }
+  
+  private function showOnlyCost() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='hidden';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';    
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='readonly';
+    self::$_fieldsAttributes['realCost']='readonly';
+    self::$_fieldsAttributes['leftCost']='readonly';
+  }
+
+  private function showOnlyValidatedWorkAndAllCost() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';    
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='readonly';
+    self::$_fieldsAttributes['realCost']='readonly';
+    self::$_fieldsAttributes['leftCost']='readonly';
+  }
+
+  private function hideWorkAndShowValidatedCost() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='hidden';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';    
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+  }
+
+  private function showAllWorkAndValidatedCost() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='';
+    self::$_fieldsAttributes['assignedWork']='readonly';
+    self::$_fieldsAttributes['realWork']='readonly';
+    self::$_fieldsAttributes['leftWork']='readonly';    
+    self::$_fieldsAttributes['validatedCost']='';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+  }
+  
+  private function showOnlyValidatedWorkAndHideCost() {
+    $this->_tab_4_2 = array('validated','assigned', 'real', 'left', 'work','cost');
+
+    self::$_fieldsAttributes['validatedWork']='';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';    
+    self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+  }
+// END - ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+
+  public function setAttributes($workVisibility, $costVisibility) {
+// MODIFY BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+      $wcVisibility = $workVisibility.$costVisibility;
+    switch ($wcVisibility) {
+        case "NONO" :
+        $this->hideWorkCost();
+            break;
+        case "NOALL" :
+            $this->showOnlyCost();
+            break;
+        case "NOVAL" :
+            $this->hideWorkAndShowValidatedCost();
+            break;
+        case "ALLALL" :
+          $this->showWorkCost();
+            break;
+        case "ALLNO" :
+            $this->showOnlyWork();
+            break;
+        case "ALLVAL" :
+            $this->showAllWorkAndValidatedCost();
+            break;
+        case "VALVAL" :
+            $this->showValidated();
+            break;
+        case "VALALL" :
+            $this->showOnlyValidatedWorkAndAllCost();
+            break;
+        case "VALNO" :
+            $this->showOnlyValidatedWorkAndHideCost();
+            break;
+        default:
+          $this->hideWorkCost();
+            break;
+      }
+// END MODIFY BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+  	//global $workVisibility,$costVisibility;
+// COMMENT BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+//    if (! $this->id) {
+//      //$this->hideWorkCost();
+//    } else {
+//      if ($workVisibility!='ALL' or $costVisibility!='ALL') {
+//        $this->hideWorkCost();
+//      } else {
+//        /*$ass=new Assignment();
+//        $cptAss=$ass->countSqlElementsFromCriteria(array('refType'=>$this->refType, 'refId'=>$this->refId));
+//        if ($cptAss>0) {*/
+//          $this->showWorkCost();
+//        /*} else {
+//          $this->hideWorkCost();
+//        } */
+//      }
+//    }
+// END COMMENT BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+    }
+    /** ==========================================================================
    * Destructor
    * @return void
    */ 

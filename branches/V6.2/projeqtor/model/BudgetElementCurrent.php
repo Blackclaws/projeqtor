@@ -73,6 +73,7 @@ class BudgetElementCurrent extends BudgetElement {
   public $totalBudgetCost;
   
   public $idle;
+  public $idleDateTime;
   
   private static $_fieldsAttributes=array(
       "id"=>"hidden",
@@ -87,6 +88,9 @@ class BudgetElementCurrent extends BudgetElement {
       "topRefType"=>"hidden",
       "topRefId"=>"hidden",
       "idle"=>"hidden",
+// ADD BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT      
+      "idleDateTime"=>"hidden",
+// END ADD BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT      
       "validatedWork"=>"readonly,noImport",
       "assignedWork"=>"readonly,noImport",
       "realWork"=>"readonly,noImport",

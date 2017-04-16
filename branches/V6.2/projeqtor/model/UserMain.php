@@ -466,13 +466,105 @@ class UserMain extends SqlElement {
       return $this->_allProfiles;
     }
   }  
+
+// ADD BY Marc TABARY - 2017-02-23 - NEW GETVISIBLE FUNCTIONS  
+  /** =========================================================================
+   * Get the list of all projects the user can have readable access to, 
+   * this means the projects the resource corresponding to the user is affected to
+   * and their sub projects
+   * Difference with getVisibleProjects = Add a criteria for null or not 'foreign key'
+   * @return a list of projects id
+   */
+  public function getVisibleProjectsNullForeignKey($limitToActiveProjects=true, $foreignKeyName='') {
+    scriptLog("UserMain::getVisibleProjectsNullForeignKey(limitToActiveProjects=$limitToActiveProjects)");
+    if ($foreignKeyName==null or trim($foreignKeyName)=='' or !property_exists('Project', $foreignKeyName)) {
+        if ($limitToActiveProjects and $this->_visibleProjects) {
+          return $this->_visibleProjects;
+        }
+        if (! $limitToActiveProjects and $this->_visibleProjectsIncludingClosed) {
+          return $this->_visibleProjectsIncludingClosed;
+        }
+        $foreignKeyName='';
+    }
+        
+    $result=array();
+    // Retrieve current affectation profile for each project
+    $resultAff=array();
+    $resultProf=array();
+    $resultProf[$this->idProfile]=$this->idProfile; // The default profile, even if used on no project
+    if ($this->idProfile) {
+      $resultProf[$this->idProfile]=$this->idProfile;
+    }
+    $affProfile=array();
+    $aff=new Affectation();
+    $crit = array("idResource"=>$this->id);
+    if ($limitToActiveProjects) {
+      $crit["idle"]='0';
+    }
+    $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
+    $today=date('Y-m-d');
+    foreach ($affList as $aff) {
+      if ( (! $aff->startDate or $aff->startDate<=$today) and (! $aff->endDate or $aff->endDate>=$today)) {
+        $affProfile[$aff->idProject]=$aff->idProfile;
+        $resultProf[$aff->idProfile]=$aff->idProfile;
+      }
+    }
+    $accessRightRead=securityGetAccessRight('menuProject', 'read');
+    // For ALL, by default can have access to all projects
+    if ($accessRightRead=="ALL") {
+    	$listAllProjects=SqlList::getList('Project');
+    	foreach($listAllProjects as $idPrj=>$namePrj) {
+    		$result[$idPrj]=$namePrj;
+    	}
+    } 
+    // Scpecific rights for projects affected to user : may change rights for ALL (admin)
+    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
+    $profile=$this->idProfile;
+    foreach($affPrjList as $idPrj=>$namePrj) {
+      if (isset($affProfile[$idPrj])) {	        
+        $profile=$affProfile[$idPrj];
+        $resultAff[$idPrj]=$profile;
+        $prj=new Project($idPrj,true);
+        $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+        foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+          $result[$idSubPrj]=$nameSubPrj;
+          $resultAff[$idSubPrj]=$profile;
+        }
+      } 
+    	$result[$idPrj]=$namePrj;
+    }
+    
+    $this->_allProfiles=$resultProf;
+    if ($foreignKeyName=='') {
+        if ($limitToActiveProjects) {
+          $this->_visibleProjects=$result;
+          $this->_specificAffectedProfiles=$resultAff;
+        } else {
+          $this->_visibleProjectsIncludingClosed=$result;
+          $this->_specificAffectedProfilesIncludingClosed=$resultAff;
+        }
+    } else {
+        $whereClause = $foreignKeyName . ' is null';
+        $prj = new Project();
+        $listPrjForeignKeyNull = $prj->getSqlElementsFromCriteria(null,false,$whereClause);
+        foreach ($listPrjForeignKeyNull as $prjList) {
+          $listPrjForeignKeyIsNull[$prjList->id]=$prjList->name;
+        }        
+        $result = array_intersect_key($result, $listPrjForeignKeyIsNull);
+    }
+    if (getSessionUser()->id==$this->id) {
+      setSessionUser($this); // Store user to cache Data
+    }  
+    return $result;
+  }
+// END ADD BY Marc TABARY - 2017-02-23 - NEW GETVISIBLE FUNCTIONS  
+  
   /** =========================================================================
    * Get the list of all projects the user can have readable access to, 
    * this means the projects the resource corresponding to the user is affected to
    * and their sub projects
    * @return a list of projects id
-   */
-  public function getVisibleProjects($limitToActiveProjects=true) {
+   */  public function getVisibleProjects($limitToActiveProjects=true) {
     scriptLog("UserMain::getVisibleProjects(limitToActiveProjects=$limitToActiveProjects)");
     if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;

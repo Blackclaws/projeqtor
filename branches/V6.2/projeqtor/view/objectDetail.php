@@ -507,6 +507,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     if (get_class($obj) == "MeetingPlanningElement" or get_class($obj) == "PeriodicMeetingPlanningElement") {
       $obj->setAttributes($workVisibility, $costVisibility);
     }
+// ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+  } else if (SqlElement::is_subclass_of($obj, 'BudgetElement')) {
+    $obj->setVisibility();
+    $workVisibility=$obj->_workVisibility;
+    $costVisibility=$obj->_costVisibility;
+    if (get_class($obj) == "OrganizationBudgetElement" or get_class($obj) == "OrganizationBudgetElementCurrent") {
+      $obj->setAttributes($workVisibility, $costVisibility);
+    }
+// END ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY    
   } else if (method_exists($obj, 'setAttributes')) {
     $obj->setAttributes();
   }
@@ -532,6 +541,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
     }
     $hide=false;
+    $notReadonlyClass=" generalColClassNotReadonly ";
     $nobr_before=$nobr;
     $nobr=false;
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
@@ -618,7 +628,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<td class="detail" style="min-width:75px;'.$internalTableBorderTitle.'">';
         if ($arrTab['cols'][$i]==0) {
           echo '<div class=""></div>';
-        } else if ($val [$i]) {
+// CHANGE BY Marc TABARY - 2017-03-31 - COLEMPTY
+          } else if ($val [$i] and $val[$i]!='empty') {
+          // old
+//          } else if ($val [$i]) {
+// END CHANGE BY Marc TABARY - 2017-03-31 - COLEMPTY              
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;"></div>';
@@ -637,7 +651,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section='';
       }    
       // Determine number of items to be displayed in Header
+// ADD BY Marc TABARY - 2017-02-22 - OBJECTS LINKED BY ID TO MAIN OBJECT
+      if (\strpos($section,'sOfObject')>0) {
+        // It's a section that draws the object linked by be to the 'main object'  
+        // naming rule to draw list of objects linked by id ('foreign key') to the object
+        // _sec_    : For section (it's generic to the FrameWork
+        // _xxxs    : xxx the object linked by id - Don't forget the 's' at the end
+        // OfObject : indicate, it's a section for linked by id object          
+        $sectionField='_'.substr($section,0,strpos($section,'sOfObject'));          
+      } else {
+// END ADD BY Marc TABARY - 2017-02-22 - OBJECTS LINKED BY ID TO MAIN OBJECT          
       $sectionField='_'.$section;
+      }
       $sectionFieldDep='_Dependency_'.ucfirst($section);
       $sectionFieldDoc='_Document'.$section;
       $sectionFieldVP='_VersionProject';
@@ -666,6 +691,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $aff=new Affectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
       } else {
+// ADD BY Marc TABARY - 2017-03-16 - FORCE SECTION ITEM'S COUNT          
+        // Want a item's count on section header
+        //  => In the section's declaration in the class : _sec_XXXXXXXX='itemsCount=method to call to count item'
+        //  Ex : Fields declaration in model class 
+        //          $_sec_MySection='itemCount=getItemCount'
+        // Sample : See OrganizationMain.php :
+        //              - Attributs declaration
+        if(strpos($val,'itemsCount=')!==false) {
+            $cpt=null;
+            $methodToCall=substr($val,strpos($val,'=')+1);
+            if(method_exists($obj,$methodToCall)) {
+                $cpt=count($obj->$methodToCall());                
+            }
+        }  
+// END ADD BY Marc TABARY - 2017-03-16 - FORCE SECTION ITEM'S COUNT          
         // echo "***** $section *****<br/>";
       }
       // Determine colSpan
@@ -705,7 +745,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         echo '<tr><td colspan=2>';
       }
-      if (!$hide and !$obj->isAttributeSetToField($col,'hidden')) {echo $obj->drawSpecificItem($item);} // the method must be implemented in the corresponidng class
+// CHANGE BY Marc TABARY - 2017-03-08 - FORCE DRAWING A SPECIFIC ITEM      
+      if ((
+           !$hide and 
+           !$obj->isAttributeSetToField($col,'hidden')
+          ) or
+          $obj->isAttributeSetToField($col,'drawforce')==true
+         ) {
+            echo $obj->drawSpecificItem($item,($included?$parentReadOnly:$readOnly)); // the method must be implemented in the corresponidng class  
+        }
+      // Old 
+//      if (!$hide and !$obj->isAttributeSetToField($col,'hidden')) {echo $obj->drawSpecificItem($item);} // the method must be implemented in the corresponidng class
+// END CHANGE BY Marc TABARY - 2017-03-08 - FORCE DRAWING A SPECIFIC ITEM      
       if ($internalTable) {
         // echo '<td>';
       } else {
@@ -810,11 +861,24 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val),$included,$obj);
       drawBillLinesFromObject($obj, false);
-    } else if (substr($col, 0, 1) == '_' and 
-    substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
-                                                                                                                              //
+// ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
+    } else if (substr($col, 0, 1) == '_' and strpos($section,'sOfObject')>0 and strpos($col,'_colSpan')==false) {
+            drawObjectLinkedByIdToObject($obj, substr($col, 1), false);
+// END ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
+    } else if (substr($col, 0, 1) == '_' and                                                                                                                           //
+// CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION            
+                substr($col, 0, 6) != '_void_' and 
+                substr($col, 0, 7) != '_label_' and 
+                substr($col, 0, 8) != '_button_' and
+                substr($col, 0, 7) != '_byMet_') { // field not to be displayed
+    //Old
+//    substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
+// END CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION                                                                                                                                  //
     } else {
       $attributes='';
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+      $isSpinner=($obj->getSpinnerAttributes($col)==''?false:true);
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER      
       $isRequired=false;
       $readOnly=false;
       $specificStyle='';
@@ -822,6 +886,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $lock='lock' . ucfirst($col);
         if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
           $attributes.=' readonly tabindex="-1"';
+          $notReadonlyClass="";
           $readOnly=true;
         }
       }
@@ -856,15 +921,55 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $hide=true;
         }
       }
-      if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
+// CHANGE BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
+      if (!$canUpdate or 
+          (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or
+          $parentReadOnly or 
+          ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus') or
+          substr($col,0,7)=='_byMet_'    
+         ) {
+// END CHANGE BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
+// COMMENT BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
+        // Old  
+//      if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
+// END COMMENT BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION          
+// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
+            if (
+                (
+                 strpos($obj->getFieldAttributes($col), 'forceInput') !== false and
+                substr($col,0,7)=='_byMet_' and
+                !$parentReadOnly
+                ) or
+                (
+                 strpos($obj->getFieldAttributes($col), 'superforceInput') !== false and
+                 substr($col,0,7)=='_byMet_'
+                )
+               ) { }
+            else {
+    // END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
         $attributes.=' readonly tabindex="-1"';
+        $notReadonlyClass="";
         $readOnly=true;
+            }
       } else if (in_array($col,$extraReadonlyFields)) {
         $attributes.=' readonly tabindex="-1"';
         $readOnly=true;
       }
+// ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION     
+      if (substr($col,0,7)=='_byMet_') {
+          if (substr($col,-4,4) == 'Work' or substr($col,-3,3) == 'Pct' or strpos(strtolower($col),'amount')!==false) {
+              $dataType = 'decimal';
+              $dataLength='14.5';
+          }
+          if (substr($col,-4,4)== 'Name') {
+              $dataType = 'varchar';
+              $dataLength = 400;
+          }
+      } else {
+// END ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
       $dataType=$obj->getDataType($col);
       $dataLength=$obj->getDataLength($col);
+      }
       if ( $obj->isAttributeSetToField($col,'calculated') and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
         $dataType='decimal';
       }
@@ -912,7 +1017,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<tr class="detail">';
           echo '<td class="' . $internalTableSpecial . '" style="text-align:right;width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow] and $arrTab['rows'][$internalTableCurrentRow]>0) {
+// ADD BY Marc TABARY - 2017-03-10 - NO ':' IF LABEL IS EMPTY
+                    $theLabelTab = htmlEncode($obj->getColCaption($internalTableRowsCaptions [$internalTableCurrentRow]));
+                    if ($internalTableRowsCaptions [$internalTableCurrentRow]=='empty') {$theLabelTab='';}
+                    if ($theLabelTab=='') {
+                        echo '<label class="label ' . $internalTableSpecial . '">' . $theLabelTab . '&nbsp;&nbsp;</label>';
+                    } else {
+// END ADD BY Marc TABARY - 2017-03-10 - NO ':' IF LABEL IS EMPTY
             echo '<label class="label ' . $internalTableSpecial . '">' . htmlEncode($obj->getColCaption($internalTableRowsCaptions [$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
+          }
           }
           echo '</td><td style="width:90%;white-space:nowrap;'.$internalTableBorder.'">';
           $internalTableCurrentRow++;
@@ -1194,7 +1307,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // Password specificity ============================================= PASSWORD
         if ($canUpdate) {
           echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
-          echo ' class="generalColClass '.$col.'Class" style="'.$specificStyle.'"';
+          echo ' class="generalColClass '.$notReadonlyClass.$col.'Class" style="'.$specificStyle.'"';
           echo $attributes;
           $salt=hash('sha256', "projeqtor" . date('YmdHis'));
           echo ' title="' . i18n('helpResetPassword') . '" >';
@@ -1265,8 +1378,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '</td></tr></table>';
       } else if ($col == 'durationSla') {
         // Draw a color selector ============================================== SLA as a duration
-        echo '<div class="generalColClass '.$col.'Class" style="width: 30px;'.$specificStyle.'">';
-        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$col.'Class" type="text"  ';
+        echo '<div class="generalColClass '.$notReadonlyClass.$col.'Class" style="width: 30px;'.$specificStyle.'">';
+        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$notReadonlyClass.$col.'Class" type="text"  ';
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
@@ -1318,7 +1431,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
           }
         }
-        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1345,7 +1458,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (sessionValueExists('browserLocaleDateFormatJs')) {
           echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\'}" ';
         }
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         echo ' value="' . $valDate . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1376,7 +1489,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1387,7 +1500,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // Draw a boolean (as a checkbox ====================================== BOOLEAN
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;
-        echo ' class="greyCheck generalColClass '.$col.'Class"';
+        echo ' class="greyCheck generalColClass '.$notReadonlyClass.$col.'Class"';
         echo $attributes;
         echo ' style="' . $specificStyle . '" ';
         // echo ' value="' . $col . '" ' ;
@@ -1443,6 +1556,32 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 }
               }
             }
+// ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION PARENT
+            // Special case for Organization Parent - Can access to parent only if the user is link
+            // directly (idOrganization) to the parent or on one of the parent's of the parent organization
+            if ($col=='idOrganization') {
+                $orga = new Organization();
+                $listOrga = $orga->getUserOrganizationsListAsArray();
+                if (!array_key_exists($val, $listOrga)) {
+                    $displayComboButtonCol=false;
+                    $displayDirectAccessButton=false;                    
+                }
+            }
+// END ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION PARENT
+
+// ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
+            // Special case for idResource, idLocker, idAuthor, idResponsive
+            // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
+            $arrayIdSpecial = ['idResource','idLocker', 'idAuthor', 'idResponsive'];
+            if (in_array($col,$arrayIdSpecial)) {
+                $idList = getUserVisibleResourcesList(true, "List");
+                if (!array_key_exists($val, $idList)) {
+                    $displayComboButtonCol=false;
+                    $displayDirectAccessButton=false;                    
+                }
+            }
+// END ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
+            
           } else {
             $displayComboButtonCol=false;
             $displayDirectAccessButton=false;
@@ -1622,9 +1761,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $fieldWidth=round($fieldWidth / 2) - 5;
           }
         }
-        echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" xlabelType="html" ';
+        echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
+
+// ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER            
+        if (get_class($obj)=='Resource' and $col=='idOrganization') {
+            // Implement the rule : A manager of an organization can't be dissocied from it.
+            $orga = new Organization($val);
+            if ($obj->id == $orga->idResource) {
+                if (strpos($attributes, 'disabled')==false) {$attributes.= ' disabled';}
+                $displayComboButtonCol = false;
+            }
+        }
+// END ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER                    
+        
         echo $attributes;
         echo $valStore;
         echo autoOpenFilteringSelect();
@@ -1657,7 +1808,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
-            echo '<a class="generalColClass '.$col.'Class" style="float:right;margin-right:5px;'.$specificStyle.'" ';
+            echo '<a class="generalColClass '.$notReadonlyClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyle.'" ';
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
             echo ' title="' . i18n('otherVersionAdd') . '">';
             echo formatSmallButton('Add');
@@ -1668,7 +1819,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
         }
         if ($col == 'idStatus' and $next and $showExtraButton) {
-          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$col.'Class"';
+          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$col.'Class"';
           echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
           echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
           $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
@@ -1678,15 +1829,20 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</div>';
         }
         if ($col == 'idResource' and $next and $showExtraButton) {
-          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$col.'Class"';
-          echo ' title="' . i18n("assignToMe") . '"';
-          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
-          $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
-          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . htmlEncode($user->id) . ');setTimeout(\''.$saveFunction.'\',100);"';
-          echo '>';
-          echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
-          echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . i18n('assignToMeShort') . '<div>';
-          echo '</div>';
+// ADD BY Marc TABARY - 2017-03-09 - EXTRA BUTTON (Assign to me) IS VISIBLE EVEN IDLE=1
+          if ($obj->idle==1 and $classObj=='Organization') { } 
+          else {
+// END ADD BY Marc TABARY - 2017-03-09 - EXTRA BUTTON (Assign to me) IS VISIBLE EVEN IDLE=1
+            echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$col.'Class"';
+            echo ' title="' . i18n("assignToMe") . '"';
+            echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
+            $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
+            echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . htmlEncode($user->id) . ');setTimeout(\''.$saveFunction.'\',100);"';
+            echo '>';
+            echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
+            echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . i18n('assignToMeShort') . '<div>';
+            echo '</div>';
+          }
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display') !== false) {
         echo '<div ';
@@ -1704,6 +1860,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '&nbsp;%';
         }
         echo '</div>';
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+      } else if ($isSpinner and is_integer(intval($val)) and !$readOnly and !$hide) {
+        // Draw an integer as spinner ================================================ SPINNER
+        $title = ' title="' . $obj->getTitle($col) . '"';
+        echo htmlDrawSpinner($col, $val, 
+                             $obj->getSpinnerAttributes($col), $obj->getFieldAttributes($col), 
+                             $name,
+                             $title,
+                             $smallWidth,
+                             $colScript);
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
       } else if ($dataType == 'int' or $dataType == 'decimal' ) {
         // Draw a number field ================================================ NUMBER
         $colScript=NumberFormatter52::completeKeyDownEvent($colScript);
@@ -1736,6 +1903,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
           $isPercent=true; 
+// ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
+          if (substr($col,-3,3)=='Pct') {$fieldWidth=$smallWidth;}
+// END ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
         }
         $spl=explode(',', $dataLength);
         $dec=0;
@@ -1747,7 +1917,52 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($isCost and $currencyPosition == 'before') {
           echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
         }
+// ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
+        if ($isPercent and 
+            ( strpos($obj->getFieldAttributes($col), 'alertOver') !== false or 
+              strpos($obj->getFieldAttributes($col), 'warningOver') !== false or
+              strpos($obj->getFieldAttributes($col), 'okUnder') !== false
+            )
+           ) {
+                // Note : reuse $negative (it's pratical)
+                $negative='';
+                $colAttributes = $obj->getFieldAttributes($col);
+                // alertOver
+                $posAWO = strpos($colAttributes, 'alertOver');
+                if ($posAWO and $val!==null) {
+                    $overValue = substr($colAttributes,$posAWO+9,3);                    
+                    if (is_numeric($overValue) and $val > intval($overValue) ) {
+                        // Red
+                        $negative='background-color: #FFAAAA !important;';
+                    } else {
+                    // warningOver
+                    $posAWO = strpos($colAttributes, 'warningOver');                
+                    if($posAWO) {
+                        $overValue = substr($colAttributes,$posAWO+11,3);
+                        if (is_numeric($overValue) and $val > intval($overValue)) {
+                            // Orange
+                            $negative='background-color: #FFBE00 !important;';
+                        } else {
+                            // okUnder
+                            $posAWO = strpos($colAttributes, 'okUnder');                
+                            if($posAWO) {
+                                $overValue = substr($colAttributes,$posAWO+7,3);
+                                if (is_numeric($overValue) and $val < intval($overValue)) {
+                                    // Green
+                                    $negative='background-color: #B5DE8E !important;';
+                                }    
+                            }    
+                        }    
+                    }
+                }
+            }
+        } else {
         $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':''; 
+        }
+// END ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'            
+// COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
+//        $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':'';
+// END COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'        
         if ($col=='workElementEstimatedWork' and property_exists($obj, 'assignedWork')) {
           $negative=($obj->workElementEstimatedWork>$obj->assignedWork)?'background-color: #FFAAAA !important;':'';
         }
@@ -1759,10 +1974,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="'.$negative.'width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
-        if ($max) {
+// ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
+        if (strpos(strtolower($col),'year')!==false) {
+            echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
+        } else if ($max) {
+// END ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
+// COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
+//        if ($max) {
+// END COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR            
           echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         }
-        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         // echo ' layoutAlign ="right" ';
         if ($isWork) {
           if ($classObj=='WorkElement') {
@@ -1813,7 +2035,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" >';
+        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" >';
         /*if (isTextFieldHtmlFormatted($val)) {
           $text=new Html2Text($val);
           $val=$text->getText();
@@ -1826,7 +2048,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         // No real need to hide and apply class : long fields will be hidden while hiding row
-        //class="generalColClass '.$col.'Class" style="'.$specificStyle.'"
+        //class="generalColClass '.$notReadonlyClass.$col.'Class" style="'.$specificStyle.'"
         if (getEditorType()=="CK" || (getEditorType()=="CKInline")) {
           //if (isIE() and ! $val) $val='<div></div>';
           echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col),'stipAllTags') . '</div>';
@@ -1947,7 +2169,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</div>';
         }
       } else if ($col == 'icon') {
-        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -1976,7 +2198,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . ';" ';
-        echo ' trim="true" maxlength="' . $dataLength . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$col.'Class" ';
+        echo ' trim="true" maxlength="' . $dataLength . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
         if ($obj->isFieldTranslatable($col)) {
           echo ' title="' . i18n("msgTranslatable") . '" ';
@@ -2251,19 +2473,26 @@ function drawOrigin($list,$refType, $refId, $obj, $col, $print) {
     }
     echo '</td><td width="5%" xclass="noteData" xvalign="top" style="white-space:nowrap">';
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
+
     foreach ( $list as $origin ) {
-      $origObj=null;
+      //$origObj=null;
+      $origObjClass=null;
+      $origObjId=null;
       if ($list->originType == get_class($obj) and $list->originId == $obj->id) {
-        $origObj=new $list->refType($list->refId);
+        //$origObj=new $list->refType($list->refId);
+        $origObjClass=$list->refType;
+        $origObjId=$list->refId;
       } else {
-        $origObj=new $list->originType($list->originId);
+        //$origObj=new $list->originType($list->originId);
+        $origObjClass=$list->originType;
+        $origObjId=$list->originId;
       }
-      $gotoE=' onClick="gotoElement(' . "'" . get_class($origObj) . "','" . htmlEncode($origObj->id) . "'" . ');" style="cursor: pointer;" ';
+      $gotoE=' onClick="gotoElement(' . "'" . $origObjClass . "','" . htmlEncode($origObjId) . "'" . ');" style="cursor: pointer;" ';
       echo '</td><td xclass="noteData" '.$gotoE.' style="height: 15px">';
     }
-      $orig=new $refType($refId);
-      echo htmlEncode($orig->name);
-      echo '</td></tr></table>';      
+    $orig=new $refType($refId,true);
+    echo htmlEncode($orig->name);
+    echo '</td></tr></table>';      
   } else {
     echo '<table><tr height="20px"><td>';
     if ($obj->id and !$print and $canUpdate) {
@@ -2464,6 +2693,145 @@ function drawHistoryFromObjects($refresh=false) {
   echo '</tr>';
   echo '</table>';
 }
+
+// ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
+/** =====================================================================================
+ * Draw section of an object linked by an id with the object to which we draw the detail
+ * Sample : drawObjectLinkedByIdToObject($obj, 'Project', true)
+ *          Draw a section for projects with idxxxx (where xxxx the name of the $obj's classe)
+ * --------------------------------------------------------------------------------------
+ * @global type $cr
+ * @global type $print
+ * @global type $outMode
+ * @global type $comboDetail
+ * @global type $displayWidth
+ * @global type $printWidth
+ * @param object $obj :                   The object's instance to which we draw the detail
+ * @param object $objLinkedByIdObject :   The name of the object's classe to which we draw the section
+ * @param boolean $refresh
+ * @return nothing
+ */
+function drawObjectLinkedByIdToObject($obj, $objLinkedByIdObject='', $refresh=false) {
+  global $cr, $print, $outMode, $comboDetail, $displayWidth, $printWidth;
+  
+  if ($comboDetail) {
+    return;
+  }
+
+  if(!class_exists($objLinkedByIdObject)) {
+    return;
+  }
+
+// ADD BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href  
+  $goto='';
+// END ADD BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href  
+          
+  $theClassName = '_' . $objLinkedByIdObject;
+  // Get the visible list of linked Object
+  $listVisibleLinkedObj = getUserVisibleObjectsList($objLinkedByIdObject);
+  
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  if ($canUpdate) {$canUpdate = securityGetAccessRightYesNo('menu' . $objLinkedByIdObject, 'update', $obj) == "YES";}
+
+  if ($obj->idle == 1) {
+    $canUpdate=false;
+  }
+  if (isset($obj->$theClassName)) {
+    $objects=$obj->$theClassName;
+  } else {
+    $objects=array();
+  }
+
+  if (!$refresh and !$print) echo '<tr><td colspan="2">';
+  echo '<input type="hidden" id="objectIdle" value="' . htmlEncode($obj->idle) . '" />';
+
+  if (! $print) {
+    echo '<table width="99.9%">';
+  }  
+  echo '<tr>';
+  if (!$print) {
+    echo '<td class="assignHeader smallButtonsGroup" style="width:5%">';
+    if ($obj->id != null and !$print and $canUpdate) {
+      // Parameters passed at addLinkObjectToObject
+      // 1 - The main object's class name
+      // 2 - The id of main object
+      // 3 - The linked object's class name
+      echo '<a onClick="addLinkObjectToObject(\'' . get_class($obj) . '\',\'' . htmlEncode($obj->id) . '\',\'' . $objLinkedByIdObject .'\');" title="' . i18n('addLinkObject') . '" >'.formatSmallButton('Add').'</a>';
+
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'85':'80') . '%">' . i18n('colName') . '</td>';
+// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle  
+  echo '<td class="assignHeader" style="width:' . (($print)?'10':'10') . '%">' . i18n('colIdle') . '</td>';
+// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle  
+  echo '</tr>';
+  $nbObjects=0;
+  foreach ( $objects as $theObj ) {
+    $nbObjects++;
+    echo '<tr>';
+    if (!$print) {
+      echo '<td class="assignData smallButtonsGroup">';
+      if (!$print and 
+              $canUpdate 
+              and array_key_exists($theObj->id, $listVisibleLinkedObj)
+         ) {
+
+         // Implement to following rule :
+         // A manager of an organization can't be remove from it
+         if (get_class($obj)=='Organization' and get_class($theObj)=='Resource' and $obj->idResource == $theObj->id) {
+            echo ' <a title="' . i18n('isOrganizationManager') . '" >'.formatSmallButton('Blocked').'</a>';
+         } else {
+// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle
+                if($theObj->idle==0) {
+// END ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle
+                    // Parameters passed at removeLinkObjectFromObject
+                    // 1 - The main object's class name
+                    // 2 - The linked object's class name
+                    // 3 - The id of the selected linked object
+                    // 4 - The name of the selected linked object  
+                    echo ' <a onClick="removeLinkObjectFromObject(\'' . get_class($obj) . '\',\'' . $objLinkedByIdObject . '\',\'' . htmlEncode($theObj->id) . '\',\'' . htmlEncode($theObj->name) .'\');" title="' . i18n('removeLinkObject') . '" > '.formatSmallButton('Remove').'</a>';
+                }
+         }
+      }
+      echo '</td>';
+    }
+    if (array_key_exists($theObj->id, $listVisibleLinkedObj)) {
+        echo '<td class="assignData" style="width:5%">#' . htmlEncode($theObj->id) . '</td>';
+// ADD BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href          
+        if (!$print and 
+            securityCheckDisplayMenu(null, get_class($theObj)) and 
+            securityGetAccessRightYesNo('menu'.get_class($theObj), 'read', '') == "YES")
+        {
+          $goto=' onClick="gotoElement(\''.get_class($theObj).'\',\'' . htmlEncode($theObj->id) . '\');" style="cursor: pointer;" ';
+        }
+// END ADD BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href
+// CHANGE BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href          
+        echo '<td '. $goto .' class="assignData hyperlink" style="width:' . (($print)?'85':'80') . '%">' . htmlEncode($theObj->name) . '</td>';
+        //Old
+//        echo '<td class="assignData" style="width:' . (($print)?'95':'85') . '%">' . htmlEncode($theObj->name) . '</td>';
+// END CHANGE BY Marc TABARY - 2017-03-10 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - href  
+    } else {
+        echo '<td class="assignData" style="width:5%"></td>';
+        echo '<td class="assignData" style="width:' . (($print)?'85':'80') . '%">' . i18n('isNotVisible') . '</td>';        
+    }
+// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle
+        echo '<td class="assignData dijitButtonText" style="width:' . (($print)?'10':'10') . '%">' . htmlDisplayCheckbox($theObj->idle) . '</td>';                
+// END ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT - idle
+    
+    echo '</tr>';
+  }
+  if (!$print) {
+    echo '</table>';
+  }
+  if (!$refresh and !$print) echo '</td></tr>'; 
+  if (!$print) {
+    echo '<input id="ObjectSectionCount" type="hidden" value="'.count($nbObjects++).'" />';
+  }
+}
+// END ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
+
 
 function drawNotesFromObject($obj, $refresh=false) {
   global $cr, $print, $outMode, $user, $comboDetail, $displayWidth, $printWidth,$preseveHtmlFormatingForPDF;
@@ -4102,7 +4470,13 @@ function startBuffering() {
 function endBuffering($prevSection,$included) {
   global $reorg,$leftPane,$rightPane,$extraPane,$bottomPane, $nbColMax, $section, $beforeAllPanes;
   $sectionPosition=array(
-      'approver'                    =>array('2'=>'right',   '3'=>'extra'),
+// ADD BY Marc TABARY - 2017-03-03 - OBJECTS LINKED BY ID TO MAIN OBJECT      
+      'projectsofobject'           =>array('2'=>'bottom',   '3'=>'extra'),
+      'resourcesofobject'           =>array('2'=>'bottom',   '3'=>'extra'),
+// END ADD BY Marc TABARY - 2017-03-03 - OBJECTS LINKED BY ID TO MAIN OBJECT
+// ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION
+      'hierarchicorganizationprojects'         =>array('2'=>'bottom',    '3'=>'extra'),
+// END ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION      'approver'                    =>array('2'=>'right',   '3'=>'extra'),
       'assignment'                  =>array('2'=>'left',   '3'=>'extra'),
       'attachment'                  =>array('2'=>'bottom',   '3'=>'extra'),
       'attendees'                   =>array('2'=>'right',   '3'=>'extra'),

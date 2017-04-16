@@ -215,7 +215,22 @@
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
           hideExtraButtons('extraButtonsDetail');
-          loadContent("objectDetail.php", "detailDiv", 'listForm');
+// ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+          // If undo Organization's detail screen, must passed periodic year in REQUEST
+          cl='';
+          if (dojo.byId('objectClass')) {
+            cl=dojo.byId('objectClass').value;
+          }
+          if (cl=='Organization' && dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear')) {
+            param='?OrganizationBudgetPeriod='+dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear').value;
+          } else {
+            param='';
+          }
+          loadContent("objectDetail.php"+param, "detailDiv", 'listForm');
+// END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+// COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+//          loadContent("objectDetail.php", "detailDiv", 'listForm');
+// END COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
           formChangeInProgress=false;
         </script>
       </button>    
@@ -242,8 +257,22 @@
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("refreshButton").blur();
           hideExtraButtons('extraButtonsDetail');
-          loadContent("objectDetail.php", "detailDiv", 'listForm');
-        </script>
+// ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+          // If undo Organization's detail screen, must passed periodic year in REQUEST
+          cl='';
+          if (dojo.byId('objectClass')) {
+            cl=dojo.byId('objectClass').value;
+          }
+          if (cl=='Organization' && dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear')) {
+            param='?OrganizationBudgetPeriod='+dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear').value;
+          } else {
+            param='';
+          }
+          loadContent("objectDetail.php"+param, "detailDiv", 'listForm');
+// END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+// COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+//          loadContent("objectDetail.php", "detailDiv", 'listForm');
+// END COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT        </script>
       </button>    
     <?php 
     $clsObj=get_class($obj);

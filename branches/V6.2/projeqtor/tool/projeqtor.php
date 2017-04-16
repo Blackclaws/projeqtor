@@ -253,6 +253,129 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
  * ============================================================================ functions ============================================================================
  */
 
+
+// ADD BY Marc TABARY - 2017-03-15 - GENERIC FUNCTION TO GET VISIBILITY ON WORK & COST FOR CONNECTED USER
+/** ============================================================================================
+ * Return the work & cost visibility of the connected user
+ * @return array key-value : Key 1 : workVisibility
+ *                           Key 2 : costVisibility
+ */
+function getUserConnectedWorkCostVisibility() {
+    if (! sessionUserExists()) {
+      return array('workVisibility'=>'NO',
+                   'costVisibility'=>'NO');
+    }
+
+    $user=getSessionUser();
+    $profile=$user->getProfile();
+            
+    $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
+    $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'cost'));
+    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'work'));
+    
+    $costVisibility='NO';
+    $workVisibility='NO';
+    
+    if ($hCost->id) {
+      $costVisibility=$list[$hCost->rightAccess];
+    } else {
+      $costVisibility='ALL';
+    }
+    if ($hWork->id) {
+      $workVisibility=$list[$hWork->rightAccess];
+    } else {
+      $workVisibility='ALL';
+    }
+
+    return array('workVisibility'=>$workVisibility,
+                 'costVisibility'=>$costVisibility);
+}
+// END ADD BY Marc TABARY - 2017-03-15 - GENERIC FUNCTION TO GET VISIBILITY ON WORK & COST FOR CONNECTED USER
+
+// ADD BY Marc TABARY - 2017-02-23 - GENERIC FUNCTION TO GET VISIBLE OBJECT's LIST IN FUNCTION OF USER HABILITATION
+/** =============================================================================================================
+ * Return an array (key - name) of objects that are visible by the connected user in function of its habilitation
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objName                   : The name of the object to whith return visible list (ex : 'Project'
+ * @param boolean $limitToActiveObjects     : false = list with idle's object = 0 or 1 - true = idle = 0
+ * @param string $listScreen                : Must be "List" (combobox list or list) - "Screen" (Screen lists on objects) 
+ * @param boolean $idLinkObjectName         : if not '', limit the list of object with this idLinkObject = null
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key - name)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getUserVisibleObjectsList('Project', true, 'List', 'idOrganization')
+ *      return the project's list with active projects, for combobox list or selection list and idOrganization null
+ */
+function getUserVisibleObjectsList($objName, $limitToActiveObjects=false, $listScreen="List", $idLinkObjectName ='') {
+    if ($objName==NULL OR trim($objName)=='') {return array();}
+    if ($listScreen != 'List' and $listScreen!='Screen') {return array();}
+    
+    switch($objName) {
+        case 'Resource' :
+            return getUserVisibleResourcesList($limitToActiveObjects, $listScreen, $idLinkObjectName);
+            break;
+        case 'Project' :
+            $user=getSessionUser();
+            return $user->getVisibleProjectsNullForeignKey($limitToActiveObjects,$idLinkObjectName);
+            break;
+        default :
+            return array();
+            break;
+    }
+    
+}
+// END ADD BY Marc TABARY - 2017-02-23 - GENERIC FUNCTION TO GET VISIBLE OBJECT's LIST IN FUNCTION OF USER HABILITATION
+
+// ADD BY Marc TABARY - 2017-02-21 - RESOURCE VISIBILITY FUNCTION OF 'teamOrga'
+// Adding because, used in html.php, jsonList.php, objectDetail.php and other
+/**
+ * ================================================================
+ * Return the visible resources list for the user in function of 'teamOrga' parameters
+ * @param boolean $limitToActiveResources
+ * @param string  $listScreen ('List' for visibility on Resources combobox - 'Screen' for visibility on Resources Screen list
+ * @param boolean $idLinkObjectName = '' if not restrict on idLinkObjectName - true if restrict to resource with idLinkObject null 
+ * @return list of visible resources
+ */
+function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen="List", $idLinkObjectName='') {
+    $crit="";
+    if ($limitToActiveResources) {
+        $crit = "idle=0 and "; 
+    }
+    if ($idLinkObjectName!='' and property_exists('Resource', $idLinkObjectName)) {
+        $crit.= $idLinkObjectName . " is null and ";
+    }
+    $resourcesList = array();
+    $res=new Resource();
+    $scope=Affectable::getVisibilityScope($listScreen);
+    switch($scope) {
+        case 'all' :
+            $crit.='(1=1)';
+            break;
+        case 'orga' :
+            $crit.="idOrganization = ". Organization::getUserOrganization();
+            break;
+        case 'subOrga' :
+            $crit.="idOrganization in (". Organization::getUserOrganizationList().")";
+            break;
+        case 'team' :
+            $aff=new Affectable(getSessionUser()->id,true);
+            $crit.="idTeam='$aff->idTeam'";
+            break;
+        default :
+            traceLog("Error on getUserVisibleResourcesList() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga', 'subOrga'");
+            $crit=array('id'=>'0');
+            break;
+    }
+        
+    $list=$res->getSqlElementsFromCriteria(null,false,$crit);
+    foreach ($list as $res) {
+      $resourcesList[$res->id]=$res->name;
+    }
+
+return $resourcesList;    
+}
+// END ADD BY Marc TABARY - 2017-02-21 - RESOURCE VISIBILITY FUNCTION OF 'teamOrga'
+
 /**
  * ============================================================================
  * Set up the locale

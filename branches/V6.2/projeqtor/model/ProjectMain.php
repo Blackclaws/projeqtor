@@ -899,8 +899,22 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     return $in;
   }
   
-  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
-    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks,$withAssignments, $withAffectations, $toProject);
+// ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+  public function copyTo($newClass, 
+                         $newType, 
+                         $newName,
+                         $setOrigin,
+                         $withNotes,
+                         $withAttachments,
+                         $withLinks,
+                         $withAssignments=false,
+                         $withAffectations=false,
+                         $toProject=null,
+                         $toActivity=null,
+                         $copyToWithResult=false,
+                         $copyToWithVersionProjects=false,
+                         $copyToWithActivityPrice=false) {
+    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
     if($copyToWithVersionProjects==true){
       $vp=new VersionProject();
       $crit=array('idProject'=>$this->id);
@@ -911,7 +925,35 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         $vp->save();
       }
     }
+    if($copyToWithActivityPrice==true) {
+        $ap = new ActivityPrice();
+        $crit=array('idProject'=>$this->id);
+        $list=$ap->getSqlElementsFromCriteria($crit);
+        foreach ($list as $ap) {
+            $ap->idProject=$result->id;
+            $ap->id=null;
+            $ap->save();
+        }
+    }
     return $result;
   } 
-}
+// END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT  
+  
+// COMMENT BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+//  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
+//    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks,$withAssignments, $withAffectations, $toProject);
+//    if($copyToWithVersionProjects==true){
+//      $vp=new VersionProject();
+//      $crit=array('idProject'=>$this->id);
+//      $list=$vp->getSqlElementsFromCriteria($crit);
+//      foreach ($list as $vp) {
+//        $vp->idProject=$result->id;
+//        $vp->id=null;
+//        $vp->save();
+//      }
+//    }
+//    return $result;
+//  }
+// END COMMENT BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+  }
 ?>

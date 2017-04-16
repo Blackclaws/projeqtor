@@ -310,7 +310,14 @@ class ProjectPlanningElementMain extends PlanningElement {
   		if ($this->topId) {
   			self::updateSynthesis($this->topRefType, $this->topRefId);
   		}
+// ADD BY Marc TABARY - 2017-02-17 - EXPENSE CONSOLIDATION ON ORGANIZATION
+                // Update BudgetElement of the project's organization (if necessary)
+                if($this->idOrganization and trim($this->idOrganization)!='') {
+                    $orga = new Organization($this->idOrganization);
+                    $orga->updateSynthesis();
   	}
+// END ADD BY Marc TABARY - 2017-02-17 - EXPENSE CONSOLIDATION ON ORGANIZATION
+  }
   }
   public function updateReserve($doNotSave=false) {
     $reserve=0;
@@ -335,8 +342,15 @@ class ProjectPlanningElementMain extends PlanningElement {
     		if ($this->topId) {
     		  self::updateSynthesis($this->topRefType, $this->topRefId);
     		}
-    }
-  }
+// ADD BY Marc TABARY - 2017-02-17 - RESERVE CONSOLIDATION ON ORGANIZATION
+                // Update BudgetElement of the project's organization (if necessary)
+                if($this->idOrganization and trim($this->idOrganization)!='') {
+                    $orga = new Organization($this->idOrganization);
+                    $orga->updateSynthesis();
+    	}
+// END ADD BY Marc TABARY - 2017-02-17 - RESERVE CONSOLIDATION ON ORGANIZATION
+  	}
+  }  
   public function addTicketWork($doNotSave=false) {
     //$crit=array('idProject'=>$this->refId,'idActivity'=>null);
     $where='idProject='.$this->refId.' and idActivity is null'; $crit=null;

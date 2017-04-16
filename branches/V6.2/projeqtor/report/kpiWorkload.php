@@ -142,7 +142,15 @@ if ($idProject) {
 } else {
   $where='1=1';
   if ($idOrganization) {
-    $where.=" and idOrganization='$idOrganization'";
+// ADD BY Marc TABARY - 2017-02-20 - KPI CONSOLIDATED WITH SUB-ORGANIZATIONS
+    $orga = new Organization($idOrganization);
+    $inOrga = $orga->getRecursiveSubOrganizationInString(false,true);
+    $where.=" and idOrganization in $inOrga";
+// END ADD BY Marc TABARY - 2017-02-20 - KPI CONSOLIDATED WITH SUB-ORGANIZATIONS
+  
+// COMMENT BY Marc TABARY - 2017-02-20 - KPI CONSOLIDATED WITH SUB-ORGANIZATIONS    
+//    $where.=" and idOrganization='$idOrganization'";
+// END COMMENT BY Marc TABARY - 2017-02-20 - KPI CONSOLIDATED WITH SUB-ORGANIZATIONS      
   }
   if ($idProjectType) {
     $where.=" and idProjectType='$idProjectType'";
