@@ -130,6 +130,7 @@ class ProjectExpenseMain extends Expense {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($withoutDependentObjects) return; // No real use yet, but no to forget as item has $Origin
     if (count($this->getExpenseDetail())>0) {
       self::$_fieldsAttributes['realAmount']="readonly";
       self::$_fieldsAttributes['realFullAmount']="readonly";

@@ -293,7 +293,7 @@ class PlannedWork extends GeneralWork {
             $startPossible=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77
           } else {
             if ($prec->refType=='Milestone') {
-              $startPossible=addWorkDaysToDate($precEnd,$precVal);
+              $startPossible=addWorkDaysToDate($precEnd,($precVal>=0)?1+$precVal:$precVal);
             } else {
               $startPossible=addWorkDaysToDate($precEnd,1+$precVal);
             }

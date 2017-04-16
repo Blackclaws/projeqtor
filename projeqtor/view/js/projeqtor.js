@@ -1519,10 +1519,27 @@ function clickCloseBoxOnMessage(destination) {
  * ============================================================================
  * Operates locking, hide and show correct buttons after loadContent, when
  * destination is detailDiv
- * 
+ * @param specificWidgetArray : array or null
+ *                              List of specific widget to enable
  * @return void
  */
-function finaliseButtonDisplay() {
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+function finaliseButtonDisplay(specificWidgetArray) {
+// Old    
+//function finaliseButtonDisplay() {
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+
+// ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+  if (specificWidgetArray!==undefined) {
+        // This parameter must be an array
+        if (specificWidgetArray instanceof Array) {
+            for (i = 0; i < specificWidgetArray.length; i++) {
+               enableWidget(specificWidgetArray[i]);
+            }
+        }
+  }
+// END ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+
   id = dojo.byId("id");
   if (id) {
     if (id.value == "") {
@@ -1627,10 +1644,16 @@ function finalizeMultipleSave() {
  * Operates locking, hide and show correct buttons when a change is done on form
  * to be able to validate changes, and avoid actions that may lead to loose
  * change
- * 
+// ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+ * @param specificWidgetArray : Array of specific widget to disabled  
+// END ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
  * @return void
  */
-function formChanged() {
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+function formChanged(specificWidgetArray) {
+// Old    
+//function formChanged() {
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   var updateRight = dojo.byId('updateRight');
   if (updateRight && updateRight.value == 'NO') {
     return;
@@ -1656,6 +1679,33 @@ function formChanged() {
 
   }
   buttonRightLock();
+
+// ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+    if (specificWidgetArray!==undefined) {
+        // This parameter must be an array
+        if (specificWidgetArray instanceof Array) {
+            for (i = 0; i < specificWidgetArray.length; i++) {
+               if (dijit.byId(specificWidgetArray[i])) {               // Widget
+                   disableWidget(specificWidgetArray[i]);
+               } else if(specificWidgetArray[i].indexOf('_spe_')!=-1) { // Specific attributes '_spe_'
+                   // Search the id DOM
+                   var theIdName = 'id_'+specificWidgetArray[i].replace('_spe_','');
+                   var theId = document.getElementById(theIdName);
+                   if (theId!==null) {
+                       theIdName = theIdName.toLowerCase();
+                       if(theIdName.indexOf('button')!=-1) {  // Button => Hide
+                           theId.style.visibility = "hidden";
+                       } else {                                         // Else, readonly
+                           theId.readOnly=true;
+                           theId.class +=' "readOnly"';
+}
+                   }
+               }
+            }
+        }
+    }
+// END ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+
 }
 
 /**
@@ -1663,10 +1713,25 @@ function formChanged() {
  * Operates unlocking, hide and show correct buttons when a form is refreshed to
  * be able to operate actions only available on forms with no change ongoing,
  * and avoid actions that may lead to unconsistancy
- * 
+ * @param specificWidgetArray : Array of specific widget to disabled  
  * @return void
  */
-function formInitialize() {
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+function formInitialize(specificWidgetArray) {
+// Old    
+//function formInitialize() {
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+
+// ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
+    if (specificWidgetArray!==undefined) {
+        // This parameter must be an array
+        if (specificWidgetArray instanceof Array) {
+            for (i = 0; i < specificWidgetArray.length; i++) {
+               enableWidget(specificWidgetArray[i]);
+            }
+        }
+    }
+// END ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
   enableWidget('newButton');
   enableWidget('newButtonList');
   enableWidget('saveButton');
@@ -3702,8 +3767,22 @@ function getExtraReadonlyFields(idType,idStatus,idProfile) {
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);
+      dojo.query(".generalColClassNotReadonly").forEach(function(domNode){
+        var name=domNode.id.replace("widget_","");
+        var widget=dijit.byId(name);
+        if (widget) {
+          widget.set('readOnly',null);
+        }
+      });
       for (key in obj) {
-        if (dijit.byId(obj[key])) dijit.byId(obj[key]).set('readOnly',true); // ("readonly", "true"); ?
+        dojo.query("." + obj[key] + "Class").forEach(function(domNode){
+          var name=domNode.id.replace("widget_","");
+          var widget=dijit.byId(name);
+          if (widget) {
+            widget.set('readOnly',true);
+          }
+        });
+        //if (dijit.byId(obj[key])) dijit.byId(obj[key]).set('readOnly',true); // ("readonly", "true"); ?
       }
     }
   });

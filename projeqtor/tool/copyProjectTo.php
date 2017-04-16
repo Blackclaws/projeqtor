@@ -86,14 +86,32 @@ if (array_key_exists('copyToWithVersionProjects',$_REQUEST)) {
   $copyToWithVersionProjects=true;
 }
 
+// ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+$copyToWithActivityPrice=false;
+if (array_key_exists('copyToWithActivityPrice',$_REQUEST)) {
+  $copyToWithActivityPrice=true;
+}
+// END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+
 // copy from existing object
 Sql::beginTransaction();
 $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
 Security::checkValidId($toType);
-$newProj=$proj->copyTo('Project',$toType, $toName,  false, false, false,$copyToWithLinks, $copyAssignments, false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
-$newProj->projectCode=$codeProject;
+// CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+$newProj=$proj->copyTo('Project',
+                        $toType,
+                        $toName, 
+                        false, false, false,
+                        $copyToWithLinks,
+                        $copyAssignments,
+                        false, $toSubProject, null, false,
+                        $copyToWithVersionProjects,
+                        $copyToWithActivityPrice );
+  // Old
+//$newProj=$proj->copyTo('Project',$toType,$toName,false,false, false,$copyToWithLinks,$copyAssignments,false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
+// END CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT$newProj->projectCode=$codeProject;
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $error=true;

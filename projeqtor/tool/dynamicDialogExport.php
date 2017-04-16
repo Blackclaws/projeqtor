@@ -95,6 +95,27 @@ foreach($FieldsArray as $key => $val) {
 		continue;
 	}
 }
+
+// ADD BY Marc TABARY - 2017-03-20 - EXPORT - DON'T DRAW SECTION WITHOUT FIELD
+$FieldsArrayNext = $FieldsArray;
+foreach($FieldsArray as $key=>$val) {
+    if(substr($key,0,5)=="_sec_") {
+        reset($FieldsArrayNext);
+        $next_=true;
+        while(current($FieldsArrayNext)!=$val and $next_!==false) {
+            $next_ = next($FieldsArrayNext);
+        }
+        $next_ = next($FieldsArrayNext);
+        if ($next_!==false) {
+            $next_key = key($FieldsArrayNext);
+            if(substr($next_key,0,5)=='_sec_') {
+                unset($FieldsArray[$key]);
+            }
+        }
+    }    
+}
+// END ADD BY Marc TABARY - 2017-03-20 - EXPORT - DON'T DRAW SECTION WITHOUT FIELD
+
 $countFields=count($FieldsArray);
 $htmlresult.='<input type="hidden" dojoType="dijit.form.TextBox" id="column0" name="column0" value="'.$countFields.'">';
 $index=1;

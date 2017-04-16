@@ -66,6 +66,35 @@ abstract class SqlElement {
 	// Management of extraReadonlyFileds per type, status or profile
 	private static $_extraReadonlyFields=null;
 	
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
+        // Management of drawing spinner for a field
+        // Array :
+        //  - key   : Name of the field
+        //  - value : Attributes of spinner.
+        //            For each attribute : String separated by commas : 'attribute of spinner:value,'
+        //            Attributes are :
+        //              - min     : Minimal value of spinner (default = 0)
+        //              - max     : Maximal value of spinner (default = 100)
+        //              - step    : Step of increment (default = 1)
+        //              - bkColor : Span on right with this background color
+        // Sample : $_spinnersAttributes = array(
+        //                                  "year"=>"min:2000,max:2100,step:1"
+        //                                );
+        private static $_spinnersAttributes = array();  
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+
+// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+  // Fields list that must be disabled when something changes on form detail
+  // Avalable for fields : 
+  //    - in widget (dijit)
+  //    - specific ('_spe_') that have an id in DOM that respect the following naming rule :
+  //        id_[name of the field without _spe_] ex : field with name _spe_theSpecificField must have this id in DOM id__theSpecificField
+  //        If the specific field has in it name 'button' (case insensitive) then it will be hidden else it will be readonly
+  // getStaticDisabledFieldOnChange et getDisabledFieldOnChange must be implemented on this class      
+  // See implementation in OrganizationBudgetElementMain
+  private static $_disabledFieldsOnChange = array();        
+// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+                
 	// All dependencies between objects :
 	//    control => sub-object must not exist to allow deletion
 	//    cascade => sub-objects are automaticaly deleted
@@ -172,6 +201,17 @@ abstract class SqlElement {
     "MilestoneType" =>      array("Milestone"=>"controlStrict"),
     "OverallProgress" => 	  array("Project"=>"controlStrict"),
     "OpportunityType" =>    array("Opportunity" => "controlStrict"),
+// ADD BY Marc TABARY - 2017-02-08            
+    "Organization" =>        array("Attachment"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade",
+// ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT        
+                                  "BudgetElement"=>"cascade",
+// END ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT                
+                                  "Project"=>"controlStrict",
+                                  "Organization"=>"control",
+                                  "Resource"=>"controlStrict"),
+// END ADD BY Marc TABARY - 2017-02-08            
     //"PaymentType" => array("Payment" => "controlStrict"),
     "PeriodicMeeting" =>    array("Assignment"=>"cascade",
                                   "Meeting"=>"cascade",
@@ -1155,6 +1195,13 @@ abstract class SqlElement {
 					if ($depObjOccurence instanceof SqlElement and $returnStatusDep!="ERROR") {
 						$depObjOccurence->refId=$this->id;
 						$depObjOccurence->refType=get_class($this);
+
+// ADD BY Marc TABARY - 2017-03-20 - INIT REFNAME OF ORGANIZATION'S BUDGET ELEMENT                                                
+            if(get_class($this)=='Organization') {
+              $depObjOccurence->refName = $this->name;
+            }
+// END ADD BY Marc TABARY - 2017-03-20 - INIT REFNAME OF ORGANIZATION'S BUDGET ELEMENT                                                
+                                                
 						$ret=$depObjOccurence->saveSqlElement();
 						if (stripos($ret,'id="lastOperationStatus" value="ERROR"')) {
 							$returnStatusDep="ERROR";
@@ -1166,6 +1213,13 @@ abstract class SqlElement {
 			} else if ($depObj instanceof SqlElement and $returnStatusDep!="ERROR") {
 				$depObj->refId=$this->id;
 				$depObj->refType=get_class($this);
+
+// ADD BY Marc TABARY - 2017-03-20 - INIT REFNAME OF ORGANIZATION'S BUDGET ELEMENT                                                                                
+                                if(get_class($this)=='Organization') {
+                                    $depObj->refName = $this->name;
+                                }
+// END ADD BY Marc TABARY - 2017-03-20 - INIT REFNAME OF ORGANIZATION'S BUDGET ELEMENT                                                
+                                
 				$ret=$depObj->save();
 				if (stripos($ret,'id="lastOperationStatus" value="ERROR"')) {
 					$returnStatusDep="ERROR";
@@ -1585,6 +1639,43 @@ abstract class SqlElement {
 							$newObj->$pe->topRefId=$this->$col_name->topRefId;
 						}
 					}
+                                        
+// ADD BY Marc TABARY - 2017-02-09                                        
+					if ($newObj->$col_name instanceof BudgetElement) {
+						$newObj->$col_name->budgetWork=0;
+						$newObj->$col_name->validatedWork=0;
+						$newObj->$col_name->assignedWork=0;
+						$newObj->$col_name->realWork=0;
+						$newObj->$col_name->leftWork=0;
+						$newObj->$col_name->plannedWork=0;
+						$newObj->$col_name->budgetCost=null;
+						$newObj->$col_name->validatedCost=null;
+						$newObj->$col_name->assignedCost=null;
+						$newObj->$col_name->realCost=null;
+						$newObj->$col_name->leftCost=null;
+						$newObj->$col_name->plannedCost=null;
+						$newObj->$col_name->progress=0;
+						$newObj->$col_name->expenseBudgetAmount=null;
+						$newObj->$col_name->expenseAssignedAmount=null;
+						$newObj->$col_name->expensePlannedAmount=null;
+						$newObj->$col_name->expenseRealAmount=null;
+						$newObj->$col_name->expenseLeftAmount=null;
+						$newObj->$col_name->expenseValidatedAmount=null;
+						$newObj->$col_name->totalBudgetCost=null;
+						$newObj->$col_name->totalAssignedCost=null;
+						$newObj->$col_name->totalPlannedCost=null;
+						$newObj->$col_name->totalRealCost=null;
+						$newObj->$col_name->totalLeftCost=null;
+						$newObj->$col_name->totalValidatedCost=null;
+						$newObj->$col_name->reserveAmount=null;
+						$newObj->$col_name->idle=0;
+// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
+						$newObj->$col_name->idleDateTime=null;
+// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
+                                                
+				  }
+// END ADD BY Marc TABARY - 2017-02-09                                        
+                                        
 				}
 			} else if (property_exists($newObj,$col_name)) {
 				if ($col_name!='id' and $col_name!="wbs" and $col_name!='name' and $col_name != $typeName
@@ -2267,12 +2358,12 @@ abstract class SqlElement {
 	private function getDependantSqlElement($objClass) {		
 		$curId=$this->id;
 		if (! trim($curId)) {$curId=null;}
-		$obj = new $objClass();
+		$obj = new $objClass(null,true);
 		$obj->refId=$this->id;
 		$obj->refType=get_class($this);
 		// If id is set, get the elements from Database
 		if ( ($curId!=null) and ($obj instanceof SqlElement) ) {
-			$obj->getSqlElement();
+			$obj->getSqlElement(true);
 			// set the reference data
 			// build query
 			$query = "select id from " . $obj->getDatabaseTableName()
@@ -2289,7 +2380,7 @@ abstract class SqlElement {
 				$line = Sql::fetchLine($result);
 				// get all data fetched for the dependant element
 				$obj->id=$line['id'];
-				$obj->getSqlElement();				
+				$obj->getSqlElement(true);				
 			}
 		}
 		// set the dependant element	
@@ -2437,6 +2528,62 @@ abstract class SqlElement {
 		return $result;
 	}
 
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+	/** ========================================================================
+	 * return the spinner attributes (min, max, step) for a given field
+	 * @return string
+	 */
+	public function getSpinnerAttributes($fieldName) {
+		$spinnersAttributes=$this->getStaticSpinnersAttributes();
+		if (array_key_exists($fieldName,$spinnersAttributes)) {
+			return $spinnersAttributes[$fieldName];
+		} else {
+			return '';
+		}
+	}
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+
+
+// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET        
+	/** ========================================================================
+	 * return the array of fields to disabled on form change
+	 * @return '' or a string structured like js array
+	 */
+	public function getDisabledFieldsOnChange() {
+            $disabledFieldsOnChange = $this->getStaticDisabledFieldsOnChange();
+            $theString = '';
+            // The main object
+            if ($disabledFieldsOnChange!==null and is_array($disabledFieldsOnChange) and count($disabledFieldsOnChange)>0) {
+                $theClass = get_class($this);
+                foreach($disabledFieldsOnChange as $disabledFieldOnChange) {
+                    $theString .= '"'.$theClass.$disabledFieldOnChange. '",';
+                }
+            }
+            // The sub-objects
+            foreach($this as $field => $val) {
+                if (is_object($val) and substr($field,0,1)!='_') {
+                    $disabledFieldsOnChange = $val->getStaticDisabledFieldsOnChange();
+                    if ($disabledFieldsOnChange!==null and is_array($disabledFieldsOnChange) and count($disabledFieldsOnChange)>0) {
+                        $theClass = get_class($val);
+                        foreach($disabledFieldsOnChange as $disabledFieldOnChange) {
+                            // Special for '_spe_' : Because the id Dom is construct by hand, it's simplier like this 
+                            if(substr($disabledFieldOnChange,0,5)==='_spe_') {
+                                $theString .= '"_'.$disabledFieldOnChange. '",';                                                            
+                            } else {
+                                $theString .= '"'.$theClass.'_'.$disabledFieldOnChange. '",';                            
+                            }
+                        }
+                    }                    
+                }
+            }
+            
+            if ($theString!='') {
+                $theString = '['.substr($theString, 0, -1).']';
+            }
+            return $theString;
+	}
+// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET 
+                
 	/** ========================================================================
 	 * return the generic attributes (required, disabled, ...) for a given field
 	 * @return an array of fields  with specific attributes
@@ -2615,7 +2762,15 @@ abstract class SqlElement {
 				$arrayFields=array_merge($arrayFields,$this->$fld->getFieldsArray($limitToExportableFields));
 			} else {
 			  if ($limitToExportableFields) {
-			    if ($this->isAttributeSetToField($fld,'hidden') and ! $this->isAttributeSetToField($fld,'forceExport')) {
+// CHANGE BY Marc TABARY - 2017-03-20 - FORCE HIDDEN OR READONLY                              
+			    if ((
+                                 $this->isAttributeSetToField($fld,'hidden') or 
+                                 $this->isAttributeSetToField($fld,'hiddenforce') 
+                                )
+                                 and ! $this->isAttributeSetToField($fld,'forceExport')) {
+                            //Old    
+//			    if ($this->isAttributeSetToField($fld,'hidden') and ! $this->isAttributeSetToField($fld,'forceExport')) {
+// END CHANGE BY Marc TABARY - 2017-03-20 - FORCE HIDDEN OR READONLY                              
 			      continue;
 			    }
 			  }
@@ -2689,6 +2844,26 @@ abstract class SqlElement {
 		return self::$_layout;
 	}
 
+// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+	/** ==========================================================================
+   * Return the generic disabledFieldOnChange
+   * @return array[name] : the generic $_disabledFieldOnChange
+   */
+  protected function getStaticDisabledFieldsOnChange() {
+          return self::$_disabledFieldsOnChange;      
+  }
+// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET        
+        
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
+	/** ==========================================================================
+	 * Return the generic spinnerAttributes
+	 * @return array[name,value] : the generic $_spinnerAttributes
+	 */
+	protected function getStaticSpinnersAttributes() {
+		return self::$_spinnersAttributes;
+	}
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+                
 	/** ==========================================================================
 	 * Return the generic fieldsAttributes
 	 * @return the layout
@@ -2750,10 +2925,19 @@ abstract class SqlElement {
 	public function getValidationScript($colName) {
 		$colScript = '';
 		$posDate=strlen($colName)-4;
+
+// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+                $specificWidgetsToDisabled = $this->getDisabledFieldsOnChange();
+// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+                
 		if (substr($colName,0,2)=='id' and strlen($colName)>2 ) {  // SELECT => onChange
 			$colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
 			$colScript .= '  if (this.value!=null && this.value!="") { ';
-			$colScript .= '    formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '  }';
 			//if ( get_class($this)=='Activity' or get_class($this)=='Ticket' or get_class($this)=='Milestone' ) {
 			if ( get_class($this)!='Project' and get_class($this)!='Affectation' ) {
@@ -2916,14 +3100,22 @@ abstract class SqlElement {
 		if (substr($colName,$posDate,4)=='Date') {  // Date => onChange
 			$colScript .= '<script type="dojo/connect" event="onChange">';
 			$colScript .= '  if (this.value!=null && this.value!="") { ';
-			$colScript .= '    formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '  }';
 			$colScript .= '</script>';
 		}
 		if ( ! (substr($colName,0,2)=='id' and strlen($colName)>2 ) ) { // OTHER => onKeyPress
 			$colScript .= '<script type="dojo/method" event="onKeyDown" args="event">'; // V4.2 Changed onKeyPress to onKeyDown because was not triggered
 			$colScript .= '  if (isEditingKey(event)) {';
-			$colScript .= '    formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '  }';
 			$colScript .= '</script>';
 		}
@@ -2973,7 +3165,11 @@ abstract class SqlElement {
         $colScript .= '    dijit.byId("cancelled").set("checked", false);';
         $colScript .= '  }';
       }
-			$colScript .= '  formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '</script>';
 		} else if ($colName=="idResolution") {
 		  $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -2988,7 +3184,11 @@ abstract class SqlElement {
   		  $colScript .= '    dijit.byId("solved").set("checked", false);';
   		  $colScript .= '  }';
   		}
-  		$colScript .= '  formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+                  $colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                  //Old
+//		    $colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   		$colScript .= '</script>';
 	  } else if ($colName=="idle") {
 			$colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -3025,7 +3225,11 @@ abstract class SqlElement {
 				$colScript .= '    dijit.byId("idleDate").set("value", null); ';
 			}
 			$colScript .= '  } ';
-			$colScript .= '  formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET                        
 			$colScript .= '</script>';
 		} else if ($colName=="done") {
 			$colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -3062,7 +3266,11 @@ abstract class SqlElement {
 				$colScript .= '    }';
 			}
 			$colScript .= '  } ';
-			$colScript .= '  formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '</script>';
 		} else if ($colName=="handled") {
 			$colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -3099,7 +3307,11 @@ abstract class SqlElement {
 				$colScript .= '    }';
 			}
 			$colScript .= '  } ';
-			$colScript .= '  formChanged();';
+// CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
+			$colScript .= '    formChanged('.$specificWidgetsToDisabled.');';
+                        //Old
+//			$colScript .= '    formChanged();';
+// END CHANGE BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
 			$colScript .= '</script>';
 		}
     
@@ -4907,5 +5119,28 @@ abstract class SqlElement {
     return "($isPrivate=0 or $idUser=".Sql::fmtId(getSessionUser()->id).")";
   }
   
+// ADD BY Marc TABARY - 2017-02-24 - TRANSFORM OBJECT SQLELMENT LIST IN ARRAY KEY-NAME
+/** =====================================================================================
+ * Transform a collection of objects with class SqlElement to array type key - name
+ * --------------------------------------------------------------------------------------
+ * @param  sqlElement Objects - $objSqlElt : The objects of class SqlElement to transform
+ * @return array key-name
+ */
+public static function transformObjSqlElementInArrayKeyName($objSqlElt) {
+    if ($objSqlElt==null) {return array();}
+    $theobjSqlElt = $objSqlElt[0];
+    $ancestor_class = get_parent_class($theobjSqlElt);
+    while ($ancestor_class!= false and $ancestor_class!= 'SqlElement') {
+        $ancestor_class = get_parent_class($ancestor_class);
+}
+    if ($ancestor_class <> 'SqlElement') {return array();}
+    
+    foreach($objSqlElt as $theObj) {
+        $array[$theObj->id] = $theObj->name;
+    }
+    return $array;
+}
+// END ADD BY Marc TABARY - 2017-02-24 - TRANSFORM OBJECT SQLELMENT LIST IN ARRAY KEY-NAME
+    
 }
 ?>

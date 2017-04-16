@@ -206,14 +206,49 @@
       $scope=Affectable::getVisibilityScope('Screen');
       if ($scope!="all") {
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        if ($scope=='orga') {
-          $queryWhere.=" $table.idOrganization in (". Organization::getUserOrganisationList().")";
-        } else if ($scope=='team') {
+// ADD BY Marc TABARY - 2017-02-21 - RESOURCE VISIBILITY
+          switch($scope) {
+              case 'subOrga' :
+                  $queryWhere.=" $table.idOrganization in (". Organization::getUserOrganizationList().")";
+                  break;
+              case 'orga' :
+                  $queryWhere.=" $table.idOrganization = ". Organization::getUserOrganization();
+                  break;
+              case 'team' :
           $aff=new Affectable(getSessionUser()->id,true);
           $queryWhere.=" $table.idTeam='$aff->idTeam'";
+                  break;
+              default:
+                  break;
+        }
+// END ADD BY Marc TABARY - 2017-02-21 - RESOURCE VISIBILITY
+// COMMENT BY Marc TABARY - 2017-02-20 - RESOURCE VISIBILITY            
+//        if ($scope=='orga') {
+//          $queryWhere.=" $table.idOrganization in (". Organization::getUserOrganisationList().")";
+//        } else if ($scope=='team') {
+//          $aff=new Affectable(getSessionUser()->id,true);
+//          $queryWhere.=" $table.idTeam='$aff->idTeam'";
+//        }
+// END COMMENT BY Marc TABARY - 2017-02-20 - RESOURCE VISIBILITY                    
+      }
+    }
+    
+// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY            
+    if ($objectClass=='Organization') {
+      $scope=Affectable::getOrganizationVisibilityScope('Screen');
+      if ($scope!="all") {
+        $queryWhere.= ($queryWhere=='')?'':' and ';
+        if ($scope=='subOrga') {
+          // Can see organization and sub-organizations
+          $queryWhere.=" $table.id in (". Organization::getUserOrganizationList().")";
+        } else if ($scope=='orga') {
+          // Can see only organization  
+          $aff=new Affectable(getSessionUser()->id,true);
+          $queryWhere.=" $table.id='$aff->idOrganization'";
         }
       }
     }
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY            
     
     // --- Apply systematic restriction  criteria defined for the object class (for instance, for types, limit to corresponding type)
     $crit=$obj->getDatabaseCriteria();

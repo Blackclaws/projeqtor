@@ -120,7 +120,11 @@
 .iconValidateProject { background-image: url(images/iconValidateProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .dijitDisabled .iconValidateProject { background-image: url(images/iconValidateProject16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
-
+/* ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+.iconButtonClose16 { background-image: url(images/smallButtonClose.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonUnClose16 { background-image: url(images/smallButtonUnclose.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonSubOrganization16 { background-image: url(images/smallButtonSubOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+/* END ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
 .iconButtonBack32 { background-image: url(images/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px;}
 .iconButtonDownload16 { background-image: url(images/smallButtonDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconButtonEdit16 { background-image: url(images/smallButtonEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

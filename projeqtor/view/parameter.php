@@ -402,6 +402,17 @@ function drawTableFromObjectList($objectList) {
   	echo ' title="' . i18n('resourceVisibility') . '">';
   	htmlDrawCrossTable(array('resVisibilityList'=>i18n('resourceVisibilityList'),'resVisibilityScreen'=>i18n('resourceVisibilityScreen')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listTeamOrga') ;
   	echo '</div><br/>';
+// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY        
+  	$titlePane="habilitationOther_OrganizationVisibility";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('organizationVisibility') . '">';
+  	htmlDrawCrossTable(array('orgaVisibilityList'=>i18n('organizationVisibilityList'),'orgaVisibilityScreen'=>i18n('organizationVisibilityScreen')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listOrgaSubOrga') ;
+  	echo '</div><br/>';
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY        
   } else {
   	drawTableFromObjectList($parameterList);
   }
