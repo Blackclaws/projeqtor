@@ -142,6 +142,7 @@ class TicketMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($withoutDependentObjects) return;
     if ($this->idActivity and is_object($this->WorkElement) and $this->WorkElement->realWork>0) {
       self::$_fieldsAttributes['idActivity']='readonly';
     }

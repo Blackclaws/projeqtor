@@ -455,7 +455,6 @@ function thumbName64(value) {
   return thumb(value, 64);
 }
 function thumb(value, size) {
-  console.log(value,size);
   if (value == "##" || value == "####")
     return "";
   if (!size)

@@ -38,7 +38,11 @@ require_once "../tool/projeqtor.php";
  * @param $required optional - indicates wether the list may present an empty value or not
  * @return void
  */
-function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
+// CHANGE BY Marc TABARY - 2017-02-17
+function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true, $limitToActiveOrganizations=true) {
+// Old
+//function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
+// END CHANGE BY Marc TABARY - 2017-02-17
 	//scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . debugDisplayObj($obj).",required=$required,critFld=$critFld,critval=$critVal)");
   if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
@@ -161,6 +165,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     } 
+// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+    if ($col=="idOrganization") { 
+    	$orgaList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveOrganizations:true );
+    }
+// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
     if ($selection) {
       $refTable=$listType;
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
@@ -175,6 +184,14 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $excludeArray=$obj->getRecursiveSubProjectsFlatList();
       $excludeArray[$obj->id]=$obj->name;
     } 
+
+// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+    if ( $class=='Organization' and $col=="idOrganization" and $obj->id!=null) { // on "is sub-organization of", remove suborganization and current organization
+      $excludeArray=$obj->getRecursiveSubOrganizationsFlatList();
+      $excludeArray[$obj->id]=$obj->name;
+    }  
+// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+
     if ($col=="idProject") {
     	$menuClass=$obj->getMenuClass();
     	if ($class=='DocumentDirectory') {
@@ -342,24 +359,68 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
   }
   if ($col=='idResource' and Affectable::getVisibilityScope()!="all") {
-    $restrictArray=array();
-    $res=new Resource();
-    $scope=Affectable::getVisibilityScope();
-    if ($scope=='orga') {
-      $crit="idOrganization in (". Organization::getUserOrganisationList().")";
-    } else if ($scope=='team') {
-      $aff=new Affectable(getSessionUser()->id,true);
-      $crit="idTeam='$aff->idTeam'";
-    } else {
-      traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
-      $crit=array('id'=>'0');
-    }
-    $list=$res->getSqlElementsFromCriteria(null,false,$crit);
-    foreach ($list as $res) {
-      $restrictArray[$res->id]=$res->name;
-    }
+// CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
+        $restrictArray = getUserVisibleResourcesList(true);
+    // Old    
+//      $restrictArray=array();
+// END CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP
+
+// COMMENT BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
+//    $res=new Resource();
+//    $scope=Affectable::getVisibilityScope();
+//    if ($scope=='orga') {
+//      $crit="idOrganization in (". Organization::getUserOrganisationList().")";
+//    } else if ($scope=='team') {
+//      $aff=new Affectable(getSessionUser()->id,true);
+//      $crit="idTeam='$aff->idTeam'";
+//    } else {
+//      traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
+//      $crit=array('id'=>'0');
+//    }
+//    $list=$res->getSqlElementsFromCriteria(null,false,$crit);
+//    foreach ($list as $res) {
+//      $restrictArray[$res->id]=$res->name;
+//    }
+// END COMMENT BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
     if ($selection) $restrictArray[$selection]="OK";
   }
+  
+  // ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER
+  if ($col=='idResource' and get_class($obj)==='Organization') {
+    // -----------------------------------------------------------------------------------------------
+    // Implement the organization's manager rule :
+    // An organization's manager must belong to the organization (no cascade on parent organizations)
+    // -----------------------------------------------------------------------------------------------
+    // Get resources linked by id to organization
+    $resourcesOfThisOrga = $obj->getResourcesOfOrganizationsListAsArray();
+    $restrictArray = array_intersect_key($restrictArray, $resourcesOfThisOrga);
+  }    
+// END ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER         
+
+// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
+    if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
+    $restrictArray=array();
+        $orga=new Organization();
+        $scope=Affectable::getOrganizationVisibilityScope();
+        // Can see his organization et sub-organization
+        if ($scope=='subOrga') {
+          $crit="id in (". Organization::getUserOrganizationList().")";
+        } else if ($scope=='orga') { // Can see only his organization
+      $aff=new Affectable(getSessionUser()->id,true);
+          $crit="id='$aff->idOrganization'";
+    } else {
+          traceLog("Error on htmlDrawOptionForReference() : Organization::getOrganizationVisibilityScope returned something different from 'all', 'subOrga', 'orga'");
+      $crit=array('id'=>'0');
+    }
+        $list=$orga->getSqlElementsFromCriteria(null,false,$crit);
+        foreach ($list as $orga) {
+          $restrictArray[$orga->id]=$orga->name;
+    }
+    if ($selection) $restrictArray[$selection]="OK";
+        
+  }
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
+  
   if (! $required) {
     echo '<option value=" " ></option>';
   }
@@ -376,6 +437,15 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if (!$sepChar) $sepChar='__';
     $wbsLevelArray=array();
   }
+  
+// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+  if ($col=="idOrganization") {
+    $sepChar=Parameter::getUserParameter('projectIndentChar');
+    if (!$sepChar) $sepChar='__';
+    $orgaLevelArray=array();      
+  }
+// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+  
   $pluginObjectClass=substr($col,2);
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
   foreach ($lstPluginEvt as $script) {
@@ -402,6 +472,33 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
         $val = $sep.$val;
       }
+
+// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+      if ($col=="idOrganization" and $sepChar!='no') {   
+        $orgOrder=$orgaList[$key];
+        $orgTest=$orgOrder;
+        $level=1;
+        while (strlen($orgTest)>4) {
+          $orgTest=substr($orgTest,0,strlen($orgTest)-5);
+          if (array_key_exists($orgTest, $orgaLevelArray)) {
+            $level=$orgaLevelArray[$orgTest]+1;
+            $orgTest="";
+          }
+        }
+        $orgaLevelArray[$orgOrder]=$level;
+        $sep='';
+        for ($i=1; $i<$level;$i++) {
+            if (strpos($sepChar,'|')!==FALSE and $i<$level-1 and strlen($sepChar)>1) {
+                $sepCharW = str_repeat('..', 2);
+//                $sepCharW = str_replace('|', $sepChar[1], $sepChar);
+            } else {$sepCharW = $sepChar;}
+            $sep.=$sepCharW;
+        }
+                
+        $val = $sep.$val;
+      }      
+// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+
       if ($col=='idResource') {
       	if ($key==$user->id) {
       		$next=$key;
@@ -1178,6 +1275,91 @@ function htmlDisplayNumeric($val) {
   //return $data;
 }
 
+// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $title, $fieldWidth, $colScript) {
+    // Default values of spinner
+    $min=0;
+    $max=100;
+    $step=1;
+    $bkColor='';
+    
+    // List of spinner Attributes
+    $spinnerAttrList = explode(',',$spinnerAttributes);
+    foreach($spinnerAttrList as $spinnerAttr) {
+        $spinnerNameAndValue = explode(':', $spinnerAttr);
+        if(count($spinnerNameAndValue)==2) {
+            switch(strtolower($spinnerNameAndValue[0])) {
+                case 'min' : 
+                    $min=(intval($spinnerNameAndValue[1])?$spinnerNameAndValue[1]:0);
+                    break;
+                case 'max' :
+                    $max=(intval($spinnerNameAndValue[1])?$spinnerNameAndValue[1]:0);
+                    break;
+                case 'step' :    
+                    $step=(intval($spinnerNameAndValue[1])?$spinnerNameAndValue[1]:0);
+                    break;
+                case 'bkcolor' :
+                    $bkColor=$spinnerNameAndValue[1];
+                    break;
+            }
+        }
+    }
+    // min > max ==> invert
+    if ($min>$max) {
+        $temp=$max;
+        $max=$min;
+        $min=$temp;
+    }
+    // step > max ==> step = 1
+    $step = ($step>$max?1:$step);
+    
+    // maxlength = length of max
+    $maxlength = strlen(strval($max));
+    
+// ADD BY Marc TABARY - 2017-03-06 - DRAW SPINNER - ADD VALIDATION SCRIPT ON SPINNER'S EVENT 'Change'
+    if (strpos($colScript,'event="onKeyDown"')!==false and strpos($colScript, 'isEditingKey(event)')!==false) {
+        $colScript.= '"<script type="dojo/on" data-dojo-event="change" args="event">if (isEditingKey(event)) {formChanged();}</script>';
+    }    
+// END ADD BY Marc TABARY - 2017-03-06 - DRAW SPINNER - ADD VALIDATION SCRIPT ON SPINNER'S EVENT 'Change'
+    // <div ...            
+    $result=  '<div ';
+    // Style
+    $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;" ';
+    // dojoType
+    $result.= 'dojoType="dijit.form.NumberSpinner" ';
+    // Constraints
+    $result.= 'constraints="{min:'.$min.',max:'.$max.',places:0,pattern:\'###0\'}" ';
+    // Change and maxlength
+    $result.= 'intermediateChanges="true" maxlength="'.$maxlength.'" ';
+    // Class
+    $required = (strpos($attributes,'required')!==false?'required':'');
+    $result.= ' class="input '.$required.' generalColClass '.$col.'Class" ';
+    // Value
+    $result.= ' value="'. $val.'" ';
+    // Step
+    $result.= 'smallDelta="'.$step.'" ';
+    // id and name
+    $result.= $name;
+    // title
+    $result.= $title; 
+    // Close div
+    $result.= '>';
+    // Script
+    $result.= $colScript;
+    // </div>
+    $result.= '</div>';
+    // Pct
+    if (substr($col,-3,3)=='Pct') {
+        $result.= '<span class="generalColClass '.$col.'Class">%'.($bkColor==''?'&nbsp;':'').'</span>';
+    }
+    // Background Color            
+    if ($bkColor!=='') {
+        $result.= '<span style="background-color:'.$bkColor.'">&nbsp;&nbsp</span><span>&nbsp;</span>';        
+    }
+    
+    return $result;
+}
+// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
 function htmlDisplayNumericWithoutTrailingZeros($val) {
   global $browserLocale;
   if ($val==0) return 0;

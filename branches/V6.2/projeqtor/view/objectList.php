@@ -77,7 +77,6 @@ $displayWidthList="9999";
 if (RequestHandler::isCodeSet('destinationWidth')) {
   $displayWidthList=RequestHandler::getNumeric('destinationWidth');
 }
-debugLog($displayWidthList);
 
 $hideTypeSearch=false;
 $hideClientSearch=false;

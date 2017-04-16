@@ -301,6 +301,14 @@ function showPrint(page, context, comboName, outMode, orientation) {
       dojo.byId("sentToPrinterDiv").style.display='none';
     }
   }
+
+// ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+  // For Organization, add the period year as parameter
+  if (cl=='Organization' && dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear')) {
+    params+='&OrganizationBudgetPeriod='+dijit.byId('OrganizationBudgetElementCurrent__byMet_periodYear').value;
+  }
+// END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
+  
   if (context == 'list') {
     if (dijit.byId("listShowIdle")) {
       if (dijit.byId("listShowIdle").get('checked')) {
@@ -665,7 +673,13 @@ function selectDetailItem(selectedValue, lastSavedName) {
         refreshTestCaseRunList(idFldVal);
         setTimeout("dojo.byId('testCaseRunTestCaseList').focus()", 1000);
         enableWidget('dialogTestCaseRunSubmit');
+// ADD BY Marc TABARY - 2017-02-23 - ADD OBJECTS LINKED BY ID TO MAIN OBJECT
+      } else if (comboName == 'linkedObjectId') {
+        refreshLinkObjectList(idFldVal);
+        setTimeout("dojo.byId('linkedObjectId').focus()", 1000);
+        enableWidget('dialogObjectSubmit');          
       }
+// END ADD BY Marc TABARY - 2017-02-23 - ADD OBJECTS LINKED BY ID TO MAIN OBJECT
     }
   }
   if (combo) {
@@ -4073,6 +4087,262 @@ function saveTestCaseRun() {
   }
 }
 
+// ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT - ADD-EDIT-REMOVE
+// =============================================================================
+// = Add-Edit-Remove an organization's Budget Element
+// =============================================================================
+/**
+ * Add a budgetElement
+ * @param objectClassName     : The class name on witch the edit is done
+ * @param refId               : The RefId of the MainClass
+ * @param id                  : The id of the budgetElement = 0
+ * @param year                : The year of the budgetElement to add
+ * @param scope               : The scope (For organization : 'organization'
+ */
+function addBudgetElement(objectClassName, refId, id, year, scope) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  params='&objectClass='+objectClassName;
+  params+='&action=ADD';
+  params+='&refId='+refId;
+  params+='&id='+id;
+  params+='&year='+year;
+  params+='&scope='+scope;
+  loadDialog('dialogAddChangeBudgetElement', null, true, params, true, true, 'addBudgetElement');
+  }
+
+/**
+ * Change values of a budgetElement
+ * @param objectClassName     : The class name on witch the edit is done
+ * @param refId               : The id of the MainClass
+ * @param id                  : The id on witch the edit is done
+ * @param year                : The year of the budgetElement (for showing)
+ * @param budgetWork          : The budget Work to edit
+ * @param budgetCost          : The budget Cost to edit
+ * @param budgetExpenseAmount : The budget element's expense Amount to edit
+ */
+function changeBudgetElement(objectClassName, refId, id, year, budgetWork, budgetCost, budgetExpenseAmount) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  params='&objectClass='+objectClassName;
+  params+='&action=CHANGE';
+  params+='&refId='+refId;
+  params+='&id='+id;
+  params+='&year='+year;
+  params+='&budgetWork='+budgetWork;
+  params+='&budgetCost='+budgetCost;
+  params+='&budgetExpenseAmount='+budgetExpenseAmount;
+    
+  loadDialog('dialogAddChangeBudgetElement', null, true, params, false, true, 'changeBudgetElement');        
+}
+
+/**
+ * Add or save a budgetElement
+ * After calling the dialog dialogAddChangeBudgetElement
+ */
+function saveOrganizationBudgetElement() {
+loadContent("../tool/saveOrganizationBudgetElement.php", "detailDiv", "addChangeBudgetElementForm");
+dijit.byId('dialogAddChangeBudgetElement').hide();
+showWait();
+}
+
+/**
+ * Close or unclose a budgetElement
+ * @param objectClassName     : The class name on witch the edit is done
+ * @param refId               : The id of main Class
+ * @param id                  : The id of a budget element
+ * @param idle                : The value of idle  - If 0, setting to 1
+ * @param year                : The period year
+ */
+function closeUncloseBudgetElement(objectClassName, refId, id, idle, year) {
+  var param="?objectClassName="+objectClassName;
+  param+="&refId="+refId;
+  param+="&budgetElementId="+id;
+  param+="&idle="+idle;
+  param+="&year="+year;
+
+if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+
+  if(idle==0) {
+      msg=i18n('confirmCloseBudgetElement');
+  } else {
+      msg=i18n('confirmUncloseBudgetElement');  
+  }
+      
+
+  actionOK=function() {
+    loadContent("../tool/closeUncloseOrganizationBudgetElement.php"+param, "detailDiv","");
+  };
+
+  showConfirm(msg, actionOK);
+}
+
+/**
+ * Delete a budgetElement
+ * @param objectClassName     : The class name on witch the edit is done
+ * @param refId               : The id of main Class
+ * @param id                  : The id of the budgetElement to delete
+ * @param year                : The period year
+ */
+function removeBudgetElement(objectClassName, refId, id, year) {
+  var param="?objectClassName="+objectClassName;
+  param+="&refId="+refId;
+  param+="&budgetElementId="+id;
+  param+="&year="+year;
+
+if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+
+  actionOK=function() {
+    loadContent("../tool/removeOrganizationBudgetElement.php"+param, "detailDiv","");
+  };
+
+  msg=i18n('confirmRemoveBudgetElement');
+  showConfirm(msg, actionOK);
+
+}
+
+// END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT - ADD-EDIT-REMOVE
+
+
+// ADD BY Marc TABARY - 2017-02-23 - LIST - ADD - REMOVE OBJECTS LINKED BY ID TO MAIN OBJECT
+// =============================================================================
+// = Linked Object by id to main object
+// =============================================================================
+function addLinkObjectToObject(mainObjectClassName, idOfInstanceOfMainClass, linkObjectClassName) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  // empty select of previous options
+  if (typeof dojo.byId('linkedObjectId') !== 'undefined') {
+    var node = document.getElementById("linkedObjectId");
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+//  dijit.byId("dialogObject").hide();
+  refreshLinkObjectList(0,mainObjectClassName, linkObjectClassName);
+  dijit.byId("dialogObject").show();
+
+  dojo.byId("mainObjectClass").value = mainObjectClassName;
+  dojo.byId("idInstanceOfMainClass").value = idOfInstanceOfMainClass;
+  dojo.byId("linkObjectClassName").value = linkObjectClassName;
+
+  disableWidget('dialogObjectSubmit');
+}
+
+/**
+ * save a idXXX of the selected linked object
+ * 
+ */
+function saveLinkObject() {  
+  var param="";  
+  var nbSelected=0;
+  if (dojo.byId("linkedObjectId").value == "") {
+      return;
+  }
+
+// ADD BY Marc TABARY - 2017-03-31 - ADD MULTIPLE OBJECTS LINKED BY ID
+  list=dojo.byId("linkedObjectId");
+  if (list.options) {
+    selected=new Array();
+    for (var i=0; i < list.options.length; i++) {
+      if (list.options[i].selected) {
+        selected.push(list.options[i].value);
+        nbSelected++;
+      }
+    }
+  }  
+// END ADD BY Marc TABARY - 2017-03-31 - ADD MULTIPLE OBJECTS LINKED BY ID
+
+// CHANGE BY Marc TABARY - 2017-03-31 - ADD MULTIPLE OBJECTS LINKED BY ID
+  param="?linkedObjectId="+selected;
+// END CHANGE BY Marc TABARY - 2017-03-31 - ADD MULTIPLE OBJECTS LINKED BY ID
+  param+="&mainObjectClass="+dojo.byId('mainObjectClass').value;
+  param+="&idInstanceOfMainClass="+dojo.byId('idInstanceOfMainClass').value;
+  param+="&linkObjectClassName="+dojo.byId('linkObjectClassName').value
+
+  loadContent("../tool/saveObjectLinkedByIdToMainObject.php"+param, "resultDiv", "objectForm", true, 'linkObject');
+  dijit.byId('dialogObject').hide();
+}
+
+/**
+ * Set idXXX of the linked object to null
+ * 
+ */
+function removeLinkObjectFromObject(mainObjectClassName, linkObjectClassName, idLinkObject, nameLinkObject) {
+  var param="?mainObjectClassName="+mainObjectClassName;
+  param+="&linkObjectClassName="+linkObjectClassName;
+  param+="&idLinkObject="+idLinkObject;
+
+if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+
+  actionOK=function() {
+    loadContent("../tool/removeObjectLinkedByIdToMainObject.php"+param, "resultDiv", "objectForm", true, 'linkObject');
+  };
+
+  msg=i18n('confirmRemoveLinkObjFromObj') + '<br>' + nameLinkObject;
+  showConfirm(msg, actionOK);
+}
+
+
+/**
+ * Refresh the link objects list (after update)
+ */
+function refreshLinkObjectList(selected, mainObjectClassName, linkObjectClassName) {
+  var param='';
+  
+  selected = typeof selected !== 'undefined' ? selected : 0;
+  mainObjectClassName = typeof mainObjectClassName !== 'undefined' ? mainObjectClassName : '';
+  linkObjectClassName = typeof linkObjectClassName !== 'undefined' ? linkObjectClassName : '';
+  
+  disableWidget('dialogObjectSubmit');
+  var url='../tool/dynamicListObjectLinkedByIdToMainObject.php';
+
+  param='?selected=' + selected;
+    
+  if (mainObjectClassName!='') {
+    param+='&mainObjectClass=' + mainObjectClassName;      
+  }
+
+  if (linkObjectClassName!='') {
+    param+='&linkObjectClassName=' + linkObjectClassName;      
+  }
+
+  url+=param;
+  loadContent(url, 'dialogObjectList', 'objectForm', false);
+  selectLinkObjectItem();
+}
+
+function selectLinkObjectItem() {
+  var nbSelected=0;
+  list=dojo.byId('linkedObjectId');
+  if (list.options) {
+    for (var i=0; i < list.options.length; i++) {
+      if (list.options[i].selected) {
+        nbSelected++;
+      }
+    }
+  }
+  if (nbSelected > 0) {
+    enableWidget('dialogObjectSubmit');
+  } else {
+    disableWidget('dialogObjectSubmit');
+  }
+}
+// END ADD BY Marc TABARY - 2017-02-23 - LIST - ADD - REMOVE OBJECTS LINKED BY ID TO MAIN OBJECT
+
 // =============================================================================
 // = Affectation
 // =============================================================================
@@ -5815,7 +6085,11 @@ function unlockRequirement() {
   return true;
 }
 
-function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable) {
+// CHANGE BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable, dialogTitle) {
+// Old    
+//function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable) {
+// END CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT
   if(typeof closable =='undefined')closable=true;
   var hideCallback=function() {
   };
@@ -5824,6 +6098,19 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
       dijit.byId(dialogDiv).set('content', null);
     };
   }
+  
+// ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+var setTitle=false;
+if(typeof dialogTitle == 'undefined') {
+    theDialogTitle = dialogDiv;
+} else if (dialogTitle=='') {
+    theDialogTitle = dialogDiv;    
+} else {
+    theDialogTitle = dialogTitle;
+    setTitle=true;
+}
+// END ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+  
   extraClass="projeqtorDialogClass";
   if (dialogDiv=="dialogLogfile") {
     extraClass="logFile";
@@ -5831,7 +6118,11 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
   if (!dijit.byId(dialogDiv)) {
     dialog=new dijit.Dialog({
       id : dialogDiv,
-      title : i18n(dialogDiv),
+// CHANGE BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+      title : i18n(theDialogTitle),
+      // Old     
+//      title : i18n(dialogDiv),
+// END CHANGE BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
       width : '500px',
       onHide : hideCallback,
       content : i18n("loading"),
@@ -5840,6 +6131,11 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
     });
   } else {
     dialog=dijit.byId(dialogDiv);
+// ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+    if (setTitle) {
+        dialog.set('title',i18n(theDialogTitle));
+  }
+// END ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
   }
   if (!params) {
     params="";
@@ -6529,21 +6825,18 @@ function changeCreationInfo() {
   }
 
   if (dijit.byId('creationDate')) {
-    console.log("1:"+dijit.byId('creationDate').get('value'));
     dijit.byId('dialogCreationInfoDate').set('value',
         dijit.byId('creationDate').get('value'));
     dojo.byId('dialogCreationInfoDateLine').style.display='inline';
     dojo.byId('dialogCreationInfoTimeLine').style.display='none';
     toShow=true;
   } else if (dojo.byId('creationDate')) {
-    console.log("2:"+dojo.byId('creationDate').value);
     dijit.byId('dialogCreationInfoDate').set('value',
         dojo.byId('creationDate').value);
     dojo.byId('dialogCreationInfoDateLine').style.display='inline';
     dojo.byId('dialogCreationInfoTimeLine').style.display='none';
     toShow=true;
   } else if (dijit.byId('creationDateTime')) {
-    console.log("3:"+dijit.byId('creationDateTime').get('value'));
     val=dijit.byId('creationDateTime').get('value');
     valDate=val.substr(0, 10);
     valTime='T' + val.substr(11, 8);
@@ -6553,7 +6846,6 @@ function changeCreationInfo() {
     dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
     toShow=true;
   } else if (dojo.byId('creationDateTime')) {
-    console.log("4:"+dojo.byId('creationDateTime').value);
     val=dojo.byId('creationDateTime').value;
     valDate=val.substr(0, 10);
     valTime=val.substr(11, 8);
@@ -6563,7 +6855,6 @@ function changeCreationInfo() {
     dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
     toShow=true;
   } else {
-    console.log("5");
     dojo.byId('dialogCreationInfoDateLine').style.display='none';
     dojo.byId('dialogCreationInfoTimeLine').style.display='none';
   }

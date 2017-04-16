@@ -145,7 +145,10 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
              <td>
                <div dojoType="dijit.form.NumberTextBox" 
                  id="numberBaseline" name="numberBaseline" 
-                 type="text" style="width:50px; class="input"
+<!-- CHANGE BY Marc TABARY - 2017-03-30 - CORRECTION -->
+                 type="text" style="width:50px;" class="input"
+<!-- old                 type="text" style="width:50px; class="input" -->
+<!-- END CHANGE BY Marc TABARY - 2017-03-30 - CORRECTION -->
                  readonly value="<?php echo $currentBaseline->baselineNumber;?>" >
                </div>
              </td>

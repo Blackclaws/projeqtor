@@ -51,6 +51,9 @@ class Affectable extends SqlElement {
   private static $_databaseCriteria=array();
   
   private static $_visibilityScope;
+// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY  
+  private static $_organizationVisibilityScope;
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY  
 
   /**
    * ==========================================================================
@@ -283,6 +286,19 @@ class Affectable extends SqlElement {
     return false;
   }
   
+// ADD BY Marc TABARY - 2017-02-20 ORGANIZATION VISIBILITY  
+  public static function  getOrganizationVisibilityScope($scope='List') {
+    if (self::$_organizationVisibilityScope) return self::$_organizationVisibilityScope;
+    $orga='all';
+    $crit=array('idProfile'=>getSessionUser()->idProfile, 'scope'=>'orgaVisibility'.$scope);
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    if ($habil and $habil->id) {
+      $orga=SqlList::getFieldFromId('ListOrgaSubOrga', $habil->rightAccess,'code',false);
+    }
+    self::$_organizationVisibilityScope==$orga;
+    return $orga;
+  }
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY
   public static function  getVisibilityScope($scope='List') {
     if (self::$_visibilityScope) return self::$_visibilityScope;
     $res='all';

@@ -64,6 +64,14 @@ class BudgetElement extends SqlElement {
   public $totalValidatedCost;
   public $reserveAmount;
   public $idle;
+// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT  
+  public $idleDateTime;
+// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT  
+  
+// ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
+  public $_workVisibility;
+  public $_costVisibility;
+// END ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
   
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
@@ -75,6 +83,9 @@ class BudgetElement extends SqlElement {
                                   "topRefType"=>"hidden",
                                   "topRefId"=>"hidden",
                                   "idle"=>"hidden",
+// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT  
+                                  "idleDateTime"=>"hidden",
+// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT  
                                   "validatedWork"=>"readonly,noImport",
                                   "assignedWork"=>"readonly,noImport",
                                   "realWork"=>"readonly,noImport",
@@ -91,6 +102,12 @@ class BudgetElement extends SqlElement {
   private static $_databaseTableName = 'budgetelement';
   public static $_noDispatch=false;
   public static $_noDispatchArray=array();
+
+// ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+  private static $staticCostVisibility=null;
+  private static $staticWorkVisibility=null;
+// END ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -117,6 +134,44 @@ class BudgetElement extends SqlElement {
     return $paramDbPrefix . self::$_databaseTableName;
   }
 
+// ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+  public function setVisibility($profile=null) {
+    if (! sessionUserExists()) {
+      return;
+    }
+    if (! $profile) {
+      $user=getSessionUser();
+      $profile=$user->getProfile();
+    }
+        
+    if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
+    and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
+      $this->_costVisibility=self::$staticCostVisibility[$profile];
+      $this->_workVisibility=self::$staticWorkVisibility[$profile];
+      return;
+    }
+    
+    $user=getSessionUser();
+    $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
+    $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'cost'));
+    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'work'));
+    if ($hCost->id) {
+      $this->_costVisibility=$list[$hCost->rightAccess];
+    } else {
+      $this->_costVisibility='ALL';
+    }
+    if ($hWork->id) {
+      $this->_workVisibility=$list[$hWork->rightAccess];
+    } else {
+      $this->_workVisibility='ALL';
+    }
+    if (!self::$staticCostVisibility) self::$staticCostVisibility=array();
+    if (!self::$staticWorkVisibility) self::$staticWorkVisibility=array();
+    self::$staticCostVisibility[$profile]=$this->_costVisibility;
+    self::$staticWorkVisibility[$profile]=$this->_workVisibility;
+  }
+// END ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
+  
   /** ==========================================================================
    * Extends save functionality to implement wbs calculation
    * Triggers parent::save() to run defaut functionality in the end.
@@ -125,12 +180,56 @@ class BudgetElement extends SqlElement {
   public function save() {  	
   	// Get old element (stored in database) : must be fetched before saving
     $old=new BudgetElement($this->id);
+// ADD BY Marc TABARY - 2017-02-09
+    
+    // update topId if needed
+    $topElt=null;
+    if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
+      $crit=array("refType"=>$this->topRefType, "refId"=>$this->topRefId);
+      $topElt=SqlElement::getSingleSqlElementFromCriteria('BudgetElement',$crit);
+      if ($topElt) {
+        $this->topId=$topElt->id;
+        $topElt->elementary=0;        
+      }
+    }
+
+    $crit=" topId=" . Sql::fmtId($this->id);
+    $this->elementary=1;
+    $lstElt=$this->getSqlElementsFromCriteria(null, null, $crit);
+    if ($lstElt and count($lstElt)>0) {
+      $this->elementary=0;
+    } else {
+      $this->elementary=1;
+    }
+    
+// END ADD BY Marc TABARY - 2017-02-09
+
     $result=parent::save();
+
+// ADD BY Marc TABARY - 2017-02-09
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;
+    }
+
+    // update topObject
+    if ($topElt) {
+      if ($topElt->refId) {
+        if (! self::$_noDispatch) {
+          $topElt->save();   
+      	} else {
+      	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
+            self::$_noDispatchArray[$topElt->id]=$topElt;
+      	  }
+      	}
+      }
+    }
+  
+// END ADD BY Marc TABARY - 2017-02-09
+
     return $result;
   }
 
-  
-  public function simpleSave() {
+    public function simpleSave() {
     // Avoir save actions
     $result = parent::save();
     return $result;

@@ -129,8 +129,12 @@ if ($type=='habilitation') {
                                      'canUpdateCreation'=>i18n('canUpdateCreationInfo'), 
                                      'viewComponents'=>i18n('viewComponents'),
                                      'resVisibilityList'=>i18n('resourceVisibilityList'),
-                                     'resVisibilityScreen'=>i18n('resourceVisibilityScreen')),
-                               'profile', 
+                                     'resVisibilityScreen'=>i18n('resourceVisibilityScreen'),
+// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY
+                                     'orgaVisibilityList'=>i18n('organizationVisibilityList'),
+                                     'orgaVisibilityScreen'=>i18n('organizationVisibilityScreen')
+// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY      
+                                ),                               'profile', 
                                'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {
     foreach($line as $colId => $val) {

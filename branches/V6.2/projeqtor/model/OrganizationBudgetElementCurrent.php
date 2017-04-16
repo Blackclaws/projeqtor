@@ -46,5 +46,57 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
     parent::__destruct();
   }
  
+// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
+
+  /** ==========================================================================
+   * Extends save functionality to implement update toIp
+   * Triggers parent::save() to run defaut functionality in the end.
+   * @return the result of parent::save() function
+   */
+  public function save() {
+
+    // Update total budget
+    $this->totalBudgetCost = $this->budgetCost + $this->expenseBudgetAmount;
+
+    $result=parent::save();    
+    return $result;
+    
+    // Get old element (stored in database) : must be fetched before saving
+    $old=$this->getOld();
+
+    // Update budget of parent organizations, if budget change
+    if ($this->budgetWork !== $old->budgetWork or 
+        $this->budgetCost != $old->budgetCost or 
+        $this->expenseBudgetAmount !== $old->expenseBudgetAmount) {
+
+        // Get Parent organization of BudgetElement
+        $parentOrga = $this->getOrganizationParent();
+        // If exists
+        if ($parentOrga != null) {
+            // Calculate new budgets for parent organization
+            $diffBudgetWork = $this->budgetWork - $old->budgetWork;
+            $diffBudgetCost = $this->budgetCost - $old->budgetCost;
+            $diffBudgetExpenseAmount = $this->expenseBudgetAmount - $old->expenseBudgetAmount;
+            $diffTotalBudgetCost = $diffBudgetCost + $diffBudgetExpenseAmount;
+            
+            $bec=$parentOrga->OrganizationBudgetElementCurrent;
+//            $old=$bec;
+           
+            $bec->budgetWork+=$diffBudgetWork;
+            $bec->budgetCost+=$diffBudgetCost;
+            $bec->expenseBudgetAmount+=$diffBudgetExpenseAmount;
+            $bec->totalBudgetCost+=$diffTotalBudgetCost;
+            
+            $bec->save();
+            // Get Parent of parent
+            $parentOrga = $bec->getOrganizationParent();
 }
-?>
+    }
+        
+    $result=parent::save();    
+
+    return $result;
+  }
+// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
+  
+}?>

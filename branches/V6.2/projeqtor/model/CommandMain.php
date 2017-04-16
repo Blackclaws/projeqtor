@@ -150,7 +150,7 @@ class CommandMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    
+    if ($withoutDependentObjects) return;
     if ($this->id) {
     	self::$_fieldsAttributes["creationDate"]='readonly';
     } else {

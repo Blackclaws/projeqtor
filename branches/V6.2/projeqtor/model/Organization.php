@@ -35,11 +35,18 @@ class Organization extends OrganizationMain {
 	 * @param $id the id of the object in the database (null if not stored yet)
 	 * @return void
 	 */
-	function __construct($id = NULL, $withoutDependentObjects=false) {
-		parent::__construct($id,$withoutDependentObjects);
+// ADD BY Marc TABARY - 2017-03-14 - PERIODIC YEAR BUDGET ELEMENT    
+	function __construct($id = NULL, $withoutDependentObjects=false, $budgetElement=null) {
+		parent::__construct($id,$withoutDependentObjects, $budgetElement);
 	}
+// END ADD BY Marc TABARY - 2017-03-14 - PERIODIC YEAR BUDGET ELEMENT    
 	
-	/** ==========================================================================
+// COMMENT BY Marc TABARY - 2017-03-30 - PERIODIC YEAR BUDGET ELEMENT        
+//	function __construct($id = NULL, $withoutDependentObjects=false) {
+//		parent::__construct($id,$withoutDependentObjects);
+//	}
+// END COMMENT BY Marc TABARY - 2017-03-30 - PERIODIC YEAR BUDGET ELEMENT        
+		/** ==========================================================================
 	 * Destructor
 	 * @return void
 	 */

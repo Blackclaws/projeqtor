@@ -168,6 +168,7 @@ class RequirementMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($withoutDependentObjects) return; 
     $this->getCalculatedItem();
   }
 

@@ -388,6 +388,11 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .contextMenuDiv{
 	border-color: #545381;
 }
+/* ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+.ProjeQtOrFlatBlue .iconButtonClose16 { background-image: url(customIcons/blue/iconClose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonUnClose16 { background-image: url(customIcons/blue/iconUnclose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonSubOrganization16 { background-image: url(customIcons/blue/iconSubOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
 .ProjeQtOrFlatBlue .iconButtonArrowRight16 { background-image: url(customIcons/blue/iconArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonCopy16 { background-image: url(customIcons/blue/iconCopy.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonBlocked16 { background-image: url(customIcons/blue/iconBlocked.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
@@ -1591,6 +1596,11 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .contextMenuDiv{
   border-color: #833e3e;
 }
+/* ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+.ProjeQtOrFlatRed .iconButtonClose16 { background-image: url(customIcons/red/iconClose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonUnClose16 { background-image: url(customIcons/red/iconUnclose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonSubOrganization16 { background-image: url(customIcons/red/iconSubOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
 .ProjeQtOrFlatRed .iconButtonArrowRight16 { background-image: url(customIcons/red/iconArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonCopy16 { background-image: url(customIcons/red/iconCopy.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonBlocked16 { background-image: url(customIcons/red/iconBlocked.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
@@ -2753,6 +2763,12 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .contextMenuDiv{
   border-color: #537665;
 }
+/* ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+.ProjeQtOrFlatGreen .iconButtonClose16 { background-image: url(customIcons/green/iconClose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonUnClose16 { background-image: url(customIcons/green/iconUnclose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonSubOrganization16 { background-image: url(customIcons/green/iconSubOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+
 .ProjeQtOrFlatGreen .iconButtonArrowRight16 { background-image: url(customIcons/green/iconArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonCopy16 { background-image: url(customIcons/green/iconCopy.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonBlocked16 { background-image: url(customIcons/green/iconBlocked.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
@@ -3914,6 +3930,11 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .contextMenuDiv{
   border-color: #656565;
 }
+/* ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE - SUB ORGANIZATION */
+.ProjeQtOrFlatGrey .iconButtonClose16 { background-image: url(customIcons/grey/iconClose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGrey .iconButtonUnClose16 { background-image: url(customIcons/grey/iconUnclose.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGrey .iconButtonSubOrganization16 { background-image: url(customIcons/grey/iconSubOrganization.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END ADD BY Marc TABARY - 2017-03-15 - ICON BUTTON CLOSE - UNCLOSE SUB ORGANIZATION */
 .ProjeQtOrFlatGrey .iconButtonArrowRight16 { background-image: url(customIcons/grey/iconArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonCopy16 { background-image: url(customIcons/grey/iconCopy.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonBlocked16 { background-image: url(customIcons/grey/iconBlocked.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
