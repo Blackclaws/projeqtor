@@ -631,7 +631,7 @@ function periodChanged(theId) {
         }
 // END ADD BY Marc TABARY - 2017-03-21 - IMPORT ORGANIZATION & BUDGETELEMENT        
     }        
-    parent::save();
+    return parent::save();
   }  
 
   /** ==========================================================================
