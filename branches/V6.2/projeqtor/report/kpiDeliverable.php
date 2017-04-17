@@ -233,7 +233,7 @@ if ($idProject) {
   echo '<td class="reportTableHeader" style="width:10%">' . htmlEncode($kpi->name) . '</td>';
   echo '</tr>';
   $query="idProject=$idProject";
-	if ($year) {
+	/*if ($year) {
 		if ($month) {
 			$query.= " and h.month='$year$month'";
 		} else if ($year==date('Y') and date('m')==1) {
@@ -241,7 +241,7 @@ if ($idProject) {
 	  } else {
 	    $query.= " and h.year='$year'";
 	  }
-	}
+	}*/
 	$newClass = new $class();
   $itemList= $newClass->getSqlElementsFromCriteria(null,false,$query,'plannedDate asc');
   $itemListInClause='(0';

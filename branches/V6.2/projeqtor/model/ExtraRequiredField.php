@@ -25,40 +25,16 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Stauts defines list stauts an activity or action can get in (lifecylce).
+ * List of orginable items
  */ 
 require_once('_securityCheck.php');
-class TenderStatus extends SqlElement {
+class ExtraRequiredField extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $name;
-  public $isWaiting;
-  public $isReceived;
-  public $isNotSelect;
-  public $isSelected;
-  public $color;
-  public $sortOrder=0;
-  public $idle;
-  public $_sec_void;
-  public $isCopyStatus;
-
-  
-  // Define the layout that will be used for lists
-  private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="30%">${name}</th>
-    <th field="isWaiting" width="10%" formatter="booleanFormatter">${isWaiting}</th>
-    <th field="isReceived" width="10%" formatter="booleanFormatter">${isReceived}</th>
-    <th field="isNotSelect" width="10%" formatter="booleanFormatter">${isNotSelect}</th>
-    <th field="isSelected" width="10%" formatter="booleanFormatter">${isSelected}</th>
-    <th field="color" width="10%" formatter="colorFormatter">${color}</th>
-    <th field="sortOrder" width="5%">${sortOrderShort}</th>  
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
-    ';
-
-  private static $_fieldsAttributes=array("isCopyStatus"=>"hidden,calculated", "name"=>"required");
+  public $scope;
+  public $idType;
+  public $field;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -78,32 +54,8 @@ class TenderStatus extends SqlElement {
   }
 
 // ============================================================================**********
-// GET STATIC DATA FUNCTIONS
+// MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  /** ==========================================================================
-   * Return the specific fieldsAttributes
-   * @return the fieldsAttributes
-   */
-  protected function getStaticFieldsAttributes() {
-    return self::$_fieldsAttributes;
-  }
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
-   */
-  protected function getStaticLayout() {
-    return self::$_layout;
-  }
   
-  public function deleteControl() {
-    $result="";
-    if ($this->isCopyStatus==1) {    
-      $result="<br/>" . i18n("msgCannotDeleteStatus");
-    }
-    if (! $result) {  
-      $result=parent::deleteControl();
-    }
-    return $result;
-  }
 }
 ?>
