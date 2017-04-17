@@ -724,7 +724,8 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
         // xxxStartDate = null : No Filter >
         // xxxEndDate = null : No filter <
         // Else filter > and < on selected period
-        $whereClause .= '(
+        // This will not work on PostgreSql
+        /*$whereClause .= '(
                             (idle=1 and
                                 (
                                     (isnull(realStartDate) and isnull(realEndDate)) or
@@ -741,8 +742,30 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
                                     (year(validatedStartDate)=YYYY or year(validatedEndDate)=YYYY)
                                 )
                             )
-                         )';
-        $whereClause = str_replace('YYYY', $periodValue, $whereClause);
+                         )';*/
+        // Transformed to be PostgreSql compliant
+        /*$whereClause .= "(
+                            (idle=1 and
+                                (
+                                    (coalesce(realStartDate,'null')='null' and coalesce(realEndDate,'null')='null') or
+                                    (coalesce(realStartDate,'null')='null' and year(realEndDate)=YYYY) OR
+                                    (coalesce(realEndDate,'null')='null') OR
+                                    (year(realStartDate)=YYYY or year(realEndDate)=YYYY)
+                                )
+                            ) or
+                            (idle=0 and
+                                (
+                                    (coalesce(validatedStartDate,'null')='null' and coalesce(validatedEndDate,'null')='null') or
+                                    (coalesce(validatedStartDate,'null')='null' and year(validatedEndDate)=YYYY) OR
+                                    (coalesce(validatedEndDate,'null')='null') OR
+                                    (year(validatedStartDate)=YYYY or year(validatedEndDate)=YYYY)
+                                )
+                            )
+                         )";
+        $whereClause = str_replace('YYYY', $periodValue, $whereClause);*/
+        // Better proposal to avoid count same project on several years
+        $whereClause .= "( year(coalesce(validatedStartDate,realStartDate,plannedStartDate,initialStartDate))=$periodValue )";
+        
         $arrayFields=array('validatedWork',
                            'assignedWork',
                            'realWork',
