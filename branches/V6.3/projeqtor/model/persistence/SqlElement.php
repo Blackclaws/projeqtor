@@ -66,6 +66,9 @@ abstract class SqlElement {
 	// Management of extraReadonlyFileds per type, status or profile
 	private static $_extraReadonlyFields=null;
 	
+	// Management of extraRequiredFileds per type, status or profile
+	private static $_extraRequiredFields=null;
+	
 // ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
         // Management of drawing spinner for a field
         // Array :
@@ -528,6 +531,7 @@ abstract class SqlElement {
 	 */
 	public function save() {
 		if (isset($this->_onlyCallSpecificSaveFunction) and $this->_onlyCallSpecificSaveFunction==true) return;
+		$this->setAllDefaultValues(true);
 		if (!property_exists($this, '_onlyCallSpecificSaveFunction') or !$this->_onlyCallSpecificSaveFunction) {
   		// PlugIn Management 
   		$lstPluginEvt=Plugin::getEventScripts('beforeSave',get_class($this));
@@ -2608,16 +2612,16 @@ abstract class SqlElement {
 	 * Return the default value for a given field
 	 * @return string the name of the data table
 	 */
-	public function getDefaultValue($fieldName) {
+	public function getDefaultValue($fieldName,$onSave=false) {
 	  $defaultValues=$this->getStaticDefaultValues();
 	  if (array_key_exists($fieldName,$defaultValues)) {
 	    if (substr($defaultValues[$fieldName],0,strlen(self::$_evaluationString))==self::$_evaluationString) {
 	      $eval=substr($defaultValues[$fieldName],strlen(self::$_evaluationString));
 	      //$eval='$value='. str_replace("'",'"',$eval).";";
-	      $eval='$value='. $eval .';';
+	      $eval='$value='. str_replace('\$','$',$eval) .';';
 	      eval($eval);
 	      return $value;
-	    } else {
+	    } else if (! $onSave) {
 	      return $defaultValues[$fieldName];
 	    }
 	  } else {
@@ -2650,15 +2654,20 @@ abstract class SqlElement {
 	 * Return the default value for a given field
 	 * @return string the name of the data table
 	 */
-	public function setAllDefaultValues() {
+	public function setAllDefaultValues($onSave=false) {
 	  $defaultValues=$this->getStaticDefaultValues();
 	  foreach ($defaultValues as $field=>$value) {
-	    if (! $this->id) {
-	      $this->$field=$this->getDefaultValue($field);
-	    } else if ($this->$field===null) {
-	      if ($this->isAttributeSetToField($field, 'required')) {
-	        $this->$field=$this->getDefaultValue($field);
+	    if ($onSave) {
+	      if ($this->isAttributeSetToField($field, 'readonly')) {
+	        $def=$this->getDefaultValue($field,$onSave);
+	        if ($def!==null) $this->$field=$def;
 	      }
+	    } else {
+  	    if (! $this->id) {
+  	      $this->$field=$this->getDefaultValue($field);
+  	    } else if ( $this->$field===null and $this->isAttributeSetToField($field, 'required') ) {
+  	      $this->$field=$this->getDefaultValue($field);
+  	    }
 	    }
 	  } 
 	}
@@ -4806,6 +4815,8 @@ abstract class SqlElement {
 	  $result=array();
 	  $type=$newType;
 	  $status=$newStatus;
+	  $user=getSessionUser();
+	  $profile=$user->getProfile($this);
 	  $planningMode=$newPlanningMode;
 	  if ($this->id) {
 	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
@@ -4899,8 +4910,20 @@ abstract class SqlElement {
 	      
 	    }
 	  }
+	  // Add extra result from plugin
+	  $extraResult=self::getExtraRequiredFieldsFullList();
+	  $scopeArray=array('Type','Status','Profile');
+	  foreach ($scopeArray as $scope) {
+	    $fld=strtolower($scope);
+	    if (isset(self::$_extraRequiredFields[$scope][get_class($this)][$$fld])) {
+	      foreach(self::$_extraRequiredFields[$scope][get_class($this)][$$fld] as $field) {
+	        $result[$field]='required';
+	      }
+	    }
+	  }
 	  return $result;
 	}
+	
 	public function getExtraHiddenFields($newType="", $newStatus="", $newProfile="") {
 	  $class=get_class($this);
 	  $testObj=$this;
@@ -4954,6 +4977,36 @@ abstract class SqlElement {
 	  //if ($newType=='*' and $newProfile=='*') return $listStatus;
 	  //if ($newType=='*' and $newStatus=='*') return $listProfile;
 	  return array_unique(array_merge($listType,$listStatus,$listProfile));
+	}
+	
+	private static function getExtraRequiredFieldsFullList() {
+	  if (self::$_extraRequiredFields!=null) {
+	    return self::$_extraRequiredFields;
+	  }
+	  $sessionList=getSessionValue('extraRequiredFieldsArray');
+	  if ($sessionList) {
+	    self::$_extraRequiredFields=$sessionList;
+	    return self::$_extraRequiredFields;
+	  }
+	  $extra=new ExtraRequiredField();
+	  $extraList=$extra->getSqlElementsFromCriteria(null); // Get all fields
+	  $result=array('Type'=>array(),'Status'=>array(),'Profile'=>array()); // Only scope for Type, Status, Profile
+	  foreach ($extraList as $extra) {
+	    $sp=explode('#',$extra->scope);
+	    if (count($sp)!=2) return array();
+	    $scope=$sp[0];
+	    $class=$sp[1];
+	    if (! isset($result[$scope])) {
+	      errorLog("getExtraRequiredFieldsFullList() : some data has scope '$scope' different from Type, Status, Profile");
+	      return array();
+	    }
+	    if (! isset($result[$scope][$class])) $result[$scope][$class]=array();
+	    if (! isset($result[$scope][$class][$extra->idType])) $result[$scope][$class][$extra->idType]=array();
+	    $result[$scope][$class][$extra->idType][]=$extra->field;
+	  }
+	  self::$_extraRequiredFields=$result;
+	  setSessionValue('extraRequiredFieldsArray', $result);
+	  return $result;
 	}
 	
 	private static function getExtraHiddenFieldsFullList() {

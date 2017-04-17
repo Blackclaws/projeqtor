@@ -150,6 +150,7 @@ function fillObj($obj) {
       if ($fld=='idTicket') $obj->$fld=null;
       if ($fld=='idTestSession') $obj->$fld=null;
       if (get_class($obj)=='VersionProject') $obj->$fld+=99;
+      if (get_class($obj)=='Organization' and $fld=='idResource') $obj->$fld=null;
 		} else if (($dbType=='int' or $dbType=='decimal') and $fld!='id') {
       $obj->$fld=($dbLength=='1')?$bool:$num;
     } else if (($dbType=='date' )) {
