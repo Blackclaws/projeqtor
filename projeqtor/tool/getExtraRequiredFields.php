@@ -81,4 +81,18 @@ foreach ($arrayDefault as $key=>$val) {
 }
 $result=array_merge($arrayDefault,$result);
 
+/*
+// BABYNUS : add management of extra required fields (defined through plugin)
+
+$user=getSessionUser();
+$profile=$user->getPrfile(obj);
+$extraResult=$obj->getExtraRequiredFields($type,$status,$profile);
+$peName=$objectClass.'PlanningElement';
+if (property_exists($obj, $peName)) {
+  $pe=$obj->$peName;
+  $resultPe=$pe->getExtraHiddenFields($type,$status,$profile);
+  $result=array_merge($result,$resultPe);
+}
+// BABYNUS : End*/
+
 echo json_encode($result);
