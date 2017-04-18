@@ -547,6 +547,7 @@ class UserMain extends SqlElement {
         $whereClause = $foreignKeyName . ' is null';
         $prj = new Project();
         $listPrjForeignKeyNull = $prj->getSqlElementsFromCriteria(null,false,$whereClause);
+        $listPrjForeignKeyIsNull=array();
         foreach ($listPrjForeignKeyNull as $prjList) {
           $listPrjForeignKeyIsNull[$prjList->id]=$prjList->name;
         }        

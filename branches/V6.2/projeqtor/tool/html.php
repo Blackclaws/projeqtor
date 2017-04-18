@@ -386,7 +386,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   }
   
   // ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER
-  if ($col=='idResource' and get_class($obj)==='Organization') {
+  if ($col=='idResource' and $obj and get_class($obj)==='Organization') {
     // -----------------------------------------------------------------------------------------------
     // Implement the organization's manager rule :
     // An organization's manager must belong to the organization (no cascade on parent organizations)
