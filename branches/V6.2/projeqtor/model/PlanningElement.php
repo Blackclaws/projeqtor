@@ -1248,6 +1248,7 @@ class PlanningElement extends SqlElement {
       self::$_fieldsAttributes['validatedWork']='readonly';
       self::$_fieldsAttributes['validatedDuration']='readonly';
       self::$_fieldsAttributes['validatedCost']='readonly';
+      self::$_fieldsAttributes['expenseValidatedAmount']='readonly';
       self::$_fieldsAttributes['priority']='readonly';
     }else{
       self::$_fieldsAttributes['validatedStartDate']='';
@@ -1255,6 +1256,7 @@ class PlanningElement extends SqlElement {
       self::$_fieldsAttributes['validatedWork']='';
       self::$_fieldsAttributes['validatedDuration']='';
       self::$_fieldsAttributes['validatedCost']='';
+      self::$_fieldsAttributes['expenseValidatedAmount']='';
       self::$_fieldsAttributes['priority']='';
     }
     

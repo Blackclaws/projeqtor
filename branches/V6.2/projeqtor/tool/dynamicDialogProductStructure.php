@@ -88,8 +88,6 @@ if ($way=='composition') {
         <?php 
         $canCreateProduct=securityGetAccessRightYesNo('menuProduct', 'create') == "YES";
         $canCreateComponent=securityGetAccessRightYesNo('menuComponent', 'create') == "YES";
-        echo "canCreateProduct=$canCreateProduct<br/>";
-        echo "canCreateComponent=$canCreateComponent";
         ?>
         <input id="productStructureObjectClass" name="productStructureObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productStructureObjectId" name="productStructureObjectId" type="hidden" value="<?php echo $objectId;?>" />

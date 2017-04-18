@@ -3784,7 +3784,7 @@ function getExtraReadonlyFields(idType,idStatus,idProfile) {
         var name=domNode.id.replace("widget_","");
         var widget=dijit.byId(name);
         if (widget) {
-          widget.set('readOnly',null);
+          widget.set('readOnly',false);
         }
       });
       for (key in obj) {
