@@ -1242,12 +1242,13 @@ class PlanningElement extends SqlElement {
     }
     
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',array('idProfile'=>$profile,'scope'=>'changeValidatedData'));
-    if ($habil and $habil->rightAccess == 2) {
+      if ($habil and $habil->rightAccess == 2) {
       self::$_fieldsAttributes['validatedStartDate']='readonly';
       self::$_fieldsAttributes['validatedEndDate']='readonly';    
       self::$_fieldsAttributes['validatedWork']='readonly';
       self::$_fieldsAttributes['validatedDuration']='readonly';
       self::$_fieldsAttributes['validatedCost']='readonly';
+      self::$_fieldsAttributes['expenseValidatedAmount']='readonly';
       self::$_fieldsAttributes['priority']='readonly';
     }else{
       self::$_fieldsAttributes['validatedStartDate']='';
@@ -1255,9 +1256,9 @@ class PlanningElement extends SqlElement {
       self::$_fieldsAttributes['validatedWork']='';
       self::$_fieldsAttributes['validatedDuration']='';
       self::$_fieldsAttributes['validatedCost']='';
+      self::$_fieldsAttributes['expenseValidatedAmount']='';
       self::$_fieldsAttributes['priority']='';
     }
-    
     if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
     and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
       $this->_costVisibility=self::$staticCostVisibility[$profile];

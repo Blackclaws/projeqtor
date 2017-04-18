@@ -107,6 +107,8 @@ if (! $idTeam) {
 	$nbAff=0;
 	foreach ($list as $ress) {
 		$affectation=new Affectation($id);
+		$exist=$affectation->getSqlElementsFromCriteria(array('idResource'=>$ress->id, 'idProject'=>$project));
+		if (count($exist)>0) continue;
     $affectation->idProject=$project;
     $affectation->idResource=$ress->id;
     $affectation->idProfile=$ress->idProfile;
