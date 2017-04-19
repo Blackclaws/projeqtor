@@ -108,26 +108,6 @@ La fonction alimente aussi
 
 Les valeurs possibles sont "PRO" (par défaut) et "ALL" (si un des accès aux écrans est ALL)
   
-  
-===============================================    ===================================================================    =================================================    
---                                                  --                                                                    Profil par projet    
-               
-Affichage menu                                     | Profil principal
-                                                                                    
-Affichage liste d'éléments                                               
-                                                                    
-Affichage détail d'un élément                              
-          
-Droits CRUD sur un élément                                        
-
-Droits spécifiques                                                                                               
-
-Accès aux états                          
-                                                   
-Affichage contenu des états                 
-                                                                                                                                                                                  
-===============================================    ===================================================================    ================================================= 
-
 .. title:: Habilitations
 
 Mot de passe
