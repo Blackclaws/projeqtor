@@ -1645,7 +1645,7 @@ abstract class SqlElement {
 					}
                                         
 // ADD BY Marc TABARY - 2017-02-09                                        
-					if ($newObj->$col_name instanceof BudgetElement) {
+					if ($this->$col_name instanceof BudgetElement) {
 						$newObj->$col_name->budgetWork=0;
 						$newObj->$col_name->validatedWork=0;
 						$newObj->$col_name->assignedWork=0;
