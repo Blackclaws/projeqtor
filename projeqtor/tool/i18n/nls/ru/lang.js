@@ -45,6 +45,7 @@ addDocumentVersion: "Добавить / загрузить новую верси
 addExpenseDetail: "Добавить детали расходов",
 addFilterClause: "Добавить критерий для фильтров",
 addFilterClauseTitle: "Добавить фильтр или пункт сортировки",
+addFormattedBillLine: "[add formatted line (depending on billing mode)]",
 addHyperlink: "Добавить ссылку на страницу или веб-страницу",
 addLine: "Добавить строку",
 addLink: "Добавить элемент для связки",

@@ -3142,14 +3142,15 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   } 
   return $result;
 }
-function formatSmallButton($class) {
+function formatSmallButton($class,$isClass=false) {
   global $print, $outMode;
   $size="16";
   $result='';
   if (isset($outMode) and $outMode=='pdf') {
     $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></span>"; 
   } else {
-    $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='iconButton$class$size' style='' >&nbsp;</div></span>";
+  	$button=($isClass)?'':'Button';
+    $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='icon$button$class$size' style='' >&nbsp;</div></span>";
   }
   return $result;
 }
