@@ -1798,7 +1798,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else {
         	echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
         }*/
-        echo formatAnyTextToPlainText($val);
+        if ($dataLength>4000) echo formatAnyTextToPlainText($val);
+        else echo $val;
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
