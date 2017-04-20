@@ -2041,7 +2041,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else {
         	echo str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$val);
         }*/
-        echo formatAnyTextToPlainText($val);
+        if ($dataLength>4000) echo formatAnyTextToPlainText($val);
+        else echo $val;
         echo '</textarea>';
       } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -2969,7 +2970,8 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     if ($obj->id != null and !$print and !$lock) {
       echo '<a onClick="addBillLine(\'M\');" title="' . i18n('addLine') . '" > '.formatSmallButton('Add').'</a>';
       if ($billingType!='M') {
-        echo '<a onClick="addBillLine(\''.$billingType.'\');" title="' . i18n('addLine') . '" style="cursor: pointer;display: inline-block;margin-left:5px;" class="roundedButtonSmall"> '.formatIcon('Bill',16).'</a>';
+        //echo '<a onClick="addBillLine(\''.$billingType.'\');" title="' . i18n('addFormattedBillLine') . '" style="cursor: pointer;display: inline-block;margin-left:5px;" class="roundedButtonSmall"> '.formatIcon('Bill',16).'</a>';
+        echo '<a onClick="addBillLine(\''.$billingType.'\');" title="' . i18n('addFormattedBillLine') . '" > '.formatSmallButton('Bill',true).'</a>';
       }
     }
     echo '</td>';
