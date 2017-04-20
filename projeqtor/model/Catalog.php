@@ -52,8 +52,8 @@ class Catalog extends SqlElement {
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
     <th field="description" width="30%" >${description}</th>
-    <th field="unitCost" width="20%" formatter="costFormatter">${unitCost}</th>
-    <th field="idMeasureUnit" width="20%" >${idMeasureUnit}</th>
+    <th field="unitCost" width="20%" formatter="costFormatter">${unitPrice}</th>
+    <th field="nameMeasureUnit" width="20%" formatter="nameFormatter">${idMeasureUnit}</th>
     ';
   
   //required and hidden attribute
@@ -64,6 +64,10 @@ class Catalog extends SqlElement {
       "unitCost"=>"nobr",
   		"idMeasureUnit"=>""
   );
+  
+  private static $_colCaptionTransposition = array('unitCost'=>'unitPrice'
+  		);
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -92,6 +96,15 @@ class Catalog extends SqlElement {
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld=null) {
+  	return self::$_colCaptionTransposition;
+  }
+  
   /** ==========================================================================
    * Return the specific layout
    * @return the layout
@@ -100,8 +113,5 @@ class Catalog extends SqlElement {
     return self::$_layout;
   }
   
-  private static $_databaseColumnName = array('idProductVersionType'=>'idVersionType');
-  
-  
-  }
-  ?>
+}
+?>
