@@ -83,14 +83,16 @@ $hideClientSearch=false;
 $hideNameSearch=false;
 $hideIdSearch=false;
 $hideShowIdleSearch=false;
+$hideEisSearch=false;
 $referenceWidth=50;
 if ($displayWidthList<1400) {
   $referenceWidth=40;
-  if ($displayWidthList<1200) {
+  if ($displayWidthList<1250) {
     $referenceWidth=30;
-    if ($displayWidthList<1100) {
+    if ($displayWidthList<1165) {
       $hideClientSearch=true;
-      if ($displayWidthList<900) {
+      $hideEisSearch=true;
+      if ($displayWidthList<1025) {
         $hideTypeSearch=true;
         if ($displayWidthList<700) {
           $hideIdSearch=true;
@@ -448,13 +450,13 @@ if ($displayWidthList<1400) {
               </button>
             </td>
 <?php }?>       
-<?php if ( property_exists($obj,'isEis') ) { ?>
-              <td style="vertical-align: middle; text-align:right;" width="5px">
-                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+<?php if ( property_exists($obj,'isEis') and !$hideEisSearch) { ?>
+              <td style="vertical-align: middle; width:15%; min-width:110px; text-align:right;white-space:normal;">
+                <div style="max-height:32px;"> 
                 <?php echo i18n("hideInService");?>
-                &nbsp;</span>
+                </div>
               </td>
-              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">
+              <td style="width: 10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
                 <?php $hideInService=Parameter::getUserParameter('hideInService');?>
                 <div title="<?php echo i18n('hideInService')?>" dojoType="dijit.form.CheckBox" 
                 class="whiteCheck" <?php if ($hideInService=='true') echo " checked ";?>
