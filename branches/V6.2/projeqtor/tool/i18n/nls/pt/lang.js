@@ -1438,6 +1438,7 @@ helpParamLockAfterWrongTries: "lock user after a given number of wrong connexion
 helpParamMailBodyApprover: "corpo da mensagem de correio enviada aos aprovadores para solicitar a aprovação",
 helpParamMailBodyUser: "corpo da mensagem de correio enviada ao utilizador a notificar a informação de login",
 helpParamMailEol: "formato de fim de linha para o mail para que se resolva um problema existente com o Postfix <2.1",
+helpParamMailerType: "[Technical way to send emails]",
 helpParamMailReplyTo: "Endereço de resposta no envio de emails",
 helpParamMailReplyToName: "Nome do remetende do email. Será usado também como o endereço para onde serão enviadas as respostas.",
 helpParamMailSender: "Remetente a usar no envio de emails",
