@@ -223,25 +223,27 @@ class Version extends SqlElement {
     $versList=$this->getSqlElementsFromCriteria($critArray,false,null,'name asc',false,true);
     foreach ($versList as $vers) {
       $result.= '<tr>';
-      $result.= '<td style="padding-left:15px;">&nbsp;&nbsp;</td><td valign="top" width="20px" style="padding-left:5px;" class="icon'.$vers->scope.'Version16" height="16px" />&nbsp;</td>';
+      $result.= '<td style="padding-left:15px;">&nbsp;&nbsp;</td>';
+      $result.= '<td valign="top" style="padding-left:5px;width:20px;height:16px;	" class="icon'.$vers->scope.'Version16" >&nbsp;</td>';
       $style="";
       if ($vers->idle) {$style='color#5555;text-decoration: line-through;';}
       else if ($vers->isEis) {$style='font-weight: bold;';}
       $result.= '<td style="vertical-align:top;'.$style.'">';   
       $result.="#$vers->id - ".htmlDrawLink($vers);
       if ($withProjects) {
-        $result.='<td>';
+        //$result.='<td>';
         $vp=new VersionProject();
         $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$vers->id),false,null,null,false,true);
         $result.= '<table>';
         foreach ($vpList as $vp) {
           $result.= '<tr>';
-          $result.= '<td style="padding-left:15px;"><td valign="top" width="20px" style="padding-left:5px;" class="iconProject16" height="16px" />&nbsp;</td>';
+          $result.= '<td style="padding-left:15px;">&nbsp;&nbsp;</td>';
+          $result.= '<td valign="top" style="padding-left:5px;width:20px;height:16px" class="iconProject16" >&nbsp;</td>';
           $result.= '<td style="vertical-align:top;">'.SqlList::getNameFromId('Project', $vp->idProject).'</td>';
           $result.= '</tr>';
         }
         $result.= '</table>';
-        $result.='</td>';
+        //$result.='</td>';
       }
       $result.= '</td></tr>';
     }

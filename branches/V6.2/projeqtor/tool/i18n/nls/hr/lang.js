@@ -1438,6 +1438,7 @@ helpParamLockAfterWrongTries: "zaštita korisnika nakon određenog broja pogreš
 helpParamMailBodyApprover: "tijelo mail poslan na odobravateljima zatražiti odobravanje",
 helpParamMailBodyUser: "tijelo mail poslan korisniku kada je obavijestila podatke za prijavu",
 helpParamMailEol: "kraj linije formata za mail kako bi mogli popraviti problem sa Postfix <2.1",
+helpParamMailerType: "[Technical way to send emails]",
 helpParamMailReplyTo: "odgovori na 'e-mail adresu",
 helpParamMailReplyToName: "Naziv pošiljatelja pošte - za odgovorima",
 helpParamMailSender: "pošiljatelja e-mail adresu",

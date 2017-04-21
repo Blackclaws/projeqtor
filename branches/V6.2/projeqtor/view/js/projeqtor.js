@@ -3971,6 +3971,17 @@ function showExtraButtons(location) {
   } else {
     divNode.style.display='block';
     divNode.style.left=(btnNode.offsetLeft-5)+"px";
+    var container=dojo.byId('buttonDiv');
+    var positionner=dojo.byId('buttonDivContainerDiv');
+    if (container) {
+      var containerWidth=parseInt(container.style.width);
+      var nodeWidth=parseInt(divNode.style.width);
+      var nodeLeft=parseInt(divNode.style.left);
+      var position=positionner.offsetLeft;
+      if (nodeLeft+nodeWidth>containerWidth-position-5) {
+        divNode.style.left=(containerWidth-position-nodeWidth-5)+"px";
+      }
+    }
   }
 }
 function hideExtraButtons(location) {
