@@ -162,7 +162,7 @@ class WorkflowMain extends SqlElement {
    * @return an html string able to display a specific item
    *  must be redefined in the inherited class
    */
-  public function drawSpecificItem($item){
+  public function drawSpecificItem($item, $limitToProfile=null){
     global $_REQUEST, $print;
     if (array_key_exists('destinationWidth', $_REQUEST)) {
       $detailWidth=$_REQUEST['destinationWidth'];
@@ -249,7 +249,9 @@ class WorkflowMain extends SqlElement {
       
     // WORKFLOW DIAGRAM  
     } else if ($item=='workflowDiagram') {
+      $statusId=RequestHandler::getId('idStatus',false,null);
       $statusList=$this->getStatusList();
+      $statusListUsed=array();
       //debugLog($statusList); // List of all status
       $statusColorList=SqlList::getList('Status', 'color');
       //debugLog($statusColorList); // List of color use by all status
@@ -264,7 +266,7 @@ class WorkflowMain extends SqlElement {
       $height="15";
       $sepWidth="10";
       $sepHeight="10";
-      $dottedStyle='solid';
+      $dottedStyle='dotted';
       $arrowDownImg='<div class="wfDownArrow"></div>';
       $arrowUpImg='<div class="wfUpArrow"></div>';
       $wsListArray=$this->getWorkflowstatusArray();
@@ -276,16 +278,26 @@ class WorkflowMain extends SqlElement {
         foreach ($statusList as $statColumnCode => $statColumnValue) {
           $allChecked=true;
           $oneChecked=false;
+          $profileCheck=false;
           if ($statColumnCode!=$statLineCode) {    
             foreach ($profileList as $profileCode => $profileValue) {  
               if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==0) {
                 $allChecked=false;
               } else {
                 $oneChecked=true;
+                if ($limitToProfile!=null and $profileCode==$limitToProfile) {
+                	$profileCheck=true;
+                }
               }
             }            
           }
-          if ($allChecked) {
+          if ($limitToProfile!=null) {
+          	if ($profileCheck==true) {
+          	  $val="ALL";
+          	} else {
+          		$val="NO";
+          	}
+          } else if ($allChecked) {
             $val="ALL";
           } else if ($oneChecked) {
             $val="ONE";
@@ -293,7 +305,14 @@ class WorkflowMain extends SqlElement {
             $val="NO";
           }
           $crossArray[$statLineCode][$statColumnCode]=$val;
+          if ($val!='NO') {
+          	$statusListUsed[$statLineCode]=$statLineValue;
+          	$statusListUsed[$statColumnCode]=$statColumnValue;
+          }
         }
+      }
+      if ($limitToProfile!=null) {
+      	$statusList=array_intersect($statusList,$statusListUsed);
       }
       $i=0;
       $max=array();
@@ -380,12 +399,9 @@ class WorkflowMain extends SqlElement {
             $colorI="#000000";
           }
           if ($idL==$idC) {
-            $statusId=RequestHandler::getId('idStatus',true,null);
-            debugLog("mon id status ");
-            debugLog($statusId);
             if($idL==$statusId){
-              $result.='<td style="border:6px solid ' . $colorI . ';">';
-              $result.='<div style="text-align:center; width:' . $width . 'px;height: ' . $height . 'px;">' . $nameL . '</div>';
+              $result.='<td style="border:2px solid ' . $colorI . ';">';
+              $result.='<div style="text-align:center;color:' . getForeColor($colorI) . ';background-color:' . $colorI . '; width:' . $width . 'px;height: ' . $height . 'px;">' . $nameL . '</div>';
             } else {
               $result.='<td style="border:2px solid ' . $colorI . ';">';
               $result.='<div style="text-align:center; width:' . $width . 'px;height: ' . $height . 'px;">' . $nameL . '</div>';

@@ -2766,18 +2766,16 @@ abstract class SqlElement {
 
 	public function getFieldsArray($limitToExportableFields=false) {
 		$arrayFields=array();
+		$extraHiddenFields=$this->getExtraHiddenFields( null, null, getSessionUser()->getProfile() );
 		foreach ($this as $fld=>$fldVal) {
 			if (is_object($this->$fld)) {
 				$arrayFields=array_merge($arrayFields,$this->$fld->getFieldsArray($limitToExportableFields));
 			} else {
 			  if ($limitToExportableFields) {
 // CHANGE BY Marc TABARY - 2017-03-20 - FORCE HIDDEN OR READONLY                              
-			    if ((
-                                 $this->isAttributeSetToField($fld,'hidden') or 
-                                 $this->isAttributeSetToField($fld,'hiddenforce') 
-                                )
-                                 and ! $this->isAttributeSetToField($fld,'forceExport')) {
-                            //Old    
+			    if ( ( $this->isAttributeSetToField($fld,'hidden') or $this->isAttributeSetToField($fld,'hiddenforce') or in_array($fld,$extraHiddenFields) )
+               and ! $this->isAttributeSetToField($fld,'forceExport') ) {
+//Old    
 //			    if ($this->isAttributeSetToField($fld,'hidden') and ! $this->isAttributeSetToField($fld,'forceExport')) {
 // END CHANGE BY Marc TABARY - 2017-03-20 - FORCE HIDDEN OR READONLY                              
 			      continue;
@@ -3325,7 +3323,7 @@ abstract class SqlElement {
 		}
     
 		// Krowry
-		if(substr($colName, -9)=="StartDate" or substr($colName, -7)=="EisDate"){ // If change start date
+			if(substr($colName, -9)=="StartDate" or substr($colName, -7)=="EisDate"){ // If change start date
 		  $end = str_replace(array('EisDate','StartDate'), array('EndDate','EndDate'), $colName);
 		  $start=$colName;
 		  if (property_exists($this, $end)){
@@ -3338,16 +3336,17 @@ abstract class SqlElement {
 		    $colScript .= "if(this.value){";
 		    $colScript .= "  var end = dijit.byId('$end');"; // $end will be replaced by value as enclosed by "
 		    $colScript .= "  if(end){";
-		    $colScript .= "    var dtStart = dijit.byId('$start').get('value'); "; // => rÃ©cupÃ©rer la date de this, qui est en string, au format Date javascrpit
-		    $colScript .= "    end.constraints.min=dtStart;";
-		    $colScript .= "    if (! end.get('value') ) {";
-		    if (!substr($colName, -7)=="EisDate") $colScript .= "      end.set('value',dtStart);";
-        if(isset($duration)){
-		    $colScript .= "      if (dijit.byId('$duration')) {";
-		    $colScript .= "        dijit.byId('$duration').set('value',1);";
-		    $colScript .= "      }";
-        }
-		    $colScript .= "    }";
+		    $colScript .= "    var dtStart = dijit.byId('$start').get('value'); "; // => retrieve date for startDate
+		    $colScript .= "    end.constraints.min=dtStart;"; // Set constraint
+		    $colScript .= "    end.set('dropDownDefaultValue',dtStart);";
+		    //$colScript .= "    if (! end.get('value') ) {";
+		    //if (!substr($colName, -7)=="EisDate") $colScript .= "      end.set('value',dtStart);";
+        //if(isset($duration)){
+		    //$colScript .= "      if (dijit.byId('$duration')) {";
+		    //$colScript .= "        dijit.byId('$duration').set('value',1);";
+		    //$colScript .= "      }";
+        //}
+		    //$colScript .= "    }";
 		    $colScript .= " }";
 		    $colScript .= "}";
 		    $colScript .= '</script>';
@@ -3401,6 +3400,8 @@ abstract class SqlElement {
 	public function control(){
 		//traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
 		global $cronnedScript, $loginSave;
+		$user=getSessionUser();
+		$arrayExtraRequired=$this->getExtraRequiredFields();
 		$result="";
 		$right="";
 	  // Manage Exceptions
@@ -3463,10 +3464,12 @@ abstract class SqlElement {
 					}
 				} else {
 					// check if required
-					if (strpos($this->getFieldAttributes($col), 'required')!==false and !$isCopy) {
-						if (!$val and $val!==0) {
-							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
-						} else if (trim($val)==''){
+					if ( (strpos($this->getFieldAttributes($col), 'required')!==false or array_key_exists($col, $arrayExtraRequired)) and !$isCopy) {
+						if ($col=='idResource' and ! trim($this->idResource) and $user->isResource and Parameter::getGlobalParameter('setResponsibleIfNeeded')!='NO') {
+							$this->idResource=$user->id;
+							$val=$this->idResource;
+						} 
+						if ((!$val and $val!==0) or trim($val)=='') {
 							$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
 						}
 					}
@@ -3517,7 +3520,6 @@ abstract class SqlElement {
 			and property_exists($this, 'idResource')
 			and property_exists($this, 'handled')) {
 				if ($this->handled and ! trim($this->idResource)) {
-					$user=getSessionUser();
 					if ($user->isResource and Parameter::getGlobalParameter('setResponsibleIfNeeded')!='NO') {
 						$this->idResource=$user->id;
 					} else {
