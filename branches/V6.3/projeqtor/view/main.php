@@ -299,7 +299,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           }
         }
       };
-
+      if (dojo.isIE) {
+        document.onhelp = function() { return (false); };
+        window.onhelp = function() { return (false); };
+      }
       var onKeyDownFunc = function(event) {
         if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
           event.preventDefault();

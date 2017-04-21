@@ -112,7 +112,7 @@
     &nbsp;
   </td>
   <td  style="white-space:nowrap;">
-    <div style="float:left;position:relative;width:45%;white-space:nowrap"> 
+    <div style="float:left;position:relative;width:45%;white-space:nowrap" id="buttonDivContainerDiv"> 
     <?php if (! $comboDetail ) {?>
       <?php organizeButtons();?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false"

@@ -1354,7 +1354,7 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
     }
     // Background Color            
     if ($bkColor!=='') {
-        $result.= '<span style="background-color:'.$bkColor.'">&nbsp;&nbsp</span><span>&nbsp;</span>';        
+        $result.= '<span style="display:inline-block;widht:50px;margin:0px 20px 0px 3px;background-color:'.$bkColor.'">&nbsp;&nbsp;&nbsp;&nbsp</span><span>&nbsp;</span>';        
     }
     
     return $result;
