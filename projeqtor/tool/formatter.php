@@ -40,14 +40,7 @@ function colorNameFormatter($value,$idTicket=-1) {
       } else { // should not be found
         return value;
       }
-      $foreColor='#000000';
-      if (strlen($color)==7) {
-        $red=substr($color,1,2);
-        $green=substr($color,3,2);
-        $blue=substr($color,5,2);
-        $light=(0.3)*base_convert($red,16,10)+(0.6)*base_convert($green,16,10)+(0.1)*base_convert($blue,16,10);
-        if ($light<128) { $foreColor='#FFFFFF'; }
-      }
+      $foreColor=getForeColor($color);
       return '<div '.($idTicket!=-1 ? 'id="status'.$idTicket.'"' : '').' style="vertical-align:middle;padding: 5px;border:1px solid #CCC;border-radius:10px;text-align: center;'.(($print and $outMode=='pdf')?'width:95%;min-height:18px;':'') . 'background-color: ' . $color . '; color:' . $foreColor . ';">' 
           .$val.'</div>';
 
@@ -272,6 +265,7 @@ function formatColorThumb($col,$val, $size=20, $float='right',$name="") {
   $radius=round($size/2,0);
   $res='<div style="border: 1px solid #AAAAAA;background:'.$color.';';
   $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px"';
+  //$res.=' onMouseOver="drawGraphStatus();"';
   if($name!="")$res.=' onMouseOver="showBigImage(null,null,this,\''.$name.'\');" onMouseOut="hideBigImage();"';
   $res.='>&nbsp;</div>';
   return $res;

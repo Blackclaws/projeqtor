@@ -2795,7 +2795,7 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
       cleanContent("detailDiv");
     }
     if (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass
-        || forceListRefresh) {
+        || forceListRefresh || dojo.byId('titleKanban')) {
       loadContent("objectMain.php?objectClass=" + eltClass, "centerDiv", false,
           false, false, eltId);
     } else {
@@ -3971,6 +3971,17 @@ function showExtraButtons(location) {
   } else {
     divNode.style.display='block';
     divNode.style.left=(btnNode.offsetLeft-5)+"px";
+    var container=dojo.byId('buttonDiv');
+    var positionner=dojo.byId('buttonDivContainerDiv');
+    if (container) {
+      var containerWidth=parseInt(container.style.width);
+      var nodeWidth=parseInt(divNode.style.width);
+      var nodeLeft=parseInt(divNode.style.left);
+      var position=positionner.offsetLeft;
+      if (nodeLeft+nodeWidth>containerWidth-position-5) {
+        divNode.style.left=(containerWidth-position-nodeWidth-5)+"px";
+      }
+    }
   }
 }
 function hideExtraButtons(location) {
@@ -3996,5 +4007,25 @@ function hideDirectChangeStatus() {
   if (! divNode) return;
   if (divNode.style.display=='block') {
     divNode.style.display='none';
+  }
+}
+
+function drawGraphStatus() {
+  var callBack = function(){
+    dojo.byId('graphStatusContentDiv');
+  };
+  graphIdStatus=dijit.byId("idStatus").get('value');
+  graphIdProject=dijit.byId("idProject").get('value');
+  objectClass=dojo.byId('objectClass').value;
+  graphIdType=dijit.byId("id"+objectClass+"Type").get('value');
+  var url = '../tool/dynamicDialogGraphStatus.php?idStatus='+graphIdStatus + '&idProject='+graphIdProject + '&idType='+graphIdType;
+  loadContent(url,"graphStatusDiv",null,null,null,null,null,callBack);
+  
+}
+
+function hideGraphStatus(){
+  var divNode=dojo.byId("graphStatusContentDiv");
+  if (divNode){
+    divNode.style.display="none";
   }
 }

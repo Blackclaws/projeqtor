@@ -1438,6 +1438,7 @@ helpParamLockAfterWrongTries: "Nutzer sperren nach falschen Login-Versuchen (Anz
 helpParamMailBodyApprover: "Text für Mails 'Genehmigung von Anforderungen'",
 helpParamMailBodyUser: "Text für Login Informations Mails",
 helpParamMailEol: "Zeilenende Format für Mails zur Problemlösung von Postfix < 2.1",
+helpParamMailerType: "[Technical way to send emails]",
 helpParamMailReplyTo: "Antworten an' Mail-Adresse",
 helpParamMailReplyToName: "Name des Mail-Senders - auch für Antworten",
 helpParamMailSender: "Absender' Mail-Adresse",

@@ -228,7 +228,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
         </script>
       <div style="width: 100%; height: 100%;">
         <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
-          region="top" style="width: 100%; height: 100%;"><?php
+          region="top" style="width: 100%; height: 100%;" onmouseout="hideGraphStatus();"><?php
   }
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
@@ -996,8 +996,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
             echo '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
             if ($thumb) {
+              //echo $formatedThumb;
+              if($col=='idStatus'){
+                echo '<a onmouseover="drawGraphStatus();">';
+              }
               echo $formatedThumb;
-            }
+              if($col=='idStatus'){
+                echo '</a>';
+                echo '<div id="graphStatusDiv" dojoType="dijit.layout.ContentPane" region="center" class="graphStatusDiv">';
+                echo '</div>';
+              }
+             }            
             echo '</td>';
             if ($print and $outMode == "pdf") {
               echo '<td style="width:' . ($largeWidth + 10) . 'px">';
@@ -1425,6 +1434,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 $min=$obj->$start;
               }
             }
+            if ($min) echo ' dropDownDefaultValue="'.$min.'" ';
             echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
           }
         }
