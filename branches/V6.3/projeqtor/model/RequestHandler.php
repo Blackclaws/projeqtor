@@ -97,6 +97,20 @@ abstract class RequestHandler {
       exit;
     }
   }
+  // debugLog to keep
+  public static function debugLog() {
+    debugTraceLog('===== Dump of $_REQUEST =============================================================');
+    foreach ($_REQUEST as $code=>$val) {
+      if (is_array($val)) {
+        $cpt=count($val);
+        debugTraceLog(" => $code is an array of $cpt elements");
+        debugTraceLog($val);
+      } else {
+        debugTraceLog(" => $code='$val'");
+      }
+    }
+    debugTraceLog('===== End of Dump ===================================================================');
+  }
   
 }
 ?>
