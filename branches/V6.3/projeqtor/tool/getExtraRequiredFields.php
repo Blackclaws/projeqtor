@@ -60,12 +60,13 @@ if (isset($_REQUEST[$pmName])) {
   $planningMode=$_REQUEST[$pmName]; // Note: validated as numeric in base SqlElement constructor
 }
 
-$result=$obj->getExtraRequiredFields($type,$status,$planningMode);
-
+$result=$obj->getExtraRequiredFields($type,$status,$planningMode,null);
+debugLog("getExtraRequiredFields($type,$status,$planningMode,null)");
+debugLog($result);
 $peName=$objectClass.'PlanningElement';
 if (property_exists($obj, $peName)) {
   $pe=$obj->$peName;
-  $resultPe=$pe->getExtraRequiredFields($type,$status,$planningMode);
+  $resultPe=$pe->getExtraRequiredFields($type,$status,$planningMode,null);
   foreach ($resultPe as $key=>$val) {
     $result[$peName.'_'.$key]=$val;
   }
@@ -86,7 +87,7 @@ $result=array_merge($arrayDefault,$result);
 
 $user=getSessionUser();
 $profile=$user->getPrfile(obj);
-$extraResult=$obj->getExtraRequiredFields($type,$status,$profile);
+$extraResult=$obj->getExtraRequiredFields($type,$status,null,$profile);
 $peName=$objectClass.'PlanningElement';
 if (property_exists($obj, $peName)) {
   $pe=$obj->$peName;
