@@ -1418,7 +1418,7 @@ function finalizeMessageDisplay(destination, validationType) {
     } else {
       formInitialize();
     }
-  } else {
+  } else if (dojo.byId('objectClass') && dojo.byId('objectId')) {
     var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
     loadDiv(url, 'buttonDivCreationInfo', null);
     if (validationType != 'note' && validationType != 'attachment') {

@@ -39,8 +39,9 @@
   unset($_REQUEST['objectId']);
   $_REQUEST['lostConnection']=true;
   $clean=ob_get_clean ();
-  session_destroy();
   $hackMessage='Hack attempt detected : the action and your IP has been traced.'; // This message will not be visible in most cases because of redirection in index.php
+  enableSilentErrors();
+  @session_destroy();
   include 'index.php';
   exit;
 ?>
