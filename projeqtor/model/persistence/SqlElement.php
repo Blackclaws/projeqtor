@@ -3512,6 +3512,7 @@ abstract class SqlElement {
 			if (property_exists($objType, 'mandatoryDescription') and $objType->mandatoryDescription
 			and property_exists($this, 'description')) {
 				if (! $this->description) {
+					$result=str_replace('<br/>' . i18n('messageMandatory',array($this->getColCaption('description'))),'',$result);
 					$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('description')));
 				}
 			}
@@ -3522,6 +3523,7 @@ abstract class SqlElement {
 					if ($user->isResource and Parameter::getGlobalParameter('setResponsibleIfNeeded')!='NO') {
 						$this->idResource=$user->id;
 					} else {
+						$result=str_replace('<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource'))),'',$result);
 						$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource')));
 					}
 				}
@@ -3530,6 +3532,7 @@ abstract class SqlElement {
 			and property_exists($this, 'result')
 			and property_exists($this, 'done')) {
 				if ($this->done and ! $this->result) {
+					$result=str_replace('<br/>' . i18n('messageMandatory',array($this->getColCaption('result'))),'',$result);
 					$result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('result')));
 				}
 			}
@@ -4812,12 +4815,12 @@ abstract class SqlElement {
 	  return ($col=='idQuality' or $col=='idHealth' or $col=='idTrend')?true:false;
 	}
 	
-	public function getExtraRequiredFields($newType="", $newStatus="", $newPlanningMode="") {  
+	public function getExtraRequiredFields($newType="", $newStatus="", $newPlanningMode="", $profile=null) {  
 	  $result=array();
 	  $type=$newType;
 	  $status=$newStatus;
 	  $user=getSessionUser();
-	  $profile=$user->getProfile($this);
+	  if (!$profile) $profile=$user->getProfile($this);
 	  $planningMode=$newPlanningMode;
 	  if ($this->id) {
 	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
@@ -4834,7 +4837,7 @@ abstract class SqlElement {
 	  } else {
 	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
 	    $typeClassName=str_replace('PlanningElement', '',get_class($this)).'Type';
-	    if (property_exists($this,$typeName) and self::class_exists($typeClassName)) {
+	    /*if (!$type and property_exists($this,$typeName) and self::class_exists($typeClassName)) {
   	    $table=SqlList::getList($typeClassName, 'name', null);
   	    if (count($table) > 0) {
   	      foreach ( $table as $idTable => $valTable ) {
@@ -4842,8 +4845,8 @@ abstract class SqlElement {
   	        break;
   	      }
   	    }
-	    }
-	    $status=1; // first status always 1 (recorded)
+	    }*/
+	    if (!$status) $status=1; // first status always 1 (recorded)
 	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
 	    $typeElt=null;
 	    if (!$type and SqlElement::class_exists($typeClassName)) {
@@ -4856,7 +4859,7 @@ abstract class SqlElement {
 	      $planningMode=$typeObj->$planningModeName;
 	    }
 	  } 
-	  if ($planningMode) {
+	  if ($planningMode and $planningMode!='*') {
 	    $planningModeObj=new PlanningMode($planningMode);
 	    if ($planningModeObj->mandatoryStartDate and property_exists($this,'validatedStartDate')) {
   	    $result['validatedStartDate']='required';
@@ -4868,10 +4871,10 @@ abstract class SqlElement {
   	  	$result['validatedDuration']='required';
   	  }
 	  }
-	  if ($type) {
+	  if ($type and $type!='*') {
 	    $typeObj=new Type($type);
 	    if ($typeObj->mandatoryResourceOnHandled) {
-	      if ($newStatus) {
+	      if ($newStatus and $newStatus!='*') {
 	        $statusObj=new Status($newStatus);
 	        if ($statusObj->setHandledStatus) {
 	          $result['idResource']='required';
@@ -4886,7 +4889,7 @@ abstract class SqlElement {
 	      $result['description']='required';
 	    }
 	    if ($typeObj->mandatoryResultOnDone) {
-	      if ($newStatus) {
+	      if ($newStatus and $newStatus!='*') {
 	        $statusObj=new Status($newStatus);
 	        if ($statusObj->setDoneStatus) {
 	          $result['result']='required';
@@ -4898,7 +4901,7 @@ abstract class SqlElement {
 	      }
 	    }
 	    if (property_exists($typeObj, 'mandatoryResolutionOnDone') and $typeObj->mandatoryResolutionOnDone) {
-	      if ($newStatus) {
+	      if ($newStatus and $newStatus!='*') {
 	        $statusObj=new Status($newStatus);
 	        if ($statusObj->setDoneStatus) {
 	          $result['idResolution']='required';
@@ -4916,12 +4919,41 @@ abstract class SqlElement {
 	  $scopeArray=array('Type','Status','Profile');
 	  foreach ($scopeArray as $scope) {
 	    $fld=strtolower($scope);
-	    if (isset(self::$_extraRequiredFields[$scope][get_class($this)][$$fld])) {
-	      foreach(self::$_extraRequiredFields[$scope][get_class($this)][$$fld] as $field) {
+	    if ($$fld and $$fld!='*' and isset($extraResult[$scope][get_class($this)][$$fld])) {
+	      foreach($extraResult[$scope][get_class($this)][$$fld] as $field) {
 	        $result[$field]='required';
 	      }
 	    }
 	  }
+	  /* // TEST
+	  $list=self::getExtraHiddenFieldsFullList();
+	  $listType=array();
+	  $listStatus=array();
+	  $listProfile=array();
+	  if ($type and $type!='*') {
+	    $type=($newType)?$newType:$testObj->$typeFld;
+	    if (isset($list['Type']) and isset($list['Type'][$class]) and isset($list['Type'][$class][$type]) ) {
+	      $listType=$list['Type'][$class][$type];
+	    }
+	  }
+	  if (property_exists($testObj,'idStatus') and $newStatus!='*') {
+	    $status=($newStatus)?$newStatus:$testObj->idStatus;
+	    if (isset($list['Status']) and isset($list['Status'][$class]) and isset($list['Status'][$class][$status]) ) {
+	      $listStatus=$list['Status'][$class][$status];
+	    }
+	  }
+	  if ($newProfile!='*') {
+	    if ($newProfile) {
+	      $profile=$newProfile;
+	    } else {
+	      $profile=getSessionUser()->getProfile($this);
+	    }
+	    if (isset($list['Profile']) and isset($list['Profile'][$class]) and isset($list['Profile'][$class][$profile]) ) {
+	      $listProfile=$list['Profile'][$class][$profile];
+	    }
+	  }
+	  // TEST */
+	  
 	  return $result;
 	}
 	
