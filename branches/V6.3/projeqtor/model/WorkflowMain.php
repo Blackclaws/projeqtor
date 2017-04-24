@@ -252,16 +252,13 @@ class WorkflowMain extends SqlElement {
       $statusId=RequestHandler::getId('idStatus',false,null);
       $statusList=$this->getStatusList();
       $statusListUsed=array();
-      //debugLog($statusList); // List of all status
       $statusColorList=SqlList::getList('Status', 'color');
-      //debugLog($statusColorList); // List of color use by all status
       foreach ($statusColorList as $key=>$val) {
         if (strtolower($val)=='#ffffff') {
           $statusColorList[$key]='#eeeeee';
         }
       }
       $profileList=SqlList::getList('Profile');
-      // debugLog($profileList); // List of profiles
       $width="75";
       $height="15";
       $sepWidth="10";
@@ -270,11 +267,9 @@ class WorkflowMain extends SqlElement {
       $arrowDownImg='<div class="wfDownArrow"></div>';
       $arrowUpImg='<div class="wfUpArrow"></div>';
       $wsListArray=$this->getWorkflowstatusArray();
-      // debugLog($wsListArray); 
       $crossArray=array();
       foreach ($statusList as $statLineCode => $statLineValue) {
         $crossArray[$statLineCode]=array();
-        debugLog($crossArray[$statLineCode]); // Maybe for right access
         foreach ($statusList as $statColumnCode => $statColumnValue) {
           $allChecked=true;
           $oneChecked=false;
@@ -386,8 +381,6 @@ class WorkflowMain extends SqlElement {
       $result.='<tr><td colspan="' . (count($statusList)*2+1) .'"><div style="height: ' . $sepHeight . 'px;"></div></td></tr>';
       $i=0;
       foreach($statusList as $idL=>$nameL) {
-        // debugLog($idL); // id of status
-        // debugLog($nameL); // Name of status
         $i++;
         $result.='<tr>';
         $result.='<td><div style="width:' . $sepWidth . 'px">' . '</div></td>'; 

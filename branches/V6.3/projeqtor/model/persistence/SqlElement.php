@@ -4718,7 +4718,13 @@ abstract class SqlElement {
 	}
 
 	public function getTitle($col) {
-		return i18n('col'.ucfirst($col));
+		$arrayTest=array('title','col','');
+		foreach ($arrayTest as $testPrefix) {
+			$test=$testPrefix.ucfirst($col);
+			$testTranslation=i18n($test);
+			if ($testTranslation!="[$test]" ) return $testTranslation;	
+		}
+		return i18n($col);
 	}
 
 	public static function unsetRelationShip($rel1, $rel2) {
