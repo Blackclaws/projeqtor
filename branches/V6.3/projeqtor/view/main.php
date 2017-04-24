@@ -2117,6 +2117,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                      <input id="affectationStartDate" name="affectationStartDate" value=""  
 			                 dojoType="dijit.form.DateTextBox" 
 			                 constraints="{datePattern:browserLocaleDateFormatJs}"
+                       onChange=" var end=dijit.byId('affectationEndDate');end.set('dropDownDefaultValue',this.value);
+                       var start = dijit.byId('affectationStartDate').get('value');end.constraints.min=start;"
 			                 style="width:100px" />
                    </td>
                    <td class="dialogLabel" >
