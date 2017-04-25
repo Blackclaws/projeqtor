@@ -90,11 +90,8 @@ $pp=new ProductProject($idProductProject);
 									dojoType="dijit.form.Button" showlabel="false"
 									title="<?php echo i18n('showDetail')?>" iconClass="iconView">
 									<script type="dojo/connect" event="onClick" args="evt">
-                    var canCreate=0;
-                    if (canCreateArray['ProductProduct'] == "YES") {
-                      canCreate=1;
-                    }
-                    showDetail('productProjectProduct', canCreate, 'ProductProduct', false);
+                    var canCreate=("<?php echo securityGetAccessRightYesNo('menuProduct','create');?>"=="YES")?1:0;
+                    showDetail('productProjectProduct', canCreate, 'Product', false);
                  </script>
 								</button>
 								<?php }?>

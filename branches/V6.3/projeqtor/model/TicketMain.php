@@ -121,7 +121,9 @@ class TicketMain extends SqlElement {
                                   "idContext2"=>"nobr,title", 
                                   "idContext3"=>"title",
                                   "doneDateTime"=>"nobr",
-                                  "solved"=>"nobr"
+                                  "solved"=>"nobr",
+                                  "idActivity"=>"title"
+      
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
