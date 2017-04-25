@@ -108,7 +108,7 @@ class ActivityMain extends SqlElement {
                                   "idle"=>"nobr",
                                   "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
-                                  "isPlanningActivity"=>""
+                                  "isPlanningActivity"=>"title"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
