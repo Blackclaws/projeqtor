@@ -4348,12 +4348,13 @@ function selectLinkObjectItem() {
 // =============================================================================
 
 function addAffectation(objectClass, type, idResource, idProject) {
+
+//  if (checkFormChangeInProgress()) {
+//    showAlert(i18n('alertOngoingChange'));
+//    return;
+//  }
+  loadDialog('dialogAffectation',function(){
   affectationLoad=true;
-  if (checkFormChangeInProgress()) {
-    showAlert(i18n('alertOngoingChange'));
-    return;
-  }
-  
   if (dijit.byId('idProfile')) {
     dijit.byId("affectationProfile").set('value',
         dijit.byId('idProfile').get('value'));
@@ -4393,8 +4394,9 @@ function addAffectation(objectClass, type, idResource, idProject) {
   dijit.byId("affectationStartDate").reset();
   dijit.byId("affectationEndDate").reset();
   dijit.byId("affectationDescription").reset();
-  dijit.byId("dialogAffectation").show();
+  dijit.byId("dialogAff").show();
   setTimeout("affectationLoad=false", 500);
+  });
 }
 
 function removeAffectation(id,own) {
@@ -4482,7 +4484,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
   } else {
     dijit.byId("affectationIdle").reset();
   }
-  dijit.byId("dialogAffectation").show();
+  dijit.byId("dialogAff").show();
   setTimeout("affectationLoad=false", 500);
 }
 
@@ -4500,7 +4502,7 @@ function saveAffectation() {
   if (formVar.validate()) {
     loadContent("../tool/saveAffectation.php", "resultDiv", "affectationForm",
         true, 'affectation');
-    dijit.byId('dialogAffectation').hide();
+    dijit.byId('dialogAff').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -4531,7 +4533,7 @@ function affectTeamMembers(idTeam) {
   dijit.byId("affectationIdle").reset();
   dijit.byId("affectationDescription").reset();
   dijit.byId("affectationIdle").set('readOnly', true);
-  dijit.byId("dialogAffectation").show();
+  dijit.byId("dialogAff").show();
 }
 
 function affectationChangeResource() {
