@@ -2869,8 +2869,8 @@ function globalSave() {
   } else if (dijit.byId('dialogProductProject')
       && dijit.byId('dialogProductProject').open) {
     var button = dijit.byId('dialogProductProjectSubmit');
-  } else if (dijit.byId('dialogAffectation')
-      && dijit.byId('dialogAffectation').open) {
+  } else if (dijit.byId('dialogAff')
+      && dijit.byId('dialogAff').open) {
     var button = dijit.byId('dialogAffectationSubmit');
   } else if (dijit.byId('dialogFilter') && dijit.byId('dialogFilter').open) {
     var button = dijit.byId('dialogFilterSubmit');
