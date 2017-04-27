@@ -66,8 +66,9 @@ echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
 echo '<td class="largeReportHeader" style="width:7%">' . i18n('colType') . '</td>';
 echo '<td class="largeReportHeader" style="width:10%">' . i18n('Risk') . '</td>';
-echo '<td class="largeReportHeader" style="width:15%">' . i18n('colCause') . '</td>';
-echo '<td class="largeReportHeader" style="width:15%">' . i18n('colImpact') . '</td>';
+echo '<td class="largeReportHeader" style="width:10%">' . i18n('colCause') . '</td>';
+echo '<td class="largeReportHeader" style="width:10%">' . i18n('colImpact') . '</td>';
+echo '<td class="largeReportHeader" style="width:10%">' . i18n('colMitigationPlan') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colSeverityShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colLikelihoodShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colCriticalityShort') . '</td>';
@@ -86,8 +87,9 @@ foreach ($lst as $risk) {
   echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($risk->name); 
   if ($risk->description and $risk->name!=$risk->description) { echo ':<br/>' . ($risk->description); }
   echo '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($risk->cause) . '</td>';
-  echo '<td class="largeReportData' . $done . '" style="width:15%">' . ($risk->impact) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:10%">' . ($risk->cause) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:10%">' . ($risk->impact) . '</td>';
+  echo '<td class="largeReportData' . $done . '" style="width:10%">' . ($risk->mitigationPlan) . '</td>';
   
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Severity', $risk->idSeverity) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Likelihood', $risk->idLikelihood) . '</td>';
