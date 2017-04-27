@@ -1103,6 +1103,10 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconRiskManagementPlan22 { background-image: url(customIcons/blue/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconRiskManagementPlan16 { background-image: url(customIcons/blue/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatBlue .iconRight32 { background-image: url(customIcons/blue/iconRight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconRight22 { background-image: url(customIcons/blue/iconRight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconRight16 { background-image: url(customIcons/blue/iconRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatBlue .iconRiskType32 { background-image: url(customIcons/blue/iconRiskType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconRiskType22 { background-image: url(customIcons/blue/iconRiskType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconRiskType16 { background-image: url(customIcons/blue/iconRiskType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -2276,6 +2280,10 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconRiskManagementPlan22 { background-image: url(customIcons/red/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconRiskManagementPlan16 { background-image: url(customIcons/red/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatRed .iconRight32 { background-image: url(customIcons/red/iconRight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconRight22 { background-image: url(customIcons/red/iconRight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconRight16 { background-image: url(customIcons/red/iconRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatRed .iconRiskType32 { background-image: url(customIcons/red/iconRiskType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconRiskType22 { background-image: url(customIcons/red/iconRiskType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconRiskType16 { background-image: url(customIcons/red/iconRiskType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -3447,6 +3455,10 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconRiskManagementPlan22 { background-image: url(customIcons/green/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconRiskManagementPlan16 { background-image: url(customIcons/green/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGreen .iconRight32 { background-image: url(customIcons/green/iconRight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconRight22 { background-image: url(customIcons/green/iconRight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconRight16 { background-image: url(customIcons/green/iconRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatGreen .iconRiskType32 { background-image: url(customIcons/green/iconRiskType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconRiskType22 { background-image: url(customIcons/green/iconRiskType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconRiskType16 { background-image: url(customIcons/green/iconRiskType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -4611,6 +4623,10 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconRiskManagementPlan32 { background-image: url(customIcons/grey/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconRiskManagementPlan22 { background-image: url(customIcons/grey/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconRiskManagementPlan16 { background-image: url(customIcons/grey/iconRiskManagementPlan.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconRight32 { background-image: url(customIcons/grey/iconRight.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconRight22 { background-image: url(customIcons/grey/iconRight.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconRight16 { background-image: url(customIcons/grey/iconRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGrey .iconRiskType32 { background-image: url(customIcons/grey/iconRiskType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconRiskType22 { background-image: url(customIcons/grey/iconRiskType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

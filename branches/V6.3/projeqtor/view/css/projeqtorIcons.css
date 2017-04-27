@@ -129,6 +129,8 @@
 .iconButtonDownload16 { background-image: url(images/smallButtonDownload.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconButtonEdit16 { background-image: url(images/smallButtonEdit.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonRemove16 { background-image: url(images/smallButtonRemove.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonRemove24 { background-image: url(images/mediumButtonRemove.png);  background-repeat: no-repeat; width: 24px; height: 24px; }
+.iconButtonSave24 { background-image: url(images/iconButtonSave.png);  background-repeat: no-repeat; width: 24px; height: 24px; }
 .iconButtonAdd16 { background-image: url(images/smallButtonAdd.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonLink16 { background-image: url(images/smallButtonLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonView16 { background-image: url(images/display.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -320,6 +322,10 @@
 .iconDeliverable32 { background-image: url(images/iconDeliverable32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconDeliverable22 { background-image: url(images/iconDeliverable32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconDeliverable16 { background-image: url(images/iconDeliverable32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconDelivery32 { background-image: url(images/iconDelivery32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDelivery22 { background-image: url(images/iconDelivery22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDelivery16 { background-image: url(images/iconDelivery16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconDeliverableStatus32 { background-image: url(images/iconDeliverableStatus32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconDeliverableStatus22 { background-image: url(images/iconDeliverableStatus32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

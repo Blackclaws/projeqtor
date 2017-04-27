@@ -523,7 +523,9 @@ class ResourceMain extends SqlElement {
     $crit=array('idTeam'=>$team);
     $resList=$this->getSqlElementsFromCriteria($crit, false);
     foreach ($resList as $res) {
-      $result.= '<tr><td valign="middle" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.= '<a><tr><td valign="middle" width="20px">';
+      $result.= formatIcon('Right', 16);
+      $result.= '</td></a><td>';
       $result.=''.$res->getPhotoThumb(32).'&nbsp;</td><td>';
       $result.=htmlDrawLink($res);
       $result.='</td></tr>';
@@ -541,10 +543,7 @@ class ResourceMain extends SqlElement {
              . ' style="cursor:pointer;border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
              . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName,'protectQuotes').'\');" />';
     } else {
-    	//$result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
-      $result.='<img src="../view/img/Affectable/thumb'.$size.'.png" '
-             . ' style="border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
-             . '  />';
+      $result.= formatLetterThumb($this->id, $size,$this->name);
     }
     return $result;
   }
