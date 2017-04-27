@@ -571,6 +571,7 @@ class MeetingMain extends SqlElement {
       $newAss->idResource= $ass->idResource;
       $newAss->refId = $result->id;
       $newAss->refType = 'Meeting';
+      $newAss->leftWork = $ass->leftWork;
       $newAss->assignedWork = $ass->assignedWork;
       $newAss->idProject = $ass->idProject;
       $newAss->save();

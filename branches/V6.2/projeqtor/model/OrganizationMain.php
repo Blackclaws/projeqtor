@@ -940,7 +940,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
             // Calculate BudgetElement
             // For Validated, Assigned AND Left => Based on PlanningElement
             $pe=new ProjectPlanningElement();
-            $whereClause='(refId='.$keyPrjOrga.' and refType="Project") and ';
+            $whereClause='(refId='.$keyPrjOrga.' and refType=\'Project\') and ';
             // BudgetElement period based on 
             //      - realStartDate and realEndDate if PlanningElement.idle=1
             //      - validatedStartDate and validatedEndDate if PlanningElement.idle = 0 
