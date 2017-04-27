@@ -28,6 +28,10 @@ Ce qui donne en table :
 
 .. figure:: /images/GUI/bdd.png
 
+Le champ 'idProfile' est l'id du profile ( présent dans ta table 'Profile') est va déterminé qui à le droit de voir l'objet . Par exemple , par défaut admin a pour id 1 , chef de projet 3 ...
+
+Dans notre cas ( capture d'écran ) , l'admin ( idProfile=1 ) va avoir accéss à l'objet ( allowAccess=1 ) d'idMenu 162.
+
 - Maintenant, créer la classe, par exemple : Categorie.php
 
 .. warning:: Le nom d'une classe s'écrit "Xxx".
