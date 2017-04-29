@@ -403,5 +403,13 @@ class Sql {
   	return $res; 
   }
   
+  public static function getYearFunction($str) {
+    if (self::isPgsql()) {
+      return "date_part('year', $str)";
+    } else {
+      return "year($str)";
+    }
+  }
+  
 }
 ?>

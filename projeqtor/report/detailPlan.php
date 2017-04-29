@@ -324,7 +324,7 @@ foreach ($resources as $idR=>$nameR) {
 		      //Krowry #2129
 		      $ass= new Assignment();
 		      $split=explode('#', $idA);
-		      $crit=array('idResource'=>$idR, 'idProject'=>$idP, 'refId'=>$split[0] , 'refType'=>$split[1]);
+		      $crit=array('idResource'=>$idR, 'idProject'=>$idP, 'refId'=>$split[1] , 'refType'=>$split[0]);
 		      $npw=$ass->sumSqlElementsFromCriteria('notPlannedWork',$crit);
 		      $sumNpw+=$npw;
 		      echo '<td class="reportTableData">'.Work::displayWork($npw).'</td>';

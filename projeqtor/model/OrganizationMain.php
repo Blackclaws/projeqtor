@@ -742,29 +742,10 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
                                     (year(validatedStartDate)=YYYY or year(validatedEndDate)=YYYY)
                                 )
                             )
-                         )';*/
-        // Transformed to be PostgreSql compliant
-        /*$whereClause .= "(
-                            (idle=1 and
-                                (
-                                    (coalesce(realStartDate,'null')='null' and coalesce(realEndDate,'null')='null') or
-                                    (coalesce(realStartDate,'null')='null' and year(realEndDate)=YYYY) OR
-                                    (coalesce(realEndDate,'null')='null') OR
-                                    (year(realStartDate)=YYYY or year(realEndDate)=YYYY)
-                                )
-                            ) or
-                            (idle=0 and
-                                (
-                                    (coalesce(validatedStartDate,'null')='null' and coalesce(validatedEndDate,'null')='null') or
-                                    (coalesce(validatedStartDate,'null')='null' and year(validatedEndDate)=YYYY) OR
-                                    (coalesce(validatedEndDate,'null')='null') OR
-                                    (year(validatedStartDate)=YYYY or year(validatedEndDate)=YYYY)
-                                )
-                            )
-                         )";
+                         )';
         $whereClause = str_replace('YYYY', $periodValue, $whereClause);*/
         // Better proposal to avoid count same project on several years
-        $whereClause .= "( year(coalesce(validatedStartDate,realStartDate,plannedStartDate,initialStartDate))=$periodValue )";
+        $whereClause .= "( ".Sql::getYearFunction('coalesce(validatedStartDate,realStartDate,plannedStartDate,initialStartDate)')."=$periodValue )";
         
         $arrayFields=array('validatedWork',
                            'assignedWork',
@@ -947,7 +928,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
             // xxxStartDate = null : No Filter >
             // xxxEndDate = null : No filter <
             // Else filter > and < on selected period
-            $whereClause .= '(
+            /*$whereClause .= '(
                                 (idle=1 and
                                     (
                                         (isnull(realStartDate) and isnull(realEndDate)) or
@@ -965,7 +946,8 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
                                     )
                                 )
                              )';
-            $whereClause = str_replace('YYYY', $periodValue, $whereClause);
+            $whereClause = str_replace('YYYY', $periodValue, $whereClause);*/
+            $whereClause .= "( ".Sql::getYearFunction('coalesce(validatedStartDate,realStartDate,plannedStartDate,initialStartDate)')."=$periodValue )";
             $arrayFields=array('validatedWork',
                                'assignedWork',
                                'realWork',
@@ -1026,7 +1008,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
                 
                 // For Real => based on Work 
                 $work = new Work();
-                $whereClause = 'year<='.$periodValue.' and idProject='.$keyPrjOrga;
+                $whereClause = 'year<=\''.$periodValue.'\' and idProject='.$keyPrjOrga;
                 $workSum = $work->sumSqlElementsFromCriteria(array('work','cost'),null,$whereClause);
                 $bE->realWork+=$workSum['sumwork'];
                 $bE->realCost+=$workSum['sumcost'];
@@ -1034,7 +1016,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
 
                 // For Expense => based on Expense (real - planned - left=if(planned-real>0 THEN planned-real ELSE 0) - Assigned=planned
                 $expense = new Expense();
-                $whereClause = 'year<='.$periodValue.' and idProject='.$keyPrjOrga;                
+                $whereClause = 'year<=\''.$periodValue.'\' and idProject='.$keyPrjOrga;                
                 $expenseSum = $expense->sumSqlElementsFromCriteria(array('plannedAmount','realAmount'), null, $whereClause);
                 $bE->expenseAssignedAmount+=$expenseSum['sumplannedamount'];
                 $bE->expenseRealAmount+=$expenseSum['sumrealamount'];
@@ -1047,7 +1029,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
               foreach($prjList as $keyPrj=>$prjName) {
                   // For Real => based on Work 
                   $work = new Work();
-                  $whereClause = 'year<='.$periodValue.' and idProject='.$keyPrj;
+                  $whereClause = 'year<=\''.$periodValue.'\' and idProject='.$keyPrj;
                   $workSum = $work->sumSqlElementsFromCriteria(array('work','cost'),null,$whereClause);
                   $bE->realWork+=$workSum['sumwork'];
                   $bE->realCost+=$workSum['sumcost'];
@@ -1055,7 +1037,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
 
                   // For Expense => based on Expense (real - planned - left=if(planned-real>0 THEN planned-real ELSE 0) - Assigned=planned
                   $expense = new Expense();
-                  $whereClause = 'year<='.$periodValue.' and idProject='.$keyPrj;                
+                  $whereClause = 'year<=\''.$periodValue.'\' and idProject='.$keyPrj;                
                   $expenseSum = $expense->sumSqlElementsFromCriteria(array('plannedAmount','realAmount'), null, $whereClause);
                   $bE->expenseAssignedAmount+=$expenseSum['sumplannedamount'];
                   $bE->expenseRealAmount+=$expenseSum['sumrealamount'];
