@@ -336,7 +336,9 @@ class MeetingPlanningElementMain extends PlanningElement {
   	if ($this->refType=='Meeting') {
   	  $this->validatedStartDate=$meeting->meetingDate;
   	  $this->validatedEndDate=$meeting->meetingDate;
-  	}
+  	} else if ($this->refType=='PeriodicMeeting') {
+      $this->validatedStartDate=$meeting->periodicityStartDate;
+    }
   	
   	$this->validatedStartFraction=calculateFractionFromTime($meeting->meetingStartTime);
   	$this->validatedDuration=calculateFractionBeetweenTimes($meeting->meetingStartTime,$meeting->meetingEndTime);
@@ -369,10 +371,19 @@ class MeetingPlanningElementMain extends PlanningElement {
   public function control(){
     $result="";
     $mode=null;
+    $meeting=new $this->refType($this->refId,true);
     if (! $this->idMeetingPlanningMode) {
       $this->idMeetingPlanningMode=16;
     }   
-    
+    if (!$this->priority) {
+      $this->priority=1; // very high priority
+    }
+    if ($this->refType=='Meeting') {
+      $this->validatedStartDate=$meeting->meetingDate;
+      $this->validatedEndDate=$meeting->meetingDate;
+    } else if ($this->refType=='PeriodicMeeting') {
+      $this->validatedStartDate=$meeting->periodicityStartDate;
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

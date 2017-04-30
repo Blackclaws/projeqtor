@@ -167,21 +167,20 @@ class IndicatorValue extends SqlElement {
   		if ( (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') and property_exists($obj, $sub) ) {
   		  $indVal->targetDateTime=$obj->$sub->$fld;
   		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
-  	  } elseif($ind->code = "YEARLY" && $indVal->targetDateTime) {
-			// Date is already set for a yearly indicator; must be overwritten only if day and month have changed
-			if(substr($indVal->targetDateTime, 5, 5) != substr($obj->$fld, 5, 5)) {
-				$indVal->targetDateTime = $obj->$fld;
-				$indVal->targetDateTime .= (strlen($indVal->targetDateTime) == 10) ? " 00:00:00" : "";
-				
-				// Also reset warning and alert sent states (otherwise can be stuck as true)
-				$indVal->warningSent = 0;
-				$indVal->alertSent = 0;
-			}
-	  } else {
-  	    $indVal->targetDateTime=$obj->$fld;
-  	    if ($fld=="meetingDate" and property_exists($obj,'meetingStartTime')) $indVal->targetDateTime.=" ".$obj->meetingStartTime;
-  	    $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
-  	  }
+  	  } else if($ind->code=="YEARLY" && $indVal->targetDateTime) {
+  			// Date is already set for a yearly indicator; must be overwritten only if day and month have changed
+  			if(substr($indVal->targetDateTime, 5, 5) != substr($obj->$fld, 5, 5)) {
+  				$indVal->targetDateTime = $obj->$fld;
+  				$indVal->targetDateTime .= (strlen($indVal->targetDateTime) == 10) ? " 00:00:00" : "";
+  				// Also reset warning and alert sent states (otherwise can be stuck as true)
+  				$indVal->warningSent = 0;
+  				$indVal->alertSent = 0;
+  			}
+  	  } else {
+    	  $indVal->targetDateTime=$obj->$fld;
+    	  if ($fld=="meetingDate" and property_exists($obj,'meetingStartTime')) $indVal->targetDateTime.=" ".$obj->meetingStartTime;
+    	  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
+    	}
   	  if (! trim($indVal->targetDateTime)) {
   	  	if ($indVal->id) {
   	  		$indVal->delete();
@@ -333,32 +332,10 @@ class IndicatorValue extends SqlElement {
         }
         break;
 
-	  // Send indicator every year
-	  case 'YEARLY': // name of field to compare on columnName
-	  	$date = date('Y-m-d H:i:s');
-
-		/*$targetControlColumnName = $this->targetDateColumnName;
-		if ($obj and trim($obj->$targetControlColumnName)) {
-			if (substr($targetControlColumnName, -8) == 'DateTime') {
-				// If targetDate is in the future, don't change it
-				if($obj->$targetControlColumnName > date('Y') . '-' . substr($obj->$targetControlColumnName, 5)) {
-					$date = $obj->$targetControlColumnName;
-				} else {
-					$date = date('Y') . '-' . substr($obj->$targetControlColumnName, 5);
-				}
-			} elseif (substr($targetControlColumnName, -4) == 'Date') {
-				// If targetDate is in the future, don't change it
-				if($obj->$targetControlColumnName > date('Y') . '-' . substr($obj->$targetControlColumnName, 5)) {
-					$date = $obj->$targetControlColumnName . " 00:00:00";
-				} else {
-					$date = date('Y') . '-' . substr($obj->$targetControlColumnName, 5) . " 00:00:00";
-				}
-			} elseif ($obj->$targetControlColumnName) {
-				return; // $targetControlColumnName is not a date, so if set don't update indicator
-			}
-			$this->status = ($date > $this->targetDateTime) ? 'KO' : 'OK';
-		}*/
-		break;
+  	  // Send indicator every year
+  	  case 'YEARLY': // name of field to compare on columnName
+  	  	$date = date('Y-m-d H:i:s');
+  		  break;
   	}
   	$cancelled=false;
   	if ($obj and property_exists($obj, 'cancelled') and $obj->cancelled) $cancelled=true;
