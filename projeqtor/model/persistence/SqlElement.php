@@ -654,7 +654,7 @@ abstract class SqlElement {
 				}
 			}
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
-		  and property_exists($this, 'WorkElement') and self::is_a($this,'WorkElement')) {
+		  and property_exists($this, 'WorkElement') ) {
 			  $we='WorkElement';
 			  $controlWe=$this->$we->control();
 			  if ($controlWe!='OK') {
@@ -4827,16 +4827,35 @@ abstract class SqlElement {
 	  $type=$newType;
 	  $status=$newStatus;
 	  $user=getSessionUser();
+	  $class=get_class($this);
+	  $testObj=$this;
+	  $testClass=$class;
+	  $typeFld='id'.$class."Type";
+	  if (SqlElement::is_a($this, 'PlanningElement')) {
+	    if ($this->refType) {
+	      $testClass=$this->refType;
+	    } else {
+	      $testClass=str_replace('PlanningElement','',$class);
+	    }
+	    $testObj=new $testClass($this->refId,true);
+	  } else if ($class=='WorkElement') {
+	    if ($this->refType) {
+	      $testClass=$this->refType;
+	    } else {
+	      $testClass='Ticket';
+	    }
+	    $testObj=new $testClass($this->refId,true);
+	  }
 	  if (!$profile) $profile=$user->getProfile($this);
 	  $planningMode=$newPlanningMode;
 	  if ($this->id) {
 	    $typeName='id'.str_replace('PlanningElement', '',get_class($this)).'Type';
 	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
-	    if (!$type and property_exists($this,$typeName)) {
-	      $type=$this->$typeName;
+	    if (!$type and property_exists($testObj,$typeName)) {
+	      $type=$testObj->$typeName;
 	    }
-	    if (! $status and property_exists($this,'idStatus') ) {
-	      $status=$this->idStatus;
+	    if (! $status and property_exists($testObj,'idStatus') ) {
+	      $status=$testObj->idStatus;
 	    }
 	    if (! $planningMode and property_exists($this,$planningModeName) ) {
 	      $planningMode=$this->$planningModeName;

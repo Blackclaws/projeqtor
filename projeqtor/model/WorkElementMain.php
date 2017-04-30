@@ -106,7 +106,8 @@ class WorkElementMain extends SqlElement {
 	 * @return the fieldsAttributes
 	 */
 	protected function getStaticFieldsAttributes() {
-		if (! $this->id) {
+	  global $hideScope;
+		if (! $this->id and !$hideScope) {
 			self::lockRealWork ();
 		}
 		return self::$_fieldsAttributes;
