@@ -69,6 +69,13 @@ if (property_exists($obj, $peName)) {
     $result[$peName.'_'.$key]=$val;
   }
 }
+if (property_exists($obj, 'WorkElement')) {
+  $we=$obj->WorkElement;
+  $resultWe=$we->getExtraRequiredFields($type,$status,$planningMode,null);
+  foreach ($resultWe as $key=>$val) {
+    $result['WorkElement_'.$key]=$val;
+  }
+}
 
 
 $arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional', 'idResolution'=>'optional',
@@ -93,5 +100,4 @@ if (property_exists($obj, $peName)) {
   $result=array_merge($result,$resultPe);
 }
 // BABYNUS : End*/
-
 echo json_encode($result);
