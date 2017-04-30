@@ -114,7 +114,13 @@ if ($way=='structure') {
             <td>
               <select size="14" id="productVersionStructureListId" name="productVersionStructureListId[]"
                 <?php if (!$structureId) echo 'multiple';?> class="selectList" onchange="enableWidget('dialogProductVersionStructureSubmit');"  ondblclick="saveProductVersionStructure();" value="">
-                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, null, true, 'id'.$critClass, $objectId);?>
+                  <?php 
+                    if (!$structureId) { 
+                      htmlDrawOptionForReference('id'.$listClass, $listId, null, true, 'id'.$critClass, $objectId);
+                    } else {
+                      $compVers=new ComponentVersion($str->idComponentVersion);
+                      htmlDrawOptionForReference('id'.$listClass, $listId, null, true, 'idComponent', $compVers->idComponent);
+                    }?>
               </select>
             </td>
             <td style="vertical-align: top">
