@@ -1741,19 +1741,25 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
-  if (substr ( $menuName, 4 )=='Admin') return 'YES';
-  if (! SqlElement::class_exists ( substr ( $menuName, 4 ) )) {
-    errorLog("securityGetAccessRightYesNo : '" . substr ( $menuName, 4 ) . "' is not an existing object class" );
+  $class=substr ( $menuName, 4 );
+  if (! SqlElement::class_exists ($class ) and $obj) {
+    $class=get_class($obj);
+  }
+  if (! $class) return 'NO'; 
+  if ($class=='Admin') return 'YES';
+  if (! SqlElement::class_exists ($class )) {
+    errorLog("securityGetAccessRightYesNo : '$class' is not an existing object class" );
     errorLog("securityGetAccessRightYesNo($menuName, $accessType, ".debugDisplayObj($obj).", ".debugDisplayObj($user).")");
     debugPrintTraceStack();
   }
+  
   if ($obj and property_exists($obj, 'isPrivate') and $obj->isPrivate==1 and $obj->idUser!=getSessionUser()->id) {
     return 'NO';
   }
-  if (property_exists ( substr ( $menuName, 4 ), '_no' . ucfirst ( $accessType ) )) {
+  if (property_exists ( $class, '_no' . ucfirst ( $accessType ) )) {
     return 'NO';
   }
-  if (property_exists ( substr ( $menuName, 4 ), '_readOnly' ) and $accessType != 'read') {
+  if (property_exists ($class, '_readOnly' ) and $accessType != 'read') {
     return 'NO';
   }
   if ($obj and $obj->id==0) {
