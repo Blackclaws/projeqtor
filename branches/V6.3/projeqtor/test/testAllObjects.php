@@ -140,7 +140,7 @@ function fillObj($obj) {
 	  } else if ($fld=='successorRefType') {
 	    $obj->$fld='Milestone';
 		} else if ($dbType=='varchar') {			 
-	    $obj->$fld=substr($var,0,$dbLength);
+	    $obj->$fld=substr($var,0,$dbLength/2);
 		} else if ($dbType=='int' and $dbLength==1) {
 			$obj->$fld=0;
 		} else if ($dbType=='int' and $dbLength==12 and substr($fld,0,2)=='id' and $fld!='id') {

@@ -32,9 +32,9 @@
      <copy todir="${deploy.dir}/external/pChart">
        <fileset dir="${src.dir}/external/pChart"/>
      </copy>
-  	 <copy todir="${deploy.dir}/external/pChart2">
-  	   <fileset dir="${src.dir}/external/pChart2"/>
-  	 </copy>
+     <copy todir="${deploy.dir}/external/pChart2">
+       <fileset dir="${src.dir}/external/pChart2"/>
+     </copy>
      <copy todir="${deploy.dir}/external/html2pdf">
        <fileset dir="${src.dir}/external/html2pdf">
          <exclude name="**/exemples/"/>
@@ -71,23 +71,23 @@
      <copy todir="${deploy.dir}/external/diff">
        <fileset dir="${src.dir}/external/diff"/>
      </copy>
-  	 <copy todir="${deploy.dir}/external/ckeditor">
-  	   <fileset dir="${src.dir}/external/ckeditor"/>
-  	 </copy>
-  	<copy todir="${deploy.dir}/external/html2canvas">
-  	   <fileset dir="${src.dir}/external/html2canvas"/>
-  	</copy>
-  	<copy todir="${deploy.dir}/external/pdfmake">
-  	   <fileset dir="${src.dir}/external/pdfmake"/>
-  	</copy>
+     <copy todir="${deploy.dir}/external/ckeditor">
+       <fileset dir="${src.dir}/external/ckeditor"/>
+     </copy>
+    <copy todir="${deploy.dir}/external/html2canvas">
+       <fileset dir="${src.dir}/external/html2canvas"/>
+    </copy>
+    <copy todir="${deploy.dir}/external/pdfmake">
+       <fileset dir="${src.dir}/external/pdfmake"/>
+    </copy>
   </target>
   
   <target name="copyFiles">
     <mkdir dir="${deploy.dir}/files/attach"/>
-  	<mkdir dir="${deploy.dir}/files/attach/import"/>
+    <mkdir dir="${deploy.dir}/files/attach/import"/>
     <mkdir dir="${deploy.dir}/files/thumbs"/>
     <mkdir dir="${deploy.dir}/files/config"/>
-  	<mkdir dir="${deploy.dir}/files/images"/>
+    <mkdir dir="${deploy.dir}/files/images"/>
     <mkdir dir="${deploy.dir}/files/logs"/>
     <mkdir dir="${deploy.dir}/files/report"/>
     <mkdir dir="${deploy.dir}/files/cron"/>
@@ -95,7 +95,7 @@
     <mkdir dir="${deploy.dir}/files/import"/>
     <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
-  	<copy todir="${deploy.dir}/files/attach/import" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/attach/import" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/logs" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/report" file="${src.dir}/files/index.php" />
@@ -115,6 +115,7 @@
   <target name="copyDocsUser">
       <copy todir="${deploy.dir}/docs/user/html_en">
         <fileset dir="${src.dir}/docs/user/html_en">
+          <exclude name="**/_sources/*.rst.txt"/>
         </fileset>
       </copy>
   </target>
@@ -124,6 +125,7 @@
       <fileset dir="${src.dir}/model">
         <include name="**" />
         <exclude name="**/custom/*.*"/>
+        <exclude name="**/Kanban.*"/>
       </fileset>
     </copy>
     <copy todir="${deploy.dir}/model/custom">
@@ -132,26 +134,26 @@
       </fileset>
     </copy>
   </target>
-	
-	<target name="copyPlugin">
-	    <copy todir="${deploy.dir}/plugin">
-	      <fileset dir="${src.dir}/plugin">
-	        <include name="*.*" />
-	      	<exclude name="*.zip" />
-	      </fileset>
-	    </copy>
-	    <copy todir="${deploy.dir}/plugin/nls">
-	      <fileset dir="${src.dir}/plugin/nls">
-	         <include name="lang.js"/>
-	      </fileset>
-	    </copy>
-	  </target>
+  
+  <target name="copyPlugin">
+      <copy todir="${deploy.dir}/plugin">
+        <fileset dir="${src.dir}/plugin">
+          <include name="*.*" />
+          <exclude name="*.zip" />
+        </fileset>
+      </copy>
+      <copy todir="${deploy.dir}/plugin/nls">
+        <fileset dir="${src.dir}/plugin/nls">
+           <include name="lang.js"/>
+        </fileset>
+      </copy>
+    </target>
 
   <target name="copyApi">
       <copy todir="${deploy.dir}/api">
         <fileset dir="${src.dir}/api">
-        	<include name="*.*" />
-        	<exclude name=".htpasswd" />
+          <include name="*.*" />
+          <exclude name=".htpasswd" />
         </fileset>
       </copy>
     </target>
@@ -170,13 +172,16 @@
       <fileset dir="${src.dir}/tool">
         <exclude name="**/i18n/nls/lang.xls"/>
         <exclude name="**/parametersLocation.php"/>
+        <exclude name="**/*Kanban*.*"/>
       </fileset>
     </copy>
   </target>
   
   <target name="copyView">
     <copy todir="${deploy.dir}/view">
-      <fileset dir="${src.dir}/view"/>
+      <fileset dir="${src.dir}/view">
+        <exclude name="**/css/**/*Kanban*.*"/>
+      </fileset>
     </copy>
   </target>
 
@@ -220,7 +225,7 @@
     <antcall target="copyFiles"/>
     <antcall target="copyDocsUser"/>
     <antcall target="copyModel"/>
-  	<antcall target="copyPlugin"/>
+    <antcall target="copyPlugin"/>
     <antcall target="copyReport"/>
     <antcall target="copyTool"/>
     <antcall target="copyView"/>
@@ -342,17 +347,17 @@
         <arg line="/c make.bat latexpdf"/>
       </exec>
   </target>
-	<target name="_sphinxBuildTechnicalManual_HTML_windows">
-	    <echo>Build HTML User Manual.</echo>
-	      <exec dir="../docs/technical" executable="cmd" >
-	        <arg line="/c make.bat html"/>
-	      </exec>
-	</target>
-	<target name="_sphinxBuildTechnicalManual_PDF_windows">
-	    <echo>Build HTML User Manual.</echo>
-	      <exec dir="../docs/technical" executable="cmd" >
-	        <arg line="/c make.bat latexpdf"/>
-	      </exec>
-	</target>
+  <target name="_sphinxBuildTechnicalManual_HTML_windows">
+      <echo>Build HTML User Manual.</echo>
+        <exec dir="../docs/technical" executable="cmd" >
+          <arg line="/c make.bat html"/>
+        </exec>
+  </target>
+  <target name="_sphinxBuildTechnicalManual_PDF_windows">
+      <echo>Build HTML User Manual.</echo>
+        <exec dir="../docs/technical" executable="cmd" >
+          <arg line="/c make.bat latexpdf"/>
+        </exec>
+  </target>
   
 </project>
