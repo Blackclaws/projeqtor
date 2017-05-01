@@ -486,12 +486,13 @@ It is possible to attributes tresholds lines to KPI.
 * Click on |buttonEdit| to update an existing JobList line.
 * Click on |buttonIconDelete| to delete the corresponding JobList line.
 
-.. figure:: /images/GUI/Kpi_Tresholds.png
+.. figure:: /images/GUI/Kpi_Tresholds.PNG
 
 .. note::
      
-      * Keep in mind KPI is an indicator of performance at project level (opposite to indicator which is calculated at item level).
-      * to display the indicator, use Kpi report. See: :ref:`report`
+   * Keep in mind KPI is an indicator of performance at project level (opposite to indicator which is calculated at item level).
+   * to display the indicator, use Kpi report. See: :ref:`report`
+      
       .. figure:: /images/GUI/Kpi_report.png
 
 

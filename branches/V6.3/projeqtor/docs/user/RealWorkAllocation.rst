@@ -159,6 +159,7 @@ The list displays the assigned tasks for the resource.
     * The icon |iconNoteAdd| allows to add a comment.
     * The icon |Note| indicates there is a comment on assigned task. 
     * Just move the mouse over the icon to see the last comment.
+    
     .. note:: Click on icon |Note|
       
       * to open windows view comments

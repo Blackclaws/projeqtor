@@ -24,12 +24,9 @@ A list of reports is available in different categories.
    :alt: Reports screen
    :align: center
    
-.. figure:: /images/GUI/Report_menu2.PNG
-    :alt: Reports screen
-    :align: center
-
-    Reports screen
-
+.. figure:: /images/GUI/Report_menu2.png
+   :alt: Reports screen
+   :align: center
 
 .. rubric:: Buttons
 
