@@ -160,6 +160,13 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
       $user = null;
       throw new Exception ( i18n ( "invalidAccessAttempt" ) );
     }
+    if (property_exists($user,'_API') and !isset($apiMode)) {
+      // Hacking detected
+      traceLog ( "'user' was connected through API and should not reach Application for same session. May be a hacking attempt from IP " . $_SERVER ['REMOTE_ADDR'] );
+      envLog ();
+      $user = null;
+      throw new Exception ( i18n ( "invalidAccessAttempt" ) );
+    } 
     $oldRoot = "";
     if (sessionValueExists('appRoot')) {
       $oldRoot = getSessionValue('appRoot');

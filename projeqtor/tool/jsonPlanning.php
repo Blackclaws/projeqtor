@@ -99,8 +99,8 @@
   // Header
   if (array_key_exists('outMode', $_REQUEST) && $_REQUEST['outMode'] == 'csv') {
     $outMode = 'csv';
-  } else {
-    $outMode = 'html';
+  } else if (! isset($outMode) ) {
+    $outMode = "html";
   }
   if ( array_key_exists('report',$_REQUEST) ) {
     $headerParameters="";
@@ -120,11 +120,11 @@
       Security::checkValidId(trim($_REQUEST['idProject']));
       $headerParameters.= i18n("colIdProject") . ' : ' . (SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
     }
-	if($outMode == 'csv') {
-      include "../report/headerFunctions.php";
+  	if($outMode == 'csv') {
+        include "../report/headerFunctions.php";
     } else {
-	  include "../report/header.php";
-	}
+  	  include "../report/header.php";
+  	}
   }
   if (! isset($outMode)) { $outMode=""; }
 
