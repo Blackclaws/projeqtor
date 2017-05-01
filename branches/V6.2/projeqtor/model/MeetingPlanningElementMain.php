@@ -379,10 +379,13 @@ class MeetingPlanningElementMain extends PlanningElement {
       $this->priority=1; // very high priority
     }
     if ($this->refType=='Meeting') {
+      if (! $meeting->meetingDate) $meeting->meetingDate=date('Y-m-d');
       $this->validatedStartDate=$meeting->meetingDate;
       $this->validatedEndDate=$meeting->meetingDate;
     } else if ($this->refType=='PeriodicMeeting') {
+      if (! $meeting->periodicityStartDate) $meeting->periodicityStartDate=date('Y-m-d');
       $this->validatedStartDate=$meeting->periodicityStartDate;
+      $this->validatedEndDate=$meeting->periodicityStartDate;
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

@@ -43,6 +43,7 @@ $invalidQuery="invalid API query";
 
 //$cronnedScript=true;
 $batchMode=true;
+$apiMode=true;
 require_once "../tool/projeqtor.php";
 require_once "../external/phpAES/aes.class.php";
 require_once "../external/phpAES/aesctr.class.php";
@@ -67,6 +68,7 @@ if (isset($_SERVER['PHP_AUTH_USER'])) {
 }
 if ($username) {
 	$user=SqlElement::getSingleSqlElementFromCriteria('User',array('name'=>$username));
+	$user->_API=true;
 } else {
 	$user=new User(); 
 	$cronnedScript=true;

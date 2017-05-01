@@ -424,10 +424,11 @@ Parameters for the “Cron” process.
 Parameters to allow the application to send emails.
 
 .. rubric:: Section: SSL connection to database
+
 * SSL Key
 * SSL Certification
 * SSL Certificate Authority
-Enter patch to corresponding files to enable SSL connection to the database.
+* Enter patch to corresponding files to enable SSL connection to the database.
 
   .. warning:: Take care that these files must exist and be valid SSL files.
   

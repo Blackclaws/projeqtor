@@ -105,7 +105,7 @@ The notion of organization introduces a way to consolidate projects on a differe
 
 * The organization summarizes the data of the projects in progress for the organization
 
-.. figure:: /images/Organization.png
+.. figure:: /images/Organization.PNG
    :align: center
 
 .. rubric:: Organization link
