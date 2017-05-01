@@ -654,9 +654,9 @@ abstract class SqlElement {
 				}
 			}
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
-		  and property_exists($this, 'WorkElement') ) {
+		  and property_exists($this, 'WorkElement') and isset($this->WorkElement) ) {
 			  $we='WorkElement';
-			  $controlWe=$this->$we->control();
+			  $controlWe=$this->WorkElement->control();
 			  if ($controlWe!='OK') {
 			    $control=$controlWe;
 			  }

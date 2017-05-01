@@ -217,13 +217,17 @@
 .ProjeQtOrFlatBlue .messageData {
   color: #545281;
 }
-.ProjeQtOrFlatBlue .dijitAccordionTitle {
+.ProjeQtOrFlatBlue .dijitAccordionTitle, .ProjeQtOrFlatBlue .reportTableColumnHeader  {
   background: url() #a6a0bc !important;
   color: #ffffff !important;
   text-shadow: none !important;
   border-top: 0px solid #a6a0bc;
-    border-bottom: 1px solid #545281;
+  border-bottom: 1px solid #7b769c ;
 }
+.ProjeQtOrFlatBlue .reportTableColumnHeader {
+	border: 1px solid #cdcadb;
+}
+
 .ProjeQtOrFlatBlue .dijitAccordionContainer {
   border : none;
 }
@@ -271,7 +275,8 @@
 }
 .ProjeQtOrFlatBlue .linkHeader, .ProjeQtOrFlatBlue .attachmentHeader, .ProjeQtOrFlatBlue .noteHeader, .ProjeQtOrFlatBlue .dependencyHeader,
 .ProjeQtOrFlatBlue .historyHeader, .ProjeQtOrFlatBlue .assignHeader,
-.ProjeQtOrFlatBlue .messageHeader, .ProjeQtOrFlatBlue .workflowHeader, .ProjeQtOrFlatBlue .filterHeader, .ProjeQtOrFlatBlue .calendarHeader {
+.ProjeQtOrFlatBlue .messageHeader, .ProjeQtOrFlatBlue .workflowHeader, .ProjeQtOrFlatBlue .filterHeader, .ProjeQtOrFlatBlue .calendarHeader,
+.ProjeQtOrFlatBlue .reportTableLineHeader {
   background-image: url();
   background: url() #cdcadb !important;
   color: #545381;
@@ -1426,12 +1431,15 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatRed .messageData {
   color: #833e3e;
 }
-.ProjeQtOrFlatRed .dijitAccordionTitle {
+.ProjeQtOrFlatRed .dijitAccordionTitle, .ProjeQtOrFlatRed .reportTableColumnHeader {
   background: url() #bda1a6 !important;
   color: #ffffff !important;
   text-shadow: none !important;
   border-top: 0px solid #bda1a6;
     border-bottom: 1px solid #833e3e;
+}
+.ProjeQtOrFlatRed .reportTableColumnHeader {
+  border: 1px solid #ddcdce;
 }
 .ProjeQtOrFlatRed .dijitAccordionContainer {
   border : none;
@@ -1479,7 +1487,8 @@ body .ProjeQtOrFlatBlue {
 }
 .ProjeQtOrFlatRed .linkHeader, .ProjeQtOrFlatRed .attachmentHeader, .ProjeQtOrFlatRed .noteHeader, .ProjeQtOrFlatRed .dependencyHeader,
 .ProjeQtOrFlatRed .historyHeader, .ProjeQtOrFlatRed .assignHeader,
-.ProjeQtOrFlatRed .messageHeader, .ProjeQtOrFlatRed .workflowHeader, .ProjeQtOrFlatRed .filterHeader, .ProjeQtOrFlatRed .calendarHeader {
+.ProjeQtOrFlatRed .messageHeader, .ProjeQtOrFlatRed .workflowHeader, .ProjeQtOrFlatRed .filterHeader, .ProjeQtOrFlatRed .calendarHeader,
+.ProjeQtOrFlatRed .reportTableLineHeader {
   background-image: url();
   background: url() #ddcdce !important;
   color: #833e3e;
@@ -2593,12 +2602,15 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatGreen .messageData {
   color: #537665;
 }
-.ProjeQtOrFlatGreen .dijitAccordionTitle {
+.ProjeQtOrFlatGreen .dijitAccordionTitle, .ProjeQtOrFlatGreen .reportTableColumnHeader {
   background: url() #86a790 !important;
   color: #ffffff !important;
   text-shadow: none !important;
   border-top: 0px solid #86a790;
     border-bottom: 1px solid #537665;
+}
+.ProjeQtOrFlatGreen .reportTableColumnHeader {
+  border: 1px solid #c9dbce;
 }
 .ProjeQtOrFlatGreen .dijitAccordionContainer {
   border : none;
@@ -2646,7 +2658,8 @@ body .ProjeQtOrFlatRed {
 }
 .ProjeQtOrFlatGreen .linkHeader, .ProjeQtOrFlatGreen .attachmentHeader, .ProjeQtOrFlatGreen .noteHeader, .ProjeQtOrFlatGreen .dependencyHeader,
 .ProjeQtOrFlatGreen .historyHeader, .ProjeQtOrFlatGreen .assignHeader,
-.ProjeQtOrFlatGreen .messageHeader, .ProjeQtOrFlatGreen .workflowHeader, .ProjeQtOrFlatGreen .filterHeader, .ProjeQtOrFlatGreen .calendarHeader {
+.ProjeQtOrFlatGreen .messageHeader, .ProjeQtOrFlatGreen .workflowHeader, .ProjeQtOrFlatGreen .filterHeader, .ProjeQtOrFlatGreen .calendarHeader,
+.ProjeQtOrFlatGreen .reportTableLineHeader {
   background-image: url();
   background: url() #c9dbce !important;
   color: #537665;
@@ -3761,12 +3774,15 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGrey .messageData {
   color: #656565;
 }
-.ProjeQtOrFlatGrey .dijitAccordionTitle {
+.ProjeQtOrFlatGrey .dijitAccordionTitle, .ProjeQtOrFlatGrey .reportTableColumnHeader {
   background: url() #AEAEAE !important;
   color: #ffffff !important;
   text-shadow: none !important;
   border-top: 0px solid #AEAEAE;
-    border-bottom: 1px solid #656565;
+  border-bottom: 1px solid #656565;
+}
+.ProjeQtOrFlatGrey .reportTableColumnHeader {
+  border: 1px solid #D4D1D1;
 }
 .ProjeQtOrFlatGrey .dijitAccordionContainer {
   border : none;
@@ -3814,8 +3830,9 @@ body .ProjeQtOrFlatGreen {
 }
 .ProjeQtOrFlatGrey .linkHeader, .ProjeQtOrFlatGrey .attachmentHeader, .ProjeQtOrFlatGrey .noteHeader, .ProjeQtOrFlatGrey .dependencyHeader,
 .ProjeQtOrFlatGrey .historyHeader, .ProjeQtOrFlatGrey .assignHeader,
-.ProjeQtOrFlatGrey .messageHeader, .ProjeQtOrFlatGrey .workflowHeader, .ProjeQtOrFlatGrey .filterHeader, .ProjeQtOrFlatGrey .calendarHeader {
-  background-image: url();
+.ProjeQtOrFlatGrey .messageHeader, .ProjeQtOrFlatGrey .workflowHeader, .ProjeQtOrFlatGrey .filterHeader, .ProjeQtOrFlatGrey .calendarHeader,
+.ProjeQtOrFlatGrey .reportTableLineHeader {
+  background-image: url() !important;
   background: url() #D4D1D1 !important;
   color: #656565;
   text-shadow: none;

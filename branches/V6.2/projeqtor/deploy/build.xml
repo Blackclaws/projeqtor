@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V6.2" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V6.2.2" />
+  <property name="version"       value="V6.2.3" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -115,6 +115,7 @@
   <target name="copyDocsUser">
       <copy todir="${deploy.dir}/docs/user/html_en">
         <fileset dir="${src.dir}/docs/user/html_en">
+          <exclude name="**/_sources/*.rst.txt"/>
         </fileset>
       </copy>
   </target>
@@ -124,6 +125,7 @@
       <fileset dir="${src.dir}/model">
         <include name="**" />
         <exclude name="**/custom/*.*"/>
+        <exclude name="**/Kanban.*"/>
       </fileset>
     </copy>
     <copy todir="${deploy.dir}/model/custom">
@@ -170,13 +172,16 @@
       <fileset dir="${src.dir}/tool">
         <exclude name="**/i18n/nls/lang.xls"/>
         <exclude name="**/parametersLocation.php"/>
+        <exclude name="**/*Kanban*.*"/>
       </fileset>
     </copy>
   </target>
   
   <target name="copyView">
     <copy todir="${deploy.dir}/view">
-      <fileset dir="${src.dir}/view"/>
+      <fileset dir="${src.dir}/view">
+        <exclude name="**/css/**/*Kanban*.*"/>
+      </fileset>
     </copy>
   </target>
 
