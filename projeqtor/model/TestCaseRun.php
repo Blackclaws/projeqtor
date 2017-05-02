@@ -41,6 +41,7 @@ class TestCaseRun extends SqlElement {
   public $statusDateTime;
   public $idTicket;
   public $idle;
+  public $result;
 
   
   private static $_colCaptionTransposition = array('idRunStatus'=> 'idStatus',

@@ -24,6 +24,14 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 require_once "../tool/projeqtor.php";
+$class=RequestHandler::getClass('objectClass');
+$id=RequestHandler::getId('objectId');
+if ($class and $id) {
+	$obj=new $class($id);
+} else {
+  $obj=null;
+}
+
 ?>
 <table>
     <tr>
@@ -42,7 +50,7 @@ require_once "../tool/projeqtor.php";
                <select dojoType="dijit.form.FilteringSelect" id="linkRef2Type" name="linkRef2Type" onchange="refreshLinkList();"
                <?php echo autoOpenFilteringSelect();?>
                 class="input" value="">
-                 <?php htmlDrawOptionForReference('idLinkable', null, null, true);?>
+                 <?php htmlDrawOptionForReference('idLinkable', null, $obj, true);?>
                </select>
              </td>
            </tr>

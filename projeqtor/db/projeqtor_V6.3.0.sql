@@ -9,6 +9,8 @@ INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES
 (17,'TestCase', '0', '900'),
 (18,'TestSession', '0', '910');
 
+ALTER TABLE `${prefix}testcaserun` ADD `result` varchar(4000) DEFAULT NULL;
+
 CREATE TABLE `${prefix}delivery` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT NULL,
@@ -44,3 +46,8 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 176, 1),
 (2, 176, 1),
 (3, 176, 1);
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES 
+(1,176,8),
+(2,176,2),
+(3,176,7);
