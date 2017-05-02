@@ -1219,6 +1219,9 @@ function addLink(classLink, defaultLink) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }*/
+  if (!classLink) {
+    var params="&objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
+  }
   loadDialog('dialogLink',function(){
     noRefreshLink=true;
     var objectClass=dojo.byId("objectClass").value;
@@ -1262,7 +1265,7 @@ function addLink(classLink, defaultLink) {
     dijit.byId("linkComment").set('value', '');
     dijit.byId("dialogLink").show();
     disableWidget('dialogLinkSubmit');
-  }, true, "", true);
+  }, true, params, true);
 }
 
 function selectLinkItem() {
@@ -1334,7 +1337,8 @@ function refreshLinkList(selected) {
 function saveLink() {
   if (dojo.byId("linkRef2Id").value == "")
     return;
-  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link');
+  var fixedClass = (dojo.byId('linkFixedClass'))?dojo.byId('linkFixedClass').value:'';
+  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link'+fixedClass);
   dijit.byId('dialogLink').hide();
 }
 
@@ -1347,10 +1351,17 @@ function removeLink(linkId, refType, refId, refTypeName) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  var fixedClass = refTypeName;
   actionOK=function() {
-    loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
-        +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
-        +"&linkRef2Id="+refId, "resultDiv", null, true, 'link');
+    if(fixedClass=='Deliverable' && refType=='Deliverable'){
+      loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
+          +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
+          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link'+fixedClass);
+    } else {
+      loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
+          +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
+          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link');
+    }
   };
   if (!refTypeName) {
     refTypeName=i18n(refType);
@@ -4087,6 +4098,20 @@ function saveTestCaseRun() {
   }
 }
 
+//gautier #1716
+function saveTcrData(id,textZone) {
+  var value=dijit.byId("tcr"+textZone+"_"+id).get("value");
+  var url = '../tool/saveTcrData.php?idTcr='+id +'&zone='+textZone +'&valueZone='+value;
+  dojo.xhrPut({
+    url : url,
+    form : 'objectForm',
+    handleAs : "text",
+    load : function(data) {
+     // write a litle message if error
+      }
+  });
+}
+
 // ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT - ADD-EDIT-REMOVE
 // =============================================================================
 // = Add-Edit-Remove an organization's Budget Element
@@ -6527,13 +6552,13 @@ function executeExport(obj, idUser) {
     }
   }
   if (dijit.byId('documentVersionLastOnly') && dijit.byId('documentVersionLastOnly').get('checked')) {
-	  toExport+='documentVersionAll';
+    toExport+='documentVersionAll';
   }
   if (verif == 1) {
     if (ExportType == 'csv') {
       showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml
-    		  +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport
-    		  , 'list', null,
+          +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport
+          , 'list', null,
           'csv');
     }
     saveCheckboxExport(obj, idUser);

@@ -155,6 +155,16 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
       if(securityGetAccessRightYesNo('menu'.$val, $typeRight, $objTmp)=="NO" or !securityCheckDisplayMenu(null,$val))$arrayToDel[]=$key;
     }
+    if ($col=='idLinkable' and $obj) {
+    	foreach ($obj as $objFld=>$objVal) {
+    		if (substr($objFld,0,6)=='_Link_') {
+    			$clsLinked=substr($objFld,6);
+    			$idLinked=SqlList::getIdFromTranslatableName('Linkable', $clsLinked);
+    			debugLog("exclude id=$idLinked, class=$clsLinked");
+    			$arrayToDel[]=$idLinked;
+    		}
+    	}
+    }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     foreach($arrayToDel as $key)unset($table[$key]);
   } else if ($col=='idActivity' or $col=='idTicket') { // List Activity or ticket without a criteria
@@ -398,7 +408,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 // END ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER         
 
 // ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
-    if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
+  if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
     $restrictArray=array();
         $orga=new Organization();
         $scope=Affectable::getOrganizationVisibilityScope();

@@ -46,7 +46,7 @@ if (! array_key_exists('testCaseRunTestSession',$_REQUEST)) {
 }
 $session=($_REQUEST['testCaseRunTestSession']);
 
-////KEVIN RAJOUT 17H55
+//Krowry
 $testCaseList = null;
 if ($mode=='add') {
 	if (! array_key_exists('testCaseRunTestCaseList',$_REQUEST)) {
@@ -61,6 +61,10 @@ if ($mode=='edit'){
     throwError('testCaseRunTestCase parameter not found in REQUEST');
   }
   $testCase=($_REQUEST['testCaseRunTestCase']);
+}
+//gautier #1716
+if(RequestHandler::isCodeSet('testCaseRunResult')){
+  $resultTcr = RequestHandler::getValue('testCaseRunResult');
 }
 
 if (! array_key_exists('testCaseRunComment',$_REQUEST)) {
@@ -114,9 +118,10 @@ foreach($arrayTestCase as $testCaseId) {
   $testCaseRun->idTestCase=$testCaseId;
   $testCaseRun->idTestSession=$session;
   $testCaseRun->idTicket=$ticket;
-  $testCaseRun->comment=$comment;
   $sortOrder+=10;
   $testCaseRun->sortOrder=$sortOrder;
+  $testCaseRun->result=$resultTcr;
+  $testCaseRun->comment=$comment;
   if ($testCaseRun->idRunStatus!=$status) {
     $testCaseRun->idRunStatus=$status;
     if ($id) {

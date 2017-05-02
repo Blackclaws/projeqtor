@@ -48,7 +48,7 @@ if (array_key_exists('idTeam',$_REQUEST)) {
 }
 $user=getSessionUser();
 
-$periodType=$_REQUEST['periodType']; // not filtering as data as data is only compared against fixed strings
+$periodType=$_REQUEST['periodType']; // not filtering as data is only compared against fixed strings
 $periodValue='';
 if (array_key_exists('periodValue',$_REQUEST))
 {

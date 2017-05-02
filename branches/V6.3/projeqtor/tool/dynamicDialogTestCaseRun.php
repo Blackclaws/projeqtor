@@ -205,6 +205,18 @@ if (count($listTcr)) {
          </div>
          <?php }?>
          <table>
+             <tr>
+	             <td class="dialogLabel" >
+	               <label for="testCaseRunResult" ><?php echo i18n("colResult");?>&nbsp;:&nbsp;</label>
+	             </td>
+	             <td>
+	                <textarea dojoType="dijit.form.Textarea"
+	                          id="testCaseRunResult" name="testCaseRunResult"
+	                          style="width: 400px;"
+	                          maxlength="4000"
+	                          class="input"><?php echo $testCaseRun->result;?></textarea>                                       
+	             </td>    
+	           </tr>
 	           <tr>
 	             <td class="dialogLabel" >
 	               <label for="testCaseRunComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
@@ -214,8 +226,7 @@ if (count($listTcr)) {
 	                          id="testCaseRunComment" name="testCaseRunComment"
 	                          style="width: 400px;"
 	                          maxlength="4000"
-	                          class="input"><?php echo $testCaseRun->comment;?></textarea>	  
-                                             
+	                          class="input"><?php echo $testCaseRun->comment;?></textarea>                                       
 	             </td>    
 	           </tr>
 	           <tr>

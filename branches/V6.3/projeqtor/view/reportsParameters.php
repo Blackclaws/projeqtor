@@ -33,7 +33,7 @@ scriptLog('   ->/view/reportsList.php');
 ?>
 <form id='reportForm' name='reportForm' onSubmit="return false;">
 <table><tr><td>
-<table style="width:100%;">
+<table style="width:100%;min-width:292px;">
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
