@@ -1136,12 +1136,18 @@ function finalizeMessageDisplay(destination, validationType) {
           loadDiv(url, 'buttonDivCreationInfo', null);  
         }
         refreshGrid();
-      }else if(validationType =='link'){
+      }else if(validationType =='link' || validationType.substr(0,4)=='link'){
+        var refTypeName=validationType.substr(4);     
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);  
         }
-        loadContent("objectDetail.php?refreshLinks=true",dojo.byId('objectClass').value+ '_Link','listForm');
+        if(refTypeName && dojo.byId('objectClass').value+ '_Link'+refTypeName){
+          var url = "objectDetail.php?refreshLinks="+refTypeName;
+          loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link'+refTypeName,'listForm');        
+        }else{
+          loadContent("objectDetail.php?refreshLinks=true",dojo.byId('objectClass').value+ '_Link','listForm');
+        }
       } else if (validationType == 'report') {
         hideWait();
       } else if (validationType == 'checklist' || validationType == 'joblist') {

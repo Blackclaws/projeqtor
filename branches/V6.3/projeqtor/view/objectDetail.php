@@ -113,8 +113,11 @@ if ($noselect) {
     exit();
   }
   if (array_key_exists('refreshLinks', $_REQUEST)) {
-    if (property_exists($obj, '_Link')) {
+    $refreshLinks=$_REQUEST ['refreshLinks'];
+    if (property_exists($obj, '_Link') && $refreshLinks =='true') {
       drawLinksFromObject($obj->_Link, $obj, null, true);
+    } else {
+      drawLinksFromObject($obj->_Link_Deliverable, $obj, "Deliverable", true);
     }
     exit();
   }
@@ -4256,11 +4259,15 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     // also count colDetail size
     $nameWidth-=10;
   }
-  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth + 15) . '%">' . i18n('col' . $otherClass) . '</td>';
+  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth) . '%">' . i18n('col' . $otherClass) . '</td>';
+  //gautier #1716
+  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n('colResult') . '</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n('colComment') . '</td>';
+  //
   if (!$print and $class == 'TestSession') {
-    echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
+    echo '<td class="assignHeader" style="width:7%">' . i18n('colDetail') . '</td>';
   }
-  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>'; 
+  echo '<td class="assignHeader" colspan="2" style="width:10%">' . i18n('colIdStatus') . '</td>'; 
   echo '</tr>';
   foreach ( $list as $tcr ) {
     if ($otherClass == 'TestCase') {
@@ -4309,9 +4316,33 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';    
     echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
     echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
-    if ($tcr->comment and !$print) {
-      echo formatCommentThumb($tcr->comment);
+    //gautier #1716
+    echo '<td class="assignData">' ;
+    if (! $print or $tcr->result) {
+      if (! $print) {
+        echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_'.$tcr->id.'" name="tcrResult_'.$tcr->id.'"
+                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Result\');">';
+        echo $tcr->result;
+        echo '</textarea>';
+      }else {
+        echo htmlEncode($tcr->result);
+      }
     }
+    echo '</td>';
+    
+    echo '<td class="assignData">' ;
+    if (! $print or $tcr->comment) {
+      if (! $print) {
+        echo '<textarea dojoType="dijit.form.Textarea" id="tcrComments_'.$tcr->id.'" name="tcrComments_'.$tcr->id.'"
+                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Comments\');">';
+        echo $tcr->comment;
+        echo '</textarea>';
+      }else {
+        echo htmlEncode($tcr->comment);
+      }
+    }
+    echo '</td>';
+    //
     echo '</td>';
     if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
@@ -4487,30 +4518,31 @@ function endBuffering($prevSection,$included) {
 // ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION
       'hierarchicorganizationprojects'         =>array('2'=>'bottom',    '3'=>'extra'),
 // END ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION      'approver'                    =>array('2'=>'right',   '3'=>'extra'),
-      'assignment'                  =>array('2'=>'left',   '3'=>'extra'),
-      'attachment'                  =>array('2'=>'bottom',   '3'=>'extra'),
+      'assignment'                  =>array('2'=>'left',    '3'=>'extra'),
+      'attachment'                  =>array('2'=>'bottom',  '3'=>'extra'),
       'attendees'                   =>array('2'=>'right',   '3'=>'extra'),
       'billline'                    =>array('2'=>'bottom',  '3'=>'bottom'),
       'calendar'                    =>array('2'=>'bottom',  '3'=>'bottom'),
       'description'                 =>array('2'=>'left',    '3'=>'left'),
-      'evaluation'                  =>array('2'=>'left',   '3'=>'extra'),
+      'evaluation'                  =>array('2'=>'left',    '3'=>'extra'),
       'evaluationcriteria'          =>array('2'=>'right',   '3'=>'extra'),
       'expensedetail'               =>array('2'=>'bottom',  '3'=>'bottom'),
       'iban'                        =>array('2'=>'right',   '3'=>'extra'),
       'internalalert'               =>array('2'=>'right',   '3'=>'extra'),
-      'link'                        =>array('2'=>'bottom',   '3'=>'extra'),
-      'lock'                        =>array('2'=>'left',   '3'=>'left'),
+      'link'                        =>array('2'=>'bottom',  '3'=>'extra'),
+  		'linkdeliverable'             =>array('2'=>'left',    '3'=>'extra'),
+      'lock'                        =>array('2'=>'left',    '3'=>'left'),
       'mailtext'                    =>array('2'=>'bottom',  '3'=>'bottom'),      
       'miscellaneous'               =>array('2'=>'right',   '3'=>'extra'),
-      'note'                        =>array('2'=>'bottom',   '3'=>'extra'),
+      'note'                        =>array('2'=>'bottom',  '3'=>'extra'),
       'progress'                    =>array('2'=>'right',   '3'=>'extra'),
-      'progress_left'               =>array('2'=>'left',   '3'=>'extra'),
+      'progress_left'               =>array('2'=>'left',    '3'=>'extra'),
       'resourcecost'                =>array('2'=>'right',   '3'=>'extra'),
       'submissions'                 =>array('2'=>'right',   '3'=>'extra'),
       'testcaserun'                 =>array('2'=>'bottom',  '3'=>'bottom'),
-      'testcaserunsummary'          =>array('2'=>'left',   '3'=>'extra'),
+      'testcaserunsummary'          =>array('2'=>'left',    '3'=>'extra'),
       'testcasesummary'             =>array('2'=>'right',   '3'=>'extra'),
-      'productcomponent'            =>array('2'=>'left',  '3'=>'extra'),    
+      'productcomponent'            =>array('2'=>'left',    '3'=>'extra'),    
       'predecessor'                 =>array('2'=>'bottom',  '3'=>'bottom'),
       'successor'                   =>array('2'=>'bottom',  '3'=>'bottom'),
       'void'                        =>array('2'=>'right',   '3'=>'right')
