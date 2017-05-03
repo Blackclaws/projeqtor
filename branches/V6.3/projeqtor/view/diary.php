@@ -269,12 +269,18 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	  }
 		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
 		foreach ($lst as $o) {	  
+			if (get_class($o)=='MilestonePlanningElement') {
+				$refType=$o->refType;
+				$item=new $refType($o->refId);
+			} else {
+				$item=$o;
+			}
 			if (array_key_exists($o->idProject,$projectColorArray)) {
 				$color=$projectColorArray[$o->idProject];
 				$projectId=$o->idProject;
 				$projectName=$projectNameArray[$o->idProject];
 			} else {
-				$pro=new Project($o->idProject);
+				$pro=new Project($item->idProject);
 				$color=$pro->getColor();
 				$projectId=$pro->id;
 				$projectName=$pro->name;
@@ -283,32 +289,32 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 			}
 			$typeName=null;
 			$typeId=null;
-			$type='id'.get_class($o).'Type';
-			if (property_exists($o,$type)) {
-			  $typeId=$o->$type;
-			  $typeName=SqlList::getNameFromId('Type', $o->$type);
+			$type='id'.get_class($item).'Type';
+			if (property_exists($item,$type)) {
+			  $typeId=$item->$type;
+			  $typeName=SqlList::getNameFromId('Type', $item->$type);
 			}
 			$priorityName=null;
 			$priorityId=null;
-			if (property_exists($o,'idPriority')) {
-			  $priorityId=$o->idPriority;
-			  $priorityName=SqlList::getNameFromId('Priority', $o->idPriority);
+			if (property_exists($item,'idPriority')) {
+			  $priorityId=$item->idPriority;
+			  $priorityName=SqlList::getNameFromId('Priority', $item->idPriority);
 			}
 			$responsibleName=null;
 			$responsibleId=null;
-			if (property_exists($o,'idResource')) {
-			  $responsibleId=$o->idResource;
-			  $responsibleName=SqlList::getNameFromId('Affectable', $o->idResource);
+			if (property_exists($item,'idResource')) {
+			  $responsibleId=$item->idResource;
+			  $responsibleName=SqlList::getNameFromId('Affectable', $item->idResource);
 			}
 			$statusName=null;
 			$statusId=null;
-			if (property_exists($o,'idStatus')) {
-			  $statusId=$o->idStatus;
-			  $statusName=SqlList::getNameFromId('Status', $o->idStatus);
+			if (property_exists($item,'idStatus')) {
+			  $statusId=$item->idStatus;
+			  $statusName=SqlList::getNameFromId('Status', $item->idStatus);
 			}
 			$description=null;
-			if (property_exists($o,'description')) {
-			  $description=$o->description;
+			if (property_exists($item,'description')) {
+			  $description=$item->description;
 			}
 			$date=null;
 			$dateField="";
@@ -430,8 +436,8 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 		  $statusName=SqlList::getNameFromId('Status', $item->idStatus);
 		}
 		$description=null;
-		if (property_exists($obj,'description')) {
-		  $description=$obj->description;
+		if (property_exists($item,'description')) {
+		  $description=$item->description;
 		}
 		$result[$date][$pw->refType.'#'.$pw->refId]=array(
 				'class'=>$pw->refType,
