@@ -1582,7 +1582,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
             // Special case for idResource, idLocker, idAuthor, idResponsive
             // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
-            $arrayIdSpecial = ['idResource','idLocker', 'idAuthor', 'idResponsive'];
+            $arrayIdSpecial = array('idResource','idLocker', 'idAuthor', 'idResponsive');
             if (in_array($col,$arrayIdSpecial)) {
                 $idList = getUserVisibleResourcesList(true, "List");
                 if (!array_key_exists($val, $idList)) {
