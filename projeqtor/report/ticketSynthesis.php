@@ -279,6 +279,7 @@ function drawSynthesisTable($scope, $lst) {
 
 function drawsynthesisGraph($scope, $lst) {
 	global $rgbPalette;
+	global $arrayColors;
   if (! testGraphEnabled()) { return;}
   if (count($lst)==0) { return;}  
   $valArr=array();
@@ -289,10 +290,17 @@ function drawsynthesisGraph($scope, $lst) {
     $valArr[]=$lst['0'];
   }
   $nbItem=0;
+  $hgt=$nbItem*20;
+  $hgt=($hgt<110)?110:$hgt;
+  $graph = new pChart(220,$hgt);
   foreach ($lstRef as $code=>$val) {
     if (array_key_exists($code, $lst)) {
       $valArr[]=$lst[$code];
       $legArr[]=$val;
+      foreach ($arrayColors as $color){
+        $colorTicket = hex2rgb($color);
+      }
+      $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
       $nbItem++;
     }
   }
@@ -304,13 +312,7 @@ function drawsynthesisGraph($scope, $lst) {
   $dataSet->SetAbsciseLabelSerie("legend"); 
   
   // Initialise the graph
-  $hgt=$nbItem*20;
-  $hgt=($hgt<110)?110:$hgt;
-    
-  $graph = new pChart(220,$hgt);
-  for ($i=0;$i<=$nbItem;$i++) {
-    $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
-  }
+ 
   //$graph->drawRoundedRectangle(2,2,196,96,2,230,230,230);    
   $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);
     

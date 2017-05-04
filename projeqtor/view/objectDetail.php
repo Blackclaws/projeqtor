@@ -4317,9 +4317,11 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
     echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
     //gautier #1716
-    echo '<td class="assignData">' ;
+    $checkImg='savedOk.png';
+    echo '<td class="assignData" style="position:relative">' ;
     if (! $print or $tcr->result) {
       if (! $print) {
+        echo '<img  id="idImageResult'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; position:absolute;top:2px;right:5px; height:16px;"/>';
         echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_'.$tcr->id.'" name="tcrResult_'.$tcr->id.'"
                 style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Result\');">';
         echo $tcr->result;
@@ -4330,11 +4332,12 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     }
     echo '</td>';
     
-    echo '<td class="assignData">' ;
-    if (! $print or $tcr->comment) {
+    echo '<td class="assignData" style="position:relative">' ;   
+     if (! $print or $tcr->comment) {
       if (! $print) {
-        echo '<textarea dojoType="dijit.form.Textarea" id="tcrComments_'.$tcr->id.'" name="tcrComments_'.$tcr->id.'"
-                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Comments\');">';
+        echo '<img  id="idImageComment'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; position:absolute;top:2px;right:5px; height:16px;"/>';
+        echo '<textarea dojoType="dijit.form.Textarea" id="tcrComment_'.$tcr->id.'" name="tcrComment_'.$tcr->id.'"
+                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Comment\');">';
         echo $tcr->comment;
         echo '</textarea>';
       }else {

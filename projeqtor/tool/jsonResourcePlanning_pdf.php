@@ -756,8 +756,7 @@ function displayGantt($list) {
 
 			echo '<TR style="height:2%;width:100%;padding:0px;margin:0px;' ;
 			echo '">';
-			echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
-			<img style="height:80%" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
+			echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">'.formatIcon($line['reftype'], 16).'</TD>';
 			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(20*$left_size).'%;"><span class="nobr">' . $tab ;
 		  echo '<span style="height:100%;vertical-align:middle;">';
 			if ($pGroup) {
