@@ -3148,8 +3148,8 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   }
   $position=($withHighlight)?'position:absolute;'.(($size=='32')?'top:0;left:5px;':''):'';
   if (isset($outMode) and $outMode=='pdf') {
-    $result.="<div style='z-index:500;width:".$size."px;height:".$size."px;$position;'>"
-        ."<img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></div>";
+    $result.="<span style='z-index:500;width:".$size."px;height:".$size."px;$position;'>"
+        ."<img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></span>";
   } else {
     $result.="<div class='icon$class$size' style='z-index:500;width:".$size."px;height:".$size."px;$position;' title='$title'>&nbsp;</div>";
   } 

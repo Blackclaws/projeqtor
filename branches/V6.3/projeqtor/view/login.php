@@ -55,16 +55,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <?php }?>  
   <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
-  <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
-  <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
+  <link rel="shortcut icon" href="../view/img/logo.ico" type="image/x-icon" />
+  <link rel="icon" href="../view/img/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
+  <link rel="stylesheet" type="text/css" href="../view/css/projeqtorFlat.css" />
   <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/phpAES/aes-ctr.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../view/js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../view/js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
     djConfig='modulePaths: {"i18n":"../../tool/i18n",
                             "i18nCustom":"../../plugin"},
@@ -173,7 +173,7 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 	    <td width="100%" align="center">
 	      <div class="background loginFrame" >
 	          <!--  <div style="position:fixed; top:0px; right:0px; height:128px;width:128px;box-shadow:0px 0px 50px #FFFFFF; background: #FFFFFF; border-radius:64px;"> 
-	          <img style="position:absolute; top:2px;right:-2px;" src="img/logoMedium.png"  />
+	          <img style="position:absolute; top:2px;right:-2px;" src="../view/img/logoMedium.png"  />
 	          </div>  -->
 			  <table  align="center">
 			    <tr style="height:10px;" >
@@ -184,7 +184,7 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 				          if (file_exists("../logo.gif")) echo '../logo.gif';
 				          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
 				          else if (file_exists("../logo.png")) echo '../logo.png';
-				          else echo 'img/titleSmall.png';?>" />
+				          else echo '../view/img/titleSmall.png';?>" />
 			          </div>
 			        </div>
 			      </td>

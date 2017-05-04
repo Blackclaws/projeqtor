@@ -3629,6 +3629,11 @@ abstract class SqlElement {
 								// If mode confirm and message of confirmation occured : OK
 							} else {
 								$objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+								if ($nb<10) {
+									$objs=$obj->getSqlElementsFromCriteria($crit,false,$where);
+									$objects.=' =>';
+									foreach ($objs as $o) { $objects.=' #'.$o->id;}
+								}
 							}
 						}
 					}

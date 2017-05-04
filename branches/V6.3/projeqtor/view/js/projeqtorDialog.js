@@ -4107,7 +4107,10 @@ function saveTcrData(id,textZone) {
     form : 'objectForm',
     handleAs : "text",
     load : function(data) {
-     // write a litle message if error
+     //Display saved message
+      addMessage(i18n("col"+textZone)+" "+i18n("resultSave"));
+      document.getElementById('idImage'+textZone+id).style.display="block";
+      setTimeout("dojo.byId('idImage"+textZone+id+"').style.display='none';", 1000);
       }
   });
 }
