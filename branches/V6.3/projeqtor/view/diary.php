@@ -160,7 +160,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	
 	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';
 	echo '<div style="overflow-y: auto; overflow-x:hidden; height:'.$dayHeight.'px;">';
-	echo '<table style="width:100%;">';
+	echo '<table style="width:100%;background-color:white;">';
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
 		$cpt++;
@@ -174,36 +174,34 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		if ($item['work'] and $item['real']) { $hintHtml.=i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
 		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('planned').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
-		echo '<td style="padding: 3px 3px 0px 3px; width:100%;position:relative;">';
-		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
-		echo '<table style="width:100%"><tr><td style="vertical-align:top;width:20px">';		
-		$attr=((! $item['real'])?'':' style="top:0px;background-color:#ffffff;opacity:0.5;filter:alpha(opacity=50);"');
-		echo '<span '.$attr.'>'.formatIcon($item['class'], 16,null,true).'</span>';
-		echo '</td><td style="color:#555555">';
+		echo '<td style="padding: 3px 3px 0px 3px; width:100%;position:relative;max-width:250px;">';
+		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;border-style:solid;border-width:0px 0px 0px 5px;border-color:'.$item['color'].'">';
+		echo '<table style="width:100%">';		
+		echo '<a style="position:absolute;left:15px;width:18px;top:3px;height:17px;z-index:20;">'.formatIcon($item['class'], 16,null,false).'</a>';
+		echo '<td style="color:#555555">';
 		//Modification ici , typename ne marche pas...
 		
-		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
+		echo '<div style="cursor:pointer;height:85px;word-wrap:break-word;margin-left:27px;" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
+		echo '<div style="float:right;width:22px;height:22px;position:relative;margin-right:10px;" id="userThumb'.$item['id'].'">'.formatUserThumb($item['responsibleId'],$item['responsibleName'], "", 22, 'left', false).'</div>';
 		if ($item['real']) {
 		  echo $item['name'];
 		} else {
 			echo '<i>'.$item['name'].'</i>';
 		}
 		if ($period=='week' or $period=='day') {
-		  echo '<table style="vertical-align:top;width:100%">';
-		  if ($item['projectName']) echo '<tr><td style="width:50px;text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdProject').'&nbsp;:&nbsp;</td><td>'.$item['projectName'].'</td></tr>';
+		  echo '<table style="vertical-align:top;height:40px;display:block;">';
+		  if ($item['projectName']) echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdProject').'&nbsp;:&nbsp;</td><td>'.$item['projectName'].'</td></tr>';
 		  if ($item['typeName']) echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colType').'&nbsp;:&nbsp;</td><td>'.$item['typeName'].'</td></tr>';
 		  if ($item['priorityName'])echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdPriority').'&nbsp;:&nbsp;</td><td>'.$item['priorityName'].'</td></tr>';
-		  if ($item['responsibleName'])echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colResponsible').'&nbsp;:&nbsp;</td><td>'.$item['responsibleName'].'</td></tr>';
 		  echo '</table>';
 		}
 		if ($period=='day') {
 		  echo '<div style="padding:5px;max-height:200px;width:100%;border:1px solid #A0A0A0;margin-top:5px;margin-bottom:5px;">'.$item['description'].'</div>';
 		}
 		echo '<div style="width:100%;height:24px;float:left;position:relative;left:-18px;padding-top:2px">';
-		echo '   <div style="float:left;min-width:22px;height:22px;position:relative;margin-top:5px;">#'.$item['id'].'</div>';
-		echo '   <div style="float:left;width:22px;height:22px;position:relative;padding-left:5px;">'.formatColorThumb("idPriority",$item['priorityId'], 22, 'left', i18n('colIdPriority').' : '.$item['priorityName']).'</div>';
-		echo '   <div style="float:left;padding-left:5px;width:22px;height:22px;position:relative;" id="userThumb'.$item['id'].'">'.formatUserThumb($item['responsibleId'], i18n('colResponsible').' : '.$item['responsibleName'], "", 22, 'left', false).'</div>';
-		echo '   <div style="float:left;max-width:100px;height:22px;position:relative;padding-left:5px;top:-1px">'.colorNameFormatter($item['statusName'].'#split#'.SqlList::getFieldFromId('Status', $item['statusId'], 'color')).'</div>';
+		echo '   <div style="float:right;min-width:22px;height:22px;position:relative;margin-top:5px;margin-right:-13px;">#'.$item['id'].'</div>';
+		echo '   <div style="float:left;width:22px;height:22px;position:relative;top:1px;">'.formatColorThumb("idPriority",$item['priorityId'], 22, 'left', i18n('colIdPriority').' : '.$item['priorityName']).'</div>';
+		echo '   <div style="max-width:100px;position:relative;margin-left:47px;">'.colorNameFormatter($item['statusName'].'#split#'.SqlList::getFieldFromId('Status', $item['statusId'], 'color')).'</div>';
 		echo '</div>';
 		echo '</div>';
 		echo '</td></tr></table>';

@@ -276,10 +276,21 @@ if (! testGraphEnabled()) { return;}
   include("../external/pChart/pChart.class");  
 $dataSet=new pData;
 $nbItem=0;
+$width=900;
+$graph = new pChart($width,360);
 foreach($sumProjUnit as $id=>$vals) {
   $dataSet->AddPoint($vals,$id);
   $dataSet->SetSerieName($tab[$id]['name'],$id);
   $dataSet->AddSerie($id);
+  $proje=new Project($id);
+  $projCol = $proje->color;
+  $projectColor=$proje->getColor();
+  $colorProj=hex2rgb($projectColor);
+  if($projCol){
+    $graph->setColorPalette($nbItem,$colorProj['R'],$colorProj['G'],$colorProj['B']);
+  } else {
+    $graph->setColorPalette($nbItem,$rgbPalette[($nbItem % 12)]['R'],$rgbPalette[($nbItem % 12)]['G'],$rgbPalette[($nbItem % 12)]['B']);
+  }
   $nbItem++;
 }
 $arrLabel=array();
@@ -288,11 +299,6 @@ foreach($arrDates as $date){
 }
 $dataSet->AddPoint($arrLabel,"dates");  
 $dataSet->SetAbsciseLabelSerie("dates");   
-$width=900;
-$graph = new pChart($width,360);  
-for ($i=0;$i<=$nbItem;$i++) {
-  $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
-}
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 $graph->drawRoundedRectangle(5,5,$width-5,358,5,230,230,230);  
 $graph->setGraphArea(40,30,$width-300,300);  
@@ -303,7 +309,6 @@ $graph->drawGrid(5,TRUE,230,230,230,255);
 $graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),TRUE);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
 $graph->drawLegend($width-250,15,$dataSet->GetDataDescription(),240,240,240);  
-
 $graph->clearScale();
 $serie=0;  
 foreach($sumProjUnit as $id=>$vals) {
