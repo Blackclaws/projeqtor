@@ -1844,20 +1844,10 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  var prj=dijit.byId('idProject').get('value');
-
-  /*
-   * var datastore =new dojo.data.ItemFileReadStore({ query: {id:'*'}, url:
-   * '../tool/jsonList.php?listType=listResourceProject&idProject='+prj,
-   * clearOnClose: true }); var store = new dojo.store.DataStore({store:
-   * datastore}); //store.query({id:"*"});
-   * dijit.byId('assignmentIdResource').set('store',store);
-   */
-  refreshListSpecific('listResourceProject', 'assignmentIdResource','idProject', prj);
-  dijit.byId("assignmentIdResource").reset();
-
-  dojo.byId("assignmentId").value="";
-  dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+  var objClass = dojo.byId("objectClass").value;
+  var validatedWorkPe = dojo.byId(objClass +"PlanningElement_validatedWork").value;
+  var assignedWorkPe = dojo.byId(objClass +"PlanningElement_assignedWork").value;
+  var callBack = function () {
   /*gautier #1702*/
   dijit.byId('attendantIsOptional').set('checked',false);
   if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
@@ -1865,18 +1855,20 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
   }else{
     dojo.byId('optionalAssignmentDiv').style.display='none';
   } 
-  dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
   dijit.byId("assignmentIdRole").reset();
   dijit.byId("assignmentDailyCost").reset();
   dijit.byId("assignmentRate").set('value', '100');
-  dijit.byId("assignmentAssignedWork").set('value', '0');
+  dijit.byId("assignmentAssignedWork").set('value', validatedWorkPe-assignedWorkPe);
+  if (dijit.byId("assignmentAssignedWork").get('value')< 0 ){
+    dijit.byId("assignmentAssignedWork").set('value','0');
+  }
   dojo.byId("assignmentAssignedWorkInit").value='0';
   dijit.byId("assignmentRealWork").set('value', '0');
   dijit.byId("assignmentLeftWork").set('value', '0');
   dojo.byId("assignmentLeftWorkInit").value='0';
   dijit.byId("assignmentPlannedWork").set('value', '0');
   dijit.byId("assignmentComment").set('value', '');
-  dijit.byId("dialogAssignment").set('title', i18n("dialogAssignment"));
+  dijit.byId("dialogAssign").set('title', i18n("dialogAssignment"));
   dijit.byId("assignmentIdResource").set('readOnly', false);
   dijit.byId("assignmentIdRole").set('readOnly', false);
   dojo.byId("assignmentPlannedUnit").value=unit;
@@ -1900,9 +1892,13 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
       dijit.byId("assignmentPlannedWork").set('value', delay);
       dijit.byId("assignmentLeftWork").set('value', delay);
     }
-
   }
-  dijit.byId("dialogAssignment").show();
+  dijit.byId("dialogAssign").show();
+  };
+  var params="&refType="+dojo.byId("objectClass").value;
+  params+="&refId="+dojo.byId("objectId").value;
+  params+="&idProject="+dijit.byId('idProject').get('value');
+  loadDialog('dialogAssignment',callBack,false,params);
 }
 
 /**
@@ -1917,21 +1913,11 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  var callBack = function () {
   editAssignmentLoading=true;
-  var prj=dijit.byId('idProject').get('value');
-  /*
-   * var datastore =new dojo.data.ItemFileReadStore({ query: {id:'*'}, url:
-   * '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
-   * +'&selected=' + idResource, clearOnClose: true }); var store = new
-   * dojo.store.DataStore({store: datastore}); //store.query({id:"*"});
-   * dijit.byId('assignmentIdResource').set('store',store);
-   */
-  refreshListSpecific('listResourceProject', 'assignmentIdResource','idProject', prj, idResource);
   dijit.byId("assignmentIdResource").reset();
   dijit.byId("assignmentIdResource").set("value", idResource);
   dijit.byId("assignmentIdRole").set("value", idRole);
-  dojo.byId("assignmentId").value=assignmentId;
-  dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
   if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
     dojo.byId('optionalAssignmentDiv').style.display='block';
     dijit.byId('attendantIsOptional').set('checked',(optional==1)?true:false);
@@ -1950,12 +1936,6 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
       dojo.number.format(realWork / 100));
   dijit.byId("assignmentLeftWork").set('value',
       dojo.number.format(leftWork / 100));
-  /*var comment=dojo.byId('comment_assignment_' + assignmentId);
-  if (comment) {
-    dijit.byId("assignmentComment").set('value', comment.innerHTML);
-  } else {
-    dijit.byId("assignmentComment").set('value', '');
-  }*/
   disableWidget('assignmentComment');
   dojo.xhrGet({
     url : '../tool/getSingleData.php?dataType=assignmentDescription&idAssignment='+assignmentId,
@@ -1971,9 +1951,9 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   dojo.byId("assignmentAssignedUnit").value=unit;
   dojo.byId("assignmentLeftWorkInit").value=leftWork / 100;
   assignmentUpdatePlannedWork('assignment');
-  dijit.byId("dialogAssignment").set('title',
+  dijit.byId("dialogAssign").set('title',
       i18n("dialogAssignment") + " #" + assignmentId);
-  dijit.byId("dialogAssignment").show();
+  dijit.byId("dialogAssign").show();
   if (dojo.number.parse(realWork) == 0) {
     dijit.byId("assignmentIdResource").set('readOnly', false);
     dijit.byId("assignmentIdRole").set('readOnly', false);
@@ -1986,6 +1966,78 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
     }
   }
   setTimeout("editAssignmentLoading=false", 1000);
+};
+var params="&idAssignment="+assignmentId;
+params+="&refType="+dojo.byId("objectClass").value;
+params+="&idProject="+dijit.byId('idProject').get('value');
+loadDialog('dialogAssignment',callBack,false,params);
+}
+
+/**
+ * Display a divide assignment box 
+ * 
+ * @param prefix
+ * @return
+ */
+
+function divideAssignment(assignedIdOrigin,assignedWorkOrigin,unit, rawUnit, hoursPerDay) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var callBack = function () {
+  dijit.byId('attendantIsOptional').set('checked',false);
+  if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
+    dojo.byId('optionalAssignmentDiv').style.display='block';
+  }else{
+    dojo.byId('optionalAssignmentDiv').style.display='none';
+  } 
+  dijit.byId("assignmentIdRole").reset();
+  dijit.byId("assignmentDailyCost").reset();
+  dijit.byId("assignmentRate").set('value', '100');
+  dijit.byId("assignmentAssignedWork").set('value', assignedWorkOrigin/2);
+  if (dijit.byId("assignmentAssignedWork").get('value')< 0 ){
+    dijit.byId("assignmentAssignedWork").set('value','0');
+  }
+  dojo.byId("assignmentAssignedWorkInit").value='0';
+  dijit.byId("assignmentRealWork").set('value', '0');
+  dijit.byId("assignmentLeftWork").set('value', '0');
+  dojo.byId("assignmentLeftWorkInit").value='0';
+  dijit.byId("assignmentPlannedWork").set('value', '0');
+  dijit.byId("assignmentComment").set('value', '');
+  dijit.byId("dialogAssign").set('title', i18n("dialogAssignment"));
+  dijit.byId("assignmentIdResource").set('readOnly', false);
+  dijit.byId("assignmentIdRole").set('readOnly', false);
+  dojo.byId("assignmentPlannedUnit").value=unit;
+  dojo.byId("assignmentLeftUnit").value=unit;
+  dojo.byId("assignmentRealUnit").value=unit;
+  dojo.byId("assignmentAssignedUnit").value=unit;
+  if (dojo.byId('objectClass').value == 'Meeting'
+      || dojo.byId('objectClass').value == 'PeriodicMeeting') {
+    if (dijit.byId('meetingEndTime')
+        && dijit.byId('meetingEndTime').get('value')
+        && dijit.byId('meetingStartTime')
+        && dijit.byId('meetingStartTime').get('value')) {
+      delay=(dijit.byId('meetingEndTime').get('value') - dijit.byId(
+          'meetingStartTime').get('value')) / 1000 / 60 / 60;
+      if (rawUnit == 'hours') {
+        // OK
+      } else {
+        delay=Math.round(delay / hoursPerDay * 1000) / 1000;
+      }
+      dijit.byId("assignmentAssignedWork").set('value', delay);
+      dijit.byId("assignmentPlannedWork").set('value', delay);
+      dijit.byId("assignmentLeftWork").set('value', delay);
+    }
+  }
+  dijit.byId("dialogAssign").show();
+  };
+  var params="&refType="+dojo.byId("objectClass").value;
+  params+="&refId="+dojo.byId("objectId").value;
+  params+="&idProject="+dijit.byId('idProject').get('value');
+  params+="&assignedIdOrigin="+assignedIdOrigin;
+  params+="&assignedWorkOrigin="+assignedWorkOrigin;
+  loadDialog('dialogAssignment',callBack,false,params);
 }
 
 /**
@@ -2059,7 +2111,7 @@ function saveAssignment() {
     dijit.byId("assignmentLeftWork").focus();
     loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm",
         true, 'assignment');
-    dijit.byId('dialogAssignment').hide();
+    dijit.byId('dialogAssign').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -2079,12 +2131,9 @@ function removeAssignment(assignmentId, realWork, resource) {
     showAlert(msg);
     return;
   }
-  dojo.byId("assignmentId").value=assignmentId;
-  dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
-  dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
   actionOK=function() {
-    loadContent("../tool/removeAssignment.php", "resultDiv", "assignmentForm",
-        true, 'assignment');
+    loadContent("../tool/removeAssignment.php?assignmentId="+assignmentId+"&assignmentRefType="+dojo.byId("objectClass").value+"&assignmentRefId="+dojo.byId("objectId").value, "resultDiv", null,
+        true, "assignment");
   };
   msg=i18n('confirmDeleteAssignment', new Array(resource));
   showConfirm(msg, actionOK);
