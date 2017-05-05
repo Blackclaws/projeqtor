@@ -106,6 +106,9 @@ if (! array_key_exists('assignmentComment',$_REQUEST)) {
   throwError('assignmentComment parameter not found in REQUEST');
 }
 
+$idOrigin=RequestHandler::getNumeric('assignedIdOrigin',false,null);
+RequestHandler::debugLog();
+
 //gautier #1742
 $optional=0;
 if (array_key_exists('attendantIsOptional',$_REQUEST)) {
@@ -174,6 +177,12 @@ if ($assignmentId) {
 }
 if ($refType=='Meeting' or $refType=='PeriodicMeeting') {
 	Meeting::removeDupplicateAttendees($refType, $refId);
+}
+
+if ($idOrigin){
+  $assignmentOrigin = new Assignment($idOrigin);
+    $assignmentOrigin->assignedWork=$assignmentOrigin->assignedWork-$assignedWork;
+    $assignmentOrigin->save();
 }
   
 // Message of correct saving
