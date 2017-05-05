@@ -2855,8 +2855,8 @@ function globalSave() {
   } else if (dijit.byId('dialogDocumentVersion')
       && dijit.byId('dialogDocumentVersion').open) {
     var button = dijit.byId('submitDocumentVersionUpload');
-  } else if (dijit.byId('dialogAssignment')
-      && dijit.byId('dialogAssignment').open) {
+  } else if (dijit.byId('dialogAssign')
+      && dijit.byId('dialogAssign').open) {
     var button = dijit.byId('dialogAssignmentSubmit');
   } else if (dijit.byId('dialogExpenseDetail')
       && dijit.byId('dialogExpenseDetail').open) {
