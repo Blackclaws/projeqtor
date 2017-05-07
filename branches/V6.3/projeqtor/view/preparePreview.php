@@ -37,6 +37,6 @@
 </head>
 
 <body id="body" class="ProjeQtOrFlatGrey" >
-<i> <?php echo i18n("messagePreview");?></i>
+<img src="../view/css/images/spinner02.gif" />&nbsp;&nbsp;<i> <?php echo i18n("messagePreview");?></i>
 </body>
 </html>
