@@ -862,12 +862,12 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
     setSessionValue('visibleProjectsList', array ());
   }
   if ( sessionTableValueExist('visibleProjectsList', $keyVPL)) {
-    getSessionTableValue('visibleProjectsList', $keyVPL);
+    return getSessionTableValue('visibleProjectsList', $keyVPL);
   }
   if ($project == "*" or $project == '') {
     $user = getSessionUser();
     setSessionTableValue('visibleProjectsList', $keyVPL, transformListIntoInClause ( $user->getVisibleProjects ( $limitToActiveProjects ) ));
-    getSessionTableValue('visibleProjectsList', $keyVPL);
+    return getSessionTableValue('visibleProjectsList', $keyVPL);
   }
   $prj = new Project ( $project );
   $subProjectsList = $prj->getRecursiveSubProjectsFlatList ( $limitToActiveProjects );

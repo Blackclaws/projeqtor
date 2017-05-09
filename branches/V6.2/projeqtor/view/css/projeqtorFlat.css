@@ -117,7 +117,8 @@
   background: #7b769c !important; 
 }
 
-.ProjeQtOrFlatBlue .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatBlue .reportTableHeader, .ProjeQtOrFlatBlue .reportHeader {
+.ProjeQtOrFlatBlue .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatBlue .reportTableHeader, 
+.ProjeQtOrFlatBlue .reportHeader {
   color: #FEFEFE !important;
   border-radius: 0px;
   text-shadow: none;
@@ -217,7 +218,7 @@
 .ProjeQtOrFlatBlue .messageData {
   color: #545281;
 }
-.ProjeQtOrFlatBlue .dijitAccordionTitle, .ProjeQtOrFlatBlue .reportTableColumnHeader  {
+.ProjeQtOrFlatBlue .dijitAccordionTitle, .ProjeQtOrFlatBlue .reportTableColumnHeader, .ProjeQtOrFlatBlue .largeReportHeader  {
   background: url() #a6a0bc !important;
   color: #ffffff !important;
   text-shadow: none !important;
@@ -1331,7 +1332,8 @@ body .ProjeQtOrFlatBlue {
   background: #b07878 !important; 
 }
 
-.ProjeQtOrFlatRed .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatRed .reportTableHeader, .ProjeQtOrFlatRed .reportHeader {
+.ProjeQtOrFlatRed .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatRed .reportTableHeader, 
+.ProjeQtOrFlatRed .reportHeader {
   color: #FEFEFE !important;
   border-radius: 0px;
   text-shadow: none;
@@ -1431,7 +1433,7 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatRed .messageData {
   color: #833e3e;
 }
-.ProjeQtOrFlatRed .dijitAccordionTitle, .ProjeQtOrFlatRed .reportTableColumnHeader {
+.ProjeQtOrFlatRed .dijitAccordionTitle, .ProjeQtOrFlatRed .reportTableColumnHeader, .ProjeQtOrFlatRed .largeReportHeader {
   background: url() #bda1a6 !important;
   color: #ffffff !important;
   text-shadow: none !important;
@@ -2502,7 +2504,24 @@ body .ProjeQtOrFlatRed {
   background: #779a84 !important; 
 }
 
-.ProjeQtOrFlatGreen .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatGreen .reportTableHeader, .ProjeQtOrFlatGreen .reportHeader {
+.ProjeQtOrFlatGreen .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatGreen .reportTableHeader, 
+.ProjeQtOrFlatGreen .reportHeader {
+  color: #FEFEFE !important;
+  border-radius: 0px;
+  text-shadow: none;
+  background: #b07878 !important; 
+}
+
+ 
+.ProjeQtOrFlatRed .iconHighlight  {
+  background: rgba(255,255,255,0.7) ;
+}
+
+.ProjeQtOrFlatRed .gridRowCount {
+  color:#e97b2c;
+  font-weight: bold;
+  -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease; {
   color: #FEFEFE !important;
   border-radius: 0px;
   text-shadow: none;
@@ -2602,7 +2621,7 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatGreen .messageData {
   color: #537665;
 }
-.ProjeQtOrFlatGreen .dijitAccordionTitle, .ProjeQtOrFlatGreen .reportTableColumnHeader {
+.ProjeQtOrFlatGreen .dijitAccordionTitle, .ProjeQtOrFlatGreen .reportTableColumnHeader, .ProjeQtOrFlatGreen .largeReportHeader {
   background: url() #86a790 !important;
   color: #ffffff !important;
   text-shadow: none !important;
@@ -3674,7 +3693,8 @@ body .ProjeQtOrFlatGreen {
   background: #898989 !important; 
 }
 
-.ProjeQtOrFlatGrey .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatGrey .reportTableHeader, .ProjeQtOrFlatGrey .reportHeader {
+.ProjeQtOrFlatGrey .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrFlatGrey .reportTableHeader, 
+.ProjeQtOrFlatGrey .reportHeader {
   color: #FEFEFE !important;
   border-radius: 0px;
   text-shadow: none;
@@ -3774,7 +3794,7 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGrey .messageData {
   color: #656565;
 }
-.ProjeQtOrFlatGrey .dijitAccordionTitle, .ProjeQtOrFlatGrey .reportTableColumnHeader {
+.ProjeQtOrFlatGrey .dijitAccordionTitle, .ProjeQtOrFlatGrey .reportTableColumnHeader, .ProjeQtOrFlatGrey .largeReportHeader {
   background: url() #AEAEAE !important;
   color: #ffffff !important;
   text-shadow: none !important;

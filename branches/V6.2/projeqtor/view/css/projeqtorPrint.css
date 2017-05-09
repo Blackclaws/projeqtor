@@ -214,12 +214,13 @@ label, .label {
   font-size: 90%;
 }
 .largeReportHeader {
-  border: 1px solid #AAAAAA;
+  border: 1px solid #555555;
   text-align: center;
   font-weight: bold;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: url() #CECECE !important;
   font-size: 80%;
   margin: 0; padding: 0; spacing: 0;
+  text-shadow: none !important;
 }
 .largeReportData {
   border: 1px solid #AAAAAA;
