@@ -25,6 +25,17 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 include_once ("../tool/projeqtor.php");
 $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+$idProject=RequestHandler::getId('idProject',false,null);
+$class=RequestHandler::getClass('objectClass');
+$idResource=RequestHandler::getId('idResource',false,null);
+$affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
+// $mode="";
+// if ( array_key_exists('id',$_REQUEST) ) {
+//   $idAffectation=RequestHandler::getId('id',false,null);
+//   $mode='edit';
+// } else {
+//   $mode='add';
+// }
 ?>
 <div id="dialogAff" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAffectation");?>">
   <table>
@@ -32,7 +43,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       <td>
        <form dojoType="dijit.form.Form" id='affectationForm' name='affectationForm' onSubmit="return false;">
          <input id="affectationId" name="affectationId" type="hidden" value="" />
-         <input id="affectationIdTeam" name="affectationIdTeam" type="hidden" value="" />
+         <input id="affectationIdTeam" name="affectationIdTeam" type="hidden" value="<?php echo $affectationIdTeam ;?>" />
          <table>
            <tr>
              <td class="dialogLabel"  >
@@ -42,9 +53,19 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationProject" name="affectationProject" 
-                class="input" value="" required="required">
-                 <?php //htmlDrawOptionForReference('idProject', null, null, true);
-                       // no use : will be updated on dialog opening;?>
+                class="input" required="required">
+                 <?php 
+                 if($class=="Project"){
+                   htmlDrawOptionForReference('idProject', $idProject, null, true);
+                 } else {
+                   $proj=null;
+                   if (sessionValueExists('project')){
+                    $proj= getSessionValue('project');
+                   }
+                   if ($proj=="*" or ! $proj) $proj=null;
+                   htmlDrawOptionForReference('idProject', $proj,null,true);
+                 }
+                 ?>
                </select>
              </td>
            </tr>
@@ -58,8 +79,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
                 class="input" value="" required="required">
-                 <?php //htmlDrawOptionForReference('idResource', null, null, true);
-                       // no use : will be updated on dialog opening;?>
+                 <?php htmlDrawOptionForReference('idResource', $idResource, null, true);?>
                </select>
              </td><td style="vertical-align: top">
                <button id="affectationDetailButton" dojoType="dijit.form.Button" showlabel="false"
