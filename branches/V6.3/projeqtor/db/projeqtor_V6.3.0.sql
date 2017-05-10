@@ -51,3 +51,6 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (1,176,8),
 (2,176,2),
 (3,176,7);
+
+INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
+(29,'Affectation', '0'); 
