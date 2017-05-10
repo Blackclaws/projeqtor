@@ -2857,7 +2857,7 @@ function setSessionTableValue($table,$code,$val,$global=false){
   }
   $_SESSION [$projeqtorSession][$table][$code]=$val;
 }
-function resetSession(){
+function resetSession($global=false){
   global $paramDbName, $paramDbPrefix;
   if ($global) {
     $projeqtorSession = 'ProjeQtOr';
