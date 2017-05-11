@@ -797,7 +797,7 @@ class PlanningElement extends SqlElement {
           //$eltLsLp=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $eltLsLp); // Alternative
           if(count($eltLsLp)==0){
           //if (! $eltLsLp->id) { // Alternative
-          	if($depS->dependencyType='E-S' && $depP->dependencyType='E-S'){
+            if($depS->dependencyType=="E-S" && $depP->dependencyType=="E-S"){
           		$dp=new Dependency();
 			        $dp->predecessorId=$depP->predecessorId;
 		          $dp->predecessorRefId=$depP->predecessorRefId;
@@ -805,9 +805,9 @@ class PlanningElement extends SqlElement {
 		          $dp->successorId=$depS->successorId;
 		          $dp->successorRefId=$depS->successorRefId;
 		          $dp->successorRefType=$depS->successorRefType;
-	            $dp->dependencyType='E-S';
+	            $dp->dependencyType="E-S";
 	            $dp->save();
-	          }	         
+            }
           }
         }
       }

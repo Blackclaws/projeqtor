@@ -111,7 +111,8 @@ $newProj=$proj->copyTo('Project',
                         $copyToWithActivityPrice );
   // Old
 //$newProj=$proj->copyTo('Project',$toType,$toName,false,false, false,$copyToWithLinks,$copyAssignments,false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
-// END CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT$newProj->projectCode=$codeProject;
+// END CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+$newProj->projectCode=$codeProject;
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $error=true;
