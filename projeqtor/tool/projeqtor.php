@@ -2937,6 +2937,7 @@ function sessionUserExists() {
 }
  
 function getListForSpecificRights($specific){
+	global $user;
   if (!isset($user)) {
     $user=getSessionUser();
   }
@@ -2977,7 +2978,11 @@ function getListForSpecificRights($specific){
     }
   }
   if (count($table)==0) {
-    $table[$user->id]=' ';
+  	if (! $user->isResource) {
+  		$table[0]=' ';
+  	} else {
+      $table[$user->id]=' ';
+  	}
   }
   asort($table);
   return $table;
