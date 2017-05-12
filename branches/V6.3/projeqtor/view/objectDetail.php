@@ -3387,6 +3387,9 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  // TEST TICKET #2680
+  $canUpdateComp=securityGetAccessRightYesNo('menuComponent', 'update', $obj) == "YES";
+  //
   if ($obj->idle == 1) {
     $canUpdate=false;
   }
@@ -3395,7 +3398,8 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
   echo '<tr>';
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
-    if ($obj->id != null and !$print and $canUpdate) {
+    // TEST TICKET #2680
+    if ($obj->id != null and !$print and $canUpdate and $canUpdateComp) {
      echo '<a onClick="addProductStructure(\''.$way.'\');" title="' . i18n('addProductStructure') . '" > '.formatSmallButton('Add').'</a>';
     }
     echo '</td>';
