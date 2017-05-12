@@ -33,6 +33,31 @@ $refId=RequestHandler::getId('refId',false,null);
 $idAssignment=RequestHandler::getId('idAssignment',false,null);
 $assignedIdOrigin=RequestHandler::getNumeric('assignedIdOrigin',false,null);
 $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
+$unit=RequestHandler::getValue('unit',false,null);
+$validatedWorkPeOld = RequestHandler::getValue('validatedWorkPe',false,null);
+$assignedWorkPeOld = RequestHandler::getValue('assignedWorkPe',false,null);
+$validatedWorkPe = str_replace(',', '.', $validatedWorkPeOld);
+$assignedWorkPe = str_replace(',', '.', $assignedWorkPeOld);
+$hoursPerDay=Work::getHoursPerDay();
+$delay=null;
+if($refType=="Meeting" || $refType=="PeriodicMeeting") {
+  $rawUnit = RequestHandler::getValue('rawUnit',false,null);
+  $obj=new $refType($refId);
+  $meetingStartTime=$obj->meetingStartTime;
+  $meetingEndTime=$obj->meetingEndTime;
+  if($meetingStartTime && $meetingEndTime){
+    $expStart = explode(':', $meetingStartTime);
+    $expEnd = explode(':', $meetingEndTime);
+    $diffHours = $expEnd[0]-$expStart[0];
+    $diffMinutes = ($expEnd[1]-$expStart[1])/60;
+    if ($rawUnit=='hours'){
+      $delay = $diffHours+$diffMinutes;
+    } else {
+      $delay = ($diffHours+$diffMinutes)/$hoursPerDay;
+    }
+  }
+}
+
 ?>
 <div id="dialogAssign" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAssignment");?>">
   <table>
@@ -99,7 +124,7 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentRate" name="assignmentRate" value="" 
+               <div id="assignmentRate" name="assignmentRate" value="100" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:999}" 
                  style="width:97px" 
@@ -114,7 +139,18 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
+               <div id="assignmentAssignedWork" name="assignmentAssignedWork" 
+                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                                  echo $delay;
+                              } else { 
+                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  if($assignedWork < 0){
+                                    echo "0";
+                                  } else {
+                                    echo $assignedWork ;
+                                  }
+                              } 
+                 ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px"
@@ -122,7 +158,7 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                  onblur="assignmentUpdateLeftWork('assignment');" >
                  <?php echo $keyDownEventScript;?>
                  </div>
-               <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="" readonly tabindex="-1"
+               <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="<?php echo $unit ;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px; background-color:white; color:#000000; border:0px;"/>
                <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="" 
@@ -134,13 +170,13 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentRealWork" name="assignmentRealWork" value=""  
+               <div id="assignmentRealWork" name="assignmentRealWork" value="0"  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly >
                  <?php echo $keyDownEventScript;?>
                  </div>
-               <input id="assignmentRealUnit" name="assignmentRealUnit" value="" readonly tabindex="-1"
+               <input id="assignmentRealUnit" name="assignmentRealUnit" value="<?php echo $unit ;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
              </td>
@@ -150,7 +186,18 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                <label for="assignmentLeftWork" ><?php echo i18n("colLeftWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentLeftWork" name="assignmentLeftWork" value=""  
+               <div id="assignmentLeftWork" name="assignmentLeftWork"                  
+                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                                  echo $delay;
+                              } else { 
+                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  if($assignedWork < 0){
+                                    echo "0";
+                                  } else {
+                                    echo $assignedWork ;
+                                  }
+                              } 
+                 ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  onchange="assignmentUpdatePlannedWork('assignment');"
@@ -158,10 +205,10 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                  style="width:97px" >
                  <?php echo $keyDownEventScript;?>
                  </div>
-               <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="" readonly tabindex="-1"
+               <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="<?php echo $unit ;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
-               <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="" 
+               <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="0" 
                  style="width:97px"/>  
              </td>
            </tr>
@@ -170,13 +217,24 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
                <label for="assignmentPlannedWork" ><?php echo i18n("colPlannedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
+               <div id="assignmentPlannedWork" name="assignmentPlannedWork"                  
+                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                                  echo $delay;
+                              } else { 
+                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  if($assignedWork < 0){
+                                    echo "0";
+                                  } else {
+                                    echo $assignedWork ;
+                                  }
+                              } 
+                 ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly > 
                  <?php echo $keyDownEventScript;?>
                  </div>
-               <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="" readonly tabindex="-1"
+               <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="<?php echo $unit;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; border:0px;"/>
              </td>
@@ -194,7 +252,7 @@ $assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
            </tr>
          </table>       
          
-       <div id="optionalAssignmentDiv">
+       <div id="optionalAssignmentDiv" style="<?php if ($refType=="Meeting" || $refType=="PeriodicMeeting"){echo "display:block;";}else {echo "display:none;";}?>">
         <table style="margin-left:143px;">
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
             <td class="dialogLabel">&nbsp;</td>     
