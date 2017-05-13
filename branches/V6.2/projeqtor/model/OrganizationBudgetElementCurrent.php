@@ -58,8 +58,8 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
     // Update total budget
     $this->totalBudgetCost = $this->budgetCost + $this->expenseBudgetAmount;
 
-    $result=parent::save();    
-    return $result;
+    //$result=parent::save();    
+    //return $result;
     
     // Get old element (stored in database) : must be fetched before saving
     $old=$this->getOld();
