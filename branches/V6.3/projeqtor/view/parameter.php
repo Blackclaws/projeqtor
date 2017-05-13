@@ -84,8 +84,8 @@ function drawTableFromObjectList($objectList) {
 	if (array_key_exists('destinationWidth',$_REQUEST)) {
 	  $width=$_REQUEST['destinationWidth'];
 	  $width-=30;
-	  $displayWidth=$width . 'px';
-	  $longTextWidth=($displayWidth-30-300).'px';
+	  $displayWidth=$width.'px';
+	  $longTextWidth=($width-30-300).'px';
 	} else {
 	  if (sessionValueExists('screenWidth')) {
 	    $detailWidth = round((getSessionValue('screenWidth') * 0.8) - 15) ; // 80% of screen - split barr - padding (x2)
