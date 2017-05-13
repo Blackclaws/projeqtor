@@ -367,7 +367,7 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
            // Implement to following rule :
            // Can't remove link (idOrganization) for suborganizations
            if (get_class($obj)=='Organization' and get_class($theObj)=='Project' and $obj->id != $theObj->idOrganization) {
-              echo ' <a title="' . i18n('ownToSubOrganization') . '" >'.formatSmallButton('SubOrganization').'</a>';
+              echo ' <a title="' . i18n('ownToSubOrganization') . '" >'.formatSmallButton('SubOrganization',false,false).'</a>';
            } else {
                   if($theObj->idle==0) {
                       // Parameters passed at removeLinkObjectFromObject

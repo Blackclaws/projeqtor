@@ -952,7 +952,7 @@ function periodChanged(theId) {
 // END ADD BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes    
       
       
-      
+/* Babynus : next code no more used, same things done generatically by previous code      
 // ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
     self::$_fieldsAttributes['budgetWork']='hidden';
 // END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
@@ -988,6 +988,7 @@ function periodChanged(theId) {
     self::$_fieldsAttributes['totalRealCost']='hidden';
     self::$_fieldsAttributes['totalLeftCost']='hidden';
     self::$_fieldsAttributes['totalPlannedCost']='hidden';
+    */
   }
 
   /** =========================================================
