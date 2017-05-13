@@ -591,7 +591,7 @@ class Parameter extends SqlElement {
       	                     'sectionPlanning'=>'section',
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',
-      	                       'ganttPlanningPrintOldStyle'=>'list',
+      	                       // 'ganttPlanningPrintOldStyle'=>'list', // obsolete
       	                       'consolidateValidated'=>'list',
       	                       'dependencyStrictMode'=>'list',                     
       	                     'sectionResponsible'=>'section',
