@@ -3160,7 +3160,7 @@ function formatIcon ($class, $size, $title=null, $withHighlight=false) {
   } 
   return $result;
 }
-function formatSmallButton($class,$isClass=false) {
+function formatSmallButton($class,$isClass=false,$activeButton=true) {
   global $print, $outMode;
   $size="16";
   $result='';
@@ -3168,7 +3168,8 @@ function formatSmallButton($class,$isClass=false) {
     $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><img style='width:".$size."px;height:".$size."px;' src='css/customIcons/grey/icon$class.png' /></span>"; 
   } else {
   	$button=($isClass)?'':'Button';
-    $result.="<span class='roundedButtonSmall' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='icon$button$class$size' style='' >&nbsp;</div></span>";
+  	$buttonClass=($activeButton)?'roundedButtonSmall':'';
+    $result.="<span class='$buttonClass' style='top:0px;display:inline-block;width:".$size."px;height:".$size."px;'><div class='icon$button$class$size' style='' >&nbsp;</div></span>";
   }
   return $result;
 }
