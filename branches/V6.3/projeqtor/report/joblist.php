@@ -74,7 +74,7 @@ $lstActivity =$lstAct->getSqlElementsFromCriteria(null, false, $where, null);
 if (checkNoData($lstActivity))     exit;
 // Joblist definition
 //$where = getAccesRestrictionClause('JoblistDefinition', false);
-$where .= "nameChecklistable = 'Activity' ";
+$where = "nameChecklistable = 'Activity' ";
 //$where .= "and idType = " . $lstActivity[0]->idActivityType;
 $joblistDef = new JoblistDefinition();
 $joblist = $joblistDef->getSqlElementsFromCriteria(null, false, $where, null);
