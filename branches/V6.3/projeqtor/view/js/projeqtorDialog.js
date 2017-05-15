@@ -1845,53 +1845,6 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
     return;
   }
   var objClass = dojo.byId("objectClass").value;
-//  var validatedWorkPe = dojo.byId(objClass +"PlanningElement_validatedWork").value;
-//  var assignedWorkPe = dojo.byId(objClass +"PlanningElement_assignedWork").value;
-  /*gautier #1702*/
-  //dijit.byId('attendantIsOptional').set('checked',false);
-//  if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
-//    dojo.byId('optionalAssignmentDiv').style.display='block';
-//  }else{
-//    dojo.byId('optionalAssignmentDiv').style.display='none';
-//  } 
-//  dijit.byId("assignmentIdRole").reset();
-//  dijit.byId("assignmentDailyCost").reset();
-  //dijit.byId("assignmentRate").set('value', '100');
-//  dijit.byId("assignmentAssignedWork").set('value', validatedWorkPe-assignedWorkPe);
-//  if (dijit.byId("assignmentAssignedWork").get('value')< 0 ){
-//    dijit.byId("assignmentAssignedWork").set('value','0');
-//  }
-  //dojo.byId("assignmentAssignedWorkInit").value='0';
-  //dijit.byId("assignmentRealWork").set('value', '0');
-  //dijit.byId("assignmentLeftWork").set('value', '0');
-  //dojo.byId("assignmentLeftWorkInit").value='0';
-  //dijit.byId("assignmentPlannedWork").set('value', '0');
-  //dijit.byId("assignmentComment").set('value', '');
-  //dijit.byId("dialogAssign").set('title', i18n("dialogAssignment"));
-  //dijit.byId("assignmentIdResource").set('readOnly', false);
-  //dijit.byId("assignmentIdRole").set('readOnly', false);
-//  dojo.byId("assignmentPlannedUnit").value=unit;
-//  dojo.byId("assignmentLeftUnit").value=unit;
-//  dojo.byId("assignmentRealUnit").value=unit;
-//  dojo.byId("assignmentAssignedUnit").value=unit;
-//  if (dojo.byId('objectClass').value == 'Meeting'
-//      || dojo.byId('objectClass').value == 'PeriodicMeeting') {
-//    if (dijit.byId('meetingEndTime')
-//        && dijit.byId('meetingEndTime').get('value')
-//        && dijit.byId('meetingStartTime')
-//        && dijit.byId('meetingStartTime').get('value')) {
-//      delay=(dijit.byId('meetingEndTime').get('value') - dijit.byId(
-//          'meetingStartTime').get('value')) / 1000 / 60 / 60;
-//      if (rawUnit == 'hours') {
-//        // OK
-//      } else {
-//        delay=Math.round(delay / hoursPerDay * 1000) / 1000;
-//      }
-//      dijit.byId("assignmentAssignedWork").set('value', delay);
-//      dijit.byId("assignmentPlannedWork").set('value', delay);
-//      dijit.byId("assignmentLeftWork").set('value', delay);
-//    }
-//  }
   var callBack = function () {
     dijit.byId("dialogAssign").show();
   };
@@ -1907,8 +1860,11 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
     params+="&rawUnit="+rawUnit;
     params+="&hoursPerDay="+hoursPerDay;
   }
-  params+="&validatedWorkPe="+dojo.byId(objClass +"PlanningElement_validatedWork").value;
-  params+="&assignedWorkPe="+dojo.byId(objClass +"PlanningElement_assignedWork").value;
+  if (dojo.byId('objectClass').value != 'PeriodicMeeting') {
+    params+="&validatedWorkPe="+dojo.byId(objClass +"PlanningElement_validatedWork").value;
+    params+="&assignedWorkPe="+dojo.byId(objClass +"PlanningElement_assignedWork").value;
+  }
+  params+="&mode=add";  
   loadDialog('dialogAssignment',callBack,false,params);
 }
 
@@ -1926,27 +1882,6 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   }
   var callBack = function () {
     editAssignmentLoading=true;
-    dijit.byId("assignmentIdResource").reset();
-    dijit.byId("assignmentIdResource").set("value", idResource);
-    dijit.byId("assignmentIdRole").set("value", idRole);
-    if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
-      dojo.byId('optionalAssignmentDiv').style.display='block';
-      dijit.byId('attendantIsOptional').set('checked',(optional==1)?true:false);
-    }else{
-      dojo.byId('optionalAssignmentDiv').style.display='none';
-      dijit.byId('attendantIsOptional').set('checked',false);
-    } 
-    dojo.byId("assignmentRefId").value=dojo.byId("id").value;
-    dijit.byId("assignmentDailyCost")
-        .set('value', dojo.number.format(cost / 100));
-    dojo.byId("assignmentRate").value=rate;
-    dijit.byId("assignmentAssignedWork").set('value',
-        dojo.number.format(assignedWork / 100));
-    dojo.byId("assignmentAssignedWorkInit").value=assignedWork / 100;
-    dijit.byId("assignmentRealWork").set('value',
-        dojo.number.format(realWork / 100));
-    dijit.byId("assignmentLeftWork").set('value',
-        dojo.number.format(leftWork / 100));
     disableWidget('assignmentComment');
     dojo.xhrGet({
       url : '../tool/getSingleData.php?dataType=assignmentDescription&idAssignment='+assignmentId,
@@ -1956,31 +1891,18 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
         enableWidget("assignmentComment");
       }
     });
-    dojo.byId("assignmentPlannedUnit").value=unit;
-    dojo.byId("assignmentLeftUnit").value=unit;
-    dojo.byId("assignmentRealUnit").value=unit;
-    dojo.byId("assignmentAssignedUnit").value=unit;
-    dojo.byId("assignmentLeftWorkInit").value=leftWork / 100;
     assignmentUpdatePlannedWork('assignment');
-    dijit.byId("dialogAssign").set('title',
-        i18n("dialogAssignment") + " #" + assignmentId);
     dijit.byId("dialogAssign").show();
-    if (dojo.number.parse(realWork) == 0) {
-      dijit.byId("assignmentIdResource").set('readOnly', false);
-      dijit.byId("assignmentIdRole").set('readOnly', false);
-    } else {
-      dijit.byId("assignmentIdResource").set('readOnly', true);
-      if (!idRole) {
-        dijit.byId("assignmentIdRole").set('readOnly', false);
-      } else {
-        dijit.byId("assignmentIdRole").set('readOnly', true);
-      }
-    }
-    setTimeout("editAssignmentLoading=false", 1000);
 };
 var params="&idAssignment="+assignmentId;
 params+="&refType="+dojo.byId("objectClass").value;
 params+="&idProject="+dijit.byId('idProject').get('value');
+params+="&refId="+dojo.byId("objectId").value;
+params+="&idResource="+idResource;
+params+="&idRole="+idRole;
+params+="&mode=edit";
+params+="&unit="+unit;
+params+="&realWork="+realWork;
 loadDialog('dialogAssignment',callBack,false,params);
 }
 
