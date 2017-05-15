@@ -1414,8 +1414,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         if (sessionValueExists('browserLocaleDateFormatJs')) { 
+        	$min='';
           if (substr($col,-7)=="EndDate"){    
-            $min='';
             $start=str_replace("EndDate", "StartDate", $col);
             if (property_exists($obj, $start) && property_exists($obj, 'refType') && $obj->refType!="Milestone")  {
               $min=$obj->$start;      
@@ -1426,8 +1426,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               }
             }
             if ($min) echo ' dropDownDefaultValue="'.$min.'" ';
-            echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
           }
+          echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
         }
         echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' value="' . htmlEncode($val) . '" ';
