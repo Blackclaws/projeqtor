@@ -33,24 +33,31 @@ $refId=RequestHandler::getId('refId',false,null);
 $idRole=RequestHandler::getId('idRole',false,null);
 $idResource = RequestHandler::getId('idResource',false,null);
 $idAssignment=RequestHandler::getId('idAssignment',false,null);
-$assignedIdOrigin=RequestHandler::getNumeric('assignedIdOrigin',false,null);
-$assignedWorkOrigin=RequestHandler::getNumeric('assignedWorkOrigin',false,null);
+$assignmentObj = new Assignment($idAssignment);
 $unit=RequestHandler::getValue('unit',false,null);
+$assignedIdOrigin=RequestHandler::getId('assignedIdOrigin',false,null);
+$assignmentObjOrigin = new Assignment($assignedIdOrigin);
 $validatedWorkPeOld = RequestHandler::getValue('validatedWorkPe',false,null);
 $assignedWorkPeOld = RequestHandler::getValue('assignedWorkPe',false,null);
 $realWork = RequestHandler::getNumeric('realWork',false,true);
-$assignmentObj = new Assignment($idAssignment);
 $validatedWorkPe = str_replace(',', '.', $validatedWorkPeOld);
 $assignedWorkPe = str_replace(',', '.', $assignedWorkPeOld);
 $hoursPerDay=Work::getHoursPerDay();
 $delay=null;
+if ($assignmentObj->realWork==null){
+  $assignmentObj->realWork="0";
+}
+if($assignmentObj->leftWork==null){
+  $assignmentObj->leftWork="0";
+}
 if($refType=="Meeting" || $refType=="PeriodicMeeting") {
 	$obj=new $refType($refId);
 	$delay=Work::displayWork(workTimeDiffDateTime('2000-01-01T'.$obj->meetingStartTime,'2000-01-01T'.$obj->meetingEndTime));
 }
 $mode = RequestHandler::getValue('mode',false,true);
+debugLog($mode);
 ?>
-<div id="dialogAssign" dojoType="dijit.Dialog" title="<?php echo($mode=="add")?i18n("dialogAssignment"):i18n("dialogAssignment")."#".$idAssignment;?>">
+<div id="dialogAssign" dojoType="dijit.Dialog" title="<?php echo($mode=="edit")?i18n("dialogAssignment")."#".$idAssignment:i18n("dialogAssignment");?>">
   <table>
     <tr>
       <td>
@@ -59,7 +66,7 @@ $mode = RequestHandler::getValue('mode',false,true);
          <input id="assignmentRefType" name="assignmentRefType" type="hidden" value="<?php echo $refType ;?>" />
          <input id="assignmentRefId" name="assignmentRefId" type="hidden" value="<?php echo $refId ;?>" />
          <input id="assignedIdOrigin" name="assignedIdOrigin" type="hidden" value="<?php echo $assignedIdOrigin ;?>" />
-         <input id="assignedWorkOrigin" name="assignedWorkOrigin" type="hidden" value="<?php echo $assignedWorkOrigin ;?>" />
+         <input id="assignedWorkOrigin" name="assignedWorkOrigin" type="hidden" value="<?php echo $assignmentObj->assignedWork ;?>" />
          <table>
            <tr>
              <td class="dialogLabel" >
@@ -72,10 +79,10 @@ $mode = RequestHandler::getValue('mode',false,true);
                 class="input" 
                 onChange="assignmentChangeResource();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" <?php echo ($realWork!=0 && $mode=='edit')?"readonly=readonly":"";?>>
-                <?php if($mode=='add'){
-                          htmlDrawOptionForReference('idResource', null,null,false,'idProject',$idProject);
-                }else{
+                <?php if($mode=='edit'){                      
                           htmlDrawOptionForReference('idResource', $idResource,null,true,'idProject',$idProject);
+                }else{
+                          htmlDrawOptionForReference('idResource', null,null,false,'idProject',$idProject);
                 }?>
                </select>  
              </td>
@@ -90,10 +97,10 @@ $mode = RequestHandler::getValue('mode',false,true);
                 id="assignmentIdRole" name="assignmentIdRole"
                 class="input" 
                 onChange="assignmentChangeRole();" <?php echo ($realWork!=0 && $idRole)?"readonly=readonly":"";?>>                
-                 <?php if($mode=='add'){
-                          htmlDrawOptionForReference('idRole', null, null, false);
-                 } else {
+                 <?php if($mode=='edit'){
                           htmlDrawOptionForReference('idRole', $idRole, null, true);
+                 } else {
+                          htmlDrawOptionForReference('idRole', null, null, false);
                  }?>            
                </select>  
              </td>
@@ -139,19 +146,22 @@ $mode = RequestHandler::getValue('mode',false,true);
              </td>
              <td>
                <div id="assignmentAssignedWork" name="assignmentAssignedWork" 
-                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                 value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add"){ 
                                   echo $delay;
                               } else if ($mode=="edit"){
-                                  echo $assignmentObj->leftWork;
+                                  echo $assignmentObj->assignedWork;
+                                  debugLog($assignmentObj->assignedWork);
                               } 
-                                else { 
+                                else if($mode=="add") { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
                                   if($assignedWork < 0){
                                     echo "0";
                                   } else {
                                     echo $assignedWork ;
                                   }                             
-                              } 
+                              } else if($mode=="divide"){
+                                  echo $assignmentObjOrigin->assignedWork/2;
+                              }
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
@@ -172,7 +182,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentRealWork" name="assignmentRealWork" value="<?php echo ($mode=="edit")?$assignmentObj->leftWork:"0";?>"  
+               <div id="assignmentRealWork" name="assignmentRealWork" value="<?php echo ($mode=="edit")?$assignmentObj->realWork:"0";?>"  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly >

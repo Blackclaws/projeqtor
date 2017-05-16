@@ -1913,63 +1913,20 @@ loadDialog('dialogAssignment',callBack,false,params);
  * @return
  */
 
-function divideAssignment(assignedIdOrigin,assignedWorkOrigin,unit, rawUnit, hoursPerDay) {
+function divideAssignment(assignedIdOrigin,unit) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
   var callBack = function () {
-  dijit.byId('attendantIsOptional').set('checked',false);
-  if(dojo.byId("objectClass").value=='Meeting' || dojo.byId("objectClass").value=='PeriodicMeeting' ){
-    dojo.byId('optionalAssignmentDiv').style.display='block';
-  }else{
-    dojo.byId('optionalAssignmentDiv').style.display='none';
-  } 
-  dijit.byId("assignmentIdRole").reset();
-  dijit.byId("assignmentDailyCost").reset();
-  dijit.byId("assignmentRate").set('value', '100');
-  dijit.byId("assignmentAssignedWork").set('value', assignedWorkOrigin/2);
-  if (dijit.byId("assignmentAssignedWork").get('value')< 0 ){
-    dijit.byId("assignmentAssignedWork").set('value','0');
-  }
-  dojo.byId("assignmentAssignedWorkInit").value='0';
-  dijit.byId("assignmentRealWork").set('value', '0');
-  dijit.byId("assignmentLeftWork").set('value', '0');
-  dojo.byId("assignmentLeftWorkInit").value='0';
-  dijit.byId("assignmentPlannedWork").set('value', '0');
-  dijit.byId("assignmentComment").set('value', '');
-  dijit.byId("dialogAssign").set('title', i18n("dialogAssignment"));
-  dijit.byId("assignmentIdResource").set('readOnly', false);
-  dijit.byId("assignmentIdRole").set('readOnly', false);
-  dojo.byId("assignmentPlannedUnit").value=unit;
-  dojo.byId("assignmentLeftUnit").value=unit;
-  dojo.byId("assignmentRealUnit").value=unit;
-  dojo.byId("assignmentAssignedUnit").value=unit;
-  if (dojo.byId('objectClass').value == 'Meeting'
-      || dojo.byId('objectClass').value == 'PeriodicMeeting') {
-    if (dijit.byId('meetingEndTime')
-        && dijit.byId('meetingEndTime').get('value')
-        && dijit.byId('meetingStartTime')
-        && dijit.byId('meetingStartTime').get('value')) {
-      delay=(dijit.byId('meetingEndTime').get('value') - dijit.byId(
-          'meetingStartTime').get('value')) / 1000 / 60 / 60;
-      if (rawUnit == 'hours') {
-        // OK
-      } else {
-        delay=Math.round(delay / hoursPerDay * 1000) / 1000;
-      }
-      dijit.byId("assignmentAssignedWork").set('value', delay);
-      dijit.byId("assignmentPlannedWork").set('value', delay);
-      dijit.byId("assignmentLeftWork").set('value', delay);
-    }
-  }
-  dijit.byId("dialogAssign").show();
+    dijit.byId("dialogAssign").show();
   };
   var params="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
   params+="&idProject="+dijit.byId('idProject').get('value');
   params+="&assignedIdOrigin="+assignedIdOrigin;
-  params+="&assignedWorkOrigin="+assignedWorkOrigin;
+  params+="&unit="+unit;
+  params+="&mode=divide";
   loadDialog('dialogAssignment',callBack,false,params);
 }
 
@@ -1989,7 +1946,7 @@ function assignmentUpdateLeftWork(prefix) {
     assigned.value=dojo.number.format(newAssigned);
   }
   var left=dojo.byId(prefix + "LeftWork");
-  //// KEVIN #2338 ////
+  //// Krowry #2338 ////
   var real = dojo.byId(prefix + "RealWork");
   // var planned = dojo.byId(prefix + "PlannedWork");
   diff=dojo.number.parse(assigned.value) - initAssigned.value;
@@ -4358,60 +4315,19 @@ function selectLinkObjectItem() {
 // =============================================================================
 
 function addAffectation(objectClass, type, idResource, idProject) {
-
 //  if (checkFormChangeInProgress()) {
 //    showAlert(i18n('alertOngoingChange'));
 //    return;
 //  }
   var callBack = function () {
     affectationLoad=true;
-    if (dijit.byId('idProfile')) {
-      dijit.byId("affectationProfile").set('value',
-          dijit.byId('idProfile').get('value'));
-    } else {
-      dijit.byId("affectationProfile").reset();
-    }
-    
-    //refreshList('idProfile', 'idProject', idProject, null, 'affectationProfile', false  ); // Attention, selected is given as idAffectation => must seach its profile ...
-//  if (objectClass == 'Project') {
-//    refreshList('idProject', 'id', idProject, idProject, 'affectationProject', true);
-//    dijit.byId("affectationProject").set('value', idProject);
-//    refreshList('id' + type, null, null, null, 'affectationResource', false);
-//    dijit.byId("affectationResource").reset();
-//  } else {
-//    if (currentSelectedProject=='*') {
-//      refreshList('idProject', null, null, null, 'affectationProject', false);
-//      dijit.byId("affectationProject").reset();
-//    } else {
-//      refreshList('idProject', null, null, currentSelectedProject, 'affectationProject', true);
-//      dijit.byId("affectationProject").set('value', currentSelectedProject);
-//    }
-    refreshList('id' + objectClass, null, null, idResource, 'affectationResource', true);
-    dijit.byId("affectationResource").set('value', idResource);
-    
-    
-    dojo.byId("affectationId").value="";
-    dojo.byId("affectationIdTeam").value="";
-    if (objectClass == 'Project') {
-      dijit.byId("affectationProject").set('readOnly', true);
-      dijit.byId("affectationResource").set('readOnly', false);
-    } else {
-      dijit.byId("affectationResource").set('readOnly', true);
-      dijit.byId("affectationProject").set('readOnly', false);
-    }
-    dijit.byId("affectationResource").set('required', true);
-    dijit.byId("affectationProfile").set('required', true);
-    dijit.byId("affectationRate").set('value', '100');
-    dijit.byId("affectationIdle").reset();
-    dijit.byId("affectationStartDate").reset();
-    dijit.byId("affectationEndDate").reset();
-    dijit.byId("affectationDescription").reset();
     dijit.byId("dialogAff").show();
     setTimeout("affectationLoad=false", 500);
   };
   var params="&idProject="+idProject;
   params+="&objectClass="+objectClass;
   params+="&idResource="+idResource;
+  params+="&type="+type;
   loadDialog('dialogAffectation',callBack,false,params);
 }
 
