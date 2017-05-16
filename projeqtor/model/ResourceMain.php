@@ -543,7 +543,7 @@ class ResourceMain extends SqlElement {
              . ' style="cursor:pointer;border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
              . ' onClick="showImage(\'Attachment\',\''.htmlEncode($image->id).'\',\''.htmlEncode($image->fileName,'protectQuotes').'\');" />';
     } else {
-      $result.= formatLetterThumb($this->id, $size,$this->name);
+      $result.= formatLetterThumb($this->id, $size,$this->name,"right",null);
     }
     return $result;
   }

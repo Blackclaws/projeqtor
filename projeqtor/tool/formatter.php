@@ -190,7 +190,7 @@ function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $i
 	  $result='<span style="position:relative;color:#ffffff;background-color:'.$bgColor.';float:left;font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;" >';
 	}else{
 	  $result='<span style="position:relative;color:#ffffff;background-color:'.$bgColor.';float:'.$floatLetter.';font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;"'
-	  		. ' onMouseOver="showBigImage(\'Affectable\','.$idUser.',this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
+	  		. ' onMouseOver="showBigImage(null,null,this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
 	  		. ($idTicket!=-1 ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
 	}
 	$result.=strtoupper(substr($userName,0,1));
@@ -237,11 +237,11 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	  if ($pos>0) $nocache=substr($nocache,0,$pos);
 	}
 	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
-	if ($title) {
-	  $title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
-	} else if ($userName) {
+// 	if ($title) {
+// 	  $title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
+// 	} else if ($userName) {
 	  $title=htmlEncode($userName,'quotes');
-	}
+// 	}
 	if (substr($file,0,6)=='letter') {
 		$res=formatLetterThumb($userId, $size,$title,$float,$idTicket);
 	} else {
@@ -249,7 +249,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	  $res.=' src="'.$file.'" ';
 		// Ceci est la partie quand on passe la souris sur l'image de la barre ( le "a" de admin par exemple )
 		if (! $print and ($known or $alwaysDisplayBigImage)) {
-		  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?",false":",true").',\''.$nocache.'\');" onMouseOut="hideBigImage();"';
+			$res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?",false":",true").',\''.$nocache.'\');" onMouseOut="hideBigImage();"';
 		} else if (!$known and $userName) {
 		  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\',true,\''.$nocache.'\');" onMouseOut="hideBigImage();"';
 		}
