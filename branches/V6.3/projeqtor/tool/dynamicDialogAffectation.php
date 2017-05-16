@@ -29,6 +29,7 @@ $idProject=RequestHandler::getId('idProject',false,null);
 $class=RequestHandler::getClass('objectClass');
 $idResource=RequestHandler::getId('idResource',false,null);
 $affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
+$type=RequestHandler::getValue('type',false,null);
 // $mode="";
 // if ( array_key_exists('id',$_REQUEST) ) {
 //   $idAffectation=RequestHandler::getId('id',false,null);
@@ -46,14 +47,14 @@ $affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
          <input id="affectationIdTeam" name="affectationIdTeam" type="hidden" value="<?php echo $affectationIdTeam ;?>" />
          <table>
            <tr>
-             <td class="dialogLabel"  >
+             <td class="dialogLabel" >
                <label for="affectationProject" ><?php echo i18n("colIdProject") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationProject" name="affectationProject" 
-                class="input" required="required">
+                class="input" required="required" <?php echo ($class=="Project")?"readonly=readonly":"";?>>
                  <?php 
                  if($class=="Project"){
                    htmlDrawOptionForReference('idProject', $idProject, null, true);
@@ -62,8 +63,10 @@ $affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
                    if (sessionValueExists('project')){
                     $proj= getSessionValue('project');
                    }
-                   if ($proj=="*" or ! $proj) $proj=null;
-                   htmlDrawOptionForReference('idProject', $proj,null,true);
+                   if ($proj=="*" or ! $proj){
+                     $proj=null;
+                  }
+                   htmlDrawOptionForReference('idProject', $proj,null,false);
                  }
                  ?>
                </select>
@@ -78,9 +81,9 @@ $affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
-                class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idResource', $idResource, null, true);?>
-               </select>
+                class="input" value="<?php if($class=="Resource"){echo $idResource ;}?>" required="required" <?php echo ($class=="Resource")?"readonly=readonly":"";?>>
+                 <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null, false):htmlDrawOptionForReference('idResource', $idResource, null, false);?>
+               </select> 
              </td><td style="vertical-align: top">
                <button id="affectationDetailButton" dojoType="dijit.form.Button" showlabel="false"
                  title="<?php echo i18n('showDetail')?>"
