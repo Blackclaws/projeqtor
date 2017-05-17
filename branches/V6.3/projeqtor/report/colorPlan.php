@@ -294,10 +294,11 @@ foreach ($resourcesFull2 as $idR=>$nameR) {
   if (!$paramTeam or $res->idTeam==$paramTeam) {
     //gautier
     if(array_key_exists($idR,$resourceCapacity)){
-  	 $capacity=$resourceCapacity[$idR];
+  	  $capacity=$resourceCapacity[$idR];
     }else{
-      $capacity=0;
+      $capacity=SqlList::getFieldFromId('Resource', $idR, 'capacity');
     }
+    $capacity=htmlDisplayNumericWithoutTrailingZeros($capacity);
 	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
 	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.$capacity.'</div>';
 	  echo '</td>';
@@ -310,7 +311,7 @@ foreach ($resourcesFull2 as $idR=>$nameR) {
 	    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
 	    // test day and result
 	  //if (array_key_exists($resources[$idR],$result) and array_key_exists($resources[$idR],$days )){
-	  if($capacity!=0){
+	  if(isset($result[$idR])){
 	    if (array_key_exists($day,$result[$idR])) {
 	      echo "<div style='position:relative;'>";
 	      $real=false;
