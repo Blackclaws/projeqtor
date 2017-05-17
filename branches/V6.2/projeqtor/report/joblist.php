@@ -63,6 +63,7 @@ if ($outMode == 'csv') {
 }
 // All activities
 $where = getAccesRestrictionClause('Activity', null);
+$where .= " and idProject in " . getVisibleProjectsList(true);
 if ($paramActivity != '') {
     $where .= " and idActivity = " . $paramActivity;
 } elseif ($paramProject != '') {
@@ -73,8 +74,8 @@ $lstAct = new Activity();
 $lstActivity =$lstAct->getSqlElementsFromCriteria(null, false, $where, null);
 if (checkNoData($lstActivity))     exit;
 // Joblist definition
-//$where = getAccesRestrictionClause('JoblistDefinition', false);
-$where = "nameChecklistable = 'Activity' ";
+$where = getAccesRestrictionClause('JoblistDefinition', false);
+$where .= "and nameChecklistable = 'Activity' ";
 //$where .= "and idType = " . $lstActivity[0]->idActivityType;
 $joblistDef = new JoblistDefinition();
 $joblist = $joblistDef->getSqlElementsFromCriteria(null, false, $where, null);
