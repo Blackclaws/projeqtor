@@ -3779,7 +3779,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <a onClick="removeAssignment(' . "'" . htmlEncode($assignment->id) . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 
         'title="' . i18n('removeAssignment') . '" > '.formatSmallButton('Remove').'</a>';
       }
-      echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',' . htmlEncode($assignment->assignedWork) . ',\'' . Work::displayShortWorkUnit() . '\',\'' . Work::getWorkUnit() . '\',\'' . Work::getHoursPerDay() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('SwitchUser').'</a>';
+      echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('SwitchUser').'</a>';
       echo '</td>';
     }
     echo '<td class="assignData">';

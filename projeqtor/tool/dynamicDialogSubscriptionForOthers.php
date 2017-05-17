@@ -106,7 +106,7 @@ uasort($lstRes,'Affectable::sort');
 uasort($lstSub,'Affectable::sort');
 
 echo '<input type="hidden" id="subscriptionObjectClass" value="'.$objectClass.'" />';
-echo '<input type="hidden" id="subscriptionObjectClass" value="'.$objectId.'" />';
+echo '<input type="hidden" id="subscriptionObjectId" value="'.$objectId.'" />';
 echo '<table style="width:100%;height:100%;min-height:300px">';
 echo '<tr style="height:20px">';
 echo '<td class="section" style="width:200px">'.i18n('titleAvailable').'</td>';

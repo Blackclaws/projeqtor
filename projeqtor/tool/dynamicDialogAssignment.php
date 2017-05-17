@@ -55,7 +55,6 @@ if($refType=="Meeting" || $refType=="PeriodicMeeting") {
 	$delay=Work::displayWork(workTimeDiffDateTime('2000-01-01T'.$obj->meetingStartTime,'2000-01-01T'.$obj->meetingEndTime));
 }
 $mode = RequestHandler::getValue('mode',false,true);
-debugLog($mode);
 ?>
 <div id="dialogAssign" dojoType="dijit.Dialog" title="<?php echo($mode=="edit")?i18n("dialogAssignment")."#".$idAssignment:i18n("dialogAssignment");?>">
   <table>
@@ -150,7 +149,6 @@ debugLog($mode);
                                   echo $delay;
                               } else if ($mode=="edit"){
                                   echo $assignmentObj->assignedWork;
-                                  debugLog($assignmentObj->assignedWork);
                               } 
                                 else if($mode=="add") { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
