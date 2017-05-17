@@ -361,6 +361,9 @@
         </button>     
       </div>
     <?php }?>
+    <?php
+        } // end of : if ($mailable and $mailable->id) {
+      ?>
     <?php 
     if (! array_key_exists('planning',$_REQUEST)) {?>
     <?php organizeButtons();?> 
@@ -458,9 +461,7 @@
       <input type="hidden" id="buttonHistoryVisible" value="<?php echo $paramHistoryVisible;?>" />
     </span>
     <?php organizeButtonsEnd();?>
-    <?php
-        }
-      ?>
+    
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo (!$obj->id)?$createRight:$updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
