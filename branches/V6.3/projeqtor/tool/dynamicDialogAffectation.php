@@ -30,20 +30,18 @@ $class=RequestHandler::getClass('objectClass');
 $idResource=RequestHandler::getId('idResource',false,null);
 $affectationIdTeam=RequestHandler::getId('affectationIdTeam',false,null);
 $type=RequestHandler::getValue('type',false,null);
-// $mode="";
-// if ( array_key_exists('id',$_REQUEST) ) {
-//   $idAffectation=RequestHandler::getId('id',false,null);
-//   $mode='edit';
-// } else {
-//   $mode='add';
-// }
+$mode = RequestHandler::getValue('mode',false,true);
+$idAffectation = RequestHandler::getId('id',false,null);
+$resource = new Resource($idResource);
+$affectation = new Affectation($idAffectation);
+$project = new Project();
 ?>
 <div id="dialogAff" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAffectation");?>">
   <table>
     <tr>
       <td>
        <form dojoType="dijit.form.Form" id='affectationForm' name='affectationForm' onSubmit="return false;">
-         <input id="affectationId" name="affectationId" type="hidden" value="" />
+         <input id="affectationId" name="affectationId" type="hidden" value="<?php echo $idAffectation;?>" />
          <input id="affectationIdTeam" name="affectationIdTeam" type="hidden" value="<?php echo $affectationIdTeam ;?>" />
          <table>
            <tr>
@@ -54,7 +52,7 @@ $type=RequestHandler::getValue('type',false,null);
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationProject" name="affectationProject" 
-                class="input" required="required" <?php echo ($class=="Project")?"readonly=readonly":"";?>>
+                value="<?php echo $idProject;?>" class="input" required="required" <?php echo ($class=="Project")?"readonly=readonly":"";?>>
                  <?php 
                  if($class=="Project"){
                    htmlDrawOptionForReference('idProject', $idProject, null, true);
@@ -81,7 +79,7 @@ $type=RequestHandler::getValue('type',false,null);
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
-                class="input" value="<?php if($class=="Resource"){echo $idResource ;}?>" required="required" <?php echo ($class=="Resource")?"readonly=readonly":"";?>>
+                class="input" value="<?php echo ($class=="Project")?$affectation->idResource:$resource->id;?>" required="required" <?php echo ($class=="Resource")?"readonly=readonly":"";?>>
                  <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null, false):htmlDrawOptionForReference('idResource', $idResource, null, false);?>
                </select> 
              </td><td style="vertical-align: top">
@@ -103,7 +101,7 @@ $type=RequestHandler::getValue('type',false,null);
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationProfile" name="affectationProfile" 
-                class="input" value="" required="required">
+                class="input" value="<?php echo ($mode=="edit")?$affectation->idProfile:"";?>" required="required">
                  <?php htmlDrawOptionForReference('idProfile', null, null, true);?>
                </select>
                </div>
@@ -114,7 +112,7 @@ $type=RequestHandler::getValue('type',false,null);
                <label for="affectationRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="affectationRate" name="affectationRate" value="" 
+               <div id="affectationRate" name="affectationRate" value="<?php echo $affectation->rate;?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  style="width:100px" class="input"
                  hasDownArrow="true"

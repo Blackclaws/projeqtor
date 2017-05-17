@@ -80,6 +80,9 @@
     <copy todir="${deploy.dir}/external/pdfmake">
        <fileset dir="${src.dir}/external/pdfmake"/>
     </copy>
+    <copy todir="${deploy.dir}/external/promise">
+       <fileset dir="${src.dir}/external/promise"/>
+    </copy>
   </target>
   
   <target name="copyFiles">

@@ -107,7 +107,6 @@ if (! array_key_exists('assignmentComment',$_REQUEST)) {
 }
 
 $idOrigin=RequestHandler::getNumeric('assignedIdOrigin',false,null);
-RequestHandler::debugLog();
 
 //gautier #1742
 $optional=0;

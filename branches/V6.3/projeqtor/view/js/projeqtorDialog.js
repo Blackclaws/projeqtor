@@ -4357,8 +4357,6 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
     return;
   }
   var callBack = function () {
-  refreshList('idProfile', 'idProject', idProject, id, 'affectationProfile', false  ); // Attention, selected is given as idAffectation => must seach its profile ...
-  disableWidget("affectationDescription");
   dojo.xhrGet({
     url : '../tool/getSingleData.php?dataType=affectationDescription&idAffectation='+id,
     handleAs : "text",
@@ -4367,29 +4365,6 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
       enableWidget("affectationDescription");
     }
   });
-  if (idProfile) {
-    dijit.byId("affectationProfile").set('value', idProfile);
-  } else {
-    dijit.byId("affectationProfile").reset();
-  }
-  dojo.byId("affectationId").value=id;
-  dojo.byId("affectationIdTeam").value="";
-  if (objectClass == 'Project') {
-    dijit.byId("affectationProject").set('readOnly', true);
-    dijit.byId("affectationProject").set('value', idProject);
-    dijit.byId("affectationResource").set('readOnly', false);
-    dijit.byId("affectationResource").set('value', idResource);
-  } else {
-    dijit.byId("affectationResource").set('readOnly', true);
-    dijit.byId("affectationResource").set('value', idResource);
-    dijit.byId("affectationProject").set('readOnly', false);
-    dijit.byId("affectationProject").set('value', idProject);
-  }
-  if (rate) {
-    dijit.byId("affectationRate").set('value', rate);
-  } else {
-    dijit.byId("affectationRate").reset();
-  }
   if (startDate) {
     dijit.byId("affectationStartDate").set('value', startDate);
   } else {
@@ -4412,6 +4387,9 @@ var params="&id="+id;
 params+="&refType="+dojo.byId("objectClass").value;
 params+="&idProject="+idProject;
 params+="&idResource="+idResource;
+params+="&mode=edit";
+params+="&type="+type;
+params+="&objectClass="+objectClass;
 loadDialog('dialogAffectation',callBack,false,params);
 }
 
