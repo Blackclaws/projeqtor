@@ -2495,30 +2495,36 @@ function runScript(refType, refId, id) {
       + dojo.byId('objectClassManual').value, 'detailDiv', 'listForm');
   highlightPlanningLine(id);
 }
+ongoingRunScriptContextMenu=false;
 function runScriptContextMenu(refType, refId, id) {
   showWait();
   setTimeout("document.body.style.cursor='default';",100);
   dojo.xhrGet({
     url : "../view/planningBarDetail.php?class="+refType+"&id="+refId+"&scale="+ganttPlanningScale,
     load : function(data, args) {
+      ongoingRunScriptContextMenu=true;
       setTimeout("document.body.style.cursor='default';",100);
       var bar = dojo.byId('bardiv_'+id);
       var line = dojo.byId('childgrid_'+id);
       var detail = dojo.byId('rightTableBarDetail');
-      detail.innerHTML=data;
       detail.style.display="block";
+      detail.innerHTML=data;
       detail.style.width=(parseInt(bar.style.width)+202)+'px';
       detail.style.left=(bar.offsetLeft-1)+"px";
-      if ( dojo.byId('planningBarDetailTable') && dojo.byId('rightTableContainer').offsetHeight + dojo.byId('planningBarDetailTable').offsetHeight > (dojo.byId('rightGanttChartDIV').offsetHeight) && (line.offsetTop+25)> dojo.byId('rightTableContainer').offsetHeight ) {
-        detail.style.top=(line.offsetTop-dojo.byId('planningBarDetailTable').offsetHeight+1)+"px";  
+      var tableHeight=44;
+      if (dojo.byId('planningBarDetailTable')) tableHeight=dojo.byId('planningBarDetailTable').offsetHeight
+      if ( dojo.byId('rightTableContainer').offsetHeight + tableHeight > (dojo.byId('rightGanttChartDIV').offsetHeight) && (line.offsetTop+25)> dojo.byId('rightTableContainer').offsetHeight ) {
+        detail.style.top=(line.offsetTop-tableHeight+1)+"px";  
       } else {
         detail.style.top=(line.offsetTop+22)+"px";
       }
       hideWait();
+      setTimeout("ongoingRunScriptContextMenu=false;",20);
     },
     error : function () {
       console.warn ("error on return from planningBarDetail.php");
       hideWait();
+      setTimeout("ongoingRunScriptContextMenu=false;",20);
     }
   });
   return false;

@@ -53,8 +53,11 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (3,176,7);
 
 INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
-(29,'Affectation', '0'); 
+(30,'Affectation', '0'); 
 
 INSERT INTO `${prefix}importable` ( `name`,`idle`) VALUES 
 ('Deliverable',0),
 ('Incoming',0);
+
+INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
+(29,'DocumentDirectory', '0');
