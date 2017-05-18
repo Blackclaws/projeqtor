@@ -3399,7 +3399,7 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
     // TEST TICKET #2680
-    if ($obj->id != null and !$print and $canUpdate and $canUpdateComp) {
+    if ($obj->id != null and !$print and $canUpdate) {
      echo '<a onClick="addProductStructure(\''.$way.'\');" title="' . i18n('addProductStructure') . '" > '.formatSmallButton('Add').'</a>';
     }
     echo '</td>';
@@ -3779,10 +3779,10 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <a onClick="removeAssignment(' . "'" . htmlEncode($assignment->id) . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 
         'title="' . i18n('removeAssignment') . '" > '.formatSmallButton('Remove').'</a>';
       }
-      echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('SwitchUser').'</a>';
+      echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('Split').'</a>';
       echo '</td>';
     }
-    echo '<td class="assignData">';
+    echo '<td class="assignData" style="vertical-align:middle">';
     echo '<table width="100%"><tr>';
     $goto="";
     if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '') == "YES") {
@@ -3804,17 +3804,25 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     //gautier #1702
     if (! $assignment->optional and (get_class($obj)== 'Meeting' or get_class($obj)== 'PeriodicMeeting' ) ) {
       echo '<td>';
-      echo '<a style="float:right";> '.formatIcon('Favorite',16,i18n('mandatoryAttendant')).'</a>';
+      echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Favorite',16,i18n('mandatoryAttendant')).'</a>';
       echo '</td>';
     }
     echo '</tr></table>';
     echo '</td>';
-    echo '<td class="assignData" align="center">' . htmlEncode($assignment->rate) . '</td>';
+    echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
     if ($workVisible) {
-      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->leftWork)) . '</td>';
-    }
+    	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+      echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
+      echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+      echo '<td class="assignData" align="right" style="vertical-align:middle">';
+      	//mehdi======================ticket#1776
+      	echo '<div id="LeftWork_'.$assignment->id.'" name="LeftWork_'.$assignment->id.'"  
+      		  		dojoType="dijit.form.NumberTextBox" onchange="saveLeftWork('.$assignment->id.');"
+  							constraints="{min:0,max:9999999.99}" class="dijitReset dijitInputInner dijitNumberTextBox "
+      					value="'.Work::displayWork($assignment->leftWork).'" style="padding:5px;background:none;max-width:100%; box-sizing:border-box;">';
+      		echo $keyDownEventScript;
+      	echo' </div>';   		
+      echo '</td>';    }
     echo '</tr>';
   }
   echo '</table></td></tr>';
