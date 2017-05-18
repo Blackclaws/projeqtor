@@ -1147,6 +1147,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle +'" '
               + ' onmousedown=JSGantt.startLink('+i+'); '
               + ' onmouseup=JSGantt.endLink('+i+'); '
+              + ' oncontextmenu="return false;"'
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
               + ' onMouseout=JSGantt.exitBarLink('+i+'); '
               + '  onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
@@ -1155,6 +1156,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+                + ' oncontextmenu="return false;"'
                 + ' onMouseout=JSGantt.exitBarLink('+i+'); '                
                 + ' class="ganttGrouprowBarComplete">' 
                 + '</div>' 
@@ -2069,9 +2071,8 @@ JSGantt.exitBarLink = function (idRow) {
 	} else {
 	  document.body.style.cursor='default';
 	}
-	if (dojo.byId('rightTableBarDetail')) {
-	  dojo.byId('rightTableBarDetail').innerHTML=""; 
-	  dojo.byId('rightTableBarDetail').style.display="none";
+	if (dojo.byId('rightTableBarDetail') && ! ongoingRunScriptContextMenu) {
+	  setTimeout("dojo.byId('rightTableBarDetail').innerHTML='';dojo.byId('rightTableBarDetail').style.display='none';",500);
 	}
 };
 

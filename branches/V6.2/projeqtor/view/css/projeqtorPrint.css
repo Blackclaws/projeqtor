@@ -408,3 +408,4 @@ div .scrollLeftTop {
   text-shadow: none;
   vertical-align: middle;
 }
+div.iconFavorite16 { background-image: url(images/iconFavorite16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
