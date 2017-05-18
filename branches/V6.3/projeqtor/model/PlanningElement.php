@@ -1165,7 +1165,7 @@ class PlanningElement extends SqlElement {
   				  } 
   				}
   			}
-  			if ($prec->refType=='Project' and $prec->refId!=$task->idProject) {
+  			if ($prec and $prec->refType=='Project' and $prec->refId!=$task->idProject) {
   				$task->idProject=$prec->refId;
     			$resTmp=$task->save();
     			if (getLastOperationStatus($resTmp)=="OK") {
@@ -1175,7 +1175,7 @@ class PlanningElement extends SqlElement {
     			  $status="ERROR";
     			  $result=$resTmp;
     			}	
-  			} else if ($prec->refType=='Activity' and property_exists($task, 'idActivity') and $task->idActivity!=$prec->refId) {
+  			} else if ($prec and $prec->refType=='Activity' and property_exists($task, 'idActivity') and $task->idActivity!=$prec->refId) {
   				$task->idActivity=$prec->refId;
     			$resTmp=$task->save();
     			if (getLastOperationStatus($resTmp)=="OK") {

@@ -39,12 +39,8 @@ $commentDep=$dep->comment;
         <div style="width:180px;border-radius:1px 1px 0px 0px;">
           <div class="section" style="display: inline-block;width:100%; border-radius:0px" >
             <p  style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("operationUpdate");?></p>
-          <div style="float:right;>
-           <ul>   
-	           <li style="list-style: none;">
+          <div style="float:right;">
 	             <a onclick="hideDependencyRightClick();" <?php echo formatSmallButton('Mark') ;?></a>
-	           </li>
-	         </ul>
         </div>
        </div>
        </div>
@@ -69,13 +65,9 @@ $commentDep=$dep->comment;
 				   </form>
 
 				  <div style="width:180px;height:25px;"> 
-				     <label for="commentDependency" style="height:25px;margin-top:7px;"><?php echo i18n("deleteButton");?>&nbsp;:&nbsp;</label>               		      		 
-	          <div style="float:right;>		 
-	           <ul>   
-	             <li style="list-style: none;">
+				     <label for="removeDependency" style="height:25px;margin-top:7px;"><?php echo i18n("deleteButton");?>&nbsp;:&nbsp;</label>               		      		 
+	          <div style="float:right;">		 
 	               <a onclick="removeDependencyRightClick();" <?php echo formatMediumButton('Remove') ;?></a>	
-	             </li>
-	           </ul>
 	          </div>
 			    </div> 
 			    	

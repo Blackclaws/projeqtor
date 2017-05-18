@@ -4054,6 +4054,20 @@ function saveTcrData(id,textZone) {
   });
 }
 
+//Mehdi
+function saveLeftWork(id) {
+	var value=dijit.byId("LeftWork_"+id).get("value");
+	var url = '../tool/saveLeftWork.php?idAssign='+id +'&valueTextZone='+value;	  
+	dojo.xhrPut({
+	  url : url,
+	  form : 'objectForm',
+	  handleAs : "text",
+	  load : function(data) {
+		  	
+	  }
+	});
+}
+
 // ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT - ADD-EDIT-REMOVE
 // =============================================================================
 // = Add-Edit-Remove an organization's Budget Element
@@ -4328,6 +4342,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
   params+="&objectClass="+objectClass;
   params+="&idResource="+idResource;
   params+="&type="+type;
+  params+="&mode=add";
   loadDialog('dialogAffectation',callBack,false,params);
 }
 
@@ -4419,18 +4434,6 @@ function affectTeamMembers(idTeam) {
     return;
   }
   var callBack = function () {
-    dojo.byId("affectationId").value="";
-    dijit.byId("affectationResource").set('readOnly', true);
-    dijit.byId("affectationResource").set('required', false);
-    dijit.byId("affectationResource").reset();
-    dijit.byId("affectationProfile").set('readOnly', true);
-    dijit.byId("affectationProfile").set('required', false);
-    dijit.byId("affectationProfile").reset();
-    dijit.byId("affectationProject").set('readOnly', false);
-    dijit.byId("affectationRate").set('value', '100');
-    dijit.byId("affectationIdle").reset();
-    dijit.byId("affectationDescription").reset();
-    dijit.byId("affectationIdle").set('readOnly', true);
     dijit.byId("dialogAff").show();
   };
   var params="&affectationIdTeam="+idTeam;
