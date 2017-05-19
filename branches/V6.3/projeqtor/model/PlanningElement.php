@@ -388,6 +388,11 @@ class PlanningElement extends SqlElement {
     
     if ($this->realEndDate){
       $this->plannedEndDate=$this->realEndDate;
+      $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
+    }
+    if ($this->realStartDate){
+    	$this->plannedStartDate=$this->realStartDate;
+    	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {

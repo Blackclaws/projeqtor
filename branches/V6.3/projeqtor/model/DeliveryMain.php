@@ -234,7 +234,6 @@ class DeliveryMain extends SqlElement {
          $deliverable = new Deliverable($link2->ref1Id);
          $deliverable->idDeliverableStatus=$this->idDeliverableStatus;
          $test=$deliverable->save();
-         debugLog($test);
         }
       }
     }

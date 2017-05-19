@@ -3809,20 +3809,33 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     }
     echo '</tr></table>';
     echo '</td>';
-    echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
-    if ($workVisible) {
-    	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
-      echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
-      echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+    if(!$print && $outMode != 'pdf'){
+      echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
+    }else if($print || $outMode == 'pdf'){
+      echo '<td class="assignData" align="center">' . htmlEncode($assignment->rate) . '</td>';
+    }
+    if ($workVisible) {  
+      if(!$print && $outMode != 'pdf'){
+        echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
+        echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+      }
+      if($print || $outMode == 'pdf'){
+        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
+        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->leftWork)) . '</td>';
+      }else{
       echo '<td class="assignData" align="right" style="vertical-align:middle">';
       	//mehdi======================ticket#1776
       	echo '<div id="LeftWork_'.$assignment->id.'" name="LeftWork_'.$assignment->id.'"  
       		  		dojoType="dijit.form.NumberTextBox" onchange="saveLeftWork('.$assignment->id.');"
   							constraints="{min:0,max:9999999.99}" class="dijitReset dijitInputInner dijitNumberTextBox "
       					value="'.Work::displayWork($assignment->leftWork).'" style="padding:5px;background:none;max-width:100%; box-sizing:border-box;">';
-      		echo $keyDownEventScript;
+      		//echo Work::displayWork($assignment->leftWork);
+      	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+      	echo $keyDownEventScript;
       	echo' </div>';   		
       echo '</td>';    }
+    }
     echo '</tr>';
   }
   echo '</table></td></tr>';

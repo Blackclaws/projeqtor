@@ -332,6 +332,16 @@ class CommandMain extends SqlElement {
     }
     return $resultClass;
   }
+  public function delete() {
+  	$idP=$this->idProject;
+  	$result =parent::delete();
+  	if ($idP) {
+  	  $prj=new Project($idP);
+  	  $prj->updateValidatedWork();
+  	}
+  	return $result;
+  }
+  
   public function simpleSave() {
     return $this->save();
   }

@@ -567,7 +567,6 @@ class MeetingMain extends SqlElement {
     $crit=array('refId'=>$this->id,'refType'=>'Meeting');
     $list=$ass->getSqlElementsFromCriteria($crit);
     foreach ($list as $ass) {
-    	debugLog($ass);
       $newAss = new Assignment();
       $newAss->idResource= $ass->idResource;
       $newAss->refId = $result->id;
