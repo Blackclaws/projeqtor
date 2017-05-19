@@ -34,7 +34,7 @@ require_once "../tool/projeqtor.php";
 $objectClass=RequestHandler::getClass('objectClass',true);
 $objectId=RequestHandler::getId('objectId',true);
 $confirm=(RequestHandler::getAlphanumeric('confirm',true)=='true')?true:false;
-$strId=RequestHandler::getId('strucutreId',false);
+$strId=RequestHandler::getId('structureId',false);
 
 $str=new ProductVersionStructure();
 $crit = array('idProductVersion'=>$objectId);

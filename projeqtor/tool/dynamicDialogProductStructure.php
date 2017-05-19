@@ -107,7 +107,7 @@ if ($way=='composition') {
               <label for="productStructureListId" ><?php echo i18n($listClass) ?>&nbsp;:&nbsp;</label>
             </td>
             <td>
-              <select size="14" id="productStructureListId" name="productStructureListId[]""
+              <select size="14" id="productStructureListId" name="productStructureListId[]"
                 <?php if (!$structureId) echo 'multiple';?> class="selectList" onchange="enableWidget('dialogProductStructureSubmit');"  ondblclick="saveProductStructure();" value="">
                   <?php htmlDrawOptionForReference('id'.$listClass, $listId, null, true);?>
               </select>
@@ -119,6 +119,7 @@ if ($way=='composition') {
                 title="<?php echo i18n('showDetail') . ' '. i18n('Product');?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
+                <?php if (!$canCreateProduct) $canCreateProduct=0;?>
                 showDetail('productStructureListId', <?php echo $canCreateProduct;?>, 'Product', true);
                 </script>
               </button>
@@ -130,6 +131,7 @@ if ($way=='composition') {
                 title="<?php echo i18n('showDetail'). ' '. i18n('Component')?>"
                 iconClass="iconView">
                 <script type="dojo/connect" event="onClick" args="evt">
+                <?php if (!$canCreateComponent) $canCreateComponent=0;?>
                 showDetail('productStructureListId', <?php echo $canCreateComponent;?>, 'Component', true);
                 </script>
               </button>
