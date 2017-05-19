@@ -410,6 +410,20 @@ function dispatchLeftWorkValueChange(rowId) {
   disableWidget("listShowPlannedWork");
   disableWidget("showId");
   
+  if (newLeft || newLeft==0) {
+    console.log(newLeft);
+    var url= '../tool/checkStatusChange.php';
+    url+='?newReal='+newReal;
+    url+='&newLeft='+newLeft;
+    url+='&idAssignment='+dojo.byId('idAssignment_' + rowId).value;
+    dojo.xhrGet({
+      url:url,
+      handleAs: "text",
+      load: function (data) {
+        dojo.byId('extra_'+rowId).innerHTML=data;
+      }
+    });
+  }
 }
 
 

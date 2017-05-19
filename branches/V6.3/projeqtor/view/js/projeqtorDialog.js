@@ -1491,16 +1491,16 @@ function editProductVersionStructure(way, productVersionStructureId) {
 }
 
 var upgradeProductVersionStructureId=null;
-function upgradeProductVersionStructure(strucutreId,withoutConfirm) {
+function upgradeProductVersionStructure(structureId,withoutConfirm) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
    return;
   }
-  upgradeProductVersionStructureId=strucutreId;
+  upgradeProductVersionStructureId=structureId;
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
   var params="&objectClass="+objectClass+"&objectId="+objectId;
-  if (strucutreId) params+="&strucutreId="+strucutreId;
+  if (structureId) params+="&structureId="+structureId;
   if (withoutConfirm) {
     loadContent("../tool/upgradeProductVersionStructure.php?confirm=true"+params, "resultDiv", null, true, 'ProductVersionStructure');
   } else {
