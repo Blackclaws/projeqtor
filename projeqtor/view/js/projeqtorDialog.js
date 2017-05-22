@@ -2255,6 +2255,7 @@ function expenseDetailTypeChange(expenseDetailId) {
 
 function expenseDetailRecalculate() {
   val=false;
+  if (! dojo.byId('expenseDetailValue01')) return;
   if (dijit.byId('expenseDetailValue01')) {
     val01=dijit.byId('expenseDetailValue01').get("value");
   } else {
