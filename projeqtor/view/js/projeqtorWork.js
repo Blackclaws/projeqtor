@@ -411,7 +411,6 @@ function dispatchLeftWorkValueChange(rowId) {
   disableWidget("showId");
   
   if (newLeft || newLeft==0) {
-    console.log(newLeft);
     var url= '../tool/checkStatusChange.php';
     url+='?newReal='+newReal;
     url+='&newLeft='+newLeft;
