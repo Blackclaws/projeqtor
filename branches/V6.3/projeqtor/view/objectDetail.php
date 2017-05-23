@@ -3809,34 +3809,36 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     }
     echo '</tr></table>';
     echo '</td>';
-    if(!$print && $outMode != 'pdf'){
-      echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
-    }else if($print || $outMode == 'pdf'){
-      echo '<td class="assignData" align="center">' . htmlEncode($assignment->rate) . '</td>';
-    }
-    if ($workVisible) {  
-      if(!$print && $outMode != 'pdf'){
-        echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
-        echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
-      }
-      if($print || $outMode == 'pdf'){
-        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
-        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
-        echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->leftWork)) . '</td>';
-      }else{
-      echo '<td class="assignData" align="right" style="vertical-align:middle">';
-      	//mehdi======================ticket#1776
-      	echo '<div id="LeftWork_'.$assignment->id.'" name="LeftWork_'.$assignment->id.'"  
-      		  		dojoType="dijit.form.NumberTextBox" onchange="saveLeftWork('.$assignment->id.');"
-  							constraints="{min:0,max:9999999.99}" class="dijitReset dijitInputInner dijitNumberTextBox "
-      					value="'.Work::displayWork($assignment->leftWork).'" style="padding:5px;background:none;max-width:100%; box-sizing:border-box;">';
-      		//echo Work::displayWork($assignment->leftWork);
-      	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
-      	echo $keyDownEventScript;
-      	echo' </div>';   		
-      echo '</td>';    }
-    }
-    echo '</tr>';
+    echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
+    if ($workVisible) {
+    	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+      // echo '<td class="assignData" align="right" style="vertical-align:middle">'
+      //mehdi======================ticket#1776
+    	echo '<td class="assignData" align="right" style="vertical-align:middle;">';   	
+    			echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
+      style="display: none; 
+  										position:relative;top:2px;left:5px; height:16px;float:left;"/>';
+    			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
+    						class="dijitReset dijitInputInner dijitNumberTextBox"
+      					value="'.Work::displayWork($assignment->assignedWork).'"
+                style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;" 
+      					onchange="saveLeftWork('.$assignment->id.',\'AssignedWork\');">';
+    			
+    			echo '</div>';
+    	echo '</td>';
+   
+    	echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+     
+      echo '<td class="assignData" align="right" style="vertical-align:middle; ">' ;    
+       		echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
+      	 echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
+        				class="dijitReset dijitInputInner dijitNumberTextBox"
+        				value="'.Work::displayWork($assignment->leftWork).'"
+                style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;" onchange="saveLeftWork('.$assignment->id.',\'LeftWork\');">';
+      	 echo $keyDownEventScript;
+      	 echo '</div>';
+         echo '</td>'; }
+     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
@@ -4344,26 +4346,26 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
     //gautier #1716
     $checkImg='savedOk.png';
-    echo '<td class="assignData" style="position:relative">' ;
+    echo '<td class="assignData" >' ;
     if (! $print or $tcr->result) {
       if (! $print) {
-        echo '<img  id="idImageResult'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; position:absolute;top:2px;right:5px; height:16px;"/>';
         echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_'.$tcr->id.'" name="tcrResult_'.$tcr->id.'"
-                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Result\');">';
+                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData('.$tcr->id.',\'Result\');">';
         echo $tcr->result;
         echo '</textarea>';
+        echo '<img  id="idImageResult'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
       }else {
         echo htmlEncode($tcr->result);
       }
     }
     echo '</td>';
     
-    echo '<td class="assignData" style="position:relative">' ;   
+    echo '<td class="assignData" >' ;   
      if (! $print or $tcr->comment) {
       if (! $print) {
-        echo '<img  id="idImageComment'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; position:absolute;top:2px;right:5px; height:16px;"/>';
+        echo '<img  id="idImageComment'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
         echo '<textarea dojoType="dijit.form.Textarea" id="tcrComment_'.$tcr->id.'" name="tcrComment_'.$tcr->id.'"
-                style="float:right;width: 150px;min-height: 25px;font-size: 90%;" maxlength="4000" class="input" onchange="saveTcrData('.$tcr->id.',\'Comment\');">';
+                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData('.$tcr->id.',\'Comment\');">';
         echo $tcr->comment;
         echo '</textarea>';
       }else {

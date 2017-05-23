@@ -1142,15 +1142,16 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer->Subject = $title; //
                                // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
     if ($headers) {
-    $phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+    $phpmailer->ContentType = 'text/calendar';
+    //$phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
     $heads = explode ( "\r\n", $headers );
     //PHPMailer
-    $phpmailer->addCustomHeader("Content-class: urn:content-classes:calendarmessage");
     $phpmailer->Body = $message;
-    $phpmailer->ContentType = 'text/calendar';
-  }else{
-  $phpmailer->Body = $message; //
   }
+// Don't need to have this else if we give $message to body .
+//   else{
+//     $phpmailer->Body = $message; //
+//   }
   if ($references) {
     $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
   } 
