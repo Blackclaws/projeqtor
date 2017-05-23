@@ -4056,15 +4056,17 @@ function saveTcrData(id,textZone) {
 }
 
 //Mehdi
-function saveLeftWork(id) {
-	var value=dijit.byId("LeftWork_"+id).get("value");
-	var url = '../tool/saveLeftWork.php?idAssign='+id +'&valueTextZone='+value;	  
+function saveLeftWork(id, zone) {
+	var value=dijit.byId("ass"+zone+"_"+id).get("value");
+	var url = '../tool/saveLeftWork.php?idAssign='+id +'&zone='+zone +'&valueTextZone='+value;
 	dojo.xhrPut({
 	  url : url,
 	  form : 'objectForm',
 	  handleAs : "text",
 	  load : function(data) {
-		  	
+		addMessage(i18n("col"+zone)+" "+i18n("resultSave"));
+	    document.getElementById('idImage'+zone+id).style.display="block";
+	    setTimeout("dojo.byId('idImage"+zone+id+"').style.display='none';", 1000); 
 	  }
 	});
 }
