@@ -463,6 +463,25 @@ function changeBrowserLocaleForDates(newFormat) {
     }
   });
 }
+//gautier
+function changeBrowserLocaleTimeFormat(newFormat) {
+  saveUserParameter('browserLocaleTimeFormat', newFormat);
+  dojo.xhrPost({
+    url : "../tool/saveDataToSession.php?idData=browserLocaleTimeFormat&value="
+        + newFormat,
+    handleAs : "text",
+    load : function(data, args) {
+      showWait();
+      noDisconnect = true;
+      quitConfirmed = true;
+      dojo.byId("directAccessPage").value = "parameter.php";
+      dojo.byId("menuActualStatus").value = menuActualStatus;
+      dojo.byId("p1name").value = "type";
+      dojo.byId("p1value").value = "userParameter";
+      dojo.byId("directAccessForm").submit();
+    }
+  });
+}
 
 function requestPasswordChange() {
   showWait();
