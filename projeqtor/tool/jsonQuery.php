@@ -787,7 +787,7 @@
                   $radius=round($size/2,0);
                   $thumbUrl=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$numField],9),false, ($outMode=='pdf')?true:false);
                   if (substr($thumbUrl,0,6)=='letter') {
-                    $disp.=formatLetterThumb($line['id'.$nameClass],$size).'&nbsp;'.$val;
+                    $disp.=formatLetterThumb($line['id'.$nameClass],$size,null,null,null).'&nbsp;'.$val;
                   } else {
 	                  $disp='<div style="text-align:left;">';
 	                  $disp.='<img style="border-radius:'.$radius.'px;height:'.$size.'px;float:left" src="'.$thumbUrl.'"';
