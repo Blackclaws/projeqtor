@@ -38,9 +38,24 @@ $table=array();
 if (! $user->isResource) {
   $table[0]=' ';
 }
-
 $table = getListForSpecificRights($specific);
 
+$selectedProject=getSessionValue('project');
+if ($selectedProject and $selectedProject!='*') {
+	$restrictTable=array();
+	$prj=new Project( $selectedProject , true);
+	$lstTopPrj=$prj->getTopProjectList(true);
+	$in=transformValueListIntoInClause($lstTopPrj);
+	$crit='idProject in ' . $in;
+	$aff=new Affectation();
+	$lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
+	foreach ($lstAff as $id=>$aff) {
+		if (array_key_exists($aff->idResource,$table)) {
+			$restrictTable[$aff->idResource]=$table[$aff->idResource];
+		}
+	}
+	$table=$restrictTable;
+}
 foreach($table as $key => $val) {
   echo '<option value="' . $key . '"';
   if ( $key==$user->id and ! isset($specificDoNotInitialize)) { echo ' SELECTED '; }
