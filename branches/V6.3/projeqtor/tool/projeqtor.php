@@ -2946,18 +2946,19 @@ function getListForSpecificRights($specific){
     $user=getSessionUser();
   }
   if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'NO')) {
-    $table[$user->id]=' ';
+    //$table[$user->id]=' ';
+    $table=array($user->id=>SqlList::getNameFromId('Affectable', $user->id));
   } else if ($user->allSpecificRightsForProfilesOneOnlyValue($specific,'ALL')) {
     $table=SqlList::getList('Resource');
   } else if (($user->allSpecificRightsForProfilesOneOnlyValue($specific,'OWN')
       or $user->allSpecificRightsForProfilesOneOnlyValue($specific,'RES')) and $user->isResource ) {
-    $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
+    $table=array($user->id=>SqlList::getNameFromId('Affectable', $user->id));
   } else  {
     $table=array();
     $fullTable=SqlList::getList('Resource');
     foreach ($user->getAllSpecificRightsForProfiles($specific) as $right=>$profList) {
       if ( ($right=='OWN' or $right=='RES') and $user->isResource) {
-        $table[$user->id]=SqlList::getNameFromId('Resource', $user->id);
+        $table[$user->id]=SqlList::getNameFromId('Affectable', $user->id);
       } else if ($right=='ALL' and in_array($user->idProfile, $profList)) {
         $table=$fullTable;
         break;
@@ -2968,7 +2969,6 @@ function getListForSpecificRights($specific){
             $inClause.=','.$prj;
           }
         }
-  
         $inClause.=')';
         $crit='idProject in ' . $inClause;
         $aff=new Affectation();

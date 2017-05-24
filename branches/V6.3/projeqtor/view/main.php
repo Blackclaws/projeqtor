@@ -241,6 +241,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var paramConfirmQuit="<?php echo Parameter::getUserParameter("paramConfirmQuit")?>";
     var browserLocaleDateFormat="<?php echo Parameter::getUserParameter('browserLocaleDateFormat');?>";
     var browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
+    var browserLocaleTimeFormat="<?php echo Parameter::getUserParameter('browserLocaleTimeFormat');?>";
     <?php $fmt=new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );?>
     var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
     var aesKeyLength=<?php echo Parameter::getGlobalParameter('aesKeyLength');?>;

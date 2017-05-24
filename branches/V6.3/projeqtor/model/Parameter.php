@@ -60,6 +60,11 @@ class Parameter extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  changeBrowserLocaleForDates(this.value);';
       $colScript .= '</script>';
+      //gautier #2270
+    } else if ($colName=="browserLocaleTimeFormat") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  changeBrowserLocaleTimeFormat(this.value);';
+      $colScript .= '</script>';
     } else if ($colName=="paramConfirmQuit") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  paramConfirmQuit=this.value;';
@@ -228,6 +233,11 @@ class Parameter extends SqlElement {
       			'MM/DD/YYYY'=>'MM/DD/YYYY',
       			'YYYY-MM-DD'=>'YYYY-MM-DD');
       	break;
+      //gautier #2270
+      case 'browserLocaleTimeFormat':
+        $list=array('h:m a'=>'AM/PM',
+      	  'H:m:s'=>'24h');
+        break;
       case 'defaultProject':
         if (sessionUserExists()) {
           $user=getSessionUser();
@@ -517,6 +527,7 @@ class Parameter extends SqlElement {
                            "theme"=>"list", 
                            "lang"=>"list",
                            "browserLocaleDateFormat"=>"list",
+                           "browserLocaleTimeFormat"=>"list",
                            'paramIconSize'=>'list',
                            "paramShowThumb"=>"list",
                            "paramShowThumbList"=>"list",
