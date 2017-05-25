@@ -61,3 +61,6 @@ INSERT INTO `${prefix}importable` ( `name`,`idle`) VALUES
 
 INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES 
 (29,'DocumentDirectory', '0');
+
+INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES 
+(19,'Opportunity', '0', '900');
