@@ -3035,6 +3035,9 @@ abstract class SqlElement {
 				    }
 				  }
 				}
+				if ($colName=='idProduct' and property_exists($this, 'idBusinessFeature')) {
+				  $colScript.="refreshList('idBusinessFeature','idProduct', this.value);";
+				}
 				if ($colName=='idComponent' and $versionExists) {
 				  foreach ($arrVersComp as $vers) {
 				    if (property_exists($this,$vers)) {

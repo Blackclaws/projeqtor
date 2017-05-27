@@ -447,6 +447,9 @@ class Parameter extends SqlElement {
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
       case 'limitPlanningActivity' :
+      //ADD qCazelles - Business features
+      case 'displayBusinessFeature':
+      //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
@@ -645,9 +648,6 @@ class Parameter extends SqlElement {
       	                       'preserveUploadedFileName'=>'list',
       	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
-      	                     'sectionVersionNameFormat'=>'section',
-      	                       'versionNameAutoformat'=>'list',
-      	                       'versionNameAutoformatSeparator'=>'text',
       	                   'newColumn'=>'newColumn',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',
@@ -664,8 +664,7 @@ class Parameter extends SqlElement {
       	                       "editor"=>'list',
       	                       "scaytAutoStartup"=>'list',
       	                       'allowTypeRestrictionOnProject'=>'list',
-      	                       'showTendersOnVersions'=>'list',
-      	                       "directAccessToComponentList"=>'list',
+      	                       
       	                       'limitPlanningActivity'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
@@ -677,6 +676,16 @@ class Parameter extends SqlElement {
       	                       'startPage'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                       'displayHistory'=>'list',
+      	                     //ADD by qCazelles - Business features
+      	                     'sectionProductAndComponent'=>'section',
+      	                        'displayBusinessFeature'=>'list',
+      	                     	//END ADD qCazelles  
+                              	'showTendersOnVersions'=>'list',
+                              	"directAccessToComponentList"=>'list',
+                            	//'sectionVersionNameFormat'=>'section',
+                              	'versionNameAutoformat'=>'list',
+                              	'versionNameAutoformatSeparator'=>'text',
+      	
       	                     'sectionFiles'=>'section',
       	                       'paramAttachmentDirectory'=>'text',
       	                       'paramAttachmentMaxSize'=>'longnumber',
