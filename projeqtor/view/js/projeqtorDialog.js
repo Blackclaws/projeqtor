@@ -1460,6 +1460,41 @@ function removeProductStructure(ProductStructureId, refType, refId, refTypeName)
   showConfirm(msg, actionOK);
 }
 
+//ADD by qCazelles - Business features
+//=============================================================================
+//= BusinessFeatures
+//=============================================================================
+function addBusinessFeature() {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var param="&objectClass="+objectClass+"&objectId="+objectId;
+	loadDialog('dialogBusinessFeature', null, true, param, false);
+}
+
+function saveBusinessFeature() {
+	if (dojo.byId("businessFeatureName").value == "") return;
+	loadContent("../tool/saveBusinessFeature.php", "resultDiv", "businessFeatureForm", true, 'BusinessFeature');
+	dijit.byId('dialogBusinessFeature').hide();	
+}
+
+function removeBusinessFeature(businessFeatureId, refType) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	actionOK=function() {
+		loadContent("../tool/removeBusinessFeature.php?businessFeatureId="+businessFeatureId, "resultDiv", null, true, 'BusinessFeature');
+	};
+	msg=i18n('confirmDeleteBusinessFeature', new Array(refType, businessFeatureId));
+	showConfirm(msg, actionOK);
+}
+//END ADD qCazelles
+
+
 //=============================================================================
 //= Product Version Composition
 //=============================================================================

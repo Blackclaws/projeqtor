@@ -43,6 +43,8 @@ class RequirementMain extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
+  // Added by babynus
+  public $idBusinessFeature;
   public $idUrgency;
   public $initialDueDate;
   public $actualDueDate;

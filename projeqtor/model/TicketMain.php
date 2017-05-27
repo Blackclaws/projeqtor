@@ -44,6 +44,9 @@ class TicketMain extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
+  //ADD by qCazelles - Business features
+  public $idBusinessFeature;
+  //END ADD qCazelles
   public $idTicket;
   public $idContext1;
   public $idContext2;
@@ -282,6 +285,11 @@ class TicketMain extends SqlElement {
       $colScript .= '      }';
       $colScript .= '    });';
       $colScript .= '  };';
+      
+      //ADD by qCazelles - Business features
+      if ($colName=="idProduct") $colScript .= 'dijit.byId("idBusinessfeature").set("value", "");refreshList("idBusinessfeature", "idProduct", dijit.byId("idProduct").get("value"));';
+      //END ADD
+      
       $colScript .= '</script>';
     }
     return $colScript;

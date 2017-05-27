@@ -64,3 +64,19 @@ INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES
 
 INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES 
 (19,'Opportunity', '0', '900');
+
+
+--ADD by qCazelles - Business Features
+CREATE TABLE `${prefix}businessfeature` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `idProduct` int(12) NOT NULL,
+  `creationDate` date NOT NULL,
+  `idUser` int(12) NOT NULL,
+  `idle` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}ticket` ADD COLUMN `idBusinessFeature` int(12) DEFAULT NULL;
+--END ADD qCazelles
+ALTER TABLE `${prefix}requirement` ADD COLUMN `idBusinessFeature` int(12) DEFAULT NULL;

@@ -647,6 +647,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
     } else if (substr($col, 0, 5) == '_sec_' and (! $comboDetail or $col!='_sec_Link') ) { // if field is _section, draw a new section bar column
+      
+      //ADD by qCazelles - Bsuiness features
+      if ($col=='_sec_ProductBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') continue;
+      //END ADD qCazelles
+    	
       $prevSection=$section;
       $currentCol+=1;
       if (strlen($col) > 8) {
@@ -787,7 +792,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawLinksFromObject($val, $obj, $linkClass);
     } else if ($col == '_productComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of Product (structure)
       drawStructureFromObject($obj, false,'composition', 'Product');
-    } else if ($col == '_componentComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of component (structure)
+    }
+    //ADD by qCazelles - Business features
+    else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
+    	drawBusinessFeatures($obj);
+    //END ADD
+    
+  	} else if ($col == '_componentComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of component (structure)
       drawStructureFromObject($obj, false,'composition', 'Component');
     } else if ($col == '_componentStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Structure of component (structure)
       drawStructureFromObject($obj, false,'structure', 'Component');
@@ -903,6 +914,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if (in_array($col,$extraHiddenFields)) {
         $specificStyle.=' display:none';
         if ($print) $hide=true;
+      }
+      if ($col=='idBusinessFeature' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') {
+        $hide=true;
       }
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
         $hide=true;
@@ -1733,6 +1747,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $critVal=SqlList::getNameFromId('Checklistable', $obj->idChecklistable, false);
           }
         }
+        //ADD by qCazelles - Business features
+        //if (get_class($obj) == 'Ticket') { // Commented by babynus (not to be restricted to tickets)
+	        if ($col=='idBusinessFeature') {
+	        	$critFld='idProduct';
+	        	$critVal=$obj->idProduct;
+	        }
+        //}
+        //END ADD qCazelles
         if (SqlElement::is_a($obj,'PlanningElement')) {
           $planningModeName='id'.$obj->refType.'PlanningMode';    
           if ($col==$planningModeName and !$obj->id and $objType) {      
@@ -3455,6 +3477,64 @@ function drawStructureFromObject($obj, $refresh=false,$way,$item) {
     echo '<input id="ProductStructureSectionCount" type="hidden" value="'.count($list).'" />';
   }
 }
+
+
+//ADD by qCazelles - Business features
+function drawBusinessFeatures($obj, $refresh=false) {
+	$crit=array();
+	$crit['idProduct']=$obj->id;
+	$pcs=new BusinessFeature();
+	$list=$pcs->getSqlElementsFromCriteria($crit);
+	global $cr, $print, $user, $comboDetail;
+	if ($comboDetail) {
+		return;
+	}
+	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+	if (!$refresh) echo '<tr><td colspan="2">';
+	echo '<table style="width:100%;">';
+	echo '<tr>';
+	if (!$print) {
+		echo '<td class="linkHeader" style="width:5%">';
+		if ($obj->id != null and !$print and $canUpdate) {
+			echo '<a onClick="addBusinessFeature();" title="' . i18n('addBusinessFeature') .  '" > '.formatSmallButton('Add').'</a>';
+		}
+		echo '</td>';
+	}
+	echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n('colId') . '</td>';
+	echo '<td class="linkHeader" style="width:80%">' . i18n('BusinessFeature') . '</td>';
+	echo '</tr>';
+	
+	foreach ($list as $bf) {
+		$userId=$bf->idUser;
+		$userName=SqlList::getNameFromId('User', $userId);
+		$creationDate=$bf->creationDate;
+		echo '<tr>';
+		if (!$print) {
+			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+			if ($canUpdate) {
+				echo '  <a onClick="removeBusinessFeature(' . "'" . htmlEncode($bf->id) . "','" . get_class($bf) . "'" . ');" '
+      		.'title="' . i18n('removeBusinessFeature') . '" > '.formatSmallButton('Remove').'</a>';
+			}
+			echo '</td>';
+		}
+		echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr>';
+		//echo '<td>IMG</td><td style="vertical-align:top">&nbsp;'.'#' . $bf->id.'</td></tr></table>';
+		echo '<td style="vertical-align:top">&nbsp;'.'#' . $bf->id.'</td></tr></table>';
+		echo '</td>';
+		echo '<td class="linkData" style="cursor: pointer;">';
+		echo htmlEncode($bf->name);
+		echo formatUserThumb($userId, $userName, 'Creator');
+		echo formatDateThumb($creationDate, null);
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+	if (!$refresh) echo '</td></tr>';
+	if (! $print) {
+		echo '<input id="BusinessFeatureSectionCount" type="hidden" value="'.count($list).'" />';
+	}
+}
+//END ADD qCazelles
 
 function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
   $crit=array();
