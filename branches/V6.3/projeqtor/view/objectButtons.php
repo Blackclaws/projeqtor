@@ -85,7 +85,19 @@
             <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
           </td>
           <td class="title" style="width:10%;">
-            &nbsp;<?php echo i18n($_REQUEST['objectClass']);?><span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?>&nbsp;</span>
+            &nbsp;<?php echo i18n($_REQUEST['objectClass']);
+//ADD BY Quentin Boudier - 2017-04-26 'copylink in title of object detail    '
+            $ref=$obj->getReferenceUrl();
+            echo '<span id="buttonDivObjectId">';
+            echo '<span class="roundedButton">';
+            echo '  <a href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n("rightClickToCopy") . '" style="cursor: pointer; color: white;" onmouseover=this.style.color="black" onmouseout=this.style.color="white">';
+            echo ($obj->id)?'&nbsp;#'.$obj->id:'';'&nbsp';
+ 			      echo ' </a>';
+           	echo '</span>';
+          	echo '<input readOnly type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 47px; left: 157px; border: 0;background: transparent;width:300px;" value="' . $ref . '" />';
+          	echo '</span>';
+// END ADD BY Quentin Boudier - 2017-04-26 'copylink in tilte of object detail	'
+           	?>
           </td>
           <td class="title" style="height:35px;">
             <div style="width:100%;height:100%;position:relative;">
