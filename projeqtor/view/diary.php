@@ -103,8 +103,8 @@
   	$endDay=$currentDay;
   	$inScopeDay=true;
   }
-  
-  echo '<TABLE style="width:100%;height:'.$totalHeight.'px">';
+
+  echo '<TABLE style="width:100%;height:'.($totalHeight).'px">';
   
   if ($period!='day') {
     echo '<tr height="10px"><td></td>';
@@ -113,7 +113,7 @@
     }
   } else {
   	echo '<tr height="0px"><td></td>';
-  	$trHeight=$totalHeight+10;
+  	$trHeight=$totalHeight;
   }
   $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource,$showDone,$showIdle);
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
@@ -160,7 +160,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	
 	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';
 	echo '<div style="overflow-y: auto; overflow-x:hidden; height:'.$dayHeight.'px;">';
-	echo '<table style="width:100%;background-color:white;">';
+	echo '<table style="width:'.(($period=='day')?'99%':'97%').';background-color:white;">';
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
 		$cpt++;
@@ -174,14 +174,14 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		if ($item['work'] and $item['real']) { $hintHtml.=i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
 		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('planned').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
-		echo '<td style="padding: 3px 3px 0px 3px; width:100%;position:relative;max-width:250px;">';
+		echo '<td style="padding: 3px 3px 3px 3px;margin-right:20px;width:100%;position:relative;max-width:250px;">';
 		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;border-style:solid;border-width:0px 0px 0px 5px;border-color:'.$item['color'].'">';
-		echo '<table style="width:100%">';		
-		echo '<a style="position:absolute;left:15px;width:18px;top:3px;height:17px;z-index:20;">'.formatIcon($item['class'], 16,null,false).'</a>';
+		echo '<table style="width:100%"><tr>';		
+		echo '<td><a style="position:absolute;left:15px;width:18px;top:3px;height:17px;z-index:20;">'.formatIcon($item['class'], 16,null,false).'</a></td>';
 		echo '<td style="color:#555555">';
 		//Modification ici , typename ne marche pas...
 		
-		echo '<div style="cursor:pointer;height:85px;word-wrap:break-word;margin-left:27px;" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
+		echo '<div style="cursor:pointer;height:100%;word-wrap:break-word;margin-left:27px;" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
 		echo '<div style="float:right;width:22px;height:22px;position:relative;margin-right:10px;" id="userThumb'.$item['id'].'">'.formatUserThumb($item['responsibleId'],$item['responsibleName'], "", 22, 'left', false).'</div>';
 		if ($item['real']) {
 		  echo $item['name'];
@@ -189,16 +189,16 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 			echo '<i>'.$item['name'].'</i>';
 		}
 		if ($period=='week' or $period=='day') {
-		  echo '<table style="vertical-align:top;height:40px;display:block;">';
+		  echo '<table style="vertical-align:top;display:block;">';
 		  if ($item['projectName']) echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdProject').'&nbsp;:&nbsp;</td><td>'.$item['projectName'].'</td></tr>';
 		  if ($item['typeName']) echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colType').'&nbsp;:&nbsp;</td><td>'.$item['typeName'].'</td></tr>';
 		  if ($item['priorityName'])echo '<tr><td style="text-align:right;font-weight:bold;vertical-align:top;">'.i18n('colIdPriority').'&nbsp;:&nbsp;</td><td>'.$item['priorityName'].'</td></tr>';
 		  echo '</table>';
 		}
 		if ($period=='day') {
-		  echo '<div style="padding:5px;max-height:200px;width:100%;border:1px solid #A0A0A0;margin-top:5px;margin-bottom:5px;">'.$item['description'].'</div>';
+		  echo '<div style="padding:5px;width:98%;border:1px solid #A0A0A0;margin-top:5px;margin-bottom:5px;">'.$item['description'].'</div>';
 		}
-		echo '<div style="width:100%;height:24px;float:left;position:relative;left:-18px;padding-top:2px">';
+		echo '<div style="width:100%;float:left;position:relative;left:-18px;padding-top:2px">';
 		echo '   <div style="float:right;min-width:22px;height:22px;position:relative;margin-top:5px;margin-right:-13px;">#'.$item['id'].'</div>';
 		echo '   <div style="float:left;width:22px;height:22px;position:relative;top:1px;">'.formatColorThumb("idPriority",$item['priorityId'], 22, 'left', i18n('colIdPriority').' : '.$item['priorityName']).'</div>';
 		echo '   <div style="max-width:100px;position:relative;margin-left:47px;">'.colorNameFormatter($item['statusName'].'#split#'.SqlList::getFieldFromId('Status', $item['statusId'], 'color')).'</div>';
@@ -207,8 +207,10 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		echo '</td></tr></table>';
 		echo '</div>';
 		// To display a tooltip in replacement of Hint
-		echo '<div dojoType="dijit.Tooltip" connectId="item_'.$cpt.'" position="above">';
-		echo $hintHtml;
+		if ($period!='day') {
+		  echo '<div dojoType="dijit.Tooltip" connectId="item_'.$cpt.'" position="above">';
+		}
+		//echo $hintHtml;
 		echo '</div>';
 		echo '</td>';
 		echo '</tr>';
