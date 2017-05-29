@@ -73,6 +73,18 @@ $objTeam=get_class($obj);
                  ?>
                </select>
              </td>
+           <?php if($class!="Project"){?>
+               <td style="vertical-align: top">
+                 <button id="affectationDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                   title="<?php echo i18n('showDetail')?>"
+                   iconClass="iconView">
+                   <script type="dojo/connect" event="onClick" args="evt">
+                    var canCreate=("<?php echo securityGetAccessRightYesNo('menuProject','create');?>"=="YES")?1:0;
+                    showDetail('affectationProject', canCreate , 'Project', false);
+                   </script>
+                 </button>
+               </td>  
+            <?php };?>  
            </tr>
            <tr>
              <td class="dialogLabel"  >
@@ -87,16 +99,19 @@ $objTeam=get_class($obj);
                 required="required" <?php echo ($class!="Project")?"readonly=readonly":"";?>>
                  <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null, false):htmlDrawOptionForReference('idResource', $idResource, null, false);?>
                </select> 
-             </td><td style="vertical-align: top">
-               <button id="affectationDetailButton" dojoType="dijit.form.Button" showlabel="false"
-                 title="<?php echo i18n('showDetail')?>"
-                 iconClass="iconView">
-                 <script type="dojo/connect" event="onClick" args="evt">
+             </td>
+             <?php if($class=="Project"){?>
+               <td style="vertical-align: top">
+                 <button id="affectationDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                   title="<?php echo i18n('showDetail')?>"
+                   iconClass="iconView">
+                   <script type="dojo/connect" event="onClick" args="evt">
                     var canCreate=("<?php echo securityGetAccessRightYesNo('menuResource','create');?>"=="YES")?1:0;
                     showDetail('affectationResource', canCreate , 'Resource', false);
-                 </script>
-               </button>
-               </td>             
+                   </script>
+                 </button>
+               </td>  
+             <?php };?>           
            </tr>
            <tr>
              <td class="dialogLabel" >

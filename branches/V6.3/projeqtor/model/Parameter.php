@@ -224,7 +224,7 @@ class Parameter extends SqlElement {
         $list=self::getLangList();
         //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;
-      //gautier ticket timezone
+      //gautier 
       case 'paramDefaultTimezone':
         $list=self::getTimezoneList();
         break;
@@ -236,7 +236,7 @@ class Parameter extends SqlElement {
       //gautier #2270
       case 'browserLocaleTimeFormat':
         $list=array('h:m a'=>'AM/PM',
-      	  'H:m:s'=>'24h');
+      	  'H:mm'=>'24h');
         break;
       case 'defaultProject':
         if (sessionUserExists()) {

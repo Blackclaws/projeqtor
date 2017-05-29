@@ -145,7 +145,7 @@ $mode = RequestHandler::getValue('mode',false,true);
              </td>
              <td>
                <div id="assignmentAssignedWork" name="assignmentAssignedWork" 
-                 value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add"){ 
+                 value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
                                   echo $delay;
                               } else if ($mode=="edit"){
                                   echo $assignmentObj->assignedWork;
@@ -197,7 +197,7 @@ $mode = RequestHandler::getValue('mode',false,true);
              </td>
              <td>
                <div id="assignmentLeftWork" name="assignmentLeftWork"                  
-                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                 value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
                                   echo $delay;
                               } else if($mode=="edit"){
                                   echo $assignmentObj->leftWork;
@@ -230,7 +230,7 @@ $mode = RequestHandler::getValue('mode',false,true);
              </td>
              <td>
                <div id="assignmentPlannedWork" name="assignmentPlannedWork"                  
-                 value="<?php if($refType=='Meeting' || $refType=='PeriodicMeeting'){ 
+                 value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
                                   echo $delay;
                               } else { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;

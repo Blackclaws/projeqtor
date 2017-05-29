@@ -745,6 +745,7 @@ function loadContent(page, destination, formName, isResultMessage,
               dojo.byId('objectId').value = directAccess;
               showWait();
               loadContent("objectDetail.php", "detailDiv", 'listForm');
+              loadContent("objectStream.php", "detailRightDiv",'listForm');
               showWait();
               hideList();
               setTimeout('selectRowById("objectGrid", '
@@ -1071,6 +1072,7 @@ function finalizeMessageDisplay(destination, validationType) {
     if (validationType) {
       if (validationType == 'note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Note', 'listForm');
+        loadContent("objectStream.php", "detailRightDiv", "listForm");
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);
@@ -1303,6 +1305,7 @@ function finalizeMessageDisplay(destination, validationType) {
           loadContent("objectDetail.php?", "detailDiv", 'listForm');
         } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv",
+          loadContent("objectStream.php", "detailRightDiv", "listForm");
               'listForm');
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value + '_history')) {

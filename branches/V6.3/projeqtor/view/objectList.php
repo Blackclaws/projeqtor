@@ -442,7 +442,8 @@ if ($displayWidthList<1400) {
                     if (switchedMode) {
                       setTimeout("hideList(null,true);", 1);
                     }
-                    loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+                    loadContent("objectDetail.php", "detailDiv", "listForm");
+                    loadContent("objectStream.php", "detailRightDiv", "listForm");
                   } else { 
                     showError(i18n("errorObjectId"));
 	                }
@@ -529,6 +530,7 @@ if ($displayWidthList<1400) {
       formChangeInProgress=false; 
       listClick();
       loadContent("objectDetail.php", "detailDiv", 'listForm');
+      loadContent("objectStream.php", "detailRightDiv", 'listForm');
    	}
     actionNo = function () {
 	    //unselectAllRows("objectGrid");
