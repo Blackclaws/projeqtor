@@ -34,8 +34,8 @@
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Diary" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" class="listTitle" splitter="false" style="height:58px;">
-  <table width="100%" height="27px" class="listTitle" >
-    <tr height="17px">
+  <table width="100%" height="36px" class="listTitle" style="max-height:36px;" >
+    <tr height="17px" style="max-height:17px;">
       <td width="50px" align="center">
         <?php echo formatIcon('Diary',32,null,true);?>
       </td>
@@ -48,7 +48,7 @@
 		   $month=date('m');
 		   $week=date('W');
 		   $day=date('Y-m-d');
-		   echo '<div style="font-size:20px" id="diaryCaption">';
+		   echo '<div style="font-size:20px; max-height:32px;" id="diaryCaption">';
 		   if ($period=='month') {
 		     echo i18n(date("F",mktime(0,0,0,$month,1,$year))).' '.$year;
 		   } else if ($period=='week') {
@@ -127,7 +127,7 @@
        </td></tr></table>
 		   </form> </td>
    	</tr>
-   	<tr height="18px" vertical-align="middle">
+   	<tr height="18px" vertical-align="middle" style="max-height:18px;">
    	  <td colspan="5">
    	    <table width="100%"><tr><td width="50%;">
    	    <div class="buttonDiary" onClick="diaryPrevious();"><img src="../view/css/images/left.png" /></div>
@@ -140,7 +140,7 @@
    </table>
   </div>
   <?php $destinationHeight=$_REQUEST['destinationHeight']-58;?>
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:<?php echo $destinationHeight;?>px">
+  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-x:auto;height:<?php echo $destinationHeight;?>px">
    <?php include 'diary.php'; ?>
   </div>
 </div>

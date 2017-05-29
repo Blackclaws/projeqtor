@@ -51,9 +51,10 @@ class Catalog extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
-    <th field="description" width="30%" >${description}</th>
-    <th field="unitCost" width="20%" formatter="costFormatter">${unitPrice}</th>
-    <th field="nameMeasureUnit" width="20%" formatter="nameFormatter">${idMeasureUnit}</th>
+    <th field="description" width="40%" >${description}</th>
+    <th field="unitCost" width="10%" formatter="costFormatter">${unitPrice}</th>
+    <th field="nameMeasureUnit" width="10%" formatter="nameFormatter">${idMeasureUnit}</th>
+  	<th field="quantity" width="10%" formatter="decimalFormatter">${quantity}</th>
     ';
   
   //required and hidden attribute

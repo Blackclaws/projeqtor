@@ -43,21 +43,38 @@
   		$topDetailDivHeight=$screenHeight-300;
   	}
   	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
+  	$rightWidth=Parameter::getUserParameter('contentPaneRightDetailDivWitdh'.$objectClass).'px"';
+  	if (!$rightWidth) $rightWidth="20%";
   }
 ?>
 <div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
-  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>">
-   <script type="dojo/connect" event="resize" args="evt">
+  <div dojoType="dijit.layout.ContentPane" region="center" splitter="true">
+    <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
+		  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>">
+		   <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
              dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
                   +"&idData=contentPaneTopDetailDivHeight<?php echo $objectClass;?>"
                   +"&value="+dojo.byId("listDiv").offsetHeight
              });;
-    </script>
-   <?php include 'objectList.php'?>
+       </script>
+		   <?php include 'objectList.php'?>
+		  </div>
+		  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
+		   <?php $noselect=true; include 'objectDetail.php'; ?>
+		  </div>
+    </div>
   </div>
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
-   <?php $noselect=true; include 'objectDetail.php'; ?>
+  <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>px">
+    <script type="dojo/connect" event="resize" args="evt">
+             dojo.xhrPost({
+               url : "../tool/saveDataToSession.php?saveUserParam=true"
+                  +"&idData=contentPaneRightDetailDivWitdh<?php echo $objectClass;?>"
+                  +"&value="+dojo.byId("detailRightDiv").offsetWidth
+             });;
+       </script>
+      <?php include 'objectStream.php'?>
   </div>
+  
 </div>
