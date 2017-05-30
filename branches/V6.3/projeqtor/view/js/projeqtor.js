@@ -1304,9 +1304,8 @@ function finalizeMessageDisplay(destination, validationType) {
         if (lastOperation.value == "copy") {
           loadContent("objectDetail.php?", "detailDiv", 'listForm');
         } else {
-          loadContent("objectDetail.php?refresh=true", "detailFormDiv",
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv");
           loadContent("objectStream.php", "detailRightDiv", "listForm");
-              'listForm');
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value + '_history')) {
             loadContent("objectDetail.php?refreshHistory=true", dojo
@@ -2190,6 +2189,8 @@ function setSelectedProject(idProject, nameProject, selectionField) {
         } else if (dojo.byId('currentPhpPage')
             && dojo.byId('currentPhpPage').value) {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");
+        } else if (dijit.byId('limitResByProj').get('value')=="on"){
+          loadContent("../view/imputationList.php", "centerDiv");
         } else if (currentPluginPage) {
           loadContent(currentPluginPage, "centerDiv");
         }
