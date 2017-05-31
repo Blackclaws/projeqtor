@@ -1304,8 +1304,8 @@ function finalizeMessageDisplay(destination, validationType) {
         if (lastOperation.value == "copy") {
           loadContent("objectDetail.php?", "detailDiv", 'listForm');
         } else {
-          loadContent("objectDetail.php?refresh=true", "detailFormDiv");
-          loadContent("objectStream.php", "detailRightDiv", "listForm");
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+          loadContent("objectStream.php", "detailRightDiv", "listForm");         
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value + '_history')) {
             loadContent("objectDetail.php?refreshHistory=true", dojo
