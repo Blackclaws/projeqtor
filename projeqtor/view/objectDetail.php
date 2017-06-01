@@ -1495,10 +1495,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="8" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        //gautier #time
-        if(getSessionValue('browserLocaleTimeFormat')=='h:m a'){
-          echo ' constraints="{timePattern:\'h:mm a\'}" ';
-        }
         echo ' style="width:60px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $valTime . '" ';
         echo ' hasDownArrow="false" ';
@@ -1517,10 +1513,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        //gautier #time
-         if(getSessionValue('browserLocaleTimeFormat')=='h:mm a'){
-           echo ' constraints="{timePattern:\''.getSessionValue('browserLocaleTimeFormat').'\'}" ';
-        }       
         echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';
         echo ' hasDownArrow="false" ';
