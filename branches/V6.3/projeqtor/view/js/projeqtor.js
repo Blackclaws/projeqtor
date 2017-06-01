@@ -1072,7 +1072,7 @@ function finalizeMessageDisplay(destination, validationType) {
     if (validationType) {
       if (validationType == 'note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Note', 'listForm');
-        loadContent("objectStream.php", "detailRightDiv", "listForm");
+        loadContent("objectStream.php?onlyCenter=true", "activityStreamCenter", "listForm");
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);
@@ -4066,4 +4066,21 @@ function hideGraphStatus(){
   if (divNode){
     divNode.style.display="none";
   }
+}
+
+function saveNoteStream(){
+  var noteEditor = dijit.byId("noteNoteStream");
+  console.log(noteEditor);
+  var noteEditorContent=noteEditor.get("value");
+  console.log("stream notre editior = "+noteEditor);
+  if (noteEditorContent.trim()=="") {
+    //var msg=i18n('messageMandatory', new Array(i18n('Note')));
+    noteEditor.focus();
+    //showAlert(msg);
+    return;
+  }
+
+  loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note');
+  noteEditor.set("value",null);
+  
 }

@@ -281,6 +281,7 @@
             param='';
           }
           loadContent("objectDetail.php"+param, "detailDiv", 'listForm');
+          loadContent("objectStream.php", "detailRightDiv", 'listForm');
 // END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
 // COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
 //          loadContent("objectDetail.php", "detailDiv", 'listForm');
