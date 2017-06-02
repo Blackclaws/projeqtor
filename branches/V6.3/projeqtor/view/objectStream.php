@@ -39,18 +39,15 @@
     $canUpdate=false;
   }
   $noData=htmlGetNoDataMessage($objectClass);
+  $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
   // get the modifications (from request)
   $note=new Note();
   $notes=$note->getSqlElementsFromCriteria(array('refType'=>$objectClass,'refId'=>$objectId));
   $ress=new Resource($user->id);
   $userId=$note->idUser;
   $userName=SqlList::getNameFromId('User', $userId);
-  debugLog("voici le userid de objstream".$userId);
-  debugLog("voici le username de objstream".$userName);
   $creationDate=$note->creationDate;
   $updateDate=$note->updateDate;
-  debugLog("voici le creationdate de objstream".$creationDate);
-  debugLog("voici le updateDate de objstream".$updateDate);
   if ($updateDate == null) {
     $updateDate='';
   }
@@ -73,12 +70,9 @@
 	<div id="activityStreamCenter" dojoType="dijit.layout.ContentPane" region="center">
 <?php }?>	
 	  <script type="dojo/connect" event="onLoad" args="evt">
-        alert("ok");
-        var elmnt = document.getElementById("activityStreamCenter");
-        console.log(elmnt);
-        elmnt.scrollIntoView(false); 
+        scrollInto();
 	  </script>
-	  <table id="objectStream"> 
+	  <table id="objectStream" style="width:100%;"> 
 	    <?php foreach ( $notes as $note ) { 
 	      $userId=$note->idUser;
         $userName=SqlList::getNameFromId('User', $userId);
@@ -92,7 +86,7 @@
         ?>
 	      <?php if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {?>
 	        <tr style="height:50px;">
-	          <td class="noteData" style="width:100%">
+	          <td class="noteData" style="width:100%;">
 	            <div style="float:left;">
 	              <?php
 	                echo formatUserThumb($note->idUser, $userName, 'Creator',32);
@@ -104,7 +98,7 @@
       	         if ($canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
       	        ?>
 	            </div>
-	      <div style="overflow-x:auto;" >
+	      <div style="overflow-x:auto;padding-left:4px;max-height:200px;" >
 	      <?php 
 	        $strDataHTML=$note->note;
 		      if (! isTextFieldHtmlFormatted($strDataHTML)) {
@@ -113,7 +107,7 @@
 		      	$strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
 		      }
 		    echo '<div>'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-	      echo '<div style="color:black;background-color:#DFF2FF;height:20px;margin-top:2px;">'.$strDataHTML.'</div>&nbsp';
+	      echo '<div style="color:black;background-color:#DFF2FF;margin-top:2px;word-break:break-all;">'.$strDataHTML.'</div>&nbsp';
 	      echo '<div>'.$note->creationDate.'</div>';
 	      ?>
 	      </div>
@@ -122,19 +116,20 @@
 	     <?php };?>
 	    <?php };?>
 	  </table>
+	   <div id="scrollToBottom" type="hidden"></div>
 <?php if (!$onlyCenter) {?>   	  
 	</div>
 
-	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px">
+	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px;overflow-x:hidden;">
 	  <form id='noteFormStream' name='noteFormStream' onSubmit="return false;" >
-         <input id="noteId" name="noteId" type="hidden" value="<?php echo $note->id;?>" />
-         <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $note->refType;?>" />
-         <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $note->refId;?>" />
+         <input id="noteId" name="noteId" type="hidden" value="" />
+         <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $objectClass;?>" />
+         <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $objectId;?>" />
          <input id="noteEditorTypeStream" name="noteEditorTypeStream" type="hidden" value="<?php echo getEditorType();?>" />
         
-         <div style="width:100%;">
-           <input placeHolder="<?php echo i18n("textareaEnterText");?>" rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.TextBox"
-            onKeyPress="if(event.keyCode==13) return saveNoteStream();" style="width:100%;height:50px;overflow-x:hidden;overflow-y:auto;" />
+         <div style="width:99%;">
+           <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
+            onKeyPress="saveNoteStream(event);return false;" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()"><?php echo i18n("textareaEnterText");?></textarea>
          </div>
        </form>
     

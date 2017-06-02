@@ -200,7 +200,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
   exit();
 }
 ?>
-<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer"><?php
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer">
+  <?php
   if (!$refresh and !$print) {
     ?>
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
@@ -214,6 +215,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     </div>
 	</div>
   <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
+
 	<?php
   }
   if (!$print) {
@@ -231,7 +233,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
         </script>
       <div style="width: 100%; height: 100%;">
         <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
-          region="top" style="width: 100%; height: 100%;" onmouseout="hideGraphStatus();"><?php
+          region="top" style="width: 100%; height: 100%;" onmouseout="hideGraphStatus();">
+          <?php
   }
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
@@ -3333,8 +3336,12 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         }
         echo '</td>';
       }
+      $goto="";
+      if (!$print and $canGoto) {
+      	$goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
+      }
       if (!$classLink) {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
+        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
         
         if (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') {
           if (get_class($linkObj) == 'DocumentVersion') $version=$linkObj;
@@ -3355,13 +3362,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         }
         echo '</td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
+        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
       echo '</td>';
-      $goto="";
-      if (!$print and $canGoto) {
-        $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
-      }
       echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%">';
      
       echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);

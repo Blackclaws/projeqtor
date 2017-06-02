@@ -146,3 +146,10 @@ if (property_exists ( $obj, 'isPrivate' )) {
 }
 ?>
 </div>
+<?php if($objectClass == 'ComponentVersion' or $objectClass == 'ProductVersion'){
+  $user = getSessionUser();
+  $idUser = $user->id;
+  $isSubcribe = isSubscribeVersion($obj, $idUser);
+ ?>
+<input type="hidden" id="isCurrentUserSubscription" value="<?php echo $isSubcribe ?>" />  
+<?php }?>

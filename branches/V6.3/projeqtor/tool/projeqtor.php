@@ -3226,3 +3226,54 @@ function formatAnyTextToPlainText($val,$removeNl=true) {
 function br2nl($val) {
 	return str_replace(array('<br>','<br/>','<br />'),array("\n","\n","\n"),$val);
 }
+
+//gautier #subscription
+function adAutoSub($obj) {
+  if(Parameter::getGlobalParameter('subscriptionAuto')!='YES'){ return;}
+      $list = array();
+      $crit = array('idProduct'=> $obj->refId, 'idle'=> '0', 'isEis' => '0');
+      $productVersion = new Version();
+      $list=$productVersion->getSqlElementsFromCriteria($crit);
+      foreach ($list as $vers){
+        $sub = new Subscription();
+        $sub->idAffectable=$obj->idAffectable;
+        if($obj->refType == 'Product'){
+          $sub->refType='ProductVersion';
+        }else{
+          $sub->refType='ComponentVersion';
+        }
+        $sub->refId=$vers->id;
+        $sub->idUser=getSessionUser()->id;
+        $sub->creationDateTime=date('Y-m-d H:i:s');
+        $sub->isAutoSub=1;
+        $sub->save();
+  }
+}
+
+function deleteAutoSub($obj) {
+  if(Parameter::getGlobalParameter('subscriptionAuto')!='YES'){ return;}
+    $list = array();
+    $crit = array('idProduct'=> $obj->refId, 'idle'=> '0', 'isEis' => '0');
+    $productVersion = new Version();
+    $list=$productVersion->getSqlElementsFromCriteria($crit);
+    foreach ($list as $vers){
+      $sub = new Subscription();
+      $crit2 = array('refId'=>$vers->id, 'idAffectable'=> $obj->idAffectable, 'isAutoSub' => '1');
+      $list2=$sub->getSqlElementsFromCriteria($crit2);
+      foreach ($list2 as $lst){
+        $lst->delete();
+      }
+    }
+}
+
+function isSubscribeVersion($obj,$idUser){
+  $subscribed = false;
+  $sub = new Subscription();
+  $crit = array('refId'=> $obj->id,'refType'=>$obj->scope.'Version','idAffectable'=>$idUser);
+  $list=$sub->getSqlElementsFromCriteria($crit);
+  if(! empty($list)){
+    $subscribed=true;
+  }
+  return $subscribed;
+}
+//end

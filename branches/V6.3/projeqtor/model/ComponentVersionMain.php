@@ -295,6 +295,11 @@ class ComponentVersionMain extends Version {
   	    $comp->updateAllVersionProject();
   	  }
   	}
+  	//gautier #subscription
+  	if($old->idComponent != $this->idComponent){
+  	  parent::changeVersionOfProduct();
+  	}
+  	parent::addVersionSubProduct();
   	return $result;
   }
   public function delete() {

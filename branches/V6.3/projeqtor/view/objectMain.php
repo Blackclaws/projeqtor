@@ -43,7 +43,7 @@
   		$topDetailDivHeight=$screenHeight-300;
   	}
   	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
-  	$rightWidth=Parameter::getUserParameter('contentPaneRightDetailDivWitdh'.$objectClass).'px"';
+  	$rightWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass).'px"';
   	if (!$rightWidth) $rightWidth="20%";
   }
 ?>
@@ -61,8 +61,15 @@
        </script>
 		   <?php include 'objectList.php'?>
 		  </div>
-		  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
-		   <?php $noselect=true; include 'objectDetail.php'; ?>
+		  <div dojoType="dijit.layout.ContentPane" region="center">
+			  <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
+				  <div id="hideStreamButton" style="cursor:pointer;position:absolute; right:-2px; bottom:2px;z-index:999999">
+		        <a onClick="hideStreamMode();" id="buttonSwitchedStream" title="" ><span style='top:0px;display:inline-block;width:32px;height:"32px;'><div class='iconHideStream32' style='' >&nbsp;</div></span></a>
+		      </div>
+				  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
+				   <?php $noselect=true; include 'objectDetail.php'; ?>
+				  </div>
+				</div>
 		  </div>
     </div>
   </div>
@@ -70,10 +77,13 @@
     <script type="dojo/connect" event="resize" args="evt">
              dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneRightDetailDivWitdh<?php echo $objectClass;?>"
+                  +"&idData=contentPaneRightDetailDivWidth<?php echo $objectClass;?>"
                   +"&value="+dojo.byId("detailRightDiv").offsetWidth
              });;
        </script>
+    <script type="dojo/connect" event="onLoad" args="evt">
+        scrollInto();
+	  </script>
       <?php include 'objectStream.php'?>
   </div>
   
