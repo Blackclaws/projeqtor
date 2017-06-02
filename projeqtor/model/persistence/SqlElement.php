@@ -4845,14 +4845,14 @@ abstract class SqlElement {
 	    } else {
 	      $testClass=str_replace('PlanningElement','',$class);
 	    }
-	    $testObj=new $testClass($this->refId,true);
+	    if ($testClass and SqlElement::class_exists($testClass)) $testObj=new $testClass($this->refId,true);
 	  } else if ($class=='WorkElement') {
 	    if ($this->refType) {
 	      $testClass=$this->refType;
 	    } else {
 	      $testClass='Ticket';
 	    }
-	    $testObj=new $testClass($this->refId,true);
+	    if ($testClass and SqlElement::class_exists($testClass)) $testObj=new $testClass($this->refId,true);
 	  }
 	  if (!$profile) $profile=$user->getProfile($this);
 	  $planningMode=$newPlanningMode;

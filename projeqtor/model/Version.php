@@ -259,7 +259,6 @@ class Version extends SqlElement {
   	if ($this->idle) {
   		VersionProject::updateIdle('Version', $this->id);
   	}
-  	
   	return $result;
   }
   
@@ -316,6 +315,43 @@ class Version extends SqlElement {
     $result.='</td>';
     $result.='</tr></table>';
     return $result;
+  }
+  
+  //gautier #subscription
+  public function changeVersionOfProduct(){
+    if(Parameter::getGlobalParameter('subscriptionAuto')!='YES'){ return;}
+    $sub = new Subscription();
+    $crit = array('refId'=>$this->id, 'refType'=> $this->scope.'Version', 'isAutoSub'=>'1');
+    $list=$sub->getSqlElementsFromCriteria($crit);
+    foreach ($list as $subList){
+      $subList->delete();
+    }
+
+  }
+  
+  public function addVersionSubProduct(){
+    if(Parameter::getGlobalParameter('subscriptionAuto')!='YES'){ return;}
+    $prod = new ProductOrComponent($this->idProduct);
+    $sub = new Subscription();
+    $crit = array('refId'=>$prod->id, 'refType'=> $prod->scope);
+    $list=$sub->getSqlElementsFromCriteria($crit);
+    foreach($list as $subs){
+      if($prod->scope == 'Product'){
+        $sub2RefType='ProductVersion';
+      }else{
+        $sub2RefType='ComponentVersion';
+      }
+      $sub2 = SqlElement::getSingleSqlElementFromCriteria('Subscription', array('refType'=>$sub2RefType, 'refId'=>$this->id,'idAffectable'=>$subs->idAffectable));
+      if ($sub2->id) continue;
+      //$sub2->idAffectable=$subs->idAffectable;
+      //$sub2->refType=$sub2RefType;
+      //$sub2->refId=$this->id;
+      $sub2->idUser=getSessionUser()->id;
+      $sub2->creationDateTime=date('Y-m-d H:i:s');
+      $sub2->isAutoSub=1;
+      $sub2->save();
+    }
+  
   }
 
 }

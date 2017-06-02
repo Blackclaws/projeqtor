@@ -235,8 +235,8 @@ class Parameter extends SqlElement {
       	break;
       //gautier #2270
       case 'browserLocaleTimeFormat':
-        $list=array('h:m a'=>'AM/PM',
-      	  'H:mm'=>'24h');
+        $list=array('H:mm'=>'24h',
+        'h:m a'=>'AM/PM');
         break;
       case 'defaultProject':
         if (sessionUserExists()) {
@@ -453,6 +453,11 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
+      // Gautier #
+      case 'subscriptionAuto':
+          $list=array('NO'=>i18n('displayNo'),
+          'YES'=>i18n('displayYes'));
+          break;
       case 'consolidateValidated' :
       	$list=array('NO'=>i18n('consolidateNever'),
       	             'ALWAYS'=>i18n('consolidateAlways'),
@@ -679,12 +684,13 @@ class Parameter extends SqlElement {
       	                     //ADD by qCazelles - Business features
       	                     'sectionProductAndComponent'=>'section',
       	                        'displayBusinessFeature'=>'list',
-      	                     	//END ADD qCazelles  
+      	                     	//END ADD qCazelles 
                               	'showTendersOnVersions'=>'list',
                               	"directAccessToComponentList"=>'list',
                             	//'sectionVersionNameFormat'=>'section',
                               	'versionNameAutoformat'=>'list',
                               	'versionNameAutoformatSeparator'=>'text',
+                              	'subscriptionAuto'=>'list',
       	
       	                     'sectionFiles'=>'section',
       	                       'paramAttachmentDirectory'=>'text',

@@ -33,22 +33,16 @@ require_once "../tool/projeqtor.php";
 
 // Get the note info
 $refType=RequestHandler::getValue("noteRefType",false);
-debugLog("reftype : ".$refType);
-
 if ($refType=='TicketSimple') {
   $refType='Ticket';    
 }
 
 $refId=RequestHandler::getId("noteRefId",false);
-debugLog("refId : ".$refId);
 
 $noteNote=RequestHandler::getValue("noteNoteStream",false);
-debugLog("notenote : ".$noteNote);
 
 $notePrivacy=null;
 $notePrivacy=RequestHandler::getValue("notePrivacy",false);
-debugLog("notePrivacy : ".$notePrivacy);
-
 $noteId=null;
 $noteId=RequestHandler::getId("noteId",false);
 $noteId=trim($noteId);
@@ -56,7 +50,6 @@ if ($noteId=='') {
   $noteId=null;
 } 
 Sql::beginTransaction();
-debugLog("noteid : ".$noteId);
 // get the modifications (from request)
 $note=new Note();
 $user=getSessionUser();

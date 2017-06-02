@@ -1185,9 +1185,8 @@ function finalizeMessageDisplay(destination, validationType) {
         if (validationType == 'assignment'
             || validationType == 'documentVersion') {
           refreshGrid();
-        } else if (validationType == 'dependency'
-            && (dojo.byId(destination) == "planResultDiv" || dojo
-                .byId("GanttChartDIV"))) {
+        } else if ( (validationType == 'dependency' || validationType == 'affectation')
+            && (dojo.byId(destination) == "planResultDiv" || dojo.byId("GanttChartDIV"))) {
           noHideWait = true;
           refreshGrid(); // Will call refreshJsonPlanning() if needed and
                           // plan() if required
@@ -1266,7 +1265,23 @@ function finalizeMessageDisplay(destination, validationType) {
             var url = '../tool/getObjectCreationInfo.php' + '?objectClass='
                 + dojo.byId('objectClass').value + '&objectId='
                 + lastSaveId.value;
-            loadDiv(url, 'buttonDivCreationInfo', null);
+            var callback=null;
+            if (dojo.byId('objectClass').value=='ProductVersion' || dojo.byId('objectClass').value=='ComponentVersion' ) {
+              callback=function() {
+                if (! dojo.byId('isCurrentUserSubscription')) return;
+                var subs=dojo.byId('isCurrentUserSubscription').value;
+                if(subs == '1'){
+                  dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribeValid');
+                  enableWidget('subscribeButtonUnsubscribe');
+                  disableWidget('subscribeButtonSubscribe');
+                }else{
+                  dijit.byId('subscribeButton').set('iconClass','dijitButtonIcon dijitButtonIconSubscribe');
+                  disableWidget('subscribeButtonUnsubscribe');
+                  enableWidget('subscribeButtonSubscribe');
+                }
+              };
+            }
+            loadDiv(url, 'buttonDivCreationInfo',null, callback);
           }
         }
         forceRefreshCreationInfo = false;
@@ -4068,19 +4083,42 @@ function hideGraphStatus(){
   }
 }
 
-function saveNoteStream(){
-  var noteEditor = dijit.byId("noteNoteStream");
-  console.log(noteEditor);
-  var noteEditorContent=noteEditor.get("value");
-  console.log("stream notre editior = "+noteEditor);
-  if (noteEditorContent.trim()=="") {
-    //var msg=i18n('messageMandatory', new Array(i18n('Note')));
-    noteEditor.focus();
-    //showAlert(msg);
-    return;
-  }
+function saveNoteStream(event){
+  var key = event.keyCode;
+  if (key == 13 && !event.shiftKey) {
+    var noteEditor = dijit.byId("noteNoteStream");
+    var noteEditorContent=noteEditor.get("value");
+    if (noteEditorContent.trim()=="") {
+      noteEditor.focus();
+      return;
+    }
+    loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note');
+    noteEditor.set("value",null);
+  } 
+}
 
-  loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note');
-  noteEditor.set("value",null);
-  
+function scrollInto(){
+  var scrollElmnt = dojo.byId("scrollToBottom");
+  scrollElmnt.scrollIntoView(); 
+}
+
+function hideStreamMode(){
+  if(dijit.byId("detailRightDiv").w != '0'){
+    menuRightDivSize=dojo.byId("detailRightDiv").offsetWidth;
+    dijit.byId("detailRightDiv").resize({
+      w : 0
+    });
+    dijit.byId("centerDiv").resize();
+  } else {
+    dijit.byId("detailRightDiv").resize({
+      w : menuRightDivSize
+    });
+    dijit.byId("centerDiv").resize();
+  }
+}
+
+function mouseDownStream() {
+  if(dijit.byId("noteNoteStream").get('value')==i18n("textareaEnterText")){
+    dijit.byId("noteNoteStream").set('value',"");
+  }
 }
