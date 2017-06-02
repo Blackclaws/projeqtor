@@ -7999,11 +7999,11 @@ function toggleFullScreen() {
 *
 */
 function subscribeToItem(objectClass, objectId, userId) {
-  if (! objectId && dojo.byId('id')) objectId=dojo.byId('id').value;
-  var url="../tool/saveSubscription.php?mode=on";
-  url+="&objectClass="+objectClass;
-  url+="&objectId="+objectId;
-  url+="&userId="+userId;
+    if (! objectId && dojo.byId('id')) objectId=dojo.byId('id').value;
+    var url="../tool/saveSubscription.php?mode=on";
+    url+="&objectClass="+objectClass;
+    url+="&objectId="+objectId;
+    url+="&userId="+userId;
   dojo.xhrGet({
     url : url,
     handleAs : "text",

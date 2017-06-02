@@ -82,3 +82,5 @@ ALTER TABLE `${prefix}ticket` ADD COLUMN `idBusinessFeature` int(12) DEFAULT NUL
 ALTER TABLE `${prefix}requirement` ADD COLUMN `idBusinessFeature` int(12) DEFAULT NULL;
 
 UPDATE `${prefix}reportparameter` SET defaultValue='currentProject' WHERE idReport in (41,43,44,53)  and name='idProject';
+
+ALTER TABLE `${prefix}subscription` ADD `isAutoSub` int(1) DEFAULT '0';

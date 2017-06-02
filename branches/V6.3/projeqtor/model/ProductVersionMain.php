@@ -328,6 +328,12 @@ class ProductVersionMain extends Version {
   	    $vp->save();
   	  }
   	}
+  	//gautier #subscription
+  	if($old->idProduct != $this->idProduct){
+  	  parent::changeVersionOfProduct();
+  	}
+  	parent::addVersionSubProduct();
+  	
   	return $result;
   }
   public function getLinkedProjects($withName=true) {

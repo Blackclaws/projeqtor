@@ -39,6 +39,7 @@ class Subscription extends SqlElement {
   public $idUser;
   public $creationDateTime;
   public $comment;
+  public $isAutoSub;
   
   //public $_noHistory=true;
     
@@ -74,5 +75,27 @@ class Subscription extends SqlElement {
   protected function getStaticFieldsAttributes() {
   	return self::$_fieldsAttributes;
   }
+  
+  /**=========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+  * @see persistence/SqlElement#save()
+  * @return the return message of persistence/SqlElement#save() method
+  */
+  public function save() {
+    if($this->refType=='Product' or $this->refType=='Component'){
+      adAutoSub($this);
+    }
+    $result = parent::save();
+    return $result;
+  }
+  
+  public function delete() {
+    if($this->refType=='Product' or $this->refType=='Component'){
+      deleteAutoSub($this);
+    }
+  	$result = parent::delete();
+    return $result;
+  }
+  
 }
 ?>
