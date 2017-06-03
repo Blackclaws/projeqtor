@@ -1573,7 +1573,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $arrayIdSpecial = array('idResource','idLocker', 'idAuthor', 'idResponsive');
             if (in_array($col,$arrayIdSpecial)) {
                 $idList = getUserVisibleResourcesList(true, "List");
-                if (!array_key_exists($val, $idList)) {
+                if ($val and !array_key_exists($val, $idList)) {
                     $displayComboButtonCol=false;
                     $displayDirectAccessButton=false;                    
                 }
