@@ -3098,7 +3098,7 @@ abstract class SqlElement {
 			if ($colName=='idStatus' or $colName=='id'.get_class($this).'Type' or substr($colName,-12)=='PlanningMode') {
 			  $colScript .= '   getExtraRequiredFields();';
 			}	
-		  if ($colName=='id'.get_class($this).'Type') {
+			if ($colName=='id'.get_class($this).'Type' or $colName=='idStatus') {
 		    $colScript .= '   getExtraHiddenFields(this.value,"","");';
 		    $colScript .= '   getExtraReadonlyFields(this.value,"","");';
 		  }
