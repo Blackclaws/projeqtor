@@ -1085,7 +1085,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $mail->mailDateTime = date ( 'Y-m-d H:i' );
   $mail->mailTo = $to;
   $mail->mailTitle = $title;
-  //$mail->mailBody = $message;
+  $mail->mailBody = $message;
   $mail->mailStatus = 'WAIT';
   $mail->idle = '0';
   $resMail = $mail->save ();
