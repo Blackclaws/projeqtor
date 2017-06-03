@@ -44,7 +44,7 @@ class DeliveryMain extends SqlElement {
   public $description;
   public $_sec_validation;
   public $idDeliverableStatus;
-  public $idDeliverableWeight;
+  //public $idDeliverableWeight;
   public $idResource;
   public $plannedDate;
   public $realDate;
@@ -83,7 +83,7 @@ class DeliveryMain extends SqlElement {
                                   "scope"=>"hidden"
   );  
   
-  private static $_colCaptionTransposition = array('idResource'=>'responsible'
+  private static $_colCaptionTransposition = array('idDeliverableStatus'=>'idDeliveryStatus'
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
