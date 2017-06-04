@@ -164,6 +164,7 @@ class ComponentMain extends ProductOrComponent {
    */
   public function drawSpecificItem($item){
   	global $showClosedItems;
+  	$showClosedItems=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
   	$result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
       $result .="<table><tr>";
