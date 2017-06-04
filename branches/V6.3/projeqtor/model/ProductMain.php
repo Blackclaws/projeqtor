@@ -162,7 +162,12 @@ class ProductMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    global $print, $showClosedItems;
+    global $print;
+    $showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
+    echo basename($_SERVER["SCRIPT_FILENAME"],'.php')."  ";
+    echo "x=".Parameter::getUserParameter('structureShowClosedItem')."  ";
+    if (basename($_SERVER["SCRIPT_FILENAME"],'.php')!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItem')!='0')?true:false;
+    echo "showClosedVersions=$showClosedVersions";
     $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
       $result .="<table><tr>";
@@ -170,13 +175,23 @@ class ProductMain extends ProductOrComponent {
       $result .="<td>";
       if ($this->id) {
         $vers=new ProductVersion();
-        if(!$showClosedItems){
+        if(!$showClosedVersions){
           $crit=array('idProduct'=>$this->id,'idle'=>'0');
         }else{
           $crit=array('idProduct'=>$this->id);
         }
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
+      $result.='<tr>';
+      $result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+      $result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
+      $result.='<script type="dojo/connect" event="onChange" args="evt">';
+      $result.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
+      $result.=' if (checkFormChangeInProgress()) {return false;}';
+      $result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+      $result.='</script>';
+      $result.='</div></td>';
+      $result.='</tr>';
       $result .="</td></tr></table>";
       return $result;
     } elseif ($item=='subproducts') {
