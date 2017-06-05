@@ -162,14 +162,13 @@ class ProductMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    global $print;
-    $showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
-    echo basename($_SERVER["SCRIPT_FILENAME"],'.php')."  ";
-    echo "x=".Parameter::getUserParameter('structureShowClosedItem')."  ";
-    if (basename($_SERVER["SCRIPT_FILENAME"],'.php')!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItem')!='0')?true:false;
-    echo "showClosedVersions=$showClosedVersions";
+    global $print, $showClosedItems;
     $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
+    	$page="objectDetail";
+    	if (isset($_REQUEST['page'])) $page=substr( basename($_REQUEST['page']) , 0, strpos(basename($_REQUEST['page']),'.php'));
+    	$showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
+    	if ($page!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
       $result .="<table><tr>";
       //$result .="<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
       $result .="<td>";
@@ -182,17 +181,20 @@ class ProductMain extends ProductOrComponent {
         }
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
-      $result.='<tr>';
-      $result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
-      $result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
-      $result.='<script type="dojo/connect" event="onChange" args="evt">';
-      $result.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
-      $result.=' if (checkFormChangeInProgress()) {return false;}';
-      $result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
-      $result.='</script>';
-      $result.='</div></td>';
-      $result.='</tr>';
-      $result .="</td></tr></table>";
+      $result.='</td></tr>';
+      if (!$print) {
+	      $result.='<tr>';
+	      $result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+	      $result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
+	      $result.='<script type="dojo/connect" event="onChange" args="evt">';
+	      $result.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
+	      $result.=' if (checkFormChangeInProgress()) {return false;}';
+	      $result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+	      $result.='</script>';
+	      $result.='</div></td>';
+	      $result.='</tr>';
+      }
+      $result .="</table>";
       return $result;
     } elseif ($item=='subproducts') {
       $result .="<table><tr>";

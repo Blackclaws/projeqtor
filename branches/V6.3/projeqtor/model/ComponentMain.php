@@ -163,20 +163,36 @@ class ComponentMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-  	global $showClosedItems;
-  	$showClosedItems=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
+  	global $print, $showClosedItems;
   	$result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
-      $result .="<table><tr>";
+    	$showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
+    	$page="objectDetail";
+    	if (isset($_REQUEST['page'])) $page=substr( basename($_REQUEST['page']) , 0, strpos(basename($_REQUEST['page']),'.php'));
+    	if ($page!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
+    	$result .="<table><tr>";
       //echo "<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
       $result .="<td>";
       if ($this->id) {
         $vers=new ComponentVersion();
         $crit=array('idComponent'=>$this->id);
-        if (! $showClosedItems) $crit['idle']='0';
+        if (! $showClosedVersions) $crit['idle']='0';
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
-      $result .="</td></tr></table>";
+      $result .="</td></tr>";
+      if (!$print) {
+      	$result.='<tr>';
+      	$result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+      	$result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
+      	$result.='<script type="dojo/connect" event="onChange" args="evt">';
+      	$result.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
+      	$result.=' if (checkFormChangeInProgress()) {return false;}';
+      	$result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+      	$result.='</script>';
+      	$result.='</div></td>';
+      	$result.='</tr>';
+      }
+      $result.="</table>";
       return $result;
     } else {
       if ($item=='tenders') {
