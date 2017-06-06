@@ -102,6 +102,8 @@ function generateImputationAlert() {
     $lstRes[$idRes]['full']=$full;
     if (!$full) {
       $lstRes[$idRes]['workDetail']=getImputationSummary($res);
+    } else {
+    	$lstRes[$idRes]['workDetail']=$full;
     }
   }
     
