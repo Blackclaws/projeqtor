@@ -64,8 +64,8 @@
 
 <?php if (!$onlyCenter) {?>
 <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
-	<div id="activityStreamTop" dojoType="dijit.layout.ContentPane" region="top" style="height:32px">
-	  <span style="color:black;" class="title" ><?php echo i18n("titleStream");?></span>
+	<div id="activityStreamTop" dojoType="dijit.layout.ContentPane" region="top" style="text-align:center" class="dijitAccordionTitle">
+	  <span class="title" ><?php echo i18n("titleStream");?></span>
 	</div>
 	<div id="activityStreamCenter" dojoType="dijit.layout.ContentPane" region="center">
 <?php }?>	
@@ -85,7 +85,7 @@
         ) );
         ?>
 	      <?php if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {?>
-	        <tr style="height:50px;">
+	        <tr style="height:100%;">
 	          <td class="noteData" style="width:100%;">
 	            <div style="float:left;">
 	              <?php
@@ -107,8 +107,9 @@
 		      	$strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
 		      }
 		    echo '<div>'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-	      echo '<div style="color:black;background-color:#DFF2FF;margin-top:2px;word-break:break-all;">'.$strDataHTML.'</div>&nbsp';
-	      echo '<div>'.$note->creationDate.'</div>';
+	      echo '<div style="color:white;margin-top:4px;word-break:break-all;min-width:188px;position:relative;" class="dijitSplitter">'.$strDataHTML.'</div>&nbsp';
+	      echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
+	      echo '<div style="margin-top:11px;">'.$note->creationDate.'</div>';
 	      ?>
 	      </div>
 	      </td>       
