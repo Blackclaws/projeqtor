@@ -84,3 +84,22 @@ ALTER TABLE `${prefix}requirement` ADD COLUMN `idBusinessFeature` int(12) DEFAUL
 UPDATE `${prefix}reportparameter` SET defaultValue='currentProject' WHERE idReport in (41,43,44,53)  and name='idProject';
 
 ALTER TABLE `${prefix}subscription` ADD `isAutoSub` int(1) DEFAULT '0';
+
+CREATE TABLE `${prefix}noteflux` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`, `menuClass`) VALUES 
+(177,'menuNoteFlux',0,'item',19,NULL,0,'Work Risk RequirementTest Financial Meeting');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 177, 1),
+(2, 177, 1),
+(3, 177, 1),
+(4, 177, 1),
+(5, 177, 0),
+(6, 177, 0),
+(7, 177, 0);
