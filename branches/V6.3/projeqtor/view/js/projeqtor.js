@@ -4087,6 +4087,7 @@ function saveNoteStream(event){
   var key = event.keyCode;
   if (key == 13 && !event.shiftKey) {
     var noteEditor = dijit.byId("noteNoteStream");
+    console.log(noteEditor);
     var noteEditorContent=noteEditor.get("value");
     if (noteEditorContent.trim()=="") {
       noteEditor.focus();

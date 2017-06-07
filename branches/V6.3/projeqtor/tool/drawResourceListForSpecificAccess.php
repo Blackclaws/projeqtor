@@ -39,7 +39,7 @@ if (! $user->isResource) {
   $table[0]=' ';
 }
 $table = getListForSpecificRights($specific);
-
+$limitResourceByProj = Parameter::getUserParameter('limitResByProj');
 $selectedProject=getSessionValue('project');
 if ($selectedProject and $selectedProject!='*') {
 	$restrictTable=array();
