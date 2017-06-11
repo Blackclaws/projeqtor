@@ -271,6 +271,9 @@ class Parameter extends SqlElement {
         break;
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
       case 'dependencyStrictMode': 
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
+      case 'useOrganizationBudgetElement' :
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
       case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
       case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
       case 'scaytAutoStartup':
@@ -613,7 +616,9 @@ class Parameter extends SqlElement {
       	                       // 'ganttPlanningPrintOldStyle'=>'list', // obsolete
       	                       'consolidateValidated'=>'list',
       	                       'dependencyStrictMode'=>'list',                     
-      	                     'sectionResponsible'=>'section',
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+      	                       'useOrganizationBudgetElement'=>'list',
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT      	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'allocateResponsibleToProject'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  

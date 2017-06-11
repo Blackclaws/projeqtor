@@ -30,28 +30,17 @@ require_once('_securityCheck.php');
 class OrganizationBudgetElementMain extends BudgetElement {
 
   public $id;
-// COMMENT BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET  
-//  public $year;
-// END COMMENT BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET  
-
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
-  // ------------------------------------------------------
-  // BEGIN : The synthesis of the budget element for period
   public $_sec_BudgetSynthesis;
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
   // For select 'year' of synthesis
   public $_byMet_periodYear;
   // For display message 'Budget element not exist
   public $_spe_OrganizationBudgetElementMsg;
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
   
-// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
   public $_tab_3_1_smallLabel = array('idle','idleDate', 'empty',
                                       'idStatus');
   public $idle;
   public $idleDateTime;
   public $_spe_buttonsActionBudgetElement;
-// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
   
   public $year;
     
@@ -62,11 +51,8 @@ class OrganizationBudgetElementMain extends BudgetElement {
   public $expenseBudgetAmount;
   public $totalBudgetCost;
 
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
   public $_tab_5_3_smallLabel = array('work','cost','expense','totalCost','reassessed',
                                       'budget','daughters','projects');
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
-// ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
   // Fields of Budget Element issued of database fields
   // Budget Elements Row
   public $_byMet_budgetWork;
@@ -76,12 +62,9 @@ class OrganizationBudgetElementMain extends BudgetElement {
 // END ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
   public $_void_15;
 
-// ADD BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
 // _byMet_ : Allows to display the field without sql query and $_fieldsFromFunction definition
 // The value is set by a method of this class, on construct of it or any class that call the method
 // Here : OrganizationMain.construct call the setDaughtersBudgetElementAndPlanningElement() method of this class
-// END ADD BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
-// ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
   // Daughters elements Rows
   public $_byMet_daughtersBudgetWork;  
   public $_byMet_daughtersBudgetCost;
@@ -95,24 +78,13 @@ class OrganizationBudgetElementMain extends BudgetElement {
   public $_byMet_projectProgressExpensePct;
   public $_byMet_projectProgressTotalCostPct;
   public $_byMet_projectProgressPlannedPct;
-  // END : The synthesis of the budget element for period
   // ----------------------------------------------------
-// END ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
 
-// CHANGE BY Marc TABARY - 2017-03-03
   // ---------------------------------------------------------------------------
-  // BEGIN : The synthesis of the projects of organization and sub-organizations
   public $_sec_synthesis;
-// END CHANGE BY Marc TABARY - 2017-03-03
   
-// CHANGE BY Marc TABARY - 2017-02-17 - WORK AND COST IN GOOD CELL
   public $_tab_5_4_smallLabel = array('validated','assigned','real','left','reassessed',
                                       'work','cost','expense','totalCost');
-  // Old
-//  public $_tab_5_5_smallLabel = array('validated','assigned','real','left','reassessed',
-//                                      'work','cost','expense','reserveAmountShort','totalCost');
-// END CHANGE BY Marc TABARY - 2017-02-17 - WORK AND COST IN GOOD CELL
-
   // Work row
   public $validatedWork;
   public $assignedWork;
@@ -131,22 +103,12 @@ class OrganizationBudgetElementMain extends BudgetElement {
   public $expenseRealAmount;
   public $expenseLeftAmount;
   public $expensePlannedAmount;
-// COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY
-//  public $_void_res_11;
-//  public $_void_res_12;
-//  public $_void_res_13;
-// END COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY
-  // COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY
-//  public $_void_res_15;
-  // END COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY
   // total row
   public $totalValidatedCost;
   public $totalAssignedCost;
   public $totalRealCost;
   public $totalLeftCost;
   public $totalPlannedCost;
-  // END : The synthesis of the projects of organization and sub-organizations
-  // -------------------------------------------------------------------------
   
   public $_nbColMax=3;
 
@@ -161,24 +123,15 @@ class OrganizationBudgetElementMain extends BudgetElement {
   
   private static $_fieldsAttributes=array(
       "id"=>"hidden",
-// CHANGE BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
       "year"=>"hidden,forceExport", #Old "hidden"
       "reserveAmount"=>"hidden", #Old "readonly,noImport"
-// ADD BY Marc TABARY - 2017-03-07 - FORCE HIDDEN OR READONLY
-      // For this class only,
-      // if 'hiddenforce', pass over visibility.
-// END ADD BY Marc TABARY - 2017-03-07 - FORCE HIDDEN OR READONLY      
       "budgetWork"=>"hiddenforce,forceExport", // CHANGE BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET - old 'hidden,noImport'
       "budgetCost"=>"hiddenforce,forceExport", // CHANGE BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET - old 'hidden,noImport'
       "expenseBudgetAmount"=>"hiddenforce,forceExport", // CHANGE BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET - old 'hidden,noImport'
       "totalBudgetCost"=>"hiddenforce,forceExport,noImport", // CHANGE BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET - old 'hidden,noImport'
       "elementary"=>"hidden",
-// END CHANGE BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
-// CHANGE BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT      
       "idle"=>"readonly,forceExport", // Old : "hidden"
       "idleDateTime"=>"readonly,forceExport", // Old : Nothing
-// END CHANGE BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT      
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
       // New attribute : forceInput 
       // Case sensitive
       // Force input value allowed
@@ -192,7 +145,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
       // Only : 
       //    for fields begining by _byMet_ 
       "_byMet_periodYear"=>"noImport,superforceInput,title",
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
       "refType"=>"hidden",
       "refId"=>"hidden",
       "refName"=>"hidden",
@@ -200,7 +152,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
       "topId"=>"hidden",
       "topRefType"=>"hidden",
       "topRefId"=>"hidden",
-// CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
       "validatedWork"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "assignedWork"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "realWork"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
@@ -216,7 +167,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
       "expenseRealAmount"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "expenseLeftAmount"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "expenseValidatedAmount"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
-// END CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
       "alertOverPct"=>"title,noImport", // ADD BY Marc TABARY - 2017-03-04 - SET VALUE OF XXX, YYY, ZZZ
       "warningOverPct"=>"title,noImport", // ADD BY Marc TABARY - 2017-03-04 - SET VALUE OF XXX, YYY, ZZZ
       "okUnderPct"=>"title,noImport", // ADD BY Marc TABARY - 2017-03-04 - SET VALUE OF XXX, YYY, ZZZ
@@ -224,7 +174,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
       "_byMet_daughtersBudgetCost"=>"readonly,noImport", //ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
       "_byMet_daughtersBudgetExpenseAmount"=>"readonly,noImport", // ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
       "_byMet_daughtersBudgetTotalCost"=>"readonly,noImport", // ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
-// ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
       // Attribute alertOver100warningOver080okUnder050 
       // Explain :
       // It allows to color the inputs of type % (ended by 'Pct') based on 3 levels:
@@ -238,57 +187,42 @@ class OrganizationBudgetElementMain extends BudgetElement {
       //   Thus, for each organization, the thresholds may be different.
       //   If there is no value, the values of the thresholds are those of the 'static' attribute
       //   It's in objectDetail.php ("COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX") that are colored the %.      
-// END ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
       "_byMet_projectProgressWorkPct"=>"readonly,noImport,title,alertOver100warningOver080okUnder050", // ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
       "_byMet_projectProgressCostPct"=>"readonly,noImport,title,alertOver100warningOver080okUnder050", // ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
       "_byMet_projectProgressExpensePct"=>"readonly,noImport,title,alertOver100warningOver080okUnder050", // ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
       "_byMet_projectProgressTotalCostPct"=>"readonly,noImport,title,alertOver100warningOver080okUnder050", // ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
       "_byMet_projectProgressPlannedPct"=>"readonly,noImport,title,alertOver100warningOver080okUnder050", // ADD BY Marc TABARY - 2017-03-01 - ORGANIZATION BUDGET
-// CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
       "totalValidatedCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "totalAssignedCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "totalRealCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "totalLeftCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "totalPlannedCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
       "totalPlannedCost"=>"readonly,noImport,forceExport", // Old "readonly,noImport"
-// END CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
       "done"=>"readonly,noImport",
       "cancelled"=>"readonly,noImport",
-// ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT
       // ONLY FOR '_spe_'
       // if 'drawforce', force drawing the 'specific field' in objectDetail.php
       "_spe_OrganizationBudgetElementMsg"=>"readonlyforce,drawforce"
-// END ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT      
   );
   
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT      
   private static $_colCaptionTransposition = array(
       '_byMet_periodYear'=>'budgetPeriod',
   );
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT      
-  
-// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER - YEAR
   // For each field that you want to draw as spinner
   private static $_spinnersAttributes = array(
       'year'=>'min:2000,max:2100,step:1',
-// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER - YEAR
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT      
       '_byMet_periodYear'=>'min:2000,max:2100,step:1'
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT      
       );  
 
-// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   // Fields list that must be disabled when something changes on form detail
   // getStaticDisabledFieldsOnChange must be implemented on this class
   private static $_disabledFieldsOnChange = array(
       '_byMet_periodYear',
       '_spe_buttonsActionBudgetElement'
   );
-// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   
   private static $_databaseCriteria = array('year'=>'0');
   
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
   
   /** ==========================================================================
    * Constructor
@@ -296,7 +230,6 @@ class OrganizationBudgetElementMain extends BudgetElement {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
       // It's not a very good practice, but it's an 'effective' solution
       if (array_key_exists ( 'OrganizationBudgetPeriod', $_REQUEST )) {
             $this->_byMet_periodYear = $_REQUEST['OrganizationBudgetPeriod'];
@@ -305,26 +238,26 @@ class OrganizationBudgetElementMain extends BudgetElement {
         }
       $this->setYearPeriod($this->_byMet_periodYear);
       $this->hideOrganizationBudgetElementMsg();
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
       
-// COMMENT BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
-//    $this->year=null;
-// END COMMENT BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
-    parent::__construct($id,$withoutDependentObjects);
-// ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET    
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        self::$_fieldsAttributes["_sec_synthesis"] = "hidden,noPrint";         
+        self::$_fieldsAttributes["_byMet_periodYear"] = "hidden,noList,notInFilter";
+    }
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+
+      
+            
     if ($id!= NULL and trim($id)!='') {
         $this->setDaughtersBudgetElementAndPlanningElement();
-// ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
         $this->setWorkCostExpenseTotalCostBudgetElement();
-        // An solution for showing something when BudgetElement
+        // A solution for showing something when BudgetElement
         $this->_tab_3_1_smallLabel = array('idle','idleDate','empty','idStatus');
     } else {
         $this->hideSynthesisBudgetAndProjectElement(true);
-        // An solution for showing nothing when no BudgetElement
+        // A solution for showing nothing when no BudgetElement
         $this->_tab_3_1_smallLabel = array('empty','empty','empty','empty');
   }
-// END ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
-// END ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
   
   }
   
@@ -407,13 +340,11 @@ function periodChanged(theId) {
     return $colScript;
 
     }
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
   
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
     
-// ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   /** ==========================================================================
    * Return the generic disabledFieldOnChange
    * @return array[name] : the generic $_disabledFieldOnChange
@@ -422,9 +353,7 @@ function periodChanged(theId) {
       if(!isset(self::$_disabledFieldsOnChange)) {return array();}
       return self::$_disabledFieldsOnChange;      
   }
-// END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   
-// ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
   /** ==========================================================================
    * Return the generic spinnerAttributes
    * @return array[name,value] : the generic $_spinnerAttributes
@@ -433,7 +362,6 @@ function periodChanged(theId) {
       if(!isset(self::$_spinnersAttributes)) {return array();}
       return self::$_spinnersAttributes;
   }
-// END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
   
   /** ==========================================================================
    * Return the specific fieldsAttributes
@@ -452,7 +380,6 @@ function periodChanged(theId) {
     return self::$_databaseCriteria;
   }
   
-// ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
   /** ============================================================================
    * Return the specific colCaptionTransposition
    * @return the colCaptionTransposition
@@ -475,7 +402,56 @@ function periodChanged(theId) {
   }
 
   public function hideSynthesisBudgetAndProjectElement($hide=false) {
-//      $fieldsAttributes = self::$_fieldsAttributes;
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {  
+      foreach($this as $fieldName=>$value) {
+          switch($fieldName) {
+              case '_byMet_budgetWork' :
+              case '_byMet_budgetCost' :
+              case '_byMet_expenseBudgetAmount' :
+              case '_byMet_totalBudgetCost' :    
+              case '_byMet_daughtersBudgetWork' :
+              case '_byMet_daughtersBudgetCost' :
+              case '_byMet_daughtersBudgetExpenseAmount' :    
+              case '_byMet_daughtersBudgetTotalCost' :
+              case '_byMet_projectProgressWorkPct' :
+              case '_byMet_projectProgressCostPct' :
+              case '_byMet_projectProgressExpensePct' :
+              case '_byMet_projectProgressTotalCostPct' :
+              case '_byMet_projectProgressPlannedPct' :
+              case 'validatedWork' :
+              case 'assignedWork' :
+              case 'realWork' :
+              case 'leftWork' :
+              case 'plannedWork' :
+              case 'validatedCost' :
+              case 'assignedCost' :
+              case 'realCost' :
+              case 'leftCost' :
+              case 'plannedCost' :
+              case 'expenseValidatedAmount' :
+              case 'expenseAssignedAmount' :
+              case 'expenseRealAmount' :
+              case 'expenseLeftAmount' :
+              case 'expensePlannedAmount' :
+              case 'totalValidatedCost' :
+              case 'totalAssignedCost' :
+              case 'totalRealCost' :
+              case 'totalLeftCost' :
+              case 'totalPlannedCost' :
+              case 'idle' :
+              case 'idleDateTime' :
+              case '_sec_BudgetSynthesis' :
+                $newFieldAttributes = "hiddenforce,noList,notInFilter";
+                self::$_fieldsAttributes[$fieldName] = $newFieldAttributes;                  
+                break;
+          }
+      }  
+      return;        
+    }
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+      
+      
       foreach($this as $fieldName=>$value) {
           switch($fieldName) {
               case '_byMet_budgetWork' :
@@ -595,7 +571,6 @@ function periodChanged(theId) {
         // Initialize year of the new organization's budget element to current year
         $this->year = date('Y');
     } else {
-// ADD BY Marc TABARY - 2017-03-21 - IMPORT ORGANIZATION & BUDGETELEMENT        
         // Year change => Due to import
         if ($this->year != $old->year) {
             // Search of BudgetElement with $this->year
@@ -629,7 +604,6 @@ function periodChanged(theId) {
             new Organization($this->refId,true,$bE);
             return;
         }
-// END ADD BY Marc TABARY - 2017-03-21 - IMPORT ORGANIZATION & BUDGETELEMENT        
     }        
     return parent::save();
   }  
@@ -640,6 +614,11 @@ function periodChanged(theId) {
    * @return string
    */
   private function drawActionsButtonsGroup($item,$readOnly) {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        return;
+    }
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
     global $print;
     
     $scope = 'Organization';
@@ -729,6 +708,11 @@ function periodChanged(theId) {
    * @param string $item : fields name to draw
    */
   public function drawSpecificItem($item,$readOnly=true) {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        return;
+    }
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
       switch($item) {
           // Draw the message that say if BudgetElement exits or not
           case 'OrganizationBudgetElementMsg' :
@@ -750,10 +734,6 @@ function periodChanged(theId) {
       return $result;
   }
   
-// END ADD BY Marc TABARY - 2017-03-06 - PERIODIC YEAR BUDGET ELEMENT
-  
-  
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
   /** =============================================================
    * Set the 
    *   - subOrganization budget elements ie :
@@ -770,7 +750,13 @@ function periodChanged(theId) {
    *           Planned  : % budgetElement.plannedCost vs budgetElement.totalBudgetCost
    */
   public function setDaughtersBudgetElementAndPlanningElement() {
-      if ($this->id==NULL or trim($this->id)=="") {
+
+      
+      if ($this->id==NULL or trim($this->id)=="" or 
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+          Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES"    
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+         ) {
           $this->_byMet_daughtersBudgetWork=0;
           $this->_byMet_daughtersBudgetCost=0;
           $this->_byMet_daughtersBudgetExpenseAmount=0;
@@ -821,6 +807,11 @@ function periodChanged(theId) {
   }
             
   private function getSubBudgetElement() {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if (Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        return array();
+    }    
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT      
     $critOrga['idOrganization']=$this->refId;
     $critOrga['idle']='0';
     
@@ -868,9 +859,7 @@ function periodChanged(theId) {
       $myOrgaParent = new Organization($myOrga->idOrganization);
       return $myOrgaParent;
   }
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET  
 
-// ADD BY Marc TABARY - 2017-03-04 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
   public function setValueOfAlertOverWarningOverOkUnder($alertOver=100, $warningOver=80, $okUnder=50) {
     $XXX=sprintf("%'.03d\n", $alertOver);
     $YYY=sprintf("%'.03d\n", $warningOver);
@@ -907,7 +896,6 @@ function periodChanged(theId) {
         self::$_fieldsAttributes[$fieldName]=$value;
     }
   }    
-// END ADD BY Marc TABARY - 2017-03-04 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
 
   
   /** =========================================================
@@ -918,13 +906,6 @@ function periodChanged(theId) {
    * @return nothing
    */
   private function hideWorkCost() {
-// COMMENT BY Marc TABARY - 2017-03-01 - WORK AND COST VISIBILITY      
-//    unset($this->_tab_5_5_smallLabel);
-// END COMMENT BY Marc TABARY - 2017-03-01 - WORK AND COST VISIBILITY
-
-      
-// ADD BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -949,7 +930,6 @@ function periodChanged(theId) {
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
 
     return;
-// END ADD BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes    
       
       
 /* Babynus : next code no more used, same things done generatically by previous code      
@@ -1001,13 +981,6 @@ function periodChanged(theId) {
    * @return nothing
    */
   private function showWorkCost() {
-// COMMENT BY Marc TABARY - 2017-03-01 - WORK AND COST VISIBILITY            
-//  	$this->_tab_5_5_smallLabel = array('validated','assigned','real','left','reassessed',
-//                                           'work','cost','expense','reserveAmountShort','totalCost');
-// END COMMENT BY Marc TABARY - 2017-03-01 - WORK AND COST VISIBILITY      
-
-// ADD BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1038,47 +1011,8 @@ function periodChanged(theId) {
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
 
     return;
-// END ADD BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-
-
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['budgetWork']='';
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['validatedWork']='readonly';
-    self::$_fieldsAttributes['assignedWork']='readonly';
-    self::$_fieldsAttributes['realWork']='readonly';
-    self::$_fieldsAttributes['leftWork']='readonly';
-    self::$_fieldsAttributes['plannedWork']='readonly';
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['budgetCost']='';
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['validatedCost']='readonly';
-    self::$_fieldsAttributes['assignedCost']='readonly';
-    self::$_fieldsAttributes['realCost']='readonly';
-    self::$_fieldsAttributes['leftCost']='readonly';
-    self::$_fieldsAttributes['plannedCost']='readonly';
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['expenseBudgetAmount']='';
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['expenseValidatedAmount']='readonly';
-    self::$_fieldsAttributes['expenseAssignedAmount']='readonly';
-    self::$_fieldsAttributes['expenseRealAmount']='readonly';
-    self::$_fieldsAttributes['expenseLeftAmount']='readonly';
-    self::$_fieldsAttributes['expensePlannedAmount']='readonly';
-// COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY                
-//    self::$_fieldsAttributes['reserveAmount']='readonly';
-// END COMMENT BY Marc TABARY - 2017-02-17 - WORK AND COST VISIBILITY                
-// ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['totalBudgetCost']='readonly';
-// END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET      
-    self::$_fieldsAttributes['totalValidatedCost']='readonly';
-    self::$_fieldsAttributes['totalAssignedCost']='readonly';
-    self::$_fieldsAttributes['totalRealCost']='readonly';
-    self::$_fieldsAttributes['totalLeftCost']='readonly';
-    self::$_fieldsAttributes['totalPlannedCost']='readonly';
   }
   
-// ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
   /** ===============================================
    * For fields those have $_fieldsAttributes defined :
    *  - Allows enter value :
@@ -1092,7 +1026,6 @@ function periodChanged(theId) {
    */
   private function showValidated() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
     
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
@@ -1147,7 +1080,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
 
   }
 
@@ -1165,8 +1097,6 @@ function periodChanged(theId) {
    */
   private function showOnlyWork() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1207,7 +1137,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
   
   /** ===============================================
@@ -1222,8 +1151,6 @@ function periodChanged(theId) {
    */
   private function showOnlyCost() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1278,7 +1205,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
 
   /** ===============================================
@@ -1294,8 +1220,6 @@ function periodChanged(theId) {
    */
   private function showOnlyValidatedWorkAndAllCost() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1360,7 +1284,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
 
   /** ===============================================
@@ -1376,8 +1299,6 @@ function periodChanged(theId) {
    */
   private function hideWorkAndShowValidatedCost() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1445,7 +1366,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
 
   /** ===============================================
@@ -1461,8 +1381,6 @@ function periodChanged(theId) {
    */
   private function showAllWorkAndValidatedCost() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1529,7 +1447,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
   
   /** ===============================================
@@ -1545,8 +1462,6 @@ function periodChanged(theId) {
    */
   private function showOnlyValidatedWorkAndHideCost() {
 
-// CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
-    
     if (isset(self::$_fieldsAttributes)) {
         foreach(self::$_fieldsAttributes as $name => $value) {
             // Do nothing if 'hiddenforce'
@@ -1613,7 +1528,6 @@ function periodChanged(theId) {
     }        
     // For the moment, reserveAmount is always hidden
     self::$_fieldsAttributes['reserveAmount'] = 'hidden';
-// END CHANGE BY Marc TABARY - 2017-03-01 - MORE GENERIC - DON'T DESTROY OTHER ITEMS OF $_fieldsAttributes
   }
 
   public function setAttributes($workVisibility, $costVisibility) {
@@ -1651,5 +1565,4 @@ function periodChanged(theId) {
             break;
     }
   }
-// END ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY   
 }?>
