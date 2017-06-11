@@ -54,7 +54,11 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
    * @return the result of parent::save() function
    */
   public function save() {
-
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if (Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        return;
+    }    
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT      
     // Update total budget
     $this->totalBudgetCost = $this->budgetCost + $this->expenseBudgetAmount;
 

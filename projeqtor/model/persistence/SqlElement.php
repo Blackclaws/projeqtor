@@ -662,7 +662,10 @@ abstract class SqlElement {
 			  }
 			}
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
-			and property_exists($class, 'OrganizationBudgetElementCurrent')) {
+			and property_exists($class, 'OrganizationBudgetElementCurrent')
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+                        and Parameter::getGlobalParameter('useOrganizationBudgetElement')==="YES"                                
+                            ) {
 			  $be='OrganizationBudgetElementCurrent';
 			  $controlBe=$this->$be->control();
 			  if ($controlBe!='OK') {
