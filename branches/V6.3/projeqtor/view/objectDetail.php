@@ -4661,6 +4661,10 @@ function endBuffering($prevSection,$included) {
       'successor'                   =>array('2'=>'bottom',  '3'=>'bottom'),
       'void'                        =>array('2'=>'right',   '3'=>'right')
   );
+  // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+//    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')==="YES") {
+//        $sectionPosition['hierarchicorganizationprojects'] = array('2'=>'bottom',    '3'=>'extra');
+//    }
   if (!$reorg) return;
   $display=ob_get_clean();
   if (!$prevSection and !$included) {

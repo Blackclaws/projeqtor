@@ -36,62 +36,67 @@ class OrganizationMain extends SqlElement {
   public $name;
   public $idOrganizationType;
   public $idResource;
-// ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION  
   public $_byMet_hierarchicName;
-// ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION  
   public $idOrganization;
   public $idUser;
   public $creationDate;
   public $lastUpdateDateTime;
   
-// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT  
   public $_tab_2_1 = array('idle','idleDate',
                            'idStatus');
   public $idle;
   public $idleDateTime;
-// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
   public $description;
 
-// ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
   public $_sec_ValueAlertOverWarningOverOkUnder;
   public $_tab_3_1_smallLabel = array('alertOver', 'warningOver', 'okUnder',
                                       'thresholds');
   public $alertOverPct;
   public $warningOverPct;
   public $okUnderPct;
-// END ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
   
-// ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
   public $sortOrder;
-// END ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
   public $OrganizationBudgetElementCurrent; // is an object because first Letter is Upper
 
-// ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION
+ // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
+  public $_sec_synthesis;
+  public $_tab_5_4_smallLabel = array('validated','assigned','real','left','reassessed',
+      'work','cost','expense','totalCost');
+  // Work row
+  public $_byMet_validatedWork;
+  public $_byMet_assignedWork;
+  public $_byMet_realWork;
+  public $_byMet_leftWork;
+  public $_byMet_plannedWork;
+  // Cost row
+  public $_byMet_validatedCost;
+  public $_byMet_assignedCost;
+  public $_byMet_realCost;
+  public $_byMet_leftCost;
+  public $_byMet_plannedCost;
+  // Expense row  
+  public $_byMet_expenseValidatedAmount;
+  public $_byMet_expenseAssignedAmount;
+  public $_byMet_expenseRealAmount;
+  public $_byMet_expenseLeftAmount;
+  public $_byMet_expensePlannedAmount;
+  // total row
+  public $_byMet_totalValidatedCost;
+  public $_byMet_totalAssignedCost;
+  public $_byMet_totalRealCost;
+  public $_byMet_totalLeftCost;
+  public $_byMet_totalPlannedCost;
+
+  // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
+  
   // Section that presents the projects that are linked to this organization and its sub-organizations
   // Want a item's count on section header => ='itemsCount=method to call to get objects to count'
   public $_sec_HierarchicOrganizationProjects='itemsCount=getProjectsOfOrganizationAndSubOrganizations';
   public $_spe_Project=array();
-// END ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION
   
-  
-// ADD BY Marc TABARY - 2017-02-24 - OBJECTS LINKED BY ID TO MAIN OBJECT
-
-// ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION'S PROJECTS
-  // naming rule to draw list of objects linked by id ('foreign key') to the object
-  // _sec_    : For section (it's generic to the FrameWork)
-  // _xxxs    : xxx the object linked by id - Don't forget the 's' at the end
-  // OfObject : indicate, it's a section for linked by id object
-//  public $_sec_ProjectsOfObject;
-//  public $_Project=array();
-// ADD BY Marc TABARY - 2017-02-22 - ORGANIZATIONS PROJECTS
-  
-// ADD BY Marc TABARY - 2017-02-21 - ORGANIZATION'S RESOURCES  
   public $_sec_ResourcesOfObject;
   public $_Resource=array();
-// ADD BY Marc TABARY - 2017-02-21 - ORGANIZATION'S RESOURCES
 
-// ADD BY Marc TABARY - 2017-02-24 - OBJECTS LINKED BY ID TO MAIN OBJECT
-  
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -99,6 +104,14 @@ class OrganizationMain extends SqlElement {
 
   // hidden
   public $_nbColMax=3;
+  
+  // ADD BY Marc TABARY - 2017-06-06 - WORK AND COST VISIBILITY
+  public $_workVisibility;
+  public $_costVisibility;
+  private static $staticCostVisibility=null;
+  private static $staticWorkVisibility=null;
+// END ADD BY Marc TABARY - 2017-06-06 - WORK AND COST VISIBILITY
+
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -111,53 +124,57 @@ class OrganizationMain extends SqlElement {
   private static $_fieldsAttributes=array(
       "name"=>"required",                                   
       "idOrganizationType"=>"required",
-// ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
       "sortOrder"=>"hidden,noImport",
       "_byMet_hierarchicName"=>"readonly,noImport",
-// END ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
-// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
       "idleDateTime"=>"readonly,noImport",
-// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT      
-// ADD BY Marc TABARY - 2017-03-18 - FIELD NOT IN LIST
-// ADD BY Marc TABARY - 2017-03-20 - FIELD NOT PRESENT FOR FILTER  
       // New value of attribute : noInFilter
       // If set, this attribute will not present in the list of attributes for the filters
       "alertOverPct"=>"noList,notInFilter",
       "warningOverPct"=>"noList,notInFilter",
       "okUnderPct"=>"noList,notInFilter",
-// END ADD BY Marc TABARY - 2017-03-18 - FIELD NOT IN LIST
-// END ADD BY Marc TABARY - 2017-03-20 - FIELD NOT PRESENT FOR FILTER
-// ADD BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
-      "_spe_Project"=>"noExport"
-// END ADD BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
+      "_spe_Project"=>"noExport",
+ // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
+      "_byMet_validatedWork"=>"readonly",
+      "_byMet_assignedWork"=>"readonly",
+      "_byMet_realWork"=>"readonly",
+      "_byMet_leftWork"=>"readonly",
+      "_byMet_plannedWork"=>"readonly",
+      "_byMet_validatedCost"=>"readonly",
+      "_byMet_assignedCost"=>"readonly",
+      "_byMet_realCost"=>"readonly",
+      "_byMet_leftCost"=>"readonly",
+      "_byMet_plannedCost"=>"readonly",
+      "_byMet_expenseValidatedAmount"=>"readonly",
+      "_byMet_expenseAssignedAmount"=>"readonly",
+      "_byMet_expenseRealAmount"=>"readonly",
+      "_byMet_expenseLeftAmount"=>"readonly",
+      "_byMet_expensePlannedAmount"=>"readonly",
+      "_byMet_totalValidatedCost"=>"readonly",
+      "_byMet_totalAssignedCost"=>"readonly",
+      "_byMet_totalRealCost"=>"readonly",
+      "_byMet_totalLeftCost"=>"readonly",
+      "_byMet_totalPlannedCost"=>"readonly"
+ // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
   );   
  
   private static $_colCaptionTransposition = array(
       'idResource'=>'manager',
       'idUser'=>'issuer',
-// ADD BY Marc TABARY - 2017-02-08 - PARENT ORGANIZATION
       'idOrganization'=>'parentOrganization',
       '_byMet_hierarchicName'=>'hierarchicString',      
-// END ADD BY Marc TABARY - 2017-02-08 - PARENT ORGANIZATION
-// CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD
     'idleDateTime'=>'idleDate',
-// END CHANGE BY Marc TABARY - 2017-03-20 - EXPORT FIELD      
   
   );
 
-  // ADD BY Marc TABARY - 2017-03-03 - DRAW SPINNER
   // Spinner for drawing et inputing the alertOverPct, warningOverPct, okUnderPct
   private static $_spinnersAttributes = array(
       'alertOverPct'=>'min:0,max:100,step:5,bkColor:#FFAAAA !important',
       'warningOverPct'=>'min:0,max:100,step:5,bkColor:#FFBE00 !important;',
       'okUnderPct'=>'min:0,max:100,step:5,bkColor:#B5DE8E !important;',      
   );  
-// END ADD BY Marc TABARY - 2017-03-03 - DRAW SPINNER
   
-// ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
   private static $_subOrganizationList=array();
   private static $_subOrganizationFlatList=array();
-// END ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
 
    /** ==========================================================================
    * Constructor
@@ -168,34 +185,61 @@ class OrganizationMain extends SqlElement {
     *                                         - null = Normal construct 
    * @return void
    */ 
-// CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT - Add BudgetElement
   function __construct($id = NULL, $withoutDependentObjects=false, $budgetElement=null) {
-  // Old    
-//  function __construct($id = NULL, $withoutDependentObjects=false) {  
-// END CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT - Add BudgetElement
       
   	parent::__construct($id,$withoutDependentObjects);
 
-// ADD BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT - Add BudgetElement
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+        self::$_fieldsAttributes["_sec_ValueAlertOverWarningOverOkUnder"] = "hidden,noList,notInFilter,noPrint";
+        self::$_fieldsAttributes["alertOverPct"] = "hidden,noList,notInFilter,noPrint";
+        self::$_fieldsAttributes["warningOverPct"] = "hidden,noList,notInFilter,noPrint";
+        self::$_fieldsAttributes["okUnderPct"] = "hidden,noList,notInFilter,noPrint";
+        unset($this->OrganizationBudgetElementCurrent);
+        if ($id!==NULL  and trim($id)!='') {            
+            $this->calculatePlanningElement();
+            $this->setHierarchicString();            
+        }
+        return;
+    } else {
+        unset($this->_sec_synthesis);
+        unset($this->_tab_5_4_smallLabel);        
+        unset($this->_byMet_validatedWork);
+        unset($this->_byMet_assignedWork);
+        unset($this->_byMet_realWork);
+        unset($this->_byMet_leftWork);
+        unset($this->_byMet_plannedWork);
+        unset($this->_byMet_validatedCost);
+        unset($this->_byMet_assignedCost);
+        unset($this->_byMet_realCost);
+        unset($this->_byMet_leftCost);
+        unset($this->_byMet_plannedCost);
+        unset($this->_byMet_expenseValidatedAmount);
+        unset($this->_byMet_expenseAssignedAmount);
+        unset($this->_byMet_expenseRealAmount);
+        unset($this->_byMet_expenseLeftAmount);
+        unset($this->_byMet_expensePlannedAmount);
+        unset($this->_byMet_totalValidatedCost);
+        unset($this->_byMet_totalAssignedCost);
+        unset($this->_byMet_totalRealCost);
+        unset($this->_byMet_totalLeftCost);
+        unset($this->_byMet_totalPlannedCost);
+    }
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+  
         if($budgetElement!=null and $id!=null and trim($id)!='') {
             $this->updateBudgetElementSynthesis($budgetElement);
             return;
   }
-// END ADD BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT - Add BudgetElement
-
-// ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
         if ($id != NULL and trim($id)!='') {
             if (is_object($this->OrganizationBudgetElementCurrent)) {
                 $this->setHierarchicString();
                 if ($this->OrganizationBudgetElementCurrent->id) {
                         $this->OrganizationBudgetElementCurrent->setDaughtersBudgetElementAndPlanningElement();
-// ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
                         $this->OrganizationBudgetElementCurrent->setValueOfAlertOverWarningOverOkUnder(
                                                                  $this->alertOverPct,
                                                                  $this->warningOverPct,
                                                                  $this->okUnderPct);
-// END ADD BY Marc TABARY - 2017-03-03 - SET VALUE OF XXX, YYY, ZZZ IN 'alertOverXXXwarningOverYYYokUnderYYY'
-// ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
                         $this->OrganizationBudgetElementCurrent->hideOrganizationBudgetElementMsg(true);
                         $this->OrganizationBudgetElementCurrent->setWorkCostExpenseTotalCostBudgetElement();
                         $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(false);
@@ -203,9 +247,7 @@ class OrganizationMain extends SqlElement {
                     $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(true);
                 }
             }
-// END ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
         }
-// END ADD BY Marc TABARY - 2017-02-28 - ORGANIZATION BUDGET
   }
 
    /** ==========================================================================
@@ -221,7 +263,6 @@ class OrganizationMain extends SqlElement {
 // ============================================================================**********
   
   
-// ADD BY Marc TABARY - 2017-03-03 - DRAW SPINNER        
   /** ==========================================================================
    * Return the generic spinnerAttributes
    * @return array[name,value] : the generic $_spinnerAttributes
@@ -230,7 +271,6 @@ class OrganizationMain extends SqlElement {
       if(!isset(self::$_spinnersAttributes)) {return array();}
       return self::$_spinnersAttributes;
   }
-// END ADD BY Marc TABARY - 2017-03-03 - DRAW SPINNER
 
   /** ==========================================================================
    * Return the specific layout
@@ -278,7 +318,6 @@ class OrganizationMain extends SqlElement {
 // ============================================================================**********
   
 
-// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF PROJECTS LINKED TO THE ORGANIZATION AND ITS SUB-ORGANIZATION
 /** =====================================================================================
  * Draw section of an object linked by an id with the object to which we draw the detail
  * Sample : drawObjectLinkedByIdToObject($obj, 'Project', true)
@@ -426,10 +465,7 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
         }    
      return $result;
   }
-// END ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF PROJECTS LINKED TO THE ORGANIZATION AND ITS SUB-ORGANIZATION
   
-// ADD BY Marc TABARY - 2017-02-21
-
   /** =========================================================================
    * Draw a specific item for the current class.
    * @param $item the item. Correct values are : 
@@ -444,9 +480,7 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
   public function simpleSave() {
     return parent::save();
   }
-// END ADD BY Marc TABARY - 2017-02-21
 
-// ADD BY Marc TABARY - 2017-02-28 - HIERARCHIC STRING
   public function setHierarchicString() {
     if ($this->id==NULL or trim($this->id)=="") {
           $this->_byMet_hierarchicName = '';
@@ -454,13 +488,18 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
         $orga = $this;
         $hierarchicName="";
         while ($orga->idOrganization and trim($orga->idOrganization)!='') {
-            $orga = new Organization($orga->idOrganization);
+// COMMENT BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+//            $orga = new Organization($orga->idOrganization);
+// END COMMENT BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+            $critArray = array("id" => $orga->idOrganization);
+            $orga = SqlElement::getSingleSqlElementFromCriteria("Organization", $critArray);
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
             $hierarchicName=$orga->name.' - '.$hierarchicName;
         }
         if ($hierarchicName==='') {$this->_byMet_hierarchicName='';} else {$this->_byMet_hierarchicName = substr($hierarchicName, 0, -3);}
     }
   }
-// END ADD BY Marc TABARY - 2017-02-28 - HIERARCHIC STRING
               
    /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
@@ -470,27 +509,24 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
   public function save() {	
     $old=$this->getOld();
     
-// ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT
     // The idleDate
     if ($old->idle != $this->idle) {
         $this->idleDateTime = ($this->idle?date('Y-m-d H:i:s'):null);        
     }
-// END ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT
     
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')==="YES") {
     
-// MOVE BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
-// ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT
     if ($this->OrganizationBudgetElementCurrent->id or   # The Budget Element exist for this organization et selected period
         $this->id==null or trim($this->id)==''           # The organization is to create
        ) {
-// END ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT        
         if ($this->name !== $old->name) {$this->OrganizationBudgetElementCurrent->refName=$this->name;}
         // 'unclose' organization ==> BudgetElement is 'unclose' to.
         if ($this->idle !== $old->idle and $this->idle) {
             $this->OrganizationBudgetElementCurrent->idle=$this->idle;            
             $this->OrganizationBudgetElementCurrent->idleDateTime=$this->idleDateTime;            
-// ADD BY Marc TABARY - 2017-03-08 - PERIODIC YEAR BUDGET ELEMENT
         }
+    }
     }
 
     $result = parent::save();
@@ -498,18 +534,13 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
     if ($lastStatus!='OK') {
     return $result; 
     }
-// END MOVE BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
 
-    
-// ADD BY Marc TABARY - 2017-03-14 - BUG CORRECTION - Store sortOrder if new organization
 // Init sortOrder if new organization
 if($old->id==null or trim($old->id)=='') {
     $this->sortOrder = sprintf("%04d", $this->id);    
     $this->simpleSave();
   }
-// END ADD BY Marc TABARY - 2017-03-14 - BUG CORRECTION - Store sortOrder if new organization
         
-// ADD BY Marc TABARY - 2017-03-03 - ORGANIZATION'S MANAGER
    // If manager change and new manager is'nt empty
    if ($old->idResource !=$this->idResource and $this->idResource!=null) {
        // Check if the manager has an organization.
@@ -520,15 +551,11 @@ if($old->id==null or trim($old->id)=='') {
            $manager->save();
        }
    }  
-// END ADD BY Marc TABARY - 2017-03-03 - ORGANIZATION'S MANAGER
     
-// ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
     // Use database colum sortOrder to have the organization level
     if ($old->idOrganization != $this->idOrganization) {
-// ADD BY Marc TABARY - 2017-02-17 - Optimization ?
         self::$_subOrganizationList=array();
         self::$_subOrganizationFlatList=array();
-// END ADD BY Marc TABARY - 2017-02-17 - Optimization ?
         $this->sortOrder = $this->getOrganizationSortOrder();
         // Only save sortOrder of the Organization
         $this->simpleSave();
@@ -542,10 +569,12 @@ if($old->id==null or trim($old->id)=='') {
             $orga->simpleSave();
         }
     }
-// END ADD BY Marc TABARY - 2017-02-12 - PARENT ORGANIZATION
     
-// ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
     if ($this->idOrganization != $old->idOrganization) {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+        if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+            $this->calculatePlanningElement();
+        } else {
         // Change the current BudgetElement
         if ($this->idOrganization and trim($this->idOrganization)!='') {
           $this->OrganizationBudgetElementCurrent->topRefType='Organization';
@@ -568,16 +597,16 @@ if($old->id==null or trim($old->id)=='') {
         // $this->updateSynthesis();
         // Then i do that
         $thisOrga = new Organization($this->id);
-// CHANGE BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
         // Take oportunity of updateSynthesis for updating others datas of all BudgetElement of the organization
         $thisOrga->updateSynthesis(
                 (($this->idle!=$old->idle and $this->idle==1)?true:false), # Close BudgetElement only on change idle 0 => 1
                 ($this->name!=$old->name?true:false)
                 );
-        // Old
-//        $thisOrga->updateSynthesis();
-// END CHANGE BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT        
+        }    
     } else {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+        if(Parameter::getGlobalParameter('useOrganizationBudgetElement')==="YES") {
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
         if($this->idle!=$old->idle or $this->name!=$old->name) {
             
             $this->saveOrganizationBudgetElement( # Close BudgetElement only on change idle 0 => 1
@@ -587,14 +616,13 @@ if($old->id==null or trim($old->id)=='') {
                                                 );
         }
     }
-// END ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION            
+    }
     
     return $result; 
 
   }
   
   
-// ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
 /** ===================================================================
  * Save idle, idleDateTime et name of all not closed BudgetElement of this organization
  * @param integer $idle
@@ -626,7 +654,6 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
       return $result;
 
 }  
-// END ADD BY Marc TABARY - 2017-03-09 - PERIODIC YEAR BUDGET ELEMENT
 
 
   public function delete() {
@@ -644,7 +671,6 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    */
   public function control(){
     $result="";
-// ADD BY Marc TABARY - 2017-02-08 - PARENT ORGANIZATION
     // Can't be it's own parent organization
     if ($this->id and $this->id==$this->idOrganization) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
@@ -660,15 +686,12 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
         $result.='<br/>' . i18n('errorHierarchicLoop');
       }
     }
-// END ADD BY Marc TABARY - 2017-02-08 - PARENT ORGANIZATION            
 
-// ADD BY Marc TABARY - 2017-03-03 - ORGANIZATION'S MANAGER
     // An organization's manager must be attached to the organization
     $res = new Resource($this->idResource);
     if ($res->idOrganization!=null and $this->id!=$res->idOrganization) {
         $result.='<br/>' . i18n('organizationManagerDifferentOfThisOrganization');        
     }
-// END ADD BY Marc TABARY - 2017-03-03 - ORGANIZATION'S MANAGER
         
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
@@ -685,6 +708,10 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * @param sqlElement budgetElement
    */
   public function updateBudgetElementSynthesis($bE=null) {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {return;}
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    
     if($bE==null) {return;}
     
     // Retrieve organization's projects (idle=0 and 1)
@@ -862,11 +889,8 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
     $bE->save();
   
   }
-// END ADD BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT - Add BudgetElement
 
   
-  
-// ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
   /** ====================================================================
    * Update BudgetElement of :
    *    - the organization
@@ -876,6 +900,10 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * @param boolean $updateName : If true, Update the BudgetElement's name
    */
   public function updateSynthesis($updateIdle=true, $updateName=true) {
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {return;}
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+      
     // Retrieve organization's projects (idle=0 and 1)
     $prjOrgaList = $this->getRecursiveOrganizationProjects(true,false);
 
@@ -1069,10 +1097,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
        $orga->updateSynthesis(false, false);
     }
   }
-// END ADD BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
 
-  
-// ADD BY Marc TABARY - 2017-02-10 - PARENT ORGANIZATION
   /** ====================================================================
    * Update BudgetElement of :
    *    - the organization
@@ -1080,6 +1105,9 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * only for the current BudgetElement
    */
   public function updateSynthesisWithoutPeriod() {      
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {return;}
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
     // Update current budgetElement
     $bec=$this->OrganizationBudgetElementCurrent;
     
@@ -1107,21 +1135,13 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
 
     // Retrieve organization's projects
     
-// CHANGE BY Marc TABARY - 2017-03-07 - INCLUDE PROJECTS WITH IDLE=1 OR 0 
     $prjOrgaList = $this->getRecursiveOrganizationProjects(true,false);
-    // Old
-//    $prjOrgaList = $this->getRecursiveOrganizationProjects(true);
-// END CHANGE BY Marc TABARY - 2017-03-07 - INCLUDE PROJECTS WITH IDLE=1 OR 0 
     
     foreach($prjOrgaList as $keyPrjOrga => $name) {
         // Calculate BudgetElement 
     $pe=new ProjectPlanningElement();
-// CHANGE BY Marc TABARY - 2017-03-07 - BUDGET ELEMENT WITH PLANNING ELEMENT'S IDLE=1 AND 0 
         $crit=array('refId'=>$keyPrjOrga, 'refType'=>'Project');
-        //Old
-//        $crit=array('refId'=>$keyPrjOrga, 'refType'=>'Project', 'idle'=>'0');
         $peList=$pe->getSqlElementsFromCriteria($crit);
-// END CHANGE BY Marc TABARY - 2017-03-07 - BUDGET ELEMENT WITH PLANNING ELEMENT'S IDLE=1 AND 0 
         foreach($peList as $pe) {
             $bec->validatedWork+=$pe->validatedWork;
             $bec->assignedWork+=$pe->assignedWork;
@@ -1151,20 +1171,14 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
     // Repeat for parent organization
     if ($this->idOrganization and trim($this->idOrganization)!='') {
        $orga = new Organization($this->idOrganization);
-// CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
-  //Old
        $orga->updateSynthesisWithoutPeriod();
-//       $orga->updateSynthesis();
-// END CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
     }
   }
-// END ADD BY Marc TABARY - 2017-02-10 - PARENT ORGANIZATION
 
-// CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
   public function updateSynthesisWithOutPeriodAndWithOutHierarchic() {
-  //Old
-//  public function updateSynthesis() {
-// END CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {return;}
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
       
     // Update current budgetElement
     $bec=$this->OrganizationBudgetElementCurrent;
@@ -1265,7 +1279,6 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
     return $res->idOrganization;
   }
   
-// ADD BY Marc TABARY - 2017-02-24 - LIST OF RESOURCES LINKED TO THE ORGANIZATION
   /** ===================================================================
    * Get the list of resources linked by id with the organization
    * @return array of resources key-name
@@ -1277,11 +1290,7 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
       $listRes = SqlElement::transformObjSqlElementInArrayKeyName($resource->getSqlElementsFromCriteria($crit));
       return $listRes;
   }
-// END ADD BY Marc TABARY - 2017-02-24 - LIST OF RESOURCES LINKED TO THE ORGANIZATION
   
-  
-  
-// ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION VISIBILITY      
   /** ===========================================================================
    * Get the list of organizations (with sub_organizations) of the connected user
    * @return array of organization's key-name
@@ -1293,15 +1302,12 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
         return $userOrga->getRecursiveSubOrganizationsFlatList(true,true);
     } else {return array();}        
 }
-// END ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION VISIBILITY
 
-  
   /** ===========================================================================
    * Get the list of organizations (with sub_organizations) of the connected user
    * @return string of organization's id separated by commas ('0' if no organization)
    */
   public static function getUserOrganizationList() {
-// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY      
     $userConnected = new Affectable(getSessionUser()->id);
     if($userConnected->idOrganization and trim($userConnected->idOrganization)!='') {
         $userOrga = new Organization($userConnected->idOrganization);
@@ -1313,17 +1319,10 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
         }        
         return substr($orgaListId, 0, -1);;
     } else {return '0';}
-// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY
-    
-// COMMENT BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
-//    $userOrga = self::getUserOrganization(); // TODO : include sub-organizations
-//    return $userOrga;
-// END COMMENT BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
     
   }
 
 
-// ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
   
   /** ==========================================================================
    * Retrieve sortOrder of a organization that represents it hierarchie
@@ -1347,11 +1346,9 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * @return an array containing id, name, suborganization (recursive array)
    */
   public function getRecursiveSubOrganizations($limitToActiveOrganizations=false) {
-    // ADD BY Marc TABARY - 2017-02-17 - Optimization ?      
     if (array_key_exists($this->id, self::$_subOrganizationList)) {
         return self::$_subOrganizationList[$this->id];
     }
-    // END ADD BY Marc TABARY - 2017-02-17 - Optimization ?
     
     $crit=array('idOrganization'=>$this->id);
     if ($limitToActiveOrganizations) {
@@ -1386,7 +1383,6 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
         return substr($orgaListId, 0, -1).')';      
   }
   
-// ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF PROJECTS LINKED TO THE ORGANIZATION AND ITS SUB-ORGANIZATION
     /** ==========================================================================
    * Recusively retrieves all the sub-organization of the current organization
    * and presents it as an array list (id,name,idle)
@@ -1417,7 +1413,6 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
     }
     return $list;
   }
-// END ADD BY Marc TABARY - 2017-03-16 - DRAW LIST OF PROJECTS LINKED TO THE ORGANIZATION AND ITS SUB-ORGANIZATION
 
   
   /** ==========================================================================
@@ -1427,11 +1422,9 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * 
    */
   public function getRecursiveSubOrganizationsFlatList($limitToActiveOrganizations=false, $includeSelf=false) {
-    // ADD BY Marc TABARY - 2017-02-17 - Optimization ?      
     if (array_key_exists($this->id, self::$_subOrganizationFlatList)) {
         return self::$_subOrganizationFlatList[$this->id];
     }
-    // END ADD BY Marc TABARY - 2017-02-17 - Optimization ?
 
     $tab=$this->getRecursiveSubOrganizations($limitToActiveOrganizations);
     $list=array();
@@ -1506,33 +1499,21 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * @return an array containing the list of projects as id=>name
    * 
    */
-// CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
     public function getRecursiveOrganizationProjects($limitToActiveOrganizations=false,$limitToActiveProjects=true) {  
-    //Old    
-//  public function getRecursiveOrganizationProjects($limitToActiveOrganizations=false) {
-// END CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT  
 
     if ($limitToActiveOrganizations and $this->idle === 0) {
-        return NULL;
+        return array();
     }
     
     // Projects of Organization
-// CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
     $prjList=$this->getOrganizationProjects($limitToActiveProjects);
-    //Old        
-//    $prjList=$this->getOrganizationProjects(true);
-// END CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT  
     
     // SubOrganizations of Organization
     $subOrgaList = $this->getRecursiveSubOrganizationsFlatList($limitToActiveOrganizations);
     foreach($subOrgaList as $keySubOrga=>$val) {
         // Projects of SubOrganization
         $Orga = new Organization($keySubOrga, false);
-// CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT
         $prjSubOrgaList=$Orga->getOrganizationProjects($limitToActiveProjects);
-    //Old        
-//        $prjSubOrgaList=$Orga->getOrganizationProjects(true);
-// END CHANGE BY Marc TABARY - 2017-03-07 - PERIODIC YEAR BUDGET ELEMENT  
         foreach($prjSubOrgaList as $keyPrjSubOrga=>$name) {
             $id = $keyPrjSubOrga;
             $prjList[$id] = $name;            
@@ -1556,6 +1537,736 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
     return $prjWithOutSubPrjList;
   }
   
-// END ADD BY Marc TABARY - 2017-02-09 - PARENT ORGANIZATION
+// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT  
+  /** ==========================================================================
+   * Calculate the work, cost, expense of projets that belong to the organization
+   * @return Nothing
+   */
+function calculatePlanningElement() {
+    $this->_byMet_validatedWork=0;
+    $this->_byMet_assignedWork=0;
+    $this->_byMet_realWork=0;
+    $this->_byMet_leftWork=0;
+    $this->_byMet_plannedWork=0;
+    $this->_byMet_validatedCost=0;
+    $this->_byMet_assignedCost=0;
+    $this->_byMet_realCost=0;
+    $this->_byMet_leftCost=0;
+    $this->_byMet_plannedCost=0;
+    $this->_byMet_expenseValidatedAmount=0;
+    $this->_byMet_expenseAssignedAmount=0;
+    $this->_byMet_expenseRealAmount=0;
+    $this->_byMet_expenseLeftAmount=0;
+    $this->_byMet_expensePlannedAmount=0;
+    $this->_byMet_totalValidatedCost=0;
+    $this->_byMet_totalAssignedCost=0;
+    $this->_byMet_totalRealCost=0;
+    $this->_byMet_totalLeftCost=0;
+    $this->_byMet_totalPlannedCost=0;
   
-}?>
+    // Get list of projets of the organization and sub-organizations
+    $lstProjects = $this->getRecursiveOrganizationProjects(true,false);
+    
+    foreach($lstProjects as $keyPrjOrga=>$name) {
+        $pe=new ProjectPlanningElement();
+        $whereClause='(refId='.$keyPrjOrga.' and refType="Project")';
+        $arrayFields=array('validatedWork',
+                           'assignedWork',
+                           'realWork',
+                           'leftWork',
+                           'plannedWork',
+                           'validatedCost',
+                           'assignedCost',
+                           'realCost',
+                           'leftCost',
+                           'plannedCost',
+                           'expenseValidatedAmount',
+                           'expenseAssignedAmount',
+                           'expenseRealAmount',
+                           'expenseLeftAmount',
+                           'expensePlannedAmount',
+                           'totalValidatedCost',
+                           'totalAssignedCost',
+                           'totalRealCost',
+                           'totalLeftCost',
+                           'totalPlannedCost'
+                          );
+        $peSum = $pe->sumSqlElementsFromCriteria($arrayFields, null,$whereClause);
+
+        $this->_byMet_validatedWork+=$peSum['sumvalidatedwork'];
+        $this->_byMet_assignedWork+=$peSum['sumassignedwork'];
+        $this->_byMet_realWork+=$peSum['sumrealwork'];
+        $this->_byMet_leftWork+=$peSum['sumleftwork'];
+        $this->_byMet_plannedWork+=$peSum['sumplannedwork'];
+        $this->_byMet_validatedCost+=$peSum['sumvalidatedcost'];
+        $this->_byMet_assignedCost+=$peSum['sumassignedcost'];
+        $this->_byMet_realCost+=$peSum['sumrealcost'];
+        $this->_byMet_leftCost+=$peSum['sumleftcost'];
+        $this->_byMet_plannedCost+=$peSum['sumplannedcost'];
+        $this->_byMet_expenseValidatedAmount+=$peSum['sumexpensevalidatedamount'];
+        $this->_byMet_expenseAssignedAmount+=$peSum['sumexpenseassignedamount'];
+        $this->_byMet_expenseRealAmount+=$peSum['sumexpenserealamount'];
+        $this->_byMet_expenseLeftAmount+=$peSum['sumexpenseleftamount'];
+        $this->_byMet_expensePlannedAmount+=$peSum['sumexpenseplannedamount'];
+        $this->_byMet_totalValidatedCost+=$peSum['sumtotalvalidatedcost'];
+        $this->_byMet_totalAssignedCost+=$peSum['sumtotalassignedcost'];
+        $this->_byMet_totalRealCost+=$peSum['sumtotalrealcost'];
+        $this->_byMet_totalLeftCost+=$peSum['sumtotalleftcost'];
+        $this->_byMet_totalPlannedCost+=$peSum['sumtotalplannedcost'];        
+    }
+    
+}
+
+    /** ==========================================================================
+   * Set the visibility of work and cost in function of user's right
+   * @return Nothing
+   */
+    public function setVisibility($profile=null) {
+        if (! sessionUserExists()) {
+          return;
+        }
+        if (! $profile) {
+          $user=getSessionUser();
+          $profile=$user->getProfile();
+        }
+
+        if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
+        and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
+          $this->_costVisibility=self::$staticCostVisibility[$profile];
+          $this->_workVisibility=self::$staticWorkVisibility[$profile];
+          return;
+        }
+
+        $user=getSessionUser();
+        $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
+        $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'cost'));
+        $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'work'));
+        if ($hCost->id) {
+          $this->_costVisibility=$list[$hCost->rightAccess];
+        } else {
+          $this->_costVisibility='ALL';
+        }
+        if ($hWork->id) {
+          $this->_workVisibility=$list[$hWork->rightAccess];
+        } else {
+          $this->_workVisibility='ALL';
+        }
+        if (!self::$staticCostVisibility) self::$staticCostVisibility=array();
+        if (!self::$staticWorkVisibility) self::$staticWorkVisibility=array();
+        self::$staticCostVisibility[$profile]=$this->_costVisibility;
+        self::$staticWorkVisibility[$profile]=$this->_workVisibility;
+    }
+
+  /** ==========================================================================
+   * Set the attribute of work, cost, expense in function of visibility
+   * @return Nothing
+   */
+    public function setAttributes() {
+        if(Parameter::getGlobalParameter('useOrganizationBudgetElement')==="YES") {return;}
+        $this->setVisibility();
+        $wcVisibility = $this->_workVisibility.$this->_costVisibility;
+        switch ($wcVisibility) {
+            case "NONO" :
+                $this->hideWorkCost();
+                break;
+            case "NOALL" :
+                $this->showOnlyCost();
+                break;
+            case "NOVAL" :
+                $this->hideWorkAndShowValidatedCost();
+                break;
+            case "ALLALL" :
+                $this->showWorkCost();
+                break;
+            case "ALLNO" :
+                $this->showOnlyWork();
+                break;
+            case "ALLVAL" :
+                $this->showAllWorkAndValidatedCost();
+                break;
+            case "VALVAL" :
+                $this->showValidated();
+                break;
+            case "VALALL" :
+                $this->showOnlyValidatedWorkAndAllCost();
+                break;
+            case "VALNO" :
+                $this->showOnlyValidatedWorkAndHideCost();
+                break;
+            default:
+                $this->hideWorkCost();
+                break;
+        }
+    }
+    
+  /** =========================================================
+   * Hide all fields those have :
+   *  - $_fieldsAttributes defined
+   *  - Cost, Work at the name's end
+   *  - Amount (case insensitive) in the name
+   * @return nothing
+   */
+  private function hideWorkCost() {
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false ) {
+                continue;
+            }
+            
+            if (substr($name,-4,4)==='Cost' or
+                substr($name,-4,4)==='Work' or
+                strtolower(substr($name,-6,6))==='amount') {
+                    if (strpos($value,'readonly')!==false) {
+                        self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                    } else {
+                        if (strpos($value,'hidden')===false) {
+                            self::$_fieldsAttributes[$name] = $value.',hidden';
+                        }
+                    }
+            }
+        }
+    }        
+  }
+
+  /** =========================================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Show :
+   *    - Cost, Work at the name's end
+   *    - Amount (case insensitive) in the name
+   *  - Allows enter value :
+   *    - budget (case insensitive) and not total (case insensitive) in the name
+   * @return nothing
+   */
+  private function showWorkCost() {
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // Budgets : Allows input its except for total
+            if (strpos(strtolower($name),'budget')!==false and strpos(strtolower($name),'total')===false) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+            } else {
+                // Cost - Amount - Work are readonly
+                if (substr($name,-4,4)==='Cost' or
+                    substr($name,-4,4)==='Work' or
+                    strtolower(substr($name,-6,6))==='amount') {
+                        if (strpos($value,'hidden')!==false) {
+                            self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                        } else {
+                            if (strpos($value,'readonly')===false) {
+                                self::$_fieldsAttributes[$name] = $value.',readonly';
+                            }
+                        }
+                }
+            }
+        }
+    }        
+    return;
+  }
+  
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value :
+   *    - budget (case insensitive) and not total (case insensitive) in the name
+   *  - Show :
+   *    - validated (case insensitive) in the name
+   *  - Hide :
+   *    - Cost, Work in the name's end
+   *    - amount (cas insensitive) in the name
+   * @return nothing
+   */
+  private function showValidated() {    
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : show
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Budgets : Allows input its except for total
+            if (strpos(strtolower($name),'budget')!==false and strpos(strtolower($name),'total')===false) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Validated : Show
+            if (strpos(strtolower($name),'validated')!== false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Cost, Work, amount : Hide
+            if (strpos(strtolower($name),'amount')!== false or
+                substr($name,-4,4)==='Cost' or
+                substr($name,-4,4)==='Work') {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+
+  
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value :
+   *    - budget (case insensitive) in the name and Work at the name's end
+   *  - Show :
+   *    - Work in the name's end
+   *  - Hide :
+   *    - Cost in the name's end
+   *    - amount (case insensitive) in the name
+   * @return nothing
+   */
+  private function showOnlyWork() {
+    
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // Budgets : Allows input only for work
+            if (strpos(strtolower($name),'budget')!==false and substr($name,-4,4)==='Work') {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Work : Show
+            if (substr($name,-4,4)==='Work') {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Cost, amount : Hide
+            if (strpos(strtolower($name),'amount')!== false or
+                substr($name,-4,4)==='Cost') {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+  
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value, except total (case insensitive) in the name:
+   *    - budget (case insensitive) in the name and ( Cost at the name's end or amount (case insensitive) in the name)
+   *  - Show :
+   *    - Cost in the name's end and amount (case insensitive) in the name
+   *  - Hide :
+   *    - Work in the name's end
+   * @return nothing
+   */
+  private function showOnlyCost() {
+
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : show
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Budgets : Allows input only for cost and amount (except total)
+            if (strpos(strtolower($name),'budget')!==false and
+                strpos(strtolower($name),'total')===false and  
+                (substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false)
+               ) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Cost and amount : Show
+            if (substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Work : Hide
+            if (substr($name,-4,4)==='Work') {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value, except total (case insensitive) in the name :
+   *    - budget (case insensitive) in the name
+   *  - Show :
+   *    - Cost in the name's end and amount (case insensitive) in the name
+   *    - Work in the name's end and validated (case insensitive) in the name
+   *  - Hide :
+   *    - Work in the name's end and not validated (case insensitive) in the name
+   * @return nothing
+   */
+  private function showOnlyValidatedWorkAndAllCost() {
+    
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : show
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Budgets : Allows input except total
+            if (strpos(strtolower($name),'budget')!==false and
+                strpos(strtolower($name),'total')===false) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Cost and amount : Show
+            if (substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // validated Work : Show
+            if (substr($name,-4,4)==='Work' and strpos(strtolower($name),'validated')!== false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // not validated Work : Hide
+            if (substr($name,-4,4)==='Work' and strpos(strtolower($name),'validated')=== false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value, except total (case insensitive) in the name :
+   *    - budget (case insensitive) in the name and not Work at the name's end
+   *  - Show :
+   *    - Cost in the name's end and amount (case insensitive) in the name and validated (case insensitive) in the name
+   *  - Hide :
+   *    - Work in the name's end
+   *    - Cost in the name's end and amount (case insensitive) in the name and not validated (case insensitive) in the name
+   * @return nothing
+   */
+  private function hideWorkAndShowValidatedCost() {
+    
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : show
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Budgets : Allows input except total and work
+            if (strpos(strtolower($name),'budget')!==false and
+                strpos(strtolower($name),'total')===false and
+                substr($name,-4,4)!=='Work') {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Cost and amount validated : Show
+            if ((substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) and
+                 strpos(strtolower($name),'validated')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Work : Hide
+            if (substr($name,-4,4)==='Work') {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }
+                continue;
+            }
+
+            // Cost and amount not validated : Hide
+            if ((substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) and
+                 strpos(strtolower($name),'validated')===false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value, except total (case insensitive) in the name :
+   *    - budget (case insensitive) in the name
+   *  - Show :
+   *    - Cost in the name's end and amount (case insensitive) in the name and validated (case insensitive) in the name
+   *    - Work in the name's end
+   *  - Hide :
+   *    - Cost in the name's end and amount (case insensitive) in the name and not validated (case insensitive) in the name
+   * @return nothing
+   */
+  private function showAllWorkAndValidatedCost() {
+
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : show
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Budgets : Allows input except total
+            if (strpos(strtolower($name),'budget')!==false and
+                strpos(strtolower($name),'total')===false) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Cost and amount validated : Show
+            if ((substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) and
+                 strpos(strtolower($name),'validated')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Work : Show
+            if (substr($name,-4,4)==='Work') {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Cost and amount not validated : Hide
+            if ((substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) and
+                 strpos(strtolower($name),'validated')===false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+            }
+        }    
+    }        
+  }
+  
+  /** ===============================================
+   * For fields those have $_fieldsAttributes defined :
+   *  - Allows enter value, except total (case insensitive) in the name :
+   *    - budget (case insensitive) in the name and Work at the name's end
+   *  - Show :
+   *    - Work in the name's end and validated (case insensitive) in the name
+   *  - Hide :
+   *    - Cost in the name's end and amount (case insensitive)
+   *    - Work in the name's end and not validated (case insensitive) in the name
+   * @return nothing
+   */
+  private function showOnlyValidatedWorkAndHideCost() {
+    
+    if (isset(self::$_fieldsAttributes)) {
+        foreach(self::$_fieldsAttributes as $name => $value) {
+            // Do nothing if 'hiddenforce'
+            if (strpos(strtolower($value),'hiddenforce')!== false) {
+                continue;
+            }
+            // total budget : hide
+            if (strpos(strtolower($name),'total')!== false and strpos(strtolower($name),'budget')!==false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }            
+                continue;
+            }
+
+            // Budgets work : Allows input except total
+            if (strpos(strtolower($name),'budget')!==false and
+                substr($name,-4,4)==='Work' and    
+                strpos(strtolower($name),'total')===false) {
+                self::$_fieldsAttributes[$name] = str_replace('readonly', '', $value);
+                self::$_fieldsAttributes[$name] = str_replace('hidden', '', $value);
+                continue;            
+            } 
+
+            // Work validated : Show
+            if (substr($name,-4,4)==='Work' and strpos(strtolower($name),'validated')!==false) {
+                if (strpos($value,'hidden')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('hidden', 'readonly', $value);
+                } else {
+                    if (strpos($value,'readonly')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',readonly';
+                    }
+                }
+                continue;
+            }
+
+            // Cost and amount : Hide
+            if (substr($name,-4,4)==='Cost' or strpos(strtolower($name),'amount')!== false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }
+                continue;
+            }
+
+            // Work not validated : Hide
+            if (substr($name,-4,4)==='Work' and strpos(strtolower($name),'validated')===false) {
+                if (strpos($value,'readonly')!==false) {
+                    self::$_fieldsAttributes[$name] = str_replace('readonly', 'hidden', $value);
+                } else {
+                    if (strpos($value,'hidden')===false) {
+                        self::$_fieldsAttributes[$name] = $value.',hidden';
+                    }
+                }
+                continue;
+            }
+        }    
+    }        
+  }
+    
+// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+  }?>

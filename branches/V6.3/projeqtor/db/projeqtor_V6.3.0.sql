@@ -85,6 +85,12 @@ UPDATE `${prefix}reportparameter` SET defaultValue='currentProject' WHERE idRepo
 
 ALTER TABLE `${prefix}subscription` ADD `isAutoSub` int(1) DEFAULT '0';
 
+# ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+INSERT INTO `${prefix}parameter` (`parameterCode`, `value`) VALUES ('useOrganizationBudgetElement', 'NO');
+DELETE FROM `${prefix}columnselector` WHERE `objectClass` = 'Organization';
+DELETE FROM `${prefix}filter` WHERE `refType` = 'Organization';
+# END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+
 CREATE TABLE `${prefix}noteflux` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `sortOrder` int(3) unsigned DEFAULT NULL,
