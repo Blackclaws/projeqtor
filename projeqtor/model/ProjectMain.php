@@ -287,7 +287,7 @@ class ProjectMain extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjects($limitToActiveProjects=false, $withoutDependantElement=false) {
-//scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");  	
+  scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");  	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -316,7 +316,7 @@ class ProjectMain extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjectsList($limitToActiveProjects=false) {
-//scriptLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");
+  scriptLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -338,7 +338,7 @@ class ProjectMain extends SqlElement {
    * @return an array containing id, name, subprojects (recursive array)
    */
   public function getRecursiveSubProjects($limitToActiveProjects=false) {
-//scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
+  scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
     if (isset(self::$_subProjectList[$this->id])) {
     	//return self::$_subProjectList[$this->id];
     }    	
@@ -366,7 +366,7 @@ class ProjectMain extends SqlElement {
    * 
    */
   public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false, $includeSelf=false) {
-//scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActiveProjects,$includeSelf)");   	
+  scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActiveProjects,$includeSelf)");   	
     if (isset(self::$_subProjectFlatList[$this->id])) {
       //return self::$_subProjectFlatList[$this->id];
     }
@@ -394,7 +394,7 @@ class ProjectMain extends SqlElement {
 
   private static $topProjectListArray=array();
   public function getTopProjectList($includeSelf=false) {
-//scriptLog("Project($this->id)->getTopProjectList($includeSelf)");
+  scriptLog("Project($this->id)->getTopProjectList($includeSelf)");
     if (isset(self::$topProjectListArray[$this->id.'#'.$includeSelf])) {
     	return self::$topProjectListArray[$this->id.'#'.$includeSelf];	
     }

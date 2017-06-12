@@ -547,6 +547,34 @@ if (beforeVersion($currVersion,"V6.1.2") and $currVersion!='V0.0.0') {
 	traceLog("   => $cpt assignments updated");
 }
 
+if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
+	traceLog("update idProject on notes");
+	//setSessionUser(new User());
+	$note=new Note();
+	$noteList=$note->getSqlElementsFromCriteria(null,false);
+	$cpt=0;
+	$cptCommit=100;
+	Sql::beginTransaction();
+	traceLog("   => ".count($noteList)." to update");
+	if (count($noteList)<100) {
+		projeqtor_set_time_limit(1500);
+	} else {
+		traceLog("   => setting unlimited execution time for script (more than 100 assignments to update)");
+		projeqtor_set_time_limit(0);
+	}
+	foreach($noteList as $note) {
+		$res=$note->save();
+		$cpt++;
+		if ( ($cpt % $cptCommit) == 0) {
+			Sql::commitTransaction();
+			traceLog("   => $cpt notes done...");
+			Sql::beginTransaction();
+		}
+	}
+	Sql::commitTransaction();
+	traceLog("   => $cpt notes updated");
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

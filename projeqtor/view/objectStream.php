@@ -120,6 +120,14 @@
            <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
             onKeyPress="saveNoteStream(event);return false;" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()"><?php echo i18n("textareaEnterText");?></textarea>
          </div>
+         
+                 <?php 
+//         echo '<div style="width:99%;">';
+//         echo '<textarea dojoType="dijit.form.Textarea" rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea" ';
+//         echo ' onKeyPress="saveNoteStream(event);return false;" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()">'; // hard coding default event
+//         echo i18n("textareaEnterText");
+//         echo '</textarea>';
+//         ?>
        </form>
     
    </div>
