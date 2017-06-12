@@ -31,6 +31,7 @@ require_once('_securityCheck.php');
 class Note extends SqlElement {
 
   public $id;
+  public $idProject;
   public $refType;
   public $refId;
   public $idUser;
@@ -72,11 +73,16 @@ class Note extends SqlElement {
   }
     
   public function save() {
+    $class = $this->refType;
+    $id = $this->refId;
+    $obj = new $class( $id );
+    if ($class=='Project') {
+    	$this->idProject=$obj->id;
+    } else if (property_exists($class, 'idProject') ) {
+    	$this->idProject=$obj->idProject;
+    }
     $result = parent::save ();
     if ($this->idPrivacy != 3) {
-      $class = $this->refType;
-      $id = $this->refId;
-      $obj = new $class( $id );
       if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' )) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
