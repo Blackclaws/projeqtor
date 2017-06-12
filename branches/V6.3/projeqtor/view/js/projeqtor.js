@@ -2198,6 +2198,8 @@ function setSelectedProject(idProject, nameProject, selectionField) {
         } else if (dojo.byId('objectClassManual')
             && dojo.byId('objectClassManual').value == 'Today') {
           loadContent("../view/today.php", "centerDiv");
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'ActivityStream') {
+          loadContent("../view/activityStreamList.php", "activityStreamListDiv", "activityStreamForm");      
         } else if (dojo.byId('objectClassManual')
             && dojo.byId('objectClassManual').value == 'DashboardTicket') {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");
@@ -4087,7 +4089,6 @@ function saveNoteStream(event){
   var key = event.keyCode;
   if (key == 13 && !event.shiftKey) {
     var noteEditor = dijit.byId("noteNoteStream");
-    console.log(noteEditor);
     var noteEditorContent=noteEditor.get("value");
     if (noteEditorContent.trim()=="") {
       noteEditor.focus();
@@ -4122,4 +4123,8 @@ function mouseDownStream() {
   if(dijit.byId("noteNoteStream").get('value')==i18n("textareaEnterText")){
     dijit.byId("noteNoteStream").set('value',"");
   }
+}
+
+function refreshActivityStreamList(){
+  loadContent('activityStreamList.php', 'activityStreamListDiv','activityStreamForm');
 }

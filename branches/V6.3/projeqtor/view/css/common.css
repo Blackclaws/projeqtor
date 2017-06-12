@@ -2976,3 +2976,27 @@ table.dijitCalendarContainer {
 .dojoxCheckedMultiSelect .dojoxCheckedMultiSelectWrapper {
  height: inherit!important;
 }
+
+.activityStream{
+  color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+}
+
+.activityStream td{
+  color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+}
+
+.activityStream a{
+  color:#3b73af;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: auto;
+}

@@ -86,7 +86,7 @@ UPDATE `${prefix}reportparameter` SET defaultValue='currentProject' WHERE idRepo
 ALTER TABLE `${prefix}subscription` ADD `isAutoSub` int(1) DEFAULT '0';
 
 # ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
-INSERT INTO `${prefix}parameter` (`parameterCode`, `value`) VALUES ('useOrganizationBudgetElement', 'NO');
+INSERT INTO `${prefix}parameter` (`parameterCode`, `parameterValue`) VALUES ('useOrganizationBudgetElement', 'NO');
 DELETE FROM `${prefix}columnselector` WHERE `objectClass` = 'Organization';
 DELETE FROM `${prefix}filter` WHERE `refType` = 'Organization';
 # END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
@@ -99,7 +99,7 @@ CREATE TABLE `${prefix}noteflux` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`, `menuClass`) VALUES 
-(177,'menuNoteFlux',0,'item',19,NULL,0,'Work Risk RequirementTest Financial Meeting');
+(177,'menuActivityStream',0,'item',19,NULL,0,'Work Risk RequirementTest Financial Meeting');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 177, 1),
@@ -109,3 +109,5 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 177, 0),
 (6, 177, 0),
 (7, 177, 0);
+
+ALTER TABLE `${prefix}note` ADD `idProject` int(12);

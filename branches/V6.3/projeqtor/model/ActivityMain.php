@@ -274,6 +274,7 @@ class ActivityMain extends SqlElement {
       $oldIdActivity=$old->idActivity;
       $oldTargetProductVersion=$old->idTargetProductVersion;
     }
+    
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
     $this->ActivityPlanningElement->refName=$this->name;
@@ -298,6 +299,7 @@ class ActivityMain extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;
     }
+
     if ( $this->idResource and trim($this->idResource) != ''
       and ! trim($oldResource)
       and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -324,62 +326,122 @@ class ActivityMain extends SqlElement {
       }
     }
 
-    // Change idle or idProject value => update idle and idProject for assignments
+     // Change idle or idProject value => update idle and idProject for assignments
      if ( ($this->idle !=  $oldIdle ) 
        or ($this->idProject != $oldIdProject ) ) {
       // Add assignment for responsible
       $ass=new Assignment();
       $crit=array("refType"=>"Activity", "refId"=>$this->id);
       $assList=$ass->getSqlElementsFromCriteria($crit,false);
-      foreach($assList as $ass) {
-        $ass->idle=$this->idle;
-        $ass->idProject=$this->idProject;
-        $ass->save();
-        // Change idProject value => update idProject for work
-        // update not done to PlannedWork : new planning must be calculated
-        if ($this->idProject != $oldIdProject ) {
-            $work=new Work();
-            $crit=array("refType"=>"Activity", "refId"=>$this->id);
-            $workList=$work->getSqlElementsFromCriteria($crit,false);
-            foreach($workList as $work) {
-              $work->idProject=$this->idProject;
-              $work->save();
-            }
-            $work=new PlannedWork();
-            $crit=array("refType"=>"Activity", "refId"=>$this->id);
-            $workList=$work->getSqlElementsFromCriteria($crit,false);
-            foreach($workList as $work) {
-              $work->idProject=$this->idProject;
-              $work->save();
-            } 
-        }   
-      }      
-    }   
-    if ($this->idProject != $oldIdProject ) {
-    	$lstElt=array('Activity','Ticket','Milestone','PeriodicMeeting','Meeting','TestSession');
-    	foreach ($lstElt as $elt) {
-    		$eltObj=new $elt();
-    		$crit=array('idActivity'=>$this->id);
-    		$lst=$eltObj->getSqlElementsFromCriteria($crit, false,null,null,true);
-    		foreach($lst as $obj) {
-          $objBis=new $elt($obj->id);   			
-    			$objBis->idProject=$this->idProject;
-    			$tmpRes=$objBis->save();
-    		}
-    	}
-    }
-    if ($oldTargetProductVersion!=$this->idTargetProductVersion) {
-    	$vers=new Version($this->idTargetProductVersion);
-    	$idProduct=($vers->idProduct)?$vers->idProduct:null;
-    	$ticket=new Ticket();
-    	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
-    	foreach ($ticketList as $ticket) {
-    		$ticket->idTargetProductVersion=$this->idTargetProductVersion;
-    		if ($idProduct) {$ticket->idProduct=$idProduct;}
-    		$ticket->save();
-    	}
-    }
-    return $result;
+	      foreach($assList as $ass) {
+	        $ass->idle=$this->idle;
+	        $ass->idProject=$this->idProject;
+	        $ass->save();
+	
+	        // Change idProject value => update idProject for work
+	        // update not done to PlannedWork : new planning must be calculated
+	        if ($this->idProject != $oldIdProject ) {
+	          $work=new Work();
+	          $crit=array("refType"=>"Activity", "refId"=>$this->id);
+	          $workList=$work->getSqlElementsFromCriteria($crit,false);
+	          foreach($workList as $work) {
+	            $work->idProject=$this->idProject;
+	            $work->save();
+	          }
+	            $work=new PlannedWork();
+	            $crit=array("refType"=>"Activity", "refId"=>$this->id);
+	            $workList=$work->getSqlElementsFromCriteria($crit,false);
+	            foreach($workList as $work) {
+	              $work->idProject=$this->idProject;
+	              $work->save();
+	            }
+	        }   
+	      }      
+	    }   
+	    if ($this->idProject != $oldIdProject ) {
+	    	$lstElt=array('Activity','Ticket','Milestone','PeriodicMeeting','Meeting','TestSession');
+	    	foreach ($lstElt as $elt) {
+	    		$eltObj=new $elt();
+	    		$crit=array('idActivity'=>$this->id);
+	    		$lst=$eltObj->getSqlElementsFromCriteria($crit, false,null,null,true);
+	    		foreach($lst as $obj) {
+	          $objBis=new $elt($obj->id);   			
+	    			$objBis->idProject=$this->idProject;
+	    			$tmpRes=$objBis->save();
+	    		}
+	    	}
+	    }
+	    if ($oldTargetProductVersion!=$this->idTargetProductVersion) {
+	    	$vers=new Version($this->idTargetProductVersion);
+	    	$idProduct=($vers->idProduct)?$vers->idProduct:null;
+	    	$ticket=new Ticket();
+	    	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
+	    	foreach ($ticketList as $ticket) {
+	    		$ticket->idTargetProductVersion=$this->idTargetProductVersion;
+	    		if ($idProduct) {$ticket->idProduct=$idProduct;}
+	    		$ticket->save();
+	    	}
+	    }
+    
+	    //mehdi
+	    if ($this->idActivity){
+	    	if(Parameter::getGlobalParameter('autoUpdateActivityStatus')=='YES'){
+	    		$parentActivity = new Activity($this->idActivity);
+	    		$parent = $parentActivity->getSqlElementsFromCriteria(array('id'=>$this->idActivity));
+	    		if ($this->handled){
+	    			foreach ($parent as $parents){
+	    				$parents->handled = $this->handled;
+	    				$status=new Status();
+		         	$results=Sql::query("select * from `status` where `setHandledStatus` = 1 order by `sortOrder` asc LIMIT 1");
+		         	$row=Sql::fetchLine($results);
+		         	$idR=$row['id'];
+		         	$parents->idStatus = $idR;    
+		         	$parents->save();    
+		    		}
+		    	}
+		    	if ($this->done){
+		    		$parentActivity = new Activity($this->idActivity);    	
+		    		$child = new Activity();
+		    		$children = $child->getSqlElementsFromCriteria(array('idActivity'=>$parentActivity->id));
+		    		$isDone = true;
+		    		$isClosed = true;
+		    		$isCancelled = true;
+		    		foreach ($children as $childAct){
+		    			if ($childAct->done == 0){
+		    				$isDone = false;
+		    			}
+		    			if ($childAct->idle == 0){
+		    				$isClosed = false;
+		    			}
+		    			if ($childAct->cancelled == 0){
+		    				$isCancelled = false;
+		    			}
+		    		}
+			    	if ($isDone){
+			    		$results=Sql::query("select * from `status` where `setDoneStatus` = 1 order by `sortOrder` asc LIMIT 1");
+			    		$row=Sql::fetchLine($results);
+			    		$idD=$row['id'];
+			    		$parentActivity->idStatus = $idD;	
+			    		$parentActivity->saveForced();  	
+			    	}
+			    	if ($isClosed){
+			    		$res=Sql::query("select * from `status` where `setIdleStatus` = 1 order by `sortOrder` asc LIMIT 1");
+			    		$row=Sql::fetchLine($res);
+			    		$isIdle=$row['id'];
+			    		$parentActivity->idStatus = $isIdle;
+			    		$parentActivity->saveForced();
+			    	}
+			    	if ($isCancelled){
+			    		$res=Sql::query("select * from `status` where `setCancelledStatus` = 1 order by `sortOrder` asc LIMIT 1");
+			    		$row=Sql::fetchLine($res);
+			    		$isCanc=$row['id'];
+			    		$parentActivity->idStatus = $isCanc;
+			    		$parentActivity->saveForced();
+			    	}
+		    	}
+	    	}
+	    }
+    	return $result;  
   }
 }
 ?>

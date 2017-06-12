@@ -456,6 +456,11 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
+        // Mehdi  #parameter
+      case 'autoUpdateActivityStatus':
+      	$list=array('NO'=>i18n('displayNo'),
+        'YES'=>i18n('displayYes'));
+        break;
       // Gautier #
       case 'subscriptionAuto':
           $list=array('NO'=>i18n('displayNo'),
@@ -598,6 +603,7 @@ class Parameter extends SqlElement {
       	                     'sectionImputation'=>'section',
       	                       'displayOnlyHandled'=>'list',
       	                       'setHandledOnRealWork'=>'list',
+      	                       'autoUpdateActivityStatus'=>'list',
       	                       'setDoneOnNoLeftWork'=>'list',
       	                       'maxDaysToBookWork'=>'number',
       	                       'maxDaysToBookWorkBlocking'=>'number',
