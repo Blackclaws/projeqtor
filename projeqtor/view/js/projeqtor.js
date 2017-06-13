@@ -4096,7 +4096,7 @@ function saveNoteStream(event){
     }
     loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note');
     noteEditor.set("value",null);
-  } 
+  }
 }
 
 function scrollInto(){

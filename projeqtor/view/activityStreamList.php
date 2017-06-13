@@ -39,8 +39,12 @@ Parameter::storeUserParameter("activityStreamAllItems", $paramAllItems);
 $paramAuthorFilter=RequestHandler::getId("activityStreamAuthorFilter");
 Parameter::storeUserParameter("activityStreamAuthorFilter", $paramAuthorFilter);
 
+$paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
+debugLog($paramTypeNote);
+
 $limitElement = RequestHandler::getNumeric("activityStreamNumberElement");
-debugLog("limitelement : ".$limitElement); 
+
+$typeNote = SqlList::getNameFromId('Linkable', $paramTypeNote);
 
 $paramProject=getSessionValue('project');
 
@@ -60,12 +64,20 @@ if($paramAllItems=="3"){
   $critWhere.=" ORDER BY creationDate DESC";
 }
 
+if($paramAllItems=="2"){
+  $critWhere.=" ORDER BY creationDate ASC";
+}
+
 if($paramAllItems=="0"){
   $critWhere.=" and refId=1";
 }
 
-if($paramAllItems=="5"){
+if($paramAllItems=="5" && $limitElement){
   $critWhere.=" LIMIT ". $limitElement;
+}
+
+if($paramAllItems=="4" && trim($paramTypeNote)!=""){
+  $critWhere.=" and refType='$typeNote'";
 }
 
 var_dump($critWhere);
@@ -77,11 +89,6 @@ if ($countIdNote == 0) {
   exit ();
 }
 $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : false;
-$user = getSessionUser ();
-$addParam=addParametersActivityStream();
-if($addParam!=""){
-  $addParam=', "paramAdd":"'.$addParam.'"';
-}
 ?>
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
 	
@@ -108,12 +115,12 @@ if($addParam!=""){
       echo formatUserThumb ( $note->idUser, $userName, 'Creator', 32 );
       echo formatPrivacyThumb ( $note->idPrivacy, $note->idTeam );
       ?>
-	            </div>
+	      </div>
 				<div style="overflow-x: hidden; padding-left: 4px;">
 	    <?php
       $strDataHTML = nl2br ( $note->note );
       echo '<div>' . $userNameFormatted . '&nbsp' . $colCommentStream . '</div>';
-      echo '<div style="color:white;margin-top:4px;word-break:break-all;min-width:188px;position:relative;" class="dijitSplitter">' . $strDataHTML . '</div>&nbsp';
+      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;position:relative;">' . $strDataHTML . '</div>';
       echo '<div style="margin-top:6px;">' . formatDateThumb ( $note->creationDate, null, "left" ) . '</div>';
       echo '<div style="margin-top:11px;">' . $note->creationDate . '</div>';
       ?>
@@ -123,26 +130,3 @@ if($addParam!=""){
 		</tr>
 	</table>
 	<div id="scrollToBottom" type="hidden"></div>
-
-<?php 
-
-
-function addParametersActivityStream(){
-  $user=getSessionUser();
-  $allNotes="0";
-  $result="";
-
-  if(isset($_REQUEST['activityStreamAllNotes'])){
-    Parameter::storeUserParameter("activityStreamAllNotes", $_REQUEST['activityStreamAllNotes']);
-  }
-  if(Parameter::getUserParameter("activityStreamAllNotes")!=null){
-    $allNotes=Parameter::getUserParameter("activityStreamAllNotes");
-  }else{
-    Parameter::storeUserParameter("activityStreamAllNotes", $allNotes);
-  }
-  if($allNotes=="1")$result.=" AND note.refId=5 ";
-  //if($allNotes=="2")$result.=" AND $prefix.idle=0 ";
-  debugLog($result);
-  return $result;
-}
-?>
