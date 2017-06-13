@@ -237,6 +237,16 @@ function drawTableFromObjectList($objectList) {
 			    echo '  showSubscriptionList("'.getSessionUser()->id.'");';
 			    echo '</script>';
 			    echo '</button>'; 
+			  } else if ($code=='team') {
+			  	$usr=getSessionUser();
+			  	$res=new Resource($usr->id);
+			  	$team=new Team($res->idTeam);
+			  	echo $team->name;
+			  } else if ($code=='oraganization') {
+			  	$usr=getSessionUser();
+			  	$res=new Resource($usr->id);
+			  	$orga=new Organization($res->idOrganization);
+			  	echo $orga->name;
 			  }
 			}
 			echo '</td></tr>';
