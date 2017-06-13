@@ -91,11 +91,11 @@
       	         if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
       	        ?>
 	            </div>
-	      <div style="overflow-x:hidden;padding-left:4px;max-height:200px;" >
+	      <div style="padding-left:4px;max-height:200px;" >
 	      <?php 
   	      $strDataHTML=nl2br($note->note); 	    
   		    echo '<div>'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-  	      echo '<div style="color:white;margin-top:4px;word-break:break-all;min-width:188px;position:relative;" class="dijitSplitter">'.$strDataHTML.'</div>&nbsp';
+  	      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;position:relative;">'.$strDataHTML.'</div>&nbsp';
   	      echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
   	      echo '<div style="margin-top:11px;">'.$note->creationDate.'</div>';
 	      ?>
