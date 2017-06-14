@@ -40,9 +40,11 @@ $paramAuthorFilter=RequestHandler::getId("activityStreamAuthorFilter");
 Parameter::storeUserParameter("activityStreamAuthorFilter", $paramAuthorFilter);
 
 $paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
-debugLog($paramTypeNote);
 
 $limitElement = RequestHandler::getNumeric("activityStreamNumberElement");
+
+$idStreamNote = RequestHandler::getNumeric("listIdFilterStream");
+debugLog("voici mon idstream : ".$idStreamNote);
 
 $typeNote = SqlList::getNameFromId('Linkable', $paramTypeNote);
 
@@ -68,8 +70,8 @@ if($paramAllItems=="2"){
   $critWhere.=" ORDER BY creationDate ASC";
 }
 
-if($paramAllItems=="0"){
-  $critWhere.=" and refId=1";
+if($paramAllItems=="1" && trim($idStreamNote)!=""){
+  $critWhere.=" and refId=". $idStreamNote;
 }
 
 if($paramAllItems=="5" && $limitElement){
@@ -80,7 +82,7 @@ if($paramAllItems=="4" && trim($paramTypeNote)!=""){
   $critWhere.=" and refType='$typeNote'";
 }
 
-var_dump($critWhere);
+//var_dump($critWhere);
 $notes=$note->getSqlElementsFromCriteria(null,false,$critWhere);
 
 $countIdNote = count ( $notes );
@@ -93,7 +95,7 @@ $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : fal
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
 	
 
-<?php var_dump($_REQUEST);?>
+<?php //var_dump($_REQUEST);?>
 	<!-- Titre et listes de notes -->
 	<table id="objectStream" style="width: 100%;"> 
 	   <?php foreach ($notes as $note) {?>

@@ -45,7 +45,7 @@ $user = getSessionUser ();
 		<table width="100%" class="activityStream">
 			<tr>
 				<td valign="top" width="10%">
-					<table>
+					<table style="margin-left:20px;margin-top:10px;">
 					  <input type="hidden" id="activityStreamAllItems" name="activityStreamAllItems" value="<?php echo Parameter::getUserParameter("activityStreamAllItems");?>" />
 						<tr>
 							<td align="left" >
@@ -55,21 +55,17 @@ $user = getSessionUser ();
 							</td>
 						</tr>
 						<tr>
-							<td align="left">
-							  <a onClick="dojo.byId('activityStreamAllItems').value=10;refreshActivityStreamList();" href="#">
-							    <?php echo i18n("activityStreamNotDone");?>
-							  </a>
-							</td>
-						</tr>
-						<tr>
-							<td align="left"><a
-								onClick="dojo.byId('activityStreamAllItems').value=12;refreshActivityStreamList();"
-								href="#"><?php echo i18n("activityStreamNotClosed");?></a></td>
-						</tr>
+					  <td style="width:5px;display:inline;">
+					   <?php echo i18n('colId');?>
+              <div style="width:15px;" class="filterField rounded" dojoType="dijit.form.TextBox" 
+               type="text" id="listIdFilterStream" name="listIdFilterStream" onChange="dojo.byId('activityStreamAllItems').value=1;refreshActivityStreamList();">
+              </div>
+            </td>
+           </tr>
 					</table>
 				</td>
 				<td valign="top" width="20%">
-					<table class="activityStream">
+					<table class="activityStreamFilter" style="margin-top:10px;">
 						<tr>
 							<td align="left">
 							 <?php echo i18n('filterOnAuthor');?>
@@ -102,7 +98,7 @@ $user = getSessionUser ();
 					</table>
         </td>
        <td valign="top" width="50%">
-        <table>
+        <table style="margin-top: 10px;">
 					<tr>
 						<td align="left" >
 							 <a onclick="dojo.byId('activityStreamAllItems').value=3;refreshActivityStreamList();" href="#">
