@@ -91,11 +91,12 @@
       	         if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
       	        ?>
 	            </div>
-	      <div style="padding-left:4px;max-height:200px;" >
+	       <?php $rightWidth=(intval(Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass))-30).'px"';?>
+	      <div style="padding-left:4px;max-width:<?php echo $rightWidth;?>px" >
 	      <?php 
   	      $strDataHTML=nl2br($note->note); 	    
   		    echo '<div>'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-  	      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;position:relative;">'.$strDataHTML.'</div>&nbsp';
+  	      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div>&nbsp';
   	      echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
   	      echo '<div style="margin-top:11px;">'.$note->creationDate.'</div>';
 	      ?>
@@ -111,24 +112,16 @@
 
 	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px;overflow-x:hidden;">
 	  <form id='noteFormStream' name='noteFormStream' onSubmit="return false;" >
-         <input id="noteId" name="noteId" type="hidden" value="" />
-         <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $objectClass;?>" />
-         <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $objectId;?>" />
-         <input id="noteEditorTypeStream" name="noteEditorTypeStream" type="hidden" value="<?php echo getEditorType();?>" />
-        
-         <div style="width:99%;">
-           <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
-            onKeyPress="saveNoteStream(event);return false;" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()"><?php echo i18n("textareaEnterText");?></textarea>
-         </div>
-         
-                 <?php 
-//         echo '<div style="width:99%;">';
-//         echo '<textarea dojoType="dijit.form.Textarea" rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea" ';
-//         echo ' onKeyPress="saveNoteStream(event);return false;" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()">'; // hard coding default event
-//         echo i18n("textareaEnterText");
-//         echo '</textarea>';
-//         ?>
-       </form>
+       <input id="noteId" name="noteId" type="hidden" value="" />
+       <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $objectClass;?>" />
+       <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $objectId;?>" />
+       <input id="noteEditorTypeStream" name="noteEditorTypeStream" type="hidden" value="<?php echo getEditorType();?>" />
+      
+       <div style="width:99%;">
+         <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
+          onkeypress="saveNoteStream(event);" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()"><?php echo i18n("textareaEnterText");?></textarea>
+       </div>
+     </form>
     
    </div>
 </div>

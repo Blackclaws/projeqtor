@@ -56,6 +56,7 @@ echo "<input type='hidden' id='reportId' name='reportId' value='" . htmlEncode($
 $param=new ReportParameter();
 $crit=array('idReport'=>$idReport);
 $listParam=$param->getSqlElementsFromCriteria($crit,false,null,'sortOrder');
+if (count($listParam)==0) echo '<tr><td class="label"><label>&nbsp;</label></td><td><div style="width:70px;">&nbsp;</div></td></tr>';
 foreach ($listParam as $param) {
   if ($param->paramType=='week') {
     $defaultWeek='';

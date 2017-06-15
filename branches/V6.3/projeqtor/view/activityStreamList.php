@@ -33,11 +33,28 @@ scriptLog ( '   ->/view/objectStream.php' );
 global $print, $user;
 $user = getSessionUser ();
 
-$paramAllItems=RequestHandler::getNumeric("activityStreamAllItems");
-Parameter::storeUserParameter("activityStreamAllItems", $paramAllItems);
+var_dump($_REQUEST);
 
-$paramAuthorFilter=RequestHandler::getId("activityStreamAuthorFilter");
-Parameter::storeUserParameter("activityStreamAuthorFilter", $paramAuthorFilter);
+if (RequestHandler::isCodeSet('activityStreamShowClosed')) {
+  $activityStreamShowClosed=RequestHandler::getValue("activityStreamShowClosed");
+  Parameter::storeUserParameter("activityStreamShowClosed", $activityStreamShowClosed);
+} else {
+	$activityStreamShowClosed=Parameter::getUserParameter("activityStreamShowClosed");
+}
+
+if (RequestHandler::isCodeSet('activityStreamNumberElement')) {
+	$activityStreamNumberElement=RequestHandler::getValue("activityStreamNumberElement");
+	Parameter::storeUserParameter("activityStreamNumberElement", $activityStreamNumberElement);
+} else {
+	$activityStreamNumberElement=Parameter::getUserParameter("activityStreamNumberElement");
+}
+
+if (RequestHandler::isCodeSet('activityStreamAuthorFilter')) {
+	$paramAuthorFilter=RequestHandler::getId("activityStreamAuthorFilter");
+	Parameter::storeUserParameter("activityStreamAuthorFilter", $paramAuthorFilter);
+} else {
+	$paramAuthorFilter=Parameter::getUserParameter("activityStreamAuthorFilter");
+}
 
 $paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
 
@@ -62,7 +79,12 @@ if ($paramProject!='*') {
 	$critWhere.=" and idProject in ".getVisibleProjectsList($paramProject);
 }
 
-if($paramAllItems=="3"){
+// TODO : activate when idle added in Notes
+//if ($activityStreamShowClosed!='1') {
+//	$critWhere.=" and idle=0";
+//}
+
+/*if($paramAllItems=="3"){
   $critWhere.=" ORDER BY creationDate DESC";
 }
 
@@ -80,10 +102,10 @@ if($paramAllItems=="5" && $limitElement){
 
 if($paramAllItems=="4" && trim($paramTypeNote)!=""){
   $critWhere.=" and refType='$typeNote'";
-}
-
-//var_dump($critWhere);
-$notes=$note->getSqlElementsFromCriteria(null,false,$critWhere);
+}*/
+echo '<br/>';
+var_dump($critWhere);
+$notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,null,null,null,$activityStreamNumberElement);
 
 $countIdNote = count ( $notes );
 if ($countIdNote == 0) {
@@ -95,11 +117,17 @@ $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : fal
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
 	
 
-<?php //var_dump($_REQUEST);?>
 	<!-- Titre et listes de notes -->
 	<table id="objectStream" style="width: 100%;"> 
-	   <?php foreach ($notes as $note) {?>
-	    <?php
+	   <?php foreach ($notes as $note) {
+	   	// TODO : desactivate when idle added in Notes
+      if ($activityStreamShowClosed!='1') {
+      	$objType=$note->refType;
+      	$obj=new $objType($note->refId);
+      	if (property_exists($objType, 'idle') and $obj->idle==1) {
+      		continue;
+      	}
+      }
       $userId = $note->idUser;
       $userName = SqlList::getNameFromId ( 'User', $userId );
       $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
