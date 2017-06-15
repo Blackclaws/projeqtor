@@ -30,7 +30,8 @@
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 $user = getSessionUser ();
-
+$showClosed=Parameter::getUserParameter("activityStreamShowClosed");
+$activityStreamNumberElement=Parameter::getUserParameter("activityStreamNumberElement");
 ?>
 <div id="resultDiv" style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: 999"></div>
 <table width="100%">
@@ -46,22 +47,35 @@ $user = getSessionUser ();
 			<tr>
 				<td valign="top" width="10%">
 					<table style="margin-left:20px;margin-top:10px;">
-					  <input type="hidden" id="activityStreamAllItems" name="activityStreamAllItems" value="<?php echo Parameter::getUserParameter("activityStreamAllItems");?>" />
+					  <input type="hidden" id="activityStreamShowClosed" name="activityStreamShowClosed" value="<?php echo $showClosed;?>" />
 						<tr>
-							<td align="left" >
-							  <a onclick="dojo.byId('activityStreamAllItems').value=0;refreshActivityStreamList();" href="#">
-							    <?php echo i18n("activityStreamAllItems");?>
+							<td align="left" style="white-space:nowrap;padding-right:20px">
+							  <a onclick="resetActivityStreamListParameters();refreshActivityStreamList();" href="#" style="cursor: pointer;">
+							    <?php echo i18n("activityStreamResetParameters");?>
 							  </a>
+							  
 							</td>
 						</tr>
 						<tr>
-					  <td style="width:5px;display:inline;">
-					   <?php echo i18n('colId');?>
-              <div style="width:15px;" class="filterField rounded" dojoType="dijit.form.TextBox" 
-               type="text" id="listIdFilterStream" name="listIdFilterStream" onChange="dojo.byId('activityStreamAllItems').value=1;refreshActivityStreamList();">
-              </div>
-            </td>
-           </tr>
+						<td align="left" style="white-space:nowrap;padding-right:20px">
+							  <a onclick="switchActivityStreamListShowClosed();refreshActivityStreamList();" href="#" style="cursor: pointer;">
+							    <?php echo i18n("activityStreamShowClosed");?>
+							  </a><?php $displayShowClosedCheck=($showClosed)?'block':'none';?><span id="activityStreamShowClosedCheck" style="display:<?php echo $displayShowClosedCheck;?>";><img src="css/images/iconSelect.png"/></span>
+							</td>
+						</tr>
+						<tr>
+						<td align="left"><?php echo i18n("limitDisplayActivityStream");?>&nbsp;:&nbsp;
+						<select title="<?php echo i18n('limitDisplayActivityStream')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+						value="<?php echo $activityStreamNumberElement;?>"
+            <?php echo autoOpenFilteringSelect();?> 
+            id="activityStreamNumberElement" name="activityStreamNumberElement" style="width:80px;margin-left:16px;" onChange="refreshActivityStreamList();">
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value= "100">100</option>
+                <option value= "500">500</option>
+                <option value= "1000">1000</option>
+				    </select></td>
+					</tr>
 					</table>
 				</td>
 				<td valign="top" width="20%">
@@ -73,7 +87,7 @@ $user = getSessionUser ();
                 <?php echo autoOpenFilteringSelect();?> 
                 id="activityStreamAuthorFilter" name="activityStreamAuthorFilter" style="width:200px">
                   <?php 
-                    $selectedAuthor=Parameter::getUserParameter('activityStreamParameter');
+                    $selectedAuthor=Parameter::getUserParameter('activityStreamAuthorFilter');
                     htmlDrawOptionForReference('idUser', $selectedAuthor, null, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshActivityStreamList();
@@ -81,6 +95,10 @@ $user = getSessionUser ();
                 </select>
 							</td>
 						</tr>
+					</table>
+				</td>
+				<td valign="top" width="20%">
+					<table class="activityStreamFilter" style="margin-top:10px;">		
 						<tr>
 							<td align="left">
 							 <?php echo i18n('filterOnType');?>
@@ -88,44 +106,43 @@ $user = getSessionUser ();
                 <?php echo autoOpenFilteringSelect();?> 
                 id="activityStreamTypeNote" name="activityStreamTypeNote" style="width:200px;margin-left:16px;">
                   <?php 
-                    htmlDrawOptionForReference('idLinkable', null, null, false); ?>
+                    $selectedElementType=Parameter::getUserParameter('activityStreamElementType');
+                    htmlDrawOptionForReference('idLinkable', $selectedElementType, null, false); ?>
                   <script type="dojo/method" event="onChange" >
-                    dojo.byId('activityStreamAllItems').value=4;refreshActivityStreamList();
+                    refreshActivityStreamList();
                   </script>
                 </select>
 							</td>
 						</tr>
+						<tr>
+					  <td style="width:5px;display:inline;">
+					   <?php echo i18n('colId');?>
+              <div style="width:15px;" class="filterField rounded" dojoType="dijit.form.TextBox" value=""
+               type="text" id="listIdFilterStream" name="listIdFilterStream" onChange="dojo.byId('activityStreamAllItems').value=1;refreshActivityStreamList();">
+              </div>
+            </td>
+           </tr>
 					</table>
         </td>
        <td valign="top" width="50%">
         <table style="margin-top: 10px;">
+        <input type="hidden" id="activityStreamRecently" name="activityStreamRecently" value="<?php echo Parameter::getUserParameter("activityStreamAllItems");?>" />
+						
 					<tr>
 						<td align="left" >
-							 <a onclick="dojo.byId('activityStreamAllItems').value=3;refreshActivityStreamList();" href="#">
+							 <a onclick="dojo.byId('activityStreamAllItems').value='added';refreshActivityStreamList();" href="#" style="cursor: pointer;">
 							   <?php echo i18n("dashboardTicketMainAddedRecently");?>
 							 </a>
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							 <a onClick="dojo.byId('activityStreamAllItems').value=2;refreshActivityStreamList();" href="#">
+							 <a onClick="dojo.byId('activityStreamAllItems').value=2;refreshActivityStreamList();" href="#" style="cursor: pointer;">
 							   <?php echo i18n("Old Added");?>
 							 </a>
 						</td>
 					</tr>
-					<tr>
-						<td align="left"><?php echo i18n("limitDisplayActivityStream");?>&nbsp;:&nbsp;
-						<select title="<?php echo i18n('limitDisplayActivityStream')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
-            <?php echo autoOpenFilteringSelect();?> 
-            id="activityStreamNumberElement" name="activityStreamNumberElement" style="width:80px;margin-left:16px;" onChange="dojo.byId('activityStreamAllItems').value=5;refreshActivityStreamList();">
-                <option></option>
-                <option>10</option>
-                <option>50</option>
-                <option>100</option>
-                <option>500</option>
-                <option>1000</option>
-				    </div></td>
-					</tr>
+					
 				 </table>
         </td>
 			</tr>
