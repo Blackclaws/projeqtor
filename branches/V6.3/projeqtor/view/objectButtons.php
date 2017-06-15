@@ -227,6 +227,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
           hideExtraButtons('extraButtonsDetail');
+          loadContent("objectStream.php", "detailRightDiv", "listForm");
 // ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
           // If undo Organization's detail screen, must passed periodic year in REQUEST
           cl='';
