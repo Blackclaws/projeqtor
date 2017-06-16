@@ -236,7 +236,7 @@ class Parameter extends SqlElement {
       //gautier #2270
       case 'browserLocaleTimeFormat':
         $list=array('H:mm'=>'24h',
-        'h:m a'=>'AM/PM');
+        'h:mm a'=>'AM/PM');
         break;
       case 'defaultProject':
         if (sessionUserExists()) {

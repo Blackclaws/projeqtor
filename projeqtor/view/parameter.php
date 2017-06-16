@@ -157,6 +157,9 @@ function drawTableFromObjectList($objectList) {
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
 				echo ' type="text" maxlength="5" ';
+				if (sessionValueExists('browserLocaleTimeFormat')) {
+				  echo ' constraints="{timePattern:\'' . getSessionValue('browserLocaleTimeFormat') . '\'}" ';
+				}
 				echo ' style="width:50px; text-align: center;" class="input" ';
 				echo ' value="T' . htmlEncode($obj->parameterValue) . '" ';
 				echo ' hasDownArrow="false" ';
@@ -242,7 +245,7 @@ function drawTableFromObjectList($objectList) {
 			  	$res=new Resource($usr->id);
 			  	$team=new Team($res->idTeam);
 			  	echo $team->name;
-			  } else if ($code=='oraganization') {
+			  } else if ($code=='organization') {
 			  	$usr=getSessionUser();
 			  	$res=new Resource($usr->id);
 			  	$orga=new Organization($res->idOrganization);
