@@ -200,7 +200,13 @@
               $paramCopy="copyObjectTo";
               echo "copyObjectBox('$paramCopy');";
             }else{
-              echo "copyObject('" .$_REQUEST['objectClass'] . "');";
+              //gautier #2522
+              if ($_REQUEST['objectClass']=='Document'){
+                $paramCopy="copyDocument";
+                echo "copyObjectBox('$paramCopy');";
+              }else{            
+                echo "copyObject('" .$_REQUEST['objectClass'] . "');";
+              }
             }
           }else{
             echo "copyObjectBox('$paramCopy');";

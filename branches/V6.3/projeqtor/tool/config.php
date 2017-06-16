@@ -379,6 +379,7 @@ $requi['logLevel'] = true;
       saveResolutionToSession();
       userBrowserLocaleForDates="";
       var browserLocaleDateFormat=null;
+      var browserLocaleTimeFormat=null;
       //saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
       //dojo.byId('login').focus();

@@ -67,44 +67,8 @@
 <?php }?>	
 	  <table id="objectStream" style="width:100%;"> 
 	    <?php foreach ( $notes as $note ) {
-	      $userId=$note->idUser;
-        $userName=SqlList::getNameFromId('User', $userId);
-        $userNameFormatted = '<span style="color:blue"><strong>'.$userName.'</strong></span>';
-        $idNote = '<span style="color:blue">'.$note->id.'</span>';
-        $ticketName = '<span style="color:blue">'.$note->refType.' #'.$note->refId.'</span>';
-        $colCommentStream = i18n ( 'addComment', array (
-            $idNote,
-            $ticketName
-        ) );
-        ?>
-	      <?php if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {?>
-	        <tr style="height:100%;">
-	          <td class="noteData" style="width:100%;">
-	            <div style="float:left;">
-	              <?php
-	                echo formatUserThumb($note->idUser, $userName, 'Creator',32);
-	                echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
-	              ?>
-	            </div>
-	            <div>
-      	        <?php
-      	         if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
-      	        ?>
-	            </div>
-	       <?php $rightWidth=(intval(Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass))-30).'px"';?>
-	      <div style="padding-left:4px;max-width:<?php echo $rightWidth;?>px" >
-	      <?php 
-  	      $strDataHTML=nl2br($note->note); 	    
-  		    echo '<div>'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-  	      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div>&nbsp';
-  	      echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
-  	      echo '<div style="margin-top:11px;">'.$note->creationDate.'</div>';
-	      ?>
-	      </div>
-	      </td>       
-	        </tr>      
-	     <?php };?>
-	    <?php };?>
+	      echo activityStreamDisplayNote ($note,"objectStream");
+	    };?>
 	  </table>
 	   <div id="scrollToBottom" type="hidden"></div>
 <?php if (!$onlyCenter) {?>   	  

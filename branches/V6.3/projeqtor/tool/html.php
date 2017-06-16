@@ -844,7 +844,7 @@ function htmlFormatDateTime($val, $withSecond=true, $hideZeroTime=false) {
   if (! $hideZeroTime or substr($val,11,5)!='00:00') {
     $result.= " " . (($withSecond)?substr($val,11):substr($val,11,5));
   }
-  if(getSessionValue('browserLocaleTimeFormat')=='h:m a'){
+  if(getSessionValue('browserLocaleTimeFormat')=='h:mm a'){
     $result = htmlFormatDate(substr($val,0,10)) .' '. date('g:i a',strtotime($val));
   }
   return $result;
@@ -854,7 +854,7 @@ function htmlFormatTime($val, $withSecond=true) {
   global $browserLocale;
   $locale=substr($browserLocale, 0,2);
   $result=(($withSecond)?$val:substr($val,0,5));
-  if(getSessionValue('browserLocaleTimeFormat')=='h:m a'){
+  if(getSessionValue('browserLocaleTimeFormat')=='h:mm a'){
     $result2 =   date('g:i a',strtotime($result));
     $result = $result2;
   }

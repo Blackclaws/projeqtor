@@ -33,7 +33,7 @@ scriptLog ( '   ->/view/objectStream.php' );
 global $print, $user;
 $user = getSessionUser ();
 
-var_dump($_REQUEST);
+//var_dump($_REQUEST);
 
 if (RequestHandler::isCodeSet('activityStreamShowClosed')) {
   $activityStreamShowClosed=RequestHandler::getValue("activityStreamShowClosed");
@@ -56,14 +56,43 @@ if (RequestHandler::isCodeSet('activityStreamAuthorFilter')) {
 	$paramAuthorFilter=Parameter::getUserParameter("activityStreamAuthorFilter");
 }
 
-$paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
-
-$limitElement = RequestHandler::getNumeric("activityStreamNumberElement");
-
-$idStreamNote = RequestHandler::getNumeric("listIdFilterStream");
-debugLog("voici mon idstream : ".$idStreamNote);
-
+if (RequestHandler::isCodeSet('activityStreamTypeNote')) {
+  $paramTypeNote=RequestHandler::getId("activityStreamTypeNote");
+  debugLog($paramTypeNote);
+  Parameter::storeUserParameter("activityStreamElementType", $paramTypeNote);
+} else {
+  $paramTypeNote=Parameter::getUserParameter("activityStreamElementType");
+}
 $typeNote = SqlList::getNameFromId('Linkable', $paramTypeNote);
+
+if (RequestHandler::isCodeSet('activityStreamIdNote')) {
+  $paramStreamIdNote=RequestHandler::getId("activityStreamIdNote");
+  Parameter::storeUserParameter("activityStreamIdNote", $paramStreamIdNote);
+} else {
+  $paramStreamIdNote=Parameter::getUserParameter("activityStreamIdNote");
+}
+
+if (RequestHandler::isCodeSet('activityStreamNumberDays')) {
+  $activityStreamNumberDays=RequestHandler::getNumeric("activityStreamNumberDays");
+  Parameter::storeUserParameter("activityStreamNumberDays", $activityStreamNumberDays);
+} else {
+  $activityStreamNumberDays=Parameter::getUserParameter("activityStreamNumberDays");
+}
+
+if (RequestHandler::isCodeSet('activityStreamRecently')) {
+  $activityStreamRecently=RequestHandler::getValue("activityStreamRecently");
+  Parameter::storeUserParameter("activityStreamRecently", $activityStreamRecently);
+} else {
+  $activityStreamRecently=Parameter::getUserParameter("activityStreamRecently");
+}
+
+//$paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
+
+//$limitElement = RequestHandler::getNumeric("activityStreamNumberElement");
+
+//$idStreamNote = RequestHandler::getNumeric("listIdFilterStream");
+
+
 
 $paramProject=getSessionValue('project');
 
@@ -73,11 +102,29 @@ if (trim($paramAuthorFilter)!="") {
 	$critWhere.=" and idUser=$paramAuthorFilter";
 }
 
+if (trim($paramTypeNote)!="") {
+  $critWhere.=" and refType='$typeNote'";
+}
+
+if (trim($paramStreamIdNote)!="") {
+  $critWhere.=" and refId=$paramStreamIdNote";
+}
+
 if ($paramProject!='*') {
 	$critWhere.=" and idProject in ".getVisibleProjectsList(true);
 } else {
 	$critWhere.=" and idProject in ".getVisibleProjectsList($paramProject);
 }
+
+if ($activityStreamRecently=="added" && trim($activityStreamNumberDays)!=""){
+  $critWhere.=" and creationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+}
+
+if ($activityStreamRecently=="updated"){
+  $critWhere.=" and updateDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+}
+
+//SELECT * FROM `note` WHERE `creationDate`>=ADDDATE(NOW(), INTERVAL (-5) DAY)
 
 // TODO : activate when idle added in Notes
 //if ($activityStreamShowClosed!='1') {
@@ -104,7 +151,7 @@ if($paramAllItems=="4" && trim($paramTypeNote)!=""){
   $critWhere.=" and refType='$typeNote'";
 }*/
 echo '<br/>';
-var_dump($critWhere);
+//var_dump($critWhere);
 $notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,null,null,null,$activityStreamNumberElement);
 
 $countIdNote = count ( $notes );
@@ -113,13 +160,12 @@ if ($countIdNote == 0) {
   exit ();
 }
 $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : false;
+var_dump($_REQUEST);
 ?>
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
-	
-
-	<!-- Titre et listes de notes -->
 	<table id="objectStream" style="width: 100%;"> 
-	   <?php foreach ($notes as $note) {
+	<?php 
+	  foreach ($notes as $note) {
 	   	// TODO : desactivate when idle added in Notes
       if ($activityStreamShowClosed!='1') {
       	$objType=$note->refType;
@@ -128,35 +174,8 @@ $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : fal
       		continue;
       	}
       }
-      $userId = $note->idUser;
-      $userName = SqlList::getNameFromId ( 'User', $userId );
-      $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
-      $idNote = '<span style="color:blue">' . $note->id . '</span>';
-      $ticketName = '<span style="color:blue">' . $note->refType . ' #' . $note->refId . '</span>';
-      $colCommentStream = i18n ( 'addComment', array (
-          $idNote,
-          $ticketName 
-      ) );
-      ?>
-	  <tr style="height: 100%;">
-			<td class="noteData" style="width: 100%;">
-				<div style="float: left;">
-	              <?php
-      echo formatUserThumb ( $note->idUser, $userName, 'Creator', 32 );
-      echo formatPrivacyThumb ( $note->idPrivacy, $note->idTeam );
-      ?>
-	      </div>
-				<div style="overflow-x: hidden; padding-left: 4px;">
-	    <?php
-      $strDataHTML = nl2br ( $note->note );
-      echo '<div>' . $userNameFormatted . '&nbsp' . $colCommentStream . '</div>';
-      echo '<div style="color:black;margin-top:4px;word-break:break-all;min-width:188px;position:relative;">' . $strDataHTML . '</div>';
-      echo '<div style="margin-top:6px;">' . formatDateThumb ( $note->creationDate, null, "left" ) . '</div>';
-      echo '<div style="margin-top:11px;">' . $note->creationDate . '</div>';
-      ?>
-	    <?php };?>
-	      </div>
-			</td>
-		</tr>
+      activityStreamDisplayNote($note,"activityStream");
+	  }?>
 	</table>
 	<div id="scrollToBottom" type="hidden"></div>
+</div>

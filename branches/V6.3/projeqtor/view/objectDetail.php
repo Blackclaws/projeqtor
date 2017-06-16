@@ -1497,6 +1497,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="8" ';
+        if (sessionValueExists('browserLocaleTimeFormat')) {
+          echo ' constraints="{timePattern:\'' . getSessionValue('browserLocaleTimeFormat') . '\'}" ';
+        }
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
         echo ' style="width:60px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $valTime . '" ';
@@ -1515,6 +1518,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
+        if (sessionValueExists('browserLocaleTimeFormat')) {
+          echo ' constraints="{timePattern:\'' . getSessionValue('browserLocaleTimeFormat') . '\'}" ';
+        }
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
         echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';

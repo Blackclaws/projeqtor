@@ -824,6 +824,15 @@ function copyObjectBox(copyType) {
   var callBack=function() {
 
   };
+  //gautier #2522
+  if (copyType=="copyDocument") {
+    callBack=function() {
+    };
+    var params="&objectClass="+dojo.byId("objectClass").value;
+    params+="&objectId="+dojo.byId("objectId").value;   
+    params+="&copyType="+copyType;  
+    loadDialog('dialogCopyDocument', callBack, true, params, false);
+  }else{
   if (copyType=="copyVersion") {
     callBack=function() {
     };
@@ -855,6 +864,7 @@ function copyObjectBox(copyType) {
   params+="&objectId="+dojo.byId("objectId").value;   
   params+="&copyType="+copyType;   
   loadDialog('dialogCopy', callBack, true, params, false);
+  }
 }
 
 //=============================================================================
@@ -5225,6 +5235,11 @@ function copyObjectToSubmit(objectClass) {
   loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true,
       'copyTo');
   dijit.byId('dialogCopy').hide();
+}
+//gautier #2522
+function copyDocumentToSubmit(objectClass) {
+  loadContent("../tool/copyDocumentTo.php", "resultDiv", 'copyDocumentForm', true );
+  dijit.byId('dialogCopyDocument').hide();
 }
 
 function copyProjectToSubmit(objectClass) {
