@@ -577,7 +577,7 @@ var formDivPosition = null; // to replace scrolling of detail after save.
 var editorArray = new Array();
 var loadContentRetryArray=new Array();
 function loadContent(page, destination, formName, isResultMessage,
-    validationType, directAccess, silent, callBackFunction) {
+    validationType, directAccess, silent, callBackFunction, noFading) {
   var debugStart = (new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -597,14 +597,16 @@ function loadContent(page, destination, formName, isResultMessage,
   }
   if (page.substr(0, 16) == 'objectDetail.php') {
     // if item = current => refresh without fading
-    if (dojo.byId('objectClassName') && dojo.byId('objectId')
-        && dojo.byId('objectClassName') && dojo.byId('id')) {
+    if (dojo.byId('objectClassName') && dojo.byId('objectId') && dojo.byId('objectClass') && dojo.byId('id')) {
       if (dojo.byId('objectClass').value == dojo.byId('objectClassName').value
           && dojo.byId('objectId').value == dojo.byId('id').value) {
         fadingMode = false;
       }
     }
   }
+  if (noFading) fadingMode = false;
+  if (page.substr(0, 16) == 'objectStream.php') fadingMode = false;
+  
   if (!(contentNode && contentWidget)) {
     consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
         formName, isResultMessage, destination)));
@@ -1157,7 +1159,10 @@ function finalizeMessageDisplay(destination, validationType) {
           loadDiv(url, 'buttonDivCreationInfo', null);  
         }
         refreshGrid();
-      }else if(validationType =='link' || validationType.substr(0,4)=='link'){
+      } else if ( validationType=='linkObject') {
+        loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
+      }else if( (validationType =='link' || validationType.substr(0,4)=='link') && validationType !='linkObject'){
+        
         var refTypeName=validationType.substr(4);     
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
@@ -4088,6 +4093,15 @@ function hideGraphStatus(){
   }
 }
 
+
+function scrollInto(){
+  var scrollElmnt = dojo.byId("scrollToBottom");
+  if(scrollElmnt){
+    console.log("scrollInto");
+    scrollElmnt.scrollIntoView();
+  }
+}
+
 function saveNoteStream(event){
   var key = event.keyCode;
   if (key == 13 && !event.shiftKey) {
@@ -4097,15 +4111,8 @@ function saveNoteStream(event){
       noteEditor.focus();
       return;
     }
-    loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note');
+    loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note',null,null);
     noteEditor.set("value",null);
-  }
-}
-
-function scrollInto(){
-  var scrollElmnt = dojo.byId("scrollToBottom");
-  if(scrollElmnt){
-    scrollElmnt.scrollIntoView();
   }
 }
 
@@ -4124,7 +4131,7 @@ function hideStreamMode(){
   }
 }
 
-function mouseDownStream() {
+function focusStream() {
   if(dijit.byId("noteNoteStream").get('value')==i18n("textareaEnterText")){
     dijit.byId("noteNoteStream").set('value',"");
   }
@@ -4140,6 +4147,7 @@ function resetActivityStreamListParameters() {
   dijit.byId("activityStreamAuthorFilter").set('value',null);
   dijit.byId("activityStreamTypeNote").reset();
   dijit.byId("activityStreamIdNote").set('value',null);
+  dijit.byId("activityStreamNumberDays").set('value','7'); 
 }
 function switchActivityStreamListShowClosed() {
   var oldValue=dojo.byId('activityStreamShowClosed').value;

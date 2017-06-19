@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -24,10 +24,11 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/* ============================================================================
+/*
+ * ============================================================================
  * Menu defines list of items to present to users.
- */ 
-require_once('_securityCheck.php');
+ */
+require_once ('_securityCheck.php');
 class WorkflowMain extends SqlElement {
 
   // extends SqlElement, so has $id
@@ -603,6 +604,33 @@ class WorkflowMain extends SqlElement {
      
      Sql::$lastQueryNewid=$new;
      return $result;
+  }
+  
+  /** 
+   * Returns list of possible status for given object, depending on current user profile
+   */
+  public static function getAllowedStatusListForObject($obj) {
+    $class=get_class($obj);
+    if ($class=='TicketSimple') $class='Ticket';
+    $idType='id' . $class . 'Type';
+    $typeClass=$class . 'Type';
+    $st=new Status();
+    $table=$st->getSqlElementsFromCriteria(array('idle'=>'0'),null,null,'sortOrder asc',true);
+    if (property_exists($obj,$idType) and property_exists($obj,'idStatus') and $obj->$idType and $obj->idStatus) {
+      $allowedTable=array();
+      $profile=getSessionUser()->getProfile($obj);
+      $type=new $typeClass($obj->$idType,true);
+      if (property_exists($type,'idWorkflow') ) {
+        $ws=new WorkflowStatus();
+        $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$obj->idStatus);
+        $wsList=$ws->getSqlElementsFromCriteria($crit, false, null, null, true);
+        foreach ($wsList as $ws) {
+          $allowedTable['#'.$ws->idStatusTo]=new Status($ws->idStatusTo);
+        }
+      }
+      $table=array_intersect_key($table, $allowedTable);
+    }
+    return $table;
   }
 }
 ?>

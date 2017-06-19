@@ -35,10 +35,10 @@ org.eclipse.php.formatter.core.formatter.alignment_for_superclass_in_type_declar
 org.eclipse.php.formatter.core.formatter.alignment_for_superinterfaces_in_type_declaration_force_split=false
 org.eclipse.php.formatter.core.formatter.alignment_for_superinterfaces_in_type_declaration_indent_policy=0
 org.eclipse.php.formatter.core.formatter.alignment_for_superinterfaces_in_type_declaration_line_wrap_policy=0
-org.eclipse.php.formatter.core.formatter.blank_lines_before_field=0
-org.eclipse.php.formatter.core.formatter.blank_lines_before_member_type=0
-org.eclipse.php.formatter.core.formatter.blank_lines_before_method=0
-org.eclipse.php.formatter.core.formatter.blank_lines_between_type_declarations=0
+org.eclipse.php.formatter.core.formatter.blank_lines_before_field=1
+org.eclipse.php.formatter.core.formatter.blank_lines_before_member_type=1
+org.eclipse.php.formatter.core.formatter.blank_lines_before_method=1
+org.eclipse.php.formatter.core.formatter.blank_lines_between_type_declarations=1
 org.eclipse.php.formatter.core.formatter.brace_position_for_block=0
 org.eclipse.php.formatter.core.formatter.brace_position_for_lambda_function_declaration=0
 org.eclipse.php.formatter.core.formatter.brace_position_for_method_declaration=0
@@ -195,7 +195,7 @@ org.eclipse.php.formatter.core.formatter.never_indent_line_comments_on_first_col
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_after_namespace=1
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_after_use_statements=1
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0
-org.eclipse.php.formatter.core.formatter.number_of_blank_lines_at_end_of_class_body=0
+org.eclipse.php.formatter.core.formatter.number_of_blank_lines_at_end_of_class_body=1
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_at_end_of_method_body=0
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_before_namespace=1
 org.eclipse.php.formatter.core.formatter.number_of_blank_lines_before_use_statements=0

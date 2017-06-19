@@ -548,7 +548,7 @@ if (beforeVersion($currVersion,"V6.1.2") and $currVersion!='V0.0.0') {
 }
 
 if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
-	traceLog("update idProject on notes");
+	traceLog("update idProject and idle on notes");
 	//setSessionUser(new User());
 	$note=new Note();
 	$noteList=$note->getSqlElementsFromCriteria(null,false);

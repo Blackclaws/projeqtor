@@ -5970,7 +5970,7 @@ function extractEmails(str) {
         current="";
       } else {
         if (current != '') {
-          if ($result != '') {
+          if (result != '') {
             result+=', ';
           }
           result+=trimTag(current);

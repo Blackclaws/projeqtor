@@ -342,8 +342,12 @@ class CallForTenderMain extends SqlElement {
       if (!$print and !$readOnly) {
         echo '<td class="noteData smallButtonsGroup">';
         if (!$print and $canUpdate) {
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" onClick="editTenderSubmission(' . htmlEncode($tender->id) . ');" title="' . i18n('editTenderSubmission') . '" /> ';
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeTenderSubmission(' . htmlEncode($tender->id) . ');" title="' . i18n('removeTenderSubmission') . '" /> ';
+          echo '<a '; echo 'onClick="editTenderSubmission(' . htmlEncode($tender->id) . ');" class="roundedButtonSmall" title="' . i18n('editTenderSubmission') . '" /> ';
+          echo formatSmallButton('Edit');
+          echo '</a>';
+          echo '<a '; echo 'onClick="removeTenderSubmission(' . htmlEncode($tender->id) . ');" class="roundedButtonSmall" title="' . i18n('removeTenderSubmission') . '" /> ';
+          echo formatSmallButton('Remove');
+          echo '</a>';
         }
         echo '</td>';
       }
