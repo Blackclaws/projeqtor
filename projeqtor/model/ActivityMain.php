@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -24,31 +24,32 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Action is establised during meeting, to define an action to be followed.
- */  
-require_once('_securityCheck.php');
+ */
+require_once ('_securityCheck.php');
 class ActivityMain extends SqlElement {
-
+  
   // List of fields that will be exposed in general user interface
   // List of fields that will be exposed in general user interface
   public $_sec_description;
-  public $id;    // redefine $id to specify its visible place 
+  public $id; // redefine $id to specify its visible place
   public $reference;
   public $name;
   public $idActivityType;
   public $idProject;
-  public $externalReference;  
+  public $externalReference;
   public $creationDate;
   public $lastUpdateDateTime;
   public $idUser;
   public $idContact;
   public $Origin;
-  public $description;  
+  public $description;
   public $_sec_treatment;
   public $idActivity;
   public $idStatus;
-  public $idResource;  
+  public $idResource;
   public $handled;
   public $handledDate;
   public $done;
@@ -59,7 +60,7 @@ class ActivityMain extends SqlElement {
   public $_lib_cancelled;
   public $result;
   public $_sec_Assignment;
-  public $_Assignment=array();
+  public $_Assignment = array();
   public $_sec_Progress;
   public $ActivityPlanningElement; // is an object
   public $isPlanningActivity;
@@ -69,18 +70,17 @@ class ActivityMain extends SqlElement {
   public $idTargetProductVersion;
   public $idTargetComponentVersion;
   public $_sec_predecessor;
-  public $_Dependency_Predecessor=array();
+  public $_Dependency_Predecessor = array();
   public $_sec_successor;
-  public $_Dependency_Successor=array();
+  public $_Dependency_Successor = array();
   public $_sec_Link;
-  public $_Link=array();
-  public $_Attachment=array();
-  public $_Note=array();
-  
-  public $_nbColMax=3;
+  public $_Link = array();
+  public $_Attachment = array();
+  public $_Note = array();
+  public $_nbColMax = 3;
   
   // Define the layout that will be used for lists
-  private static $_layout='
+  private static $_layout = '
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="9%" >${idProject}</th>
     <th field="nameActivityType" width="7%" >${idActivityType}</th>
@@ -96,84 +96,97 @@ class ActivityMain extends SqlElement {
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
     ';
-
-  private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
-                                  "name"=>"required", 
-                                  "idProject"=>"required",
-                                  "idActivityType"=>"required",
-                                  "idStatus"=>"required",
-                                  "creationDate"=>"required",
-                                  "handled"=>"nobr",
-                                  "done"=>"nobr",
-                                  "idle"=>"nobr",
-                                  "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr",
-                                  "isPlanningActivity"=>"title"
-  );  
+  private static $_fieldsAttributes = array(
+      "id" => "nobr", 
+      "reference" => "readonly", 
+      "name" => "required", 
+      "idProject" => "required", 
+      "idActivityType" => "required", 
+      "idStatus" => "required", 
+      "creationDate" => "required", 
+      "handled" => "nobr", 
+      "done" => "nobr", 
+      "idle" => "nobr", 
+      "idleDate" => "nobr", 
+      "cancelled" => "nobr", 
+      "isPlanningActivity" => "title");
+  private static $_colCaptionTransposition = array(
+      'idUser' => 'issuer', 
+      'idResource' => 'responsible', 
+      'idActivity' => 'parentActivity', 
+      'idContact' => 'requestor', 
+      'isPlanningActivity' => 'PlanningActivity');
   
-  private static $_colCaptionTransposition = array('idUser'=>'issuer', 
-                                                   'idResource'=> 'responsible',
-                                                   'idActivity' => 'parentActivity',
-                                                   'idContact' => 'requestor',                                    
-                                                   'isPlanningActivity'=>'PlanningActivity');
+  // private static $_databaseColumnName = array('idResource'=>'idUser');
+  private static $_databaseColumnName = array(
+      'idTargetProductVersion' => 'idVersion', 
+      'idTargetComponentVersion' => 'idComponentVersion');
   
-  //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array('idTargetProductVersion'=>'idVersion', 
-      'idTargetComponentVersion'=>'idComponentVersion');
-    
-   /** ==========================================================================
+  /**
+   * ==========================================================================
    * Constructor
-   * @param $id the id of the object in the database (null if not stored yet)
+   * 
+   * @param $id the
+   *          id of the object in the database (null if not stored yet)
    * @return void
-   */ 
-  function __construct($id = NULL, $withoutDependentObjects=false) {
-    parent::__construct($id,$withoutDependentObjects);
-    if ($withoutDependentObjects) return;
-    if (Parameter::getGlobalParameter('limitPlanningActivity')!="YES"){
-      self::$_fieldsAttributes['isPlanningActivity']='hidden';      
-    }   
-      
+   */
+  function __construct($id = NULL, $withoutDependentObjects = false) {
+    parent::__construct ( $id, $withoutDependentObjects );
+    if ($withoutDependentObjects)
+      return;
+    if (Parameter::getGlobalParameter ( 'limitPlanningActivity' ) != "YES") {
+      self::$_fieldsAttributes ['isPlanningActivity'] = 'hidden';
+    }
   }
-
-   /** ==========================================================================
-   * Destructor
-   * @return void
-   */ 
-  function __destruct() {
-    parent::__destruct();
-  }
-
-
-// ============================================================================**********
-// GET STATIC DATA FUNCTIONS
-// ============================================================================**********
   
-  /** ==========================================================================
+  /**
+   * ==========================================================================
+   * Destructor
+   * 
+   * @return void
+   */
+  function __destruct() {
+    parent::__destruct ();
+  }
+  
+  // ============================================================================**********
+  // GET STATIC DATA FUNCTIONS
+  // ============================================================================**********
+  
+  /**
+   * ==========================================================================
    * Return the specific layout
+   * 
    * @return the layout
    */
   protected function getStaticLayout() {
     return self::$_layout;
   }
   
-  /** ==========================================================================
+  /**
+   * ==========================================================================
    * Return the specific fieldsAttributes
+   * 
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
   
-  /** ============================================================================
+  /**
+   * ============================================================================
    * Return the specific colCaptionTransposition
+   * 
    * @return the colCaptionTransposition
    */
-  protected function getStaticColCaptionTransposition($fld=null) {
+  protected function getStaticColCaptionTransposition($fld = null) {
     return self::$_colCaptionTransposition;
   }
-
-  /** ========================================================================
+  
+  /**
+   * ========================================================================
    * Return the specific databaseColumnName
+   * 
    * @return the databaseTableName
    */
   protected function getStaticDatabaseColumnName() {
@@ -181,267 +194,281 @@ class ActivityMain extends SqlElement {
   }
   
   // ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
+  // GET VALIDATION SCRIPT
+  // ============================================================================**********
   
-  /** ==========================================================================
+  /**
+   * ==========================================================================
    * Return the validation sript for some fields
+   * 
    * @return the validation javascript (for dojo framework)
    */
   public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-
-    if ($colName=="idProject") {   
+    $colScript = parent::getValidationScript ( $colName );
+    
+    if ($colName == "idProject") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    } else if ($colName=="idActivity") {   
+    } else if ($colName == "idActivity") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    } else if ($colName=="idActivityType") {
+    } else if ($colName == "idActivityType") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  setDefaultPlanningMode(this.value);';
       $colScript .= '  setDefaultPriority(this.value);';
       $colScript .= '</script>';
-    } 
+    }
     return $colScript;
   }
-
-/** =========================================================================
+  
+  /**
+   * =========================================================================
    * control data corresponding to Model constraints
-   * @param void
-   * @return "OK" if controls are good or an error message 
-   *  must be redefined in the inherited class
+   * 
+   * @param
+   *          void
+   * @return "OK" if controls are good or an error message
+   *         must be redefined in the inherited class
    */
-  public function control(){
-    $result="";
-    if ($this->id and $this->id==$this->idActivity) {
-      $result.='<br/>' . i18n('errorHierarchicLoop');
-    } else if ($this->ActivityPlanningElement and $this->ActivityPlanningElement->id){
-    	if (trim($this->idActivity)) {
-    		$parentType='Activity';
-    		$parentId=$this->idActivity;
-    	} else {
-    		$parentType='Project';
-    		$parentId=$this->idProject;
-    	}
-    	$result.=$this->ActivityPlanningElement->controlHierarchicLoop($parentType, $parentId);
+  public function control() {
+    $result = "";
+    if ($this->id and $this->id == $this->idActivity) {
+      $result .= '<br/>' . i18n ( 'errorHierarchicLoop' );
+    } else if ($this->ActivityPlanningElement and $this->ActivityPlanningElement->id) {
+      if (trim ( $this->idActivity )) {
+        $parentType = 'Activity';
+        $parentId = $this->idActivity;
+      } else {
+        $parentType = 'Project';
+        $parentId = $this->idProject;
+      }
+      $result .= $this->ActivityPlanningElement->controlHierarchicLoop ( $parentType, $parentId );
     }
     
-    if (trim($this->idActivity)) {
-      $parentActivity=new Activity($this->idActivity);
-      if ($parentActivity->idProject!=$this->idProject) {
-    	  $result.='<br/>' . i18n('msgParentActivityInSameProject');
+    if (trim ( $this->idActivity )) {
+      $parentActivity = new Activity ( $this->idActivity );
+      if ($parentActivity->idProject != $this->idProject) {
+        $result .= '<br/>' . i18n ( 'msgParentActivityInSameProject' );
       }
     }
-    $defaultControl=parent::control();
-    if ($defaultControl!='OK') {
-      $result.=$defaultControl;
+    $defaultControl = parent::control ();
+    if ($defaultControl != 'OK') {
+      $result .= $defaultControl;
     }
-    if ($result=="") {
-      $result='OK';
+    if ($result == "") {
+      $result = 'OK';
     }
     return $result;
   }
   
-  
-  /** =========================================================================
+  /**
+   * =========================================================================
    * Overrides SqlElement::save() function to add specific treatments
+   * 
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
-   */  
+   */
   
-  /**=========================================================================
+  /**
+   * =========================================================================
    * Overrides SqlElement::save() function to add specific treatments
+   * 
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+    debugLog("Save activity # $this->id");
     
-    $oldResource=null;
-    $oldIdle=null;
-    $oldIdProject=null;
-    $oldIdActivity=null;
-    $oldTargetProductVersion=null;
+    $oldResource = null;
+    $oldIdle = null;
+    $oldIdProject = null;
+    $oldIdActivity = null;
+    $oldTargetProductVersion = null;
     if ($this->id) {
-      $old=$this->getOld();
-      $oldResource=$old->idResource;
-      $oldIdle=$old->idle;
-      $oldIdProject=$old->idProject;
-      $oldIdActivity=$old->idActivity;
-      $oldTargetProductVersion=$old->idTargetProductVersion;
+      $old = $this->getOld ();
+      $oldResource = $old->idResource;
+      $oldIdle = $old->idle;
+      $oldIdProject = $old->idProject;
+      $oldIdActivity = $old->idActivity;
+      $oldTargetProductVersion = $old->idTargetProductVersion;
     }
     
     // #305 : need to recalculate before dispatching to PE
-    $this->recalculateCheckboxes();
-    $this->ActivityPlanningElement->refName=$this->name;
-    $this->ActivityPlanningElement->idProject=$this->idProject;
-    $this->ActivityPlanningElement->idle=$this->idle;
-    $this->ActivityPlanningElement->done=$this->done;
-    $this->ActivityPlanningElement->cancelled=$this->cancelled;
-    if ($this->idActivity and trim($this->idActivity)!='') {
-      $this->ActivityPlanningElement->topRefType='Activity';
-      $this->ActivityPlanningElement->topRefId=$this->idActivity;
-      $this->ActivityPlanningElement->topId=null;
+    $this->recalculateCheckboxes ();
+    $this->ActivityPlanningElement->refName = $this->name;
+    $this->ActivityPlanningElement->idProject = $this->idProject;
+    $this->ActivityPlanningElement->idle = $this->idle;
+    $this->ActivityPlanningElement->done = $this->done;
+    $this->ActivityPlanningElement->cancelled = $this->cancelled;
+    if ($this->idActivity and trim ( $this->idActivity ) != '') {
+      $this->ActivityPlanningElement->topRefType = 'Activity';
+      $this->ActivityPlanningElement->topRefId = $this->idActivity;
+      $this->ActivityPlanningElement->topId = null;
     } else {
-      $this->ActivityPlanningElement->topRefType='Project';
-      $this->ActivityPlanningElement->topRefId=$this->idProject;
-      $this->ActivityPlanningElement->topId=null;
-    } 
-    if (trim($this->idProject)!=trim($oldIdProject) or trim($this->idActivity)!=trim($oldIdActivity)) {
-    	$this->ActivityPlanningElement->wbs=null;
-    	$this->ActivityPlanningElement->wbsSortable=null;
+      $this->ActivityPlanningElement->topRefType = 'Project';
+      $this->ActivityPlanningElement->topRefId = $this->idProject;
+      $this->ActivityPlanningElement->topId = null;
     }
-    $result = parent::save();
-    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+    if (trim ( $this->idProject ) != trim ( $oldIdProject ) or trim ( $this->idActivity ) != trim ( $oldIdActivity )) {
+      $this->ActivityPlanningElement->wbs = null;
+      $this->ActivityPlanningElement->wbsSortable = null;
+    }
+    $result = parent::save ();
+    if (! strpos ( $result, 'id="lastOperationStatus" value="OK"' )) {
+      debugLog ("NOT SAVE OK ".$result);
       return $result;
     }
-
-    if ( $this->idResource and trim($this->idResource) != ''
-      and ! trim($oldResource)
-      and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-      	// Add assignment for responsible
-      $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',
-          array('idProfile' => getSessionUser()->getProfile($this->idProject),'scope' => 'assignmentEdit'));
-      if ($habil and $habil->rightAccess == 1) {      
-        $ass=new Assignment();
-        $crit=array('idResource'=>$this->idResource, 'refType'=>'Activity', 'refId'=>$this->id);
-        $lst=$ass->getSqlElementsFromCriteria($crit, false);
-        if (count($lst)==0) {
-  	      $ass->idProject=$this->idProject;
-  	      $ass->refType='Activity';
-  	      $ass->refId=$this->id;
-  	      $ass->idResource=$this->idResource;
-  	      $ass->assignedWork=0;
-  	      $ass->realWork=0;
-  	      $ass->leftWork=0;
-  	      $ass->plannedWork=0;
-  	      $ass->notPlannedWork=0;
-  	      $ass->rate='100';
-  	      $ass->save();
-        }   
+    
+    if ($this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
+      // Add assignment for responsible
+      $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
+          'idProfile' => getSessionUser ()->getProfile ( $this->idProject ), 
+          'scope' => 'assignmentEdit') );
+      if ($habil and $habil->rightAccess == 1) {
+        $ass = new Assignment ();
+        $crit = array('idResource' => $this->idResource, 'refType' => 'Activity', 'refId' => $this->id);
+        $lst = $ass->getSqlElementsFromCriteria ( $crit, false );
+        if (count ( $lst ) == 0) {
+          $ass->idProject = $this->idProject;
+          $ass->refType = 'Activity';
+          $ass->refId = $this->id;
+          $ass->idResource = $this->idResource;
+          $ass->assignedWork = 0;
+          $ass->realWork = 0;
+          $ass->leftWork = 0;
+          $ass->plannedWork = 0;
+          $ass->notPlannedWork = 0;
+          $ass->rate = '100';
+          $ass->save ();
+        }
       }
     }
-
-     // Change idle or idProject value => update idle and idProject for assignments
-     if ( ($this->idle !=  $oldIdle ) 
-       or ($this->idProject != $oldIdProject ) ) {
-      // Add assignment for responsible
-      $ass=new Assignment();
-      $crit=array("refType"=>"Activity", "refId"=>$this->id);
-      $assList=$ass->getSqlElementsFromCriteria($crit,false);
-	      foreach($assList as $ass) {
-	        $ass->idle=$this->idle;
-	        $ass->idProject=$this->idProject;
-	        $ass->save();
-	
-	        // Change idProject value => update idProject for work
-	        // update not done to PlannedWork : new planning must be calculated
-	        if ($this->idProject != $oldIdProject ) {
-	          $work=new Work();
-	          $crit=array("refType"=>"Activity", "refId"=>$this->id);
-	          $workList=$work->getSqlElementsFromCriteria($crit,false);
-	          foreach($workList as $work) {
-	            $work->idProject=$this->idProject;
-	            $work->save();
-	          }
-	            $work=new PlannedWork();
-	            $crit=array("refType"=>"Activity", "refId"=>$this->id);
-	            $workList=$work->getSqlElementsFromCriteria($crit,false);
-	            foreach($workList as $work) {
-	              $work->idProject=$this->idProject;
-	              $work->save();
-	            }
-	        }   
-	      }      
-	    }   
-	    if ($this->idProject != $oldIdProject ) {
-	    	$lstElt=array('Activity','Ticket','Milestone','PeriodicMeeting','Meeting','TestSession');
-	    	foreach ($lstElt as $elt) {
-	    		$eltObj=new $elt();
-	    		$crit=array('idActivity'=>$this->id);
-	    		$lst=$eltObj->getSqlElementsFromCriteria($crit, false,null,null,true);
-	    		foreach($lst as $obj) {
-	          $objBis=new $elt($obj->id);   			
-	    			$objBis->idProject=$this->idProject;
-	    			$tmpRes=$objBis->save();
-	    		}
-	    	}
-	    }
-	    if ($oldTargetProductVersion!=$this->idTargetProductVersion) {
-	    	$vers=new Version($this->idTargetProductVersion);
-	    	$idProduct=($vers->idProduct)?$vers->idProduct:null;
-	    	$ticket=new Ticket();
-	    	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
-	    	foreach ($ticketList as $ticket) {
-	    		$ticket->idTargetProductVersion=$this->idTargetProductVersion;
-	    		if ($idProduct) {$ticket->idProduct=$idProduct;}
-	    		$ticket->save();
-	    	}
-	    }
     
-	    //mehdi
-	    if ($this->idActivity){
-	    	if(Parameter::getGlobalParameter('autoUpdateActivityStatus')=='YES'){
-	    		$parentActivity = new Activity($this->idActivity);
-	    		$parent = $parentActivity->getSqlElementsFromCriteria(array('id'=>$this->idActivity));
-	    		if ($this->handled){
-	    			foreach ($parent as $parents){
-	    				$parents->handled = $this->handled;
-	    				$status=new Status();
-		         	$results=Sql::query("select * from `status` where `setHandledStatus` = 1 order by `sortOrder` asc LIMIT 1");
-		         	$row=Sql::fetchLine($results);
-		         	$idR=$row['id'];
-		         	$parents->idStatus = $idR;    
-		         	$parents->save();    
-		    		}
-		    	}
-		    	if ($this->done){
-		    		$parentActivity = new Activity($this->idActivity);    	
-		    		$child = new Activity();
-		    		$children = $child->getSqlElementsFromCriteria(array('idActivity'=>$parentActivity->id));
-		    		$isDone = true;
-		    		$isClosed = true;
-		    		$isCancelled = true;
-		    		foreach ($children as $childAct){
-		    			if ($childAct->done == 0){
-		    				$isDone = false;
-		    			}
-		    			if ($childAct->idle == 0){
-		    				$isClosed = false;
-		    			}
-		    			if ($childAct->cancelled == 0){
-		    				$isCancelled = false;
-		    			}
-		    		}
-			    	if ($isDone){
-			    		$results=Sql::query("select * from `status` where `setDoneStatus` = 1 order by `sortOrder` asc LIMIT 1");
-			    		$row=Sql::fetchLine($results);
-			    		$idD=$row['id'];
-			    		$parentActivity->idStatus = $idD;	
-			    		$parentActivity->saveForced();  	
-			    	}
-			    	if ($isClosed){
-			    		$res=Sql::query("select * from `status` where `setIdleStatus` = 1 order by `sortOrder` asc LIMIT 1");
-			    		$row=Sql::fetchLine($res);
-			    		$isIdle=$row['id'];
-			    		$parentActivity->idStatus = $isIdle;
-			    		$parentActivity->saveForced();
-			    	}
-			    	if ($isCancelled){
-			    		$res=Sql::query("select * from `status` where `setCancelledStatus` = 1 order by `sortOrder` asc LIMIT 1");
-			    		$row=Sql::fetchLine($res);
-			    		$isCanc=$row['id'];
-			    		$parentActivity->idStatus = $isCanc;
-			    		$parentActivity->saveForced();
-			    	}
-		    	}
-	    	}
-	    }
-    	return $result;  
+    // Change idle or idProject value => update idle and idProject for assignments
+    if (($this->idle != $oldIdle) or ($this->idProject != $oldIdProject)) {
+      // Add assignment for responsible
+      $ass = new Assignment ();
+      $crit = array("refType" => "Activity", "refId" => $this->id);
+      $assList = $ass->getSqlElementsFromCriteria ( $crit, false );
+      foreach ( $assList as $ass ) {
+        $ass->idle = $this->idle;
+        $ass->idProject = $this->idProject;
+        $ass->save ();
+        
+        // Change idProject value => update idProject for work
+        // update not done to PlannedWork : new planning must be calculated
+        if ($this->idProject != $oldIdProject) {
+          $work = new Work ();
+          $crit = array("refType" => "Activity", "refId" => $this->id);
+          $workList = $work->getSqlElementsFromCriteria ( $crit, false );
+          foreach ( $workList as $work ) {
+            $work->idProject = $this->idProject;
+            $work->save ();
+          }
+          $work = new PlannedWork ();
+          $crit = array("refType" => "Activity", "refId" => $this->id);
+          $workList = $work->getSqlElementsFromCriteria ( $crit, false );
+          foreach ( $workList as $work ) {
+            $work->idProject = $this->idProject;
+            $work->save ();
+          }
+        }
+      }
+    }
+    if ($this->idProject != $oldIdProject) {
+      $lstElt = array('Activity', 'Ticket', 'Milestone', 'PeriodicMeeting', 'Meeting', 'TestSession');
+      foreach ( $lstElt as $elt ) {
+        $eltObj = new $elt ();
+        $crit = array('idActivity' => $this->id);
+        $lst = $eltObj->getSqlElementsFromCriteria ( $crit, false, null, null, true );
+        foreach ( $lst as $obj ) {
+          $objBis = new $elt ( $obj->id );
+          $objBis->idProject = $this->idProject;
+          $tmpRes = $objBis->save ();
+        }
+      }
+    }
+    if ($oldTargetProductVersion != $this->idTargetProductVersion) {
+      $vers = new Version ( $this->idTargetProductVersion );
+      $idProduct = ($vers->idProduct) ? $vers->idProduct : null;
+      $ticket = new Ticket ();
+      $ticketList = $ticket->getSqlElementsFromCriteria ( array('idActivity' => $this->id) );
+      foreach ( $ticketList as $ticket ) {
+        $ticket->idTargetProductVersion = $this->idTargetProductVersion;
+        if ($idProduct) {
+          $ticket->idProduct = $idProduct;
+        }
+        $ticket->save ();
+      }
+    }
+    
+    // mehdi
+    // ticket 2822
+    
+    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES') {
+      if ($this->idActivity) {
+        debugLog("OK, has parent");
+        if ($this->handled and $this->handled!=$old->handled) {
+          debugLog("OK, has been set to handled");
+          $parentActivity = new Activity ($this->idActivity);
+          if ( ! $parentActivity->handled ) {
+            debugLog("OK, parent not handled");
+            $parentActivity->handled = $this->handled;
+            $parentActivity->handledDate=date('Y-m-d');
+            $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
+            debugLog($allowedStatusList);
+            foreach ( $allowedStatusList as $st ) {
+              if ($st->setHandledStatus) {
+                $parentActivity->idStatus=$st->id;
+                debugLog("OK, save parent with new status $st->name");
+                $parentActivity->save();
+                break;
+              }
+            }
+            
+          }
+        }
+        $status = new Status ($this->idStatus);
+        $isStat=($status->setDoneStatus)?'setDoneStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setCancelledStatus)?'setCancelledStatus':''));
+        $status = new Status ($old->idStatus);
+        $isOldStat=($status->setDoneStatus)?'setDoneStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setCancelledStatus)?'setCancelledStatus':''));
+        if ($isStat and $isStat!=$isOldStat) {
+          $allDone=true; $allIdle=true; $allCancelled=true;
+          $sons=$this->getSqlElementsFromCriteria(array('idActivity'=>$this->idActivity));
+          foreach ($sons as $act) {
+            if (!$act->done and !$act->cancelled) $allDone=false;
+            if (!$act->idle and !$act->cancelled) $allIdle=false;
+            if (!$act->cancelled) $allCancelled=false;
+          }
+          debugLog("allDone=$allDone");
+          debugLog("allIdle=$allIdle");
+          debugLog("allCancelled=$allCancelled");
+          $newStat=($allCancelled)?'setCancelledStatus':(($allIdle)?'setIdleStatus':(($allDone)?'setDoneStatus':''));
+          if ($newStat) {
+            $currentParentStatus=new Status($parentActivity->idStatus);
+            if ( $currentParentStatus->$newStat ) {
+              // Nothing to do, alread in a status corresponsding to target
+            } else {
+              $parentActivity = new Activity ($this->idActivity);
+              
+              $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
+              foreach ( $allowedStatusList as $st ) {
+                if ($st->$newStat) {
+                  $parentActivity->idStatus=$st->id;
+                  $parentActivity->save();
+                  break;
+                }
+              }
+          }
+          }
+        }
+      }
+    }
+    return $result;
   }
 }
 ?>

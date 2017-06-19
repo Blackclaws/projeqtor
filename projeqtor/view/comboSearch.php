@@ -136,13 +136,25 @@
     var browserLocaleDecimalSeparator="<?php echo $fmt->decimalSeparator?>";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
-      var onKeyPressFunc = function(event) {
-            if(event.ctrlKey && event.keyChar == 's'){
-              event.preventDefault();
-              top.globalSave();
-            }  
+//       var onKeyPressFunc = function(event) {
+//             if(event.ctrlKey && event.keyChar == 's'){
+//               event.preventDefault();
+//               top.globalSave();
+//             }  
+//       };
+      var onKeyDownFunc = function(event) {
+        if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S (save)
+          event.preventDefault();
+          if (top.dojo.isFF) stopDef();
+          top.globalSave();
+        } else if (event.keyCode == 112) { // F1 (show help)
+          event.preventDefault();
+          if (top.dojo.isFF) stopDef();
+          top.showHelp();
+        }
       };
-      dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      //dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      dojo.connect(document, "onkeydown", this, onKeyDownFunc);
       dojo.fadeIn({
           node : dojo.byId('body'),
           duration : 300,

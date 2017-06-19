@@ -1,22 +1,22 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  * 
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU Affero General Public License as published by the Free 
+ * the terms of the GNU General Public License as published by the Free 
  * Software Foundation, either version 3 of the License, or (at your option) 
  * any later version.
  * 
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
  * more details.
  *
- * You should have received a copy of the GNU Affero General Public License along with
+ * You should have received a copy of the GNU General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
@@ -28,7 +28,9 @@
 //include_once $parametersLocation;
 $versionPath="http://projeqtor.org/version/";
 $dir="/var/www/version";
-$lastStable="V5.5.3";
+$dir="D:/www/version"; // Only for Test purpose on Windows test environment
+$lastStableMajor="V6.2";
+$lastStable="";
 
 $arrayVersion=array();
 if (! is_dir($dir)) {
@@ -61,6 +63,9 @@ while (($file = readdir($handle)) !== false) {
 		'last'=>'N', 
 		'file'=>$file, 
 		'size'=>$size);
+	  if (substr($vers,0,strlen($lastStableMajor))==$lastStableMajor and ($lastStable="" or version_compare($vers,$lastStable)>=0) ) {
+		  $lastStable=$vers;  
+	  }
 	}
 }
 closedir($handle);
@@ -75,7 +80,7 @@ foreach ($arrayVersion as $key=>$vers) {
     }
 	$split=explode('.',substr($key,1));
 	$curVers=$split[0].'.'.$split[1];
-	if ($curVers!=$stVers and $stVers!='') $vers['stable']='Y';
+	if ($curVers!=$stVers and $stVers!='' and version_compare('V'.$stVers,$lastStableMajor)<=0 ) $vers['stable']='Y';
 	$cpt++;
 	$stVers=$curVers;
 	$arrayVersion[$key]=$vers;

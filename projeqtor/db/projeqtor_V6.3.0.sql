@@ -111,3 +111,5 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 177, 0);
 
 ALTER TABLE `${prefix}note` ADD `idProject` int(12);
+
+ALTER TABLE `${prefix}note` ADD `idle` int(1) DEFAULT '0';

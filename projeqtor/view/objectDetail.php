@@ -207,7 +207,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
     style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
     <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
-      style="display: none;z-index:99999;"></div>
+      style="display: none;z-index:99999;">     
+    </div>
 		<?php  include 'objectButtons.php'; ?>
 		<div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');"
 		 <?php if (RequestHandler::isCodeSet('switchedMode') and RequestHandler::getValue('switchedMode')=='on') echo ' style="display:block;"'?>>

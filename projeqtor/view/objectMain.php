@@ -73,7 +73,7 @@
 		  </div>
     </div>
   </div>
-  <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>px">
+  <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>">
     <script type="dojo/connect" event="resize" args="evt">
              dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
