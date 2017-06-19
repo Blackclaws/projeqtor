@@ -86,14 +86,6 @@ if (RequestHandler::isCodeSet('activityStreamRecently')) {
   $activityStreamRecently=Parameter::getUserParameter("activityStreamRecently");
 }
 
-//$paramTypeNote=RequestHandler::getValue("activityStreamTypeNote");
-
-//$limitElement = RequestHandler::getNumeric("activityStreamNumberElement");
-
-//$idStreamNote = RequestHandler::getNumeric("listIdFilterStream");
-
-
-
 $paramProject=getSessionValue('project');
 
 $note = new Note ();
@@ -120,7 +112,7 @@ if ($activityStreamRecently=="added" && trim($activityStreamNumberDays)!=""){
   $critWhere.=" and creationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
 }
 
-if ($activityStreamRecently=="updated"){
+if ($activityStreamRecently=="updated" && trim($activityStreamNumberDays)!=""){
   $critWhere.=" and updateDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
 }
 

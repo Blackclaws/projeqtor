@@ -51,9 +51,11 @@
   if ($updateDate == null) {
     $updateDate='';
   }
-  if (!$objectId) {echo $noData; exit;}
+  if (!$objectId) {
+    echo $noData; 
+    exit;
+  }
   $countIdNote=count($notes);
-  if($countIdNote==0){echo i18n("noNote");exit;}
   $onlyCenter=(RequestHandler::getValue('onlyCenter')=='true')?true:false;
 ?>
 <!-- Titre et listes de notes -->
@@ -64,6 +66,9 @@
 	  <span class="title" ><?php echo i18n("titleStream");?></span>
 	</div>
 	<div id="activityStreamCenter" dojoType="dijit.layout.ContentPane" region="center">
+	  <script type="dojo/connect" event="onLoad" args="evt">
+        scrollInto();
+	  </script>
 <?php }?>	
 	  <table id="objectStream" style="width:100%;"> 
 	    <?php foreach ( $notes as $note ) {
@@ -71,19 +76,18 @@
 	    };?>
 	  </table>
 	   <div id="scrollToBottom" type="hidden"></div>
-<?php if (!$onlyCenter) {?>   	  
+<?php if (!$onlyCenter) {?>   
+<?php if($countIdNote==0){echo i18n("noNote");}	?>  
 	</div>
-
 	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px;overflow-x:hidden;">
 	  <form id='noteFormStream' name='noteFormStream' onSubmit="return false;" >
        <input id="noteId" name="noteId" type="hidden" value="" />
        <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $objectClass;?>" />
        <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $objectId;?>" />
        <input id="noteEditorTypeStream" name="noteEditorTypeStream" type="hidden" value="<?php echo getEditorType();?>" />
-      
        <div style="width:99%;">
          <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
-          onkeypress="saveNoteStream(event);" style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:2px solid;" onmousedown="mouseDownStream()"><?php echo i18n("textareaEnterText");?></textarea>
+         style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:1px solid grey;margin-top:2px;" onfocus="focusStream()"><?php echo i18n("textareaEnterText");?></textarea>
        </div>
      </form>
     

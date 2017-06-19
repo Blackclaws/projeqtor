@@ -440,11 +440,11 @@ function activityStreamDisplayNote ($note,$origin){
   $userName = SqlList::getNameFromId ( 'User', $userId );
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
   $idNote = '<span style="color:blue">' . $note->id . '</span>';
-  $ticketName = '<span style="color:blue">' . $note->refType . ' #' . $note->refId . '</span>';
+  $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->id).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
+  debugLog($ticketName);
   $colCommentStream = i18n ( 'addComment', array ($idNote,
         $ticketName
     ) );
-    //if($origin=="objectStream") {
     global $print,$user;
     $objectClass=$note->refType;
     $objectId=$note->refId;
@@ -468,13 +468,12 @@ function activityStreamDisplayNote ($note,$origin){
       		$rightWidth="100%";
       	}
       }
-      echo '<div style="padding-left:4px;max-width:'.$rightWidth.'" >';
+      echo '<div style="padding-left:4px;max-width:'.$rightWidth.'">';
       $strDataHTML=nl2br($note->note); 	    
       echo '<div style="margin-top:10px;margin-left:37px;">'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-      	echo '<div style="color:black;margin-top:20px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div>&nbsp';
-      	echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
-      	echo '<div style="margin-top:11px;">'.htmlFormatTime($note->creationDate,true).'</div></div></td></tr>';
+    	echo '<div style="color:black;margin-top:20px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div>&nbsp';
+    	echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
+    	echo '<div style="margin-top:11px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div></td></tr>';
       }
-
 }
 ?>

@@ -285,45 +285,47 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       saveBrowserLocaleToSession();
       // Relaunch Cron (if stopped, any connexion will restart it)
       adminCronRelaunch();
-      var onKeyPressFunc = function(event) {
-        if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
-          event.preventDefault();
-          if (dojo.isFF) stopDef(event);
-          globalSave();
-        } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
-          event.preventDefault();
-          if (dojo.isFF) stopDef(event);
-          showHelp();
-        }else if(event.keyCode==27){
-          if(editorInFullScreen() && whichFullScreen!=-1){
-            editorArray[whichFullScreen].execCommand('maximize');
-          }
-        }
-      };
+//       var onKeyPressFunc = function(event) {
+//         if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
+//           event.preventDefault();
+//           if (dojo.isFF) stopDef(event);
+//           globalSave();
+//         } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
+//           event.preventDefault();
+//           if (dojo.isFF) stopDef(event);
+//           showHelp();
+//         }else if(event.keyCode==27){
+//           if(editorInFullScreen() && whichFullScreen!=-1){
+//             editorArray[whichFullScreen].execCommand('maximize');
+//           }
+//         }
+//       };
       if (dojo.isIE) {
         document.onhelp = function() { return (false); };
         window.onhelp = function() { return (false); };
       }
       var onKeyDownFunc = function(event) {
-        if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
+        if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S (save)
           event.preventDefault();
           if (dojo.isFF) stopDef();
           globalSave();
-        } else if (event.keyCode == 112) { // On F1
+        } else if (event.keyCode == 112) { // F1 (show help)
           event.preventDefault();
           if (dojo.isFF) stopDef();
           showHelp();
-        }else if(event.keyCode==27){
+        }else if(event.keyCode==27){ // ESCAPE (to exit full screen mode of CK Editor)
           if(editorInFullScreen() && whichFullScreen!=-1){
             editorArray[whichFullScreen].execCommand('maximize');
           }
-        } 
+        } if (event.target.id=="noteNoteStream") {
+          saveNoteStream(event);
+        }
       };
-      if (dojo.isIE && dojo.isIE<=8) {
-        dojo.connect(document, "onkeypress", this, onKeyPressFunc);
-      } else {
+      //if (dojo.isIE && dojo.isIE<=8) { // compatibility with IE8 removed in V6.0
+      //  dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      //} else {
         dojo.connect(document, "onkeydown", this, onKeyDownFunc);
-      }
+      //}
       <?php 
       $firstPage="welcome.php";
       if (securityCheckDisplayMenu(1) ) {
