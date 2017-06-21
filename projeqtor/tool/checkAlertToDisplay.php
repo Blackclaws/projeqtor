@@ -39,6 +39,21 @@ $user=getSessionUser();
 $crit=array('idUser'=>$user->id,'readFlag'=>'0', 'idle'=>'0');
 $alert=new Alert();
 $lst=$alert->getSqlElementsFromCriteria($crit, false, null, 'id asc');
+
+// BABYNUS : check new notes
+$curObj=SqlElement::getCurrentObject();
+if ($curObj and $curObj->id and (isset($curObj->_Note)) and isset($curObj->_storageDateTime)) {
+  $note=new Note();
+  $dt=$curObj->_storageDateTime;
+  $myId=getSessionUser()->id;
+  $crit="refType='".get_class($curObj)."' and refId=".$curObj->id." and ( creationDate>'$dt' or updateDate>'$dt' or ( (creationDate='$dt' or updateDate='$dt') and idUser!=$myId) )";
+  $cpt=$note->countSqlElementsFromCriteria(null,$crit);
+  if ($cpt>0) {
+    echo '<input type="hidden" id="alertNeedStreamRefresh" name="alertNeedStreamRefresh" value="' .$cpt. '" />';
+  }
+}
+// END
+
 if (count($lst)==0) {
 	return;
 }
@@ -56,3 +71,4 @@ foreach($lst as $alert) {
 	  return;
 	}
 }
+

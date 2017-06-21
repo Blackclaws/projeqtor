@@ -281,7 +281,6 @@ class ActivityMain extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-    debugLog("Save activity # $this->id");
     
     $oldResource = null;
     $oldIdle = null;
@@ -319,7 +318,7 @@ class ActivityMain extends SqlElement {
     }
     $result = parent::save ();
     if (! strpos ( $result, 'id="lastOperationStatus" value="OK"' )) {
-      debugLog ("NOT SAVE OK ".$result);
+      //debugLog ("NOT SAVE OK ".$result);
       return $result;
     }
     
@@ -407,33 +406,26 @@ class ActivityMain extends SqlElement {
     }
     
     // mehdi
-    // ticket 2822
-    
-    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES') {
+    // ticket 2822   
+    $parentActivity = new Activity ($this->idActivity);
+    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
       if ($this->idActivity) {
-        debugLog("OK, has parent");
         if ($this->handled and $this->handled!=$old->handled) {
-          debugLog("OK, has been set to handled");
-          $parentActivity = new Activity ($this->idActivity);
           if ( ! $parentActivity->handled ) {
-            debugLog("OK, parent not handled");
             $parentActivity->handled = $this->handled;
             $parentActivity->handledDate=date('Y-m-d');
             $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
-            debugLog($allowedStatusList);
             foreach ( $allowedStatusList as $st ) {
               if ($st->setHandledStatus) {
                 $parentActivity->idStatus=$st->id;
-                debugLog("OK, save parent with new status $st->name");
                 $parentActivity->save();
                 break;
               }
-            }
-            
+            }  
           }
         }
         $status = new Status ($this->idStatus);
-        $isStat=($status->setDoneStatus)?'setDoneStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setCancelledStatus)?'setCancelledStatus':''));
+        $isStat=($status->setCancelledStatus)?'setCancelledStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setDoneStatus)?'setDoneStatus':''));
         $status = new Status ($old->idStatus);
         $isOldStat=($status->setDoneStatus)?'setDoneStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setCancelledStatus)?'setCancelledStatus':''));
         if ($isStat and $isStat!=$isOldStat) {
@@ -444,26 +436,36 @@ class ActivityMain extends SqlElement {
             if (!$act->idle and !$act->cancelled) $allIdle=false;
             if (!$act->cancelled) $allCancelled=false;
           }
-          debugLog("allDone=$allDone");
-          debugLog("allIdle=$allIdle");
-          debugLog("allCancelled=$allCancelled");
           $newStat=($allCancelled)?'setCancelledStatus':(($allIdle)?'setIdleStatus':(($allDone)?'setDoneStatus':''));
           if ($newStat) {
             $currentParentStatus=new Status($parentActivity->idStatus);
-            if ( $currentParentStatus->$newStat ) {
-              // Nothing to do, alread in a status corresponsding to target
+            if ( $currentParentStatus->$newStat) {
+              // Nothing to do, already in a status corresponding to target
             } else {
-              $parentActivity = new Activity ($this->idActivity);
-              
               $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
               foreach ( $allowedStatusList as $st ) {
                 if ($st->$newStat) {
                   $parentActivity->idStatus=$st->id;
+                  $i = $parentActivity->idStatus;
+                  switch ($i) {
+                  	case 4:
+                  	  $parentActivity->done = $this->done;
+                  	  $parentActivity->doneDate=date('Y-m-d');
+                  		break;
+                  	case 7:
+                  	  $parentActivity->idle = $this->idle;
+                  	  $parentActivity->idleDate=date('Y-m-d');
+                  		break;
+                  	case 9:
+                  	  $parentActivity->cancelled = $this->cancelled;
+                  	  $parentActivity->doneDate=date('Y-m-d');
+                  		break;
+                  }
                   $parentActivity->save();
                   break;
                 }
               }
-          }
+            }
           }
         }
       }
