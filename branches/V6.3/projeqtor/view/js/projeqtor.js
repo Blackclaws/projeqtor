@@ -4113,7 +4113,9 @@ function saveNoteStream(event){
     }
     loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note',null,null);
     noteEditor.set("value",null);
+    event.preventDefault();
   }
+  return false;
 }
 
 function hideStreamMode(){
@@ -4132,7 +4134,7 @@ function hideStreamMode(){
 }
 
 function focusStream() {
-  if(dijit.byId("noteNoteStream").get('value')==i18n("textareaEnterText")){
+  if(dijit.byId("noteNoteStream").get('value')==trim(i18n("textareaEnterText"))){
     dijit.byId("noteNoteStream").set('value',"");
   }
 }
@@ -4149,6 +4151,7 @@ function resetActivityStreamListParameters() {
   dijit.byId("activityStreamIdNote").set('value',null);
   dijit.byId("activityStreamNumberDays").set('value','7'); 
 }
+
 function switchActivityStreamListShowClosed() {
   var oldValue=dojo.byId('activityStreamShowClosed').value;
   if (oldValue==1) {
@@ -4158,6 +4161,19 @@ function switchActivityStreamListShowClosed() {
     dojo.byId('activityStreamShowClosed').value=1;
     dojo.byId('activityStreamShowClosedCheck').style.display='block';
   }
+}
+
+function switchActivityStreamListAddedRecently() {
+  var oldValue=dojo.byId('activityStreamAddedRecently').value;
+  console.log("oldValue : "+oldValue);
+  if (oldValue=="added") {
+    dojo.byId('activityStreamAddedRecently').value=0;
+    dojo.byId('activityStreamAddedRecentlyCheck').style.display='none';
+  } else {
+    dojo.byId('activityStreamAddedRecently').value="added";
+    dojo.byId('activityStreamAddedRecentlyCheck').style.display='block';
+  }
+  console.log("new value : "+dojo.byId('activityStreamAddedRecently').value);
 }
 
 function activityStreamTypeRead(){

@@ -5422,6 +5422,7 @@ function customMenuRemoveItem() {
 // var alertDisplayed=false;
 var checkAlertDisplayQuick=false;
 function checkAlert() {
+  console.log("checkAlert");
   // if (alertDisplayed) return;
   dojo.xhrGet({
     url : "../tool/checkAlertToDisplay.php",
@@ -5443,6 +5444,9 @@ function checkAlertRetour(data) {
         && dojo.byId("requestRefreshProject").value == "true") {
       refreshProjectSelectorList();
       if (alertCheckTime>0) setTimeout('checkAlert();', alertCheckTime * 1000);
+    } else if (dojo.byId("alertNeedStreamRefresh") && dojo.byId("alertNeedStreamRefresh").value>0) {
+      loadContent("objectStream.php?onlyCenter=true", "activityStreamCenter", "listForm");
+        if (alertCheckTime>0) setTimeout('checkAlert();', alertCheckTime * 1000);
     } else if (dojo.byId('alertType')) {
       if (dojo.byId('alertCount') && dojo.byId('alertCount').value>1) {
         dijit.byId('markAllAsReadButton').set('label',i18n('markAllAsRead',new Array(dojo.byId('alertCount').value)));
