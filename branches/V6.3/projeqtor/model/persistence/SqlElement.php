@@ -37,7 +37,7 @@ if (file_exists ( '../_securityCheck.php' ))
 abstract class SqlElement {
   // List of fields that will be exposed in general user interface
   public $id;
- // every SqlElement have an id !!!
+  // every SqlElement have an id !!!
   public static $_evaluationString = '###EVAL###';
 
   public static $_evaluationStringForbiddenKeywords = array(
@@ -489,7 +489,7 @@ abstract class SqlElement {
    * =========================================================================
    * Constructor.
    * Protected because this class must be extended.
-   * 
+   *
    * @param $id the
    *          id of the object in the database (null if not stored yet)
    * @return void
@@ -510,7 +510,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Destructor
-   * 
+   *
    * @return void
    */
   protected function __destruct() {}
@@ -522,7 +522,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Give public visibility to the saveSqlElement action
-   * 
+   *
    * @param
    *          force to avoid controls and force saving even if controls are false
    * @return message including definition of html hiddenfields to be used
@@ -585,7 +585,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Give public visibility to the purgeSqlElement action
-   * 
+   *
    * @return message including definition of html hiddenfields to be used
    */
   public function purge($clause) {
@@ -595,7 +595,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Give public visibility to the closeSqlElement action
-   * 
+   *
    * @return message including definition of html hiddenfields to be used
    */
   public function close($clause) {
@@ -605,7 +605,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Give public visibility to the deleteSqlElement action
-   * 
+   *
    * @return message including definition of html hiddenfields to be used
    */
   public function delete() {
@@ -626,7 +626,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Give public visibility to the copySqlElement action
-   * 
+   *
    * @return the new object
    */
   public function copy() {
@@ -640,7 +640,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Save an object to the database
-   * 
+   *
    * @return void
    */
   private function saveSqlElement($force = false, $withoutDependencies = false, $forceInsert = false) {
@@ -830,7 +830,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Save an object to the database : new object
-   * 
+   *
    * @return void
    */
   private function insertSqlElement($forceInsert = false) {
@@ -953,7 +953,7 @@ abstract class SqlElement {
    * Get old values (stored in session) to :
    * 1) build the smallest query
    * 2) save change history
-   * 
+   *
    * @param string $objectClass          
    * @param string $force          
    * @return Ambigous <NULL, unknown>
@@ -996,6 +996,7 @@ abstract class SqlElement {
   }
 
   public static function setCurrentObject($obj, $isComboDetail = false) {
+    $obj=self::setCurrentObjectTimestamp($obj);
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
       if (! sessionValueExists ( 'directAccessIndex' )) {
         setSessionValue ( 'directAccessIndex', array() );
@@ -1013,6 +1014,25 @@ abstract class SqlElement {
       }
     }
   }
+  
+  public static function setCurrentObjectTimestamp($obj) {
+    if (!$obj or ! is_object($obj)) return;
+    $obj->_storageDateTime=date('Y-m-d H:i:s');
+    return $obj;
+  }
+  public static function getCurrentObjectTimestamp($obj) {
+    if (!$obj) $obj=self::getCurrentObject();
+    if (!$obj or ! is_object($obj)) return;
+    return $obj->_storageDateTime;
+  }
+  
+  public static function resetCurrentObjectTimestamp($obj=null) {
+    if (!$obj) $obj=self::getCurrentObject();
+    if (!$obj or ! is_object($obj)) return;
+    $obj->_storageDateTime=self::setCurrentObjectTimestamp($obj);
+    self::setCurrentObject($obj);
+    return $obj->_storageDateTime;
+  }
 
   public static function unsetCurrentObject() {
     if (isset ( $_REQUEST ['directAccessIndex'] ) and sessionTableValueExist ( 'directAccessIndex', $_REQUEST ['directAccessIndex'] )) {
@@ -1025,7 +1045,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * save an object to the database : existing object
-   * 
+   *
    * @return void
    */
   private function updateSqlElement($force = false, $withoutDependencies = false) {
@@ -1040,6 +1060,7 @@ abstract class SqlElement {
     else
       $arrayCols ['lastUpdateDateTime'] = '$lastUpdateDateTime';
     $idleChange = false;
+    $projectChange = false;
     // Get old values (stored) to : 1) build the smallest query 2) save change history
     $oldObject = self::getCurrentObject ( get_class ( $this ), $this->id, false, $force );
     // Specific treatment for other versions
@@ -1126,6 +1147,9 @@ abstract class SqlElement {
           if ($col_name == 'idle') {
             $idleChange = true;
           }
+          if ($col_name == 'idProject') {
+            $projectChange = true;
+          }
           $insertableColName = $this->getDatabaseColumnName ( $col_name );
           if (Sql::isPgsql ()) {
             $insertableColName = strtolower ( $insertableColName );
@@ -1192,19 +1216,31 @@ abstract class SqlElement {
       $query .= " where refType='" . get_class ( $this ) . "' ";
       $query .= " and refId=" . $this->id;
       $result = Sql::query ( $query );
-      if (!$result) {
-        $returnValue=Sql::$lastQueryErrorMessage;
-        $returnStatus='ERROR';
+      if (! $result) {
+        $returnValue = Sql::$lastQueryErrorMessage;
+        $returnStatus = 'ERROR';
       }
-      $note=new Note();
-      $query="update " . $note->getDatabaseTableName();
-      $query.=" set idle='" . $this->idle . "'";
-      $query.=" where refType='" . get_class($this) . "' ";
-      $query.=" and refId=" . $this->id;
-      $result = Sql::query($query);
-      if (!$result) {
-        $returnValue=Sql::$lastQueryErrorMessage;
-        $returnStatus='ERROR';
+      $note = new Note ();
+      $query = "update " . $note->getDatabaseTableName ();
+      $query .= " set idle='" . $this->idle . "'";
+      $query .= " where refType='" . get_class ( $this ) . "' ";
+      $query .= " and refId=" . $this->id;
+      $result = Sql::query ( $query );
+      if (! $result) {
+        $returnValue = Sql::$lastQueryErrorMessage;
+        $returnStatus = 'ERROR';
+      }
+    }
+    if ($projectChange and $returnStatus != "ERROR") {
+      $note = new Note ();
+      $query = "update " . $note->getDatabaseTableName ();
+      $query .= " set idProject='" . $this->idProject . "'";
+      $query .= " where refType='" . get_class ( $this ) . "' ";
+      $query .= " and refId=" . $this->id;
+      $result = Sql::query ( $query );
+      if (! $result) {
+        $returnValue = Sql::$lastQueryErrorMessage;
+        $returnStatus = 'ERROR';
       }
     }
     
@@ -1234,7 +1270,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Save the dependant objects stored in a list (may be single objects or list
-   * 
+   *
    * @param $depedantObjects list
    *          (array) of objects to store
    * @return void
@@ -1288,7 +1324,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Delete an object from the database
-   * 
+   *
    * @return void
    */
   private function deleteSqlElement() {
@@ -1448,7 +1484,7 @@ abstract class SqlElement {
    * Important :
    * => does not automatically purges included elements ...
    * => does not include history insertion
-   * 
+   *
    * @return void
    */
   private function purgeSqlElement($clause) {
@@ -1497,7 +1533,7 @@ abstract class SqlElement {
    * Important :
    * => does not automatically purges included elements ...
    * => does not include history insertion
-   * 
+   *
    * @return void
    */
   private function closeSqlElement($clause) {
@@ -1525,7 +1561,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Copy the curent object as a new one of the same class
-   * 
+   *
    * @return the new object
    */
   private function copySqlElement() {
@@ -1923,7 +1959,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Retrieve an object from the Request (modified Form) - Public method
-   * 
+   *
    * @return void (operate directly on the object)
    */
   public function fillFromRequest($ext = null) {
@@ -1934,7 +1970,7 @@ abstract class SqlElement {
    * ========================================================================
    * Retrieve a list of objects from the Database
    * Called from an empty object of the expected class
-   * 
+   *
    * @param array $critArray
    *          the critera as an array
    * @param boolean $initializeIfEmpty
@@ -2052,7 +2088,7 @@ abstract class SqlElement {
    * ========================================================================
    * Retrieve the count of a list of objects from the Database
    * Called from an empty object of the expected class
-   * 
+   *
    * @param $critArray the
    *          critera asd an array
    * @param $clauseWhere Sql
@@ -2178,7 +2214,7 @@ abstract class SqlElement {
    * ==========================================================================
    * Retrieve a single object from the Database
    * Called from an empty object of the expected class
-   * 
+   *
    * @param $critArray the
    *          critera asd an array
    * @param $initializeIfEmpty boolean
@@ -2210,7 +2246,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Retrieve an object from the Request (modified Form)
-   * 
+   *
    * @return void (operate directly on the object)
    */
   private function fillSqlElementFromRequest($included = false, $ext = null) {
@@ -2307,7 +2343,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Retrieve an object from the Database
-   * 
+   *
    * @return void
    */
   private function getSqlElement($withoutDependentObjects = false) {
@@ -2428,7 +2464,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * retrieve single object included in an object from the Database
-   * 
+   *
    * @param $objClass the
    *          name of the class of the included object
    * @return an object
@@ -2468,7 +2504,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * retrieve objects included in an object from the Database
-   * 
+   *
    * @param $objClass the
    *          name of the class of the included object
    * @return an array ob objects
@@ -2516,7 +2552,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the type of a column depending on its name
-   * 
+   *
    * @param $colName the
    *          name of the column
    * @return the type of the data
@@ -2544,7 +2580,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the length (max) of a column depending on its name
-   * 
+   *
    * @param $colName the
    *          name of the column
    * @return the type of the data
@@ -2584,7 +2620,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the generic layout for grit list
-   * 
+   *
    * @return the layout from static data
    */
   public function getLayout() {
@@ -2620,7 +2656,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the spinner attributes (min, max, step) for a given field
-   * 
+   *
    * @return string
    */
   public function getSpinnerAttributes($fieldName) {
@@ -2637,7 +2673,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the array of fields to disabled on form change
-   * 
+   *
    * @return '' or a string structured like js array
    */
   public function getDisabledFieldsOnChange() {
@@ -2678,8 +2714,9 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the generic attributes (required, disabled, .
+   *
    * ..) for a given field
-   * 
+   *
    * @return an array of fields with specific attributes
    */
   public function getFieldAttributes($fieldName) {
@@ -2702,7 +2739,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * Return the default value for a given field
-   * 
+   *
    * @return string the name of the data table
    */
   public function getDefaultValue($fieldName, $onSave = false) {
@@ -2752,7 +2789,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * Return the default value for a given field
-   * 
+   *
    * @return string the name of the data table
    */
   public function setAllDefaultValues($onSave = false) {
@@ -2780,7 +2817,7 @@ abstract class SqlElement {
    * Default is the name of the class (lowercase)
    * May be overloaded for some classes, who reference a table different
    * from class name
-   * 
+   *
    * @return string the name of the data table
    */
   public function getDatabaseTableName() {
@@ -2792,7 +2829,7 @@ abstract class SqlElement {
    * Return the name of the column name in the table in the database
    * Default is the name of the field
    * May be overloaded for some fields of some classes
-   * 
+   *
    * @return string the name of the data column
    */
   public function getDatabaseColumnName($field) {
@@ -2817,7 +2854,7 @@ abstract class SqlElement {
    * (it is the reversed method from getDatabaseColumnName()
    * Default is the name of the field
    * May be overloaded for some fields of some classes
-   * 
+   *
    * @return string the name of the data column
    */
   public function getDatabaseColumnNameReversed($field) {
@@ -2837,7 +2874,7 @@ abstract class SqlElement {
    * Default is empty string
    * May be overloaded for some classes, which reference a table different
    * from class name
-   * 
+   *
    * @return array listing criteria
    */
   public function getDatabaseCriteria() {
@@ -2847,7 +2884,7 @@ abstract class SqlElement {
   /**
    * ============================================================================
    * Return the caption of a field using i18n translation
-   * 
+   *
    * @param $fld the
    *          name of the field
    * @return the translated colXxxxxx value
@@ -2903,7 +2940,7 @@ abstract class SqlElement {
    * =========================================================================
    * Return the list of fields format and store it in static array of formats
    * to be able to fetch it again without requesting it from database
-   * 
+   *
    * @param $class the
    *          class of the object
    * @return the format list
@@ -2971,7 +3008,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return the generic layout
-   * 
+   *
    * @return the layout from static data
    */
   protected function getStaticLayout() {
@@ -2982,7 +3019,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Return the generic disabledFieldOnChange
-   * 
+   *
    * @return array[name] : the generic $_disabledFieldOnChange
    */
   protected function getStaticDisabledFieldsOnChange() {
@@ -2994,7 +3031,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Return the generic spinnerAttributes
-   * 
+   *
    * @return array[name,value] : the generic $_spinnerAttributes
    */
   protected function getStaticSpinnersAttributes() {
@@ -3005,7 +3042,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Return the generic fieldsAttributes
-   * 
+   *
    * @return the layout
    */
   protected function getStaticFieldsAttributes() {
@@ -3015,7 +3052,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Return the generic defaultValues
-   * 
+   *
    * @return the layout
    */
   protected function getStaticDefaultValues() {
@@ -3025,7 +3062,7 @@ abstract class SqlElement {
   /**
    * ==========================================================================
    * Return the generic databaseTableName
-   * 
+   *
    * @return the layout
    */
   protected function getStaticDatabaseTableName() {
@@ -3036,7 +3073,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * Return the generic databaseTableName
-   * 
+   *
    * @return the databaseTableName
    */
   protected function getStaticDatabaseColumnName() {
@@ -3046,7 +3083,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * Return the generic database criteria
-   * 
+   *
    * @return the databaseTableName
    */
   protected function getStaticDatabaseCriteria() {
@@ -3056,7 +3093,7 @@ abstract class SqlElement {
   /**
    * ============================================================================
    * Return the specific colCaptionTransposition
-   * 
+   *
    * @return the colCaptionTransposition
    */
   protected function getStaticColCaptionTransposition($fld = null) {
@@ -3070,7 +3107,7 @@ abstract class SqlElement {
   /**
    * ========================================================================
    * return generic javascript to be executed on validation of field
-   * 
+   *
    * @param $colName the
    *          name of the column
    * @return the javascript code
@@ -3528,7 +3565,7 @@ abstract class SqlElement {
    * Draw a specific item for a given class.
    * Should always be implemented in the corresponding class.
    * Here is alway an error.
-   * 
+   *
    * @param $item the
    *          item
    * @return a message to draw (to echo) : always an error in this class,
@@ -3545,7 +3582,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Indicate if a property of is translatable
-   * 
+   *
    * @param $col the
    *          nale of the property
    * @return a boolean
@@ -3564,7 +3601,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * control data corresponding to Model constraints, before saving an object
-   * 
+   *
    * @param
    *          void
    * @return "OK" if controls are good or an error message
@@ -3862,7 +3899,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * control data corresponding to Model constraints, before deleting an object
-   * 
+   *
    * @param
    *          void
    * @return "OK" if controls are good or an error message
@@ -3971,7 +4008,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Return the menu string for the object (from its class)
-   * 
+   *
    * @param
    *          void
    * @return a string
@@ -3983,7 +4020,7 @@ abstract class SqlElement {
   /**
    * =========================================================================
    * Send a mail on status change (if object is "mailable")
-   * 
+   *
    * @param
    *          void
    * @return status of mail, if sent
@@ -4623,7 +4660,7 @@ abstract class SqlElement {
    * =========================================================================
    * Specific function added to setup a workaround for bug #305
    * waiting for Dojo fixing (Dojo V1.6 ?)
-   * 
+   *
    * @todo : deactivate this function if Dojo fixed.
    */
   public function recalculateCheckboxes($force = false) {
@@ -4727,11 +4764,11 @@ abstract class SqlElement {
     foreach ( $this as $col => $val ) {
       $firstCar = substr ( $col, 0, 1 );
       $threeCars = substr ( $col, 0, 3 );
-      if (! isset ( $dep [$col] ) and ! isset ( $dep ['root'] ) and (($included and ($col == 'id' or $threeCars == 'ref' or $threeCars == 'top' or $col == 'idle')) or ($firstCar == '_') or (strpos ( $this->getFieldAttributes ( $col ), 'hidden' ) !== false and strpos ( $this->getFieldAttributes ( $col ), 'forceExport' ) === false) or ($col == 'password') or (isset ( $hidden [$col] )) or (strpos ( $this->getFieldAttributes ( $col ), 'noExport' ) !== false) or (strpos ( $this->getFieldAttributes ( $col ), 'calculated' ) !== false))
+      if (! isset ( $dep [$col] ) and ! isset ( $dep ['root'] ) and (($included and ($col == 'id' or $threeCars == 'ref' or $threeCars == 'top' or $col == 'idle')) or ($firstCar == '_') or (strpos ( $this->getFieldAttributes ( $col ), 'hidden' ) !== false and strpos ( $this->getFieldAttributes ( $col ), 'forceExport' ) === false) or ($col == 'password') or (isset ( $hidden [$col] )) or (strpos ( $this->getFieldAttributes ( $col ), 'noExport' ) !== false) or (strpos ( $this->getFieldAttributes ( $col ), 'calculated' ) !== false))) 
       // or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
       // or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
       // or calculated field : not to be fetched
-      ) {
+      {
         // Here are all cases of not dispalyed fields
       } else if ($included and ((isset ( $dep ['root'] ) and isset ( $hidden [$dep ['root'] . $col] )) or ($parent and ($col == 'refType' or $col == 'refId' or $col == 'id' . $parent)))) {
         //
@@ -5454,7 +5491,7 @@ abstract class SqlElement {
    * =====================================================================================
    * Transform a collection of objects with class SqlElement to array type key - name
    * --------------------------------------------------------------------------------------
-   * 
+   *
    * @param
    *          sqlElement Objects - $objSqlElt : The objects of class SqlElement to transform
    * @return array key-name
@@ -5478,37 +5515,31 @@ abstract class SqlElement {
     return $array;
   }
   // END ADD BY Marc TABARY - 2017-02-24 - TRANSFORM OBJECT SQLELMENT LIST IN ARRAY KEY-NAME
-  
-  protected function updateMessage($message, $nodataMsg, $status = 'INVALID')
-  {
-    $result = new ResultHdl(ResultHdl::TYPE_UPDATE,$status , $message, null,$nodataMsg=null,$this->id);
+  protected function updateMessage($message, $nodataMsg, $status = 'INVALID') {
+    $result = new ResultHdl ( ResultHdl::TYPE_UPDATE, $status, $message, null, $nodataMsg = null, $this->id );
     return $result;
   }
-  
-  protected function insertMessage($message, $status = 'OK')
-  {
-    $result = new ResultHdl(ResultHdl::TYPE_INSERT,$status , $message, null,null,$this->id);
-    return $result;
-  }
-  
-  protected function copyMessage($message, $newId, $status = 'OK')
-  {
-    $result = new ResultHdl(ResultHdl::TYPE_COPY,$status , $message, null,null,$newId);
-    return $result;
-  }
-  
-  protected function deleteMessage($message, $nodataMsg, $status = 'INVALID')
-  {
-    $result = new ResultHdl(ResultHdl::TYPE_DELETE,$status , $message, null,$nodataMsg,$this->id);
-    return $result;
-  }
-  
-  protected function controlMessage($control, $status = 'INVALID')
-  {
-    $result = new ResultHdl(ResultHdl::TYPE_CONTROL,$status , null, $control,null,$this->id);
-    return $result;
-  }
-}
 
+  protected function insertMessage($message, $status = 'OK') {
+    $result = new ResultHdl ( ResultHdl::TYPE_INSERT, $status, $message, null, null, $this->id );
+    return $result;
+  }
+
+  protected function copyMessage($message, $newId, $status = 'OK') {
+    $result = new ResultHdl ( ResultHdl::TYPE_COPY, $status, $message, null, null, $newId );
+    return $result;
+  }
+
+  protected function deleteMessage($message, $nodataMsg, $status = 'INVALID') {
+    $result = new ResultHdl ( ResultHdl::TYPE_DELETE, $status, $message, null, $nodataMsg, $this->id );
+    return $result;
+  }
+
+  protected function controlMessage($control, $status = 'INVALID') {
+    $result = new ResultHdl ( ResultHdl::TYPE_CONTROL, $status, null, $control, null, $this->id );
+    return $result;
+  }
+
+}
 
 ?>

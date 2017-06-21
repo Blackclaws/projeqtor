@@ -31,6 +31,8 @@ require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 $user = getSessionUser ();
 $showClosed=Parameter::getUserParameter("activityStreamShowClosed");
+$addedRecently=Parameter::getUserParameter("activityStreamAddedRecently");
+debugLog("add recently param : ".$addedRecently);
 $activityStreamNumberElement=Parameter::getUserParameter("activityStreamNumberElement");
 $activityStreamIdNote=Parameter::getUserParameter("activityStreamIdNote");
 $activityStreamNumberDays=Parameter::getUserParameter("activityStreamNumberDays");
@@ -122,7 +124,7 @@ if(!$activityStreamNumberDays){
 							</td>
 						</tr>
 						<tr>
-					  <td style="width:5px;display:inline;">
+					  <td style="width:5px;display:inline;margin-left:18px;">
 					   <?php echo ucfirst(i18n('colId'));?>&nbsp;:&nbsp;
               <div style="width:30px;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamIdNote;?>"
                type="text" id="activityStreamIdNote" name="activityStreamIdNote" onChange="refreshActivityStreamList();" <?php echo (trim($selectedElementType)=="")?"readonly=readonly":"";?>>
@@ -133,15 +135,17 @@ if(!$activityStreamNumberDays){
         </td>
        <td valign="top" width="30%">
         <table style="margin-top: 10px;">
-        <input type="hidden" id="activityStreamRecently" name="activityStreamRecently" value="<?php echo Parameter::getUserParameter("activityStreamRecently");?>" />
-						
-					<tr><div><strong><?php echo i18n('filterOnDate')?></strong></div>
-						<td align="left" >
-							 <a onclick="dojo.byId('activityStreamRecently').value='added';refreshActivityStreamList();" href="#" style="cursor: pointer;">
-							   <?php echo i18n("dashboardTicketMainAddedRecently");?>
-							 </a>
-						</td>
-					</tr>
+          <input type="hidden" id="activityStreamAddedRecently" name="activityStreamAddedRecently" value="<?php echo $addedRecently;?>" />                      
+          <tr><div><strong><?php echo i18n('filterOnDate')?></strong></div>
+              <td align="left"  >
+                   <a onclick="switchActivityStreamListAddedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
+                     <?php echo i18n("dashboardTicketMainAddedRecently");?>
+                     <?php $displayAddedRecentlyCheck=($addedRecently)?'block':'none';?>
+                     <span id="activityStreamAddedRecentlyCheck" style="display:<?php echo $displayAddedRecentlyCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>
+                   <?php debugLog("displayaddedrecentlycheck : ".$displayAddedRecentlyCheck);?>
+                   </a>
+              </td>
+          </tr>
 					<tr>
 						<td align="left">
 							 <a onClick="dojo.byId('activityStreamRecently').value='updated';refreshActivityStreamList();" href="#" style="cursor: pointer;">

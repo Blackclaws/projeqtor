@@ -440,11 +440,12 @@ function activityStreamDisplayNote ($note,$origin){
   $userName = SqlList::getNameFromId ( 'User', $userId );
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
   $idNote = '<span style="color:blue">' . $note->id . '</span>';
+  
   $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->id).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
-  debugLog($ticketName);
-  $colCommentStream = i18n ( 'addComment', array ($idNote,
-        $ticketName
-    ) );
+  if ($note->updateDate)  $colCommentStream = i18n ( 'activityStreamUpdateComment', array ($idNote, $ticketName ) );
+  else  $colCommentStream = i18n ( 'activityStreamCreationComment', array ($idNote, $ticketName ) );
+  
+  
     global $print,$user;
     $objectClass=$note->refType;
     $objectId=$note->refId;
