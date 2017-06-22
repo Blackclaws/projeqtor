@@ -588,21 +588,21 @@ function periodChanged(theId) {
                     $bE->budgetCost = $this->budgetCost;
                     $bE->expenseBudgetAmount = $this->expenseBudgetAmount;
                     $bE->totalBudgetCost = $bE->budgetCost + $bE->expenseBudgetAmount;
-                    $bE->save();
+                    $result=$bE->save();
                 }
-                return;
+                return $result;
             }
             // Not Found => Create it
             $this->id = null;
             $theYear=$this->year;
-            parent::save();
+            $result=parent::save();
             // Must do that due to $_databeCriteria initilization with current date.
             $this->year = $theYear;
             $this->simpleSave();
             // Force calculation of BudgetElement's project informations
             $bE = new BudgetElement($this->id);
             new Organization($this->refId,true,$bE);
-            return;
+            return $result;
         }
     }        
     return parent::save();

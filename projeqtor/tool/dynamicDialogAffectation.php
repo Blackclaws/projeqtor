@@ -96,8 +96,8 @@ $objTeam=get_class($obj);
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
                 class="input" value="<?php if($class=="Project" && $type=="Resource"){ echo $affectation->idResource;}else if($class=="Project" && $type=="Contact"){ echo $affectation->idContact;}else{ echo $idResource;}?>" 
-                required="required" <?php echo ($class!="Project")?"readonly=readonly":"";?>>
-                 <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null, false):htmlDrawOptionForReference('idResource', $idResource, null, false);?>
+                <?php echo ($objTeam!="Team")?"required=required":"";?> <?php echo ($class!="Project")?"readonly=readonly":"";?>>
+                 <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null):htmlDrawOptionForReference('idResource', $idResource, null,false);?>
                </select> 
              </td>
              <?php if($class=="Project"){?>
@@ -123,7 +123,7 @@ $objTeam=get_class($obj);
                 id="affectationProfile" name="affectationProfile" 
                 class="input" value="<?php if($mode=="edit"){ echo $affectation->idProfile;}else if($mode=="add" && $class=="Resource"){echo $resource->idProfile;}else if($mode=="add" && $class=="Contact"){echo $contact->idProfile;}else if($mode=="add" && $class=="User"){echo $user->idProfile;}?>" 
                 <?php echo ($objTeam!="Team")?"required=required":"";?> <?php echo ($objTeam=="Team")?"readonly=readonly":"";?>>
-                 <?php htmlDrawOptionForReference('idProfile', null, null, true);?>
+                 <?php htmlDrawOptionForReference('idProfile', null, null,false);?>
                </select>
                </div>
              </td>    

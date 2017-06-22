@@ -33,7 +33,6 @@ scriptLog ( '   ->/view/objectStream.php' );
 global $print, $user;
 $user = getSessionUser ();
 
-//var_dump($_REQUEST);
 
 if (RequestHandler::isCodeSet('activityStreamNumberElement')) {
 	$activityStreamNumberElement=RequestHandler::getValue("activityStreamNumberElement");
@@ -87,8 +86,13 @@ $activityStreamAddedRecently=null;
   }
 
 $activityStreamUpdatedRecently=null;
-// TODO : $activityStreamUpdatedRecently
-
+  if (RequestHandler::isCodeSet('activityStreamUpdatedRecently')) {
+    $activityStreamUpdatedRecently=RequestHandler::getValue("activityStreamUpdatedRecently");
+    Parameter::storeUserParameter("activityStreamUpdatedRecently", $activityStreamUpdatedRecently);
+  } else {
+    $activityStreamUpdatedRecently=Parameter::getUserParameter("activityStreamUpdatedRecently");
+  }
+    
 $paramProject=getSessionValue('project');
 
 $note = new Note ();
@@ -111,45 +115,33 @@ if ($paramProject!='*') {
 	$critWhere.=" and idProject in ".getVisibleProjectsList($paramProject);
 }
 
-if ($activityStreamNumberDays){
-  if ($activityStreamAddedRecently and $activityStreamUpdatedRecently) {
-    $critWhere.=" and ( creationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
-    $critWhere.=" or updateDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) )";
+if ($activityStreamNumberDays!==""){
+  if (Sql::isPgsql()) {
+    if ($activityStreamAddedRecently and $activityStreamUpdatedRecently) {
+      $critWhere.=" AND creationDate>=CURRENT_DATE - INTERVAL '" . intval($activityStreamNumberDays) . " day' ";
+      $critWhere.=" or updateDate>=CURRENT_DATE - INTERVAL '" . intval($activityStreamNumberDays) . " day ' ";
+    } else if ($activityStreamAddedRecently=="added" && trim($activityStreamNumberDays)!=""){
+      $critWhere.=" and creationDate>=CURRENT_DATE -INTERVAL '" . intval($activityStreamNumberDays) . " day ' ";
+    } else if ($activityStreamUpdatedRecently=="updated"){
+      $critWhere.=" and updateDate>=CURRENT_DATE - INTERVAL '" . intval($activityStreamNumberDays) . " day ' ";
+    }   
+  } else {
+  if ($activityStreamAddedRecently and $activityStreamUpdatedRecently) {   
+    $critWhere.=" and ( creationDate>=ADDDATE(CURDATE(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+    $critWhere.=" or updateDate>=ADDDATE(CURDATE(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) )";
   } else if ($activityStreamAddedRecently=="added" && trim($activityStreamNumberDays)!=""){
-    $critWhere.=" and creationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
-  } else if ($activityStreamNumberDays=="updated"){
-    $critWhere.=" and updateDate>=ADDDATE(NOW(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+    $critWhere.=" and creationDate>=ADDDATE(CURDATE(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+  } else if ($activityStreamUpdatedRecently=="updated"){
+    $critWhere.=" and updateDate>=ADDDATE(CURDATE(), INTERVAL (-" . intval($activityStreamNumberDays) . ") DAY) ";
+  }
   }
 }
 
-//SELECT * FROM `note` WHERE `creationDate`>=ADDDATE(NOW(), INTERVAL (-5) DAY)
-
-// TODO : activate when idle added in Notes
-//if ($activityStreamShowClosed!='1') {
-//	$critWhere.=" and idle=0";
-//}
-
-/*if($paramAllItems=="3"){
-  $critWhere.=" ORDER BY creationDate DESC";
+if ($activityStreamShowClosed!='1') {
+	$critWhere.=" and idle=0";
 }
 
-if($paramAllItems=="2"){
-  $critWhere.=" ORDER BY creationDate ASC";
-}
-
-if($paramAllItems=="1" && trim($idStreamNote)!=""){
-  $critWhere.=" and refId=". $idStreamNote;
-}
-
-if($paramAllItems=="5" && $limitElement){
-  $critWhere.=" LIMIT ". $limitElement;
-}
-
-if($paramAllItems=="4" && trim($paramTypeNote)!=""){
-  $critWhere.=" and refType='$typeNote'";
-}*/
 echo '<br/>';
-//var_dump($critWhere);
 $notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,null,null,null,$activityStreamNumberElement);
 
 $countIdNote = count ( $notes );
@@ -158,20 +150,11 @@ if ($countIdNote == 0) {
   exit ();
 }
 $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : false;
-var_dump($_REQUEST);
 ?>
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
 	<table id="objectStream" style="width: 100%;"> 
 	<?php 
 	  foreach ($notes as $note) {
-	   	// TODO : desactivate when idle added in Notes
-      if ($activityStreamShowClosed!='1') {
-      	$objType=$note->refType;
-      	$obj=new $objType($note->refId);
-      	if (property_exists($objType, 'idle') and $obj->idle==1) {
-      		continue;
-      	}
-      }
       activityStreamDisplayNote($note,"activityStream");
 	  }?>
 	</table>

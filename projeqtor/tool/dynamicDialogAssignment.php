@@ -148,17 +148,17 @@ $mode = RequestHandler::getValue('mode',false,true);
                  value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
                                   echo $delay;
                               } else if ($mode=="edit"){
-                                  echo $assignmentObj->assignedWork;
+                                  echo Work::displayWork($assignmentObj->assignedWork);
                               } 
                                 else if($mode=="add") { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
                                   if($assignedWork < 0){
                                     echo "0";
                                   } else {
-                                    echo $assignedWork ;
+                                    echo Work::displayWork($assignedWork);
                                   }                             
                               } else if($mode=="divide"){
-                                  echo $assignmentObjOrigin->assignedWork/2;
+                                  echo Work::displayWork($assignmentObjOrigin->assignedWork/2);
                               }
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
@@ -171,7 +171,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="<?php echo $unit ;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px; background-color:white; color:#000000; border:0px;"/>
-               <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="<?php echo($mode=="edit")?$assignmentObj->assignedWork/100:"";?>" 
+               <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="<?php echo($mode=="edit")?Work::displayWork($assignmentObj->assignedWork):"";?>" 
                  style="width:97px"/>  
              </td>    
            </tr>
@@ -180,7 +180,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentRealWork" name="assignmentRealWork" value="<?php echo ($mode=="edit")?$assignmentObj->realWork:"0";?>"  
+               <div id="assignmentRealWork" name="assignmentRealWork" value="<?php echo ($mode=="edit")?Work::displayWork($assignmentObj->realWork):"0";?>"  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px" readonly >
@@ -198,15 +198,15 @@ $mode = RequestHandler::getValue('mode',false,true);
              <td>
                <div id="assignmentLeftWork" name="assignmentLeftWork"                  
                  value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
-                                  echo $delay;
+                                  echo Work::displayWork($delay);
                               } else if($mode=="edit"){
-                                  echo $assignmentObj->leftWork;
+                                  echo Work::displayWork($assignmentObj->leftWork);
                                 } else { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
                                     if($assignedWork < 0){
                                       echo "0";
                                     } else {
-                                      echo $assignedWork ;
+                                      echo Work::displayWork($assignedWork) ;
                                   }
                               } 
                  ?>" 
@@ -220,7 +220,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="<?php echo $unit ;?>" readonly tabindex="-1"
                  xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
-               <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="<?php echo ($mode=="edit")?$assignmentObj->leftWork/100:"0";?>" 
+               <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="<?php echo ($mode=="edit")?Work::displayWork($assignmentObj->leftWork):"0";?>" 
                  style="width:97px"/>  
              </td>
            </tr>
@@ -231,13 +231,13 @@ $mode = RequestHandler::getValue('mode',false,true);
              <td>
                <div id="assignmentPlannedWork" name="assignmentPlannedWork"                  
                  value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
-                                  echo $delay;
+                                  echo Work::displayWork($delay);
                               } else { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
                                   if($assignedWork < 0){
                                     echo "0";
                                   } else {
-                                    echo $assignedWork ;
+                                    echo Work::displayWork($assignedWork) ;
                                   }
                               } 
                  ?>" 

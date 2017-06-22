@@ -39,9 +39,9 @@ if (! $user->isResource) {
   $table[0]=' ';
 }
 $table = getListForSpecificRights($specific);
-$limitResourceByProj = Parameter::getUserParameter('limitResByProj');
+
 $selectedProject=getSessionValue('project');
-if ($selectedProject and $selectedProject!='*') {
+if ($selectedProject and $selectedProject!='*' and (!isset($limitResourceByProj) or $limitResourceByProj=='on') ) {
 	$restrictTable=array();
 	$prj=new Project( $selectedProject , true);
 	$lstTopPrj=$prj->getTopProjectList(true);
@@ -55,6 +55,9 @@ if ($selectedProject and $selectedProject!='*') {
 		}
 	}
 	$table=$restrictTable;
+}
+if (!isset($table[$user->id])) {
+  $table[$user->id]=$user->name;
 }
 foreach($table as $key => $val) {
   echo '<option value="' . $key . '"';

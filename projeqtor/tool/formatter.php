@@ -439,42 +439,43 @@ function activityStreamDisplayNote ($note,$origin){
   $userId = $note->idUser;
   $userName = SqlList::getNameFromId ( 'User', $userId );
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
-  $idNote = '<span style="color:blue">' . $note->id . '</span>';
-  
-  $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->id).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
+  $idNote = '<span style="color:blue">#' . $note->id . '</span>';
+  $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->refId).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
   if ($note->updateDate)  $colCommentStream = i18n ( 'activityStreamUpdateComment', array ($idNote, $ticketName ) );
   else  $colCommentStream = i18n ( 'activityStreamCreationComment', array ($idNote, $ticketName ) );
-  
-  
-    global $print,$user;
-    $objectClass=$note->refType;
-    $objectId=$note->refId;
-    $obj=new $objectClass($objectId,true);
-    $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
-    if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
-      echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;">';
-      echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');
-      echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
-      echo '</div><div>';
-      if($origin=="objectStream") {
-            if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
-      }
-      echo '</div>';
-      if ($origin=='objectStream') {
-      	$rightWidth=(intval(Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass))-30).'px"';
-      } else {
-      	if (RequestHandler::isCodeSet('destinationWidth')) {
-          $rightWidth=(RequestHandler::getNumeric('destinationWidth')-30).'px';
-      	} else {
-      		$rightWidth="100%";
-      	}
-      }
-      echo '<div style="padding-left:4px;max-width:'.$rightWidth.'">';
-      $strDataHTML=nl2br($note->note); 	    
-      echo '<div style="margin-top:10px;margin-left:37px;">'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>';
-    	echo '<div style="color:black;margin-top:20px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div>&nbsp';
-    	echo '<div style="margin-top:6px;">'.formatDateThumb($note->creationDate,null,"left").'</div>';
-    	echo '<div style="margin-top:11px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div></td></tr>';
-      }
+  global $print,$user;
+  $objectClass=$note->refType;
+  $objectId=$note->refId;
+  $obj=new $objectClass($objectId,true);
+  $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
+  if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
+    echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
+    echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');
+    echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
+    echo '</div><div>';
+    if($origin=="objectStream") {
+          if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
+    }
+    echo '</div>';
+    if ($origin=='objectStream') {
+    	$rightWidth=(intval(Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass))-30).'px"';
+    } else {
+    	if (RequestHandler::isCodeSet('destinationWidth')) {
+        $rightWidth=(RequestHandler::getNumeric('destinationWidth')-30).'px';
+    	} else {
+    		$rightWidth="100%";
+    	}
+    }
+    echo '<div style="padding-left:4px;max-width:'.$rightWidth.'">';
+    $strDataHTML=$note->note;
+    echo '<div><div style="margin-top:2px;margin-left:37px;">'.$userNameFormatted.'&nbsp'.$colCommentStream.'</div>'; 
+  	echo '<div style="margin-top:3px;margin-left:37px;">'.formatDateThumb($note->creationDate,$note->updateDate,"left").'</div>';
+  	if($note->updateDate){
+  	 echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->updateDate,true).'</div></div>';    	 
+    } else {
+     echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
+    }
+    echo '<div style="color:black;margin-top:20px;word-break:break-all;min-width:188px;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+  }
 }
 ?>

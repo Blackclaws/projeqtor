@@ -1,8 +1,8 @@
 <?php
 // Include the PHPWord.php, all other classes were loaded by an autoloader
-require_once '../external/PHPWord/PHPWord.php';
+require_once '../external/PhpWord/PhpWord.php';
 
-$PHPWord = new PHPWord();
+$PHPWord = new PhpWord();
 
 $section = $PHPWord->createSection();
 $sectionStyle = $section->getSettings();

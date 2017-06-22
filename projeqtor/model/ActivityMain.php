@@ -405,67 +405,75 @@ class ActivityMain extends SqlElement {
       }
     }
     
-    // mehdi
-    // ticket 2822   
-    $parentActivity = new Activity ($this->idActivity);
+    // ticket #2822 - mehdi
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
       if ($this->idActivity) {
-        if ($this->handled and $this->handled!=$old->handled) {
-          if ( ! $parentActivity->handled ) {
-            $parentActivity->handled = $this->handled;
-            $parentActivity->handledDate=date('Y-m-d');
-            $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
-            foreach ( $allowedStatusList as $st ) {
-              if ($st->setHandledStatus) {
-                $parentActivity->idStatus=$st->id;
-                $parentActivity->save();
-                break;
-              }
-            }  
-          }
+        $parent = new Activity ($this->idActivity);
+      } else {
+        $parent = new Project ($this->idProject);
+      }
+      if ($this->handled and $this->handled!=$old->handled) {
+        if ( ! $parent->handled ) {
+          $parent->handled = $this->handled;
+          $parent->handledDate=date('Y-m-d');
+          $allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
+          foreach ( $allowedStatusList as $st ) {
+            if ($st->setHandledStatus) {
+              $parent->idStatus=$st->id;
+              $parent->save();
+              break;
+            }
+          }  
         }
-        $status = new Status ($this->idStatus);
-        $isStat=($status->setCancelledStatus)?'setCancelledStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setDoneStatus)?'setDoneStatus':''));
-        $status = new Status ($old->idStatus);
-        $isOldStat=($status->setDoneStatus)?'setDoneStatus':(($status->setIdleStatus)?'setIdleStatus':(($status->setCancelledStatus)?'setCancelledStatus':''));
-        if ($isStat and $isStat!=$isOldStat) {
-          $allDone=true; $allIdle=true; $allCancelled=true;
-          $sons=$this->getSqlElementsFromCriteria(array('idActivity'=>$this->idActivity));
-          foreach ($sons as $act) {
-            if (!$act->done and !$act->cancelled) $allDone=false;
-            if (!$act->idle and !$act->cancelled) $allIdle=false;
-            if (!$act->cancelled) $allCancelled=false;
-          }
-          $newStat=($allCancelled)?'setCancelledStatus':(($allIdle)?'setIdleStatus':(($allDone)?'setDoneStatus':''));
-          if ($newStat) {
-            $currentParentStatus=new Status($parentActivity->idStatus);
-            if ( $currentParentStatus->$newStat) {
-              // Nothing to do, already in a status corresponding to target
-            } else {
-              $allowedStatusList=Workflow::getAllowedStatusListForObject($parentActivity);
-              foreach ( $allowedStatusList as $st ) {
-                if ($st->$newStat) {
-                  $parentActivity->idStatus=$st->id;
-                  $i = $parentActivity->idStatus;
-                  switch ($i) {
-                  	case 4:
-                  	  $parentActivity->done = $this->done;
-                  	  $parentActivity->doneDate=date('Y-m-d');
-                  		break;
-                  	case 7:
-                  	  $parentActivity->idle = $this->idle;
-                  	  $parentActivity->idleDate=date('Y-m-d');
-                  		break;
-                  	case 9:
-                  	  $parentActivity->cancelled = $this->cancelled;
-                  	  $parentActivity->doneDate=date('Y-m-d');
-                  		break;
-                  }
-                  $parentActivity->save();
-                  break;
-                }
+      }
+      $status = new Status ($this->idStatus);
+      $isStatDone=($status->setDoneStatus)?true:false;
+      $isStatIdle=($status->setIdleStatus)?true:false;
+      $isStatCancelled=($status->setCancelledStatus)?true:false;
+      $status = new Status ($old->idStatus);
+      $isOldStatDone=($status->setDoneStatus)?true:false;
+      $isOldStatIdle=($status->setIdleStatus)?true:false;
+      $isOldStatCancelled=($status->setCancelledStatus)?true:false;
+      if ( ($isStatDone and $isStatDone!=$isOldStatDone) or ($isStatIdle and $isStatIdle!=$isOldStatIdle) or ($isStatCancelled and $isStatCancelled!=$isOldStatCancelled)) {
+        $allDone=true; 
+        $allIdle=true; 
+        $allCancelled=true;
+        $sons=$this->getSqlElementsFromCriteria(array('idActivity'=>$this->idActivity));
+        foreach ($sons as $act) {
+          if (!$act->done and !$act->cancelled) $allDone=false;
+          if (!$act->idle and !$act->cancelled) $allIdle=false;
+          if (!$act->cancelled) $allCancelled=false;
+        }
+        $setToDone=($isStatDone and $isStatDone!=$isOldStatDone and $allDone)?true:false;
+        $setToIdle=($isStatIdle and $isStatIdle!=$isOldStatIdle and $allIdle)?true:false;
+        $setToCancelled=($isStatCancelled and $isStatCancelled!=$isOldStatCancelled and $allCancelled)?true:false;
+        if ($setToDone or $setToIdle or $setToCancelled) {
+          $currentParentStatus=new Status($parent->idStatus);
+          if ( (! $setToDone or ($setToDone and $currentParentStatus->setToDone) ) 
+           and (! $setToIdle or ($setToIdle and $currentParentStatus->setToIdle) )  
+           and (! $setToCancelled or ($setToCancelled and $currentParentStatus->setToCancelled) )) {
+            // Nothing to do, already in a status corresponding to target
+          } else {
+            $allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
+            $saveParent=false;
+            foreach ( $allowedStatusList as $st ) {
+              if ($setToDone and $st->setToDone) {
+                $parent->idStatus=$st->id;
+                $saveParent=true;
+                $setToDone=false;
+              }
+              if ($setToIdle and $st->setToIdle) {
+                $parent->idStatus=$st->id;
+                $saveParent=true;
+                $setToIdle=false;
+              }  
+              if ($setToCancelled and $st->setToCancelled) {
+                $parent->idStatus=$st->id;
+                $saveParent=true;
+                $setToCancelled=false;
               }
             }
+            if (saveParent) parent::save();
           }
         }
       }
