@@ -3370,3 +3370,9 @@ p {
 	border-color:#656565;
 	width:190px;
 }
+
+.inputParameter{
+	font-size:8pt;
+	width:170px;
+	height:20px;
+}

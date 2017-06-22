@@ -132,6 +132,36 @@
       if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
       	$user=getSessionUser();
       	$list=$user->getVisibleProjects();
+      } else if ($dataType=='imputationResource') {
+        $class='Affectable';
+        $specific='imputation';
+        $table = getListForSpecificRights($specific);
+        
+        $selectedProject=getSessionValue('project');
+        $limitResourceByProj=Parameter::getUserParameter("limitResourceByProject");
+        debugLog("limitResourceByProj=$limitResourceByProj");
+        if ($selectedProject and $selectedProject!='*' and $limitResourceByProj=='on') {
+          $restrictTable=array();
+          $prj=new Project( $selectedProject , true);
+          $lstTopPrj=$prj->getTopProjectList(true);
+          $in=transformValueListIntoInClause($lstTopPrj);
+          $crit='idProject in ' . $in;
+          $aff=new Affectation();
+          $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
+          foreach ($lstAff as $id=>$aff) {
+            if (array_key_exists($aff->idResource,$table)) {
+              $restrictTable[$aff->idResource]=$table[$aff->idResource];
+            }
+          }
+          $list=$restrictTable;
+        } else {
+          $list=$table;
+        }
+        $user=getSessionUser();
+        if (!isset($list[$user->id])) {
+          $list[$user->id]=$user->name;
+        }
+        debugLog($list);
       } else if ($dataType=='planning') {
       	$user=getSessionUser();
       	$list=$user->getVisibleProjects();

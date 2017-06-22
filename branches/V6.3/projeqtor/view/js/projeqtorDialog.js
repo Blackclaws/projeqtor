@@ -1929,14 +1929,6 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   var callBack = function () {
     editAssignmentLoading=true;
     disableWidget('assignmentComment');
-    dojo.xhrGet({
-      url : '../tool/getSingleData.php?dataType=assignmentDescription&idAssignment='+assignmentId,
-      handleAs : "text",
-      load : function(data) {
-        dijit.byId('assignmentComment').set('value', data);
-        enableWidget("assignmentComment");
-      }
-    });
     assignmentUpdatePlannedWork('assignment');
     dijit.byId("dialogAssign").show();
 };
@@ -5124,7 +5116,6 @@ function redoItemButton() {
     disableWidget('menuBarRedoButton');
   }
   getTargetFromCurrentScreen(currentScreen);
-  console.log(currentScreen);
 }
 
 // Stock id and name, to
@@ -5422,7 +5413,6 @@ function customMenuRemoveItem() {
 // var alertDisplayed=false;
 var checkAlertDisplayQuick=false;
 function checkAlert() {
-  console.log("checkAlert");
   // if (alertDisplayed) return;
   dojo.xhrGet({
     url : "../tool/checkAlertToDisplay.php",

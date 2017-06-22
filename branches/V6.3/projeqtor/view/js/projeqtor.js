@@ -2212,7 +2212,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
             && dojo.byId('currentPhpPage').value) {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");
         } else if (dijit.byId('limitResByProj').get('value')=="on"){
-          loadContent("../view/imputationList.php", "centerDiv");
+          refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true);
         } else if (currentPluginPage) {
           loadContent(currentPluginPage, "centerDiv");
         }
@@ -4097,7 +4097,6 @@ function hideGraphStatus(){
 function scrollInto(){
   var scrollElmnt = dojo.byId("scrollToBottom");
   if(scrollElmnt){
-    console.log("scrollInto");
     scrollElmnt.scrollIntoView();
   }
 }
@@ -4114,8 +4113,7 @@ function saveNoteStream(event){
     loadContent("../tool/saveNoteStream.php", "resultDiv", "noteFormStream", true, 'note',null,null);
     noteEditor.set("value",null);
     event.preventDefault();
-  }
-  return false;
+  } 
 }
 
 function hideStreamMode(){
@@ -4161,19 +4159,30 @@ function switchActivityStreamListShowClosed() {
     dojo.byId('activityStreamShowClosed').value=1;
     dojo.byId('activityStreamShowClosedCheck').style.display='block';
   }
+  setTimeout("refreshActivityStreamList();", 100);
 }
 
 function switchActivityStreamListAddedRecently() {
   var oldValue=dojo.byId('activityStreamAddedRecently').value;
-  console.log("oldValue : "+oldValue);
   if (oldValue=="added") {
-    dojo.byId('activityStreamAddedRecently').value=0;
+    dojo.byId('activityStreamAddedRecently').value="";
     dojo.byId('activityStreamAddedRecentlyCheck').style.display='none';
   } else {
     dojo.byId('activityStreamAddedRecently').value="added";
     dojo.byId('activityStreamAddedRecentlyCheck').style.display='block';
   }
-  console.log("new value : "+dojo.byId('activityStreamAddedRecently').value);
+  setTimeout("refreshActivityStreamList();", 100);
+}
+
+function switchActivityStreamListUpdatedRecently() {
+  var oldValue=dojo.byId('activityStreamUpdatedRecently').value;
+  if (oldValue=="updated") {
+    dojo.byId('activityStreamUpdatedRecently').value="";
+    dojo.byId('activityStreamUpdatedRecentlyCheck').style.display='none';
+  } else {
+    dojo.byId('activityStreamUpdatedRecently').value="updated";
+    dojo.byId('activityStreamUpdatedRecentlyCheck').style.display='block';
+  }
 }
 
 function activityStreamTypeRead(){

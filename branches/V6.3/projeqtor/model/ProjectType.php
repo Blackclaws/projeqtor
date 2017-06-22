@@ -46,6 +46,8 @@ class ProjectType extends SqlElement {
   public $_sec_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
+  public $lockHandled;
+  public $_lib_statusMustChangeHandled;
   public $lockDone;
   public $_lib_statusMustChangeDone;
   public $lockIdle;
@@ -72,6 +74,7 @@ class ProjectType extends SqlElement {
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
                                           "code"=> "readonly,nobr",
+                                          "lockHandled"=>"nobr",
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
                                           "lockCancelled"=>"nobr",

@@ -113,3 +113,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 ALTER TABLE `${prefix}note` ADD `idProject` int(12);
 
 ALTER TABLE `${prefix}note` ADD `idle` int(1) DEFAULT '0';
+
+ALTER TABLE `${prefix}project` ADD `handled` int(1) DEFAULT '0',
+ADD `handledDate` date DEFAULT NULL;
