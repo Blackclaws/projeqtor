@@ -66,7 +66,7 @@ if ($note->creationDate==null) {
 } else if ($note->note!=$noteNote) {
     $note->updateDate=date("Y-m-d H:i:s");
 }
-$note->note=$noteNote;
+$note->note=nl2br($noteNote);
 if ($notePrivacy) {
   $note->idPrivacy=$notePrivacy;
 } else if (! $note->idPrivacy) {

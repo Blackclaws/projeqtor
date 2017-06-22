@@ -32,7 +32,7 @@ require_once "../tool/formatter.php";
 $user = getSessionUser ();
 $showClosed=Parameter::getUserParameter("activityStreamShowClosed");
 $addedRecently=Parameter::getUserParameter("activityStreamAddedRecently");
-debugLog("add recently param : ".$addedRecently);
+$updatedRecently=Parameter::getUserParameter("activityStreamUpdatedRecently");
 $activityStreamNumberElement=Parameter::getUserParameter("activityStreamNumberElement");
 $activityStreamIdNote=Parameter::getUserParameter("activityStreamIdNote");
 $activityStreamNumberDays=Parameter::getUserParameter("activityStreamNumberDays");
@@ -91,9 +91,9 @@ if(!$activityStreamNumberDays){
 						<tr><div><strong><?php echo i18n('filterOnAuthor')?></strong></div>						  
 							<td align="left">
 							 <?php echo ucfirst(i18n('colIdAuthor'));?>&nbsp;:&nbsp;
-							  <select title="<?php echo i18n('filterOnAuthor')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+							  <select title="<?php echo i18n('filterOnAuthor')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
-                id="activityStreamAuthorFilter" name="activityStreamAuthorFilter" style="width:200px;height:20px;">
+                id="activityStreamAuthorFilter" name="activityStreamAuthorFilter" >
                   <?php 
                     $selectedAuthor=Parameter::getUserParameter('activityStreamAuthorFilter');
                     htmlDrawOptionForReference('idUser', $selectedAuthor, null, false); ?>
@@ -110,9 +110,9 @@ if(!$activityStreamNumberDays){
 						<tr><div><strong><?php echo i18n('filterOnElement')?></strong></div>
 							<td align="left">
 							 <?php echo ucfirst(i18n('colType'));?>&nbsp;:&nbsp;
-							  <select title="<?php echo i18n('filterOnElement')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+							  <select title="<?php echo i18n('filterOnElement')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
-                id="activityStreamTypeNote" name="activityStreamTypeNote" style="width:200px;height:20px;">
+                id="activityStreamTypeNote" name="activityStreamTypeNote">
                   <?php 
                     $selectedElementType=Parameter::getUserParameter('activityStreamElementType');
                     htmlDrawOptionForReference('idLinkable', $selectedElementType, null, false); ?>
@@ -135,21 +135,23 @@ if(!$activityStreamNumberDays){
         </td>
        <td valign="top" width="30%">
         <table style="margin-top: 10px;">
-          <input type="hidden" id="activityStreamAddedRecently" name="activityStreamAddedRecently" value="<?php echo $addedRecently;?>" />                      
+          <input type="hidden" id="activityStreamAddedRecently" name="activityStreamAddedRecently" value="<?php echo $addedRecently;?>" />   
+           <input type="hidden" id="activityStreamUpdatedRecently" name="activityStreamUpdatedRecently" value="<?php echo $updatedRecently;?>" />                    
           <tr><div><strong><?php echo i18n('filterOnDate')?></strong></div>
               <td align="left"  >
                    <a onclick="switchActivityStreamListAddedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
                      <?php echo i18n("dashboardTicketMainAddedRecently");?>
                      <?php $displayAddedRecentlyCheck=($addedRecently)?'block':'none';?>
                      <span id="activityStreamAddedRecentlyCheck" style="display:<?php echo $displayAddedRecentlyCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>
-                   <?php debugLog("displayaddedrecentlycheck : ".$displayAddedRecentlyCheck);?>
                    </a>
               </td>
           </tr>
 					<tr>
 						<td align="left">
-							 <a onClick="dojo.byId('activityStreamRecently').value='updated';refreshActivityStreamList();" href="#" style="cursor: pointer;">
+							 <a onClick="switchActivityStreamListUpdatedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
 							   <?php echo i18n("dashboardTicketMainUpdatedRecently");?>
+							   <?php $displayUpdatedRecentlyCheck=($updatedRecently)?'block':'none';?>
+							   <span id="activityStreamUpdatedRecentlyCheck" style="display:<?php echo $displayUpdatedRecentlyCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>							   
 							 </a>
 						</td>
 					</tr>

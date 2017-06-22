@@ -115,7 +115,7 @@ $expenseDetail->unit02=$expenseDetailUnit02;
 $expenseDetail->unit03=$expenseDetailUnit03;
 
 $expense=new Expense($idExpense);
-$expenseDetail->idProject=$expense->id; 
+$expenseDetail->idProject=$expense->idProject; 
 $expenseDetail->idle=$expense->idle;
 
 $result=$expenseDetail->save();

@@ -42,7 +42,8 @@
   $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
   // get the modifications (from request)
   $note=new Note();
-  $notes=$note->getSqlElementsFromCriteria(array('refType'=>$objectClass,'refId'=>$objectId));
+  $order = "COALESCE (updateDate,creationDate) ASC";
+  $notes=$note->getSqlElementsFromCriteria(array('refType'=>$objectClass,'refId'=>$objectId),null,null,$order);
   SqlElement::resetCurrentObjectTimestamp();
   $ress=new Resource($user->id);
   $userId=$note->idUser;

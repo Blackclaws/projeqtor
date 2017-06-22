@@ -71,6 +71,8 @@ class ProjectMain extends SqlElement {
   public $idOverallProgress;
   public $fixPlanning;
   public $isUnderConstruction;
+  public $handled;
+  public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
@@ -130,6 +132,7 @@ class ProjectMain extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required",                                   
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
+                                  "handled"=>"nobr",
                                   "sortOrder"=>"hidden",
                                   "codeType"=>"hidden",
                                   "idProjectType"=>"required",
