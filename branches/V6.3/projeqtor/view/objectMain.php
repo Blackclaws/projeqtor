@@ -42,9 +42,13 @@
   	if ($screenHeight and $topDetailDivHeight>$screenHeight-300) {
   		$topDetailDivHeight=$screenHeight-300;
   	}
-  	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
-  	$rightWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass).'px"';
-  	if (!$rightWidth) $rightWidth="20%";
+  	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight; 	
+  	$detailDivWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass);
+  	if($detailDivWidth){
+  	  $rightWidth=$detailDivWidth.'px';
+  	} else {
+  	  $rightWidth="15%";
+  	}
   }
 ?>
 <div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">

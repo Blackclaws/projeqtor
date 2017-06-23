@@ -107,7 +107,6 @@ if (! array_key_exists('assignmentComment',$_REQUEST)) {
 }
 
 $idOrigin=RequestHandler::getNumeric('assignedIdOrigin',false,null);
-
 //gautier #1742
 $optional=0;
 if (array_key_exists('attendantIsOptional',$_REQUEST)) {
@@ -181,6 +180,7 @@ if ($refType=='Meeting' or $refType=='PeriodicMeeting') {
 if ($idOrigin){
   $assignmentOrigin = new Assignment($idOrigin);
     $assignmentOrigin->assignedWork=$assignmentOrigin->assignedWork-$assignedWork;
+    $assignmentOrigin->leftWork=$assignmentOrigin->leftWork-$leftWork;
     $assignmentOrigin->save();
 }
   
