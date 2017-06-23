@@ -1928,7 +1928,6 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   }
   var callBack = function () {
     editAssignmentLoading=true;
-    disableWidget('assignmentComment');
     assignmentUpdatePlannedWork('assignment');
     dijit.byId("dialogAssign").show();
 };

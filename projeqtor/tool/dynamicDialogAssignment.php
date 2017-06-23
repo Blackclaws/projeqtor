@@ -37,6 +37,8 @@ $assignmentObj = new Assignment($idAssignment);
 $unit=RequestHandler::getValue('unit',false,null);
 $assignedIdOrigin=RequestHandler::getId('assignedIdOrigin',false,null);
 $assignmentObjOrigin = new Assignment($assignedIdOrigin);
+debugLog("assignmentObjOrigin");
+debugLog($assignmentObjOrigin);
 $validatedWorkPeOld = RequestHandler::getValue('validatedWorkPe',false,null);
 $assignedWorkPeOld = RequestHandler::getValue('assignedWorkPe',false,null);
 $realWork = RequestHandler::getNumeric('realWork',false,true);
@@ -158,7 +160,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                                     echo Work::displayWork($assignedWork);
                                   }                             
                               } else if($mode=="divide"){
-                                  echo Work::displayWork($assignmentObjOrigin->assignedWork/2);
+                                  echo Work::displayWork($assignmentObjOrigin->leftWork/2);
                               }
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
@@ -201,7 +203,9 @@ $mode = RequestHandler::getValue('mode',false,true);
                                   echo Work::displayWork($delay);
                               } else if($mode=="edit"){
                                   echo Work::displayWork($assignmentObj->leftWork);
-                                } else { 
+                              } else if($mode=="divide"){
+                                  echo Work::displayWork($assignmentObjOrigin->leftWork/2);                                                       
+                              } else { 
                                   $assignedWork = $validatedWorkPe-$assignedWorkPe;
                                     if($assignedWork < 0){
                                       echo "0";
@@ -212,8 +216,8 @@ $mode = RequestHandler::getValue('mode',false,true);
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
-                 onchange="assignmentUpdatePlannedWork('assignment');"
-                 onblur="assignmentUpdatePlannedWork('assignment');"  
+                 onchange="assignmentUpdateLeftWork('assignment');"
+                 onblur="assignmentUpdateLeftWork('assignment');"  
                  style="width:97px" >
                  <?php echo $keyDownEventScript;?>
                  </div>
@@ -256,7 +260,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                <label for="assignmentComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentComment" name="assignmentComment" value=""  
+               <input id="assignmentComment" name="assignmentComment" value="<?php echo $assignmentObj->comment;?>"  
                  dojoType="dijit.form.Textarea"
                  class="input" 
                  /> 
