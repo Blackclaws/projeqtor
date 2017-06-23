@@ -96,7 +96,7 @@ $objTeam=get_class($obj);
                 id="affectationResource" name="affectationResource" 
                 onChange="affectationChangeResource();"
                 class="input" value="<?php if($class=="Project" && $type=="Resource"){ echo $affectation->idResource;}else if($class=="Project" && $type=="Contact"){ echo $affectation->idContact;}else{ echo $idResource;}?>" 
-                <?php echo ($objTeam!="Team")?"required=required":"";?> <?php echo ($class!="Project")?"readonly=readonly":"";?>>
+                <?php echo ($objTeam=="Team")?"required=false":"";?> <?php echo ($class!="Project")?"readonly=readonly":"";?>>
                  <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null):htmlDrawOptionForReference('idResource', $idResource, null,false);?>
                </select> 
              </td>
@@ -122,7 +122,7 @@ $objTeam=get_class($obj);
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationProfile" name="affectationProfile" 
                 class="input" value="<?php if($mode=="edit"){ echo $affectation->idProfile;}else if($mode=="add" && $class=="Resource"){echo $resource->idProfile;}else if($mode=="add" && $class=="Contact"){echo $contact->idProfile;}else if($mode=="add" && $class=="User"){echo $user->idProfile;}?>" 
-                <?php echo ($objTeam!="Team")?"required=required":"";?> <?php echo ($objTeam=="Team")?"readonly=readonly":"";?>>
+               <?php echo ($objTeam=="Team")?"required=false":"";?> <?php echo ($objTeam=="Team")?"readonly=readonly":"";?>>
                  <?php htmlDrawOptionForReference('idProfile', null, null,false);?>
                </select>
                </div>
