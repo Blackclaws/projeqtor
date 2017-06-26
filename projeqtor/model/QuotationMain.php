@@ -111,8 +111,8 @@ class QuotationMain extends SqlElement {
                                   "idle"=>"nobr",
   								                "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
-                                  'taxAmount'=>'calculated,readonly',
-                                  'fullAmount'=>'readonly'               
+                                  "taxAmount"=>"calculated,readonly",
+                                  "fullAmount"=>"readonly"               
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
