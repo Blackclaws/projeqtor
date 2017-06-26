@@ -3376,3 +3376,7 @@ p {
 	width:170px;
 	height:20px;
 }
+
+li.section {
+  border-radius:0px;
+}
