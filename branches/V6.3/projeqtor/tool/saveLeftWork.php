@@ -35,11 +35,14 @@ $value = RequestHandler::getNumeric('valueTextZone');
 $ass = new Assignment($id);
 
 if($zone == 'AssignedWork'){
-	$ass->assignedWork = $value;
+	$ass->assignedWork = $value; //Work::displayWork(
 }
+
 if($zone == 'LeftWork'){
 	$ass->leftWork = $value;
 }
+
+
 
 $ass->save();
 ?>

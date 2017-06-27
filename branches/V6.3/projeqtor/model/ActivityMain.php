@@ -318,7 +318,6 @@ class ActivityMain extends SqlElement {
     }
     $result = parent::save ();
     if (! strpos ( $result, 'id="lastOperationStatus" value="OK"' )) {
-      //debugLog ("NOT SAVE OK ".$result);
       return $result;
     }
     
@@ -408,9 +407,6 @@ class ActivityMain extends SqlElement {
     // ticket #2822 - mehdi
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
       if ($this->idActivity) {
-        debugLog("voici l'id de l'objet en cours : ".$this->id);
-        debugLog("voici son statut : ".$this->idStatus);
-        debugLog("================================================");
         $parent = new Activity ($this->idActivity);
       } else {
         $parent = new Project ($this->idProject);
@@ -424,23 +420,15 @@ class ActivityMain extends SqlElement {
             if ($st->setHandledStatus) {
               $parent->idStatus=$st->id;
               $parent->save();
-debugLog("save 1 ok");
-debugLog("================================================");
               break;
             }
           }  
         }
       }
       $status = new Status ($this->idStatus);
-debugLog("voici this id status ".$this->idStatus);
       $isStatDone=($status->setDoneStatus)?true:false;
-debugLog("voici this id ".$this->id);
-debugLog("is stat Done1 est ".$isStatDone);
       $isStatIdle=($status->setIdleStatus)?true:false;
-debugLog("is stat Idle1 est ".$isStatIdle);
       $isStatCancelled=($status->setCancelledStatus)?true:false;
-debugLog("is stat Cancel1 est ".$isStatCancelled);
-debugLog("================================================");
       $status = new Status ($old->idStatus);
       $isOldStatDone=($status->setDoneStatus)?true:false;
       $isOldStatIdle=($status->setIdleStatus)?true:false;
@@ -459,28 +447,16 @@ debugLog("================================================");
         $setToIdle=($isStatIdle and $isStatIdle!=$isOldStatIdle and $allIdle)?true:false;
         $setToCancelled=($isStatCancelled and $isStatCancelled!=$isOldStatCancelled and $allCancelled)?true:false;
         if ($setToDone or $setToIdle or $setToCancelled) {
-debugLog("set to done est : ".$setToDone);
           $currentParentStatus=new Status($parent->idStatus);
-debugLog("le statut du parent est : ".$currentParentStatus->id);
           if ( (! $setToDone or ($setToDone and $currentParentStatus->setDoneStatus) ) 
            and (! $setToIdle or ($setToIdle and $currentParentStatus->setIdleStatus) )  
            and (! $setToCancelled or ($setToCancelled and $currentParentStatus->setCancelledStatus) )) {
-debugLog("Nothing to do, already in a status corresponding to target");
             // Nothing to do, already in a status corresponding to target
           } else {
             $allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
-debugLog("ceci devrait être l'id du parent : ".$parent->id);
-debugLog("is stat Done2 est ".$isStatDone);
-
-debugLog("is stat Idle2 est ".$isStatIdle);
-
-debugLog("is stat Cancel2 est ".$isStatCancelled);
-//debugLog($allowedStatusList);
             $saveParent=false;
             foreach ( $allowedStatusList as $st ) {
-//debugLog($st);
               if ($setToDone and $st->setDoneStatus) {
-//                 debugLog("set to done est true");
                 $parent->idStatus=$st->id;
                 $parent->done=$this->done;
                 $parent->doneDate=date('Y-m-d');
@@ -488,9 +464,6 @@ debugLog("is stat Cancel2 est ".$isStatCancelled);
                 $setToDone=false;
               }
               if ($setToIdle and $st->setIdleStatus) {
-//                 debugLog("====================");
-//                 debugLog("set to idle est true");
-//                 debugLog("====================");
                 $parent->idStatus=$st->id;
                 $parent->idle=$this->idle;
                 $parent->idleDate=date('Y-m-d');
@@ -498,15 +471,13 @@ debugLog("is stat Cancel2 est ".$isStatCancelled);
                 $setToIdle=false;
               }  
               if ($setToCancelled and $st->setCancelledStatus) {
-//                 debugLog("set to cancel est true");
                 $parent->idStatus=$st->id;
                 $parent->cancelled=$this->cancelled;
-                //$parent->doneDate=date('Y-m-d');
+                $parent->doneDate=date('Y-m-d');
                 $saveParent=true;
                 $setToCancelled=false;
               }
             }
-            //if ($saveParent) parent::save();
             if ($saveParent) $parent->save();
           }
         }

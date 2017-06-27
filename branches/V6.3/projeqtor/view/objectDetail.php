@@ -1445,7 +1445,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' type="text" maxlength="' . $dataLength . '" ';
         if (sessionValueExists('browserLocaleDateFormatJs')) { 
         	$min='';
-          if (substr($col,-7)=="EndDate"){    
+          if (substr($col,-7)=="EndDate" and !$readOnly){    
             $start=str_replace("EndDate", "StartDate", $col);
             if (property_exists($obj, $start) && property_exists($obj, 'refType') && $obj->refType!="Milestone")  {
               $min=$obj->$start;      
@@ -1455,6 +1455,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 $min=$obj->$start;
               }
             }
+            // Babynus - For test purpose
+            if ($val<$min) $val=$min;
             if ($min) echo ' dropDownDefaultValue="'.$min.'" ';
           }
           echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
@@ -3904,30 +3906,32 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
       //mehdi======================ticket#1776
+    	echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="' . Work::convertWork($assignment->assignedWork) . '"/>';
     	echo '<td class="assignData" align="right" style="vertical-align:middle;">';   	
     			echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
-      style="display: none; 
-  										position:relative;top:2px;left:5px; height:16px;float:left;"/>';
+                style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
     			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
-    						class="dijitReset dijitInputInner dijitNumberTextBox"
-      					value="'.Work::displayWork($assignment->assignedWork).'"
-                style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;" 
-      					onchange="saveLeftWork('.$assignment->id.',\'AssignedWork\');">';
-    			
+    						  class="dijitReset dijitInputInner dijitNumberTextBox"
+      					  value="'.Work::convertWork($assignment->assignedWork).'"
+                  style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;" 
+      					  onchange="assUpdateLeftWork(\'ass\', '.$assignment->id.'); saveLeftWork('.$assignment->id.',\'AssignedWork\')">';  			      
     			echo '</div>';
     	echo '</td>';
-   
+    	
+    	echo '<input type="hidden" id="RealWork_'.$assignment->id.'" value="' . Work::convertWork($assignment->realWork) . '"/>';
     	echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
      
+    	echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="' . Work::convertWork($assignment->leftWork) . '"/>';
       echo '<td class="assignData" align="right" style="vertical-align:middle; ">' ;    
-       		echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
-      	 echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
+       	echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
+      	  echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
-        				value="'.Work::displayWork($assignment->leftWork).'"
-                style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;" onchange="saveLeftWork('.$assignment->id.',\'LeftWork\');">';
-      	 echo $keyDownEventScript;
-      	 echo '</div>';
-         echo '</td>'; }
+        				value="'.Work::convertWork($assignment->leftWork).'"
+                style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;" 
+                onchange="saveLeftWork('.$assignment->id.',\'LeftWork\');"';      
+      	  echo $keyDownEventScript;
+      	  echo '</div>';
+      echo '</td>'; }
      echo '</tr>';
   }
   echo '</table></td></tr>';
