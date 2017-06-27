@@ -216,8 +216,8 @@ $mode = RequestHandler::getValue('mode',false,true);
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
-                 onchange="assignmentUpdateLeftWork('assignment');"
-                 onblur="assignmentUpdateLeftWork('assignment');"  
+                 onchange="assignmentUpdatePlannedWork('assignment');"
+                 onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" >
                  <?php echo $keyDownEventScript;?>
                  </div>
