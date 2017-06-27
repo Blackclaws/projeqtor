@@ -4091,8 +4091,76 @@ function saveTcrData(id,textZone) {
       }
   });
 }
+/**
+ * Update the left work on assignment update
+ * 
+ * @param prefix
+ * @return
+ */
+function assignmentUpdateLeftWork(prefix) {
+  var initAssigned=dojo.byId(prefix + "AssignedWorkInit");
+  var initLeft=dojo.byId(prefix + "LeftWorkInit");
+  var assigned=dojo.byId(prefix + "AssignedWork");
+  var newAssigned=dojo.number.parse(assigned.value);
+  if (newAssigned == null || isNaN(newAssigned)) {
+    newAssigned=0;
+    assigned.value=dojo.number.format(newAssigned);
+  }
+  var left=dojo.byId(prefix + "LeftWork");
+  //// Krowry #2338 ////
+  var real = dojo.byId(prefix + "RealWork");
+  // var planned = dojo.byId(prefix + "PlannedWork");
+  diff=dojo.number.parse(assigned.value) - initAssigned.value;
+  newLeft=parseFloat(initLeft.value) + diff;
+  if (newLeft < 0 || isNaN(newLeft)) {
+    newLeft=0;
+  }
+  if(assigned.value != initAssigned.value){
+    diffe=dojo.number.parse(assigned.value) - real.value ;
+    if (initAssigned.value==0 || isNaN(initAssigned.value)){
+      newLeft= 0 + diffe;
+    }
+  }
+  left.value=dojo.number.format(newLeft);
+  assignmentUpdatePlannedWork(prefix);
+}
 
-//Mehdi
+//Mehdi 
+function assUpdateLeftWork(prefix, id) {
+  var initAss = dojo.byId('initAss_'+id).value;
+  var initLeft=dojo.byId('initLeft_'+id).value;
+  var assign=dijit.byId(prefix+"AssignedWork_"+id).get('value');
+  var newAss = dojo.number.parse(assign);
+  if (newAss == null || isNaN(newAss)) {
+	newAss=0;
+	assign.value=dojo.number.format(newAss);
+  }
+  var leftWork = dojo.byId('assLeftWork_'+id);
+  diff = assign-initAss;
+  newLeft=parseFloat(initLeft) + diff;
+  if (newLeft < 0 || isNaN(newLeft)) {
+    newLeft=0;
+  }
+  leftWork.value=dojo.number.format(newLeft); 
+  initAss.value = newAss;
+  diff = 0;
+}
+  
+function saveAssignedWork(id, zone) {
+  var value=dijit.byId("ass"+zone+"_"+id).get("value");
+  var url = '../tool/saveLeftWork.php?idAssign='+id +'&zone='+zone +'&valueTextZone='+value;
+  dojo.xhrPut({
+	url : url,
+	form : 'objectForm',
+	handleAs : "text",
+	load : function(data) {
+	  addMessage(i18n("col"+zone)+" "+i18n("resultSave"));
+	  document.getElementById('idImage'+zone+id).style.display="none";
+	  setTimeout("dojo.byId('idImage"+zone+id+"').style.display='block';", 1000);
+	}
+  });
+}
+
 function saveLeftWork(id, zone) {
 	var value=dijit.byId("ass"+zone+"_"+id).get("value");
 	var url = '../tool/saveLeftWork.php?idAssign='+id +'&zone='+zone +'&valueTextZone='+value;
