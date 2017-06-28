@@ -347,6 +347,7 @@ class PeriodicMeetingMain extends SqlElement {
   	$meet=new Meeting();
   	$lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->id));
   	foreach ($lstMeet as $meet) {
+  		projeqtor_set_time_limit(300);
   		$meeting=new Meeting($meet->id);
   		$resDel=$meeting->delete();
   		if (stripos($resDel,'id="lastOperationStatus" value="OK"')==0 ) {
@@ -587,6 +588,7 @@ class PeriodicMeetingMain extends SqlElement {
     return $result;
   }
   private function saveMeeting($currentDate, $nb, $old) {
+  	projeqtor_set_time_limit(300);
   	$critArray=array("idPeriodicMeeting"=>$this->id, "isPeriodic"=>'1',"periodicOccurence"=>$nb);
   	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray);
   	$isNew=($meeting->id)?false:true;

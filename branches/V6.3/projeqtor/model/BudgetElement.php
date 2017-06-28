@@ -229,9 +229,10 @@ class BudgetElement extends SqlElement {
     return $result;
   }
 
+  // Save without extra save() feature and without controls
     public function simpleSave() {
-    // Avoir save actions
-    $result = parent::save();
+    // Avoid save actions
+    $result = parent::saveForced();
     return $result;
   }
   
