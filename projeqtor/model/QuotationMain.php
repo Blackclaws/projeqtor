@@ -254,8 +254,10 @@ class QuotationMain extends SqlElement {
     $result = parent::save();
     return $result;
   }
+  
+  // Save without extra save() feature and without controls
   public function simpleSave() {
-    return parent::save();
+    return parent::saveForced();
   }
     /** ==========================================================================
    * Return the validation sript for some fields

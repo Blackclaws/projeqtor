@@ -3044,12 +3044,33 @@ function importFinished() {
  * Display a planning Box
  * 
  */
+var oldSelectedProjectsToPlan=null;
 function showPlanParam(selectedProject) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
   dijit.byId("dialogPlan").show();
+  oldSelectedProjectsToPlan=dijit.byId("idProjectPlan").get("value");
+  console.log("STOCKE");
+}
+
+function changedIdProjectPlan(value) {
+  console.log("AVANT");
+  console.log(oldSelectedProjectsToPlan);
+  console.log("APRES");
+  console.log(value);
+  if (oldSelectedProjectsToPlan==value) return;
+  if (oldSelectedProjectsToPlan.indexOf(" ")>=0 && value.length>1 ) {
+    value=value.splice(0,1);
+    oldSelectedProjectsToPlan=value;
+    dijit.byId("idProjectPlan").set("value",value);
+  } else if (value.indexOf(" ")>=0 && oldSelectedProjectsToPlan.indexOf(" ")===-1) {
+    value=[" "];
+    oldSelectedProjectsToPlan=value;
+    dijit.byId("idProjectPlan").set("value",value);
+  }
+  oldSelectedProjectsToPlan=value;
 }
 
 /**
@@ -4687,7 +4708,7 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     urlList+='&critField1=' + param1;
     urlList+='&critValue1=' + paramVal1;
   }
-  if (selected) {
+  if (selected && field!='planning') {
     urlList+='&selected=' + selected;
   }
   if (required || Array.isArray(paramVal)) {
@@ -4706,7 +4727,7 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     var mySelect=dijit.byId(field);
   }
   //mySelect.set('store', store);
-  mySelect.set({labelAttr: 'name', store: store});
+  mySelect.set({labelAttr: 'name', store: store, sortByLabel: false});
   store.query({
     id : "*"
   }).then(function(items) {
@@ -4718,9 +4739,12 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     if (required && ! selected && ! trim(mySelect.get('value')) ) { // required but no value set : select first
       mySelect.set("value", items[0].id);
     }
+    if (field=='planning') {
+      mySelect.set("value",selected); 
+    }
   });
-  
 }
+
 function refreshListSpecific(listType, destination, param, paramVal, selected, required) {
   var urlList='../tool/jsonList.php?listType=' + listType;
   if (param) {

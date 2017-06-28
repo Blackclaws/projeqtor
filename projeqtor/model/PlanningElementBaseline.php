@@ -441,7 +441,7 @@ class PlanningElementBaseline extends PlanningElement {
     return null; // OK nothing to do
   }
   
-  
+  // Save without extra save() feature and without controls
   public function simpleSave() {
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     if ($this->validatedStartDate and $this->validatedEndDate) {
@@ -450,7 +450,7 @@ class PlanningElementBaseline extends PlanningElement {
     if ($this->initialStartDate and $this->initialEndDate) {
       $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
     }
-    $result = parent::save();
+    $result = parent::saveForced();
   }
 
   public function wbsSave() {

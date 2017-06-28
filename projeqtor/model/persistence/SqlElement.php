@@ -581,6 +581,11 @@ abstract class SqlElement {
     }
     return $result;
   }
+  
+  // Save without controls and without extra save() feature defined in local save() method (for corresponding class)
+  public function simpleSave() {
+    return parent::saveForced();
+  }
 
   /**
    * =========================================================================

@@ -446,8 +446,9 @@ class BillMain extends SqlElement {
     }
   }
   
+  // Save without extra save() feature and without controls
   public function simpleSave() {
-     return parent::save();
+     return parent::saveForced();
   }
   
   public function retreivePayments($save=true) {   

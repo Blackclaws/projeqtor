@@ -174,6 +174,7 @@ $cptNoChange=0;
 echo "<table>";
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
+	projeqtor_set_time_limit(300);
 	Sql::beginTransaction();
 	echo '<tr>';
 	echo '<td valign="top"><b>#'.$id.'&nbsp:&nbsp;</b></td>';

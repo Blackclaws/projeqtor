@@ -477,8 +477,9 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
      return $result;
   }
 
+  // Save without extra save() feature and without controls
   public function simpleSave() {
-    return parent::save();
+    return parent::saveForced();
   }
 
   public function setHierarchicString() {
