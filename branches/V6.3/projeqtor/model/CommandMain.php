@@ -342,8 +342,9 @@ class CommandMain extends SqlElement {
   	return $result;
   }
   
+  // Save without extra save() feature and without controls
   public function simpleSave() {
-    return $this->save();
+    return $this->saveForced();
   }
     /** ==========================================================================
    * Return the validation sript for some fields

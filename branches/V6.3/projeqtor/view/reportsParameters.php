@@ -716,7 +716,7 @@ foreach ($listParam as $param) {
         <input type="hidden" id="report" name="report" value=true />
         <input type="hidden" id="outMode" name="outMode" value='' />
         <input type="hidden" id="reportName" name="reportName" value="<?php echo i18n($report->name);?>" />
-      </dib></td>
+      </div></td>
   </tr>
 </table>
 </td><td>&nbsp;

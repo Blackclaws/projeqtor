@@ -167,7 +167,7 @@
       	$list=$user->getVisibleProjects();
       	$restrictArray=$user->getListOfPlannableProjects();
       	foreach ($list as $prj=>$prjname) {
-      	  if (! isset($restrictArray[$prj])) {
+      	  if ($prj!='*' and ! isset($restrictArray[$prj]) or trim($prj)=='') {
       	    unset($list[$prj]);
       	  }
       	}
@@ -323,14 +323,15 @@
       	}
         $list[$selected]=$name;
       }
-      if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
+      if ($dataType=="idProject" or $dataType=='planning') { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
       $nbRows=0;
       // return result in json format
       if (! array_key_exists('required', $_REQUEST) and ! isset($_REQUEST['critArray']) ) {
-      	echo '{id:" ", name:""}';
+      	if ($dataType=='planning') echo '{id:" ", name:"'.i18n("allProjects").'"}';
+      	else echo '{id:" ", name:""}';
         $nbRows+=1;
       }
-      if ($dataType=="idProject") {
+      if ($dataType=="idProject" or $dataType=='planning') {
         $sepChar=Parameter::getUserParameter('projectIndentChar');
         if (!$sepChar) $sepChar='__';
         $wbsLevelArray=array();
@@ -346,8 +347,9 @@
       foreach ($lstPluginEvt as $script) {
         require $script; // execute code
       }
+      if ($dataType=="idProject" or $dataType=='planning') { debugLog($dataType);debugLog($table);}
       foreach ($table as $id=>$name) {
-        if ($dataType=="idProject" and $sepChar!='no') {
+        if ( ($dataType=="idProject" and $sepChar!='no') or $dataType=='planning') {
           if (isset($wbsList[$id])) {
         	  $wbs=$wbsList[$id];
           } else {

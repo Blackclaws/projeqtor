@@ -552,7 +552,7 @@ class PlanningElement extends SqlElement {
     return null; // OK nothing to do
   }
   
-  
+  // Save without extra save() feature and without controls
   public function simpleSave() {
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     if ($this->validatedStartDate and $this->validatedEndDate) {
@@ -561,7 +561,7 @@ class PlanningElement extends SqlElement {
     if ($this->initialStartDate and $this->initialEndDate) {
       $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
     }
-    $result = parent::save();
+    $result = parent::saveForced();
     if ($this->refType=='Project') {
       KpiValue::calculateKpi($this);
     }

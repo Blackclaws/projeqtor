@@ -184,6 +184,10 @@
 .iconActivityPrice22 { background-image: url(images/iconActivityPrice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActivityPrice16 { background-image: url(images/iconActivityPrice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconActivityStream32 { background-image: url(images/iconActivityStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconActivityStream22 { background-image: url(images/iconActivityStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconActivityStream16 { background-image: url(images/iconActivityStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconActivityType32 { background-image: url(images/iconActivityType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconActivityType22 { background-image: url(images/iconActivityType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActivityType16 { background-image: url(images/iconActivityType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
