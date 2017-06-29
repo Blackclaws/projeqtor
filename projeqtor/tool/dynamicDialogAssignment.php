@@ -37,8 +37,6 @@ $assignmentObj = new Assignment($idAssignment);
 $unit=RequestHandler::getValue('unit',false,null);
 $assignedIdOrigin=RequestHandler::getId('assignedIdOrigin',false,null);
 $assignmentObjOrigin = new Assignment($assignedIdOrigin);
-debugLog("assignmentObjOrigin");
-debugLog($assignmentObjOrigin);
 $validatedWorkPeOld = RequestHandler::getValue('validatedWorkPe',false,null);
 $assignedWorkPeOld = RequestHandler::getValue('assignedWorkPe',false,null);
 $realWork = RequestHandler::getNumeric('realWork',false,true);

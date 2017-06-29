@@ -139,7 +139,6 @@
         
         $selectedProject=getSessionValue('project');
         $limitResourceByProj=Parameter::getUserParameter("limitResourceByProject");
-        debugLog("limitResourceByProj=$limitResourceByProj");
         if ($selectedProject and $selectedProject!='*' and $limitResourceByProj=='on') {
           $restrictTable=array();
           $prj=new Project( $selectedProject , true);
@@ -161,7 +160,6 @@
         if (!isset($list[$user->id])) {
           $list[$user->id]=$user->name;
         }
-        debugLog($list);
       } else if ($dataType=='planning') {
       	$user=getSessionUser();
       	$list=$user->getVisibleProjects();
@@ -347,7 +345,6 @@
       foreach ($lstPluginEvt as $script) {
         require $script; // execute code
       }
-      if ($dataType=="idProject" or $dataType=='planning') { debugLog($dataType);debugLog($table);}
       foreach ($table as $id=>$name) {
         if ( ($dataType=="idProject" and $sepChar!='no') or $dataType=='planning') {
           if (isset($wbsList[$id])) {

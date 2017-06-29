@@ -142,11 +142,12 @@ if ($activityStreamShowClosed!='1') {
 }
 
 echo '<br/>';
-$notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,null,null,null,$activityStreamNumberElement);
+$order = "COALESCE (updateDate,creationDate) ASC";
+$notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,$order,null,null,$activityStreamNumberElement);
 
 $countIdNote = count ( $notes );
 if ($countIdNote == 0) {
-  echo i18n ( "noNote" );
+  echo i18n ( "noNoteToDisplay" );
   exit ();
 }
 $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : false;

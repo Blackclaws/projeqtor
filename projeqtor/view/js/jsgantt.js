@@ -1804,7 +1804,8 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
     case 'week-short':
       return ( vYear2Str + ' #'  + vWeekNum  );
     case 'week-firstday':
-      if (dojo.locale.substring(0,2)=="fr") {
+      fmt=top.getBrowserLocaleDateFormatJs();
+      if (fmt.substr(0,5).toUpperCase()=="DD/MM") {
         return (  vDayStr + '/' + vMonthStr );
       } else {
         return ( vMonthStr + '/'  + vDayStr );
