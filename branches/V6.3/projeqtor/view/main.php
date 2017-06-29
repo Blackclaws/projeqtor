@@ -1470,9 +1470,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <label for="idProjectPlan" ><?php echo i18n("colIdProject") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <select dojoType="dojox.form.CheckedMultiSelect"  multiple="true" style="width:initial;"
+               <select dojoType="dojox.form.CheckedMultiSelect"  multiple="true" style="width:initial;overflow:overlay;max-height:240px;"
                 id="idProjectPlan" name="idProjectPlan[]" onChange="changedIdProjectPlan(this.value);"
-                class="input" value=" " >
+                value=" " >
                  <option value=" "><strong><?php echo i18n("allProjects");?></strong></option>
                  <?php 
                     $proj=null; 

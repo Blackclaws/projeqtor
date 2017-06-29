@@ -76,7 +76,7 @@ if(!$activityStreamNumberDays){
 						<select title="<?php echo i18n('limitDisplayActivityStream')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
 						value="<?php echo $activityStreamNumberElement;?>"
             <?php echo autoOpenFilteringSelect();?> 
-            id="activityStreamNumberElement" name="activityStreamNumberElement" style="width:80px;margin-left:16px;height:20px;" onChange="refreshActivityStreamList();">
+            id="activityStreamNumberElement" name="activityStreamNumberElement" style="width:80px;margin-left:16px;height:20px;font-size:8pt;" onChange="refreshActivityStreamList();">
                 <option value="10">10</option>
                 <option value="50">50</option>
                 <option value= "100">100</option>
@@ -126,7 +126,7 @@ if(!$activityStreamNumberDays){
 						<tr>
 					  <td style="width:5px;display:inline;margin-left:18px;">
 					   <?php echo ucfirst(i18n('colId'));?>&nbsp;:&nbsp;
-              <div style="width:30px;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamIdNote;?>"
+              <div style="width:30px;font-size:8pt;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamIdNote;?>"
                type="text" id="activityStreamIdNote" name="activityStreamIdNote" onChange="refreshActivityStreamList();" <?php echo (trim($selectedElementType)=="")?"readonly=readonly":"";?>>
               </div>
             </td>
@@ -158,7 +158,7 @@ if(!$activityStreamNumberDays){
 					<tr>
 					  <td style="width:5px;display:inline;">
 					   <?php echo ucfirst(i18n('colDays'));?>&nbsp;:&nbsp;
-              <div style="width:30px;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamNumberDays;?>"
+              <div style="width:30px;font-size:8pt;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamNumberDays;?>"
                type="text" id="activityStreamNumberDays" name="activityStreamNumberDays" onChange="refreshActivityStreamList();">
               </div>
             </td>

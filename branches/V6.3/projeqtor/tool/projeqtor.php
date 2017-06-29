@@ -3236,18 +3236,27 @@ function adAutoSub($obj) {
       $list=$productVersion->getSqlElementsFromCriteria($crit);
       foreach ($list as $vers){
         $sub = new Subscription();
-        $sub->idAffectable=$obj->idAffectable;
         if($obj->refType == 'Product'){
-          $sub->refType='ProductVersion';
+          $refType='ProductVersion';
         }else{
-          $sub->refType='ComponentVersion';
+          $refType='ComponentVersion';
         }
-        $sub->refId=$vers->id;
-        $sub->idUser=getSessionUser()->id;
-        $sub->creationDateTime=date('Y-m-d H:i:s');
-        $sub->isAutoSub=1;
-        $sub->save();
-  }
+        $crit2 = array('idAffectable' => $obj->idAffectable,'refType' => $refType, 'refId' => $vers->id );
+        $list2=$sub->getSqlElementsFromCriteria($crit2);
+        if(empty($list2)){
+          $sub->idAffectable=$obj->idAffectable;
+          if($obj->refType == 'Product'){
+            $sub->refType='ProductVersion';
+          }else{
+            $sub->refType='ComponentVersion';
+          }
+          $sub->refId=$vers->id;
+          $sub->idUser=getSessionUser()->id;
+          $sub->creationDateTime=date('Y-m-d H:i:s');
+          $sub->isAutoSub=1;
+          $sub->save();
+        }
+      }
 }
 
 function deleteAutoSub($obj) {

@@ -404,6 +404,7 @@ class ActivityMain extends SqlElement {
       }
     }
     
+    /*
     // ticket #2822 - mehdi
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
       if ($this->idActivity) {
@@ -437,7 +438,8 @@ class ActivityMain extends SqlElement {
         $allDone=true; 
         $allIdle=true; 
         $allCancelled=true;
-        $sons=$this->getSqlElementsFromCriteria(array('idActivity'=>$this->idActivity));
+        
+        $sons=$this->getSqlElementsFromCriteria(null, null, "idActivity=$parent->id or ( idActivity is null and idProject=$parent->id)");
         foreach ($sons as $act) {
           if (!$act->done and !$act->cancelled) $allDone=false;
           if (!$act->idle and !$act->cancelled) $allIdle=false;
@@ -482,7 +484,7 @@ class ActivityMain extends SqlElement {
           }
         }
       }
-    }
+    }*/
     return $result;
   }
 }

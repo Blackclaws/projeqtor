@@ -1325,7 +1325,9 @@ function finalizeMessageDisplay(destination, validationType) {
           loadContent("objectDetail.php?", "detailDiv", 'listForm');
         } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-          loadContent("objectStream.php", "detailRightDiv", "listForm");         
+          if(dojo.byId('detailRightDiv')){
+            loadContent("objectStream.php", "detailRightDiv", "listForm");  
+          }
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value + '_history')) {
             loadContent("objectDetail.php?refreshHistory=true", dojo
@@ -4095,10 +4097,11 @@ function hideGraphStatus(){
 
 
 function scrollInto(){
-  var scrollElmnt = dojo.byId("scrollToBottom");
-  if(scrollElmnt){
-    scrollElmnt.scrollIntoView();
-  }
+  //var scrollElmnt = dojo.byId("scrollToBottom");
+  //if(scrollElmnt){
+  //  scrollElmnt.scrollIntoView();
+  //}
+  dojo.window.scrollIntoView('scrollToBottom');
 }
 
 function saveNoteStream(event){
@@ -4123,6 +4126,7 @@ function hideStreamMode(){
       w : 0
     });
     dijit.byId("centerDiv").resize();
+
   } else {
     dijit.byId("detailRightDiv").resize({
       w : menuRightDivSize

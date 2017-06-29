@@ -1056,16 +1056,17 @@ label, .label, .smallLabel {
 .thumbBigImageTitle, .thumbBigImageTitleAlone {
   position:absolute;
   right:-0px;
-  text-shadow:1px 1px #ffffff; 
+  /*text-shadow:1px 1px #ffffff;*/ 
   white-space:nowrap;
-  background:rgba(220,220,230,0.8);
+  background:rgba(255,255,255,0.9);
   border: 1px solid #AAAAAA;
   box-shadow: 5px 5px 10px #555555; 
-  border-radius:5px;
-  padding: 0px 5px 2px 5px;
+  /*border-radius:5px;*/
+  /*padding: 0px 5px 2px 5px;*/
+  padding: 5px 10px;
 }
 .thumbBigImageTitle{
-  bottom:5px;
+  bottom:-20px;
 }
 .thumbBigImageTitleAlone {
   top:35px;
