@@ -97,8 +97,8 @@ abstract class RequestHandler {
       exit;
     }
   }
-  // debugLog to keep
-  public static function debugLog() {
+  // debug log to keep
+  public static function dump() {
     debugTraceLog('===== Dump of $_REQUEST =============================================================');
     foreach ($_REQUEST as $code=>$val) {
       if (is_array($val)) {

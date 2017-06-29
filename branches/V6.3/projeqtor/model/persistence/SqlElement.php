@@ -528,6 +528,10 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used
    */
   public function save() {
+    $peName=get_class($this).'PlanningElement';
+    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) and !isset($old)) {
+      $old=$this->getOld();
+    }
     if (isset ( $this->_onlyCallSpecificSaveFunction ) and $this->_onlyCallSpecificSaveFunction == true)
       return;
     $this->setAllDefaultValues ( true );
@@ -544,6 +548,93 @@ abstract class SqlElement {
       $lstPluginEvt = Plugin::getEventScripts ( 'afterSave', get_class ( $this ) );
       foreach ( $lstPluginEvt as $script ) {
         require $script; // execute code
+      }
+    }
+    
+    // ticket #2822 - mehdi
+    //$arrayStatusable("Project","Activity","Milestone","Meeting","TestSession");
+    //$peName=get_class($this).'PlanningElement';
+    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) ) {
+      $pe=$this->$peName;
+      if (!$old->id or !$pe->topId or ! property_exists($this,'idStatus') or ! property_exists($this,'handled') or ! property_exists($this,'handledDate')) return $result;
+      //$parentPe=new PlanningElement($pe->topId);
+      $parentType=$pe->topRefType;
+      $parent=new $parentType($pe->topRefId);
+      if (! property_exists($parent,'idStatus') or ! property_exists($parent,'handled') or ! property_exists($parent,'handledDate')) return $result;
+      if ($this->handled and $this->handled!=$old->handled) {
+        if ( ! $parent->handled ) {
+          $parent->handled = $this->handled;
+          $parent->handledDate=date('Y-m-d');
+          $allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
+          foreach ( $allowedStatusList as $st ) {
+            if ($st->setHandledStatus) {
+              $parent->idStatus=$st->id;
+              $parent->save();
+              break;
+            }
+          }
+        }
+      }
+      $status = new Status ($this->idStatus);
+      $isStatDone=($status->setDoneStatus)?true:false;
+      $isStatIdle=($status->setIdleStatus)?true:false;
+      $isStatCancelled=($status->setCancelledStatus)?true:false;
+      $status = new Status ($old->idStatus);
+      $isOldStatDone=($status->setDoneStatus)?true:false;
+      $isOldStatIdle=($status->setIdleStatus)?true:false;
+      $isOldStatCancelled=($status->setCancelledStatus)?true:false;
+      if ( ($isStatDone and $isStatDone!=$isOldStatDone) or ($isStatIdle and $isStatIdle!=$isOldStatIdle) or ($isStatCancelled and $isStatCancelled!=$isOldStatCancelled)) {
+        $allDone=true;
+        $allIdle=true;
+        $allCancelled=true;
+        $peobj=new PlanningElement();
+        $sons=$peobj->getSqlElementsFromCriteria(null, null, "topId=$pe->topId");
+        foreach ($sons as $sonPe) {
+          $sonType=$sonPe->refType;
+          $son=new $sonType($sonPe->refId);
+          if (! property_exists($parent,'done') or ! property_exists($parent,'idle') or ! property_exists($parent,'cancelled')) continue;
+          if (!$son->done and !$son->cancelled) $allDone=false;
+          if (!$son->idle and !$son->cancelled) $allIdle=false;
+          if (!$son->cancelled) $allCancelled=false;
+        }
+        $setToDone=($isStatDone and $isStatDone!=$isOldStatDone and $allDone)?true:false;
+        $setToIdle=($isStatIdle and $isStatIdle!=$isOldStatIdle and $allIdle)?true:false;
+        $setToCancelled=($isStatCancelled and $isStatCancelled!=$isOldStatCancelled and $allCancelled)?true:false;
+        if ($setToDone or $setToIdle or $setToCancelled) {
+          $currentParentStatus=new Status($parent->idStatus);
+          if ( (! $setToDone or ($setToDone and $currentParentStatus->setDoneStatus) )
+              and (! $setToIdle or ($setToIdle and $currentParentStatus->setIdleStatus) )
+              and (! $setToCancelled or ($setToCancelled and $currentParentStatus->setCancelledStatus) )) {
+                // Nothing to do, already in a status corresponding to target
+              } else {
+                $allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
+                $saveParent=false;
+                foreach ( $allowedStatusList as $st ) {
+                  if ($setToDone and $st->setDoneStatus and property_exists($parent,'done') and property_exists($parent,'doneDate')) {
+                    $parent->idStatus=$st->id;
+                    $parent->done=$this->done;
+                    $parent->doneDate=date('Y-m-d');
+                    $saveParent=true;
+                    $setToDone=false;
+                  }
+                  if ($setToIdle and $st->setIdleStatus and property_exists($parent,'idle') and property_exists($parent,'idleDate')) {
+                    $parent->idStatus=$st->id;
+                    $parent->idle=$this->idle;
+                    $parent->idleDate=date('Y-m-d');
+                    $saveParent=true;
+                    $setToIdle=false;
+                  }
+                  if ($setToCancelled and $st->setCancelledStatus and property_exists($parent,'cancelled') ) {
+                    $parent->idStatus=$st->id;
+                    $parent->cancelled=$this->cancelled;
+                    //$parent->doneDate=date('Y-m-d');
+                    $saveParent=true;
+                    $setToCancelled=false;
+                  }
+                }
+                if ($saveParent) $parent->save();
+              }
+        }
       }
     }
     return $result;

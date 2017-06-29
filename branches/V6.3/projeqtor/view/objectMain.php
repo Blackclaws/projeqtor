@@ -44,7 +44,7 @@
   	}
   	$listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight; 	
   	$detailDivWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass);
-  	if($detailDivWidth){
+  	if($detailDivWidth or $detailDivWidth==="0"){
   	  $rightWidth=$detailDivWidth.'px';
   	} else {
   	  $rightWidth="15%";

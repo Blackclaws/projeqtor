@@ -160,7 +160,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		if (substr($objFld,0,6)=='_Link_') {
     			$clsLinked=substr($objFld,6);
     			$idLinked=SqlList::getIdFromTranslatableName('Linkable', $clsLinked);
-    			debugLog("exclude id=$idLinked, class=$clsLinked");
     			$arrayToDel[]=$idLinked;
     		}
     	}

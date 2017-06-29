@@ -756,6 +756,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $purg=$plw->purge($clause);
     }
     
+    /*
     // ticket #2822 - mehdi - auto update parent status
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
     	if ($this->idProject) {
@@ -837,7 +838,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     			}
     		}
     	}
-    }
+    }*/
     
     //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 

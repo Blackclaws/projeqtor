@@ -1456,7 +1456,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               }
             }
             // Babynus - For test purpose
-            if ($val<$min) $val=$min;
+            if ($val and $val<$min) $val=$min;
             if ($min) echo ' dropDownDefaultValue="'.$min.'" ';
           }
           echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
@@ -3906,27 +3906,27 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
       //mehdi======================ticket#1776
-    	echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="' . Work::convertWork($assignment->assignedWork) . '"/>';
+    	echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="' . Work::displayWork($assignment->assignedWork) . '"/>';
     	echo '<td class="assignData" align="right" style="vertical-align:middle;">';   	
     			echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
                 style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
     			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
     						  class="dijitReset dijitInputInner dijitNumberTextBox"
-      					  value="'.Work::convertWork($assignment->assignedWork).'"
+      					  value="'.Work::displayWork($assignment->assignedWork).'"
                   style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;" 
       					  onchange="assUpdateLeftWork(\'ass\', '.$assignment->id.'); saveLeftWork('.$assignment->id.',\'AssignedWork\')">';  			      
     			echo '</div>';
     	echo '</td>';
     	
-    	echo '<input type="hidden" id="RealWork_'.$assignment->id.'" value="' . Work::convertWork($assignment->realWork) . '"/>';
+    	echo '<input type="hidden" id="RealWork_'.$assignment->id.'" value="' . Work::displayWork($assignment->realWork) . '"/>';
     	echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
      
-    	echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="' . Work::convertWork($assignment->leftWork) . '"/>';
+    	echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="' . Work::displayWork($assignment->leftWork) . '"/>';
       echo '<td class="assignData" align="right" style="vertical-align:middle; ">' ;    
        	echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
       	  echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
-        				value="'.Work::convertWork($assignment->leftWork).'"
+        				value="'.Work::displayWork($assignment->leftWork).'"
                 style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;" 
                 onchange="saveLeftWork('.$assignment->id.',\'LeftWork\');"';      
       	  echo $keyDownEventScript;
