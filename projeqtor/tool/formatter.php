@@ -475,7 +475,7 @@ function activityStreamDisplayNote ($note,$origin){
     } else {
      echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
     }
-    echo '<div style="color:black;margin-top:20px;word-break:break-all;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+    echo '<div style="color:black;margin-top:15px;margin-bottom:10px;word-break:break-all;max-width:100%;width:100%;overflow-x:auto;overflow-y:hidden;position:relative;">'.$strDataHTML.'</div></div></td></tr>&nbsp';
   }
 }
 ?>

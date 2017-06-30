@@ -34,53 +34,34 @@ $obj=SqlElement::getCurrentObject(null,null,true,false);
 $valueCopy = RequestHandler::getValue('copyOption');
 $toName = RequestHandler::getValue('copyToNameDoc');
 
+$obj->name=$toName;
+Sql::beginTransaction();
+// copy from existing object
+$newObj=$obj->copy();
+// save the new object to session (modified status)
+$result=$newObj->_copyResult;
+unset($newObj->_copyResult);
 
-  $obj->name=$toName;
-  Sql::beginTransaction();
-  // copy from existing object
-  $newObj=$obj->copy();
-  // save the new object to session (modified status)
-  $result=$newObj->_copyResult;
-  unset($newObj->_copyResult);
+$list = array();
+$vd=new DocumentVersion();
+$crit=array('idDocument'=>$obj->id);
 
 if($valueCopy == 'lastVersionRef'){
-  $vd=new DocumentVersion();
-  $crit=array('idDocument'=>$obj->id);
+  $crit=array('idDocument'=>$obj->id, 'isRef'=>'1' );
   $list=$vd->getSqlElementsFromCriteria($crit);
-  foreach ($list as $vd) {
-    //duplicate isRef version
-    if($vd->isRef){
-      $vd->idDocument=$newObj->id;
-      $vd->id=null;
-      $vd->name = $vd->name;
-      $vd->save();
-    }
-  }
-}
-
-if($valueCopy == 'lastVersion'){
-  $vd=new DocumentVersion();
-  $crit=array('idDocument'=>$obj->id);
-  //get the last id version
+}elseif ($valueCopy == 'lastVersion'){
   $list=$vd->getSqlElementsFromCriteria($crit,null,false,'id DESC',null,false,1);
-  foreach ($list as $vd) {
-    $vd->idDocument=$newObj->id;
-    $vd->id=null;
-    $vd->name = $vd->name;
-    $vd->save();
-  }
-}
-
-if($valueCopy == 'allVersion'){
-  $vd=new DocumentVersion();
-  $crit=array('idDocument'=>$obj->id);
+}elseif ($valueCopy == 'allVersion'){
   $list=$vd->getSqlElementsFromCriteria($crit);
-  foreach ($list as $vd) {
-    $vd->idDocument=$newObj->id;
-    $vd->id=null;
-    $vd->name = $vd->name;
-    $vd->save();
-  }
+}
+foreach ($list as $vd) {
+  $source= $vd->getUploadFileName();
+  $vd->idDocument=$newObj->id;
+  $vd->id=null;
+  $vd->name = $vd->name;
+  $vd->save();
+  $dest = $vd->getUploadFileName();
+  copy($source, $dest);
 }
 
 // Message of correct saving

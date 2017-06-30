@@ -2018,6 +2018,7 @@ function assignmentUpdatePlannedWork(prefix) {
   var planned=dojo.byId(prefix + "PlannedWork");
   newPlanned=dojo.number.parse(real.value) + dojo.number.parse(left.value);
   planned.value=dojo.number.format(newPlanned);
+  
 }
 
 /**
@@ -4144,22 +4145,34 @@ function assignmentUpdateLeftWork(prefix) {
 
 //Mehdi 
 function assUpdateLeftWork(prefix, id) {
-  var initAss = dojo.byId('initAss_'+id).value;
-  var initLeft=dojo.byId('initLeft_'+id).value;
+  var initAss =dojo.byId('initAss_'+id).value;
   var assign=dijit.byId(prefix+"AssignedWork_"+id).get('value');
-  var newAss = dojo.number.parse(assign);
+  var obj=dojo.byId('objectClass').value;
+  var assPeAss=dojo.byId(obj+'PlanningElement_assignedWork').value;
+  var assPeLeft=dojo.byId(obj+'PlanningElement_leftWork').value;
+  var assPePlan=dojo.byId(obj+'PlanningElement_plannedWork').value;
+  var newAss = assign;
   if (newAss == null || isNaN(newAss)) {
-	newAss=0;
-	assign.value=dojo.number.format(newAss);
+	  newAss=0;
+	  dijit.byId(prefix+"AssignedWork_"+id).set('value',0);
   }
-  var leftWork = dojo.byId('assLeftWork_'+id);
-  diff = assign-initAss;
-  newLeft=parseFloat(initLeft) + diff;
+  var leftWork = dijit.byId('assLeftWork_'+id).get("value");
+  var diff = (newAss)-(initAss);
+  var newLeft=leftWork + diff;
   if (newLeft < 0 || isNaN(newLeft)) {
     newLeft=0;
   }
-  leftWork.value=dojo.number.format(newLeft); 
-  initAss.value = newAss;
+  if(assPeAss){
+    assPeAss= parseFloat(assPeAss) + parseFloat(diff);
+    dijit.byId(obj+'PlanningElement_assignedWork').set("value",assPeAss);
+    assPeLeft=newLeft;
+    dijit.byId(obj+'PlanningElement_leftWork').set("value",assPeLeft);
+    var assrealPe=dojo.byId(obj + 'PlanningElement_realWork');
+    assPePlan=dojo.number.parse(assrealPe.value) + dojo.number.parse(newLeft);
+    dijit.byId(obj+'PlanningElement_plannedWork').set("value",assPePlan);
+  }
+  dijit.byId('assLeftWork_'+id).set("value",newLeft); 
+  dojo.byId('initAss_'+id).value = newAss;
   diff = 0;
 }
   
