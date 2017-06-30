@@ -40,6 +40,7 @@
   }
   $noData=htmlGetNoDataMessage($objectClass);
   $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
+  $noNotes = '<p"><br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n("noNote").'</p>';
   // get the modifications (from request)
   $note=new Note();
   $order = "COALESCE (updateDate,creationDate) ASC";
@@ -81,7 +82,7 @@
 	  </table>
 	   
 <?php if (!$onlyCenter) {?>   
-<?php if($countIdNote==0){echo i18n("noNote");}	?>  
+<?php if($countIdNote==0){ echo $noNotes;}	?>  
 	</div>
 	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px;overflow-x:hidden;">
 	  <form id='noteFormStream' name='noteFormStream' onSubmit="return false;" >

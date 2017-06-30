@@ -65,7 +65,7 @@ $obj=new Document($objectId);
                  </tr>
                    <td></td>
                    <td>  <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyOption" id="copyOption3"   value="lastVersionRef"/> </td>
-                   <td> <label style="text-align:left;" for="copyOption3"><?php echo i18n("lastVersionRef");?></label>  </td>   
+                   <td> <label style="text-align:left; width:300px;" for="copyOption3"><?php echo i18n("lastVersionRef");?></label>  </td>   
                  <tr>
                    <td></td>
                    <td> <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyOption" id="copyOption4"   value="allVersion"/> </td>

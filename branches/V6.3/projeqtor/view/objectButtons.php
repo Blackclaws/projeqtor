@@ -138,6 +138,7 @@
 		        id.value="";
 		        unselectAllRows("objectGrid");
             loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+            loadContent("objectStream.php", "detailRightDiv", "listForm");
           } else { 
             showError(i18n("errorObjectId"));
 	        }
@@ -263,6 +264,7 @@
           hideExtraButtons('extraButtonsDetail');
 		      action=function(){
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
+            loadContent("objectStream.php", "detailRightDiv", "listForm");
           };
           var alsoDelete="";
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);

@@ -3832,7 +3832,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (!$print and $canUpdate) {
-    echo '<td class="assignHeader" style="width:10%">';
+    echo '<td class="assignHeader" style="width:10%;vertical-align:middle;">';
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<a onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\',\'' . Work::getWorkUnit() . '\',\'' . Work::getHoursPerDay() . '\');" ';
       echo ' title="' . i18n('addAssignment') . '" > '.formatSmallButton('Add').'</a>';
@@ -3860,7 +3860,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       }
     }
     if (!$print and $canUpdate) {
-      echo '<td class="assignData" style="text-align:center;white-space:nowrap;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap;vertical-align:middle">';
       if ($canUpdate and !$print and $workVisible) {
         echo '  <a onClick="editAssignment(' . "'" . htmlEncode($assignment->id) . "'" . ",'" . htmlEncode($assignment->idResource) . "'" . ",'" . htmlEncode($assignment->idRole) . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . htmlEncode($assignment->rate) . "'" . ",'" .
              Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ",".$assignment->optional.');" ' . 'title="' . i18n('editAssignment') .
@@ -3913,8 +3913,13 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
     						  class="dijitReset dijitInputInner dijitNumberTextBox"
       					  value="'.Work::displayWork($assignment->assignedWork).'"
-                  style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;" 
-      					  onchange="assUpdateLeftWork(\'ass\', '.$assignment->id.'); saveLeftWork('.$assignment->id.',\'AssignedWork\')">';  			      
+                  style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;border:1px solid #A0A0A0 !important;margin:2px 0px" >
+                   <script type="dojo/method" event="onChange">
+                    assUpdateLeftWork(\'ass\', '.$assignment->id.'); 
+                    saveLeftWork('.$assignment->id.',\'AssignedWork\'); 
+                    //saveLeftWork('.$assignment->id.',\'LeftWork\');
+                   </script>';
+    			echo $keyDownEventScript;
     			echo '</div>';
     	echo '</td>';
     	
@@ -3927,8 +3932,10 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       	  echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
         				value="'.Work::displayWork($assignment->leftWork).'"
-                style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;" 
-                onchange="saveLeftWork('.$assignment->id.',\'LeftWork\');"';      
+                style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;border:1px solid #A0A0A0 !important;margin:2px 0px"  >
+                <script type="dojo/method" event="onChange">
+                    saveLeftWork('.$assignment->id.',\'LeftWork\');
+                </script>';      
       	  echo $keyDownEventScript;
       	  echo '</div>';
       echo '</td>'; }

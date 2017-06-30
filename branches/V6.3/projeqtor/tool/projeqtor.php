@@ -1141,20 +1141,23 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer->isHTML ( true ); // Set email format to HTML
   $phpmailer->Subject = $title; //
                                // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
+// TODO : FOR OUTLOOK
     if ($headers) {
-    $phpmailer->ContentType = 'text/calendar';
-    //$phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
-    $heads = explode ( "\r\n", $headers );
-    //PHPMailer
-    $phpmailer->Body = $message;
-  }
-// Don't need to have this else if we give $message to body .
-//   else{
-//     $phpmailer->Body = $message; //
-//   }
+      //$phpmailer->ContentType = 'text/calendar';
+      $phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+      $heads = explode ( "\r\n", $headers );
+      //PHPMailer
+      $phpmailer->Body = " ";
+      //$phpmailer->Body = $message;
+    }
+    else{
+      $phpmailer->Body = $message; //
+    }
   if ($references) {
     $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
   } 
+////////////////////////////////////////////////////////////
+  
   $phpmailer->CharSet = "UTF-8";
   if ($attachmentsArray) { // attachments
     if (! is_array ( $attachmentsArray )) {

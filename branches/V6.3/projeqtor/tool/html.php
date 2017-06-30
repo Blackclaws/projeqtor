@@ -844,7 +844,7 @@ function htmlFormatDateTime($val, $withSecond=true, $hideZeroTime=false) {
     $result.= " " . (($withSecond)?substr($val,11):substr($val,11,5));
   }
   if(getSessionValue('browserLocaleTimeFormat')=='h:mm a'){
-    $result = htmlFormatDate(substr($val,0,10)) .' '. date('g:i a',strtotime($val));
+    $result = htmlFormatDate(substr($val,0,10)) .' '. date('g:i A',strtotime($val));
   }
   return $result;
 }
@@ -854,7 +854,7 @@ function htmlFormatTime($val, $withSecond=true) {
   $locale=substr($browserLocale, 0,2);
   $result=(($withSecond)?$val:substr($val,0,5));
   if(getSessionValue('browserLocaleTimeFormat')=='h:mm a'){
-    $result2 =   date('g:i a',strtotime($result));
+    $result2 =   date('g:i A',strtotime($result));
     $result = $result2;
   }
   return $result;
