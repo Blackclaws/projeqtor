@@ -151,7 +151,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                                   echo Work::displayWork($assignmentObj->assignedWork);
                               } 
                                 else if($mode=="add") { 
-                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  $assignedWork = GeneralWork::convertWork($validatedWorkPe)-GeneralWork::convertWork($assignedWorkPe);
                                   if($assignedWork < 0){
                                     echo "0";
                                   } else {
@@ -198,13 +198,13 @@ $mode = RequestHandler::getValue('mode',false,true);
              <td>
                <div id="assignmentLeftWork" name="assignmentLeftWork"                  
                  value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
-                                  echo Work::displayWork($delay);
+                                  echo $delay;
                               } else if($mode=="edit"){
                                   echo Work::displayWork($assignmentObj->leftWork);
                               } else if($mode=="divide"){
                                   echo Work::displayWork($assignmentObjOrigin->leftWork/2);                                                       
                               } else { 
-                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  $assignedWork = GeneralWork::convertWork($validatedWorkPe)-GeneralWork::convertWork($assignedWorkPe);
                                     if($assignedWork < 0){
                                       echo "0";
                                     } else {
@@ -233,9 +233,9 @@ $mode = RequestHandler::getValue('mode',false,true);
              <td>
                <div id="assignmentPlannedWork" name="assignmentPlannedWork"                  
                  value="<?php if(($refType=='Meeting' || $refType=='PeriodicMeeting') && $mode=="add" && $obj->meetingStartTime && $obj->meetingEndTime){ 
-                                  echo Work::displayWork($delay);
+                                  echo $delay;
                               } else { 
-                                  $assignedWork = $validatedWorkPe-$assignedWorkPe;
+                                  $assignedWork = GeneralWork::convertWork($validatedWorkPe)-GeneralWork::convertWork($assignedWorkPe);
                                   if($assignedWork < 0){
                                     echo "0";
                                   } else {
