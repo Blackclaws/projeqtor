@@ -249,6 +249,7 @@ html, body {
       /* margin: 4px 8px 4px 8px;*/ 
       padding: 0px 0px 10px 0px;
       opacity:0.0;filter:alpha(opacity=00);
+      pointer-events: none;
     }
     #planResultDiv {
       /*max-height:220px;*/
@@ -263,6 +264,7 @@ html, body {
       /* margin: 4px 8px 4px 8px;*/ 
       padding: 0px 0px 10px 0px;
       opacity:0.0;filter:alpha(opacity=00);
+      pointer-events: none;
     }
     #comboDetailResult {
       width:48%;
@@ -276,6 +278,7 @@ html, body {
       z-index:4;
       /* margin: 4px 8px 4px 8px;*/ 
       padding: 0px 0px 10px 0px;
+      pointer-events: none;
     }
     #formDiv {
       overflow-y: scroll; 
@@ -1322,6 +1325,7 @@ label, .label, .smallLabel {
   cursor:pointer; 
   height:16px; width:16px;
   background-image: url(images/close.png);
+  pointer-events: auto;
 }
 
 /* =============================================================================== */

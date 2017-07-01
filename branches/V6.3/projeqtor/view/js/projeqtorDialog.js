@@ -4109,52 +4109,15 @@ function saveTcrData(id,textZone) {
       }
   });
 }
-/**
- * Update the left work on assignment update
- * 
- * @param prefix
- * @return
- */
-function assignmentUpdateLeftWork(prefix) {
-  var initAssigned=dojo.byId(prefix + "AssignedWorkInit");
-  var initLeft=dojo.byId(prefix + "LeftWorkInit");
-  var assigned=dojo.byId(prefix + "AssignedWork");
-  var newAssigned=dojo.number.parse(assigned.value);
-  if (newAssigned == null || isNaN(newAssigned)) {
-    newAssigned=0;
-    assigned.value=dojo.number.format(newAssigned);
-  }
-  var left=dojo.byId(prefix + "LeftWork");
-  //// Krowry #2338 ////
-  var real = dojo.byId(prefix + "RealWork");
-  // var planned = dojo.byId(prefix + "PlannedWork");
-  diff=dojo.number.parse(assigned.value) - initAssigned.value;
-  newLeft=parseFloat(initLeft.value) + diff;
-  if (newLeft < 0 || isNaN(newLeft)) {
-    newLeft=0;
-  }
-  if(assigned.value != initAssigned.value){
-    diffe=dojo.number.parse(assigned.value) - real.value ;
-    if (initAssigned.value==0 || isNaN(initAssigned.value)){
-      newLeft= 0 + diffe;
-    }
-  }
-  left.value=dojo.number.format(newLeft);
-  assignmentUpdatePlannedWork(prefix);
-}
 
 //Mehdi 
-function assUpdateLeftWork(prefix, id) {
+function assUpdateLeftWork(id) {
   var initAss =dojo.byId('initAss_'+id).value;
-  var assign=dijit.byId(prefix+"AssignedWork_"+id).get('value');
-  var obj=dojo.byId('objectClass').value;
-  var assPeAss=dojo.byId(obj+'PlanningElement_assignedWork').value;
-  var assPeLeft=dojo.byId(obj+'PlanningElement_leftWork').value;
-  var assPePlan=dojo.byId(obj+'PlanningElement_plannedWork').value;
+  var assign=dijit.byId("assAssignedWork_"+id).get('value');
   var newAss = assign;
   if (newAss == null || isNaN(newAss)) {
 	  newAss=0;
-	  dijit.byId(prefix+"AssignedWork_"+id).set('value',0);
+	  dijit.byId("assAssignedWork_"+id).set('value',0);
   }
   var leftWork = dijit.byId('assLeftWork_'+id).get("value");
   var diff = (newAss)-(initAss);
@@ -4162,22 +4125,22 @@ function assUpdateLeftWork(prefix, id) {
   if (newLeft < 0 || isNaN(newLeft)) {
     newLeft=0;
   }
+  // update assigned for PlanningElement
+  var objClass=dojo.byId('objectClass').value;
+  var assPeAss=dijit.byId(objClass+'PlanningElement_assignedWork');
   if(assPeAss){
-    assPeAss= parseFloat(assPeAss) + parseFloat(diff);
-    dijit.byId(obj+'PlanningElement_assignedWork').set("value",assPeAss);
-    assPeLeft=newLeft;
-    dijit.byId(obj+'PlanningElement_leftWork').set("value",assPeLeft);
-    var assrealPe=dojo.byId(obj + 'PlanningElement_realWork');
-    assPePlan=dojo.number.parse(assrealPe.value) + dojo.number.parse(newLeft);
-    dijit.byId(obj+'PlanningElement_plannedWork').set("value",assPePlan);
+    assPeAss.set("value", assPeAss.get("value") + diff);
   }
-  dijit.byId('assLeftWork_'+id).set("value",newLeft); 
+  //
+  dijit.byId('assLeftWork_'+id).set("value",newLeft); // Will trigger the saveLeftWork() function
   dojo.byId('initAss_'+id).value = newAss;
   diff = 0;
+  dojo.byId(objClass+'PlanningElement_assignedCost').style.textDecoration="line-through";
 }
   
 function saveAssignedWork(id, zone) {
   var value=dijit.byId("ass"+zone+"_"+id).get("value");
+  var objClass=dojo.byId('objectClass').value;
   var url = '../tool/saveLeftWork.php?idAssign='+id +'&zone='+zone +'&valueTextZone='+value;
   dojo.xhrPut({
 	url : url,
@@ -4192,7 +4155,20 @@ function saveAssignedWork(id, zone) {
 }
 
 function saveLeftWork(id, zone) {
-	var value=dijit.byId("ass"+zone+"_"+id).get("value");
+  var value=dijit.byId("ass"+zone+"_"+id).get("value");
+  // update left and planned for PlanningElement
+  var initLeft =dojo.byId('initLeft_'+id).value;
+  var objClass=dojo.byId('objectClass').value;
+  var assPeLeft=dijit.byId(objClass+'PlanningElement_leftWork');
+  var assPePlan=dijit.byId(objClass+'PlanningElement_plannedWork');
+  var diff=value-initLeft;
+  if(assPeLeft){
+    assPeLeft.set("value", assPeLeft.get("value") + diff);
+  }
+  if(assPePlan){
+    assPePlan.set("value", assPePlan.get("value") + diff);
+  }
+	//
 	var url = '../tool/saveLeftWork.php?idAssign='+id +'&zone='+zone +'&valueTextZone='+value;
 	dojo.xhrPut({
 	  url : url,
@@ -4204,6 +4180,9 @@ function saveLeftWork(id, zone) {
 	    setTimeout("dojo.byId('idImage"+zone+id+"').style.display='none';", 1000); 
 	  }
 	});
+	dojo.byId('initLeft_'+id).value=value;
+	dojo.byId(objClass+'PlanningElement_leftCost').style.textDecoration="line-through";
+	dojo.byId(objClass+'PlanningElement_plannedCost').style.textDecoration="line-through";
 }
 
 // ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT - ADD-EDIT-REMOVE

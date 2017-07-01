@@ -3887,10 +3887,12 @@ function ckEditorReplaceAll() {
   }
 }
 var maxEditorHeight = Math.round(screen.height * 0.6);
-
+var tempResizeCK = null;
 var currentEditorIsNote=false;
+var doNotTriggerResize=false;
 function ckEditorReplaceEditor(editorName, numEditor) {
   var height = 200;
+  doNotTriggerResize=true;
   if (dojo.byId("ckeditorHeight"+numEditor)) {
     height=dojo.byId("ckeditorHeight"+numEditor).value;
   }
@@ -3929,18 +3931,12 @@ function ckEditorReplaceEditor(editorName, numEditor) {
   });
   //gautier
   editorArray[numEditor].on('resize', function(evt) {
-    var tempResizeCK = null;
     if(tempResizeCK){
-      clearTimeOut(tempResizeCK);
+      clearTimeout(tempResizeCK);
     }
-    var CkHeight = this.ui.editor.container.$.clientHeight;
-    tempResizeCK = setTimeout(CKeEnd(CkHeight),100);
+    var CkHeight = this.ui.editor.container.$.clientHeight - 102;
+    tempResizeCK = setTimeout("CKeEnd("+CkHeight+","+numEditor+");",500);
   }); 
-  function CKeEnd(CkHeight) {
-    var ckeObj = dojo.byId('ckeditorObj'+numEditor).value;
-    ckeObj = 'ckeditorHeight'+ckeObj;
-    saveDataToSession(ckeObj,CkHeight,true);
-  }
   
   editorArray[numEditor].on('key', function(evt) {
     onKeyDownCkEditorFunction(evt, this);
@@ -3950,7 +3946,14 @@ function ckEditorReplaceEditor(editorName, numEditor) {
       dojo.addClass('cke_' + evt.editor.name, 'input required');
     }
   });
-
+  doNotTriggerResize=false;
+}
+function CKeEnd(CkHeight,numEditor) {
+  if (doNotTriggerResize) return;
+  var ckeObj = dojo.byId('ckeditorObj'+numEditor).value;
+  ckeObj = 'ckeditorHeight'+ckeObj;
+  saveDataToSession(ckeObj,CkHeight,true);
+  tempResizeCK=null;
 }
 
 // Default Planning Mode

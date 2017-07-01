@@ -3915,7 +3915,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       					  value="'.Work::displayWork($assignment->assignedWork).'"
                   style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;border:1px solid #A0A0A0 !important;margin:2px 0px" >
                    <script type="dojo/method" event="onChange">
-                    assUpdateLeftWork(\'ass\', '.$assignment->id.'); 
+                    assUpdateLeftWork('.$assignment->id.'); 
                     saveLeftWork('.$assignment->id.',\'AssignedWork\'); 
                     //saveLeftWork('.$assignment->id.',\'LeftWork\');
                    </script>';
