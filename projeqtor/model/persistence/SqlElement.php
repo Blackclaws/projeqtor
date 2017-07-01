@@ -1240,6 +1240,12 @@ abstract class SqlElement {
         }
         // !!! do not insert query for last update date time unless some change is detected
         if ($col_new_value != $col_old_value or ($isText and ('x' . $col_new_value != 'x' . $col_old_value))) {
+          if (SqlElement::is_a($this, 'PlanningElement')) {
+            if (! isset($this->_workHistory) and ($col_name=='assignedWork' or $col_name=='leftWork'  or $col_name=='plannedWork' 
+                                               or $col_name=='assignedCost' or $col_name=='leftCost'  or $col_name=='plannedCost')) {
+              continue; // Do not update calculated fields if not coming from function updateSynthesisObj()                              
+            }
+          }
           if ($col_name == 'idle') {
             $idleChange = true;
           }

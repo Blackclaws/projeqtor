@@ -324,7 +324,7 @@ if($copyType=="copyObjectTo"){
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopy').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="protectDblClick(this);copyProjectToSubmit();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="protectDblClick(this);copyProjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
