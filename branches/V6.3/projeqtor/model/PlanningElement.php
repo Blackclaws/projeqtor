@@ -571,7 +571,7 @@ class PlanningElement extends SqlElement {
   	//
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
-  	$this->saveForced();
+  	$resTmp=$this->saveForced();
   	if ($this->refType=='Project') {
   		$proj=new Project($this->refId); 
   		$proj->sortOrder=$this->wbsSortable;
@@ -1460,7 +1460,7 @@ class PlanningElement extends SqlElement {
   	  foreach ($directFullList[$id] as $idPrec=>$prec) {
   	  	if(array_key_exists($idPrec,$visited)) continue;
   	  	$visited[$idPrec]=1;
-        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result,$scope,$visited));
+        $result=array_merge(self::getRecursivePredecessor($directFullList,$idPrec,$result,$scope,$visited),$result);
       }
     } else {
       $result=array();

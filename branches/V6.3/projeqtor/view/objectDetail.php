@@ -998,7 +998,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             // Will have to add label
             echo '<td colspan="2">';
           } else {
-            echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
+            echo '<td class="label" style="position:relative;width:' . $labelStyleWidth . ';">';
             $thumbRes=SqlElement::isThumbableField($col);
             $thumbColor=SqlElement::isColorableField($col);
             $formatedThumb='';
@@ -1018,6 +1018,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             echo '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
             if ($thumb) {
               //echo $formatedThumb;
+              if (!$print) echo '<div style="position:absolute;top:1px;right:0px;float:right;">';
               if($col=='idStatus'){
                 echo '<a onmouseover="drawGraphStatus();">';
               }
@@ -1027,6 +1028,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 echo '<div id="graphStatusDiv" dojoType="dijit.layout.ContentPane" region="center" class="graphStatusDiv">';
                 echo '</div>';
               }
+              if (!$print) echo "</div>";
              }            
             echo '</td>';
             if ($print and $outMode == "pdf") {

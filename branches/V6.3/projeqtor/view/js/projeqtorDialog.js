@@ -7689,11 +7689,16 @@ function changeDashboardTicketMainTabPos(){
 }
 
 function getLocalLocation(){
-  if(dojo.locale.length==2){
-    return dojo.locale+"_"+dojo.locale.toUpperCase();
-  }else{
-    return dojo.locale.split('-')[0]+"_"+dojo.locale.split('-')[1].toUpperCase();
+  var availableScaytLocales=["en_US", "en_GB", "pt_BR", "da_DK", "nl_NL", "en_CA", "fi_FI", "fr_FR", "fr_CA", "de_DE", "el_GR", "it_IT", "nb_NO", "pt_PT", "es_ES", "sv_SE"];
+  var correspondingLocales= ["en",    "",      "pt-br", "",      "nl",    "",      "",      "fr",    "fr-ca", "de",    "el",    "it",    "",      "pt",    "es",    ""];
+  var locale=dojo.locale;
+  if (currentLocale) {
+    var pos=correspondingLocales.indexOf(currentLocale);
+    if (pos>=0) {
+      locale=availableScaytLocales[pos];
+    }
   }
+  return locale;
 }
 function getLocalScaytAutoStartup() {
   if (typeof scaytAutoStartup == "undefined" || scaytAutoStartup===null || scaytAutoStartup==='') {

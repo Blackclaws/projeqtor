@@ -99,7 +99,9 @@ $error=false;
 //$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 
 Security::checkValidId($toType);
+
 // CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
+$proj->projectCode=$codeProject;
 $newProj=$proj->copyTo('Project',
                         $toType,
                         $toName, 
@@ -112,10 +114,13 @@ $newProj=$proj->copyTo('Project',
   // Old
 //$newProj=$proj->copyTo('Project',$toType,$toName,false,false, false,$copyToWithLinks,$copyAssignments,false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
 // END CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
-$newProj->projectCode=$codeProject;
+
 $result=$newProj->_copyResult;
 if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $error=true;
+  $result.= '<input type="hidden" id="lastSaveId" value="" />';
+  $result .= '<input type="hidden" id="lastOperation" value="copy" />';
+  $result .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
 }
 unset($newProj->_copyResult);
 if(!$error)$newProj->save();

@@ -52,9 +52,10 @@ if (! array_key_exists('dependencyRefTypeDep',$_REQUEST)) {
 $dependencyRefTypeDepObj=New Dependable($_REQUEST['dependencyRefTypeDep']);
 $dependencyRefTypeDep=$dependencyRefTypeDepObj->name;
 if (! array_key_exists('dependencyRefIdDep',$_REQUEST)) {
-  //if (! array_key_exists('dependencyId',$_REQUEST)) {
+  if (! array_key_exists('dependencyId',$_REQUEST)) {
     throwError('dependencyRefIdDep parameter not found in REQUEST');
-  //}
+  }
+  //$dependencyRefIdDep=null; // Keep not defined to raise an error...
 } else {
   $dependencyRefIdDep=$_REQUEST['dependencyRefIdDep'];
 }
@@ -71,12 +72,6 @@ if (array_key_exists('dependencyId',$_REQUEST)) {
 // KEVIN TICKET #2038 
 $dependencyComment=$_REQUEST['dependencyComment'];
 
-$arrayDependencyRefIdDep=array();
-if (is_array($dependencyRefIdDep)) {
-  $arrayDependencyRefIdDep=$dependencyRefIdDep;
-} else {
-  $arrayDependencyRefIdDep[]=$dependencyRefIdDep;
-}
 Sql::beginTransaction();
 if ($dependencyId) { // Edit Mode
 	$dep=new Dependency($dependencyId);
@@ -84,6 +79,12 @@ if ($dependencyId) { // Edit Mode
 	$dep->comment=$dependencyComment;
 	$result=$dep->save();
 } else { // Add Mode
+  $arrayDependencyRefIdDep=array();
+  if (is_array($dependencyRefIdDep)) {
+    $arrayDependencyRefIdDep=$dependencyRefIdDep;
+  } else {
+    $arrayDependencyRefIdDep[]=$dependencyRefIdDep;
+  }
 	$result="";
 	foreach ($arrayDependencyRefIdDep as $dependencyRefIdDep) {
 		if ($dependencyType=="Successor") {
