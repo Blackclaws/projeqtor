@@ -189,7 +189,7 @@ function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $i
 	if($print){
 	  $result='<span style="position:relative;color:#ffffff;background-color:'.$bgColor.';float:left;font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;" >';
 	}else{
-	  $result='<span style="position:relative;color:#ffffff;background-color:'.$bgColor.';float:'.$floatLetter.';font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;"'
+	  $result='<span style="color:#ffffff;background-color:'.$bgColor.';float:'.$floatLetter.';font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;"'
 	  		. ' onMouseOver="showBigImage(null,null,this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
 	  		. ($idTicket!=-1 ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
 	}
@@ -265,7 +265,7 @@ function formatColorThumb($col,$val, $size=20, $float='right',$name="") {
   if (! $color) return '';
   $radius=round($size/2,0);
   $res='<div style="border: 1px solid #AAAAAA;background:'.$color.';';
-  $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px"';
+  $res.='width:'.($size-2).'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px"';
   //$res.=' onMouseOver="drawGraphStatus();"';
   if($name!="")$res.=' onMouseOver="showBigImage(null,null,this,\''.$name.'\');" onMouseOut="hideBigImage();"';
   $res.='>&nbsp;</div>';

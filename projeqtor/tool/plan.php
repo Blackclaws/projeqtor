@@ -30,10 +30,12 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/plan.php');
 if (! array_key_exists('idProjectPlan',$_REQUEST)) {
-  throwError('idProjectPlan parameter not found in REQUEST');
+  //throwError('idProjectPlan parameter not found in REQUEST');
+  $idProjectPlan=array(" ");
+} else {
+  $idProjectPlan=$_REQUEST['idProjectPlan']; // validated to be numeric in SqlElement base constructor
+  Security::checkValidId($idProjectPlan);
 }
-$idProjectPlan=$_REQUEST['idProjectPlan']; // validated to be numeric in SqlElement base constructor
-Security::checkValidId($idProjectPlan);
 
 if (! array_key_exists('startDatePlan',$_REQUEST)) {
   throwError('startDatePlan parameter not found in REQUEST');

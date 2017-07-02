@@ -68,6 +68,13 @@ if ($saveShowClosed) {
 }
 //$objectClass='Task';
 //$obj=new $objectClass;
+
+$displayWidthPlan="9999";
+if (RequestHandler::isCodeSet('destinationWidth')) {
+  $displayWidthPlan=RequestHandler::getNumeric('destinationWidth');
+}
+echo $displayWidthPlan;
+
 ?>
    
 <div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
@@ -75,13 +82,13 @@ if ($saveShowClosed) {
 	style="z-index: 3; position: relative; overflow: visible !important;">
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="32px">
-		    <td style="vertical-align:top; width:250px;">
+		    <td style="vertical-align:top; min-width:100px; width:15%;">
 		      <table >
     		    <tr height="32px">
-      		    <td width="50px" align="center">
+      		    <td width="50px" style="min-width:50px" align="center">
                 <?php echo formatIcon('ResourcePlanning', 32, null, true);?>
               </td>
-              <td width="200px"><span class="title" style="max-width:200px;white-space:normal"><?php echo i18n('menuResourcePlanning');?></span></td>
+              <td style="min-width:100px"><span class="title" style="max-width:250px;white-space:normal"><?php echo i18n('menuResourcePlanning');?></span></td>
       		  </tr>
     		  </table>
 		    </td>
@@ -104,10 +111,10 @@ if ($saveShowClosed) {
 		              </button>
 <?php }?>             
 		            </td>
-		            <td style="white-space:nowrap;width:240px">
+		            <td style="white-space:nowrap;width:<?php echo ($displayWidthPlan>1030)?240:150;?>px">
 		              <table>
                     <tr>
-                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
+                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo ($displayWidthPlan>1030)?i18n("displayStartDate"):i18n("from");?>&nbsp;&nbsp;</td><td>
                         <div dojoType="dijit.form.DateTextBox"
 	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
 														echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
@@ -125,7 +132,7 @@ if ($saveShowClosed) {
                       </td>
                     </tr>
                     <tr>
-                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td>
+                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo ($displayWidthPlan>1030)?i18n("displayEndDate"):i18n("to");?>&nbsp;&nbsp;</td>
                       <td>
                         <div dojoType="dijit.form.DateTextBox"
 	                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
@@ -145,7 +152,7 @@ if ($saveShowClosed) {
                     </tr>
                   </table>
 		            </td>
-                <td style="width:150px">
+                <td style="width:<?php echo ($displayWidthPlan>1030)?'150':'120';?>px">
                   <table>
                     <tr>
                       <td width="32px">
@@ -231,7 +238,7 @@ if ($saveShowClosed) {
                       <td style="text-align:right;"><?php echo i18n('colIdResource');?>&nbsp;&nbsp;</td>
                       <td>
                       <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
-                        style="width: 150px;"
+                        style="width: <?php echo ($displayWidthPlan>1030)?150:100;?>px;"
                         name="selectResourceName" id="selectResourceName"
                         <?php echo autoOpenFilteringSelect();?>
                         >
@@ -250,7 +257,7 @@ if ($saveShowClosed) {
                       <td style="text-align:right;"><?php echo i18n('colIdTeam');?>&nbsp;&nbsp;</td>
                       <td>
                       <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
-                        style="width: 150px;"
+                        style="width:  <?php echo ($displayWidthPlan>1030)?150:100;?>px;"
                         name="teamName" id="teamName"
                         <?php echo autoOpenFilteringSelect();?>
                         >
@@ -296,7 +303,7 @@ if ($saveShowClosed) {
 		              </div>&nbsp;
                   </td></tr>
                   <tr>
-                  <td><?php echo i18n("labelShowProjectLevel");?></td>
+                  <td style="min-width:80px;"><?php echo i18n("labelShowProjectLevel");?></td>
 		              <td>
                   <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="listShowProject" name="listShowProject" class="whiteCheck"

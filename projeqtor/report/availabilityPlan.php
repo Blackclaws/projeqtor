@@ -74,7 +74,7 @@ if ($paramTeam!="") {
 include "header.php";
 
 $where=getAccesRestrictionClause('Affectation',false,false,true,true);
-$where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
+//$where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
 
 $resources=array();
 $resourceCalendar=array();
@@ -89,6 +89,7 @@ foreach($affLst as $aff){
 	asort($resources);
 }
 
+$where="1=1"; // Ticket #2532 : must show availability whatever the project 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
@@ -108,10 +109,11 @@ foreach ($resources as $id=>$name) {
 $real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-    $resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
-    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
-    $result[$work->idResource]=array();
+    continue;
+    //$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    //$resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
+    //$capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    //$result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idResource,$real)) {
   	$real[$work->idResource]=array();
@@ -126,10 +128,11 @@ $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-    $resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
-    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
-    $result[$work->idResource]=array();
+    continue;
+    //$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    //$resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
+    //$capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    //$result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idResource,$real)) {
     $real[$work->idResource]=array();
