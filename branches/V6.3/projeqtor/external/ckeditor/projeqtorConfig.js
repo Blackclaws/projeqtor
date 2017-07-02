@@ -24,7 +24,7 @@ CKEDITOR.editorConfig = function( config ) {
   config.magicline_color = '#aaaaaa';
   config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style;';
   config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style';
-  config.resize_minHeight = 30;
+  config.resize_minHeight = 150;
   //gautier
   if (dojo.byId('ckeditorType')){
     var cktype=dojo.byId('ckeditorType').value;

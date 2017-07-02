@@ -691,6 +691,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
        
     // Dispatch Organization 
+    $subProj=$this->getSubProjects(false,false); // Must refresh subProject, to be sure to get latest values (for instance when moving project, retreive correct WBS)
     foreach ($subProj as $sp) {
       if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
         $sp->idOrganization=$this->idOrganization;
@@ -755,90 +756,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $clause=('idProject ='.$this->id);
       $purg=$plw->purge($clause);
     }
-    
-    /*
-    // ticket #2822 - mehdi - auto update parent status
-    if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and isset($old)) {
-    	if ($this->idProject) {
-    		$parent = new Project ($this->idProject);
-    	} else {
-    	  // this is the parent project
-    		$parent = new Project ($this->id);
-    	}
-    	if ($this->handled and $this->handled!=$old->handled) {
-    		if ( ! $parent->handled ) {
-    			$parent->handled = $this->handled;
-    			$parent->handledDate=date('Y-m-d');
-    			$allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
-    			foreach ( $allowedStatusList as $st ) {
-    				if ($st->setHandledStatus) {
-    					$parent->idStatus=$st->id;
-    					$parent->save();
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	$status = new Status ($this->idStatus);
-    	$isStatDone=($status->setDoneStatus)?true:false;
-    	$isStatIdle=($status->setIdleStatus)?true:false;
-    	$isStatCancelled=($status->setCancelledStatus)?true:false;
-    	$status = new Status ($old->idStatus);
-    	$isOldStatDone=($status->setDoneStatus)?true:false;
-    	$isOldStatIdle=($status->setIdleStatus)?true:false;
-    	$isOldStatCancelled=($status->setCancelledStatus)?true:false;
-    	if ( ($isStatDone and $isStatDone!=$isOldStatDone) 
-    	  or ($isStatIdle and $isStatIdle!=$isOldStatIdle) 
-    	  or ($isStatCancelled and $isStatCancelled!=$isOldStatCancelled)) {
-    		$allDone=true;
-    		$allIdle=true;
-    		$allCancelled=true;
-    		$sons=$this->getSqlElementsFromCriteria(array('idProject'=>$this->idProject));
-    		foreach ($sons as $act) {
-    			if (!$act->done and !$act->cancelled) $allDone=false;
-    			if (!$act->idle and !$act->cancelled) $allIdle=false;
-    			if (!$act->cancelled) $allCancelled=false;
-    		}
-    		$setToDone=($isStatDone and $isStatDone!=$isOldStatDone and $allDone)?true:false;
-    		$setToIdle=($isStatIdle and $isStatIdle!=$isOldStatIdle and $allIdle)?true:false;
-    		$setToCancelled=($isStatCancelled and $isStatCancelled!=$isOldStatCancelled and $allCancelled)?true:false;
-    		if ($setToDone or $setToIdle or $setToCancelled) {
-    			$currentParentStatus=new Status($parent->idStatus);
-    			if ( (! $setToDone or ($setToDone and $currentParentStatus->setDoneStatus) )
-    			and (! $setToIdle or ($setToIdle and $currentParentStatus->setIdleStatus) )
-    			and (! $setToCancelled or ($setToCancelled and $currentParentStatus->setCancelledStatus) )) {
-    				// Nothing to do, already in a status corresponding to target
-    			} else {
-    				$allowedStatusList=Workflow::getAllowedStatusListForObject($parent);
-    				$saveParent=false;
-    				foreach ( $allowedStatusList as $st ) {
-    					if ($setToDone and $st->setDoneStatus) {
-    						$parent->idStatus=$st->id;
-    						$parent->done=$this->done;
-    						$parent->doneDate=date('Y-m-d');
-    						$saveParent=true;
-    						$setToDone=false;
-    					}
-    					if ($setToIdle and $st->setIdleStatus) {
-    						$parent->idStatus=$st->id;
-    						$parent->idle=$this->idle;
-    						$parent->idleDate=date('Y-m-d');
-    						$saveParent=true;
-    						$setToIdle=false;
-    					}
-    					if ($setToCancelled and $st->setCancelledStatus) {
-    						$parent->idStatus=$st->id;
-    						$parent->cancelled=$this->cancelled;
-    						$parent->doneDate=date('Y-m-d');
-    						$saveParent=true;
-    						$setToCancelled=false;
-    					}
-    				}
-    				if ($saveParent) $parent->save();
-    			}
-    		}
-    	}
-    }*/
     
     //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 
@@ -989,6 +906,16 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
 // ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments=false, $withAffectations=false,
                          $toProject=null, $toActivity=null, $copyToWithResult=false, $copyToWithVersionProjects=false, $copyToWithActivityPrice=false) {
+    
+    // Control that copy is not directly copied into structure of copied project 
+    if ($toProject) {
+      $sub=$this->getSubProjectsList(false);
+      if ($toProject==$this->id or isset($sub[$toProject])) {
+        $result=i18n('copyNotAsSubOfCurrent').'<br/>';
+        $this->_copyResult=$result;
+        return $this;
+      }
+    }
     $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments, $withAffectations ,
     		                 $toProject, $toActivity, $copyToWithResult, $copyToWithVersionProjects, $copyToWithActivityPrice);
     if($copyToWithVersionProjects==true){
