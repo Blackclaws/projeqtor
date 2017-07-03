@@ -651,7 +651,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
     } else if (substr($col, 0, 5) == '_sec_' and (! $comboDetail or $col!='_sec_Link') ) { // if field is _section, draw a new section bar column
-      
+      //ADD qCazelles - Lang-Context
+      if ($col == '_sec_language' and Parameter::getGlobalParameter('displayLanguage') != 'YES') continue;
+      if ($col == '_sec_context' and Parameter::getGlobalParameter('displayContext') != 'YES') continue;
+      //END ADD qCazelles - Lang-Context
       //ADD by qCazelles - Bsuiness features
       if ($col=='_sec_ProductBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') continue;
       //END ADD qCazelles
@@ -796,9 +799,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawLinksFromObject($val, $obj, $linkClass);
     } else if ($col == '_productComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of Product (structure)
       drawStructureFromObject($obj, false,'composition', 'Product');
-    }
+    //ADD qCazelles - Lang-Context
+ 	} else if ($col == '_productLanguage' and Parameter::getGlobalParameter('displayLanguage') == 'YES') {
+  	drawLanguageSection($obj);
+	 } else if ($col == '_productContext' and Parameter::getGlobalParameter('displayContext') == 'YES') {
+  	drawContextSection($obj);
+  	//END ADD qCazelles - Lang-Context
     //ADD by qCazelles - Business features
-    else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
+ 	}  else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
     	drawBusinessFeatures($obj);
     //END ADD
     
@@ -853,7 +861,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,$cpt,$included,$obj);
         drawAttachmentsFromObject($obj, false);
       }
-    } else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
+    //ADD qCazelles - Lang
+    } else if ($col == 'idLanguage' and Parameter::getGlobalParameter('displayLanguage') != 'YES') continue;
+    //END ADD qCazelles - Lang
+      else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
       $prevSection=$section;
       $section="Note";
       $ress=new Resource(getCurrentUserId());
@@ -3549,6 +3560,140 @@ function drawBusinessFeatures($obj, $refresh=false) {
 	}
 }
 //END ADD qCazelles
+
+//ADD qCazelles - Lang-Context
+function drawLanguageSection($obj, $refresh=false) {
+	$crit=array();
+	$crit['idProduct']=$obj->id;
+	$langsProduct=new ProductLanguage();
+	$list=$langsProduct->getSqlElementsFromCriteria($crit);
+	global $cr, $print, $user, $comboDetail;
+	if ($comboDetail) {
+		return;
+	}
+	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+	if ($obj->idle == 1) {
+		$canUpdate=false;
+	}
+	if (!$refresh) echo '<tr><td colspan="2">';
+	echo '<table style="width:100%;">';
+	echo '<tr>';
+	if (!$print) {
+		echo '<td class="linkHeader" style="width:5%">';
+		if ($obj->id != null and !$print and $canUpdate) {
+			echo '<a onClick="addProductLanguage();" title="' . i18n('addProductLanguage') . '" > '.formatSmallButton('Add').'</a>';
+		}
+		echo '</td>';
+	}
+	$listClass='Language';
+	echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+	echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
+	echo '</tr>';
+	foreach ( $list as $lang ) { //$lang is ProductLanguage
+		$langObj=new Language($lang->idLanguage);
+		$userId=$lang->idUser;
+		$userName=SqlList::getNameFromId('User', $userId);
+		$creationDate=$lang->creationDate;
+		$canGoto=(securityCheckDisplayMenu(null, get_class($langObj)) and securityGetAccessRightYesNo('menu' . get_class($langObj), 'read', $langObj) == "YES")?true:false;
+		echo '<tr>';
+		$classLangName=i18n(get_class($langObj));
+		if (!$print) {
+			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+			if ($canUpdate) {
+				echo '  <a onClick="editProductLanguage(' . htmlEncode($lang->id). ');" '
+      		.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
+      		echo '  <a onClick="removeProductLanguage(' . "'" . htmlEncode($lang->id) . "','" . get_class($lang) . "'" . ');" '
+  		.'title="' . i18n('removeProductLanguage') . '" > '.formatSmallButton('Remove').'</a>';
+			}
+			echo '</td>';
+		}
+		echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr>';
+		echo '<td>'.formatIcon(get_class($langObj),16).'</td><td style="vertical-align:top">&nbsp;'.'#' . $langObj->id.'</td></tr></table>';
+		echo '</td>';
+		$goto="";
+		if (!$print and $canGoto) {
+			$goto=' onClick="gotoElement(' . "'" . get_class($langObj) . "','" . htmlEncode($langObj->id) . "'" . ');" style="cursor: pointer;" ';
+		}
+		echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+		echo htmlEncode($langObj->name);
+		echo formatUserThumb($userId, $userName, 'Creator');
+		echo formatDateThumb($creationDate, null);
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+	if (!$refresh) echo '</td></tr>';
+	if (! $print) {
+		echo '<input id="ProductLanguageSectionCount" type="hidden" value="'.count($list).'" />';
+	}
+}
+
+function drawContextSection($obj, $refresh=false) {
+	$crit=array();
+	$crit['idProduct']=$obj->id;
+	$contextProduct=new ProductContext();
+	$list=$contextProduct->getSqlElementsFromCriteria($crit);
+	global $cr, $print, $user, $comboDetail;
+	if ($comboDetail) {
+		return;
+	}
+	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+	if ($obj->idle == 1) {
+		$canUpdate=false;
+	}
+	if (!$refresh) echo '<tr><td colspan="2">';
+	echo '<table style="width:100%;">';
+	echo '<tr>';
+	if (!$print) {
+		echo '<td class="linkHeader" style="width:5%">';
+		if ($obj->id != null and !$print and $canUpdate) {
+			echo '<a onClick="addProductContext();" title="' . i18n('addProductContext') . '" > '.formatSmallButton('Add').'</a>';
+		}
+		echo '</td>';
+	}
+	$listClass='Context';
+	echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+	echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
+	echo '</tr>';
+	foreach ( $list as $context ) { //$context is a ProductContext
+		$contextObj=new Context($context->idContext);
+		$userId=$context->idUser;
+		$userName=SqlList::getNameFromId('User', $userId);
+		$creationDate=$context->creationDate;
+		$canGoto=(securityCheckDisplayMenu(null, get_class($contextObj)) and securityGetAccessRightYesNo('menu' . get_class($contextObj), 'read', $contextObj) == "YES")?true:false;
+		echo '<tr>';
+		$classLangName=i18n(get_class($contextObj));
+		if (!$print) {
+			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+			if ($canUpdate) {
+				echo '  <a onClick="editProductContext(' . htmlEncode($context->id). ');" '
+        		.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
+        		echo '  <a onClick="removeProductContext(' . "'" . htmlEncode($context->id) . "','" . get_class($context) . "'" . ');" '
+          		.'title="' . i18n('removeProductContext') . '" > '.formatSmallButton('Remove').'</a>';
+			}
+			echo '</td>';
+		}
+		echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr>';
+		echo '<td>'.formatIcon(get_class($contextObj),16).'</td><td style="vertical-align:top">&nbsp;'.'#' . $contextObj->id.'</td></tr></table>';
+		echo '</td>';
+		$goto="";
+		if (!$print and $canGoto) {
+			$goto=' onClick="gotoElement(' . "'" . get_class($contextObj) . "','" . htmlEncode($contextObj->id) . "'" . ');" style="cursor: pointer;" ';
+		}
+		echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+		echo htmlEncode($contextObj->name);
+		echo formatUserThumb($userId, $userName, 'Creator');
+		echo formatDateThumb($creationDate, null);
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+	if (!$refresh) echo '</td></tr>';
+	if (! $print) {
+		echo '<input id="ProductContextSectionCount" type="hidden" value="'.count($list).'" />';
+	}
+}
+//END qCazelles - Lang-Context
 
 function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
   $crit=array();

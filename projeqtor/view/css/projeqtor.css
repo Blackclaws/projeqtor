@@ -3385,3 +3385,19 @@ p {
 li.section {
   border-radius:0px;
 }
+
+.activityStreamNoteContent {
+	color:black;
+	margin-top:15px;
+	word-break:break-all;
+	max-width:100%;
+	width:100%;
+	overflow-x:auto;
+	overflow-y:hidden;
+	position:relative;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}

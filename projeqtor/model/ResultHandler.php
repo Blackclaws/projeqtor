@@ -46,8 +46,8 @@ class ResultHandler {
   public $nodataMsg;
   public $status;
   public $savedId;
-  *
-  static function istanza() {
+  
+  static function instanciate() {
   if (! isset ( self::$me )) {
     self::$me = new ResultHdl ();
   }
