@@ -168,7 +168,6 @@ if ($displayWidthList<1400) {
     <td width="50px" align="center">
        <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
        <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
-    
     </td>
     <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
     <td>   
@@ -190,7 +189,7 @@ if ($displayWidthList<1400) {
               <div title="<?php echo i18n('filterOnId')?>" style="width:<?php echo $referenceWidth;?>px" class="filterField rounded" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
-				          setTimeout("filterJsonList()",10);
+					        setTimeout("filterJsonList()",10);
                 </script>
               </div>
             </td>
@@ -205,7 +204,7 @@ if ($displayWidthList<1400) {
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
                 id="listNameFilter" name="listNameFilter" style="width:<?php echo $referenceWidth*2;?>px">
                   <script type="dojo/method" event="onKeyUp" >
-                  setTimeout("filterJsonList()",10);
+                  	setTimeout("filterJsonList()",10);
                 </script>
                 </div>
               </td>
@@ -244,7 +243,29 @@ if ($displayWidthList<1400) {
                   </script>
                 </select>
               </td>
-              <?php }?> 
+              <?php }?>
+              <?php  //ADD qCazelles - Filter by Status
+              if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
+              	<td style="vertical-align: middle;" width="5px">
+                	<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td>
+                <td width="5px" style="postion:relative">
+					        <button dojoType="dijit.form.Button" showlabel="false"
+			             title="<?php echo i18n('filterByStatus');?>" style="height:18px;position:absolute;top:3px;"
+			             iconClass="iconStatus16" xclass="detailButton">
+			             <script type="dojo/connect" event="onClick" args="evt">
+						         if (dijit.byId('barFilterByStatus').domNode.style.display == 'none') {
+							         dijit.byId('barFilterByStatus').domNode.style.display = 'block';
+						         } else {
+							         dijit.byId('barFilterByStatus').domNode.style.display = 'none';
+						         }
+						         dijit.byId('barFilterByStatus').getParent().resize();
+                     saveDataToSession("displayByStatusList_<?php echo $objectClass;?>", dijit.byId('barFilterByStatus').domNode.style.display, true);
+          				 </script>
+			            </button>
+                </td>              
+              <?php } 
+              //END ADD qCazelles ?>
               <?php 
                  $elementable=null;
                  if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
@@ -493,6 +514,46 @@ if ($displayWidthList<1400) {
   <div id="listBarIcon" align="center"></div>
 </div>
 </div>
+
+<!-- ADD by qCazelles - Filter by Status -->
+<?php if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {
+  $displayStatus=Parameter::getUserParameter("displayByStatusList_$objectClass");
+  if (!$displayStatus) $displayStatus='none';
+?>
+<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:16px">
+	<table style="position:absolute;top:-2px">
+		<tr>
+			<td style="font-weight:bold;padding-left:135px;">Status&nbsp;:&nbsp;</td>
+<?php
+	
+	$object = new $objectClass();
+	$listStatus = $object->getExistingStatus();
+
+	$cptStatus = 0;
+	foreach ($listStatus as $status) {
+		$cptStatus += 1;
+
+?>
+			<td>
+				<div id="showStatus<?php echo $cptStatus; ?>" title="<?php echo $status->name; ?>" dojoType="dijit.form.CheckBox" type="checkbox" value="<?php echo $status->id; ?>">
+					<script type="dojo/method" event="onChange">
+						refreshJsonList('<?php echo $objectClass; ?>');
+					</script>
+				</div>
+				<?php echo $status->name; ?>&nbsp;&nbsp;
+			</td>
+
+<?php
+	echo ($cptStatus % 15 == 0) ? '</tr><tr><td></td>' : '';
+	 } ?>
+		</tr>
+	</table>
+	<input type="hidden" id="countStatus" value="<?php echo $cptStatus; ?>" />
+</div>
+<?php 
+} ?>
+<!-- END ADD qCazelles -->
+
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"
   query="{ id: '*' }" store="objectStore"

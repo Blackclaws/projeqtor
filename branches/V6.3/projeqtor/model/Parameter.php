@@ -266,6 +266,21 @@ class Parameter extends SqlElement {
       case 'allowTypeRestrictionOnProject' :
       case 'versionNameAutoformat' : 
       case 'directAccessToComponentList' :
+      case 'printInNewWindow':
+      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': case 'allocateResponsibleToProject':
+      case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
+      case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
+      case 'limitPlanningActivity' :
+      // Mehdi  #parameter
+      case 'autoUpdateActivityStatus':
+      // Gautier #
+      case 'subscriptionAuto':
+      //ADD qCazelles - Business features
+      case 'displayBusinessFeature':
+      case 'filterByStatus':
+      case 'displayLanguage' :
+      case 'displayContext' :
+      //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -277,7 +292,9 @@ class Parameter extends SqlElement {
       case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
       case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
       case 'scaytAutoStartup':
-      	$list=array('YES'=>i18n('displayYes'),
+      case 'changeReferenceOnTypeChange': case 'rememberMe':
+      case 'getVersion':
+        $list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
       case 'displayNote':
@@ -305,10 +322,6 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'AUTO'=>i18n('displayYesShowOnMouse'),
                     'CLICK'=>i18n('displayYesShowOnClick'));
-        break;
-      case 'printInNewWindow':
-        $list=array('NO'=>i18n('displayNo'),
-                    'YES'=>i18n('displayYes'));
         break;
   /////KEVIN////      
       case 'OpenDayMonday':
@@ -354,10 +367,6 @@ class Parameter extends SqlElement {
         $list=array('days'=>i18n('days'),
                     'hours'=>i18n('hours'));
         break;
-      case 'getVersion':
-      	$list=array('YES'=>i18n('displayYes'),
-                    'NO'=>i18n('displayNo'));
-      	break;
       case 'paramLdap_allow_login':case 'paramFadeLoadingMode';
         $list=array('false'=>i18n('displayNo'),
                     'true'=>i18n('displayYes'));
@@ -442,30 +451,6 @@ class Parameter extends SqlElement {
       	  $list['startGuide.php']=i18n('startGuideTitle');
       	}
       	break; 
-      case 'changeReferenceOnTypeChange': case 'rememberMe':
-        	$list=array('YES'=>i18n('displayYes'),
-        	'NO'=>i18n('displayNo'));
-        	break;
-      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': case 'allocateResponsibleToProject': 
-      case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
-      case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
-      case 'limitPlanningActivity' :
-      //ADD qCazelles - Business features
-      case 'displayBusinessFeature':
-      //END ADD qCazelles
-        $list=array('NO'=>i18n('displayNo'),
-                    'YES'=>i18n('displayYes'));
-        break;
-        // Mehdi  #parameter
-      case 'autoUpdateActivityStatus':
-      	$list=array('NO'=>i18n('displayNo'),
-        'YES'=>i18n('displayYes'));
-        break;
-      // Gautier #
-      case 'subscriptionAuto':
-          $list=array('NO'=>i18n('displayNo'),
-          'YES'=>i18n('displayYes'));
-          break;
       case 'consolidateValidated' :
       	$list=array('NO'=>i18n('consolidateNever'),
       	             'ALWAYS'=>i18n('consolidateAlways'),
@@ -509,7 +494,7 @@ class Parameter extends SqlElement {
         'YESW'=>i18n('displayYesWithWork'),
         'REQ'=>i18n('displayOnRequest') );
         break;
-        
+      	//END ADD qCazelles
       case 'imputationAlertGenerationDay': 
         $list=array(
           'NEVER'=>i18n('never'),
@@ -694,10 +679,15 @@ class Parameter extends SqlElement {
       	                       'startPage'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                       'displayHistory'=>'list',
-      	                     //ADD by qCazelles - Business features
+     	                       //ADD by qCazelles - Filter by Status
+      	                       'filterByStatus'=>'list',
+     	                       //END ADD qCazelles
+      	                     //ADD by qCazelles 
       	                     'sectionProductAndComponent'=>'section',
       	                        'displayBusinessFeature'=>'list',
-      	                     	//END ADD qCazelles 
+                              	'displayLanguage'=>'list',
+                              	'displayContext'=>'list',
+                              	//END ADD qCazelles
                               	'showTendersOnVersions'=>'list',
                               	"directAccessToComponentList"=>'list',
                             	//'sectionVersionNameFormat'=>'section',

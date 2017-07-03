@@ -1505,6 +1505,92 @@ function removeBusinessFeature(businessFeatureId, refType) {
 }
 //END ADD qCazelles
 
+//ADD qCazelles - Lang-Context
+//=============================================================================
+//= Product/Component Language/Context 
+//=============================================================================
+
+function addProductLanguage() {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var param="&objectClass="+objectClass+"&objectId="+objectId;
+	loadDialog('dialogProductLanguage', null, true, param, false);
+}
+
+function saveProductLanguage() {
+	loadContent("../tool/saveProductLanguage.php", "resultDiv", "productLanguageForm", true, 'ProductLanguage');
+	dijit.byId('dialogProductLanguage').hide();	
+}
+
+function editProductLanguage(productLanguageId) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	
+	var param="&objectClass="+objectClass+"&objectId="+objectId+"&languageId="+productLanguageId;
+	loadDialog('dialogProductLanguage',null,true,param,true);
+}
+
+function removeProductLanguage(productLanguageId, refType) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	actionOK=function() {
+		loadContent("../tool/removeProductLanguage.php?productLanguageId="+productLanguageId, "resultDiv", null, true, 'ProductLanguage');
+	};
+	msg=i18n('confirmDeleteProductLanguage', new Array(refType, productLanguageId));
+	showConfirm(msg, actionOK);
+}
+
+function addProductContext() {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var param="&objectClass="+objectClass+"&objectId="+objectId;
+	loadDialog('dialogProductContext', null, true, param, false);
+}
+
+function saveProductContext() {
+	loadContent("../tool/saveProductContext.php", "resultDiv", "productContextForm", true, 'ProductContext');
+	dijit.byId('dialogProductContext').hide();	
+}
+
+function editProductContext(productContextId) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	
+	var param="&objectClass="+objectClass+"&objectId="+objectId+"&contextId="+productContextId;
+	loadDialog('dialogProductContext',null,true,param,true);
+}
+
+function removeProductContext(productContextId, refType) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	actionOK=function() {
+		loadContent("../tool/removeProductContext.php?productContextId="+productContextId, "resultDiv", null, true, 'ProductContext');
+	};
+	msg=i18n('confirmDeleteProductContext', new Array(refType, productContextId));
+	showConfirm(msg, actionOK);
+}
+//END ADD qCazelles - Lang-Context
+
 
 //=============================================================================
 //= Product Version Composition

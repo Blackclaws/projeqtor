@@ -39,6 +39,9 @@ class UserMain extends SqlElement {
   public $initials;
   public $email;
   public $idProfile;
+  //ADD qCazelles - LANG
+  public $idLanguage;
+  //END ADD qCazelles - LANG
   public $locked;
   public $loginTry;
   

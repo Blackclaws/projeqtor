@@ -114,6 +114,20 @@ function refreshJsonList(className, keepUrl) {
             + dijit.byId('listElementableFilter').get("value");
       }
     }
+    //ADD qCazelles - Filter by status
+    if (dojo.byId('countStatus')) {
+    	var filteringByStatus = false;
+    	for (var i = 1; i <= dojo.byId('countStatus').value; i++) {
+    		if (dijit.byId('showStatus' + i).checked) {
+    			url = url + "&objectStatus" + i + "=" + dijit.byId('showStatus' + i).value;
+    			filteringByStatus = true;
+    		}
+    	}
+    	if (filteringByStatus) {
+    		url = url + "&countStatus=" + dojo.byId('countStatus').value;
+    	}
+    }
+    //END ADD qCazelles - Filter by status
     if (dijit.byId('quickSearchValue')) {
       if (dijit.byId('quickSearchValue').get("value") != '') {
         // url = url + "&quickSearch=" +
@@ -4110,6 +4124,10 @@ function scrollInto(){
   }
 }
 
+// *************************************************************************
+// Activity Stream 
+// *************************************************************************
+
 function saveNoteStream(event){
   var key = event.keyCode;
   if (key == 13 && !event.shiftKey) {
@@ -4203,4 +4221,55 @@ function activityStreamTypeRead(){
   } else {
     dijit.byId("activityStreamIdNote").set('readOnly', false);
   }
+}
+
+var notesHeight=[];
+function switchNoteStatus(idNote) {
+  var noteDiv=dojo.byId("activityStreamNoteContent_"+idNote);
+  var status="closed";
+  var img=dojo.byId('imgCollapse_'+idNote);
+  if (!noteDiv.style.transition) {
+    noteDiv.style.transition="all 0.5s ease";
+    if (noteDiv.offsetHeight==0) {
+      noteDiv.style.height="100px";
+      noteDiv.style.maxHeight="100px";
+      noteDiv.style.maxHeight="0px";
+      noteDiv.style.height="0px";
+      setTimeout("switchNoteStatus("+idNote+")",10);
+      return;
+    } else {
+      noteDiv.style.maxHeight=(noteDiv.offsetHeight)+"px";
+    }
+  }
+  if (noteDiv.style.height=='0px') {
+    var newHeight=(idNote in notesHeight)?notesHeight[idNote]:"1000";
+    noteDiv.style.maxHeight=newHeight+"px";
+    noteDiv.style.height="100%";
+    noteDiv.style.marginBottom="10px";
+    status="open";
+    dojo.query('#imgCollapse_'+idNote+' div').forEach(function(node, index, arr){
+      node.className="iconButtonCollapseHide16";
+    });
+  } else {
+    console.log(noteDiv.style.height);
+    console.log(noteDiv.offsetHeight);
+    if (noteDiv.offsetHeight) notesHeight[idNote]=noteDiv.offsetHeight;
+    noteDiv.style.maxHeight="0px";
+    noteDiv.style.height="0px";
+    noteDiv.style.marginBottom="0px";
+    status="closed";
+    dojo.query('#imgCollapse_'+idNote+' div').forEach(function(node, index, arr){
+      node.className="iconButtonCollapseOpen16";
+    });
+  }
+  url="../tool/saveClosedNote.php?idNote="+idNote+"&statusNote="+status;
+  dojo.xhrPost({
+    url : url,
+    load : function(data, args) {
+    },
+    error : function () {
+      consoleTraceLog("error saving note status : "+url);
+    }
+ });
+  
 }

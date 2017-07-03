@@ -113,3 +113,45 @@ ALTER TABLE `${prefix}note` ADD `idle` int(1) DEFAULT '0';
 
 ALTER TABLE `${prefix}project` ADD `handled` int(1) DEFAULT '0',
 ADD `handledDate` date DEFAULT NULL;
+
+--ADD qCazelles - Lang
+CREATE TABLE `${prefix}language` (
+	`id` int(12) unsigned AUTO_INCREMENT,
+	`name` varchar(100) NOT NULL,
+	`code` varchar(100) NOT NULL,
+	`sortOrder` int(3),
+	`idle` int(1) DEFAULT 0,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `${prefix}resource` ADD COLUMN `idLang` int(12) DEFAULT NULL;
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
+(178,'menuLanguage', 36, 'object', 795, 'ReadWriteList', 0, 'ListOfValues');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1, 178, 1);
+--END ADD qCazelles - Lang
+
+--ADD qCazelles - Lang-Context
+CREATE TABLE `${prefix}productlanguage` (
+	`id` int(12) unsigned AUTO_INCREMENT,
+	`idProduct` int(12) unsigned NOT NULL,
+	`idLanguage` int(12) unsigned NOT NULL,
+	`creationDate` date NOT NULL,
+	`idUser` int(12) unsigned NOT NULL,
+	`idle` int(1) unsigned NOT NULL DEFAULT 0,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `${prefix}productcontext` (
+	`id` int(12) unsigned AUTO_INCREMENT,
+	`idProduct` int(12) unsigned NOT NULL,
+	`idContext` int(12) unsigned NOT NULL,
+	`creationDate` date NOT NULL,
+	`idUser` int(12) unsigned NOT NULL,
+	`idle` int(1) unsigned NOT NULL DEFAULT 0,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--END ADD qCazelles - Lang-Context
