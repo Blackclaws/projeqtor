@@ -43,7 +43,7 @@ $ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
     .'|screen(Width|Height)?|showWorkHistory|theme|hideInService'
     .'|defaultProject|(print|pdf)InNewWindow|accordionPane(Top|Bottom)'
     .'|contentPane(Left(DivWidth|BottomDivHeight)|Top(DetailDivHeight(.*)?|(Portfolio|Resource)?PlanningDivHeight))'
-    .'|contentPaneRightDetailDivWidth(.*)'
+    .'|contentPaneRightDetailDivWidth(.*)|plgKanban(.*)'
     .'|contentPaneBottomLiveMeeting|contentPaneTopLiveMeeting|plgKanbanname|plgKanbanresponsible|plgKanbanstatus|plgKanbantargetProductVersion)|ckeditorHeight(.*)?';
 if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True){
   if (array_key_exists($id, Parameter::getParamtersList('userParameter'))) {
@@ -66,6 +66,7 @@ if ($id=='disconnect') {
 }
 
 $value=$_REQUEST['value'];
+debugLog("saveDataToSession id=$id, value=$value");
 setSessionValue($id, $value);
 setSessionValue($id, $value);
 if ($id=='browserLocaleDateFormat') {

@@ -163,7 +163,19 @@
         }
       }
     }
-    
+    //ADD qCazelles - Filter by Status
+    // --- Direct filter on status
+    if ( array_key_exists('countStatus',$_REQUEST) and property_exists($obj, 'idStatus') and !$quickSearch) {
+    	$queryWhere.= ($queryWhere=='')?'':' and '.$table.'.'.$obj->getDatabaseColumnName('idStatus').' in (';
+    	for ($i = 1; $i <= $_REQUEST['countStatus']; $i++) {
+    		if ( array_key_exists('objectStatus'.$i,$_REQUEST) and trim($_REQUEST['objectStatus'.$i])!='') {
+    			$queryWhere.= Sql::str($_REQUEST['objectStatus'.$i]).', ';
+    		}
+    	}
+    	$queryWhere = substr($queryWhere, 0, -2); //Remove the last comma & space
+    	$queryWhere.=')';
+    }
+    //END ADD qCazelles
     // --- Restrict to allowed projects : for Projects list
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';

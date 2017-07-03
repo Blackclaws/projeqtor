@@ -123,14 +123,25 @@ abstract class SqlElement {
   // cascade => sub-objects are automaticaly deleted
   // confirm => confirmation will be requested
   private static $_relationShip = array(
-      "AccessProfile" => array("AccessRight" => "cascade"), 
-      "AccessScopeRead" => array("AccessProfile" => "controlStrict"), 
-      "AccessScopeCreate" => array("AccessProfile" => "controlStrict"), 
-      "AccessScopeUpdate" => array("AccessProfile" => "controlStrict"), 
-      "AccessScopeDelete" => array("AccessProfile" => "controlStrict"), 
-      "Assignment" => array("PlannedWork" => "cascade", "Work" => "controlStrict"), 
-      "Action" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
-      "ActionType" => array("Action" => "controlStrict"), 
+      "AccessProfile" => array(
+          "AccessRight" => "cascade"), 
+      "AccessScopeRead" => array(
+          "AccessProfile" => "controlStrict"), 
+      "AccessScopeCreate" => array(
+          "AccessProfile" => "controlStrict"), 
+      "AccessScopeUpdate" => array(
+          "AccessProfile" => "controlStrict"), 
+      "AccessScopeDelete" => array(
+          "AccessProfile" => "controlStrict"), 
+      "Assignment" => array(
+          "PlannedWork" => "cascade", 
+          "Work" => "controlStrict"), 
+      "Action" => array(
+          "Attachment" => "cascade", 
+          "Link" => "cascade", 
+          "Note" => "cascade"), 
+      "ActionType" => array(
+          "Action" => "controlStrict"), 
       "Activity" => array(
           "Activity" => "confirm", 
           "Assignment" => "confirm", 
@@ -141,18 +152,37 @@ abstract class SqlElement {
           "Note" => "cascade", 
           "PlannedWork" => "cascade", 
           "Ticket" => "control"), 
-      "ActivityType" => array("Activity" => "controlStrict"), 
-      "Bill" => array("BillLine" => "confirm", "Note" => "cascade"), 
-      "BillType" => array("Bill" => "controlStrict"), 
-      "CallForTender" => array("Tender" => "controlStrict", "TenderEvaluationCriteria" => "cascade"), 
-      "CallForTenderType" => array("CallForTender" => "controlStrict"), 
-      "CalendarDefinition" => array("Calendar" => "cascade", "Resource" => "controlStrict"), 
-      "Checklist" => array("ChecklistLine" => "cascade"), 
-      "ChecklistDefinition" => array("Checklist" => "control", "ChecklistDefinitionLine" => "cascade"), 
-      "ClientType" => array("Client" => "controlStrict"), 
-      "Command" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
-      "CommandType" => array("Command" => "controlStrict"), 
-      "Component" => array("ProductStructure" => "cascade", "ComponentVersion" => "control"), 
+      "ActivityType" => array(
+          "Activity" => "controlStrict"), 
+      "Bill" => array(
+          "BillLine" => "confirm", 
+          "Note" => "cascade"), 
+      "BillType" => array(
+          "Bill" => "controlStrict"), 
+      "CallForTender" => array(
+          "Tender" => "controlStrict", 
+          "TenderEvaluationCriteria" => "cascade"), 
+      "CallForTenderType" => array(
+          "CallForTender" => "controlStrict"), 
+      "CalendarDefinition" => array(
+          "Calendar" => "cascade", 
+          "Resource" => "controlStrict"), 
+      "Checklist" => array(
+          "ChecklistLine" => "cascade"), 
+      "ChecklistDefinition" => array(
+          "Checklist" => "control", 
+          "ChecklistDefinitionLine" => "cascade"), 
+      "ClientType" => array(
+          "Client" => "controlStrict"), 
+      "Command" => array(
+          "Attachment" => "cascade", 
+          "Link" => "cascade", 
+          "Note" => "cascade"), 
+      "CommandType" => array(
+          "Command" => "controlStrict"), 
+      "Component" => array(
+          "ProductStructure" => "cascade", 
+          "ComponentVersion" => "control"), 
       "ComponentVersion" => array(
           "Requirement" => "control", 
           "TestCase" => "control", 
@@ -167,17 +197,27 @@ abstract class SqlElement {
           "Tender" => "ControlStrict", 
           "Ticket" => "controlStrict", 
           "Version" => "controlStrict"), 
-      "ContextType" => array("Context" => "controlStrict"), 
-      "Client" => array("Project" => "control"), 
+      "ContextType" => array(
+          "Context" => "controlStrict"), 
+      "Client" => array(
+          "Project" => "control"), 
       "Criticality" => array(
           "Issue" => "controlStrict", 
           "Opportunity" => "controlStrict", 
           "Requirement" => "controlStrict", 
           "Risk" => "controlStrict", 
           "Ticket" => "controlStrict"), 
-      "Decision" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
-      "DecisionType" => array("Decision" => "controlStrict"), 
-      "Document" => array("Approver" => "control", "DocumentVersion" => "control", "Link" => "cascade", "Note" => "cascade"), 
+      "Decision" => array(
+          "Attachment" => "cascade", 
+          "Link" => "cascade", 
+          "Note" => "cascade"), 
+      "DecisionType" => array(
+          "Decision" => "controlStrict"), 
+      "Document" => array(
+          "Approver" => "control", 
+          "DocumentVersion" => "control", 
+          "Link" => "cascade", 
+          "Note" => "cascade"), 
       "DocumentVersion" => array("Approver" => "cascade"), 
       "DocumentDirectory" => array("Document" => "control", "DocumentDirectory" => "control"), 
       "DocumentType" => array("Document" => "controlStrict"), 
@@ -428,15 +468,31 @@ abstract class SqlElement {
           "WorkflowStatus" => "cascade"));
 
   private static $_closeRelationShip = array(
-      "AccessScopeRead" => array("AccessProfile" => "control"), 
-      "AccessScopeCreate" => array("AccessProfile" => "control"), 
-      "AccessScopeUpdate" => array("AccessProfile" => "control"), 
-      "AccessScopeDelete" => array("AccessProfile" => "control"), 
-      "Activity" => array("Milestone" => "control", "Activity" => "control", "Ticket" => "control", "Assignment" => "cascade"), 
-      "Document" => array("DocumentVersion" => "cascade"), 
-      "DocumentDirectory" => array("Document" => "control", "DocumentDirectory" => "control"), 
-      "PeriodicMeeting" => array("Meeting" => "control"), 
-      "Product" => array("Version" => "control", "Requirement" => "confirm", "TestCase" => "confirm", "TestSession" => "control"), 
+      "AccessScopeRead" => array(
+          "AccessProfile" => "control"), 
+      "AccessScopeCreate" => array(
+          "AccessProfile" => "control"), 
+      "AccessScopeUpdate" => array(
+          "AccessProfile" => "control"), 
+      "AccessScopeDelete" => array(
+          "AccessProfile" => "control"), 
+      "Activity" => array(
+          "Milestone" => "control", 
+          "Activity" => "control", 
+          "Ticket" => "control", 
+          "Assignment" => "cascade"), 
+      "Document" => array(
+          "DocumentVersion" => "cascade"), 
+      "DocumentDirectory" => array(
+          "Document" => "control", 
+          "DocumentDirectory" => "control"), 
+      "PeriodicMeeting" => array(
+          "Meeting" => "control"), 
+      "Product" => array(
+          "Version" => "control", 
+          "Requirement" => "confirm", 
+          "TestCase" => "confirm", 
+          "TestSession" => "control"), 
       "Project" => array(
           "Action" => "confirm", 
           "Activity" => "control", 
@@ -480,10 +536,16 @@ abstract class SqlElement {
           "Requirement" => "control", 
           "TestCase" => "control", 
           "TestSession" => "control"), 
-      "TestCase" => array("TestCase" => "confirm", "TestCaseRun" => "cascade"), 
-      "TestSession" => array("TestCaseRun" => "cascade"), 
-      "User" => array("Affectation" => "cascade"), 
-      "Version" => array("VersionProject" => "cascade", "TestSession" => "confirm"));
+      "TestCase" => array(
+          "TestCase" => "confirm", 
+          "TestCaseRun" => "cascade"), 
+      "TestSession" => array(
+          "TestCaseRun" => "cascade"), 
+      "User" => array(
+          "Affectation" => "cascade"), 
+      "Version" => array(
+          "VersionProject" => "cascade", 
+          "TestSession" => "confirm"));
 
   /**
    * =========================================================================
@@ -5216,7 +5278,7 @@ abstract class SqlElement {
         $status = 1; // first status always 1 (recorded)
       $planningModeName = 'id' . str_replace ( 'PlanningElement', '', get_class ( $this ) ) . 'PlanningMode';
       $typeElt = null;
-      if (! $type and SqlElement::class_exists ( $typeClassName ) and $typeClassName!="ExpenseDetailType") {
+      if (! $type and SqlElement::class_exists ($typeClassName) and $typeClassName!="ExpenseDetailType") {
         $typeList = SqlList::getList ( $typeClassName );
         $typeElt = reset ( $typeList );
         $type = ($typeElt) ? key ( $typeList ) : null;
@@ -5641,6 +5703,14 @@ abstract class SqlElement {
     $result = new ResultHdl ( ResultHdl::TYPE_CONTROL, $status, null, $control, null, $this->id );
     return $result;
   }
+  //ADD qCazelles - Filter by status
+  public function getExistingStatus() {
+  	$where = 'id in (select distinct idStatus from '.$this->getDatabaseTableName().')';
+  	$status=new Status();
+  	$list=$status->getSqlElementsFromCriteria(null,null,$where,'sortOrder asc');
+  	return $list;
+  }
+  //END ADD qCazelles - Filter by status
 
 }
 

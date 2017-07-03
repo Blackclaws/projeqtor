@@ -59,6 +59,12 @@ class ProductVersionMain extends Version {
   public $_productVersionComposition=array();
   public $_spe_flatStructure;
   public $_spe_tenders;
+  //ADD qCazelles - LANG 2
+  public $_sec_language;
+  public $_productLanguage;
+  public $_sec_context;
+  public $_productContext;
+  //END ADD qCazelles - LANG 2
   public $_Attachment=array();
   public $_Note=array();
   public $_nbColMax=3;
