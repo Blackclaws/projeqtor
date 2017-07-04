@@ -106,7 +106,11 @@ class TestSessionPlanningElementMain extends PlanningElement {
   private static $_databaseColumnName=array(
     "idTestSessionPlanningMode"=>"idPlanningMode"
   );
-    
+  private static $_colCaptionTransposition = array('initialStartDate'=>'requestedStartDate',
+      'initialEndDate'=> 'requestedEndDate',
+      'initialDuration'=>'requestedDuration'
+  );
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -149,7 +153,13 @@ class TestSessionPlanningElementMain extends PlanningElement {
   protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
   }
-  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld=null) {
+    return self::$_colCaptionTransposition;
+  }
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()

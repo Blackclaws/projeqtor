@@ -139,7 +139,10 @@ class ProjectPlanningElementMain extends PlanningElement {
   );   
   
   private static $_databaseTableName = 'planningelement';
-  
+  private static $_colCaptionTransposition = array('initialStartDate'=>'requestedStartDate',
+      'initialEndDate'=> 'requestedEndDate',
+      'initialDuration'=>'requestedDuration'
+  );
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -377,7 +380,13 @@ class ProjectPlanningElementMain extends PlanningElement {
   protected function getStaticFieldsAttributes() {
     return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
   }
-  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld=null) {
+    return self::$_colCaptionTransposition;
+  }
   public function getValidationScript($colName) {
   	$colScript = parent::getValidationScript($colName);
   	if ($colName=='validatedCost' or $colName=='expenseValidatedAmount') {

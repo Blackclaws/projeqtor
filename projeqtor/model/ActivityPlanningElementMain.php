@@ -122,6 +122,11 @@ class ActivityPlanningElementMain extends PlanningElement {
   private static $_databaseColumnName=array(
     "idActivityPlanningMode"=>"idPlanningMode"
   );
+  
+  private static $_colCaptionTransposition = array('initialStartDate'=>'requestedStartDate',
+      'initialEndDate'=> 'requestedEndDate',
+      'initialDuration'=>'requestedDuration'
+  );
     
   /** ==========================================================================
    * Constructor
@@ -172,6 +177,13 @@ class ActivityPlanningElementMain extends PlanningElement {
     return self::$_databaseColumnName;
   }
   
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld=null) {
+    return self::$_colCaptionTransposition;
+  }
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()
