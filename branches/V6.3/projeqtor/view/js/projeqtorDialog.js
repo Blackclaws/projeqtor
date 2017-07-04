@@ -5474,6 +5474,14 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("importData.php", "centerDiv");
   } else if (item == 'Reports') {
     loadContent("reportsMain.php", "centerDiv");
+    
+    //ADD qCazelles - GANTT
+  } else if (item == 'VersionsPlanning') {
+	//loadContent("versionsPlanningMain.php", "centerDiv");
+	
+	loadDialog("dialogVersionsPlanning", null, true, null, false);
+	//END ADD qCazelles - GANTT
+	
   } else if (item == 'UserParameter') {
     loadContent("parameter.php?type=userParameter", "centerDiv");
   } else if (item == 'ProjectParameter') {
@@ -5871,7 +5879,13 @@ function changePlanningColumn(col, status, order) {
     // order=planningColumnOrder.indexOf(col);
     order=dojo.indexOf(planningColumnOrder, col);
     planningColumnOrder[order]='Hidden' + col;
-  }
+  } 
+  
+  
+  moveListColumn();
+  
+  
+  
   if (col=='IdStatus' || col=='Type') {
     validatePlanningColumnNeedRefresh=true;
   }
@@ -5927,6 +5941,9 @@ function movePlanningColumn(source, destination) {
     list+=itemSelected + "|";
     planningColumnOrder[i]=check + itemSelected;
   }
+  
+  //alert(planningColumnOrder);
+  
   var url='../tool/movePlanningColumn.php?orderedList=' + list;
   dojo.xhrPost({
     url : url,
@@ -5982,7 +5999,7 @@ function validateListColumn() {
   showWait();
   dijit.byId('listColumnSelector').closeDropDown();
   loadContent("objectList.php?objectClass=" + dojo.byId('objectClass').value
-      + "&objectId=" + dojo.byId('objectId').value, "listDiv");
+	      + "&objectId=" + dojo.byId('objectId').value, "listDiv");
 }
 
 function resetListColumn() {
@@ -6015,7 +6032,7 @@ function moveListColumn(source, destination) {
     // check=(dijit.byId('checkListColumnSelector'+itemSelected).get('checked'))?'':'hidden';
     list+=itemSelected + "|";
     // listColumnOrder[i]=check+itemSelected;
-  }
+  }  
   // dijit.byId('listColumnSelector').closeDropDown();
   var url='../tool/moveListColumn.php?orderedList=' + list;
   dojo.xhrPost({
@@ -8326,6 +8343,15 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
     }
   });
 }
+
+//ADD qCazelles - GANTT
+function displayVersionsPlanning() {
+	vGanttCurrentLine=-1;
+	cleanContent("centerDiv");
+	loadContent("versionsPlanningMain.php", "centerDiv", "versionsPlanningForm");
+	dijit.byId('dialogVersionsPlanning').hide();
+}
+//END ADD qCazelles - GANTT
 
 function filterDnDList(search,list) {
   var searchVal=dojo.byId(search).value;

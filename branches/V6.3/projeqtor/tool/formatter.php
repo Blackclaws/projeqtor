@@ -449,7 +449,6 @@ function activityStreamDisplayNote ($note,$origin){
   $obj=new $objectClass($objectId,true);
   $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
   $isNoteClosed=getSessionTableValue("closedNotes", $note->id);
-  debugLog($isNoteClosed);
   if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
     echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
     echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');

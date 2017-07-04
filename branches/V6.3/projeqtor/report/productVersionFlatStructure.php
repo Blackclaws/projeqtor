@@ -67,7 +67,12 @@ if ($format=='print') {
   echo "<tr><th style='padding:5px;text-align:center;'>".i18n('sectionComposition',array(i18n($objectClass),intval($objectId).' - '.$item->name)).'</th></tr>';
   foreach ($result as $item) {
     echo "<tr><td>";
-    showProduct($item['class'], $item['id'], $item['name']);
+    //CHANGE by qCazelles - dateComposition
+    //Old
+    //showProduct($item['class'], $item['id'], $item['name']);
+    //NEW
+    showProduct($item['class'], $item['id'], $item['name'], $item['deliveryDate']);
+    //END CHANGE qCazelles - dateComposition
     echo "</td></tr>";
   }
   echo "</table>";
@@ -106,17 +111,38 @@ function getSubItems($item,$result){
   $psList=$ps->getSqlElementsFromCriteria(array('idProductVersion'=>$item->id));
   foreach ($psList as $ps) {
     $comp=new ComponentVersion($ps->idComponentVersion);
-    $result[$ps->idComponentVersion]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
+    //CHANGE by qCazelles - dateComposition
+    //Old
+    //$result[$ps->idComponentVersion]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name);
+    //New
+    $deliveryDate=null;
+    if ($comp->realDeliveryDate) $deliveryDate=$comp->realDeliveryDate;
+    else if ($comp->plannedDeliveryDate) $deliveryDate=$comp->plannedDeliveryDate;
+    else if ($comp->initialDeliveryDate) $deliveryDate=$comp->initialDeliveryDate;
+    $result[$ps->idComponentVersion]=array('class'=>get_class($comp),'id'=>$comp->id,'name'=>$comp->name,'deliveryDate'=>$deliveryDate);
+    //END CHANGE qCazelles - dateComposition
     $result=getSubItems($comp,$result);
   }
   return $result;
 }
 
-
-function showProduct($class,$id,$name) {
+//CHANGE by qCazelles - dateComposition
+//Old
+//function showProduct($class,$id,$name) {
+//New
+function showProduct($class,$id,$name,$deliveryDate=null) {
   $name="#$id - $name";
   $style="width:100%";
   $item=new $class($id);
+  //Old
+  /*
   echo '<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:20px;" class="icon'.$class.'16" >&nbsp;</td>'
       .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td></tr></table>';
+  */
+  //New
+  echo '<table style="'.$style.'"><tr><td style="padding-left:5px;padding-top:2px;width:20px;" class="icon'.$class.'16" >&nbsp;</td>'
+      .'<td style="padding:0px 5px;vertical-align:middle;">'.$name.'</td>';
+      if ($deliveryDate) echo '<td style="padding:0px 5px;vertical-align:middle;">'.htmlFormatDate($deliveryDate).'</td>';
+  echo '</tr></table>';
 }
+//END CHANGE qCazelles - dateComposition

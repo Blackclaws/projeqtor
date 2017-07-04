@@ -43,7 +43,21 @@ class ProductVersionMain extends Version {
   public $idResource;
   public $creationDate;
   public $idUser;
-  public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
+  //CHANGE qCazelles - dateComposition
+  //OLD
+  //public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
+  //NEW
+  public $_tab_4_4 = array('initial', 'planned', 'real', 'done', 'startDate', 'deliveryDate', 'eisDate', 'endDate');
+  //ADD
+  public $initialStartDate;
+  public $plannedStartDate;
+  public $realStartDate;
+  public $isStarted;
+  public $initialDeliveryDate;
+  public $plannedDeliveryDate;
+  public $realDeliveryDate;
+  public $isDelivered;
+  //END ADD qCazelles - dateComposition
   public $initialEisDate;
   public $plannedEisDate;
   public $realEisDate;
@@ -87,8 +101,14 @@ class ProductVersionMain extends Version {
       "scope"=>"hidden"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
+  //CHANGE qCazelles - dateComposition
+  //Old
+  //private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
+  //);
+  //New
+  private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible', 'deliveryDate'=>'versionDeliveryDate'
   );
+  //END CHANGE qCazelles - dateComposition
   
   private static $_databaseColumnName = array('idProductVersionType'=>'idVersionType');
   

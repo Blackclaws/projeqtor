@@ -41,8 +41,21 @@ class Version extends SqlElement {
   public $idContact;
   public $idResource;
   public $creationDate;
-  public $idUser;
-  public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
+  //CHANGE qCazelles - dateComposition
+  //OLD
+  //public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
+  //NEW
+  public $_tab_4_4 = array('initial', 'planned', 'real', 'done', 'startDate', 'deliveryDate', 'eisDate', 'endDate');
+  //ADD
+  public $initialStartDate;
+  public $plannedStartDate;
+  public $realStartDate;
+  public $isStarted;
+  public $initialDeliveryDate;
+  public $plannedDeliveryDate;
+  public $realDeliveryDate;
+  public $isDelivered;
+  //END ADD qCazelles - dateComposition
   public $initialEisDate;
   public $plannedEisDate;
   public $realEisDate;
@@ -190,6 +203,70 @@ class Version extends SqlElement {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
+    //ADD qCazelles - dateComposition
+    if ($colName=="initialStartDate") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (! dijit.byId("plannedStartDate").get("value")) {';
+    	$colScript .= '  dijit.byId("plannedStartDate").set("value",this.value);';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    if ($colName=="realStartDate") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (this.value) {';
+    	$colScript .= '  dijit.byId("isStarted").set("checked",true);';
+    	$colScript .= '} else {;';
+    	$colScript .= '  dijit.byId("isStarted").set("checked",false);';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    if ($colName=="isStarted") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (this.checked) { ';
+    	$colScript .= '  if (! dijit.byId("realStartDate").get("value")) {';
+    	$colScript .= '    var curDate = new Date();';
+    	$colScript .= '    dijit.byId("realStartDate").set("value", curDate); ';
+    	$colScript .= '  }';
+    	$colScript .= '} else {;';
+    	$colScript .= '  dijit.byId("realStartDate").set("value", null); ';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    if ($colName=="initialDeliveryDate") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (! dijit.byId("plannedDeliveryDate").get("value")) {';
+    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("value",this.value);';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    if ($colName=="realDeliveryDate") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (this.value) {';
+    	$colScript .= '  dijit.byId("isDelivered").set("checked",true);';
+    	$colScript .= '} else {;';
+    	$colScript .= '  dijit.byId("isDelivered").set("checked",false);';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    if ($colName=="isDelivered") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'if (this.checked) { ';
+    	$colScript .= '  if (! dijit.byId("realDeliveryDate").get("value")) {';
+    	$colScript .= '    var curDate = new Date();';
+    	$colScript .= '    dijit.byId("realDeliveryDate").set("value", curDate); ';
+    	$colScript .= '  }';
+    	$colScript .= '} else {;';
+    	$colScript .= '  dijit.byId("realDeliveryDate").set("value", null); ';
+    	$colScript .= '};';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
+    //END ADD qCazelles - dateComposition
     return $colScript;
   }
   
@@ -351,8 +428,203 @@ class Version extends SqlElement {
       $sub2->isAutoSub=1;
       $sub2->save();
     }
-  
   }
+  
+  //ADD qCazelles - GANTT
+  
+  private static $tabHasChild = array();
+  private static $cpt = 0;
+  private static $existingIDs = array();
+  private static $tabDirectChild = array();
+  
+  public function treatmentVersionPlanning ($parentVersion) {    
+    if ($this->directChild($parentVersion)) {
+      $this->displayVersion($parentVersion);
+      
+      if ($this->hasChild()) {
+        foreach (ProductVersionStructure::getComposition($this->id) as $key => $idComponentVersion) {
+          $componentVersion = new ComponentVersion($idComponentVersion);
+          $componentVersion->treatmentVersionPlanning($this);
+        }
+      }
+    }
+  }
+  
+  public function displayVersion($parentVersion = NULL) {    
+    if (self::$cpt === 1) {
+      echo ',';
+    }
+    
+    if ( !isset($this->nbOccurences)) {
+      $this->nbOccurences = 1;
+    }
+
+    while (in_array($this->id.'.'.$this->nbOccurences, self::$existingIDs)) {
+      $this->nbOccurences += 1;
+    }
+    
+    $idPE = $this->id.'.'.$this->nbOccurences;
+    self::$existingIDs[] = $idPE;
+    
+    echo '{';
+    echo '"id":"'.$idPE.'"';
+    echo ',"refname":"'.$this->name.'"';
+    //echo ',"refname":"'.$this->name.' - ID : '.$idPE.' - '.(($parentVersion != NULL) ? "TOPID : $parentVersion->id.$parentVersion->nbOccurences" : "").'"';
+    
+    if ($parentVersion != NULL) {
+      echo ',"topid":"'.$parentVersion->id.'.'.$parentVersion->nbOccurences.'"';
+      echo ',"topreftype":"'.$parentVersion->scope.'VersionhasChild"';
+      echo ',"toprefid":"'.$parentVersion->id.'"';
+    }
+    
+    if ( !$this->hasChild()) {
+      echo ',"reftype":"'.$this->scope.'Version"';
+    }
+    else {
+      echo ',"reftype":"'.$this->scope.'VersionhasChild"';
+    }
+    
+    echo ',"refid":"'.$this->id.'"';
+    echo ',"collapsed":"0"';
+    
+    $startDate = '';
+    if ($this->realStartDate) {
+      $startDate = $this->realStartDate;
+    }
+    elseif ($this->plannedStartDate) {
+      $startDate = $this->plannedStartDate;
+    }
+    elseif ($this->initialStartDate) {
+      $startDate = $this->initialStartDate;
+    }
+    
+    $deliveryDate = '';
+    if ($this->realDeliveryDate) {
+      $deliveryDate = $this->realDeliveryDate;
+    }
+    elseif ($this->plannedDeliveryDate) {
+      $deliveryDate = $this->plannedDeliveryDate;
+    }
+    elseif ($this->initialDeliveryDate) {
+      $deliveryDate = $this->initialDeliveryDate;
+    }
+    
+    $ownDate = true;
+    if ($parentVersion != NULL and empty($startDate)) {
+      if ($parentVersion->realStartDate) {
+        $startDate = $parentVersion->realStartDate;
+      }
+      elseif ($parentVersion->plannedStartDate) {
+        $startDate = $parentVersion->plannedStartDate;
+      }
+      elseif ($parentVersion->initialStartDate) {
+        $startDate = $parentVersion->initialStartDate;
+      }
+      else {
+        $startDate = $parentVersion->myStartDate;
+      }
+      $ownDate = false;
+    }
+    
+    if ($parentVersion != NULL and empty($deliveryDate)) {
+      if ($parentVersion->realDeliveryDate) {
+        $deliveryDate = $parentVersion->realDeliveryDate;
+      }
+      elseif ($parentVersion->plannedDeliveryDate) {
+        $deliveryDate = $parentVersion->plannedDeliveryDate;
+      }
+      elseif ($parentVersion->initialDeliveryDate) {
+        $deliveryDate = $parentVersion->initialDeliveryDate;
+      }
+      else {
+        $deliveryDate = $parentVersion->myDeliveryDate;
+      }
+      $ownDate = false;
+    }
+    
+    if ($parentVersion == NULL and empty($startDate) and empty($deliveryDate)) {
+      $ownDate = false;
+    }
+    
+    if ($ownDate) {
+      echo ',"owndate":"1"';
+    }
+    else {
+      echo ',"owndate":"0"';
+    }
+    
+    $status = '';
+    if ($this->idle) {
+      $status = i18n('statusGanttClosed');
+    }
+    elseif (!$this->isStarted and !empty($this->plannedStartDate) and strtotime($this->plannedStartDate) - time() < 0) {
+      $status = i18n('statusGanttStartDelayed');
+    }
+    elseif (!$this->isStarted) {
+      $status = i18n('statusGanttNotStarted');
+    }
+    elseif ($this->isDelivered) {
+      $status = i18n('statusGanttDelivered');
+    }
+    elseif ($this->isStarted and (empty($deliveryDate) or strtotime($this->plannedDeliveryDate) - time() > 0)) {
+      $status = i18n('statusGanttInProgress');
+    }
+    elseif (!$this->isDelivered and !empty($this->plannedDeliveryDate) and strtotime($this->plannedDeliveryDate) - time() < 0) {
+      $status = i18n('statusGanttDeliveryDelayed');
+    }
+    
+    echo ',"status":"'.$status.'"';
+    
+    $this->myStartDate = $startDate;
+    $this->myDeliveryDate = $deliveryDate;
+    
+    echo ',"realstartdate":"'.$startDate.'"';
+    echo ',"realenddate":"'.$deliveryDate.'"';
+    echo '}';
+    self::$cpt = 1;
+  }
+  
+  private function directChild($parentVersion) {
+    
+    if (array_key_exists($parentVersion->id, self::$tabDirectChild)) {
+      if (array_key_exists($this->id, self::$tabDirectChild[$parentVersion->id])) {
+        return self::$tabDirectChild[$parentVersion->id][$this->id];
+      }
+    }
+    
+    $query = 'select id from productversionstructure where idComponentVersion = "'.$this->id.'" and idProductVersion="'.$parentVersion->id.'"';
+    $result = Sql::query($query);
+    $line = Sql::fetchLine($result);
+    if ($line) {
+      $directChild = true;
+    }
+    else {
+      $directChild = false;
+    }
+    self::$tabDirectChild[$parentVersion->id][$this->id] = $directChild;
+    return $directChild;
+  }
+  
+  private function hasChild() {
+    
+    if (array_key_exists($this->id, self::$tabHasChild)) {
+      return self::$tabHasChild[$this->id];
+    }
+    
+    $query = 'select * from productversionstructure where idProductVersion = "'.$this->id.'"';
+    $result = Sql::query($query);
+    $line = Sql::fetchLine($result);
+    if ($line) {
+      $hasChild = true;
+    }
+    else {
+      $hasChild = false;
+    }
+    self::$tabHasChild[$this->id] = $hasChild;
+    return $hasChild;
+  }
+  
+  //END ADD qCazelles - GANTT
 
 }
 ?>

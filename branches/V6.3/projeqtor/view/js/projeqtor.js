@@ -174,10 +174,30 @@ function refreshJsonList(className, keepUrl) {
 function refreshJsonPlanning() {
   if (dojo.byId("resourcePlanning")) {
     url = "../tool/jsonResourcePlanning.php";
+    //ADD qCazelles - GANTT
+  } else if (dojo.byId("versionsPlanning")) {
+	url = "../tool/jsonVersionsPlanning.php";
+	//END ADD qCazelles - GANTT
   } else {
     url = "../tool/jsonPlanning.php";
   }
   param = false;
+  
+  //ADD qCazelles - GANTT
+  if (dojo.byId('nbPvs')) {
+	  url += (param) ? "&" : "?";
+	  for (var i = 0; i < dojo.byId('nbPvs').value; i++) {
+		  if (i != 0) {
+			  url += "&";
+		  }
+		  url += "pvNo" + i + "=" + dojo.byId('pvNo' + i).value;
+	  }
+	  if (dojo.byId('nbPvs').value != 0) {
+		  param = true;
+	  }
+  }
+  //END ADD qCazelles - GANTT
+  
   if (dojo.byId('listShowIdle')) {
     if (dojo.byId('listShowIdle').checked) {
       url += (param) ? "&" : "?";
@@ -808,8 +828,12 @@ function loadContent(page, destination, formName, isResultMessage,
               || (page.indexOf("jsonResourcePlanning.php") >= 0 && dijit.byId("startDatePlanView"))
               || page.indexOf("portfolioPlanningMain.php") >= 0
               || page.indexOf("portfolioPlanningList.php") >= 0
-              || (page.indexOf("jsonPortfolioPlanning.php") >= 0 && dijit.byId("startDatePlanView"))) {
-            drawGantt();
+              || (page.indexOf("jsonPortfolioPlanning.php") >= 0 && dijit.byId("startDatePlanView"))
+              //ADD qCazelles - GANTT
+              || page.indexOf("versionsPlanningMain.php") >= 0 || page.indexOf("versionsPlanningList.php") >= 0
+              || (page.indexOf("jsonVersionsPlanning.php") >= 0 && dijit.byId("startDatePlanView"))) {
+        	  //END ADD qCazelles - GANTT
+        	drawGantt();
             selectPlanningRow();
             if (!silent)
               hideWait();
@@ -2467,7 +2491,9 @@ function drawGantt() {
       }
       // pGroup : is the task a group one ?
       var pGroup = (item.elementary == '0') ? 1 : 0;
-      if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Construction' ) pGroup=1;
+      //MODIF qCazelles - GANTT
+      if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Construction' || item.reftype=='ProductVersionhasChild' || item.reftype=='ComponentVersionhasChild' ) pGroup=1;
+     //END MODIF qCazelles - GANTT
       // runScript : JavaScript to run when click on task (to display the
       // detail of the task)
       var runScript = "runScript('" + item.reftype + "','" + item.refid + "','"+ item.id + "');";
@@ -2491,8 +2517,19 @@ function drawGantt() {
       } else if (! pGroup && item.reftype!='Milestone' && ( ! item.assignedwork || item.assignedwork==0 ) && ( ! item.leftwork || item.leftwork==0 ) && ( ! item.realwork || item.realwork==0 ) ) { // No workassigned : greyed green
         pColor = 'aec5ae';
       }
+      
+      //ADD by qCazelles - GANTT
+      if (item.owndate == '0') {
+    	  pColor = 'BB5050';
+      }
+      else if(item.owndate == '1') {
+    	  pColor = '50BB50';
+      }
+      //END ADD qCazelles - GANTT
+      
+      
       // pColor = '9099BB';
-      // pMile : is it a milestone ?
+      // pMile : is it a milestone ?      
       var pMile = (item.reftype == 'Milestone') ? 1 : 0;
       if (pMile) {
         pStart = pEnd;
@@ -2546,6 +2583,14 @@ function runScript(refType, refId, id) {
   if (refType == 'Fixed' || refType=='Construction') {
     refType = 'Project';
   }
+  //ADD by qCazelles - GANTT
+  if (refType == 'ProductVersionhasChild') {
+	  refType = 'ProductVersion';
+  }
+  if (refType == 'ComponentVersionhasChild') {
+	  refType = 'ComponentVersion';
+  }
+  //END ADD qCazelles - GANTT
   if (waitingForReply) {
     showInfo(i18n("alertOngoingQuery"));
     return;
@@ -4251,8 +4296,6 @@ function switchNoteStatus(idNote) {
       node.className="iconButtonCollapseHide16";
     });
   } else {
-    console.log(noteDiv.style.height);
-    console.log(noteDiv.offsetHeight);
     if (noteDiv.offsetHeight) notesHeight[idNote]=noteDiv.offsetHeight;
     noteDiv.style.maxHeight="0px";
     noteDiv.style.height="0px";
