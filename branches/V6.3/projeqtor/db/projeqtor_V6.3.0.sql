@@ -124,7 +124,7 @@ CREATE TABLE `${prefix}language` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `${prefix}resource` ADD COLUMN `idLang` int(12) DEFAULT NULL;
+ALTER TABLE `${prefix}resource` ADD COLUMN `idLanguage` int(12) DEFAULT NULL;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
 (178,'menuLanguage', 36, 'object', 795, 'ReadWriteList', 0, 'ListOfValues');
@@ -155,3 +155,25 @@ CREATE TABLE `${prefix}productcontext` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --END ADD qCazelles - Lang-Context
+
+--- ADD qCazelles - dateComposition
+ALTER TABLE `${prefix}version` ADD `isStarted` INT(1) UNSIGNED NULL DEFAULT '0' AFTER `idle`;
+ALTER TABLE `${prefix}version` ADD `realStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
+ALTER TABLE `${prefix}version` ADD `plannedStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
+ALTER TABLE `${prefix}version` ADD `initialStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
+
+ALTER TABLE `${prefix}version` ADD `isDelivered` INT(1) UNSIGNED NULL DEFAULT '0' AFTER `isStarted`;
+ALTER TABLE `${prefix}version` ADD `realDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
+ALTER TABLE `${prefix}version` ADD `plannedDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
+ALTER TABLE `${prefix}version` ADD `initialDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
+--END ADD qCazelles - dateComposition
+
+--ADD qCazelles - GANTT
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
+(179, 'menuVersionsPlanning', 173, 'item', 390, NULL, 0, 'Work');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1, 179, 1);
+--END ADD qCazelles - GANTT
+
+

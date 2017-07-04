@@ -1235,6 +1235,16 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconUserParameter22 { background-image: url(customIcons/blue/iconUserParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconUserParameter16 { background-image: url(customIcons/blue/iconUserParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/*ADD qCazelles - GANTT*/
+
+/* V */
+
+.ProjeQtOrFlatBlue .iconVersionsPlanning32 { background-image: url(customIcons/blue/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconVersionsPlanning22 { background-image: url(customIcons/blue/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconVersionsPlanning16 { background-image: url(customIcons/blue/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - GANTT*/
+
 /* W */
 
 .ProjeQtOrFlatBlue .iconWork32 { background-image: url(customIcons/blue/iconWork.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -2423,6 +2433,16 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconUserParameter22 { background-image: url(customIcons/red/iconUserParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconUserParameter16 { background-image: url(customIcons/red/iconUserParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/*ADD qCazelles - GANTT*/
+
+/* V */
+
+.ProjeQtOrFlatRed .iconVersionsPlanning32 { background-image: url(customIcons/red/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconVersionsPlanning22 { background-image: url(customIcons/red/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconVersionsPlanning16 { background-image: url(customIcons/red/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - GANTT*/
+
 /* W */
 
 .ProjeQtOrFlatRed .iconWork32 { background-image: url(customIcons/red/iconWork.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -3610,6 +3630,17 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconUserParameter22 { background-image: url(customIcons/green/iconUserParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconUserParameter16 { background-image: url(customIcons/green/iconUserParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/*ADD qCazelles - GANTT*/
+
+/* V */
+
+.ProjeQtOrFlatGreen .iconVersionsPlanning32 { background-image: url(customIcons/green/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconVersionsPlanning22 { background-image: url(customIcons/green/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconVersionsPlanning16 { background-image: url(customIcons/green/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - GANTT*/
+
+
 /* W */
 
 .ProjeQtOrFlatGreen .iconWork32 { background-image: url(customIcons/green/iconWork.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -4789,6 +4820,16 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconUserParameter32 { background-image: url(customIcons/grey/iconUserParameter.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconUserParameter22 { background-image: url(customIcons/grey/iconUserParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconUserParameter16 { background-image: url(customIcons/grey/iconUserParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*ADD qCazelles - GANTT*/
+
+/* V */
+
+.ProjeQtOrFlatGrey .iconVersionsPlanning32 { background-image: url(customIcons/grey/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconVersionsPlanning22 { background-image: url(customIcons/grey/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconVersionsPlanning16 { background-image: url(customIcons/grey/iconVersionsPlanning.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles*/
 
 /* W */
 

@@ -280,6 +280,7 @@ class Parameter extends SqlElement {
       case 'filterByStatus':
       case 'displayLanguage' :
       case 'displayContext' :
+     	case 'displayMilestonesStartDelivery' :
       //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
@@ -685,6 +686,7 @@ class Parameter extends SqlElement {
       	                     //ADD by qCazelles 
       	                     'sectionProductAndComponent'=>'section',
       	                        'displayBusinessFeature'=>'list',
+      	                        'displayMilestonesStartDelivery'=>'list',
                               	'displayLanguage'=>'list',
                               	'displayContext'=>'list',
                               	//END ADD qCazelles

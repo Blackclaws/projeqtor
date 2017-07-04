@@ -741,11 +741,27 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + '</td></tr></table>'
             +'</span>';
         } else {
+        	
+        	//ADD qCazelles - GANTT
+        	var tmp = vTaskList[i].getClass();
+        	if (vTaskList[i].getClass() == 'ComponentVersionhasChild') {
+        		tmp = 'ComponentVersion';
+        	}
+        	else if (vTaskList[i].getClass() == 'ProductVersionhasChild') {
+        		tmp = 'ProductVersion';
+        	}
+        	//END ADD qCazelles - GANTT
+        	
           vLeftTable += '<span class="dojoDndHandle handleCursor">'
             + '<table><tr><td>'
             + '<img style="width:8px" src="css/images/iconDrag.gif" />'
             + '</td><td class="ganttIconBackground">'
-            + '<div class="icon'+vTaskList[i].getClass()+'16" style="width:16px;height:16px;" >&nbsp;</div>'
+            //MODIF qCazelles - GANTT
+            //Old
+            //+ '<div class="icon'+ vTaskList[i].getClass() +'16" style="width:16px;height:16px;" >&nbsp;</div>'
+            //New
+            + '<div class="icon'+ tmp +'16" style="width:16px;height:16px;" >&nbsp;</div>'
+            //END MODIF qCazelles - GANTT
             + '</td></tr></table>'
             +'</span>';
         }
@@ -763,11 +779,21 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var levlWidth = (levl-1) * 16;
         vLeftTable +='<table><tr><td>';
         vLeftTable += '<div style="width:' + levlWidth + 'px;">';
-        if (vTaskList[i].getGroup()) {
+        
+        
+        //MODIF qCazelles - GANTT
+        //Old
+        //if (vTaskList[i].getGroup())
+        //New
+        if (vTaskList[i].getGroup() && vTaskList[i].getClass() != 'ProductVersionhasChild' &&  vTaskList[i].getClass() != 'ComponentVersionhasChild') {
+        //END MODIF qCazelles - GANTT
           vLeftTable += '<div style="margin-left:3px;width:8px;">&nbsp</div>';
         } else {
           vLeftTable += '<div style="margin-left:3px;width:8px;background-color:#'+vTaskList[i].getColor()+'">&nbsp</div>';
         }
+        
+        
+        
         vLeftTable += '</div>';
         vLeftTable +='</td><td>';
         if( vTaskList[i].getGroup()) {

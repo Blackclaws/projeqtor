@@ -474,13 +474,39 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $type=$classObj . 'Type';
   $idType='id' . $type;
   $objType=null;
+  $defaultProject=null;
+  if (sessionValueExists('project') and getSessionValue('project') != '*') {
+  	$defaultProject=getSessionValue('project');
+  } else {
+  	$table=SqlList::getList('Project', 'name', null);
+  	$restrictArray=array();
+  	if (! $user->_accessControlVisibility) {
+  		$user->getAccessControlRights(); // Force setup of accessControlVisibility
+  	}
+  	if ($user->_accessControlVisibility != 'ALL') {
+  		$restrictArray=$user->getVisibleProjects(true);
+  	}
+  	if (count($table) > 0) {
+  		foreach ( $table as $idTable => $valTable ) {
+  			if (count($restrictArray)==0 or isset($restrictArray[$idTable])) {
+  				$firstId=$idTable;
+  				break;
+  			}
+  		}
+  		$defaultProject=$firstId;
+  	}
+  }
   if (property_exists($obj, $idType)) {
     if (!$obj->id) {
       if (SqlElement::class_exists($type)) {
+      	$listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
-        $first_value = reset($listType);
-        $first_key = key($listType);
-        $objType=new $type($first_key);
+        foreach($listType as $keyType=>$valType) {
+        	if (in_array($keyType, $listRestrictType)) {
+        		$objType=new $type($keyType);
+        		break;
+        	}
+        }
       }
     } else {
       if (SqlElement::class_exists($type)) $objType=new $type($obj->$idType);
@@ -490,10 +516,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $idType='id' . $type;
     if (!$obj->id) {
       if (SqlElement::class_exists($type)) {
+        $listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
-        $first_value = reset($listType);
-        $first_key = key($listType);
-        $objType=new $type($first_key);
+        foreach($listType as $keyType=>$valType) {
+        	if (in_array($keyType, $listRestrictType)) {
+        		$objType=new $type($keyType);
+        		break;
+        	}
+        }
       }
     } else {
       if (SqlElement::class_exists($obj->refType)) {
@@ -535,7 +565,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
-  $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
+  $arrayRequired=$obj->getExtraRequiredFields(($objType)?$objType->id:null ); // will define extra required fields, depending on status, planning mode...
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
@@ -583,6 +613,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $decomp=explode("_", $col);
       $internalTableCols=$decomp [2];
       $internalTableRows=$decomp [3];
+      //ADD qCazelles - dateComposition
+      if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') $internalTableRows -= 2;
+      //END ADD qCazelles - dateComposition
       $internalTableSpecial='';
       if (count($decomp) > 4) {
         $internalTableSpecial=$decomp [4];
@@ -606,6 +639,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       // 
       $internalTable=$internalTableCols * $internalTableRows;
+      //ADD qCazelles - dateComposition
+      if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') {
+      	unset($val[4]);
+      	unset($val[5]);
+      }
+      //END ADD qCazelles - dateComposition
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth=($detailWidth) / $nbCol;
@@ -640,7 +679,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           } else if ($val [$i] and $val[$i]!='empty') {
           // old
 //          } else if ($val [$i]) {
-// END CHANGE BY Marc TABARY - 2017-03-31 - COLEMPTY              
+// END CHANGE BY Marc TABARY - 2017-03-31 - COLEMPTY       	
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;"></div>';
@@ -933,6 +972,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($col=='idBusinessFeature' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') {
         $hide=true;
       }
+      //ADD qCazelles - dateComposition
+      if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
+      	$hide=true; continue;
+      }
+      //END ADD qCazelles - dateComposition
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
         $hide=true;
       }
@@ -1679,28 +1723,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               $critFld='idProject';
               $critVal=$obj->idProject;
             } else if ($obj->isAttributeSetToField('idProject', 'required') or (sessionValueExists('project') and getSessionValue('project') != '*')) {
-              if (sessionValueExists('project') and getSessionValue('project') != '*') {
-                $critFld='idProject';
-                $critVal=getSessionValue('project');
-              } else {
-                $table=SqlList::getList('Project', 'name', null);
-                $restrictArray=array();
-                if (! $user->_accessControlVisibility) {
-                  $user->getAccessControlRights(); // Force setup of accessControlVisibility
-                }
-                if ($user->_accessControlVisibility != 'ALL') {
-                  $restrictArray=$user->getVisibleProjects(true);
-                }
-                if (count($table) > 0) {
-                  foreach ( $table as $idTable => $valTable ) {
-                    if (count($restrictArray)==0 or isset($restrictArray[$idTable])) {
-                      $firstId=$idTable;
-                      break;
-                    }
-                  }
-                  $critFld='idProject';
-                  $critVal=$firstId;
-                }
+              if ($defaultProject) {
+              	$critFld='idProject';
+              	$critVal=$defaultProject;
               }
             }
           }
@@ -3772,6 +3797,38 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     echo formatUserThumb($userId, $userName, 'Creator');
     echo formatDateThumb($creationDate, null);
     echo formatCommentThumb($comp->comment);
+    //ADD qCazelles - dateComposition
+    
+    if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') == 'YES' and property_exists($compObj,'realDeliveryDate')) {
+      if ($compObj->realDeliveryDate) {
+        $deliveryDate = $compObj->realDeliveryDate;
+      }
+      elseif ($compObj->plannedDeliveryDate) {
+        $deliveryDate = $compObj->plannedDeliveryDate;
+      }
+      elseif ($compObj->initialDeliveryDate) {
+        $deliveryDate = $compObj->initialDeliveryDate;
+      }
+       
+      $errorDatesDelivery = false;
+      if ($way=='composition') {
+        if (isset($deliveryDate) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate) {
+          $errorDatesDelivery = true;
+        }
+      }
+      elseif ($way=='structure') {
+        if (isset($deliveryDate) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate) {
+          $errorDatesDelivery = true;
+        }
+      }
+       
+      if (isset($deliveryDate)) {
+        echo '<br />'.(($errorDatesDelivery) ? '<span style="color: red;">' : '').htmlFormatDate($deliveryDate).(($errorDatesDelivery) ? '</span>' : '').' ';
+      }
+    }
+     
+    //END ADD qCazelles - dateComposition
+
     echo '</td>';
     echo '</tr>';
   }

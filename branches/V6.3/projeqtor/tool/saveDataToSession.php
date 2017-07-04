@@ -66,7 +66,6 @@ if ($id=='disconnect') {
 }
 
 $value=$_REQUEST['value'];
-debugLog("saveDataToSession id=$id, value=$value");
 setSessionValue($id, $value);
 setSessionValue($id, $value);
 if ($id=='browserLocaleDateFormat') {
