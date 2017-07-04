@@ -467,13 +467,39 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $type=$classObj . 'Type';
   $idType='id' . $type;
   $objType=null;
+  $defaultProject=null;
+  if (sessionValueExists('project') and getSessionValue('project') != '*') {
+  	$defaultProject=getSessionValue('project');
+  } else {
+  	$table=SqlList::getList('Project', 'name', null);
+  	$restrictArray=array();
+  	if (! $user->_accessControlVisibility) {
+  		$user->getAccessControlRights(); // Force setup of accessControlVisibility
+  	}
+  	if ($user->_accessControlVisibility != 'ALL') {
+  		$restrictArray=$user->getVisibleProjects(true);
+  	}
+  	if (count($table) > 0) {
+  		foreach ( $table as $idTable => $valTable ) {
+  			if (count($restrictArray)==0 or isset($restrictArray[$idTable])) {
+  				$firstId=$idTable;
+  				break;
+  			}
+  		}
+  		$defaultProject=$firstId;
+  	}
+  }
   if (property_exists($obj, $idType)) {
     if (!$obj->id) {
       if (SqlElement::class_exists($type)) {
+      	$listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
-        $first_value = reset($listType);
-        $first_key = key($listType);
-        $objType=new $type($first_key);
+        foreach($listType as $keyType=>$valType) {
+        	if (in_array($keyType, $listRestrictType)) {
+        		$objType=new $type($keyType);
+        		break;
+        	}
+        }
       }
     } else {
       if (SqlElement::class_exists($type)) $objType=new $type($obj->$idType);
@@ -483,10 +509,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $idType='id' . $type;
     if (!$obj->id) {
       if (SqlElement::class_exists($type)) {
+        $listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
-        $first_value = reset($listType);
-        $first_key = key($listType);
-        $objType=new $type($first_key);
+        foreach($listType as $keyType=>$valType) {
+        	if (in_array($keyType, $listRestrictType)) {
+        		$objType=new $type($keyType);
+        		break;
+        	}
+        }
       }
     } else {
       if (SqlElement::class_exists($obj->refType)) {
@@ -528,7 +558,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
-  $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
+  $arrayRequired=$obj->getExtraRequiredFields(($objType)?$objType->id:null ); // will define extra required fields, depending on status, planning mode...
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
@@ -1628,28 +1658,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               $critFld='idProject';
               $critVal=$obj->idProject;
             } else if ($obj->isAttributeSetToField('idProject', 'required') or (sessionValueExists('project') and getSessionValue('project') != '*')) {
-              if (sessionValueExists('project') and getSessionValue('project') != '*') {
-                $critFld='idProject';
-                $critVal=getSessionValue('project');
-              } else {
-                $table=SqlList::getList('Project', 'name', null);
-                $restrictArray=array();
-                if (! $user->_accessControlVisibility) {
-                  $user->getAccessControlRights(); // Force setup of accessControlVisibility
-                }
-                if ($user->_accessControlVisibility != 'ALL') {
-                  $restrictArray=$user->getVisibleProjects(true);
-                }
-                if (count($table) > 0) {
-                  foreach ( $table as $idTable => $valTable ) {
-                    if (count($restrictArray)==0 or isset($restrictArray[$idTable])) {
-                      $firstId=$idTable;
-                      break;
-                    }
-                  }
-                  $critFld='idProject';
-                  $critVal=$firstId;
-                }
+              if ($defaultProject) {
+              	$critFld='idProject';
+              	$critVal=$defaultProject;
               }
             }
           }
