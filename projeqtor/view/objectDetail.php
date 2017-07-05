@@ -1455,6 +1455,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 $min=$obj->$start;
               }
             }
+            if ($val and $val<$min) $val=$min;
             if ($min) echo ' dropDownDefaultValue="'.$min.'" ';
           }
           echo ' constraints="{datePattern:\'' . getSessionValue('browserLocaleDateFormatJs') . '\', min:\'' .$min. '\' }" ';
