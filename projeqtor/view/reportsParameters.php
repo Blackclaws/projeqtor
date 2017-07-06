@@ -470,7 +470,7 @@ foreach ($listParam as $param) {
        <?php if (! $canChangeResource) echo ' readonly ';?>
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
-       <?php htmlDrawOptionForReference('idResource', $defaultValue, null, false); ?>
+       <?php htmlDrawOptionForReference('idResource', $defaultValue, null, false); ?> 
      </select>    
     </td>
     </tr>
@@ -615,6 +615,87 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php 
+	//ADD qCazelles - graphTickets
+  } else if ($param->paramType=='priorityList') { 
+  	if (Parameter::getGlobalParameter('filterTicketReportPriority') != 'YES') {
+  		continue;
+  	}
+?>
+  	<tr>
+  	<td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+  	<td>
+  		<table>
+  			<tr>
+    <?php 
+    $listPriorities = SqlList::getList('Priority');
+    
+    foreach ($listPriorities as $idPriority => $priorityName) {
+    	?>
+		    	<td>
+		    		<table>
+		    			<tr>
+		    				<td>&nbsp;<?php echo $priorityName; ?>&nbsp;</td>
+		    			</tr>
+		    			<tr>
+		    				<td style="text-align:center">
+		    				<!-- 
+					    		<select name="priorities[<?php echo $idPriority; ?>]">
+					    			<option value="YES"><?php echo i18n('displayYes'); ?></option>
+					    			<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    		</select>
+					    	-->
+    							<div dojoType="dijit.form.CheckBox" type="checkbox" 
+    								name="priorities[<?php echo $idPriority;?>]" style="">
+    							</div>
+					    	</td>
+					    </tr>
+					</table>
+				</td>	
+    	<?php	
+    }
+    ?>
+    	<td>
+    		<table>
+    			<tr>
+    				<td>&nbsp;<?php echo i18n('undefinedPriority');?>&nbsp;</td>
+    			</tr>
+    			<tr>
+    				<td style="text-align:center">
+    				<!-- 
+    					<select name="priorities[undefined]"">
+					    	<option value="YES"><?php echo i18n('displayYes');?></option>
+					    	<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    </select>
+					-->
+					<div dojoType="dijit.form.CheckBox" type="checkbox" 
+						name="priorities[undefined]" style="">
+					</div>
+					</td>
+    			</tr>
+    		</table>
+    	</td>
+    
+    		</tr>
+    	</table>
+    </td>
+    </tr>
+<?php  
+
+  } else if ($param->paramType=='intInput') {
+  	$defaultValue='';
+  	if ($param->defaultValue) {
+  		$defaultValue=$param->defaultValue;	
+  	}
+?>
+	<tr>
+	<td class="label"><label><?php echo i18n('numberOfDays');?>&nbsp;:&nbsp;</label></td>
+	<td>
+	<div dojoType="dijit.form.TextBox" type="text" class="input" style="width: 150px" id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" value="<?php echo $defaultValue;?>" />
+	</td>
+	</tr>
+<?php
+
+  	//END ADD qCazelles - graphTickets
   } else {
     $defaultValue='';
     if ($param->defaultValue) {

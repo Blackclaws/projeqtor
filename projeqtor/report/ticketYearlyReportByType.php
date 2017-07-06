@@ -70,6 +70,15 @@ if (array_key_exists('responsible',$_REQUEST)) {
 	$paramResponsible = Security::checkValidId($paramResponsible); // only allow digits
 };
 
+//ADD qCazelles - graphTickets
+$paramPriorities=array();
+if (array_key_exists('priorities',$_REQUEST)) {
+	foreach ($_REQUEST['priorities'] as $idPriority => $boolean) {
+		$paramPriorities[] = $idPriority;
+	}
+}
+//END ADD qCazelles - graphTickets
+
 $user=getSessionUser();
 
 $periodType='year';
@@ -99,6 +108,29 @@ if ($paramIssuer!="") {
 if ($paramResponsible!="") {
   $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
 }
+//ADD qCazelles - graphTickets
+if (!empty($paramPriorities)) {
+	$priority = new Priority();
+	$priorities = $priority->getSqlElementsFromCriteria(null, false, null, 'id asc');
+	
+	$prioritiesDisplayed = array();
+	for ($i = 0; $i < count($priorities); $i++) {
+		if ( in_array($i+1, $paramPriorities)) {
+			$prioritiesDisplayed[] = $priorities[$i];
+		}
+	}
+	
+	$headerParameters.= i18n("colPriority") .' : ';
+	foreach ($prioritiesDisplayed as $priority) {
+		$headerParameters.=$priority->name . ', ';
+	}
+	$headerParameters=substr($headerParameters, 0, -2);
+	
+	if ( in_array('undefined', $paramPriorities)) {
+		$headerParameters.=', '.i18n('undefinedPriority');
+	}
+}
+//END ADD qCazelles - graphTickets
 include "header.php";
 
 $lst=SqlList::getList('TicketType');

@@ -281,6 +281,8 @@ class Parameter extends SqlElement {
       case 'displayLanguage' :
       case 'displayContext' :
      	case 'displayMilestonesStartDelivery' :
+      case 'filterTicketReportPriority' :
+      case 'projectRestriction' :
       //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
@@ -667,9 +669,9 @@ class Parameter extends SqlElement {
       	                       'fontForPDF'=>'list',
       	                       "editor"=>'list',
       	                       "scaytAutoStartup"=>'list',
-      	                       'allowTypeRestrictionOnProject'=>'list',
-      	                       
+      	                       'allowTypeRestrictionOnProject'=>'list',                
       	                       'limitPlanningActivity'=>'list',
+      	                       'filterTicketReportPriority'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  
@@ -682,6 +684,8 @@ class Parameter extends SqlElement {
       	                       'displayHistory'=>'list',
      	                       //ADD by qCazelles - Filter by Status
       	                       'filterByStatus'=>'list',
+// Babynus : feature disabled do to regressions
+//      	                       'projectRestriction'=>'list',
      	                       //END ADD qCazelles
       	                     //ADD by qCazelles 
       	                     'sectionProductAndComponent'=>'section',
@@ -695,8 +699,7 @@ class Parameter extends SqlElement {
                             	//'sectionVersionNameFormat'=>'section',
                               	'versionNameAutoformat'=>'list',
                               	'versionNameAutoformatSeparator'=>'text',
-                              	'subscriptionAuto'=>'list',
-      	
+                              	'subscriptionAuto'=>'list',     	
       	                     'sectionFiles'=>'section',
       	                       'paramAttachmentDirectory'=>'text',
       	                       'paramAttachmentMaxSize'=>'longnumber',
