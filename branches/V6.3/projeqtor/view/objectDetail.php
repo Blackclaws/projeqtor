@@ -696,7 +696,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //END ADD qCazelles - Lang-Context
       //ADD by qCazelles - Bsuiness features
       if ($col=='_sec_ProductBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') continue;
-      //END ADD qCazelles
+      //END ADD qCazelles 
     	
       $prevSection=$section;
       $currentCol+=1;
@@ -972,6 +972,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($col=='idBusinessFeature' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') {
         $hide=true;
       }
+      //ADD qCazelles - Project restriction
+      if ($col=='idProject' ) {
+      	$uniqueProjectRestriction = false;
+        if (getSessionValue('project')!="" and getSessionValue('project') != "*" and Parameter::getGlobalParameter('projectRestriction') == 'YES') {
+          $proj = new Project(getSessionValue('project'));
+          if (empty($proj->getSubProjects())) {
+            $uniqueProjectRestriction = true;
+            $hide=true;
+          }
+        }
+      }
+      //END ADD qCazelles - Project restriction
       //ADD qCazelles - dateComposition
       if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
       	$hide=true; continue;
@@ -1805,6 +1817,28 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	        }
         //}
         //END ADD qCazelles
+        
+        //ADD qCazelles - Project restriction
+ // Babynus : feature disabled do to regressions
+ /*       if ($col == 'idProject') {
+        	if (sessionValueExists('project') and getSessionValue('project') != '*') {
+        		$critFld = 'id';
+        		$proj = new Project(getSessionValue('project'));
+        		//if (!empty($proj->getSubProjects())) {
+        		if (!$uniqueProjectRestriction) {
+	        		$critProjs=array();
+	        		foreach ($proj->getRecursiveSubProjectsFlatList() as $idProject => $subProj) {
+	        			$critProjs[]=$idProject;
+	        		}
+	        		$critVal[]=$critProjs;
+        		}
+        		else {
+        			//continue;
+        		}
+        	}
+        }
+*/        //END ADD qCazelles - Project restriction
+        
         if (SqlElement::is_a($obj,'PlanningElement')) {
           $planningModeName='id'.$obj->refType.'PlanningMode';    
           if ($col==$planningModeName and !$obj->id and $objType) {      

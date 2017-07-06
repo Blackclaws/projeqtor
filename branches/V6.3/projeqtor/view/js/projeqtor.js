@@ -4188,6 +4188,7 @@ function saveNoteStream(event){
   } 
 }
 
+var menuRightDivSize=null;
 function hideStreamMode(){
   if(dijit.byId("detailRightDiv").w != '0'){
     menuRightDivSize=dojo.byId("detailRightDiv").offsetWidth;
@@ -4197,6 +4198,7 @@ function hideStreamMode(){
     dijit.byId("centerDiv").resize();
 
   } else {
+    if (! menuRightDivSize) menuRightDivSize=((dojo.byId("centerDiv").offsetWidth)*0.15);
     dijit.byId("detailRightDiv").resize({
       w : menuRightDivSize
     });

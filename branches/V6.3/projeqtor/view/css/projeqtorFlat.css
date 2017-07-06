@@ -863,6 +863,14 @@ body .ProjeQtOrFlatBlue {
 
 /* L */
 
+/*ADD qCazelles - lang-Context*/
+
+.ProjeQtOrFlatBlue .iconLanguage32 { background-image: url(customIcons/blue/iconLanguage.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconLanguage22 { background-image: url(customIcons/blue/iconLanguage.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconLanguage16 { background-image: url(customIcons/blue/iconLanguage.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - lang-Context*/
+
 .ProjeQtOrFlatBlue .iconLikelihood32 { background-image: url(customIcons/blue/iconLikelihood.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconLikelihood22 { background-image: url(customIcons/blue/iconLikelihood.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconLikelihood16 { background-image: url(customIcons/blue/iconLikelihood.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -2058,6 +2066,14 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconKpiDefinition16 { background-image: url(customIcons/red/iconKpiDefinition.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* L */
+
+/*ADD qCazelles - lang-Context*/
+
+.ProjeQtOrFlatRed .iconLanguage32 { background-image: url(customIcons/red/iconLanguage.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconLanguage22 { background-image: url(customIcons/red/iconLanguage.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconLanguage16 { background-image: url(customIcons/red/iconLanguage.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - lang-Context*/
 
 .ProjeQtOrFlatRed .iconLikelihood32 { background-image: url(customIcons/red/iconLikelihood.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconLikelihood22 { background-image: url(customIcons/red/iconLikelihood.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3257,6 +3273,14 @@ body .ProjeQtOrFlatGreen {
 
 /* L */
 
+/*ADD qCazelles - lang-Context*/
+
+.ProjeQtOrFlatGreen .iconLanguage32 { background-image: url(customIcons/green/iconLanguage.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconLanguage22 { background-image: url(customIcons/green/iconLanguage.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconLanguage16 { background-image: url(customIcons/green/iconLanguage.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - lang-Context*/
+
 .ProjeQtOrFlatGreen .iconLikelihood32 { background-image: url(customIcons/green/iconLikelihood.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconLikelihood22 { background-image: url(customIcons/green/iconLikelihood.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconLikelihood16 { background-image: url(customIcons/green/iconLikelihood.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -4448,6 +4472,14 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconKpiDefinition16 { background-image: url(customIcons/grey/iconKpiDefinition.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 /* L */
+
+/*ADD qCazelles - lang-Context*/
+
+.ProjeQtOrFlatGrey .iconLanguage32 { background-image: url(customIcons/grey/iconLanguage.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconLanguage22 { background-image: url(customIcons/grey/iconLanguage.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconLanguage16 { background-image: url(customIcons/grey/iconLanguage.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/*END ADD qCazelles - lang-Context*/
 
 .ProjeQtOrFlatGrey .iconLikelihood32 { background-image: url(customIcons/grey/iconLikelihood.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconLikelihood22 { background-image: url(customIcons/grey/iconLikelihood.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

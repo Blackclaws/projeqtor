@@ -80,6 +80,16 @@ if (! isset($includedReport)) {
 	  $paramResponsible = Security::checkValidId($paramResponsible); // only allow digits
   };
   
+  //ADD qCazelles - graphTickets
+  $paramPriorities=array();
+  if (array_key_exists('priorities',$_REQUEST)) {
+  	foreach ($_REQUEST['priorities'] as $idPriority => $boolean) {
+  		$paramPriorities[] = $idPriority;
+  	}
+  }
+  
+  //END ADD qCazelles - graphTickets
+  
   $user=getSessionUser();
   
   $periodType="";
@@ -118,6 +128,29 @@ if (! isset($includedReport)) {
   if ($paramResponsible!="") {
     $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
   }
+  //qCazelles : GRAPH TICKETS - COPY THAT IN EACH REPORT FILE
+  if (!empty($paramPriorities)) {
+  	$priority = new Priority();
+  	$priorities = $priority->getSqlElementsFromCriteria(null, false, null, 'id asc');
+  	
+  	$prioritiesDisplayed = array();
+  	for ($i = 0; $i < count($priorities); $i++) {
+  		if ( in_array($i+1, $paramPriorities)) {
+  			$prioritiesDisplayed[] = $priorities[$i];
+  		}
+  	}
+  	
+  	$headerParameters.= i18n("colPriority") .' : ';
+  	foreach ($prioritiesDisplayed as $priority) {
+  		$headerParameters.=$priority->name . ', ';
+  	}
+  	$headerParameters=substr($headerParameters, 0, -2);
+  	
+  	if ( in_array('undefined', $paramPriorities)) {
+  		$headerParameters.=', '.i18n('undefinedPriority');
+  	}
+  }
+  //END OF THAT
   include "header.php";
 }
 $where=getAccesRestrictionClause('Ticket',false);
@@ -157,6 +190,31 @@ if ($paramIssuer!="") {
 if ($paramResponsible!="") {
   $where.=" and idResource='" . Sql::fmtId($paramResponsible) . "'";
 }
+
+//ADD qCazelles - graphTickets
+$filterByPriority = false;
+if (!empty($paramPriorities) and $paramPriorities[0] != 'undefined') {
+	$filterByPriority = true;
+	$where.=" and idPriority in (";
+	foreach ($paramPriorities as $idDisplayedPriority) {
+		if ($idDisplayedPriority== 'undefined') continue;
+		$where.=$idDisplayedPriority.', ';
+	}
+	$where = substr($where, 0, -2); //To remove the last comma and space
+	$where.=")";
+	
+}
+if ($filterByPriority and in_array('undefined', $paramPriorities)) {
+	$where.=" or idPriority is null";
+}
+else if (in_array('undefined', $paramPriorities)) {
+	$where.=" and idPriority is null";
+}
+else if ($filterByPriority) {
+	$where.=" and idPriority is not null";
+}
+//END ADD qCazelles - graphTickets
+
 $order="";
 //echo $where;
 $ticket=new Ticket();
