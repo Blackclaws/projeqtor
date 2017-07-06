@@ -49,12 +49,26 @@ if (! isset($includedReport)) {
 		$paramWeek=$_REQUEST['weekSpinner'];
 	  $paramWeek=Security::checkValidWeek($paramWeek);
 	};
-  
+	
   $paramProject='';
   if (array_key_exists('idProject',$_REQUEST)) {
     $paramProject=trim($_REQUEST['idProject']);
 	Security::checkValidId($paramProject);
   }
+  
+  //ADD qCazelles - graphTickets
+  $paramProduct='';
+  if (array_key_exists('idProduct',$_REQUEST)) {
+  	$paramProduct=trim($_REQUEST['idProduct']);
+  	$paramProduct = Security::checkValidId($paramProduct); // only allow digits
+  };
+  
+  $paramVersion='';
+  if (array_key_exists('idVersion',$_REQUEST)) {
+  	$paramVersion=trim($_REQUEST['idVersion']);
+  	$paramVersion = Security::checkValidId($paramVersion); // only allow digits
+  };
+  //END ADD qCazelles - graphTickets
     
   $paramTicketType='';
   if (array_key_exists('idTicketType',$_REQUEST)) {
@@ -80,6 +94,14 @@ if (! isset($includedReport)) {
 	  $paramResponsible = Security::checkValidId($paramResponsible); // only allow digits
   };
   
+  //ADD qCazelles - graphTickets
+  $paramPriorities=array();
+  if (array_key_exists('priorities',$_REQUEST)) {
+  	foreach ($_REQUEST['priorities'] as $idPriority => $boolean) {
+  		$paramPriorities[] = $idPriority;
+  	}
+  }
+  //END ADD qCazelles - graphTickets
   
   $user=getSessionUser();
   
@@ -92,6 +114,14 @@ if (! isset($includedReport)) {
   if ($paramProject!="") {
     $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
   }
+  //ADD qCazelles - graphTickets
+  if ($paramProduct!="") {
+  	$headerParameters.= i18n("colIdProduct") . ' : ' . htmlEncode(SqlList::getNameFromId('Product', $paramProduct)) . '<br/>';
+  }
+  if ($paramVersion!="") {
+  	$headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
+  }
+  //END ADD qCazelles
   if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
     $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';  
   }
@@ -113,6 +143,29 @@ if (! isset($includedReport)) {
   if ($paramResponsible!="") {
     $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
   }
+  //qCazelles : GRAPH TICKETS - COPY THAT IN EACH REPORT FILE
+  if (!empty($paramPriorities)) {
+  	$priority = new Priority();
+  	$priorities = $priority->getSqlElementsFromCriteria(null, false, null, 'id asc');
+  	
+  	$prioritiesDisplayed = array();
+  	for ($i = 0; $i < count($priorities); $i++) {
+  		if ( in_array($i+1, $paramPriorities)) {
+  			$prioritiesDisplayed[] = $priorities[$i];
+  		}
+  	}
+  	
+  	$headerParameters.= i18n("colPriority") .' : ';
+  	foreach ($prioritiesDisplayed as $priority) {
+  		$headerParameters.=$priority->name . ', ';
+  	}
+  	$headerParameters=substr($headerParameters, 0, -2);
+  	
+  	if ( in_array('undefined', $paramPriorities)) {
+  		$headerParameters.=', '.i18n('undefinedPriority');
+  	}
+  }
+  //END OF THAT
   include "header.php";
 }
 $reportContext=false;
@@ -127,6 +180,14 @@ $where.="        and idleDateTime<='" . $paramYear . "-12-31' ) )";
 if ($paramProject!="") {
   $where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);
 }
+//ADD qCazelles - graphTickets
+if (isset($paramProduct) and $paramProduct!="") {
+	$where.=" and idProduct='" . Sql::fmtId($paramProduct) . "'";
+}
+if (isset($paramVersion) and $paramVersion!="") {
+	$where.=" and idOriginalProductVersion='" . Sql::fmtId($paramVersion) . "'";
+}
+//END ADD qCazelles - graphTickets
 if ($paramTicketType!="") {
   $where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";
 }
@@ -139,6 +200,31 @@ if ($paramIssuer!="") {
 if ($paramResponsible!="") {
   $where.=" and idResource='" . Sql::fmtId($paramResponsible) . "'";
 }
+
+//ADD qCazelles - graphTickets
+$filterByPriority = false;
+if (!empty($paramPriorities) and $paramPriorities[0] != 'undefined') {
+	$filterByPriority = true;
+	$where.=" and idPriority in (";
+	foreach ($paramPriorities as $idDisplayedPriority) {
+		if ($idDisplayedPriority== 'undefined') continue;
+		$where.=$idDisplayedPriority.', ';
+	}
+	$where = substr($where, 0, -2); //To remove the last comma and space
+	$where.=")";
+
+}
+if ($filterByPriority and in_array('undefined', $paramPriorities)) {
+	$where.=" or idPriority is null";
+}
+else if (in_array('undefined', $paramPriorities)) {
+	$where.=" and idPriority is null";
+}
+else if ($filterByPriority) {
+	$where.=" and idPriority is not null";
+}
+//END ADD qCazelles - graphTickets
+
 $order="";
 //echo $where;
 $ticket=new Ticket();
