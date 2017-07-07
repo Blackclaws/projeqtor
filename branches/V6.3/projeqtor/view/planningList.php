@@ -87,7 +87,6 @@ $displayWidthPlan="9999";
 if (RequestHandler::isCodeSet('destinationWidth')) {
   $displayWidthPlan=RequestHandler::getNumeric('destinationWidth');
 }
-echo $displayWidthPlan;
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>

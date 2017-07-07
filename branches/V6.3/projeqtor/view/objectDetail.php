@@ -985,8 +985,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       //END ADD qCazelles - Project restriction
       //ADD qCazelles - dateComposition
-      if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
-      	$hide=true; continue;
+      if (SqlElement::is_a($obj,'Version') and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
+      	$hide=true; //continue;
       }
       //END ADD qCazelles - dateComposition
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {

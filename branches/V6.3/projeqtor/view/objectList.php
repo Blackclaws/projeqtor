@@ -225,7 +225,35 @@ if ($displayWidthList<1400) {
                   </script>
                 </select>
               </td>
-              <?php }?>   
+              <?php }?>
+              
+              <!-- ADD qCazelles - Predefined Action -->
+              <?php
+				if ($objectClass == 'Action' and Parameter::getGlobalParameter('enablePredefinedActions') == 'YES') { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("predefinedAction");?>
+                &nbsp;</span>
+              </td>
+              <td width="5px">
+                <select title="<?php echo i18n('predefinedAction')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
+                id="listPredefinedActions" name="listPredefinedActions" style="width:<?php echo $referenceWidth*4;?>px">                
+                  <?php htmlDrawOptionForReference('idPredefinedAction', null); ?>
+                  <script type="dojo/method" event="onChange" >
+					id=dojo.byId('objectId');
+	        		if (id) { 	
+		    			id.value="";
+		     			unselectAllRows("objectGrid");
+					}
+					loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+					setTimeout(loadPredefinedAction, 100, "<?php echo getEditorType(); ?>");
+                  </script>
+                </select>
+              </td>
+              <?php } ?>
+              <!-- END ADD qCazelles -->
+              
               <?php if ( !$hideClientSearch and property_exists($obj,'idClient') ) { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
                  <span class="nobr">&nbsp;&nbsp;&nbsp;

@@ -283,6 +283,7 @@ class Parameter extends SqlElement {
      	case 'displayMilestonesStartDelivery' :
       case 'filterTicketReportPriority' :
       case 'projectRestriction' :
+      case 'enablePredefinedActions' :
       //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
@@ -672,6 +673,8 @@ class Parameter extends SqlElement {
       	                       'allowTypeRestrictionOnProject'=>'list',                
       	                       'limitPlanningActivity'=>'list',
       	                       'filterTicketReportPriority'=>'list',
+// Babynus : feature disabled do to not stable feature
+//      	                       'enablePredefinedActions'=>'list',
       	                   //'newColumn'=>'newColumn',
       	                     'sectionDisplay'=>'section',
       	                       'paramDbDisplayName'=>'text',  
