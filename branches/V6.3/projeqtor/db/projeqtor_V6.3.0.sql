@@ -176,7 +176,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 179, 1),
 (2, 179, 1),
 (3, 179, 1);
-END ADD qCazelles - GANTT
+--END ADD qCazelles - GANTT
 
 --ADD qCazelles - graphTickets
 
@@ -228,3 +228,34 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (74, 'priority', 'priorityList', 80, 0, NULL, 0);
 
 --END ADD qCazelles - graphTickets
+
+-- ADD by qCazelles - Predefined Actions
+-- Babynus : feature disabled do to not stable feature
+--INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES 
+--(180,'menuPredefinedAction', 88, 'object', '625', 'ReadWriteEnvironnement', 0, 'Automation');
+
+--INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+--(1, 180, 1);
+
+CREATE TABLE `${prefix}predefinedaction` (
+  `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) UNSIGNED DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `idActionType` int(12) UNSIGNED DEFAULT NULL,
+  `description` mediumtext,
+  `creationDate` date DEFAULT NULL,
+  `idUser` int(12) UNSIGNED DEFAULT NULL,
+  `idStatus` int(12) UNSIGNED DEFAULT NULL,
+  `idContact` int(12) UNSIGNED DEFAULT NULL,
+  `idResource` int(12) UNSIGNED DEFAULT NULL,
+  `initialDueDateDelay` int(3) UNSIGNED DEFAULT NULL,
+  `actualDueDateDelay` int(3) UNSIGNED DEFAULT NULL,
+  `result` mediumtext,
+  `idPriority` int(12) UNSIGNED DEFAULT NULL,
+  `idEfficiency` int(12) UNSIGNED DEFAULT NULL,
+  `isPrivate` int(1) UNSIGNED DEFAULT '0',
+  `idle` int(1) UNSIGNED DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- END ADD by qCazelles - Predefined Actions
