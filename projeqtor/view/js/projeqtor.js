@@ -4124,6 +4124,63 @@ function hideExtraButtons(location) {
   }
 }
 
+//ADD qCazelles - Predefined Action
+function loadPredefinedAction(editorType) {
+	
+	dojo.xhrPost({
+		url : "../tool/getPredefinedAction.php?idPA=" + dijit.byId('listPredefinedActions').get("value"),
+		handleAs : "text",
+		load: function(data,args) {
+			if (data) {
+				var pa = JSON.parse(data);
+
+				if (dijit.byId('name')) {
+					dijit.byId('name').set('value', pa.name);
+					dijit.byId('idActionType').set('value', pa.idActionType);
+					dijit.byId('idProject').set('value', pa.idProject);
+					dijit.byId('idPriority').set('value', pa.idPriority);
+					dijit.byId('idContact').set('value', pa.idContact);
+					dijit.byId('idResource').set('value', pa.idResource);
+					dijit.byId('idEfficiency').set('value', pa.idEfficiency);
+					
+					if (pa.isPrivate == 1) {
+						dijit.byId('isPrivate').set('checked', true);
+					}
+
+					dijit.byId('initialDueDate').set('value', null);
+					if (Number(pa.initialDueDateDelay) != 0) {
+						var myDate = new Date();
+						myDate.setDate(myDate.getDate() + Number(pa.initialDueDateDelay));
+						dijit.byId('initialDueDate').set('value', myDate);
+					}
+
+					dijit.byId('actualDueDate').set('value', null);
+					if (Number(pa.actualDueDateDelay) != 0) {
+						var myDateBis = myDate;
+						myDateBis.setDate(myDateBis.getDate() + Number(pa.actualDueDateDelay));
+						dijit.byId('actualDueDate').set('value', myDateBis);
+					}
+
+	   				if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
+	    				CKEDITOR.instances['description'].setData(pa.description);
+						CKEDITOR.instances['result'].setData(pa.result);
+					}
+					else if (editorType=="text") {
+	        			dijit.byId('description').set('value', pa.description);
+						dijit.byId('result').set('value', pa.result);
+	     			}
+					else if (editorType=="Dojo") {   //NOT FUNCTIONNAL
+						//dojo.byId('descriptionEditor').value = pa.description;
+						//dojo.byId('dijitE').value = pa.description;
+					}
+
+				}
+			}
+		}
+	});
+}
+//END ADD qCazelles - Predefined Action
+
 function showDirectChangeStatus() {
   var divNode=dojo.byId('directChangeStatusDiv');
   if (! divNode) return;

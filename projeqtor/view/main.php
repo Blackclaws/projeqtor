@@ -278,6 +278,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         }
       }     
       ?>
+      //Mobile confirm dialog KROWRY
+      showDialogConfirmMobile();
+      //
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo htmlEncode(i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name),'qotes');?>");
       //dojo.byId('body').className='<?php echo getTheme();?>';
@@ -664,7 +667,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <div id="toolBarDiv" style="height:<?php echo ($iconSize+10);?>px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
-    <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
+    <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >
     </div>
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom" style="height:28px; position:absolute; bottom:0px;">
       <table width="100%">
