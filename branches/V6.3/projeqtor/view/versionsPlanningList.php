@@ -6,14 +6,6 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/versionsPlanningList.php');
 
-//$canPlan=false;
-$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
-if ($right) {
-	$list=new ListYesNo($right->rightAccess);
-	if ($list->code=='YES') {
-		$canPlan=true;
-	}
-}
 $startDate=date('Y-m-d');
 $endDate=null;
 $user=getSessionUser();
@@ -78,17 +70,6 @@ if ($proj=='*' or !$proj) {
                   	  <input type="hidden" id="versions" name="versions" value="true" />
 		              &nbsp;&nbsp;&nbsp;
 <?php
-/*if ($canPlan) { ?>
-		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
-		                title="<?php echo i18n('buttonPlan');?>"
-		                iconClass="iconPlanStopped" >
-		                <script type="dojo/connect" event="onClick" args="evt">
-                     showPlanParam();
-                     return false;
-                    </script>
-		              </button>
-<?php }
-*/
 $tabProductVersions = $_REQUEST['productVersionsListId'];
 $nbPvs = 0;
 foreach ($tabProductVersions as $idProductVersion) {
@@ -96,8 +77,6 @@ foreach ($tabProductVersions as $idProductVersion) {
 	$nbPvs += 1;
 }
 echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
-
-
 ?>            
 		            </td>
 		            <td style="white-space:nowrap;width:240px">
@@ -172,39 +151,6 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                           else showPrint("../tool/jsonPlanning_pdf.php?portfolio=true", 'planning', null, 'pdf');
                           </script>
                         </button>
-                      </td>
-                      
-                      
-                      
-                      <td width="32px">
-                        <input type="hidden" id="outMode" name="outMode" value="" />
-                        <div dojoType="dijit.form.DropDownButton"
-                             id="planningColumnSelector" jsId="planningColumnSelector" name="planningColumnSelector" 
-                             showlabel="false" class="comboButton" iconClass="dijitButtonIcon dijitButtonIconColumn" 
-                             title="<?php echo i18n('columnSelector');?>">
-                          <span>title</span>
-                          <div dojoType="dijit.TooltipDialog" class="white" style="width:250px;">
-                            <script type="dojo/connect" event="onHide" args="evt">
-                              if (dndMoveInProgress) { this.show(); }
-                            </script>   
-									          <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" 
-                             dndType="column" dojotype="dojo.dnd.Source" 
-                             withhandles="true" class="container">    
-									             <?php 
-									               $versionsPlanning=true; 
-									               include('../tool/planningColumnSelector.php')?>
-									          </div>
-                            <div style="height:5px;"></div>    
-                            <div style="text-align: center;"> 
-                              <button title="" dojoType="dijit.form.Button" 
-                                id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
-                                <script type="dojo/connect" event="onClick" args="evt">
-                                  validatePlanningColumn();
-                                </script>
-                              </button>
-                            </div>        
-                          </div>
-                        </div>
                       </td>
                     </tr>
                     <tr>
