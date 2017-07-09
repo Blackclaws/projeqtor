@@ -637,13 +637,29 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vWidth=this.getWidth();
     var sortArray=this.getSortArray();
     var vLeftWidth = vIconWidth+getPlanningFieldWidth('Name')+2;
-    for (var iSort=0;iSort<sortArray.length;iSort++) {
-      var field=sortArray[iSort];
-      if (field.substr(0,6)=='Hidden') field=field.substr(6);
-      var showField=getPlanningFieldShow(field);
-      var fieldWidth=getPlanningFieldWidth(field);
-      if (showField && field!='Name') vLeftWidth+=1+fieldWidth;
+    //CHANGE qCazelles - GANTT (Correction)
+    //ADD
+    if (!dojo.byId('versionsPlanning')) {
+    //END ADD
+	    for (var iSort=0;iSort<sortArray.length;iSort++) {
+	      var field=sortArray[iSort];
+	      if (field.substr(0,6)=='Hidden') field=field.substr(6);
+	      var showField=getPlanningFieldShow(field);
+	      var fieldWidth=getPlanningFieldWidth(field);
+	      if (showField && field!='Name') vLeftWidth+=1+fieldWidth;
+	    }
     }
+    //ADD
+    else {
+    	for (var iSort=0;iSort<sortArray.length;iSort++) {
+  	      var field=sortArray[iSort];
+  	      if (field.substr(0,6)=='Hidden') field=field.substr(6);
+  	      var fieldWidth=getPlanningFieldWidth(field);
+  	      if (field!='Name' && (field=='StartDate' || field=='EndDate' || field=='IdStatus')) vLeftWidth+=1+fieldWidth;
+  	    }
+    }
+    //END ADD
+    //END CHANGE qCazelles - GANTT (Correction)
     
     var vRightWidth = vWidth - vLeftWidth - 18;
     var ffSpecificHeight=(dojo.isFF<16)?' class="ganttHeight"':'';
@@ -687,33 +703,69 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><span class="nobr">';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</span></TD>'; 
-      
-      for (iSort=0;iSort<sortArray.length;iSort++) {
-        var field=sortArray[iSort];
-        if (field.substr(0,6)=='Hidden') field=field.substr(6);
-        var showField=getPlanningFieldShow(field);
-        var fieldWidth=getPlanningFieldWidth(field);
-	      if(showField && field!='Name') { 
-	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + fieldWidth + 'px;"></TD>' ;
+
+      //CHANGE qCazelles - GANTT (Correction)
+      //ADD
+      if (!dojo.byId('versionsPlanning')) {
+      //END ADD
+	      for (iSort=0;iSort<sortArray.length;iSort++) {
+	        var field=sortArray[iSort];
+	        if (field.substr(0,6)=='Hidden') field=field.substr(6);
+	        var showField=getPlanningFieldShow(field);
+	        var fieldWidth=getPlanningFieldWidth(field);
+		      if(showField && field!='Name') { 
+		        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + fieldWidth + 'px;"></TD>' ;
+		      }
 	      }
-      }
-      vLeftTable += '</TR><TR class="ganttHeight" style="height:24px">'
-        +'<TD class="ganttLeftTitle" style="width:22px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:22px; z-index:1000;" class="namePartgroup"><span class="nobr">&nbsp;</span></div></TD>'
-        +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vNameWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">'
-        +(JSGantt.i18n('colTask')==''?'&nbsp;':JSGantt.i18n('colTask'))+'</span></div></TD>' ;     
-      for (var iSort=0;iSort<sortArray.length;iSort++) {
-        var field=sortArray[iSort];
-        if (field.substr(0,6)=='Hidden') field=field.substr(6);
-        var showField=getPlanningFieldShow(field);
-        var fieldWidth=getPlanningFieldWidth(field);
-        if(showField && field!='Name') {
-	        vLeftTable += '<TD id="jsGanttHeaderTD'+field+'" class="ganttLeftTitle" style="position:relative;width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap>'
-	          +'<div id="jsGanttHeader'+field+'" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup">'
-	          +'<span class="nobr">'+ JSGantt.i18n( ('col'+field).replace('Work','')) + '</span>'
-	          //+'<div class="columnHandle" onmousedown="startResizeJsHeader(event,\''+field+'\');"  onmouseup="stopResizeJsHeader(event);" onmouseleave="stopResizeJsHeader(event);" onmousemove="resizeJsHeader(event);">&nbsp;</div>'
-	          +'</div></TD>' ;
+	      vLeftTable += '</TR><TR class="ganttHeight" style="height:24px">'
+	        +'<TD class="ganttLeftTitle" style="width:22px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:22px; z-index:1000;" class="namePartgroup"><span class="nobr">&nbsp;</span></div></TD>'
+	        +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vNameWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">'
+	        +(JSGantt.i18n('colTask')==''?'&nbsp;':JSGantt.i18n('colTask'))+'</span></div></TD>' ;        
+	      
+	      for (var iSort=0;iSort<sortArray.length;iSort++) {
+	        var field=sortArray[iSort];
+	        if (field.substr(0,6)=='Hidden') field=field.substr(6);
+	        var showField=getPlanningFieldShow(field);
+	        var fieldWidth=getPlanningFieldWidth(field);
+	        if(showField && field!='Name') {
+		        vLeftTable += '<TD id="jsGanttHeaderTD'+field+'" class="ganttLeftTitle" style="position:relative;width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap>'
+		          +'<div id="jsGanttHeader'+field+'" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup">'
+		          +'<span class="nobr">'+ JSGantt.i18n( ('col'+field).replace('Work','')) + '</span>'
+		          //+'<div class="columnHandle" onmousedown="startResizeJsHeader(event,\''+field+'\');"  onmouseup="stopResizeJsHeader(event);" onmouseleave="stopResizeJsHeader(event);" onmousemove="resizeJsHeader(event);">&nbsp;</div>'
+		          +'</div></TD>' ;
+		      }
 	      }
+	  //ADD
       }
+      else {
+    	  for (iSort=0;iSort<sortArray.length;iSort++) {
+  	        var field=sortArray[iSort];
+  	        if (field.substr(0,6)=='Hidden') field=field.substr(6);
+  	        var fieldWidth=getPlanningFieldWidth(field);
+  	      if(field!='Name' && (field=='StartDate' || field=='EndDate' || field=='IdStatus')) {
+  		        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + fieldWidth + 'px;"></TD>' ;
+  		      }
+  	      }
+  	      vLeftTable += '</TR><TR class="ganttHeight" style="height:24px">'
+  	        +'<TD class="ganttLeftTitle" style="width:22px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:22px; z-index:1000;" class="namePartgroup"><span class="nobr">&nbsp;</span></div></TD>'
+  	        +'<TD class="ganttLeftTitle ganttAlignLeft ganttNoLeftBorder" style="width: ' + vNameWidth + 'px;"><div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + vNameWidth + 'px; z-index:1000;" class="namePartgroup"><span class="nobr">'
+  	        +(JSGantt.i18n('colTask')==''?'&nbsp;':JSGantt.i18n('colTask'))+'</span></div></TD>' ;        
+  	      
+  	      for (var iSort=0;iSort<sortArray.length;iSort++) {
+  	        var field=sortArray[iSort];
+  	        if (field.substr(0,6)=='Hidden') field=field.substr(6);
+  	        var fieldWidth=getPlanningFieldWidth(field);
+  	        if(field!='Name' && (field=='StartDate' || field=='EndDate' || field=='IdStatus')) {
+  		        vLeftTable += '<TD id="jsGanttHeaderTD'+field+'" class="ganttLeftTitle" style="position:relative;width: ' + fieldWidth + 'px;max-width: ' + fieldWidth + 'px;overflow:hidden" nowrap>'
+  		          +'<div id="jsGanttHeader'+field+'" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width:' + fieldWidth + 'px; z-index:1000;" class="namePartgroup">'
+  		          +'<span class="nobr">'+ JSGantt.i18n( ('col'+field).replace('Work','')) + '</span>'
+  		          //+'<div class="columnHandle" onmousedown="startResizeJsHeader(event,\''+field+'\');"  onmouseup="stopResizeJsHeader(event);" onmouseleave="stopResizeJsHeader(event);" onmousemove="resizeJsHeader(event);">&nbsp;</div>'
+  		          +'</div></TD>' ;
+  		      }
+  	      }
+      }
+      //END ADD
+      //END CHANGE qCazelles - GANTT (Correction)
       var planningPage=dojo.byId('objectClassManual').value;
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
@@ -823,18 +875,39 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        for (var iSort=0;iSort<sortArray.length;iSort++) {
-          var field=sortArray[iSort];
-          if (field.substr(0,6)=='Hidden') field=field.substr(6);
-          var showField=getPlanningFieldShow(field);
-          var fieldWidth=getPlanningFieldWidth(field);
-          if(showField==1 && field!='Name') { 
-            vLeftTable += '<TD class="ganttDetail" style="width: ' + fieldWidth + 'px;">'
-              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + fieldWidth + 'px;text-overflow:ellipsis;">' + vTaskList[i].getFieldValue(field,JSGantt) 
-              +'</span></TD>' ;
-          }
+        //CHANGE qCazelles - GANTT (Correction)
+        //ADD
+        if (!dojo.byId('versionsPlanning')) {
+        //END ADD
+	        for (var iSort=0;iSort<sortArray.length;iSort++) {
+	          var field=sortArray[iSort];
+	          if (field.substr(0,6)=='Hidden') field=field.substr(6);
+	          var showField=getPlanningFieldShow(field);
+	          var fieldWidth=getPlanningFieldWidth(field);
+	          if(showField==1 && field!='Name') { 
+	            vLeftTable += '<TD class="ganttDetail" style="width: ' + fieldWidth + 'px;">'
+	              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + fieldWidth + 'px;text-overflow:ellipsis;">' + vTaskList[i].getFieldValue(field,JSGantt) 
+	              +'</span></TD>' ;
+	          }
+	        }
+	        vLeftTable += '</TR>';
         }
-        vLeftTable += '</TR>';
+        //ADD
+        else {
+        	for (var iSort=0;iSort<sortArray.length;iSort++) {
+  	          var field=sortArray[iSort];
+  	          if (field.substr(0,6)=='Hidden') field=field.substr(6);
+  	          var fieldWidth=getPlanningFieldWidth(field);
+  	          if(field!='Name' && (field=='StartDate' || field=='EndDate' || field=='IdStatus')) { 
+  	            vLeftTable += '<TD class="ganttDetail" style="width: ' + fieldWidth + 'px;">'
+  	              +'<span class="nobr hideLeftPart' + vRowType + '" style="width: ' + fieldWidth + 'px;text-overflow:ellipsis;">' + vTaskList[i].getFieldValue(field,JSGantt) 
+  	              +'</span></TD>' ;
+  	          }
+  	        }
+  	        vLeftTable += '</TR>';
+        }
+        //END ADD
+        //END CHANGE qCazelles - GANTT (Correction)
       }
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
