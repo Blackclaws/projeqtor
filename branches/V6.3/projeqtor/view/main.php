@@ -278,9 +278,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         }
       }     
       ?>
-      //Mobile confirm dialog KROWRY
-      showDialogConfirmMobile();
-      //
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo htmlEncode(i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name),'qotes');?>");
       //dojo.byId('body').className='<?php echo getTheme();?>';

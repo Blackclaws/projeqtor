@@ -2202,7 +2202,7 @@ paramUpdateDeliverableResponsibleFromMilestone: "оновити виступні
 paramUpdateIncomingResponsibleFromMilestone: "оновити вступні від репера (milestone)",
 paramUpdateMilestoneResponsibleFromDeliverable: "оновити репера (milestone) від виступних",
 paramUpdateMilestoneResponsibleFromIncoming: "оновити репера (milestone) від вступних",
-paramUseOrganizationBudgetElement: "[use budget feature for Oraganizations]",
+paramUseOrganizationBudgetElement: "[use budget feature for Organizations]",
 paramVersionNameAutoformat: "Автоматичний формат найменування версії",
 paramVersionNameAutoformatSeparator: "Роздільник поміж ім'ям та числом",
 paramVersionReferenceSuffix: "суфікс для версії посилання(reference)",
