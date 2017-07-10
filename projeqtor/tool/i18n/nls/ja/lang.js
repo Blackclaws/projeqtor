@@ -2202,7 +2202,7 @@ paramUpdateDeliverableResponsibleFromMilestone: "[update deliverable from milest
 paramUpdateIncomingResponsibleFromMilestone: "[update incoming from milestone]",
 paramUpdateMilestoneResponsibleFromDeliverable: "[update milestone from deliverable]",
 paramUpdateMilestoneResponsibleFromIncoming: "[update milestone from incoming]",
-paramUseOrganizationBudgetElement: "[use budget feature for Oraganizations]",
+paramUseOrganizationBudgetElement: "[use budget feature for Organizations]",
 paramVersionNameAutoformat: "バージョン名の自動生成",
 paramVersionNameAutoformatSeparator: "バージョン名自動生成時のセパレータ",
 paramVersionReferenceSuffix: "バージョン参照接尾辞",

@@ -2202,7 +2202,7 @@ paramUpdateDeliverableResponsibleFromMilestone: "[update deliverable from milest
 paramUpdateIncomingResponsibleFromMilestone: "[update incoming from milestone]",
 paramUpdateMilestoneResponsibleFromDeliverable: "[update milestone from deliverable]",
 paramUpdateMilestoneResponsibleFromIncoming: "[update milestone from incoming]",
-paramUseOrganizationBudgetElement: "[use budget feature for Oraganizations]",
+paramUseOrganizationBudgetElement: "[use budget feature for Organizations]",
 paramVersionNameAutoformat: "[automatic format of version name]",
 paramVersionNameAutoformatSeparator: "[separator between name and number]",
 paramVersionReferenceSuffix: "sufixo de referência da versão",
