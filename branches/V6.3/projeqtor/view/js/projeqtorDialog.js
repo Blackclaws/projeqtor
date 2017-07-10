@@ -8365,18 +8365,3 @@ function filterDnDList(search,list) {
     }
   });
 }
-
-function showDialogConfirmMobile() {
-  var url = "../mobile/";
-  var xhr = new XMLHttpRequest();
-  xhr.open('HEAD', url, false);
-  xhr.send();
-  mobileRedirectFunction = function() {  
-          window.location = url;
-    };
-  require(["dojo/has", "dojo/sniff"], function(has){
-    if(xhr.status != "404" && (has("android") || has("ios"))){
-      showConfirm(i18n("msgConfirmRedirectMobile"),mobileRedirectFunction);
-    }
-  });
-}
