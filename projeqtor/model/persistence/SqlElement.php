@@ -54,6 +54,8 @@ abstract class SqlElement {
       'include', 
       'stream_context_create');
 
+  private static $_copyInProgress = false;
+  
   private static $staticCostVisibility = null;
 
   private static $staticWorkVisibility = null;
@@ -788,12 +790,28 @@ abstract class SqlElement {
    * @return the new object
    */
   public function copy() {
+    self::setCopyInProgress();
     return $this->copySqlElement ();
   }
 
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = null, $toActivity = null, $copyToWithResult = false, $copyToWithVersionProjects = false) {
+    self::setCopyInProgress();
     return $this->copySqlElementTo ( $newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments, $withAffectations, $toProject, $toActivity, $copyToWithResult );
   }
+  
+  public static function setCopyInProgress() {
+    self::$_copyInProgress=true;
+  }
+  
+  public static function isCopyInProgress() {
+    if (isset(self::$_copyInProgress) and self::$_copyInProgress==true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  
 
   /**
    * =========================================================================
