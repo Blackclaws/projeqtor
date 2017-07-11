@@ -514,10 +514,15 @@
           $ref=$line['reftype'];
           $type='id'.$ref.'Type';
           $item=new $ref($line['refid'],true);
-          $status = new Status($item->idStatus);
-          $line['status'] = $status->name;
-          $line['statuscolor'] = $status->color;
           $line["type"]=SqlList::getNameFromId('Type',$item->$type);
+          if (property_exists($item,"idStatus")) {
+            $status = new Status($item->idStatus);
+            $line['status'] = $status->name;
+            $line['statuscolor'] = $status->color;
+          } else {
+            $line['status'] = '';
+            $line['statuscolor'] = '';
+          }
         }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}

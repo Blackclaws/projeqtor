@@ -5880,12 +5880,7 @@ function changePlanningColumn(col, status, order) {
     order=dojo.indexOf(planningColumnOrder, col);
     planningColumnOrder[order]='Hidden' + col;
   } 
-  
-  
-  moveListColumn();
-  
-  
-  
+  //moveListColumn(); // Removed as sets error 
   if (col=='IdStatus' || col=='Type') {
     validatePlanningColumnNeedRefresh=true;
   }
