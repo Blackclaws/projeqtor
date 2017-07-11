@@ -1071,7 +1071,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo ' name="filterNameDisplay" id="filterNameDisplay"';
   echo '  style="width: 564px;" ';
   echo ' trim="true" maxlength="100" class="input" ';
-  echo ' value="' . htmlEncode($filterName) . '" ';
+  echo ' value="' . $filterName . '" ';
   echo ' >';
   echo '</td><td>';
   echo '<button title="' . i18n('saveFilter') . '" ';  
