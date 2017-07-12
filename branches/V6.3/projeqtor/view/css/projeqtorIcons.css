@@ -261,6 +261,9 @@
 .iconClientType16 { background-image: url(images/iconClientType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconButtonCollapseOpen16 { background-image: url(images/iconCollapseOpen.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconButtonCollapseHide16 { background-image: url(images/iconCollapseClosed.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconHideStream32 { background-image: url(images/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .iconCommand32 { background-image: url(images/iconCommand32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconCommand22 { background-image: url(images/iconCommand22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

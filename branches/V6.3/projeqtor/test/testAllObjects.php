@@ -43,7 +43,7 @@ if (is_dir($classDir)) {
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
         and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType' and $class!='Security'
-        and substr($class,-4)!='Main' and $class!='_securityCheck' and $class!='RequestHandler'
+        and substr($class,-4)!='Main' and $class!='_securityCheck' and $class!='RequestHandler' and $class!='ResultHandler'
         //and $class>='Ti' // and $class<'B' 
         ){
           debugTraceLog("Test for class $class");
@@ -106,7 +106,7 @@ function fillObj($obj) {
 		for ($i=1;$i<=4;$i++) {$var.=$var;}
 		$dbType=$obj->getDataType($fld);
 		$dbLength=$obj->getDataLength($fld);		
-		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase') {
+		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase' or $fld=='idOrganization' or $fld=='id'.get_Class($obj)) {
 			// Nothing => would lead to invalid controls
 		} else if ($fld=='refType' or $fld=='originType') {
 			$pos=strpos(get_class($obj),'PlanningElement');

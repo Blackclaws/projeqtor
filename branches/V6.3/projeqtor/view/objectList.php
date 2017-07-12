@@ -77,6 +77,22 @@ $displayWidthList="9999";
 if (RequestHandler::isCodeSet('destinationWidth')) {
   $displayWidthList=RequestHandler::getNumeric('destinationWidth');
 }
+$rightWidthVal=0;
+if (isset($rightWidth)) {
+  if (substr($rightWidth,-1)=="%") {
+    $rightWidthVal=intval(str_replace('%', '', $rightWidth))*$displayWidthList;
+  } else {
+    $rightWidthVal=intval(str_replace('px', '', $rightWidth));
+  }
+} else { 
+  $detailRightDivWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass);
+  if($detailRightDivWidth or $detailRightDivWidth==="0"){
+    $rightWidthVal=$detailRightDivWidth;
+  } else {
+    $rightWidth=15/100*$displayWidthList;
+  }
+}
+$displayWidthList-=$rightWidthVal;
 
 $hideTypeSearch=false;
 $hideClientSearch=false;
