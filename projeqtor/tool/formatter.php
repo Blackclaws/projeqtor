@@ -436,6 +436,7 @@ function privateFormatter($value) {
 }
 
 function activityStreamDisplayNote ($note,$origin){
+  global $print,$user, $userRessource;
   $userId = $note->idUser;
   $userName = SqlList::getNameFromId ( 'User', $userId );
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
@@ -443,13 +444,14 @@ function activityStreamDisplayNote ($note,$origin){
   $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->refId).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
   if ($note->updateDate)  $colCommentStream = i18n ( 'activityStreamUpdateComment', array ($idNote, $ticketName ) );
   else  $colCommentStream = i18n ( 'activityStreamCreationComment', array ($idNote, $ticketName ) );
-  global $print,$user;
+  if (!$user) $user=getSessionUser();
+  if (!$userRessource) $userRessource=new Affectable($user->id);
   $objectClass=$note->refType;
   $objectId=$note->refId;
   $obj=new $objectClass($objectId,true);
   $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
   $isNoteClosed=getSessionTableValue("closedNotes", $note->id);
-  if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
+  if ($note->idPrivacy == 1 or ($note->idPrivacy == 3 and $user->id == $note->idUser) or ($note->idPrivacy == 2 and $userRessource->idTeam == $note->idTeam)) {
     echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
     echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');
     echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);

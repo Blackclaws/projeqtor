@@ -394,11 +394,13 @@ function periodChanged(theId) {
    * @param int year that served of criteria
    */
   public function setYearPeriod($year) {
-      if (!isset(self::$_databaseCriteria)) {return;}
-      $dbCrit = self::$_databaseCriteria;
-      if(array_key_exists('year', $dbCrit)) {
-          self::$_databaseCriteria['year'] = $year;
+      if (!isset(self::$_databaseCriteria)) {
+        self::$_databaseCriteria=array();
       }
+      //$dbCrit = self::$_databaseCriteria;
+      //if(array_key_exists('year', $dbCrit)) {
+      self::$_databaseCriteria['year'] = $year;
+      //}
   }
 
   public function hideSynthesisBudgetAndProjectElement($hide=false) {
@@ -524,6 +526,7 @@ function periodChanged(theId) {
    * @param boolean $hide : True to hide the message 'OrganizationBudgetElementMsg'
    */
   public function hideOrganizationBudgetElementMsg($hide=false) {
+    debugLog("hideOrganizationBudgetElementMsg() for id $this->id" );
       $fieldAttributes = self::$_fieldsAttributes['_spe_OrganizationBudgetElementMsg'];
       $fieldAttribute = explode(',',$fieldAttributes);
       $newFieldAttributes = '';
@@ -540,7 +543,7 @@ function periodChanged(theId) {
                   break;
           }
       }
-      if (substr($newFieldAttributes,-1,1)==',') {
+      if ($newFieldAttributes and substr($newFieldAttributes,-1,1)==',') {
           $newFieldAttributes=substr($newFieldAttributes,0,-1);
       }
       self::$_fieldsAttributes['_spe_OrganizationBudgetElementMsg'] = $newFieldAttributes;

@@ -47,13 +47,14 @@ class ResultHandler {
   public $status;
   public $savedId;
   
-  static function instanciate() {
+  static function getInstance() {
   if (! isset ( self::$me )) {
     self::$me = new ResultHdl ();
   }
   return self::$me;
 }
   
+  // Constructor set private because this class implements singleton and should not be directly instanciated, use ResultHandler::getInstance()
   private function __construct($type = null, $status = null, $message = null, $control = null, $nodataMsg = null, $savedId = '') {
     $this->type = $type;
     $this->message = $message;

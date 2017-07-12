@@ -691,15 +691,17 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
        
     // Dispatch Organization 
-    $subProj=$this->getSubProjects(false,false); // Must refresh subProject, to be sure to get latest values (for instance when moving project, retreive correct WBS)
-    foreach ($subProj as $sp) {
-      if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
-        $sp->idOrganization=$this->idOrganization;
-        $sp->organizationInherited=1;
-        $resSp=$sp->save();
-      } else if ($sp->organizationInherited) {
-        $sp->organizationInherited=0;
-        $sp->save();
+    if ($this->idOrganization) {
+      $subProj=$this->getSubProjects(false,false); // Must refresh subProject, to be sure to get latest values (for instance when moving project, retreive correct WBS)
+      foreach ($subProj as $sp) {
+        if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
+          $sp->idOrganization=$this->idOrganization;
+          $sp->organizationInherited=1;
+          $resSp=$sp->save();
+        } else if ($sp->organizationInherited) {
+          $sp->organizationInherited=0;
+          $sp->save();
+        }
       }
     }
     
