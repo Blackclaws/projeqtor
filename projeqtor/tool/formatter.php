@@ -456,11 +456,14 @@ function activityStreamDisplayNote ($note,$origin){
     echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');
     echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
     echo '</div><div>';
+    echo '<table style="float:right;"><tr><td>';
     if($origin=="objectStream") {
           if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
     }
-    echo '<div "style=float:right"><a  id="imgCollapse_'.$note->id.'" style="float:right;margin-top:'.(($origin=="objectStream")?'20px':'').';margin-right:'.(($origin=="objectStream")?'-18px':'').'" onclick="switchNoteStatus('.$note->id.');">'.formatSmallButton('Collapse'.(($isNoteClosed)?'Open':'Hide')).'</a></div>';
-    echo '</div>';
+    echo '</td></tr><tr><td>';
+    echo '<div "style=float:right;"><a  id="imgCollapse_'.$note->id.'" style="float:right;" onclick="switchNoteStatus('.$note->id.');">'.formatSmallButton('Collapse'.(($isNoteClosed)?'Open':'Hide')).'</a></div>';
+    echo '</div></td></tr></table>';
+    
     if ($origin=='objectStream') {
     	$rightWidth=(intval(Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass))-30).'px"';
     } else {
