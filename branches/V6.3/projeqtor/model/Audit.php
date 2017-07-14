@@ -54,6 +54,8 @@ class Audit extends SqlElement {
 	public $_noHistory;
 	public $_readOnly = true;
 	
+	public static $_lastAudit=null;
+	
 	// Define the layout that will be used for lists
 	private static $_layout = '
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -133,6 +135,8 @@ class Audit extends SqlElement {
 	}
 	static function updateAudit() {
 		// $source can be "main" (from projeqtor.php), "login" (from loginCheck.php) or "alert" (from checkAlertToDisplay.php)
+		if (self::$_lastAudit and self::$_lastAudit==date("Y-m-d H:i:s")) return; // Do not save audit more than once each second
+		self::$_lastAudit=date("Y-m-d H:i:s");
 		if (! getSessionUser() )
 			return;
 		$audit = SqlElement::getSingleSqlElementFromCriteria ( 'Audit', array (

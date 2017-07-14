@@ -3181,9 +3181,9 @@ function indentTask(way) {
   loadContent(url, "planResultDiv", null, true, null);
 }
 
+var arrayCollapsed=[];
 function saveCollapsed(scope) {
-  if (waitingForReply == true)
-    return;
+  if (waitingForReply == true)  return;
   if (!scope) {
     if (dijit.byId(scope)) {
       scope = dijit.byId(scope);
@@ -3191,6 +3191,8 @@ function saveCollapsed(scope) {
       return;
     }
   }
+  if (arrayCollapsed[scope] && arrayCollapsed[scope]=='true') { return; }
+  saveCollapsed[scope]='true';
   dojo.xhrPost({
     url : "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
     handleAs : "text",
@@ -3209,6 +3211,8 @@ function saveExpanded(scope) {
       return;
     }
   }
+  if (arrayCollapsed[scope] && arrayCollapsed[scope]=='false') { return; }
+  saveCollapsed[scope]='false';
   dojo.xhrPost({
     url : "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
     handleAs : "text",

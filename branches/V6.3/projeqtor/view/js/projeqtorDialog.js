@@ -3142,7 +3142,7 @@ function showPlanParam(selectedProject) {
 }
 
 function changedIdProjectPlan(value) {
-  if (oldSelectedProjectsToPlan==value) return;
+  if (!oldSelectedProjectsToPlan || oldSelectedProjectsToPlan==value) return;
   if (oldSelectedProjectsToPlan.indexOf(" ")>=0 && value.length>1 ) {
     //value=value.splice(0,1);
     value[0]=null;
@@ -8359,4 +8359,17 @@ function filterDnDList(search,list) {
       child.style.display="block";
     }
   });
+}
+
+var arrayPaneSize=[];
+function storePaneSize(paneName,sizeValue) {
+  if (arrayPaneSize[paneName] && arrayPaneSize[paneName]==sizeValue) {
+    return;
+  }
+  arrayPaneSize[paneName]=sizeValue;
+  dojo.xhrPost({
+    url : "../tool/saveDataToSession.php?saveUserParam=true"
+       +"&idData="+paneName
+       +"&value="+sizeValue
+  });;
 }
