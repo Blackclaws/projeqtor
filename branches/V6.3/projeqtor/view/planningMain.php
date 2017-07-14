@@ -43,11 +43,7 @@
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
     <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
-             dojo.xhrPost({
-               url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneTopPlanningDivHeight"
-                  +"&value="+dojo.byId("listDiv").offsetHeight
-             });;
+         storePaneSize("contentPaneTopPlanningDivHeight",dojo.byId("listDiv").offsetHeight);
     </script>
    <?php include 'planningList.php'?>
   </div>
