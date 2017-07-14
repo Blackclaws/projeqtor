@@ -1570,7 +1570,7 @@ function calculatePlanningElement() {
     
     foreach($lstProjects as $keyPrjOrga=>$name) {
         $pe=new ProjectPlanningElement();
-        $whereClause='(refId='.$keyPrjOrga.' and refType="Project")';
+        $whereClause='(refId='.$keyPrjOrga.' and refType=\'Project\')';
         $arrayFields=array('validatedWork',
                            'assignedWork',
                            'realWork',

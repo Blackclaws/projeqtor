@@ -2314,5 +2314,6 @@ function outHighlightDependency(event){
 
 function hideDependencyRightClick(){
   var divNode=dojo.byId("editDependencyDiv");
+  if (!divNode) return;
   divNode.style.display="none";
 }

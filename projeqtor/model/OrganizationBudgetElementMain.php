@@ -526,7 +526,6 @@ function periodChanged(theId) {
    * @param boolean $hide : True to hide the message 'OrganizationBudgetElementMsg'
    */
   public function hideOrganizationBudgetElementMsg($hide=false) {
-    debugLog("hideOrganizationBudgetElementMsg() for id $this->id" );
       $fieldAttributes = self::$_fieldsAttributes['_spe_OrganizationBudgetElementMsg'];
       $fieldAttribute = explode(',',$fieldAttributes);
       $newFieldAttributes = '';

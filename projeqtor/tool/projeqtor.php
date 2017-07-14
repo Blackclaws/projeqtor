@@ -42,8 +42,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V6.3.0"; // Version of application : Major / Minor / Release
-$build = "0170"; // Build number. To be increased on each release
+$version = "V6.3.1"; // Version of application : Major / Minor / Release
+$build = "0171"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -103,8 +103,10 @@ $tz = Parameter::getGlobalParameter ( 'paramDefaultTimezone' );
 if ($tz)
   date_default_timezone_set ( $tz );
 if (! isset ( $noScriptLog )) {
-  scriptLog ( $_SERVER ["SCRIPT_NAME"] );
+  if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("===== ".$_SERVER ["SCRIPT_NAME"]." =======================================================================");}
+  else {scriptLog ( "=====".$_SERVER ["SCRIPT_NAME"] );}
 }
+
 $testMode = false; // Setup a variable for testing purpose test.php changes this value to true
 $i18nMessages = null; // Array containing messages depending on local (initialized at first need)
 

@@ -35,9 +35,9 @@ CREATE TABLE `${prefix}delivery` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-CREATE INDEX `deliverableType` ON `${prefix}delivery` (`idDeliverableType`);
-CREATE INDEX `deliverableStatusIdx` ON `${prefix}delivery` (`idDeliverableStatus`);
-CREATE INDEX `deliverableProject` ON `${prefix}delivery` (`idProject`);
+CREATE INDEX `deliveryDeliverableTypeIdx` ON `${prefix}delivery` (`idDeliverableType`);
+CREATE INDEX `deliveryDeliverableStatusIdx` ON `${prefix}delivery` (`idDeliverableStatus`);
+CREATE INDEX `deliveryProjectIdx` ON `${prefix}delivery` (`idProject`);
 
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (176,'menuDelivery', 6, 'object', 375, 'Project', 0, 'Work Meeting');
@@ -116,7 +116,7 @@ ADD `handledDate` date DEFAULT NULL;
 
 --ADD qCazelles - Lang
 CREATE TABLE `${prefix}language` (
-	`id` int(12) unsigned AUTO_INCREMENT,
+	`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
 	`name` varchar(100) NOT NULL,
 	`code` varchar(100) NOT NULL,
 	`sortOrder` int(3),
@@ -135,7 +135,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 --ADD qCazelles - Lang-Context
 CREATE TABLE `${prefix}productlanguage` (
-	`id` int(12) unsigned AUTO_INCREMENT,
+	`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
 	`idProduct` int(12) unsigned NOT NULL,
 	`idLanguage` int(12) unsigned NOT NULL,
 	`creationDate` date NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE `${prefix}productlanguage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `${prefix}productcontext` (
-	`id` int(12) unsigned AUTO_INCREMENT,
+	`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
 	`idProduct` int(12) unsigned NOT NULL,
 	`idContext` int(12) unsigned NOT NULL,
 	`creationDate` date NOT NULL,
@@ -157,15 +157,15 @@ CREATE TABLE `${prefix}productcontext` (
 --END ADD qCazelles - Lang-Context
 
 --- ADD qCazelles - dateComposition
-ALTER TABLE `${prefix}version` ADD `isStarted` INT(1) UNSIGNED NULL DEFAULT '0' AFTER `idle`;
-ALTER TABLE `${prefix}version` ADD `realStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
-ALTER TABLE `${prefix}version` ADD `plannedStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
-ALTER TABLE `${prefix}version` ADD `initialStartDate` DATE NULL DEFAULT NULL AFTER `idle`;
+ALTER TABLE `${prefix}version` ADD `isStarted` INT(1) UNSIGNED NULL DEFAULT '0';
+ALTER TABLE `${prefix}version` ADD `realStartDate` DATE NULL DEFAULT NULL;
+ALTER TABLE `${prefix}version` ADD `plannedStartDate` DATE NULL DEFAULT NULL;
+ALTER TABLE `${prefix}version` ADD `initialStartDate` DATE NULL DEFAULT NULL;
 
-ALTER TABLE `${prefix}version` ADD `isDelivered` INT(1) UNSIGNED NULL DEFAULT '0' AFTER `isStarted`;
-ALTER TABLE `${prefix}version` ADD `realDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
-ALTER TABLE `${prefix}version` ADD `plannedDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
-ALTER TABLE `${prefix}version` ADD `initialDeliveryDate` DATE NULL DEFAULT NULL AFTER `isStarted`;
+ALTER TABLE `${prefix}version` ADD `isDelivered` INT(1) UNSIGNED NULL DEFAULT '0';
+ALTER TABLE `${prefix}version` ADD `realDeliveryDate` DATE NULL DEFAULT NULL;
+ALTER TABLE `${prefix}version` ADD `plannedDeliveryDate` DATE NULL DEFAULT NULL;
+ALTER TABLE `${prefix}version` ADD `initialDeliveryDate` DATE NULL DEFAULT NULL;
 --END ADD qCazelles - dateComposition
 
 --ADD qCazelles - GANTT
@@ -238,7 +238,7 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 --(1, 180, 1);
 
 CREATE TABLE `${prefix}predefinedaction` (
-  `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) UNSIGNED DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `idActionType` int(12) UNSIGNED DEFAULT NULL,

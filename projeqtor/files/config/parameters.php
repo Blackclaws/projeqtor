@@ -14,8 +14,8 @@ $pdfNamePrefix="ProjeQtOr - ";
 $debugQuery=false;
 $debugJsonQuery=false;
 $debugPerf=true;
+$debugTraceUpdates=true;
 $debugReport=true;
 $i18nNocache=true;
 $debugIEcompatibility=false;
-$scaytAutoStartup='YES';
 //======= END

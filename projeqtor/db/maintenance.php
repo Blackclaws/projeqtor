@@ -574,6 +574,9 @@ if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
 	Sql::commitTransaction();
 	traceLog("   => $cpt notes updated");
 }
+if ($currVersion=='V6.3.0' and Sql::isPgsql()) {
+  $nbErrorsPg=runScript('V6.3.1.pg');
+}
 
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();

@@ -115,7 +115,7 @@ if ($paramTeam) {
 }
 
 $querySelect= 'select sum(work) as sumWork, ' . $scale . ' as scale , t2.id as idproject '; 
-$queryGroupBy = $scale . ', t1.idProject';
+$queryGroupBy = $scale . ', t1.idProject, t2.id';
 // constitute query and execute
 
 $tab=array();

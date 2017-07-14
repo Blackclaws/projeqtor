@@ -320,6 +320,10 @@ function formatForDbType($query) {
     $from[]='  ';                                         $to[]=' ';
     $from[]='`';                                          $to[]='';
     $from[]=' int(12) unsigned NOT NULL AUTO_INCREMENT';  $to[]=' serial';
+    $from[]=' int(12) UNSIGNED NOT NULL AUTO_INCREMENT';  $to[]=' serial';
+    $from[]=' int(12) unsigned AUTO_INCREMENT';           $to[]=' serial';
+    $from[]=' int(12) UNSIGNED AUTO_INCREMENT';           $to[]=' serial';
+    $from[]=' int(12) AUTO_INCREMENT';                    $to[]=' serial';
     $from[]=' int(';                                      $to[]=' numeric(';
     $from[]=' datetime';                                  $to[]=' timestamp';
     $from[]=' double';                                    $to[]=' double precision';

@@ -80,7 +80,7 @@ if (array_key_exists('affectationEndDate',$_REQUEST)) {
 }
 Security::checkValidDateTime($endDate);
 
-$idle=false;
+$idle=0;
 if (array_key_exists('affectationIdle',$_REQUEST)) {
   $idle=1;
 }

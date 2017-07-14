@@ -977,7 +977,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       	$uniqueProjectRestriction = false;
         if (getSessionValue('project')!="" and getSessionValue('project') != "*" and Parameter::getGlobalParameter('projectRestriction') == 'YES') {
           $proj = new Project(getSessionValue('project'));
-          if (empty($proj->getSubProjects())) {
+          $subProjs=$proj->getSubProjects();
+          if (count($subProjs)==0) {
             $uniqueProjectRestriction = true;
             $hide=true;
           }
