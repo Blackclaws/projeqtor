@@ -508,7 +508,7 @@ if ($displayWidthList<1400) {
                       setTimeout("hideList(null,true);", 1);
                     }
                     loadContent("objectDetail.php", "detailDiv", "listForm");
-                    loadContent("objectStream.php", "detailRightDiv", "listForm");
+                    if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
                   } else { 
                     showError(i18n("errorObjectId"));
 	                }
@@ -635,7 +635,7 @@ if ($displayWidthList<1400) {
       formChangeInProgress=false; 
       listClick();
       loadContent("objectDetail.php", "detailDiv", 'listForm');
-      loadContent("objectStream.php", "detailRightDiv", 'listForm');
+      if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", 'listForm');
    	}
     actionNo = function () {
 	    //unselectAllRows("objectGrid");

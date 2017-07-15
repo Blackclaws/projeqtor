@@ -781,7 +781,7 @@ function loadContent(page, destination, formName, isResultMessage,
               dojo.byId('objectId').value = directAccess;
               showWait();
               loadContent("objectDetail.php", "detailDiv", 'listForm');
-              loadContent("objectStream.php", "detailRightDiv",'listForm');
+              if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv",'listForm');
               showWait();
               hideList();
               setTimeout('selectRowById("objectGrid", '
@@ -1112,7 +1112,7 @@ function finalizeMessageDisplay(destination, validationType) {
     if (validationType) {
       if (validationType == 'note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Note', 'listForm');
-        loadContent("objectStream.php", "detailRightDiv", "listForm");
+        if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);
@@ -3823,6 +3823,7 @@ function getExtraRequiredFields() {
         var widget=dijit.byId(key);
         if (dijit.byId(key)) {
           dojo.removeClass(dijit.byId(key).domNode, 'required');
+          dijit.byId(key).set('required',false);
         } else if (dojo.byId(key + 'Editor')) {
           keyEditor = key + 'Editor';
           dojo.removeClass(dijit.byId(keyEditor).domNode, 'required');
@@ -3837,9 +3838,11 @@ function getExtraRequiredFields() {
           if (obj[key] == 'required') {
             // dijit.byId(key).set('class','input required');
             dojo.addClass(dijit.byId(key).domNode, 'required');
+            dijit.byId(key).set('required',true);
           } else if (obj[key] == 'optional') {
             // dijit.byId(key).set('class','input');
             dojo.removeClass(dijit.byId(key).domNode, 'required');
+            dijit.byId(key).set('required',false);
           }
         } else if (dojo.byId(key + 'Editor')) {
           keyEditor = key + 'Editor';
@@ -4251,6 +4254,7 @@ function saveNoteStream(event){
 
 var menuRightDivSize=null;
 function hideStreamMode(){
+  if (! dijit.byId('detailRightDiv')) return;
   if(dijit.byId("detailRightDiv").w != '0'){
     menuRightDivSize=dojo.byId("detailRightDiv").offsetWidth;
     dijit.byId("detailRightDiv").resize({

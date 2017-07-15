@@ -138,7 +138,7 @@
 		        id.value="";
 		        unselectAllRows("objectGrid");
             loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
-            loadContent("objectStream.php", "detailRightDiv", "listForm");
+            if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
           } else { 
             showError(i18n("errorObjectId"));
 	        }
@@ -234,7 +234,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
           hideExtraButtons('extraButtonsDetail');
-          loadContent("objectStream.php", "detailRightDiv", "listForm");
+          if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
 // ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
           // If undo Organization's detail screen, must passed periodic year in REQUEST
           cl='';
@@ -264,7 +264,7 @@
           hideExtraButtons('extraButtonsDetail');
 		      action=function(){
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
-            loadContent("objectStream.php", "detailRightDiv", "listForm");
+            if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
           };
           var alsoDelete="";
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
@@ -290,7 +290,7 @@
             param='';
           }
           loadContent("objectDetail.php"+param, "detailDiv", 'listForm');
-          loadContent("objectStream.php", "detailRightDiv", 'listForm');
+          if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", 'listForm');
 // END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
 // COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
 //          loadContent("objectDetail.php", "detailDiv", 'listForm');

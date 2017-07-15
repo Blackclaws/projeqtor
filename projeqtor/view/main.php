@@ -362,9 +362,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         $id=$_REQUEST['objectId'];
         Security::checkValidId($id);
         $directObj=new $class($id);
-        if ($class=='Ticket' and securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='NO') {
+        $rights=$user->getAccessControlRights();
+        if ($class=='Ticket' and (securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='NO' or securityCheckDisplayMenu(null,'Ticket')==false ) )  {
           $class='TicketSimple';
-        } else if ($class=='TicketSimple' and securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='YES') {
+        } else if ($class=='TicketSimple' and securityGetAccessRightYesNo('menuTicket', 'read', $directObj)=='YES' and securityCheckDisplayMenu(null,'Ticket')==true) {
           $class='Ticket';
         }
         if (array_key_exists('directAccess', $_REQUEST)) {
