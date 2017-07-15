@@ -118,7 +118,7 @@ ADD `handledDate` date DEFAULT NULL;
 CREATE TABLE `${prefix}language` (
 	`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
 	`name` varchar(100) NOT NULL,
-	`code` varchar(100) NOT NULL,
+	`code` varchar(10) DEFAULT NULL,
 	`sortOrder` int(3),
 	`idle` int(1) DEFAULT 0,
 	PRIMARY KEY (`id`)
