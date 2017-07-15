@@ -481,7 +481,7 @@
             <?php }
      // validatedCost and validatedWork krowry debug
             $pe=get_class($obj).'PlanningElement';
-            if (isDisplayable($obj,'priority', true)) {?>
+            if (isDisplayable($obj,'validatedWork', true)) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colValidatedWork');?>&nbsp;:&nbsp;</td>
               <td>
@@ -495,7 +495,7 @@
             $currency=Parameter::getGlobalParameter('currency');
             $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
             $pe=get_class($obj).'PlanningElement';
-            if (isDisplayable($obj,'priority', true)) {?>
+            if (isDisplayable($obj,'validatedCost', true)) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colValidatedCost');?>&nbsp;:&nbsp;</td>
               <td>
@@ -577,16 +577,29 @@
 
 <?php 
 function isDisplayable($obj, $field, $fromPlanningElement=false) {
+  global $extraHiddenFields, $extraReadonlyFields, $peExtraHiddenFields, $peExtraReadonlyFields;
+  if (!$extraHiddenFields) $extraHiddenFields = $obj->getExtraHiddenFields ( null, null, getSessionUser ()->getProfile () );
+  if (!$extraReadonlyFields) $extraReadonlyFields = $obj->getExtraReadonlyFields ( null, null, getSessionUser ()->getProfile () );
   if ( property_exists($obj,$field) 
   and ! $obj->isAttributeSetToField($field,'readonly') 
-  and ! $obj->isAttributeSetToField($field,'hidden') ) {
+  and ! $obj->isAttributeSetToField($field,'hidden') 
+  and ! in_array($field,$extraHiddenFields) and ! in_array($field,$extraReadonlyFields)) {
     return true;
   } else {
     $pe=get_class($obj).'PlanningElement';
     if ($fromPlanningElement and property_exists($obj,$pe) and is_object($obj->$pe) and property_exists($obj->$pe,$field)) {
       $peObj=$obj->$pe;
+      $peObj->setVisibility();
+      $workVisibility=$peObj->_workVisibility;
+      $costVisibility=$peObj->_costVisibility;
+      if ( (substr($field,-4,4)=='Cost' and $costVisibility!='ALL') or (substr($field,-4, 4)=='Work' and $workVisibility!='ALL') ) {
+        return false;
+      }
+      if (!$peExtraHiddenFields) $peExtraHiddenFields = $peObj->getExtraHiddenFields ( null, null, getSessionUser ()->getProfile () );
+      if (!$peExtraReadonlyFields) $peExtraReadonlyFields = $peObj->getExtraReadonlyFields ( null, null, getSessionUser ()->getProfile () );
       if (! $peObj->isAttributeSetToField($field,'readonly')
-      and ! $peObj->isAttributeSetToField($field,'hidden') ) {
+      and ! $peObj->isAttributeSetToField($field,'hidden')
+      and ! in_array($field,$peExtraHiddenFields) and ! in_array($field,$peExtraReadonlyFields)     ) {
         return true;
       } else {
         return false;

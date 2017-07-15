@@ -974,20 +974,13 @@ function saveNote() {
     noteEditor=CKEDITOR.instances['noteNote'];
     noteEditor.updateElement();
     var tmpCkEditor=noteEditor.document.getBody().getText();
-    if (tmpCkEditor.trim()=="") {
+    var tmpCkEditorData=noteEditor.getData();
+    if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
       var msg=i18n('messageMandatory', new Array(i18n('Note')));
       noteEditor.focus();
       showAlert(msg);
       return;
     }
-/*  } else if (editorType=="CK") {
-    if (dijit.byId("noteNote").getValue() == '') {
-      dijit.byId("noteNote").set("class", "input required");
-      var msg=i18n('messageMandatory', new Array(i18n('Note')));
-      dijit.byId("noteNote").focus();
-      showAlert(msg);
-      return;
-    }*/
   } else if (dijit.byId("noteNoteEditor")) {
     if (dijit.byId("noteNote").getValue() == '') {
       dijit.byId("noteNoteEditor").set("class", "input required");
@@ -999,7 +992,7 @@ function saveNote() {
     }
   } 
   loadContent("../tool/saveNote.php", "resultDiv", "noteForm", true, 'note');
-  loadContent("objectStream.php", "detailRightDiv", "listForm");
+  if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
   dijit.byId('dialogNote').hide();
 }
 

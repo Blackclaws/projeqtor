@@ -3661,7 +3661,7 @@ function drawLanguageSection($obj, $refresh=false) {
 			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
 			if ($canUpdate) {
 				echo '  <a onClick="editProductLanguage(' . htmlEncode($lang->id). ');" '
-      		.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
+      		.'title="' . i18n('editProductLanguage') . '" > '.formatSmallButton('Edit').'</a>';
       		echo '  <a onClick="removeProductLanguage(' . "'" . htmlEncode($lang->id) . "','" . get_class($lang) . "'" . ');" '
   		.'title="' . i18n('removeProductLanguage') . '" > '.formatSmallButton('Remove').'</a>';
 			}
@@ -3727,7 +3727,7 @@ function drawContextSection($obj, $refresh=false) {
 			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
 			if ($canUpdate) {
 				echo '  <a onClick="editProductContext(' . htmlEncode($context->id). ');" '
-        		.'title="' . i18n('editProductStructure') . '" > '.formatSmallButton('Edit').'</a>';
+        		.'title="' . i18n('editProductContext') . '" > '.formatSmallButton('Edit').'</a>';
         		echo '  <a onClick="removeProductContext(' . "'" . htmlEncode($context->id) . "','" . get_class($context) . "'" . ');" '
           		.'title="' . i18n('removeProductContext') . '" > '.formatSmallButton('Remove').'</a>';
 			}
