@@ -59,7 +59,6 @@ For instance, bugs should be managed through tickets :
  .. compound:: **Initial due date**
 
     * If a definition of ticket delay exists for giving ticket type and urgency the date is automatically calculated with this delay.
-    * Else date is initialized to current day.
     * :ref:`delay-for-ticket` screen allows to define ticket delay.
 
  .. compound:: **Planned due date**
