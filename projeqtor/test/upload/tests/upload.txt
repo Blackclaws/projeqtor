@@ -1,0 +1,125 @@
+---------------------------------------------------------
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/KIF_0975.JPG
+Json Data Returned:
+{"file":"..\/tests\/uploads\/KIF_0975.JPG","name":"KIF_0975.JPG","width":2048,"height":1536,"type":"jpg","size":538532,"additionalParams":{"album":"Summer Vacation","year":"2011"}}
+---------------------------------------------------------
+POSTDATA: 0 FILES
+
+IMROPER DATA SENT... Array:
+Array:::::
+
+Json Data Returned:
+{"ERROR":"Improper data sent - no files found"}
+---------------------------------------------------------
+POSTDATA: 0 FILES
+    album = Summer Vacation
+    year = 2011
+
+IMROPER DATA SENT... Array:
+Array:::::
+
+Json Data Returned:
+{"ERROR":"Improper data sent - no files found"}
+---------------------------------------------------------
+POSTDATA: 0 FILES
+    album = Summer Vacation
+    year = 2011
+
+IMROPER DATA SENT... Array:
+Array:::::
+
+Json Data Returned:
+{"ERROR":"Improper data sent - no files found"}
+---------------------------------------------------------
+POSTDATA: 0 FILES
+    album = Summer Vacation
+    year = 2011
+
+IMROPER DATA SENT... Array:
+Array:::::
+
+Json Data Returned:
+{"ERROR":"Improper data sent - no files found"}
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/Picture 2.jpg
+Json Data Returned:
+{"file":"..\/tests\/uploads\/Picture 2.jpg","name":"Picture 2.jpg","width":1280,"height":1024,"type":"jpg","size":206977,"additionalParams":{"album":"Summer Vacation","year":"2011"}}
+---------------------------------------------------------
+POSTDATA: 0 FILES
+
+IMROPER DATA SENT... Array:
+Array:::::
+
+Json Data Returned:
+{"ERROR":"Improper data sent - no files found"}
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/0312.JPG
+Json Data Returned:
+{"file":"..\/tests\/uploads\/0312.JPG","name":"0312.JPG","width":960,"height":1280,"type":"jpg","size":323298,"additionalParams":{"album":"Summer Vacation","year":"2011"}}
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/0312.JPG
+Json Data Returned:
+{"file":"..\/tests\/uploads\/0312.JPG","name":"0312.JPG","width":960,"height":1280,"type":"jpg","size":323298,"additionalParams":{"album":"Summer Vacation","year":"2011"}}
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/
+Json Data Returned:
+{"file":"..\/tests\/uploads\/","name":"","width":null,"height":null,"type":"\/tests\/uploads\/","size":0,"additionalParams":{"album":"Summer Vacation","year":"2011"}}
+---------------------------------------------------------
+POSTDATA: 1 FILES
+    album = Summer Vacation
+    year = 2011
+
+   file: uploadedfile=Array
+HTML single POST:
+    album = Summer Vacation
+    year = 2011
+
+file: ../tests/uploads/2008_0928marche80059.JPG
+Json Data Returned:
+{"file":"..\/tests\/uploads\/2008_0928marche80059.JPG","name":"2008_0928marche80059.JPG","width":600,"height":450,"type":"jpg","size":47701,"additionalParams":{"album":"Summer Vacation","year":"2011"}}

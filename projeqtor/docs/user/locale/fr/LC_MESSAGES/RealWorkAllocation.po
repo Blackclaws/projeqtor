@@ -1,0 +1,499 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../RealWorkAllocation.rst:0 ../../RealWorkAllocation.rst:17
+#: ../../RealWorkAllocation.rst:14
+msgid "Real work allocation"
+msgstr "Imputation"
+
+#: ../../RealWorkAllocation.rst:19
+msgid "This screen is devoted to input of real work."
+msgstr "Cette écran est utilisé pour saisir le travail réel."
+
+#: ../../RealWorkAllocation.rst:23
+msgid "The input is for one resource, on a weekly basis."
+msgstr "La saisie est pour une ressource sur une base hebdomadaire."
+
+#: ../../RealWorkAllocation.rst:21
+msgid "Resource enters work day by day, on each assigned task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:27
+msgid ""
+"The corresponding cost to the real work is automatically updated to the "
+"assignment, activity and project."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:34
+msgid "Timesheet areas"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:37 ../../RealWorkAllocation.rst:159
+msgid "Selection timesheet"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:38
+msgid "Allows to select a timesheet for a resource and for a period. |one|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:39
+msgid ""
+"More detail about selection timesheet, see : :ref:`RWA-selection-timesheet-"
+"label`."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:42
+msgid "Show planned work"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:43
+msgid "Flag selected allows to display planned work. |two|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:44
+msgid ""
+"Planned work is indicated over each input cell, on top right corner, in "
+"light blue color."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:45
+msgid "Allow to display the planned work of each task each day."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:52
+msgid "Planned work displayed"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:55
+msgid "Filters"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:56
+msgid "Filters allow to show or hide task in the task list. |three|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Show only current week meeting"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:60
+msgid "Flag allows to show only the week meeting task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Hide not handled items"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:64
+msgid "Flag allows to hide task not take over."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Hide done items"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:68
+msgid "Flag allows to hide done task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Show closed items"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:72
+msgid "Flag allows to show closed task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:75
+msgid "Buttons"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:76
+msgid "Buttons of the timesheet: |four|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:78
+msgid "Click on |buttonIconSave| to save timesheet data."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:79
+msgid "Click on |buttonIconPrint| to print timesheet."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:80
+msgid "Click on |buttonIconPdf| to export timesheet in PDF format."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:81
+msgid "Click on |buttonIconUndo| to undo modification on the timesheet."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:84 ../../RealWorkAllocation.rst:200
+msgid "Input fields"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:85
+msgid "Input fields in timesheet. |five|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:86
+msgid "More detail about, see : :ref:`RWA-input-timesheet-label`"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:93
+msgid "Tasks list"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:94
+msgid "Task list allows to display each resource affectation task. |six|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:101
+msgid "Task list area"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Tasks |alpha|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:105
+msgid "Tasks are regrouped by project."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:106
+msgid "Tasks displayed in the list depends on :"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:108
+msgid "Assigned tasks planified during this period."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:109
+msgid "Selected filter flags."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:110
+msgid ""
+":ref:`administration-global-parameters-label` set in \"Real work "
+"allocation\" section."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Function of the assignement |beta|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:116
+msgid ""
+"The function on the assignment is displayed in blue after the name of the "
+"task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:117
+msgid ""
+"A resource assigned to the same task with many functions, several input line"
+" is displayed."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Comment on the assignment |gamma|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:121
+msgid "The |Note| icon indicates there is a comment on the assignment."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:122
+msgid "Just move the mouse over the activity to see the comment."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Task metrics |delta|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:126
+msgid "**Planned dates**: Planned start and end dates for the task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:127
+msgid "**Assigned**: Assigned work for the task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:128
+msgid "**Real**: Sum of real work for the task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:129
+msgid "**Left**: Left work for the task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:132
+msgid "**Planned**: Planned work for the task."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:139
+msgid "Data entry validation"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:140
+msgid "Buttons allow to send and validate real work. |seven|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Button: Submit work"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:144
+msgid "Users can send works to project leader."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Button: Validate work"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:148
+msgid "Project leaders can validate works."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:166
+msgid "Timesheet selector"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:169
+msgid "Selection of the resource"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:170
+msgid "Users can only select themselves as a resource. |one|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Access to other resources timesheet"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:174
+msgid "Depending on access rights, user can select other resource timesheet."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:177
+msgid "Selection period"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:178
+msgid "By default, the period is determined depending on the current day."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:179
+msgid "It is possible to change the period of two ways:"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:181
+msgid "Select year and week. |two|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:182
+msgid "Or select the first day of the week. |three|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:185
+msgid "Displayed timesheet"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:186
+msgid "A timesheet is displayed depends on the resource and period selection."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:187
+msgid "The name of the resource and the week are displayed. |four|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:188
+msgid "The days of the week are displayed. |five|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:189
+msgid "The current day is displayed. |six|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:207
+msgid "Input timesheet"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:210
+msgid "Comments"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:211
+msgid "A global comment can be added on the weekly follow-up. |one|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:214
+msgid "Real work entry"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:215
+msgid "Area allows to entry real work. |two|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:216
+msgid "Week is displayed from monday to sunday."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:217
+msgid "It possible put real work in off days."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Current day"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:221
+msgid "Columns of current day is displayed in yellow."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:0
+msgid "Days off"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:225
+msgid "Columns of days off is displayed in grey."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:226
+msgid ""
+"Days off is determine in resource calendar definition, see: :ref:`resource-"
+"calendar-label`."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:229
+msgid "Left work"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:230
+msgid "Left work is automatically decreased on input of real work."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:231
+msgid ""
+"Resources can update this data to reflect the real estimated left work. "
+"|three|"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:234
+msgid "Unit for real work"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:235
+msgid ""
+"Unit for real work is set with \"unit for real work allocation\" parameter "
+"in \"Units for work\" section, see: * :ref:`administration-global-"
+"parameters-label`."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:236
+msgid "Selected unit is displayed on left at bottom window |four|."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:244
+msgid "Input entry validation"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:251
+msgid "Columns validation"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:254
+msgid "Resource capacity validation"
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:255
+msgid ""
+"Total of the day is green whether the entry in the day respects resource "
+"capacity."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:256
+msgid ""
+"Total of the day is red whether the entry in the day is more than the "
+"resource capacity."
+msgstr ""
+
+#: ../../RealWorkAllocation.rst:260
+msgid "This control is not blocking."
+msgstr ""
+
+#~ msgid "Real work allocation window"
+#~ msgstr "Fênetre Imputation"
+
+#~ msgid "Resource selector"
+#~ msgstr "Selecteur de ressource"
+
+#~ msgid "The resource selector allows to select the resource timesheet."
+#~ msgstr ""
+#~ "Le sélecteur de ressource permet la sélection de la feuille de temps de la "
+#~ "ressource."
+
+#~ msgid "List of resource |one|"
+#~ msgstr "List des ressources"
+
+#~ msgid ""
+#~ "Depending on rights management, users call only select themselves as a "
+#~ "resource, or select any resource affected to a managed project."
+#~ msgstr ""
+#~ "Selon les habilitations, les utilisateurs peuvent seulement ce sélectionner "
+#~ "comme ressource ou sélectionner n'importe quel ressource affecté à la "
+#~ "gestion de projets."
+
+#~ msgid "The name of selected ressources displayed |two|."
+#~ msgstr "Le nom de la ressource sélectionné est affiché |two|."
+
+#~ msgid "Period selector"
+#~ msgstr "Sélecteur de période"
+
+#~ msgid "The period selector allows to select the timesheet of the week."
+#~ msgstr ""
+#~ "Le sélecteur de période permets de sélection la feuille de temps de la "
+#~ "semaine."
+
+#~ msgid "Just changing year and/or week will display the corresponding sheet."
+#~ msgstr ""
+#~ "Changer l'année et la semaine pour afficher la feuille de temps "
+#~ "correspondante."
+
+#~ msgid ""
+#~ "The period can also be selected through the a calendar, by selecting the "
+#~ "“1st day of week”."
+#~ msgstr "La période peut être aussi sélectionnée par un calendrier."
+
+#~ msgid "3 - Buttons"
+#~ msgstr ""
+
+#~ msgid "Click on |buttonIconSave| to save."
+#~ msgstr ""
+
+#~ msgid "Click on |buttonIconPrint| to print."
+#~ msgstr ""
+
+#~ msgid "Click on |buttonIconPdf| to export in PDF format."
+#~ msgstr ""
+
+#~ msgid "Click on |buttonIconUndo| to undo modification."
+#~ msgstr ""
+
+#~ msgid "4 - Filters"
+#~ msgstr ""
+
+#~ msgid "5 - Time sheet header"
+#~ msgstr ""
+
+#~ msgid "6 - Task list"
+#~ msgstr ""
