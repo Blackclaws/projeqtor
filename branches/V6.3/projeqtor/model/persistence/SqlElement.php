@@ -649,6 +649,9 @@ abstract class SqlElement {
       $isOldStatDone=($status->setDoneStatus)?true:false;
       $isOldStatIdle=($status->setIdleStatus)?true:false;
       $isOldStatCancelled=($status->setCancelledStatus)?true:false;
+      SqlElement::$_cachedQuery ['Status']=array();
+      $st=new Status();
+      $statusList=$st->getSqlElementsFromCriteria(null,null,null,null,true);
       if ( ($isStatDone and $isStatDone!=$isOldStatDone) or ($isStatIdle and $isStatIdle!=$isOldStatIdle) or ($isStatCancelled and $isStatCancelled!=$isOldStatCancelled)) {
         $allDone=true;
         $allIdle=true;
@@ -657,11 +660,18 @@ abstract class SqlElement {
         $sons=$peobj->getSqlElementsFromCriteria(null, null, "topId=$pe->topId");
         foreach ($sons as $sonPe) {
           $sonType=$sonPe->refType;
-          $son=new $sonType($sonPe->refId);
-          if (! property_exists($parent,'done') or ! property_exists($parent,'idle') or ! property_exists($parent,'cancelled')) continue;
-          if (!$son->done and !$son->cancelled) $allDone=false;
-          if (!$son->idle and !$son->cancelled) $allIdle=false;
-          if (!$son->cancelled) $allCancelled=false;
+          $son=new $sonType($sonPe->refId);       
+          // Change : only base on Status...
+          if (! property_exists($son,'idStatus') or !$son->idStatus) continue;
+          if (!isset($statusList['#'.$son->idStatus])) continue;
+          $sonStatus=$statusList['#'.$son->idStatus];
+          if (!$sonStatus->setDoneStatus and !$sonStatus->setCancelledStatus) $allDone=false;
+          if (!$sonStatus->setIdleStatus and !$sonStatus->setCancelledStatus) $allIdle=false;
+          if (!$sonStatus->setCancelledStatus) $allCancelled=false;
+          //if (! property_exists($son,'done') or ! property_exists($son,'idle') or ! property_exists($son,'cancelled')) continue;
+          //if (!$son->done and !$son->cancelled) $allDone=false;
+          //if (!$son->idle and !$son->cancelled) $allIdle=false;
+          //if (!$son->cancelled) $allCancelled=false;
         }
         $setToDone=($isStatDone and $isStatDone!=$isOldStatDone and $allDone)?true:false;
         $setToIdle=($isStatIdle and $isStatIdle!=$isOldStatIdle and $allIdle)?true:false;
@@ -698,7 +708,9 @@ abstract class SqlElement {
                     $setToCancelled=false;
                   }
                 }
-                if ($saveParent) $parent->save();
+                if ($saveParent) {
+                  $resParent=$parent->save();
+                }
               }
         }
       }
