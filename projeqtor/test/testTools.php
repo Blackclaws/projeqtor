@@ -33,10 +33,14 @@ $last='';
 $microtime=microtime(true);
 $debugTrace=false;
 function testHeader($title){
-	echo '<table style="font-size: 12px;font-family:arial;border:1px solid #000000;border-collapse:collapse;">';
+	echo '<table style="display:block;font-size: 12px;font-family:arial;border:1px solid #000000;border-collapse:collapse;">';
+	echo '<thead>';
 	echo '<tr><td style="background-color:#EEEEEE;font-weight:bold; font-size:15px; text-align:center;" colspan="5">'.$title.'</td></tr>';  
+	echo '</thead>';
+	echo '<tbody style="heigt:500px;display:block;overflow-y:scroll;">';
 }
 function testFooter(){
+  echo '</tbody>';
 	echo '</table>';
 }
 function testTitle($title){
