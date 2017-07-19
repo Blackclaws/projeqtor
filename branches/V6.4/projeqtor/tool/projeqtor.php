@@ -629,7 +629,7 @@ function disableSilentErrors() {
   $globalSilentErrors = false;
 }
 
-function traceHack($msg = "Unidentified source code") {
+function traceHack($msg = "Unidentified source code",$exit=true) {
   errorLog ( "HACK ================================================================" );
   errorLog ( "Try to hack detected" );
   errorLog ( " Source Code = " . $msg );
@@ -644,7 +644,7 @@ function traceHack($msg = "Unidentified source code") {
     }
   }
   errorLog ( " REQUEST_URI = " . $_SERVER ['REQUEST_URI'] );
-  require "../tool/hackMessage.php"; // Will call exit
+  if ($exit) require "../tool/hackMessage.php"; // Will call exit
   // exit; / exit is called in hackMessage
 }
 

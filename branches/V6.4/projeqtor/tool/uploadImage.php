@@ -85,7 +85,7 @@ $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 if (!$error) {
   $fileName=date('YmdHis').'_'.getSessionUser()->id.'_'.$uploadedFile['name'];
   $mimeType=$uploadedFile['type'];
-  $fileSize=$uploadedFile['size'];   
+  $fileSize=$uploadedFile['size'];
   $uploaddir = $targetDir;
   $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
   if ($paramFilenameCharset) {
@@ -93,10 +93,15 @@ if (!$error) {
   } else {
     $uploadfile = $uploaddir . $pathSeparator . $fileName;
   }
-  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-    $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-    errorLog(i18n('errorUploadFile','hacking ?'));
-  } 
+  if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm') {
+    $error="Hack attempt detected : the action and your IP has been traced.";
+    traceHack("Try to upload php file as image in CKEditor",false);
+  } else {
+    if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
+      $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
+      errorLog(i18n('errorUploadFile','hacking ?'));
+    } 
+  }
 }
 if (!$error) {
   if(@!getimagesize($uploadfile)) {
@@ -109,7 +114,7 @@ if ($error) {
   $jsonReturn='{"uploaded": 0, "error": { "message": "'.$error.'" } }';
 } else {
   $url=$targetDir.'/'.$fileName;
-  $jsonReturn='{"uploaded": 1, "filename": "'.$fileName.'", "url":"'.$url.'"}';
+  $jsonReturn='{"uploaded": 1, "filename": "'.$fileName.'", "url":"'.$url.'"'.$hackMessage.'}';
 }
 
 ob_end_clean();
