@@ -992,7 +992,7 @@ function htmlGetMimeType($mimeType,$fileName, $id=null, $type='Attachment') {
     $img= "../view/img/mime/unknown.png";
   }
   $image='<img src="' . $img . '" title="' . $mimeType . '" ';
-  if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf" or $ext=="txt")) {
+  if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf" or $ext=="txt" or $ext=="log")) {
   	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.htmlEncode($fileName,'quotes').'\',\''.$type.'\')" ';
   } else {
     $image.=' style="float:left;opacity: 0.4;filter: alpha(opacity=40);" ';
