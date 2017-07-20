@@ -94,8 +94,11 @@ if (!$error) {
     $uploadfile = $uploaddir . $pathSeparator . $fileName;
   }
   if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm') {
-    $error="Hack attempt detected : the action and your IP has been traced.";
-    traceHack("Try to upload php file as image in CKEditor",false);
+    if(@!getimagesize($uploadedFile['tmp_name'])) {
+      $error=i18n('errorNotAnImage');
+    } else {
+      traceHack("Try to upload php file as image in CKEditor");
+    }
   } else {
     if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
       $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
@@ -114,7 +117,7 @@ if ($error) {
   $jsonReturn='{"uploaded": 0, "error": { "message": "'.$error.'" } }';
 } else {
   $url=$targetDir.'/'.$fileName;
-  $jsonReturn='{"uploaded": 1, "filename": "'.$fileName.'", "url":"'.$url.'"'.$hackMessage.'}';
+  $jsonReturn='{"uploaded": 1, "filename": "'.$fileName.'", "url":"'.$url.'"}';
 }
 
 ob_end_clean();

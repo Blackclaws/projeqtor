@@ -84,6 +84,10 @@
                   +"&idData=contentPaneRightDetailDivWidth<?php echo $objectClass;?>"
                   +"&value="+dojo.byId("detailRightDiv").offsetWidth
              });;
+             var newWidth=dojo.byId("detailRightDiv").offsetWidth;
+             dojo.query(".activityStreamNoteContainer").forEach(function(node, index, nodelist) {
+              node.style.maxWidth=(newWidth-30)+"px";
+             });
        </script>
     <script type="dojo/connect" event="onLoad" args="evt">
         scrollInto();

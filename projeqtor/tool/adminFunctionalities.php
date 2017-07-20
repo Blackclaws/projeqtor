@@ -210,15 +210,32 @@ function updateReference($element) {
 			$arrayElements[]=$ref;
 		}
 	}
+	$cptCommit=100;
+	// Sql::beginTransaction(); already done
 	foreach ($arrayElements as $elt) {
 		$obj=new $elt();
 		$request="update " . $obj->getDatabaseTableName() . " set reference=null";
 		SqlDirectElement::execute($request); 
 		$lst=$obj->getSqlElementsFromCriteria(null, false);
+		if (count($lst)<100) {
+		  projeqtor_set_time_limit(1500);
+		} else {
+		  traceLog("   => setting unlimited execution time for script (more than 100 $elt to update)");
+		  projeqtor_set_time_limit(0);
+		}
+		$cpt=0;
+		traceLog("   => ".count($lst)." $elt to update");
 	  foreach ($lst as $object) {
 		  $object->setReference(true);
+		  $cpt++;
+		  if ( ($cpt % $cptCommit) == 0) {
+		    Sql::commitTransaction();
+		    traceLog("   => $cpt $elt done...");
+		    Sql::beginTransaction();
+		  }
 		}
 	}
+	// Sql::commitTransaction(); done afterwards
 	$element=(!$element)?'all':$element;
 	$returnValue=i18n('updatedReference',array(i18n($element)));	
 	$returnValue .= '<input type="hidden" id="lastOperation" value="update" />';

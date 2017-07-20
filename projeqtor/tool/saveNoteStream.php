@@ -42,7 +42,7 @@ $refId=RequestHandler::getId("noteRefId",false);
 $noteNote=RequestHandler::getValue("noteNoteStream",false);
 
 $notePrivacy=null;
-$notePrivacy=RequestHandler::getValue("notePrivacy",false);
+$notePrivacy=RequestHandler::getValue("notePrivacyStream",false);
 $noteId=null;
 $noteId=RequestHandler::getId("noteId",false);
 $noteId=trim($noteId);
@@ -69,7 +69,7 @@ if ($note->creationDate==null) {
 $note->note=nl2br($noteNote);
 if ($notePrivacy) {
   $note->idPrivacy=$notePrivacy;
-} else if (! $note->idPrivacy) {
+} else {
 	$note->idPrivacy=1;
 }
 $result=$note->save();
