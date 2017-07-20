@@ -75,16 +75,17 @@ class DocumentMain extends SqlElement {
   public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
+    <th field="id" formatter="numericFormatter" width="4%"># ${id}</th>
     <th field="nameProject" width="10%">${idProject}</th>
     <th field="nameProduct" width="10%">${idProduct}</th>
-    <th field="nameDocumentType" width="10%">${type}</th>
-    <th field="name" width="25%">${name}</th>
-    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameDocumentVersion" width="10%">${currentDocumentVersion}</th>
-    <th field="nameDocumentVersionRef" width="10%">${reference}</th>
-    <th field="locked" width="5%" formatter="booleanFormatter">${locked}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    <th field="nameDocumentType" width="8%">${type}</th>
+    <th field="name" width="20%">${name}</th>
+    <th field="documentReference" width="20%">${documentReference}</th>
+    <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="nameDocumentVersion" width="6%">${currentDocumentVersion}</th>
+    <th field="nameDocumentVersionRef" width="6%">${referenceDocumentVersion}</th>
+    <th field="locked" width="4%" formatter="booleanFormatter">${locked}</th>
+    <th field="idle" width="4%" formatter="booleanFormatter">${idle}</th>
     ';
 //<th field="nameCurrentVersion" width="10%">${idCurrentVersion}</th>
 //<th field="nameCurrentRefVersion" width="10%">${idCurrentRefVersion}</th>
@@ -111,7 +112,8 @@ class DocumentMain extends SqlElement {
    
    private static $_colCaptionTransposition = array(
        'idDocumentType' => 'type',
-      'idDocumentVersion' => 'currentDocumentVersion'
+       'idDocumentVersion' => 'currentDocumentVersion',
+       'idDocumentVersionRef'=>'referenceDocumentVersion'
    );
    private static $_databaseColumnName = array();
    
