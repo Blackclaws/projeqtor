@@ -404,7 +404,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   // $obj->splitLongFields ();
   // }
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
-  $obj->setAllDefaultValues();
+  
   if (property_exists($obj, '_sec_Assignment')) {
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
     if ($habil and $habil->rightAccess != 1) {
@@ -565,6 +565,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
+  $obj->setAllDefaultValues();
   $arrayRequired=$obj->getExtraRequiredFields(($objType)?$objType->id:null ); // will define extra required fields, depending on status, planning mode...
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
