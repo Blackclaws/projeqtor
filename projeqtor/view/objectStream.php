@@ -47,8 +47,8 @@
   $notes=$note->getSqlElementsFromCriteria(array('refType'=>$objectClass,'refId'=>$objectId),null,null,$order);
   SqlElement::resetCurrentObjectTimestamp();
   $ress=new Resource($user->id);
-  $userId=$note->idUser;
-  $userName=SqlList::getNameFromId('User', $userId);
+  //$userId=$note->idUser;
+  //$userName=SqlList::getNameFromId('User', $userId);
   $creationDate=$note->creationDate;
   $updateDate=$note->updateDate;
   if ($updateDate == null) {
@@ -60,6 +60,7 @@
   }
   $countIdNote=count($notes);
   $onlyCenter=(RequestHandler::getValue('onlyCenter')=='true')?true:false;
+  $privacyNotes=Parameter::getUserParameter('privacyNotes'.$objectClass);
 ?>
 <!-- Titre et listes de notes -->
 
@@ -90,9 +91,22 @@
        <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $objectClass;?>" />
        <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $objectId;?>" />
        <input id="noteEditorTypeStream" name="noteEditorTypeStream" type="hidden" value="<?php echo getEditorType();?>" />
-       <div style="width:99%;">
+       <div style="width:99%;position:relative">
          <textarea rows="4"  name="noteNoteStream" id="noteNoteStream" dojoType="dijit.form.SimpleTextarea"
          style="width:98%;height:60px;overflow-x:hidden;overflow-y:auto;border:1px solid grey;margin-top:2px;" onfocus="focusStream();"><?php echo i18n("textareaEnterText");?></textarea>
+         <?php
+         $privacyClass="";
+         $privacyLabel=i18n("public");
+         if ($privacyNotes=="3") { // Team privacy
+           $privacyClass="iconFixed16";
+           $privacyLabel=i18n("private");
+         } else if ($privacyNotes=="2") { // Private
+           $privacyClass="iconTeam16";
+           $privacyLabel=i18n("team");
+         }?>
+         <div title="<?php echo i18n("colIdPrivacy").' = '.$privacyLabel;?>" id="notePrivacyStreamDiv" class="<?php echo $privacyClass;?>" onclick="switchNotesPrivacyStream();" style="border-radius:7px 0px 0px 0px;width:16px; height:16px;position:absolute;bottom:2px;right:-2px;opacity:1;background-color: #E0E0E0;color:#A0A0A0;cursor:pointer;text-align:center">...</div>
+         <input type="hidden" id="notePrivacyStream" name="notePrivacyStream" value="<?php echo $privacyNotes?>" />
+         <input type="hidden" id="notePrivacyStreamUserTeam" name="notePrivacyStreamUserTeam" value="<?php echo $ress->idTeam;?>" />
        </div>
      </form>
     
