@@ -44,11 +44,8 @@ class ProductVersionMain extends Version {
   public $creationDate;
   public $idUser;
   //CHANGE qCazelles - dateComposition
-  //OLD
-  //public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
-  //NEW
+  //public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate'); // Babyns : define both, will hide with setAttribute()
   public $_tab_4_4 = array('initial', 'planned', 'real', 'done', 'startDate', 'deliveryDate', 'eisDate', 'endDate');
-  //ADD
   public $initialStartDate;
   public $plannedStartDate;
   public $realStartDate;
@@ -121,16 +118,9 @@ class ProductVersionMain extends Version {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
-    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
-    if ($paramNameAutoformat=='YES') {
-      self::$_fieldsAttributes['name']='readonly';
-      self::$_fieldsAttributes['versionNumber']='required';
-    } else {
-      self::$_fieldsAttributes['versionNumber']='hidden';
-    }
     parent::__construct($id,$withoutDependentObjects);
   }
-
+  
    /** ==========================================================================
    * Destructor
    * @return void
@@ -139,6 +129,26 @@ class ProductVersionMain extends Version {
     parent::__destruct();
   }
 
+  public function setAttributes() {
+    $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($paramNameAutoformat=='YES') {
+      self::$_fieldsAttributes['name']='readonly';
+      self::$_fieldsAttributes['versionNumber']='required';
+    } else {
+      self::$_fieldsAttributes['versionNumber']='hidden';
+    }
+    $displayMilestonesStartDelivery=Parameter::getGlobalParameter('displayMilestonesStartDelivery');
+    if ($displayMilestonesStartDelivery!='YES') {
+      self::$_fieldsAttributes['initialStartDate']='hidden';
+      self::$_fieldsAttributes['plannedStartDate']='hidden';
+      self::$_fieldsAttributes['realStartDate']='hidden';
+      self::$_fieldsAttributes['isStarted']='hidden';
+      self::$_fieldsAttributes['initialDeliveryDate']='hidden';
+      self::$_fieldsAttributes['plannedDeliveryDate']='hidden';
+      self::$_fieldsAttributes['realDeliveryDate']='hidden';
+      self::$_fieldsAttributes['isDelivered']='hidden';
+    }
+  }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********

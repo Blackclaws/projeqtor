@@ -54,7 +54,6 @@ class ProjectMain extends SqlElement {
   public $creationDate;
   public $lastUpdateDateTime;
   public $color;
- 
   public $longitude;
   public $latitude;
   public $description;

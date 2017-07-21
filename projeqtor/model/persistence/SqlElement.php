@@ -3702,6 +3702,9 @@ abstract class SqlElement {
         $colScript .= '      dijit.byId("handledDate").set("value", curDate); ';
         $colScript .= '    }';
       }
+      if (property_exists ( $this, 'isUnderConstruction' )) {
+        $colScript .= '      if (dijit.byId("isUnderConstruction")) dijit.byId("isUnderConstruction").set("checked", false);';
+      }
       $colScript .= '  } else {';
       if (property_exists ( $this, 'handledDateTime' )) {
         $colScript .= '    dijit.byId("handledDateTime").set("value", null); ';

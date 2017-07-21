@@ -2069,7 +2069,7 @@ paramDisplayChecklist: "показати обрані переліки (checklis
 paramDisplayContext: "[display contexts in Product/Component (Version)]",
 paramDisplayHistory: "відображати  історію",
 paramDisplayLanguage: "[display language in Product/Component (Version)]",
-paramDisplayMilestonesStartDelivery: "[display the new milestones start and delivery]",
+paramDisplayMilestonesStartDelivery: "[display the start and delivery milestones]",
 paramDisplayNote: "відображати нотатки",
 paramDisplayOnlyHandled: "Відобр. тільки поточні завдання",
 paramDisplayResourcePlan: "показ.ресурсу у діаграмі Ганта",
