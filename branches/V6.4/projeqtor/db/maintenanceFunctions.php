@@ -299,8 +299,8 @@ function deleteDuplicate() {
   }
 }
 
-function formatForDbType($query) {
-  $dbType=Parameter::getGlobalParameter('paramDbType');
+function formatForDbType($query,$dbType=null) {
+  if (!$dbType) $dbType=Parameter::getGlobalParameter('paramDbType');
   if (substr($query,0,4)=='SET ') {
 	 return ''; // Remove SET instructions 
   }

@@ -29,7 +29,7 @@ CREATE TABLE `${prefix}delivery` (
   `validationDate` date DEFAULT NULL,
   `impactWork` decimal(5) DEFAULT NULL,
   `impactDuration` int(5) DEFAULT NULL,
-  `impactCost` decimal(9) DEFAULT null,
+  `impactCost` decimal(9) DEFAULT NULL,
   `idDeliverableWeight` int(12) unsigned DEFAULT NULL,
   `idDeliverableStatus` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',

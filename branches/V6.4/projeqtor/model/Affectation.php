@@ -328,10 +328,14 @@ public $_noCopy;
     $result="";
      
     // If try to delete own affectation (for project leader for instance), require confirmation
-    if ($this->idResource==getSessionUser()->id and ! isset($_REQUEST['confirmed']) ) {
-      $result.='<br/>' . i18n('confirmDeleteOwnAffectation');
-      $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="delete" />';
-    } 
+    // !!!!!
+    // !!!!! Do not try some delete confirmation here, as it will be taken into account as of Prject deletion.
+    // !!!!! Control is already done in JS
+    // !!!!! 
+    //if ($this->idResource==getSessionUser()->id and ! isset($_REQUEST['confirmed']) ) {
+    //  $result.='<br/>' . i18n('confirmDeleteOwnAffectation');
+    //  $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="delete" />';
+    //} 
     $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
     $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder');
     if ($usrPrfOrder>$prfOrder) {

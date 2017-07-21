@@ -80,28 +80,28 @@ INSERT INTO `${prefix}measureunit` (`id`, `name`, `pluralName`, `sortOrder`, `id
 ALTER TABLE `${prefix}billline` ADD `idMeasureUnit` int(12) unsigned DEFAULT NULL,
 ADD `extra` int(1) UNSIGNED DEFAULT 0;
 
-ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}bill` ADD `idPaymentDelay` int(12) unsigned DEFAULT NULL,
 ADD `paymentDueDate` date DEFAULT NULL,
-ADD `idDeliveryMode` int(12) unsigned DEFAULT null,
-ADD `idResource` int(12) unsigned DEFAULT null,
-ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `idDeliveryMode` int(12) unsigned DEFAULT NULL,
+ADD `idResource` int(12) unsigned DEFAULT NULL,
+ADD `idUser` int(12) unsigned DEFAULT NULL,
 ADD `creationDate` date,
 ADD `paymentsCount` int(3) default 0;
 
 UPDATE `${prefix}bill` b set `idUser` = (select idUser from `${prefix}history` h where h.refType='Bill' and h.refId=b.id order by operationDate LIMIT 1); 
 
-ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}quotation` ADD `idPaymentDelay` int(12) unsigned DEFAULT NULL,
 ADD `tax` decimal(5,2) DEFAULT NULL,
 ADD `fullAmount` decimal(12,2) DEFAULT NULL,
-ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
+ADD `idDeliveryMode` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}quotation` CHANGE `initialWork` `untaxedAmount` DECIMAL(11,2) UNSIGNED;
 
-ALTER TABLE `${prefix}command` ADD `idPaymentDelay` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}command` ADD `idPaymentDelay` int(12) unsigned DEFAULT NULL,
 ADD `tax` decimal(5,2) DEFAULT NULL,
 ADD `fullAmount` decimal(12,2) DEFAULT NULL,
 ADD `addFullAmount` decimal(12,2) DEFAULT NULL,
 ADD `totalFullAmount` decimal(12,2) DEFAULT NULL,
-ADD `idDeliveryMode` int(12) unsigned DEFAULT null;
+ADD `idDeliveryMode` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}command` CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2);
 ALTER TABLE `${prefix}command` CHANGE `addAmount` `addUntaxedAmount` DECIMAL(11,2);
 ALTER TABLE `${prefix}command` CHANGE `validatedAmount` `totalUntaxedAmount` DECIMAL(11,2);
@@ -203,27 +203,27 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (6, 83, 0),
 (7, 83, 0);
 
-ALTER TABLE `${prefix}payment` ADD `idPaymentType` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}payment` ADD `idPaymentType` int(12) unsigned DEFAULT NULL,
 ADD `paymentAmount`  DECIMAL(11,2) UNSIGNED,
 ADD `paymentFeeAmount`  DECIMAL(11,2) UNSIGNED,
 ADD `paymentCreditAmount` DECIMAL(11,2) UNSIGNED,
 ADD `description` mediumtext,
-ADD `idUser` int(12) unsigned DEFAULT null,
+ADD `idUser` int(12) unsigned DEFAULT NULL,
 ADD `creationDate` date,
-ADD `referenceBill` varchar(100) DEFAULT null,
-ADD `idClient` int(12) unsigned DEFAULT null,
-ADD `idRecipient` int(12) unsigned DEFAULT null;
+ADD `referenceBill` varchar(100) DEFAULT NULL,
+ADD `idClient` int(12) unsigned DEFAULT NULL,
+ADD `idRecipient` int(12) unsigned DEFAULT NULL;
 
 DELETE FROM `${prefix}type` WHERE `scope`='Payment' and `name`='event payment';
 UPDATE `${prefix}type` SET sortOrder=10 WHERE `scope`='Payment' and `name`='final payment';
 
-ALTER TABLE `${prefix}term` ADD `idUser` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}term` ADD `idUser` int(12) unsigned DEFAULT NULL,
 ADD `creationDate` date;
 
-ALTER TABLE `${prefix}activityprice` ADD `idUser` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}activityprice` ADD `idUser` int(12) unsigned DEFAULT NULL,
 ADD `creationDate` date;
 
-ALTER TABLE `${prefix}quotation` ADD `idLikelihood` int(12) unsigned DEFAULT null,
+ALTER TABLE `${prefix}quotation` ADD `idLikelihood` int(12) unsigned DEFAULT NULL,
 ADD `plannedWork` decimal(12,2) DEFAULT 0;
 
 ALTER TABLE `${prefix}bill` ADD `commandAmountPct` int(3) unsigned DEFAULT 100,
