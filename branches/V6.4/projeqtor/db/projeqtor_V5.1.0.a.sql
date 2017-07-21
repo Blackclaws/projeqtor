@@ -17,7 +17,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 136, 0);
 
 ALTER TABLE `${prefix}plugin` ADD `comment` varchar(4000) DEFAULT NULL,
-ADD `uniqueCode` varchar (100) DEFAULT null;
+ADD `uniqueCode` varchar (100) DEFAULT NULL;
 
 CREATE TABLE `${prefix}projecthistory` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -35,19 +35,19 @@ CREATE TABLE `${prefix}projecthistory` (
 CREATE INDEX projecthistoryProjectDay ON `${prefix}projecthistory` (idProject,day);
 
 ALTER TABLE `${prefix}recipient` ADD `legalNotice` varchar(1000) DEFAULT NULL,
-ADD `contactName` varchar (100) DEFAULT null,
-ADD `contactEmail` varchar (100) DEFAULT null,
-ADD `contactPhone` varchar (100) DEFAULT null,
-ADD `contactMobile` varchar (100) DEFAULT null,
-ADD `bankNationalAccountNumber` varchar (100) DEFAULT null,
-ADD `bankInternationalAccountNumber` varchar (100) DEFAULT null,
-ADD `bankIdentificationCode` varchar (100) DEFAULT null;
+ADD `contactName` varchar (100) DEFAULT NULL,
+ADD `contactEmail` varchar (100) DEFAULT NULL,
+ADD `contactPhone` varchar (100) DEFAULT NULL,
+ADD `contactMobile` varchar (100) DEFAULT NULL,
+ADD `bankNationalAccountNumber` varchar (100) DEFAULT NULL,
+ADD `bankInternationalAccountNumber` varchar (100) DEFAULT NULL,
+ADD `bankIdentificationCode` varchar (100) DEFAULT NULL;
 ALTER TABLE `${prefix}recipient` CHANGE `companyNumber` `companyNumber` varchar (100);
 ALTER TABLE `${prefix}recipient` CHANGE `bank` `bankName` varchar (100);
 
 UPDATE `${prefix}recipient` set `bankInternationalAccountNumber`=concat(ibanCountry,ibanKey,' ',ibanBban);
 
-ALTER TABLE `${prefix}bill` ADD `reference` varchar (100) DEFAULT null,
+ALTER TABLE `${prefix}bill` ADD `reference` varchar (100) DEFAULT NULL,
 ADD `paymentDone` int(1) unsigned DEFAULT 0,
 ADD `paymentDate` date DEFAULT NULL,
 ADD `paymentAmount` DECIMAL(11,2) UNSIGNED;

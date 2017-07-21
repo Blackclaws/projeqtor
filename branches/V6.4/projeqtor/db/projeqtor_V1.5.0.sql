@@ -7,32 +7,32 @@
 -- ///////////////////////////////////////////////////////////
 --
 --
-ALTER TABLE `${prefix}affectation` ADD `idRole` int(12) unsigned DEFAULT null,
-ADD `startDate` date DEFAULT null,
-ADD `endDate` date DEFAULT null;
+ALTER TABLE `${prefix}affectation` ADD `idRole` int(12) unsigned DEFAULT NULL,
+ADD `startDate` date DEFAULT NULL,
+ADD `endDate` date DEFAULT NULL;
 
-ALTER TABLE `${prefix}assignment` ADD `idRole` int(12) unsigned DEFAULT null,
-ADD `dailyCost` NUMERIC(7,2) DEFAULT null,
-ADD `newDailyCost` NUMERIC(7,2) DEFAULT null,
-ADD `assignedCost` NUMERIC(11,2) DEFAULT null,
-ADD `realCost` NUMERIC(11,2) DEFAULT null,
-ADD `leftCost` NUMERIC(11,2) DEFAULT null,
-ADD `plannedCost` NUMERIC(11,2) DEFAULT null;
+ALTER TABLE `${prefix}assignment` ADD `idRole` int(12) unsigned DEFAULT NULL,
+ADD `dailyCost` NUMERIC(7,2) DEFAULT NULL,
+ADD `newDailyCost` NUMERIC(7,2) DEFAULT NULL,
+ADD `assignedCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `realCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `leftCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `plannedCost` NUMERIC(11,2) DEFAULT NULL;
 
-ALTER TABLE `${prefix}work` ADD  `dailyCost` NUMERIC(7,2) DEFAULT null,
-ADD `cost` NUMERIC(11,2) DEFAULT null;
+ALTER TABLE `${prefix}work` ADD  `dailyCost` NUMERIC(7,2) DEFAULT NULL,
+ADD `cost` NUMERIC(11,2) DEFAULT NULL;
 
-ALTER TABLE `${prefix}plannedwork` ADD  `dailyCost` NUMERIC(7,2) DEFAULT null,
-ADD `cost` NUMERIC(11,2) DEFAULT null;
+ALTER TABLE `${prefix}plannedwork` ADD  `dailyCost` NUMERIC(7,2) DEFAULT NULL,
+ADD `cost` NUMERIC(11,2) DEFAULT NULL;
 
 ALTER TABLE `${prefix}resource` ADD  `idRole` int(12) unsigned DEFAULT NULL;
 
-ALTER TABLE `${prefix}planningelement` ADD `initialCost` NUMERIC(11,2) DEFAULT null,
-ADD `validatedCost` NUMERIC(11,2) DEFAULT null,
-ADD `assignedCost` NUMERIC(11,2) DEFAULT null,
-ADD `realCost` NUMERIC(11,2) DEFAULT null,
-ADD `leftCost` NUMERIC(11,2) DEFAULT null,
-ADD `plannedCost` NUMERIC(11,2) DEFAULT null;
+ALTER TABLE `${prefix}planningelement` ADD `initialCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `validatedCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `assignedCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `realCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `leftCost` NUMERIC(11,2) DEFAULT NULL,
+ADD `plannedCost` NUMERIC(11,2) DEFAULT NULL;
 
 UPDATE `${prefix}type` SET `name`='Steering Committee'
 WHERE `scope`='Meeting' and `name`='Steering Comitee';
@@ -41,9 +41,9 @@ CREATE TABLE `${prefix}resourcecost` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idResource` int(12) unsigned DEFAULT NULL,
   `idRole` int(12) unsigned DEFAULT NULL,
-  `cost` NUMERIC(11,2) DEFAULT null,
-  `startDate` date DEFAULT null,
-  `endDate` date DEFAULT null,
+  `cost` NUMERIC(11,2) DEFAULT NULL,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

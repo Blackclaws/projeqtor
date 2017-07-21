@@ -4,7 +4,14 @@
  */
 //Link Contexts to a Product
 require_once('_securityCheck.php');
-class ProductContext extends ProductContextMain {
+class ProductContext extends SqlElement {
+	
+	public $id;
+	public $idProduct;
+	public $idContext;
+	public $creationDate;
+	public $idUser;
+	public $idle;
 	
 	/** ==========================================================================
 	 * Constructor
@@ -25,5 +32,4 @@ class ProductContext extends ProductContextMain {
 	}
 	
 }
-	
 ?>

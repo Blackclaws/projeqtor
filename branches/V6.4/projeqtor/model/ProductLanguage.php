@@ -2,8 +2,17 @@
 /*
  *	@author: qCazelles 
  */
+//Link languages to a Product
 require_once('_securityCheck.php');
-class ProductLanguage extends ProductLanguageMain {
+class ProductLanguage extends SqlElement {
+	
+	// extends SqlElement, so has $id
+	public $id;    // redefine $id to specify its visible place
+	public $idProduct;
+	public $idLanguage;
+	public $creationDate;
+	public $idUser;
+	public $idle;
 	
 	/** ==========================================================================
 	 * Constructor
@@ -13,6 +22,7 @@ class ProductLanguage extends ProductLanguageMain {
 	function __construct($id = NULL, $withoutDependentObjects=false) {
 		parent::__construct($id,$withoutDependentObjects);
 	}
+	
 	
 	/** ==========================================================================
 	 * Destructor
@@ -24,4 +34,3 @@ class ProductLanguage extends ProductLanguageMain {
 	
 	
 }
-?>
