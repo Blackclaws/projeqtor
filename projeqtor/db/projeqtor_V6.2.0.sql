@@ -39,7 +39,7 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (3,'subscription','3');
 
 ALTER TABLE `${prefix}accessscope` ADD `isSpecific` int(1) unsigned DEFAULT 1;
-ALTER TABLE `${prefix}accessscope` ADD `nameSpecific` varchar(100) DEFAULT null;
+ALTER TABLE `${prefix}accessscope` ADD `nameSpecific` varchar(100) DEFAULT NULL;
 UPDATE `${prefix}accessscope` set `isSpecific`=0 WHERE accessCode='RES';
 UPDATE `${prefix}accessscope` set `nameSpecific`=replace(`name`,'accessScope','accessScopeSpecific') WHERE `isSpecific`=1;
 UPDATE `${prefix}habilitationother` set `rightAccess`='2' WHERE `rightAccess`='5' and `scope` in ('imputation','workValid','diary');
@@ -88,7 +88,7 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `idle`) VALUES
 ('Catalog', 'Service',0);
 
 ALTER TABLE `${prefix}quotation`
-ADD `idRecipient` int(12) unsigned DEFAULT null;
+ADD `idRecipient` int(12) unsigned DEFAULT NULL;
 
 UPDATE `${prefix}menu` SET `idle`=1 WHERE id=173;
 

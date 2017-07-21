@@ -386,7 +386,7 @@ function dateTimeFormatter(value) {
     return dojo.date.locale.format(vDate, {
       datePattern : fmt,
       formatLength : "short",
-      timePattern : browserLocaleTimeFormat,
+      timePattern : top.browserLocaleTimeFormat,
       fullYear : true
     });
   } else {
@@ -410,7 +410,7 @@ function timeFormatter(value) {
     }
     return dojo.date.locale.format(vDate, {
       formatLength : "time",
-      timePattern : browserLocaleTimeFormat
+      timePattern : top.browserLocaleTimeFormat
     });
   } else {
     var dateFormattedValue="2000-01-01 "+value;

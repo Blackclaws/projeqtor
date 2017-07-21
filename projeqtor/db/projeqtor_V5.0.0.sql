@@ -216,7 +216,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (6, 135, 0),
 (7, 135, 0);
 
-ALTER TABLE `${prefix}work` ADD `idWorkElement` int(12) unsigned DEFAULT null;
+ALTER TABLE `${prefix}work` ADD `idWorkElement` int(12) unsigned DEFAULT NULL;
 CREATE INDEX workWorkelement ON `${prefix}work` (idWorkElement);
 UPDATE `${prefix}work` set idWorkElement=
 (select id from `${prefix}workelement` we where we.refType=`${prefix}work`.refType and we.refId=`${prefix}work`.refId);

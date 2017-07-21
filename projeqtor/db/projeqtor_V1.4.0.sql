@@ -18,7 +18,7 @@ WHERE refType='Milestone';
 
 ALTER TABLE `${prefix}resource` ADD `address` varchar(4000),
 ADD isContact int(1) unsigned DEFAULT '0',
-ADD idClient int(12) unsigned DEFAULT Null;
+ADD idClient int(12) unsigned DEFAULT NULL;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (72, 'menuContact', 14, 'object', 913, null, 0);
@@ -26,4 +26,4 @@ INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 72, 1);
 
-ALTER TABLE `${prefix}issue` ADD idCriticality int(12) unsigned DEFAULT null;
+ALTER TABLE `${prefix}issue` ADD idCriticality int(12) unsigned DEFAULT NULL;
