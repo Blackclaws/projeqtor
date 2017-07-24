@@ -8397,11 +8397,4 @@ function repositionMenuDiv(id,idParent) {
 }
 function hideUnderMenu(id){
   dojo.byId('UnderMenu'+id).style.display="none";
- // setTimeout("hideMenu("+id+");",1000);
-  
- // dojo.byId('UnderMenu'+id).style.opacity="0";
- //dojo.byId('UnderMenu'+id).style.width="0px";
 }
-//function hideMenu(id){
-//  dojo.byId('UnderMenu'+id).style.display="none";
-//}
