@@ -40,10 +40,10 @@ class WorkflowMain extends SqlElement {
   public $workflowUpdate;
   public $description;
   public $_sec_void;
-  public $_spe_hideStatus;
   public $_sec_WorkflowDiagram;
   public $_workflowDiagram_colSpan="2";
   public $_spe_workflowDiagram;
+  public $_spe_hideStatus;
   public $_sec_WorkflowStatus;
   public $_workflowStatus_colSpan="2";
   public $_spe_workflowStatus;
@@ -486,7 +486,7 @@ class WorkflowMain extends SqlElement {
     	if (!$print and $this->id) {
         $result.='<button id="workflowParameterButton" dojoType="dijit.form.Button" showlabel="false"';
         $result.='title="'.i18n('workflowParameters').'"'; 
-        $result.='iconClass="iconParameter16" style="position:relative;left:-31px;top:12px;">';
+        $result.='iconClass="iconParameter16" style="position:absolute;right:3px;top:-1px;">';
         $result.=' <script type="dojo/connect" event="onClick" args="evt">';
 		    $result.='  showWorkflowParameter('.htmlEncode($this->id).');';
         $result.=' </script>';
