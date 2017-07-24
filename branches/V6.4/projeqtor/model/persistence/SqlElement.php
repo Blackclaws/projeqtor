@@ -937,7 +937,7 @@ abstract class SqlElement {
       }
       // if (($statusChanged or $responsibleChanged) and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
       if (stripos ( $returnValue, 'id="lastOperationStatus" value="OK"' ) > 0) {
-        $mailResult = $this->sendMailIfMailable ( $newItem, $statusChanged, false, $responsibleChanged, false, false, false, $descriptionChange, $resultChange, false, false, true );
+        $mailResult = $this->sendMailIfMailable ( $newItem, $statusChanged, false, $responsibleChanged, false, false, false, $descriptionChange, $resultChange, false, false, true,false,false );
         if ($mailResult) {
           $returnValue = str_replace ( '${mailMsg}', ' - ' . i18n ( 'mailSent' ), $returnValue );
         } else {
@@ -4235,7 +4235,7 @@ abstract class SqlElement {
    *          void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false) {
+  public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false,$affectationAdd = false , $affectationChange = false) {
     $objectClass = get_class ( $this );
     $idProject = ($objectClass == 'Project') ? $this->id : ((property_exists ( $this, 'idProject' )) ? $this->idProject : null);
     if ($objectClass == 'TicketSimple') {
@@ -4289,6 +4289,12 @@ abstract class SqlElement {
       }
       if ($anyChange) {
         $crit .= " or idEvent='9' ";
+      }
+      if ($affectationAdd) {
+        $crit .= " or idEvent='10' ";
+      }
+      if ($affectationChange) {
+        $crit .= " or idEvent='11' ";
       }
       $crit .= ")";
       $statusMail = new StatusMail ();
@@ -4473,6 +4479,10 @@ abstract class SqlElement {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleDirect' );
     } else if ($anyChange) {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleAnyChange' );
+    } else if ($affectationAdd) {
+       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleAffectationAdd' );
+    } else if ($affectationChange) {
+       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleAffectationChange' );
     } else {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitle' ); // default
     }

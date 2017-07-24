@@ -761,7 +761,9 @@ class Parameter extends SqlElement {
       	                       'paramMailTitleUser'=>'longtext',
       	                       'paramMailBodyUser'=>'longtext',
       	                       'paramMailTitleApprover'=>'longtext',
-      	                       'paramMailBodyApprover'=>'longtext'
+      	                       'paramMailBodyApprover'=>'longtext',
+      	                       'paramMailTitleAffectationAdd'=>'longtext',
+      	                       'paramMailTitleAffectationChange'=>'longtext'
       	                       //'messageAlertImputationResource'=>'longtext',
       	                       //'messageAlertImputationProjectLeader'=>'longtext'
       	                     

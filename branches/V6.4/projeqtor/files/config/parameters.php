@@ -5,7 +5,7 @@
 // ========== Database configuration =====================================================
 // --- MySql Degfault
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-$paramDbName='projeqtor_v63';$paramDbPrefix='';
+$paramDbName='projeqtor_v64';$paramDbPrefix='';
 // --- PostgreSql Default
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor_maaf'; $paramDbPassword='projeqtor';
 //$paramDbName='projeqtor';$paramDbPrefix=''; 
@@ -27,7 +27,7 @@ $pdfNamePrefix="ProjeQtOr - ";
 $debugQuery=false;                 // Debug all queries : trace Query and running time for each query
 $debugJsonQuery=false;             // Trace only JsonQuery queries  (retrieving lists)
 $debugPerf=true;                   // Add some timestamps and execution time at all debug lines
-$debugTraceUpdates=true;           // Will add trace on each save() or delete()
+$debugTraceUpdates=false;           // Will add trace on each save() or delete()
 $debugReport=true;                 // Displays report file name on report header
 $i18nNocache=true;                 // Will not cache i18n table, so that new values are automatically displayed without needing disconnection
 $debugIEcompatibility=false;       // If set to true, will allow compatibility mode (mode IE9 on IE11), otherwise, edge mode is forced

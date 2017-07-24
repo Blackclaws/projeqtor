@@ -539,7 +539,31 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
-     $leftWidth=($leftWidth and $leftWidth>20)?$leftWidth.'px':'20%';?>
+     $leftWidth=($leftWidth and $leftWidth>32)?$leftWidth.'px':'20%';
+     
+    //$IconSizeMenuHide=Parameter::getUserParameter('paramIconSize');
+    $IconSizeMenuHide = 16;
+    $IconSizeMenuHide2 = $IconSizeMenuHide+5;
+   ?>
+  <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:51px; bottom:32px; width:<?php echo $IconSizeMenuHide2;?>px;">
+    <?php include "menuHideMenu.php"; ?> 
+    <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-31px; bottom:2px;z-index:999998">
+		  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
+		    <span style='top:0px;display:inline-block;width:32px;height:"32px;'>
+		      <div class='iconHideStream32' style='' >&nbsp;</div>
+		    </span>
+		  </a>
+		</div>
+  </div> 
+  
+  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $leftWidth ?>; bottom:34px;z-index:999998">
+	  <a onClick="hideMenuBarShowMode2();" id="buttonSwitchedMenuBarShow" title="" >
+	    <span style='top:0px;display:inline-block;width:32px;height:"32px;'>
+	      <div class='iconHideStream32' style='' >&nbsp;</div>
+	    </span>
+	  </a>
+	</div>
+	
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
       <script type="dojo/connect" event="resize" args="evt">
@@ -549,8 +573,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               +"&idData=contentPaneLeftDivWidth"
               +"&value="+dojo.byId("leftDiv").offsetWidth
          });;
+         dojo.byId("hideMenuBarShowButton2").style.left=dojo.byId("leftDiv").offsetWidth+3+"px";
       </script>
-      <div id="menuBarShow" class="dijitAccordionTitle" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');">
+      <div id="menuBarShow" class="dijitAccordionTitle " onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');">
         <div id="menuBarIcon" valign="middle"></div>
       </div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">

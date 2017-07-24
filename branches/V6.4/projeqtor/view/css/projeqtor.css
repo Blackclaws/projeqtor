@@ -311,8 +311,8 @@ html, body {
 
 #menuBarShow {
   display: none; 
-  width: 16px; 
-  height:100%;
+  height: calc(100% -32px);
+  height: -moz-calc(100% -32px);
   float: left;
   top: 0px; left: 0px;
   z-index: 900;
@@ -3384,6 +3384,14 @@ p {
 
 li.section {
   border-radius:0px;
+}
+
+.largeReportHeader2 {
+	-webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
 }
 
 .activityStreamNoteContent {

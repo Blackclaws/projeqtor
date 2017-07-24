@@ -225,6 +225,15 @@
   border-top: 0px solid #a6a0bc;
   border-bottom: 1px solid #7b769c ;
 }
+
+.ProjeQtOrFlatBlue .dijitAccordionTitle2, .ProjeQtOrFlatBlue .reportTableColumnHeader2, .ProjeQtOrFlatBlue .largeReportHeader2   {
+  background: url() #cdcadb !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  border-top: 0px solid #a6a0bc;
+  border-bottom: 1px solid #7b769c ;
+}
+
 .ProjeQtOrFlatBlue .reportTableColumnHeader {
 	border: 1px solid #cdcadb;
 }
@@ -258,11 +267,21 @@
 .ProjeQtOrFlatBlue .dijitTreeRow {
   color: #545281;
 }
+.ProjeQtOrFlatBlue .dijitTreeRow2 {
+  color: #545281;
+}
 .ProjeQtOrFlatBlue .dijitTreeRow:hover {
   background-image: url();
   background: #cdcadb;
   color: #545281;
 }
+
+.ProjeQtOrFlatBlue .dijitTreeRow2:hover {
+	background-image: url();
+  background: #a6a0bc;
+  color: #ffffff;
+}
+
 .ProjeQtOrFlatBlue .dijitTreeRowSelected .dijitTreeLabel {  
   background: none;
   font-weight: bold;
@@ -1479,7 +1498,14 @@ body .ProjeQtOrFlatBlue {
   color: #ffffff !important;
   text-shadow: none !important;
   border-top: 0px solid #bda1a6;
-    border-bottom: 1px solid #833e3e;
+  border-bottom: 1px solid #833e3e;
+}
+.ProjeQtOrFlatRed .dijitAccordionTitle2, .ProjeQtOrFlatRed .reportTableColumnHeader2, .ProjeQtOrFlatRed .largeReportHeader2{
+  background: url() #ddcdce !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  border-top: 0px solid #bda1a6;
+  border-bottom: 1px solid #833e3e;
 }
 .ProjeQtOrFlatRed .reportTableColumnHeader {
   border: 1px solid #ddcdce;
@@ -1512,10 +1538,18 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatRed .dijitTreeRow {
   color: #833e3e;
 }
+.ProjeQtOrFlatRed .dijitTreeRow2 {
+  color: #833e3e;
+}
 .ProjeQtOrFlatRed .dijitTreeRow:hover {
   background-image: url();
   background: #ddcdce;
   color: #833e3e;
+}
+.ProjeQtOrFlatRed .dijitTreeRow2:hover {
+  background-image: url();
+  background: #bda1a6;
+  color: #ffffff;
 }
 .ProjeQtOrFlatRed .dijitTreeRowSelected .dijitTreeLabel {  
   background: none;
@@ -2693,6 +2727,13 @@ body .ProjeQtOrFlatRed {
   border-top: 0px solid #86a790;
     border-bottom: 1px solid #537665;
 }
+.ProjeQtOrFlatGreen .dijitAccordionTitle2, .ProjeQtOrFlatGreen .reportTableColumnHeader2, .ProjeQtOrFlatGreen .largeReportHeader2 {
+  background: url() #c9dbce !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  border-top: 0px solid #86a790;
+    border-bottom: 1px solid #537665;
+}
 .ProjeQtOrFlatGreen .reportTableColumnHeader {
   border: 1px solid #c9dbce;
 }
@@ -2724,10 +2765,18 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatGreen .dijitTreeRow {
   color: #537665;
 }
+.ProjeQtOrFlatGreen .dijitTreeRow2 {
+  color: #537665;
+}
 .ProjeQtOrFlatGreen .dijitTreeRow:hover {
   background-image: url();
   background: #c9dbce;
   color: #537665;
+}
+.ProjeQtOrFlatGreen .dijitTreeRow2:hover {
+  background-image: url();
+  background: #86a790;
+  color: #ffffff;
 }
 .ProjeQtOrFlatGreen .dijitTreeRowSelected .dijitTreeLabel {  
   background: none;
@@ -3908,6 +3957,13 @@ body .ProjeQtOrFlatGreen {
   border-top: 0px solid #AEAEAE;
   border-bottom: 1px solid #656565;
 }
+.ProjeQtOrFlatGrey .dijitAccordionTitle2, .ProjeQtOrFlatGrey .reportTableColumnHeader2, .ProjeQtOrFlatGrey .largeReportHeader2{
+  background: url() #D4D1D1 !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  border-top: 0px solid #AEAEAE;
+  border-bottom: 1px solid #656565;
+}
 .ProjeQtOrFlatGrey .reportTableColumnHeader {
   border: 1px solid #D4D1D1;
 }
@@ -3939,10 +3995,18 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGrey .dijitTreeRow {
   color: #656565;
 }
+.ProjeQtOrFlatGrey .dijitTreeRow2 {
+  color: #656565;
+}
 .ProjeQtOrFlatGrey .dijitTreeRow:hover {
   background-image: url();
   background: #D4D1D1;
   color: #656565;
+}
+.ProjeQtOrFlatGrey .dijitTreeRow2:hover {
+  background-image: url();
+  background: #AEAEAE;
+  color: #ffffff;
 }
 .ProjeQtOrFlatGrey .dijitTreeRowSelected .dijitTreeLabel {  
   background: none;

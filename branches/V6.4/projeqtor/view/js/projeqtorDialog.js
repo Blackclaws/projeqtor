@@ -4875,6 +4875,7 @@ var hideShowTries=0;
  * Hide or show the Menu (left part of the screen
  */
 function hideShowMenu(noRefresh) {
+  var disableSlide=true;
   if (!dijit.byId("leftDiv")) {
     return;
   }
@@ -4892,10 +4893,10 @@ function hideShowMenu(noRefresh) {
     if (menuDivSize < 2) {
       menuDivSize=dojo.byId("mainDiv").offsetWidth * .2;
     }
-    if (!isHtml5()) {
+    if (disableSlide || !isHtml5()) {
       duration=0;
       dijit.byId("leftDiv").resize({
-        w : 20
+        w : 31
       });
       setTimeout("dojo.byId('menuBarShow').style.display='block';", 10);
       // dojo.byId('menuBarShow').style.display='block';
@@ -4904,20 +4905,20 @@ function hideShowMenu(noRefresh) {
       dojox.fx.combine([ dojox.fx.animateProperty({
         node : "leftDiv",
         properties : {
-          width : 20
+          width : 31
         },
         duration : duration
       }), dojox.fx.animateProperty({
         node : "centerDiv",
         properties : {
-          left : 20,
+          left : 45,
           width : fullWidth
         },
         duration : duration
       }), dojox.fx.animateProperty({
         node : "leftDiv_splitter",
         properties : {
-          left : 20
+          left : 31
         },
         duration : duration
       }) ]).play();
@@ -4927,7 +4928,8 @@ function hideShowMenu(noRefresh) {
     }
     dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonShowMenu');
     menuHidden=true;
-    menuActualStatus='hidden';
+    menuActualStatus='hidden'; 
+    dojo.byId('hideMenuBarShowButton2').style.display='none';
   } else {
     dojo.byId('menuBarShow').style.display='none';
     dojo.byId('leftDiv_splitter').style.left='20px';
@@ -4935,7 +4937,7 @@ function hideShowMenu(noRefresh) {
     if (menuDivSize < 20) {
       menuDivSize=dojo.byId("mainDiv").offsetWidth * .2;
     }
-    if (!isHtml5()) {
+    if (disableSlide || !isHtml5()) {
       duration=0;
       dijit.byId("leftDiv").resize({
         w : menuDivSize
@@ -4964,6 +4966,7 @@ function hideShowMenu(noRefresh) {
     dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonHideMenu');
     menuHidden=false;
     menuActualStatus='visible';
+    dojo.byId('hideMenuBarShowButton2').style.display='block';
   }
   setTimeout('dijit.byId("globalContainer").resize();', duration + 10);
   var detailHidden=false;
@@ -4975,11 +4978,13 @@ function hideShowMenu(noRefresh) {
   setTimeout("hideShowMenuInProgress=false;",duration+50);
   // dojo.byId('menuBarShow').style.top='50px';
 }
-function tempShowMenu(mode) {
-  if (mode == 'mouse' && menuShowMode == 'CLICK')
-    return;
-  hideShowMenu();
-  menuHidden=true;
+
+// gautier #2672
+function hideMenuBarShowMode() {
+  hideShowMenu(false);
+}
+function hideMenuBarShowMode2() {
+  hideShowMenu(true);
 }
 function menuClick() {
   if (menuHidden) {
@@ -8366,3 +8371,37 @@ function storePaneSize(paneName,sizeValue) {
        +"&value="+sizeValue
   });;
 }
+
+//gautier #showHideMenu
+function displayMenu(id){
+  dojo.byId('UnderMenu'+id).style.zIndex="999999";
+  dojo.byId('UnderMenu'+id).style.display="block";
+  setTimeout("repositionMenuDiv("+id+","+id+");",10);
+}
+function displayUnderMenu(id,idParent){
+  dojo.byId('UnderMenu'+id).style.display="block";
+ // dojo.byId('UnderMenu'+idParent).style.opacity="1";
+  setTimeout("repositionMenuDiv("+id+","+idParent+");",10);
+}
+function repositionMenuDiv(id,idParent) {
+  var parentDiv=dojo.byId('Menu'+idParent);
+  var currentDiv=dojo.byId('UnderMenu'+id);
+  var top = parentDiv.offsetTop;
+  var totalHeight = dojo.byId('centerDiv').offsetHeight;
+  currentDiv.style.maxHeight=(totalHeight-30)+'px';
+  var height = currentDiv.offsetHeight;
+  if (top + height > totalHeight + 10){
+    newTop = totalHeight - (top + height) - 10 ; 
+    currentDiv.style.top = newTop+'px';
+  };
+}
+function hideUnderMenu(id){
+  dojo.byId('UnderMenu'+id).style.display="none";
+ // setTimeout("hideMenu("+id+");",1000);
+  
+ // dojo.byId('UnderMenu'+id).style.opacity="0";
+ //dojo.byId('UnderMenu'+id).style.width="0px";
+}
+//function hideMenu(id){
+//  dojo.byId('UnderMenu'+id).style.display="none";
+//}
