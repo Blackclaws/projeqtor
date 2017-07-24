@@ -66,8 +66,6 @@
     $paramIconSize3 = -1 ; 
     if($paramIconSize==16){
        $paramIconSize4=3;
-       $spaceName = '&nbsp&nbsp&nbsp&nbsp&nbsp';
-       $spaceTitle = '&nbsp';
     } 
 //     elseif($paramIconSize == 22) {
 //       $paramIconSize4= 8;
@@ -108,13 +106,13 @@
      }else{
        //echo  "$level$indent<div id='Menu$idMenu' name='$icon' parent='$idMenuParent'>"."\n";
        if ($type=='item') {
-        echo $indent.'<div  onclick="loadMenuBarItem(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'quotes') . '\',\'bar\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px; margin-bottom:0px;">
+        echo $indent.'<div  onclick="loadMenuBarItem(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'quotes') . '\',\'bar\');hideUnderMenu(\''.$idMenuParent.'\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px; margin-bottom:0px;">
               <span  style="min-width:210px;  margin-top:3px; height:auto;" role="presentation" class="dijitInline dijitIcon dijitTreeIcon icon'.$icon.$paramIconSize.'" data-dojo-attach-point="iconNode"> <div style="float:left; max-width:210px; margin-left:20px;"> '.$menuNameI18n.' </div>   </span>';
        }elseif ($type=='object'){
-         echo $indent.'<div  onclick="loadMenuBarObject(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'bar') . '\',\'bar\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px;margin-bottom:0px;">
+         echo $indent.'<div  onclick="loadMenuBarObject(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'bar') . '\',\'bar\');hideUnderMenu(\''.$idMenuParent.'\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px;margin-bottom:0px;">
               <span style="min-width:210px; margin-top:3px; height:auto;" role="presentation" class="dijitInline dijitIcon dijitTreeIcon icon'.$icon.$paramIconSize.'" data-dojo-attach-point="iconNode"><div style="float:left; max-width:210px; margin-left:20px;"> '.$menuNameI18n.' </div>  </span>';       
        }elseif($type=='plugin'){
-         echo $indent.'<div  onclick="loadMenuBarPlugin(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'quotes') . '\',\'bar\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px;margin-bottom:0px;">
+         echo $indent.'<div  onclick="loadMenuBarPlugin(\'' . $menu .  '\',\'' . htmlEncode(i18n($menuName),'quotes') . '\',\'bar\');hideUnderMenu(\''.$idMenuParent.'\');" data-dojo-attach-point="rowNode" class="dijitTreeRow2" role="presentation" title="" style="padding-left: 5px; margin-top:0px;margin-bottom:0px;">
               <span style="min-width:210px;  margin-top:3px; height:auto;" role="presentation" class="dijitInline dijitIcon dijitTreeIcon icon'.$icon.$paramIconSize.'" data-dojo-attach-point="iconNode"><div style="float:left; max-width:210px; margin-left:20px;"> '.$menuNameI18n.' </div> </span>';
        }else{
          //Under menu case
@@ -124,12 +122,11 @@
          $isUnderMenu = true;
        }
      }
-     //opacity:0.5;
      if ($hasChildren) {
       $menuNextIsFirst=true;
       if(!$isUnderMenu){
         echo "$indent<div id='UnderMenu$idMenu'  class='dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2' style='display:none;  font-size:100%; position:absolute; left:".$paramIconSize2."px; top:0px; width:230px;' >";
-        echo '<span  style="min-width:210px" role="presentation" class=" dijitTreeRow2" > '.$spaceTitle.''.$menuNameI18n.'</span>';
+        echo '<div style="margin-left:5px;padding-top:3px;margin-bottom:8px;"> <span  style="min-width:210px;" role="presentation" class=" dijitTreeRow2" >'.$menuNameI18n.'</span> </div>';
       }else{
         echo "$indent<div id='UnderMenu$idMenu' class='dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2' style='display:none;font-size:100%; overflow-y:auto; position:absolute; left:238px; top:0px; width:230px;' >";
       }
