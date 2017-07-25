@@ -69,6 +69,7 @@ class PeriodicMeetingMain extends SqlElement {
   public $_sec_Attendees;
   public $_Assignment=array();
   public $attendees;
+  public $_spe_buttonAssignTeam;
   public $_sec_progress;
   public $MeetingPlanningElement;
   public $_sec_predecessor;
@@ -326,6 +327,15 @@ class PeriodicMeetingMain extends SqlElement {
       $result.='</select>';
       $result.='</td></tr></table>';
       $result.='</div>';
+    }
+    // Gautier ticket #2838
+    if ($item=='buttonAssignTeam') {
+      $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
+      $result .= '<button id="attendeesAllTeam2" dojoType="dijit.form.Button" showlabel="true" onClick ="assignTeamForMeeting()"';
+      $result .= ' title="' . i18n('buttonAssignWholeTeam') . '" >';
+      $result .= '<span>' . i18n('buttonAssignWholeTeam') . '</span>';
+      $result .= '</button>';
+      $result .= '</td></tr>';
     }
     return $result;
   }
