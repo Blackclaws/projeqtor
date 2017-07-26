@@ -5242,6 +5242,8 @@ function getTargetFromCurrentScreen(currentScreen){
     target="parameter.php?type=accessRight";
   } else if (currentScreen=="AccessRightNoProject") {
     target="parameter.php?type=accessRightNoProject";
+  } else if (pluginMenuPage['menu'+currentScreen]) {
+    target=pluginMenuPage['menu'+currentScreen];
   } else {
     target=currentScreen.charAt(0).toLowerCase()+currentScreen.substr(1)+"Main.php";
   }
