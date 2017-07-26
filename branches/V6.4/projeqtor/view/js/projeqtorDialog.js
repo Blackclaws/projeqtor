@@ -5247,6 +5247,8 @@ function getTargetFromCurrentScreen(currentScreen){
     target="parameter.php?type=accessRight";
   } else if (currentScreen=="AccessRightNoProject") {
     target="parameter.php?type=accessRightNoProject";
+  } else if (pluginMenuPage['menu'+currentScreen]) {
+    target=pluginMenuPage['menu'+currentScreen];
   } else {
     target=currentScreen.charAt(0).toLowerCase()+currentScreen.substr(1)+"Main.php";
   }
@@ -5528,6 +5530,7 @@ function loadMenuBarPlugin(item, itemName, from) {
   }
   currentPluginPage=pluginMenuPage['menu'+item];
   loadContent(pluginMenuPage['menu'+item], "centerDiv");
+  return currentPluginPage;
 }
 
 var customMenuAddRemoveTimeout=null;

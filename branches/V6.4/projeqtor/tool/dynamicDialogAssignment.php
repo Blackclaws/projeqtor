@@ -70,7 +70,7 @@ $mode = RequestHandler::getValue('mode',false,true);
            <tr>
              <td class="dialogLabel" >
                <label for="assignmentIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
-             </td>
+             </td>  
              <td>
               <select dojoType="dijit.form.FilteringSelect"
               <?php echo autoOpenFilteringSelect();?>
@@ -85,6 +85,15 @@ $mode = RequestHandler::getValue('mode',false,true);
                 }?>
                </select>  
              </td>
+             <td style="vertical-align: top">
+               <button id="assignmentDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    var canCreate=("<?php echo securityGetAccessRightYesNo('menuResource','create');?>"=="YES")?1:0;
+                    showDetail('assignmentIdResource', canCreate , 'Resource', false);
+                 </script>
+               </button>
+             </td> 
            </tr>
            <tr>
              <td class="dialogLabel" >
