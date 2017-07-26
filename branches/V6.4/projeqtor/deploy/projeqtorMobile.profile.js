@@ -20,6 +20,7 @@
     		"dojox/mobile/Switch",
     		"dojox/mobile/RoundRectCategory",
     		"dojox/mobile/FormLayout",
+    		"dojox/mobile/SimpleDialog",
     		"dojox/mobile/TextBox",
     		"dojox/mobile/ComboBox",
     		"dojox/mobile/TextArea",
@@ -28,6 +29,8 @@
     		"dojox/mobile/ProgressIndicator",
     		"dojox/mobile/ContentPane",
     		"dojox/mobile/Badge",
+        "dojox/mobile/SpinWheelDatePicker",
+        "dojox/mobile/SpinWheelTimePicker",
         "dojo/data/ItemFileReadStore",
         "dojo/store/DataStore",
         "dijit/form/DataList"
