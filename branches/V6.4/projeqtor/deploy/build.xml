@@ -165,6 +165,7 @@
     <copy todir="${deploy.dir}/report">
       <fileset dir="${src.dir}/report">
         <exclude name="**/object/*.*"/>
+        <exclude name="**/template/*.*"/>
         <exclude name="projectFlashReport.php"/>
       </fileset>
     </copy>

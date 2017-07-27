@@ -456,6 +456,10 @@
     $opportunity= new Opportunity();
     $listOpportunity=$opportunity->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listOpportunity);
+    //gautier #2840
+    $question= new Question();
+    $listQuestion=$question->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listQuestion);
     $action= new Action();
     $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listAction);   
