@@ -35,7 +35,14 @@ class Report extends SqlElement {
   public $name;
   public $idReportCategory;
   public $file;
+  public $hasView;
+  public $hasPrint;
+  public $hasPdf;
+  public $hasToday;
+  public $hasFavorite;
   public $hasCsv;
+  public $hasWord;
+  public $hasExcel;
   public $sortOrder;
   public $idle; 
   public $orientation;

@@ -710,6 +710,7 @@ foreach ($listParam as $param) {
     }
     $class=(substr($param->paramType,-4,4)=='List')?substr($param->paramType,0,strlen($param->paramType)-4):$param->paramType;
     $class=ucfirst($class);
+    if (! class_exists($class)) continue;
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
@@ -723,7 +724,6 @@ foreach ($listParam as $param) {
      </select>     
     </td>
     </tr>
-
 <?php 
   }
 }
@@ -731,12 +731,17 @@ foreach ($listParam as $param) {
   <tr>
     <td></td>
     <td><div style="position:absolute;top:5px" class="nobr">
+      <input type="hidden" name="orientation" value="<?php echo $report->orientation;?>" />
+      <input type="hidden" id="objectClass" name="objectClass" value="Job" />
+      <?php if($report->hasView) { ?>
       <button title="<?php echo i18n('reportShow')?>"   
          dojoType="dijit.form.Button" type="submit" 
          id="reportSubmit" name="reportSubmit" 
          iconClass="dijitButtonIcon dijitButtonIconDisplay" class="detailButton whiteBackground" showLabel="false"
          onclick="dojo.byId('outMode').value='';runReport();return false;">
       </button>
+      <?php }?>
+      <?php if($report->hasPrint) { ?>
       <button title="<?php echo i18n('reportPrint')?>"  
          dojoType="dijit.form.Button" type="button"
          id="reportPrint" name="reportPrint"
@@ -747,6 +752,8 @@ foreach ($listParam as $param) {
             showPrint("../report/"+ fileName, 'report',null,null,'<?php echo $report->orientation;?>');
           </script>
       </button>
+      <?php }?>
+      <?php if($report->hasPdf) { ?>
       <button title="<?php echo i18n('reportPrintPdf')?>"  
          dojoType="dijit.form.Button" 
          id="reportPrintPdf" name="reportPrintPdf"
@@ -764,14 +771,16 @@ foreach ($listParam as $param) {
             }
           </script>
       </button>
-      <input type="hidden" name="orientation" value="<?php echo $report->orientation;?>" />
+      <?php }?>
+      <?php if($report->hasToday) { ?>
       <button title="<?php echo i18n('showInToday')?>"   
          dojoType="dijit.form.Button" type="button" 
          id="reportShowInToday" name="reportShowInToday" 
          iconClass="dijitButtonIcon dijitButtonIconToday" class="detailButton whiteBackground" showLabel="false"
          onclick="saveReportInToday();">
       </button>
-      <?php if (isHtml5()) {?>
+      <?php }?>
+      <?php if (isHtml5() and $report->hasFavorite) {?>
       <button title="<?php echo i18n('defineAsFavorite')?>"   
          dojoType="dijit.form.Button" type="button" 
          id="reportDefineAsFavorite" name="reportDefineAsFavorite" 
@@ -780,18 +789,41 @@ foreach ($listParam as $param) {
       </button>
       <?php }?>
       <?php if($report->hasCsv) { ?>
-        <button title="<?php echo i18n('reportPrintCsv')?>"
-           dojoType="dijit.form.Button" type="button"
-           id="reportPrintCsv" name="reportPrintCsv"
-           iconClass="dijitButtonIcon dijitButtonIconCsv" class="detailButton whiteBackground" showLabel="false">
-           <script type="dojo/connect" event="onClick" args="evt">
+      <button title="<?php echo i18n('reportPrintCsv')?>"
+         dojoType="dijit.form.Button" type="button"
+         id="reportPrintCsv" name="reportPrintCsv"
+         iconClass="dijitButtonIcon dijitButtonIconCsv" class="detailButton whiteBackground" showLabel="false">
+         <script type="dojo/connect" event="onClick" args="evt">
              dojo.byId('outMode').value='csv';
              var fileName=dojo.byId('reportFile').value;
              showPrint("../report/"+ fileName, 'report',null,'csv','<?php echo $report->orientation;?>');
            </script>
-        </button>
-        <input type="hidden" id="objectClass" name="objectClass" value="Job" />
-		<?php }?>
+      </button>
+		  <?php }?>
+		  <?php if ($report->hasWord) { ?>
+      <button title="<?php echo i18n('reportPrintWord')?>"
+         dojoType="dijit.form.Button" type="button"
+         id="reportPrintWord" name="reportPrintWord"
+         iconClass="dijitButtonIcon dijitButtonIconWord" class="detailButton whiteBackground" showLabel="false">
+         <script type="dojo/connect" event="onClick" args="evt">
+             dojo.byId('outMode').value='word';
+             var fileName=dojo.byId('reportFile').value;
+             showPrint("../report/"+ fileName, 'report',null,'word','X');
+           </script>
+      </button>
+		  <?php }?>
+		  <?php if($report->hasExcel) { ?>
+      <button title="<?php echo i18n('reportPrintExcel')?>"
+         dojoType="dijit.form.Button" type="button"
+         id="reportPrintCsv" name="reportPrintCsv"
+         iconClass="dijitButtonIcon dijitButtonIconExcel" class="detailButton whiteBackground" showLabel="false">
+         <script type="dojo/connect" event="onClick" args="evt">
+             dojo.byId('outMode').value='word';
+             var fileName=dojo.byId('reportFile').value;
+             showPrint("../report/"+ fileName, 'report',null,'excel','X');
+           </script>
+      </button>
+		  <?php }?>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />

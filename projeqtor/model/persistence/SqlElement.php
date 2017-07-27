@@ -5768,6 +5768,23 @@ abstract class SqlElement {
   }
   //END ADD qCazelles - Filter by status
 
+  public static function toArrayList($list) {
+    $result=array();
+    foreach ($list as $obj) {
+      $result[]=$obj->toArrayFields();
+    }
+    return $result;
+  }
+  public function toArrayFields() {
+    $result=array();
+    foreach ($this as $fld=>$value) {
+      if (is_object($value)) continue;
+      if (substr($fld,0,1=='_')) continue;
+      $result[$fld]=$value;
+    }
+    return $result;
+  }
+  
 }
 
 ?>

@@ -13,3 +13,11 @@ INSERT INTO `${prefix}event` (`id`,`name`,`idle`, `sortOrder`) VALUES
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'paramMailTitleAffectationAdd', '[${dbName}] New affectation has been created on ${item} #${id} : "${name}"'), 
 (null,null, 'paramMailTitleAffectationChange', '[${dbName}] An affectation has been modified on ${item} #${id} : "${name}"');
+
+ALTER TABLE `${prefix}report` ADD `hasView` int(1) DEFAULT 1,
+ADD `hasPrint` int(1) DEFAULT 1,
+ADD `hasPdf` int(1) DEFAULT 1,
+ADD `hasToday` int(1) DEFAULT 1,
+ADD `hasFavorite` int(1) DEFAULT 1,
+ADD `hasWord` int(1) DEFAULT 0,
+ADD `hasExcel` int(1) DEFAULT 0;

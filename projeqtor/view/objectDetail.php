@@ -4464,7 +4464,25 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   foreach ($lstPluginEvt as $script) {
     require $script; // execute code
   }
-  $list=$tableObject;
+  $listTemp=$tableObject;
+  $list=array();
+  foreach ($listTemp as $aff) {
+    if ($type == 'Project') {
+      $name=SqlList::getNameFromId($type, $aff->idProject);
+    } else {
+      $name=SqlList::getNameFromId($type, $aff->idResource);
+    }
+    if ($aff->idResource == $name and $type == 'Resource') {
+      $name=SqlList::getNameFromId('User', $aff->idResource);
+      $typeAffectable='User';
+      if ($aff->idResource != $name and trim($name)) {
+        $name.=" (" . i18n('User') . ")";
+      }
+    }
+    $aff->name=$name;
+    $list[$name.'#'.$aff->id]=$aff;
+  }
+  ksort($list);
   if ($comboDetail) {
     return;
   }
@@ -4529,20 +4547,14 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     $isResource=($res->id)?true:false;
     $goto="";
     if ($type == 'Project') {
-      $name=SqlList::getNameFromId($type, $aff->idProject);
+      $name=$aff->name;
       if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '') == "YES") {
         $goto=' onClick="gotoElement(\'Project\',\'' . htmlEncode($aff->idProject) . '\');" style="cursor: pointer;" ';
       }
     } else {
-      $name=SqlList::getNameFromId($type, $aff->idResource);
+      $name=$aff->name;
       $typeAffectable=$type;
-      if ($aff->idResource == $name and $type == 'Resource') {
-        $name=SqlList::getNameFromId('User', $aff->idResource);
-        $typeAffectable='User';
-        if ($aff->idResource != $name and trim($name)) {
-          $name.=" (" . i18n('User') . ")";
-        }
-      }
+      
       if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '') == "YES") {
         $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\'' . htmlEncode($aff->idResource) . '\');" style="cursor: pointer;" ';
       }
