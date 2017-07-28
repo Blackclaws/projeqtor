@@ -81,6 +81,8 @@
      header("Expires: 0"); 
      header("Cache-Control: no-cache, must-revalidate");
      header("Pragma: no-cache");
+   } else if ($outMode=='word' or $outMode=='excel')  {
+     
    } else {
      header ('Content-Type: text/html; charset=UTF-8');
    }
@@ -88,11 +90,11 @@
    if (array_key_exists('detail', $_REQUEST)) {
    	$detail=true;
    }
-  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp') {?> 
+  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel') {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <?php }
-   if ($outMode!='csv' and $outMode!='mpp') {?>
+   if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel') {?>
 <html>
 <head>   
   <title><?php echo getPrintTitle();?></title>
@@ -174,7 +176,7 @@
     }
   }
   include $includeFile;
-  if ($outMode!='csv' and $outMode!='mpp') {?>
+  if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel') {?>
 </<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>

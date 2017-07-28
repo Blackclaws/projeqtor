@@ -815,7 +815,7 @@ foreach ($listParam as $param) {
 		  <?php if($report->hasExcel) { ?>
       <button title="<?php echo i18n('reportPrintExcel')?>"
          dojoType="dijit.form.Button" type="button"
-         id="reportPrintCsv" name="reportPrintCsv"
+         id="reportPrintExcel" name="reportPrintExcel"
          iconClass="dijitButtonIcon dijitButtonIconExcel" class="detailButton whiteBackground" showLabel="false">
          <script type="dojo/connect" event="onClick" args="evt">
              dojo.byId('outMode').value='word';

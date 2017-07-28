@@ -483,7 +483,7 @@ if ($displayWidthList<1400) {
                 </script>
               </button>              
             </td>
-             <td width="36px">
+            <td width="36px">
               <button title="<?php echo i18n('reportPrintCsv')?>"  
                dojoType="dijit.form.Button" 
                id="listPrintCsv" name="listPrintCsv"

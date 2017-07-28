@@ -5778,9 +5778,27 @@ abstract class SqlElement {
   public function toArrayFields() {
     $result=array();
     foreach ($this as $fld=>$value) {
-      if (is_object($value)) continue;
+      if (is_object($value)) {
+        if (SqlElement::is_a($value,'SqlElement')) {
+          $sub=$value->toArrayFields();
+          array_merge_preserve_keys($result,$sub);
+        } else  {
+          continue;
+        }
+      }
       if (substr($fld,0,1=='_')) continue;
       $result[$fld]=$value;
+      $dataType=$this->getDataType($fld);
+      $dataLength=$this->getDataLength($fld);
+      if ($dataLength>4000) { // Big text html formatted : must be transformed into plain text
+        $text=new Html2Text($value);
+        $result[$fld.'Text']=$text->getText();
+      } else if ($dataType=='int' and $dataLength=='12' and substr($fld,0,2)=='id' and strlen($fld)>2) { // idXxx : also add nameXxx
+        $class=substr($fld,2);
+        if (SqlElement::class_exists($class)) {
+          $result['name'.$class]=SqlList::getNameFromId($class, $value);
+        }
+      }
     }
     return $result;
   }
