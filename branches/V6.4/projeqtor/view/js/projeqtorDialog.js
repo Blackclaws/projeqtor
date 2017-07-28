@@ -279,6 +279,9 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode == "mpp") {
     printInNewWin=true;
   }
+  if (outMode == "word" || outMode == "excel") {
+    printInNewWin=true;
+  }
   if (context=='favorite') {
     printInNewWin=false;
   }
@@ -427,7 +430,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
       params+="&sortWay=" + sortWay;
     }
   }
-  if (outMode == "csv") {
+  if (outMode == "csv" || outMode == "word" || outMode == "excel") {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
         + "&objectClass=" + cl + "&objectId=" + id + params;
     hideWait();
@@ -4977,6 +4980,7 @@ function hideShowMenu(noRefresh) {
   }
   setTimeout("hideShowMenuInProgress=false;",duration+50);
   // dojo.byId('menuBarShow').style.top='50px';
+  dojo.byId("hideMenuBarShowButton2").style.left=dojo.byId("leftDiv").offsetWidth+3+"px";
 }
 
 // gautier #2672
@@ -6610,8 +6614,8 @@ function openExportDialog(Type) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  loadDialog("dialogExport", null, true, '&objectClass='
-      + dojo.byId('objectClass').value);
+   loadDialog("dialogExport", null, true, '&objectClass='
+       + dojo.byId('objectClass').value);
 }
 
 // close the dialog with checkboxes
