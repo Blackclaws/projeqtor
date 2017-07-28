@@ -997,7 +997,7 @@ div.imputation input.dijitInputInner {
 .dijitCheckBox,.dijitCheckBoxIcon {
   background-image: url(images/checkmark.png);
   background-repeat: no-repeat;
-  width: 16px;
+  width: 15px;
   height: 16px;
   margin: 0 2px 0 0;
   padding: 0;
@@ -1271,6 +1271,10 @@ div.imputation input.dijitInputInner {
   color: #ffffff;
 }
 
+.dijitTreeRow3 {
+  color: #656565;
+  padding-bottom: 7px;
+}
 .dijitTreeContent {
   min-height: 18px;
   min-width: 18px;
@@ -2066,6 +2070,8 @@ table.dijitCalendarContainer {
 .dijitButtonIconStatusChange { background-position: -801px;}
 .dijitButtonIconSubscribe { background-position: -826px;}
 .dijitButtonIconSubscribeValid { background-position: -851px;}
+.dijitButtonIconWord { background-position: -876px;}
+.dijitButtonIconExcel { background-position: -901px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
