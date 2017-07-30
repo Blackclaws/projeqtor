@@ -110,9 +110,9 @@ if (trim($paramStreamIdNote)!="") {
 }
 
 if ($paramProject!='*') {
-	$critWhere.=" and idProject in ".getVisibleProjectsList(true);
+	$critWhere.=" and (idProject is null or idProject in ".getVisibleProjectsList(true).')';
 } else {
-	$critWhere.=" and idProject in ".getVisibleProjectsList($paramProject);
+	$critWhere.=" and (idProject is null or idProject in ".getVisibleProjectsList($paramProject).')';
 }
 
 if ($activityStreamNumberDays!==""){
@@ -140,7 +140,6 @@ if ($activityStreamNumberDays!==""){
 if ($activityStreamShowClosed!='1') {
 	$critWhere.=" and idle=0";
 }
-
 echo '<br/>';
 $order = "COALESCE (updateDate,creationDate) ASC";
 $notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,$order,null,null,$activityStreamNumberElement);
