@@ -42,6 +42,8 @@ class History extends SqlElement {
   public $idUser;
   public $isWorkHistory;
   
+  public static $_storeDate;
+  public static $_storeItem;
   public $_noHistory=true; // Will never save history for this object
   
    /** ==========================================================================
@@ -101,6 +103,7 @@ class History extends SqlElement {
       $hist->isWorkHistory=1;
     }
     $hist->idUser=$user->id;
+    $hist->operationDate=self::getOperationDate($obj);
     $returnValue=$hist->save();
     // For TestCaseRun : store history for TestSession 
     if ($refType=='TestCaseRun') {
@@ -136,5 +139,20 @@ class History extends SqlElement {
       return false;
     }
   }
+  private static function getOperationDate($obj) {
+    $objRef=get_class($obj).'#'.$obj->id;
+    if (! self::$_storeDate) {
+      self::$_storeDate=date('Y-m-d H:i:s');
+      self::$_storeItem=$objRef;
+    }
+    if ($objRef!=self::$_storeItem and property_exists($obj, 'refType') and property_exists($obj, 'refId')) {
+      $objRef=$obj->refType.'#'.$obj->refId;
+    }
+    if ($objRef!=self::$_storeItem) {
+      self::$_storeDate=date('Y-m-d H:i:s');
+      self::$_storeItem=$objRef;
+    }
+    return self::$_storeDate;
+  } 
 }
 ?>
