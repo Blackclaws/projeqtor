@@ -319,6 +319,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           }
         } if (event.target.id=="noteNoteStream") {
           saveNoteStream(event);
+        } if (event.target.id=="noteStreamKanban") {
+          saveNoteStreamKanban(event);
         }
       };
       //if (dojo.isIE && dojo.isIE<=8) { // compatibility with IE8 removed in V6.0

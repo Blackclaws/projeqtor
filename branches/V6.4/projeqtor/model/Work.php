@@ -37,12 +37,13 @@ class Work extends GeneralWork {
 	     'workDate'=>'date'
 	 );
 	 private static $_fieldsAttributes=array(
-	     "day"=>"noImport",
-	     "week"=>"noImport",
-	     "month"=>"noImport",
-	     "year"=>"noImport",
-	     "dailyCost"=>"noImport",
-	     "idWorkElement"=>"noImport"
+	     "day"=>"hidden,noExport,noImport",
+	     "week"=>"hidden,noExport,noImport",
+	     "month"=>"hidden,noExport,noImport",
+	     "year"=>"hidden,noExport,noImport",
+	     "dailyCost"=>"hidden,noExport,noImport",
+	     "idWorkElement"=>"hidden,noExport,noImport",
+	     "idBill"=>"hidden,noExport"
 	 );
    /** ==========================================================================
    * Constructor
