@@ -90,7 +90,6 @@ function refreshImputationList() {
   dojo.byId('yearSpinnerT').value=dojo.byId('yearSpinner').value;
   dojo.byId('weekSpinnerT').value=dijit.byId('weekSpinner').get('value');
   dojo.byId('hideDone').checked=dojo.byId('listHideDone').checked;
-  
 
   enableWidget("userName");
   enableWidget("yearSpinner");

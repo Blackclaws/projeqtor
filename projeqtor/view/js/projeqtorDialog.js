@@ -6614,8 +6614,13 @@ function openExportDialog(Type) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-   loadDialog("dialogExport", null, true, '&objectClass='
-       + dojo.byId('objectClass').value);
+  var params = "&objectClass=" + dojo.byId("objectClass").value;
+  if(dojo.byId("objectClass").value == 'Work'){
+    params += "&dateWeek="+ dojo.byId("dateWeek").value;
+    params += "&dateMonth="+ dojo.byId("dateMonth").value;
+    params += "&userId="+ dojo.byId("userId").value;
+  }
+   loadDialog("dialogExport", null, true,params );
 }
 
 // close the dialog with checkboxes
@@ -6652,6 +6657,10 @@ function executeExport(obj, idUser) {
   var val=dojo.byId('column0').value;
   var exportReferencesAs=dijit.byId('exportReferencesAs').get('value');
   var exportHtml=(dijit.byId('exportHtml').get('checked'))?'1':'0';
+  if(obj == 'Work'){
+    var exportDateAs = dijit.byId('exportDateAs').get('value');
+    var exportRessourceAs = dijit.byId('exportRessourceAs').get('value');  
+  }
   val=eval(val);
   var toExport="";
   for (i=1; i <= val; i++) {
@@ -6670,10 +6679,17 @@ function executeExport(obj, idUser) {
   }
   if (verif == 1) {
     if (ExportType == 'csv') {
+      if(obj != 'Work'){
       showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml
-          +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport
+          +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport 
           , 'list', null,
           'csv');
+      }else{
+        showPrint("../tool/jsonQuery.php?exportHtml="+exportHtml
+            +"&exportReferencesAs="+ exportReferencesAs + "&hiddenFields=" + toExport +"&exportDateAs="+ exportDateAs +"&exportRessourceAs="+ exportRessourceAs
+            , 'list', null,
+            'csv');
+      }
     }
     saveCheckboxExport(obj, idUser);
     closeExportDialog(obj, idUser);

@@ -50,6 +50,8 @@ if (array_key_exists('weekSpinnerT',$_REQUEST)) {
   $week=$_REQUEST['weekSpinnerT'];
 }
 
+$month=substr(date('Y-m-d',firstDayofWeek($week,$year)),5,-3);
+
 $showPlannedWork=0;
 if (array_key_exists('showPlannedWork',$_REQUEST)) {
     $showPlannedWork=1;
@@ -94,6 +96,9 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
   <input type="hidden" name="daysWorkFuture" id="daysWorkFuture" value="0"/>
   <input type="hidden" name="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
+  <input type="hidden" name="objectClass" id="objectClass" value="Work"/>
+  <input type="hidden" name="dateWeek" id="dateWeek" value="<?php echo $year.$week; ?>"/>
+  <input type="hidden" name="dateMonth" id="dateMonth" value="<?php echo $year.$month; ?>"/>
   <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
