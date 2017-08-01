@@ -29,9 +29,14 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
 }
 $objectClass=$_REQUEST['objectClass'];
 Security::checkValidClass($objectClass);
+//gautier
+if($objectClass == 'Work'){
+  $week = RequestHandler::getValue('dateWeek');
+  $month = RequestHandler::getValue('dateMonth');
+  $isMyUser = RequestHandler::getValue('userId');
+}
 
 $obj=new $objectClass();
-
 $idUser = getSessionUser()->id;
 $cs=new ColumnSelector();
 $crit=array('scope'=>'export','objectClass'=>$objectClass, 'idUser'=>$user->id);
@@ -182,14 +187,39 @@ $htmlresult.="<br/>";
 				   style="width: 150px;" name="exportReferencesAs" id="exportReferencesAs">         
            <option value="name"><?php echo i18n("colName");?></option>                            
            <option value="id"><?php echo i18n("colId");?></option>
-			   </select></td>
+			    </select></td>
   </tr>
   <tr>
     <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportHtml")?> :&nbsp;</td>
     <td > <div type="checkbox" dojoType="dijit.form.CheckBox" id="exportHtml" name="exportHtml" ></div></td>
   </tr>
+   <?php if( $objectClass != 'Work' ){?>
   <tr><td colspan="2" >&nbsp;</td></tr>
-</table>
+  
+  <?php  } if( $objectClass == 'Work' ){?>
+  <tr>
+    <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportDateAs")?> :&nbsp;</td>
+    <td > <select dojoType="dijit.form.FilteringSelect" class="input" 
+           <?php echo autoOpenFilteringSelect();?>
+				   style="width: 150px;" name="exportDateAs" id="exportDateAs">         
+           <option value="<?php echo 'W'.$week ;?>"> <?php echo i18n("selectWeek");?> </option>                            
+           <option value="<?php echo 'M'.$month ;?>"><?php echo i18n("selectMonth");?></option>
+           <option value="<?php echo 'Y'.substr($month,0,4);?>"><?php echo i18n("selectYear");?></option>
+           <option value="<?php echo 'All' ;?>"><?php echo i18n("getAll");?></option>
+			    </select></td>
+  </tr>
+  <tr>
+    <td style="width:300px;text-align:right" class="dialogLabel"><?php echo i18n("exportRessourceAs")?> :&nbsp;</td>
+    <td > <select dojoType="dijit.form.FilteringSelect" class="input" 
+           <?php echo autoOpenFilteringSelect();?>
+				   style="width: 150px;" name="exportRessourceAs" id="exportRessourceAs">         
+           <option value="<?php echo 'C'.$isMyUser ;?>"> <?php echo i18n("selectResource");?> </option>                            
+           <option value="<?php echo 'A' ;?>"><?php echo i18n("allResource");?></option>
+			    </select></td>
+  </tr>
+  <?php }?>
+
+  </table>
 <table style="width: 100%;">
   <tr>
   <?php  echo $htmlresult; ?>

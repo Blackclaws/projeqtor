@@ -104,6 +104,9 @@
     $showIdleProjects=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
     // --- "show idle checkbox is checked ?
     if (! isset($showIdle)) $showIdle=false;
+    if($objectClass=='Work'){
+      $showIdle = true;
+    }
     if (!$showIdle and ! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
@@ -192,6 +195,8 @@
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
             $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdleProjects) ;
+          } else if ($objectClass=='Work') {
+             $queryWhere.="1=1";
           } else if ($objectClass=='Document') {
           	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null)";
           } else {
@@ -205,7 +210,8 @@
     	// No limit, although idProject exists
     } else {
       $clause=getAccesRestrictionClause($objectClass,$table, $showIdleProjects);
-      if (trim($clause)) {
+      //gautier #1700
+      if (trim($clause) and $objectClass!="Work") {
         $queryWhere.= ($queryWhere=='')?'(':' and (';
         $queryWhere.= $clause;
         if ($objectClass=='Project') {
@@ -612,7 +618,31 @@
     
     // ==================== Constitute query and execute ============================================================
     // --- Buimd where from "Select", "From", "Where" and "Order by" clauses built above
-    $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
+    //gautier #1700
+    if($objectClass == 'Work'){
+      $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
+      $table = getListForSpecificRights('imputation');
+      $getRessource = RequestHandler::getValue('exportRessourceAs');
+      $date = RequestHandler::getValue('exportDateAs');
+      if (substr($getRessource,0,1) == 'C') {
+        $getRessource = substr($getRessource,1);
+        $queryWhere.=" and idResource = $getRessource ";
+      }else{
+        $queryWhere.=" and idResource in ".transformListIntoInClause($table);
+      }
+      if(substr($date,0,1) == 'W') {
+        $dateWeekOrMonthOrYear = 'week';
+      }elseif (substr($date,0,1) == 'M'){
+        $dateWeekOrMonthOrYear = 'month';
+      }elseif (substr($date,0,1) == 'Y'){
+        $dateWeekOrMonthOrYear = 'year';
+      }
+      if($date != 'All'){
+        $date = substr($date,1);
+        $queryWhere.=" and $dateWeekOrMonthOrYear = ".Sql::str($date);
+      }
+    }
+    //end gautier
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 

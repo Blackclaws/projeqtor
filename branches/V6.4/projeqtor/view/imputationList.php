@@ -36,13 +36,13 @@ $user=getSessionUser();
 $rangeType='week';
 $currentWeek=weekNumber(date('Y-m-d')) ;
 $currentYear=strftime("%Y") ;
+$currentMonth=strftime("%m") ;
 if ($currentWeek==1 and strftime("%m")>10 ) {
 	$currentYear+=1;
 }
 if ($currentWeek>50 and strftime("%m")==1 ) {
   $currentYear-=1;
 }
-
 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));
 $rangeValue=$currentYear . $currentWeek;
 
@@ -267,6 +267,14 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                   showPrint('../report/imputation.php', 'imputation', null, 'pdf');
                 </script>
               </button>
+              <button title="<?php echo i18n('reportPrintCsv')?>"  
+               dojoType="dijit.form.Button" 
+               id="listPrintCsv2" name="listPrintCsv2"
+               iconClass="dijitButtonIcon dijitButtonIconCsv" class="detailButton" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  openExportDialog('csv');
+                </script>
+              </button>              
               <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
                title="<?php echo i18n('buttonUndoImputation');?>"
                "disabled"
@@ -301,6 +309,10 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
        <input type="hidden" name="weekSpinnerT" id="weekSpinnerT" value=""/>
        <input type="hidden" noname="daysWorkFuture" id="daysWorkFuture" value="0"/>
        <input type="hidden" noname="daysWorkFutureBlocking" id="daysWorkFutureBlocking" value="0"/>
+       <input type="hidden" name="objectClass" id="objectClass" value="Work"/>
+       <input type="hidden" name="dateWeek" id="dateWeek" value="<?php echo $currentYear.$currentWeek; ?>"/>
+       <input type="hidden" name="dateMonth" id="dateMonth" value="<?php echo $currentYear.$currentMonth; ?>"/>
+       
       <?php if (! isset($print) ) {$print=false;}
       ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings,$currentWeek,$currentYear, $showId);?>
      </form>
