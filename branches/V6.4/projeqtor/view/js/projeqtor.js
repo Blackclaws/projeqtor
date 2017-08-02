@@ -1021,7 +1021,6 @@ function submitForm(page, destination, formName) {
     if (formName == 'passwordForm') {
       isResultDiv = false;
     }
-    ;
     loadContent(page, destination, formName, isResultDiv);
   } else {
     showAlert(i18n("alertInvalidForm"));
@@ -4210,15 +4209,33 @@ function hideDirectChangeStatus() {
 
 function drawGraphStatus() {
   var callBack = function(){
-    dojo.byId('graphStatusContentDiv');
+    var contentDiv=dojo.byId('graphStatusContentDiv');
+    var detailDiv=dojo.byId('detailDiv');
+    var leftDiv=dojo.byId('leftDiv');
+    contentDiv.style.left='';
+    if (!contentDiv || ! detailDiv || !leftDiv) return;
+    var leftWidth=leftDiv.offsetWidth;
+    var contentWidth=(contentDiv.offsetWidth);
+    var contentLeft=contentDiv.offsetLeft;
+    var detailWidth=detailDiv.offsetWidth;
+    console.log("current left="+contentLeft);
+    if (contentLeft-85+contentWidth>leftWidth+detailWidth) {
+      console.log("A"+contentLeft+"+"+contentWidth+"="+(contentLeft+contentWidth));
+      console.log("B"+leftWidth+"+"+detailWidth+"="+(leftWidth+detailWidth));
+      var newLeft=leftWidth+detailWidth-contentWidth+55;
+      if (newLeft-85<leftWidth) newLeft=leftWidth+85+10;
+      contentDiv.style.left=newLeft+"px";
+    } 
+    
+    console.log()
   };
   graphIdStatus=dijit.byId("idStatus").get('value');
   graphIdProject=dijit.byId("idProject").get('value');
   objectClass=dojo.byId('objectClass').value;
   graphIdType=dijit.byId("id"+objectClass+"Type").get('value');
   var url = '../tool/dynamicDialogGraphStatus.php?idStatus='+graphIdStatus + '&idProject='+graphIdProject + '&idType='+graphIdType;
-  loadContent(url,"graphStatusDiv",null,null,null,null,null,callBack);
-  
+  //loadContent(url,"graphStatusDiv",null,null,null,null,null,callBack);
+  loadDiv(url,"graphStatusDiv",null,callBack);
 }
 
 function hideGraphStatus(){

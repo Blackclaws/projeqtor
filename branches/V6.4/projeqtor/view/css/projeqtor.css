@@ -1344,11 +1344,21 @@ label, .label, .smallLabel {
 }
 
 .blue #mapDiv, .blue #messageDiv, .blue #listDiv, .blue #detailDiv, .blue #formDiv, .blue .display, .blue .background,
-.blue .dijitTitlePaneContentInner, 
+.blue .dijitTitlePaneContentInner, .blue .dijitTabPane,
 .blue #mainDiv,  .blue #contentDiv, .blue #centerDiv {
   background-color: #C3C3EB;
 }
-
+.blue .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #C3C3EB;
+  border-bottom-color: #C3C3EB;
+}
+.blue .dijitTabPaneWrapper {
+  border: 1px solid #ffffff;
+  border-top:none;
+}
+.blue .dijitTabChecked, .blue .dijitTab, .blue .dijitTabContainerTop-tabs{
+  border-color: #ffffff;
+}
 .blue #toolBarDiv, .blue #statusBarDiv, .blue .statusBar, .blue .dojoxGridRowSelected, .blue .listTitle,
 .blue .section, .blue .dijitTitlePane .dijitTitlePaneTitle, .blue .title {
   background-color: #545281;  color: #EEEEEE;  
@@ -1391,11 +1401,21 @@ label, .label, .smallLabel {
 }
 
 .red #mapDiv, .red #messageDiv, .red #listDiv, .red #detailDiv, .red #formDiv, .red .display, .red .background,
-.red .dijitTitlePaneContentInner,
+.red .dijitTitlePaneContentInner, .red .dijitTabPane,
 .red #mainDiv, .red #contentDiv, .red #centerDiv {
   background-color: #EBC3C3;
 }
-
+.red .dijitTabPaneWrapper {
+  border: 1px solid #ffffff;
+  border-top:none;
+}
+.red .dijitTabChecked, .red .dijitTab, .red .dijitTabContainerTop-tabs{
+  border-color: #ffffff;
+}
+.red .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #EBC3C3;
+  border-bottom-color: #EBC3C3;
+}
 .red #toolBarDiv, .red #statusBarDiv, .red .statusBar, .red .dojoxGridRowSelected, .red .listTitle,
 .red .section, .red .dijitTitlePane .dijitTitlePaneTitle, .red .title {
   background-color: #9B5353;  color: #FFFFFF;   
@@ -1437,11 +1457,21 @@ label, .label, .smallLabel {
 }
 
 .green #mapDiv, .green #messageDiv, .green #listDiv, .green #detailDiv, .green #formDiv, .green .display, .green .background,
-.green .dijitTitlePaneContentInner, 
+.green .dijitTitlePaneContentInner, .green .dijitTabPane,
 .green #mainDiv,  .green #contentDiv, .green #centerDiv {
   background-color: #C3EBC3;
 }
-
+.green .dijitTabPaneWrapper {
+  border: 1px solid #ffffff;
+  border-top:none;
+}
+.green .dijitTabChecked, .green .dijitTab, .green .dijitTabContainerTop-tabs{
+  border-color: #ffffff;
+}
+.green .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #C3EBC3;
+  border-bottom-color: #C3EBC3;
+}
 .green #toolBarDiv, .green #statusBarDiv, .green .statusBar, .green .dojoxGridRowSelected, .green .listTitle,
 .green .section, .green .dijitTitlePane .dijitTitlePaneTitle, .green .title {
   background-color: #539B53;  color: #EEEEEE;  
@@ -1484,11 +1514,21 @@ label, .label, .smallLabel {
 }
 
 .grey #mapDiv, .grey #messageDiv, .grey #listDiv, .grey #detailDiv, .grey #formDiv, .grey .display, .grey .background,
-.grey .dijitTitlePaneContentInner, 
+.grey .dijitTitlePaneContentInner, .grey .dijitTabPane,
 .grey #mainDiv,  .grey #contentDiv, .grey #centerDiv {
   background-color: #C3C3C3;
 }
-
+.grey .dijitTabPaneWrapper {
+  border: 1px solid #ffffff;
+  border-top:none;
+}
+.grey .dijitTabChecked, .grey .dijitTab, .grey .dijitTabContainerTop-tabs{
+  border-color: #ffffff;
+}
+.grey .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #C3C3C3;
+  border-bottom-color: #C3C3C3;
+}
 .grey #toolBarDiv, .grey #statusBarDiv, .grey .statusBar, .grey .dojoxGridRowSelected, .grey .listTitle,
 .grey .section, .grey .dijitTitlePane .dijitTitlePaneTitle, .grey .title {
   background-color: #9B9B9B;  color: #FFFFFF;  
@@ -1531,11 +1571,21 @@ label, .label, .smallLabel {
 }
 
 .orange #mapDiv, .orange #messageDiv, .orange #listDiv, .orange #detailDiv, .orange #formDiv, .orange .display, .orange .background,
-.orange .dijitTitlePaneContentInner, 
+.orange .dijitTitlePaneContentInner, .orange .dijitTabPane,
 .orange #mainDiv,  .orange #contentDiv, .orange #centerDiv {
   background-color: #F6C672;
 }
-
+.orange .dijitTabPaneWrapper {
+  border: 1px solid #ffffff;
+  border-top:none;
+}
+.orange .dijitTabChecked, .orange .dijitTab, .orange .dijitTabContainerTop-tabs{
+  border-color: #ffffff;
+}
+.orange .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #F6C672;
+  border-bottom-color: #F6C672;
+}
 .orange #toolBarDiv, .orange #statusBarDiv, .orange .statusBar, .orange .dojoxGridRowSelected, .orange .listTitle,
 .orange .section, .orange .dijitTitlePane .dijitTitlePaneTitle, .orange .title {
   background-color: #D98F0E;  color: #FFFFFF;  
@@ -1587,10 +1637,13 @@ label, .label, .smallLabel {
 }
 
 .white .tabLabel, .white .label,
-.white .dijitTitlePaneContentInner  {
+.white .dijitTitlePaneContentInner, .white .dijitTabPane  {
   background-color: #FFFFFF; color: #000000;
 }
-
+.white .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
 .white .dojoxGridRowOver .dojoxGridCell {
     background-color: #DDDDDD; color: #000000;
 }
@@ -1625,11 +1678,14 @@ label, .label, .smallLabel {
 }
 
 .blueLight #mapDiv, .blueLight #messageDiv, .blueLight #listDiv, .blueLight #detailDiv, .blueLight #formDiv, .blueLight .display, .blueLight .background,
-.blueLight .dijitTitlePaneContentInner, 
+.blueLight .dijitTitlePaneContentInner, .blueLight .dijitTabPane,
 .blueLight #mainDiv,  .blueLight #contentDiv, .blueLight #centerDiv {
   background-color: #EEEEFF;
 }
-
+.blueLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #EEEEFF;
+  border-bottom-color: #EEEEFF;
+}
 .blueLight #toolBarDiv, .blueLight #statusBarDiv, .blueLight .statusBar, .blueLight .dojoxGridRowSelected, .blueLight .listTitle,
 .blueLight .section, .blueLight .dijitTitlePane .dijitTitlePaneTitle, .blueLight .title  {
   background-color: #C3C3EB;  color: #545281;  
@@ -1671,9 +1727,13 @@ label, .label, .smallLabel {
 }
 
 .blueContrast #mapDiv, .blueContrast #messageDiv, .blueContrast #listDiv, .blueContrast #detailDiv, .blueContrast #formDiv, .blueContrast .display, .blueContrast .background,
-.blueContrast .dijitTitlePaneContentInner, 
+.blueContrast .dijitTitlePaneContentInner, .blueContrast .dijitTabPane,
 .blueContrast #mainDiv,  .blueContrast #contentDiv, .blueContrast #centerDiv {
   background-color: #FFFFFF;
+}
+.blueContrast .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
 }
 
 .blueContrast #toolBarDiv, .blueContrast #statusBarDiv, .blueContrast .statusBar, .blueContrast .dojoxGridRowSelected, .blueContrast .listTitle,
@@ -1720,9 +1780,13 @@ label, .label, .smallLabel {
 }
 
 .redLight #mapDiv, .redLight #messageDiv, .redLight #listDiv, .redLight #detailDiv, .redLight #formDiv, .redLight .display, .redLight .background,
-.redLight .dijitTitlePaneContentInner,
+.redLight .dijitTitlePaneContentInner, .redLight .dijitTabPane,
 .redLight #mainDiv, .redLight #contentDiv, .redLight #centerDiv {
   background-color: #FFEEEE;
+}
+.redLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFEEEE;
+  border-bottom-color: #FFEEEE;
 }
 
 .redLight #toolBarDiv, .redLight #statusBarDiv, .redLight .statusBar, .redLight .dojoxGridRowSelected, .redLight .listTitle,
@@ -1767,11 +1831,14 @@ label, .label, .smallLabel {
 }
 
 .redContrast #mapDiv, .redContrast #messageDiv, .redContrast #listDiv, .redContrast #detailDiv, .redContrast #formDiv, .redContrast .display, .redContrast .background,
-.redContrast .dijitTitlePaneContentInner, 
+.redContrast .dijitTitlePaneContentInner, .redContrast .dijitTabPane,
 .redContrast #mainDiv,  .redContrast #contentDiv, .redContrast #centerDiv {
   background-color: #FFFFFF;
 }
-
+.redContrast .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
 .redContrast #toolBarDiv, .redContrast #statusBarDiv, .redContrast .statusBar, .redContrast .dojoxGridRowSelected, .redContrast .listTitle,
 .redContrast .section, .redContrast .dijitTitlePane .dijitTitlePaneTitle, .redContrast .title  {
   background-color: #9B5353;  color: #FFFFFF;  
@@ -1816,11 +1883,14 @@ label, .label, .smallLabel {
 }
 
 .greenLight #mapDiv, .greenLight #messageDiv, .greenLight #listDiv, .greenLight #detailDiv, .greenLight #formDiv, .greenLight .display, .greenLight .background,
-.greenLight .dijitTitlePaneContentInner, 
+.greenLight .dijitTitlePaneContentInner, .greenLight .dijitTabPane,
 .greenLight #mainDiv,  .greenLight #contentDiv, .greenLight #centerDiv {
   background-color: #EEFFEE;
 }
-
+.greenLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #EEFFEE;
+  border-bottom-color: #EEFFEE;
+}
 .greenLight #toolBarDiv, .greenLight #statusBarDiv, .greenLight .statusBar, .greenLight .dojoxGridRowSelected, .greenLight .listTitle,
 .greenLight .section, .greenLight .dijitTitlePane .dijitTitlePaneTitle, .greenLight .title  {
   background-color: #C3EBC3;  color: #539B53;  
@@ -1862,11 +1932,14 @@ label, .label, .smallLabel {
 }
 
 .greenContrast #mapDiv, .greenContrast #messageDiv, .greenContrast #listDiv, .greenContrast #detailDiv, .greenContrast #formDiv, .greenContrast .display, .greenContrast .background,
-.greenContrast .dijitTitlePaneContentInner, 
+.greenContrast .dijitTitlePaneContentInner, .greenConstrast .dijitTabPane,
 .greenContrast #mainDiv,  .greenContrast #contentDiv, .greenContrast #centerDiv {
   background-color: #FFFFFF;
 }
-
+.greenContrast .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
 .greenContrast #toolBarDiv, .greenContrast #statusBarDiv, .greenContrast .statusBar, .greenContrast .dojoxGridRowSelected, .greenContrast .listTitle,
 .greenContrast .section, .greenContrast .dijitTitlePane .dijitTitlePaneTitle, .greenContrast .title  {
   background-color: #539B53;  color: #FFFFFF;  
@@ -1911,11 +1984,14 @@ label, .label, .smallLabel {
 }
 
 .orangeLight #mapDiv, .orangeLight #messageDiv, .orangeLight #listDiv, .orangeLight #detailDiv, .orangeLight #formDiv, .orangeLight .display, .orangeLight .background,
-.orangeLight .dijitTitlePaneContentInner, 
+.orangeLight .dijitTitlePaneContentInner, .orangeLight .dijitTabPane,
 .orangeLight #mainDiv,  .orangeLight #contentDiv, .orangeLight #centerDiv {
   background-color: #FFFFDD;
 }
-
+.orangeLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFDD;
+  border-bottom-color: #FFFFDD;
+}
 .orangeLight #toolBarDiv, .orangeLight #statusBarDiv, .orangeLight .statusBar, .orangeLight .dojoxGridRowSelected, .orangeLight .listTitle,
 .orangeLight .section, .orangeLight .dijitTitlePane .dijitTitlePaneTitle, .orangeLight .title  {
   background-color: #F6C672;  color: #D98F0E;  
@@ -1957,11 +2033,14 @@ label, .label, .smallLabel {
 }
 
 .orangeContrast #mapDiv, .orangeContrast #messageDiv, .orangeContrast #listDiv, .orangeContrast #detailDiv, .orangeContrast #formDiv, .orangeContrast .display, .orangeContrast .background,
-.orangeContrast .dijitTitlePaneContentInner, 
+.orangeContrast .dijitTitlePaneContentInner, .orengeContrast .dijitTabPane,
 .orangeContrast #mainDiv,  .orangeContrast #contentDiv, .orangeContrast #centerDiv {
   background-color: #FFFFFF;
 }
-
+.orangeContrast .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
 .orangeContrast #toolBarDiv, .orangeContrast #statusBarDiv, .orangeContrast .statusBar, .orangeContrast .dojoxGridRowSelected, .orangeContrast .listTitle,
 .orangeContrast .section, .orangeContrast .dijitTitlePane .dijitTitlePaneTitle, .orangeContrast .title  {
   background-color: #D98F0E;  color: #FFFFFF;  
@@ -2006,11 +2085,14 @@ label, .label, .smallLabel {
 }
 
 .greyLight #mapDiv, .greyLight #messageDiv, .greyLight #listDiv, .greyLight #detailDiv, .greyLight #formDiv, .greyLight .display, .greyLight .background,
-.greyLight .dijitTitlePaneContentInner,
+.greyLight .dijitTitlePaneContentInner, .greyLight .dijitTabPane,
 .greyLight #mainDiv, .greyLight #contentDiv, .greyLight #centerDiv {
   background-color: #F0F0F0;
 }
-
+.greyLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #F0F0F0;
+  border-bottom-color: #F0F0F0;
+}
 .greyLight #toolBarDiv, .greyLight #statusBarDiv, .greyLight .statusBar, .greyLight .dojoxGridRowSelected, .greyLight .listTitle,
 .greyLight .section, .greyLight .dijitTitlePane .dijitTitlePaneTitle, .greyLight .title {
   background-color: #C3C3C3;  color: #9B9B9B;   
@@ -2053,11 +2135,14 @@ label, .label, .smallLabel {
 }
 
 .greyContrast #mapDiv, .greyContrast #messageDiv, .greyContrast #listDiv, .greyContrast #detailDiv, .greyContrast #formDiv, .greyContrast .display, .greyContrast .background,
-.greyContrast .dijitTitlePaneContentInner, 
+.greyContrast .dijitTitlePaneContentInner, .greyContrast .dijitTabPane,
 .greyContrast #mainDiv,  .greyContrast #contentDiv, .greyContrast #centerDiv {
   background-color: #FFFFFF;
 }
-
+.greyContrast .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
 .greyContrast #toolBarDiv, .greyContrast #statusBarDiv, .greyContrast .statusBar, .greyContrast .dojoxGridRowSelected, .greyContrast .listTitle,
 .greyContrast .section, .greyContrast .dijitTitlePane .dijitTitlePaneTitle, .greyContrast .title  {
   background-color: #9B9B9B;  color: #FFFFFF;  
@@ -2107,9 +2192,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,
-.ProjeQtOr .dijitTitlePaneContentInner, 
+.ProjeQtOr .dijitTitlePaneContentInner, .ProjeQtOr .dijitTabPane,
 .ProjeQtOr #mainDiv, .ProjeQtOr #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOr .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOr #toolBarDiv, .ProjeQtOr #statusBarDiv, .ProjeQtOr .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2185,9 +2274,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrFire #mapDiv, .ProjeQtOrFire #messageDiv, .ProjeQtOrFire #listDiv, .ProjeQtOrFire #formDiv, .ProjeQtOrFire .display, .ProjeQtOrFire .background,
-.ProjeQtOrFire .dijitTitlePaneContentInner, 
+.ProjeQtOrFire .dijitTitlePaneContentInner,  .ProjeQtOrFire .dijitTabPane,
 .ProjeQtOrFire #mainDiv, .ProjeQtOrFire #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrFire .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrFire #toolBarDiv, .ProjeQtOrFire #statusBarDiv, .ProjeQtOrFire .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2254,9 +2347,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrForest #mapDiv, .ProjeQtOrForest #messageDiv, .ProjeQtOrForest #listDiv, .ProjeQtOrForest #formDiv, .ProjeQtOrForest .display, .ProjeQtOrForest .background,
-.ProjeQtOrForest .dijitTitlePaneContentInner, 
+.ProjeQtOrForest .dijitTitlePaneContentInner, .ProjeQtOrForest .dijitTabPane,
 .ProjeQtOrForest #mainDiv, .ProjeQtOrForest #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrForest .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrForest #toolBarDiv, .ProjeQtOrForest #statusBarDiv, .ProjeQtOrForest .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2323,9 +2420,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrEarth #mapDiv, .ProjeQtOrEarth #messageDiv, .ProjeQtOrEarth #listDiv, .ProjeQtOrEarth #formDiv, .ProjeQtOrEarth .display, .ProjeQtOrEarth .background,
-.ProjeQtOrEarth .dijitTitlePaneContentInner, 
+.ProjeQtOrEarth .dijitTitlePaneContentInner, .ProjeQtOrEarth .dijitTabPane,
 .ProjeQtOrEarth #mainDiv, .ProjeQtOrEarth #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrEarth .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrEarth #toolBarDiv, .ProjeQtOrEarth #statusBarDiv, .ProjeQtOrEarth .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2392,9 +2493,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrWater #mapDiv, .ProjeQtOrWater #messageDiv, .ProjeQtOrWater #listDiv, .ProjeQtOrWater #formDiv, .ProjeQtOrWater .display, .ProjeQtOrWater .background,
-.ProjeQtOrWater .dijitTitlePaneContentInner, 
+.ProjeQtOrWater .dijitTitlePaneContentInner, .ProjeQtOrWater .dijitTabPane,
 .ProjeQtOrWater #mainDiv, .ProjeQtOrWater #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrWater .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrWater #toolBarDiv, .ProjeQtOrWater #statusBarDiv, .ProjeQtOrWater .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2461,9 +2566,13 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrWine #mapDiv, .ProjeQtOrWine #messageDiv, .ProjeQtOrWine #listDiv, .ProjeQtOrWine #formDiv, .ProjeQtOrWine .display, .ProjeQtOrWine .background,
-.ProjeQtOrWine .dijitTitlePaneContentInner, 
+.ProjeQtOrWine .dijitTitlePaneContentInner, .ProjeQtOrWine .dijitTabPane,
 .ProjeQtOrWine #mainDiv, .ProjeQtOrWine #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrWine .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrWine #toolBarDiv, .ProjeQtOrWine #statusBarDiv, .ProjeQtOrWine .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2528,11 +2637,14 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrDark #mapDiv, .ProjeQtOrDark #messageDiv, .ProjeQtOrDark #listDiv, .ProjeQtOrDark #detailDiv, .ProjeQtOrDark #formDiv, .ProjeQtOrDark .display, .ProjeQtOrDark .background,
-.ProjeQtOrDark .dijitTitlePaneContentInner, 
+.ProjeQtOrDark .dijitTitlePaneContentInner, .ProjeQtOrDark .dijitTabPane,
 .ProjeQtOrDark #mainDiv,  .ProjeQtOrDark #contentDiv, .ProjeQtOrDark #centerDiv {
   background-color: #fafafa;
 }
-
+.ProjeQtOrDark .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
+}
 .ProjeQtOrDark #statusBarDiv, .ProjeQtOrDark .statusBar, 
 .ProjeQtOrDark .dojoxGridRowSelected, .ProjeQtOrDark .listTitle,   
 .ProjeQtOrDark .section, .ProjeQtOrDark .dijitTitlePane .dijitTitlePaneTitle {
@@ -2600,12 +2712,15 @@ label, .label, .smallLabel {
 }
 
 .ProjeQtOrLight #mapDiv, .ProjeQtOrLight #messageDiv, .ProjeQtOrLight #listDiv, .ProjeQtOrLight .display, .ProjeQtOrLight .background,
-.ProjeQtOrLight .dijitTitlePaneContentInner, 
+.ProjeQtOrLight .dijitTitlePaneContentInner, .ProjeQtOrLight .dijitTabPane,
 .ProjeQtOrLight #detailDiv, .ProjeQtOrLight #formDiv,
 .ProjeQtOrLight #mainDiv,  .ProjeQtOrLight #contentDiv, .ProjeQtOrLight #centerDiv {
   background-color: #fcfcfc;
 }
-
+.ProjeQtOrLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fcfcfc;
+  border-bottom-color: #fcfcfc;
+}
 .ProjeQtOrLight #toolBarDiv, .ProjeQtOrLight #statusBarDiv, .ProjeQtOrLight .statusBar, 
 .ProjeQtOrLight .dojoxGridRowSelected, .ProjeQtOrLight .listTitle,
 .ProjeQtOrLight .section, .ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle  {
@@ -2665,11 +2780,14 @@ label, .label, .smallLabel {
 }
 
 .ProjectOrRiaContrasted #mapDiv, .ProjectOrRiaContrasted #messageDiv, .ProjectOrRiaContrasted #listDiv, .ProjectOrRiaContrasted #detailDiv, .ProjectOrRiaContrasted #formDiv, .ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted .background,
-.ProjectOrRiaContrasted #printPreview, .ProjectOrRiaContrasted .dijitTitlePaneContentInner, 
+.ProjectOrRiaContrasted #printPreview, .ProjectOrRiaContrasted .dijitTitlePaneContentInner, .ProjectOrRiaContrasted .dijitTabPane,
 .ProjectOrRiaContrasted #mainDiv,  .ProjectOrRiaContrasted #contentDiv, .ProjectOrRiaContrasted #centerDiv {
   background-color: #ececec;
 }
-
+.ProjectOrRiaContrasted .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #ececec;
+  border-bottom-color: #ececec;
+}
 .ProjectOrRiaContrasted #statusBarDiv, .ProjectOrRiaContrasted .statusBar, 
 .ProjectOrRiaContrasted .dojoxGridRowSelected, .ProjectOrRiaContrasted .listTitle,   
 .ProjectOrRiaContrasted .section, .ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaContrasted .title {
@@ -2716,12 +2834,15 @@ label, .label, .smallLabel {
 }
 
 .ProjectOrRiaLight #mapDiv, .ProjectOrRiaLight #messageDiv, .ProjectOrRiaLight #listDiv, .ProjectOrRiaLight .display, .ProjectOrRiaLight .background,
-.ProjectOrRiaLight #printPreview, .ProjectOrRiaLight .dijitTitlePaneContentInner, 
+.ProjectOrRiaLight #printPreview, .ProjectOrRiaLight .dijitTitlePaneContentInner, .ProjectOrRiaLight .dijitTabPane,
 .ProjectOrRiaLight #detailDiv, .ProjectOrRiaLight #formDiv,
 .ProjectOrRiaLight #mainDiv,  .ProjectOrRiaLight #contentDiv, .ProjectOrRiaLight #centerDiv {
   background-color: #ececec;
 }
-
+.ProjectOrRiaLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #ececec;
+  border-bottom-color: #ececec;
+}
 .ProjectOrRiaLight #toolBarDiv, .ProjectOrRiaLight #statusBarDiv, .ProjectOrRiaLight .statusBar, 
 .ProjectOrRiaLight .dojoxGridRowSelected, .ProjectOrRiaLight .listTitle,
 .ProjectOrRiaLight .section, .ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaLight .title  {
@@ -2767,9 +2888,13 @@ label, .label, .smallLabel {
 }
 
 .ProjectOrRia #mapDiv, .ProjectOrRia #messageDiv, .ProjectOrRia #listDiv, .ProjectOrRia #detailDiv, .ProjectOrRia #formDiv, .ProjectOrRia .display, .ProjectOrRia .background,
-.ProjectOrRia #printPreview, .ProjectOrRia .dijitTitlePaneContentInner, 
+.ProjectOrRia #printPreview, .ProjectOrRia .dijitTitlePaneContentInner, .ProjectOrRia .dijitTabPane,
 .ProjectOrRia #mainDiv,  .ProjectOrRia #contentDiv, .ProjectOrRia #centerDiv {
   background-color: #ececec;
+}
+.ProjectOrRia .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #ececec;
+  border-bottom-color: #ececec;
 }
 .ProjectOrRia #buttonDiv { /**toolbar**/
   background-color: #d4d5da;  color: #545281;  
@@ -2847,9 +2972,13 @@ label, .label, .smallLabel {
 
 .ProjectomLight #mapDiv, .ProjectomLight #messageDiv, .ProjectomLight #listDiv, 
 .ProjectomLight #detailDiv, .ProjectomLight #formDiv, .ProjectomLight .display, .ProjectomLight .background,
-.ProjectomLight #printPreview, .ProjectomLight .dijitTitlePaneContentInner, 
+.ProjectomLight #printPreview, .ProjectomLight .dijitTitlePaneContentInner, .ProjectomLight .dijitTabPane,
 .ProjectomLight #mainDiv,  .ProjectomLight #contentDiv, .ProjectomLight #centerDiv {
   background-color: #ececec;
+}
+.ProjectomLight .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #ececec;
+  border-bottom-color: #ececec;
 }
 .ProjectomLight #buttonDiv { /**toolbar**/
   background-color: #d4d5da;  color: #545281;  
@@ -3039,11 +3168,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', end
 }
 
 .Projectom #mapDiv, .Projectom #messageDiv, .Projectom #listDiv, .Projectom #detailDiv, .Projectom #formDiv, .Projectom .display, .Projectom .background,
-.Projectom #printPreview, .Projectom .dijitTitlePaneContentInner, 
+.Projectom #printPreview, .Projectom .dijitTitlePaneContentInner, .Projectom .dijitTabPane,
 .Projectom #mainDiv,  .Projectom #contentDiv, .Projectom #centerDiv {
   background-color: #f1f1f1;
 }
-
+.Projectom .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #f1f1f1;
+  border-bottom-color: #f1f1f1;
+}
 .Projectom #mainDiv, .Projectom #contentDiv, .Projectom #centerDiv {
     background-color: #f1f1f1;
 }
@@ -3408,4 +3540,21 @@ li.section {
   -o-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+.graphStatusDiv {
+	background-color:#ffffff;
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+	z-index:999;
+}
+.graphStatusContentDiv {
+	height:auto;
+	z-index:9999;
+	position:fixed;
+	margin-right:0;
+  padding:0;
+	margin-left:-85px;
+	margin-top:23px;
 }

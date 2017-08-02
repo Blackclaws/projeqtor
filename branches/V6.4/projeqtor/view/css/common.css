@@ -150,8 +150,34 @@ table.dojoDndAvatar {
   margin-right: 4px;
   padding: 0px;
   border: 1px solid #ccc;
-  background: #e2e2e2 url(images/tabEnabled.png) repeat-x;
+  background: #e2e2e2;
+  /*border-radius: 20px 20px 0px 0px;*/
 }
+.dijitTab .tabLabel {
+  /*border-radius: 20px 20px 0px 0px;*/	
+  /* make sure tabs w/close button and w/out close button are same height, even w/small (<12px) font */
+  min-height: 16px;
+  display: inline-block;
+  font-size:120%;
+}
+div.dijitTab>span.tabLabel {
+	color:#A0A0A0;
+	font-weight:bold;
+	width:auto;
+	padding:10px;
+	border-bottom:0px;
+	background-color:transparent;
+}
+div.dijitTab.dijitTabChecked>span.tabLabel {
+  color:#000000;
+  font-weight:bold;
+  border:0;
+  /* background-color:inherit;*/
+}
+.dijitTabPane {
+	/*background-color: #FFFFFF !important;*/
+} 
+
 .dijitTabInnerDiv {
   padding: 6px 8px 5px 9px;
 }
@@ -206,11 +232,7 @@ table.dojoDndAvatar {
   border:1px solid #ccc;
   background:#fff;
 }
-.dijitTab .tabLabel {
-  /* make sure tabs w/close button and w/out close button are same height, even w/small (<12px) font */
-  min-height: 10px;
-  display: inline-block;
-}
+
 .dijitTabContainerNested .dijitTabListWrapper {
   height: auto;
 }

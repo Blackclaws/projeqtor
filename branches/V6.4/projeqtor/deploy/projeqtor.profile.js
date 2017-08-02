@@ -46,6 +46,7 @@ dependencies = {
 			    "dijit.layout.AccordionContainer",
 			    "dijit.layout.BorderContainer",
 			    "dijit.layout.ContentPane",
+			    "dijit.layout.TabContainer",
 			    "dijit.Menu", 
 			    "dijit.MenuBar",
 			    "dijit.MenuBarItem",

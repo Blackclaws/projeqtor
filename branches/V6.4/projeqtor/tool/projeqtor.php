@@ -1144,21 +1144,21 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer->Subject = $title; //
                                // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
 // TODO : FOR OUTLOOK
-    if ($headers) {
+  if ($headers) {
       //$phpmailer->ContentType = 'text/calendar';
       $phpmailer->AddStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
       $heads = explode ( "\r\n", $headers );
       //PHPMailer
       $phpmailer->Body = " ";
       //$phpmailer->Body = $message;
-    }
-    else{
+  } else {
       $phpmailer->Body = $message; //
-    }
+      $text=new Html2Text($message);
+      $phpmailer->AltBody = $text->getText();
+  }
   if ($references) {
     $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
   } 
-////////////////////////////////////////////////////////////
   
   $phpmailer->CharSet = "UTF-8";
   if ($attachmentsArray) { // attachments
@@ -1186,6 +1186,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
     errorLog ( "   Mail stored in Database : #" . $mail->id );
     errorLog ( "   PHPMail error : " . $phpmailer->ErrorInfo );
     errorLog ( "   PHPMail debug : " . $debugMessages );
+    Mail::setLastErrorMessage($phpmailer->ErrorInfo.'<br/>'.$debugMessages);
   }
   if ($resultMail === "NO") {
     $resultMail = "";
@@ -1257,6 +1258,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
     $resultMail = false;
     $sock = fsockopen ( $smtpServers [$key] ['server'], $smtpServers [$key] ['smtpPort'], $errno, $errstr, $timeout );
     if (! $sock)
+      Mail::setLastErrorMessage('cannot connect server (socket mode)');
       break; // or loop over more smtp servers
     $res = fgets ( $sock, 515 );
     if ($debug)
@@ -1269,6 +1271,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "250" )) {
+        Mail::setLastErrorMessage("invalid return for HELO in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1279,6 +1282,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "334 VXNlcm5hbWU6" )) {
+        Mail::setLastErrorMessage("invalid return for AUTH in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1289,6 +1293,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "334 UGFzc3dvcmQ6" )) {
+        Mail::setLastErrorMessage("invalid return for username input in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1299,6 +1304,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "235" )) {
+        Mail::setLastErrorMessage("invalid return for password input in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1309,6 +1315,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "250" )) {
+        Mail::setLastErrorMessage("invalid return for MAIL FROM in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1319,6 +1326,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "250" )) {
+        Mail::setLastErrorMessage("invalid return for RCPT TO in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1330,6 +1338,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "354" )) {
+        Mail::setLastErrorMessage("invalid return for DATA in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1356,6 +1365,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
       if ($debug)
         errorLog ( "+ $cmd- $res\n" );
       if (! isValidReturn ( $res, "250" )) {
+        Mail::setLastErrorMessage("invalid return for headers in socket mode : '$res'");
         quit ( $sock );
         break;
       }
@@ -1486,6 +1496,7 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
   if ($paramMailSmtpServer !== null) {
     $resultMail = mail ( $to, $title, $message, $headers );
   } else {
+    Mail::setLastErrorMessage("SMTP Server not set. Not able to send mail.");
     errorLog ( "   SMTP Server not set. Not able to send mail." );
   }
   disableCatchErrors ();
@@ -1500,6 +1511,7 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
     $path = ini_get ( 'sendmail_path' );
     errorLog ( "   Sendmail path : " . $path );
     errorLog ( "   Mail stored in Database : #" . $mail->id );
+    Mail::setLastErrorMessage("Error sending mail. <br/>Cannot retreive more information.<br/>Maybe you'll get more info in mailing system log file.");
   }
   if ($resultMail === "NO") {
     $resultMail = "";
