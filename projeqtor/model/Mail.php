@@ -48,7 +48,7 @@ class Mail extends SqlElement {
   public $_mailText_colSpan="2";
   public $mailBody;
   
-  
+  private static $_lastErrorMessage=null;
   public $_noHistory=true;
   
     private static $_layout='
@@ -128,6 +128,13 @@ class Mail extends SqlElement {
   public function save() {
   	$this->mailBody=substr($this->mailBody,0,65536); // Limit for MySql Text field
   	return parent::save();
+  }
+  
+  public static function getLastErrorMessage() {
+    return self::$_lastErrorMessage;
+  } 
+  public static function setLastErrorMessage($msg) {
+    self::$_lastErrorMessage=$msg;
   }
 }
 ?>

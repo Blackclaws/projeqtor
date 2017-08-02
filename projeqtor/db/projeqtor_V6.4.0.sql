@@ -21,3 +21,7 @@ ADD `hasToday` int(1) DEFAULT 1,
 ADD `hasFavorite` int(1) DEFAULT 1,
 ADD `hasWord` int(1) DEFAULT 0,
 ADD `hasExcel` int(1) DEFAULT 0;
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'mailerTestTitle', '[${dbName}] test email sent at ${date}'), 
+(null,null, 'mailerTestMessage', 'This is a test email sent from ${dbName} at ${date}.<br/>Receiving this email means that counfiguration is correct.');

@@ -613,6 +613,7 @@ function displayGantt($list) {
     $cptSort=0;
     foreach ($sortArray as $name) { if (substr($name,0,6)!='Hidden' and $name!='ValidatedWork' and $name!='Resource') $cptSort++; }
 		//echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+    echo '<div style="overflow:auto;">';
 		echo '<table style="-webkit-print-color-adjust: exact;font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
 		echo '<tr style="height: 20px;"><td colspan="' . (2+$cptSort) . '">&nbsp;</td>';
 		$day=$minDate;
@@ -881,7 +882,7 @@ function displayGantt($list) {
 			echo '</TR>';
 		}
 	}
-	echo "</table>";
+	echo "</table></div>";
 }
 
 function exportGantt($list) {

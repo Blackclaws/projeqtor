@@ -23,18 +23,27 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-require_once "../tool/projeqtor.php";
-$statusId=RequestHandler::getId('idStatus',false,null);
-$idProject=RequestHandler::getId('idProject',false,null);
-$idType=RequestHandler::getId('idType',false,null);
+
+/** =========================================================================== 
+ * Chek login/password entered in connection screen
+ */
+  require_once "../tool/projeqtor.php";
+  require_once "../tool/formatter.php";
+  scriptLog('   ->/tool/sendMailTest.php');  
+  $title=Parameter::getGlobalParameter('mailerTestTitle');
+  $msg=Parameter::getGlobalParameter('mailerTestMessage');
+  $dest=Parameter::getGlobalParameter('mailerTestDest');
+  $dbName=Parameter::getGlobalParameter('paramDbDisplayName');
+  $arrayFrom=array('${dbName}','${date}');
+  $arrayTo=array($dbName,htmlFormatDateTime(date('Y-m-d H:i:s')));
+  $title=str_replace($arrayFrom, $arrayTo, $title);
+  $msg=str_replace($arrayFrom, $arrayTo, $msg);
+  $result="";
+  $result=sendMail($dest,$title,$msg);
+  if ($result) {
+    echo "<span style='color:green; font-weight:bold'>".i18n("mailSentTo",array($dest))."</span>";
+  } else {
+    $error=nl2br(Mail::getLastErrorMessage());
+    echo "<div style='color:red; font-weight:bold;'>$error</div>";
+  }
 ?>
- 
-<div class="graphStatusContentDiv" id="graphStatusContentDiv" oncontextmenu="return false;" style="">
-    <?php 
-    $type=new Type($idType);
-    $idWorkflow=$type->idWorkflow;
-    $wf=new Workflow($idWorkflow);
-    $profile=getSessionUser()->getProfile($idProject);
-    echo $wf->drawSpecificItem('workflowDiagram',$profile);
-    ?>
-</div>
