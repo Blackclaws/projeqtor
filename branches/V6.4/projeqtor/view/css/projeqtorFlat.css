@@ -53,16 +53,20 @@
 }
 
 .ProjeQtOrFlatBlue #mapDiv, .ProjeQtOrFlatBlue #messageDiv, .ProjeQtOrFlatBlue #listDiv, .ProjeQtOrFlatBlue #formDiv, .ProjeQtOrFlatBlue .display, .ProjeQtOrFlatBlue .background,
-.ProjeQtOrFlatBlue .dijitTitlePaneContentInner, 
+.ProjeQtOrFlatBlue .dijitTitlePaneContentInner, .ProjeQtOrFlatBlue .dijitTabPane,
 .ProjeQtOrFlatBlue #mainDiv, .ProjeQtOrFlatBlue #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrFlatBlue .dijitTabContainerTop-tabs .dijitTabChecked {
+	background-color: #fafafa;
+	border-bottom-color: #fafafa;
 }
 .ProjeQtOrFlatBlue #toolBarDiv, .ProjeQtOrFlatBlue #statusBarDiv, .ProjeQtOrFlatBlue .statusBar { /**toolbar**/
    color: #EEEEEE;
    background: #545281 !important;
 }
 .ProjeQtOrFlatBlue .tabLabel, .ProjeQtOrFlatBlue .label {
-  background-color: color: #545281;
+  background-color:  #fafafa; color: #545281;
 }
 .ProjeQtOrFlatBlue .dojoxGridRowOver .dojoxGridCell {
  background: #aca0bc !important;
@@ -1331,9 +1335,13 @@ body .ProjeQtOrFlatBlue {
 }
 
 .ProjeQtOrFlatRed #mapDiv, .ProjeQtOrFlatRed #messageDiv, .ProjeQtOrFlatRed #listDiv, .ProjeQtOrFlatRed #formDiv, .ProjeQtOrFlatRed .display, .ProjeQtOrFlatRed .background,
-.ProjeQtOrFlatRed .dijitTitlePaneContentInner, 
+.ProjeQtOrFlatRed .dijitTitlePaneContentInner, .ProjeQtOrFlatRed .dijitTabPane,
 .ProjeQtOrFlatRed #mainDiv, .ProjeQtOrFlatRed #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrFlatRed .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrFlatRed #toolBarDiv, .ProjeQtOrFlatRed #statusBarDiv, .ProjeQtOrFlatRed .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -2561,9 +2569,13 @@ body .ProjeQtOrFlatRed {
 }
 
 .ProjeQtOrFlatGreen #mapDiv, .ProjeQtOrFlatGreen #messageDiv, .ProjeQtOrFlatGreen #listDiv, .ProjeQtOrFlatGreen #formDiv, .ProjeQtOrFlatGreen .display, .ProjeQtOrFlatGreen .background,
-.ProjeQtOrFlatGreen .dijitTitlePaneContentInner, 
+.ProjeQtOrFlatGreen .dijitTitlePaneContentInner, .ProjeQtOrFlatGreen .dijitTabPane,
 .ProjeQtOrFlatGreen #mainDiv, .ProjeQtOrFlatGreen #centerDiv {
   background-color: #fafafa;
+}
+.ProjeQtOrFlatGreen .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
 }
 .ProjeQtOrFlatGreen #toolBarDiv, .ProjeQtOrFlatGreen #statusBarDiv, .ProjeQtOrFlatGreen .statusBar { /**toolbar**/
    color: #EEEEEE;
@@ -3793,11 +3805,14 @@ body .ProjeQtOrFlatGreen {
 }
 
 .ProjeQtOrFlatGrey #mapDiv, .ProjeQtOrFlatGrey #messageDiv, .ProjeQtOrFlatGrey #listDiv, .ProjeQtOrFlatGrey #formDiv, .ProjeQtOrFlatGrey .display, .ProjeQtOrFlatGrey .background,
-.ProjeQtOrFlatGrey .dijitTitlePaneContentInner, 
+.ProjeQtOrFlatGrey .dijitTitlePaneContentInner, .ProjeQtOrFlatGrey .dijitTabPane,
 .ProjeQtOrFlatGrey #mainDiv, .ProjeQtOrFlatGrey #centerDiv {
   background-color: #fafafa;
 }
-
+.ProjeQtOrFlatGrey .dijitTabContainerTop-tabs .dijitTabChecked {
+  background-color: #fafafa;
+  border-bottom-color: #fafafa;
+}
 .ProjeQtOrFlatGrey #toolBarDiv, .ProjeQtOrFlatGrey #statusBarDiv, .ProjeQtOrFlatGrey .statusBar { /**toolbar**/
    color: #EEEEEE;
    background: #656565 !important;
