@@ -57,6 +57,7 @@ class RequirementMain extends SqlElement {
   public $idFeasibility;
   public $idRiskLevel;
   public $plannedWork;
+  public $idTargetProductVersion;
   public $handled;
   public $handledDate;
   public $done;
@@ -65,7 +66,6 @@ class RequirementMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $idTargetProductVersion;
   public $result;
   public $_sec_Lock;
   public $_spe_lockButton;
