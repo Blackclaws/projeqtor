@@ -79,9 +79,9 @@ for ($i=0; $i<$nbLines; $i++) {
       $line->leftWork=Work::convertImputation($_REQUEST['leftWork'][$i]);
     } else {
     	traceLog('WARNING - Left work not retrieved from screen');
-    	traceLog('        - Maybe max_input_vars is too small in php.ini');
+    	traceLog('        - Maybe max_input_vars is too small in php.ini (actual value is '.ini_get('max_input_vars').')');
     	traceLog('        - Assignment #'.$ass->id.' on '.$ass->refType.' #'.$ass->refId.' for resource #'.$ass->idResource. ' - '.SqlList::getNameFromId('Resource',$ass->idResource));
-    	trigger_error('Error - Maybe max_input_vars is too small in php.ini',E_USER_ERROR);
+    	trigger_error('Error - Maybe max_input_vars is too small in php.ini ,E_USER_ERROR);
     }
     $line->imputable=$imputable;
     $arrayWork=array();

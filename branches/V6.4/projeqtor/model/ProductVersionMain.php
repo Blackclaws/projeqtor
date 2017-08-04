@@ -43,10 +43,6 @@ class ProductVersionMain extends Version {
   public $idResource;
   public $creationDate;
   public $idUser;
-  //CHANGE qCazelles - dateComposition
-  //OLD
-  //public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
-  //NEW
   public $_tab_4_4 = array('initial', 'planned', 'real', 'done', 'startDate', 'deliveryDate', 'eisDate', 'endDate');
   public $initialStartDate;
   public $plannedStartDate;
@@ -56,7 +52,6 @@ class ProductVersionMain extends Version {
   public $plannedDeliveryDate;
   public $realDeliveryDate;
   public $isDelivered;
-  //END ADD qCazelles - dateComposition
   public $initialEisDate;
   public $plannedEisDate;
   public $realEisDate;
