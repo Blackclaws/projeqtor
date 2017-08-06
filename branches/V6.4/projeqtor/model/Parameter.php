@@ -284,6 +284,7 @@ class Parameter extends SqlElement {
       case 'filterTicketReportPriority' :
       case 'projectRestriction' :
       case 'enablePredefinedActions' :
+      case 'paramMailerSendAsCurrentUser' :
       //END ADD qCazelles
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
@@ -519,6 +520,12 @@ class Parameter extends SqlElement {
             'next'=>i18n('imputationControlNextDay')
         );
         break;
+      case 'mailerTestSender' :
+          $list=array(
+          'sender'=>i18n('paramParamMailSender'),
+          'self'=>i18n('paramParamMailerSendAsCurrentUser')
+          );
+          break;
     } 
     return $list;
   }
@@ -689,12 +696,14 @@ class Parameter extends SqlElement {
                               'paramMailSmtpPassword'=>'password',
                               'paramMailEol'=>'list',
                               'paramMailSendmailPath'=> 'text',
-                              'paramMailerType'=>'list',                             
+                              'paramMailerType'=>'list',
+                              'paramMailerSendAsCurrentUser'=>'list',
                           'newColumnMailRight'=>'newColumn',
                             'sectionMailTest'=>'section',
                               'mailerTestDest'=>'text',
                               'mailerTestTitle'=>'text',
                               'mailerTestMessage'=>'text',
+                              'mailerTestSender'=>'list',
                               'mailerTest'=>'specific',
     	                    'newColumnMailBottom'=>'newColumnFull',
     	                      'sectionMailTitle'=>'section',  
