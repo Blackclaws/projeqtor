@@ -33,13 +33,21 @@
   $title=Parameter::getGlobalParameter('mailerTestTitle');
   $msg=Parameter::getGlobalParameter('mailerTestMessage');
   $dest=Parameter::getGlobalParameter('mailerTestDest');
+  $send=Parameter::getGlobalParameter('mailerTestSender');
   $dbName=Parameter::getGlobalParameter('paramDbDisplayName');
   $arrayFrom=array('${dbName}','${date}');
   $arrayTo=array($dbName,htmlFormatDateTime(date('Y-m-d H:i:s')));
   $title=str_replace($arrayFrom, $arrayTo, $title);
   $msg=str_replace($arrayFrom, $arrayTo, $msg);
   $result="";
-  $result=sendMail($dest,$title,$msg);
+  $sender=null;
+  if ($send=='sender') {
+    $sender=Parameter::getGlobalParameter('paramMailSender');
+  } else {
+    $sender=getSessionUser()->email;
+  }
+  $result=sendMail($dest,$title,$msg,null,null,$sender);
+  echo i18n('paramMailerTestSender')."&nbsp;:&nbsp;".$sender.'<br/>';
   if ($result) {
     echo "<span style='color:green; font-weight:bold'>".i18n("mailSentTo",array($dest))."</span>";
   } else {

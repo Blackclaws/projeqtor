@@ -1119,7 +1119,8 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
       $phpmailer->Host = substr ( $phpmailer->Host, strpos ( $phpmailer->Host, '://' ) + 3 );
     }
   }
-  $phpmailer->From = ($sender) ? $sender : $paramMailSender; // Sender of email
+  $allowSendFromCurrentUser=Parameter::getGlobalParameter('paramMailerSendAsCurrentUser');
+  $phpmailer->From = ($allowSendFromCurrentUser=='YES' and $sender) ? $sender : $paramMailSender; // Sender of email
   $phpmailer->FromName = $paramMailSenderName; // Name of sender
   $toList = explode ( ';', str_replace ( ',', ';', $to ) );
   foreach ( $toList as $addrMail ) {
