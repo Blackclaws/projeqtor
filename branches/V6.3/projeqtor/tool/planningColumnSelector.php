@@ -52,7 +52,7 @@ foreach ($columnsAll as $order=>$col) {
 	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkColumnSelector'.$col.'" ' 
 	    . ((substr($columns[$order],0,6)!='Hidden')?' checked="checked" ':'') 
 	    . (($col=='Name')?' readonly':'')
-	    . ' onChange="changePlanningColumn(\'' . $col . '\',this.checked,\'' . $order . '\')" '
+	    . ' onChange="changePlanningColumn(\'' . $col . '\',this.checked,\'' . $order . '\');" '
 	    . '></span><label for="checkColumnSelector'.$col.'" class="checkLabel" style="white-space:nowrap">';
 	  echo '&nbsp;';
 	  echo i18n('col' . $col) . "</label>";
