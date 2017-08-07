@@ -97,6 +97,11 @@ abstract class RequestHandler {
       exit;
     }
   }
+  public static function getBoolean($code) {
+    $val=self::getValue($code,false,null);
+    if (!$val or $val=='off') return false;
+    else return true;
+  }
   // debug log to keep
   public static function dump() {
     debugTraceLog('===== Dump of $_REQUEST =============================================================');

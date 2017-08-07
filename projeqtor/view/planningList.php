@@ -245,9 +245,9 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                              showlabel="false" class="comboButton" iconClass="dijitButtonIcon dijitButtonIconColumn" 
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
-                          <div dojoType="dijit.TooltipDialog" class="white" style="width:250px;">   
-                            <script type="dojo/connect" event="onHide" args="evt">
-                              if (dndMoveInProgress) { this.show(); }
+                          <div dojoType="dijit.TooltipDialog" id="planningColumnSelectorDialog" class="white" style="width:250px;">   
+                            <script type="dojo/connect" event="onHide" data-dojo-args="evt">
+                              if (dndMoveInProgress) {  setTimeout('dijit.byId("planningColumnSelector").openDropDown();',1); }
                             </script>
                             <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" dojotype="dojo.dnd.Source"  
                              dndType="column"

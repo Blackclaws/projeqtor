@@ -29,6 +29,7 @@ CKEDITOR.editorConfig = function( config ) {
   if (dojo.byId('ckeditorType')){
     var cktype=dojo.byId('ckeditorType').value;
     if (cktype != 'CK' && ! currentEditorIsNote) {
+      config.removeButtons = 'tools,Maximize';
       config.extraPlugins += ',staticspace';
       config.staticSpacePriority=1;
       config.removePlugins += ',elementspath';

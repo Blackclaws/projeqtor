@@ -550,7 +550,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
    ?>
   <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:51px; bottom:32px; width:<?php echo $IconSizeMenuHide2;?>px;">
     <?php include "menuHideMenu.php"; ?> 
-    <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-31px; bottom:2px;z-index:999998">
+    <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-31px; bottom:2px;z-index:949">
 		  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
 		    <span style='top:0px;display:inline-block;width:32px;height:"32px;'>
 		      <div class='iconHideStream32' style='' >&nbsp;</div>

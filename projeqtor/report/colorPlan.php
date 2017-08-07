@@ -53,6 +53,7 @@ if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
 	$paramWeek=Security::checkValidWeek($paramWeek);
 };
+$paramShowAdminProj=RequestHandler::getBoolean('showAdminProj');
 
 $user=getSessionUser();
 
@@ -87,6 +88,9 @@ if ($periodType=='month' and isset($_REQUEST['includeNextMonth'])) {
   $nbMonths=2;
   $headerParameters.= i18n("colIncludeNextMonth").'<br/>';
 }
+if ($paramShowAdminProj) {
+  $headerParameters.= i18n("colShowAdminProj").'<br/>';
+}
 
 include "header.php";
 
@@ -107,7 +111,11 @@ $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
 if ($paramProject!='') {
-  $where.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;
+  $where.=  "and ( idProject in " . getVisibleProjectsList(true, $paramProject) ;
+  if ($paramShowAdminProj) {
+    $where.= "or idProject in ".Project::getAdminitrativeProjectList();
+  }
+  $where.= ")";
 }
 $order="";
 $work=new Work();
