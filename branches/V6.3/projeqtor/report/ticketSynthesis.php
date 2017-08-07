@@ -354,9 +354,8 @@ function drawsynthesisGraph($scope, $lst) {
     if (array_key_exists($code, $lst)) {
       $valArr[]=$lst[$code];
       $legArr[]=$val;
-      foreach ($arrayColors as $color){
-        $colorTicket = hex2rgb($color);
-      }
+      $color=$arrayColors[$code%count($arrayColors)];
+      $colorTicket = hex2rgb($color);
       $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
       $nbItem++;
     }
