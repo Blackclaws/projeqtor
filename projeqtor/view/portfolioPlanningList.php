@@ -202,7 +202,7 @@ echo $displayWidthPlan;
                           <span>title</span>
                           <div dojoType="dijit.TooltipDialog" class="white" style="width:250px;">
                             <script type="dojo/connect" event="onHide" args="evt">
-                              if (dndMoveInProgress) { this.show(); }
+                              if (dndMoveInProgress) { setTimeout('dijit.byId("planningColumnSelector").openDropDown();',1); }
                             </script>   
                             <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" 
                              dojotype="dojo.dnd.Source"  
