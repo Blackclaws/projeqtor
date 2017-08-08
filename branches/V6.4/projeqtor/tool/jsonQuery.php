@@ -860,7 +860,7 @@
       // return result in json format
       echo '{"identifier":"id",' ;
       echo ' "items":[';
-      if (Sql::$lastQueryNbRows > 0) {        
+      if (Sql::$lastQueryNbRows > 0) {               
         while ($line = Sql::fetchLine($result)) {
           echo (++$nbRows>1)?',':'';
           echo  '{';
@@ -928,8 +928,8 @@
             }            
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
-          echo '}';       
-        }
+          echo '}';
+        }   
       }
        echo ']';
       //echo ', "numberOfRow":"' . $nbRows . '"' ;

@@ -115,9 +115,9 @@ class OrganizationMain extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameOrganizationType" width="15%" >${type}</th>
-    <th field="name" width="30%" >${organizationName}</th>
-    <th field="nameResource" width="10%" >${responsible}</th>
+    <th field="nameOrganizationType" width="15%" >${idOrganizationType}</th>
+    <th field="name" width="30%" >${name}</th>
+    <th field="nameResource" width="10%" >${manager}</th>
     <th field="idle" formatter="booleanFormatter" width="5%" >${idle}</th>  
     ';
   
@@ -162,8 +162,7 @@ class OrganizationMain extends SqlElement {
       'idUser'=>'issuer',
       'idOrganization'=>'parentOrganization',
       '_byMet_hierarchicName'=>'hierarchicString',      
-    'idleDateTime'=>'idleDate',
-  
+      'idleDateTime'=>'idleDate',
   );
 
   // Spinner for drawing et inputing the alertOverPct, warningOverPct, okUnderPct
@@ -188,66 +187,70 @@ class OrganizationMain extends SqlElement {
   function __construct($id = NULL, $withoutDependentObjects=false, $budgetElement=null) {
       
   	parent::__construct($id,$withoutDependentObjects);
+  	$currentDetailObj=SqlElement::getCurrentObject(null,null,true,false);
+  	if (!$withoutDependentObjects and $currentDetailObj and get_class($currentDetailObj)==get_class($this) and $currentDetailObj->id=$this->id) $this->setAttributesForBudget();
+  	if($budgetElement!=null and $id!=null and trim($id)!='') {
+  	  $this->updateBudgetElementSynthesis($budgetElement);
+  	  return;
+  	}
 
+  }
+  
+  public function setAttributesForBudget() {
 // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
+    $this->_attributesSet=true;
+    $id=$this->id;
     if(Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
-        self::$_fieldsAttributes["_sec_ValueAlertOverWarningOverOkUnder"] = "hidden,noList,notInFilter,noPrint";
-        self::$_fieldsAttributes["alertOverPct"] = "hidden,noList,notInFilter,noPrint";
-        self::$_fieldsAttributes["warningOverPct"] = "hidden,noList,notInFilter,noPrint";
-        self::$_fieldsAttributes["okUnderPct"] = "hidden,noList,notInFilter,noPrint";
-        unset($this->OrganizationBudgetElementCurrent);
-        if ($id!==NULL  and trim($id)!='') {            
-            $this->calculatePlanningElement();
-            $this->setHierarchicString();            
-        }
-        return;
+      self::$_fieldsAttributes["_sec_ValueAlertOverWarningOverOkUnder"] = "hidden,noList,notInFilter,noPrint";
+      self::$_fieldsAttributes["alertOverPct"] = "hidden,noList,notInFilter,noPrint";
+      self::$_fieldsAttributes["warningOverPct"] = "hidden,noList,notInFilter,noPrint";
+      self::$_fieldsAttributes["okUnderPct"] = "hidden,noList,notInFilter,noPrint";
+      unset($this->OrganizationBudgetElementCurrent);
+      if ($id!==NULL  and trim($id)!='') {            
+          $this->calculatePlanningElement();
+          $this->setHierarchicString();            
+      }
+      return;
     } else {
-        unset($this->_sec_synthesis);
-        unset($this->_tab_5_4_smallLabel);        
-        unset($this->_byMet_validatedWork);
-        unset($this->_byMet_assignedWork);
-        unset($this->_byMet_realWork);
-        unset($this->_byMet_leftWork);
-        unset($this->_byMet_plannedWork);
-        unset($this->_byMet_validatedCost);
-        unset($this->_byMet_assignedCost);
-        unset($this->_byMet_realCost);
-        unset($this->_byMet_leftCost);
-        unset($this->_byMet_plannedCost);
-        unset($this->_byMet_expenseValidatedAmount);
-        unset($this->_byMet_expenseAssignedAmount);
-        unset($this->_byMet_expenseRealAmount);
-        unset($this->_byMet_expenseLeftAmount);
-        unset($this->_byMet_expensePlannedAmount);
-        unset($this->_byMet_totalValidatedCost);
-        unset($this->_byMet_totalAssignedCost);
-        unset($this->_byMet_totalRealCost);
-        unset($this->_byMet_totalLeftCost);
-        unset($this->_byMet_totalPlannedCost);
+      unset($this->_sec_synthesis);
+      unset($this->_tab_5_4_smallLabel);        
+      unset($this->_byMet_validatedWork);
+      unset($this->_byMet_assignedWork);
+      unset($this->_byMet_realWork);
+      unset($this->_byMet_leftWork);
+      unset($this->_byMet_plannedWork);
+      unset($this->_byMet_validatedCost);
+      unset($this->_byMet_assignedCost);
+      unset($this->_byMet_realCost);
+      unset($this->_byMet_leftCost);
+      unset($this->_byMet_plannedCost);
+      unset($this->_byMet_expenseValidatedAmount);
+      unset($this->_byMet_expenseAssignedAmount);
+      unset($this->_byMet_expenseRealAmount);
+      unset($this->_byMet_expenseLeftAmount);
+      unset($this->_byMet_expensePlannedAmount);
+      unset($this->_byMet_totalValidatedCost);
+      unset($this->_byMet_totalAssignedCost);
+      unset($this->_byMet_totalRealCost);
+      unset($this->_byMet_totalLeftCost);
+      unset($this->_byMet_totalPlannedCost);
     }
 // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
-  
-        if($budgetElement!=null and $id!=null and trim($id)!='') {
-            $this->updateBudgetElementSynthesis($budgetElement);
-            return;
-  }
-        if ($id != NULL and trim($id)!='') {
-            if (is_object($this->OrganizationBudgetElementCurrent)) {
-                $this->setHierarchicString();
-                if ($this->OrganizationBudgetElementCurrent->id) {
-                        $this->OrganizationBudgetElementCurrent->setDaughtersBudgetElementAndPlanningElement();
-                        $this->OrganizationBudgetElementCurrent->setValueOfAlertOverWarningOverOkUnder(
-                                                                 $this->alertOverPct,
-                                                                 $this->warningOverPct,
-                                                                 $this->okUnderPct);
-                        $this->OrganizationBudgetElementCurrent->hideOrganizationBudgetElementMsg(true);
-                        $this->OrganizationBudgetElementCurrent->setWorkCostExpenseTotalCostBudgetElement();
-                        $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(false);
-                } else {
-                    $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(true);
-                }
-            }
+  debugLog("setAttributesForBudget for $this->id budget=".is_object($this->OrganizationBudgetElementCurrent));
+    if ($id != NULL and trim($id)!='') {
+      if (is_object($this->OrganizationBudgetElementCurrent)) {
+        $this->setHierarchicString();
+        if ($this->OrganizationBudgetElementCurrent->id) {
+          $this->OrganizationBudgetElementCurrent->setDaughtersBudgetElementAndPlanningElement();
+          $this->OrganizationBudgetElementCurrent->setValueOfAlertOverWarningOverOkUnder($this->alertOverPct, $this->warningOverPct, $this->okUnderPct);
+          $this->OrganizationBudgetElementCurrent->hideOrganizationBudgetElementMsg(true);
+          $this->OrganizationBudgetElementCurrent->setWorkCostExpenseTotalCostBudgetElement();
+          $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(false);
+        } else {
+          $this->OrganizationBudgetElementCurrent->hideSynthesisBudgetAndProjectElement(true);
         }
+      }
+    }
   }
 
    /** ==========================================================================
@@ -308,8 +311,6 @@ class OrganizationMain extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-
- 
     return $colScript;
   }
   
@@ -332,8 +333,8 @@ class OrganizationMain extends SqlElement {
  * @param boolean $refresh
  * @return nothing
    */
-function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
-  global $cr, $print, $outMode, $comboDetail, $displayWidth, $printWidth;
+  function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
+    global $cr, $print, $outMode, $comboDetail, $displayWidth, $printWidth;
 
     if ($comboDetail) {
         return;
@@ -447,8 +448,8 @@ function drawProjectsOfOrganizationAndSubOrganizations($item, $refresh=false) {
       echo '</table>';
     }
     if (!$refresh and !$print) echo '</td></tr>';
-}
-
+  }
+  
   /** =========================================================================
    * Draw a specific item for the current class.
    * @param $item the item. Correct values are : 
@@ -1423,10 +1424,11 @@ public function saveOrganizationBudgetElement($idle=null,$idleDateTime=null,$nam
    * 
    */
   public function getRecursiveSubOrganizationsFlatList($limitToActiveOrganizations=false, $includeSelf=false) {
-    if (array_key_exists($this->id, self::$_subOrganizationFlatList)) {
-        return self::$_subOrganizationFlatList[$this->id];
-    }
-
+// BEGIN - ticket #2862
+//    if (array_key_exists($this->id, self::$_subOrganizationFlatList)) {
+//        return self::$_subOrganizationFlatList[$this->id];
+//    }
+// END - ticket #2862
     $tab=$this->getRecursiveSubOrganizations($limitToActiveOrganizations);
     $list=array();
     if ($includeSelf) {

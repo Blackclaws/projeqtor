@@ -209,6 +209,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     	dndMoveInProgress=true;
       setTimeout("dndMoveInProgress=false;",50);
     });
+    // Management of history
     var historyTable=new Array();
     var historyPosition=-1;    
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
@@ -550,19 +551,19 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
    ?>
   <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:51px; bottom:32px; width:<?php echo $IconSizeMenuHide2;?>px;">
     <?php include "menuHideMenu.php"; ?> 
-    <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-31px; bottom:2px;z-index:949">
+    <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-22px; bottom:2px;z-index:949">
 		  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
-		    <span style='top:0px;display:inline-block;width:32px;height:"32px;'>
-		      <div class='iconHideStream32' style='' >&nbsp;</div>
+		    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
+		      <div class='iconHideStream22' style='' >&nbsp;</div>
 		    </span>
 		  </a>
 		</div>
   </div> 
   
-  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $leftWidth ?>; bottom:34px;z-index:999998">
+  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $leftWidth ?>; bottom:35px;z-index:999998">
 	  <a onClick="hideMenuBarShowMode2();" id="buttonSwitchedMenuBarShow" title="" >
-	    <span style='top:0px;display:inline-block;width:32px;height:"32px;'>
-	      <div class='iconHideStream32' style='' >&nbsp;</div>
+	    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
+	      <div class='iconHideStream22' style='' >&nbsp;</div>
 	    </span>
 	  </a>
 	</div>
@@ -693,7 +694,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <div id="toolBarDiv" style="height:<?php echo ($iconSize+10);?>px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
-    <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >
+    <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center">
     </div>
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom" style="height:28px; position:absolute; bottom:0px;">
       <table width="100%">
