@@ -320,8 +320,9 @@
 .ProjeQtOrFlatBlue .hyperlink:hover {
   color: #545381;
 }
-
-
+.ProjeQtOrFlatBlue #menuBarShow {
+  border-right:1px solid #545381;
+}
 .ProjeQtOrFlatBlue .menuBarItem  {
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -335,7 +336,15 @@
     transform: rotate(-7deg);
     /* height:170px; */
 }
-
+#menuBarShow {
+  display: none; 
+  height: calc(100% -31px);
+  height: -moz-calc(100% -31px);
+  float: left;
+  top: 0px; left: 0px;
+  z-index: 900;
+  border-right:1px solid #505050;
+}
 .ProjeQtOrFlatBlue .dijitButtonNode, .ProjeQtOrFlatBlue .dijitReset.dijitInline.dijitButtonNode {
   background: #cdcadb;
   -webkit-transition: all 0.5s ease;
@@ -449,6 +458,8 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconButtonMark24 { background-image: url(customIcons/blue/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatBlue .iconButtonCollapseHide16 { background-image: url(customIcons/blue/iconCollapseHide.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconHideStream32 { background-image: url(customIcons/blue/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconHideStream22 { background-image: url(customIcons/blue/iconHideStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 20px 22px;}
+.ProjeQtOrFlatBlue .iconHideStream16 { background-image: url(customIcons/blue/iconHideStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatBlue .iconFilter { background-image: url(customIcons/blue/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconActiveFilter { background-image: url(customIcons/blue/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -1596,7 +1607,9 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatRed .hyperlink:hover {
   color: #833e3e;
 }
-
+.ProjeQtOrFlatRed #menuBarShow {
+  border-right:1px solid #833e3e;
+}
 
 .ProjeQtOrFlatRed .menuBarItem  {
   -webkit-transition: all 0.5s ease;
@@ -1723,10 +1736,12 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconButtonSave24 { background-image: url(customIcons/red/iconButtonSave.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatRed .iconButtonRemove24 { background-image: url(customIcons/red/iconRemove.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatRed .iconButtonMark24 { background-image: url(customIcons/red/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
-.ProjeQtOrFlatRed .iconHideStream32 { background-image: url(customIcons/red/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconButtonCollapseHide16 { background-image: url(customIcons/red/iconCollapseHide.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconFilter { background-image: url(customIcons/red/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconActiveFilter { background-image: url(customIcons/red/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconHideStream32 { background-image: url(customIcons/red/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconHideStream22 { background-image: url(customIcons/red/iconHideStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 20px 22px;}
+.ProjeQtOrFlatRed .iconHideStream16 { background-image: url(customIcons/red/iconHideStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatRed .iconHelpTitle { background-image: url(customIcons/red/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconHelp { background-image: url(customIcons/red/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
@@ -2830,7 +2845,9 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatGreen .hyperlink:hover {
   color: #537665;
 }
-
+.ProjeQtOrFlatGreen #menuBarShow {
+  border-right:1px solid #537665;
+}
 
 .ProjeQtOrFlatGreen .menuBarItem  {
   -webkit-transition: all 0.5s ease;
@@ -2958,8 +2975,10 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconButtonSave24 { background-image: url(customIcons/green/iconButtonSave.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGreen .iconButtonRemove24 { background-image: url(customIcons/green/iconRemove.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGreen .iconButtonMark24 { background-image: url(customIcons/green/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
-.ProjeQtOrFlatGreen .iconHideStream32 { background-image: url(customIcons/green/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconButtonCollapseHide16 { background-image: url(customIcons/green/iconCollapseHide.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconHideStream32 { background-image: url(customIcons/green/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconHideStream22 { background-image: url(customIcons/green/iconHideStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 20px 22px;}
+.ProjeQtOrFlatGreen .iconHideStream16 { background-image: url(customIcons/green/iconHideStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .ProjeQtOrFlatGreen .iconFilter { background-image: url(customIcons/green/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconActiveFilter { background-image: url(customIcons/green/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -4066,7 +4085,9 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGrey .hyperlink:hover {
   color: #656565;
 }
-
+.ProjeQtOrFlatGrey #menuBarShow {
+  border-right:1px solid #656565;
+}
 
 .ProjeQtOrFlatGrey .menuBarItem  {
   -webkit-transition: all 0.5s ease;
@@ -4192,10 +4213,13 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconButtonSave24 { background-image: url(customIcons/grey/iconButtonSave.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGrey .iconButtonRemove24 { background-image: url(customIcons/grey/iconRemove.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGrey .iconButtonMark24 { background-image: url(customIcons/grey/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
-.ProjeQtOrFlatGrey .iconHideStream32 { background-image: url(customIcons/grey/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconButtonCollapseHide16 { background-image: url(customIcons/grey/iconCollapseHide.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconFilter { background-image: url(customIcons/grey/iconFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconActiveFilter { background-image: url(customIcons/grey/iconActiveFilter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconHideStream32 { background-image: url(customIcons/grey/iconHideStream.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconHideStream22 { background-image: url(customIcons/grey/iconHideStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 20px 22px;}
+.ProjeQtOrFlatGrey .iconHideStream16 { background-image: url(customIcons/grey/iconHideStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 
 .ProjeQtOrFlatGrey .iconHelpTitle { background-image: url(customIcons/grey/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconHelp { background-image: url(customIcons/grey/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}

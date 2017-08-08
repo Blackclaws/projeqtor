@@ -311,11 +311,13 @@ html, body {
 
 #menuBarShow {
   display: none; 
-  height: calc(100% -32px);
-  height: -moz-calc(100% -32px);
+  height: calc(100% -31px);
+  height: -moz-calc(100% -31px);
   float: left;
   top: 0px; left: 0px;
   z-index: 900;
+  border-right:1px solid #505050;
+  border-top: 1px solid #ffffff;
 }
 #menuBarIcon {
   display: block;
