@@ -22,17 +22,24 @@ if (! array_key_exists('businessFeatureName',$_REQUEST)) {
 }
 $businessFeatureName=$_REQUEST['businessFeatureName'];
 
+//ADD qCazelles - Business Feature (Correction) - Ticket #96
+$businessFeatureId=null;
+if ( array_key_exists('businessFeatureId',$_REQUEST)) {
+  $businessFeatureId=$_REQUEST['businessFeatureId'];
+}
+//END ADD qCazelles - Business Feature (Correction) - Ticket #96
+
 Sql::beginTransaction();
 $result="";
 
-$str=new BusinessFeature();
+$bf=new BusinessFeature($businessFeatureId);
 
-$str->name=$businessFeatureName;
-$str->idProduct=$objectId;
-$str->creationDate=date('Y-m-d');
-$str->idUser=$user->id;;
+$bf->name=$businessFeatureName;
+$bf->idProduct=$objectId;
+$bf->creationDate=date('Y-m-d');
+$bf->idUser=$user->id;;
 
-$result=$str->save();
+$result=$bf->save();
 
 // Message of correct saving
 displayLastOperationStatus($result);

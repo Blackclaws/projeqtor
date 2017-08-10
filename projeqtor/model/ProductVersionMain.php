@@ -66,6 +66,10 @@ class ProductVersionMain extends Version {
   public $_sec_ProductVersionComposition;
   public $_productVersionComposition=array();
   public $_spe_flatStructure;
+  //ADD qCazelles - Version compatibility
+  public $_sec_ProductVersionCompatibility;
+  public $_productVersionCompatibility=array();
+  //END ADD qCazelles - Version compatibility
   public $_spe_tenders;
   //ADD qCazelles - LANG 2
   public $_sec_language;
@@ -427,6 +431,22 @@ class ProductVersionMain extends Version {
       $pvs->creationDate=date('Y-m-d');
       $pvs->save();
     }
+    //ADD qCazelles - Version compatibility
+    $vc=new VersionCompatibility();
+    $crit=array('idVersionA'=>$this->id);
+    $list=$vc->getSqlElementsFromCriteria($crit);
+    $crit=array('idVersionB'=>$this->id);
+    foreach ($vc->getSqlElementsFromCriteria($crit) as $vcItem) {
+    	$list[]=$vcItem;
+    }
+    foreach ($list as $vc) {
+    	if ($vc->idVersionA==$this->id) $vc->idVersionA=$result->id;
+    	else $vc->idVersionB=$result->id;
+    	$vc->id=null;
+    	$vc->creationDate=date('Y-m-d');
+    	$vc->save();
+    }
+    //END ADD qCazelles - Version compatibility
     return $result;
   } 
 }
