@@ -40,7 +40,7 @@
   }
   $noData=htmlGetNoDataMessage($objectClass);
   $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
-  $noNotes = '<p"><br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n("noNote").'</p>';
+  $noNotes = '<p><br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n("noNote").'</p>';
   // get the modifications (from request)
   $note=new Note();
   $order = "COALESCE (updateDate,creationDate) ASC";

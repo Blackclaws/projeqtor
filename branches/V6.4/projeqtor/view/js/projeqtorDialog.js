@@ -1482,6 +1482,19 @@ function addBusinessFeature() {
 	loadDialog('dialogBusinessFeature', null, true, param, false);
 }
 
+//ADD qCazelles - Business Feature (Correction)
+function editBusinessFeature(businessFeatureId) {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var param="&objectClass="+objectClass+"&objectId="+objectId+"&businessFeatureId="+businessFeatureId;
+	loadDialog('dialogBusinessFeature', null, true, param, false);
+}
+//END ADD qCazelles - Business Feature (Correction)
+
 function saveBusinessFeature() {
 	if (dojo.byId("businessFeatureName").value == "") return;
 	loadContent("../tool/saveBusinessFeature.php", "resultDiv", "businessFeatureForm", true, 'BusinessFeature');
@@ -1586,7 +1599,42 @@ function removeProductContext(productContextId, refType) {
 	showConfirm(msg, actionOK);
 }
 //END ADD qCazelles - Lang-Context
+//ADD qCazelles - Version compatibility
+//=============================================================================
+//= Product Version Compatibility
+//=============================================================================
+function addVersionCompatibility() {
+if (checkFormChangeInProgress()) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+}
+var objectClass=dojo.byId("objectClass").value;
+var objectId=dojo.byId("objectId").value;
+var param="&objectClass="+objectClass+"&objectId="+objectId;
+loadDialog('dialogVersionCompatibility', null, true, param, false);
+}
 
+function saveVersionCompatibility() {
+if (dojo.byId('versionCompatibilityListId').value=='') return;
+loadContent("../tool/saveVersionCompatibility.php", "resultDiv", "versionCompatibilityForm", true, 'VersionCompatibility');
+dijit.byId('dialogVersionCompatibility').hide();
+}
+
+function removeVersionCompatibility(versionCompatibilityId, refType, refId, refTypeName) {
+if (checkFormChangeInProgress()) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+}
+actionOK=function() {
+	loadContent("../tool/removeVersionCompatibility.php?versionCompatibilityId="+versionCompatibilityId, "resultDiv", null, true, 'VersionCompatibility');
+};
+if (!refTypeName) {
+	refTypeName=i18n(refType);
+}
+msg=i18n('confirmDeleteVersionCompatibility', new Array(refType, versionCompatibilityId));
+showConfirm(msg, actionOK);
+}
+//END ADD qCazelles - Version compatibility
 
 //=============================================================================
 //= Product Version Composition
@@ -4891,6 +4939,7 @@ function hideShowMenu(noRefresh) {
   hideShowMenuInProgress=true;
   duration=300;
   if (menuActualStatus == 'visible' || !menuHidden) {
+    saveDataToSession("hideMenu","CLICK",true);
     menuDivSize=dojo.byId("leftDiv").offsetWidth;
     fullWidth=dojo.byId("mainDiv").offsetWidth;
     if (menuDivSize < 2) {
@@ -4899,7 +4948,7 @@ function hideShowMenu(noRefresh) {
     if (disableSlide || !isHtml5()) {
       duration=0;
       dijit.byId("leftDiv").resize({
-        w : 31
+        w : 34
       });
       setTimeout("dojo.byId('menuBarShow').style.display='block';", 10);
       // dojo.byId('menuBarShow').style.display='block';
@@ -4908,7 +4957,7 @@ function hideShowMenu(noRefresh) {
       dojox.fx.combine([ dojox.fx.animateProperty({
         node : "leftDiv",
         properties : {
-          width : 31
+          width : 34
         },
         duration : duration
       }), dojox.fx.animateProperty({
@@ -4934,6 +4983,7 @@ function hideShowMenu(noRefresh) {
     menuActualStatus='hidden'; 
     dojo.byId('hideMenuBarShowButton2').style.display='none';
   } else {
+    saveDataToSession("hideMenu","NO",true);
     dojo.byId('menuBarShow').style.display='none';
     dojo.byId('leftDiv_splitter').style.left='20px';
     dojo.byId('leftDiv_splitter').style.display='block';

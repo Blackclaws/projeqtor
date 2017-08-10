@@ -543,7 +543,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
-     $leftWidth=($leftWidth and $leftWidth>32)?$leftWidth.'px':'20%';
+     $leftWidth=($leftWidth and $leftWidth>35)?$leftWidth.'px':'20%';
      
     //$IconSizeMenuHide=Parameter::getUserParameter('paramIconSize');
     $IconSizeMenuHide = 16;

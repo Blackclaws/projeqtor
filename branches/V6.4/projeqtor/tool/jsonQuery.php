@@ -716,10 +716,15 @@
 	    				echo $val.$csvSep;
 	            $dataType[$id]=$obj->getDataType($id);
 	            $dataLength[$id]=$obj->getDataLength($id);
+	            if ($id=='refId' and ! property_exists($objectClass,'refName') and $exportReferencesAs=='name') {
+	              echo encodeCSV(i18n('colName')).$csvSep;
+	            }
 	          }
 	          echo "\r\n";
     			}
+    			$refType=null;
     			foreach ($line as $id => $val) {
+    			  if ($id=='refType') $refType=$val;
     				$foreign=false;
     				if (substr($id, 0,2)=='id' and strlen($id)>2) {
     					$class=substr($arrayFields[strtolower($id)], 2);
@@ -730,7 +735,7 @@
     						if ($exportReferencesAs=='name') {
     						  if ($id=='idDocumentDirectory') {
     						    $val=SqlList::getFieldFromId($class, $val,'location');
-    						  } else {
+    						  } else if (property_exists($class, 'name')){
     					      $val=SqlList::getNameFromId($class, $val);
     						  }
     						}
@@ -758,6 +763,9 @@
             } else {
               $val=str_replace($csvSep,' ',$val);
             	echo $val.$csvSep;
+            }
+            if ($id=='refId' and ! property_exists($objectClass,'refName') and $exportReferencesAs=='name' and $refType) {
+              echo encodeCSV(SqlList::getNameFromId($refType, $val)).$csvSep;
             }
     			}
     			$first=false;
