@@ -698,7 +698,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //ADD by qCazelles - Bsuiness features
       if ($col=='_sec_ProductBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') continue;
       //END ADD qCazelles 
-    	
+      //ADD qCazelles - Version compatibility
+      if ($col=='_sec_ProductVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') != 'YES') continue;
+      //END ADD qCazelles - Version compatibility
+      
       $prevSection=$section;
       $currentCol+=1;
       if (strlen($col) > 8) {
@@ -840,16 +843,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     } else if ($col == '_productComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of Product (structure)
       drawStructureFromObject($obj, false,'composition', 'Product');
     //ADD qCazelles - Lang-Context
- 	} else if ($col == '_productLanguage' and Parameter::getGlobalParameter('displayLanguage') == 'YES') {
-  	drawLanguageSection($obj);
-	 } else if ($col == '_productContext' and Parameter::getGlobalParameter('displayContext') == 'YES') {
-  	drawContextSection($obj);
+ 	  } else if ($col == '_productLanguage' and Parameter::getGlobalParameter('displayLanguage') == 'YES') {
+  	  drawLanguageSection($obj);
+	  } else if ($col == '_productContext' and Parameter::getGlobalParameter('displayContext') == 'YES') {
+  	  drawContextSection($obj);
   	//END ADD qCazelles - Lang-Context
     //ADD by qCazelles - Business features
- 	}  else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
+ 	  }  else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
     	drawBusinessFeatures($obj);
     //END ADD
-    
+   	//ADD qCazelles - Version compatibility
+   	} else if ($col == '_productVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') == 'YES') {
+   		drawVersionCompatibility($obj);
+   		//END ADD qCazelles - Version compatibility    
   	} else if ($col == '_componentComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of component (structure)
       drawStructureFromObject($obj, false,'composition', 'Component');
     } else if ($col == '_componentStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Structure of component (structure)
@@ -3598,8 +3604,23 @@ function drawBusinessFeatures($obj, $refresh=false) {
 		if (!$print) {
 			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
 			if ($canUpdate) {
-				echo '  <a onClick="removeBusinessFeature(' . "'" . htmlEncode($bf->id) . "','" . get_class($bf) . "'" . ');" '
-      		.'title="' . i18n('removeBusinessFeature') . '" > '.formatSmallButton('Remove').'</a>';
+			  //ADD qCazelles - Business Feature (Correction) - Ticket #96
+			  echo '  <a onClick="editBusinessFeature(' . htmlEncode($bf->id). ');" '
+          .'title="' . i18n('editBusinessFeature') . '" > '.formatSmallButton('Edit').'</a>';
+        //END ADD qCazelles - Business Feature (Correction) - Ticket #96
+          //CHANGE qCazelles - Business Feature (Correction) - Ticket #96
+        //Old
+				//echo '  <a onClick="removeBusinessFeature(' . "'" . htmlEncode($bf->id) . "','" . get_class($bf) . "'" . ');" '
+      		//.'title="' . i18n('removeBusinessFeature') . '" > '.formatSmallButton('Remove').'</a>';
+      	//New
+      	$crit=array('idBusinessFeature'=>$bf->id);
+      	$ticket=new Ticket();
+      	$listBfTicket=$ticket->getSqlElementsFromCriteria($crit);
+      	if (count($listBfTicket)==0) {
+          echo '  <a onClick="removeBusinessFeature(' . "'" . htmlEncode($bf->id) . "','" . get_class($bf) . "'" . ');" '
+          .'title="' . i18n('removeBusinessFeature') . '" > '.formatSmallButton('Remove').'</a>';
+      	}
+      	//END CHANGE qCazelles - Business Feature (Correction) - Ticket #96
 			}
 			echo '</td>';
 		}
@@ -3874,6 +3895,100 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
     echo '<input id="ProductVersionStructureSectionCount" type="hidden" value="'.count($list).'" />';
   }
 }
+
+//ADD qCazelles - Version compatibility
+function drawVersionCompatibility($obj, $refresh=false) {
+	$vcs=new VersionCompatibility();
+	$crit=array();
+	$crit['idVersionA']=$obj->id;
+	$list=$vcs->getSqlElementsFromCriteria($crit);
+	
+	$crit=array();
+	$crit['idVersionB']=$obj->id;
+	foreach ($vcs->getSqlElementsFromCriteria($crit) as $vc) {
+		$list[] = $vc;
+	}
+	$idObj=$obj->id;
+
+	usort($list, function($vca, $vcb) use ($idObj) {
+		$a=new ProductVersion((($idObj==$vca->idVersionA) ? $vca->idVersionB : $vca->idVersionA));
+		$b=new ProductVersion((($idObj==$vcb->idVersionA) ? $vcb->idVersionB : $vcb->idVersionA));
+		if (strcmp($a->name, $b->name) == 0) {
+			return strnatcmp($a->versionNumber, $b->versionNumber);
+		}
+		return strnatcmp($a->name, $b->name);
+	});
+
+	global $cr, $print, $user, $comboDetail;
+	if ($comboDetail) {
+		return;
+	}
+	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+	if (!$refresh) echo '<tr><td colspan="2">';
+	echo '<table style="width:100%;">';
+	echo '<tr>';
+	if (!$print) {
+		echo '<td class="linkHeader" style="width:10%;white-space:nowrap">';
+		if ($obj->id != null and !$print and $canUpdate) {
+			echo '<a onClick="addVersionCompatibility();" title="' . i18n('addVersionCompatibility') .  '" > '.formatSmallButton('Add').'</a>';
+		}
+		echo '<button dojoType="dijit.form.Button" title="'.i18n('exportVersionCompatibilities').'" iconClass="dijitButtonIcon dijitButtonIconCsv" class="roundedButtonSmall" style="border:0">';
+		echo '<script type="dojo/connect" event="onClick" args="evt">';
+		$page='../report/productVersionCompatibility.php?objectClass='.get_class($obj).'&objectId='.$obj->id;
+		echo "var url='$page';";
+		echo 'url+="&format=csv";';
+		echo 'showPrint(url, null, null, "csv", "P");';
+		echo '</script>';
+		echo '</button>';
+		echo '</td>';
+	}
+	$listClass='ProductVersion';
+	echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+	echo '<td class="linkHeader" style="width:80%">' . i18n('colName') . '</td>';
+	echo '</tr>';
+	
+	foreach ($list as $vc) {
+		$userId=$vc->idUser;
+		$userName=SqlList::getNameFromId('User', $userId);
+		$creationDate=$vc->creationDate;
+		if ($vc->idVersionA == $obj->id) {
+			$vcObj=new ProductVersion($vc->idVersionB);
+		}
+		else {
+			$vcObj=new ProductVersion($vc->idVersionA);
+		}
+		$canGoto=(securityCheckDisplayMenu(null, get_class($vcObj)) and securityGetAccessRightYesNo('menu' . get_class($vcObj), 'read', $vcObj) == "YES")?true:false;
+		echo '<tr>';
+		$classVersionName=i18n(get_class($vcObj));
+		if (!$print) {
+			echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
+			if ($canUpdate) {
+				echo '  <a onClick="removeVersionCompatibility(' . "'" . htmlEncode($vc->id) . "','" . get_class($vcObj) . "','" . htmlEncode($vcObj->id) . "','" . $classVersionName . "'" . ');" '
+          		.'title="' . i18n('removeVersionCompatibility') . '" > '.formatSmallButton('Remove').'</a>';
+			}
+			echo '</td>';
+		}
+		echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr><td>'.formatIcon(get_class($vcObj),16).'</td><td style="vertical-align:top">&nbsp;'.'#' . $vcObj->id.'</td></tr></table>';
+		echo '</td>';
+		$goto="";
+		if (!$print and $canGoto) {
+			$goto=' onClick="gotoElement(' . "'" . get_class($vcObj) . "','" . htmlEncode($vcObj->id) . "'" . ');" style="cursor: pointer;" ';
+		}
+		echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+		echo htmlEncode($vcObj->name);		
+ 		echo formatUserThumb($userId, $userName, 'Creator');
+ 		echo formatDateThumb($creationDate, null);
+ 		echo formatCommentThumb($vc->comment);
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+	if (!$refresh) echo '</td></tr>';
+	if (! $print) {
+		echo '<input id="VersionCompatibilitySectionCount" type="hidden" value="'.count($list).'" />';
+	}
+}
+//END ADD qCazelles - Version compatibility
 
 function drawApproverFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;

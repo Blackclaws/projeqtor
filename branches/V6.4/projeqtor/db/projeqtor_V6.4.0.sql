@@ -28,3 +28,15 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
 (4, 'showAdminProj', 'boolean', 60, 0, 0, 0);
+
+--ADD qCazelles - Version compatibility
+CREATE TABLE `${prefix}versioncompatibility` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idVersionA` int(12) NOT NULL,
+  `idVersionB` int(12) NOT NULL,
+  `creationDate` date NOT NULL,
+  `idUser` int(12) NOT NULL,
+  `idle` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+--END ADD qCazelles - Version compatibility
