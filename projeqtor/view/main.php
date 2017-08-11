@@ -345,7 +345,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         if (array_key_exists("menuActualStatus",$_REQUEST)) {
           $menuActualStatus=$_REQUEST['menuActualStatus'];
           if ($menuActualStatus!='visible') {
-            echo 'hideShowMenu();';
+            echo 'hideShowMenu(true,true);';
           }
         }         
         for ($i=1;$i<=9;$i++) {
@@ -391,10 +391,14 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           echo 'gotoElement("' . $class . '","' . $id . '");';
           $firstPage="";
         }
-      } else if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
-        echo 'setTimeout("hideShowMenu();",500);';
       }
-      
+      $hideMenu=false;
+      if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
+        //echo 'setTimeout("hideShowMenu(true,true);",1);';
+        echo 'hideShowMenu(true,true);';
+        $hideMenu=true;
+      }
+      echo "menuDivSize='".Parameter::getUserParameter('contentPaneLeftDivWidth')."';";
       if ($firstPage) {
       ?>
         loadContent("<?php echo $firstPage;?>","centerDiv");
@@ -544,7 +548,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
      $leftWidth=($leftWidth and $leftWidth>35)?$leftWidth.'px':'20%';
-     
+     if ($hideMenu){
+       $leftWidth="32px";
+     }
     //$IconSizeMenuHide=Parameter::getUserParameter('paramIconSize');
     $IconSizeMenuHide = 16;
     $IconSizeMenuHide2 = $IconSizeMenuHide+5;
@@ -572,6 +578,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
       <script type="dojo/connect" event="resize" args="evt">
          if (hideShowMenuInProgress) return;
+         if (dojo.byId("leftDiv").offsetWidth>35) 
          dojo.xhrPost({
             url : "../tool/saveDataToSession.php?saveUserParam=true"
               +"&idData=contentPaneLeftDivWidth"

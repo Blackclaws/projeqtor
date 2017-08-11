@@ -425,6 +425,7 @@ class UserMain extends SqlElement {
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
     foreach ($affList as $aff) {
       $prj=new Project($aff->idProject,true); 
+      if (!$prj->id) continue;
     	if (! isset($result[$aff->idProject])) {
 	      $result[$aff->idProject]=$prj->name;
 	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);

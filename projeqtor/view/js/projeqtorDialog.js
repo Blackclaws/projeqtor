@@ -640,7 +640,12 @@ function selectDetailItem(selectedValue, lastSavedName) {
       critVal=prj.get("value");
     }
   }
-  if (comboName != 'idStatus' && comboName != 'idProject') { 
+  //CHANGE qCazelles - Correction GANTT - Ticket #100
+  //Old
+  //if (comboName != 'idStatus' && comboName != 'idProject') { 
+  //New
+  if (comboName != 'idStatus' && comboName != 'idProject' && comboName != 'versionsPlanningDetail') { 
+  //END CHANGE qCazelles - Correction GANTT - Ticket #100
     if (combo) {
       refreshList('id' + comboClass, crit, critVal, idFldVal, comboName);
     } else {
@@ -685,6 +690,15 @@ function selectDetailItem(selectedValue, lastSavedName) {
 // END ADD BY Marc TABARY - 2017-02-23 - ADD OBJECTS LINKED BY ID TO MAIN OBJECT
     }
   }
+  
+  //ADD qCazelles - Correction GANTT - Ticket #100
+  if (comboName == 'versionsPlanningDetail') {
+	  displayVersionsPlanning(idFldVal);
+	  hideDetail();
+	  return;
+  }
+  //END ADD qCazelles - Correction GANTT - Ticket #100
+  
   if (combo) {
     combo.set("value", idFldVal);
   }
@@ -3346,6 +3360,9 @@ function showFilterDialog() {
     dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
+    //ADD qCazelles - Dynamic filter - Ticket #78
+    dojo.byId('filterDynamicParameterPane').style.display='none';
+    //END ADD qCazelles - Dynamic filter - Ticket #78
     dijit.byId('idFilterAttribute').reset();
     dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
     filterType="";
@@ -3358,8 +3375,14 @@ function showFilterDialog() {
       }
     });
     compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
+    //CHANGE qCazelles - Dynamic filter - Ticket #78
+    //Old
+//    loadContent("../tool/displayFilterClause.php" + compUrl,
+//        "listFilterClauses", "dialogFilterForm", false);
+    //New
     loadContent("../tool/displayFilterClause.php" + compUrl,
-        "listFilterClauses", "dialogFilterForm", false);
+    		"listFilterClauses", "dialogFilterForm", false, null, null, null, displayOrOperator);
+    //END CHANGE qCazelles - Dynamic filter - Ticket #78
     loadContent("../tool/displayFilterList.php" + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
     loadContent("../tool/displayFilterSharedList.php" + compUrl,
@@ -3377,6 +3400,14 @@ function showFilterDialog() {
   
   loadDialog('dialogFilter', callBack, true, "", true);
 }
+
+//ADD qCazelles - Dynamic filter - Ticket #78
+function displayOrOperator() {
+	if (dojo.byId('nbFilterCriteria').value != "0") {
+		dojo.byId('filterLogicalOperator').style.display='block';
+    }
+}
+//END ADD qCazelles - Dynamic filter - Ticket #78
 
 /**
  * Select attribute : refresh dependant lists box
@@ -3415,6 +3446,9 @@ function filterSelectAtribute(value) {
         dojo.style(dijit.byId('idFilterOperator').domNode, {
           visibility : 'visible'
         });
+        //ADD qCazelles - Dynamic filter - Ticket #78
+        dojo.byId('filterDynamicParameterPane').style.display='block';
+        //END ADD qCazelles - Dynamic filter - Ticket #78
         dojo.byId('filterDataType').value=dataType;
         if (dataType == "bool") {
           filterType="bool";
@@ -3544,6 +3578,7 @@ function filterSelectAtribute(value) {
     dijit.byId('filterValueList').reset();
     dijit.byId('filterValueCheckbox').reset();
     dijit.byId('filterValueDate').reset();
+    
   } else {
     dojo.style(dijit.byId('idFilterOperator').domNode, {
       visibility : 'hidden'
@@ -3582,6 +3617,10 @@ function filterSelectOperator(operator) {
     dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'block'
     });
+  //ADD qCazelles - Dynamic filter - Ticket #78
+    dijit.byId('filterDynamicParameter').set('checked', '');
+    dojo.byId('filterDynamicParameterPane').style.display='none';
+    //END ADD qCazelles - Dynamic filter - Ticket #78
   } else if (operator == "<=now+" || operator == ">=now+") {
     filterType="text";
     dojo.style(dijit.byId('filterValue').domNode, {
@@ -3617,6 +3656,10 @@ function filterSelectOperator(operator) {
     dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
+    //ADD qCazelles - Dynamic filter - Ticket #78
+    dijit.byId('filterDynamicParameter').set('checked', '');
+    dojo.byId('filterDynamicParameterPane').style.display='none';
+    //END ADD qCazelles - Dynamic filter - Ticket #78
   } else {
     dojo.style(dijit.byId('filterValue').domNode, {
       display : 'none'
@@ -3635,16 +3678,28 @@ function filterSelectOperator(operator) {
       dojo.style(dijit.byId('filterValueList').domNode, {
         display : 'block'
       });
+      //ADD qCazelles - Dynamic filter - Ticket #78
+      dijit.byId('filterDynamicParameter').set('checked', '');
+      dojo.byId('filterDynamicParameterPane').style.display='block';
+      //END ADD qCazelles - Dynamic filter - Ticket #78
     } else if (dataType == "date") {
       filterType="date";
       dojo.style(dijit.byId('filterValueDate').domNode, {
         display : 'block'
       });
+      //ADD qCazelles - Dynamic filter - Ticket #78
+      dijit.byId('filterDynamicParameter').set('checked', '');
+      dojo.byId('filterDynamicParameterPane').style.display='block';
+      //END ADD qCazelles - Dynamic filter - Ticket #78
     } else {
       filterType="text";
       dojo.style(dijit.byId('filterValue').domNode, {
         display : 'block'
       });
+      //ADD qCazelles - Dynamic filter - Ticket #78
+      dijit.byId('filterDynamicParameter').set('checked', '');
+      dojo.byId('filterDynamicParameterPane').style.display='block';
+      //END ADD qCazelles - Dynamic filter - Ticket #78
     }
   }
 }
@@ -3668,33 +3723,46 @@ function addfilterClause(silent) {
       showAlert(i18n('operatorNotSelected'));
     return;
   }
-  if (filterType == "list"
-      && trim(dijit.byId('filterValueList').get('value')) == '') {
-    if (!silent)
-      showAlert(i18n('valueNotSelected'));
-    return;
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  if (!dijit.byId('filterDynamicParameter').get('checked')) {
+  //END ADD qCazelles - Dynamic filter - Ticket #78
+	  if (filterType == "list"
+	      && trim(dijit.byId('filterValueList').get('value')) == '') {
+	    if (!silent)
+	      showAlert(i18n('valueNotSelected'));
+	    return;
+	  }
+	  if (filterType == "date" && !dijit.byId('filterValueDate').get('value')) {
+	    if (!silent)
+	      showAlert(i18n('valueNotSelected'));
+	    return;
+	  }
+	  if (filterType == "text" && !dijit.byId('filterValue').get('value')) {
+	    if (!silent)
+	      showAlert(i18n('valueNotSelected'));
+	    return;
+	  }
+	  if (dijit.byId('idFilterAttribute').get('value')=='idle' 
+	    && dijit.byId('idFilterOperator').get('value')=='='
+	    && dijit.byId('filterValueCheckbox').get('checked')) {
+	    dijit.byId('listShowIdle').set('checked',true);
+	  }
+  //ADD qCazelles - Dynamic filter - Ticket #78
   }
-  if (filterType == "date" && !dijit.byId('filterValueDate').get('value')) {
-    if (!silent)
-      showAlert(i18n('valueNotSelected'));
-    return;
-  }
-  if (filterType == "text" && !dijit.byId('filterValue').get('value')) {
-    if (!silent)
-      showAlert(i18n('valueNotSelected'));
-    return;
-  }
-  if (dijit.byId('idFilterAttribute').get('value')=='idle' 
-    && dijit.byId('idFilterOperator').get('value')=='='
-    && dijit.byId('filterValueCheckbox').get('checked')) {
-    dijit.byId('listShowIdle').set('checked',true);
-  }
+  //END ADD qCazelles - Dynamic filter - Ticket #78
   // Add controls on operator and value
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
   loadContent("../tool/addFilterClause.php" + compUrl, "listFilterClauses",
       "dialogFilterForm", false);
   // dijit.byId('filterNameDisplay').set('value',null);
   // dojo.byId('filterName').value=null;
+  
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  if (dojo.byId('filterLogicalOperator') && dojo.byId('filterLogicalOperator').style.display=='none') {
+	  dojo.byId('filterLogicalOperator').style.display='block';
+  }
+  //END ADD qCazelles - Dynamic filter - Ticket #78
+	  
 }
 
 /**
@@ -3713,6 +3781,16 @@ function removefilterClause(id) {
       "listFilterClauses", "dialogFilterForm", false);
   // dijit.byId('filterNameDisplay').set('value',null);
   // dojo.byId('filterName').value=null;
+  
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  if (id=='all' || dojo.byId('nbFilterCriteria').value == "1") { //Value is not set to 0 already but is going to
+	dojo.byId('filterLogicalOperator').style.display='none';
+  }
+  else if (dojo.byId('nbFilterCriteria').value == "2") { //Value is going to be set at 1
+	  loadContent("../tool/displayFilterClause.php" + compUrl,
+		"listFilterClauses", "dialogFilterForm", false);
+  }
+  //END ADD qCazelles - Dynamic filter - Ticket #78
 }
 
 /**
@@ -3744,7 +3822,12 @@ function selectFilterContinue() {
     load : function(data, args) {
     }
   });
-  if (dojo.byId("nbFilterCriteria").value > 0) {
+  //CHANGE qCazelles - Dynamic filter - Ticket #78
+  //Old
+  //if (dojo.byId("nbFilterCriteria").value > 0) {
+  //New
+  if (dojo.byId("nbFilterCriteria").value > 0 && !dijit.byId('filterDynamicParameter').get("checked") && dojo.byId('nbDynamicFilterCriteria').value==0) {
+  //END CHANGE qCazelles - Dynamic filter - Ticket #78
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
   } else {
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
@@ -3755,7 +3838,12 @@ function selectFilterContinue() {
       false, 'returnFromFilter', false);
   if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Plugin_kanban' || dojo.byId('objectClassManual').value=='Plugin_liveMeeting')){
     loadContent("../plugin/kanban/kanbanView.php?idKanban="+dojo.byId('idKanban').value, "divKanbanContainer");
-  }else{
+  //CHANGE qCazelles - Dynamic filter - Ticket #78
+  //Old
+  //}else {
+  //New
+  } else if (!dijit.byId('filterDynamicParameter').get("checked")) {
+  //END CHANGE qCazelles - Dynamic filter - Ticket #78
     doc.refreshJsonList(dojo.byId('objectClass').value);
   }
   dijit.byId("dialogFilter").hide();
@@ -3835,7 +3923,7 @@ function saveFilter() {
  * Select a stored filter in the list and fetch criteria
  * 
  */
-function selectStoredFilter(idFilter, context, contentLoad, container) {
+function selectStoredFilter(idFilter, context, contentLoad, container) {  
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   if (context == 'directFilterList') {
     if (dojo.byId('noFilterSelected')) {
@@ -3844,6 +3932,13 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
       } else {
         dojo.byId('noFilterSelected').value='false';
       }
+	    //ADD qCazelles - Dynamic filter - Ticket #78
+	  	if (dojo.byId('dynamicFilterId'+idFilter)) {
+	  		
+	  		var param="&idFilter="+idFilter;
+	  		loadDialog('dialogDynamicFilter', null, true, param, true);
+	  	}
+	  	//END ADD qCazelles - Dynamic filter - Ticket #78
     }
 
     if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
@@ -3859,10 +3954,14 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
           false);
     }
   } else {
+	  if (dojo.byId('filterLogicalOperator') && dojo.byId('filterLogicalOperator').style.display=='none') {
+		  	dojo.byId('filterLogicalOperator').style.display='block';
+	  }
     loadContent(
         "../tool/selectStoredFilter.php?idFilter=" + idFilter + compUrl,
         "listFilterClauses", "dialogFilterForm", false);
   }
+
 }
 
 /**
@@ -3887,6 +3986,55 @@ function shareStoredFilter(idFilter, nameFilter) {
   loadContent("../tool/shareFilter.php?idFilter=" + idFilter + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
 }
+
+//ADD qCazelles - Dynamic filter - Ticket #78
+function selectDynamicFilter() {
+	
+	for (var i = 0; i < dojo.byId('nbDynamicFilterClauses').value; i++) {
+		if (dijit.byId('filterValueList' + i)) {
+			if (dijit.byId('filterValueList' + i).get("value")=="") {
+				showAlert(i18n('valueNotSelected'));
+				return;
+			}
+		}
+		else if (dijit.byId('filterValue' + i)) {
+			if (dijit.byId('filterValue' + i).get("value")=="") {
+				showAlert(i18n('valueNotSelected'));
+				return;
+			}
+		}
+		else if (dijit.byId('filterValueDate' + i)) {
+			if (dijit.byId('filterValueDate' + i).get("value")=="") {
+				showAlert(i18n('valueNotSelected'));
+				return;
+			}
+		}
+	}
+	
+	var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
+	loadContent("../tool/addDynamicFilterClause.php" + compUrl, "listDynamicFilterClauses",
+		      "dialogDynamicFilterForm", false);
+	setTimeout("selectDynamicFilterContinue();", 1000);
+}
+
+function selectDynamicFilterContinue() {
+	  if (top.dijit.byId('dialogDetail').open) {
+	    var doc=top.window.frames['comboDetailFrame'];
+	  } else {  
+	    var doc=top;
+	  }
+	  if (dijit.byId('filterNameDisplay')) {
+		  dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+	  }
+	  doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
+	  doc.loadContent(
+	      "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
+	          + dojo.byId('objectClass').value, "directFilterList", null,
+	      false, 'returnFromFilter', false);
+	  doc.refreshJsonList(dojo.byId('objectClass').value);
+	  dijit.byId("dialogDynamicFilter").hide();
+}
+//END ADD qCazelles - Dynamic filter - Ticket #78
 
 // =============================================================================
 // = Reports
@@ -4925,7 +5073,7 @@ var hideShowTries=0;
 /**
  * Hide or show the Menu (left part of the screen
  */
-function hideShowMenu(noRefresh) {
+function hideShowMenu(noRefresh,noStore) {
   var disableSlide=true;
   if (!dijit.byId("leftDiv")) {
     return;
@@ -4937,22 +5085,21 @@ function hideShowMenu(noRefresh) {
   }
   hideShowTries=0;
   hideShowMenuInProgress=true;
-  duration=300;
+  duration=1;
   if (menuActualStatus == 'visible' || !menuHidden) {
-    saveDataToSession("hideMenu","CLICK",true);
-    menuDivSize=dojo.byId("leftDiv").offsetWidth;
+    saveDataToSession("hideMenu","YES",true);
+    if (!noStore) menuDivSize=dojo.byId("leftDiv").offsetWidth;
     fullWidth=dojo.byId("mainDiv").offsetWidth;
     if (menuDivSize < 2) {
       menuDivSize=dojo.byId("mainDiv").offsetWidth * .2;
     }
     if (disableSlide || !isHtml5()) {
       duration=0;
+      dojo.byId('menuBarShow').style.display='block';
+      dojo.byId('leftDiv_splitter').style.display='none';
       dijit.byId("leftDiv").resize({
         w : 34
       });
-      setTimeout("dojo.byId('menuBarShow').style.display='block';", 10);
-      // dojo.byId('menuBarShow').style.display='block';
-      dojo.byId('leftDiv_splitter').style.display='none';
     } else {
       dojox.fx.combine([ dojox.fx.animateProperty({
         node : "leftDiv",
@@ -4975,18 +5122,14 @@ function hideShowMenu(noRefresh) {
         duration : duration
       }) ]).play();
       setTimeout("dojo.byId('menuBarShow').style.display='block'", duration);
-      setTimeout("dojo.byId('leftDiv_splitter').style.display='none';",
-          duration);
+      setTimeout("dojo.byId('leftDiv_splitter').style.display='none';",duration);
     }
     dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonShowMenu');
     menuHidden=true;
     menuActualStatus='hidden'; 
     dojo.byId('hideMenuBarShowButton2').style.display='none';
   } else {
-    saveDataToSession("hideMenu","NO",true);
-    dojo.byId('menuBarShow').style.display='none';
-    dojo.byId('leftDiv_splitter').style.left='20px';
-    dojo.byId('leftDiv_splitter').style.display='block';
+    saveDataToSession("hideMenu","NO",true);  
     if (menuDivSize < 20) {
       menuDivSize=dojo.byId("mainDiv").offsetWidth * .2;
     }
@@ -4995,6 +5138,9 @@ function hideShowMenu(noRefresh) {
       dijit.byId("leftDiv").resize({
         w : menuDivSize
       });
+      dojo.byId('menuBarShow').style.display='none';
+      dojo.byId('leftDiv_splitter').style.left='20px';
+      dojo.byId('leftDiv_splitter').style.display='block';
     } else {
       dojox.fx.combine([ dojox.fx.animateProperty({
         node : "leftDiv",
@@ -5015,6 +5161,9 @@ function hideShowMenu(noRefresh) {
         },
         duration : duration
       }) ]).play();
+      dojo.byId('menuBarShow').style.display='none';
+      dojo.byId('leftDiv_splitter').style.left='20px';
+      dojo.byId('leftDiv_splitter').style.display='block';
     }
     dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonHideMenu');
     menuHidden=false;
@@ -5531,9 +5680,12 @@ function loadMenuBarItem(item, itemName, from) {
     
     //ADD qCazelles - GANTT
   } else if (item == 'VersionsPlanning') {
-	//loadContent("versionsPlanningMain.php", "centerDiv");
-	
-	loadDialog("dialogVersionsPlanning", null, true, null, false);
+	//CHANGE qCazelles - Correction GANTT - Ticket #100
+	//Old
+	//loadDialog("dialogVersionsPlanning", null, true, null, false);
+	//New
+	showDetail('versionsPlanningDetail', false, 'ProductVersion', true);
+	//END CHANGE qCazelles - Correction GANTT - Ticket #100
 	//END ADD qCazelles - GANTT
 	
   } else if (item == 'UserParameter') {
@@ -6238,11 +6390,11 @@ function assignTeamForMeeting() {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  dojo.byId("assignmentId").value=null;
-  dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
-  dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+  //dojo.byId("assignmentId").value=null;
+  //dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+  //dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
   actionOK=function() {
-    loadContent("../tool/assignTeamForMeeting.php","resultDiv", "assignmentForm",
+    loadContent("../tool/assignTeamForMeeting.php?assignmentId=&assignmentRefType="+dojo.byId("objectClass").value+"&assignmentRefId="+dojo.byId("objectId").value,"resultDiv", null,
         true, 'assignment');
   };
   msg=i18n('confirmAssignWholeTeam');
@@ -8411,11 +8563,13 @@ function changeSubscriptionFromDialog(mode,dialog,objectClass,objectId,userId,ke
 }
 
 //ADD qCazelles - GANTT
-function displayVersionsPlanning() {
+function displayVersionsPlanning(idProductVersions) {
 	vGanttCurrentLine=-1;
 	cleanContent("centerDiv");
-	loadContent("versionsPlanningMain.php", "centerDiv", "versionsPlanningForm");
-	dijit.byId('dialogVersionsPlanning').hide();
+	loadContent("versionsPlanningMain.php?productVersionsListId=" + idProductVersions, "centerDiv");
+	//REMOVE qCazelles - Correction GANTT - Ticket #100
+	//dijit.byId('dialogVersionsPlanning').hide();
+	//END REMOVE qCazelles - Correction GANTT - Ticket #100
 }
 //END ADD qCazelles - GANTT
 

@@ -432,10 +432,13 @@ class Version extends SqlElement {
   
   //ADD qCazelles - GANTT
   
-  private static $tabHasChild = array();
-  private static $cpt = 0;
-  private static $existingIDs = array();
-  private static $tabDirectChild = array();
+  protected static $tabHasChild = array();
+  protected static $cpt = 0;
+  //ADD qCazelles - Correction GANTT - Ticket #100
+  protected static $idVersionsDisplayed=array();
+  //END ADD qCazelles - Correction GANTT - Ticket #100
+  protected static $existingIDs = array();
+  protected static $tabDirectChild = array();
   
   public function treatmentVersionPlanning ($parentVersion) {    
     if ($this->directChild($parentVersion)) {
@@ -454,6 +457,12 @@ class Version extends SqlElement {
     if (self::$cpt === 1) {
       echo ',';
     }
+    
+    //ADD qCazelles - Correction GANTT - Ticket #100
+    if (!in_array($this->id, self::$idVersionsDisplayed)) {
+      self::$idVersionsDisplayed[] = $this->id;
+    }
+    //END ADD qCazelles - Correction GANTT - Ticket #100
     
     if ( !isset($this->nbOccurences)) {
       $this->nbOccurences = 1;
@@ -487,6 +496,37 @@ class Version extends SqlElement {
     echo ',"refid":"'.$this->id.'"';
     echo ',"collapsed":"0"';
     
+    $startDate = $this->startDateVersionsPlanning($parentVersion);
+    $endDate = $this->endDateVersionsPlanning($parentVersion);
+    
+    $this->ownDate=true;
+
+    if ($parentVersion == NULL and empty($startDate) and empty($endDate)) {
+      $this->ownDate = false;
+    }
+
+    if ($this->isDelivered or $this->isEis) {
+      echo ',"redElement":"0"';
+    }
+    elseif (!$this->ownDate or strtotime($this->plannedDeliveryDate) < time() or $this->hasRedChild() or $this->hasRedParent()) {
+      echo ',"redElement":"1"';
+    }
+    else {
+      echo ',"redElement":"0"';
+    }
+
+    echo ',"status":"'.$this->statusVersionPlanning().'"';
+    
+    $this->myStartDate = $startDate;
+    $this->myEndDate = $endDate;
+    
+    echo ',"realstartdate":"'.$startDate.'"';
+    echo ',"realenddate":"'.$endDate.'"';
+    echo '}';
+    self::$cpt = 1;
+  }
+  //ADD qCazelles - Correction GANTT - Ticket #100
+  protected function startDateVersionsPlanning($parentVersion=null) {
     $startDate = '';
     if ($this->realStartDate) {
       $startDate = $this->realStartDate;
@@ -498,18 +538,6 @@ class Version extends SqlElement {
       $startDate = $this->initialStartDate;
     }
     
-    $deliveryDate = '';
-    if ($this->realDeliveryDate) {
-      $deliveryDate = $this->realDeliveryDate;
-    }
-    elseif ($this->plannedDeliveryDate) {
-      $deliveryDate = $this->plannedDeliveryDate;
-    }
-    elseif ($this->initialDeliveryDate) {
-      $deliveryDate = $this->initialDeliveryDate;
-    }
-    
-    $ownDate = true;
     if ($parentVersion != NULL and empty($startDate)) {
       if ($parentVersion->realStartDate) {
         $startDate = $parentVersion->realStartDate;
@@ -523,36 +551,91 @@ class Version extends SqlElement {
       else {
         $startDate = $parentVersion->myStartDate;
       }
-      $ownDate = false;
+      $this->ownDate = false;
+    }
+    return $startDate;
+  }
+  
+  protected function endDateVersionsPlanning($parentVersion=null) {
+    $deliveryDate = '';
+    if ($this->realDeliveryDate) {
+      $deliveryDate = $this->realDeliveryDate;
+    }
+    elseif ($this->plannedDeliveryDate) {
+      $deliveryDate = $this->plannedDeliveryDate;
+    }
+    elseif ($this->initialDeliveryDate) {
+      $deliveryDate = $this->initialDeliveryDate;
+    }
+    elseif ($this->realEisDate) {
+      $deliveryDate = $this->realEisDate;
+    }
+    elseif ($this->plannedEisDate) {
+      $deliveryDate = $this->plannedEisDate;
     }
     
-    if ($parentVersion != NULL and empty($deliveryDate)) {
+    if ($parentVersion != NULL and empty($endDate)) {
       if ($parentVersion->realDeliveryDate) {
-        $deliveryDate = $parentVersion->realDeliveryDate;
+        $endDate= $parentVersion->realDeliveryDate;
       }
       elseif ($parentVersion->plannedDeliveryDate) {
-        $deliveryDate = $parentVersion->plannedDeliveryDate;
+        $endDate= $parentVersion->plannedDeliveryDate;
       }
       elseif ($parentVersion->initialDeliveryDate) {
-        $deliveryDate = $parentVersion->initialDeliveryDate;
+        $endDate= $parentVersion->initialDeliveryDate;
       }
       else {
-        $deliveryDate = $parentVersion->myDeliveryDate;
+        $endDate= $parentVersion->myEndDate;
       }
-      $ownDate = false;
+      $this->ownDate = false;
     }
-    
-    if ($parentVersion == NULL and empty($startDate) and empty($deliveryDate)) {
-      $ownDate = false;
+    return $deliveryDate;
+  }
+  
+  protected function isRed($version,$way) {
+    if ($this->isDelivered or $this->isEis) {
+      return false;
     }
-    
-    if ($ownDate) {
-      echo ',"owndate":"1"';
+    if (strtotime($this->plannedDeliveryDate) < time()) {
+      return true;
     }
-    else {
-      echo ',"owndate":"0"';
+    if ($version->isDelivered or $version->isEis) {
+      return false;
     }
-    
+    if ($way == 'composition') {
+      return strtotime($this->plannedDeliveryDate) > strtotime($version->plannedDeliveryDate);
+    }
+    if ($way == 'structure') {
+      return strtotime($this->plannedDeliveryDate) < strtotime($version->plannedDeliveryDate);
+    }
+
+  }
+  
+  protected function hasRedChild() {
+    if (!$this->hasChild()) return false;
+    foreach (ProductVersionStructure::getComposition($this->id) as $key => $idComponentVersion) {
+      $comp=new ComponentVersion($idComponentVersion);
+      if ($comp->isRed($this,'composition')) {
+        return true;
+      }
+    }
+   return false;
+  }
+  
+  protected function hasRedParent() {
+    foreach (ProductVersionStructure::getStructure($this->id) as $key => $idVersion) {
+      if ( !in_array($idVersion, self::$idVersionsDisplayed)) continue;
+      $version=new Version($idVersion);
+      if ($version->scope=='Product') $version=new ProductVersion($version->id);
+      else $version=new ComponentVersion($version->id);
+      if ($version->isRed($this,'structure')) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  protected function statusVersionPlanning() {
     $status = '';
     if ($this->idle) {
       $status = i18n('statusGanttClosed');
@@ -560,42 +643,41 @@ class Version extends SqlElement {
     elseif (!$this->isStarted and !empty($this->plannedStartDate) and strtotime($this->plannedStartDate) - time() < 0) {
       $status = i18n('statusGanttStartDelayed');
     }
-    elseif (!$this->isStarted) {
+    elseif (!$this->isStarted and !$this->isEis and !$this->isDelivered) {
       $status = i18n('statusGanttNotStarted');
     }
-    elseif ($this->isDelivered) {
+    elseif ($this->isDelivered or $this->isEis) {
       $status = i18n('statusGanttDelivered');
     }
-    elseif ($this->isStarted and (empty($deliveryDate) or strtotime($this->plannedDeliveryDate) - time() > 0)) {
+    elseif ($this->isStarted and (empty($deliveryDate) or (!empty($this->plannedDeliveryDate) and strtotime($this->plannedDeliveryDate) - time() > 0) or (!empty($this->plannedDeliveryDate) and strtotime($this->plannedEisDate) - time() > 0))) {
       $status = i18n('statusGanttInProgress');
     }
-    elseif (!$this->isDelivered and !empty($this->plannedDeliveryDate) and strtotime($this->plannedDeliveryDate) - time() < 0) {
+    elseif (!$this->isDelivered and $this->isEis and !empty($this->plannedDeliveryDate) and strtotime($this->plannedDeliveryDate) - time() < 0) {
       $status = i18n('statusGanttDeliveryDelayed');
     }
-    
-    echo ',"status":"'.$status.'"';
-    
-    $this->myStartDate = $startDate;
-    $this->myDeliveryDate = $deliveryDate;
-    
-    echo ',"realstartdate":"'.$startDate.'"';
-    echo ',"realenddate":"'.$deliveryDate.'"';
-    echo '}';
-    self::$cpt = 1;
+    return $status;
   }
+  //END ADD qCazelles - Correction GANTT - Ticket #100
   
-  private function directChild($parentVersion) {
+  protected function directChild($parentVersion) {
     
     if (array_key_exists($parentVersion->id, self::$tabDirectChild)) {
       if (array_key_exists($this->id, self::$tabDirectChild[$parentVersion->id])) {
         return self::$tabDirectChild[$parentVersion->id][$this->id];
       }
     }
-    
-    $query = 'select id from productversionstructure where idComponentVersion = "'.$this->id.'" and idProductVersion="'.$parentVersion->id.'"';
-    $result = Sql::query($query);
-    $line = Sql::fetchLine($result);
-    if ($line) {
+    //CHANGE qCazelles - Correction GANTT - Ticket #100
+    //Old
+//     $query = 'select id from productversionstructure where idComponentVersion = "'.$this->id.'" and idProductVersion="'.$parentVersion->id.'"';
+//     $result = Sql::query($query);
+//     $line = Sql::fetchLine($result);
+//     if ($line) {
+    //New
+    $pvs=new ProductVersionStructure();
+    $crit=array('idComponentVersion'=>$this->id,'idProductVersion'=>$parentVersion->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    if (count($list)>0) {
+    //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $directChild = true;
     }
     else {
@@ -605,16 +687,23 @@ class Version extends SqlElement {
     return $directChild;
   }
   
-  private function hasChild() {
+  protected function hasChild() {
     
     if (array_key_exists($this->id, self::$tabHasChild)) {
       return self::$tabHasChild[$this->id];
     }
-    
-    $query = 'select * from productversionstructure where idProductVersion = "'.$this->id.'"';
-    $result = Sql::query($query);
-    $line = Sql::fetchLine($result);
-    if ($line) {
+    //CHANGE qCazelles - Correction GANTT - Ticket #100
+    //Old
+//     $query = 'select * from productversionstructure where idProductVersion = "'.$this->id.'"';
+//     $result = Sql::query($query);
+//     $line = Sql::fetchLine($result);
+//     if ($line) {
+    //New
+    $pvs=new ProductVersionStructure();
+    $crit=array('idProductVersion'=>$this->id);
+    $list=$pvs->getSqlElementsFromCriteria($crit);
+    if (count($list)>0) {
+    //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $hasChild = true;
     }
     else {
