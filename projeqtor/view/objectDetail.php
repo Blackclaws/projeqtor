@@ -502,7 +502,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       	$listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
         foreach($listType as $keyType=>$valType) {
-        	if (in_array($keyType, $listRestrictType)) {
+        	if (in_array($keyType, $listRestrictType) or count($listRestrictType)==0) {
         		$objType=new $type($keyType);
         		break;
         	}
@@ -519,7 +519,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $listRestrictType=Type::listRestritedTypesForClass($type,$defaultProject, null,null);
         $listType=SqlList::getList($type);
         foreach($listType as $keyType=>$valType) {
-        	if (in_array($keyType, $listRestrictType)) {
+        	if (in_array($keyType, $listRestrictType) or count($listRestrictType)==0) {
         		$objType=new $type($keyType);
         		break;
         	}
@@ -1828,7 +1828,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 */        //END ADD qCazelles - Project restriction
         
         if (SqlElement::is_a($obj,'PlanningElement')) {
-          $planningModeName='id'.$obj->refType.'PlanningMode';    
+          $planningModeName='id'.$obj->refType.'PlanningMode';
           if ($col==$planningModeName and !$obj->id and $objType) {      
             if (property_exists($objType,$planningModeName)) {
               $obj->$planningModeName=$objType->$planningModeName;

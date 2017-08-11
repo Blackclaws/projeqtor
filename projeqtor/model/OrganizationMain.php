@@ -237,7 +237,6 @@ class OrganizationMain extends SqlElement {
       unset($this->_byMet_totalPlannedCost);
     }
 // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
-  debugLog("setAttributesForBudget for $this->id budget=".is_object($this->OrganizationBudgetElementCurrent));
     if ($id != NULL and trim($id)!='') {
       if (is_object($this->OrganizationBudgetElementCurrent)) {
         $this->setHierarchicString();
