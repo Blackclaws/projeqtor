@@ -2523,14 +2523,22 @@ function drawGantt() {
         pColor = 'aec5ae';
       }
       
-      //ADD by qCazelles - GANTT
-      if (item.owndate == '0') {
+      //CHANGE by qCazelles - Correction GANTT - Ticket #100
+      //Old
+//      if (item.ownDate == '1') {
+//    	  pColor = 'BB5050';
+//      }
+//      else if(item.ownDate == '0') {
+//    	  pColor = '50BB50';
+//      }
+      //New
+      if (item.redElement == '1') {
     	  pColor = 'BB5050';
       }
-      else if(item.owndate == '1') {
+      else if(item.redElement == '0') {
     	  pColor = '50BB50';
       }
-      //END ADD qCazelles - GANTT
+      //END CHANGE qCazelles - Correction GANTT - Ticket #100
       
       
       // pColor = '9099BB';

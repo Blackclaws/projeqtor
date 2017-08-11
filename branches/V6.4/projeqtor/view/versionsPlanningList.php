@@ -70,7 +70,18 @@ if ($proj=='*' or !$proj) {
                   	  <input type="hidden" id="versions" name="versions" value="true" />
 		              &nbsp;&nbsp;&nbsp;
 <?php
-$tabProductVersions = $_REQUEST['productVersionsListId'];
+//CHANGE qCazelles - Correction GANTT - Ticket #100
+//Old
+// $tabProductVersions = $_REQUEST['productVersionsListId'];
+//New
+$tabProductVersions=array();
+if ( strpos($_REQUEST['productVersionsListId'], '_')!==false) {
+  $tabProductVersions=explode('_', $_REQUEST['productVersionsListId']);
+}
+else {
+  $tabProductVersions[]=$_REQUEST['productVersionsListId'];
+}
+//END CHANGE qCazelles - Correction GANTT - Ticket #100
 $nbPvs = 0;
 foreach ($tabProductVersions as $idProductVersion) {
 	echo '<input type="hidden" id="pvNo'.$nbPvs.'" name="idsProductVersion[]" value="'.$idProductVersion.'" />';
