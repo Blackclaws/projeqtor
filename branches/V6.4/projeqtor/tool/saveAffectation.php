@@ -84,6 +84,7 @@ $idle=0;
 if (array_key_exists('affectationIdle',$_REQUEST)) {
   $idle=1;
 }
+$mailResult=null;
 Sql::beginTransaction();
 if (! $idTeam) {
 	$affectation=new Affectation($id);
@@ -134,19 +135,6 @@ if (! $idTeam) {
 	}
 }
 
-$mailResult=null;
-$elt = new Project($project);
-if ($affectation->id) {
-  $mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,true);
-} else {
-  $mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,true,false);
-}
-if ($mailResult) {
-  $pos=strpos($result,'<input type="hidden"');
-  if ($pos) {
-    $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
-  }
-}
 
 // Message of correct saving
 displayLastOperationStatus($result);

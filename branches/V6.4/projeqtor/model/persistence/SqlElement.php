@@ -4255,7 +4255,12 @@ abstract class SqlElement {
       if (getSessionUser ()->email)
         $sender = getSessionUser ()->email;
     } else if ($canBeSend) {
-      $mailable = SqlElement::getSingleSqlElementFromCriteria ( 'Mailable', array('name' => $objectClass) );
+      if ($objectClass=='Affectation') {
+        $mailable=SqlElement::getSingleSqlElementFromCriteria ( 'Mailable', array('name' => 'Project') );
+      } else {
+        $mailable = SqlElement::getSingleSqlElementFromCriteria ( 'Mailable', array('name' => $objectClass) );
+      }
+      debugLog($mailable);
       if (! $mailable or ! $mailable->id) {
         return false; // exit if not mailable object
       }

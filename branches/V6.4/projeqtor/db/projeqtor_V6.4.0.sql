@@ -11,8 +11,8 @@ INSERT INTO `${prefix}event` (`id`,`name`,`idle`, `sortOrder`) VALUES
 (11,'affectationChange',0,52);
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
-(null,null, 'paramMailTitleAffectationAdd', '[${dbName}] New affectation has been created on ${item} #${id} : "${name}"'), 
-(null,null, 'paramMailTitleAffectationChange', '[${dbName}] An affectation has been modified on ${item} #${id} : "${name}"');
+(null,null, 'paramMailTitleAffectationAdd', '[${dbName}] New allocation of resource ${responsible} has been created on Project ${project}'), 
+(null,null, 'paramMailTitleAffectationChange', '[${dbName}] Allocation of resource ${responsible} has been changed on Project ${project}');
 
 ALTER TABLE `${prefix}report` ADD `hasView` int(1) DEFAULT 1,
 ADD `hasPrint` int(1) DEFAULT 1,
