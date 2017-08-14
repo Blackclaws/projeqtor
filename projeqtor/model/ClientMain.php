@@ -53,6 +53,10 @@ class ClientMain extends SqlElement {
   public $_spe_projects;
   public $_sec_Contacts;
   public $_spe_contacts;
+  //ADD qCazelles - Manage ticket at customer level - Ticket #87
+  public $_sec_TicketsClient;
+  public $_tickets;
+  //END ADD qCazelles - Manage ticket at customer level - Ticket #87
   public $_Attachment=array();
   public $_Note=array();
   public $_nbColMax=3;

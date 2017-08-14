@@ -700,6 +700,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //ADD by qCazelles - Bsuiness features
       if ($col=='_sec_ProductBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') continue;
       //END ADD qCazelles 
+      //ADD qCazelles - Manage ticket at customer level - Ticket #87
+      if (($col=='_sec_TicketsClient' or $col=='_sec_TicketsContact') and Parameter::getGlobalParameter('manageTicketCustomer') != 'YES') continue;
+      //END ADD qCazelles - Manage ticket at customer level - Ticket #87
       //ADD qCazelles - Version compatibility
       if ($col=='_sec_ProductVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') != 'YES') continue;
       //END ADD qCazelles - Version compatibility
@@ -854,6 +857,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
  	  }  else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
     	drawBusinessFeatures($obj);
     //END ADD
+    //ADD qCazelles - Manage ticket at customer level - Ticket #87
+ 	  } else if ($col == '_tickets' and Parameter::getGlobalParameter('manageTicketCustomer') == 'YES') {
+ 	    drawTicketsList($obj);
+ 	  //END ADD qCazelles - Manage ticket at customer level - Ticket #87
    	//ADD qCazelles - Version compatibility
    	} else if ($col == '_productVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') == 'YES') {
    		drawVersionCompatibility($obj);
@@ -3779,6 +3786,72 @@ function drawContextSection($obj, $refresh=false) {
 	}
 }
 //END qCazelles - Lang-Context
+
+//ADD qCazelles - Manage ticket at customer level - Ticket #87
+function drawTicketsList($obj, $refresh=false) {  
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  if ($obj->idle == 1) {
+    $canUpdate=false;
+  }
+  if (!$refresh) echo '<tr><td colspan="4">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  $listClass='Ticket';
+  echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
+  echo '<td class="linkHeader" style="width:60%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:40%">' . i18n('colIdStatus') . '</td>';
+  echo '</tr>';
+
+  if (get_class($obj)=='Contact') {
+    $crit=array('idContact'=>$obj->id,'idle'=>'0');
+    $ticket=new Ticket();
+    $list=$ticket->getSqlElementsFromCriteria($crit);
+  }
+  if (get_class($obj)=='Client') {
+    $contact=new Contact();
+    $crit=array('idClient'=>$obj->id);
+    $listContacts=$contact->getSqlElementsFromCriteria($crit);
+    $clauseWhere='idContact in (';
+    foreach ($listContacts as $contact) {
+      $clauseWhere.=$contact->id.', ';
+    }
+    $clauseWhere=substr($clauseWhere, 0, -2);
+    $clauseWhere.=') and idle=0';
+    $ticket=new Ticket();
+    $list=$ticket->getSqlElementsFromCriteria(null, false, $clauseWhere);
+  }
+
+  foreach ( $list as $ticket ) {
+    $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu' . $listClass, 'read', $ticket) == "YES")?true:false;
+    echo '<tr>';
+    $classCompName=i18n($listClass);
+    echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><table><tr><td>'.formatIcon($listClass,16).'</td><td style="vertical-align:top">&nbsp;'.'#' . $ticket->id.'</td></tr></table>';
+    echo '</td>';
+    $goto="";
+    if (!$print and $canGoto) {
+      $goto=' onClick="gotoElement(' . "'" . $listClass . "','" . htmlEncode($ticket->id) . "'" . ');" style="cursor: pointer;" ';
+    }
+    echo '<td class="linkData" ' . $goto . ' style="position:relative;">';
+    echo htmlEncode($ticket->name);
+    echo '</td><td class="linkData">';
+    //$objStatus=new $statusClass($linkObj->$idStatus);
+    echo colorNameFormatter(SqlList::getNameFromId('Status', $ticket->idStatus) . "#split#" . SqlList::getFieldFromId('Status', $ticket->idStatus, 'color')) . '</td>';
+    echo '</td>';
+    echo '</tr>';
+  }
+  
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  if (! $print) {
+    echo '<input id="TicketSectionCount" type="hidden" value="'.count($list).'" />';
+  }
+}
+//END ADD qCazelles - Manage ticket at customer level - Ticket #87
 
 function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
   $crit=array();

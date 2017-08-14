@@ -287,6 +287,7 @@ class Parameter extends SqlElement {
       case 'versionCompatibility' :
       case 'paramMailerSendAsCurrentUser' :
       //END ADD qCazelles
+      case 'manageTicketCustomer' :  //ADD qCazelles - Manage ticket at customer level - Ticket #87
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes')); 
         break;
@@ -622,9 +623,10 @@ class Parameter extends SqlElement {
           	                  'responsibleFromProduct'=>'list',
           	                  'limitPlanningActivity'=>'list',
           	                  'filterTicketReportPriority'=>'list',
-          	                'sectionAction'=>'section',
-          	                  'enablePredefinedActions'=>'list',
-          	                'sectionOrganization'=>'section',
+                              'manageTicketCustomer'=>'list', //ADD qCazelles - Manage ticket at customer level - Ticket #87
+         	                //'sectionAction'=>'section',
+          	              //    'enablePredefinedActions'=>'list',
+          	              'sectionOrganization'=>'section',
           	                  'useOrganizationBudgetElement'=>'list', // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
       	                  'columnPlanningRight'=>'newColumn',
       	                    'sectionPlanningAutomation'=>'section',
