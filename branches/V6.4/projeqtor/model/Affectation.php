@@ -314,6 +314,17 @@ public $_noCopy;
        or ($old->idProfile!=$this->idProfile and $this->idUser==getSessionUser()->id) ) {
       User::resetAllVisibleProjects(null,$this->idUser);
     }
+    if ($old->id) {
+      $mailResult=$this->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,true);
+    } else {
+      $mailResult=$this->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,true,false);
+    }
+    if ($mailResult) {
+      $pos=strpos($result,'<input type="hidden"');
+      if ($pos) {
+        $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+      }
+    }
     return $result;
   }
   

@@ -114,13 +114,19 @@ if($copyType=="copyObjectTo"){
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <div id="copyWithStructureDiv" style="display:none;">
 	               <label for="copyWithStructure" style="width:90%;text-align: right;"><?php echo i18n("copyWithStructure") ?>&nbsp;:&nbsp;</label>
-	               <div id="copyWithStructure" name="copyWithStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
-	                checked >
+	               <?php $isCheckedStructure=true;$isCheckedStructure=Parameter::getUserParameter('isCheckedStructure'.$objectClass);?>
+	               <div id="copyWithStructure" name="copyWithStructure" dojoType="dijit.form.CheckBox" <?php if ($isCheckedStructure=='true') echo " checked ";?> type="checkbox" >
+	               <script type="dojo/method" event="onChange" >
+                    saveDataToSession('isCheckedStructure<?php echo $objectClass;?>',((this.checked)?true:false),true);
+                 </script>
 	               </div>
 	               <br />
                  <label for="copyWithAssignments" style="width:90%;text-align: right;"><?php echo i18n("copyAssignments") ?>&nbsp;:&nbsp;</label>
-                 <div id="copyWithAssignments" name="copyWithAssignments" dojoType="dijit.form.CheckBox" type="checkbox" 
-                   >
+                 <?php $isCheckedWithAsignments=true;$isCheckedWithAsignments=Parameter::getUserParameter('isCheckedWithAsignments'.$objectClass);?>
+                 <div id="copyWithAssignments" name="copyWithAssignments" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithAsignments=='true') echo " checked ";?> type="checkbox" >
+                 <script type="dojo/method" event="onChange" >
+                    saveDataToSession('isCheckedWithAsignments<?php echo $objectClass;?>',((this.checked)?true:false),true);
+                 </script>
                  </div>
               </div>
              </td>
@@ -129,10 +135,10 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToOrigin" style="width:90%;text-align: right;"><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedOrigin=true;$isCheckedOrigin=Parameter::getUserParameter('isCheckedOrigin');?>
+               <?php $isCheckedOrigin=true;$isCheckedOrigin=Parameter::getUserParameter('isCheckedOrigin'.$objectClass);?>
                <div id="copyToOrigin" name="copyToOrigin" dojoType="dijit.form.CheckBox"  <?php if ($isCheckedOrigin=='true') echo " checked ";?> type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedOrigin',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedOrigin<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -140,10 +146,10 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToLinkOrigin" style="width:90%;text-align: right;"><?php echo i18n("copyToLinkOrigin") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedLinkOrigin=true;$isCheckedLinkOrigin=Parameter::getUserParameter('isCheckedLinkOrigin');?>
+               <?php $isCheckedLinkOrigin=true;$isCheckedLinkOrigin=Parameter::getUserParameter('isCheckedLinkOrigin'.$objectClass);?>
                <div id="copyToLinkOrigin" name="copyToLinkOrigin" dojoType="dijit.form.CheckBox" <?php if ($isCheckedLinkOrigin=='true') echo " checked ";?> type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedLinkOrigin',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedLinkOrigin<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -151,10 +157,10 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithLinks" style="width:90%;text-align: right;"><?php echo i18n("copyToWithLinks") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedWithLink=true;$isCheckedWithLink=Parameter::getUserParameter('isCheckedWithLink');?>
+               <?php $isCheckedWithLink=true;$isCheckedWithLink=Parameter::getUserParameter('isCheckedWithLink'.$objectClass);?>
                <div id="copyToWithLinks" name="copyToWithLinks" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithLink=='true') echo " checked ";?> type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedWithLink',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedWithLink<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -162,10 +168,10 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithAttachments" style="width:90%;text-align: right;"><?php echo i18n("copyToWithAttachments") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedWithAttachments=true;$isCheckedWithAttachments=Parameter::getUserParameter('isCheckedWithAttachments');?>
+               <?php $isCheckedWithAttachments=true;$isCheckedWithAttachments=Parameter::getUserParameter('isCheckedWithAttachments'.$objectClass);?>
                <div id="copyToWithAttachments" name="copyToWithAttachments" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithAttachments=='true') echo " checked ";?> type="checkbox">
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedWithAttachments',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedWithAttachments<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -173,11 +179,11 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithNotes" style="width:90%;text-align: right;"><?php echo i18n("copyToWithNotes") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedWithNotes=true;$isCheckedWithNotes=Parameter::getUserParameter('isCheckedWithNotes');?>
+               <?php $isCheckedWithNotes=true;$isCheckedWithNotes=Parameter::getUserParameter('isCheckedWithNotes'.$objectClass);?>
                <div id="copyToWithNotes" name="copyToWithNotes" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithNotes=='true') echo " checked ";?> 
                     type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedWithNotes',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedWithNotes<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -185,11 +191,11 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithResult" style="width:90%;text-align: right;"><?php echo i18n("copyToWithResult") ?>&nbsp;:&nbsp;</label>
-                <?php $isCheckedWithResult=true;$isCheckedWithResult=Parameter::getUserParameter('isCheckedWithResult');?>
+                <?php $isCheckedWithResult=true;$isCheckedWithResult=Parameter::getUserParameter('isCheckedWithResult'.$objectClass);?>
                <div id="copyToWithResult" name="copyToWithResult" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithResult=='true') echo " checked ";?> 
                     type="checkbox">
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedWithResult',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedWithResult<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -278,11 +284,11 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyProjectStructure") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedProjectStructure=true;$isCheckedProjectStructure=Parameter::getUserParameter('isCheckedProjectStructure');?>
+               <?php $isCheckedProjectStructure=true;$isCheckedProjectStructure=Parameter::getUserParameter('isCheckedProjectStructure'.$objectClass);?>
                <div id="copyProjectStructure" name="copyProjectStructure" dojoType="dijit.form.CheckBox" <?php if ($isCheckedProjectStructure=='true') echo " checked ";?>
                 type="checkbox" onChange="copyProjectStructureChange()" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedProjectStructure',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedProjectStructure<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -290,10 +296,10 @@ if($copyType=="copyObjectTo"){
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copySubProjects" style="width:90%;text-align: right;"><?php echo i18n("copySubProjects") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedSubProject=true;$isCheckedSubProject=Parameter::getUserParameter('isCheckedSubProject');?>
+               <?php $isCheckedSubProject=true;$isCheckedSubProject=Parameter::getUserParameter('isCheckedSubProject'.$objectClass);?>
                <div id="copySubProjects" name="copySubProjects" dojoType="dijit.form.CheckBox" <?php if ($isCheckedSubProject=='true') echo " checked ";?> type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedSubProject',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedSubProject<?php echo $objectClass;?>',((this.checked)?true:false),true);
                </script>
                </div>
              </td>
@@ -301,11 +307,11 @@ if($copyType=="copyObjectTo"){
             <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectAffectations" style="width:90%;text-align: right;"><?php echo i18n("copyProjectAffectations") ?>&nbsp;:&nbsp;</label>              
-               <?php $isCheckedProjectAffectation=Parameter::getUserParameter('isCheckedProjectAffectation');?>
+               <?php $isCheckedProjectAffectation=Parameter::getUserParameter('isCheckedProjectAffectation'.$objectClass);?>
                <div id="copyProjectAffectations" name="copyProjectAffectations" dojoType="dijit.form.CheckBox" <?php if ($isCheckedProjectAffectation=='true') echo " checked ";?>
                     type="checkbox" >
                 <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedProjectAffectation',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedProjectAffectation<?php echo $objectClass;?>',((this.checked)?true:false),true);
                 </script>
                </div>
              </td>
@@ -313,11 +319,11 @@ if($copyType=="copyObjectTo"){
         <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectAssignments" style="width:90%;text-align: right;"><?php echo i18n("copyAssignments") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedProjectAssignment=Parameter::getUserParameter('isCheckedProjectAssignment');?>
+               <?php $isCheckedProjectAssignment=Parameter::getUserParameter('isCheckedProjectAssignment'.$objectClass);?>
                <div id="copyProjectAssignments" name="copyProjectAssignments" dojoType="dijit.form.CheckBox" <?php if ($isCheckedProjectAssignment=='true') echo " checked ";?> 
                     type="checkbox" >
                 <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedProjectAssignment',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedProjectAssignment<?php echo $objectClass;?>',((this.checked)?true:false),true);
                 </script>
                </div>
              </td>
@@ -326,11 +332,11 @@ if($copyType=="copyObjectTo"){
               <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithLinks" style="width:90%;text-align: right;"><?php echo i18n("copyToWithLinks") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedLink=true;$isCheckedLink=Parameter::getUserParameter('isCheckedLink');?>
+               <?php $isCheckedLink=true;$isCheckedLink=Parameter::getUserParameter('isCheckedLink'.$objectClass);?>
                <div id="copyToWithLinks" name="copyToWithLinks" dojoType="dijit.form.CheckBox" <?php if ($isCheckedLink=='true') echo " checked ";?> 
                     type="checkbox" >
                 <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedLink',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedLink<?php echo $objectClass;?>',((this.checked)?true:false),true);
                 </script>
                </div>
              </td>
@@ -339,11 +345,11 @@ if($copyType=="copyObjectTo"){
             <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithVersionProjects" style="width:90%;text-align: right;"><?php echo i18n("copyToWithVersionProjects") ?>&nbsp;:&nbsp;</label>
-               <?php $isCheckedVersionProjects=true;$isCheckedVersionProjects=Parameter::getUserParameter('isCheckedVersionProjects');?>
+               <?php $isCheckedVersionProjects=true;$isCheckedVersionProjects=Parameter::getUserParameter('isCheckedVersionProjects'.$objectClass);?>
                <div id="copyToWithVersionProjects" name="copyToWithVersionProjects" dojoType="dijit.form.CheckBox" <?php if ($isCheckedVersionProjects=='true') echo " checked ";?> 
                     type="checkbox" >
                <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedVersionProjects',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedVersionProjects<?php echo $objectClass;?>',((this.checked)?true:false),true);
                 </script>
                </div>
              </td>
@@ -352,11 +358,11 @@ if($copyType=="copyObjectTo"){
             <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithActivityPrice" style="width:90%;text-align: right;"><?php echo i18n("copyToWithActivityPrice") ?>&nbsp;:&nbsp;</label>
-                <?php $isCheckedActivityPrice=Parameter::getUserParameter('isCheckedActivityPrice');?>
+                <?php $isCheckedActivityPrice=Parameter::getUserParameter('isCheckedActivityPrice'.$objectClass);?>
                <div id="copyToWithActivityPrice" name="copyToWithActivityPrice" dojoType="dijit.form.CheckBox" <?php if ($isCheckedProjectAssignment=='true') echo " checked ";?> 
                     type="checkbox">
                  <script type="dojo/method" event="onChange" >
-                  saveDataToSession('isCheckedActivityPrice',((this.checked)?true:false),true);
+                  saveDataToSession('isCheckedActivityPrice<?php echo $objectClass;?>',((this.checked)?true:false),true);
                 </script>
                </div>
              </td>

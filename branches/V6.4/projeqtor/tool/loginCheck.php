@@ -238,7 +238,7 @@
     $user->finalizeSuccessfullConnection(false);
     echo '<div class="messageOK">';
     echo i18n('loginOK');
-    echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
+    echo '<div id="validated" name="validated" type="hidden" dojoType="dijit.form.TextBox">OK';
     echo '</div>';
     echo '</div>';
   }

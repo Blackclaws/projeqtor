@@ -85,15 +85,17 @@ $mode = RequestHandler::getValue('mode',false,true);
                 }?>
                </select>  
              </td>
+             <?php if($refType=="Meeting" || $refType=="PeriodicMeeting") {  ?>
              <td style="vertical-align: top">
                <button id="assignmentDetailButton" dojoType="dijit.form.Button" showlabel="false"
                  title="<?php echo i18n('showDetail')?>"iconClass="iconView">
                  <script type="dojo/connect" event="onClick" args="evt">
-                    var canCreate=("<?php echo securityGetAccessRightYesNo('menuResource','create');?>"=="YES")?1:0;
-                    showDetail('assignmentIdResource', canCreate , 'Resource', false);
+                    var canCreate=("<?php echo securityGetAccessRightYesNo('menuAffectable','create');?>"=="YES")?1:0;
+                    showDetail('assignmentIdResource', canCreate ,'Affectable',false);
                  </script>
                </button>
              </td> 
+             <?php } ?>
            </tr>
            <tr>
              <td class="dialogLabel" >
