@@ -422,6 +422,16 @@ class ResourceMain extends SqlElement {
       return $result;     
     }
   	Affectation::updateAffectations($this->id);
+  	if ($this->id==getSessionUser()->id) { //must refresh data
+  	  $user=getSessionUser();
+  	  $user->name=$this->userName;
+  	  $user->resourceName=$this->name;
+  	  $user->initials=$this->initials;
+  	  $user->email=$this->email;
+  	  $user->idProfile=$this->idProfile;
+  	  $user->isContact=$this->isContact;
+  	  setSessionUser($user);
+  	}
   	return $result;
   }
   

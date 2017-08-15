@@ -532,8 +532,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
     }
   }
-  debugLog("for extra required fields");
-  debugLog($objType);
   $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
   $extraReadonlyFields=$obj->getExtraReadonlyFields( ($objType)?$objType->id:null );
   if (!$included) $section='';
@@ -580,6 +578,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $largeWidth=$mediumWidth;
       }
     }
+    $style=$obj->getDisplayStyling($col);
+    $labelStyle=$style["caption"];
+    $fieldStyle=$style["field"];
+    $captionStyle=
     $hide=false;
     $notReadonlyClass=" generalColClassNotReadonly ";
     $notRequiredClass=" generalColClassNotRequired ";
@@ -1093,7 +1095,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
             // $thumbIcon=SqlElement::isIconableField($col);
             $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
-            echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.'">';
+            echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.';'.$labelStyle.'">';
             if ($outMode == 'pdf') { 
               echo str_replace(' ', '&nbsp;',htmlEncode($obj->getColCaption($col),'stipAllTags'));
             } else {
@@ -1199,6 +1201,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       // $colScript=str_replace($col,$col . $extName,$colScript);
       // $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
       // }
+      $specificStyle.=";".$fieldStyle;
       if (is_object($val)) {
         if (!$obj->isAttributeSetToField($col, 'hidden')) {
           if ($col == 'Origin') {
@@ -1857,8 +1860,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 */        //END ADD qCazelles - Project restriction
         
         if (SqlElement::is_a($obj,'PlanningElement')) {
-          $planningModeName='id'.$obj->refType.'PlanningMode';
-          debugLog($objType);
+          $planningModeName='id'.$obj->refType.'PlanningMode';    
           if ($col==$planningModeName and !$obj->id and $objType) {      
             if (property_exists($objType,$planningModeName)) {
               $obj->$planningModeName=$objType->$planningModeName;

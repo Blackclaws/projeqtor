@@ -941,6 +941,18 @@ class UserMain extends SqlElement {
       return $result;     
     }
     Affectation::updateAffectations($this->id);
+    if ($this->id==getSessionUser()->id) { //must refresh data
+      $user=getSessionUser();
+      $user->name=$this->name;
+      $user->resourceName=$this->resourceName;
+      $user->initials=$this->initials;
+      $user->email=$this->email;
+      $user->idProfile=$this->idProfile;
+      $user->idLanguage=$this->idLanguage;
+      $user->isContact=$this->isContact;
+      $user->isResource=$this->isResource;
+      setSessionUser($user);
+    }
     return $result;
   }
   
