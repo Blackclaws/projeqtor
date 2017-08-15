@@ -2943,6 +2943,18 @@ abstract class SqlElement {
     }
   }
 
+  public function getDisplayStyling($fieldName) {
+    $displayStyling=$this->getStaticDisplayStyling();
+    if (isset($displayStyling[$fieldName])) {
+      $res=$displayStyling[$fieldName];
+      if (!isset($res['caption'])) $res['caption']='';
+      if (!isset($res['caption'])) $res['caption']='';
+      return $res;
+    } else {
+      return array('caption'=>'','field'=>'');
+    }
+    
+  }
   /**
    * ========================================================================
    * Return the default value for a given field
@@ -4260,7 +4272,6 @@ abstract class SqlElement {
       } else {
         $mailable = SqlElement::getSingleSqlElementFromCriteria ( 'Mailable', array('name' => $objectClass) );
       }
-      debugLog($mailable);
       if (! $mailable or ! $mailable->id) {
         return false; // exit if not mailable object
       }
