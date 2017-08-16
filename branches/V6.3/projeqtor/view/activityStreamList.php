@@ -54,7 +54,7 @@ if (RequestHandler::isCodeSet('activityStreamTypeNote')) {
 } else {
   $paramTypeNote=Parameter::getUserParameter("activityStreamElementType");
 }
-$typeNote = SqlList::getNameFromId('Linkable', $paramTypeNote,false);
+$typeNote = SqlList::getNameFromId('Importable', $paramTypeNote,false);
 
 if (RequestHandler::isCodeSet('activityStreamIdNote')) {
   $paramStreamIdNote=RequestHandler::getId("activityStreamIdNote");
