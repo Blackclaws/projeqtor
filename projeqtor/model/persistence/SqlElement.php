@@ -2955,6 +2955,9 @@ abstract class SqlElement {
     }
     
   }
+  private static function getStaticDisplayStyling() {
+    return array();
+  }
   /**
    * ========================================================================
    * Return the default value for a given field
