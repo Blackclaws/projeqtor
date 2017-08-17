@@ -2746,8 +2746,13 @@ table.dijitCalendarContainer {
  
 .dijitReadOnly *, .dijitDisabled *, .dijitReadOnly, .dijitDisabled {
 	/*color:grey;*/
-	color:#606060 !important;
+	/*color:#606060;*/
 	cursor: default !important;
+}
+.dijitReadOnly, .dijitDisabled {
+  /*color:grey;*/
+  color:#606060 !important;
+  cursor: default !important;
 }
 .dijitTextBoxReadOnly { 
 	color:#606060 !important;

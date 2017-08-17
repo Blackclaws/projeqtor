@@ -962,6 +962,9 @@ function checkDestination(destination) {
       dojo.byId('indentButtonDiv').style.display = 'none';
     }
   }
+  dojo.query('.titlePaneFromDetail').forEach(function(node, index, nodelist) { // Apply specific style for title panes
+    dijit.byId(node.id).titlePaneHandler();
+  });
 }
 /**
  * ============================================================================
@@ -4428,4 +4431,9 @@ function switchNotesPrivacyStream() {
   }
   var currentClass=(dojo.byId('objectClass'))?dojo.byId('objectClass').value:'';
   saveDataToSession("privacyNotes"+currentClass,dojo.byId("notePrivacyStream").value,true);
+}
+
+function setAttributeOnTitlepane(pane,attr,height) {
+  if (height) attr+='height:'+height+'px';
+  dojo.byId(pane+'_titleBarNode').style=attr;
 }
