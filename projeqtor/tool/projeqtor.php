@@ -3304,3 +3304,15 @@ function isSubscribeVersion($obj,$idUser){
   return $subscribed;
 }
 //end
+
+function splitCssAttributes($attr) {
+  $spl=explode(';',$attr);
+  $res=array();
+  foreach ($spl as $at) {
+    $sep=explode(':',$at);
+    if (count($sep)<2) continue;
+    $sep[1]=str_replace(' !important','',$sep[1]);
+    $res[$sep[0]]=$sep[1];
+  }
+  return $res;
+}
