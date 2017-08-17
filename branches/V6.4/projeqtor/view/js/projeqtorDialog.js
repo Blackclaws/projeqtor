@@ -6123,7 +6123,6 @@ function validatePlanningColumn() {
   setGanttVisibility(g);
   if (validatePlanningColumnNeedRefresh) { 
     refreshJsonPlanning();
-    console.log("refresh");
   } else {
     JSGantt.changeFormat(g.getFormat(), g);
     hideWait();

@@ -581,7 +581,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $style=$obj->getDisplayStyling($col);
     $labelStyle=$style["caption"];
     $fieldStyle=$style["field"];
-    $captionStyle=
     $hide=false;
     $notReadonlyClass=" generalColClassNotReadonly ";
     $notRequiredClass=" generalColClassNotRequired ";
@@ -964,6 +963,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $isRequired=false;
       $readOnly=false;
       $specificStyle='';
+      $specificStyleWithoutCustom='';
       if (($col == "idle" or $col == "done" or $col == "handled" or $col == "cancelled" or $col == "solved") and $objType) {
         $lock='lock' . ucfirst($col);
         if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
@@ -1201,6 +1201,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       // $colScript=str_replace($col,$col . $extName,$colScript);
       // $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
       // }
+      $specificStyleWithoutCustom=$specificStyle;
       $specificStyle.=";".$fieldStyle;
       if (is_object($val)) {
         if (!$obj->isAttributeSetToField($col, 'hidden')) {
@@ -1378,13 +1379,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
         $ref=$obj->getReferenceUrl();
-        echo '<span class="roundedButton" style="padding:1px 5px 5px 5px;font-size:8pt; height: 50px; color:#AAAAAA;" >';
+        echo '<span class="roundedButton" style="padding:1px 5px 5px 5px;font-size:8pt; height: 50px; color:#AAAAAA;'.$specificStyle.'" >';
         echo '  <a  href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n("rightClickToCopy") . '" style="cursor: pointer;">';
-        echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;">#</span>';
+        echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;'.$specificStyle.'">#</span>';
         echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo '     class="display pointer" ';
-        echo '     readonly tabindex="-1" style="background: transparent; border: 0; cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;" ';
+        echo '     readonly tabindex="-1" style="background: transparent; border: 0; cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;'.$specificStyle.'" ';
         echo '     value="' . htmlEncode($val) . '" >';
         echo '    </span>';
         echo '  </a>';
@@ -1423,7 +1424,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // Password specificity ============================================= PASSWORD
         if ($canUpdate) {
           echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
-          echo ' class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="'.$specificStyle.'"';
+          echo ' class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="'.$specificStyleWithoutCustom.'"';
           echo $attributes;
           $salt=hash('sha256', "projeqtor" . date('YmdHis'));
           echo ' title="' . i18n('helpResetPassword') . '" >';
@@ -1445,7 +1446,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col == 'color' and $dataLength == 7) {
         // Draw a color selector ============================================== COLOR
-        echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyle.'"><tr><td class="detail">';
+        echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'"><tr><td class="detail">';
         echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly tabindex="-1" ';
         echo $name;
         echo $attributes;
@@ -1494,7 +1495,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '</td></tr></table>';
       } else if ($col == 'durationSla') {
         // Draw a color selector ============================================== SLA as a duration
-        echo '<div class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="width: 30px;'.$specificStyle.'">';
+        echo '<div class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="width: 30px;'.$specificStyleWithoutCustom.'">';
         echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" type="text"  ';
         echo $name;
         echo $attributes;
@@ -1925,7 +1926,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '</select>';
         if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonGoto" ';
-          echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
+          echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton  generalColClass '.$col.'Class">';
           echo '<div class="iconGoto" ';
           $jsFunction="var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . $comboClass . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
@@ -1935,7 +1936,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonDetail" ';
-          echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;'.$specificStyle.'"';
+          echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo '<div class="iconView" ';
           echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol)?1:0) . ',\''.$comboClass.'\')"';
@@ -1944,7 +1945,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
-            echo '<a class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyle.'" ';
+            echo '<a class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyleWithoutCustom.'" ';
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
             echo ' title="' . i18n('otherVersionAdd') . '">';
             echo formatSmallButton('Add');
@@ -1957,7 +1958,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($col == 'idStatus' and $next and $showExtraButton) {
           echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
           echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
-          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
+          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyleWithoutCustom.'"';
           $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
           echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $next . ');setTimeout(\''.$saveFunction.'\',100);">';
           echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
@@ -2052,7 +2053,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $ent=$spl [0] - $dec;
         $max=substr('99999999999999999999', 0, $ent);
         if ($isCost and $currencyPosition == 'before') {
-          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
+          echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;height:100%;'.$specificStyleWithoutCustom.$labelStyle.'">'.$currency.'</span>';
         }
 // ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         if ($isPercent and 
@@ -2140,10 +2141,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $colScript;
         echo '</div>';
         if ($isCost and $currencyPosition == 'after') {
-          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">'.$currency.'</span>';
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">'.$currency.'</span>';
         }
         if ($isWork or $isDuration or $isPercent) {
-          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyle.'">';
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">';
         }
         if ($isWork) {
           if ($classObj=='WorkElement') {
@@ -2402,6 +2403,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null,$obj=null) {
   scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
+
   if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
@@ -2421,6 +2423,8 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   	$sectionName=$split[0];
   }
   if (!$obj) $obj=new $classObj();
+  $style=$obj->getDisplayStyling('_sec_'.$section);
+  $labelStyle=$style["caption"];
   $extraHiddenFields=$obj->getExtraHiddenFields();
   if (!$print) {
     $arrayPosition=array(
@@ -2470,13 +2474,19 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     if ($obj->isAttributeSetToField('_sec_'.$section,'hidden') or in_array('_sec_'.$section,$extraHiddenFields)) {
     	$display='none';
     }
-    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($sectionName)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
+    $attrs=splitCssAttributes($labelStyle);
+    $fontSize=(isset($attrs['font-size']))?intval($attrs['font-size']):'';
+    echo '<div dojoType="dijit.TitlePane" title="'. i18n('section' . ucfirst($sectionName)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    echo ' class="generalColClass _sec_'.$section.'Class" ';
+    echo ' class="titlePaneFromDetail generalColClass _sec_'.$section.'Class" ';
+    echo ' titleStyle="'.$labelStyle.'"';
     echo ' style="display:'.$display.';position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-    echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
+    echo ' onShow=";saveExpanded(\'' . $titlePane . '\');">';
+    $titleHeight=($fontSize)?$fontSize*1.6:'';
+    //echo ' <script type="dojo/connect" event="onShow" > setAttributeOnTitlepane(\''.$titlePane.'\',\''.$labelStyle.'\',\''.$titleHeight.'\');</script>';
+    echo ' <script type="dojo/method" event="titlePaneHandler" > setAttributeOnTitlepane(\''.$titlePane.'\',\''.$labelStyle.'\',\''.$titleHeight.'\');</script>';
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
   	$display='';
