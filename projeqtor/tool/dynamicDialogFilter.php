@@ -58,6 +58,18 @@ require_once "../tool/projeqtor.php";
          <table width="100%" style="border: 1px solid grey;">
            <tr><td colspan="4" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
            <tr style="vertical-align: top;">
+             <?php //ADD qCazelles - Dynamic filter - Ticket #78?>
+           	 <td id="filterLogicalOperator" style="width: 80px;display: none" title="<?php echo i18n('helpOrInput');?>" >
+           	 	<select dojoType="dijit.form.Select"
+           	 		id="orOperator" name="orOperator"
+           	 		class="input" style="width: 70px;" value="0">
+           	 		<?php echo autoOpenFilteringSelect();?> 
+           	 		<!-- BOITE DE DIALOGUE A METTRE SUR LE OR -->						<!-- TODO TODO TODO -->
+           	 		<option value="0" selected><?php echo i18n('AND');?></option> <!-- TRANSLATION qCazelles -->
+           	 		<option value="1"><?php echo i18n('OR');?></option>			  <!-- TRANSLATION qCazelles -->
+           	 	</select>
+           	 </td>
+             <?php //END ADD qCazelles - Dynamic filter - Ticket #78?>
              <td style="width: 210px;" >
                <div dojoType="dojo.data.ItemFileReadStore" jsId="attributeStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
                </div>
@@ -85,6 +97,12 @@ require_once "../tool/projeqtor.php";
                </select>
              </td>
              <td style="width:410px;vertical-align:middle;">
+             <?php //ADD qCazelles - Dynamic filter - Ticket #78?>
+               <div id="filterDynamicParameterPane" dojoType="dijit.layout.ContentPane" region="top">
+               	<input type="checkbox" id="filterDynamicParameter" name="filterDynamicParameter" value=""
+               	 	dojoType="dijit.form.CheckBox" /><label class="checkLabel" for="filterDynamicParameter"><?php echo i18n('dynamicValue');?></label>
+               	</div>
+               <?php //END ADD qCazelles - Dynamic filter - Ticket #78?>
                <input id="filterValue" name="filterValue" value=""  
                  dojoType="dijit.form.TextBox" 
                  style="width:400px" />

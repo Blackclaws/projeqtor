@@ -40,3 +40,9 @@ CREATE TABLE `${prefix}versioncompatibility` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 --END ADD qCazelles - Version compatibility
+
+--ADD qCazelles - Dynamic filter - Ticket #78
+ALTER TABLE `${prefix}filter` ADD COLUMN `isDynamic` int(1) DEFAULT '0';
+ALTER TABLE `${prefix}filtercriteria` ADD COLUMN `isDynamic` int(1) DEFAULT '0';
+ALTER TABLE `${prefix}filtercriteria` ADD COLUMN `orOperator` int(1) DEFAULT '0';
+--END ADD qCazelles - Dynamic filter - Ticket #78

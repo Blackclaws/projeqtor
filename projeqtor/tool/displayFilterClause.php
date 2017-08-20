@@ -66,6 +66,25 @@ if (! $comboDetail and array_key_exists($filterObjectClass . "FilterName", $user
   $name=$user->_arrayFiltersDetail[$filterObjectClass . "FilterName"];
 }
 
+//ADD qCazelles - Dynamic filter - Ticket #78
+//When removing filter criterias, the first one can not be defined by an OR operator
+if (!empty($filterArray)) {
+	$filterArray=array_values($filterArray);
+	if ($filterArray[0]['orOperator']=='1') {
+		$filterArray[0]['orOperator']='0';
+		
+		if (! $comboDetail) {
+			$user->_arrayFilters[$filterObjectClass]=$filterArray;
+			$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+		} else {
+			$user->_arrayFiltersDetail[$filterObjectClass]=$filterArray;
+			$user->_arrayFiltersDetail[$filterObjectClass . "FilterName"]=$name;
+		}
+		setSessionUser($user);
+	}
+}
+//END ADD qCazelles - Dynamic filter - Ticket #78
+
 htmlDisplayFilterCriteria($filterArray,$name); 
 
 ?>

@@ -37,6 +37,9 @@ class Filter extends SqlElement {
   public $refType;
   public $idUser;
   public $isShared;
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  public $isDynamic;
+  //END ADD qCazelles - Dynamic filter - Ticket #78
   public $_FilterCriteriaArray;
     
    /** ==========================================================================

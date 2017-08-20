@@ -178,7 +178,7 @@ function thumbFormatter($objectClass,$id,$size) {
   }
 }
 
-function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $idTicket) {
+function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $idTicket=null) {
   global $print;
 	if (!$userName) $userName=SqlList::getNameFromId('Affectable',$idUser);
 	$arrayColors=array('#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#99CC00', '#e74c3c', '#95a5a6', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d');
@@ -191,7 +191,7 @@ function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $i
 	}else{
 	  $result='<span style="color:#ffffff;background-color:'.$bgColor.';float:'.$floatLetter.';font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;"'
 	  		. ' onMouseOver="showBigImage(null,null,this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
-	  		. ($idTicket!=-1 ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
+	  		. (($idTicket>0 ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
 	}
 	$result.=strtoupper(substr($userName,0,1));
 	$result.='</span>';
