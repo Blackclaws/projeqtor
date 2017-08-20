@@ -40,6 +40,10 @@ class FilterCriteria extends SqlElement {
   public $sqlAttribute;
   public $sqlOperator;
   public $sqlValue;
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  public $isDynamic;
+  public $orOperator;
+  //END ADD qCazelles - Dynamic filter - Ticket #78
   
    /** ==========================================================================
    * Constructor

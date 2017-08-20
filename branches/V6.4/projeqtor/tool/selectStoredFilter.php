@@ -72,7 +72,12 @@ if (is_array($filter->_FilterCriteriaArray)) {
     $arraySql["attribute"]=$filterCriteria->sqlAttribute;
     $arraySql["operator"]=$filterCriteria->sqlOperator;
     $arraySql["value"]=$filterCriteria->sqlValue;
-    $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+    //CHANGE qCazelles - Dynamic filter - Ticket #78
+    //Old
+    //$filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+  	//New
+  	$filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql,"isDynamic"=>$filterCriteria->isDynamic,"orOperator"=>$filterCriteria->orOperator);
+  	//END CHANGE qCazelles - Dynamic filter - Ticket #78
   }
 } 
 

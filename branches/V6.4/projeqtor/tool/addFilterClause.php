@@ -56,7 +56,12 @@ if (! array_key_exists('idFilterOperator',$_REQUEST)) {
 }
 $idFilterOperator=$_REQUEST['idFilterOperator'];
 // TODO (SECURITY) : test completness of test
-if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|<>|SORT|[<>]=now\+)$/', $idFilterOperator) != true) {
+//CHANGE qCazelles - Dynamic filter - Ticket #78
+//Old
+//if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|<>|SORT|[<>]=now\+)$/', $idFilterOperator) != true) {
+//New - Add of startBy
+if (preg_match('/^(([<>]|<>)?=|(NOT )?LIKE|hasSome|(NOT )?IN|is(Not)?Empty|<>|SORT|[<>]=now\+|startBy)$/', $idFilterOperator) != true) {
+//END CHANGE qCazelles - Dynamic filter - Ticket #78
 	traceHack("bad value for idFilterOperator ($idFilterOperator)");
 	exit;
 }
@@ -70,7 +75,6 @@ if (preg_match('/^(list|decimal|int|date|bool|refObject|varchar)$/', $filterData
 	traceHack("bad value for filterDataType ($filterDataType)");
 	exit;
 }
-
 
 if (! array_key_exists('filterValue',$_REQUEST)) {
   throwError('filterValue parameter not found in REQUEST');
@@ -100,6 +104,20 @@ if (! array_key_exists('filterSortValueList',$_REQUEST)) {
 }
 $filterSortValue=$_REQUEST['filterSortValueList']; 
 Security::checkValidAlphanumeric($filterSortValue);
+
+//ADD qCazelles - Dynamic filter - Ticket #78
+if (! array_key_exists('orOperator',$_REQUEST)){
+	throwError('orOperator parameter not found in REQUEST');
+}
+$orOperator=$_REQUEST['orOperator'];
+
+if (! array_key_exists('filterDynamicParameter', $_REQUEST)) {
+	$filterDynamicParameter=false;
+}
+else {
+	$filterDynamicParameter=true;
+}
+//END ADD qCazelles - Dynamic filter - Ticket #78
 
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
@@ -209,13 +227,13 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arraySql["operator"]="is not null";
       $arrayDisp["value"]="";
       $arraySql["value"]="";
-  } else if ($idFilterOperator=="SORT") {  
+  } else if ($idFilterOperator=="SORT") {
     $arrayDisp["operator"]=i18n("sortFilter");
     $arraySql["operator"]=$idFilterOperator;
     Security::checkValidAlphanumeric($filterSortValue);
     $arrayDisp["value"]=htmlEncode(i18n('sort' . ucfirst($filterSortValue) ));
     $arraySql["value"]=$filterSortValue;
-  } else if ($idFilterOperator=="<=now+") {  
+  } else if ($idFilterOperator=="<=now+") {
     $arrayDisp["operator"]="<= " . i18n('today') . (($filterValue>0)?' +':' ');
     $arraySql["operator"]="<=";
     $arrayDisp["value"]=htmlEncode(intval($filterValue)) . ' ' . i18n('days');
@@ -239,11 +257,48 @@ if ($idFilterAttribute and $idFilterOperator) {
     } else {
       $arraySql["value"]= "ADDDATE(NOW(), INTERVAL (" . intval($filterValue) . ") DAY)";
     }
+    //ADD qCazelles - Dynamic filter - Ticket #78
+  } else if ($idFilterOperator=="startBy") {
+  	$arrayDisp["operator"]="startBy";
+  	$arraySql["operator"]="LIKE";
+  	$arrayDisp["value"]="'".htmlEncode($filterValue)."'";
+  	$arraySql["value"]="'".htmlEncode($filterValue)."%'";
+    //END ADD qCazelles - Dynamic filter - Ticket #78
   } else {
      echo htmlGetErrorMessage(i18n('incorrectOperator'));
      exit;
-  } 
-  $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+  }
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  if ($filterDynamicParameter) {
+  	$arrayDisp["value"] = NULL;
+  	$arraySql["value"] = NULL;
+  	
+  	if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<="  or $idFilterOperator=="<>" or $idFilterOperator==">=now+" or $idFilterOperator=="<=now+") {
+  		if ($filterDataType=='date' and $idFilterOperator!=">=now+" and $idFilterOperator!="<=now+") {
+  			$arraySql["value"]='date';
+  		}
+  		elseif ($filterDataType=='bool') {
+  			$arraySql["value"]='bool';
+  		}
+  		elseif ($idFilterOperator==">=now+" or $idFilterOperator=="<=now+") {
+  			$arraySql["value"]='intDate';
+  		}
+  		else {
+  			$arraySql["value"]='int';
+  		}
+  	}
+  	elseif ($idFilterOperator=='startBy') {
+  	  $arraySql["value"]='startBy';
+  	}
+  }
+  //END ADD qCazelles - Dynamic filter - Ticket #78
+  
+  //CHANGE qCazelles - Dynamic filter - Ticket #78
+  //Old
+  //$filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+  //New
+  $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql,"isDynamic"=>($filterDynamicParameter ? "1" : "0"),"orOperator"=>$orOperator);
+  //END CHANGE qCazelles - Dynamic filter - Ticket #78
   if ($idFilterAttribute=='idle' and $filterValueCheckbox) {
     $arrayDisp["attribute"]=i18n('labelShowIdle');
     $arrayDisp["operator"]="";
@@ -251,8 +306,8 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arraySql["attribute"]='idle';
     $arraySql["operator"]='>=';
     $arraySql["value"]='0';
-    $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
   }
+  
   if (! $comboDetail) {
     $user->_arrayFilters[$filterObjectClass]=$filterArray;
   } else {
