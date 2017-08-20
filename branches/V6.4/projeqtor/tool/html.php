@@ -1093,26 +1093,54 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo ' </a>';
   echo "</td>";
   echo "</tr>";
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  $nbDynamicFilterCriteria=0;
+  $nbFilters=0;
+  //END ADD qCazelles - Dynamic filter - Ticket #78
   if (count($filterArray)>0) { 
     foreach ($filterArray as $id=>$filter) {
       echo "<tr>";
-      echo "<td class='filterData'>" . 
-           $filter['disp']['attribute'] . " " .
+      echo "<td class='filterData'>";
+      //ADD qCazelles - Dynamic filter - Ticket #78
+	  if ($filter['orOperator']=='1') {
+      	echo i18n('OR').' ';
+      }
+      	elseif ($nbFilters==0) { //Nothing is displayed on the first criteria
+       	$nbFilters+=1;
+      }
+      else {
+      	echo i18n('AND').' ';
+      }
+      //END ADD qCazelles - Dynamic filter - Ticket #78
+      echo $filter['disp']['attribute'] . " " .
            $filter['disp']['operator'] . " " .
-           $filter['disp']['value'] .
-           "</td>";
+           //CHANGE qCazelles - Dynamic filter - Ticket #78
+           //Old
+      	   //$filter['disp']['value'] .
+           //New
+           ($filter['isDynamic']=="1" ? '{'.i18n('dynamicValue').'}' : $filter['disp']['value']) .
+           //END CHANGE qCazelles - Dynamic filter - Ticket #78
+      	   "</td>";
       echo "<td class='filterData' style='text-align: center;'>";
       echo ' <a src="css/images/smallButtonRemove.png" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" > ';
       echo formatSmallButton('Remove');
       echo ' </a>';
       echo "</td>";
       echo "</tr>";
+      //ADD qCazelles - Dynamic filter - Ticket #78
+      if ($filter['isDynamic']=="1") {
+      	$nbDynamicFilterCriteria+=1;
+      }
+      //END ADD qCazelles - Dynamic filter - Ticket #78
     }
   } else {
     echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noFilterClause") . "</i></td></tr>";
   }
   echo "</table>";
   echo '<input id="nbFilterCriteria" name="nbFilterCriteria" type="hidden" value="' . count($filterArray) . '" />';
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  echo '<input id="nbDynamicFilterCriteria" name="nbDynamicFilterCriteria" type="hidden" value="'.$nbDynamicFilterCriteria.'" />';
+  //END ADD qCazelles - Dynamic filter - Ticket #78
 }
 
 /**
@@ -1147,9 +1175,12 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
            . "</td>";
     echo "</tr>";
   }
-  if (count($filterArray)>0) { 
+  if (count($filterArray)>0) {
     foreach ($filterArray as $filter) {
       echo "<tr>";
+      //ADD qCazelles - Dynamic filter - Ticket #78
+      echo ($filter->isDynamic=="1" ? '<input type="hidden" id="dynamicFilterId'.$filter->id.'" />' : ''); //Used for selection of stored filter, to enable the prompt of dynamic value(s)
+      //END ADD qCazelles - Dynamic filter - Ticket #78
       echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter and $context=='directFilterList')?'color:white; background-color: grey;':'cursor: pointer;') . '"' 
            . ' class="filterData" '
            //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . htmlEncode($filter->id) . "'" . ');" ')

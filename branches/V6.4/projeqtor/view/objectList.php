@@ -338,13 +338,32 @@ if ($displayWidthList<1400) {
                  if (! $comboDetail and is_array(getSessionUser()->_arrayFilters)) {
                    if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
                      if (count(getSessionUser()->_arrayFilters[$objectClass])>0) {
-                       $activeFilter=true;
+                     	//CHANGE qCazelles - Dynamic filter - Ticket #78
+                     	//Old
+                     	//$activeFilter=true;
+                     	//New
+                     	//A filter with isDynamic=1 is not active
+                     	foreach (getSessionUser()->_arrayFilters[$objectClass] as $filter) {
+                     		if (isset($filter['isDynamic']) and $filter['isDynamic']=="0") {
+                     			$activeFilter=true;
+                     		}
+                     	}
+                     	//END CHANGE qCazelles - Dynamic filter - Ticket #78
                      }
                    }
                  } else if ($comboDetail and is_array(getSessionUser()->_arrayFiltersDetail)) {
                    if (array_key_exists($objectClass, getSessionUser()->_arrayFiltersDetail)) {
                      if (count(getSessionUser()->_arrayFiltersDetail[$objectClass])>0) {
-                       $activeFilter=true;
+                     	//CHANGE qCazelles - Dynamic filter - Ticket #78
+                     	//Old
+                     	//$activeFilter=true;
+                     	//New
+                     	foreach (getSessionUser()->_arrayFiltersDetail[$objectClass] as $filter) {
+                     		if ($filter['isDynamic']=="0") {
+                     			$activeFilter=true;
+                     		}
+                     	}
+                     	//END CHANGE qCazelles - Dynamic filter - Ticket #78
                      }
                    }
                  }

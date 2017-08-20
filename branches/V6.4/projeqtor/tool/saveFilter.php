@@ -76,10 +76,16 @@ if (! $name) {
     $filter->name=$name;
     $filter->idUser=$user->id;
     $filter->isShared=0;
+    //ADD qCazelles - Dynamic filter - Ticket #78
+     $filter->isDynamic="0";
+     //END ADD qCazelles - Dynamic filter - Ticket #78
   }
   $filter->save();
   $criteria=new FilterCriteria();
   $criteria->purge("idFilter='" . $filter->id . "'");
+  //ADD qCazelles - Dynamic filter - Ticket #78
+  $dynamicFilter=0;
+  //END ADD qCazelles - Dynamic filter - Ticket #78
   foreach ($filterArray as $filterCriteria) {
     $criteria=new FilterCriteria();
     $criteria->idFilter=$filter->id;
@@ -96,9 +102,23 @@ if (! $name) {
     	  $criteria->sqlValue='0';
     	}
     }
+    //ADD qCazelles - Dynamic filter - Ticket #78
+    $criteria->orOperator=$filterCriteria["orOperator"];
+    $criteria->isDynamic=$filterCriteria["isDynamic"];
+    if ($filterCriteria["isDynamic"]=="1") {
+		$dynamicFilter=1;
+    }
+    //END ADD qCazelles - Dynamic filter - Ticket #78
     $criteria->save();
   }
 }
+//ADD qCazelles - Dynamic filter - Ticket #78
+if ($filter->isDynamic!=$dynamicFilter) {
+	$filter->isDynamic=$dynamicFilter; //If a criteria is dynamic, the filter is dynamic
+	$filter->save();
+}
+//END ADD qCazelles - Dynamic filter - Ticket #78
+
 echo '<table width="100%"><tr><td align="center" >';
 echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.htmlEncode($filter->id).')</span>';
 echo '</td></tr></table>';

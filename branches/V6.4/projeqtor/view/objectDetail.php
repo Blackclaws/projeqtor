@@ -618,7 +618,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $internalTableCols=$decomp [2];
       $internalTableRows=$decomp [3];
       //ADD qCazelles - dateComposition
-      if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') $internalTableRows -= 2;
+      // if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') $internalTableRows -= 2;
       //END ADD qCazelles - dateComposition
       $internalTableSpecial='';
       if (count($decomp) > 4) {
@@ -644,10 +644,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       // 
       $internalTable=$internalTableCols * $internalTableRows;
       //ADD qCazelles - dateComposition
-      if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') {
-      	unset($val[4]);
-      	unset($val[5]);
-      }
+      //if (count($val) == 8 and $val[4]=='startDate' and $val[5]=='deliveryDate' and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES') {
+      //	unset($val[4]);
+      //	unset($val[5]);
+      //}
       //END ADD qCazelles - dateComposition
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
@@ -1004,9 +1004,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       //END ADD qCazelles - Project restriction
       //ADD qCazelles - dateComposition
-      if (SqlElement::is_a($obj,'Version') and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
-      	$hide=true; //continue;
-      }
+      //if (SqlElement::is_a($obj,'Version') and Parameter::getGlobalParameter('displayMilestonesStartDelivery') != 'YES' and ($col=='initialStartDate' or $col=='plannedStartDate' or $col=='realStartDate' or $col=='isStarted' or $col=='initialDeliveryDate' or $col=='plannedDeliveryDate' or $col=='realDeliveryDate' or $col=='isDelivered')) {
+      //	$hide=true; //continue;
+      //}
       //END ADD qCazelles - dateComposition
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
         $hide=true;
