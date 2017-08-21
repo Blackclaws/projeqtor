@@ -68,7 +68,7 @@
 		  <div dojoType="dijit.layout.ContentPane" region="center">
 			  <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
 				  <div id="hideStreamButton" style="cursor:pointer;position:absolute; right:-2px; bottom:2px;z-index:999999">
-		        <a onClick="hideStreamMode();" id="buttonSwitchedStream" title="" ><span style='top:0px;display:inline-block;width:20px;height:"22px;'><div class='iconHideStream22' style='' >&nbsp;</div></span></a>
+		        <a onClick="hideStreamMode();" id="buttonSwitchedStream" title="" ><span style="top:0px;display:inline-block;width:20px;height:22px;"><div class='iconHideStream22' style='' >&nbsp;</div></span></a>
 		      </div>
 				  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
 				   <?php $noselect=true; include 'objectDetail.php'; ?>

@@ -341,20 +341,35 @@ function drawsynthesisGraph($scope, $lst) {
   if (count($lst)==0) { return;}  
   $valArr=array();
   $legArr=array();
-  $lstRef=SqlList::getList($scope,'name',false,true);
+  $lstRef=SqlList::getList($scope,'name',null,true,false);
+  $lstColorRef=array();
+  if (property_exists($scope, 'color')) {
+    $lstColorRef=SqlList::getList($scope,'color',null,true,false);
+  }
+  $nbItem=0;
+  
+  $hgt=count($lst)*20;
+  $hgt=($hgt<110)?110:$hgt;
+  $graph = new pChart(220,$hgt);
   if (array_key_exists('0', $lst)) {
     $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
+    $lstColorRef[0]='#cccccc';
+    $colorTicket = hex2rgb($lstColorRef[0]);
+    $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
+    $nbItem++;
   }
-  $nbItem=0;
-  $hgt=$nbItem*20;
-  $hgt=($hgt<110)?110:$hgt;
-  $graph = new pChart(220,$hgt);
+ 
+  
   foreach ($lstRef as $code=>$val) {
     if (array_key_exists($code, $lst)) {
       $valArr[]=$lst[$code];
       $legArr[]=$val;
-      $color=$arrayColors[$code%count($arrayColors)];
+      if (isset($lstColorRef[$code])) {
+        $color=$lstColorRef[$code];
+      } else {
+        $color=$arrayColors[$code%count($arrayColors)];
+      }
       $colorTicket = hex2rgb($color);
       $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
       $nbItem++;
