@@ -1253,22 +1253,30 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
           // Display full HTML ================================================== Hidden field
           // echo '<div class="displayHtml">';
+          echo '<span style="'.$fieldStyle.'">';
           if ($outMode == 'pdf') {
             echo htmlRemoveDocumentTags($val);
           } else {
             echo $val;
           }
+          echo '</span>';
         } else if ($col == 'id') { // id
-          echo '<span style="color:grey;">#' . $val . "&nbsp;&nbsp;&nbsp;</span>";
+          echo '<span style="color:grey;'.$fieldStyle.'">#' . $val . "&nbsp;&nbsp;&nbsp;</span>";
         } else if ($col == 'password') {
           echo "..."; // nothing
         } else if ($dataType == 'date' and $val != null and $val != '') {
+          echo '<span style="'.$fieldStyle.'">';
           echo htmlFormatDate($val);
+          echo '</span>';
         } else if ($dataType == 'datetime' and $val != null and $val != '') {
           //echo str_replace(' ','&nbsp;',htmlFormatDateTime($val, false));
+          echo '<span style="'.$fieldStyle.'">';
           echo htmlFormatDateTime($val, false);
+          echo '</span>';
         } else if ($dataType == 'time' and $val != null and $val != '') {
+          echo '<span style="'.$fieldStyle.'">';
           echo htmlFormatTime($val, false);
+          echo '</span>';
         } else if ($col == 'color' and $dataLength == 7) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
@@ -1291,11 +1299,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if ($col=='cancelled' or $col=='solved') echo "&nbsp;&nbsp;&nbsp;";
           echo '<img src="img/' . $checkImg . '" />';
         } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) { // Idxxx
+          echo '<span style="'.$fieldStyle.'">';
           echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));
+          echo '</span>';
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col),'stipAllTags').'&nbsp;:&nbsp;</div>';
-          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;">';
+          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;'.$fieldStyle.'">';
           if (isTextFieldHtmlFormatted($val)) $val=htmlEncode($val,'formatted');
           if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
             if ($preseveHtmlFormatingForPDF) {
@@ -1307,21 +1317,29 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo $val.'&nbsp;';
           echo '</div>';
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
+          echo '<span style="'.$fieldStyle.'">';
           echo htmlEncode($val, 'print');
           $fldFull='_' . $col . '_full';
           if ($outMode == 'pdf' and isset($obj->$fldFull)) {
             echo '<img src="../view/css/images/doubleArrowDown.png" />';
           }
+          echo '</span>';
         } else if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
+          echo '<span style="'.$fieldStyle.'">';
           if ($currencyPosition == 'after') {
             echo htmlEncode($val, 'print') . ' ' . $currency;
           } else {
             echo $currency . ' ' . htmlEncode($val, 'print');
           }
+          echo '</span>';
         } else if ($dataType == 'decimal' and substr($col, -4, 4) == 'Work') {
+          echo '<span style="'.$fieldStyle.'">';
           echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
+          echo '</span>';
         } else if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
-            echo $val.'&nbsp;%';
+          echo '<span style="'.$fieldStyle.'">';
+          echo $val.'&nbsp;%';
+          echo '</span>';
         } else if ($col == 'icon') {
           if ($val) {
             echo '<img src="../view/icons/' . $val . '" />';
@@ -1331,7 +1349,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $val=i18n($val);
           }
           if (0 and $internalTable == 0) {
-            echo '<div style="width: 80%;"> ';
+            echo '<div style="width: 80%;'.$fieldStyle.'"> ';
             if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
               echo $val;
             } else {
@@ -1339,11 +1357,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
             echo '</div>';
           } else {
+            echo '<span style="'.$fieldStyle.'">';
             if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
               echo $val;
             } else {
               echo htmlEncode($val, 'print');
             }
+            echo '</span>';
           }
         }
         // ============================================================================================================

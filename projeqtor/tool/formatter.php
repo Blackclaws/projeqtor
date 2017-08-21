@@ -191,7 +191,7 @@ function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $i
 	}else{
 	  $result='<span style="color:#ffffff;background-color:'.$bgColor.';float:'.$floatLetter.';font-size:'.$fontSize.'px;border-radius:50%;font-weight:300;text-shadow:none;text-align:center;border:1px solid #eeeeee;height:'.($size-2).'px;width:'.($size-2).'px; top:1px;"'
 	  		. ' onMouseOver="showBigImage(null,null,this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
-	  		. (($idTicket>0 ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
+	  		. (($idTicket>0) ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
 	}
 	$result.=strtoupper(substr($userName,0,1));
 	$result.='</span>';
