@@ -2036,7 +2036,7 @@ function addAssignment(unit, rawUnit, hoursPerDay) {
   }
   var objClass = dojo.byId("objectClass").value;
   var callBack = function () {
-    dijit.byId("dialogAssign").show();
+    dijit.byId("dialogAssignment").show();
   };
   var params="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
@@ -2073,7 +2073,7 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
   var callBack = function () {
     editAssignmentLoading=true;
     assignmentUpdatePlannedWork('assignment');
-    dijit.byId("dialogAssign").show();
+    dijit.byId("dialogAssignment").show();
 };
 var params="&idAssignment="+assignmentId;
 params+="&refType="+dojo.byId("objectClass").value;
@@ -2100,7 +2100,7 @@ function divideAssignment(assignedIdOrigin,unit) {
     return;
   }
   var callBack = function () {
-    dijit.byId("dialogAssign").show();
+    dijit.byId("dialogAssignment").show();
   };
   var params="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
@@ -2183,7 +2183,7 @@ function saveAssignment() {
     dijit.byId("assignmentLeftWork").focus();
     loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm",
         true, 'assignment');
-    dijit.byId('dialogAssign').hide();
+    dijit.byId('dialogAssignment').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -4730,7 +4730,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
 //  }
   var callBack = function () {
     affectationLoad=true;
-    dijit.byId("dialogAff").show();
+    dijit.byId("dialogAffectation").show();
     setTimeout("affectationLoad=false", 500);
   };
   var params="&idProject="+idProject;
@@ -4790,7 +4790,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
   } else {
     dijit.byId("affectationIdle").reset();
   }
-  dijit.byId("dialogAff").show();
+  dijit.byId("dialogAffectation").show();
   setTimeout("affectationLoad=false", 500);
 };
 var params="&id="+id;
@@ -4817,7 +4817,7 @@ function saveAffectation() {
   if (formVar.validate()) {
     loadContent("../tool/saveAffectation.php", "resultDiv", "affectationForm",
         true, 'affectation');
-    dijit.byId('dialogAff').hide();
+    dijit.byId('dialogAffectation').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
@@ -4829,7 +4829,7 @@ function affectTeamMembers(idTeam) {
     return;
   }
   var callBack = function () {
-    dijit.byId("dialogAff").show();
+    dijit.byId("dialogAffectation").show();
   };
   var params="&affectationIdTeam="+idTeam;
   loadDialog('dialogAffectation',callBack,false,params);

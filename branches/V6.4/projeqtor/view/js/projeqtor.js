@@ -2990,8 +2990,8 @@ function globalSave() {
   } else if (dijit.byId('dialogDocumentVersion')
       && dijit.byId('dialogDocumentVersion').open) {
     var button = dijit.byId('submitDocumentVersionUpload');
-  } else if (dijit.byId('dialogAssign')
-      && dijit.byId('dialogAssign').open) {
+  } else if (dijit.byId('dialogAssignment')
+      && dijit.byId('dialogAssignment').open) {
     var button = dijit.byId('dialogAssignmentSubmit');
   } else if (dijit.byId('dialogExpenseDetail')
       && dijit.byId('dialogExpenseDetail').open) {
@@ -3010,8 +3010,8 @@ function globalSave() {
   } else if (dijit.byId('dialogProductProject')
       && dijit.byId('dialogProductProject').open) {
     var button = dijit.byId('dialogProductProjectSubmit');
-  } else if (dijit.byId('dialogAff')
-      && dijit.byId('dialogAff').open) {
+  } else if (dijit.byId('dialogAffectation')
+      && dijit.byId('dialogAffectation').open) {
     var button = dijit.byId('dialogAffectationSubmit');
   } else if (dijit.byId('dialogFilter') && dijit.byId('dialogFilter').open) {
     var button = dijit.byId('dialogFilterSubmit');
