@@ -56,7 +56,6 @@ if($refType=="Meeting" || $refType=="PeriodicMeeting") {
 }
 $mode = RequestHandler::getValue('mode',false,true);
 ?>
-<div id="dialogAssign" dojoType="dijit.Dialog" title="<?php echo($mode=="edit")?i18n("dialogAssignment")."#".$idAssignment:i18n("dialogAssignment");?>">
   <table>
     <tr>
       <td>
@@ -298,7 +297,7 @@ $mode = RequestHandler::getValue('mode',false,true);
     <tr>
       <td align="center">
         <input type="hidden" id="dialogAssignmentAction">
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAssign').hide();">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAssignment').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button class="mediumTextButton" dojoType="dijit.form.Button" id="dialogAssignmentSubmit" type="submit" onclick="protectDblClick(this);saveAssignment();return false;">
@@ -307,4 +306,3 @@ $mode = RequestHandler::getValue('mode',false,true);
       </td>
     </tr>
   </table>
-</div>

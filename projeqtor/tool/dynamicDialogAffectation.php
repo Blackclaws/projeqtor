@@ -47,7 +47,7 @@ $user = new User($idResource);
 $obj=SqlElement::getCurrentObject(null,null,true,false) ;
 $objTeam=get_class($obj);
 ?>
-<div id="dialogAff" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAffectation");?>">
+
   <table>
     <tr>
       <td>
@@ -204,7 +204,7 @@ $objTeam=get_class($obj);
     <tr>
       <td align="center">
         <input type="hidden" id="affectationAction">
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAff').hide();">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAffectation').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogAffectationSubmit" onclick="protectDblClick(this);saveAffectation();return false;">
@@ -213,4 +213,3 @@ $objTeam=get_class($obj);
       </td>
     </tr>
   </table>
-</div>
