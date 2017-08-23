@@ -1019,7 +1019,7 @@ div.imputation input.dijitInputInner {
 .dijitCheckBox,.dijitCheckBoxIcon {
   background-image: url(images/checkmark.png);
   background-repeat: no-repeat;
-  width: 15px;
+  width: 16px;
   height: 16px;
   margin: 0 2px 0 0;
   padding: 0;

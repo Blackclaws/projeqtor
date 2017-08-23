@@ -437,6 +437,7 @@ function privateFormatter($value) {
 
 function activityStreamDisplayNote ($note,$origin){
   global $print,$user, $userRessource;
+  $rightWidthScreen=RequestHandler::getNumeric('destinationWidth');
   $userId = $note->idUser;
   $userName = SqlList::getNameFromId ( 'User', $userId );
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
@@ -482,7 +483,11 @@ function activityStreamDisplayNote ($note,$origin){
     } else {
      echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
     }
-    echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+    if($rightWidthScreen<100){
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>&nbsp'; 
+    } else {
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+    } 
   }
 }
 ?>

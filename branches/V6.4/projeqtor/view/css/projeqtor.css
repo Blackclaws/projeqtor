@@ -3531,7 +3531,6 @@ li.section {
 .activityStreamNoteContent {
 	color:black;
 	margin-top:15px;
-	word-break:break-all;
 	max-width:100%;
 	width:100%;
 	overflow-x:auto;
