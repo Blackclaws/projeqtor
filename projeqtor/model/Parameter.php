@@ -866,17 +866,17 @@ class Parameter extends SqlElement {
       }
       return $nl;
     }
-  	if (!sessionValueExists('globalParamatersArray')) {
-  	  setSessionValue('globalParamatersArray', array());
+  	if (!sessionValueExists('globalParametersArray')) {
+  	  setSessionValue('globalParametersArray', array());
       $p=new Parameter();
       $crit=" (idUser is null and idProject is null)";
       $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
       foreach ($lst as $param) {
-        setSessionTableValue('globalParamatersArray', $param->parameterCode, $param->parameterValue);
+        setSessionTableValue('globalParametersArray', $param->parameterCode, $param->parameterValue);
       }
   	}
-  	if (sessionTableValueExist('globalParamatersArray', $code)) {
-  		return getSessionTableValue('globalParamatersArray', $code);
+  	if (sessionTableValueExist('globalParametersArray', $code)) {
+  		return getSessionTableValue('globalParametersArray', $code);
   	} else {
       return '';
     }
@@ -935,10 +935,10 @@ class Parameter extends SqlElement {
     }
     $param->parameterValue=$value;
     $param->save();
-    if (!sessionValueExists('globalParamatersArray')) {
-      setSessionValue('globalParamatersArray', array());
+    if (!sessionValueExists('globalParametersArray')) {
+      setSessionValue('globalParametersArray', array());
     }
-    setSessionTableValue('globalParamatersArray', $code, $value);
+    setSessionTableValue('globalParametersArray', $code, $value);
   }
   
   static public function getPlanningColumnOrder($all=false) {
@@ -1148,7 +1148,7 @@ class Parameter extends SqlElement {
   
   static public function clearGlobalParameters() {
   	// This function is call on most of admin functionalities or global parameters update, to force refresh of parameters
-  	unsetSessionValue('globalParamatersArray');
+  	unsetSessionValue('globalParametersArray');
     $aut=new Audit();
     $table=$aut->getDatabaseTableName();
     $sessionId=session_id();
@@ -1159,9 +1159,8 @@ class Parameter extends SqlElement {
   static public function refreshParameters() {
 scriptLog('refreshParameters()');
   	// This function is call when refresh of parameters is requested
-  	unsetSessionValue('globalParamatersArray');
+  	unsetSessionValue('globalParametersArray');
   }
-  
   static public function getLangList() {
     $dir='../tool/i18n/nls';
     $handle = opendir($dir);
