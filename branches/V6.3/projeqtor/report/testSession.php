@@ -176,9 +176,9 @@ foreach ($lst as $ts) {
       echo '<td class="largeReportData" style="text-align: left;width:7%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
       echo '<td class="largeReportData" style="text-align: center;font-size:75%;width:8%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';
       if ($paramDetail) {
-        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->description,'print') . '</td>';
-        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->prerequisite,'print') . '</td>';
-        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->result,'print') . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . $tc->description . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . $tc->prerequisite . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . $tc->result . '</td>';
       } else {
         echo '<td style="width:0%" colspan="3"></td>';
       }
