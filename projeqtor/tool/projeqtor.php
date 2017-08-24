@@ -173,7 +173,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
     if (sessionValueExists('appRoot')) {
       $oldRoot = getSessionValue('appRoot');
     }
-    if ($oldRoot != "" and $oldRoot != getAppRoot ()) {
+    if ($oldRoot != "" and $oldRoot != getAppRoot() and $oldRoot.'mobile' != getAppRoot ()) {
       $appRoot = getAppRoot ();
       traceLog ( "Application root changed (from $oldRoot to $appRoot). New Login requested for user '" . $user->name . "' from IP " . $_SERVER ['REMOTE_ADDR'] );
       // session_destroy();
