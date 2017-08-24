@@ -426,10 +426,6 @@ function setupLocale() {
  *
  * @return void
  */
-// Not used any more this way - user Parameter::getUserParameter("paramIconSize");
-/*
- * function setupIconSize() { global $iconSizeMode; $paramIconSize=Parameter::getGlobalParameter('paramIconSize');; //default // Search in Session, if found, convert from text to int corresponding value if (isset($_SESSION['iconSize'])) { $iconSizeMode = $_SESSION['iconSize']; switch ($iconSizeMode) { case 'small' : $paramIconSize='16'; break; case 'medium' : $paramIconSize='22'; break; case 'big' : $paramIconSize='32'; break; } } return $paramIconSize; }
- */
 
 /**
  * ============================================================================
@@ -941,7 +937,7 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
       $fieldProj='id';
     }
   }
-  if ($objectClass == 'Document') {
+  if ($objectClass == 'Document' or $objectClass='TestCase' or $objectClass='Requirement' or $objectClass='TestSession') {
     $v = new Version ();
     $vp = new VersionProject ();
     $clauseALLPRO="(".$tableAlias."idProject in ".$listALLPRO

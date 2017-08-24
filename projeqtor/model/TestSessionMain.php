@@ -327,8 +327,17 @@ class TestSessionMain extends SqlElement {
   }
   
   public function copy() {
-
     $newObj=parent::copy();
+    $new=$this->copyTestCasRun($newObj);
+    return $new;
+  
+  }
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = null, $toActivity = null, $copyToWithResult = false, $copyToWithVersionProjects = false) {
+    $newObj=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments, $withAffectations, $toProject, $toActivity, $copyToWithResult, $copyToWithVersionProjects);
+    $new=$this->copyTestCasRun($newObj);
+    return $new;
+  }
+  private function copyTestCasRun($newObj) {
     $copyResult=$newObj->_copyResult;
     // Copy TestCaseRun for session
     $newId=$newObj->id;
@@ -336,13 +345,13 @@ class TestSessionMain extends SqlElement {
     $tcr=new TestCaseRun();
     $list=$tcr->getSqlElementsFromCriteria($crit);
     foreach ($list as $tcr) {
-    	$new=new TestCaseRun();
-    	$new->idTestSession=$newId;
-    	$new->idTestCase=$tcr->idTestCase;
-    	$new->idRunStatus='1';
-    	$new->_copy=true;
-    	$new->save();
-    }  
+      $new=new TestCaseRun();
+      $new->idTestSession=$newId;
+      $new->idTestCase=$tcr->idTestCase;
+      $new->idRunStatus='1';
+      $new->_copy=true;
+      $new->save();
+    }
     $new=new TestSession($newId);
     $new->_noHistory=true;
     $new->save();
@@ -350,9 +359,7 @@ class TestSessionMain extends SqlElement {
     $new->_copyResult=$copyResult;
     unset($new->_noHistory);
     return $new;
-  
   }
-  
   
   public function updateDependencies() {
   	$this->_noHistory=true;

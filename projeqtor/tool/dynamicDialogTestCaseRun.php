@@ -107,9 +107,9 @@ if (count($listTcr)) {
                       onchange="enableWidget('dialogTestCaseRunSubmit');"  
                       ondblclick="saveTestCaseRun();" >                    
                      <?php
-                     foreach ($list as $lstObj) {
+                     //foreach ($list as $lstObj) {
                        //echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".htmlEncode($lstObj->id)." - ".htmlEncode($lstObj->name)."</option>";
-                     }?>
+                     //}?>
                      <?php htmlDrawOptionForReference('idTestCase',null, null, true); ?>
                     </select>
 	               </div>
