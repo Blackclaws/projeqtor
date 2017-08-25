@@ -122,6 +122,8 @@ class UserMain extends SqlElement {
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
   private $_hierarchicalViewOfVisibleProjectsNotClosed;
+  public $_visibleProducts;
+  private $_visibleProductsIncludingClosed;
   
   
    /** ==========================================================================
@@ -639,12 +641,38 @@ class UserMain extends SqlElement {
   }
   
   /** =========================================================================
-   * Get the list of all projects the user can have readable access to, 
-   * this means the projects the resource corresponding to the user is affected to
+   * Get the list of all products the user should have readable access to, 
+   * this means the products linked (through version) to projects the resource corresponding to the user is affected to
    * and their sub projects
    * @return a list of projects id
    */
-
+  public function getVisibleProducts($limitToActiveProjects=true) {
+    if ($limitToActiveProjects and $this->_visibleProducts) {
+      return $this->_visibleProducts;
+    }
+    if (! $limitToActiveProjects and $this->_visibleProductsIncludingClosed) {
+      return $this->_visibleProductsIncludingClosed;
+    }
+    $result=array();
+    $prjList=$this->getVisibleProjects($limitToActiveProjects);
+    $v = new Version ();
+    $vp = new VersionProject ();
+    $clauseWhere="id in "
+        ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
+            ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($prjList)
+            .")))";
+    $prd=new Product();
+    $prdList=$prd->getSqlElementsFromCriteria(null,false,$clauseWhere);
+    foreach ($prdList as $prd) {
+      $result[$prd->id]=$prd->name;
+    }
+    if ($limitToActiveProjects) {
+      $this->_visibleProducts=$result;
+    } else {
+      $this->_visibleProductsIncludingClosed=$result;
+    }
+    return $result;
+  }
   public function getHierarchicalViewOfVisibleProjects($hideClosed=false) {
 //scriptLog("getHierarchicalViewOfVisibleProjects()");
     if (!$hideClosed and is_array($this->_hierarchicalViewOfVisibleProjects)) {
