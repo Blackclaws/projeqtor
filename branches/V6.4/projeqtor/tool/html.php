@@ -169,6 +169,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($col=='idActivity' or $col=='idTicket') { // List Activity or ticket without a criteria
   	$cls=substr($col,2);
   	$table=SqlList::getList($cls,'name',$selection,false,true);
+  } else if ($col=='idTestCase') { // List Test case with criteria on project or visible product
+    $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false,true );
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
