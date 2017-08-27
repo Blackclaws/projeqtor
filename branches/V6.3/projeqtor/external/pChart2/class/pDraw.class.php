@@ -2047,6 +2047,10 @@
              if ($Parameters["Rows"] == 0 ) { $Step  = $Width; } else { $Step  = $Width / ($Parameters["Rows"]); }
              
              $MaxBottom = $AxisPos["B"];
+             $minValueOnAbsis=$Data["Series"][$Abscissa]["Data"][0];
+             $maxValueOnAbsis=$Data["Series"][$Abscissa]["Data"][count($Data["Series"][$Abscissa]["Data"])-1];
+             $scaleStepForAbsis=($maxValueOnAbsis-$minValueOnAbsis)/30;
+             $lastValueDisplayedOnAbsis=null;
              for($i=0;$i<=$Parameters["Rows"];$i++)
               {
                // Patch start
@@ -2072,8 +2076,13 @@
                   $Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"]*$i,$Data["XAxisDisplay"],$Data["XAxisFormat"],$Data["XAxisUnit"]);
                  else
                   $Value = $i;
-                }
-
+                } 
+               $currentValueToDisplayOnAbsis=$Data["Series"][$Abscissa]["Data"][$i];
+               if (!$lastValueDisplayedOnAbsis or $currentValueToDisplayOnAbsis>$lastValueDisplayedOnAbsis+$scaleStepForAbsis) {
+                 $lastValueDisplayedOnAbsis=$currentValueToDisplayOnAbsis;
+               } else {
+                 $Value='';
+               }
                $ID++; $Skipped = TRUE;//
                // Patch start
                //if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) && !$RemoveXAxis)
@@ -3390,8 +3399,11 @@
      if ( $Mode == AXIS_FORMAT_CUSTOM )
       { if ( function_exists($Format) ) { return(call_user_func($Format,$Value)); } }
 
-     if ( $Mode == AXIS_FORMAT_DATE )
-      { if ( $Format == NULL ) { $Pattern = "d/m/Y"; } else { $Pattern = $Format; } return(gmdate($Pattern,$Value)); }
+     if ( $Mode == AXIS_FORMAT_DATE ) { 
+       if ( $Format == NULL ) { $Pattern = "d/m/Y"; } else { $Pattern = $Format; }
+       $res=gmdate($Pattern,$Value);
+       return($res); 
+     }
 
      if ( $Mode == AXIS_FORMAT_TIME )
       { if ( $Format == NULL ) { $Pattern = "H:i:s"; } else { $Pattern = $Format; } return(gmdate($Pattern,$Value)); }

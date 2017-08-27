@@ -171,7 +171,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   	$table=SqlList::getList($cls,'name',$selection,false,true);
   } else if ($col=='idTestCase') { // List Test case with criteria on project or visible product
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false,true );
-    debugLog($table);
   } else {
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
