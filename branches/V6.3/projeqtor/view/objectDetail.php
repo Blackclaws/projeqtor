@@ -4132,7 +4132,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
       //mehdi======================ticket#1776
     	echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="' . Work::displayWork($assignment->assignedWork) . '"/>';
-    	echo '<td class="assignData" align="right" style="vertical-align:middle;">';   	
+    	echo '<td class="assignData" align="right" style="vertical-align:middle;">';  
+    	if ($canUpdate and get_class($obj)!='PeriodicMeeting' ) { 	
     			echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
                 style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
     			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
@@ -4146,6 +4147,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
                    </script>';
     			echo $keyDownEventScript;
     			echo '</div>';
+    	} else {
+    	  echo $fmt->format(Work::displayWork($assignment->assignedWork));
+    	}
     	echo '</td>';
     	
     	echo '<input type="hidden" id="RealWork_'.$assignment->id.'" value="' . Work::displayWork($assignment->realWork) . '"/>';
@@ -4153,6 +4157,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
      
     	echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="' . Work::displayWork($assignment->leftWork) . '"/>';
       echo '<td class="assignData" align="right" style="vertical-align:middle; ">' ;    
+      if ($canUpdate and get_class($obj)!='PeriodicMeeting' ) {
        	echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
       	  echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
@@ -4163,6 +4168,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
                 </script>';      
       	  echo $keyDownEventScript;
       	  echo '</div>';
+      } else {
+         echo $fmt->format(Work::displayWork($assignment->assignedWork));
+      }	   
       echo '</td>'; }
      echo '</tr>';
   }
