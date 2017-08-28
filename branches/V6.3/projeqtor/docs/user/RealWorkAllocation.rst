@@ -31,7 +31,7 @@ Data entry for one resource, on a weekly base.
    * If you enter work in hours, you must define  the parameter **number of hours per day** before some real work has been entered.
    * After first work is entered, this parameter will be locked.
 
-.. figure:: /images/GUI/SCR_TimeSheetZone.png
+.. figure:: /images/GUI/SCR_TimeSheetZone2.png
    :alt: Timesheet zone screen
    :align: center
 
@@ -45,10 +45,10 @@ Data entry for one resource, on a weekly base.
 .. rubric:: 2 - Show planned work
 
 * Check this box to display the planned work.
-* Planned work is indicated over each input cell, on top right corner, in light blue color.
+* Planned work is indicated over each input cell, on top left corner, in light blue color.
 * Allows to display the planned working time by day, for the resource assigned to the task.
 
-.. figure:: /images/GUI/ZONE_RealWorkAllocationWithPlannedWork.png
+.. figure:: /images/GUI/ZONE_RealWorkAllocationWithPlannedWork2.png
    :alt: Planned work displayed zone
    :align: center
 
@@ -56,7 +56,7 @@ Data entry for one resource, on a weekly base.
 
 .. note::
 
-   * The planned work will be deleted when the real work is entered (to avoid duplication of work in reports).
+   * The planned work will be deleted if the real work is entered instead of planned work (to avoid duplication of work in reports) to see it you have to refresh the screen.
 
 .. rubric:: 3 - Filters
 
@@ -90,6 +90,7 @@ Buttons of the timesheet:
 * Click on |buttonIconSave| to save timesheet data.
 * Click on |buttonIconPrint| to print timesheet.
 * Click on |buttonIconPdf| to export timesheet in PDF format.
+* Click on |buttonIconCsv| to export timesheet in CSV format.
 * Click on |buttonIconUndo| to undo modification on the timesheet.
 
 .. rubric:: 5 - Data entry validation
@@ -352,6 +353,3 @@ The task status can be changed automatically according to data entries on real w
 
     * If a :term:`responsible` or a :term:`result` are set as mandatory in element type definition for the task. It's impossible to set those values by real work allocation screen.
     * The change status must be done in treatment section on the task definition screen.
-
-
-

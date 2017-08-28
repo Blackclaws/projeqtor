@@ -214,7 +214,7 @@ The Gantt chart view is a graphic representation of progress data.
 
 For each planning element, a Gantt bar is displayed at them right.
 
-.. figure:: /images/GUI/ZONE_GanttChartView2.png
+.. figure:: /images/GUI/ZONE_GanttChartView3.png
    :alt: Gantt chart view
    :align: center
 
@@ -284,6 +284,15 @@ For each planning element, a Gantt bar is displayed at them right.
 .. rubric:: 5 - Dependency links
 
 * Dependencies between planning elements are displayed with an arrow.
+
+* To modify dependency link, click on dependency to displays a pop-up
+
+.. figure:: /images/GUI/ZONE_dependency_gantt.png
+   :alt: Multiple mode
+   
+.. note:: Pop-up
+
+     * You can modify the delay, add a comment or remove the dependency.
 
 .. raw:: latex
 
@@ -579,7 +588,7 @@ Export contains all details and links between tasks.
 .. note:: Browser compatibility
 
    * This new feature is technically complex and it is not compatible with all browsers.
-   * Enabled only with Chrome browser as of now.
+   * Compatible with IE11, Firefox, Edge and Chrome.
    * Else, the old export feature will be used.
 
 .. note:: Forced feature activation (deactivation)

@@ -125,6 +125,13 @@ $userLink['Gallery']='FinancialGallery.html';
 $userLink['Organization']='Organization.html';
 $userLink['Tender']='Expense.html#tenders';
 $userLink['CallForTender']='Expense.html#call-for-tenders';
+$userLink['ActivityStream']='ActivityStream.html';
+$userLink['Language']='ListsOfValues.html#languages';
+$userLink['DeliverableStatus']='ListsOfValues.html#deliverable-status';
+$userLink['IncomingStatus']='ListsOfValues.html#incoming-status';
+$userLink['DeliverableWeight']='ListsOfValues.html#deliverabl-eweight';
+$userLink['IncomingWeight']='ListsOfValues.html#incoming-weight';
+$userLink['VersionsPlanning']='ConfigurationManagement.html#versions-planning';
 
 
 $section=null;

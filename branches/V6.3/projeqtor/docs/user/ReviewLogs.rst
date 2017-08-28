@@ -535,3 +535,77 @@ Incomings links with Milestones.
    * You can estimated quality value for incoming  and this will produce a KPI.
 
    * See: :ref:`kpi-definitions`
+   
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Deliverys
+    
+.. _deliverys:
+
+Deliverys
+=========
+
+Deliverys items are stored to keep track of deliverys.
+
+Added list of deliverables integrated in delivery.
+
+.. note::
+
+   * Automatic dispatch of delivery status to deliverables.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the delivery.
+   * - **Name**
+     - Short description of the delivery.
+   * - **Deliverable type**
+     - Type of deliverable.
+   * - **Project**
+     - The project concerned by the delivery. 
+   * - ExternalReference
+     - name of the external reference.
+   * - Description
+     - Description of the delivery. 
+ 
+**\* Required field**
+
+.. sidebar:: Other sections
+   
+   * :ref:`Deliverables`
+   * :ref:`Linked element<linkElement-section>`   
+   * :ref:`Attachments<attachment-section>`   
+   * :ref:`Notes<note-section>`
+
+.. rubric:: Section: Validation
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - Delivery status
+     - Actual :term:`status` of the delivery.
+   * - Resource
+     - resource of the delivery.
+   * - Planned date
+     - Expected date of delivery.
+   * - Real date
+     - Effective delivery date.
+   * - Validation date
+     - validate the delivery date.
+   * - :term:`Closed`
+     - Flag to indicate that delivery is archived.
