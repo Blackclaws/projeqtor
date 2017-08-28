@@ -365,13 +365,27 @@ List window
 * Click on |buttonIconCsv| to export data of the selected items in a CSV format file. (See: :ref:`export-csv-format`)
 * Click on |buttonIconNew| to create a new item of the element.
 
+.. rubric:: 4 - Extra buttons
 
-.. rubric:: 4 - Checkbox «Show closed items»
+* Click on |buttonIconStatus| to diplays status list.
+
+.. figure:: /images/GUI/filterStatus.png
+   :alt: List window
+
+* Only existing status are visible if their are used.
+* Choice one of them and the item list will be filter. 
+* This is a quick filter list by status.
+
+.. note::
+
+   * Actives 'quick filtering by status' in  global parameters otherwise this button is hidden.
+
+.. rubric:: 5 - Checkbox «Show closed items»
 
 * Flag on «Show closed items» allows to list also closed items.
 
 
-.. rubric:: 5 - Column headers
+.. rubric:: 6 - Column headers
 
 * Click a column header to sort the list on that column (first ascending, then descending).
 
@@ -383,11 +397,9 @@ List window
      
       * Sorting on the «Status» allows to sort values such as defined in the workflow. 
 
-.. rubric:: 6 - Items list
+.. rubric:: 7 - Items list
 
 * Click on a line (any column) will display the corresponding item in the detail window.
-
-
 
 
 .. raw:: latex
@@ -624,11 +636,9 @@ Detail window
    :backlinks: top
 
 
-.. figure:: /images/GUI/ZONE_DetailWindow.png
+.. figure:: /images/GUI/ZONE_DetailWindow2.png
    :alt: Detail window
    :align: center
-
-   Detail window
 
 .. rubric:: 1 - Item identifier
 
@@ -660,6 +670,7 @@ Detail window
 * Click on |buttonIconDelete| to delete the item.      
 * Click on |buttonIconRefresh| to refresh the display.      
 * Click on |buttonIconEmail| to send details of item by email. (See: :ref:`email-detail`)
+* Click on |buttonIconSubscribe| to susbcribe of item. (See: :ref:`subscribe-detail`)
 * Click on |buttonIconMultipleUpdate| to update several items in one operation. (See: :ref:`multiple-update`)
 
  .. note::
@@ -800,7 +811,44 @@ Allows to send an informative email to defined recipients list.
 
 * Flag on to indicate the email message will be saved as a note.
 
+.. raw:: latex
 
+    \newpage
+
+.. index:: ! Subscribe
+  
+.. _subscribe-detail:
+
+Subscribe detail
+^^^^^^^^^^^^^^^^
+
+.. rubric:: Subscribe list 
+
+Allows to subscribe to tracking of an item.
+
+.. figure:: /images/GUI/zone_subscribe1.png
+   :alt: Dialog box - Susbcribe detail
+   
+This icon is checked when you subscribed.
+
+.. figure:: /images/GUI/Subscribe.png
+   :alt: Dialog box - Susbcribe
+
+* Ability to subscribe a third party user to the tracking of an element (according to configurable rights).
+You can drag the name of selected ressources and drop them on the right column for subscribe them.
+
+.. figure:: /images/GUI/ZONE_subscribe_for_other.png
+   :alt: Dialog box - Susbcribe for other
+
+
+* Display of list of tracked items.
+To display it, click on button "Show list of subscriptions"
+
+.. figure:: /images/GUI/List_of_subscribe.png
+   :alt: Dialog box - Display list of tracked items
+
+
+* Possibility to send an email to users following the item, when unitary sending detail or on automatic sending or on indicator.
 
 .. raw:: latex
 
@@ -990,8 +1038,24 @@ Text editors are available for editing of long text fields like description, res
    CK Editor
 
 .. note::
-
+   
+   * Ability to resize the CK Editor height, the size is saved.
    * Possibility to deactivate the SCAYT spell checker. It can be modified by each user in user parameters.
+
+.. rubric:: CK editor inline
+
+.. figure:: /images/GUI/ZONE_CKEditorInline.png
+   :alt: CK Editor inline
+   :align: center   
+   
+* As CK Editor. 
+* Activated only when needed.
+
+.. note::
+   
+   * CK editor inline height, keep the size of CK editor.
+   * Click on the text zone to display toolbar.
+   * Can not use it in fullscreen mode.
 
 .. rubric:: Dojo Editor
 

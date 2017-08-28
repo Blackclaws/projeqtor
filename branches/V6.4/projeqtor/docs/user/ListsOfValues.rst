@@ -2,6 +2,16 @@
 
 .. index:: ! Function - Lists of values
 
+Each screen in List of values allows to define your own values.
+
+Then you will be able to select them in corresponding screens.
+
+.. topic:: Note:
+   
+   * By default, some lists are not visible on their corresponding screen like Languages in Product and Component screen.
+   
+   * To use them you must enable their parameter in global parameters.
+
 .. _function:
 
 Functions
@@ -33,9 +43,6 @@ The function defines the generic competency of a resource.
 
 **\* Required field**
 
-
-
-
 .. raw:: latex
 
     \newpage
@@ -52,6 +59,8 @@ The status is an important element of items lifecycle.
 It defines the progress of the treatment of the element.
 
 Some automations are implemented, depending on status definition, to set on items.
+
+See: :ref:`workflow`.
 
 .. glossary::
 
@@ -76,7 +85,6 @@ Some automations are implemented, depending on status definition, to set on item
    Cancelled status
 
      * This status specifies that the item is cancelled.
-
 
 .. rubric:: Section: Description
 
@@ -111,6 +119,20 @@ Some automations are implemented, depending on status definition, to set on item
 
 
 
+.. rubric:: Consolidation of status changes  
+
+* We have a parameter which allows to auto set parent item status.
+  It depends on children item status and available status in the workflow.
+
+.. note::
+
+  * Select YES 'auto set parent activity status' in global parameters to use it.
+
+* If an activity changes to a "handled" status, all parents move to the first "handled" status available in the workflow.
+* If an activity changes to a "done", "closed" or "canceled" status, moving of each parent to the first "done" or "closed" status according to the status of all its children.
+
+
+.. warning::  If parents items status has not been changed auto, please check your controls like required fields.
 
 .. raw:: latex
 
@@ -720,8 +742,6 @@ The mode of payment.
    
 **\* Required field**
 
-
-
 .. index:: ! Delivery mode - Lists of values
 
 .. _delivery-mode:
@@ -730,7 +750,6 @@ Delivery modes
 ^^^^^^^^^^^^^^
 
 The mode of delivery.
-
 
 .. rubric:: Section: Description
 
@@ -768,7 +787,6 @@ Measure units
 
 The measure units.
 
-
 .. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
@@ -792,4 +810,224 @@ The measure units.
    
 **\* Required field**
 
+Tender status
+^^^^^^^^^^^^^
 
+Allows to define or create your own tender status list.
+
+Tender status displayed on Tenders screen and in the table Submissions of tenders 
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Color
+     - Color to display the status in element lists.
+   * - Waiting tender
+     - Status information.
+   * - Tender received
+     - status information.
+   * - Tender not selected
+     - status information.
+   * - Tender selected
+     - status information.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Categories of project
+^^^^^^^^^^^^^^^^^^^^^
+
+Define your categories of project and you are able to select one in Project screen.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Incoming weights
+^^^^^^^^^^^^^^^^
+
+Define your incoming weights list and select it in Incoming screen.
+
+That is useful to calculate weighting between different parameters in Reports->KPIs->KPI-incoming-for-project screen.   
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - **Value**
+     - Value of incoming weights.
+   * - Color
+     - Color to display the incoming weights in element lists.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Deliverable weights
+^^^^^^^^^^^^^^^^^^^
+
+Define your deliverable weights list and select it in Deliverable screen.
+
+That is useful to calculate weighting between different parameters in Reports->KPIs->KPI-deliverable-for-project screen. 
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - **Value**
+     - Value of deliverable weights.
+   * - Color
+     - Color to display the deliverable weights in element lists.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Incoming status
+^^^^^^^^^^^^^^^
+
+Define your incoming status list and select it in Incoming screen.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - **Value**
+     - Value of incoming status.
+   * - Color
+     - Color to display the incoming status in element lists.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Deliverable status
+^^^^^^^^^^^^^^^^^^
+
+Define your deliverable status list and select it in Deliverable screen.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - **Value**
+     - Value of deliverable status.
+   * - Color
+     - Color to display the deliverable status in element lists.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**
+
+Languages
+^^^^^^^^^
+
+Allows to define and create your own languages list.
+
+Then in Product or Component screen you can select your languages values.
+
+.. topic:: Note:
+   
+   * you have to active 'display language in Product/Component' in global parameters.
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for this value.
+   * - **Name**
+     - Name of this value.
+   * - **Value**
+     - Value of deliverable status.
+   * - Sort order
+     - Number to define order of display in lists.
+   * - :term:`Closed`
+     - Flag to indicate this value is archived.
+   
+**\* Required field**

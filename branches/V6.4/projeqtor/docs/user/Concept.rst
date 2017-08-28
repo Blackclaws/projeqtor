@@ -1215,6 +1215,8 @@ A photo can be defined for a user, a resource and a contact.
 
 It is a visual identification associated with the name.
 
+To default, the first letter of the name appear as long as you don't add photo.
+
 .. note::
 
    * To enlarge, move the cursor over the picture.

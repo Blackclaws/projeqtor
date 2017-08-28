@@ -281,13 +281,6 @@ Input for each bill line depends on billing type.
    * Can be set on update.
 
 
-
-
-
-
-
-
-
 .. raw:: latex
 
     \newpage
@@ -607,11 +600,63 @@ The bill keeps track of payment.
 
 **\* Required field**
 
+.. raw:: latex
 
 
+    \newpage
+    
+.. index:: ! Bill (Catalog)
+.. index:: ! Catalog
 
+.. _catalog:
 
+Catalog
+-------
 
+Catalog defines ...
 
+This is used to the quotation lines, order lines and invoice lines. See: :ref:`bill-line-catalog`.
 
+.. rubric:: Section: Description
 
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Description
+   * - :term:`Id`
+     - Unique Id for the payment.
+   * - **Name**
+     - Name of the catalog.
+   * - **Catalog type**
+     - Type of catalog.
+   * - **Description**
+     - Description of the catalog.
+   * - Detail
+     - Detail of the catalog.
+   * - Nomenclature
+     - Nomenclature of the catalog.
+   * - Specification
+     - Specification of the catalog.
+
+**\* Required field**
+
+.. rubric:: Section: Treatment
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1            
+     
+   * - Field
+     - Treatment
+   * - Unit price
+     - Type of unit.
+   * - Quantity
+     - Quantity of catalog.
+   * - Product
+     - Type of product.
+   * - Product version
+     - Version of the product.
