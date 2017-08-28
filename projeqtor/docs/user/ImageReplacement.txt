@@ -102,7 +102,19 @@
 
 .. |buttonIconNew| image:: images/buttonIconNew.png
    :alt: Button icon new
+   
+.. |buttonIconStatus| image:: images/buttonIconStatus.png
+   :alt: Button icon status
 
+.. |buttonCollapseOpen| image:: images/buttonCollapseOpen.png
+   :alt: Button Collapse open
+
+.. |buttonCollapseClose| image:: images/buttonCollapseClosed.png
+   :alt: Button Collapse close
+ 
+.. |iconHideStream| image:: images/iconHideStream.png
+   :alt: icon Hide Stream  
+ 
 .. |buttonIconSave| image:: images/buttonIconSave.png
    :alt: Button icon save
 
