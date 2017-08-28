@@ -46,33 +46,42 @@ This section summarizes significant changes made in the user guide document for 
 
 To see complete list of changes made to software, visit the ProjeQtOr web site.
 
-Current version is V6.1.0 
+Current version is V6.3.0 
+  
+.. rubric:: Activity Stream.
+
+* Activity Stream
+    
+ * Display of notes on right part of screen.
+    
+ * Possibility to quickly add note, in chat like mode.
+    
+ * See: :ref:`AS`
+
+.. rubric:: Configuration Management.
+
+* Versions planning
+
+  * New screen "version planning" to display versions in a Gantt chart according to their delivery dates.
+
+  * See: :ref:`versions-planning`
 
 .. rubric:: Review logs.
 
-* Management of deliverables
+* Deliverys
 
-  * See: :ref:`deliverables`
+  * Added list of deliverables integrated in delivery.
+  
+  * Automatic dispatch of delivery status to deliverables.
 
-* Management of incomings
-  
-  * See: :ref:`incomings`
-  
-.. rubric:: Controls & Automation.
+  * See: :ref:`deliverys`
 
-* Production of indicators on the quality of deliverables
 
-  * See: :ref:`kpi-definitions`
-  
-* JobList to detail an Activity or Ticket
-  
-  * See: :ref:`jobList`
-  
-.. rubric:: ConfigurationManagement.
+.. rubric:: List of values.
 
-* Grouping of Products, Components, Product Versions and Component Versions in a dedicated "Configuration Management" menu.
-  
-  * See: :ref:`ConfigurationManagement`
+* Consolidation of status changes.
+
+  * See: :ref:`status`
 
 .. raw:: latex
 
@@ -303,6 +312,14 @@ Administration
 
    Administration
 
+Activity Stream
+==============
+
+.. toctree::
+   :maxdepth: 1
+
+   ActivityStream   
+
 Glossary
 ========
 
@@ -310,5 +327,3 @@ Glossary
    :maxdepth: 1
   
    Glossary
-
-
