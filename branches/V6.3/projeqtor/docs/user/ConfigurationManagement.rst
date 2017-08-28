@@ -21,6 +21,7 @@ The product and component is done on screens:
 * :ref:`component`
 * :ref:`product-version`
 * :ref:`component-version`
+* :ref:`versions-planning`
 
 .. raw:: latex
 
@@ -404,5 +405,29 @@ This section allows to manage links between projects and versions of products.
    * From the screen «Product versions», the field «project» will be selectable.
 
 
+.. raw:: latex
 
+    \newpage
 
+.. _versions-planning:
+
+Versions planning
+^^^^^^^^^^^^^^^^^
+
+Select one or more product versions and the planning version is displayed.
+
+This planning displays each version of selected product versions and their components from define start date to deliverable date.
+
+To use it define your start and delivery date in Product Version and Component Version.
+
+.. figure:: /images/GUI/deliveryDateComponent.png
+
+.. note::
+
+ * To insert values you have to Actives 'display the start and delivery milestones' in  global parameters otherwise these fields are hidden.
+
+This screen allows to see if the delivery date of Component versions is more later than their Product versions. 
+
+Graphically, you can see any delay or incompatibility.
+
+.. figure:: /images/GUI/planningVersion.png
