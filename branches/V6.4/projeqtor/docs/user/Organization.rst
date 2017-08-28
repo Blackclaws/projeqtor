@@ -43,6 +43,10 @@ Depending on the profile, you can limit the visibility of resources to people in
      - Type of organization.
    * - Manager
      - Manager of organization.
+   * - Hierarchy
+     - list of parents organizations.
+   * - Parent organization
+     - parent organization.
    * - Closed 
      - Box checked indicates the organization is archived.
 
