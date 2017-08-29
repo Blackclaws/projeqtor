@@ -22,19 +22,22 @@ $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
 $yourname = "Pascal";
 // A recordset for merging tables 
 $data = array(); 
-$data[] = array('rank'=> 'A', 'reference'=>'REQ_0001_TECH_01' , 'name'=>'Hill'      , 'number'=>'1523d', 'score'=>200, 'description'=>'sh@tbs.com
-DFMLGK DFSLKG FDLMKG DFKGLDF DFKG FDKG DMFLKG FDKGmlkfdg kgdfk gfdgk
-dfp^gk fdkg mfdgk<b>dflgk dfg</b>',  'email_2'=>'sandra@tbs.com',  'email_3'=>'s.hill@tbs.com'); 
-$data[] = array('rank'=> 'A', 'reference'=>'REQ_0001_TECH_02'  , 'name'=>'Smith'     , 'number'=>'1234f', 'score'=>800, 'description'=>'rs@tbs.com',  'email_2'=>'robert@tbs.com',  'email_3'=>'r.smith@tbs.com' ); 
-$data[] = array('rank'=> 'B', 'reference'=>'REQ_0001_TECH_03', 'name'=>'Mac Dowell', 'number'=>'5491y', 'score'=>130, 'description'=>'wmc@tbs.com', 'email_2'=>'william@tbs.com', 'email_3'=>'w.m.dowell@tbs.com' ); 
-
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'1001' , 'resourceName'=>'AAAAA', 'projectCode'=>'X1', 'projectName'=>'Project X1',  'work'=>0.5); 
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'1001' , 'resourceName'=>'AAAAA', 'projectCode'=>'X2', 'projectName'=>'Project X2',  'work'=>0.4);
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'1001' , 'resourceName'=>'AAAAA', 'projectCode'=>'X3', 'projectName'=>'Project X3',  'work'=>0.6);
+$data[] = array('year'=> '', 'month'=>''  , 'resourceId'=>'1001' , 'resourceName'=>'Total AAAAA', 'projectCode'=>'', 'projectName'=>'',  'work'=>1.5);
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'2002' , 'resourceName'=>'BBBBB', 'projectCode'=>'X1', 'projectName'=>'Project X1',  'work'=>0.5);
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'2002' , 'resourceName'=>'BBBBB', 'projectCode'=>'X2', 'projectName'=>'Project X2',  'work'=>0.4);
+$data[] = array('year'=> '2017', 'month'=>'08'  , 'resourceId'=>'2002' , 'resourceName'=>'BBBBB', 'projectCode'=>'X3', 'projectName'=>'Project X3',  'work'=>0.6);
+$data[] = array('year'=> '', 'month'=>''  , 'resourceId'=>'2002' , 'resourceName'=>'Total BBBBB', 'projectCode'=>'', 'projectName'=>'',  'work'=>1.5);
+$data[] = array('year'=> 'Total général', 'month'=>''  , 'resourceId'=>'' , 'resourceName'=>'', 'projectCode'=>'', 'projectName'=>'',  'work'=>3.0);
 
 
 // ----------------- 
 // Load the template 
 // ----------------- 
 
-$template = 'Requirement.docx'; 
+$template = 'D:\RapportMensuel.xlsx'; 
 $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8); // Also merge some [onload] automatic fields (depends of the type of document). 
 
 // ---------------------- 
@@ -50,7 +53,10 @@ if (isset($debug) && ($debug=='show'))    $TBS->Plugin(OPENTBS_DEBUG_XML_SHOW); 
 // -------------------------------------------- 
 
 // Merge data in the body of the document 
-$TBS->MergeBlock('a,b', $data); 
+$TBS->PlugIn(OPENTBS_SELECT_SHEET, 1);
+$TBS->MergeBlock('line', $data); 
+$TBS->PlugIn(OPENTBS_SELECT_SHEET, 2);
+$TBS->MergeBlock('line', $data);
 
 // Change chart series 
 
