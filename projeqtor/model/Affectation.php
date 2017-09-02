@@ -68,7 +68,8 @@ public $_noCopy;
    private static $_fieldsAttributes=array(
        "idResourceSelect"=>"hidden, forceExport", 
        "idResource"=>"noExport,noList",
-       "idProfile"=>"required"); 
+       "idProfile"=>"required"
+   ); 
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

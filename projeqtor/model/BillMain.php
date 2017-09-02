@@ -109,7 +109,7 @@ class BillMain extends SqlElement {
                       "cancelled"=>"nobr",
                       'paymentDueDate'=>'readonly',
                       'paymentsCount'=>'hidden'
-                      );  
+  );  
   
   private static $_colCaptionTransposition = array('description'=>'comment',
                                                    'idContact'=>'billContact',

@@ -2931,18 +2931,23 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     dojo.byId('objectClass').value = eltClass;
     dojo.byId('objectId').value = eltId;
     loadContent('objectDetail.php', 'detailDiv', 'listForm');
+    //if (dijit.byId("detailRightDiv")) loadContent("objectStream.php", "detailRightDiv", "listForm"); 
   } else {
     if (dojo.byId("detailDiv")) {
       cleanContent("detailDiv");
     }
     if (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass
         || forceListRefresh || dojo.byId('titleKanban')) {
+      var callBack=null;
+      if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");}; 
       loadContent("objectMain.php?objectClass=" + eltClass, "centerDiv", false,
-          false, false, eltId);
+          false, false, eltId,false,callBack);
+      
     } else {
       dojo.byId('objectClass').value = eltClass;
       dojo.byId('objectId').value = eltId;
       loadContent('objectDetail.php', 'detailDiv', 'listForm');
+      if (dijit.byId("detailRightDiv")) loadContent("objectStream.php", "detailRightDiv", "listForm"); 
       hideList();
       setTimeout('selectRowById("objectGrid", ' + parseInt(eltId) + ');', 100);
     }
