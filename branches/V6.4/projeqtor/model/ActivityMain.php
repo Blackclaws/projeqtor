@@ -109,13 +109,15 @@ class ActivityMain extends SqlElement {
       "idle" => "nobr", 
       "idleDate" => "nobr", 
       "cancelled" => "nobr", 
-      "isPlanningActivity" => "title");
+      "isPlanningActivity" => "title"
+  );
   private static $_colCaptionTransposition = array(
       'idUser' => 'issuer', 
       'idResource' => 'responsible', 
       'idActivity' => 'parentActivity', 
       'idContact' => 'requestor', 
-      'isPlanningActivity' => 'PlanningActivity');
+      'isPlanningActivity' => 'PlanningActivity'
+  );
   
   // private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array(

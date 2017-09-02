@@ -512,6 +512,7 @@
             $line['statuscolor'] = $status->color;
         } else if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
           $ref=$line['reftype'];
+          if ($ref=='PeriodicMeeting') $ref='Meeting';
           $type='id'.$ref.'Type';
           $item=new $ref($line['refid'],true);
           $line["type"]=SqlList::getNameFromId('Type',$item->$type);

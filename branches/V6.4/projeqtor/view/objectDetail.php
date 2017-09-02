@@ -904,7 +904,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $isAttachmentEnabled=false;
         }
       }
-      if ($isAttachmentEnabled and !$comboDetail) {
+      if ($isAttachmentEnabled and !$comboDetail ) {
+        if ($obj->isAttributeSetToField('_Attachment','hidden') or in_array('_Attachment',$extraHiddenFields)) continue;
         $prevSection=$section;
         $section="Attachment";
         $ress=new Resource(getCurrentUserId());
@@ -918,9 +919,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         drawAttachmentsFromObject($obj, false);
       }
     //ADD qCazelles - Lang
-    } else if ($col == 'idLanguage' and Parameter::getGlobalParameter('displayLanguage') != 'YES') continue;
+    } else if ($col == 'idLanguage' and Parameter::getGlobalParameter('displayLanguage') != 'YES') { continue;
     //END ADD qCazelles - Lang
-      else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
+    } else if (substr($col, 0, 5) == '_Note' and ! $comboDetail) {
+      if ($obj->isAttributeSetToField('_Note','hidden') or in_array('_Note',$extraHiddenFields)) continue;
       $prevSection=$section;
       $section="Note";
       $ress=new Resource(getCurrentUserId());
@@ -1204,7 +1206,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $specificStyleWithoutCustom=$specificStyle;
       $specificStyle.=";".$fieldStyle;
       if (is_object($val)) {
-        if (!$obj->isAttributeSetToField($col, 'hidden')) {
+        if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
           if ($col == 'Origin') {
             drawOrigin($obj->Origin,$val->originType, $val->originId, $obj, $col, $print);
           } else {
@@ -2443,7 +2445,11 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   	$sectionName=$split[0];
   }
   if (!$obj) $obj=new $classObj();
-  $style=$obj->getDisplayStyling('_sec_'.$section);
+  if ($section=='Note' or $section=='Attachment') {
+    $style=$obj->getDisplayStyling('_'.$section);
+  } else {
+    $style=$obj->getDisplayStyling('_sec_'.$section);
+  }
   $labelStyle=$style["caption"];
   $extraHiddenFields=$obj->getExtraHiddenFields();
   if (!$print) {
