@@ -99,7 +99,8 @@ class ActionMain extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
-                                                    'idContact' => 'requestor');
+                                                    'idContact' => 'requestor'
+  );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
