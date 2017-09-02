@@ -53,16 +53,21 @@ if ($paramEnd->id) {
   $endDate=$paramEnd->parameterValue;
   $saveDates=true;
 }
-$saveShowWbsObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWbs'));
-$saveShowWbs=$saveShowWbsObj->parameterValue;
-$saveShowResourceObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowResource'));
-$saveShowResource=$saveShowResourceObj->parameterValue;
-$saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWork'));
-$saveShowWork=$saveShowWorkObj->parameterValue;
-$saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
-$saveShowClosed=$saveShowClosedObj->parameterValue;
-$saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
-$saveShowMilestone=$saveShowMilestoneObj->parameterValue;
+//$saveShowWbsObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWbs'));
+//$saveShowWbs=$saveShowWbsObj->parameterValue;
+$saveShowWbs=Parameter::getUserParameter('planningShowWbs');
+//$saveShowResourceObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowResource'));
+//$saveShowResource=$saveShowResourceObj->parameterValue;
+$saveShowResource=Parameter::getUserParameter('planningShowResource');
+//$saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWork'));
+//$saveShowWork=$saveShowWorkObj->parameterValue;
+$saveShowWork=Parameter::getUserParameter('planningShowWork');
+//$saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
+//$saveShowClosed=$saveShowClosedObj->parameterValue;
+$saveShowClosed=Parameter::getUserParameter('planningShowClosed');
+//$saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
+//$saveShowMilestone=$saveShowMilestoneObj->parameterValue;
+$saveShowMilestone=Parameter::getUserParameter('planningShowMilestone');
 
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
@@ -82,7 +87,6 @@ $displayWidthPlan="9999";
 if (RequestHandler::isCodeSet('destinationWidth')) {
   $displayWidthPlan=RequestHandler::getNumeric('destinationWidth');
 }
-echo $displayWidthPlan;
 
 ?>
   
