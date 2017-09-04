@@ -44,7 +44,15 @@ if ($linkId==null) {
 Sql::beginTransaction();
 $obj=new Link($linkId);
 $result=$obj->delete();
-
+$mailResult=null;
+$elt=new $obj->ref1Type($obj->ref1Id);
+$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true);
+if ($mailResult) {
+  $pos=strpos($result,'<input type="hidden"');
+  if ($pos) {
+    $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+  }
+}
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

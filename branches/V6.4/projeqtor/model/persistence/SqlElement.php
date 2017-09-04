@@ -4250,7 +4250,7 @@ abstract class SqlElement {
    *          void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false,$affectationAdd = false , $affectationChange = false) {
+  public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false,$affectationAdd = false , $affectationChange = false, $linkAdd = false, $linkDelete = false) {
     $objectClass = get_class ( $this );
     $idProject = ($objectClass == 'Project') ? $this->id : ((property_exists ( $this, 'idProject' )) ? $this->idProject : null);
     if ($objectClass == 'TicketSimple') {
@@ -4314,6 +4314,12 @@ abstract class SqlElement {
       }
       if ($affectationChange) {
         $crit .= " or idEvent='11' ";
+      }
+      if ($linkAdd) {
+        $crit .= " or idEvent='12' ";
+      }
+      if ($linkDelete) {
+        $crit .= " or idEvent='13' ";
       }
       $crit .= ")";
       $statusMail = new StatusMail ();
@@ -4502,6 +4508,10 @@ abstract class SqlElement {
        $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleAffectationAdd' );
     } else if ($affectationChange) {
        $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleAffectationChange' );
+    } else if ($linkAdd) {
+       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleLinkAdd' );
+    } else if ($linkDelete) {
+        $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleLinkDelete' );
     } else {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitle' ); // default
     }
