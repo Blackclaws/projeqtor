@@ -137,7 +137,15 @@ foreach ($arrayId as $ref2Id) {
   	} 
   }
 }
-
+$elt=new $link->ref1Type($link->ref1Id);
+$mailResult=null;
+$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false);
+if ($mailResult) {
+  $pos=strpos($result,'<input type="hidden"');
+  if ($pos) {
+    $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+  }
+}
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

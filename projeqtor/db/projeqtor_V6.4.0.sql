@@ -14,6 +14,10 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'paramMailTitleAffectationAdd', '[${dbName}] New allocation of resource ${responsible} has been created on Project ${project}'), 
 (null,null, 'paramMailTitleAffectationChange', '[${dbName}] Allocation of resource ${responsible} has been changed on Project ${project}');
 
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'paramMailTitleLinkAdd', '[${dbName}] New link has been created on ${item} #${id} '), 
+(null,null, 'paramMailTitleLinkDelete', '[${dbName}] Link #${id} has been removed');
+
 ALTER TABLE `${prefix}report` ADD `hasView` int(1) DEFAULT 1,
 ADD `hasPrint` int(1) DEFAULT 1,
 ADD `hasPdf` int(1) DEFAULT 1,
@@ -46,3 +50,7 @@ ALTER TABLE `${prefix}filter` ADD COLUMN `isDynamic` int(1) DEFAULT '0';
 ALTER TABLE `${prefix}filtercriteria` ADD COLUMN `isDynamic` int(1) DEFAULT '0';
 ALTER TABLE `${prefix}filtercriteria` ADD COLUMN `orOperator` int(1) DEFAULT '0';
 --END ADD qCazelles - Dynamic filter - Ticket #78
+
+INSERT INTO `${prefix}event` (`id`,`name`,`idle`, `sortOrder`) VALUES 
+(12,'linkAdd',0,53),
+(13,'linkDelete',0,54);
