@@ -57,11 +57,12 @@
 		  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>">
 		   <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
-             dojo.xhrPost({
+           saveDataToSession("contentPaneTopDetailDivHeight<?php echo $objectClass;?>", dojo.byId("listDiv").offsetHeight, true);
+           /*dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
                   +"&idData=contentPaneTopDetailDivHeight<?php echo $objectClass;?>"
                   +"&value="+dojo.byId("listDiv").offsetHeight
-             });;
+             });;*/
        </script>
 		   <?php include 'objectList.php'?>
 		  </div>
@@ -79,11 +80,12 @@
   </div>
   <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>">
     <script type="dojo/connect" event="resize" args="evt">
-             dojo.xhrPost({
+             saveDataToSession("contentPaneRightDetailDivWidth<?php echo $objectClass;?>", dojo.byId("detailRightDiv").offsetWidth, true);
+             /*dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
                   +"&idData=contentPaneRightDetailDivWidth<?php echo $objectClass;?>"
                   +"&value="+dojo.byId("detailRightDiv").offsetWidth
-             });;
+             });;*/
              var newWidth=dojo.byId("detailRightDiv").offsetWidth;
              dojo.query(".activityStreamNoteContainer").forEach(function(node, index, nodelist) {
               node.style.maxWidth=(newWidth-30)+"px";

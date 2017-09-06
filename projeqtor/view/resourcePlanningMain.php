@@ -44,11 +44,12 @@
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
     <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
-             dojo.xhrPost({
+              saveDataToSession("contentPaneTopResourcePlanningDivHeight", dojo.byId("listDiv").offsetHeight, true);
+             /*dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
                   +"&idData=contentPaneTopResourcePlanningDivHeight"
                   +"&value="+dojo.byId("listDiv").offsetHeight
-             });;
+             });;*/
     </script>
    <?php include 'resourcePlanningList.php'?>
   </div>
