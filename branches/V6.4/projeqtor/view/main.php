@@ -579,11 +579,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       <script type="dojo/connect" event="resize" args="evt">
          if (hideShowMenuInProgress) return;
          if (dojo.byId("leftDiv").offsetWidth>35) 
-         dojo.xhrPost({
+         saveDataToSession("contentPaneLeftDivWidth", dojo.byId("leftDiv").offsetWidth, true);
+         /*dojo.xhrPost({
             url : "../tool/saveDataToSession.php?saveUserParam=true"
               +"&idData=contentPaneLeftDivWidth"
               +"&value="+dojo.byId("leftDiv").offsetWidth
-         });;
+         });;*/
          dojo.byId("hideMenuBarShowButton2").style.left=dojo.byId("leftDiv").offsetWidth+3+"px";
       </script>
       <div id="menuBarShow" class="dijitAccordionTitle " onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');">
@@ -622,10 +623,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               style="overflow: hidden !important;" <?php if ($selectedAccordionTop=='menuTree') echo 'selected="true"';?>>
               <?php include "menuTree.php"; ?>
               <script type="dojo/connect" event="onShow" args="evt">
-                dojo.xhrPost({
+                saveDataToSession("accordionPaneTop","messageDiv",true);
+                /*dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
                     +"&idData=accordionPaneTop&value=messageDiv"
-                });;
+                });;*/
               </script>
             </div>
             <?php if (securityCheckDisplayMenu(null,'Document')) {?>
@@ -647,10 +649,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                 </script>
               </div>
               <script type="dojo/connect" event="onShow" args="evt">
-                dojo.xhrPost({
+                saveDataToSession("accordionPaneTop", "document", true);
+                /*dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
                     +"&idData=accordionPaneTop&value=document"
-                });;
+                });;*/
               </script>
             </div>
             <?php }?>
@@ -660,11 +663,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            $leftBottomHeight=($leftBottomHeight)?$leftBottomHeight.'px':'300px';?>
         <div dojoType="dijit.layout.ContentPane" id="leftBottomDiv" region="bottom" splitter="true" style="height:<?php echo $leftBottomHeight;?>;">
           <script type="dojo/connect" event="resize" args="evt">
-             dojo.xhrPost({
+             saveDataToSession("contentPaneLeftBottomDivHeight", dojo.byId("leftBottomDiv").offsetHeight, true);
+             /*dojo.xhrPost({
                url : "../tool/saveDataToSession.php?saveUserParam=true"
                   +"&idData=contentPaneLeftBottomDivHeight"
                   +"&value="+dojo.byId("leftBottomDiv").offsetHeight
-             });;
+             });;*/
           </script>
           <div dojoType="dijit.layout.AccordionContainer" persists="true">
             <?php $selectedAccordionBottom=Parameter::getUserParameter('accordionPaneBottom');
@@ -672,18 +676,21 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" <?php if ($selectedAccordionBottom=='projectLinkDiv') echo 'selected="true"';?> title="<?php echo i18n('ExternalShortcuts');?>">
               <?php include "../view/shortcut.php"?>
               <script type="dojo/connect" event="onShow" args="evt">
-                dojo.xhrPost({
+                
+                saveDataToSession("accordionPaneBottom", "projectLinkDiv", true);
+                /*dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
                     +"&idData=accordionPaneBottom&value=projectLinkDiv"
-                });;
+                });;*/
               </script>
             </div>
             <div id="messageDiv" dojoType="dijit.layout.ContentPane" title="<?php echo i18n('Console');?>" <?php if ($selectedAccordionBottom=='messageDiv') echo 'selected="true"';?>>
               <script type="dojo/connect" event="onShow" args="evt">
-                dojo.xhrPost({
+                saveDataToSession("ccordionPaneBottom", "messageDiv", true);
+                /*dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
                     +"&idData=accordionPaneBottom&value=messageDiv"
-                });;
+                });;*/
               </script>
             </div>
           </div>

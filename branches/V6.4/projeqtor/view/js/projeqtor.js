@@ -356,11 +356,19 @@ function addMessage(msg) {
 function changeTheme(newTheme) {
   if (newTheme != "") {
     dojo.byId('body').className = 'tundra ' + newTheme;
-    dojo.xhrPost({
+    // Mehdi #2887
+    alert(newTheme);
+    
+    var callBack = function() { 
+      addMessage("Theme=" + newTheme); 
+    };
+    alert(callBack);
+    saveDataToSession('theme',newTheme, null, callBack);
+    /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=theme&value=" + newTheme,
       handleAs : "text"
     // , load: function(data,args) { addMessage("Theme=" + newTheme ); }
-    });
+    });*/
   }
 }
 
@@ -383,13 +391,15 @@ function saveUserParameter(parameter, value) {
  */
 function saveBrowserLocaleToSession() {
   browserLocale = dojo.locale;
-  dojo.xhrPost({
+  //#2887
+  saveDataToSession('browserLocale', browserLocale, null);
+/*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=browserLocale&value="
         + browserLocale,
     handleAs : "text",
     load : function(data, args) {
     }
-  });
+  });*/
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
   if (browserLocaleDateFormat) {
     format = browserLocaleDateFormat;
@@ -410,36 +420,41 @@ function saveBrowserLocaleToSession() {
     browserLocaleDateFormatJs = browserLocaleDateFormat.replace(/D/g, 'd')
         .replace(/Y/g, 'y');
   }
-  dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
-        + encodeURI(format),
-    handleAs : "text",
-    load : function(data, args) {
-    }
-  });
+  saveDataToSession('browserLocaleDateFormat', encodeURI(format));
+// #2887
+//  dojo.xhrPost({
+//    url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
+//        + encodeURI(format),
+//    handleAs : "text",
+//    load : function(data, args) {
+//    }
+//  });
   var fmt = "" + dojo.number.format(1.1) + " ";
   var decPoint = fmt.substr(1, 1);
-  dojo
-      .xhrPost({
-        url : "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value="
-            + decPoint,
-        handleAs : "text",
-        load : function(data, args) {
-        }
-      });
+  saveDataToSession('browserLocaleDecimalPoint', decPoint);
+  //#2887
+//  dojo.xhrPost({
+//        url : "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value="
+//            + decPoint,
+//        handleAs : "text",
+//        load : function(data, args) {
+//        }
+//      });
   var fmt = dojo.number.format(100000) + ' ';
   var thousandSep = fmt.substr(3, 1);
   if (thousandSep == '0') {
     thousandSep = '';
   }
-  dojo
-      .xhrPost({
-        url : "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value="
-            + thousandSep,
-        handleAs : "text",
-        load : function(data, args) {
-        }
-      });
+  saveDataToSession('browserLocaleDecimalPoint', thousandSep);
+  // #2887
+//  dojo
+//      .xhrPost({
+//        url : "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value="
+//            + thousandSep,
+//        handleAs : "text",
+//        load : function(data, args) {
+//        }
+//      });
 
 }
 
@@ -455,7 +470,18 @@ function saveBrowserLocaleToSession() {
 function changeLocale(locale) {
   if (locale != "") {
     currentLocale = locale;
-    dojo.xhrPost({
+    var callBack = function() { 
+    	showWait();
+        noDisconnect = true;
+        quitConfirmed = true;
+        dojo.byId("directAccessPage").value = "parameter.php";
+        dojo.byId("menuActualStatus").value = menuActualStatus;
+        dojo.byId("p1name").value = "type";
+        dojo.byId("p1value").value = "userParameter";
+        dojo.byId("directAccessForm").submit(); 
+    };
+    saveDataToSession('currentLocale', locale,null, callBack);
+    /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=currentLocale&value="
           + locale,
       handleAs : "text",
@@ -475,13 +501,25 @@ function changeLocale(locale) {
       },
       error : function(error, args) {
       }
-    });
+    });*/
   }
 }
 
 function changeBrowserLocaleForDates(newFormat) {
   saveUserParameter('browserLocaleDateFormat', newFormat);
-  dojo.xhrPost({
+  // #2887
+  var callBack = function() { 
+	showWait();
+    noDisconnect = true;
+    quitConfirmed = true;
+    dojo.byId("directAccessPage").value = "parameter.php";
+    dojo.byId("menuActualStatus").value = menuActualStatus;
+    dojo.byId("p1name").value = "type";
+    dojo.byId("p1value").value = "userParameter";
+    dojo.byId("directAccessForm").submit();
+  };
+  saveDataToSession('currentLocale', newFormat,null, callBack);
+  /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
         + newFormat,
     handleAs : "text",
@@ -495,12 +533,24 @@ function changeBrowserLocaleForDates(newFormat) {
       dojo.byId("p1value").value = "userParameter";
       dojo.byId("directAccessForm").submit();
     }
-  });
+  });*/
 }
 //gautier
 function changeBrowserLocaleTimeFormat(newFormat) {
   saveUserParameter('browserLocaleTimeFormat', newFormat);
-  dojo.xhrPost({
+  //#2887
+  var callBack = function() { 
+	showWait();
+	noDisconnect = true;
+	quitConfirmed = true;
+	dojo.byId("directAccessPage").value = "parameter.php";
+	dojo.byId("menuActualStatus").value = menuActualStatus;
+	dojo.byId("p1name").value = "type";
+	dojo.byId("p1value").value = "userParameter";
+	dojo.byId("directAccessForm").submit();
+  };
+  saveDataToSession('currentLocale', newFormat,null, callBack);
+  /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=browserLocaleTimeFormat&value="
         + newFormat,
     handleAs : "text",
@@ -514,7 +564,7 @@ function changeBrowserLocaleTimeFormat(newFormat) {
       dojo.byId("p1value").value = "userParameter";
       dojo.byId("directAccessForm").submit();
     }
-  });
+  });*/
 }
 
 function requestPasswordChange() {
@@ -536,18 +586,22 @@ function requestPasswordChange() {
 function saveResolutionToSession() {
   var height = screen.height;
   var width = screen.width;
-  dojo.xhrPost({
+  //#2887
+  saveDataToSession("screenWidth", width);
+  /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=screenWidth&value=" + width,
     handleAs : "text",
     load : function(data, args) {
     }
-  });
-  dojo.xhrPost({
+  });*/
+  //#2887
+  saveDataToSession("screenHeight", height);
+  /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=screenHeight&value=" + height,
     handleAs : "text",
     load : function(data, args) {
     }
-  });
+  });*/
 }
 
 /**
@@ -2233,7 +2287,42 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   }
   currentSelectedProject = idProject;
   if (idProject != "") {
-    dojo.xhrPost({
+	//#2887
+	var callBack = function(){
+      addMessage(i18n("Project") + "=" + nameProject);
+      if (dojo.byId("GanttChartDIV")) {
+        if (dojo.byId("resourcePlanning")) {
+          loadContent("resourcePlanningList.php", "listDiv", 'listForm');
+        } else if (dojo.byId("portfolioPlanning")) {
+          loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
+        } else {
+          loadContent("planningList.php", "listDiv", 'listForm');
+        }
+      } else if (dijit.byId("listForm") && dojo.byId('objectClass')
+          && dojo.byId('listShowIdle')) {
+        refreshJsonList(dojo.byId('objectClass').value);
+      } else if (dojo.byId('objectClassManual')
+          && dojo.byId('objectClassManual').value == 'Today') {
+        loadContent("../view/today.php", "centerDiv");
+      } else if (dojo.byId('objectClassManual')
+          && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
+        loadContent("../plugin/kanban/kanbanViewMain.php", "centerDiv");        
+      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'ActivityStream') {
+        loadContent("../view/activityStreamList.php", "activityStreamListDiv", "activityStreamForm");      
+      } else if (dojo.byId('objectClassManual')
+          && dojo.byId('objectClassManual').value == 'DashboardTicket') {
+        loadContent("../view/dashboardTicketMain.php", "centerDiv");
+      } else if (dojo.byId('currentPhpPage')
+          && dojo.byId('currentPhpPage').value) {
+        loadContent("../view/dashboardTicketMain.php", "centerDiv");
+      } else if (dijit.byId('limitResByProj').get('value')=="on"){
+        refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true);
+      } else if (currentPluginPage) {
+        loadContent(currentPluginPage, "centerDiv");
+      }
+	};
+	saveDataToSession('project', idProject, null, callBack);
+    /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=project&value=" + idProject,
       handleAs : "text",
       load : function(data, args) {
@@ -2269,7 +2358,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           loadContent(currentPluginPage, "centerDiv");
         }
       }
-    });
+    });*/
   }
   if (idProject != "" && idProject != "*" && dijit.byId("idProjectPlan")) {
     dijit.byId("idProjectPlan").set("value", idProject);
@@ -2289,10 +2378,17 @@ function setSelectedProject(idProject, nameProject, selectionField) {
 function disconnect(cleanCookieHash) {
   disconnectFunction = function() {
     quitConfirmed = true;
-    var extUrl = "";
+    //extUrl="";
+    extUrl="origin==disconnect";
     if (cleanCookieHash) {
-      extUrl = "&cleanCookieHash=true"
+      extUrl += "&cleanCookieHash=true";
     }
+    //#2887
+    var callBack = function(){
+    	window.location = "../index.php";
+    }
+    saveDataToSession("disconnect", extUrl, null, callBack);/*
+    saveDataToSession("disconnect"+extUrl, "origin=disconnect");
     dojo.xhrPost({
       url : "../tool/saveDataToSession.php?origin=disconnect&idData=disconnect"
           + extUrl,
@@ -2303,7 +2399,7 @@ function disconnect(cleanCookieHash) {
         else
           window.location = "../index.php";
       }
-    });
+    });/**/
   };
   if (!checkFormChangeInProgress()) {
     if (paramConfirmQuit != "NO") {
@@ -2331,12 +2427,13 @@ function sleep(milliseconds) {
 function quit() {
   if (!noDisconnect) {
     showWait();
-    dojo.xhrGet({
+    saveDataToSession('disconnect', '&origin==quit');
+    /*dojo.xhrGet({
       url : "../tool/saveDataToSession.php?origin==quit&idData=disconnect",
       load : function(data, args) {
         hideWait();
       }
-    });
+    });*/
     if(dojo.isFF || dojo.isSafari){
       sleep(1000);
     }
@@ -4106,7 +4203,7 @@ function changeGalleryEntity() {
   loadContent("galleryParameters.php", "listGalleryDiv", "galleryForm", false);
 }
 
-function saveDataToSession(param, value, saveUserParameter) {
+function saveDataToSession(param, value, saveUserParameter, callBack) {
   var url="../tool/saveDataToSession.php";
   url+="?idData="+param;
   url+="&value="+value;
@@ -4116,6 +4213,9 @@ function saveDataToSession(param, value, saveUserParameter) {
   dojo.xhrPost({
     url : url,
     load : function(data, args) {
+      if(callBack){
+    	setTimeout(callBack, 10);
+      }
     },
     error : function () {
       consoleTraceLog("error saving data to session param="+param+", value="+value+", saveUserParameter="+saveUserParameter);

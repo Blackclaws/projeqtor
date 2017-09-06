@@ -38,13 +38,19 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
 	     <div title="<?php echo i18n('showIdleElements');?>" dojoType="dijit.form.CheckBox" type="checkbox"
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
-           dojo.xhrPost({
+           var callBack = function(){
+             loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
+             refreshProjectSelectorList();
+           }
+           saveDataToSession('projectSelectorShowIdle', ((this.checked)?1:0));
+           
+         /*dojo.xhrPost({
              url: "../tool/saveDataToSession.php?idData=projectSelectorShowIdle&value="+((this.checked)?1:0),
              load: function() {
                //loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
                refreshProjectSelectorList();
              }
-           });
+           });*/
            dijit.byId('dialogProjectSelectorParameters').hide();
          </script>
 	     </div>

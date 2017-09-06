@@ -6947,13 +6947,21 @@ function checkExportColumns(scope) {
 // Project Selector Functions
 // ==================================================================
 function changeProjectSelectorType(displayMode) {
-  dojo.xhrPost({
+	//#2887
+	
+	
+	var callBack = function(){
+	  loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
+	};
+	
+	saveDataToSession('projectSelectorDisplayMode', displayMode, null, callBack);
+  /*dojo.xhrPost({
         url : "../tool/saveDataToSession.php?saveUserParam=true&idData=projectSelectorDisplayMode&value="
             + displayMode,
         load : function() {
           loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
         }
-      });
+      });*/
   if (dijit.byId('dialogProjectSelectorParameters')) {
     dijit.byId('dialogProjectSelectorParameters').hide();
   }
@@ -7355,12 +7363,17 @@ function historyShowHideWork() {
   if (dijit.byId('dialogHistory')) {
     dijit.byId('dialogHistory').hide();
   } 
+  var callBack = function(){
+	showHistory(dojo.byId('objectClass').value);
+  };
+  saveDataToSession("showWorkHistory", historyShowHideWorkStatus, null, callBack);
+  /*
   dojo.xhrPost({
     url : "../tool/saveDataToSession.php?saveUserParam=false&idData=showWorkHistory&value="+historyShowHideWorkStatus,
     load : function() {
       showHistory(dojo.byId('objectClass').value);  
     }
-  });
+  });*/
 }
 
 // ====================================================
@@ -8591,11 +8604,12 @@ function storePaneSize(paneName,sizeValue) {
     return;
   }
   arrayPaneSize[paneName]=sizeValue;
-  dojo.xhrPost({
+  saveDataToSession(paneName, sizeValue, true);
+  /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?saveUserParam=true"
        +"&idData="+paneName
        +"&value="+sizeValue
-  });;
+  });;*/
 }
 
 //gautier #showHideMenu
