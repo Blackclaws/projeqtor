@@ -406,8 +406,9 @@ if ($displayWidthList<1400) {
                   clearTimeout(openFilterListTimeout);
                   closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
                 </script>
-                <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;display:none; position: absolute;">
+                <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;<!-- display:none; --> position: absolute;">
                   <?php 
+                  
                      //$_REQUEST['filterObjectClass']=$objectClass;
                      //$_REQUEST['context']="directFilterList";
                      if ($comboDetail) $_REQUEST['comboDetail']=true;

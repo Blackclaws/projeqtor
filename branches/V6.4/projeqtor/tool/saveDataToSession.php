@@ -29,6 +29,14 @@
  */
 require_once "../tool/projeqtor.php";
 
+// $idTest=RequestHandler::getValue('idData');
+
+// $val=RequestHandler::getValue('value');
+
+// $saveParam=RequestHandler::getValue('saveUserParameter');
+
+// $callBack=RequestHandler::getValue('callBack');
+
 if (isset($_REQUEST['idData'])) {
   $id=$_REQUEST['idData'];
 } else if (isset($_REQUEST['id'])) {
