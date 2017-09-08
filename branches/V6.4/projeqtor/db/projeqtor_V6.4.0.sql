@@ -54,3 +54,7 @@ ALTER TABLE `${prefix}filtercriteria` ADD COLUMN `orOperator` int(1) DEFAULT '0'
 INSERT INTO `${prefix}event` (`id`,`name`,`idle`, `sortOrder`) VALUES 
 (12,'linkAdd',0,53),
 (13,'linkDelete',0,54);
+
+-- ticket #2924
+INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES 
+(49,'Delivery',0);

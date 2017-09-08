@@ -686,7 +686,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
             </div>
             <div id="messageDiv" dojoType="dijit.layout.ContentPane" title="<?php echo i18n('Console');?>" <?php if ($selectedAccordionBottom=='messageDiv') echo 'selected="true"';?>>
               <script type="dojo/connect" event="onShow" args="evt">
-                saveDataToSession("ccordionPaneBottom", "messageDiv", true);
+                saveDataToSession("accordionPaneBottom", "messageDiv", true);
                 /*dojo.xhrPost({
                   url : "../tool/saveDataToSession.php?saveUserParam=true"
                     +"&idData=accordionPaneBottom&value=messageDiv"
