@@ -73,7 +73,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
   }
 } 
 
-$displayWidthList="9999";
+$displayWidthList="1980";
 if (RequestHandler::isCodeSet('destinationWidth')) {
   $displayWidthList=RequestHandler::getNumeric('destinationWidth');
 }

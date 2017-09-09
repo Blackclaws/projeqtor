@@ -831,15 +831,14 @@ function loadContent(page, destination, formName, isResultMessage,
             expenseDetailRecalculate();
           }
           if (directAccess) {
-            if (dijit.byId('listIdFilter')) {
+            if (dojo.byId('objectClass') && dojo.byId('objectId') && dijit.byId('listForm')) {
               dojo.byId('objectId').value = directAccess;
               showWait();
               loadContent("objectDetail.php", "detailDiv", 'listForm');
               if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv",'listForm');
               showWait();
               hideList();
-              setTimeout('selectRowById("objectGrid", '
-                  + parseInt(directAccess) + ');', 500);
+              setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');', 500);
             }
           }
           if (isResultMessage) {    

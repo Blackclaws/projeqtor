@@ -3480,6 +3480,8 @@ function filterSelectAtribute(value) {
           if (currentSelectedProject && currentSelectedProject!='' && currentSelectedProject!='*') {
             if (value=='idActivity') {
               urlListFilter+='&critField=idProjectSub&critValue='+currentSelectedProject;
+            } if (value=='idComponent') {
+              // noting
             } else {
               urlListFilter+='&critField=idProject&critValue='+currentSelectedProject;
             }
