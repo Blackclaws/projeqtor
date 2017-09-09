@@ -885,7 +885,7 @@
             	    $val="####$val";
             	  }  	  
             	} else if (Affectable::isAffectable($objectClass)) {
-            		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val).'##'.strtoupper(substr(SqlList::getNameFromId('Affectable', $line['id']),0,1));
+            		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val).'##'.strtoupper(mb_substr(SqlList::getNameFromId('Affectable', $line['id']),0,1,'UTF-8'));
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
 	              if ($image->id and $image->isThumbable()) {
