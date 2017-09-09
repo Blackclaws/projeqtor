@@ -193,7 +193,7 @@ function formatLetterThumb($idUser,$size,$userName=null,$floatLetter="right", $i
 	  		. ' onMouseOver="showBigImage(null,null,this,\''.$userName.'\',false);" onMouseOut="hideBigImage();" '
 	  		. (($idTicket>0) ? 'id="responsible'.$idTicket.'"' : '') .'valueuser="'.$userName.'">';
 	}
-	$result.=strtoupper(substr($userName,0,1));
+  $result.=strtoupper(mb_substr($userName,0,1,'UTF-8'));
 	$result.='</span>';
 	return $result;
 }

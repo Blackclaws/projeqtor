@@ -215,7 +215,7 @@
 	      	$pp=new ProductProject();
 	      	$ppList=$pp->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
 	      	foreach ($ppList as $pp) {
-	      	  $list[$pp->idProduct]=$listProd[$pp->idProduct];
+	      	  if (isset($listProd[$pp->idProduct])) $list[$pp->idProduct]=$listProd[$pp->idProduct];
 	      	}
       	} else if (trim($_REQUEST['critValue']) and $_REQUEST['critField']=='idProduct') {
       	    $prod=new Product($_REQUEST['critValue']);
