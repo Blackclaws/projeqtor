@@ -5269,6 +5269,7 @@ abstract class SqlElement {
     $result = array();
     $type = $newType;
     $status = $newStatus;
+    $planningMode = $newPlanningMode;
     $user = getSessionUser ();
     $class = get_class ( $this );
     $testObj = $this;
@@ -5282,6 +5283,10 @@ abstract class SqlElement {
       }
       if ($testClass and SqlElement::class_exists ( $testClass ))
         $testObj = new $testClass ( $this->refId, true );
+      $planningModeName = 'id' . str_replace ( 'PlanningElement', '', get_class ( $this ) ) . 'PlanningMode';
+      if (!$planningMode and property_exists($this, $planningModeName)) {
+        $planningMode=$this->$planningModeName;
+      }
     } else if ($class == 'WorkElement') {
       if ($this->refType) {
         $testClass = $this->refType;
@@ -5291,9 +5296,7 @@ abstract class SqlElement {
       if ($testClass and SqlElement::class_exists ( $testClass ))
         $testObj = new $testClass ( $this->refId, true );
     }
-    if (! $profile)
-      $profile = $user->getProfile ( $this );
-    $planningMode = $newPlanningMode;
+    if (! $profile) $profile = $user->getProfile ( $this );
     if ($this->id) {
       $typeName = 'id' . str_replace ( 'PlanningElement', '', get_class ( $this ) ) . 'Type';
       $planningModeName = 'id' . str_replace ( 'PlanningElement', '', get_class ( $this ) ) . 'PlanningMode';
