@@ -115,7 +115,7 @@ if(!$activityStreamNumberDays){
                 id="activityStreamTypeNote" name="activityStreamTypeNote">
                   <?php 
                     $selectedElementType=Parameter::getUserParameter('activityStreamElementType');
-                    htmlDrawOptionForReference('idLinkable', $selectedElementType, null, false); ?>
+                    htmlDrawOptionForReference('idImportable', $selectedElementType, null, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshActivityStreamList();
                     activityStreamTypeRead();
