@@ -494,7 +494,7 @@ function thumb(value, size) {
       var fontSize=(size==32)?24:((size==16)?10:15);
       var name=tab[2];
       var initial=tab[2].substr(0,1).toUpperCase();
-      if (tab.length>=4) initial=tab[3].toUpperCase();
+      if (tab.length>=4 && tab[3]!="") initial=tab[3].toUpperCase();
       if (name){
         result+= '<div style="text-align:left">';
       } else {

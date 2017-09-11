@@ -204,6 +204,13 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          } 
        }
     });
+    require(["dojo/sniff"], function(sniff) {
+      if(sniff("android") || sniff("ios") || sniff("bb")) {
+          alert("i18n('redirection vers plugin mobile')");
+          var url = "../mobile/";  
+          window.location = url;
+      }
+    });
     dndMoveInProgress=false;
     dojo.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
     	dndMoveInProgress=true;
@@ -278,7 +285,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           echo "switchedMode=true;";
           echo "switchListMode='" . getSessionValue('switchedMode'). "';";
         }
-      }     
+      }    
       ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo htmlEncode(i18n('welcomeMessage').' '.((getSessionUser()->resourceName)?getSessionUser()->resourceName:getSessionUser()->name),'qotes');?>");
