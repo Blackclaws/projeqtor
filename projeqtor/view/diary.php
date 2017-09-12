@@ -116,6 +116,7 @@
   	$trHeight=$totalHeight;
   }
   $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource,$showDone,$showIdle);
+  
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
   while ($currentDay<=$endDay) {
   	if ($period=="month") {
@@ -210,7 +211,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		if ($period!='day') {
 		  echo '<div dojoType="dijit.Tooltip" connectId="item_'.$cpt.'" position="above">';
 		}
-		//echo $hintHtml;
+		echo $hintHtml;
 		echo '</div>';
 		echo '</td>';
 		echo '</tr>';
@@ -234,7 +235,6 @@ function getActivity($date) {
 function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdle=false) {
 	global $projectColorArray, $projectNameArray, $allActi;
 	$result=array();
-	// 
 	$arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement());
 	foreach ($arrObj as $obj) {
 		$critWhere="idResource=".Sql::fmtId($ress);
@@ -262,13 +262,16 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				$critWhere=" refType='MileStone' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
 				$critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
 				$lstMile=SqlList::getListWithCrit('Milestone', array('idResource'=>$ress));
+				
 				$critWhere.=" and refId in ".transformListIntoInClause($lstMile);
 			}
 	  } else {
 	  	$critWhere.=" and 1=0";
 	  }
+	  
 		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
-		foreach ($lst as $o) {	  
+		
+		foreach ($lst as $o) {	
 			if (get_class($o)=='MilestonePlanningElement') {
 				$refType=$o->refType;
 				$item=new $refType($o->refId);
