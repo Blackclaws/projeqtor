@@ -51,7 +51,7 @@ $canUpdateCreationInfo=false;
 if ($obj->id and $updateRight) {
   $user=getSessionUser();
   $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->getProfile($obj),'scope' => 'canUpdateCreation'));
-  if ($habil) {
+  if ($habil and $obj->idStatus != "7") {
     $list=new ListYesNo($habil->rightAccess);
     if ($list->code == 'YES') {
       $canUpdateCreationInfo=true;

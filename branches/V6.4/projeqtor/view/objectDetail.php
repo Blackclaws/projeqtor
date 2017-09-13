@@ -3995,6 +3995,9 @@ function drawVersionStructureFromObject($obj, $refresh=false,$way,$item) {
        
       if (isset($deliveryDate)) {
         echo '<br />'.(($errorDatesDelivery) ? '<span style="color: red;">' : '').htmlFormatDate($deliveryDate).(($errorDatesDelivery) ? '</span>' : '').' ';
+        //ADD qCazelles - DeliveryDateXLS - Ticket #126
+        unset($deliveryDate);
+        //END ADD qCazelles - DeliveryDateXLS - Ticket #126
       }
     }
      

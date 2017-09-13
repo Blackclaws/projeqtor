@@ -11,7 +11,6 @@
 			dependencies: [
          "dojox/mobile/parser",
          "dojo/data/ItemFileReadStore",
-         "dojo/domReady!",
          "dijit/form/DataList",
          "dijit/layout/ContentPane",
          "dojox/mobile/Badge",

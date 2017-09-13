@@ -88,11 +88,18 @@ if ($format=='print') {
   //echo "</table>";
   echo "</td></tr>";
   echo "</table>";
-} else if ($format=='csv') {
+  //CHANGE qCazelles - DeliveryDateXLS - Ticket #126
+} else if ($format=='csv' and Parameter::getGlobalParameter("displayMilestonesStartDelivery") != 'YES') {
   echo "Class;Id;Name\n";
   foreach ($result as $item) {
     echo $item['class'].';'.$item['id'].';'.$item['name']."\n";
   }
+} else if ($format=='csv') {
+  echo "Class;Id;Name;Delivery date\n";
+  foreach ($result as $item) {
+    echo $item['class'].';'.$item['id'].';'.$item['name'].';'.$item['deliveryDate']."\n";
+  }
+//END CHANGE qCazelles - DeliveryDateXLS - Ticket #126
 } else {
   errorLog("productStructure : incorrect format '$format'");
   exit;
