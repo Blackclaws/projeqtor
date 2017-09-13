@@ -357,12 +357,9 @@ function changeTheme(newTheme) {
   if (newTheme != "") {
     dojo.byId('body').className = 'tundra ' + newTheme;
     // Mehdi #2887
-    alert(newTheme);
-    
     var callBack = function() { 
       addMessage("Theme=" + newTheme); 
     };
-    alert(callBack);
     saveDataToSession('theme',newTheme, null, callBack);
     /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=theme&value=" + newTheme,

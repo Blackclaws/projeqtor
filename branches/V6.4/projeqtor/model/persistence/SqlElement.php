@@ -5121,6 +5121,11 @@ abstract class SqlElement {
     } else {
       $projObj = new Project ();
     }
+    if (property_exists($this, 'idProduct') and isset($this->idProduct)) {
+    	$prodObj = new Product ( $this->idProduct );
+    } else {
+    	$prodObj = new Product ();
+    }
     if (isset ( $this->$type )) {
       $typeObj = new Type ( $this->$type );
     } else {
@@ -5138,8 +5143,15 @@ abstract class SqlElement {
       $year = substr ( $this->creationDateTime, 0, 4 );
       $month = substr ( $this->creationDateTime, 5, 2 );
     }
-    $arrayFrom = array('{PROJ}', '{TYPE}', '{YEAR}', '{MONTH}');
-    $arrayTo = array($projObj->projectCode, $typeObj->code, $year, $month);
+    $arrayFrom = array('{PROD}', '{PROJ/PROD}','{PROD/PROJ}','{PROJ}', '{TYPE}', '{YEAR}', '{MONTH}');
+    $arrayTo = array(
+    		$prodObj->designation,
+    		($projObj->projectCode)?$projObj->projectCode:$prodObj->designation,
+    		($prodObj->designation)?$prodObj->designation:$projObj->projectCode,
+        $projObj->projectCode, 
+        $typeObj->code, 
+        $year, 
+        $month);
     $prefix = str_replace ( $arrayFrom, $arrayTo, $fmtPrefix );
     $suffix = str_replace ( $arrayFrom, $arrayTo, $fmtSuffix );
     $query = "select max(reference) as ref from " . $this->getDatabaseTableName ();
@@ -5165,7 +5177,10 @@ abstract class SqlElement {
     $this->reference = $prefix . $num . $suffix;
     if (get_class ( $this ) == 'Document' and property_exists ( $this, 'documentReference' )) {
       $fmtDocument = Parameter::getGlobalParameter ( 'documentReferenceFormat' );
-      $docRef = str_replace ( array('{PROJ}', '{TYPE}', '{NUM}', '{NAME}'), array(
+      $docRef = str_replace ( array('{PROD}', '{PROJ/PROD}','{PROD/PROJ}','{PROJ}', '{TYPE}', '{NUM}', '{NAME}'), array(
+          $prodObj->designation,
+          ($projObj->projectCode)?$projObj->projectCode:$prodObj->designation,
+      		($prodObj->designation)?$prodObj->designation:$projObj->projectCode,
           $projObj->projectCode, 
           $typeObj->code, 
           $num, 
