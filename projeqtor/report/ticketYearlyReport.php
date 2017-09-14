@@ -125,6 +125,11 @@ if (! isset($includedReport)) {
   if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
     $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';  
   }
+  //ADD qCazelles - Report fiscal year - Ticket #128
+  if ($periodType=='year' and $paramMonth!="01") {
+    $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+  }
+  //END ADD qCazelles - Report fiscal year - Ticket #128
   if ($periodType=='month') {
     $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
   }
@@ -171,12 +176,33 @@ if (! isset($includedReport)) {
 $reportContext=false;
 $where=getAccesRestrictionClause('Ticket',false);
 
-$where.=" and ( (    creationDateTime>= '" . $paramYear . "-01-01'";
-$where.="        and creationDateTime<='" . $paramYear . "-12-31' )";
-$where.="    or (    doneDateTime>= '" . $paramYear . "-01-01'";
-$where.="        and doneDateTime<='" . $paramYear . "-12-31' )";
-$where.="    or (    idleDateTime>= '" . $paramYear . "-01-01'";
-$where.="        and idleDateTime<='" . $paramYear . "-12-31' ) )";
+//CHANGE qCazelles - Report fiscal year - Ticket #128
+//ADD
+if ($paramMonth=="01") {
+  $endMonth = "12";
+}
+else {
+  $endMonth = ($paramMonth<11?'0':'') . ($paramMonth - 1);
+}
+$endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
+//END ADD
+//Old
+// $where.=" and ( (    creationDateTime>= '" . $paramYear . "-01-01'";
+// $where.="        and creationDateTime<='" . $paramYear . "-12-31' )";
+// $where.="    or (    doneDateTime>= '" . $paramYear . "-01-01'";
+// $where.="        and doneDateTime<='" . $paramYear . "-12-31' )";
+// $where.="    or (    idleDateTime>= '" . $paramYear . "-01-01'";
+// $where.="        and idleDateTime<='" . $paramYear . "-12-31' ) )";
+
+//New
+$where.=" and ( (    creationDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
+$where.="        and creationDateTime<='" . $endYear. "-" . $endMonth . "-31' )";
+$where.="    or (    doneDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
+$where.="        and doneDateTime<='" . $endYear. "-" . $endMonth . "-31' )";
+$where.="    or (    idleDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
+$where.="        and idleDateTime<='" . $endYear. "-" . $endMonth . "-31' ) )";
+//END CHANGE qCazelles - Report fiscal year - Ticket #128
+
 if ($paramProject!="") {
   $where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);
 }
@@ -239,21 +265,49 @@ for ($i=1; $i<=13; $i++) {
 }
 $sumProj=array();
 foreach ($lstTicket as $t) {
+  
+  //CHANGE qCazelles - Report fiscal year - Ticket #128
   if (substr($t->creationDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->creationDateTime,5,2));
-    $created[$month]+=1;
-    $created[13]+=1;
+    if ($month>=$paramMonth) {
+      $created[$month - ($paramMonth - 1)]+=1;
+      $created[13]+=1;
+    }
   }
+  //ADD qCazelles
+  else if (substr($t->creationDateTime,0,4)==$endYear) {
+    $month=intval(substr($t->creationDateTime,5,2));
+    if ($month<=$paramMonth) {
+      $created[12 - $paramMonth + $month + 1]+=1;
+      $created[13]+=1;
+    }
+  }
+  //END ADD qCazelles
   if (substr($t->doneDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->doneDateTime,5,2));
     $done[$month]+=1;
     $done[13]+=1;
   }
+  //ADD qCazelles
+  else if (substr($t->doneDateTime,0,4)==$paramYear) {
+    $month=intval(substr($t->doneDateTime,5,2));
+    $done[12 - $paramMonth + $month + 1]+=1;
+    $done[13]+=1;
+  }
+  //END ADD qCazelles
   if (substr($t->idleDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->idleDateTime,5,2));
     $closed[$month]+=1;
     $closed[13]+=1;
   }
+  //ADD qCazellles
+  else if (substr($t->idleDateTime,0,4)==$endYear) {
+    $month=intval(substr($t->idleDateTime,5,2));
+    $closed[12 - $paramMonth + $month + 1]+=1;
+    $closed[13];
+  }
+  //END ADD qCazelles
+  //END CHANGE qCazelles - Report fiscal year - Ticket #128
 }
 
 if (checkNoData($lstTicket)) return;
@@ -264,7 +318,16 @@ echo '<tr><td class="reportTableHeader" rowspan="2">' . i18n('Ticket') . '</td>'
 echo '<td colspan="13" class="reportTableHeader">' . $periodValue . '</td>';
 echo '</tr><tr>';
 $arrMonth=getArrayMonth(4,true);
+
+//ADD qCazelles - Report fiscal year - Ticket #128
+for ($i = 0; $i < $paramMonth - 1; $i++) {
+  $val = array_shift($arrMonth);
+  array_push($arrMonth, $val);
+}
+//END ADD qCazelles - Report fiscal year - Ticket #128
+
 $arrMonth[13]=i18n('sum');
+
 for ($i=1; $i<=12; $i++) {
   echo '<td class="reportTableColumnHeader">' . $arrMonth[$i-1] . '</td>';
 }

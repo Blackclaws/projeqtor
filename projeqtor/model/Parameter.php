@@ -56,6 +56,10 @@ class Parameter extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  changeLocale(this.value);';
       $colScript .= '</script>';
+    } else if ($colName=="scaytAutoStartup") {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+        $colScript .= '  saveDataToSessionAndReload("scaytAutoStartup", this.value, null);';
+        $colScript .= '</script>'; 
     } else if ($colName=="browserLocaleDateFormat") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  changeBrowserLocaleForDates(this.value);';

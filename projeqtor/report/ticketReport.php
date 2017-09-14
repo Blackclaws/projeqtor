@@ -110,6 +110,11 @@ if (! isset($includedReport)) {
   if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
     $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';  
   }
+  //ADD qCazelles - Report fiscal year - Ticket #128
+  if ($periodType=='year' and $paramMonth!="01") {
+    $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+  }
+  //END ADD qCazelles - Report fiscal year - Ticket #128
   if ($periodType=='month') {
     $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
   }
@@ -158,8 +163,15 @@ if ($periodType) {
   $start=date('Y-m-d');
   $end=date('Y-m-d');
   if ($periodType=='year') {
-    $start=$paramYear . '-01-01';
-    $end=$paramYear . '-12-31';
+    
+    //CHANGE qCazelles - Report fiscal year - Ticket #128    
+    //Old
+    //$start=$paramYear . '-01-01';
+    //$end=$paramYear . '-12-31';
+    //New
+    $start=$paramYear . '-' . ($paramMonth<10?'0':'') . $paramMonth . '-01';
+    $end=(($paramMonth=="1") ? $paramYear : ($paramYear + 1)) . '-' . ((($paramMonth=="1") ? "12" : ($paramMonth<11?'0':'') . $paramMonth - 1)) . '-31';
+    //END CHANGE qCazelles - Report fiscal year - Ticket #128
   } else if ($periodType=='month') {
     $start=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-01';
     $end=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-' . date('t',mktime(0,0,0,$paramMonth,1,$paramYear));  
