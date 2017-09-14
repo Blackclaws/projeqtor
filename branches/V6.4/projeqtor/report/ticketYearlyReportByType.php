@@ -34,6 +34,7 @@ if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
 	$paramYear=Security::checkValidYear($paramYear);
 };
+
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];

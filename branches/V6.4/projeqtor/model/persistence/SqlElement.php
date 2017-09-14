@@ -2271,6 +2271,16 @@ abstract class SqlElement {
               $keyId = '#' . $obj->{$col_name};
             }
           }
+          // FOR PHP 7.1 COMPATIBILITY
+          $dataType=$obj->getDataType($col_name);
+          $dataLength=$obj->getDataLength($col_name);
+          if ($obj->{$col_name}===null and (
+              // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
+              ($dataType=='decimal') or
+              ($dataType=='numeric')
+          )) {
+            $obj->{$col_name}=0;
+          }
         }
         if ($getIdInKey) {
           $objects [$keyId] = $obj;
@@ -2542,6 +2552,14 @@ abstract class SqlElement {
               $this->$key = $_REQUEST [$formField];
             }
           }
+          // FOR PHP 7.1 COMPATIBILITY
+          if ($this->$key===null and (
+            // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
+               ($dataType=='decimal') or 
+               ($dataType=='numeric') 
+              )) {
+            $this->$key=0;
+          }
         }
       }
     }
@@ -2632,6 +2650,8 @@ abstract class SqlElement {
           } else if (strpos ( $this->getFieldAttributes ( $col_name ), 'calculated' ) !== false) {} else {
             // $test=$line[$this->getDatabaseColumnName($col_name)];
             $dbColName = $this->getDatabaseColumnName ( $col_name );
+            $dbType=$this->getDataType($col_name);
+            $dbLength=$this->getDataLength($col_name);
             if (array_key_exists ( $dbColName, $line )) {
               $this->{$col_name} = $line [$dbColName];
             } else if (array_key_exists ( strtolower ( $dbColName ), $line )) {
@@ -2639,6 +2659,14 @@ abstract class SqlElement {
               $this->{$col_name} = $line [$dbColName];
             } else {
               errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $this ) . "' " . " : field '" . $dbColName . "' not found in Database." );
+            }
+            // FOR PHP 7.1 COMPATIBILITY
+            if ($this->{$col_name}===null and ( 
+               // ( $dbType=='int' and $dbLength!=12 and $dbLength!=1) or // Intergers : should not be summed, so preserve previous behavior
+                  ( $dbType=='numeric') or
+                  ( $dbType=='decimal')
+               ) )  {
+              $this->{$col_name}=0;
             }
           }
         }

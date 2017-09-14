@@ -210,6 +210,26 @@ foreach ($listParam as $param) {
       </script>
     </div></td>
     </tr>
+    <?php //ADD qCazelles - Report fiscal year - Ticket #128 
+    if (Parameter::getGlobalParameter("reportStartMonth")!='NO') {
+    ?>
+    <tr>
+    <td class="label"><label><?php echo i18n("startMonth");?>&nbsp;:&nbsp;</label></td>
+    <td><div style="width:55px; text-align: center; color: #000000;" 
+       dojoType="dijit.form.NumberSpinner" 
+       constraints="{min:1,max:12,places:0,pattern:'00'}"
+       intermediateChanges="true"
+       maxlength="2"
+       value="01" smallDelta="1"
+       id="monthSpinner" name="monthSpinner" >
+     </div>
+     </td>
+     </tr>
+     <?php }
+     else {
+       echo '<input type="hidden" name="monthSpinner" id="monthSpinner" value="01" />'; 
+     }
+     //END ADD qCazelles - Report fiscal year - Ticket #128 ?>
 <?php    
   } else if ($param->paramType=='date') {
     $defaultDate='';

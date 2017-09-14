@@ -464,10 +464,24 @@ function saveBrowserLocaleToSession() {
  *          the new locale (en, fr, ...)
  * @return void
  */
+function saveDataToSessionAndReload(param, value, saveUserParameter) {
+  var callBack = function() { 
+    showWait();
+    noDisconnect = true;
+    quitConfirmed = true;
+    dojo.byId("directAccessPage").value = "parameter.php";
+    dojo.byId("menuActualStatus").value = menuActualStatus;
+    dojo.byId("p1name").value = "type";
+    dojo.byId("p1value").value = "userParameter";
+    dojo.byId("directAccessForm").submit(); 
+  };
+  saveDataToSession(param, value, saveUserParameter, callBack);
+}
+
 function changeLocale(locale) {
   if (locale != "") {
     currentLocale = locale;
-    var callBack = function() { 
+    /*var callBack = function() { 
     	showWait();
         noDisconnect = true;
         quitConfirmed = true;
@@ -477,7 +491,8 @@ function changeLocale(locale) {
         dojo.byId("p1value").value = "userParameter";
         dojo.byId("directAccessForm").submit(); 
     };
-    saveDataToSession('currentLocale', locale,null, callBack);
+    saveDataToSession('currentLocale', locale,null, callBack);*/
+    saveDataToSessionAndReload('currentLocale', locale, null)
     /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=currentLocale&value="
           + locale,
@@ -690,7 +705,10 @@ function loadContent(page, destination, formName, isResultMessage,
     }
   }
   if (noFading) fadingMode = false;
-  if (page.substr(0, 16) == 'objectStream.php') fadingMode = false;
+  if (page.substr(0, 16) == 'objectStream.php') {
+    fadingMode = false;
+    silent=true;
+  }
   
   if (!(contentNode && contentWidget)) {
     consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
