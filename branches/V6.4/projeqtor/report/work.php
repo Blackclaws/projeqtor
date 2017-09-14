@@ -91,8 +91,12 @@ if ($paramTeam!="") {
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
-  
 }
+//ADD qCazelles - Report fiscal year - Ticket #128
+if ($periodType=='year' and $paramMonth!="01") {
+  $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+}
+//END ADD qCazelles - Report fiscal year - Ticket #128
 if ($periodType=='month') {
   $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
 }
@@ -108,7 +112,17 @@ $where="(".getAccesRestrictionClause('Activity',false,false,true,true) ." or idR
 //$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
-$where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
+
+//CHANGE qCazelles - Report start month - Ticket #128
+//Old
+//$where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
+//New
+if ($periodType=='year') {
+  $where.=" and ((year='" . $periodValue . "' and month>='" . $periodValue.($paramMonth<10?'0':'').$paramMonth . "')".
+          " or (year='" . ($periodValue + 1) . "' and month<='" . ($periodValue + 1) . ($paramMonth<11?'0':'') . $paramMonth . "'))";
+}
+//END CHANGE qCazelles - Report start month - Ticket #128
+
 if ($paramProject!='') {
   $where.=  " and idProject in " . getVisibleProjectsList(true, $paramProject); 
 }

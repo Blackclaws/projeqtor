@@ -25,7 +25,11 @@ if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
 	$paramYear=Security::checkValidYear($paramYear);
 };
-
+$paramMonth='';
+if (array_key_exists('monthSpinner',$_REQUEST)) {
+  $paramMonth=$_REQUEST['monthSpinner'];
+  $paramMonth=Security::checkValidMonth($paramMonth);
+};
 $paramTicketType='';
 if (array_key_exists('idTicketType',$_REQUEST)) {
 	$paramTicketType=trim($_REQUEST['idTicketType']);
