@@ -198,6 +198,9 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		}
 		if ($period=='day') {
 		  echo '<div style="padding:5px;width:98%;border:1px solid #A0A0A0;margin-top:5px;margin-bottom:5px;">'.$item['description'].'</div>';
+		  if ($item['date']) { echo i18n('colDate').": <i>".$item['date']."</i>"; }
+		  if ($item['work'] and $item['real']) { echo i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
+		  if ($item['work'] and ! $item['real']) { echo i18n('planned').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		}
 		echo '<div style="width:100%;float:left;position:relative;left:-18px;padding-top:2px">';
 		echo '   <div style="float:right;min-width:22px;height:22px;position:relative;margin-top:5px;margin-right:-13px;">#'.$item['id'].'</div>';
@@ -210,9 +213,9 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		// To display a tooltip in replacement of Hint
 		if ($period!='day') {
 		  echo '<div dojoType="dijit.Tooltip" connectId="item_'.$cpt.'" position="above">';
+		  echo $hintHtml;
+		  echo '</div>';
 		}
-		echo $hintHtml;
-		echo '</div>';
 		echo '</td>';
 		echo '</tr>';
 	}
@@ -368,7 +371,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				    'typeName'=>$typeName,
 				    'priorityId'=>$priorityId,
 				    'priorityName'=>$priorityName,
-				    'responsibleId'=>$responsibleName,
+				    'responsibleId'=>$responsibleId,
 				    'responsibleName'=>$responsibleName,
 				    'statusId'=>$statusId,
 				    'statusName'=>$statusName,
@@ -456,7 +459,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 				'typeName'=>$typeName,
 				'priorityId'=>$priorityId,
 				'priorityName'=>$priorityName,
-				'responsibleId'=>$responsibleName,
+				'responsibleId'=>$responsibleId,
 				'responsibleName'=>$responsibleName,
 		    'statusId'=>$statusId,
 		    'statusName'=>$statusName,

@@ -73,13 +73,13 @@
     
     if ($type=='empty') {
           
-    } else if ($type=='object') {    
+    } else if ($type=='object') { //================================================= OBJECT ===================================================================================== 
       $objectClass=$_REQUEST['objectClass'];
       Security::checkValidClass($objectClass, 'objectClass');
 
       $obj=new $objectClass();
       $nbRows=listFieldsForFilter ($obj,0);
-    } else if ($type=='operator') {    
+    } else if ($type=='operator') { //=============================================== OPERATOR ===================================================================================   
       $dataType=$_REQUEST['dataType']; // Note: checked against constant values.
       if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or $dataType=='decimal') {
         echo ' {id:"=", name:"="}';
@@ -121,7 +121,7 @@
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       }
       
-    } else if ($type=='list') {   
+    } else if ($type=='list') { //================================================= LIST =======================================================================================
       $dataType=$_REQUEST['dataType']; // Note: checked against constant values.     
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
@@ -246,6 +246,7 @@
         }
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $critField=$_REQUEST['critField'];
+        $critValue=$_REQUEST['critValue'];
         if (($dataType=='idVersion' or $dataType=='idProductVersion' or $dataType=='idComponentVersion' 
           or $dataType=='idOriginalVersion' or $dataType=='idOriginalProductVersion' or $dataType=='idOriginalComponentVersion'
           or $dataType=='idTargetVersion' or $dataType=='idTargetProductVersion' or $dataType=='idTargetComponentVersion') 
@@ -289,6 +290,40 @@
           $list = array_intersect_key($list, $listVisibleRes);
         }
         // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
+      }
+      if ($critField=='scope' and $dataType='idEvent') {
+        if (SqlElement::class_exists($critValue)) {
+          //$objVal=new $critVal();
+          if (!property_exists($critValue, 'idResource')) {
+            unset($list[1]); // 1	responsibleChange
+          }
+          if (!property_exists($critValue, '_Note')) {
+            unset($list[2]); // 2	noteAdd
+            unset($list[4]); // 4	noteChange
+          }
+          if (!property_exists($critValue, '_Link')) {
+            unset($list[12]); // 12	linkAdd
+            unset($list[13]); // 13	linkDelete
+          }
+          if (!property_exists($critValue, '_Attachment')) {
+            unset($list[3]); // 3	attachmentAdd 
+          }
+          if ($critValue!='Project') {
+            unset($list[10]); // 10	affectationAdd
+            unset($list[11]); // 11	affectationChange
+          }
+          if (!property_exists($critValue, '_Assignment')) {
+            unset($list[7]); // 7	assignmentAdd
+            unset($list[8]); // 8	assignmentChange
+          }
+          if (!property_exists($critValue, 'description')) {
+            unset($list[5]); // 5	descriptionChange
+          }
+          if (!property_exists($critValue, 'result')) {
+            unset($list[6]); // 6	resultChange
+          }
+          /* 9	anyChange */
+        }
       }
       /*if ($dataType=='idResource') {
         $scope=Affectable::getVisibilityScope();
@@ -375,7 +410,7 @@
         echo '{id:"' . htmlEncodeJson($id) . '", name:"'. htmlEncodeJson($name) . '"}';
         $nbRows+=1;
       }
-    } else if ($type=='listResourceProject') {
+    } else if ($type=='listResourceProject') { // ====================================================== LISTRESOURCEPROJECT ===================================================
 	      $idPrj=$_REQUEST['idProject'];
 	      $prj=new Project($idPrj);
 	      $lstTopPrj=$prj->getTopProjectList(true);

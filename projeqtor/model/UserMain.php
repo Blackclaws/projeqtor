@@ -981,6 +981,7 @@ class UserMain extends SqlElement {
       $user->isResource=$this->isResource;
       setSessionUser($user);
     }
+    if ($this->id==getSessionUser()->id) User::refreshUserInSession();
     return $result;
   }
   
@@ -1300,7 +1301,17 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
     traceLog("NEW CONNECTED USER '" . $this->name . "'".(($rememberMe)?' (using remember me feature)':''));
     Audit::updateAudit();
   }
-  
+  public static function refreshUserInSession() {
+    $target=getSessionUser();
+    $current=new User($target->id);
+    foreach ($current as $fld=>$val) {
+      if (substr($fld,0,1)=='_') continue; // Specific field
+      if (is_object($val) or substr($fld,0,1)==strtoupper(substr($fld,0,1))) continue; // Object
+      if (is_array($val)) continue; // array
+      $target->$fld=$val; // Copy field
+    } 
+    setSessionUser($target);
+  }
   
   public function disconnect() {
     purgeFiles(Parameter::getGlobalParameter('paramReportTempDirectory'),"user" . $this->id . "_");

@@ -1402,6 +1402,9 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId('attachmentFileDirectDiv')) {
           dojo.byId('attachmentFileDirectDiv').style.visibility = 'visible';
         }
+        if (dojo.byId('objectClass') && dojo.byId('objectId')) {
+          stockHistory(dojo.byId('objectClass').value,dojo.byId('objectId').value);
+        }
       }
       if (lastOperation.value == "delete") {
         var zone = dijit.byId("formDiv");
