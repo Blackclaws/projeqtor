@@ -94,9 +94,7 @@ class StatusMail extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if ($this->id) {
-      self::$_fieldsAttributes["idMailable"]='readonly';
-    }
+    
   }
 
    /** ==========================================================================
@@ -107,6 +105,16 @@ class StatusMail extends SqlElement {
     parent::__destruct();
   }
 
+  public function setAttributes() {
+    if ($this->id) {
+      self::$_fieldsAttributes["idMailable"]='readonly';
+      $mailable=SqlList::getNameFromId('Mailable', $this->idMailable,false);
+      if ($mailable!="Activity" and $mailable!="TestSession" and $mailable!="Meeting" and $mailable!="PeriodicMeeting") {
+        self::$_fieldsAttributes["mailToAssigned"]='readonly';
+      }
+    } 
+  }
+  
   public function control() {
     $result="";
     if (! trim($this->idMailable)) {
@@ -218,7 +226,6 @@ class StatusMail extends SqlElement {
     } else if ($colName=="mailToAssigned") {
     	$colScript .= '<script type="dojo/connect" event="onClick" >';
     	$colScript .= ' mailable=dijit.byId("idMailable");';
-    	//$colScript .= ' alert(mailable.get("value")+" => "+mailable.get("displayedValue"));';
     	$colScript .= ' mVal=mailable.get("displayedValue");';
     	$colScript .= ' if (this.checked && mVal!=i18n("Activity") && mVal!=i18n("Meeting") && mVal!=i18n("TestSesion")) { ';
     	$colScript .= '   showAlert(i18n("msgIncorrectReceiver"));';
@@ -227,8 +234,17 @@ class StatusMail extends SqlElement {
     	$colScript .= '</script>';
     } else if ($colName=='idMailable') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .=' var mailable=mailableArray[this.value];';
       $colScript .= '  dijit.byId("idType").set("value",null);';
-      $colScript .= '  refreshList("idType","scope", mailableArray[this.value]);';
+      $colScript .= '  refreshList("idType","scope", mailable);';
+      $colScript .= '  dijit.byId("idEvent").reset();';
+      $colScript .= '  refreshList("idEvent","scope", mailable, null);';
+      $colScript .= '  if (mailable=="Activity" || mailable=="TestSession" || mailable=="Meeting" || mailable=="PeriodicMeeting") {';
+      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",false);';
+      $colScript .= '  } else {';
+      $colScript .= '    dijit.byId("mailToAssigned").set("checked",false);';
+      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",true);';
+      $colScript .= '  }';
       $colScript .= '</script>';
     }
     return $colScript;

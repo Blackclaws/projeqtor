@@ -15,8 +15,8 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'paramMailTitleAffectationChange', '[${dbName}] Allocation of resource ${responsible} has been changed on Project ${project}');
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
-(null,null, 'paramMailTitleLinkAdd', '[${dbName}] New link has been created on ${item} #${id} '), 
-(null,null, 'paramMailTitleLinkDelete', '[${dbName}] Link #${id} has been removed');
+(null,null, 'paramMailTitleLinkAdd', '[${dbName}] New link #${id} has been created on ${item} #${id} '), 
+(null,null, 'paramMailTitleLinkDelete', '[${dbName}] Link #${id} has been removed from ${item} #${id}');
 
 ALTER TABLE `${prefix}report` ADD `hasView` int(1) DEFAULT 1,
 ADD `hasPrint` int(1) DEFAULT 1,
