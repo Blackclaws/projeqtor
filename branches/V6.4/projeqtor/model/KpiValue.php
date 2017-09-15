@@ -112,8 +112,10 @@ class KpiValue extends SqlElement {
           $kv->setDates($date);
           if ($obj->realDuration) {
             $kv->kpiValue=$obj->realDuration/$obj->validatedDuration;
-          } else {
+          } else if ($obj->plannedDuration) {
             $kv->kpiValue=$obj->plannedDuration/$obj->validatedDuration;
+          } else {
+            $kv->kpiValue=0;
           }
           $kv->save();
           self::consolidate($obj->refType,$obj->refId);

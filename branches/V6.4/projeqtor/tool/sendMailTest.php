@@ -46,12 +46,17 @@
   } else {
     $sender=getSessionUser()->email;
   }
-  $result=sendMail($dest,$title,$msg,null,null,$sender);
+  $smtp=Parameter::getGlobalParameter('paramMailSmtpServer');
+  if (!$smtp) {
+    $error=i18n("messageMandatory",array(i18n("paramParamMailSmtpServer")));
+  } else {
+    $result=sendMail($dest,$title,$msg,null,null,$sender);
+  }
   echo i18n('paramMailerTestSender')."&nbsp;:&nbsp;".$sender.'<br/>';
-  if ($result) {
+  if ($result and !isset($error)) {
     echo "<span style='color:green; font-weight:bold'>".i18n("mailSentTo",array($dest))."</span>";
   } else {
-    $error=nl2br(Mail::getLastErrorMessage());
+    if (!isset($error)) $error=nl2br(Mail::getLastErrorMessage());
     echo "<div style='color:red; font-weight:bold;'>$error</div>";
   }
 ?>

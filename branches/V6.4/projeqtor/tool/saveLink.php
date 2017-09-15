@@ -137,10 +137,17 @@ foreach ($arrayId as $ref2Id) {
   	} 
   }
 }
-$elt=new $link->ref1Type($link->ref1Id);
-$mailResult=null;
-$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false);
-if ($mailResult) {
+
+//$mailResult=null;
+$mailResult1=null;
+$mailResult2=null;
+if (getLastOperationStatus($result)=='OK') {
+  $elt1=new $link->ref1Type($link->ref1Id);
+  $mailResult1=$elt1->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false);
+  $elt2=new $link->ref2Type($link->ref2Id);
+  $mailResult2=$elt2->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false);
+}
+if ($mailResult1 or $mailResult2) {
   $pos=strpos($result,'<input type="hidden"');
   if ($pos) {
     $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);

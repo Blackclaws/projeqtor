@@ -432,6 +432,7 @@ class ResourceMain extends SqlElement {
   	  $user->isContact=$this->isContact;
   	  setSessionUser($user);
   	}
+  	if ($this->id==getSessionUser()->id) User::refreshUserInSession();
   	return $result;
   }
   

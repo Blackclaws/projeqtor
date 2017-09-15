@@ -44,10 +44,15 @@ if ($linkId==null) {
 Sql::beginTransaction();
 $obj=new Link($linkId);
 $result=$obj->delete();
-$mailResult=null;
-$elt=new $obj->ref1Type($obj->ref1Id);
-$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true);
-if ($mailResult) {
+$mailResult1=null;
+$mailResult2=null;
+if (getLastOperationStatus($result)=='OK') {
+  $elt1=new $obj->ref1Type($obj->ref1Id);
+  $mailResult1=$elt1->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true);
+  $elt2=new $obj->ref2Type($obj->ref2Id);
+  $mailResult2=$elt2->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true);
+}
+if ($mailResult1 or $mailResult2) {
   $pos=strpos($result,'<input type="hidden"');
   if ($pos) {
     $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);

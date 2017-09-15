@@ -608,6 +608,12 @@ abstract class SqlElement {
         require $script; // execute code
       }
     }
+    if(property_exists($this,'idProduct') and property_exists($this,'idTargetProductVersion')){
+      if($this->idTargetProductVersion and !$this->idProduct){
+        $getVersion = new Version($this->idTargetProductVersion);
+        $this->idProduct = $getVersion->idProduct;
+      }
+    }
     $result = $this->saveSqlElement ();
     if (! property_exists ( $this, '_onlyCallSpecificSaveFunction' ) or ! $this->_onlyCallSpecificSaveFunction) {
       // PlugIn Management
@@ -4922,6 +4928,32 @@ abstract class SqlElement {
           $msg .= $fieldEnd . $rowEnd;
         }
       }
+    } 
+    if (isset ( $this->_Link ) and is_array ( $this->_Link )) {
+      $msg .= $rowStart . $sectionStart . i18n ( 'sectionLink' ) . $sectionEnd . $rowEnd;
+      $links=$this->_Link;
+      foreach ( $links as $link ) {
+          if($link->ref1Id == $this->id and $link->ref1Type == get_class($this)){
+            $refLinkType = $link->ref2Type;
+            $refLinkId = $link->ref2Id;
+          } else if ($link->ref2Id == $this->id and $link->ref2Type == get_class($this)) {
+            $refLinkType = $link->ref1Type;
+            $refLinkId = $link->ref1Id;
+          }
+          $creationDate = $link->creationDate;
+          $msg .= $rowStart . $labelStart;
+          $userId = $link->idUser;
+          $userName = SqlList::getNameFromId ( 'User', $userId );
+          $msg .= $userName;
+          $msg .= '<br/>';
+          $msg .= htmlFormatDateTime ( $creationDate );
+          $msg .= $labelEnd . $fieldStart;
+          $msg .= '<b>'.i18n($refLinkType);
+          $msg .= '&nbsp;#'.$refLinkId.'</b>&nbsp;-&nbsp;';
+          $nameLink = SqlList::getNameFromId($refLinkType,$refLinkId);
+          $msg.=htmlEncode($nameLink,'print');
+          $msg .= $fieldEnd . $rowEnd;
+      }
     }
     $msg .= $tableEnd;
     return $msg;
@@ -5137,8 +5169,14 @@ abstract class SqlElement {
       if (! $old) {
         $old = new $class ( $this->id );
       }
-      if ($this->$type == $old->$type and $this->idProject == $old->idProject) {
-        return;
+      if (!property_exists($this, 'idProduct')) {
+        if ($this->$type == $old->$type and $this->idProject == $old->idProject) {
+          return;
+        }
+      } else {
+        if ($this->$type == $old->$type and $this->idProject == $old->idProject and $this->idProduct == $old->idProduct) {
+          return;
+        }
       }
       if (in_array ( get_class ( $this ), $objectsWithFixedReference )) {
         return;
@@ -5194,7 +5232,7 @@ abstract class SqlElement {
     if (count ( $result ) > 0) {
       $line = Sql::fetchLine ( $result );
       $refMax = $line ['ref'];
-      $numMax = substr ( $refMax, strlen ( $prefix ) );
+      $numMax = intval(substr ( $refMax, strlen ( $prefix ) ));
     }
     $numMax += 1;
     if ($fmtNumber and $fmtNumber - strlen ( $numMax ) > 0) {
@@ -5414,7 +5452,7 @@ abstract class SqlElement {
         $typeElt = reset ( $typeList );
         $type = ($typeElt) ? key ( $typeList ) : null;
       }
-      if (! $planningMode and $type and property_exists ( $typeClassName, $planningModeName )) {
+      if (! $planningMode and $type and SqlElement::class_exists($typeClassName) and property_exists ( $typeClassName, $planningModeName )) {
         $typeObj = new $typeClassName ( $type );
         $planningMode = $typeObj->$planningModeName;
       }
