@@ -42,7 +42,7 @@ if (is_dir($classDir)) {
         $split=explode('.',$file);
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
-        and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType' and $class!='Security'
+        and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType' and $class!='Security' and $class!='UserOld'
         and substr($class,-4)!='Main' and $class!='_securityCheck' and $class!='RequestHandler' and $class!='ResultHandler'
         //and $class>='Ti' // and $class<'B' 
         ){
@@ -89,7 +89,6 @@ function testObject($obj) {
 			$ass=new Assignment();
 			Sql::query("DELETE FROM ".$ass->getDatabaseTableName()." where refType='Activity' and refId=".$obj->id);
 		}
-		
 	  $res=$obj->delete();
     testResult($res, testCheck($res,'delete'));
 	}
@@ -98,7 +97,7 @@ function testObject($obj) {
 
 function fillObj($obj) {
   $dbCrit=$obj->getDatabaseCriteria();
-  $id=($obj->id)?2:1;
+  $id=($obj->id)?9:8;
 	foreach($obj as $fld=>$val){
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
 		$num=(substr($fld,0,4)=='real' and substr(get_class($obj),-7)!='Expense')?0:(($obj->id)?2:1);
@@ -120,9 +119,11 @@ function fillObj($obj) {
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
 		} else if ($fld=='refId') {
-			$obj->$fld='3999999999';
+			$obj->$fld='9999';
 		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
 			// Nothing
+		} if ($fld=='periodicityTimes') {
+		  $obj->$fld=1;
 		} else if (substr($fld,0,1)==strtoupper(substr($fld,0,1))) {
 			if (is_object($obj->$fld)) {
 				//$subObj=new $fld($obj->$fld->id);

@@ -613,9 +613,9 @@ The bill keeps track of payment.
 Catalog
 -------
 
-Catalog defines ...
+Catalog defines items (products or services) that can be obects of a quotation, an order or a bill.
 
-This is used to the quotation lines, order lines and invoice lines. See: :ref:`bill-line-catalog`.
+This is used on the quotation lines, order lines and invoice lines. See: :ref:`Bill lines<manual-billing>`.
 
 .. rubric:: Section: Description
 
