@@ -296,7 +296,7 @@ class ContactMain extends SqlElement {
       $user->isResource=$this->isResource;
       setSessionUser($user);
     }
-    if ($this->id=getSessionUser()->id) User::refreshUserInSession();
+    if ($this->id==getSessionUser()->id) User::refreshUserInSession();
     return $result;
   }
   
