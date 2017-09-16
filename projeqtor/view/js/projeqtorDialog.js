@@ -2071,7 +2071,7 @@ function editAssignment(assignmentId, idResource, idRole, cost, rate,
     return;
   }
   var callBack = function () {
-    editAssignmentLoading=true;
+    editAssignmentLoading=false;
     assignmentUpdatePlannedWork('assignment');
     dijit.byId("dialogAssignment").show();
 };
@@ -2084,6 +2084,7 @@ params+="&idRole="+idRole;
 params+="&mode=edit";
 params+="&unit="+unit;
 params+="&realWork="+realWork;
+editAssignmentLoading=true;
 loadDialog('dialogAssignment',callBack,false,params);
 }
 
@@ -2212,6 +2213,7 @@ function removeAssignment(assignmentId, realWork, resource) {
 }
 
 function assignmentChangeResource() {
+  console.log(assignmentChangeResource);
   if (editAssignmentLoading)
     return;
   var idResource=dijit.byId("assignmentIdResource").get("value");

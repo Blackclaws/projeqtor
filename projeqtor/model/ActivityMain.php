@@ -343,6 +343,10 @@ class ActivityMain extends SqlElement {
           $ass->plannedWork = 0;
           $ass->notPlannedWork = 0;
           $ass->rate = '100';
+          if ($this->ActivityPlanningElement->validatedWork and $this->ActivityPlanningElement->validatedWork>$this->ActivityPlanningElement->assignedWork) {
+            $ass->assignedWork=$this->ActivityPlanningElement->validatedWork-$this->ActivityPlanningElement->assignedWork;
+            $ass->leftWork=$ass->assignedWork;
+          }
           $ass->save ();
         }
       }

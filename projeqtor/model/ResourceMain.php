@@ -450,14 +450,31 @@ class ResourceMain extends SqlElement {
     if ($idRole) {
       $where.= " and idRole='" . Sql::fmtId($idRole) . "'";
     }
+    $where.= " and (startDate is null or startDate<='".date('Y-m-d')."')";
+    $rc=new ResourceCost();
+    $rcL = $rc->getSqlElementsFromCriteria(null, false, $where, "startDate desc");
+    if (count($rcL)>=1) {
+      $rc=reset($rcL);
+      return $rc->cost;
+    }
+    return null;
+  }  
+  public function getLastResourceCost($idRole=null) {
+    if (! $this->id) return null;
+    if (! $idRole) $idRole=$this->idRole;
+    $where="idResource='" . Sql::fmtId($this->id) . "'";
+    if ($idRole) {
+      $where.= " and idRole='" . Sql::fmtId($idRole) . "'";
+    }
     $where.= " and endDate is null";
     $rc=new ResourceCost();
     $rcL = $rc->getSqlElementsFromCriteria(null, false, $where, "startDate desc");
     if (count($rcL)>=1) {
-      return $rcL[0]->cost;
+      $rc=reset($rcL);
+      return $rc->cost;
     }
     return null;
-  }  
+  }
 
   /** =========================================================================
    * Draw a specific item for the current class.
