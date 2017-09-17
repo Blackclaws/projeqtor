@@ -615,7 +615,7 @@ Catalog
 
 Catalog defines ...
 
-This is used to the quotation lines, order lines and invoice lines. See: :ref:`bill-line-catalog`.
+This is used to the quotation lines, order lines and invoice lines. See: :ref:`Bill lines<manual-billing>`.
 
 .. rubric:: Section: Description
 
