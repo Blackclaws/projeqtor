@@ -122,7 +122,9 @@
       }
       
     } else if ($type=='list') { //================================================= LIST =======================================================================================
-      $dataType=$_REQUEST['dataType']; // Note: checked against constant values.     
+      $dataType=RequestHandler::getValue('dataType');
+      $critField=RequestHandler::getValue('critField');
+      $critValue=RequestHandler::getValue('critValue');
       $selected="";
       if ( array_key_exists('selected',$_REQUEST) ) {
         $selected=$_REQUEST['selected'];

@@ -118,7 +118,6 @@
   <target name="copyDocsUser">
       <copy todir="${deploy.dir}/docs/user/html_en">
         <fileset dir="${src.dir}/docs/user/html_en">
-          <exclude name="**/_sources/*.rst.txt"/>
         </fileset>
       </copy>
   </target>
