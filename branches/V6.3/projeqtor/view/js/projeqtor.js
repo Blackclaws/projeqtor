@@ -1510,9 +1510,14 @@ function finalizeMessageDisplay(destination, validationType) {
     }
   } else {
     if (dojo.byId('objectClass') && dojo.byId('objectId')) {
-  
       var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
       loadDiv(url, 'buttonDivCreationInfo', null);
+      var objClass=dojo.byId('objectClass').value;
+      if (lastOperationStatus.value=='NO_CHANGE' && !validationType && dojo.byId(objClass+'PlanningElement_assignedCost') 
+          && dojo.byId(objClass+'PlanningElement_assignedCost').style.textDecoration=="line-through") {
+        // No change but assignment changed so that refresh is required
+        loadContent("objectDetail.php?", "detailDiv", 'listForm');
+      }
     }
     if (validationType != 'note' && validationType != 'attachment') {
       formInitialize();
