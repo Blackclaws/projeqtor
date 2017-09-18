@@ -763,8 +763,8 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
 
   }
   public function delete() {
-    User::resetAllVisibleProjects($this->id,null);
   	$result = parent::delete();
+  	User::resetAllVisibleProjects($this->id,null);
     return $result;
   }
   
