@@ -362,7 +362,7 @@ public $_noCopy;
   
   public function delete() {
     $result = parent::delete();
-    User::resetAllVisibleProjects(null,$this->idUser);
+    //User::resetAllVisibleProjects(null,$this->idUser);
     return $result;
   }
   
