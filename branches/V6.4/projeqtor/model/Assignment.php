@@ -196,6 +196,7 @@ class Assignment extends SqlElement {
         $ass->leftCost=$ass->assignedCost-$ass->realCost;
         $ass->plannedCost=$ass->assignedCost;
         $ass->idle=0;      	
+        $ass->optional=$this->optional;
         $resAss=$ass->save();
       }
     }
