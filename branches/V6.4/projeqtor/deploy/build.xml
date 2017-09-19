@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V6.4" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V6.4.0" />
+  <property name="version"       value="V6.4.1" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -82,6 +82,9 @@
     </copy>
     <copy todir="${deploy.dir}/external/promise">
        <fileset dir="${src.dir}/external/promise"/>
+    </copy>
+    <copy todir="${deploy.dir}/external/tbs">
+       <fileset dir="${src.dir}/external/tbs"/>
     </copy>
   </target>
   
