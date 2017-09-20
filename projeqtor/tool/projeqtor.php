@@ -938,7 +938,7 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
     }
   }
   //if ($objectClass == 'Document' or $objectClass=='TestCase' or $objectClass=='Requirement' or $objectClass=='TestSession') {
-  if (property_exists($objectClass, 'idProject') and property_exists($objectClass, 'idProduct')) {
+  if (property_exists($objectClass, 'idProject') and !$obj->isAttributeSetToField('idProject','required') and property_exists($objectClass, 'idProduct')) {
     $v = new Version ();
     $vp = new VersionProject ();
     $clauseALLPRO="(".$tableAlias."idProject in ".$listALLPRO

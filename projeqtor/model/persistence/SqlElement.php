@@ -2559,7 +2559,7 @@ abstract class SqlElement {
             }
           }
           // FOR PHP 7.1 COMPATIBILITY
-          if ($this->$key===null and (
+          if (($this->$key===null or $this->$key==='') and (
             // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
                ($dataType=='decimal') or 
                ($dataType=='numeric') 
