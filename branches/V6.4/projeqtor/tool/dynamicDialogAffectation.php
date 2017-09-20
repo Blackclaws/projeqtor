@@ -45,7 +45,7 @@ if ($proj=="*" or !$proj){
 $contact = new Contact($idResource);
 $user = new User($idResource);
 $obj=SqlElement::getCurrentObject(null,null,true,false) ;
-$objTeam=get_class($obj);
+$objTeam=($obj)?get_class($obj):'';
 ?>
 
   <table>
