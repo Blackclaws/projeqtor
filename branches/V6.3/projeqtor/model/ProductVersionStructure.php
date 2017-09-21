@@ -68,7 +68,7 @@ class ProductVersionStructure extends SqlElement {
   public function save() {
     $old=$this->getOld();
     $result=parent::save();
-    if ($old->idProductVersion!=$this->idProductVersion or $old->idComponentVersion!=$this->idComponentVersion) {
+    if ($old->id and ($old->idProductVersion!=$this->idProductVersion or $old->idComponentVersion!=$this->idComponentVersion)) {
       if ($this->idComponentVersion) {
         $vers=new ComponentVersion($this->idComponentVersion);
         $comp=new Component($vers->idComponent);
