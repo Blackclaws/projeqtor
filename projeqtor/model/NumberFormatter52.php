@@ -69,6 +69,7 @@ class NumberFormatter52  {
     if (ord($this->thouthandSeparator)>127) {
       $this->thouthandSeparator=" ";
     }
+    debugLog("decimal separator='".$this->decimalSeparator."'");
   }
 
   

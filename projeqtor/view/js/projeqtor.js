@@ -428,6 +428,7 @@ function saveBrowserLocaleToSession() {
 //  });
   var fmt = "" + dojo.number.format(1.1) + " ";
   var decPoint = fmt.substr(1, 1);
+  console.log("save decimal point as "+decPoint);
   saveDataToSession('browserLocaleDecimalPoint', decPoint);
   //#2887
 //  dojo.xhrPost({
@@ -442,7 +443,7 @@ function saveBrowserLocaleToSession() {
   if (thousandSep == '0') {
     thousandSep = '';
   }
-  saveDataToSession('browserLocaleDecimalPoint', thousandSep);
+  saveDataToSession('browserLocaleThousandSeparator', thousandSep);
   // #2887
 //  dojo
 //      .xhrPost({
@@ -1594,6 +1595,7 @@ function finalizeMessageDisplay(destination, validationType) {
           && dojo.byId(objClass+'PlanningElement_assignedCost').style.textDecoration=="line-through") {
         // No change but assignment changed so that refresh is required
         loadContent("objectDetail.php?", "detailDiv", 'listForm');
+        refreshGrid();
       }
     }
     if (validationType != 'note' && validationType != 'attachment') {

@@ -42,8 +42,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V6.4.0"; // Version of application : Major / Minor / Release
-$build = "0174"; // Build number. To be increased on each release
+$version = "V6.4.1"; // Version of application : Major / Minor / Release
+$build = "0179"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -2134,11 +2134,11 @@ function workTimeDiffDateTime($start, $end) {
   $time = substr ( $start, 11, 5 );
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
-  $mnStart = $hh * 60 + $mn;
+  $mnStart = intval($hh) * 60 + intval($mn);
   $time = substr ( $end, 11, 5 );
   $hh = substr ( $time, 0, 2 );
   $mn = substr ( $time, 3, 2 );
-  $mnStop = $hh * 60 + $mn;
+  $mnStop = intval($hh) * 60 + intval($mn);
   $mnFullDay=60*24;
   if ($startDay==$endDay) {
     $days=0;
