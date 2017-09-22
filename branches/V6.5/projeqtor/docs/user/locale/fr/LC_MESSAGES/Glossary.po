@@ -1,0 +1,218 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-03 10:03-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Glossary.rst:4
+msgid "Glossary"
+msgstr "Lexique"
+
+#: ../../Glossary.rst:44
+msgid "id"
+msgstr ""
+
+#: ../../Glossary.rst:47
+msgid "Every item has a unique Id, automatically generated on creation."
+msgstr ""
+
+#: ../../Glossary.rst:49
+msgid ""
+"Id is chronologically affected, for all kind of items (Activity, Ticket)."
+msgstr ""
+
+#: ../../Glossary.rst:51
+msgid ""
+"Id is shared for all projects and all types (i.e. incident) of the same kind"
+" items (i.e. Ticket)."
+msgstr ""
+
+#: ../../Glossary.rst:60
+msgid ""
+"Default format defines an numbering specific for each project and each type "
+"of items."
+msgstr ""
+
+#: ../../Glossary.rst:7
+msgid "closed"
+msgstr "Clos"
+
+#: ../../Glossary.rst:53
+msgid ""
+"**Reference** is displayed after id, automatically generated on creation."
+msgstr ""
+
+#: ../../Glossary.rst:10
+msgid "Flag to indicate that item is archived."
+msgstr ""
+
+#: ../../Glossary.rst:12
+msgid ""
+"Item will not appear in lists any more, unless “show closed” is checked."
+msgstr ""
+
+#: ../../Glossary.rst:15
+msgid "done"
+msgstr "fait"
+
+#: ../../Glossary.rst:18
+msgid "Flag to indicate that item has been done."
+msgstr ""
+
+#: ../../Glossary.rst:20
+msgid "Date of done is saved."
+msgstr ""
+
+#: ../../Glossary.rst:24
+msgid "external reference"
+msgstr ""
+
+#: ../../Glossary.rst:27
+msgid "This field allows fill free input."
+msgstr ""
+
+#: ../../Glossary.rst:28
+msgid "It uses to refer information from an external source."
+msgstr ""
+
+#: ../../Glossary.rst:29
+msgid ""
+"External reference value can be put in email message with "
+"**externalReference** special field."
+msgstr ""
+
+#: ../../Glossary.rst:31
+msgid "More detail, see: **Administration guide**."
+msgstr ""
+
+#: ../../Glossary.rst:34
+msgid "handled"
+msgstr ""
+
+#: ../../Glossary.rst:37
+msgid "Flag to indicate that item has been taken into account."
+msgstr ""
+
+#: ../../Glossary.rst:39
+msgid "Date of handling is saved."
+msgstr ""
+
+#: ../../Glossary.rst:41
+msgid "This generally means that Responsible has been named."
+msgstr ""
+
+#: ../../Glossary.rst:55
+msgid ""
+"Reference depends on defined format, see under \"Format for reference "
+"numbering\" section in :ref:`administration-global-parameters-label`."
+msgstr ""
+
+#: ../../Glossary.rst:63
+msgid "origin"
+msgstr "origine"
+
+#: ../../Glossary.rst:66
+msgid "Determines the element of origin."
+msgstr ""
+
+#: ../../Glossary.rst:68
+msgid ""
+"The origin is used to keep track of events (ex.: order from quote, action "
+"from meeting)."
+msgstr ""
+
+#: ../../Glossary.rst:86
+msgid "status"
+msgstr "etat"
+
+#: ../../Glossary.rst:89
+msgid "The status determines the life cycle of items."
+msgstr ""
+
+#: ../../Glossary.rst:91
+msgid "It defines the progress of the treatment of the element."
+msgstr ""
+
+#: ../../Glossary.rst:94
+msgid "planning priority"
+msgstr ""
+
+#: ../../Glossary.rst:97
+msgid "This priority allows to define planned order among planning element."
+msgstr ""
+
+#: ../../Glossary.rst:99
+msgid "The smaller priority element is planned first."
+msgstr ""
+
+#: ../../Glossary.rst:101
+msgid "The default priority is 500 (medium)."
+msgstr ""
+
+#: ../../Glossary.rst:103
+msgid ""
+"If projects have different priorities, all elements of project with smaller "
+"value priority are planned first."
+msgstr ""
+
+#: ../../Glossary.rst:106
+msgid "PPD"
+msgstr ""
+
+#: ../../Glossary.rst:109
+msgid "Price Per Day."
+msgstr ""
+
+#: ../../Glossary.rst:111
+msgid "It represent the cost of one work day."
+msgstr ""
+
+#: ../../Glossary.rst:114
+msgid "WBS"
+msgstr ""
+
+#: ../../Glossary.rst:117
+msgid "Work Breakdown Structure."
+msgstr ""
+
+#: ../../Glossary.rst:119
+msgid "Hierarchical position of the element in the global planning."
+msgstr ""
+
+#: ../../Glossary.rst:70
+msgid "The origin may be selected manually or automatically inserted on copy."
+msgstr ""
+
+#: ../../Glossary.rst:72
+msgid ""
+"Click on |buttonAdd| to add a orgin element. A “Add an orgin element” pop up"
+" will be displayed."
+msgstr ""
+
+#: ../../Glossary.rst:74
+msgid "Click on |buttonRemove| to delete the link."
+msgstr ""
+
+#: ../../Glossary.rst:0
+msgid "Pop up “Add an orgin element”"
+msgstr ""
+
+#: ../../Glossary.rst:78
+msgid "Type of the orign  - Type of element to be selected."
+msgstr ""
+
+#: ../../Glossary.rst:80
+msgid "Origin element - item selected"
+msgstr ""
+
+#: ../../Glossary.rst:82
+msgid "Click on |buttonIconView| to search a item of element."
+msgstr ""
+
