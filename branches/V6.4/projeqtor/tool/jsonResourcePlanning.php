@@ -29,7 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/jsonResourcePlanning.php');
-SqlElement::$_cachedQuery['Project']=array();
+//SqlElement::$_cachedQuery['Project']=array(); // Do not manage project cahce here : lead to error and is no use as some caching is done here.
 SqlElement::$_cachedQuery['Ticket']=array();
 SqlElement::$_cachedQuery['Activity']=array();
 SqlElement::$_cachedQuery['Resource']=array();
