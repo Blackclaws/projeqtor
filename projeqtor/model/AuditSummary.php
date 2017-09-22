@@ -120,7 +120,7 @@ class AuditSummary extends SqlElement {
    	 $audit=new Audit();
    	 $list=$audit->getSqlElementsFromCriteria(null, false, $crit);
    	 $delay=Parameter::getGlobalParameter('alertCheckTime');
-   	 if (! $delay or $delay < 30) { $delay==30 ;}
+   	 if (! $delay or $delay < 30) { $delay=30 ;}
    	 foreach ($list as $audit) {
    	 	 $duration=strtotime(date('Y-m-d'))-strtotime($audit->lastAccessDateTime);
        if ($duration>5*$delay) { // Very old connection, idle now, must be closed
