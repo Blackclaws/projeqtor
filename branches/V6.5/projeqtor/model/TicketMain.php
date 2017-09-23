@@ -90,6 +90,7 @@ class TicketMain extends SqlElement {
   public $_Attachment=array();
   public $_Note=array();
   public $_nbColMax=3;
+  public $delayReadOnly;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -356,7 +357,8 @@ class TicketMain extends SqlElement {
   			$this->initialDueDateTime=addDelayToDatetime($this->creationDateTime,$delay->value, $unit->code);
   			if (! trim($this->actualDueDateTime) or ($old->actualDueDateTime==$old->initialDueDateTime 
   			                                     and $old->actualDueDateTime==$this->actualDueDateTime) ) {
-  			  $this->actualDueDateTime=$this->initialDueDateTime;                                 	
+  			  $this->actualDueDateTime=$this->initialDueDateTime;   
+  			  $this->delayReadOnly = "1";                           	
   			}
   		}
   	}
@@ -420,5 +422,11 @@ class TicketMain extends SqlElement {
   	
   }
   
+  public function setAttributes() {
+    if ($this->delayReadOnly == "1") {
+      self::$_fieldsAttributes['initialDueDateTime']='readonly';     
+      self::$_fieldsAttributes['actualDueDateTime']='readonly';
+    }  
+  }
 }
 ?>
