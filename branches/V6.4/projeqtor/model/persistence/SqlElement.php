@@ -1351,6 +1351,9 @@ abstract class SqlElement {
         }
         // !!! do not insert query for last update date time unless some change is detected
         if ($col_new_value != $col_old_value or ($isText and ('x' . $col_new_value != 'x' . $col_old_value))) {
+          if ( !$col_new_value and !$col_old_value and (substr($col_name,-4)=='Cost' or substr($col_name,-4)=='Work' or substr($col_name,-6)=='Amount') ) {
+            continue; // do not save 0 to null or null to zero for Cost, Work and Amount
+          }
           if (SqlElement::is_a($this, 'PlanningElement')) {
             if (! isset($this->_workHistory) and ($col_name=='assignedWork' or $col_name=='leftWork'  or $col_name=='plannedWork' 
                                                or $col_name=='assignedCost' or $col_name=='leftCost'  or $col_name=='plannedCost')) {
