@@ -3478,7 +3478,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       	$goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
       }
       if (!$classLink) {
-        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
         
         if (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') {
           if (get_class($linkObj) == 'DocumentVersion') $version=$linkObj;
@@ -3497,7 +3497,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         } else {
           echo formatIcon(get_class($linkObj),16);
         }
-        echo '</td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
+        echo '</td><td ' . $goto . ' style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
         echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }

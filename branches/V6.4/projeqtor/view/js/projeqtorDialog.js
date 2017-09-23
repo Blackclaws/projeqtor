@@ -2213,7 +2213,6 @@ function removeAssignment(assignmentId, realWork, resource) {
 }
 
 function assignmentChangeResource() {
-  console.log(assignmentChangeResource);
   if (editAssignmentLoading)
     return;
   var idResource=dijit.byId("assignmentIdResource").get("value");
