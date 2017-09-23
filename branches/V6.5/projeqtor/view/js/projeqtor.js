@@ -428,7 +428,6 @@ function saveBrowserLocaleToSession() {
 //  });
   var fmt = "" + dojo.number.format(1.1) + " ";
   var decPoint = fmt.substr(1, 1);
-  console.log("save decimal point as "+decPoint);
   saveDataToSession('browserLocaleDecimalPoint', decPoint);
   //#2887
 //  dojo.xhrPost({

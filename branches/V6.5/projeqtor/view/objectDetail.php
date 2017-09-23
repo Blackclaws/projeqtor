@@ -3478,7 +3478,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       	$goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
       }
       if (!$classLink) {
-        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
         
         if (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') {
           if (get_class($linkObj) == 'DocumentVersion') $version=$linkObj;
@@ -3497,7 +3497,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         } else {
           echo formatIcon(get_class($linkObj),16);
         }
-        echo '</td><td style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
+        echo '</td><td ' . $goto . ' style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
       } else {
         echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
@@ -4151,7 +4151,7 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
     $approverId=null;
     if ($obj and get_class($obj) == 'Document') {
       $crit=array('refType' => 'DocumentVersion','refId' => $obj->idDocumentVersion,'idAffectable' => $app->idAffectable);
-      $versApp=SqlElement::getSingleSqlElementFromCriteria('Approver', $crit);
+      $versApp=SqlElement::getSingleSqlElementFromCriteria('Approver',$crit);
       if ($versApp->id) {
         $approved=$versApp->approved;
         $compMsg=' ' . $docVers->name;
@@ -4168,7 +4168,7 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
       echo i18n("approved") . $compMsg . $date;
     } else {
       echo i18n("notApproved") . $compMsg;
-      if ($user->id == $app->idAffectable and !$print) {
+      if ($user->id == $app->idAffectable and !$print and $versApp->id) {
         echo '&nbsp;&nbsp;<button dojoType="dijit.form.Button" showlabel="true" >';
         echo i18n('approveNow');
         echo '  <script type="dojo/connect" event="onClick" args="evt">';
@@ -4177,7 +4177,6 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
         echo '</button>';
       }
     }
-    
     echo '</td>';
     echo '</tr>';
   }

@@ -124,6 +124,7 @@ if ($line->line) {
          <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo htmlEncode($refId);?>" />
          <input id="billLineBillingType" name="billLineBillingType" type="hidden" value="<?php echo htmlEncode($billingType);?>" />
        	 <table>
+       	 <?php if ($billingType == 'M') {?>
        	     <tr>
              <td class="dialogLabel"  >
                <label for="billLineIdCatalog" ><?php echo i18n("colIdCatalog") ?>&nbsp;:&nbsp;</label>
@@ -132,13 +133,16 @@ if ($line->line) {
                <select dojoType="dijit.form.FilteringSelect"
               <?php echo autoOpenFilteringSelect();?>
                 id="billLineIdCatalog" name="billLineIdCatalog"
-                class="input" value="" 
-                onChange="billLineChangeCatalog();"
+                class="input" 
+                onChange="billLineChangeCatalog();" 
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdCatalog')));?>" >
-                 <?php htmlDrawOptionForReference('idCatalog', null, null, false); ?>
+                 <?php htmlDrawOptionForReference('idCatalog', $line->idCatalog, null, false); ?>
                </select> 
              </td>
-           </tr>    	      	 
+           </tr>  
+         <?php } else {?>
+           <input type='hidden' id="billLineIdCatalog" name="billLineIdCatalog" value="" />
+         <?php } ?>  	      	 
            <tr>
              <td class="dialogLabel" >
               <label for="billLineLine" ><?php echo i18n("colLineNumber");?>&nbsp;:&nbsp;</label>
