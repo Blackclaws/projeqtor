@@ -108,6 +108,8 @@ if ( $paramResource=='') {
 }
 include "header.php";
 
+
+
 $where="(".getAccesRestrictionClause('Activity',false,false,true,true) ." or idResource=". getSessionUser()->id . ")"; 
 //$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
@@ -118,6 +120,12 @@ $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 //$where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
 //New
 if ($periodType=='year') {
+  if (!$periodValue ) {
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+    echo '</div>';
+    exit;
+  }
   $where.=" and ((year='" . $periodValue . "' and month>='" . $periodValue.($paramMonth<10?'0':'').$paramMonth . "')".
           " or (year='" . ($periodValue + 1) . "' and month<='" . ($periodValue + 1) . ($paramMonth<11?'0':'') . $paramMonth . "'))";
 }
