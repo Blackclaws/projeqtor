@@ -48,6 +48,7 @@ class BillLine extends SqlElement {
   public $endDate;
   public $extra;
   public $billingType;
+  public $idCatalog;
   
   public $_noHistory=true; // Will never save history for this object
   

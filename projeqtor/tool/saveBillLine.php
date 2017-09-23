@@ -154,6 +154,7 @@ $line->extra=$extra;
 $line->billingType=$billingType;
 //gautier #2516
 if($boolCatalog){
+  $line->idCatalog=$catalog->id;
   if($line->refType=="Bill"){
     $bill=new Bill($line->refId);
     if(!$bill->description or strpos($bill->description,$catalogSpecification )=== FALSE){ 
