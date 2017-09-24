@@ -135,15 +135,27 @@ class ActivityPlanningElementMain extends PlanningElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if ($this->isAttributeSetToField('workElementCount', 'hidden') 
-        and $this->isAttributeSetToField('workElementEstimatedWork', 'hidden')
-        and $this->isAttributeSetToField('workElementRealWork', 'hidden')
-        and $this->isAttributeSetToField('workElementLeftWork', 'hidden')) {
-      self::$_fieldsAttributes['_button_showTickets']='hidden';   
-    }
   }
   
-  
+  public function setAttributes() {
+    
+    //if (Parameter::getGlobalParameter('PlanningActivity')=='YES') {
+      $act=new Activity($this->refId,true);
+      if ( ! $act->isPlanningActivity) {
+        self::$_fieldsAttributes['workElementCount']='hidden';
+        self::$_fieldsAttributes['workElementEstimatedWork']='hidden';
+        self::$_fieldsAttributes['workElementRealWork']='hidden';
+        self::$_fieldsAttributes['workElementLeftWork']='hidden';
+        self::$_fieldsAttributes['_button_showTickets']='hidden';
+      }
+    //}
+    if ($this->isAttributeSetToField('workElementCount', 'hidden')
+    and $this->isAttributeSetToField('workElementEstimatedWork', 'hidden')
+    and $this->isAttributeSetToField('workElementRealWork', 'hidden')
+    and $this->isAttributeSetToField('workElementLeftWork', 'hidden')) {
+      self::$_fieldsAttributes['_button_showTickets']='hidden';
+    }
+  }
   /** ==========================================================================
    * Destructor
    * @return void

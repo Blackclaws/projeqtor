@@ -543,6 +543,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $costVisibility=$obj->_costVisibility;
     if (get_class($obj) == "MeetingPlanningElement" or get_class($obj) == "PeriodicMeetingPlanningElement") {
       $obj->setAttributes($workVisibility, $costVisibility);
+    } else if (method_exists($obj, 'setAttributes')) {
+      $obj->setAttributes();
     }
 // ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
   } else if (SqlElement::is_subclass_of($obj, 'BudgetElement')) {
