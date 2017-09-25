@@ -492,7 +492,7 @@ function changeLocale(locale) {
         dojo.byId("directAccessForm").submit(); 
     };
     saveDataToSession('currentLocale', locale,null, callBack);*/
-    saveDataToSessionAndReload('currentLocale', locale, null)
+    saveDataToSessionAndReload('currentLocale', locale, null);
     /*dojo.xhrPost({
       url : "../tool/saveDataToSession.php?idData=currentLocale&value="
           + locale,
@@ -530,7 +530,7 @@ function changeBrowserLocaleForDates(newFormat) {
     dojo.byId("p1value").value = "userParameter";
     dojo.byId("directAccessForm").submit();
   };
-  saveDataToSession('currentLocale', newFormat,null, callBack);
+  saveDataToSession('browserLocaleDateFormat', newFormat,null, callBack);
   /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
         + newFormat,
@@ -561,7 +561,7 @@ function changeBrowserLocaleTimeFormat(newFormat) {
 	dojo.byId("p1value").value = "userParameter";
 	dojo.byId("directAccessForm").submit();
   };
-  saveDataToSession('currentLocale', newFormat,null, callBack);
+  saveDataToSession('browserLocaleTimeFormat', newFormat,null, callBack);
   /*dojo.xhrPost({
     url : "../tool/saveDataToSession.php?idData=browserLocaleTimeFormat&value="
         + newFormat,
@@ -4230,9 +4230,13 @@ function saveDataToSession(param, value, saveUserParameter, callBack) {
   var url="../tool/saveDataToSession.php";
   url+="?idData="+param;
   url+="&value="+value;
+  console.log(param);
+  console.log(value);
   if (saveUserParameter && (saveUserParameter==true || saveUserParameter=='true' || saveUserParameter==1)) { 
     url+="&saveUserParam=true";
   }
+  
+  console.log(url);
   dojo.xhrPost({
     url : url,
     load : function(data, args) {

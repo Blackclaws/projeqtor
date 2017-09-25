@@ -34,6 +34,7 @@ class TicketDelay extends Delay {
     
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
+  public $idProject;
   public $idTicketType;
   public $idUrgency;
   public $value;
@@ -83,7 +84,7 @@ class TicketDelay extends Delay {
 
   public function control() {
     $result="";
-    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
+    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idProject='" . Sql::fmtId($this->idProject) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($list)>0) {
       $result.="<br/>" . i18n('errorDuplicateTicketDelay',null);

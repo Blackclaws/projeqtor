@@ -33,7 +33,7 @@ class Delay extends SqlElement {
   // extends SqlElement, so has $id
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
-  //public $scope; 
+  //public $scope;
   public $idType;
   public $idUrgency;
   public $value;
