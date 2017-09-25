@@ -315,7 +315,43 @@
       echo '</div>';
     }
   }
-
+  
+  function showDocuments(){
+    $user=getSessionUser();
+    $prjDocLst=$user->getVisibleProjects();
+    $approver = new Approver();
+    //debugLog($docLst);
+    $critApprover = array('refType'=>"Document",'idAffectable'=>$user->id);
+    $critApprover2 = array('refType'=>"DocumentVersion",'approved'=>'1','idAffectable'=>$user->id);
+    $listApprover = $approver->getSqlElementsFromCriteria($critApprover,false,null);
+    $listApprover2 = $approver->getSqlElementsFromCriteria($critApprover2,false,null);
+    $arrayDoc=array();
+    $arrayDocVers=array();
+    // Liste of document version approved and approved by me
+    foreach ($listApprover2 as $valApp2){
+       $docVers = new DocumentVersion($valApp2->refId);  
+       $doc = new Document($docVers->idDocument);
+       if($docVers->id == $doc->idDocumentVersion){
+        $arrayDocVers[$docVers->idDocument]=$doc->id;
+       }
+       debugLog($arrayDocVers);
+    }
+    //List of document approved by me
+    foreach($listApprover as $valApp){
+    // recupérer version document new documentversion ($valApp->refId) , acceder au document , si iddocumentversion du document est bien la version recupérer dans le foreach , alors je stocke le $arrayDoc[iddudocument]
+       $arrayDoc[$valApp->refId]=$valApp->refId;
+       //debugLog($valApp);
+    }
+    $arrayD=array_diff($arrayDoc, $arrayDocVers);
+    //debugLog($arrayD);
+    $whereDocument = "id in ".transformListIntoInClause($arrayD);  
+    $whereActivity = "1=0";
+    $where = $whereActivity;
+    $whereTicket = $where;
+    $whereMeeting = $whereTicket;
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_DocumentDiv', 'menuDocument');
+  }
+  
   function countFrom($list,$idProj,$type, $scope) {
   	$cpt00=(isset($list[$idProj.'|0|0']))?$list[$idProj.'|0|0']:0;
   	$cpt01=(isset($list[$idProj.'|0|1']))?$list[$idProj.'|0|1']:0;
@@ -383,11 +419,12 @@
     $meet=new Meeting();
   	$where="1=0";
   	$whereTicket=$where;
+  	$whereDocument=$where;
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
       "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . Sql::fmtId($user->id) . "')" .
       ") and idle=0 and done=0";
     $whereMeeting=str_replace(array('Activity',$act->getDatabaseTableName()), array('Meeting',$meet->getDatabaseTableName()), $whereActivity);
-    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_WorkDiv', 'todayAssignedTasks');
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_WorkDiv', 'todayAssignedTasks');
   }
   
   function showResponsibleTasks() {
@@ -399,7 +436,8 @@
     $whereTicket=$where;
     $whereActivity=$where;
     $whereMeeting=$whereActivity;
-    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_RespDiv', 'todayResponsibleTasks');
+    $whereDocument="1=0";
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_RespDiv', 'todayResponsibleTasks');
   }
   
   function showIssuerRequestorTasks() {
@@ -411,7 +449,8 @@
        ") and idle=0 and done=0";
     $whereActivity=$whereTicket;
     $whereMeeting=$where;
-    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_FollowDiv', 'todayIssuerRequestorTasks');
+    $whereDocument="1=0";
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_FollowDiv', 'todayIssuerRequestorTasks');
   }
   
   function showProjectsTasks() {
@@ -420,10 +459,11 @@
     $whereTicket=$where;
     $whereActivity=$where;
     $whereMeeting=$where;
-    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_ProjectTasks', 'todayProjectsTasks');
+    $whereDocument="1=0";
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_ProjectTasks', 'todayProjectsTasks');
   }
   
-  function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, $divName, $title) {   
+  function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, $divName, $title) {   
   	//                   Assign  idRess  idUser  idCont  Items
   	// $where :          NO      YES     YES     NO      Milestone, Risk, Action, Issue, Opportunity, Decision, Question, Quote, Order, Bill
   	// $whereActivity :  YES     YES     YES     YES     Activity
@@ -459,7 +499,11 @@
     //gautier #2840
     $question= new Question();
     $listQuestion=$question->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
-    $list=array_merge($list, $listQuestion);
+    $list=array_merge($list, $listQuestion);  
+    // krowry #2915
+    $document = new Document();
+    $listDoc=$document->getSqlElementsFromCriteria(null, false,$whereDocument);
+    $list=array_merge($list,$listDoc);    
     $action= new Action();
     $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listAction);   
@@ -595,9 +639,9 @@
              '  <td class="messageData" style="'.$color.'">' . htmlEncode($elt->name) . '</td>' .
              '  <td class="messageDataValue" style="'.$color.'" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
              '  <td class="messageData" style="'.$color.'">' . htmlDisplayColored($status,$statusColor) . '</td>' .
-             '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
-             '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' .
-            '</tr>';
+             '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' ;
+             if(property_exists($elt, 'idResource')) echo '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' ;   // KROWRY a vérifier
+            echo '</tr>';
     }
     echo "</table>";
     echo "</div><br/>";
@@ -779,12 +823,14 @@ foreach ($todayList as $todayItem) {
       showProjects();?>
     </div><br/><?php
     }
-  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='AssignedTasks') {
+  }  else if ($todayItem->scope=='static' and $todayItem->staticSection=='AssignedTasks') {
     showAssignedTasks();
   } else if ($todayItem->scope=='static' and $todayItem->staticSection=='ResponsibleTasks') {
     showResponsibleTasks();
   } else if ($todayItem->scope=='static' and $todayItem->staticSection=='IssuerRequestorTasks') {
     showIssuerRequestorTasks();
+  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='Documents') { 
+    showDocuments();
   } else if ($todayItem->scope=='static' and $todayItem->staticSection=='ProjectsTasks') {
 	  if ($profile->profileCode=='PL') {
 	    showProjectsTasks();
