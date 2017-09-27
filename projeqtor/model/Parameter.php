@@ -74,7 +74,7 @@ class Parameter extends SqlElement {
       $colScript .= '  paramConfirmQuit=this.value;';
       $colScript .= '</script>';
     } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  newValue=this.value;';
    	$colScript .= '  
       var callBack = function(){
@@ -88,7 +88,7 @@ class Parameter extends SqlElement {
         dojo.byId("directAccessForm").submit(); 
         window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter")
       };';
-    	$colScript .= "saveDataToSession('$colName' , newValue, true, callBack);";
+    	$colScript .= 'saveDataToSession("$colName" , newValue, true, callBack);';
 //     	$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
 //       $colScript .= '     load: function(data,args) { 
 //     	                    showWait(); 
@@ -100,7 +100,7 @@ class Parameter extends SqlElement {
 //       $colScript .= '     dojo.byId("p1value").value="userParameter";';
 //       $colScript .= '     dojo.byId("directAccessForm").submit();';
 //       $colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
-//       $colScript .= '     }  });';
+//       $colScript .= '     }  });';*/
     	$colScript .= '</script>';
     } else if ($colName=="defaultProject") {
       //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';
@@ -833,11 +833,11 @@ class Parameter extends SqlElement {
     if (isset($hosted) and $hosted) {
     	if ($typeParameter=='globalParameter') {
     	  unset($parameterList['documentRoot']);
-    	  unset($parameterList['paramMailSender']);
-    	  unset($parameterList['paramMailReplyTo']);
-    	  unset($parameterList['paramMailSmtpServer']);
-    	  unset($parameterList['paramMailSmtpPort']);
-    	  unset($parameterList['paramMailSmtpPort']);
+    	  //unset($parameterList['paramMailSender']);
+      	//unset($parameterList['paramMailReplyTo']);
+      	//unset($parameterList['paramMailSmtpServer']);
+      	//unset($parameterList['paramMailSmtpPort']);
+      	//unset($parameterList['paramMailSmtpPort']);
     	  unset($parameterList['paramMailSendmailPath']);
     	  unset($parameterList['cronImportDirectory']);
     	  unset($parameterList['paramMemoryLimitForPDF']);

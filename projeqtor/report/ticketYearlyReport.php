@@ -127,6 +127,9 @@ if (! isset($includedReport)) {
   }
   //ADD qCazelles - Report fiscal year - Ticket #128
   if ($periodType=='year' and $paramMonth!="01") {
+    if(!$paramMonth){
+      $paramMonth="01";
+    }
     $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
   }
   //END ADD qCazelles - Report fiscal year - Ticket #128
@@ -178,11 +181,15 @@ $where=getAccesRestrictionClause('Ticket',false);
 
 //CHANGE qCazelles - Report fiscal year - Ticket #128
 //ADD
+if(!$paramMonth){
+  $paramMonth="01";
+}
 if ($paramMonth=="01") {
   $endMonth = "12";
 }
 else {
   $endMonth = ($paramMonth<11?'0':'') . ($paramMonth - 1);
+  debugLog($endMonth);
 }
 $endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
 //END ADD

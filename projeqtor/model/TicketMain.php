@@ -126,7 +126,8 @@ class TicketMain extends SqlElement {
                                   "idContext3"=>"title",
                                   "doneDateTime"=>"nobr",
                                   "solved"=>"nobr",
-                                  "idActivity"=>"title"
+                                  "idActivity"=>"title",
+                                  "delayReadOnly"=>"hidden"
       
   );  
   
