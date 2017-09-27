@@ -74,7 +74,14 @@ if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
 }
 //ADD qCazelles - Report fiscal year - Ticket #128
 if ($periodType=='year' and $paramMonth!="01") {
-  $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+  if (!$paramMonth ) {
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('messageNoData',array(i18n('month'))); // TODO i18n message
+    echo '</div>';
+    exit;
+  } else {
+    $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+  }
 }
 //END ADD qCazelles - Report fiscal year - Ticket #128
 if ($periodType=='month') {

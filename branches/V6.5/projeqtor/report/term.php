@@ -69,8 +69,32 @@ if ($periodType) {
 		$end = $paramYear . '-12-31';
 	} else if ($periodType == 'month') {
 		$start = $paramYear . '-' . (($paramMonth < 10) ? '0' : '') . $paramMonth . '-01';
+    if ((!$paramYear and !$paramMonth) or (!$paramYear) or (!$paramMonth)) {
+      echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    if(!$paramYear and !$paramMonth){
+      echo i18n('messageNoData',array(i18n('yearAndmonth'))); // TODO i18n message
+    } else if(!$paramYear){
+      echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+    } else if(!$paramMonth){
+      echo i18n('messageNoData',array(i18n('month'))); // TODO i18n message
+    }
+    echo '</div>';
+    exit;
+    }
 		$end = $paramYear . '-' . (($paramMonth < 10) ? '0' : '') . $paramMonth . '-' . date('t', mktime(0, 0, 0, $paramMonth, 1, $paramYear));
 	} if ($periodType == 'week') {
+  	  if ((!$paramYear and !$paramWeek) or (!$paramYear) or (!$paramWeek)) {
+        echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+      if(!$paramYear and !$paramWeek){
+        echo i18n('messageNoData',array(i18n('yearAndweek'))); // TODO i18n message
+      } else if(!$paramYear){
+        echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+      } else if(!$paramWeek){
+        echo i18n('messageNoData',array(i18n('week'))); // TODO i18n message
+      }
+      echo '</div>';
+      exit;
+      }
 		$start=date('Y-m-d', firstDayofWeek($paramWeek, $paramYear));
   	$end=addDaysToDate($start,6);
 	}

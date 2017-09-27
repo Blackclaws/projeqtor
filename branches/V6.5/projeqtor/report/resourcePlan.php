@@ -199,6 +199,12 @@ foreach ($lstPlanWork as $work) {
 
 if ($periodType=='month') {
   $startDate=$periodValue. "01";
+  if (!$paramYear ) {
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+    echo '</div>';
+    exit;
+  }
   $time=mktime(0, 0, 0, $paramMonth, 1, $paramYear);
   $header=i18n(strftime("%B", $time)).strftime(" %Y", $time);
   $nbDays=date("t", $time);

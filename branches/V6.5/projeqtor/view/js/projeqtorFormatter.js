@@ -325,6 +325,7 @@ function dateFormatter(value) {
       selector : "date",
       datePattern : "yyyy-MM-dd"
     });
+    if (!vDate || !fmt) { return value; }
     return dojo.date.locale.format(vDate, {
       datePattern : fmt,
       formatLength : "short",
