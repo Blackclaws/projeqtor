@@ -771,11 +771,11 @@ class Parameter extends SqlElement {
     if (isset($hosted) and $hosted) {
     	if ($typeParameter=='globalParameter') {
     	  unset($parameterList['documentRoot']);
-    	  unset($parameterList['paramMailSender']);
-    	  unset($parameterList['paramMailReplyTo']);
-    	  unset($parameterList['paramMailSmtpServer']);
-    	  unset($parameterList['paramMailSmtpPort']);
-    	  unset($parameterList['paramMailSmtpPort']);
+    	  //unset($parameterList['paramMailSender']);
+      	//unset($parameterList['paramMailReplyTo']);
+      	//unset($parameterList['paramMailSmtpServer']);
+      	//unset($parameterList['paramMailSmtpPort']);
+      	//unset($parameterList['paramMailSmtpPort']);
     	  unset($parameterList['paramMailSendmailPath']);
     	  unset($parameterList['cronImportDirectory']);
     	  unset($parameterList['paramMemoryLimitForPDF']);
