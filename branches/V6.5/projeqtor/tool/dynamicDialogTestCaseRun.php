@@ -82,6 +82,8 @@ if (count($listTcr)) {
   $testCaseRun->sortOrder=10;
 }
 }
+
+$selectedProject=getSessionValue('project');
 ?>
 
   <table>
@@ -180,7 +182,7 @@ if (count($listTcr)) {
 		               <select dojoType="dijit.form.FilteringSelect" 
 		               <?php echo autoOpenFilteringSelect();?>
 		                id="testCaseRunTicket" name="testCaseRunTicket"
-		                class="input"><?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false); ?>
+		                class="input"><?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false,'idProject',$selectedProject); ?>
 		               </select>
 		             </td>
                  <td style="vertical-align: top">

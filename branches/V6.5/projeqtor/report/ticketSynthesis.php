@@ -114,6 +114,9 @@ if (! isset($includedReport)) {
   }
   //ADD qCazelles - Report fiscal year - Ticket #128
   if ($periodType=='year' and $paramMonth!="01") {
+    if(!$paramMonth){
+      $paramMonth="01";
+    }
     $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
   }
   //END ADD qCazelles - Report fiscal year - Ticket #128
@@ -181,9 +184,33 @@ if ($periodType) {
     //END CHANGE qCazelles - Report start month - Ticket #128
     
   } else if ($periodType=='month') {
+    if ((!$paramYear and !$paramMonth) or (!$paramYear) or (!$paramMonth)) {
+      echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+      if(!$paramYear and !$paramMonth){
+        echo i18n('messageNoData',array(i18n('yearAndmonth'))); // TODO i18n message
+      } else if(!$paramYear){
+        echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+      } else if(!$paramMonth){
+        echo i18n('messageNoData',array(i18n('month'))); // TODO i18n message
+      }
+      echo '</div>';
+      exit;
+    }
     $start=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-01';
     $end=$paramYear . '-' . (($paramMonth<10)?'0':'') . $paramMonth . '-' . date('t',mktime(0,0,0,$paramMonth,1,$paramYear));  
   } if ($periodType=='week') {
+      if ((!$paramYear and !$paramWeek) or (!$paramYear) or (!$paramWeek)) {
+        echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+        if(!$paramYear and !$paramWeek){
+          echo i18n('messageNoData',array(i18n('yearAndweek'))); // TODO i18n message
+        } else if(!$paramYear){
+          echo i18n('messageNoData',array(i18n('year'))); // TODO i18n message
+        } else if(!$paramWeek){
+          echo i18n('messageNoData',array(i18n('week'))); // TODO i18n message
+        }
+        echo '</div>';
+        exit;
+      }
     $start=date('Y-m-d', firstDayofWeek($paramWeek, $paramYear));
     $end=addDaysToDate($start,6);
   }
