@@ -4230,13 +4230,9 @@ function saveDataToSession(param, value, saveUserParameter, callBack) {
   var url="../tool/saveDataToSession.php";
   url+="?idData="+param;
   url+="&value="+value;
-  console.log(param);
-  console.log(value);
   if (saveUserParameter && (saveUserParameter==true || saveUserParameter=='true' || saveUserParameter==1)) { 
     url+="&saveUserParam=true";
   }
-  
-  console.log(url);
   dojo.xhrPost({
     url : url,
     load : function(data, args) {
@@ -4568,4 +4564,13 @@ function switchNotesPrivacyStream() {
 function setAttributeOnTitlepane(pane,attr,height) {
   if (height) attr+='height:'+height+'px';
   dojo.byId(pane+'_titleBarNode').style=attr;
+}
+
+function redirectMobile(){
+  redirectMobileFunction = function() {
+    var url = "../mobile/";  
+    window.location = url;
+    quitConfirmed = true;
+  };
+  showConfirm(i18n('confirmRedirectionMobile'), redirectMobileFunction);
 }
