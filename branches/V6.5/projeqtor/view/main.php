@@ -206,9 +206,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     });
     require(["dojo/sniff"], function(sniff) {
       if(sniff("android") || sniff("ios") || sniff("bb")) {
-          alert("i18n('redirection vers plugin mobile')");
-          var url = "../mobile/";  
-          window.location = url;
+        dojo.addOnLoad(function(){
+          redirectMobile();
+        });
       }
     });
     dndMoveInProgress=false;
