@@ -33,11 +33,20 @@ if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
   $paramProject=Security::checkValidId($paramProject); // only allow digits
 };
+
+$paramClosedItems=false;
+if (array_key_exists('showClosedItems',$_REQUEST)) {
+  $paramClosedItems=true;
+};
   // Header
 $headerParameters="";
 if ($paramProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
+}
+if ($paramClosedItems!="") {
+  $headerParameters.= i18n("colShowClosedItems") . ' : ' . i18n('displayYes') . '<br/>';
 }  
+
 include "header.php";
 
 $queryWhereAction=getAccesRestrictionClause('Action',false);
@@ -49,7 +58,10 @@ $queryWherePlus="";
 if ($paramProject!="") {
   $queryWherePlus.=" and idProject in " . getVisibleProjectsList(true, $paramProject);
 }
-$queryWherePlus.=" and idle=0";
+if(!$paramClosedItems){
+  $queryWherePlus.=" and idle=0";
+}
+
 $clauseOrderBy=" actualEndDate asc";
 $tabAction = array();
 
