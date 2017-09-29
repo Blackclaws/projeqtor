@@ -12,3 +12,6 @@ INSERT INTO `${prefix}checklistable` (`id`,`name`,`idle`) VALUES
 ALTER TABLE `${prefix}ticket` ADD `delayReadOnly` int(1) DEFAULT '0';
 
 ALTER TABLE `${prefix}delay` ADD `idProject` int(12);
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
+(23,'showClosedItems','boolean',850,0,null);
