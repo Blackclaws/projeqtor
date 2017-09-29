@@ -4565,3 +4565,12 @@ function setAttributeOnTitlepane(pane,attr,height) {
   if (height) attr+='height:'+height+'px';
   dojo.byId(pane+'_titleBarNode').style=attr;
 }
+
+function redirectMobile(){
+  redirectMobileFunction = function() {
+    var url = "../mobile/";  
+    window.location = url;
+    quitConfirmed = true;
+  };
+  showConfirm(i18n('confirmRedirectionMobile'), redirectMobileFunction);
+}

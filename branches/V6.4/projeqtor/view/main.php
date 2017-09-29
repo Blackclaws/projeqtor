@@ -205,10 +205,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
        }
     });
     require(["dojo/sniff"], function(sniff) {
-      if(sniff("android") || sniff("ios") || sniff("bb")) {
-          alert("i18n('redirection vers plugin mobile')");
-          var url = "../mobile/";  
-          window.location = url;
+      if(sniff("android") || sniff("ios") || sniff("bb")) {  /// missed : if /mobile file exist
+        dojo.addOnLoad(function(){
+          redirectMobile();
+        });
       }
     });
     dndMoveInProgress=false;
