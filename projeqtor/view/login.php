@@ -87,6 +87,14 @@
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
+    require(["dojo/sniff"], function(sniff) {
+      var mobileExists=<?php echo (file_exists("../mobile"))?'true':'false';?>;
+      if(mobileExists && (sniff("android") || sniff("ios") || sniff("bb") ) ) { 
+        dojo.addOnLoad(function(){
+          redirectMobile();
+        });
+      }
+    });
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     var aesLoginHash="<?php echo md5(session_id());?>";
     var browserLocaleDateFormat="";
@@ -157,6 +165,30 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 ?>
   <div id="waitLogin" style="display:none" >
   </div>
+  <div id="dialogConfirm" dojoType="dijit.Dialog" title="<?php echo i18n("dialogConfirm");?>">
+  <table>
+    <tr>
+      <td width="50px">
+           <?php echo formatIcon('Confirm',32);?>
+      </td>
+      <td>
+        <div id="dialogConfirmMessage"></div>
+      </td>
+    </tr>
+    <tr><td colspan="2" align="center">&nbsp;</td></tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="hidden" id="dialogConfirmAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogConfirm').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" id="dialogConfirmSubmitButton" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
   <div class="loginMessageContainer">
   	<?php 
   	$cpt=0;
