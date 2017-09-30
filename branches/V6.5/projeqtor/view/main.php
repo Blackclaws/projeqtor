@@ -204,13 +204,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          } 
        }
     });
-    require(["dojo/sniff"], function(sniff) {
-      if(sniff("android") || sniff("ios") || sniff("bb")) {  /// missed : if /mobile file exist
-        dojo.addOnLoad(function(){
-          redirectMobile();
-        });
-      }
-    });
+
     dndMoveInProgress=false;
     dojo.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
     	dndMoveInProgress=true;

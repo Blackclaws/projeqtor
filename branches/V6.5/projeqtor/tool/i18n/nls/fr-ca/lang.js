@@ -997,7 +997,7 @@ confirmDisconnectAll: "Confirmer la déconnexion de tous les utilisateurs (sauf 
 confirmDisconnection: "Confirmer la déconnexion",
 confirmInstallPlugin: "Merci de confirmer l'installation du module d'extension '${1}'",
 confirmLocaleChange: "Vous venez de changer la langue d'affichage.<br/> Souhaitez-vous recharger la page pour refléter cette modification maintenant ?",
-confirmRedirectionMobile: "Confirmer la redirection",
+confirmRedirectionMobile: "Une version dédiée aux mobiles existe.<br/>Souhaitez-vous accéder à cette version mobile ?<br/><i>('Annuler' continuera sur la version standard)</i>",
 confirmRemoveBudgetElement: "Etes-vous sûr de vouloir supprimer cette période budgétaire ?",
 confirmRemoveFilter: "Supprimer le filtre '${1}' ?",
 confirmRemoveLinkObjFromObj: "Dissocier cet élément de l'entité ?",
