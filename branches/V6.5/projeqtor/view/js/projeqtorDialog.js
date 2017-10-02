@@ -8641,3 +8641,8 @@ function repositionMenuDiv(id,idParent) {
 function hideUnderMenu(id){
   dojo.byId('UnderMenu'+id).style.display="none";
 }
+
+function displayListOfApprover(id){
+  var params="&objectId=" + id;
+  loadDialog('dialogListApprover', null, true,params,null,true,"dialogApproverByVersion");
+}
