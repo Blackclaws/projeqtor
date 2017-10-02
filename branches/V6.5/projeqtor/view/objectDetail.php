@@ -2594,6 +2594,11 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
                 .formatSmallButton('Remove') 
                 .'</a> ';
       }
+      if(count($obj->_Approver)>= 1){
+        echo '  <a onClick="displayListOfApprover(' . "'" . htmlEncode($version->id) . "'" . ');" ' . 'title="' . i18n('dialogApproverByVersion') . '" >'
+            .formatSmallButton('ListApprover')
+            .'</a> ';
+      }
       echo '<input type="hidden" id="documentVersion_' . htmlEncode($version->id) . '" name="documentVersion_' . htmlEncode($version->id) . '" value="' . htmlEncode($version->description) . '"/>';
       echo '</td>';
     }
