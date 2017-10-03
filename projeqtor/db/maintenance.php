@@ -548,6 +548,7 @@ if (beforeVersion($currVersion,"V6.1.2") and $currVersion!='V0.0.0') {
 }
 
 if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
+  SqlElement::$_doNotSaveLastUpdateDateTime=true;
 	traceLog("update idProject and idle on notes");
 	//setSessionUser(new User());
 	$note=new Note();
@@ -573,6 +574,7 @@ if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
 	}
 	Sql::commitTransaction();
 	traceLog("   => $cpt notes updated");
+	SqlElement::$_doNotSaveLastUpdateDateTime=false;
 }
 if ($currVersion=='V6.3.0' and Sql::isPgsql()) {
   $nbErrorsPg=runScript('V6.3.1.pg');
