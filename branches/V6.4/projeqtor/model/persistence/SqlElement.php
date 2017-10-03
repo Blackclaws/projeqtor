@@ -79,6 +79,8 @@ abstract class SqlElement {
 
   private static $_defaultValues = array();
   
+  public static $_doNotSaveLastUpdateDateTime=false;
+  
   // Management of cache for queries : cache is only valid during current script
   public static $_cachedQuery = array('Habilitation' => array(), 'Menu' => array(), 'PluginTriggeredEvent' => array(), 'Plugin' => array());
   
@@ -1077,7 +1079,7 @@ abstract class SqlElement {
     if (Sql::isPgsql ()) {
       $queryColumns = strtolower ( $queryColumns );
     }
-    if (property_exists ( $this, 'lastUpdateDateTime' )) { // Initialize lastUpdateDateTime (for tickets)
+    if (property_exists ( $this, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) { // Initialize lastUpdateDateTime (for tickets)
       $this->lastUpdateDateTime = date ( 'Y-m-d H:i:s' );
     }
     // get all data
