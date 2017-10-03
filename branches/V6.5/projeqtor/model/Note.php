@@ -85,7 +85,7 @@ class Note extends SqlElement {
     if (property_exists($obj,'idle')) $this->idle=$obj->idle;
     $result = parent::save ();
     if ($this->idPrivacy != 3) {
-      if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' )) {
+      if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }
