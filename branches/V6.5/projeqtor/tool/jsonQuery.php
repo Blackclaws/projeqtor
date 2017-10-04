@@ -685,6 +685,8 @@
         $dateWeekOrMonthOrYear = 'month';
       }elseif (substr($date,0,1) == 'Y'){
         $dateWeekOrMonthOrYear = 'year';
+      }else {
+        $date = 'All';
       }
       if($date != 'All'){
         $date = substr($date,1);
