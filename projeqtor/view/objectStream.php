@@ -35,7 +35,7 @@
   if (! isset($objectId)) $objectId=RequestHandler::getId('objectId');
   $obj=new $objectClass($objectId);
   $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
-  if ($obj->idle == 1) {
+  if (!property_exists($obj, 'idle') or $obj->idle == 1) {
     $canUpdate=false;
   }
   $noData=htmlGetNoDataMessage($objectClass);
