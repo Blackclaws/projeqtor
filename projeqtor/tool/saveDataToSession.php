@@ -45,7 +45,7 @@ $ValidSessionIDs = '(param(ConfirmQuit|(Top)?IconSize)|lang|hideMenu'
     .'|contentPane(Left(DivWidth|BottomDivHeight)|Top(DetailDivHeight(.*)?|(Portfolio|Resource)?PlanningDivHeight))'
     .'|contentPaneRightDetailDivWidth(.*)|plgKanban(.*)|privacyNotes(.*)'
     .'|contentPaneBottomLiveMeeting|contentPaneTopLiveMeeting|plgKanbanname|plgKanbanresponsible|plgKanbanstatus|plgKanbantargetProductVersion)|ckeditorHeight(.*)?'
-    .'|skipEmptyDay|globalParameter(.*)';
+    .'|skipEmptyDay|globalParameter(.*)|displayByStatusList(.*)';
 if (preg_match('/^'.$ValidSessionIDs.'$/', trim($id)) != True){
   if (array_key_exists($id, Parameter::getParamtersList('userParameter'))) {
     // OK, it is a user parameter
