@@ -88,7 +88,7 @@ class Parameter extends SqlElement {
         dojo.byId("directAccessForm").submit(); 
         window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter")
       };';
-    	$colScript .= 'saveDataToSession("$colName" , newValue, true, callBack);';
+    	$colScript .= 'saveDataToSession(\''.$colName.'\' , newValue, true, callBack);';
      	/*$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
       $colScript .= '     load: function(data,args) { 
      	                    showWait(); 
