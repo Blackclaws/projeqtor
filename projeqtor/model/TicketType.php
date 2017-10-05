@@ -76,8 +76,7 @@ class TicketType extends Type {
       "internalData"=>"hidden",
       "showInFlash"=>"hidden",
       "scope"=>"hidden",
-      "lockNoLeftOnDone"=>"nobr",
-      "_lib_statusMustChangeLeftDone"=>"nobr" );
+      "lockNoLeftOnDone"=>"nobr");
   private static $_databaseCriteria = array('scope'=>'Ticket');
   
    /** ==========================================================================
