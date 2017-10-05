@@ -64,8 +64,8 @@ class Collapsed extends SqlElement {
    * @return the databaseTableName
    */
 
-  public static function collapse($scope) {
-  	$userId=self::getUserId();
+  public static function collapse($scope,$userId=null) {
+  	if ($userId===null) $userId=self::getUserId();
   	$crit=array('scope'=>$scope, 'idUser'=>$userId);
     $col=SqlElement::getSingleSqlElementFromCriteria('Collapsed', $crit);
     if (!$col or !$col->id) {
@@ -79,8 +79,8 @@ class Collapsed extends SqlElement {
     self::setCollaspedList($list);
   }
   
-  public static function expand($scope) {
-  	$userId=self::getUserId();
+  public static function expand($scope,$userId=nul) {
+  	if ($userId===null) $userId=self::getUserId();
   	$crit=array('scope'=>$scope, 'idUser'=>$userId);
     $col=SqlElement::getSingleSqlElementFromCriteria('Collapsed', $crit);
   	if ($col and $col->id) {
@@ -115,8 +115,13 @@ class Collapsed extends SqlElement {
   
   private static function initialiseCollapsedList() {
   	$list=array();
-  	$crit=array('idUser'=>self::getUserId());
   	$col=new Collapsed();
+  	$crit=array('idUser'=>'0'); // Retreive default collapsed from Customization screen
+  	$listCol=$col->getSqlElementsFromCriteria($crit, false);
+  	foreach($listCol as $col) {
+  	  $list[$col->scope]=true;
+  	}
+  	$crit=array('idUser'=>self::getUserId());
   	$listCol=$col->getSqlElementsFromCriteria($crit, false);
   	foreach($listCol as $col) {
   		$list[$col->scope]=true;
