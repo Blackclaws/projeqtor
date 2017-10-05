@@ -587,6 +587,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $notReadonlyClass=" generalColClassNotReadonly ";
     $notRequiredClass=" generalColClassNotRequired ";
     $nobr_before=$nobr;
+    /*debugLog("$col  nobr=$nobr  nobr_before=$nobr_before");
+    if ( $nobr_before 
+    and ( $obj->isAttributeSetToField($col, "hidden" ) )
+    and (!$obj->isAttributeSetToField($col, "nobr")    )) {
+      $nobr_before=false;
+      debugLog("erased nobr_before");
+    }*/
     $nobr=false;
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
       $hide=true;
@@ -1015,8 +1022,27 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
         $hide=true;
       }
-      if (strpos($obj->getFieldAttributes($col), 'nobr') !== false) {
+      if ($obj->isAttributeSetToField($col,'nobr')) {
         $nobr=true;
+        $tempCurrentFound=false;
+        foreach ($obj as $tmpCol=>$tmpVal) {
+          if ($tmpCol==$col) {
+            $tempCurrentFound=true;
+            continue;
+          } else if ($tempCurrentFound==false) {
+            continue;
+          } 
+          // Here current was found and
+          if ($obj->isAttributeSetToField($tmpCol,'hidden') or in_array($tmpCol,$extraHiddenFields)) {
+             if (!$obj->isAttributeSetToField($tmpCol,'nobr')) {
+              $nobr=false; // Current is NOBR but next is hidden and not NOBR (no next on same line) : remove NOBR
+              break;
+            }
+          } else {
+            break; // OK current is NOBR and next is visible
+          }
+        }
+        
       }
       if (strpos($obj->getFieldAttributes($col), 'invisible') !== false) {
         $specificStyle.=' visibility:hidden';
@@ -1901,6 +1927,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3') !== false) {
           $fieldWidth=$fieldWidth / 3 - 3;
         }
+        if (strpos($obj->getFieldAttributes($col), 'size1/2') !== false) {
+          $fieldWidth=$fieldWidth / 2 - 2;
+        }
         $hasOtherVersion=false;
         $versionType='';
         $otherVersion='';
@@ -2425,7 +2454,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 }
 
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null,$obj=null) {
-  scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
+  //scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
 
   if (!$currentColumn) $currentColumn=0;

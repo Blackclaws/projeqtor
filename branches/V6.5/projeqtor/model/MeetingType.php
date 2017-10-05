@@ -48,8 +48,7 @@ class MeetingType extends Type {
                                           "showInFlash"=>"hidden",
                                           "idPlanningMode"=>"hidden",
                                           "lockNoLeftOnDone"=>"nobr",
-                                          "scope"=>"hidden",
-                                          "_lib_statusMustChangeLeftDone"=>"nobr");
+                                          "scope"=>"hidden");
   private static $_databaseCriteria = array('scope'=>'Meeting');
   
    /** ==========================================================================

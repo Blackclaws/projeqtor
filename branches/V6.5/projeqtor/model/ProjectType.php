@@ -74,13 +74,13 @@ class ProjectType extends SqlElement {
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
                                           "code"=> "readonly,nobr",
+                                          "internalData"=>"hidden",
                                           "lockHandled"=>"nobr",
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
                                           "lockCancelled"=>"nobr",
-                                          "lockNoLeftOnDone"=>"nobr",
-                                          "internalData"=>"hidden",
-                                          "_lib_statusMustChangeLeftDone"=>"nobr" );
+                                          "lockNoLeftOnDone"=>"nobr"
+                                           );
    
    private static $_databaseColumnName = array();
    
