@@ -1382,9 +1382,9 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
   public function getVisibility($idProject,$col,$type) {
     $profile=$this->getProfile($idProject);
     if ($type=='cost') {
-      $visibility=PlanningElement::getCostVisibiliy($profile);
+      $visibility=PlanningElement::getCostVisibility($profile);
     } else {
-      $visibility=PlanningElement::getWorkVisibiliy($profile);
+      $visibility=PlanningElement::getWorkVisibility($profile);
     }
     if ($visibility=='ALL') {
       return true;

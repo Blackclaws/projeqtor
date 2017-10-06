@@ -1221,14 +1221,14 @@ class PlanningElement extends SqlElement {
   	}
   }
   
-  public static function getWorkVisibiliy($profile) {
+  public static function getWorkVisibility($profile) {
     if (! self::$staticWorkVisibility or ! isset(self::$staticWorkVisibility[$profile]) ) {
       $pe=new PlanningElement();
       $pe->setVisibility($profile);
     }
     return self::$staticWorkVisibility[$profile];
   }
-  public static function getCostVisibiliy($profile) {
+  public static function getCostVisibility($profile) {
     if (! self::$staticCostVisibility or ! isset(self::$staticCostVisibility[$profile]) ) {
       $pe=new PlanningElement();
       $pe->setVisibility($profile);
@@ -1516,6 +1516,61 @@ class PlanningElement extends SqlElement {
       $res=self::copyStructure($item, $newItem, $copyToOrigin,
                           $copyToWithNotes, $copyToWithAttachments, $copyToWithLinks,
                           $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects);
+      debugLog($res);
+      if ($res!='OK') {
+        return $res;
+      }
+    }
+    return "OK"; // No error ;)
+  }
+  
+  static function copyOtherStructure($obj, $newObj, $copyToOrigin=false,
+    $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false,
+    $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
+    self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
+    $pe=new PlanningElement();
+    $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
+    foreach ($list as $pe) { // each planning element corresponding to item to copy
+      if ($pe->refType!='Meeting' and $pe->refType!='TestSession' and $pe->refType!='PeriodicMeeting') continue;
+      if ($pe->refType=='Project' and ! $copySubProjects) continue;
+      $item=new $pe->refType($pe->refId);
+      $type=null;
+      if(get_class($item)=='PeriodicMeeting'){
+        $type='idMeetingType';
+      } else {
+        $type='id'.get_class($item).'Type';
+      }
+      if(get_class($item)=='PeriodicMeeting'){
+        $newItem=$item->copy();
+      } else {
+        $newItem=$item->copyTo(get_class($item),$item->$type, $item->name, $copyToOrigin,
+            $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks,
+            $copyAssignments, $copyAffectations, $toProject, (get_class($newObj)=='Activity')?$newObj->id:null );
+      }
+      $resultItem=$newItem->_copyResult;
+      unset($newItem->_copyResult);
+      if (! stripos($resultItem,'id="lastOperationStatus" value="OK"')>0 ) {
+        return $resultItem;
+      }
+      self::$_copiedItems[get_class($item).'#'.$item->id]=array('from'=>$item,'to'=>$newItem);
+      if ($pe->refType=='Project' and $copyAffectations) {
+        $aff=new Affectation();
+        $crit=array('idProject'=>$item->id);
+        $lstAff=$aff->getSqlElementsFromCriteria($crit);
+        foreach ($lstAff as $aff) {
+          $critExists=array('idProject'=>$aff->idProject, 'idResource'=>$aff->idResource);
+          $affExists=SqlElement::getSingleSqlElementFromCriteria('Affectation', $critExists);
+          if (!$affExists or !$affExists->id) {
+          		$aff->id=null;
+          		$aff->idProject=$newItem->id;
+          		$aff->save();
+          }
+        }
+      }
+      // recursively call copy structure
+      $res=self::copyOtherStructure($item, $newItem, $copyToOrigin,
+          $copyToWithNotes, $copyToWithAttachments, $copyToWithLinks,
+          $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects);
       if ($res!='OK') {
         return $res;
       }
