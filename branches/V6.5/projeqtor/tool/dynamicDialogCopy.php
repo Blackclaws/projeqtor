@@ -295,6 +295,19 @@ if($copyType=="copyObjectTo"){
            </tr>
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyOtherProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyOtherProjectStructure") ?>&nbsp;:&nbsp;</label>
+               <?php $isCheckedOtherProjectStructure=true;$isCheckedOtherProjectStructure=Parameter::getUserParameter('isCheckedOtherProjectStructure'.$objectClass);?>
+               <div id="copyOtherProjectStructure" name="copyOtherProjectStructure" dojoType="dijit.form.CheckBox" <?php if ($isCheckedOtherProjectStructure=='true') echo " checked ";?>
+                type="checkbox" onChange="copyProjectStructureChange()" >
+               <script type="dojo/method" event="onChange" >
+                  saveDataToSession('isCheckedOtherProjectStructure<?php echo $objectClass;?>',((this.checked)?true:false),true);
+               </script>
+               </div>
+             </td>
+           </tr>
+           
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copySubProjects" style="width:90%;text-align: right;"><?php echo i18n("copySubProjects") ?>&nbsp;:&nbsp;</label>
                <?php $isCheckedSubProject=true;$isCheckedSubProject=Parameter::getUserParameter('isCheckedSubProject'.$objectClass);?>
                <div id="copySubProjects" name="copySubProjects" dojoType="dijit.form.CheckBox" <?php if ($isCheckedSubProject=='true') echo " checked ";?> type="checkbox" >
