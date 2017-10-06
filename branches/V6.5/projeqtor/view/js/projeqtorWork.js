@@ -452,6 +452,19 @@ function submitWorkPeriod(action) {
   });   
 }
 
+function enterRealAsPlanned(nbDays){   
+  var nblines = dojo.byId("nbLines").value;
+    for (line=1;line<=nblines;line++) {
+      for (day=1; day<=nbDays; day++) { 
+        var workValue = dijit.byId('workValue_' + line + '_' + day);
+        var plannedValue = dojo.byId('plannedValue_' + line + '_' + day);
+        if(plannedValue){        
+          workValue.set('value',plannedValue.getAttribute("data-value"));
+        }
+      }
+    }
+}
+
 function checkCapacity() {
   var capacity=parseFloat(dojo.byId('resourceCapacity').value);
   for (colId=1; colId<=7; colId++) {

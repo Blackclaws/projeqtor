@@ -551,6 +551,16 @@ class ImputationLine {
     echo '  <TD class="ganttLeftTopLine" colspan="5" style="width:'.($nameWidth+2*$dateWidth+2*$workWidth).'px">';
     echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
     echo '</td>';
+    if (!$print and !$period->validated) { //and $resourceId == $user->id 
+      echo '<td style="width:1%">';
+      echo '<button id="enterRealAsPlanned" dojoType="dijit.form.Button" showlabel="true" >';
+      echo '<script type="dojo/connect" event="onClick" args="evt">enterRealAsPlanned('.$nbDays.');</script>';
+      echo i18n('enterRealAsPlanned');
+      echo '</button>';
+      echo '</td>';
+    }
+    debugLog("before : ".$nbDays);
+    echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';
     if ($period->submitted) {
       $msg='<div class="imputationSubmitted"><span class="nobr">' . i18n('submittedWorkPeriod', array(htmlFormatDateTime($period->submittedDate))) . '</span></div>';
       if (!$print and !$period->validated and ($resourceId == $user->id or $canValidate)) {
@@ -873,8 +883,11 @@ class ImputationLine {
             if ($showPlanned and $line->arrayPlannedWork [$i]->work) {
               echo '<div style="display: inline;';
               echo ' position: absolute; left: 7px; top: 1px; text-align: right;';
-              echo ' color:#8080DD; font-size:90%;">';
-              echo Work::displayImputation($line->arrayPlannedWork [$i]->work);
+              echo ' color:#8080DD; font-size:90%;"';
+              echo ' id="plannedValue_' . $nbLine . '_' . $i . '" ';
+              echo ' data-value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->arrayPlannedWork [$i]->work)).'"';
+              echo ' > ';
+              echo htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->arrayPlannedWork [$i]->work));
               echo '</div>';
             }
             echo '<div type="text" idProject="' . $line->idProject . '" dojoType="dijit.form.NumberTextBox" ';
@@ -894,6 +907,8 @@ class ImputationLine {
             echo $keyDownEventScript;
             echo '<script type="dojo/method" event="onChange" args="evt">';
             echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
+            debugLog("after : ".$nbLine);
+            debugLog("after : ".$i);
             echo '</script>';
             echo '</div>';
             echo '</div>';

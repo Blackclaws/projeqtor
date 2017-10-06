@@ -56,6 +56,12 @@ $copyStructure=false;
 if (array_key_exists('copyProjectStructure',$_REQUEST)) {
 	$copyStructure=true;
 }
+
+$copyOtherStructure=false;
+if (array_key_exists('copyOtherProjectStructure',$_REQUEST)) {
+  $copyOtherStructure=true;
+}
+
 $copySubProjects=false;
 if (array_key_exists('copySubProjects',$_REQUEST)) {
   $copySubProjects=true;
@@ -126,6 +132,18 @@ unset($newProj->_copyResult);
 if(!$error)$newProj->save();
 if (!$error and $copyStructure) {
   $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
+  if ($res!='OK') {
+    $result=$res;
+    $error=true;
+  } else {
+    PlanningElement::copyStructureFinalize();
+  }
+}
+
+if (!$error and $copyOtherStructure) {
+  //debugLog($proj);
+  //debugLog($newProj);
+  $res=PlanningElement::copyOtherStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
   if ($res!='OK') {
     $result=$res;
     $error=true;
