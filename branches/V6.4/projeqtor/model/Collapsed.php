@@ -79,7 +79,7 @@ class Collapsed extends SqlElement {
     self::setCollaspedList($list);
   }
   
-  public static function expand($scope,$userId=nul) {
+  public static function expand($scope,$userId=null) {
   	if ($userId===null) $userId=self::getUserId();
   	$crit=array('scope'=>$scope, 'idUser'=>$userId);
     $col=SqlElement::getSingleSqlElementFromCriteria('Collapsed', $crit);
