@@ -103,13 +103,13 @@ function generateImputationAlert() {
     if (!$full) {
       $lstRes[$idRes]['workDetail']=getImputationSummary($res);
     } else {
-    	$lstRes[$idRes]['workDetail']=$full;
+    	$lstRes[$idRes]['workDetail']=null;
     }
   }
     
   $dest=array();
   foreach ($lstRes as $id=>$res) {
-    if (!$full) {
+    if (!$res['full']) {
       if ($sendToResource and $sendToResource!='NO') {
         $dest[$id]=array(
             'ress'=>array($id=>$res['workDetail']),
