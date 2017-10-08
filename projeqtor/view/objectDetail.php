@@ -585,13 +585,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $notReadonlyClass=" generalColClassNotReadonly ";
     $notRequiredClass=" generalColClassNotRequired ";
     $nobr_before=$nobr;
-    /*debugLog("$col  nobr=$nobr  nobr_before=$nobr_before");
-    if ( $nobr_before 
-    and ( $obj->isAttributeSetToField($col, "hidden" ) )
-    and (!$obj->isAttributeSetToField($col, "nobr")    )) {
-      $nobr_before=false;
-      debugLog("erased nobr_before");
-    }*/
     $nobr=false;
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
       $hide=true;

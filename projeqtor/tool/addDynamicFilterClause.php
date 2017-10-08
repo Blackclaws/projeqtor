@@ -55,7 +55,7 @@ if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters))
 $dynamicClauses=array();
 if (!empty($filterArray)) {
 	foreach ($filterArray as $key => $crit) {
-		if ($crit['isDynamic']=='1') {
+		if (isset($crit['isDynamic']) and $crit['isDynamic']=='1') {
 			$dynamicClauses[]=$key;
 		}
 	}
@@ -67,7 +67,7 @@ for ($i=0;$i<$nbDynamicFilterClauses;$i++) {
 	$idFilterOperator=$_REQUEST['idFilterOperator'.$i];
 	$filterDataType=RequestHandler::getValue('filterDataType'.$i);
 	
-	$orOperator=$_REQUEST['orOperator'.$i];
+	$orOperator=RequestHandler::getValue('orOperator'.$i);
 	
 	$filterValue="";
 	if ( array_key_exists('filterValue'.$i,$_REQUEST)) {
