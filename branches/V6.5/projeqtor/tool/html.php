@@ -1104,6 +1104,8 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
       echo "<tr>";
       echo "<td class='filterData'>";
       //ADD qCazelles - Dynamic filter - Ticket #78
+    if (!isset($filter['orOperator'])) $filter['orOperator']=0;
+    if (!isset($filter['isDynamic'])) $filter['isDynamic']=0;
 	  if ($filter['orOperator']=='1') {
       	echo i18n('OR').' ';
       }

@@ -344,7 +344,7 @@ if ($displayWidthList<1400) {
                      	//New
                      	//A filter with isDynamic=1 is not active
                      	foreach (getSessionUser()->_arrayFilters[$objectClass] as $filter) {
-                     		if (isset($filter['isDynamic']) and $filter['isDynamic']=="0") {
+                     		if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
                      			$activeFilter=true;
                      		}
                      	}
@@ -359,7 +359,7 @@ if ($displayWidthList<1400) {
                      	//$activeFilter=true;
                      	//New
                      	foreach (getSessionUser()->_arrayFiltersDetail[$objectClass] as $filter) {
-                     		if ($filter['isDynamic']=="0") {
+                     		if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
                      			$activeFilter=true;
                      		}
                      	}

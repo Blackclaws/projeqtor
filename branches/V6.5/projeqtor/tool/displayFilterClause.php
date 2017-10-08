@@ -70,7 +70,7 @@ if (! $comboDetail and array_key_exists($filterObjectClass . "FilterName", $user
 //When removing filter criterias, the first one can not be defined by an OR operator
 if (!empty($filterArray)) {
 	$filterArray=array_values($filterArray);
-	if ($filterArray[0]['orOperator']=='1') {
+	if (isset($filterArray[0]['orOperator']) and $filterArray[0]['orOperator']=='1') {
 		$filterArray[0]['orOperator']='0';
 		
 		if (! $comboDetail) {
