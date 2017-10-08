@@ -31,7 +31,7 @@ $filter=new Filter($idFilter);
            <?php
            $cpt=0;
            foreach ($filter->_FilterCriteriaArray as $filterCriteria) {
-           	if ($filterCriteria->isDynamic=="0") continue;
+           	if ($filterCriteria->isDynamic!="1") continue;
            ?>
            
            <tr style="vertical-align: top;">
