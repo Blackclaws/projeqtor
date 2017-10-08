@@ -609,8 +609,7 @@
 	          //if (isset($arrayFilter[$key+1]) and $arrayFilter[$key+1]['orOperator']=="1") {
 	          if (isset($crit['orOperator']) and $crit['orOperator']=="1") {
 	          	$queryWhereTmp.=' or ';
-	          }
-	          else if (count($arrayFilter) > 1 and $i+1 < count($arrayFilter) and isset($arrayFilter[$i+1]['orOperator']) and $arrayFilter[$i+1]['orOperator'] == '1') {
+	          } else if (count($arrayFilter) > 1 and $i+1 < count($arrayFilter) and isset($arrayFilter[$i+1]['orOperator']) and $arrayFilter[$i+1]['orOperator'] == '1') {
 	          	$queryWhereTmp.=' and ';
 	          	for ($j = $i+1; $j < count($arrayFilter) and $arrayFilter[$j]['orOperator']=='1'; $j++) {
 	          		$queryWhereTmp.= '(';
