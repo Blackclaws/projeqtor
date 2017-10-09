@@ -49,7 +49,7 @@ $filter=new Filter($idFilter);
                  	?>
                <select id="filterValueList<?php echo $cpt;?>" name="filterValueList<?php echo $cpt;?>[]" value=""  
                  dojoType="dijit.form.MultiSelect" multiple
-                 style="width:400px" size="10" class="selectList">
+                 style="width:400px" size="10" class="selectList" onDblClick="selectDynamicFilter();">
                  <!-- REMPLIR LISTE -->
                  <?php 
                  htmlDrawOptionForReference($filterCriteria->sqlAttribute, null, null, true);

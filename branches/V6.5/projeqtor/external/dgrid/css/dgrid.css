@@ -1,8 +1,17 @@
+@import "../../dojo/resources/dojo.css";
+@import "../../dijit/themes/dijit.css";
+/* @import "../../external/dijit/themes/tundra/tundra.css"; */
+@import "../../dijit/icons/commonIcons.css";
+@import "../../../view/css/FileInput.css";
+@import "../../../view/css/common.css";
+@import "../../../view/css/projeqtorIcons.css";
+
 .dgrid {
+	margin-top: 5%;
   position: relative;
   overflow: hidden;
   border: 1px solid #ddd;
-  height: 30em;
+  height: 45em;
   display: block;
 }
 .dgrid-header {
