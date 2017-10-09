@@ -188,21 +188,23 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       } else if (source.id!=target.id) { 
         return;
       } else if (nodes.length>0 && nodes[0] && target && target.current) {
-         var idFrom = nodes[0].id;
-         var idTo = target.current.id;                   
-         if (target.id=='dndSourceTable') {
-        	 showWait();  
-           setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
-         } else  if (target.id=='dndPlanningColumnSelector') {
-        	 setTimeout('movePlanningColumn("' + idFrom + '", "' + idTo + '")',100);
-         } else  if (target.id=='dndListColumnSelector') {
-           setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
-         } else if (target.id=='dndTodayParameters') {
-           setTimeout('reorderTodayItems()',100);  
-         } else if (target.id=='dndFavoriteReports') {
-        	 setTimeout('reorderFavoriteReportItems()',100);  
-         } 
-       }
+        dojo.forEach(nodes, function(selectedItem) {
+           var idFrom = selectedItem.id;
+           var idTo = target.current.id;                   
+           if (target.id=='dndSourceTable') {
+          	 showWait();  
+             setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
+           } else  if (target.id=='dndPlanningColumnSelector') {
+          	 setTimeout('movePlanningColumn("' + idFrom + '", "' + idTo + '")',100);
+           } else  if (target.id=='dndListColumnSelector') {
+             setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
+           } else if (target.id=='dndTodayParameters') {
+             setTimeout('reorderTodayItems()',100);  
+           } else if (target.id=='dndFavoriteReports') {
+          	 setTimeout('reorderFavoriteReportItems()',100);  
+           } 
+        });
+      }
     });
 
     dndMoveInProgress=false;
