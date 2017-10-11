@@ -78,14 +78,15 @@ class Parameter extends SqlElement {
     	$colScript .= '  newValue=this.value;';
     	$colScript .= '  var callBack = function(){ 
     	                     showWait(); 
-    	                     noDisconnect=true; quitConfirmed=true;
+    	                     noDisconnect=true; 
+    	                     quitConfirmed=true;
     	                     dojo.byId("directAccessPage").value="parameter.php";
     	                     dojo.byId("menuActualStatus").value=menuActualStatus;
     	                     dojo.byId("p1name").value="type";
     	                     dojo.byId("p1value").value="userParameter";
     	                     dojo.byId("directAccessForm").submit();
-    	                   }';
-    	$colScript .= 'saveDataToSession('.$colName.', newValue, null, callBack)';
+    	                   };';
+    	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
     	//$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
       //$colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
       //$colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
@@ -100,7 +101,7 @@ class Parameter extends SqlElement {
       //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  saveDataToSession('.$colName.', newValue);';
+      $colScript .= '  saveDataToSession("'.$colName.'", newValue);';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';             
     } else if ($colName=="hideMenu") {
@@ -113,7 +114,7 @@ class Parameter extends SqlElement {
       $colScript .= '    menuShowMode=this.value; hideShowMenu()';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  saveDataToSession('.$colName.', newValue);';
+      $colScript .= '  saveDataToSession("'.$colName.'", newValue);';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else if ($colName=="switchedMode") {
@@ -127,7 +128,7 @@ class Parameter extends SqlElement {
       $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonStandardMode"));';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  saveDataToSession('.$colName.', newValue); ';
+      $colScript .= '  saveDataToSession("'.$colName.'", newValue); ';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';    
     } else  if ($colName=="printInNewWindow"){
@@ -138,7 +139,7 @@ class Parameter extends SqlElement {
       $colScript .= '  } else {';
       $colScript .= '    printInNewWindow=false;';
       $colScript .= '  }';
-      $colScript .= '  saveDataToSession('.$colName.', newValue); ';
+      $colScript .= '  saveDataToSession("'.$colName.'", newValue); ';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else  if ($colName=="pdfInNewWindow"){
@@ -149,7 +150,7 @@ class Parameter extends SqlElement {
       $colScript .= '  } else {';
       $colScript .= '    pdfInNewWindow=false;';
       $colScript .= '  }';
-      $colScript .= ' saveDataToSession('.$colName.', newValue);';
+      $colScript .= ' saveDataToSession("'.$colName.'", newValue);';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else if ($colName=='versionNameAutoformat') {
@@ -161,7 +162,7 @@ class Parameter extends SqlElement {
       $colScript .= '  } else {';
       $colScript .= '    separator.set("value",null);';
       $colScript .= '  }';
-      $colScript .= ' saveDataToSession('.$colName.', newValue);';
+      $colScript .= ' saveDataToSession("'.$colName.'", newValue);';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else {
@@ -170,7 +171,7 @@ class Parameter extends SqlElement {
       //  $colScript .= '  formChanged();';
       //}
       $colScript .= '  newValue=this.value;';
-      $colScript .= ' saveDataToSession('.$colName.', newValue);';
+      $colScript .= ' saveDataToSession("'.$colName.'", newValue);';
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     }
@@ -564,7 +565,7 @@ class Parameter extends SqlElement {
                            "lang"=>"list",
                            "browserLocaleDateFormat"=>"list",
                            "browserLocaleTimeFormat"=>"list",
-                           'paramIconSize'=>'list',
+                           "paramIconSize"=>"list",
                            "paramShowThumb"=>"list",
                            "paramShowThumbList"=>"list",
                            //'paramTopIconSize'=>'list',
