@@ -167,6 +167,7 @@ $tablePlanned=array();
 //$existingDates=array();
 while ($line = Sql::fetchLine($resultPlanned)) {
   $day=substr($line['date'],0,10);
+  if (!$day or $day=='' or $day<'2000-01-01' ) continue;
   $existingDates[$day]=$day;
   $idpe=$line['idpe'];
   $old=$line['old'];

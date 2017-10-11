@@ -76,31 +76,26 @@ class Parameter extends SqlElement {
     } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  newValue=this.value;';
-     	$colScript .= '  
-      var callBack = function(){
-        showWait(); 
-        noDisconnect=true; 
-        quitConfirmed=true;
-        dojo.byId("directAccessPage").value="parameter.php"; 
-        menuActualStatus =dojo.byId("menuActualStatus").value=menuActualStatus;
-        dojo.byId("p1name").value="type";
-        dojo.byId("p1value").value="userParameter"; 
-        dojo.byId("directAccessForm").submit(); 
-        window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter")
-      };';
-    	$colScript .= 'saveDataToSession(\''.$colName.'\' , newValue, true, callBack);';
-     	/*$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
-      $colScript .= '     load: function(data,args) { 
-     	                    showWait(); 
-     	                    noDisconnect=true; 
-     	                    quitConfirmed=true;';
-      $colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
-      $colScript .= '     dojo.byId("menuActualStatus").value=menuActualStatus;';
-      $colScript .= '     dojo.byId("p1name").value="type";';
-      $colScript .= '     dojo.byId("p1value").value="userParameter";';
-      $colScript .= '     dojo.byId("directAccessForm").submit();';
-      $colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
-      $colScript .= '     }  });';*/
+    	$colScript .= '  var callBack = function(){ 
+    	                     showWait(); 
+    	                     noDisconnect=true; 
+    	                     quitConfirmed=true;
+    	                     dojo.byId("directAccessPage").value="parameter.php";
+    	                     dojo.byId("menuActualStatus").value=menuActualStatus;
+    	                     dojo.byId("p1name").value="type";
+    	                     dojo.byId("p1value").value="userParameter";
+    	                     dojo.byId("directAccessForm").submit();
+    	                   };';
+    	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
+    	//$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
+      //$colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
+      //$colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
+      //$colScript .= '     dojo.byId("menuActualStatus").value=menuActualStatus;';
+      //$colScript .= '     dojo.byId("p1name").value="type";';
+      //$colScript .= '     dojo.byId("p1value").value="userParameter";';
+      //$colScript .= '     dojo.byId("directAccessForm").submit();';
+      //$colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
+      //$colScript .= '     }  });';
     	$colScript .= '</script>';
     } else if ($colName=="defaultProject") {
       //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';

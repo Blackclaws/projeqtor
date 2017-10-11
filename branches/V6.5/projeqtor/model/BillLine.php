@@ -49,6 +49,7 @@ class BillLine extends SqlElement {
   public $extra;
   public $billingType;
   public $idCatalog;
+  public $numberDays;
   
   public $_noHistory=true; // Will never save history for this object
   
@@ -418,7 +419,6 @@ class BillLine extends SqlElement {
   	
   	// Update Bill to get total of amount
   	$bill->save(); 
-  	
   	return $result;
   }
 }

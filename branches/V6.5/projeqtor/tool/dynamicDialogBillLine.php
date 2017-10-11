@@ -354,6 +354,22 @@ if ($line->line) {
                <?php if ($currencyPosition=='after') echo $currency;?>
              </td>
            </tr>
+           <?php if($refType=="Quotation"){?>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="billLineNumberDays" ><?php echo i18n("numberOfDays");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div dojoType="dijit.form.NumberTextBox" 
+                id="billLineNumberDays" name="billLineNumberDays"
+                style="width:100px;"
+                onChange="billLineUpdateNumberDays();"
+                class="input"  value="<?php echo $line->numberDays;?>">
+                <?php echo $keyDownEventScript;?>  
+               </div> 
+             </td>
+           </tr>
+           <?php }?>
 	      </table>
 	      </div>     
         </form>
