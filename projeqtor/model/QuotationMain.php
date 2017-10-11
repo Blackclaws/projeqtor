@@ -140,6 +140,7 @@ class QuotationMain extends SqlElement {
     if ($withoutDependentObjects) return; 
     if (count($this->_BillLine)) {
       self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['plannedWork']='readonly';
     }
     if ($this->fullAmount) {
       $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
@@ -244,10 +245,13 @@ class QuotationMain extends SqlElement {
 	  $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
 	  if (count($billLineList)>0) {
   	  $amount=0;
+  	  $numberDays=0;
   	  foreach ($billLineList as $line) {
   	    $amount+=$line->amount;
+  	    $numberDays+=$line->numberDays;
   	  }
   	  $this->untaxedAmount=$amount;
+  	  $this->plannedWork=$numberDays;
 	  }
     $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
     

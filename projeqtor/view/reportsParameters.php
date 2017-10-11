@@ -50,6 +50,10 @@ $idReport=$_REQUEST['idReport'];
 if (!$idReport) {
   exit;
 }
+$limitToActiveProjects=true;
+if (sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1) {
+  $limitToActiveProjects=false;
+}
 $report=new Report($idReport);
 echo "<input type='hidden' id='reportFile' name='reportFile' value='" . htmlEncode($report->file) . "' />";
 echo "<input type='hidden' id='reportId' name='reportId' value='" . htmlEncode($report->id) . "' />";
@@ -323,8 +327,8 @@ foreach ($listParam as $param) {
     <?php echo autoOpenFilteringSelect();?>
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
-     >
-       <?php htmlDrawOptionForReference('idProject', $defaultValue, null, false); ?>
+     >  
+       <?php htmlDrawOptionForReference('idProject', $defaultValue, null, false,null,null,$limitToActiveProjects); ?>
        <script type="dojo/connect" event="onChange" args="evt">
           if (dijit.byId('idVersion')) {
             if (dijit.byId('idProduct')) {
