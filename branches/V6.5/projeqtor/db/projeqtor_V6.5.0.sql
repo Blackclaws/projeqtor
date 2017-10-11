@@ -42,4 +42,6 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (76, 'idResource', 'resourceList', 10, 'currentResource'),
 (76, 'idTeam', 'teamList', 20, NULL),
-(76, 'month', 'month', 30, 'currentYear');
+(76, 'month', 'month', 30, 'currentMonth');
+
+ALTER TABLE `${prefix}billline` ADD COLUMN `numberDays` DECIMAL(9,2) UNSIGNED;

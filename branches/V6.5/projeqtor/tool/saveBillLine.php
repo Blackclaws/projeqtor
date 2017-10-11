@@ -61,6 +61,12 @@ if (array_key_exists('billLineQuantity',$_REQUEST)) {
   Security::checkValidNumeric($quantity);
 }
 
+$numberDays=null;
+if (array_key_exists('billLineNumberDays',$_REQUEST)) {
+  $numberDays=$_REQUEST['billLineNumberDays'];
+  Security::checkValidNumeric($numberDays);
+}
+
 $idTerm="";
 if (array_key_exists('billLineIdTerm',$_REQUEST)) {
    $idTerm=$_REQUEST['billLineIdTerm'];
@@ -141,6 +147,7 @@ $line->refType=$refType;
 $line->refId=$refId;
 $line->line=$lineNum;
 $line->quantity=$quantity;
+$line->numberDays=$numberDays;
 $line->idTerm=$idTerm;
 $line->idResource=$idResource;
 $line->idActivityPrice=$idActivityPrice;
