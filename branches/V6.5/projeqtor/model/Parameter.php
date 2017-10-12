@@ -175,7 +175,6 @@ class Parameter extends SqlElement {
       //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     }
-    debugLog($colScript);
     return $colScript;
   }
   

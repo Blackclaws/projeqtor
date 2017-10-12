@@ -141,8 +141,6 @@ if (!$error and $copyStructure) {
 }
 
 if (!$error and $copyOtherStructure) {
-  //debugLog($proj);
-  //debugLog($newProj);
   $res=PlanningElement::copyOtherStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
   if ($res!='OK') {
     $result=$res;

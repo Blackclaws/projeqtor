@@ -2146,6 +2146,30 @@ function countSelectedItem(gridName) {
   if (!grid) {
     return 0;
   }
+  var lstStore=new Array();
+  grid.store.fetch({
+    onComplete : function(items) {
+      dojo.forEach(items, function(item, index) {
+        lstStore[item.id]=item.id;
+      });
+    }
+  });
+  console.log("lstStore=");
+  console.log(lstStore);
+  var items=grid.selection.getSelected();
+  if (items.length) {
+    console.log("some selected");
+    dojo.forEach(items, function(selectedItem) {
+      if (selectedItem !== null) {
+        if (lstStore.indexOf(selectedItem.id)===-1) {
+          grid.selection.setSelected(selectedItem.id, false);
+        }
+      }
+    });
+  } else {
+    console.log("no selected");
+    return 0;
+  }
   return grid.selection.getSelectedCount();
 }
 /**

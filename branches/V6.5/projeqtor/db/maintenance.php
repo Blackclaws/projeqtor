@@ -70,6 +70,12 @@ if (checkPrerequisites()!="OK") {
 } 
 
 $nbErrors=0;
+if(file_exists("../files/cron/MIGRATION")){
+  exit;
+} else {
+  $filename = "../tool/i18n/nls/lang.js";
+  fopen("../files/cron/MIGRATION","w");
+}
 $currVersion=Sql::getDbVersion();
 traceLog("");
 traceLog("=====================================");
@@ -609,5 +615,6 @@ traceLog("");
 echo "<br/>__________________________________<br/><br/>";
 echo '</div>';
 
+unlink("../files/cron/MIGRATION");
 // Check if installed plugins are compatible with new ProjeQtOr plugin
 Plugin::checkPluginCompatibility($version);
