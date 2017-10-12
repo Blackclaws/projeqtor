@@ -559,7 +559,6 @@ class ImputationLine {
       echo '</button>';
       echo '</td>';
     }
-    debugLog("before : ".$nbDays);
     echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';
     if ($period->submitted) {
       $msg='<div class="imputationSubmitted"><span class="nobr">' . i18n('submittedWorkPeriod', array(htmlFormatDateTime($period->submittedDate))) . '</span></div>';
@@ -907,8 +906,6 @@ class ImputationLine {
             echo $keyDownEventScript;
             echo '<script type="dojo/method" event="onChange" args="evt">';
             echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
-            debugLog("after : ".$nbLine);
-            debugLog("after : ".$i);
             echo '</script>';
             echo '</div>';
             echo '</div>';

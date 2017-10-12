@@ -620,7 +620,7 @@ class pDraw
 	}
 
 	/* Drawn a spline based on the bezier function */
-	function drawSpline(array $Coordinates, array $Format = []): array {
+	function drawSpline(array $Coordinates, array $Format = []) {
 		
 		#$R = 0; # UNUSED
 		#$G = 0;

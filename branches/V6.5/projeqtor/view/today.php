@@ -320,7 +320,6 @@
     $user=getSessionUser();
     $prjDocLst=$user->getVisibleProjects();
     $approver = new Approver();
-    //debugLog($docLst);
     $critApprover = array('refType'=>"Document",'idAffectable'=>$user->id);
     $critApprover2 = array('refType'=>"DocumentVersion",'approved'=>'1','idAffectable'=>$user->id);
     $listApprover = $approver->getSqlElementsFromCriteria($critApprover,false,null);

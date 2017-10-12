@@ -251,7 +251,7 @@ class PlanningElement extends SqlElement {
    * Triggers parent::save() to run defaut functionality in the end.
    * @return the result of parent::save() function
    */
-  public function save() {  	
+  public function save() {
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
     if (! $this->idProject) {
@@ -288,6 +288,13 @@ class PlanningElement extends SqlElement {
         }
       }
     } else {
+      if ($this->leftWork==0 and !$this->realEndDate) {
+        $ass=new Assignment();
+        $critArray=array('refType'=>$this->refType,'refId'=>$this->refId);
+        $this->realEndDate=$ass->getMaxValueFromCriteria('realEndDate', $critArray);
+      } else if ($this->leftWork>0 and $this->realEndDate) {
+        $this->realEndDate=null;
+      }
     	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
     }
     if ($this->validatedWork!=0) {
@@ -1516,7 +1523,6 @@ class PlanningElement extends SqlElement {
       $res=self::copyStructure($item, $newItem, $copyToOrigin,
                           $copyToWithNotes, $copyToWithAttachments, $copyToWithLinks,
                           $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects);
-      debugLog($res);
       if ($res!='OK') {
         return $res;
       }

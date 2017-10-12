@@ -2355,6 +2355,34 @@ abstract class SqlElement {
     return 0;
   }
 
+  public function getMaxValueFromCriteria($field, $critArray, $clauseWhere = null) {
+    $whereClause = '';
+    $objects = array();
+    $className = get_class ( $this );
+    $defaultObj = new $className ();
+    if ($critArray) {
+      foreach ( $critArray as $colCrit => $valCrit ) {
+        $whereClause .= ($whereClause == '') ? ' where ' : ' and ';
+        if ($valCrit == null) {
+          $whereClause .= $this->getDatabaseTableName () . '.' . $this->getDatabaseColumnName ( $colCrit ) . ' is null';
+        } else {
+          $whereClause .= $this->getDatabaseTableName () . '.' . $this->getDatabaseColumnName ( $colCrit ) . '= ' . Sql::str ( $valCrit );
+        }
+        $defaultObj->$colCrit = $valCrit;
+      }
+    } else if ($clauseWhere) {
+      $whereClause = ' where ' . $clauseWhere;
+    }
+    // If $whereClause is set, get the element from Database
+    $query = "select max($field) as value from " . $this->getDatabaseTableName () . $whereClause;
+    $result = Sql::query ( $query );
+    if (Sql::$lastQueryNbRows > 0) {
+      $line = Sql::fetchLine ( $result );
+      return $line ['value'];
+    }
+    return null;
+  }
+  
   public function sumSqlElementsFromCriteria($field, $critArray, $clauseWhere = null) {
     // Build where clause from criteria
     $fields = array();
@@ -4440,7 +4468,6 @@ abstract class SqlElement {
                 if ($resource->email and strpos ( $dest, $newDest ) === false) {
                   $dest .= ($dest) ? ', ' : '';
                   $dest .= $newDest;
-                  debugLog($dest);
                 }
               }
             }
