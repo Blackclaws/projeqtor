@@ -4365,8 +4365,10 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <a onClick="removeAssignment(' . "'" . htmlEncode($assignment->id) . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 
         'title="' . i18n('removeAssignment') . '" > '.formatSmallButton('Remove').'</a>';
       }
-      echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('Split').'</a>';
-      echo '</td>';
+      if ($canUpdate and !$print and $workVisible) {
+        echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('Split').'</a>';
+        echo '</td>';
+      }
     }
     echo '<td class="assignData" style="vertical-align:middle">';
     echo '<table width="100%"><tr>';
