@@ -131,10 +131,8 @@ for ($i=1;$i<=2;$i++) {
      . ' group by ' . $queryGroupBy;
     // . ' order by t2.sortOrder asc '; 
   $result=Sql::query($query);
- // debugLog($result); 
   while ($line = Sql::fetchLine($result)) {
   	$line=array_change_key_case($line,CASE_LOWER);
-  	//debugLog($line);
     $date=$line['scale'];
     $res=$line['idresource'];
     //$work=round($line['sumwork'],2);

@@ -4456,9 +4456,16 @@ function saveLeftWork(id, zone) {
 	  form : 'objectForm',
 	  handleAs : "text",
 	  load : function(data) {
-		addMessage(i18n("col"+zone)+" "+i18n("resultSave"));
+	    console.log("data="+data);
+		  addMessage(i18n("col"+zone)+" "+i18n("resultSave"));
 	    document.getElementById('idImage'+zone+id).style.display="block";
-	    setTimeout("dojo.byId('idImage"+zone+id+"').style.display='none';", 1000); 
+	    setTimeout("dojo.byId('idImage"+zone+id+"').style.display='none';", 1000);
+	    var objClass=dojo.byId('objectClass').value;
+	    if (data) {
+	      dijit.byId(objClass+'PlanningElement_realEndDate').set('value',data);
+	    } else {
+	      dijit.byId(objClass+'PlanningElement_realEndDate').set('value',null);
+	    }
 	  }
 	});
 	dojo.byId('initLeft_'+id).value=value;
