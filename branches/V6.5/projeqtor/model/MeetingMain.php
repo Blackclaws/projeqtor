@@ -422,6 +422,10 @@ class MeetingMain extends SqlElement {
       $this->MeetingPlanningElement->wbs=null;
       $this->MeetingPlanningElement->wbsSortable=null;
     }
+    if($this->description==""){
+      $meetingType = new MeetingType($this->idMeetingType);
+      $this->description=$meetingType->description;
+    }
     return parent::save();
   }
 

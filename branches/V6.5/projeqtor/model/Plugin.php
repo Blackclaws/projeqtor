@@ -536,5 +536,71 @@ class Plugin extends SqlElement {
       $V2=ltrim($V2,'V');
       return(version_compare($V1, $V2,">="));
     }
+    
+    public static function checkCustomDefinition($class=null) {
+      $list=array();
+      if ($class) {
+        $list[]=$class;
+      } else {
+          $dir='../model/custom/';
+          $handle = opendir($dir);
+          while ( ($file = readdir($handle)) !== false) {
+            if ($file == '.' || $file == '..' || $file=='index.php'   // exclude ., .. and index.php
+                || substr($file,-4)!='.php'                           // exclude non php files
+                || substr($file,0,1)=='Plg'                           // exclude custom Plugin files
+                || substr($file,0,1)=='_') {                          // exclude the _securityCheck.php
+              continue;
+            }
+            $class=pathinfo($file,PATHINFO_FILENAME);
+            $list[]=$class;
+          }
+          closedir($handle);
+      }
+      $errorClass=array();
+      foreach ($list as $class) {
+        $obj=new $class();
+        $last=false;
+        foreach ($obj as $fld=>$val) {
+          if ($fld=='_Note' or $fld=='_Link' or $fld=='_Attachment' or $fld=='_sec_Link') {
+            $last=true;
+          } else if (substr($fld, 0,1)=='_') {
+            continue; // specific field
+          } else if ($last and !$obj->isAttributeSetToField($fld,'hidden')) { // not a specific field, after $last (notes, attachment, link)
+            $errorClass[]=$class;
+            break;
+          }
+        }
+      }
+      if (count($errorClass)==0) {
+        return "OK";
+      } else {
+        echo '<br/><div class="messageWARNING" style="text-align:left">';
+        traceLog("=== SCREEN CUSTOMIZATION ISSUE =====================================");
+        echo "Some screen customizations are not consistant any more with current version :<br/>";
+        traceLog("Some screen customizations are not consistant any more with current version :");
+        $allFixed=true;
+        foreach ($errorClass as $class) {
+          echo " - $class ";
+          traceLog(" - $class");
+          if (function_exists('screenCustomizationFixDefinition')) {
+            if (screenCustomizationFixDefinition($class)=='OK') {
+            } else {
+              $allFixed=false;
+            }
+          } else {
+            $allFixed=false;
+          }
+          echo "<br/>";
+        }
+        if (!$allFixed) {
+          echo "Please access each screen on customazation plugin to fix the issue (Plugin V5.0 or over is required)";
+          traceLog("Please access each screen customization with plugin to fix the issue (Plugin V5.0 or over is required)");
+        } else {
+          echo "Screen customizations have been fixed automatically ;)";
+          traceLog("Screen customizations have been fixed automatically ;)");
+        }
+        echo '</div>';
+        return ($allFixed)?"OK":"KO";
+      }
+    }
 }
- 
