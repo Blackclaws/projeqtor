@@ -276,7 +276,9 @@ class Cron {
 	
 	public static function run() {
 //scriptLog('Cron::run()');	
-    global $cronnedScript;
+    global $cronnedScript, $i18nMessages, $currentLocale;
+    $i18nMessages=null;
+    $currentLocale=Parameter::getGlobalParameter('lang');
     $cronnedScript=true; // Defined and set to be able to force rights on Control() : Cron has all rights.
     self::init();  
 		if (self::check()=='running') {

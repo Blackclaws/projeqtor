@@ -49,7 +49,7 @@ $versionParameters =array(
                  'paramMailShowDetail'=>'true' ),
   'V1.3.0'=>array('defaultTheme'=>'blue'),
   'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
-  'V1.5.0'=>array('currency'=>'€', 
+  'V1.5.0'=>array('currency'=>'â‚¬', 
                   'currencyPosition'=>'after'),
   'V1.8.0'=>array('paramLdap_allow_login'=>'false',
 					'paramLdap_base_dn'=>'dc=mydomain,dc=com',
@@ -616,5 +616,10 @@ echo "<br/>__________________________________<br/><br/>";
 echo '</div>';
 
 unlink("../files/cron/MIGRATION");
+
 // Check if installed plugins are compatible with new ProjeQtOr plugin
 Plugin::checkPluginCompatibility($version);
+//if (file_exists('../plugin/screenCustomization/screenCustomizationFixDefinition.php')) {
+include_once('../plugin/screenCustomization/screenCustomizationFixDefinition.php');
+//}
+Plugin::checkCustomDefinition();

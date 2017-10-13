@@ -213,7 +213,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
 		}
 	  $attachment->creationDate=date("Y-m-d H:i:s");
 	  if ($type=='file') {
-	    $attachment->fileName=$uploadedFile['name'];
+	    $attachment->fileName=trim($uploadedFile['name']);
 	    $ext = strtolower ( pathinfo ( $attachment->fileName, PATHINFO_EXTENSION ) );
 	    if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm') {
 	    	$attachment->fileName.=".projeqtor";

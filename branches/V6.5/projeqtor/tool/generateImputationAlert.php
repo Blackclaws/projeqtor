@@ -53,7 +53,6 @@ function generateImputationAlert() {
 
   $lstResource=SqlList::getList('Resource');
   $lstProject=SqlList::getList('Project');
-  
   // Initialize list of resources
   $lstRes=array();
   foreach ($lstResource as $id=>$name) {
@@ -94,7 +93,7 @@ function generateImputationAlert() {
     $tmpDate=$startDate;
     $full=true;
     while ($tmpDate<=$endDate) {
-      if ($res['days'][$tmpDate]['open']=='1' and $res['days'][$tmpDate]['work']<$res['capacity']) {
+      if ($res['days'][$tmpDate]['open']=='1' and $res['days'][$tmpDate]['work']!=$res['capacity']) {
         $full=false;
       }
       $tmpDate=addDaysToDate($tmpDate, 1);
@@ -111,10 +110,17 @@ function generateImputationAlert() {
   foreach ($lstRes as $id=>$res) {
     if (!$res['full']) {
       if ($sendToResource and $sendToResource!='NO') {
-        $dest[$id]=array(
-            'ress'=>array($id=>$res['workDetail']),
-            'send'=>$sendToResource
-        );
+        if (isset($dest[$id])) {
+          $dest[$id]['ress'][$id]=$res['workDetail'];
+          if ($dest[$id]['send']!=$sendToResource) {
+            $dest[$id]['send']='ALERT&MAIL';
+          }
+        } else {
+          $dest[$id]=array(
+              'ress'=>array($id=>$res['workDetail']),
+              'send'=>$sendToResource
+          );
+        }
       }
       if ($sendToTeamManager and $sendToTeamManager!='NO') {
         $team=SqlList::getFieldFromId('Resource', $id, 'idTeam');

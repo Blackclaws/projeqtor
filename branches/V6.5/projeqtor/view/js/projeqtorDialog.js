@@ -6592,7 +6592,7 @@ function saveMultipleUpdateMode(objectClass) {
   if (!grid) {
     return;
   }
-  dojo.byId("selection").value=""
+  dojo.byId("selection").value="";
   var items=grid.selection.getSelected();
   if (items.length) {
     dojo.forEach(items, function(selectedItem) {
@@ -6601,8 +6601,12 @@ function saveMultipleUpdateMode(objectClass) {
       }
     });
   }
+  var callBack = function(){
+    updateSelectedCountMultiple();
+    console.log("cas 1 ");
+  };
   loadContent('../tool/saveObjectMultiple.php?objectClass=' + objectClass,
-      'resultDivMultiple', 'objectFormMultiple');
+      'resultDivMultiple', 'objectFormMultiple',null,null,null,null,callBack);
 }
 
 function endMultipleUpdateMode(objectClass) {
