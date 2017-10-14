@@ -345,12 +345,13 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       if (array_key_exists("directAccessPage",$_REQUEST)) {
         securityCheckRequest();
         $firstPage=$_REQUEST['directAccessPage'];
+        /* This part is obsolete in V6.4 and would lead to open the menu
         if (array_key_exists("menuActualStatus",$_REQUEST)) {
           $menuActualStatus=$_REQUEST['menuActualStatus'];
           if ($menuActualStatus!='visible') {
-            echo 'hideShowMenu(true,true);';
+            echo 'setTimeout("hideShowMenu(true,true);",2000);';
           }
-        }         
+        } */        
         for ($i=1;$i<=9;$i++) {
           $pName='p'.$i.'name';
           $pValue='p'.$i.'value';

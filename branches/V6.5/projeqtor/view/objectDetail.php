@@ -868,7 +868,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     	drawBusinessFeatures($obj);
     //END ADD
     //ADD qCazelles - Manage ticket at customer level - Ticket #87
- 	  } else if ($col == '_tickets' and Parameter::getGlobalParameter('manageTicketCustomer') == 'YES') {
+ 	  } else if ($col == '_spe_tickets' and Parameter::getGlobalParameter('manageTicketCustomer') == 'YES') {
  	    drawTicketsList($obj);
  	  //END ADD qCazelles - Manage ticket at customer level - Ticket #87
    	//ADD qCazelles - Version compatibility
@@ -1919,16 +1919,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
           }
         }
+       
+        if (strpos($obj->getFieldAttributes($col), 'size1/3') !== false) {
+          $fieldWidth=$fieldWidth / 3 - 3;
+        } else if (strpos($obj->getFieldAttributes($col), 'size1/2') !== false) {
+          $fieldWidth=$fieldWidth / 2 - 2;
+        } else if ( ($nobr_before or $nobr) and $fieldWidth>$mediumWidth) {
+          $fieldWidth=$fieldWidth / 2 - 2;
+        }
         if ($displayComboButtonCol) {
           $fieldWidth-=50;
         } else if ($displayDirectAccessButton) {
           $fieldWidth-=30;
-        }
-        if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3') !== false) {
-          $fieldWidth=$fieldWidth / 3 - 3;
-        }
-        if (strpos($obj->getFieldAttributes($col), 'size1/2') !== false) {
-          $fieldWidth=$fieldWidth / 2 - 2;
         }
         $hasOtherVersion=false;
         $versionType='';
@@ -2101,9 +2103,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $spl=explode(',', $dataLength);
         $dec=0;
         if (count($spl) > 1) {
-          $dec=$spl [1];
+          $dec=intval($spl [1]);
         }
-        $ent=$spl [0] - $dec;
+        $ent=intval($spl [0]) - $dec;
         $max=substr('99999999999999999999', 0, $ent);
         if ($isCost and $currencyPosition == 'before') {
           echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;height:100%;'.$specificStyleWithoutCustom.$labelStyle.'">'.$currency.'</span>';

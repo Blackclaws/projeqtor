@@ -4,7 +4,15 @@
  */
 
 require_once('_securityCheck.php');
-class VersionCompatibility extends VersionCompatibilityMain {
+class VersionCompatibility extends SqlElement {
+	
+	public $id;
+	public $idVersionA;
+	public $idVersionB;
+	public $comment;
+	public $creationDate;
+	public $idUser;
+	public $idle;
 	
 	/** ==========================================================================
 	 * Constructor
@@ -21,6 +29,26 @@ class VersionCompatibility extends VersionCompatibilityMain {
 	 */
 	function __destruct() {
 		parent::__destruct();
+	}
+	
+	public function control() {
+		$result="";
+		$checkCrit="(idVersionA=$this->idVersionA and idVersionB=$this->idVersionB) or (idVersionA=$this->idVersionB and idVersionB=$this->idVersionA)";
+		if ($this->id) $checkCrit.=" and id!=$this->id";
+		$vc=new VersionCompatibility();
+		$check=$vc->getSqlElementsFromCriteria(null, false, $checkCrit);
+		if (count($check)>0) {
+			$result.='<br/>' . i18n('errorDuplicateLink');
+		}
+		
+		$defaultControl=parent::control();
+		if ($defaultControl!='OK') {
+			$result.=$defaultControl;
+		}if ($result=="") {
+			$result='OK';
+		}
+		
+		return $result;
 	}
 	
 }

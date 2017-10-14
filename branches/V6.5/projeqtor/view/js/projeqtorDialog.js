@@ -4456,7 +4456,6 @@ function saveLeftWork(id, zone) {
 	  form : 'objectForm',
 	  handleAs : "text",
 	  load : function(data) {
-	    console.log("data="+data);
 		  addMessage(i18n("col"+zone)+" "+i18n("resultSave"));
 	    document.getElementById('idImage'+zone+id).style.display="block";
 	    setTimeout("dojo.byId('idImage"+zone+id+"').style.display='none';", 1000);
@@ -6603,7 +6602,6 @@ function saveMultipleUpdateMode(objectClass) {
   }
   var callBack = function(){
     updateSelectedCountMultiple();
-    console.log("cas 1 ");
   };
   loadContent('../tool/saveObjectMultiple.php?objectClass=' + objectClass,
       'resultDivMultiple', 'objectFormMultiple',null,null,null,null,callBack);
