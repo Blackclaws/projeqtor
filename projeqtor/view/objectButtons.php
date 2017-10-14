@@ -387,7 +387,11 @@
         } // end of : if ($mailable and $mailable->id) {
       ?>
     <?php 
-    if (! array_key_exists('planning',$_REQUEST)) {?>
+    $user=getSessionUser();
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->getProfile($obj),'scope'=>'multipleUpdate'));
+    $list=new ListYesNo($habil->rightAccess);
+    $buttonMultiple=($list->code=='NO')?false:true;
+    if ($buttonMultiple and ! array_key_exists('planning',$_REQUEST)) {?>
     <?php organizeButtons();?> 
     <span id="multiUpdateButtonDiv" >
     <button id="multiUpdateButton" dojoType="dijit.form.Button" showlabel="false"

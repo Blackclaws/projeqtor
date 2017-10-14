@@ -2154,11 +2154,8 @@ function countSelectedItem(gridName) {
       });
     }
   });
-  console.log("lstStore=");
-  console.log(lstStore);
   var items=grid.selection.getSelected();
   if (items.length) {
-    console.log("some selected");
     dojo.forEach(items, function(selectedItem) {
       if (selectedItem !== null) {
         if (lstStore.indexOf(selectedItem.id)===-1) {
@@ -2167,7 +2164,6 @@ function countSelectedItem(gridName) {
       }
     });
   } else {
-    console.log("no selected");
     return 0;
   }
   return grid.selection.getSelectedCount();

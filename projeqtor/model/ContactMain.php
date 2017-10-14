@@ -63,7 +63,7 @@ class ContactMain extends SqlElement {
   public $dontReceiveTeamMails;
   //ADD qCazelles - Manage ticket at customer level - Ticket #87
   public $_sec_TicketsContact;
-  public $_tickets;
+  public $_spe_tickets;
   //END ADD qCazelles - Manage ticket at customer level - Ticket #87
   public $password;
   public $_nbColMax=3;
