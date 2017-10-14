@@ -55,7 +55,7 @@ class ClientMain extends SqlElement {
   public $_spe_contacts;
   //ADD qCazelles - Manage ticket at customer level - Ticket #87
   public $_sec_TicketsClient;
-  public $_tickets;
+  public $_spe_tickets;
   //END ADD qCazelles - Manage ticket at customer level - Ticket #87
   public $_Attachment=array();
   public $_Note=array();
@@ -159,6 +159,12 @@ class ClientMain extends SqlElement {
       }
       $result .="</td></tr></table>";
       return $result;
+    }
+  }
+  public function setAttributes() {
+    if (Parameter::getGlobalParameter('manageTicketCustomer') != 'YES') {
+      self::$_fieldsAttributes["_sec_TicketsClient"]='hidden';
+      self::$_fieldsAttributes["_spe_tickets"]='hidden';
     }
   }
   
