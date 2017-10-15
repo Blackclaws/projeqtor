@@ -619,7 +619,7 @@ unlink("../files/cron/MIGRATION");
 
 // Check if installed plugins are compatible with new ProjeQtOr plugin
 Plugin::checkPluginCompatibility($version);
-//if (file_exists('../plugin/screenCustomization/screenCustomizationFixDefinition.php')) {
-include_once('../plugin/screenCustomization/screenCustomizationFixDefinition.php');
-//}
+if (file_exists('../plugin/screenCustomization/screenCustomizationFixDefinition.php')) {
+  include_once('../plugin/screenCustomization/screenCustomizationFixDefinition.php');
+}
 Plugin::checkCustomDefinition();
