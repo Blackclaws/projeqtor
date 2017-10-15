@@ -593,7 +593,7 @@ class Plugin extends SqlElement {
           echo "<br/>";
         }
         if (!$allFixed) {
-          echo "Please access each screen on customazation plugin to fix the issue (Plugin V5.0 or over is required)";
+          echo "Please access each screen on customization plugin to fix the issue (Plugin V5.0 or over is required)";
           traceLog("Please access each screen customization with plugin to fix the issue (Plugin V5.0 or over is required)");
         } else {
           echo "Screen customizations have been fixed automatically ;)";

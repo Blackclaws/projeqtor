@@ -57,6 +57,10 @@ class ProductMain extends ProductOrComponent {
   public $_spe_structure;
   public $_sec_ProductBusinessFeatures; // ADD qCazelles
   public $_productBusinessFeatures; // ADD qCazelles
+  public $_sec_language;
+  public $_productLanguage;
+  public $_sec_context;
+  public $_productContext;
   public $_spe_tenders;
   public $_sec_Link;
   public $_Link = array();
