@@ -41,23 +41,17 @@ class OrganizationMain extends SqlElement {
   public $idUser;
   public $creationDate;
   public $lastUpdateDateTime;
-  
-  public $_tab_2_1 = array('idle','idleDate',
-                           'idStatus');
+  public $_tab_2_1 = array('idle','idleDate','idStatus');
   public $idle;
   public $idleDateTime;
   public $description;
-
   public $_sec_ValueAlertOverWarningOverOkUnder;
-  public $_tab_3_1_smallLabel = array('alertOver', 'warningOver', 'okUnder',
-                                      'thresholds');
+  public $_tab_3_1_smallLabel = array('alertOver', 'warningOver', 'okUnder','thresholds');
   public $alertOverPct;
   public $warningOverPct;
   public $okUnderPct;
-  
   public $sortOrder;
   public $OrganizationBudgetElementCurrent; // is an object because first Letter is Upper
-
  // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
   public $_sec_synthesis;
   public $_tab_5_4_smallLabel = array('validated','assigned','real','left','reassessed',
@@ -86,22 +80,17 @@ class OrganizationMain extends SqlElement {
   public $_byMet_totalRealCost;
   public $_byMet_totalLeftCost;
   public $_byMet_totalPlannedCost;
-
   // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
-  
   // Section that presents the projects that are linked to this organization and its sub-organizations
   // Want a item's count on section header => ='itemsCount=method to call to get objects to count'
   public $_sec_HierarchicOrganizationProjects='itemsCount=getProjectsOfOrganizationAndSubOrganizations';
   public $_spe_Project=array();
-  
   public $_sec_ResourcesOfObject;
   public $_Resource=array();
-
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-
   // hidden
   public $_nbColMax=3;
   
@@ -127,13 +116,10 @@ class OrganizationMain extends SqlElement {
       "sortOrder"=>"hidden,noImport",
       "_byMet_hierarchicName"=>"readonly,noImport",
       "idleDateTime"=>"readonly,noImport",
-      // New value of attribute : noInFilter
-      // If set, this attribute will not present in the list of attributes for the filters
       "alertOverPct"=>"noList,notInFilter",
       "warningOverPct"=>"noList,notInFilter",
       "okUnderPct"=>"noList,notInFilter",
       "_spe_Project"=>"noExport",
- // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
       "_byMet_validatedWork"=>"readonly",
       "_byMet_assignedWork"=>"readonly",
       "_byMet_realWork"=>"readonly",
@@ -154,7 +140,6 @@ class OrganizationMain extends SqlElement {
       "_byMet_totalRealCost"=>"readonly",
       "_byMet_totalLeftCost"=>"readonly",
       "_byMet_totalPlannedCost"=>"readonly"
- // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT 
   );   
  
   private static $_colCaptionTransposition = array(
