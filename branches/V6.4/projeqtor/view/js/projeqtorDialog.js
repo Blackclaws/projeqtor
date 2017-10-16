@@ -6712,6 +6712,7 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
   var width=node.getBoundingClientRect().width;
+  if (!objectClass && !objectId) top+=15;
   if (!height)
     height=40;
   if (objectClass == 'Affectable' || objectClass == 'Resource'
