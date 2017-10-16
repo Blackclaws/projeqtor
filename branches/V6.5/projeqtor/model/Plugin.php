@@ -574,7 +574,7 @@ class Plugin extends SqlElement {
       if (count($errorClass)==0) {
         return "OK";
       } else {
-        echo '<br/><div class="messageWARNING" style="text-align:left">';
+        echo '<br/><div class="messageWARNING" style="text-align:left;height:40px">';
         traceLog("=== SCREEN CUSTOMIZATION ISSUE =====================================");
         echo "Some screen customizations are not consistant any more with current version :<br/>";
         traceLog("Some screen customizations are not consistant any more with current version :");

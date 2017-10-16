@@ -451,6 +451,7 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconButtonAddComment16 { background-image: url(customIcons/blue/iconAddComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonComment16 { background-image: url(customIcons/blue/iconComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonListApprover16 { background-image: url(customIcons/blue/iconButtonListApprover.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonRefresh32 { background-image: url(customIcons/blue/iconRefresh.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconView { background-image: url(customIcons/blue/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconGoto { background-image: url(customIcons/blue/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatBlue .iconButtonBack32 { background-image: url(customIcons/blue/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -1731,6 +1732,7 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconButtonAddComment16 { background-image: url(customIcons/red/iconAddComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonComment16 { background-image: url(customIcons/red/iconComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonListApprover16 { background-image: url(customIcons/red/iconButtonListApprover.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonRefresh24 { background-image: url(customIcons/red/iconRefresh.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatRed .iconView { background-image: url(customIcons/red/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconGoto { background-image: url(customIcons/red/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatRed .iconButtonBack32 { background-image: url(customIcons/red/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -2972,6 +2974,7 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconButtonAddComment16 { background-image: url(customIcons/green/iconAddComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonComment16 { background-image: url(customIcons/green/iconComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonListApprover16 { background-image: url(customIcons/green/iconButtonListApprover.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonRefresh24 { background-image: url(customIcons/green/iconRefresh.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGreen .iconView { background-image: url(customIcons/green/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconGoto { background-image: url(customIcons/green/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonBack32 { background-image: url(customIcons/green/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
@@ -4212,6 +4215,7 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconButtonAddComment16 { background-image: url(customIcons/grey/iconAddComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonComment16 { background-image: url(customIcons/grey/iconComment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonListApprover16 { background-image: url(customIcons/grey/iconButtonListApprover.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGrey .iconButtonRefresh24 { background-image: url(customIcons/grey/iconRefresh.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .ProjeQtOrFlatGrey .iconView { background-image: url(customIcons/grey/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconGoto { background-image: url(customIcons/grey/iconGoto.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonBack32 { background-image: url(customIcons/grey/iconButtonBack.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}

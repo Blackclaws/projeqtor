@@ -4457,6 +4457,7 @@ function resetActivityStreamListParameters() {
   dijit.byId("activityStreamTypeNote").set('value',null);
   dijit.byId("activityStreamIdNote").set('value',null);
   dijit.byId("activityStreamNumberDays").set('value','7'); 
+  dijit.byId("activityStreamTeamFilter").set('value',null);
 }
 
 function switchActivityStreamListShowClosed() {
