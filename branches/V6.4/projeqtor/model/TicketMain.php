@@ -121,8 +121,8 @@ class TicketMain extends SqlElement {
                                   "idleDateTime"=>"nobr",
                                   "cancelled"=>"nobr",
                                   "idContext1"=>"nobr,size1/3,title",
-                                  "idContext2"=>"nobr,title", 
-                                  "idContext3"=>"title",
+                                  "idContext2"=>"nobr,size1/3,title", 
+                                  "idContext3"=>"title,size1/3",
                                   "doneDateTime"=>"nobr",
                                   "solved"=>"nobr",
                                   "idActivity"=>"title"
