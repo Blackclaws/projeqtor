@@ -102,6 +102,21 @@ if(!$activityStreamNumberDays){
                   </script>
                 </select>
 							</td>
+					  </tr>
+					  <tr style="line-height:22px;">
+					   <td style="display:inline;margin-left:9px;">
+							 <?php echo ucfirst(i18n('colIdTeam'));?>&nbsp;:&nbsp;
+							  <select title="<?php echo i18n('filterOnTeam')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
+                id="activityStreamTeamFilter" name="activityStreamTeamFilter" >
+                  <?php 
+                    $selectedTeam=Parameter::getUserParameter('activityStreamAuthorTeam');
+                    htmlDrawOptionForReference('idTeam', $selectedTeam, null, false); ?>
+                  <script type="dojo/method" event="onChange" >
+                    refreshActivityStreamList();
+                  </script>
+                </select>
+							</td>						
 						</tr>
 					</table>
 				</td>
@@ -133,7 +148,7 @@ if(!$activityStreamNumberDays){
            </tr>
 					</table>
         </td>
-       <td valign="top" width="30%">
+       <td valign="top" width="20%">
         <table style="margin-top: 10px;">
           <input type="hidden" id="activityStreamAddedRecently" name="activityStreamAddedRecently" value="<?php echo $addedRecently;?>" />   
            <input type="hidden" id="activityStreamUpdatedRecently" name="activityStreamUpdatedRecently" value="<?php echo $updatedRecently;?>" />                    
@@ -162,10 +177,14 @@ if(!$activityStreamNumberDays){
                type="text" id="activityStreamNumberDays" name="activityStreamNumberDays" onChange="refreshActivityStreamList();">
               </div>
             </td>
-           </tr>
-					
+         </tr>		
 				 </table>
         </td>
+        <td valign="top" width="10%">
+        <table><tr><td>
+              <div style="position:absolute;top:59%" onClick="refreshActivityStreamList();"><?php echo formatBigButton('Refresh');?></div>
+         </td></tr></table></td>
+        
 			</tr>
 		</table>
 	</form>

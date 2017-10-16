@@ -48,6 +48,13 @@ if (RequestHandler::isCodeSet('activityStreamAuthorFilter')) {
 	$paramAuthorFilter=Parameter::getUserParameter("activityStreamAuthorFilter");
 }
 
+if (RequestHandler::isCodeSet('activityStreamTeamFilter')) {
+  $paramTeamFilter=RequestHandler::getId("activityStreamTeamFilter");
+  Parameter::storeUserParameter("activityStreamTeamFilter", $paramTeamFilter);
+} else {
+  $paramTeamFilter=Parameter::getUserParameter("activityStreamAuthorTeam");
+}
+
 if (RequestHandler::isCodeSet('activityStreamTypeNote')) {
   $paramTypeNote=RequestHandler::getId("activityStreamTypeNote");
   Parameter::storeUserParameter("activityStreamElementType", $paramTypeNote);
@@ -100,6 +107,10 @@ $critWhere="1=1";
 if (trim($paramAuthorFilter)!="") {
 	$critWhere.=" and idUser=$paramAuthorFilter";
 }
+
+if (trim($paramTeamFilter)!="") {}
+  $critWhere.=" and idTeam=$paramTeamFilter";
+
 
 if (trim($paramTypeNote)!="") {
   $critWhere.=" and refType='$typeNote'";
