@@ -5332,7 +5332,7 @@ abstract class SqlElement {
         $typeElt = reset ( $typeList );
         $type = ($typeElt) ? key ( $typeList ) : null;
       }
-      if (! $planningMode and $type and property_exists ( $typeClassName, $planningModeName )) {
+      if (! $planningMode and $type and SqlElement::class_exists($typeClassName) and property_exists ( $typeClassName, $planningModeName )) {
         $typeObj = new $typeClassName ( $type );
         $planningMode = $typeObj->$planningModeName;
       }
