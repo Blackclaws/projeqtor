@@ -1162,6 +1162,7 @@ class PlanningElement extends SqlElement {
   			}
   		}
   	} else { // $way=="increase"
+  	  $prec=null;
   		$precs=$this->getSqlElementsFromCriteria(null,false,
   		    "wbsSortable<'".$this->wbsSortable."' and idProject in " . getVisibleProjectsList(true),"wbsSortable desc");
   		if (count($precs)>0) {
