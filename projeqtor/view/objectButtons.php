@@ -168,15 +168,22 @@
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
      <?php organizeButtons();?>
+     <?php $mode='pdf';
+        if (SqlElement::class_exists('TemplateReport')) {
+          $tmpMode=TemplateReport::getMode($objectClass);
+          if ($tmpMode) $mode=$tmpMode;
+        }
+        ?>
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton">
+       iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($mode);?>" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
         hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-        showPrint("<?php echo $printPage;?>", null, null, 'pdf', 'P');
+        
+        showPrint("<?php echo $printPage;?>", null, null, '<?php echo $mode;?>', 'P');
         </script>
       </button>   
 <?php } 
