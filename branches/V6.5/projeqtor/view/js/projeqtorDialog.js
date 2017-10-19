@@ -279,7 +279,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode == "mpp") {
     printInNewWin=true;
   }
-  if (outMode == "word" || outMode == "excel") {
+  if (outMode == "word" || outMode == "excel" || outMode == "download") {
     printInNewWin=true;
   }
   if (context=='favorite') {
@@ -430,7 +430,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
       params+="&sortWay=" + sortWay;
     }
   }
-  if (outMode == "csv" || outMode == "word" || outMode == "excel") {
+  if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download") {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
         + "&objectClass=" + cl + "&objectId=" + id + params;
     hideWait();
