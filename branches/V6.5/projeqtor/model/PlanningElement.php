@@ -438,6 +438,11 @@ class PlanningElement extends SqlElement {
       $this->updateSynthesis($old->topRefType, $old->topRefId);
     }
     // save new parent (for synthesis update) if parent has changed
+    // #2995 : a previous version changed the following condition so that updateSynthesis is always called for parent
+    //         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolet 
+    //         and would lead to re-update synthesis several times (as many as project WBS level)
+    //         Call in ProjectPlanningElement::updateSynthesisProject has been removed. 
+    //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
     if ($this->topId!='' and ! self::$_noDispatch) { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }
@@ -738,9 +743,14 @@ class PlanningElement extends SqlElement {
     if (! $doNotSave) {
 	    $this->save();
 	    // Dispath to top element
-	    if ($this->topId) {
-	        self::updateSynthesis($this->topRefType, $this->topRefId);
-	    }
+	    // #2995 : a previous version changed the condition in save() in PlanningElement so that updateSynthesis is always called for parent
+	    //         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolete
+	    //         and would lead to re-update synthesis several times (as many as project WBS level)
+	    //         Call in ProjectPlanningElement::updateSynthesisProject has been removed.
+	    //         DO NOT CHANGE CONDITION IN PLANNINGELEMENT::SAVE() UNLESS YOU REACTIVATE CALL HERE
+	    //if ($this->topId) {
+	    //    self::updateSynthesis($this->topRefType, $this->topRefId);
+	    //}
     }
   }
   

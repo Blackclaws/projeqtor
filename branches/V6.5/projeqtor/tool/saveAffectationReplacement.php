@@ -122,8 +122,10 @@ foreach ($assList as $ass) {
   $needNew=true;
   $where='idAssignment='.$ass->id;
   $left=0;
+  $assigned=0;
   if (! $startDate) {
     $left=$ass->leftWork;
+    $assigned=$ass->assignedWork;
     if ($ass->realWork==0) {
       $needNew=false;
     }
@@ -134,7 +136,7 @@ foreach ($assList as $ass) {
       $needNew=false;
     }
   }
-  if ($left>0) {
+  if ($left>0 or $assigned>=0) {
     if ($needNew) {
       $newAss=new Assignment();
       $newAss->idProject=$ass->idProject;

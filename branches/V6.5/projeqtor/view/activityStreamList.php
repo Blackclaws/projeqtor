@@ -52,7 +52,7 @@ if (RequestHandler::isCodeSet('activityStreamTeamFilter')) {
   $paramTeamFilter=RequestHandler::getId("activityStreamTeamFilter");
   Parameter::storeUserParameter("activityStreamTeamFilter", $paramTeamFilter);
 } else {
-  $paramTeamFilter=Parameter::getUserParameter("activityStreamAuthorTeam");
+  $paramTeamFilter=Parameter::getUserParameter("activityStreamTeamFilter");
 }
 
 if (RequestHandler::isCodeSet('activityStreamTypeNote')) {
