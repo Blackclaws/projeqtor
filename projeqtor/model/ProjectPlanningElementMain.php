@@ -278,9 +278,14 @@ class ProjectPlanningElementMain extends PlanningElement {
   	}
   	$resultSaveProj=$this->save();
   	// Dispath to top element
-  	if ($this->topId) {
-  		self::updateSynthesis($this->topRefType, $this->topRefId);
-  	}
+  	// #2995 : a previous version changed the condition in save() in PlanningElement so that updateSynthesis is always called for parent
+  	//         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolete
+  	//         and would lead to re-update synthesis several times (as many as project WBS level)
+  	//         Call in ProjectPlanningElement::updateSynthesisProject has been removed.
+  	//         DO NOT CHANGE CONDITION IN PLANNINGELEMENT::SAVE() UNLESS YOU REACTIVATE CALL HERE
+  	//if ($this->topId) {
+  	//	self::updateSynthesis($this->topRefType, $this->topRefId);
+  	//}
   }
   
   public function updateExpense($doNotSave=false) {

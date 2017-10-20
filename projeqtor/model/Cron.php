@@ -277,10 +277,10 @@ class Cron {
 	public static function run() {
 //scriptLog('Cron::run()');	
     global $cronnedScript, $i18nMessages, $currentLocale;
-    $i18nMessages=null;
-    $currentLocale=Parameter::getGlobalParameter('lang');
     $cronnedScript=true; // Defined and set to be able to force rights on Control() : Cron has all rights.
     self::init();  
+    $i18nMessages=null;
+    $currentLocale=Parameter::getGlobalParameter ( 'paramDefaultLocale' );
 		if (self::check()=='running') {
       errorLog('Try to run cron already running');
       return;
