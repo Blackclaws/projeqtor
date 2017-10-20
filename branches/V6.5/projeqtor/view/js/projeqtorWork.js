@@ -497,6 +497,7 @@ function saveImputation() {
   var futureInputBlocking=dojo.byId('daysWorkFutureBlocking').value != '0' ? true : false;;  
   if(futureInputBlocking){
     nbDays=dojo.byId('nbFutureDaysBlocking').value;
+    hideWait();
     showAlert(i18n('msgRealWorkInTheFutureBlocking',new Array(nbDays)));
   } else if (futureInput) {
     valid=function() {
@@ -505,6 +506,7 @@ function saveImputation() {
     };
     nbDays=dojo.byId('nbFutureDays').value;
     var msg=i18n('msgRealWorkInTheFuture',new Array(nbDays));
+    hideWait();
     showConfirm(msg,valid);
   } else {
     formChangeInProgress=false; 

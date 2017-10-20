@@ -251,6 +251,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           $restrictArray[0]=0;
         }
       }
+      if(Parameter::getUserParameter("restricProjecList")=="true") {
+        $class=get_class($obj);
+        $toto = array();
+        $proj = new Project(getSessionValue("project"));
+        $lstChild = $proj->getRecursiveSubProjectsFlatList(true,true);
+        $restrictArray=$lstChild;
+      }
     } else if ($col=='idStatus') {
     	if ($class=='TicketSimple') $class='Ticket';        
       $idType='id' . $class . 'Type';

@@ -66,8 +66,9 @@ ini_set('suhosin.post.max_vars', 50*$nbLines+20);
 ini_set('suhosin.request.max_vars', 50*$nbLines+20);
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
-  $imputable=$_REQUEST['imputable'][$i];
+	$imputable=$_REQUEST['imputable'][$i];
   $locked=$_REQUEST['locked'][$i];
+  $changed=false;
   if ($imputable and ! $locked) {
     $line=new ImputationLine();
     $line->idAssignment=$_REQUEST['idAssignment'][$i];
@@ -116,19 +117,25 @@ for ($i=0; $i<$nbLines; $i++) {
       break;
     } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
       $status='OK';
+      $changed=true;
     } else { 
       if ($finalResult=="") {
         $finalResult=$result;
       }
     }
-    $ass->leftWork=$line->leftWork;
-    $resultAss=$ass->saveWithRefresh();
-    if (stripos($resultAss,'id="lastOperationStatus" value="OK"')>0 ) {
-      $status='OK';
-    } else if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ){
-      $status='ERROR';
-      $finalResult=$resultAss;
-      break;
+    if ($ass->leftWork!=$line->leftWork) {
+    	$changed=true;
+    	$ass->leftWork=$line->leftWork;
+    }
+    if ($changed) {
+       $resultAss=$ass->saveWithRefresh();
+       if (stripos($resultAss,'id="lastOperationStatus" value="OK"')>0 ) {
+       	$status='OK';
+       } else if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ){
+       	$status='ERROR';
+       	$finalResult=$resultAss;
+       	break;
+       }
     }
   }
 }
