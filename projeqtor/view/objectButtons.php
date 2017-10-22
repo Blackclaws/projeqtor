@@ -49,8 +49,20 @@
   	$noselect=false;
   }
   $printPage="objectDetail.php";
+  $printPagePdf="objectDetail.php";
+  $modePdf='pdf';
   if (file_exists('../report/object/'.$class.'.php')) {
-  	$printPage='../report/object/'.$class.'.php';
+    $printPage='../report/object/'.$class.'.php';
+    $printPagePdf='../report/object/'.$class.'.php';
+    if (SqlElement::class_exists('TemplateReport')) {
+      $tmpMode=TemplateReport::getMode($class);
+      if ($tmpMode=='download') {
+        $modePdf='download';
+        $printPage="objectDetail.php"; // If template must be downloaded, do not use it for print
+      } else if ($tmpMode=='show') {
+        $modePdf='download'; // If template can be shown print will show, pdf will download
+      } // else : keep default behavior
+    }
   }
   $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
   if (!$obj->id) {
@@ -168,22 +180,15 @@
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
      <?php organizeButtons();?>
-     <?php $mode='pdf';
-        if (SqlElement::class_exists('TemplateReport')) {
-          $tmpMode=TemplateReport::getMode($objectClass);
-          if ($tmpMode) $mode=$tmpMode;
-        }
-        ?>
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($mode);?>" class="detailButton">
+       iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($modePdf);?>" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
         hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-        
-        showPrint("<?php echo $printPage;?>", null, null, '<?php echo $mode;?>', 'P');
+        showPrint("<?php echo $printPagePdf;?>", null, null, '<?php echo $modePdf;?>', 'P');
         </script>
       </button>   
 <?php } 
