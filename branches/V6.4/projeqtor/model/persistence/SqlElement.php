@@ -5921,21 +5921,44 @@ abstract class SqlElement {
     }
     return $result;
   }
-  public function toArrayFields() {
+  public function toArrayFields($parent=null) {
     $result=array();
     foreach ($this as $fld=>$value) {
       if (is_object($value)) {
         if (SqlElement::is_a($value,'SqlElement')) {
-          $sub=$value->toArrayFields();
-          array_merge_preserve_keys($result,$sub);
-        } else  {
-          continue;
+          $sub=$value->toArrayFields($this);
+          $result[strtolower($fld)]=array($sub);
         }
+        continue;
       }
-      if (substr($fld,0,1=='_')) continue;
+      if (is_array($value)) {
+        $pos=strrpos($fld,'_');
+        $subClass=substr($fld,1);
+        $pos=strpos($subClass,'_');
+        if ($pos) {
+          $subClass=substr($fld,0,$pos);
+        }
+        if (SqlElement::class_exists($subClass)) {
+          $sub=SqlElement::toArrayList($value);
+          $result[strtolower($subClass)]=$sub;
+          if ($subClass=='Link') {
+            foreach ($sub as $link) {
+              $lnkClass=$link['refType'];
+              if (!isset($result[$lnkClass])) $result[$lnkClass]=array();
+              $result[$lnkClass][]=$link;
+            }
+          }
+        }
+        continue;
+      }
+      if (substr($fld,0,1)=='_') continue;
       $result[$fld]=$value;
       $dataType=$this->getDataType($fld);
       $dataLength=$this->getDataLength($fld);
+      if ($fld=='id'.get_class($this).'Type') {
+      	$result['idType']=$value;
+      	$result['nameType']=SqlList::getNameFromId('Type', $value);
+      }
       if ($dataLength>4000) { // Big text html formatted : must be transformed into plain text
         $text=new Html2Text($value);
         $result[$fld.'Text']=$text->getText();
@@ -5944,11 +5967,78 @@ abstract class SqlElement {
         if (SqlElement::class_exists($class)) {
           $result['name'.$class]=SqlList::getNameFromId($class, $value);
         }
+      } else if ($dataType=='date') {
+        $result[$fld]=htmlFormatDate($value);
+      } else if ($dataType=='time') {
+        $result[$fld]=htmlFormatTime($value);
+      } else if ($dataType=='datetime') {
+        $result[$fld]=htmlFormatDateTime($value);
+      }
+    }
+    if (property_exists($this, 'refType') and property_exists($this, 'refId') and !property_exists($this, 'refName')) {
+      $result['refName']=self::getRefName($this->refType, $this->refId);
+      $result['refTypeName']=i18n($this->refType);
+    }
+    if (property_exists($this, 'originType') and property_exists($this, 'originId')) {
+      $result['originName']=self::getRefName($this->originType, $this->originId);
+      $result['originTypeName']=i18n($this->originType);
+    }
+    if (get_class($this)=='Attachment') {
+      if ($this->link) $this->fileName=$this->link;
+    }
+    if (property_exists($this, 'ref1Type') and property_exists($this, 'ref1Id') and property_exists($this, 'ref2Type') and property_exists($this, 'ref2Id')) {
+      $result['ref1Name']=self::getRefName($this->ref1Type, $this->ref1Id);
+      $result['ref2Name']=self::getRefName($this->ref2Type, $this->ref2Id);
+      if ($parent and self::get_class($parent)==$ref1Type and $parent->id==$ref1Id and !property_exists($this,'refType') and !property_exists($this, 'refName')) {
+        $result['refType']=$this->ref2Type;
+        $result['refId']=$this->ref2Id;
+        $result['refName']=$result['ref2Name'];
+        $result['refTypeName']=i18n($this->ref2Type);
+        $result['refStatus']=self::getRefStatus($this->ref2Type, $this->ref2Id);
+      } else {
+        $result['refType']=$this->ref1Type;
+        $result['refId']=$this->ref1Id;
+        $result['refName']=$result['ref1Name'];
+        $result['refTypeName']=i18n($this->ref1Type);
+        $result['refStatus']=self::getRefStatus($this->ref1Type, $this->ref1Id);
       }
     }
     return $result;
   }
-  
+
+  private static $_lastRefObject=null;
+  public static function getRefName($refType,$refId) {
+    $result='';
+    if ($refType and $refId and SqlElement::class_exists($refType)) {
+      if (self::$_lastRefObject and is_object(self::$_lastRefObject)
+      and get_class(self::$_lastRefObject)==$refType and self::$_lastRefObject->id==$refId) {
+        $refObj=self::$_lastRefObject;
+      } else {
+        $refObj=new $refType($refId);
+        self::$_lastRefObject=$refObj;
+      }
+      if (property_exists($refObj, 'name')) {
+        $result=$refObj->name;
+      }
+    }
+    return $result;
+  }
+  public static function getRefStatus($refType,$refId) {
+    $result='';
+    if ($refType and $refId and SqlElement::class_exists($refType)) {
+      if (self::$_lastRefObject and is_object(self::$_lastRefObject)
+      and get_class(self::$_lastRefObject)==$refType and self::$_lastRefObject->id==$refId) {
+        $refObj=self::$_lastRefObject;
+      } else {
+        $refObj=new $refType($refId);
+        self::$_lastRefObject=$refObj;
+      }
+      if (property_exists($refObj, 'idStatus')) {
+        $result=SqlList::getNameFromId('Status',$refObj->idStatus);
+      }
+    }
+    return $result;
+  }
 }
 
 ?>

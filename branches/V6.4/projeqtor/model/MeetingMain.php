@@ -581,4 +581,3 @@ class MeetingMain extends SqlElement {
   }
 }
 ?>
-
