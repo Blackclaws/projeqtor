@@ -2158,7 +2158,7 @@ function countSelectedItem(gridName) {
   if (items.length) {
     dojo.forEach(items, function(selectedItem) {
       if (selectedItem !== null) {
-        if (lstStore.indexOf(selectedItem.id)===-1) {
+        if (lstStore.indexOf(selectedItem.id)=== -1) {
           grid.selection.setSelected(selectedItem.id, false);
         }
       }

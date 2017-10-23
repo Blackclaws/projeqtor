@@ -400,7 +400,7 @@ class Parameter extends SqlElement {
         $list=array('false'=>i18n('displayNo'),
                     'true'=>i18n('displayYes'));
         break;
-      case 'restricProjecList';
+      case 'restrictProjectList';
         $list=array('false'=>i18n('displayNo'),
                     'true'=>i18n('displayYes'));
         break;
@@ -587,7 +587,7 @@ class Parameter extends SqlElement {
                            "scaytAutoStartup"=>'list',
                            "maxColumns"=>'list',
                            "directAccessToComponentList"=>'list',
-                           "restricProjecList"=>'list',
+                           "restrictProjectList"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
@@ -675,7 +675,7 @@ class Parameter extends SqlElement {
       	                      'paramFadeLoadingMode'=>'list',
       	                      'maxItemsInTodayLists'=>'number',
       	                      'filterByStatus'=>'list', //ADD by qCazelles - Filter by Status
-      	                      'restricProjecList'=>'list',
+      	                      'restrictProjectList'=>'list',
       	                      //'projectRestriction'=>'list', // Babynus : feature disabled do to regressions
                           	'sectionLocalization'=>'section',
                             	'currency'=>'text',
