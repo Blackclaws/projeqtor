@@ -80,11 +80,11 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
 $rightWidthVal=0;
 if (isset($rightWidth)) {
   if (substr($rightWidth,-1)=="%") {
-    $rightWidthVal=intval(str_replace('%', '', $rightWidth))*$displayWidthList;
+    $rightWidthVal=(intval(str_replace('%', '', $rightWidth))/100)*$displayWidthList;
   } else {
     $rightWidthVal=intval(str_replace('px', '', $rightWidth));
   }
-} else { 
+} else {
   $detailRightDivWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass);
   if($detailRightDivWidth or $detailRightDivWidth==="0"){
     $rightWidthVal=$detailRightDivWidth;

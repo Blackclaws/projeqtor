@@ -251,7 +251,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           $restrictArray[0]=0;
         }
       }
-      if(Parameter::getUserParameter("restricProjecList")=="true") {
+      if(Parameter::getUserParameter("restrictProjectList")=="true") {
         $class=get_class($obj);
         $toto = array();
         $proj = new Project(getSessionValue("project"));
