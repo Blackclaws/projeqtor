@@ -2239,7 +2239,7 @@ paramReferenceFormatPrefix: "формат префіксу для посилан
 paramRefreshUpdates: "повторіть оновлення",
 paramRememberMe: "дозволити «запам'ятати мене»",
 paramResponsibleFromProduct: "відповідне виправлення (ticket) з відповідного продукту",
-paramRestricProjecList: "[restrict project list to selected]",
+paramRestricProjectList: "[restrict project list to selected]",
 paramScaytAutoStartup: "активувати перевірку орфографії в редакторі CK Editor",
 paramSetDoneOnNoLeftWork: "Встановити до першого 'виконаного' стану",
 paramSetHandledOnRealWork: "Втановіть перший стан  'обробляється'",
