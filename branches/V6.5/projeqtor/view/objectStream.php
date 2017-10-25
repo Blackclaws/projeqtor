@@ -38,7 +38,12 @@
   if (!property_exists($obj, 'idle') or $obj->idle == 1) {
     $canUpdate=false;
   }
-  $noData=htmlGetNoDataMessage($objectClass);
+  if($objectClass=="PlanningElement"){
+    $noData = '<br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . i18n('noItemSelected') . '</i>';
+  } else {
+    $noData=htmlGetNoDataMessage($objectClass);    
+  }
+  
   $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
   $noNotes = '<p><br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n("noNote").'</p>';
   // get the modifications (from request)

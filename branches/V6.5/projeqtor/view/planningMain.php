@@ -37,20 +37,43 @@
     $topDetailDivHeight=$screenHeight-300;
   }
   $listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
+  $detailDivWidthPlanning=Parameter::getUserParameter('contentPaneRightDetailDivWidthPlanning');
+  if($detailDivWidthPlanning or $detailDivWidthPlanning==="0"){
+    $rightWidthPlanning=$detailDivWidthPlanning.'px';
+  } else {
+    $rightWidthPlanning="15%";
+  }
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Planning" />
 <div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer" onclick="hideDependencyRightClick();">
-  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
-    <script type="dojo/connect" event="resize" args="evt">
-         if (switchedMode) return;
-         storePaneSize("contentPaneTopPlanningDivHeight",dojo.byId("listDiv").offsetHeight);
-    </script>
-   <?php include 'planningList.php'?>
-  </div>
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
-    <div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');">
-      <div id="detailBarIcon" align="center"></div>
+ <div dojoType="dijit.layout.ContentPane" region="center" splitter="true">
+    <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
+      <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:<?php echo $listHeight;?>;">
+        <script type="dojo/connect" event="resize" args="evt">
+          if (switchedMode) return;
+          storePaneSize("contentPaneTopPlanningDivHeight",dojo.byId("listDiv").offsetHeight);
+        </script>
+        <?php include 'planningList.php'?>
+      </div>
+      <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+        <div id="detailBarShow" class="dijitAccordionTitle" onMouseover="hideList('mouse');" onClick="hideList('click');">
+          <div id="detailBarIcon" align="center"></div>
+        </div>
+        <?php $noselect=true; //include 'objectDetail.php'; ?>
+      </div>
     </div>
-   <?php $noselect=true; //include 'objectDetail.php'; ?>
-  </div>
+ </div>
+ <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidthPlanning;?>">
+    <script type="dojo/connect" event="resize" args="evt">
+             saveDataToSession("contentPaneRightDetailDivWidthPlanning", dojo.byId("detailRightDiv").offsetWidth, true);
+             var newWidth=dojo.byId("detailRightDiv").offsetWidth;
+             dojo.query(".activityStreamNoteContainer").forEach(function(node, index, nodelist) {
+              node.style.maxWidth=(newWidth-30)+"px";
+             });
+    </script>
+    <script type="dojo/connect" event="onLoad" args="evt">
+        scrollInto();
+	  </script>
+    <?php include 'objectStream.php'?>
+ </div>
 </div>  

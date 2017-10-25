@@ -2759,6 +2759,7 @@ function runScript(refType, refId, id) {
   hideList();
   loadContent('objectDetail.php?planning=true&planningType='
       + dojo.byId('objectClassManual').value, 'detailDiv', 'listForm');
+  if (dijit.byId("detailRightDiv")) loadContent("objectStream.php", "detailRightDiv", "listForm"); 
   highlightPlanningLine(id);
 }
 ongoingRunScriptContextMenu=false;
