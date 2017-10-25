@@ -331,8 +331,10 @@ class ActivityMain extends SqlElement {
       if ($habil and $habil->rightAccess == 1) {
         $ass = new Assignment ();
         $crit = array('idResource' => $this->idResource, 'refType' => 'Activity', 'refId' => $this->id);
-        $lst = $ass->getSqlElementsFromCriteria ( $crit, false );
-        if (count ( $lst ) == 0) {
+        //$lst = $ass->getSqlElementsFromCriteria ( $crit, false );
+        //if (count ( $lst ) == 0) {
+        $cpt=$ass->countSqlElementsFromCriteria($crit);
+        if ($cpt == 0) {
           $ass->idProject = $this->idProject;
           $ass->refType = 'Activity';
           $ass->refId = $this->id;
