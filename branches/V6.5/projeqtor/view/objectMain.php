@@ -81,11 +81,6 @@
   <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>">
     <script type="dojo/connect" event="resize" args="evt">
              saveDataToSession("contentPaneRightDetailDivWidth<?php echo $objectClass;?>", dojo.byId("detailRightDiv").offsetWidth, true);
-             /*dojo.xhrPost({
-               url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneRightDetailDivWidth<?php echo $objectClass;?>"
-                  +"&value="+dojo.byId("detailRightDiv").offsetWidth
-             });;*/
              var newWidth=dojo.byId("detailRightDiv").offsetWidth;
              dojo.query(".activityStreamNoteContainer").forEach(function(node, index, nodelist) {
               node.style.maxWidth=(newWidth-30)+"px";

@@ -439,7 +439,7 @@ class PlanningElement extends SqlElement {
     }
     // save new parent (for synthesis update) if parent has changed
     // #2995 : a previous version changed the following condition so that updateSynthesis is always called for parent
-    //         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolet 
+    //         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolete
     //         and would lead to re-update synthesis several times (as many as project WBS level)
     //         Call in ProjectPlanningElement::updateSynthesisProject has been removed. 
     //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
