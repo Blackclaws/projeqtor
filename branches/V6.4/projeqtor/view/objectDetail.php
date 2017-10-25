@@ -4442,7 +4442,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       	  echo $keyDownEventScript;
       	  echo '</div>';
       } else {
-         echo $fmt->format(Work::displayWork($assignment->assignedWork));
+         echo $fmt->format(Work::displayWork($assignment->leftWork));
       }	   
       echo '</td>'; }
      echo '</tr>';
