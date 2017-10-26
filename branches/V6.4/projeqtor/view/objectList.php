@@ -80,7 +80,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
 $rightWidthVal=0;
 if (isset($rightWidth)) {
   if (substr($rightWidth,-1)=="%") {
-    $rightWidthVal=intval(str_replace('%', '', $rightWidth))*$displayWidthList;
+    $rightWidthVal=(intval(str_replace('%', '', $rightWidth))/100)*$displayWidthList;
   } else {
     $rightWidthVal=intval(str_replace('px', '', $rightWidth));
   }
@@ -567,6 +567,8 @@ if ($displayWidthList<1400) {
                 </script>
               </div>&nbsp;
             </td>
+<?php } else {?>
+       <input type="hidden" id="listShowIdle" name="listShowIdle" value="<?php echo $showIdle;?>">
 <?php }?>           
           </tr>
         </table>    

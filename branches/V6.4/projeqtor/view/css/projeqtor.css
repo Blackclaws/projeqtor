@@ -264,7 +264,6 @@ html, body {
       /* margin: 4px 8px 4px 8px;*/ 
       padding: 0px 0px 10px 0px;
       opacity:0.0;filter:alpha(opacity=00);
-      pointer-events: none;
     }
     #comboDetailResult {
       width:48%;
