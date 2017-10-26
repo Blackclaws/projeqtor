@@ -153,7 +153,11 @@ class Assignment extends SqlElement {
         }
       }      
     }
-    $this->assignedCost=$this->assignedWork*$this->dailyCost;
+    if($this->dailyCost==0 && $this->newDailyCost!=0){
+      $this->assignedCost=$this->assignedWork*$this->newDailyCost;
+    } else {
+      $this->assignedCost=$this->assignedWork*$this->dailyCost;
+    }
     
     if ($this->refType=='PeriodicMeeting') {
     	$this->idle=1;

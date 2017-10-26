@@ -680,7 +680,7 @@
           }
           dijit.byId("toolBarDiv").resize({h :0});
           dijit.byId("statusBarDiv").resize({h :0});
-          var  obj  =  {  height : "2000px" }; 
+          var obj  =  {  height : "2000px" }; 
           dojo.setAttr(dojo.byId("menuBarShow"),"style",obj);
           var msgParams=new Array();
           msgParams[0]='<?php echo $paramScrollDelay;?>';

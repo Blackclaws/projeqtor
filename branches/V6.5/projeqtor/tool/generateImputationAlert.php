@@ -93,7 +93,7 @@ function generateImputationAlert() {
     $tmpDate=$startDate;
     $full=true;
     while ($tmpDate<=$endDate) {
-      if ($res['days'][$tmpDate]['open']=='1' and $res['days'][$tmpDate]['work']!=$res['capacity']) {
+      if ($res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
         $full=false;
       }
       $tmpDate=addDaysToDate($tmpDate, 1);
@@ -187,10 +187,10 @@ function getImputationSummary($resTab) {
     $colorDay=($dayData['open']=='1')?'#eeeeee':'#aaaaaa';
     $workHeader.='<td style="text-align:center;border:1px solid #555555;width:80px;background-color:'.$colorDay.'">'.htmlFormatDate($day).'</td>';
     $colorData=$colorDay;
-    if ($dayData['work']>$resTab['capacity']) {
+    if (abs($dayData['work']-$resTab['capacity'])>=0.01) {
       $colorData='#ffaaaa';
     } else if ($dayData['open']=='1') {
-      if ($dayData['work']==$resTab['capacity']) {
+      if (abs($dayData['work']-$resTab['capacity'])<0.01) {
         $colorData='#aaffaa';
       } else if ($dayData['work']<$resTab['capacity']) {
         $colorData='#ffffaa';
