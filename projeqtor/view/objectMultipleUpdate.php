@@ -312,6 +312,25 @@
               </td>
             </tr>
             <?php }
+      // Resolution
+            if (isDisplayable($obj,'idResolution')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResolution');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idResolution" name="idResolution">
+                 <?php htmlDrawOptionForReference('idResolution', null, null, false);?>
+                </select>
+                <button id="resolutionButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                                showDetail("idResolution",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <?php }
       // Responsable
             if (isDisplayable($obj,'idResource')) {?>
             <tr class="detail">

@@ -567,6 +567,8 @@ if ($displayWidthList<1400) {
                 </script>
               </div>&nbsp;
             </td>
+<?php } else {?>
+       <input type="hidden" id="listShowIdle" name="listShowIdle" value="<?php echo $showIdle;?>">
 <?php }?>           
           </tr>
         </table>    
