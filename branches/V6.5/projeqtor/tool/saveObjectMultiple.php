@@ -65,6 +65,10 @@ $idStatus="";
 if (array_key_exists('idStatus',$_REQUEST)) {
   $idStatus=trim($_REQUEST['idStatus']);
 }
+$idResolution="";
+if (array_key_exists('idResolution',$_REQUEST)) {
+  $idResolution=trim($_REQUEST['idResolution']);
+}
 $idResource="";
 if (array_key_exists('idResource',$_REQUEST)) {
   $idResource=trim($_REQUEST['idResource']);
@@ -199,6 +203,9 @@ foreach ($selectList as $id) {
   	//$oldStatus=new Status($item->idStatus);
     $item->idStatus=$idStatus;
     $item->recalculateCheckboxes(true);
+  }
+  if ($idResolution and property_exists($item,'idResolution')) {
+    $item->idResolution=$idResolution;
   }
   if ($idResource and property_exists($item,'idResource')) {
     $item->idResource=$idResource;

@@ -2341,24 +2341,19 @@ function setSelectedProject(idProject, nameProject, selectionField) {
         } else {
           loadContent("planningList.php", "listDiv", 'listForm');
         }
-      } else if (dijit.byId("listForm") && dojo.byId('objectClass')
-          && dojo.byId('listShowIdle')) {
+      } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
         refreshJsonList(dojo.byId('objectClass').value);
-      } else if (dojo.byId('objectClassManual')
-          && dojo.byId('objectClassManual').value == 'Today') {
+      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Today') {
         loadContent("../view/today.php", "centerDiv");
-      } else if (dojo.byId('objectClassManual')
-          && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
+      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
         loadContent("../plugin/kanban/kanbanViewMain.php", "centerDiv");        
       } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'ActivityStream') {
         loadContent("../view/activityStreamList.php", "activityStreamListDiv", "activityStreamForm");      
-      } else if (dojo.byId('objectClassManual')
-          && dojo.byId('objectClassManual').value == 'DashboardTicket') {
+      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'DashboardTicket') {
         loadContent("../view/dashboardTicketMain.php", "centerDiv");
-      } else if (dojo.byId('currentPhpPage')
-          && dojo.byId('currentPhpPage').value) {
+      } else if (dojo.byId('currentPhpPage') && dojo.byId('currentPhpPage').value) {
         loadContent("../view/dashboardTicketMain.php", "centerDiv");
-      } else if (dijit.byId('limitResByProj').get('value')=="on"){
+      } else if (dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
         refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true);
       } else if (currentPluginPage) {
         loadContent(currentPluginPage, "centerDiv");
