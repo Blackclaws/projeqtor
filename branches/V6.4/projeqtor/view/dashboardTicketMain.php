@@ -408,9 +408,9 @@ function addParametersDashboardTicketMain($prefix="t"){
     if($recent=="2")$result.=" AND $prefix.doneDateTime>=current_date - INTERVAL '" . intval($nbDay) . " day' ";
     if($recent=="3")$result.=" AND $prefix.id IN (SELECT t2.refId FROM history t2 WHERE t2.refId=$prefix.id AND t2.refType='Ticket' AND t2.operationDate>=current_date - INTERVAL '" . intval($nbDay) . " day' ) ";
   } else {
-    if($recent=="1")$result.=" AND $prefix.creationDateTime>=ADDDATE(CURDATE(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
-    if($recent=="2")$result.=" AND $prefix.doneDateTime>=ADDDATE(CURDATE(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
-    if($recent=="3")$result.=" AND $prefix.id IN (SELECT t2.refId FROM history t2 WHERE t2.refId=$prefix.id AND t2.refType='Ticket' AND t2.operationDate>=ADDDATE(CURDATE(), INTERVAL (-" . intval($nbDay) . ") DAY)) ";
+    if($recent=="1")$result.=" AND $prefix.creationDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
+    if($recent=="2")$result.=" AND $prefix.doneDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
+    if($recent=="3")$result.=" AND $prefix.id IN (SELECT t2.refId FROM history t2 WHERE t2.refId=$prefix.id AND t2.refType='Ticket' AND t2.operationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY)) ";
   }
 
   if(isset($_REQUEST['dashboardTicketMainToMe'])){

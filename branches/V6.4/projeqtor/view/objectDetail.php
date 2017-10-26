@@ -1759,7 +1759,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($col == 'idProject') {
           if ($obj->id == null) {
-            if (sessionValueExists('project') and !$obj->$col ) {
+            $projSelected = new Project(getSessionValue('project'));
+            if ((sessionValueExists('project') and !$obj->$col) and $projSelected->idle != '1') { 
               $val=getSessionValue('project');
             }
             $accessRight=securityGetAccessRight('menu' . $classObj, 'create'); // TODO : study use of this variable...
