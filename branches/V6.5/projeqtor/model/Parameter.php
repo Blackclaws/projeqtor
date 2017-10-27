@@ -295,6 +295,10 @@ class Parameter extends SqlElement {
       case 'limitPlanningActivity' :
       // Mehdi  #parameter
       case 'autoUpdateActivityStatus':
+      case 'autoSetAssignmentByResponsible':
+        $list=array('YES'=>i18n('displayYes'),
+            'NO'=>i18n('displayNo'));
+        break;
       // Gautier #
       case 'subscriptionAuto':
       //ADD qCazelles - Business features
@@ -666,6 +670,7 @@ class Parameter extends SqlElement {
       	                      'updateDeliverableResponsibleFromMilestone'=>'list',
       	                      'updateIncomingResponsibleFromMilestone'=>'list',
       	                      'autoUpdateActivityStatus'=>'list',
+      	                      'autoSetAssignmentByResponsible'=>'list',
       	                    'sectionPlanningControl'=>'section',
       	                      'allowTypeRestrictionOnProject'=>'list',
       	                'tabDisplay'=>"tab",
