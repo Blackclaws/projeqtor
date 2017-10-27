@@ -3470,9 +3470,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
   }
   
-  echo '<td class="linkHeader" style="width:' . (($classLink)?'75':'65') . '%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:' . (($classLink)?'70':'60') . '%">' . i18n('colName') . '</td>';
   // if ($classLink and property_exists($classLink, 'idStatus')) {
-  echo '<td class="linkHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
+  echo '<td class="linkHeader" style="width:10%">' . i18n('colIdStatus') . '</td>';
+  echo '<td class="linkHeader" style="width:10%">' . i18n('colResponsibleShort') . '</td>';
   // }
   //echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
   //echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
@@ -3561,6 +3562,15 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
       } else {
         echo '<td class="dependencyData"  style="width:15%">&nbsp;</td>';
+      }
+      ////KROWRY
+      if (property_exists($linkObj, 'idResource')) {
+        $objR = get_class($linkObj);
+        $objResp=new $objR($linkObj->id);
+        debugLog($objResp);
+        echo '<td class="dependencyData"  style="width:10%">' . formatLetterThumb($objResp->idResource, 22) . '</td>';
+      } else {
+        echo '<td class="dependencyData"  style="width:10%">&nbsp;</td>';
       }
       echo '</tr>';
     }

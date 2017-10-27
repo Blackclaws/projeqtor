@@ -323,33 +323,36 @@ class ActivityMain extends SqlElement {
       return $result;
     }
     
-    if ($this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
-      // Add assignment for responsible
-      $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
-          'idProfile' => getSessionUser ()->getProfile ( $this->idProject ), 
-          'scope' => 'assignmentEdit') );
-      if ($habil and $habil->rightAccess == 1) {
-        $ass = new Assignment ();
-        $crit = array('idResource' => $this->idResource, 'refType' => 'Activity', 'refId' => $this->id);
-        //$lst = $ass->getSqlElementsFromCriteria ( $crit, false );
-        //if (count ( $lst ) == 0) {
-        $cpt=$ass->countSqlElementsFromCriteria($crit);
-        if ($cpt == 0) {
-          $ass->idProject = $this->idProject;
-          $ass->refType = 'Activity';
-          $ass->refId = $this->id;
-          $ass->idResource = $this->idResource;
-          $ass->assignedWork = 0;
-          $ass->realWork = 0;
-          $ass->leftWork = 0;
-          $ass->plannedWork = 0;
-          $ass->notPlannedWork = 0;
-          $ass->rate = '100';
-          if ($this->ActivityPlanningElement->validatedWork and $this->ActivityPlanningElement->validatedWork>$this->ActivityPlanningElement->assignedWork) {
-            $ass->assignedWork=$this->ActivityPlanningElement->validatedWork-$this->ActivityPlanningElement->assignedWork;
-            $ass->leftWork=$ass->assignedWork;
+    /// KROWRY HERE
+    if(Parameter::getGlobalParameter('autoSetAssignmentByResponsible')=="YES"){ 
+      if ($this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
+        // Add assignment for responsible
+        $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
+            'idProfile' => getSessionUser ()->getProfile ( $this->idProject ), 
+            'scope' => 'assignmentEdit') );
+        if ($habil and $habil->rightAccess == 1) {
+          $ass = new Assignment ();
+          $crit = array('idResource' => $this->idResource, 'refType' => 'Activity', 'refId' => $this->id);
+          //$lst = $ass->getSqlElementsFromCriteria ( $crit, false );
+          //if (count ( $lst ) == 0) {
+          $cpt=$ass->countSqlElementsFromCriteria($crit);
+          if ($cpt == 0) {
+            $ass->idProject = $this->idProject;
+            $ass->refType = 'Activity';
+            $ass->refId = $this->id;
+            $ass->idResource = $this->idResource;
+            $ass->assignedWork = 0;
+            $ass->realWork = 0;
+            $ass->leftWork = 0;
+            $ass->plannedWork = 0;
+            $ass->notPlannedWork = 0;
+            $ass->rate = '100';
+            if ($this->ActivityPlanningElement->validatedWork and $this->ActivityPlanningElement->validatedWork>$this->ActivityPlanningElement->assignedWork) {
+              $ass->assignedWork=$this->ActivityPlanningElement->validatedWork-$this->ActivityPlanningElement->assignedWork;
+              $ass->leftWork=$ass->assignedWork;
+            }
+            $ass->save ();
           }
-          $ass->save ();
         }
       }
     }

@@ -187,10 +187,11 @@ function getImputationSummary($resTab) {
     $colorDay=($dayData['open']=='1')?'#eeeeee':'#aaaaaa';
     $workHeader.='<td style="text-align:center;border:1px solid #555555;width:80px;background-color:'.$colorDay.'">'.htmlFormatDate($day).'</td>';
     $colorData=$colorDay;
-    if (abs($dayData['work']-$resTab['capacity'])>=0.01) {
+    $dayData['work']=round($dayData['work'],2);
+    if ($dayData['work']>$resTab['capacity']) {
       $colorData='#ffaaaa';
     } else if ($dayData['open']=='1') {
-      if (abs($dayData['work']-$resTab['capacity'])<0.01) {
+      if ($dayData['work']==$resTab['capacity']) {
         $colorData='#aaffaa';
       } else if ($dayData['work']<$resTab['capacity']) {
         $colorData='#ffffaa';
