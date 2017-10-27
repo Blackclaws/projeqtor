@@ -5914,10 +5914,10 @@ abstract class SqlElement {
   }
   //END ADD qCazelles - Filter by status
 
-  public static function toArrayList($list) {
+  public static function toArrayList($list,$parent=null) {
     $result=array();
     foreach ($list as $obj) {
-      $result[]=$obj->toArrayFields();
+      $result[]=$obj->toArrayFields($parent);
     }
     return $result;
   }
@@ -5939,13 +5939,16 @@ abstract class SqlElement {
           $subClass=substr($fld,0,$pos);
         }
         if (SqlElement::class_exists($subClass)) {
-          $sub=SqlElement::toArrayList($value);
+          $sub=SqlElement::toArrayList($value,$this);
           $result[strtolower($subClass)]=$sub;
           if ($subClass=='Link') {
+            foreach (SqlList::getListNotTranslated('Linkable') as $linkable) {
+              $result["link_$linkable"]=array();
+            }
             foreach ($sub as $link) {
               $lnkClass=$link['refType'];
-              if (!isset($result[$lnkClass])) $result[$lnkClass]=array();
-              $result[$lnkClass][]=$link;
+              if (!isset($result["link_$lnkClass"])) $result["link_$lnkClass"]=array();
+              $result["link_$lnkClass"][]=$link;
             }
           }
         }
@@ -5989,7 +5992,7 @@ abstract class SqlElement {
     if (property_exists($this, 'ref1Type') and property_exists($this, 'ref1Id') and property_exists($this, 'ref2Type') and property_exists($this, 'ref2Id')) {
       $result['ref1Name']=self::getRefName($this->ref1Type, $this->ref1Id);
       $result['ref2Name']=self::getRefName($this->ref2Type, $this->ref2Id);
-      if ($parent and self::get_class($parent)==$ref1Type and $parent->id==$ref1Id and !property_exists($this,'refType') and !property_exists($this, 'refName')) {
+      if ($parent and get_class($parent)==$this->ref1Type and $parent->id==$this->ref1Id and !property_exists($this,'refType') and !property_exists($this, 'refName')) {
         $result['refType']=$this->ref2Type;
         $result['refId']=$this->ref2Id;
         $result['refName']=$result['ref2Name'];
