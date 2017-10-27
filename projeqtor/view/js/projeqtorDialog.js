@@ -4739,6 +4739,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
 //  }
   var callBack = function () {
     affectationLoad=true;
+    refreshList('idProfile', 'idProject', idProject, null, 'affectationProfile', false  );
     dijit.byId("dialogAffectation").show();
     setTimeout("affectationLoad=false", 500);
   };
@@ -4776,40 +4777,41 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,
     return;
   }
   var callBack = function () {
-  dojo.xhrGet({
-    url : '../tool/getSingleData.php?dataType=affectationDescription&idAffectation='+id,
-    handleAs : "text",
-    load : function(data) {
-      dijit.byId('affectationDescription').set('value', data);
-      enableWidget("affectationDescription");
+    dojo.xhrGet({
+      url : '../tool/getSingleData.php?dataType=affectationDescription&idAffectation='+id,
+      handleAs : "text",
+      load : function(data) {
+        dijit.byId('affectationDescription').set('value', data);
+        enableWidget("affectationDescription");
+      }
+    });
+    if (startDate) {
+      dijit.byId("affectationStartDate").set('value', startDate);
+    } else {
+      dijit.byId("affectationStartDate").reset();
     }
-  });
-  if (startDate) {
-    dijit.byId("affectationStartDate").set('value', startDate);
-  } else {
-    dijit.byId("affectationStartDate").reset();
-  }
-  if (endDate) {
-    dijit.byId("affectationEndDate").set('value', endDate);
-  } else {
-    dijit.byId("affectationEndDate").reset();
-  }
-  if (idle == 1) {
-    dijit.byId("affectationIdle").set('value', idle);
-  } else {
-    dijit.byId("affectationIdle").reset();
-  }
-  dijit.byId("dialogAffectation").show();
-  setTimeout("affectationLoad=false", 500);
-};
-var params="&id="+id;
-params+="&refType="+dojo.byId("objectClass").value;
-params+="&idProject="+idProject;
-params+="&idResource="+idResource;
-params+="&mode=edit";
-params+="&type="+type;
-params+="&objectClass="+objectClass;
-loadDialog('dialogAffectation',callBack,false,params);
+    if (endDate) {
+      dijit.byId("affectationEndDate").set('value', endDate);
+    } else {
+      dijit.byId("affectationEndDate").reset();
+    }
+    if (idle == 1) {
+      dijit.byId("affectationIdle").set('value', idle);
+    } else {
+      dijit.byId("affectationIdle").reset();
+    }
+    refreshList('idProfile', 'idProject', idProject, null, 'affectationProfile', false  );
+    dijit.byId("dialogAffectation").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&id="+id;
+  params+="&refType="+dojo.byId("objectClass").value;
+  params+="&idProject="+idProject;
+  params+="&idResource="+idResource;
+  params+="&mode=edit";
+  params+="&type="+type;
+  params+="&objectClass="+objectClass;
+  loadDialog('dialogAffectation',callBack,false,params);
 }
 
 function saveAffectation() {

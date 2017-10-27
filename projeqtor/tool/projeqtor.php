@@ -658,7 +658,10 @@ function securityCheckPage($page) {
   }
   $allowed_folders = array(realpath("../tool/"),
       realpath("../view/"),
-      realpath("../report/"),realpath("../report/object/"));
+      realpath("../report/"),
+      realpath("../report/object/"), 
+      realpath("../plugin/templateReport")
+  );
   if (! in_array(dirname(realpath($path)),$allowed_folders) ) {
     traceHack("securityCheckPage($page) - '".dirname(realpath($path))."' is not in allowed folders list");
     exit (); // Not required : traceHack already exits script
