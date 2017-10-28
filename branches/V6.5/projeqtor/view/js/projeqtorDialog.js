@@ -260,7 +260,6 @@ function showAbout(msg) {
  * @return void
  */
 function showPrint(page, context, comboName, outMode, orientation) {
-
   // dojo.byId('printFrame').style.width= 1000 + 'px';
   showWait();
   quitConfirmed=true;
@@ -430,7 +429,10 @@ function showPrint(page, context, comboName, outMode, orientation) {
       params+="&sortWay=" + sortWay;
     }
   }
-  if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download") {
+  if (outMode == "download" && context=='template') {
+    dojo.byId("printFrame").src="print.php?print=true&page=" + page;
+    hideWait();
+  } else if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download") {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
         + "&objectClass=" + cl + "&objectId=" + id + params;
     hideWait();
