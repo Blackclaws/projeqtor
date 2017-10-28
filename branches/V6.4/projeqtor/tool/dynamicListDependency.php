@@ -61,7 +61,7 @@ if (SqlElement::class_exists ($refTypeDep) ) {
   $list=array();
 }
 if ($refType=="Project") {
-  $wbsList=SqlList::getList('Project','sortOrder');
+  $wbsList=SqlList::getList('Project','sortOrder',null,true);
   $sepChar=Parameter::getUserParameter('projectIndentChar');
   if (!$sepChar) $sepChar='__';
   $wbsLevelArray=array();
@@ -80,7 +80,7 @@ class="selectList" >
  	 }
  	 $val=$lstObj->name;
    if ($refType=="Project" and $sepChar!='no') {
-     $wbs=$wbsList[$lstObj->id];
+     $wbs=(isset($wbsList[$lstObj->id]))?$wbsList[$lstObj->id]:'';
      $wbsTest=$wbs;
      $level=1;
      while (strlen($wbsTest)>3) {
