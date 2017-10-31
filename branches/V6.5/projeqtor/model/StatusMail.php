@@ -44,7 +44,7 @@ class StatusMail extends SqlElement {
   public $mailToResource;
   public $mailToSponsor;
   public $mailToProject;
-  public $mailToParentIncludingParentProject;
+  public $mailToProjectIncludingParentProject;
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;

@@ -86,7 +86,7 @@
     $directStatusMail->mailToResource=$mailToResource;
     $directStatusMail->mailToSponsor=$mailToSponsor;
     $directStatusMail->mailToProject=$mailToProject;
-    $directStatusMail->mailToParentIncludingParentProject=$mailToProjectIncludingParentProject;
+    $directStatusMail->mailToProjectIncludingParentProject=$mailToProjectIncludingParentProject;
     $directStatusMail->mailToLeader=$mailToLeader;
     $directStatusMail->mailToManager=$mailToManager;
     $directStatusMail->mailToSubscribers=$mailToSubscribers;
