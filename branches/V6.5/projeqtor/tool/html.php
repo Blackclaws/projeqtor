@@ -77,6 +77,18 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idProductOrComponent')) {
     $critFld='idProduct';
   }
+  if($col=='idProfile'){
+    $idPrj = $obj->id;
+    $user=new User();
+    $prf = new Profile(getSessionUser()->getProfile($idPrj));
+    $lstPrf=$prf->getSqlElementsFromCriteria(null,false,"idle=0 and ".(($prf->sortOrder)?'sortOrder>='.$prf->sortOrder:'1=1'),"sortOrder asc");
+    $listPrf=array();
+    foreach ($lstPrf as $profile) {
+      $listPrf[$profile->id]=$profile->id;
+    }
+    $critFld='id';
+    $critVal=$listPrf;
+  }
   if ($col=='idResource' and $critFld=='idProject') {
   	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
@@ -463,6 +475,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $orgaLevelArray=array();      
   }
 // END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+// KROWRY
+
   
   $pluginObjectClass=substr($col,2);
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);

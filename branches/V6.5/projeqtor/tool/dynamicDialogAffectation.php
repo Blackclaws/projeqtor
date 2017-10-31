@@ -127,7 +127,7 @@ $objTeam=($obj)?get_class($obj):'';
                 id="affectationProfile" name="affectationProfile" 
                 class="input" value="<?php if($mode=="edit"){ echo $affectation->idProfile;}else if($mode=="add" && $class=="Resource"){echo $resource->idProfile;}else if($mode=="add" && $class=="Contact"){echo $contact->idProfile;}else if($mode=="add" && $class=="User"){echo $user->idProfile;}?>" 
                <?php echo ($objTeam=="Team")?"required=false":"";?> <?php echo ($objTeam=="Team")?"readonly=readonly":"";?>>
-                 <?php htmlDrawOptionForReference('idProfile', null, null,false);?>
+                 <?php htmlDrawOptionForReference('idProfile', null, $obj);?>
                </select>
                </div>
              </td>    

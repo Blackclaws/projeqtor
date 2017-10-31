@@ -4406,7 +4406,7 @@ abstract class SqlElement {
           continue; // exist : not corresponding type
         }
       }
-      if ($statusMail->mailToUser == 0 and $statusMail->mailToResource == 0 and $statusMail->mailToProject == 0 and $statusMail->mailToLeader == 0 and $statusMail->mailToContact == 0 and $statusMail->mailToOther == 0 and $statusMail->mailToManager == 0 and $statusMail->mailToAssigned == 0 and $statusMail->mailToSubscribers == 0 and $statusMail->mailToSponsor == 0 and $statusMail->mailToParentIncludingParentProject == 0) {
+      if ($statusMail->mailToUser == 0 and $statusMail->mailToResource == 0 and $statusMail->mailToProject == 0 and $statusMail->mailToLeader == 0 and $statusMail->mailToContact == 0 and $statusMail->mailToOther == 0 and $statusMail->mailToManager == 0 and $statusMail->mailToAssigned == 0 and $statusMail->mailToSubscribers == 0 and $statusMail->mailToSponsor == 0 and $statusMail->mailToProjectIncludingParentProject == 0) {
         continue; // exit not a status for mail sending (or disabled)
       }
       if ($statusMail->mailToUser) {
@@ -4439,9 +4439,9 @@ abstract class SqlElement {
           }
         }
       }
-      if ($statusMail->mailToProject or $statusMail->mailToLeader or $statusMail->mailToParentIncludingParentProject) {
+      if ($statusMail->mailToProject or $statusMail->mailToLeader or $statusMail->mailToProjectIncludingParentProject) {
         $aff = new Affectation ();
-        if ($statusMail->mailToParentIncludingParentProject) {
+        if ($statusMail->mailToProjectIncludingParentProject) {
           $proj = new Project($idProject); 
           $critWhere="idProject in ".transformValueListIntoInClause($proj->getTopProjectList(true));
           $affList = $aff->getSqlElementsFromCriteria ( null, false, $critWhere);
@@ -4452,7 +4452,7 @@ abstract class SqlElement {
         if ($affList and count ( $affList ) > 0) {
           foreach ( $affList as $aff ) {
             $resource = new Resource ( $aff->idResource );
-            if ($statusMail->mailToProject or $statusMail->mailToParentIncludingParentProject) {
+            if ($statusMail->mailToProject or $statusMail->mailToProjectIncludingParentProject) {
               // Change on V4.4.0 oly send mail if user has read access to item
               if ($aff->idResource == getSessionUser ()->id) {
                 $usr = getSessionUser ();
