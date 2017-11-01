@@ -64,6 +64,13 @@ include "header.php";
 // Graph
 if (! testGraphEnabled()) { return;}
 
+if($idProject == ' ' ){
+  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+  echo i18n('no project Selected');
+  echo '</div>';
+  exit;
+}
+
 // project seleted without date
 if ($idProject AND ($startDateReport == null OR $endDateReport == null)) {
   $proj = new ProjectPlanningElement($idProject);
@@ -72,7 +79,7 @@ if ($idProject AND ($startDateReport == null OR $endDateReport == null)) {
       $startDateReport = $proj->realStartDate;
     }elseif ($proj->plannedStartDate != null){
       $startDateReport = $proj->plannedStartDate;
-    }elseif ($proj->validatedStartDate != null){
+    }elseif ($proj->validatedStartDate != null){     
       $startDateReport = $proj->validatedStartDate;
     }elseif ($proj->initialStartDate != null){
       $startDateReport = $proj->initialStartDate;
@@ -130,7 +137,6 @@ if($element == 'activities' or $element =='both'){
 
   $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
   $result=Sql::query($query);
-  
   $tabResource = array();
 
   while ($line = Sql::fetchLine($result)) {
@@ -143,7 +149,7 @@ if($element == 'activities' or $element =='both'){
   }
   
 }elseif($element == 'tickets'){
-  
+
   $querySelect = " SELECT DISTINCT  workelement.idUser,
                           workelement.refId as idTicket,
 			                    workelement.realwork,
@@ -181,6 +187,7 @@ if($element == 'activities' or $element =='both'){
   
   $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
   $result=Sql::query($query);
+
   $tabResource = array();
   while ($line = Sql::fetchLine($result)) {
     $idResource = $line['idUser'];
@@ -234,16 +241,19 @@ foreach ($tabDate as $idResource3=>$val){
     }
   }
 }
+// $resourceName = array();
+// foreach ($tabArray3 as $idResource=>$value){
+//   $resourceName[]=SqlList::getNameFromId('Resource',$idResource);
+// }
 
-$resourceName = array();
-foreach ($tabArray3 as $idResource=>$value){
-  $resourceName[]=SqlList::getNameFromId('Resource',$idResource);
-}
 $nb = array();
 $dateAct1 = array();
 $indice = array();
+
 foreach ($tabArray3 as $id=>$value){
+  $i = 0;
   foreach ($value as $idd=>$val){
+    $i++;
     $dateAct1[$idd] = $idd;
     if ($scale=='day') {
       $idd = htmlFormatDate($idd);
@@ -257,16 +267,21 @@ foreach ($tabArray3 as $id=>$value){
       $quarter=1+intval(($month-1)/3);
       $idd=$year.'-Q'.$quarter;
     }
-    if ( array_key_exists($idd, $nb)) {
-      $nb[$idd] += $val['nb'];
-      if($val['nb']==1){
-        $indice[$idd] = ((($nb[$idd]-$val['nb'])*$indice[$idd])+ $val['indice'] ) / $nb[$idd];
-      }else{
-        $indice[$idd] = ((($nb[$idd]-$val['nb'])*$indice[$idd])+ $val['nb']*$val['indice'] ) / $nb[$idd];
-      }
+    if($i == 1 ){
+      $nb[$id][$idd] = $val['nb'];
+      $indice[$id][$idd] = round($val['indice'],2);
     }else{
-      $nb[$idd] = $val['nb'];
-      $indice[$idd] = $val['indice'];
+      if ( array_key_exists($idd, $nb[$id])) {
+        $nb[$id][$idd] += $val['nb'];        
+        if($val['nb']==1){
+          $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['indice'] ) / $nb[$id][$idd],2);
+        }else{
+          $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['nb']*$val['indice'] ) / $nb[$id][$idd],2);
+        }
+      }else{
+        $nb[$id][$idd] = $val['nb'];
+        $indice[$id][$idd] = round($val['indice'],2);
+      }
     }
   }
 }
@@ -357,9 +372,10 @@ if($element == "both"){
   foreach ($tabArray4 as $idResource=>$value){
     $resourceName2[]=SqlList::getNameFromId('Resource',$idResource);
   }
-  
+
   foreach ($tabArray4 as $id=>$value){
     foreach ($value as $idd=>$val){
+      $i++;
       $dateAct1[$idd] = $idd;
       if ($scale=='day') {
         $idd = htmlFormatDate($idd);
@@ -373,34 +389,26 @@ if($element == "both"){
         $quarter=1+intval(($month-1)/3);
         $idd=$year.'-Q'.$quarter;
       }
-      if ( array_key_exists($idd, $nb)) {
-        $nb[$idd] += $val['nb'];
-        if($val['nb']==1){
-          $indice[$idd] = ((($nb[$idd]-$val['nb'])*$indice[$idd])+ $val['indice'] ) / $nb[$idd];
+        if ( array_key_exists($idd, $nb[$id])) {
+          $nb[$id][$idd] += $val['nb'];
+          if($val['nb']==1){
+            $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['indice'] ) / $nb[$id][$idd],2);
+          }else{
+            $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['nb']*$val['indice'] ) / $nb[$id][$idd],2);
+          }
         }else{
-          $indice[$idd] = ((($nb[$idd]-$val['nb'])*$indice[$idd])+ $val['nb']*$val['indice'] ) / $nb[$idd];
-        }
-      }else{
-        $nb[$idd] = $val['nb'];
-        $indice[$idd] = $val['indice'];
-      }
+          $nb[$id][$idd] = $val['nb'];
+          $indice[$id][$idd] = round($val['indice'],2);
+        }   
     }
   }
-  
+  //no value
   if(count($tabDate) == 0  && count($tabDate2) == 0 ){
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('reportNoData');
     echo '</div>';
     exit;
   }
-  
-}
-
-if (!$idProject) {
-  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
-  echo i18n('No idProject selected');
-  echo '</div>';
-  exit;
 }
 
 $start = $startDateReport;
@@ -471,24 +479,59 @@ $arrLabel=array();
 foreach($dateAct as $date){
   $arrLabel[]=$date;
 }
-asort($arrLabel);
+
 foreach ($arrLabel as $val){
-  if (! array_key_exists($val, $nb)) {
-    $nb[$val]=0;
+  foreach ($nb as $iddd=>$tabNumber){
+    if (! array_key_exists($val, $nb[$iddd])) {
+      $nb[$iddd][$val]=0;
+    }
+    ksort( $nb[$iddd]);
   }
-  if (! array_key_exists($val, $indice)) {
-    $indice[$val]=VOID;
+  foreach ($indice as $idddd=>$tabNumber){
+    if (! array_key_exists($val, $indice[$idddd])) {
+      $indice[$idddd][$val]=VOID;
+    }
+    ksort( $indice[$idddd]);
   }
 }
-ksort( $nb);
-ksort( $indice);
-$mydates = array();
+
+// if($scale != 'day'){
+//   ksort( $nb);
+// }else{
+//   ksort( $nb);
+// }
+
+// ksort( $indice);
+
+$datesResource = array();
 foreach ($nb as $id=>$value){
-  $mydates[]= $id;
+ foreach ($value as $idddd=>$val){
+   $datesResource[$id][]= $idddd;
+ }
+}
+
+//DRAW TODAY
+if($scale!='day'){
+  $indexToday=0;
+  if ($scale=='week') {
+    $today=weekFormat(date('Y-m-d'));
+  }elseif ($scale=='month'){
+    $today = date('Y-m',strtotime($today));
+  }elseif ($scale=='quarter'){
+    $year=date('Y',strtotime($today));
+    $month=date('m',strtotime($today));
+    $quarter=1+intval(($month-1)/3);
+    $today=$year.'-Q'.$quarter;
+  }
+  foreach ($datesResource[1] as $val){
+    if ($val<$today){
+      $indexToday++;
+    }
+  }
 }
 
 //modulo scale
-$modulo=intVal(50*count($mydates)/$graphWidth);
+$modulo=intVal(50*count($datesResource)/$graphWidth);
 if ($scale=='day' or $scale=='week') {
   if ($modulo<0.5) $modulo=0;
 }elseif ($scale == 'month' or $scale =='quarter'){
@@ -499,15 +542,16 @@ $maxPlotted=30; // max number of point to get plotted lines. If over lines are n
   
 // GRAPH INDICE
 $MyData = new pData();
-
-$MyData->addPoints($indice,"test");
-$MyData->addPoints($mydates,"myDates");
-
-$MyData->setAxisName(0,"Indice");
-
-$MyData->setSerieDescription("test",$resourceName[0]);
-
+$dateId = "";
+foreach ($indice as $id=>$val){
+  $name = SqlList::getNameFromId('Resource',$id);
+  $MyData->addPoints($val,$name);
+  $MyData->setSerieDescription($name,$name);
+  $dateIdResource =  $id;
+}
+$MyData->addPoints($datesResource[$dateIdResource],"myDates");
 $MyData->setAbscissa("myDates");
+$MyData->setAxisName(0,"Indice");
 
 /* Je crée l'image qui contiendra mon graphique précédemment crée */
 $myPicture = new pImage($graphWidth,$graphHeight,$MyData);
@@ -525,28 +569,37 @@ $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verda
 
 /* J'indique le titre de mon graphique, son positionnement sur l'image et sa police */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
-$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndicator"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
-
+$myPicture->drawText($graphWidth/2,50,i18n("reportPerformanceIndicator"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 /* Draw the scale */
 $myPicture->setGraphArea(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75));
 $myPicture->drawFilledRectangle(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
 $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
-    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
     "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndice"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 $myPicture->drawScale($formatGrid);
-
 $myPicture->Antialias = TRUE;
 
 //courbe and color
-$MyData->setSerieWeight("test",0.1);
-$MyData->setPalette("test",array("R"=>188,"G"=>224,"B"=>46,"Alpha"=>255));
-$MyData->setSerieDrawable("test",true);
-/* Je rajoute des points rouge (plots) en affichant par dessus les données */
+$r = 188;
+$g = 224;
+$b = 46;
+foreach ($indice as $id=>$val){
+  $name = SqlList::getNameFromId('Resource',$id);
+  $MyData->setSerieWeight($name,0.2);
+  $MyData->setPalette($name,array("R"=>$r,"G"=>$g,"B"=>$b,"Alpha"=>255));
+  $MyData->setSerieDrawable($name,true);
+  $r += 75;
+  $g += 20;
+  $b += 10;
+}
+
+/* Je rajoute des points (plots) en affichant par dessus les données */
 $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
 $myPicture->drawLineChart();
 //draw today
@@ -563,14 +616,16 @@ echo '<br/>';
 // GRAPH NUMBER
 $MyData = new pData();
 
-$MyData->addPoints($nb,"test");
-$MyData->addPoints($mydates,"myDates");
-
-$MyData->setAxisName(0,"Number");
-
-$MyData->setSerieDescription("test",$resourceName[0]);
-
+$dateId = "";
+foreach ($nb as $id=>$val){
+  $name = SqlList::getNameFromId('Resource',$id);
+  $MyData->addPoints($val,$name);
+  $MyData->setSerieDescription($name,$name);
+  $dateIdResource =  $id;
+}
+$MyData->addPoints($datesResource[$dateIdResource],"myDates");
 $MyData->setAbscissa("myDates");
+$MyData->setAxisName(0,"Number");
 
 /* Je crée l'image qui contiendra mon graphique précédemment crée */
 $myPicture = new pImage($graphWidth,$graphHeight,$MyData);
@@ -588,7 +643,7 @@ $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verda
 
 /* J'indique le titre de mon graphique, son positionnement sur l'image et sa police */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
    "FontR"=>55,"FontG"=>55,"FontB"=>55,
    "Margin"=>5));
@@ -606,15 +661,26 @@ $myPicture->drawScale($formatGrid);
 $myPicture->Antialias = TRUE;
 
 //courbe and color
-$MyData->setSerieWeight("test",0.1);
-$MyData->setPalette("test",array("R"=>188,"G"=>224,"B"=>46,"Alpha"=>255));
-$MyData->setSerieDrawable("test",true);
-
-$taille = count($mydates);
-
-if($taille < 2){
-  $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
+$r = 188;
+$g = 224;
+$b = 46;
+foreach ($nb as $id=>$val){
+  $name = SqlList::getNameFromId('Resource',$id);
+  $MyData->setSerieWeight($name,0.2);
+  $MyData->setPalette($name,array("R"=>$r,"G"=>$g,"B"=>$b,"Alpha"=>255));
+  $MyData->setSerieDrawable($name,true);
+  $r += 75;
+  $g += 20;
+  $b += 10;
 }
+
+foreach ($datesResource as $val){
+  $taille = count($val);
+  if($taille < 2){
+    $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
+  }
+}
+
 $myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
 $myPicture->drawLineChart();
 
