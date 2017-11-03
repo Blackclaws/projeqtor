@@ -597,7 +597,19 @@
 	          $externalTableAlias = 'T' . $idTab;
 	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
-	          $queryWhereTmp.=($queryWhereTmp=='' or $queryWhereTmp=='(')?'':' and ';
+	          // FIX #3069 PBE - Start
+	          //$queryWhereTmp.=($queryWhereTmp=='' or $queryWhereTmp=='(')?'':' and ';
+	          if (isset($crit['orOperator']) and $crit['orOperator']=="1") {
+	            $queryWhereTmp.=' or ';
+	          } else if (count($arrayFilter) > 1 and $i+1 < count($arrayFilter) and isset($arrayFilter[$i+1]['orOperator']) and $arrayFilter[$i+1]['orOperator'] == '1') {
+	            $queryWhereTmp.=' and ';
+	            for ($j = $i+1; $j < count($arrayFilter) and $arrayFilter[$j]['orOperator']=='1'; $j++) {
+	              $queryWhereTmp.= '(';
+	            }
+	          } else {
+	            $queryWhereTmp.=' and ';
+	          }
+	          // FIX #3069 PBE - End
 	          $queryWhereTmp.=$externalTableAlias . "." . $split[1] . ' ' 
 	                 . $crit['sql']['operator'] . ' '
 	                 . $critSqlValue;
@@ -614,8 +626,7 @@
 	          	for ($j = $i+1; $j < count($arrayFilter) and $arrayFilter[$j]['orOperator']=='1'; $j++) {
 	          		$queryWhereTmp.= '(';
 	          	}
-	          }
-	          else {
+	          } else {
 	          	$queryWhereTmp.=' and ';
 	          }
 	          //END CHANGE qCazelles - Dynamic filter          
