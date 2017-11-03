@@ -66,7 +66,7 @@ if (! testGraphEnabled()) { return;}
 
 if($idProject == ' ' ){
   echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
-  echo i18n('no project Selected');
+   echo i18n('messageNoData',array(i18n('Project'))); // TODO i18n message
   echo '</div>';
   exit;
 }
@@ -111,15 +111,14 @@ if($element == 'activities' or $element =='both'){
   $queryFrom = "   FROM assignment ";
   
   $queryWhere = "  WHERE assignment.refType = 'Activity'";
+  $queryWhere .=  " AND assignment.idProject = ".$idProject;
   
   if($resource != ' '){
     $queryWhere .= " AND assignment.idResource = ".$resource;
+  }else{
+    $queryWhere .= " AND assignment.idResource <> 'NULL' ";
   }
-  
-  if($idProject != ' '){
-  $queryWhere .=  " AND assignment.idProject = ".$idProject;
-  }
-  
+   
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
     $queryWhere .=  "  AND   (assignment.realEndDate >= '$startDateReport'";
@@ -130,7 +129,8 @@ if($element == 'activities' or $element =='both'){
   }
   
   if($endDateReport != null ){
-    $queryWhere .=  "  AND  assignment.realStartDate <= '$endDateReport'";
+    $queryWhere .=  "  AND ( assignment.realStartDate <= '$endDateReport'";
+    $queryWhere .= " OR assignment.realStartDate IS NULL )";
  }
 
   $queryOrder = " order by idResource, idActivite ;";
@@ -144,60 +144,19 @@ if($element == 'activities' or $element =='both'){
      if($line['realEndDate'] == null){
        $line['realEndDate'] = $today;
      }
+     if($line['assignedWork'] == 0){
+       if($line['plannedWork'] != 0){
+         $line['assignedWork'] = $line['plannedWork'];
+       }else{
+         continue;
+       }
+     }
      $tabResource[$idResource][$line['idActivite']][1] = $line['realEndDate'] ;
      $tabResource[$idResource][$line['idActivite']][2] = ($line['plannedWork']) / ($line['assignedWork']) ;
   }
   
 }elseif($element == 'tickets'){
-
-  $querySelect = " SELECT DISTINCT  workelement.idUser,
-                          workelement.refId as idTicket,
-			                    workelement.realwork,
-                          workelement.leftWork,
-                          workelement.plannedWork,
-                          ticket.doneDateTime as date";
-  
-  $queryFrom = "   FROM ticket,workelement ";
-  
-  $queryWhere = "  WHERE  ticket.id = workelement.refId";
-  
-  if($resource != ' '){
-    $queryWhere .= " AND workelement.idUser = ".$resource;
-  }
-  
-  if($idProject != ' '){
-    $queryWhere .=  " AND workelement.idProject = ".$idProject;
-  }
-  
-  if($startDateReport != null ){
-    if($endDateReport != null && $endDateReport >= $today ){
-      $queryWhere .=  "  AND   (ticket.doneDateTime >= '$startDateReport'";
-      $queryWhere .= " OR ticket.doneDateTime IS NULL )";
-    }else{
-      $queryWhere .=  "  AND ticket.doneDateTime >= '$startDateReport'";
-    }
-  }
-  
-  if($endDateReport != null ){
-      $queryWhere .=  "  AND  (ticket.doneDateTime <= '$endDateReport'";
-      $queryWhere .= " OR ticket.doneDateTime IS NULL )"; 
-  } 
-
-  $queryOrder = " order by idUser, idTicket, date ;";
-  
-  $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
-  $result=Sql::query($query);
-
-  $tabResource = array();
-  while ($line = Sql::fetchLine($result)) {
-    $idResource = $line['idUser'];
-    if($line['date'] == null){
-      $line['date'] = $today;
-    }
-    $tabResource[$idResource][$line['idTicket']][1] = date('Y-m-d',strtotime($line['date']));
-    $tabResource[$idResource][$line['idTicket']][2] = ($line['realwork'] + $line['leftWork'] ) / ($line['plannedWork']) ;
-  }
- 
+ $tabResource = ticket($resource,$idProject,$startDateReport,$endDateReport,$today);
 }
 
 //General CASE
@@ -210,157 +169,39 @@ foreach ($tabResource as $idResource=>$valResourceTab){
   ksort($tabDate[$idResource]);
 }
 
-if(!isset($tabDate) ){
-  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
-  echo i18n('reportNoData');
-  echo '</div>';
-  exit;
-}
-
-$tabArray3 = array();
-foreach ($tabDate as $idResource3=>$val){
-  $i = 0;
-  foreach ($val as $date=>$tabIdActIndice){
-    foreach ($tabIdActIndice as $valueIndice){
-      if($i == 0){
-        $tabArray3[$idResource3][$date]['sum'] = $valueIndice;
-        $tabArray3[$idResource3][$date]['nb'] = 1;
-        $tabArray3[$idResource3][$date]['indice'] = ($tabArray3[$idResource3][$date]['sum'] / $tabArray3[$idResource3][$date]['nb']) ;
-      }else{
-        if (array_key_exists($date, $tabArray3[$idResource3])) {
-          $tabArray3[$idResource3][$date]['sum'] = $tabArray3[$idResource3][$date]['sum']+$valueIndice;
-          $tabArray3[$idResource3][$date]['nb'] = $tabArray3[$idResource3][$date]['nb']+1;
-          $tabArray3[$idResource3][$date]['indice'] = ($tabArray3[$idResource3][$date]['sum'] / $tabArray3[$idResource3][$date]['nb']) ;
-        }else{
-          $tabArray3[$idResource3][$date]['sum'] = $valueIndice;
-          $tabArray3[$idResource3][$date]['nb'] = 1;
-          $tabArray3[$idResource3][$date]['indice'] = ($tabArray3[$idResource3][$date]['sum'] / $tabArray3[$idResource3][$date]['nb']) ;
-        }
-      }
-      $i++;
-    }
+if($element !='both'){
+  if(!isset($tabDate) ){
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('reportNoData');
+    echo '</div>';
+    exit;
   }
 }
-// $resourceName = array();
-// foreach ($tabArray3 as $idResource=>$value){
-//   $resourceName[]=SqlList::getNameFromId('Resource',$idResource);
-// }
 
 $nb = array();
 $dateAct1 = array();
 $indice = array();
 
-foreach ($tabArray3 as $id=>$value){
-  $i = 0;
-  foreach ($value as $idd=>$val){
-    $i++;
-    $dateAct1[$idd] = $idd;
-    if ($scale=='day') {
-      $idd = htmlFormatDate($idd);
-    }elseif($scale=='week'){
-      $idd=weekFormat($idd);
-    } elseif ($scale=='month') {
-      $idd=date('Y-m',strtotime($idd));
-    }elseif ($scale=='quarter') {
-      $year=date('Y',strtotime($idd));
-      $month=date('m',strtotime($idd));
-      $quarter=1+intval(($month-1)/3);
-      $idd=$year.'-Q'.$quarter;
-    }
-    if($i == 1 ){
-      $nb[$id][$idd] = $val['nb'];
-      $indice[$id][$idd] = round($val['indice'],2);
-    }else{
-      if ( array_key_exists($idd, $nb[$id])) {
-        $nb[$id][$idd] += $val['nb'];        
-        if($val['nb']==1){
-          $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['indice'] ) / $nb[$id][$idd],2);
-        }else{
-          $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['nb']*$val['indice'] ) / $nb[$id][$idd],2);
-        }
-      }else{
-        $nb[$id][$idd] = $val['nb'];
-        $indice[$id][$idd] = round($val['indice'],2);
-      }
-    }
-  }
-}
-
-if($element == "both"){
-  $querySelect = " SELECT DISTINCT  workelement.idUser,
-                          workelement.refId as idTicket,
-			                    workelement.realwork,
-                          workelement.leftWork,
-                          workelement.plannedWork,
-                          ticket.doneDateTime as date";
+if(isset($tabDate) ){
   
-  $queryFrom = "   FROM ticket,workelement ";
-  
-  $queryWhere = "  WHERE  ticket.id = workelement.refId";
-  
-  if($resource != ' '){
-    $queryWhere .= " AND workelement.idUser = ".$resource;
-  }
-  
-  if($idProject != ' '){
-    $queryWhere .=  " AND workelement.idProject = ".$idProject;
-  }
-  
-  if($startDateReport != null ){
-    if($endDateReport != null && $endDateReport >= $today ){
-      $queryWhere .=  "  AND   (ticket.doneDateTime >= '$startDateReport'";
-      $queryWhere .= " OR ticket.doneDateTime IS NULL )";
-    }else{
-      $queryWhere .=  "  AND ticket.doneDateTime >= '$startDateReport'";
-    }
-  }
-  if($endDateReport != null ){
-    $queryWhere .=  "  AND  (ticket.doneDateTime <= '$endDateReport'";
-    $queryWhere .= " OR ticket.doneDateTime IS NULL )";   
-  }
-  $queryOrder = " order by idUser, idTicket, date ;";
-  
-  $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
-  $result=Sql::query($query);
-  $tabResource = array();
-  while ($line = Sql::fetchLine($result)) {
-    $idResource = $line['idUser'];
-    if($line['date'] == null){
-      $line['date'] = $today;
-    }
-    $tabResource[$idResource][$line['idTicket']][1] = date('Y-m-d',strtotime($line['date']));
-    $tabResource[$idResource][$line['idTicket']][2] = ($line['realwork'] + $line['leftWork'] ) / ($line['plannedWork']) ;
-  }
-  
-  $tabDate2 = array();
-  
-  foreach ($tabResource as $idResource=>$valResourceTab){
-    $i = 0;
-    foreach ($valResourceTab as $idAct=>$value){
-      $i++;
-      $tabDate2[$idResource][$value[1]][$idAct] = $value[2];
-    }
-    ksort($tabDate2[$idResource]);
-  }
-  
-  $tabArray4 = array();
-  foreach ($tabDate2 as $idResource3=>$val){
+  $tabValues1 = array();
+  foreach ($tabDate as $idResource=>$val){
     $i = 0;
     foreach ($val as $date=>$tabIdActIndice){
       foreach ($tabIdActIndice as $valueIndice){
         if($i == 0){
-          $tabArray4[$idResource3][$date]['sum'] = $valueIndice;
-          $tabArray4[$idResource3][$date]['nb'] = 1;
-          $tabArray4[$idResource3][$date]['indice'] = ($tabArray4[$idResource3][$date]['sum'] / $tabArray4[$idResource3][$date]['nb']) ;
+          $tabValues1[$idResource][$date]['sum'] = $valueIndice;
+          $tabValues1[$idResource][$date]['nb'] = 1;
+          $tabValues1[$idResource][$date]['indice'] = ($tabValues1[$idResource][$date]['sum'] / $tabValues1[$idResource][$date]['nb']) ;
         }else{
-          if (array_key_exists($date, $tabArray4[$idResource3])) {
-            $tabArray4[$idResource3][$date]['sum'] = $tabArray4[$idResource3][$date]['sum']+$valueIndice;
-            $tabArray4[$idResource3][$date]['nb'] = $tabArray4[$idResource3][$date]['nb']+1;
-            $tabArray4[$idResource3][$date]['indice'] = ($tabArray4[$idResource3][$date]['sum'] / $tabArray4[$idResource3][$date]['nb']) ;
+          if (array_key_exists($date, $tabValues1[$idResource])) {
+            $tabValues1[$idResource][$date]['sum'] = $tabValues1[$idResource][$date]['sum']+$valueIndice;
+            $tabValues1[$idResource][$date]['nb'] = $tabValues1[$idResource][$date]['nb']+1;
+            $tabValues1[$idResource][$date]['indice'] = ($tabValues1[$idResource][$date]['sum'] / $tabValues1[$idResource][$date]['nb']) ;
           }else{
-            $tabArray4[$idResource3][$date]['sum'] = $valueIndice;
-            $tabArray4[$idResource3][$date]['nb'] = 1;
-            $tabArray4[$idResource3][$date]['indice'] = ($tabArray4[$idResource3][$date]['sum'] / $tabArray4[$idResource3][$date]['nb']) ;
+            $tabValues1[$idResource][$date]['sum'] = $valueIndice;
+            $tabValues1[$idResource][$date]['nb'] = 1;
+            $tabValues1[$idResource][$date]['indice'] = ($tabValues1[$idResource][$date]['sum'] / $tabValues1[$idResource][$date]['nb']) ;
           }
         }
         $i++;
@@ -368,12 +209,8 @@ if($element == "both"){
     }
   }
   
-  $resourceName2 = array();
-  foreach ($tabArray4 as $idResource=>$value){
-    $resourceName2[]=SqlList::getNameFromId('Resource',$idResource);
-  }
-
-  foreach ($tabArray4 as $id=>$value){
+  foreach ($tabValues1 as $id=>$value){
+    $i = 0;
     foreach ($value as $idd=>$val){
       $i++;
       $dateAct1[$idd] = $idd;
@@ -389,8 +226,12 @@ if($element == "both"){
         $quarter=1+intval(($month-1)/3);
         $idd=$year.'-Q'.$quarter;
       }
+      if($i == 1 ){
+        $nb[$id][$idd] = $val['nb'];
+        $indice[$id][$idd] = round($val['indice'],2);
+      }else{
         if ( array_key_exists($idd, $nb[$id])) {
-          $nb[$id][$idd] += $val['nb'];
+          $nb[$id][$idd] += $val['nb'];        
           if($val['nb']==1){
             $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['indice'] ) / $nb[$id][$idd],2);
           }else{
@@ -399,15 +240,92 @@ if($element == "both"){
         }else{
           $nb[$id][$idd] = $val['nb'];
           $indice[$id][$idd] = round($val['indice'],2);
-        }   
+        }
+      }
     }
   }
-  //no value
-  if(count($tabDate) == 0  && count($tabDate2) == 0 ){
+}
+if($element == "both"){
+  $tabResource2 = ticket($resource,$idProject,$startDateReport,$endDateReport,$today);
+  foreach ($tabResource2 as $idResource=>$valResourceTab){
+    $i = 0;
+    foreach ($valResourceTab as $idAct=>$value){
+      $i++;
+      $tabDate2[$idResource][$value[1]][$idAct] = $value[2];
+    }
+    ksort($tabDate2[$idResource]);
+  }
+  
+  //no value ticket and activity
+  if(!isset($tabDate) && !isset($tabDate2) ){
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('reportNoData');
     echo '</div>';
     exit;
+  }
+  
+  $tabValues2 = array();
+  foreach ($tabDate2 as $idResource=>$val){
+    $i = 0;
+    foreach ($val as $date=>$tabIdActIndice){
+      foreach ($tabIdActIndice as $valueIndice){
+        if($i == 0){
+          $tabValues2[$idResource][$date]['sum'] = $valueIndice;
+          $tabValues2[$idResource][$date]['nb'] = 1;
+          $tabValues2[$idResource][$date]['indice'] = ($tabValues2[$idResource][$date]['sum'] / $tabValues2[$idResource][$date]['nb']) ;
+        }else{
+          if (array_key_exists($date, $tabValues2[$idResource])) {
+            $tabValues2[$idResource][$date]['sum'] = $tabValues2[$idResource][$date]['sum']+$valueIndice;
+            $tabValues2[$idResource][$date]['nb'] = $tabValues2[$idResource][$date]['nb']+1;
+            $tabValues2[$idResource][$date]['indice'] = ($tabValues2[$idResource][$date]['sum'] / $tabValues2[$idResource][$date]['nb']) ;
+          }else{
+            $tabValues2[$idResource][$date]['sum'] = $valueIndice;
+            $tabValues2[$idResource][$date]['nb'] = 1;
+            $tabValues2[$idResource][$date]['indice'] = ($tabValues2[$idResource][$date]['sum'] / $tabValues2[$idResource][$date]['nb']) ;
+          }
+        }
+        $i++;
+      }
+    }
+  }
+  
+  $resourceName2 = array();
+  foreach ($tabValues2 as $idResource=>$value){
+    $resourceName2[]=SqlList::getNameFromId('Resource',$idResource);
+  }
+  
+  foreach ($tabValues2 as $id=>$value){
+    foreach ($value as $idd=>$val){
+      $dateAct1[$idd] = $idd;
+      if ($scale=='day') {
+        $idd = htmlFormatDate($idd);
+      }elseif($scale=='week'){
+        $idd=weekFormat($idd);
+      } elseif ($scale=='month') {
+        $idd=date('Y-m',strtotime($idd));
+      }elseif ($scale=='quarter') {
+        $year=date('Y',strtotime($idd));
+        $month=date('m',strtotime($idd));
+        $quarter=1+intval(($month-1)/3);
+        $idd=$year.'-Q'.$quarter;
+      }
+      if ( array_key_exists($id, $nb)) {
+        if ( array_key_exists($idd, $nb[$id])) {
+          $nb[$id][$idd] += $val['nb'];
+          if($val['nb']==1){
+            $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['indice'] ) / $nb[$id][$idd],2);
+          }else{
+            $indice[$id][$idd] = round(((($nb[$id][$idd]-$val['nb'])*$indice[$id][$idd])+ $val['nb']*$val['indice'] ) / $nb[$id][$idd],2);
+          }
+          }else{
+            $nb[$id][$idd] = $val['nb'];
+            $indice[$id][$idd] = round($val['indice'],2);
+          }  
+        }else{
+          $nb[$id][$idd] = $val['nb'];
+          $indice[$id][$idd] = round($val['indice'],2);
+        }   
+    }
   }
 }
 
@@ -456,10 +374,11 @@ if ($startDatePeriod or $endDatePeriod) {
   }
 }
 
-$graphWidth=1200;
-$graphHeight=430;
+$graphWidth=1000;
+$graphHeight=600;
 $indexToday=0;
 $cpt=0;
+
 $modulo=intVal(50*count($dateAct)/$graphWidth);
 if ($modulo<0.5) $modulo=0;
 foreach ($dateAct as $date => $period) {
@@ -480,34 +399,31 @@ foreach($dateAct as $date){
   $arrLabel[]=$date;
 }
 
+$nb2 = array();
+$indice2 =array();
 foreach ($arrLabel as $val){
-  foreach ($nb as $iddd=>$tabNumber){
-    if (! array_key_exists($val, $nb[$iddd])) {
-      $nb[$iddd][$val]=0;
+    foreach ($nb as $iddd=>$tabNumber){
+      if (! array_key_exists($val, $nb[$iddd])) {
+        $nb2[$iddd][$val]=0;
+      }else{
+        $nb2[$iddd][$val]=$nb[$iddd][$val];
+      }
+    } 
+    foreach ($indice as $id=>$tabNumber){
+      if (! array_key_exists($val, $indice[$id])) {
+        $indice2[$id][$val]=VOID;
+      }else{
+        $indice2[$id][$val]=$indice[$id][$val];
+      }
     }
-    ksort( $nb[$iddd]);
-  }
-  foreach ($indice as $idddd=>$tabNumber){
-    if (! array_key_exists($val, $indice[$idddd])) {
-      $indice[$idddd][$val]=VOID;
-    }
-    ksort( $indice[$idddd]);
-  }
 }
 
-// if($scale != 'day'){
-//   ksort( $nb);
-// }else{
-//   ksort( $nb);
-// }
-
-// ksort( $indice);
-
 $datesResource = array();
-foreach ($nb as $id=>$value){
+foreach ($nb2 as $id=>$value){
  foreach ($value as $idddd=>$val){
    $datesResource[$id][]= $idddd;
  }
+ $idDateResource = $id;
 }
 
 //DRAW TODAY
@@ -523,19 +439,12 @@ if($scale!='day'){
     $quarter=1+intval(($month-1)/3);
     $today=$year.'-Q'.$quarter;
   }
-  foreach ($datesResource[1] as $val){
+
+  foreach ($datesResource[$idDateResource] as $val){
     if ($val<$today){
       $indexToday++;
     }
   }
-}
-
-//modulo scale
-$modulo=intVal(50*count($datesResource)/$graphWidth);
-if ($scale=='day' or $scale=='week') {
-  if ($modulo<0.5) $modulo=0;
-}elseif ($scale == 'month' or $scale =='quarter'){
-  if ($modulo<1) $modulo=0;
 }
 
 $maxPlotted=30; // max number of point to get plotted lines. If over lines are not plotted/
@@ -543,17 +452,23 @@ $maxPlotted=30; // max number of point to get plotted lines. If over lines are n
 // GRAPH INDICE
 $MyData = new pData();
 $dateId = "";
-foreach ($indice as $id=>$val){
+foreach ($indice2 as $id=>$val){
   $name = SqlList::getNameFromId('Resource',$id);
   $MyData->addPoints($val,$name);
   $MyData->setSerieDescription($name,$name);
   $dateIdResource =  $id;
 }
+//modulo scale
+$modulo=intVal(50*count($datesResource[$dateIdResource])/$graphWidth);
+if ($scale=='day' or $scale=='week') {
+  if ($modulo<0.5) $modulo=0;
+}elseif ($scale == 'month' or $scale =='quarter'){
+  if ($modulo<1) $modulo=0;
+}
 $MyData->addPoints($datesResource[$dateIdResource],"myDates");
 $MyData->setAbscissa("myDates");
-$MyData->setAxisName(0,"Indice");
+$MyData->setAxisName(0,i18n("indicatorValue"));
 
-/* Je crée l'image qui contiendra mon graphique précédemment crée */
 $myPicture = new pImage($graphWidth,$graphHeight,$MyData);
 
 /* Draw the background */
@@ -567,13 +482,13 @@ $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>1
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
-/* J'indique le titre de mon graphique, son positionnement sur l'image et sa police */
+/* title */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
-$myPicture->drawText($graphWidth/2,50,i18n("reportPerformanceIndicator"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText($graphWidth/2,50,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 /* Draw the scale */
 $myPicture->setGraphArea(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75));
 $myPicture->drawFilledRectangle(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
@@ -581,25 +496,18 @@ $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), 
     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
     "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
     "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
-$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndice"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 $myPicture->drawScale($formatGrid);
 $myPicture->Antialias = TRUE;
 
-//courbe and color
-$r = 188;
-$g = 224;
-$b = 46;
-foreach ($indice as $id=>$val){
+//curve and color
+foreach ($indice2 as $id=>$val){
   $name = SqlList::getNameFromId('Resource',$id);
   $MyData->setSerieWeight($name,0.2);
-  $MyData->setPalette($name,array("R"=>$r,"G"=>$g,"B"=>$b,"Alpha"=>255));
   $MyData->setSerieDrawable($name,true);
-  $r += 75;
-  $g += 20;
-  $b += 10;
 }
 
-/* Je rajoute des points (plots) en affichant par dessus les données */
+/* add plots */
 $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
 $myPicture->drawLineChart();
 //draw today
@@ -617,7 +525,7 @@ echo '<br/>';
 $MyData = new pData();
 
 $dateId = "";
-foreach ($nb as $id=>$val){
+foreach ($nb2 as $id=>$val){
   $name = SqlList::getNameFromId('Resource',$id);
   $MyData->addPoints($val,$name);
   $MyData->setSerieDescription($name,$name);
@@ -625,7 +533,7 @@ foreach ($nb as $id=>$val){
 }
 $MyData->addPoints($datesResource[$dateIdResource],"myDates");
 $MyData->setAbscissa("myDates");
-$MyData->setAxisName(0,"Number");
+$MyData->setAxisName(0,i18n("colWorkElementCount"));
 
 /* Je crée l'image qui contiendra mon graphique précédemment crée */
 $myPicture = new pImage($graphWidth,$graphHeight,$MyData);
@@ -641,7 +549,7 @@ $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>1
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
-/* J'indique le titre de mon graphique, son positionnement sur l'image et sa police */
+/*title */
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
@@ -661,17 +569,10 @@ $myPicture->drawScale($formatGrid);
 $myPicture->Antialias = TRUE;
 
 //courbe and color
-$r = 188;
-$g = 224;
-$b = 46;
-foreach ($nb as $id=>$val){
+foreach ($nb2 as $id=>$val){
   $name = SqlList::getNameFromId('Resource',$id);
   $MyData->setSerieWeight($name,0.2);
-  $MyData->setPalette($name,array("R"=>$r,"G"=>$g,"B"=>$b,"Alpha"=>255));
   $MyData->setSerieDrawable($name,true);
-  $r += 75;
-  $g += 20;
-  $b += 10;
 }
 
 foreach ($datesResource as $val){
@@ -680,6 +581,7 @@ foreach ($datesResource as $val){
     $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
   }
 }
+$myPicture->drawPlotChart(array("DisplayValues"=>false,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
 
 $myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
 $myPicture->drawLineChart();
@@ -692,4 +594,64 @@ echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img style="width:1000px;height:600px" src="' . $imgName . '" />';
 echo '</td></tr></table>';
 echo '<br/>';
+
+//FUNCTION
+function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
+  
+  $querySelect = " SELECT DISTINCT  ticket.idResource,
+                          workelement.refId as idTicket,
+			                    workelement.realwork,
+                          workelement.leftWork,
+                          workelement.plannedWork,
+                          ticket.doneDateTime as date";
+  
+  $queryFrom = "   FROM ticket,workelement ";
+  
+  $queryWhere = "  WHERE  ticket.id = workelement.refId";
+  $queryWhere .=  " AND workelement.idProject = ".$idProject;
+  
+  if($resource != ' '){
+    $queryWhere .= " AND ticket.idResource = ".$resource;
+  }else{
+    $queryWhere .= " AND ticket.idResource <> 'NULL' ";
+  }
+  //  $queryWhere .= " AND workelement.plannedwork > 0 ";
+  
+  if($startDateReport != null ){
+    if($endDateReport != null && $endDateReport >= $today ){
+      $queryWhere .=  "  AND   (ticket.doneDateTime >= '$startDateReport'";
+      $queryWhere .= " OR ticket.doneDateTime IS NULL )";
+    }else{
+      $queryWhere .=  "  AND ticket.doneDateTime >= '$startDateReport'";
+    }
+  }
+  
+  if($endDateReport != null ){
+    $queryWhere .=  "  AND  (ticket.doneDateTime <= '$endDateReport'";
+    $queryWhere .= " OR ticket.doneDateTime IS NULL )";
+  }
+  
+  $queryOrder = " order by idResource, idTicket, date ;";
+  
+  $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
+  $result=Sql::query($query);
+  $tabResource = array();
+  while ($line = Sql::fetchLine($result)) {
+    $idResource = $line['idResource'];
+    if($line['date'] == null){
+      $line['date'] = $today;
+    }
+    if($line['plannedWork'] == 0){
+      if($line['realwork'] != 0){
+        $line['plannedWork'] = $line['realwork'];
+      }else{
+        continue;
+      }
+    }
+      $tabResource[$idResource][$line['idTicket']][1] = date('Y-m-d',strtotime($line['date']));
+      $tabResource[$idResource][$line['idTicket']][2] = ($line['realwork'] + $line['leftWork'] ) / ($line['plannedWork']) ;
+  }
+  
+  return $tabResource;
+}
 ?>
