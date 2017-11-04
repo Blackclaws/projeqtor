@@ -348,7 +348,7 @@
     $where = $whereActivity;
     $whereTicket = $where;
     $whereMeeting = $whereTicket;
-    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_DocumentDiv', 'menuDocument');
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting,$whereDocument, 'Today_DocumentDiv', 'documentsApproval');
   }
   
   function countFrom($list,$idProj,$type, $scope) {

@@ -83,3 +83,6 @@ INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES
 
 INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES 
 (51,'Joblist',0);
+
+INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
+SELECT id, 'static','Documents',null,6,0 FROM `${prefix}resource` where isUser=1 and idle=0;

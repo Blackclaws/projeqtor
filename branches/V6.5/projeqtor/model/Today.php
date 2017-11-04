@@ -40,7 +40,7 @@ class Today extends SqlElement {
   public $sortOrder;
   public $idle;
   
-  public static $staticList=array('Projects','AssignedTasks','ResponsibleTasks','IssuerRequestorTasks','ProjectsTasks');
+  public static $staticList=array('Projects','AssignedTasks','ResponsibleTasks','IssuerRequestorTasks','ProjectsTasks','Documents');
   public $_noHistory=true; // Will never save history for this object
   
   /** ==========================================================================

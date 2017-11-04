@@ -34,20 +34,29 @@ $crit = array('refType'=>"DocumentVersion",'refId'=>$objectId);
 $lstApp = $approver->getSqlElementsFromCriteria($crit,false);
 echo '<table style="width:100%;">';
 echo '<tr>';
-echo '<td class="historyHeader" style="width:25%">' . i18n('colId') . '</td>';
-echo '<td class="historyHeader" style="width:25%">' . i18n('colName') . '</td>';
+echo '<td class="historyHeader" style="width:50%">' . i18n('colName') . '</td>';
 echo '<td class="historyHeader" style="width:25%">' . i18n('colApproved') . '</td>';
 echo '<td class="historyHeader" style="width:25%">' . i18n('colDateApproved') . '</td>';
 echo '</tr>';
 
 foreach ($lstApp as $lstApps){
-  $user = SqlList::getNameFromId('Affectable', $lstApps->idAffectable);
-  echo '<tr><td class="historyData" width="10%">' . $lstApps->id . '</td>';    
-  echo '<td class="historyData" width="14%">' . $user . '</td>';    
-  echo '<td class="historyData" width="23%">' . $lstApps->approved . '</td>';    
+  $user = SqlList::getNameFromId('Affectable', $lstApps->idAffectable); 
+  echo '<td class="historyData" width="14%">' . $user . '</td>';
+  if($lstApps->approved=="1"){
+    echo '<td class="historyData" width="23%" style="text-align:center;"><img src="../view/img/check.png" width="12" height="12" /></td>';  
+  } else {
+    echo '<td class="historyData" width="23%"></td>';
+  }
   echo '<td class="historyData" width="10%">' . $lstApps->approvedDate . '</td></tr>';    
 }
 
-
 ?>
-
+<table style="margin:auto">
+  <tr>
+    <td>
+      <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogListApprover').hide();">
+        <?php echo ucfirst(i18n("closed"));?>
+      </button>
+    </td>
+  </tr>
+</table>

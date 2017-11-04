@@ -131,8 +131,6 @@
         $result["WE#$lstWe->id"]=$arrayWE;
     }
   }
-   debugLog($result);
-//   debugLog("\n\n***************************************\n\n\n");
   foreach ($result as $lstResult=>$resultt){
     $tab="";
     for ($i=1;$i<$resultt["level"];$i++) {
@@ -159,11 +157,6 @@ function addTotal($idProject,$realWork,$leftWork,$plannedWork){
   if($plannedWork) $result["Project#$idProject"]['plannedWork'] += $plannedWork;
   if($leftWork) $result["Project#$idProject"]['leftWork'] += $leftWork;
   if($realWork) $result["Project#$idProject"]['realWork'] += $realWork;
-  if  ($result["Project#$idProject"]['parent']) {
-//   $parent = $result["Project#$idProject"]['parent'];
-//   if(!$result["Project#$idProject"]['parent']) $result["Project#$idProject"]['plannedWork'] += $plannedWork;
-//   if($result["Project#$idProject"]['parent']==$result["Project#$parent"]["refId"]) $result["Project#$parent"]['leftWork'] += $leftWork;
-//   if($result["Project#$idProject"]['parent']==$result["Project#$parent"]["refId"]) $result["Project#$parent"]['realWork'] += $realWork;
-  }
+  if($result["Project#$idProject"]['parent']) addTotal($result["Project#$idProject"]['parent'],$realWork,$leftWork,$plannedWork);
 }
 ?>
