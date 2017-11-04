@@ -5994,18 +5994,26 @@ abstract class SqlElement {
     if (property_exists($this, 'ref1Type') and property_exists($this, 'ref1Id') and property_exists($this, 'ref2Type') and property_exists($this, 'ref2Id')) {
       $result['ref1Name']=self::getRefName($this->ref1Type, $this->ref1Id);
       $result['ref2Name']=self::getRefName($this->ref2Type, $this->ref2Id);
-      if ($parent and get_class($parent)==$this->ref1Type and $parent->id==$this->ref1Id and !property_exists($this,'refType') and !property_exists($this, 'refName')) {
+    if ($parent and get_class($parent)==$this->ref1Type and $parent->id==$this->ref1Id and !property_exists($this,'refType') and !property_exists($this, 'refName')) {
         $result['refType']=$this->ref2Type;
         $result['refId']=$this->ref2Id;
         $result['refName']=$result['ref2Name'];
         $result['refTypeName']=i18n($this->ref2Type);
         $result['refStatus']=self::getRefStatus($this->ref2Type, $this->ref2Id);
+        $result['refResponsible']=self::getRefResponsible($this->ref2Type, $this->ref2Id);
+        $result['refInitialDueDate']=self::getRefInitialDueDate($this->ref2Type, $this->ref2Id);
+        $result['refActualDueDate']=self::getRefActualDueDate($this->ref2Type, $this->ref2Id);
+        $result['refDueDate']=($result['refActualDueDate'])?$result['refActualDueDate']:$result['refInitialDueDate'];
       } else {
         $result['refType']=$this->ref1Type;
         $result['refId']=$this->ref1Id;
         $result['refName']=$result['ref1Name'];
         $result['refTypeName']=i18n($this->ref1Type);
         $result['refStatus']=self::getRefStatus($this->ref1Type, $this->ref1Id);
+        $result['refResponsible']=self::getRefResponsible($this->ref1Type, $this->ref1Id);
+        $result['refInitialDueDate']=self::getRefInitialDueDate($this->ref1Type, $this->ref1Id);
+        $result['refActualDueDate']=self::getRefActualDueDate($this->ref1Type, $this->ref1Id);
+        $result['refDueDate']=($result['refActualDueDate'])?$result['refActualDueDate']:$result['refInitialDueDate'];
       }
     }
     return $result;
@@ -6041,6 +6049,58 @@ abstract class SqlElement {
       if (property_exists($refObj, 'idStatus')) {
         $result=SqlList::getNameFromId('Status',$refObj->idStatus);
       }
+    }
+    return $result;
+  }
+  public static function getRefResponsible($refType,$refId) {
+    $result='';
+    if ($refType and $refId and SqlElement::class_exists($refType)) {
+      if (self::$_lastRefObject and is_object(self::$_lastRefObject)
+          and get_class(self::$_lastRefObject)==$refType and self::$_lastRefObject->id==$refId) {
+            $refObj=self::$_lastRefObject;
+          } else {
+            $refObj=new $refType($refId);
+            self::$_lastRefObject=$refObj;
+          }
+          if (property_exists($refObj, 'idResource')) {
+            $result=SqlList::getNameFromId('Affectable',$refObj->idResource);
+          }
+    }
+    return $result;
+  }
+  public static function getRefInitialDueDate($refType,$refId) {
+    $result='';
+    if ($refType and $refId and SqlElement::class_exists($refType)) {
+      if (self::$_lastRefObject and is_object(self::$_lastRefObject)
+          and get_class(self::$_lastRefObject)==$refType and self::$_lastRefObject->id==$refId) {
+            $refObj=self::$_lastRefObject;
+          } else {
+            $refObj=new $refType($refId);
+            self::$_lastRefObject=$refObj;
+          }
+          if (property_exists($refObj, 'initialDueDate')) {
+            $result=htmlFormatDate($refObj->initialDueDate);
+          } else if (property_exists($refObj, 'initialDueDateTime')) {
+            $result=htmlFormatDate($refObj->initialDueDateTime,true);
+          }
+    }
+    return $result;
+  }
+  public static function getRefActualDueDate($refType,$refId) {
+    $result='';
+    if ($refType and $refId and SqlElement::class_exists($refType)) {
+      if (self::$_lastRefObject and is_object(self::$_lastRefObject)
+          and get_class(self::$_lastRefObject)==$refType and self::$_lastRefObject->id==$refId) {
+            $refObj=self::$_lastRefObject;
+          } else {
+            $refObj=new $refType($refId);
+            self::$_lastRefObject=$refObj;
+          }
+          if (property_exists($refObj, 'actualDueDate')) {
+            $result=htmlFormatDate($refObj->actualDueDate);
+          } else if (property_exists($refObj, 'actualDueDateTime')) {
+            $result=htmlFormatDate($refObj->actualDueDateTime,true);
+          }
     }
     return $result;
   }

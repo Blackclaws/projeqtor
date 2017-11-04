@@ -408,7 +408,7 @@ class BillMain extends SqlElement {
   public function drawSpecificItem($item){
   	global $print,$displayWidth;
   	$labelWidth=175; // To be changed if changes in css file (label and .label)
-  	$largeWidth=( ($displayWidth+30) / 2) - $labelWidth;
+  	$largeWidth=( (intval($displayWidth)+30) / 2) - $labelWidth;
     $result="";
     if ($item=='billingType') {
     	$result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";

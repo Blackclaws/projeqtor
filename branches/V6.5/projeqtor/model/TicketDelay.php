@@ -34,20 +34,21 @@ class TicketDelay extends Delay {
     
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
-  public $idProject;
   public $idTicketType;
   public $idUrgency;
+  public $idProject;
   public $value;
   public $idDelayUnit;
   public $idle;
   public $_sec_void;
   
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="nameTicketType" width="25%">${idTicketType}</th>
-    <th field="nameUrgency" width="25%">${urgency}</th>
+    <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
+    <th field="nameTicketType" width="20%">${idTicketType}</th>
+    <th field="nameUrgency" width="20%">${urgency}</th>
+    <th field="nameProject" width="20%">${idProject}</th>
     <th field="value" width="10%" formatter="numericFormatter">${value}</th>
-    <th field="nameDelayUnit" width="25%" formatter="translateFormatter">${unit}</th>
+    <th field="nameDelayUnit" width="20%" formatter="translateFormatter">${unit}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
@@ -83,8 +84,17 @@ class TicketDelay extends Delay {
   }
 
   public function control() {
+    //debugLog($this->idProject);
     $result="";
-    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idProject='" . Sql::fmtId($this->idProject) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
+    //$crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
+    //debugLog($this->idProject);
+    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";     
+    if(property_exists($this, 'idProject') and $this->idProject){
+      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
+    } else {
+      $crit.=  " and idProject is null";
+    }
+    //debugLog($crit);
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($list)>0) {
       $result.="<br/>" . i18n('errorDuplicateTicketDelay',null);
