@@ -182,7 +182,7 @@ $selectedProject=getSessionValue('project');
 		               <select dojoType="dijit.form.FilteringSelect" 
 		               <?php echo autoOpenFilteringSelect();?>
 		                id="testCaseRunTicket" name="testCaseRunTicket"
-		                class="input"><?php htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false,'idProject',$selectedProject); ?>
+		                class="input"><?php ($idProject)?htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false,'idProject',$idProject):htmlDrawOptionForReference('idTicket',$testCaseRun->idTicket, null, false,'idProject',$selectedProject); ?>
 		               </select>
 		             </td>
                  <td style="vertical-align: top">

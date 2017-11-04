@@ -61,7 +61,7 @@ if ($resource!="") {
   $headerParameters.= i18n("Resource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$resource)) . '<br/>';
 }
 include "header.php";
-// Graph
+
 if (! testGraphEnabled()) { return;}
 
 if($idProject == ' ' ){
@@ -103,42 +103,39 @@ $end="";
 if($element == 'activities' or $element =='both'){
   
   $querySelect = " SELECT DISTINCT  assignment.idResource,
-                          assignment.refId as idActivite,
-			                    assignment.plannedWork,
-                          assignment.assignedWork,
-                          assignment.realEndDate ";
+                                    assignment.refId as idActivite,
+          			                    assignment.plannedWork,
+                                    assignment.assignedWork,
+                                    assignment.realEndDate ";
   
   $queryFrom = "   FROM assignment ";
   
   $queryWhere = "  WHERE assignment.refType = 'Activity'";
-  $queryWhere .=  " AND assignment.idProject = ".$idProject;
-  
+  $queryWhere .= " AND  assignment.idProject = ".$idProject;
   if($resource != ' '){
     $queryWhere .= " AND assignment.idResource = ".$resource;
   }else{
     $queryWhere .= " AND assignment.idResource <> 'NULL' ";
   }
-   
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
-    $queryWhere .=  "  AND   (assignment.realEndDate >= '$startDateReport'";
-      $queryWhere .= " OR assignment.realEndDate IS NULL )";
+      $queryWhere .=  " AND   (assignment.realEndDate >= '$startDateReport'";
+      $queryWhere .= "         OR assignment.realEndDate IS NULL )";
     }else{
-      $queryWhere .=  "  AND assignment.realEndDate >= '$startDateReport'";
+      $queryWhere .= "  AND assignment.realEndDate >= '$startDateReport'";
     }
   }
-  
   if($endDateReport != null ){
     $queryWhere .=  "  AND ( assignment.realStartDate <= '$endDateReport'";
-    $queryWhere .= " OR assignment.realStartDate IS NULL )";
+    $queryWhere .= "      OR assignment.realStartDate IS NULL )";
  }
 
   $queryOrder = " order by idResource, idActivite ;";
 
   $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
   $result=Sql::query($query);
+  
   $tabResource = array();
-
   while ($line = Sql::fetchLine($result)) {
      $idResource = $line['idResource'];
      if($line['realEndDate'] == null){
@@ -448,7 +445,28 @@ if($scale!='day'){
 }
 
 $maxPlotted=30; // max number of point to get plotted lines. If over lines are not plotted/
-  
+ 
+if ($team != ' ') {
+  foreach ($indice2 as $idR=>$ress) {
+    $res=new Resource($idR);
+    if ($res->idTeam!=$team) {
+      unset($indice2[$idR]);
+    }
+  }
+  foreach ($nb2 as $idR=>$ress) {
+    $res=new Resource($idR);
+    if ($res->idTeam!=$team) {
+      unset($nb2[$idR]);
+    }
+  }
+  if (count($nb2) == 0) {
+    echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+    echo i18n('reportNoData');
+    echo '</div>';
+    exit;
+  }
+}
+
 // GRAPH INDICE
 $MyData = new pData();
 $dateId = "";
@@ -615,8 +633,6 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   }else{
     $queryWhere .= " AND ticket.idResource <> 'NULL' ";
   }
-  //  $queryWhere .= " AND workelement.plannedwork > 0 ";
-  
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
       $queryWhere .=  "  AND   (ticket.doneDateTime >= '$startDateReport'";
