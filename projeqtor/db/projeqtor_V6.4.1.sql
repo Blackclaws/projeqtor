@@ -5,5 +5,5 @@
 -- // Date : 2017-09-23                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}dependency` CHANGE `successorId` `successorId` INT(12) UNSIGNED DEFAULT NULL;
-ALTER TABLE `${prefix}dependency` CHANGE `predecessorId` `predecessorId` INT(12) UNSIGNED  DEFAULT NULL;
+ALTER TABLE `${prefix}dependency` ALTER COLUMN `successorId` SET DEFAULT NULL;
+ALTER TABLE `${prefix}dependency` ALTER COLUMN `predecessorId` SET DEFAULT NULL;

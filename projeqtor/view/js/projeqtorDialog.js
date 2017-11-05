@@ -2224,7 +2224,7 @@ function assignmentChangeResource() {
     url : '../tool/getSingleData.php?dataType=resourceRole&idResource='+idResource,
     handleAs : "text",
     load : function(data) {
-      dijit.byId('assignmentIdRole').set('value', parseInt(data));
+      if (data) dijit.byId('assignmentIdRole').set('value', parseInt(data));
     }
   });
 }
