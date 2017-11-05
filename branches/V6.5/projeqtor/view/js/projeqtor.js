@@ -1447,7 +1447,7 @@ function finalizeMessageDisplay(destination, validationType) {
           	loadContent("../tool/dynamicDialogKanbanGetObjectStream.php","dialogKanbanGetObjectStream","noteFormStreamKanban");   	
           } 
           // Need also to refresh History
-          if (dojo.byId(dojo.byId('objectClass').value + '_history')) {
+          if (dojo.byId(dojo.byId('objectClass').value + '_history') && dojo.byId(dojo.byId('objectClass').value + '_history').style.display!='none') {
             loadContent("objectDetail.php?refreshHistory=true", dojo
                 .byId('objectClass').value
                 + '_history', 'listForm');
@@ -1494,8 +1494,7 @@ function finalizeMessageDisplay(destination, validationType) {
                   .byId('objectClass').value
                   + '_BillLine', 'listForm');
             }
-            if (dojo.byId(dojo.byId('objectClass').value
-                + '_checklistDefinitionLine')) {
+            if (dojo.byId(dojo.byId('objectClass').value + '_checklistDefinitionLine')) {
               loadContent(
                   "objectDetail.php?refreshChecklistDefinitionLines=true", dojo
                       .byId('objectClass').value
