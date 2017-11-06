@@ -1452,9 +1452,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
           echo '<span style="width:20px; position: absolute; left: 5px;" id="alertId" >';
           if ($alertLevel == 'ALERT') {
-            echo '<image src="../view/css/images/indicatorAlert32.png" />';
+            echo '<image style="z-index:3;position:relative" src="../view/css/images/indicatorAlert32.png" />';
           } else {
-            echo '<image src="../view/css/images/indicatorWarning32.png" />';
+            echo '<image style="z-index:3;position:relative" src="../view/css/images/indicatorWarning32.png" />';
           }
           echo '</span>';
           echo '<div dojoType="dijit.Tooltip" connectId="alertId" position="below">';
