@@ -957,8 +957,12 @@ abstract class SqlElement {
       // indicators
       if (SqlList::getIdFromTranslatableName ( 'Indicatorable', get_class ( $this ) )) {
         $indDef = new IndicatorDefinition ();
-        $crit = array('nameIndicatorable' => get_class ( $this ), 'idle' => '0');
+        $crit = array('nameIndicatorable' => get_class ( $this ), 'idle' => '0','idProject' => $this->idProject);
         $lstInd = $indDef->getSqlElementsFromCriteria ( $crit, false );
+        if(!$lstInd){
+          $crit = array('nameIndicatorable' => get_class ( $this ), 'idle' => '0','idProject' =>"");
+          $lstInd = $indDef->getSqlElementsFromCriteria ( $crit, false );
+        }
         foreach ( $lstInd as $ind ) {
           $fldType = 'id' . ((get_class ( $this ) == 'TicketSimple') ? 'Ticket' : get_class ( $this )) . 'Type';
           if (! $ind->idType or $ind->idType == $this->$fldType) {
@@ -4331,6 +4335,7 @@ abstract class SqlElement {
       $canBeSend = ! SqlList::getFieldFromId ( "Project", $idProject, "isUnderConstruction" );
     }
     $statusMailList = array();
+    $statusMail = new StatusMail ();
     $sender = Parameter::getGlobalParameter ( 'paramMailSender' );
     if ($directStatusMail) { // Direct Send Mail
       $statusMailList = array($directStatusMail->id => $directStatusMail);
@@ -4345,7 +4350,7 @@ abstract class SqlElement {
       if (! $mailable or ! $mailable->id) {
         return false; // exit if not mailable object
       }
-      $crit = "idle='0' and idMailable='" . $mailable->id . "' and ( false ";
+      $crit = "idle='0' and idProject='" . $this->idProject ."' and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
         $crit .= "  or idStatus='" . $this->idStatus . "' ";
       }
@@ -4389,8 +4394,56 @@ abstract class SqlElement {
         $crit .= " or idEvent='13' ";
       }
       $crit .= ")";
-      $statusMail = new StatusMail ();
       $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
+      if(!$statusMailList){
+          $crit = "idle='0' and idProject is null and idMailable='" . $mailable->id . "' and ( false ";
+          if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
+            $crit .= "  or idStatus='" . $this->idStatus . "' ";
+          }
+          if ($responsibleChange) {
+            $crit .= " or idEvent='1' ";
+          }
+          if ($noteAdd) {
+            $crit .= " or idEvent='2' ";
+          }
+          if ($attachmentAdd) {
+            $crit .= " or idEvent='3' ";
+          }
+          if ($noteChange) {
+            $crit .= " or idEvent='4' ";
+          }
+          if ($descriptionChange) {
+            $crit .= " or idEvent='5' ";
+          }
+          if ($resultChange) {
+            $crit .= " or idEvent='6' ";
+          }
+          if ($assignmentAdd) {
+            $crit .= " or idEvent='7' ";
+          }
+          if ($assignmentChange) {
+            $crit .= " or idEvent='8' ";
+          }
+          if ($anyChange) {
+            $crit .= " or idEvent='9' ";
+          }
+          if ($affectationAdd) {
+            $crit .= " or idEvent='10' ";
+          }
+          if ($affectationChange) {
+            $crit .= " or idEvent='11' ";
+          }
+          if ($linkAdd) {
+            $crit .= " or idEvent='12' ";
+          }
+          if ($linkDelete) {
+            $crit .= " or idEvent='13' ";
+          }
+          $crit .= ")";
+          $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
+      }
+          debugLog($crit);
+          debugLog($statusMailList);
     }
     if (count ( $statusMailList ) == 0 || (! $directStatusMail && ! $canBeSend)) {
       return false; // exit not a status for mail sending (or disabled)
