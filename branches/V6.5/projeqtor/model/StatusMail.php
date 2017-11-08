@@ -35,6 +35,7 @@ class StatusMail extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idMailable;
   public $idType;
+  public $idProject;
   public $idStatus;
   public $idEvent;
   public $idle;
@@ -57,9 +58,10 @@ class StatusMail extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameMailable" formatter="translateFormatter" width="14%" >${idMailable}</th>
+    <th field="nameMailable" formatter="translateFormatter" width="11%" >${idMailable}</th>
     <th field="nameType" formatter="nameFormatter" width="9%" >${type}</th>
-    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${newStatus}</th>
+    <th field="nameProject" width="7%">${idProject}</th>
+    <th field="colorNameStatus" width="6%" formatter="colorNameFormatter">${newStatus}</th>
     <th field="nameEvent" formatter="translateFormatter" width="10%" >${orOtherEvent}</th>
     <th field="mailToContact" width="6%" formatter="booleanFormatter" >${mailToContact}</th>    
     <th field="mailToUser" width="6%" formatter="booleanFormatter" >${mailToUser}</th>
@@ -132,6 +134,11 @@ class StatusMail extends SqlElement {
       $crit.=" and idType='" . Sql::fmtId($this->idType) . "'";
     } else {
       $crit.=" and idType is null";	
+    }
+    if(property_exists($this, 'idProject') and $this->idProject){
+      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
+    } else {
+      $crit.=  " and idProject is null";
     }
     $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);

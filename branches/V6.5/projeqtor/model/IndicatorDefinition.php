@@ -37,6 +37,7 @@ class IndicatorDefinition extends SqlElement {
   public $name;
   public $nameIndicatorable;
   public $idType;
+  public $idProject;
   public $idIndicator;
   public $codeIndicator;
   public $typeIndicator;
@@ -78,7 +79,8 @@ class IndicatorDefinition extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameIndicatorable" formatter="translateFormatter" width="15%" >${element}</th>
     <th field="nameIndicator" width="20%" formatter="translateFormatter">${idIndicator}</th>
-    <th field="nameType" width="10%" >${type}</th>
+    <th field="nameType" width="5%" >${type}</th>
+    <th field="nameProject" width="15%" >${idProject}</th>
     <th field="warningValue" width="8%" formatter="numericFormatter">${warning}</th>
     <th field="nameWarningDelayUnit" width="12%" formatter="translateFormatter">${unit}</th>
     <th field="alertValue" width="8%" formatter="numericFormatter">${alert}</th>
@@ -196,6 +198,7 @@ class IndicatorDefinition extends SqlElement {
     $iv=new IndicatorValue();
     $iv->purge("idIndicatorDefinition='".$this->id."'");
   }
+  
   private function updateExistingIndicatorValue() {
     $iv=new IndicatorValue();
     $ivList=$iv->getSqlElementsFromCriteria(array('idIndicatorDefinition'=>$this->id));
@@ -209,10 +212,11 @@ class IndicatorDefinition extends SqlElement {
     }
   }
   
-    /** ==========================================================================
+   /** ==========================================================================
    * Return the validation sript for some fields
    * @return the validation javascript (for dojo framework)
    */
+  
   public function getValidationScript($colName) {
     if ($this->mailToOther=='1') {
       self::$_fieldsAttributes['otherMail']='';
@@ -271,10 +275,18 @@ class IndicatorDefinition extends SqlElement {
     //if (! trim($this->idType)) {
     //  $result.='<br/>' . i18n('messageMandatory',array(i18n('colType')));
     //}
-    $crit=array('idIndicatorable'=>trim($this->idIndicatorable),
-                'idIndicator'=>trim($this->idIndicator),
-                'idType'=>trim($this->idType));
-    $elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
+    $crit="idIndicatorable='" . trim($this->idIndicatorable) . "' and idIndicator='" . trim($this->idIndicator) . "' and idType='" . trim($this->idType) . "'";
+//     $crit=array('idIndicatorable'=>trim($this->idIndicatorable),
+//                 'idIndicator'=>trim($this->idIndicator),
+//                 'idType'=>trim($this->idType));
+    if(property_exists($this, 'idProject') and $this->idProject){
+      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
+    } else {
+      $crit.=  " and idProject is null";
+    }
+    debugLog($crit);
+    //$elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
+    $elt=$this->getSqlElementsFromCriteria(null, false, $crit);
     if ($elt and $elt->id and $elt->id!=$this->id) {
       $result.='<br/>' . i18n('errorDuplicateIndicator');
     }

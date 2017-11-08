@@ -86,3 +86,7 @@ INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES
 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','Documents',null,6,0 FROM `${prefix}resource` where isUser=1 and idle=0;
+
+ALTER TABLE `${prefix}indicatordefinition` ADD `idProject` int(12);
+
+ALTER TABLE `${prefix}statusmail` ADD `idProject` int(12);
