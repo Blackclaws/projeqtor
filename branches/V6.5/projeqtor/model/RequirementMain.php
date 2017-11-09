@@ -50,6 +50,9 @@ class RequirementMain extends SqlElement {
   public $actualDueDate;
   public $description;
   public $_sec_treatment;
+  //ADDED BY atrancoso ticket #84
+  public $idPriority;
+  //ENS ADD atrancoso
   public $idRequirement;
   public $idStatus;
   public $idResource;

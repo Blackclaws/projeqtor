@@ -2525,6 +2525,55 @@ function getBooleanValueAsString($val) {
   }
 }
 
+// ADD By atrancoso #ticket 84
+function getMonth($max, $SpeMonth, $addPoint = true) {
+  $monthArr = array(
+      i18n ( 'January' ),
+      i18n ( 'February' ),
+      i18n ( 'March' ),
+      i18n ( 'April' ),
+      i18n ( 'May' ),
+      i18n ( 'June' ),
+      i18n ( 'July' ),
+      i18n ( 'August' ),
+      i18n ( 'September' ),
+      i18n ( 'October' ),
+      i18n ( 'November' ),
+      i18n ( 'December' ));
+  if ($max) {
+    foreach ( $monthArr as $num => $month ) {
+      if (mb_strlen ( $month, 'UTF-8' ) > $max) {
+        if ($addPoint) {
+          $monthArr [$num] = mb_substr ( $month, 0, $max - 1, 'UTF-8' ) . '.';
+        } else {
+          $monthArr [$num] = mb_substr ( $month, 0, $max, 'UTF-8' );
+        }
+      }
+    }
+  }
+ return ($monthArr [$SpeMonth]);
+}
+            
+// end ADD atrancoso #ticket 84
+// ADD By atrancoso #ticket 84
+function getNbMonth($max, $addPoint = true) {
+  $monthArr = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
+  if ($max) {
+    foreach ( $monthArr as $num => $month ) {
+      if (mb_strlen ( $month, 'UTF-8' ) > $max) {
+        if ($addPoint) {
+          $monthArr [$num] = mb_substr ( $month, 0, $max - 1, 'UTF-8' ) . '.';
+        } else {
+          $monthArr [$num] = mb_substr ( $month, 0, $max, 'UTF-8' );
+        }
+      }
+    }
+  }
+    return $monthArr;
+}
+
+// end ADD atrancoso #ticket 84
+                        
 function getArrayMonth($max, $addPoint = true) {
   $monthArr = array (
       i18n ( "January" ),

@@ -292,8 +292,10 @@ foreach ($lstTicket as $t) {
   //END ADD qCazelles
   if (substr($t->doneDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->doneDateTime,5,2));
-    $done[$month]+=1;
-    $done[13]+=1;
+    if ($month>=$paramMonth) {
+      $done[$month - ($paramMonth - 1)]+=1;
+      $done[13]+=1;
+    }
   }
   //ADD qCazelles
   else if (substr($t->doneDateTime,0,4)==$paramYear) {
@@ -304,8 +306,10 @@ foreach ($lstTicket as $t) {
   //END ADD qCazelles
   if (substr($t->idleDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->idleDateTime,5,2));
-    $closed[$month]+=1;
-    $closed[13]+=1;
+    if ($month>=$paramMonth) {
+      $closed[$month - ($paramMonth - 1)]+=1;
+      $closed[13]+=1;
+    }
   }
   //ADD qCazellles
   else if (substr($t->idleDateTime,0,4)==$endYear) {
@@ -322,7 +326,18 @@ if (checkNoData($lstTicket)) return;
 // title
 echo '<table width="95%" align="center">';
 echo '<tr><td class="reportTableHeader" rowspan="2">' . i18n('Ticket') . '</td>';
-echo '<td colspan="13" class="reportTableHeader">' . $periodValue . '</td>';
+//CHANGE atrancoso - Ticket #84
+//Old
+//echo '<td colspan="13" class="reportTableHeader">' . $periodValue . '</td>';
+//New
+if ($paramMonth=="01") {
+  echo '<td colspan="13" class="reportTableHeader">' . $periodValue . '</td>';
+} else {
+  echo '<td colspan="' . (13 - $paramMonth) . '" class="reportTableHeader">' . $periodValue . '</td>';
+  echo '<td colspan="' . ($paramMonth - 1) . '" class="reportTableHeader">' . ($periodValue + 1) . '</td>';
+  echo '<td colspan="1" class="reportTableHeader"></td>';
+}
+//END CHANGE atrancoso - Ticket #84
 echo '</tr><tr>';
 $arrMonth=getArrayMonth(4,true);
 

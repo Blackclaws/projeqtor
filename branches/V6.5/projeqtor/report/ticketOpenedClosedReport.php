@@ -150,16 +150,18 @@ $month=getArrayMonth(4, true);
 $created = array();
 $closed = array();
 $arrDays = array();
-for ($i=1;$i<=$paramNbOfDays;$i++) {
-	$created[$i]=0;
-	$closed[$i]=0;
-	$arrDays[$i]='';
-	if ($i == 1) {
-		$arrDays[1] = $month[date('n', $prevDate) - 1].date('Y', $prevDate);
-	}
-	else if (date('d', $prevDate + ($i * 24 * 60 * 60)) == '01') {
-		$arrDays[$i]=$month[date('n', $prevDate + ($i * 24 * 60 * 60)) - 1].date('Y', $prevDate + ($i * 24 * 60 * 60));
-	}
+$arrDays = array();
+for($i = 1; $i <= $paramNbOfDays; $i ++) {
+  $created [$i] = 0;
+  $closed [$i] = 0;
+  $arrDays [$i] = '';
+  if ($i == 1) {
+    $arrDays [1] = $month [date ( 'n', $prevDate ) - 1] . date ( 'Y', $prevDate );
+  } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01' and date ( 'm', $prevDate + ($i * 24 * 60 * 60) ) == '01'){
+    $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1] . date ( 'Y', $prevDate + ($i * 24 * 60 * 60) );
+  } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01') {
+    $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1];
+  }
 }
 
 foreach ($lstTicketNew as $t) {
@@ -221,7 +223,7 @@ $graph->setGraphArea(40,30,$width-140,200);
 $graph->drawGraphArea(252,252,252);
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 $graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,TRUE,0,1, true);
-$graph->drawGrid(5,TRUE,230,230,230,255);
+$graph->drawGrid(0,TRUE,230,230,230,255);
 
 // Draw the line graph
 $graph->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());
