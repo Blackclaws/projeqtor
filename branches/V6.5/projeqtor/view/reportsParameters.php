@@ -671,7 +671,6 @@ foreach ($listParam as $param) {
   			<tr>
     <?php 
     $listPriorities = SqlList::getList('Priority');
-    
     foreach ($listPriorities as $idPriority => $priorityName) {
     	?>
 		    	<td>
@@ -739,7 +738,162 @@ foreach ($listParam as $param) {
 <?php
 
   	//END ADD qCazelles - graphTickets
-  } else {
+    //add atrancoso
+      } else if ($param->paramType=='urgencyList') {
+    ?>
+  	<tr>
+  	<td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+  	<td>
+  		<table>
+  			<tr>
+    <?php 
+    $listUrgency = SqlList::getList('Urgency');
+    
+    foreach ($listUrgency as $idUrgency => $urgencyName) {
+    	?>
+		    	<td>
+		    		<table>
+		    			<tr>
+		    				<td>&nbsp;<?php echo $urgencyName; ?>&nbsp;</td>
+		    			</tr>
+		    			<tr>
+		    				<td style="text-align:center">
+		    				<!-- 
+					    		<select name="priorities[<?php echo $idUrgency; ?>]">
+					    			<option value="YES"><?php echo i18n('displayYes'); ?></option>
+					    			<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    		</select>
+					    	-->
+    							<div dojoType="dijit.form.CheckBox" type="checkbox" 
+    								name="urgency[<?php echo $idUrgency;?>]" style="">
+    							</div>
+					    	</td>
+					    </tr>
+					</table>
+				</td>	
+    	<?php	
+    }
+    ?>
+    	<td>
+    		<table>
+    			<tr>
+    				<td>&nbsp;<?php echo i18n('undefinedUrgency');?>&nbsp;</td>
+    			</tr>
+    			<tr>
+    				<td style="text-align:center">
+    				<!-- 
+    					<select name="urgency[undefined]"">
+					    	<option value="YES"><?php echo i18n('displayYes');?></option>
+					    	<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    </select>
+					-->
+					<div dojoType="dijit.form.CheckBox" type="checkbox" 
+						name="urgency[undefined]" style="">
+					</div>
+					</td>
+    			</tr>
+    		</table>
+    	</td>
+    
+    		</tr>
+    	</table>
+    </td>
+    </tr>
+<?php  
+
+  } else if ($param->paramType=='intInput') {
+  	$defaultValue='';
+  	if ($param->defaultValue) {
+  		$defaultValue=$param->defaultValue;	
+  	}
+?>
+	<tr>
+	<td class="label"><label><?php echo i18n('numberOfDays');?>&nbsp;:&nbsp;</label></td>
+	<td>
+	<div dojoType="dijit.form.TextBox" type="text" class="input" style="width: 150px" id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" value="<?php echo $defaultValue;?>" />
+	</td>
+	</tr>
+<?php
+
+  	//END ADD atrancoso
+  //add atrancoso
+} else if ($param->paramType=='criticalityList') {
+  ?>
+  	<tr>
+  	<td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+  	<td>
+  		<table>
+  			<tr>
+    <?php 
+    $listCriticality = SqlList::getList('Criticality');
+    
+    foreach ($listCriticality as $idCriticality => $criticalityName) {
+    	?>
+		    	<td>
+		    		<table>
+		    			<tr>
+		    				<td>&nbsp;<?php echo $criticalityName; ?>&nbsp;</td>
+		    			</tr>
+		    			<tr>
+		    				<td style="text-align:center">
+		    				<!-- 
+					    		<select name="criticality[<?php echo $idCriticality; ?>]">
+					    			<option value="YES"><?php echo i18n('displayYes'); ?></option>
+					    			<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    		</select>
+					    	-->
+    							<div dojoType="dijit.form.CheckBox" type="checkbox" 
+    								name="criticality[<?php echo $idCriticality;?>]" style="">
+    							</div>
+					    	</td>
+					    </tr>
+					</table>
+				</td>	
+    	<?php	
+    }
+    ?>
+    	<td>
+    		<table>
+    			<tr>
+    				<td>&nbsp;<?php echo i18n('undefinedCriticality');?>&nbsp;</td>
+    			</tr>
+    			<tr>
+    				<td style="text-align:center">
+    				<!-- 
+    					<select name="criticality[undefined]"">
+					    	<option value="YES"><?php echo i18n('displayYes');?></option>
+					    	<option value="NO"><?php echo i18n('displayNo'); ?></option>
+					    </select>
+					-->
+					<div dojoType="dijit.form.CheckBox" type="checkbox" 
+						name="criticality[undefined]" style="">
+					</div>
+					</td>
+    			</tr>
+    		</table>
+    	</td>
+    
+    		</tr>
+    	</table>
+    </td>
+    </tr>
+<?php  
+
+  } else if ($param->paramType=='intInput') {
+  	$defaultValue='';
+  	if ($param->defaultValue) {
+  		$defaultValue=$param->defaultValue;	
+  	}
+?>
+	<tr>
+	<td class="label"><label><?php echo i18n('numberOfDays');?>&nbsp;:&nbsp;</label></td>
+	<td>
+	<div dojoType="dijit.form.TextBox" type="text" class="input" style="width: 150px" id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" value="<?php echo $defaultValue;?>" />
+	</td>
+	</tr>
+<?php
+//end add atrancoso
+  }else {
     $defaultValue='';
     if ($param->defaultValue) {
       if ($param->defaultValue=='currentOrganization') {
