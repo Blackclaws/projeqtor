@@ -4334,8 +4334,10 @@ abstract class SqlElement {
     if ($idProject) {
       $canBeSend = ! SqlList::getFieldFromId ( "Project", $idProject, "isUnderConstruction" );
     }
+    //KROWRY
     $statusMailList = array();
     $statusMail = new StatusMail ();
+    $statusMailPerProject = new StatusMailPerProject();
     $sender = Parameter::getGlobalParameter ( 'paramMailSender' );
     if ($directStatusMail) { // Direct Send Mail
       $statusMailList = array($directStatusMail->id => $directStatusMail);
@@ -4350,7 +4352,11 @@ abstract class SqlElement {
       if (! $mailable or ! $mailable->id) {
         return false; // exit if not mailable object
       }
-      $crit = "idle='0' and idProject='" . $this->idProject ."' and idMailable='" . $mailable->id . "' and ( false ";
+      $crit = "idle='0'";
+      if(property_exists($this, "idProject")){
+        $crit .= "and idProject='" . $this->idProject ."'";
+      }
+      $crit .= "and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
         $crit .= "  or idStatus='" . $this->idStatus . "' ";
       }
@@ -4442,8 +4448,6 @@ abstract class SqlElement {
           $crit .= ")";
           $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
       }
-          debugLog($crit);
-          debugLog($statusMailList);
     }
     if (count ( $statusMailList ) == 0 || (! $directStatusMail && ! $canBeSend)) {
       return false; // exit not a status for mail sending (or disabled)
