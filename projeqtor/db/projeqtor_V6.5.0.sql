@@ -91,66 +91,33 @@ ALTER TABLE `${prefix}indicatordefinition` ADD `idProject` int(12);
 
 ALTER TABLE `${prefix}statusmail` ADD `idProject` int(12);
 
--- ============= IGE START ===================
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`,`menuClass`) VALUES
+(180, 'menuStatusMailPerProject', 88, 'object', 591, 'Project',0, 'Admin'),
+(181, 'menuIndicatorDefinitionPerProject', 88, 'object', 611, 'ReadWriteEnvironment', 0, 'Automation'),
+(182, 'menuTicketDelayPerProject', 88, 'object', 601, 'ReadWriteEnvironment', 0,'Automation');
 
---atrancoso -- ticket #84 curve of requirement open vs closed
-
-ALTER TABLE `${prefix}requirement` ADD idPriority int(12) UNSIGNED NULL;
-
---ALTER TABLE `${prefix}requirement` ADD INDEX( `idPriority`);
-CREATE INDEX `requirementPriority` ON `${prefix}requirement` (`idPriority`);
-
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) 
-VALUES (81, 'reportRequirementCumulatedAnnual', 8, 'requirementCumulatedAnualReport.php', 840, 0, 'L', 0, 1, 1, 1, 1, 1, 0, 0);
-
-INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES (1, 81, 1);
-
-INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(81, 'idProject', 'projectList', 10, 0, NULL, 0), 
-(81, 'idProduct', 'productList', 20, 0, NULL, 0), 
-(81, 'idVersion', 'versionList', 30, 0, NULL, 0), 
-(81, 'month', 'month', 40, 0, 'currentMonth', 0), 
-(81, 'idPriority', 'priorityList', 50, 0, NULL, 0);
-
--- ticket #84  Report requirement nb of days
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) VALUES 
-(82, 'reportRequirementCumulatedNbOfDays', 8, 'requirementNbOfDays.php', 850, 0, 'L', 0, 1, 1, 1, 1, 1, 0, 0);
-
-INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES 
-(1, 82, 1);
-
-INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(82, 'idProject', 'projectList', 10, 0, NULL, 0), 
-(82, 'idProduct', 'productList', 20, 0, NULL, 0), 
-(82, 'idVersion', 'versionList', 30, 0, NULL, 0), 
-(82, 'nbOfDays', 'intInput', 40, 0, 30, 0), 
-(82, 'idPriority', 'priorityList', 50, 0, NULL, 0);
-
--- ticket #84 Curve of requirement BurnDown
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) VALUES 
-(79, 'burnDownCurve', 8, 'burnDownCurve.php', 860, 0, 'L', 0, 1, 1, 1, 1, 1, 0, 0);
-
-INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES 
-(1, 79, 1);
-
-INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(79, 'idProject', 'projectList', 10, 0, NULL, 0), 
-(79, 'idProduct', 'productList', 20, 0, NULL, 0), 
-(79, 'idVersion', 'versionList', 30, 0, NULL, 0), 
-(79, 'IdUrgency', 'urgencyList', 40, 0, NULL, 0), 
-(79, 'idCriticality', 'criticalityList', 50, 0, NULL, 0);
-
--- ticket #84 Curve of tickets burnDown
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) VALUES 
-(80, 'curveOfTicketsBurndown', 3, 'curveOfTickets.php', 398, 0, 'L', 0, 1, 1, 1, 1, 1, 0, 0);
-
-INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES 
-(1, 80, 1);
-
-INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(80, 'idProject', 'projectList', 10, 0, NULL, 0), 
-(80, 'idProduct', 'productList', 20, 0, NULL, 0), 
-(80, 'idVersion', 'versionList', 30, 0, NULL, 0), 
-(80, 'idPriority', 'priorityList', 50, 0, NULL, 0);
-  
--- ============= IGE END ===================
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 180, 1),
+(2, 180, 0),
+(3, 180, 0),
+(4, 180, 0),
+(5, 180, 0),
+(6, 180, 0),
+(7, 180, 0),
+(8, 180, 0),
+(1, 181, 1),
+(2, 181, 1),
+(3, 181, 1),
+(4, 181, 0),
+(5, 181, 0),
+(6, 181, 0),
+(7, 181, 0),
+(8, 181, 0),
+(1, 182, 1),
+(2, 182, 1),
+(3, 182, 1),
+(4, 182, 0),
+(5, 182, 0),
+(6, 182, 0),
+(7, 182, 0),
+(8, 182, 0);
