@@ -68,9 +68,11 @@
 		  </div>
 		  <div dojoType="dijit.layout.ContentPane" region="center">
 			  <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
+			   <?php if (property_exists($objectClass, '_Note')) {?>
 				  <div id="hideStreamButton" style="cursor:pointer;position:absolute; right:-2px; bottom:2px;z-index:999999">
 		        <a onClick="hideStreamMode();" id="buttonSwitchedStream" title="" ><span style="top:0px;display:inline-block;width:20px;height:22px;"><div class='iconHideStream22' style='' >&nbsp;</div></span></a>
 		      </div>
+		     <?php }?>
 				  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" >
 				   <?php $noselect=true; include 'objectDetail.php'; ?>
 				  </div>
@@ -78,6 +80,7 @@
 		  </div>
     </div>
   </div>
+  <?php if (property_exists($objectClass, '_Note')) {?>
   <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>">
     <script type="dojo/connect" event="resize" args="evt">
              saveDataToSession("contentPaneRightDetailDivWidth<?php echo $objectClass;?>", dojo.byId("detailRightDiv").offsetWidth, true);
@@ -91,5 +94,5 @@
 	  </script>
       <?php include 'objectStream.php'?>
   </div>
-  
+  <?php }?>  
 </div>

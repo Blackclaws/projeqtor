@@ -28,20 +28,11 @@
  * RiskType defines the type of a risk.
  */ 
 require_once('_securityCheck.php');
-class TicketDelay extends Delay {
+class TicketDelayPerProject extends TicketDelay {
 
   // Define the layout that will be used for lists
     
-  public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place
-  public $idTicketType;
-  public $idUrgency;
-  public $idProject;
-  public $value;
-  public $idDelayUnit;
-  public $idle;
-  public $_sec_void;
-  public $isProject;
+
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -56,18 +47,30 @@ class TicketDelay extends Delay {
   private static $_fieldsAttributes=array("idTicketType"=>"required",
                                           "idType"=>"hidden", 
                                           "idUrgency"=>"required",
+                                          "idProject"=>"required",
                                           "value"=>"required, nobr",
                                           "idDelayUnit"=>"required",
                                           "scope"=>"hidden",
-                                          "isProject"=>"hidden",
-                                          "idProject"=>"hidden"
+                                          "isProject"=>"hidden"
   );
   
-  private static $_databaseCriteria = array('scope'=>'Ticket');
+  private static $_databaseCriteria = array('scope'=>'Ticket','isProject'=>'1');
   
   private static $_databaseColumnName = array("idTicketType"=>"idType");
   
   private static $_colCaptionTransposition = array('idDelayUnit'=>'unit');
+  
+  private static $_databaseTableName = 'delay';
+  
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
   
    /** ==========================================================================
    * Constructor
@@ -86,6 +89,7 @@ class TicketDelay extends Delay {
   function __destruct() {
     parent::__destruct();
   }
+
 
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
@@ -125,7 +129,6 @@ class TicketDelay extends Delay {
    */
   protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
-  }  
-
+  }   
 }
 ?>
