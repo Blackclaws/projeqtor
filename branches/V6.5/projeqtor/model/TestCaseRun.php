@@ -205,7 +205,7 @@ class TestCaseRun extends SqlElement {
     return $result;
   }
   
-  public static function sort($b, $a) {
+  public static function sort($a,$b) {
     if ($a->sortOrder == $b->sortOrder) {
     		if ($a->id < $b->id) {
     		  return -1;

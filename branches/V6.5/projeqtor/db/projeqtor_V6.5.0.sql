@@ -121,3 +121,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (6, 182, 0),
 (7, 182, 0),
 (8, 182, 0);
+
+ALTER TABLE `${prefix}statusmail` ADD isProject int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}delay` ADD isProject int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}indicatordefinition` ADD isProject int(1) unsigned DEFAULT '0';

@@ -135,6 +135,7 @@
 .iconButtonLink16 { background-image: url(images/smallButtonLink.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonView16 { background-image: url(images/display.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonSwitchUser16 { background-image: url(images/smallButtonSwitch.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconButtonSwitch16 { background-image: url(images/smallButtonSwitch.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonExchangeArrow16 { background-image: url(images/smallButtonExchangeArrow.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconButtonArrowRight16 { background-image: url(images/smallButtonArrowRight.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 .iconConfirm32 { background-image: url(images/iconDecision32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -780,6 +781,10 @@
 .iconStatusMail22 { background-image: url(images/iconStatusMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconStatusMail16 { background-image: url(images/iconStatusMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconStatusMailPerProject32 { background-image: url(images/iconStatusMailPerProject.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconStatusMailPerProject22 { background-image: url(images/iconStatusMailPerProject.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconStatusMailPerProject16 { background-image: url(images/iconStatusMailPerProject.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconTeam32 { background-image: url(images/iconTeam32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTeam22 { background-image: url(images/iconTeam22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTeam16 { background-image: url(images/iconTeam16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -827,6 +832,10 @@
 .iconTicketDelay32 { background-image: url(images/iconTicketDelay32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicketDelay22 { background-image: url(images/iconTicketDelay22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTicketDelay16 { background-image: url(images/iconTicketDelay16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicketDelayPerProject32 { background-image: url(images/iconTicketDelayPerProject.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconTicketDelayPerProject22 { background-image: url(images/iconTicketDelayPerProject.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconTicketDelayPerProject16 { background-image: url(images/iconTicketDelayPerProject.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconTicketType32 { background-image: url(images/iconTicketType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicketType22 { background-image: url(images/iconTicketType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
