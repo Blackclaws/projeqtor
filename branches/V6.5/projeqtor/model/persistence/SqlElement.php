@@ -4337,7 +4337,6 @@ abstract class SqlElement {
     //KROWRY
     $statusMailList = array();
     $statusMail = new StatusMail ();
-    $statusMailPerProject = new StatusMailPerProject();
     $sender = Parameter::getGlobalParameter ( 'paramMailSender' );
     if ($directStatusMail) { // Direct Send Mail
       $statusMailList = array($directStatusMail->id => $directStatusMail);

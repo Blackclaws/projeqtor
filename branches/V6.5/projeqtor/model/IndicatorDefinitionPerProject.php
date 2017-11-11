@@ -28,7 +28,7 @@
  * Habilitation defines right to the application for a menu and a profile.
  */ 
 require_once('_securityCheck.php');
-class IndicatorDefinition extends SqlElement {
+class IndicatorDefinitionPerProject extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_description;
@@ -91,6 +91,7 @@ class IndicatorDefinition extends SqlElement {
 
   private static $_fieldsAttributes=array("name"=>"hidden",
                                   "idType"=>"nocombo",
+                                  "idProject"=>"required",
                                   "warningValue"=>"nobr",
                                   "alertValue"=>"nobr",
                                   "nameIndicatorable"=>"hidden",
@@ -100,10 +101,9 @@ class IndicatorDefinition extends SqlElement {
                                   "codeAlertDelayUnit"=>"hidden",
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
-                                  "idProject"=>"hidden",
                                   "isProject"=>"hidden"
   );  
-    
+  
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
                                                      'idType'=>'type',
                                                      'warningValue'=>'warning',
@@ -118,6 +118,10 @@ class IndicatorDefinition extends SqlElement {
                                                      'alertToSubscribers'=>'mailToSubscribers',
                                                      'otherMail'=>'email');
   
+    
+    private static $_databaseTableName = 'indicatordefinition';
+    
+    private static $_databaseCriteria = array('isProject'=>'1');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -163,6 +167,23 @@ class IndicatorDefinition extends SqlElement {
    */
   protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
+  }
+  
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
   
 // ============================================================================**********
@@ -269,13 +290,22 @@ class IndicatorDefinition extends SqlElement {
     if (! trim($this->idIndicator)) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicator')));
     }
+    if (! trim($this->idProject)) {
+      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
+    }
     if ($this->alertValue!="" and ! trim($this->idAlertDelayUnit) ) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
     }
     if ($this->warningValue!="" and ! trim($this->idWarningDelayUnit) ) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
     }    
+    //if (! trim($this->idType)) {
+    //  $result.='<br/>' . i18n('messageMandatory',array(i18n('colType')));
+    //}
     $crit="idIndicatorable='" . trim($this->idIndicatorable) . "' and idIndicator='" . trim($this->idIndicator) . "' and idType='" . trim($this->idType) . "'";
+//     $crit=array('idIndicatorable'=>trim($this->idIndicatorable),
+//                 'idIndicator'=>trim($this->idIndicator),
+//                 'idType'=>trim($this->idType));
     if(property_exists($this, 'idProject') and $this->idProject){
       $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
     } else {

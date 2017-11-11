@@ -3567,7 +3567,6 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       if (property_exists($linkObj, 'idResource')) {
         $objR = get_class($linkObj);
         $objResp=new $objR($linkObj->id);
-        debugLog($objResp);
         echo '<td class="dependencyData"  style="width:10%">' . formatLetterThumb($objResp->idResource, 22) . '</td>';
       } else {
         echo '<td class="dependencyData"  style="width:10%">&nbsp;</td>';

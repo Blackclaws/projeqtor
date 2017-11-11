@@ -28,7 +28,7 @@
  * Menu defines list of items to present to users.
  */ 
 require_once('_securityCheck.php');
-class StatusMail extends SqlElement {
+class StatusMailPerProject extends StatusMail {
 
   // extends SqlElement, so has $id
   public $_sec_Description;
@@ -76,12 +76,12 @@ class StatusMail extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("idMailable"=>"", 
+    private static $_fieldsAttributes=array("idMailable"=>"", 
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
                                   "idType"=>"nocombo", 
   		                            "mailToSponsor"=>"hidden,calculated",
-                                  "idProject"=>"hidden",
+                                  "idProject"=>"required",
                                   "isProject"=>"hidden"
   );  
   
@@ -94,7 +94,9 @@ class StatusMail extends SqlElement {
   private static $_databaseColumnName = array();
   
   private static $_databaseTableName = 'statusmail';
-
+  
+  private static $_databaseCriteria = array('isProject'=>'1');
+    
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -196,6 +198,14 @@ class StatusMail extends SqlElement {
    */
   protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
+  }
+  
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
   
   /** ========================================================================

@@ -86,6 +86,7 @@ class Subscription extends SqlElement {
       adAutoSub($this);
     }
     $result = parent::save();
+    debugLog($result);
     return $result;
   }
   
