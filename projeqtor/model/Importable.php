@@ -371,9 +371,7 @@ class Importable extends SqlElement {
 						if (strlen($field) > $dataLength) {
 							$field = substr($field, 0, $dataLength);
 						}
-					}
-					// 4.1.0 : Adaptation of date formats
-					else if ($dataType == 'date') {
+					}	else if ($dataType == 'date') { // 4.1.0 : Adaptation of date formats
 						if (!$field == '') {
 							if ($extension=="xlsx") {
 							  if(is_numeric($field)) {
@@ -383,9 +381,7 @@ class Importable extends SqlElement {
 							  $field=formatBrowserDateToDate($field); // Detect if format is correct
 							}
 						}
-					}
-					// 4.1.0 : Adaptation of date formats
-					else if ($dataType=='datetime') {
+					}	else if ($dataType=='datetime') { // 4.1.0 : Adaptation of date formats
 						if (!$field == '') {
 							if ($extension=="xlsx") {								
 								$field=gmdate ('Y-m-d H:i:s',XLSXReader::toUnixTimeStamp($field));
@@ -393,9 +389,7 @@ class Importable extends SqlElement {
 								$field=formatBrowserDateToDate($field); // Detect if format is correct
 							}
 						}
-					}
-					// --------------------------------------
-					else if ($dataType == 'int' and substr($title[$idx], 0, 2) != 'id') {
+					} else if ($dataType == 'int' and substr($title[$idx], 0, 2) != 'id') { // --------------------------------------
 						$field = str_replace(' ', '', $field);
 					} else if ($dataType == 'decimal') {
 						$field=formatNumericInput($field);
@@ -423,7 +417,7 @@ class Importable extends SqlElement {
 					  }
 					  $sub = $obj->$subClass;
 					  if (property_exists($subClass, $fldName)) {
-					    if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
+					    if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field) and $field!=null) {
 					      $obj->$subClass->$fldName = SqlList::getIdFromName(substr($fldName, 2), $field);
 					    } else {
 					      $obj->$subClass->$fldName = $field;
@@ -432,7 +426,7 @@ class Importable extends SqlElement {
 					    continue;
 					  }
 					} else if (property_exists($obj, $title[$idx])) {
-						if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field)) {
+						if (substr($fldName, 0, 2) == 'id' and substr($fldName, 0, 4) != 'idle' and strlen($fldName) > 2 and !is_numeric($field) and $field!=null) {
 							if ($fldName=='idProject' or $fldName=='idActivity') {
 							  $crit=array('name'=>$field);
 							  if ($fldName=='idActivity' and property_exists($obj, 'idProject') and $obj->idProject) {
