@@ -51,12 +51,12 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (76, 'idResource', 'resourceList', 10, 'currentResource'),
 (76, 'idTeam', 'teamList', 20, NULL),
-(76, 'week', 'week', 30, 'currentYear');
+(76, 'week', 'week', 30, NULL);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (77, 'idResource', 'resourceList', 10, 'currentResource'),
 (77, 'idTeam', 'teamList', 20, NULL),
-(77, 'month', 'month', 30, 'currentMonth');
+(77, 'month', 'month', 30, NULL);
 
 ALTER TABLE `${prefix}billline` ADD COLUMN `numberDays` DECIMAL(9,2) UNSIGNED;
 
@@ -127,3 +127,5 @@ ALTER TABLE `${prefix}statusmail` ADD isProject int(1) unsigned DEFAULT '0';
 ALTER TABLE `${prefix}delay` ADD isProject int(1) unsigned DEFAULT '0';
 
 ALTER TABLE `${prefix}indicatordefinition` ADD isProject int(1) unsigned DEFAULT '0';
+
+INSERT INTO `${prefix}parameter` (`parameterCode`, `parameterValue`) VALUES ('autoSetAssignmentByResponsible', 'YES');

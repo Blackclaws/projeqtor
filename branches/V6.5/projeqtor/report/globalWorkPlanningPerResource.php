@@ -191,7 +191,7 @@ echo "</tr></table>";
 echo "<br/>";
 echo '<table width="100%" align="left">';
 echo '<tr rowspan="2">';
-echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 foreach ($arrYear as $year=>$nb) {
   echo '<td class="reportTableHeader" colspan="' . $nb . '">' . $year . '</td>';
 }

@@ -289,16 +289,17 @@ class Parameter extends SqlElement {
       case 'versionNameAutoformat' : 
       case 'directAccessToComponentList' :
       case 'printInNewWindow':
-      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': case 'allocateResponsibleToProject':
+      case 'initializePassword': case 'setResponsibleIfNeeded': 
+      case 'autoSetAssignmentByResponsible':
+        $list=array('YES'=>i18n('displayYes'),
+        'NO'=>i18n('displayNo'));
+        break;
+      case 'setResponsibleIfSingle': case 'allocateResponsibleToProject':
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
       case 'limitPlanningActivity' :
       // Mehdi  #parameter
       case 'autoUpdateActivityStatus':
-      case 'autoSetAssignmentByResponsible':
-        $list=array('YES'=>i18n('displayYes'),
-            'NO'=>i18n('displayNo'));
-        break;
       // Gautier #
       case 'subscriptionAuto':
       //ADD qCazelles - Business features
@@ -665,12 +666,12 @@ class Parameter extends SqlElement {
       	                      'setResponsibleIfSingle'=>'list',
       	                      'allocateResponsibleToProject'=>'list',
       	                      'setResponsibleIfNeeded'=>'list',
+      	                      'autoSetAssignmentByResponsible'=>'list',
       	                      'updateMilestoneResponsibleFromDeliverable'=>'list',
       	                      'updateMilestoneResponsibleFromIncoming'=>'list',
       	                      'updateDeliverableResponsibleFromMilestone'=>'list',
       	                      'updateIncomingResponsibleFromMilestone'=>'list',
       	                      'autoUpdateActivityStatus'=>'list',
-      	                      'autoSetAssignmentByResponsible'=>'list',
       	                    'sectionPlanningControl'=>'section',
       	                      'allowTypeRestrictionOnProject'=>'list',
       	                'tabDisplay'=>"tab",

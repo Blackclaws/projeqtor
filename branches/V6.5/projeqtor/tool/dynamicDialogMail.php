@@ -154,11 +154,23 @@ if (array_key_exists("objectClass", $_REQUEST)) {
               </td>
               <td>
                 <textarea dojoType="dijit.form.Textarea" 
-					          id="dialogOtherMail" name="dialogOtherMail"
-					          style="width: 500px; display:none"
-					          maxlength="4000"
-					          class="input" ></textarea>
-              </td>
+  				          id="dialogOtherMail" name="dialogOtherMail"
+  				          style="width: 500px; display:none"
+  				          maxlength="4000"
+  				          class="input" onblur="findAutoEmail()"></textarea>
+  				      <textarea dojoType="dijit.form.Textarea" 
+      					          id="dialogMailObjectIdEmail" name="dialogMailObjectIdEmail"
+      					          style="width: 500px; display:none"
+      					          class="input" onchange="dialogMailIdEmailChange()"></textarea>
+  					    <td style="vertical-align: top">
+                 <button id="otherMailDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                         style="display:none" title="<?php echo i18n('showDetail')?>"iconClass="iconView">
+                   <script type="dojo/connect" event="onClick" args="evt">
+                        showDetail('dialogMailObjectIdEmail', 0, 'Resource', true);
+                   </script>
+                 </button>
+                </td> 
+               </td>
             </tr>
             <tr>
               <td class="dialogLabel">
