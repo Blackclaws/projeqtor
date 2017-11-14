@@ -60,7 +60,6 @@ class TicketDelay extends Delay {
                                           "idDelayUnit"=>"required",
                                           "scope"=>"hidden",
                                           "isProject"=>"hidden",
-                                          "idProject"=>"hidden"
   );
   
   private static $_databaseCriteria = array('scope'=>'Ticket');
@@ -85,6 +84,32 @@ class TicketDelay extends Delay {
    */ 
   function __destruct() {
     parent::__destruct();
+  }
+  
+  public function control() {
+    //debugLog($this->idProject);
+    $result="";
+    //$crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
+    //debugLog($this->idProject);
+    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
+    if(property_exists($this, 'idProject') and $this->idProject){
+      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
+    } else {
+      $crit.=  " and idProject is null";
+    }
+    //debugLog($crit);
+    $list=$this->getSqlElementsFromCriteria(null, false, $crit);
+    if (count($list)>0) {
+      $result.="<br/>" . i18n('errorDuplicateTicketDelay',null);
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
   }
 
 // ============================================================================**********
