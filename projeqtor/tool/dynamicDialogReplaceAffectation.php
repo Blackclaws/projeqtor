@@ -37,6 +37,7 @@
   $affId=$_REQUEST['idAffectation'];
   $aff=new Affectation($affId);
   $res=new Resource($aff->idResource);
+  $obj=SqlElement::getCurrentObject(null,null,true,false) ;
   ?>
 <div>
   <form dojoType="dijit.form.Form" id='replaceAffectationForm' name='replaceAffectationForm' onSubmit="return false;">
@@ -77,7 +78,7 @@
       <td><select dojoType="dijit.form.FilteringSelect" id="replaceAffectationProfile" name="replaceAffectationProfile"
                 <?php echo autoOpenFilteringSelect();?> 
                 class="input required" value="<?php echo $aff->idProfile?>" required="required" style="width:200px;">
-           <?php htmlDrawOptionForReference('idProfile', $aff->idProfile, null, true);?>
+           <?php htmlDrawOptionForReference('idProfile', $aff->idProfile, $obj, true);?>
           </select></td>
     </tr>
     <tr>

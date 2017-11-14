@@ -81,7 +81,6 @@ class StatusMail extends SqlElement {
                                   "otherMail"=>"",
                                   "idType"=>"nocombo", 
   		                            "mailToSponsor"=>"hidden,calculated",
-                                  "idProject"=>"hidden",
                                   "isProject"=>"hidden"
   );  
   

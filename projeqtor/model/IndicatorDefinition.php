@@ -100,7 +100,6 @@ class IndicatorDefinition extends SqlElement {
                                   "codeAlertDelayUnit"=>"hidden",
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
-                                  "idProject"=>"hidden",
                                   "isProject"=>"hidden"
   );  
     

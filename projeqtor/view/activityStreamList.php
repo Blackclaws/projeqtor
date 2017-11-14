@@ -108,9 +108,9 @@ if (trim($paramAuthorFilter)!="") {
 	$critWhere.=" and idUser=$paramAuthorFilter";
 }
 
-if (trim($paramTeamFilter)!="") {}
+if (trim($paramTeamFilter)!="") {
   $critWhere.=" and idTeam=$paramTeamFilter";
-
+}
 
 if (trim($paramTypeNote)!="") {
   $critWhere.=" and refType='$typeNote'";

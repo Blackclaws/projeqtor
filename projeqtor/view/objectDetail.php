@@ -3564,7 +3564,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '<td class="dependencyData"  style="width:15%">&nbsp;</td>';
       }
       ////KROWRY
-      if (property_exists($linkObj, 'idResource')) {
+      if (property_exists($linkObj, 'idResource') && $linkObj->idResource != null) {
         $objR = get_class($linkObj);
         $objResp=new $objR($linkObj->id);
         echo '<td class="dependencyData"  style="width:10%">' . formatLetterThumb($objResp->idResource, 22) . '</td>';
