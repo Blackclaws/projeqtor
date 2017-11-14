@@ -2132,6 +2132,7 @@ function addWeeksToDate($date, $weeks) {
 
 function workTimeDiffDateTime($start, $end) {
   $hoursPerDay=Parameter::getGlobalParameter ( 'dayTime' );
+  if (!$hoursPerDay) $hoursPerDay=8;
   $startDay=substr($start,0,10);
   $endDay=substr($end,0,10);
   $time = substr ( $start, 11, 5 );
