@@ -165,30 +165,6 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 ?>
   <div id="waitLogin" style="display:none" >
   </div>
-  <div id="dialogConfirm" dojoType="dijit.Dialog" title="<?php echo i18n("dialogConfirm");?>">
-  <table>
-    <tr>
-      <td width="50px">
-           <?php echo formatIcon('Confirm',32);?>
-      </td>
-      <td>
-        <div id="dialogConfirmMessage"></div>
-      </td>
-    </tr>
-    <tr><td colspan="2" align="center">&nbsp;</td></tr>
-    <tr>
-      <td colspan="2" align="center">
-        <input type="hidden" id="dialogConfirmAction">
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogConfirm').hide();">
-          <?php echo i18n("buttonCancel");?>
-        </button>
-        <button class="mediumTextButton" id="dialogConfirmSubmitButton" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
-          <?php echo i18n("buttonOK");?>
-        </button>
-      </td>
-    </tr>
-  </table>
-</div>
   <div class="loginMessageContainer">
   	<?php 
   	$cpt=0;
@@ -337,5 +313,30 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
       </td>
     </tr>
   </table>
+  <div id="dialogConfirm" dojoType="dijit.Dialog" title="<?php echo i18n("dialogConfirm");?>">
+  <table>
+    <tr>
+      <td width="50px">
+           <?php echo formatIcon('Confirm',32);?>
+      </td>
+      <td>
+        <div id="dialogConfirmMessage"></div>
+      </td>
+    </tr>
+    <tr><td colspan="2" align="center">&nbsp;</td></tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="hidden" id="dialogConfirmAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogConfirm').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" id="dialogConfirmSubmitButton" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+  
 </body>
 </html>
