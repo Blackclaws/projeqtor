@@ -429,6 +429,7 @@ class BillMain extends SqlElement {
 	    $result .= '</td></tr></table>';
       return $result;     
     } else if ($item=='paymentsList') {
+      if (!$this->id) return '';
       $pay=new Payment();
       $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
       //$result.='</td><td>';
@@ -436,7 +437,9 @@ class BillMain extends SqlElement {
       $result.='<table>';
       foreach ($payList as $pay) {
         $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'Payment\','.htmlEncode($pay->id).');">';
-        $result.='<td style="padding:0px 5px"><img src="../view/css/images/iconPayment16.png"></td>';
+        $result.='<td style="padding:0px 5px">';
+        $result.= formatSmallButton('Payment');
+        $result.='</td>';
         $result.='<td >#'.htmlEncode($pay->id).'</td><td>&nbsp;&nbsp;&nbsp;</td>';
         $result.='<td style="padding:0px 5px">'.htmlEncode($pay->name).'</td></tr>';
       }

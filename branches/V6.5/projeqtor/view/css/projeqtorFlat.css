@@ -468,6 +468,7 @@ body .ProjeQtOrFlatBlue {
 
 .ProjeQtOrFlatBlue .iconHelpTitle { background-image: url(customIcons/blue/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconHelp { background-image: url(customIcons/blue/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonPayment16 { background-image: url(customIcons/blue/iconPayment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
 .ProjeQtOrFlatBlue .ganttRightTitle, .ProjeQtOrFlatBlue .ganttLeftTopLine, .ProjeQtOrFlatBlue .ganttLeftTitle {
@@ -1762,6 +1763,7 @@ body .ProjeQtOrFlatRed {
 
 .ProjeQtOrFlatRed .iconHelpTitle { background-image: url(customIcons/red/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconHelp { background-image: url(customIcons/red/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonPayment16 { background-image: url(customIcons/red/iconPayment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
 .ProjeQtOrFlatRed .ganttRightTitle, .ProjeQtOrFlatRed .ganttLeftTopLine, .ProjeQtOrFlatRed .ganttLeftTitle {
@@ -3017,6 +3019,7 @@ body .ProjeQtOrFlatGreen {
 
 .ProjeQtOrFlatGreen .iconHelpTitle { background-image: url(customIcons/green/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconHelp { background-image: url(customIcons/green/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonPayment16 { background-image: url(customIcons/green/iconPayment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
 .ProjeQtOrFlatGreen .ganttRightTitle, .ProjeQtOrFlatGreen .ganttLeftTopLine, .ProjeQtOrFlatGreen .ganttLeftTitle {
@@ -4270,6 +4273,7 @@ body .ProjeQtOrFlatGrey {
 
 .ProjeQtOrFlatGrey .iconHelpTitle { background-image: url(customIcons/grey/iconHelpWhite.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconHelp { background-image: url(customIcons/grey/iconHelp.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGrey .iconButtonPayment16 { background-image: url(customIcons/grey/iconPayment.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
 .ProjeQtOrFlatGrey .ganttRightTitle, .ProjeQtOrFlatGrey .ganttLeftTopLine, .ProjeQtOrFlatGrey .ganttLeftTitle {
