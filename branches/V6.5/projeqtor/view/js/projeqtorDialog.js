@@ -4019,7 +4019,7 @@ function selectDynamicFilter() {
 	var compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
 	loadContent("../tool/addDynamicFilterClause.php" + compUrl, "listDynamicFilterClauses",
 		      "dialogDynamicFilterForm", false);
-	setTimeout("selectDynamicFilterContinue();", 1000);
+	setTimeout("selectDynamicFilterContinue();", 100);
 }
 
 function selectDynamicFilterContinue() {
