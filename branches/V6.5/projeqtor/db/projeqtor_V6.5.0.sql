@@ -129,3 +129,5 @@ ALTER TABLE `${prefix}delay` ADD isProject int(1) unsigned DEFAULT '0';
 ALTER TABLE `${prefix}indicatordefinition` ADD isProject int(1) unsigned DEFAULT '0';
 
 INSERT INTO `${prefix}parameter` (`parameterCode`, `parameterValue`) VALUES ('autoSetAssignmentByResponsible', 'YES');
+
+ALTER TABLE `${prefix}subscription` ADD `idProject` int(12) unsigned;
