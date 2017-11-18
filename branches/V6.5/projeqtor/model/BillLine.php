@@ -218,6 +218,8 @@ class BillLine extends SqlElement {
     if (property_exists($bill, 'untaxedAmount') and property_exists($bill, 'fullAmount') and property_exists($bill, 'taxPct')) {
       $bill->untaxedAmount=$bill->untaxedAmount-$this->amount;
       $bill->fullAmount=$bill->untaxedAmount*(1+$bill->taxPct*0.01);
+      $bill->plannedWork=$bill->plannedWork-$this->numberDays;
+      if($bill->plannedWork<0) $bill->plannedWork = 0;
       $bill->simpleSave();
     } 
     // Only save without calculate the amount

@@ -3193,10 +3193,11 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colLineNumber') . '</td>';
   echo '<td class="noteHeader" style="width:20%">' . i18n('colDescription') . '</td>';
-  echo '<td class="noteHeader" style="width:30%">' . i18n('colDetail') . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . i18n('colUnitPrice') . '</td>';
+  echo '<td class="noteHeader" style="width:25%">' . i18n('colDetail') . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . i18n('colUnitPrice') . '</td>';
   echo '<td class="noteHeader" style="width:10%">' . i18n('colQuantity') . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . strtolower(i18n('sum')) . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . strtolower(i18n('sum')) . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colDays') . '</td>';
   echo '</tr>';
   
   $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
@@ -3222,16 +3223,17 @@ function drawBillLinesFromObject($obj, $refresh=false) {
       echo '<input type="hidden" id="billLineDescription_' . htmlEncode($line->id) . '" value="' . htmlEncode($line->description) . '" />';
     }
     echo '</td>';
-    echo '<td class="noteData" style="width:30%">' . htmlEncode($line->detail, 'withBR');
+    echo '<td class="noteData" style="width:25%">' . htmlEncode($line->detail, 'withBR');
     if (!$print) {
       echo '<input type="hidden" id="billLineDetail_' . htmlEncode($line->id) . '" value="' . htmlEncode($line->detail) . '" />';
     }
     echo '</td>';
     $unitPrice=($unit->name)?' / '.$unit->name:'';
-    echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->price) . $unitPrice.'</td>';
+    echo '<td class="noteData" style="width:10%">' . htmlDisplayCurrency($line->price) . $unitPrice.'</td>';
     $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->pluralName:$unit->name):'';
     echo '<td class="noteData" style="width:10%">' . htmlDisplayNumericWithoutTrailingZeros($line->quantity) . $unitQuantity. '</td>';
-    echo '<td class="noteData" style="width:15%">' . htmlDisplayCurrency($line->amount) . '</td>';
+    echo '<td class="noteData" style="width:10%">' . htmlDisplayCurrency($line->amount) . '</td>';
+    echo '<td class="noteData" style="width:15%">' . htmlDisplayNumericWithoutTrailingZeros($line->numberDays) . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
