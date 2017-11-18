@@ -34,60 +34,24 @@ $mode=RequestHandler::getExpected('mode',true,array('on','off'));
 $class=RequestHandler::getClass('objectClass',true);
 $id=RequestHandler::getId('objectId',true);
 $userId=RequestHandler::getId('userId',true);
-// debugLog("class : ".$class);
-// debugLog("id : ".$id);
-// debugLog("user id : ".$userId);
 
 $result='OK';
 $sub=SqlElement::getSingleSqlElementFromCriteria('Subscription', array('refType'=>$class,'refId'=>$id,'idAffectable'=>$userId));
-$prj = new Project($id);
-$pe=new PlanningElement();
-$we = new WorkElement();
-$crit = array('idProject'=>$id);
-$prjChildPe = $pe->getSqlElementsFromCriteria($crit);
-$prjChildWe = $we->getSqlElementsFromCriteria($crit);
-$arrayPeWe = array_merge($prjChildPe,$prjChildWe);
-if ($mode=='on' && $class == "Project") {
-  foreach ($arrayPeWe as $arrayLst){
-      $sub->id = null;
-      $sub->idAffectable=$userId;
-      $sub->refType=$arrayLst->refType;
-      $sub->refId=$arrayLst->refId;
-      $sub->idUser=getSessionUser()->id;
-      $sub->creationDateTime=date('Y-m-d H:i:s');
-      $sub->idProject = $id;
-      $message=$sub->save();
-      $result=getLastOperationStatus($message);   
-  }
-} else if ($mode=='off' && $class == "Project") {
-  if ($sub->id) {
-    $subscription = new Subscription();
-    $crit1 = array('idProject'=>$id);
-    $subLst = $subscription->getSqlElementsFromCriteria($crit1);
-    foreach ($subLst as $subList){
-      $subList->delete();
-    }
-    $message=$sub->delete();
-    $result=getLastOperationStatus($message);
-  } else {
-    $result="ERROR";
-    $message=i18n('messageDeleted',array($class));
-  }
-} else if ($mode=='on' && $class != "Project") {
+if ($mode=='on') {
   if (!$sub->id) {
-    debugLog("je passe ici 4");
     $sub->idAffectable=$userId;
     $sub->refType=$class;
     $sub->refId=$id;
     $sub->idUser=getSessionUser()->id;
     $sub->creationDateTime=date('Y-m-d H:i:s');
+    //$sub->comment;
     $message=$sub->save();
     $result=getLastOperationStatus($message);
   } else {
     $result="ERROR";
     $message=i18n('errorDuplicateLink');
   }
-} else if ($mode=='off' && $class != "Project") {
+} else if ($mode=='off') {
   if ($sub->id) {
     $message=$sub->delete();
     $result=getLastOperationStatus($message);
@@ -95,10 +59,11 @@ if ($mode=='on' && $class == "Project") {
     $result="ERROR";
     $message=i18n('messageDeleted',array($class));
   }
- } else {
+} else {
   $result="ERROR";
   $message='invalid mode (on/off)';
 }
+
 $itemLabel=i18n($class).' #'.$id;
 $posTag=strpos($message,'<');
 if ($posTag) $message=substr($message,0,$posTag);

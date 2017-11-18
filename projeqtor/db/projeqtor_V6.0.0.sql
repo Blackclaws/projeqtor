@@ -242,7 +242,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (60,'idProject','projectList',10,'currentProject'), 
 (60,'idTeam','teamList',20,null), 
-(60,'month','month',40,'currentMonth');
+(60,'month','month',40,null);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES 
 (61, 'reportSCurveChart', 10, 'reportSCurveChart.php', 1020);
