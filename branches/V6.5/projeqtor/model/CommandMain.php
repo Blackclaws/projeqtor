@@ -290,7 +290,11 @@ class CommandMain extends SqlElement {
   	      if ($line->idMeasureUnit==3) $addWork+=$line->quantity; // Only if unit is Days
   	    } else {
   	      $amount+=$line->amount;
-  	      if ($line->idMeasureUnit==3) $work+=$line->quantity;
+  	      if ($line->numberDays) {
+  	        $work = $line->numberDays;
+  	      } else if ($line->idMeasureUnit==3) {
+  	        $work+=$line->quantity;
+  	      }
   	    }
   	  }
   	  $this->untaxedAmount=$amount;
