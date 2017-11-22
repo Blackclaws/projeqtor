@@ -71,7 +71,7 @@ if (checkPrerequisites()!="OK") {
 
 $nbErrors=0;
 if(file_exists("../files/cron/MIGRATION")){
-  echo i18n('selectProjectToPlan');
+  echo '<div class="messageERROR">'.i18n("messageUpgradeMigration").'</div>';
   exit;
 } else {
   $filename = "../tool/i18n/nls/lang.js";
