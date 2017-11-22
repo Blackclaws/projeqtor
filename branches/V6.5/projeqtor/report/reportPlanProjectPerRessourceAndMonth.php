@@ -44,6 +44,7 @@ Pour les libellés internationaux : ajouter une ligne dans  tool\i18n\nls\fr\lan
  
 include_once '../tool/projeqtor.php';
 
+$today=date('Y');
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
@@ -53,7 +54,8 @@ $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
 	$paramYear=$_REQUEST['yearSpinner'];
 	$paramYear=Security::checkValidYear($paramYear);
-};
+} 
+
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
@@ -87,6 +89,12 @@ if ($idProject!="") {
 if ( $paramTeam) {
   $headerParameters.= i18n("team") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
 }
+if ($paramYear) {
+  $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
+}
+if ($paramMonth) {
+  $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
+}
 
 include "header.php";
 
@@ -100,10 +108,16 @@ if ($idProject!='') {
 } else {
   //
 }
+
+if ($paramMonth) {
+  $queryWhere.=  " and month=".Sql::str($periodValue);
+}
 // Remove Admin Projects : should not appear in Work Plan
 $queryWhere.= " and t1.idProject not in " . Project::getAdminitrativeProjectList() ;
 
-
+if ($paramYear) {
+	$queryWhere.=  " and year=".Sql::str($paramYear);
+}
 if ($periodValue) {
   $queryWhere.=  " and month>=".Sql::str($periodValue);
 }
