@@ -4047,6 +4047,7 @@ function selectDynamicFilterContinue() {
 
 function reportSelectCategory(idCateg) {
   if (isNaN(idCateg)) return;
+  console.log(idCateg);
   loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv",
       null, false);
   var tmpStore=new dojo.data.ItemFileReadStore(
@@ -4079,8 +4080,10 @@ function reportSelectReport(idReport) {
   dojo.query(".section").removeClass("reportSelected");
   dojo.addClass(dojo.byId('report'+idReport),"reportSelected");
   loadContent("../view/reportsParameters.php?idReport=" + idReport,
-      "reportParametersDiv", null, false);
-}
+  "reportParametersDiv", null, false);
+  //mehdi Ticket #3092
+  detailReportDiv.innerHTML = ""; 
+  }
 
 // =============================================================================
 // = Resource Cost
@@ -6348,6 +6351,64 @@ function dialogMailToOtherChange() {
   }
 }
 
+
+//function addNote() {
+//	  if (dijit.byId("noteToolTip")) {
+//	    dijit.byId("noteToolTip").destroy();
+//	    dijit.byId("noteNote").set("class", "");
+//	  }
+//	  var callBack=function() {
+//	    var editorType=dojo.byId("noteEditorType").value;
+//	    if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
+//	      ckEditorReplaceEditor("noteNote",999);
+//	    } else if (editorType=="text") {
+//	      dijit.byId("noteNote").focus();
+//	      dojo.byId("noteNote").style.height=(screen.height*0.6)+'px';
+//	      dojo.byId("noteNote").style.width=(screen.width*0.6)+'px';
+//	    } else if (dijit.byId("noteNoteEditor")) { // Dojo type editor
+//	      dijit.byId("noteNoteEditor").set("class", "input");
+//	      dijit.byId("noteNoteEditor").focus();
+//	      dijit.byId("noteNoteEditor").set("height", (screen.height*0.6)+'px'); // Works on first time
+//	      dojo.byId("noteNoteEditor_iframe").style.height=(screen.height*0.6)+'px'; // Works after first time
+//	    }
+//	  };
+//	  var params="&objectClass="+dojo.byId("objectClass").value;
+//	  params+="&objectId="+dojo.byId("objectId").value;
+//	  params+="&noteId="; // Null    
+//	  loadDialog('dialogNote', callBack, true, params, true);
+//
+//	}
+
+//mehdi #3019
+function mailerTextEditor(){
+  var callBack=function() {
+    ckEditorReplaceEditor("mailEditor",999);
+  };
+  loadDialog('dialogMailEditor', callBack, true, null, true);
+}
+//
+function saveMessageMail(){
+  mailEditor=CKEDITOR.instances['mailEditor'];
+  mailEditor.updateElement();
+//
+  var tmpCkEditor=mailEditor.document.getBody().getText();
+  var tmpCkEditorData=mailEditor.getData();
+//  console.log(tmpCkEditor);
+  if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
+    var msg=i18n('messageMandatory', new Array(i18n('Message')));
+    mailEditor.focus();
+    showAlert(msg);
+    return;
+  }
+  var callBack=function() {
+	dojo.byId('mailerTestMessage').value=tmpCkEditorData;
+	var mail = dojo.byId('mailerTestMessage').value;
+  };
+  loadDiv("../tool/saveParameter.php","resultDiv", "messageForm", callBack);
+  dijit.byId('dialogMailEditor').hide();
+}
+
+
 //gautier #2935
 function findAutoEmail(){
   var adress=dijit.byId('dialogOtherMail').get('value');
@@ -6819,7 +6880,16 @@ function showHtml(id, file, className) {
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
 } 
-
+function showHtml2(id, file, className) {
+  dijit.byId("dialogShowTest").title=file;
+  dijit.byId("dialogShowTest").clearOnHide=false;
+  window.frames['showHtmlFrame'].location.href='../tool/download.php?class='+className+'&id='
+  + id + '&showHtml=true&msg=true';
+  dijit.byId("dialogShowTest").show();
+}
+function displayTestPreview(){
+	var toto = dojo.byId('testPreview');
+}
 // *******************************************************
 // Dojo code to position into a tree
 // *******************************************************
