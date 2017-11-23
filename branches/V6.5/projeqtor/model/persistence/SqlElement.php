@@ -2289,11 +2289,9 @@ abstract class SqlElement {
           // FOR PHP 7.1 COMPATIBILITY
           $dataType=$obj->getDataType($col_name);
           $dataLength=$obj->getDataLength($col_name);
-          if ($obj->{$col_name}===null and (
-              // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
-              ($dataType=='decimal') or
-              ($dataType=='numeric')
-          )) {
+          if ($obj->{$col_name}===null 
+          and ( ($dataType=='decimal') or ($dataType=='numeric') ) 
+          and $col_name!='warningValue' and $col_name!='alertValue')  {
             $obj->{$col_name}=0;
           }
         }
@@ -2596,11 +2594,9 @@ abstract class SqlElement {
             }
           }
           // FOR PHP 7.1 COMPATIBILITY
-          if (($this->$key===null or $this->$key==='') and (
-            // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
-               ($dataType=='decimal') or 
-               ($dataType=='numeric') 
-              )) {
+          if (($this->$key===null or $this->$key==='') 
+          and ( ($dataType=='decimal') or ($dataType=='numeric') ) 
+          and $key!='warningValue' and $key!='alertValue') {
             $this->$key=0;
           }
         }
@@ -2704,11 +2700,9 @@ abstract class SqlElement {
               errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $this ) . "' " . " : field '" . $dbColName . "' not found in Database." );
             }
             // FOR PHP 7.1 COMPATIBILITY
-            if ($this->{$col_name}===null and ( 
-               // ( $dbType=='int' and $dbLength!=12 and $dbLength!=1) or // Intergers : should not be summed, so preserve previous behavior
-                  ( $dbType=='numeric') or
-                  ( $dbType=='decimal')
-               ) )  {
+            if ($this->{$col_name}===null 
+            and ( ( $dbType=='numeric') or ( $dbType=='decimal') ) 
+            and $col_name!='warningValue' and $col_name!='alertValue')  {
               $this->{$col_name}=0;
             }
           }

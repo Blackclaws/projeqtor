@@ -333,16 +333,13 @@
        if($docVers->id == $doc->idDocumentVersion){
         $arrayDocVers[$docVers->idDocument]=$doc->id;
        }
-       debugLog($arrayDocVers);
     }
     //List of document approved by me
     foreach($listApprover as $valApp){
     // recupérer version document new documentversion ($valApp->refId) , acceder au document , si iddocumentversion du document est bien la version recupérer dans le foreach , alors je stocke le $arrayDoc[iddudocument]
        $arrayDoc[$valApp->refId]=$valApp->refId;
-       //debugLog($valApp);
     }
     $arrayD=array_diff($arrayDoc, $arrayDocVers);
-    //debugLog($arrayD);
     $whereDocument = "id in ".transformListIntoInClause($arrayD);  
     $whereActivity = "1=0";
     $where = $whereActivity;
@@ -562,7 +559,7 @@
     foreach($list as $elt) {
     	$echeance="";
     	if (property_exists($elt,'idProject') and array_key_exists($elt->idProject,$templateProjectList)) continue;
-    	$class=get_class($elt);  	
+    	$class=get_class($elt); 	
     	if ($class=='Ticket') {
     		$echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
     		$echeance=substr($echeance, 0,10);
@@ -639,8 +636,12 @@
              '  <td class="messageDataValue" style="'.$color.'" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
              '  <td class="messageData" style="'.$color.'">' . htmlDisplayColored($status,$statusColor) . '</td>' .
              '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' ;
-             if(property_exists($elt, 'idResource')) echo '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' ;   // KROWRY a vérifier
-            echo '</tr>';
+             if(property_exists($elt, 'idAuthor')) {
+               echo '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idAuthor) . '</td>' ;
+             } else {
+               echo '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' ;
+             }
+                  echo '</tr>';
     }
     echo "</table>";
     echo "</div><br/>";
