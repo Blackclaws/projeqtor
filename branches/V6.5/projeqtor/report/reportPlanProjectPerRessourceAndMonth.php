@@ -44,7 +44,6 @@ Pour les libellés internationaux : ajouter une ligne dans  tool\i18n\nls\fr\lan
  
 include_once '../tool/projeqtor.php';
 
-$today=date('Y');
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);

@@ -25,12 +25,12 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (75, 'idProject', 'projectList', 10, 'currentProject'),
-(75, 'format', 'periodScale', 30, 'day'),
+(75, 'format', 'periodScale', 30, 'week'),
 (75, 'startDate', 'date', 40, null),
 (75, 'endDate', 'date', 50, null),
 (75, 'activityOrTicket', 'element', 60, null),
 (75, 'idTeam', 'teamList', 70, null),
-(75, 'idResource', 'resourceList', 80, 'currentResource');
+(75, 'idResource', 'resourceList', 80, 'null');
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`) VALUES 
 (76, 'reportGlobalWorkPlanningPerResourceWeekly', 2, 'globalWorkPlanningPerResource.php?scale=week', 276, 0, 'L', 0),
@@ -76,13 +76,6 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (78, 'idProject', 'projectList', 10, 'currentProject');
 
 ALTER TABLE `${prefix}statusmail` ADD `mailToProjectIncludingParentProject` int(1) unsigned DEFAULT 0;
-
--- ticket #2906
-INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES 
-(52,'Checklist',0);
-
-INSERT INTO `${prefix}importable` (`id`,`name`,`idle`) VALUES 
-(53,'Joblist',0);
 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','Documents',null,6,0 FROM `${prefix}resource` where isUser=1 and idle=0;
@@ -137,3 +130,5 @@ ALTER TABLE `${prefix}projecthistory` ADD COLUMN `validatedCost` DECIMAL(11,2) U
 
 UPDATE `${prefix}report` SET `sortOrder`=483 WHERE `id`=4;
 UPDATE `${prefix}report` SET `sortOrder`=484 WHERE `id`=60;
+
+UPDATE `${prefix}reportparameter` SET `defaultValue`=null WHERE idReport=60 and name='month';

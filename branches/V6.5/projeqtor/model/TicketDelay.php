@@ -111,6 +111,12 @@ class TicketDelay extends Delay {
     }
     return $result;
   }
+  
+  public function save() {
+    if ($this->idProject) $this->isProject=1;
+    else $this->isProject=0;
+    return parent::save();
+  }
 
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

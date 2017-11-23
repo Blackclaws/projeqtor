@@ -71,6 +71,7 @@
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colPlanned') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colLeft') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
     echo '</TR>';
   }
 
@@ -111,7 +112,6 @@
       "realWork" => "0",
       "leftWork" => "0",
     );
-    //debugLog($arrayP);
     $result["Project#$lstPrj->id"]=$arrayP;
 
     foreach($weLst as $lstWe){
@@ -133,6 +133,10 @@
   }
   foreach ($result as $lstResult=>$resultt){
     $tab="";
+    $plannedWork = $resultt["plannedWork"];
+    $realWork = $resultt['realWork'];
+    $leftWork = $resultt['leftWork'];
+    $progress = $realWork / ($realWork + $leftWork) * 100;
     for ($i=1;$i<$resultt["level"];$i++) {
       $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
     }
@@ -145,9 +149,10 @@
     echo '<TR>';
     echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '">'.formatIcon($resultt["refType"], 16).'</TD>';
     echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>'. $tab . htmlEncode($resultt["refName"]) . '</TD>';
-    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($resultt["plannedWork"])  . '</TD>' ;
-    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($resultt['realWork']) . '</TD>' ;
-    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($resultt['leftWork']) . '</TD>' ;
+    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($plannedWork)  . '</TD>' ;
+    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($realWork) . '</TD>' ;
+    echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($leftWork) . '</TD>' ;
+    echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
     echo '</TR>';
   }
   echo "</table>";

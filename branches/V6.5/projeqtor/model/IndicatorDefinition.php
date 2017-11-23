@@ -169,8 +169,10 @@ class IndicatorDefinition extends SqlElement {
 // ============================================================================**********
   
   public function save() {
-    $old=$this->getOld();
-  	$indicatorable=new Indicatorable($this->idIndicatorable);
+    $old=$this->getOld();  
+    if ($this->idProject) $this->isProject=1;
+    else $this->isProject=0;
+    $indicatorable=new Indicatorable($this->idIndicatorable);
   	$this->nameIndicatorable=$indicatorable->name;
   	$delayUnit=new DelayUnit($this->idWarningDelayUnit);
   	$this->codeWarningDelayUnit=$delayUnit->code;
@@ -274,14 +276,20 @@ class IndicatorDefinition extends SqlElement {
     if ($this->warningValue!="" and ! trim($this->idWarningDelayUnit) ) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
     }    
-    $crit="idIndicatorable='" . trim($this->idIndicatorable) . "' and idIndicator='" . trim($this->idIndicator) . "' and idType='" . trim($this->idType) . "'";
+    $crit="idIndicatorable='" . trim($this->idIndicatorable) . "' and idIndicator='" . trim($this->idIndicator) . "'";
+    if (trim($this->idType)) {
+      $crit.=" and idType='" . Sql::fmtId($this->idType) . "'";
+    } else {
+      $crit.=" and idType is null";
+    }
     if(property_exists($this, 'idProject') and $this->idProject){
       $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
     } else {
       $crit.=  " and idProject is null";
     }
-    $elt=$this->getSqlElementsFromCriteria(null, false, $crit);
-    if ($elt and $elt->id and $elt->id!=$this->id) {
+    $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
+    $list=$this->getSqlElementsFromCriteria(null, false, $crit);
+    if (count($list)>0) {
       $result.='<br/>' . i18n('errorDuplicateIndicator');
     }
     $defaultControl=parent::control();
