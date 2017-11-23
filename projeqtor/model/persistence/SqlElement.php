@@ -2289,7 +2289,7 @@ abstract class SqlElement {
               // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
               ($dataType=='decimal') or
               ($dataType=='numeric')
-          )) {
+          ) and $col_name!='warningValue' and $col_name!='alertValue')  {
             $obj->{$col_name}=0;
           }
         }
@@ -2596,7 +2596,7 @@ abstract class SqlElement {
             // ($dataType=='int' and $dataLength!=1 and $dataLength!=12) or // Intergers : should not be summed, so preserve previous behavior
                ($dataType=='decimal') or 
                ($dataType=='numeric') 
-              )) {
+          ) and $key!='warningValue' and $key!='alertValue') {
             $this->$key=0;
           }
         }
@@ -2704,7 +2704,7 @@ abstract class SqlElement {
                // ( $dbType=='int' and $dbLength!=12 and $dbLength!=1) or // Intergers : should not be summed, so preserve previous behavior
                   ( $dbType=='numeric') or
                   ( $dbType=='decimal')
-               ) )  {
+            ) and $col_name!='warningValue' and $col_name!='alertValue')  {
               $this->{$col_name}=0;
             }
           }
