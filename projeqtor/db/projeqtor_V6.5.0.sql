@@ -132,3 +132,7 @@ UPDATE `${prefix}report` SET `sortOrder`=483 WHERE `id`=4;
 UPDATE `${prefix}report` SET `sortOrder`=484 WHERE `id`=60;
 
 UPDATE `${prefix}reportparameter` SET `defaultValue`=null WHERE idReport=60 and name='month';
+
+ALTER TABLE `${prefix}indicatordefinition` ADD `mailToProjectIncludingParentProject` int(1) unsigned DEFAULT 0;
+
+ALTER TABLE `${prefix}indicatordefinition` ADD `alertToProjectIncludingParentProject` int(1) unsigned DEFAULT 0;

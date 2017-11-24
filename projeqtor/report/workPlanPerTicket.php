@@ -136,7 +136,10 @@
     $plannedWork = $resultt["plannedWork"];
     $realWork = $resultt['realWork'];
     $leftWork = $resultt['leftWork'];
-    $progress = $realWork / ($realWork + $leftWork) * 100;
+    $progress = 0;
+    if ($plannedWork>0) {
+      $progress = $realWork / ($realWork + $leftWork) * 100;
+    }
     for ($i=1;$i<$resultt["level"];$i++) {
       $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
     }
@@ -152,7 +155,7 @@
     echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($plannedWork)  . '</TD>' ;
     echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($realWork) . '</TD>' ;
     echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($leftWork) . '</TD>' ;
-    echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
+    echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter(round($progress)) . '</TD>' ;
     echo '</TR>';
   }
   echo "</table>";

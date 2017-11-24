@@ -560,6 +560,34 @@ class IndicatorValue extends SqlElement {
         }
       }
     }
+    if ($def->mailToProjectIncludingParentProject or $def->alertToProjectIncludingParentProject) {
+      $aff = new Affectation ();
+      $proj = new Project($def->idProject);
+      $critWhere="idProject in ".transformValueListIntoInClause($proj->getTopProjectList(true));
+      $affList = $aff->getSqlElementsFromCriteria ( null, false, $critWhere);
+      if ($affList and count ( $affList ) > 0) {
+        foreach ( $affList as $aff ) {
+          $resource = new Resource ( $aff->idResource );
+          if ($def->alertToProjectIncludingParentProject) {
+            $arrayAlertDest[$resource->id]=$resource->name;
+          }
+          if ($def->mailToProjectIncludingParentProject) {
+            if ($aff->idResource == getSessionUser ()->id) {
+              $usr = getSessionUser ();
+            } else {
+              $usr = new User ( $aff->idResource );
+            }
+            if (! $resource->dontReceiveTeamMails) {
+              $newDest = "###" . $resource->email . "###";
+              if ($resource->email and strpos ( $dest, $newDest ) === false) {
+                $dest .= ($dest) ? ', ' : '';
+                $dest .= $newDest;
+              }
+            }
+          }
+        }
+      }
+    }
     if ($def->mailToOther) {
       if ($def->otherMail) {
         $otherMail=str_replace(';',',', $def->otherMail);

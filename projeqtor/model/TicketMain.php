@@ -351,7 +351,7 @@ class TicketMain extends SqlElement {
   	}
   	if ($this->idTicketType != $old->idTicketType 
   	 or $this->idUrgency != $old->idUrgency
-  	 or $this->creationDateTime != $old->creationDateTime) {
+  	 or $this->creationDateTime != $old->creationDateTime or $this->idProject != $old->idProject) {
   	 	$crit=array('idTicketType'=>$this->idTicketType, 'idUrgency'=>$this->idUrgency, 'idle'=>'0','idProject'=>$this->idProject);
   		$delay=SqlElement::getSingleSqlElementFromCriteria('TicketDelay', $crit);
   		if ($delay and !$delay->id) {
