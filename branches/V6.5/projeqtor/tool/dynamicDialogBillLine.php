@@ -354,7 +354,7 @@ if ($line->line) {
                <?php if ($currencyPosition=='after') echo $currency;?>
              </td>
            </tr>
-           <?php if($refType=="Quotation"){?>
+           <?php if($refType=="Quotation" or $refType=="Command"){?>
            <tr>
              <td class="dialogLabel" >
                <label for="billLineNumberDays" ><?php echo i18n("numberOfDays");?>&nbsp;:&nbsp;</label>
