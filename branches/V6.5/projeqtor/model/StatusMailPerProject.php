@@ -44,8 +44,9 @@ class StatusMailPerProject extends StatusMail {
   public $mailToUser;
   public $mailToResource;
   public $mailToSponsor;
-  public $mailToProject;
+  public $mailToProject;  
   public $mailToProjectIncludingParentProject;
+  public $_lib_globalProjectTeam;
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;
@@ -82,7 +83,8 @@ class StatusMailPerProject extends StatusMail {
                                   "idType"=>"nocombo", 
   		                            "mailToSponsor"=>"hidden,calculated",
                                   "idProject"=>"required",
-                                  "isProject"=>"hidden"
+                                  "isProject"=>"hidden",
+                                  "mailToProjectIncludingParentProject" => "nobr"
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus',

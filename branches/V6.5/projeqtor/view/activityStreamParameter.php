@@ -110,7 +110,7 @@ if(!$activityStreamNumberDays){
                 <?php echo autoOpenFilteringSelect();?> 
                 id="activityStreamTeamFilter" name="activityStreamTeamFilter" >
                   <?php 
-                    $selectedTeam=Parameter::getUserParameter('activityStreamAuthorTeam');
+                    $selectedTeam=Parameter::getUserParameter('activityStreamTeamFilter');
                     htmlDrawOptionForReference('idTeam', $selectedTeam, null, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshActivityStreamList();

@@ -46,6 +46,7 @@ class StatusMail extends SqlElement {
   public $mailToSponsor;
   public $mailToProject;
   public $mailToProjectIncludingParentProject;
+  public $_lib_globalProjectTeam;
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;
@@ -81,7 +82,8 @@ class StatusMail extends SqlElement {
                                   "otherMail"=>"",
                                   "idType"=>"nocombo", 
   		                            "mailToSponsor"=>"hidden,calculated",
-                                  "isProject"=>"hidden"
+                                  "isProject"=>"hidden",
+                                  "mailToProjectIncludingParentProject" => "nobr"
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus',

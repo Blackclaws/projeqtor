@@ -53,6 +53,8 @@ class IndicatorDefinitionPerProject extends SqlElement {
   public $mailToUser;
   public $mailToResource;
   public $mailToProject;
+  public $mailToProjectIncludingParentProject;
+  public $_lib_globalProjectTeam;
   public $mailToLeader;
   public $mailToManager;
   public $mailToAssigned;
@@ -64,6 +66,8 @@ class IndicatorDefinitionPerProject extends SqlElement {
   public $alertToUser;
   public $alertToResource;
   public $alertToProject;
+  public $alertToProjectIncludingParentProject;
+  public $_lib_globalProjectTeamAlert;
   public $alertToLeader;
   public $alertToManager;
   public $alertToAssigned;
@@ -101,7 +105,9 @@ class IndicatorDefinitionPerProject extends SqlElement {
                                   "codeAlertDelayUnit"=>"hidden",
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
-                                  "isProject"=>"hidden"
+                                  "isProject"=>"hidden",
+                                  "mailToProjectIncludingParentProject" => "nobr",
+                                  "alertToProjectIncludingParentProject" => "nobr"
   );  
   
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
@@ -116,6 +122,7 @@ class IndicatorDefinitionPerProject extends SqlElement {
                                                      'alertToManager'=>'mailToManager',
                                                      'alertToAssigned'=>'mailToAssigned',
                                                      'alertToSubscribers'=>'mailToSubscribers',
+                                                     'alertToProjectIncludingParentProject'=>'mailToProjectIncludingParentProject',
                                                      'otherMail'=>'email');
   
     

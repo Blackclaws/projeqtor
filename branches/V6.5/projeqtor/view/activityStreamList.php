@@ -109,7 +109,9 @@ if (trim($paramAuthorFilter)!="") {
 }
 
 if (trim($paramTeamFilter)!="") {
-  $critWhere.=" and idTeam=$paramTeamFilter";
+	$team = new Resource();
+	$teamResource=$team->getDatabaseTableName();
+	$critWhere.=" and idUser in (select id from $teamResource where idTeam=$paramTeamFilter)";
 }
 
 if (trim($paramTypeNote)!="") {

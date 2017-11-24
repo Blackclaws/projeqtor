@@ -215,7 +215,7 @@ class BillLine extends SqlElement {
     }
 //Debut Code Marc
     // Update Bill to get total of amount
-    if (property_exists($bill, 'untaxedAmount') and property_exists($bill, 'fullAmount') and property_exists($bill, 'taxPct')) {
+    if (property_exists($bill, 'untaxedAmount') and property_exists($bill, 'fullAmount') and property_exists($bill, 'taxPct') and property_exists($bill, 'plannedWork')) {
       $bill->untaxedAmount=$bill->untaxedAmount-$this->amount;
       $bill->fullAmount=$bill->untaxedAmount*(1+$bill->taxPct*0.01);
       $bill->plannedWork=$bill->plannedWork-$this->numberDays;
