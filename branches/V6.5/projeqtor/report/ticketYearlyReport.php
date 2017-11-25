@@ -189,7 +189,6 @@ if ($paramMonth=="01") {
 }
 else {
   $endMonth = ($paramMonth<11?'0':'') . ($paramMonth - 1);
-  debugLog($endMonth);
 }
 $endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
 //END ADD

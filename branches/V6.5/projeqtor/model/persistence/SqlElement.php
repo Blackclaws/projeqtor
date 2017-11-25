@@ -6138,7 +6138,9 @@ abstract class SqlElement {
       return '';
     }
   }
-  
+  //public function setAttributes() {
+  //  parent::setAttributes();
+  //}
 }
 
 ?>

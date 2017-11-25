@@ -109,6 +109,11 @@ foreach ($versionHistory as $vers) {
   }
 }
 
+// Set Session User with Admin Rights
+$admin=new User();
+$admin->idProfile=1;
+setSessionUser($admin);
+
 if ($currVersion=='V0.0.0') {
   traceLog ("create default project");
   $type=new ProjectType();
@@ -439,7 +444,7 @@ if (beforeVersion($currVersion,"V5.1.5") and afterVersion($currVersion, "V5.1.0"
 }
 if (beforeVersion($currVersion,"V5.2.0") and $currVersion!='V0.0.0') {
   traceLog("update work elements [5.2.0]");
-  setSessionUser(new User());
+  //setSessionUser(new User());
   $we=new WorkElement();
   $weList=$we->getSqlElementsFromCriteria(null,false, "realWork>0");
   $cpt=0;
@@ -528,7 +533,7 @@ if ($currVersion=="V6.0.0" or $currVersion=="V6.0.1" ) {
 
 if (beforeVersion($currVersion,"V6.1.2") and $currVersion!='V0.0.0') {
 	traceLog("update assignment were cost is null [6.1.0]");
-	setSessionUser(new User());
+	//setSessionUser(new User());
 	$ass=new Assignment();
 	$assList=$ass->getSqlElementsFromCriteria(null,false, "realCost is null and realWork is not null and newDailyCost is not null");
 	$cpt=0;
@@ -586,6 +591,33 @@ if (beforeVersion($currVersion,"V6.3.0") and $currVersion!='V0.0.0') {
 if ($currVersion=='V6.3.0' and Sql::isPgsql()) {
   $nbErrorsPg=runScript('V6.3.1.pg');
 }
+
+//ADD qCazelles
+if (beforeVersion($currVersion,'V6.5.0')) {
+	traceLog("Create delivery types from deliverable types");
+  $deliverableType=new DeliverableType();
+  $list=$deliverableType->getSqlElementsFromCriteria(null);
+  $workflow=new Workflow();
+  $listWorkflow=$workflow->getSqlElementsFromCriteria(null, false, null, 'id asc');
+  $workflow=$listWorkflow[0];
+  foreach ($list as $deliverableType) {
+    $deliveryType = new DeliveryType();
+    foreach ($deliverableType as $attribute => $val) {
+      $deliveryType->$attribute = $val;
+    }
+    $deliveryType->id = null;
+    $deliveryType->scope = 'Delivery';
+    $deliveryType->idWorkflow = $workflow->id;
+    $res=$deliveryType->save();
+    $delivery = new Delivery();
+    $deliveries=$delivery->getSqlElementsFromCriteria(array('idDeliveryType' => $deliverableType->id));
+    foreach ($deliveries as $delivery) {
+      $delivery->idDeliveryType = $deliveryType->id;
+      $res=$delivery->save();
+    }
+  }
+}
+//END ADD qCazelles
 
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();

@@ -315,8 +315,11 @@ class Parameter extends SqlElement {
       case 'paramMailerSendAsCurrentUser' :
       //END ADD qCazelles
       case 'manageTicketCustomer' :  //ADD qCazelles - Manage ticket at customer level - Ticket #87
+      //ADD qCazelles
+      case 'productVersionOnDelivery' :
+      //END ADD qCazelles    
         $list=array('NO'=>i18n('displayNo'),
-            'YES'=>i18n('displayYes')); 
+                    'YES'=>i18n('displayYes')); 
         break;
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
       case 'dependencyStrictMode': 
@@ -720,7 +723,9 @@ class Parameter extends SqlElement {
                             	'versionNameAutoformat'=>'list',
                              	'versionNameAutoformatSeparator'=>'text',
                              	'versionCompatibility'=>'list',
-                             	'subscriptionAuto'=>'list',     	
+                             	'subscriptionAuto'=>'list',
+                              //'sectionDelivery'=>'section', //ADD qCazelles
+                              'productVersionOnDelivery'=>'list',
                         'tabMail'=>"tab",   
                           'newColumnMailLeft'=>'newColumn',
                             'sectionMail'=>'section',
