@@ -342,6 +342,14 @@
 .iconDelivery22 { background-image: url(images/iconDelivery32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconDelivery16 { background-image: url(images/iconDelivery32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
+/*ADD qCazelles*/
+
+.iconDeliveryType32 { background-image: url(images/iconDeliveryType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconDeliveryType22 { background-image: url(images/iconDeliveryType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconDeliveryType16 { background-image: url(images/iconDeliveryType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+/*END ADD qCazelles*/
+
 .iconDeliverableStatus32 { background-image: url(images/iconDeliverableStatus32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconDeliverableStatus22 { background-image: url(images/iconDeliverableStatus32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconDeliverableStatus16 { background-image: url(images/iconDeliverableStatus32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}

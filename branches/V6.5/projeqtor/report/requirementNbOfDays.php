@@ -135,7 +135,6 @@ $where .= " and creationDateTime>='" . date ( 'Y-m-d', $prevDate ) . "' ";
 $order = "";
 // echo $where;
 $req = new Requirement ();
-debugLog ( $where );
 $lstReqNew = $req->getSqlElementsFromCriteria ( null, false, $where, $order );
 $lstReqclosed = $req->getSqlElementsFromCriteria ( null, false, $whereClosed, $order );
 

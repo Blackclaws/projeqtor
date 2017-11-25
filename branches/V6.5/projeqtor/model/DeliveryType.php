@@ -25,27 +25,26 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Subscription is a way to follow an item (some email can be sent to subscribers)
- */  
+ * DeliveryType defines the type of a Delivery.
+ */ 
 require_once('_securityCheck.php');
-class Subscription extends SqlElement {
+class DeliveryType extends Type {
 
-  // extends SqlElement, so has $id
-  public $_sec_Description;
-  public $id;
-  public $idAffectable;
-  public $refType;
-  public $refId;
-  public $idUser;
-  public $creationDateTime;
-  public $comment;
-  public $isAutoSub;
-  
-  //public $_noHistory=true;
+  // Define the layout that will be used for lists
     
-  private static $_fieldsAttributes=array("refType"=>"required", 
-  		 "refId"=>"required"
-  );
+  
+   private static $_fieldsAttributes=array();
+
+   // Define the layout that will be used for lists
+   private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
+    <th field="name" width="70%">${name}</th>
+    <th field="code" width="10%">${code}</th>
+    <th field="sortOrder" width="5%">${sortOrderShort}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
+   
+  private static $_databaseCriteria = array('scope'=>'Delivery');
   
    /** ==========================================================================
    * Constructor
@@ -68,34 +67,30 @@ class Subscription extends SqlElement {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
+  
+
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
+  }
+  
   /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
-  	return self::$_fieldsAttributes;
+    return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
   }
   
-  /**=========================================================================
-   * Overrides SqlElement::save() function to add specific treatments
-  * @see persistence/SqlElement#save()
-  * @return the return message of persistence/SqlElement#save() method
-  */
-  public function save() {
-    if($this->refType=='Product' or $this->refType=='Component'){
-      adAutoSub($this);
-    }
-    $result = parent::save();
-    return $result;
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
   }
-  
-  public function delete() {
-    if($this->refType=='Product' or $this->refType=='Component'){
-      deleteAutoSub($this);
-    }
-  	$result = parent::delete();
-    return $result;
-  }
-  
 }
 ?>

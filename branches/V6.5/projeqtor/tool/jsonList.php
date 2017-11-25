@@ -281,7 +281,32 @@
             $crit['isPlanningActivity']=1;
           }
         }
-        $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
+        //ADD qCazelles
+         if ($dataType=='idProductVersion' and $critField=='idProject') {
+//            if (Parameter::getGlobalParameter('sortingLists')=='YES') {
+//              $versionProject=new VersionProject();
+//              $list=$versionProject->getVersionsFromProject($critValue);
+//            } else {
+             $proj=new Project($critValue);
+             $listProjs=$proj->getRecursiveSubProjectsFlatList(false, true);
+             $clauseWhere = 'idProject in (';
+             foreach ($listProjs as $idProj => $nameProj) {
+               $clauseWhere .= $idProj.', ';
+             }
+             $clauseWhere = substr($clauseWhere, 0, -2);
+             $clauseWhere .= ')';
+             $versionProject=new VersionProject();
+             $listVersionProjects=$versionProject->getSqlElementsFromCriteria(null, false, $clauseWhere);
+             $crit = array('id'=>array());
+             foreach ($listVersionProjects as $versionProject) {
+               $crit['id'][] = $versionProject->idVersion;
+             }             
+             $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
+           //}
+        } else {
+        //END ADD qCazelles
+          $list=SqlList::getListWithCrit($class, $crit,'name',null,$showIdle);
+        }
       } else {
         $list=SqlList::getList($class);   
         // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
