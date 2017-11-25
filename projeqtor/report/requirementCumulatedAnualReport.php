@@ -186,8 +186,6 @@ foreach ( $lstReq as $t ) {
   if (substr ( $t->creationDateTime, 0, 4 ) == $paramYear or substr ( $t->creationDateTime, 0, 4 ) == ($paramYear + 1)) {
     $month = intval ( substr ( $t->creationDateTime, 5, 2 ) );
     if (substr ( $t->creationDateTime, 0, 4 ) == $paramYear) {
-      // debugLog($month);
-      // debugLog($t->creationDateTime);
       $created [$month - $paramMonth + 1] += 1;
     } else if (substr ( $t->creationDateTime, 0, 4 ) == $paramYear + 1) {
       if (($month - $paramMonth) > 0) {
@@ -203,9 +201,7 @@ $reqC = new Requirement ();
 $lstReqC = $reqC->getSqlElementsFromCriteria ( null, false, $whereC, $orderC );
 foreach ( $lstReqC as $k ) {
   $month = intval ( substr ( $k->idleDate, 5, 2 ) );
-  debugLog ( 'idleDate = ' . $k->idleDate );
   if (substr ( $k->idleDate, 0, 4 ) == $paramYear or substr ( $k->idleDate, 0, 4 ) == ($paramYear + 1)) {
-    debugLog ( 'month = ' . $month );
     if (substr ( $k->idleDate, 0, 4 ) == $paramYear and $month >= $paramMonth) {
       $closed [$month - $paramMonth + 1] += 1;
     } else if (substr ( $k->idleDate, 0, 4 ) == $paramYear + 1) {

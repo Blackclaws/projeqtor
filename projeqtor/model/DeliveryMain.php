@@ -36,23 +36,43 @@ class DeliveryMain extends SqlElement {
   public $reference;
   public $scope;
   public $name;
-  public $idDeliverableType;
+  //public $idDeliverableType;  //REMOVED qCazelles
+  public $idDeliveryType;
   public $idProject;
   public $externalReference;
+  //ADD qCazelles
+  public $idProductVersion;
+  //END ADD qCazelles
   public $idUser;
   public $creationDateTime;
   public $description;
   public $_sec_validation;
-  public $idDeliverableStatus;
+  //ADD qCazelles
+  public $idStatus;
+  //END ADD qCazelles
   //public $idDeliverableWeight;
   public $idResource;
   public $plannedDate;
-  public $realDate;
-  public $validationDate;
+  //public $realDate;
+  //public $validationDate;
+  //ADD qCazelles
+  public $handled;
+  public $handledDateTime;
+  public $done;
+  public $doneDateTime;
   public $idle;
+  public $idleDateTime;
+  public $cancelled;
+  public $_lib_cancelled;
+  //END ADD qCazelles
+  public $idDeliverableStatus;
   public $result;
   public $_sec_LinkDeliverable;
   public $_Link_Deliverable=array();
+  //ADD qCazelles
+  public $_sec_LinkActivity;
+  public $_Link_Activity=array();
+  //END ADD qCazelles
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -65,7 +85,7 @@ class DeliveryMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameDeliverableType" width="10%" >${idDeliverableType}</th>
+    <th field="nameDeliveryType" width="10%" >${idDeliveryType}</th>
     <th field="name" width="30%" >${name}</th>
     <th field="colorNameDeliverableStatus" width="12%" formatter="colorNameFormatter">${idDeliverableStatus}</th>
     <th field="colorNameDeliverableWeight" width="12%" formatter="colorNameFormatter">${idDeliverableWeight}</th>
@@ -77,16 +97,22 @@ class DeliveryMain extends SqlElement {
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
                                   "name"=>"required", 
                                   "idProject"=>"required",
-                                  "idDeliverableType"=>"required",
+                                  "idDeliveryType"=>"required",
                                   "idUser"=>"hidden",
                                   "creationDateTime"=>"hidden",
-                                  "scope"=>"hidden"
+                                  "scope"=>"hidden",
+                                  "idActivity"=>"title",
+                                  "idStatus"=>"required",
+                                  "handled"=>"nobr",
+                                  "done"=>"nobr",
+                                  "idle"=>"nobr",
+                                  "idleDateTime"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idDeliverableStatus'=>'idDeliveryStatus'
   );
   
-  //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
   
   private static $_databaseTableName = 'delivery';
@@ -206,6 +232,11 @@ class DeliveryMain extends SqlElement {
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+      //ADD qCazelles
+    } else if ($colName=="idProject") {
+     $colScript .= '<script type="dojo/connect" event="onChange" >';
+     $colScript .= '  refreshList("idProductVersion", "idProject", this.value);';     
+     $colScript .= '</script>';
     }
     return $colScript;
   }
@@ -239,6 +270,30 @@ class DeliveryMain extends SqlElement {
     }
     KpiValue::calculateKpi($this);
     return $result;
+  }
+  
+  //ADD qCazelles
+  public function control() {
+    $result="";
+    if (trim($this->idProductVersion)) {
+      $linkedVersion=new ProductVersion($this->idProductVersion);
+      if ( !in_array($this->idProject,$linkedVersion->getLinkedProjects(false))) {
+        $result.='<br/>' . i18n('msgVersionNotLinkedToProject');
+      }
+    }
+  	$defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  public function setAttributes() {
+  	if (Parameter::getGlobalParameter('productVersionOnDelivery') != 'YES') {
+  		self::$_fieldsAttributes['idProductVersion']='hidden';
+  	} 
   }
 }
 ?>

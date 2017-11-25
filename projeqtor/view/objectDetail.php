@@ -587,13 +587,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $notReadonlyClass=" generalColClassNotReadonly ";
     $notRequiredClass=" generalColClassNotRequired ";
     $nobr_before=$nobr;
-    /*debugLog("$col  nobr=$nobr  nobr_before=$nobr_before");
-    if ( $nobr_before 
-    and ( $obj->isAttributeSetToField($col, "hidden" ) )
-    and (!$obj->isAttributeSetToField($col, "nobr")    )) {
-      $nobr_before=false;
-      debugLog("erased nobr_before");
-    }*/
     $nobr=false;
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
       $hide=true;
@@ -716,7 +709,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //ADD qCazelles - Version compatibility
       if ($col=='_sec_ProductVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') != 'YES') continue;
       //END ADD qCazelles - Version compatibility
-      
+      //if ($col=='_sec_delivery' and Parameter::getGlobalParameter('productVersionOnDelivery') != 'YES') continue;
       $prevSection=$section;
       $currentCol+=1;
       if (strlen($col) > 8) {
@@ -874,7 +867,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
    	//ADD qCazelles - Version compatibility
    	} else if ($col == '_productVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') == 'YES') {
    		drawVersionCompatibility($obj);
-   		//END ADD qCazelles - Version compatibility    
+   		//END ADD qCazelles - Version compatibility
+    //ADD qCazelles
+   	} else if ($col == '_versionDelivery' and Parameter::getGlobalParameter('productVersionOnDelivery') == 'YES') {
+   	  drawDeliverysFromObject($obj);
+   	//END ADD qCazelles
   	} else if ($col == '_componentComposition' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Composition of component (structure)
       drawStructureFromObject($obj, false,'composition', 'Component');
     } else if ($col == '_componentStructure' and !$obj->isAttributeSetToField($col, "hidden")) { // Display Structure of component (structure)
@@ -1001,6 +998,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($col=='idBusinessFeature' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') {
         $hide=true;
       }
+      //ADD qCazelles
+      //if ($col=='idProductVersion' and get_class($obj) == 'Delivery' and Parameter::getGlobalParameter('productVersionOnDelivery') != 'YES') {
+      //  $hide=true;
+      //}
+      //END ADD qCazelles
       //ADD qCazelles - Project restriction
       if ($col=='idProject' ) {
       	$uniqueProjectRestriction = false;
@@ -4156,6 +4158,49 @@ function drawVersionCompatibility($obj, $refresh=false) {
 	}
 }
 //END ADD qCazelles - Version compatibility
+
+//ADD qCazelles
+function drawDeliverysFromObject($obj) {
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  
+  echo '<tr>';
+  echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('Delivery') . '</td>';
+  echo '<td class="linkHeader" style="width:40%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:50%">' . i18n('colIdDeliveryStatus') . '</td>';
+  echo '</tr>';
+
+  $delivery=new Delivery();
+  $list=$delivery->getSqlElementsFromCriteria(array('idProductVersion'=>$obj->id), false, null, 'creationDateTime desc');
+  
+  $userId=$delivery->idUser;
+  $user=new User($userId);
+  $userName=$user->name;
+  
+  foreach ( $list as $delivery ) {
+    $status=new Status($delivery->idStatus);
+    echo '<tr onClick="gotoElement(' . "'Delivery','" . htmlEncode($delivery->id) . "'" . ');" style="cursor: pointer;">';
+    echo '<td class="linkData">#' . htmlEncode($delivery->id) . '</td>';
+    echo '<td class="linkData">' . htmlEncode($delivery->name) . '</td>';
+    echo '<td class="linkData">' . htmlEncode($status->name);
+    echo formatUserThumb($userId, $userName, 'Creator');
+    
+    if ($delivery->idle) {
+      echo formatDateThumb($delivery->creationDateTime, $delivery->idleDateTime);
+    } else if ($delivery->done) {
+      echo formatDateThumb($delivery->creationDateTime, $delivery->doneDateTime);
+    } else if ($delivery->handled) {
+      echo formatDateThumb($delivery->creationDateTime, $delivery->handledDateTime);
+    } else {
+      echo formatDateThumb($delivery->creationDateTime, null);
+    }
+    echo '</td>';
+    echo '</tr>';
+  }
+}
+//END ADD qCazelles
 
 function drawApproverFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;

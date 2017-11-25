@@ -77,6 +77,10 @@ class ProductVersionMain extends Version {
   public $_sec_context;
   public $_productContext;
   //END ADD qCazelles - LANG 2
+  //ADD qCazelles
+  public $_sec_delivery;
+  public $_versionDelivery;
+  //END ADD qCazelles
   public $_sec_Link;
   public $_Link = array();
   public $_Attachment=array();
@@ -151,6 +155,11 @@ class ProductVersionMain extends Version {
       self::$_fieldsAttributes['realDeliveryDate']='hidden';
       self::$_fieldsAttributes['isDelivered']='hidden';
     }
+    if (Parameter::getGlobalParameter('productVersionOnDelivery') != 'YES') {
+    	self::$_fieldsAttributes['_sec_delivery']='hidden';
+    	self::$_fieldsAttributes['_versionDelivery']='hidden';
+    }
+    
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
