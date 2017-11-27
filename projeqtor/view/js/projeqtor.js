@@ -337,6 +337,16 @@ function getTime() {
  * @return void
  */
 function addMessage(msg) {
+  msg = msg.replace(" class='messageERROR' ", "");
+  msg = msg.replace(" class='messageOK' ", "");
+  msg = msg.replace(" class='messageWARNING' ", "");
+  msg = msg.replace(" class='messageNO_CHANGE' ", "");
+  msg = msg.replace("</div><div>", ", ");
+  msg = msg.replace("</div><div>", ", ");
+  msg = msg.replace("<div>", "");
+  msg = msg.replace("<div>", "");
+  msg = msg.replace("</div>", "");
+  msg = msg.replace("</div>", "");
   var msgDiv = dojo.byId("messageDiv");
   if (msgDiv) {
     msgDiv.innerHTML = "[" + getTime() + "] " + msg + "<br/>"
