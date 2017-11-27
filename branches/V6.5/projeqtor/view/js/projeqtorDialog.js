@@ -4047,7 +4047,6 @@ function selectDynamicFilterContinue() {
 
 function reportSelectCategory(idCateg) {
   if (isNaN(idCateg)) return;
-  console.log(idCateg);
   loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv",
       null, false);
   var tmpStore=new dojo.data.ItemFileReadStore(
@@ -6393,7 +6392,6 @@ function saveMessageMail(){
 //
   var tmpCkEditor=mailEditor.document.getBody().getText();
   var tmpCkEditorData=mailEditor.getData();
-//  console.log(tmpCkEditor);
   if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
     var msg=i18n('messageMandatory', new Array(i18n('Message')));
     mailEditor.focus();
