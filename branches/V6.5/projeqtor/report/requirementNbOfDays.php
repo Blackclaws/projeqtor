@@ -95,7 +95,7 @@ if ($paramProject != "") {
   $where .= " and idProject in " . getVisibleProjectsList ( false, $paramProject );
 }
 if ($paramProduct != "") {
-  $where .= " and idProduct=" . Sql::fmtId ( $paramProduct ) . "'";
+  $where .= " and idProduct=" . Sql::fmtId ( $paramProduct );
 }
 
 $filterByPriority = false;
@@ -117,6 +117,8 @@ if ($filterByPriority and in_array ( 'undefined', $paramPriorities )) {
 } else if ($filterByPriority) {
   $where .= " and idPriority is not null";
 }
+// Date by number of days in the past
+$prevDate = time () - ($paramNbOfDays * 24 * 60 * 60);
 
 $whereClosed = $where . " and idStatus in (";
 
@@ -127,25 +129,34 @@ foreach ( $lstStatusClosed as $s ) {
 $whereClosed = substr ( $whereClosed, 0, - 2 ); // To remove the last comma and space
 $whereClosed .= ') ';
 
-// Date by number of days in the past
-$prevDate = time () - ($paramNbOfDays * 24 * 60 * 60);
+
+
+$whereDone = $where;
+$whereDone .= " and doneDate >= '" . date ( 'Y-m-d', $prevDate ) . "' ";
+
 
 $where .= " and creationDateTime>='" . date ( 'Y-m-d', $prevDate ) . "' ";
+
 
 $order = "";
 // echo $where;
 $req = new Requirement ();
+debugLog($where);
+debugLog($whereDone);
 $lstReqNew = $req->getSqlElementsFromCriteria ( null, false, $where, $order );
 $lstReqclosed = $req->getSqlElementsFromCriteria ( null, false, $whereClosed, $order );
+$lstReqDone = $req->getSqlElementsFromCriteria ( null, false, $whereDone, $order );
 
 $month = getArrayMonth ( 4, true );
 
 $created = array();
 $closed = array();
+$done = array();
 $arrDays = array();
 for($i = 1; $i <= $paramNbOfDays; $i ++) {
   $created [$i] = 0;
   $closed [$i] = 0;
+  $done [$i] = 0;
   $arrDays [$i] = '';
   if ($i == 1) {
     $arrDays [1] = $month [date ( 'n', $prevDate ) - 1] . date ( 'Y', $prevDate );
@@ -155,13 +166,16 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
     $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1];
   }
 }
+debugLog($arrDays);
 
 foreach ( $lstReqNew as $t ) {
   if (strtotime ( $t->creationDateTime ) > $prevDate) {
     $i = ceil ( (strtotime ( $t->creationDateTime ) - $prevDate) / (24 * 60 * 60) );
-    $created [$i] += 1;
-    for($j = $i + 1; $j <= $paramNbOfDays; $j ++) {
-      $created [$j] += 1;
+    if (isset($created [$i])) {
+      $created [$i] += 1;
+      for($j = $i + 1; $j <= $paramNbOfDays; $j ++) {
+        $created [$j] += 1;
+      }
     }
   }
 }
@@ -169,9 +183,23 @@ foreach ( $lstReqNew as $t ) {
 foreach ( $lstReqclosed as $t ) {
   if (strtotime ( $t->idleDate ) > $prevDate) {
     $i = ceil ( (strtotime ( $t->idleDate ) - $prevDate) / (24 * 60 * 60) );
-    $closed [$i] += 1;
-    for($j = $i + 1; $j <= $paramNbOfDays; $j ++) {
-      $closed [$j] += 1;
+    if (isset($created [$i])) {
+      $closed [$i] += 1;
+      for($j = $i + 1; $j <= $paramNbOfDays; $j ++) {
+        $closed [$j] += 1;
+      }
+    }
+  }
+}
+debugLog($lstReqDone);
+foreach ( $lstReqDone as $t ) {
+  if (strtotime ( $t->doneDate ) > $prevDate) {
+    $i = ceil ( (strtotime ( $t->doneDate ) - $prevDate) / (24 * 60 * 60) );
+    if (isset($created [$i])) {
+      $done [$i] += 1;
+      for($j = $i + 1; $j <= $paramNbOfDays; $j ++) {
+        $done [$j] += 1;
+      }
     }
   }
 }
@@ -182,6 +210,9 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
   }
   if ($closed [$i] == 0) {
     $closed [$i] = '';
+  }
+  if ($done [$i] == 0) {
+    $done [$i] = '';
   }
 }
 
@@ -198,6 +229,9 @@ $dataSet->AddSerie ( "created" );
 $dataSet->AddPoint ( $closed, "closed" );
 $dataSet->SetSerieName ( i18n ( "closed" ), "closed" );
 $dataSet->AddSerie ( "closed" );
+$dataSet->AddPoint ( $done, "done" );
+$dataSet->SetSerieName ( i18n ( "done" ), "done" );
+$dataSet->AddSerie ( "done" );
 $dataSet->AddPoint ( $arrDays, "days" );
 $dataSet->SetAbsciseLabelSerie ( "days" );
 
@@ -212,10 +246,10 @@ $graph->setColorPalette ( 2, 100, 100, 200 );
 $graph->setColorPalette ( 3, 200, 100, 100 );
 $graph->setColorPalette ( 4, 100, 200, 100 );
 $graph->setColorPalette ( 5, 100, 100, 200 );
-$graph->setGraphArea ( 40, 30, $width - 140, 200 );
+$graph->setGraphArea ( 40, 30, $width - 140, 170 );
 $graph->drawGraphArea ( 252, 252, 252 );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 0, 1, true );
+$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 60, 1, true );
 $graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
 
 // Draw the line graph
@@ -229,7 +263,7 @@ $graph->drawArea ( $dataSet->GetData (), "created", "closed", 127, 127, 127 );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
 $graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
 
-$graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 0, 1, true );
+$graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 60, 1, true );
 
 $imgName = getGraphImgName ( "requirement nb of days" );
 $graph->Render ( $imgName );

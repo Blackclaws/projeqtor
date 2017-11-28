@@ -99,7 +99,7 @@ if ($paramTicketType!="") {
 	$where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";
 }
 if ($paramProduct!="") {
-	$where.=" and idProduct=".Sql::fmtId($paramProduct) . "'";
+	$where.=" and idProduct=".Sql::fmtId($paramProduct);
 }
 
 $filterByPriority = false;
@@ -126,7 +126,7 @@ else if ($filterByPriority) {
 
 $whereClosed=$where." and idStatus in (";
 
-$lstStatusClosed = SqlList::getListWithCrit('Status', array('setIdleStatus' => '1'), 'id');
+$lstStatusClosed = SqlList::getListWithCrit('Status', array('setDoneStatus' => '1'), 'id');
 foreach ($lstStatusClosed as $s) {
 	$whereClosed .= $s.', ';
 }
@@ -167,20 +167,24 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
 foreach ($lstTicketNew as $t) {
 	if (strtotime($t->creationDateTime) > $prevDate) {		
 		$i = ceil((strtotime($t->creationDateTime) - $prevDate) / (24 * 60 * 60));
-		$created[$i]+=1;
-		for ($j = $i+1; $j <= $paramNbOfDays; $j++) {
-			$created[$j]+=1;
+		if (isset($created[$i])) {
+  		$created[$i]+=1;
+  		for ($j = $i+1; $j <= $paramNbOfDays; $j++) {
+  			$created[$j]+=1;
+  		}
 		}
 	}
 }
 
 foreach ($lstTicketclosed as $t) {
-	if (strtotime($t->idleDateTime) > $prevDate) {
-		$i = ceil((strtotime($t->idleDateTime) - $prevDate) / (24 * 60 * 60));
-		$closed[$i]+=1;
-		for ($j = $i+1; $j <= $paramNbOfDays; $j++) {
-			$closed[$j]+=1;
-		}
+	if (strtotime($t->doneDateTime) > $prevDate) {
+		$i = ceil((strtotime($t->doneDateTime) - $prevDate) / (24 * 60 * 60));
+		if (isset($closed[$i])) {
+  		$closed[$i]+=1;
+  		for ($j = $i+1; $j <= $paramNbOfDays; $j++) {
+  			$closed[$j]+=1;
+  		}
+	  }
 	}
 }
 
@@ -202,7 +206,7 @@ $dataSet->AddPoint($created,"created");
 $dataSet->SetSerieName(i18n("created"),"created");
 $dataSet->AddSerie("created");
 $dataSet->AddPoint($closed,"closed");
-$dataSet->SetSerieName(i18n("closed"),"closed");
+$dataSet->SetSerieName(i18n("done"),"closed");
 $dataSet->AddSerie("closed");
 $dataSet->AddPoint($arrDays,"days");
 $dataSet->SetAbsciseLabelSerie("days");
