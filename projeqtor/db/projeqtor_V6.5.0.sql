@@ -172,7 +172,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (1, 79, 1);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(79, 'idProject', 'projectList', 10, 0, NULL, 0), 
+(79, 'idProject', 'projectList', 10, 0, 'currentProject', 0), 
 (79, 'idProduct', 'productList', 20, 0, NULL, 0), 
 (79, 'idVersion', 'versionList', 30, 0, NULL, 0), 
 (79, 'IdUrgency', 'urgencyList', 40, 0, NULL, 0), 
@@ -186,7 +186,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (1, 80, 1);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(80, 'idProject', 'projectList', 10, 0, NULL, 0), 
+(80, 'idProject', 'projectList', 10, 0, 'currentProject', 0), 
 (80, 'idProduct', 'productList', 20, 0, NULL, 0), 
 (80, 'idVersion', 'versionList', 30, 0, NULL, 0), 
 (80, 'idPriority', 'priorityList', 50, 0, NULL, 0);
@@ -197,7 +197,7 @@ VALUES (81, 'reportRequirementCumulatedAnnual', 8, 'requirementCumulatedAnualRep
 INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES (1, 81, 1);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(81, 'idProject', 'projectList', 10, 0, NULL, 0), 
+(81, 'idProject', 'projectList', 10, 0, 'currentProject', 0), 
 (81, 'idProduct', 'productList', 20, 0, NULL, 0), 
 (81, 'idVersion', 'versionList', 30, 0, NULL, 0), 
 (81, 'month', 'month', 40, 0, 'currentMonth', 0), 
@@ -211,7 +211,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (1, 82, 1);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultvalue`, `multiple`) VALUES 
-(82, 'idProject', 'projectList', 10, 0, NULL, 0), 
+(82, 'idProject', 'projectList', 10, 0, 'currentProject', 0), 
 (82, 'idProduct', 'productList', 20, 0, NULL, 0), 
 (82, 'idVersion', 'versionList', 30, 0, NULL, 0), 
 (82, 'nbOfDays', 'intInput', 40, 0, 30, 0), 
