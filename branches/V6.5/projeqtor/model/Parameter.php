@@ -457,6 +457,10 @@ class Parameter extends SqlElement {
           $list=array('phpmailer'=>i18n('libraryPHPMailer'),
                       'mail'=>i18n('functionPHPMail'),
                       'socket'=>i18n('connexionSocket'));
+        break;
+      case 'paramMailerHelo':
+        $list = array('NO'=>i18n('displayNo'),
+                      'YES'=>i18n('displayYes'));
         break; 
       case 'logLevel':
          $list=array('0'=>i18n('debugLevel0'),
@@ -740,12 +744,13 @@ class Parameter extends SqlElement {
                               'paramMailEol'=>'list',
                               'paramMailSendmailPath'=> 'text',
                               'paramMailerType'=>'list',
+                              'paramMailerHelo'=>'list',
                               'paramMailerSendAsCurrentUser'=>'list',
                           'newColumnMailRight'=>'newColumn',
                             'sectionMailTest'=>'section',
                               'mailerTestDest'=>'text',
                               'mailerTestTitle'=>'text',
-                              'mailerTestMessage'=>'text',
+                              'mailerTestMessage'=>'text', 
                               'mailerTestSender'=>'list',
                               'mailerTest'=>'specific',
     	                    'newColumnMailBottom'=>'newColumnFull',

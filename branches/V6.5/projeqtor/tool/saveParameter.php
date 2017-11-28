@@ -250,6 +250,10 @@ if ($type=='habilitation') {
       $crit['parameterCode']=$fld;
       $crit['idUser']=null;
       $crit['idProject']=null;
+      if ($fld == 'mailerTestMessage'){
+         $text=new Html2Text($val);
+         $val=$text->getText();
+      }
       $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
       if ($parameterList[$fld]=='time') {
         $val=substr($val,1,5);

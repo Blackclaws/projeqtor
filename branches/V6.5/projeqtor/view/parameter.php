@@ -208,7 +208,7 @@ function drawTableFromObjectList($objectList) {
 				echo ' >';
 				echo NumberFormatter52::completeKeyDownEvent($obj->getValidationScript($code));
 				echo '</div>';
-			} else if ($format=='text' or $format=='password') {
+			}else if ($format=='text' or $format=='password') {
 				echo '<div dojoType="dijit.form.TextBox" ';
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';
@@ -218,8 +218,15 @@ function drawTableFromObjectList($objectList) {
 				echo ' value="' .  htmlEncode($obj->parameterValue)  . '" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);
+				debugLog(htmlEncode($obj->parameterValue));
 				echo '</div>';
-			} else if ($format=='longtext') {
+				//if 
+				if ($code=='mailerTestMessage'){
+				  echo '<div style="float:right;display:block">';
+				  echo '<a onclick="mailerTextEditor();" id="mailerTextEditor">'.formatSmallButton('Add').'</a>';
+				  echo '</div>';
+				}
+			}else if ($format=='longtext') {
 				echo '<textarea dojoType="dijit.form.Textarea" ';
 				echo ' name="' . $code . '" id="' . $code . '"';
 				echo ' title="' . i18n('help' . ucfirst($code)) . '"';

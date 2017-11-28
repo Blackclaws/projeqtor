@@ -98,7 +98,7 @@ if(!$activityStreamNumberDays){
 						</tr>
 						<tr style="height:5px;"></tr>
 						<tr>						  
-							<td style="width:10%" align="left">
+							<td style="width:10%" align="right">
 							 <?php echo ucfirst(i18n('colIdAuthor'));?>&nbsp;:&nbsp;
 							</td>
 							<td align="left" style="margin-top:10px;">
@@ -116,7 +116,7 @@ if(!$activityStreamNumberDays){
 					  </tr>
 					  <tr style="height:2px;"></tr>
 					  <tr>
-					   <td align="left">
+					   <td align="right">
 							 <?php echo ucfirst(i18n('colIdTeam'));?>&nbsp;:&nbsp;
 						 </td>
 						 <td align="left">
@@ -141,7 +141,7 @@ if(!$activityStreamNumberDays){
 						</tr>
 						<tr style="height:5px;"></tr>
 						<tr>
-						  <td style="width:10%" align="left">
+						  <td style="width:10%" align="right">
 							 <?php echo ucfirst(i18n('colType'));?>&nbsp;:&nbsp;
 							</td>
 						  <td align="left" style="margin-top:10px;">
@@ -159,7 +159,7 @@ if(!$activityStreamNumberDays){
 							</td>
 						</tr>
 						<tr>
-						<td align="left" style="width:10%">
+						<td align="right" style="width:10%">
 					   <?php echo ucfirst(i18n('colId'));?>&nbsp;:&nbsp;
 					  </td>
 					  <td align="left">
@@ -179,7 +179,7 @@ if(!$activityStreamNumberDays){
 					</tr>      
 					<tr style="height:5px;"></tr>
 					<tr>             
-          <td style="width:50%" align="left">
+          <td style="width:50%" align="right">
                <a onclick="switchActivityStreamListAddedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
                  <?php echo i18n("dashboardTicketMainAddedRecently");?>
                  <?php $displayAddedRecentlyCheck=($addedRecently)?'block':'none';?>
@@ -197,7 +197,7 @@ if(!$activityStreamNumberDays){
 						</td>
 					</tr>
 				  <tr>
-						<td style="width:20%" align="left">
+						<td style="width:20%" align="right">
 							<?php echo ucfirst(i18n('colDays'));?>&nbsp;:
 						</td>
 						<td align="left">		
