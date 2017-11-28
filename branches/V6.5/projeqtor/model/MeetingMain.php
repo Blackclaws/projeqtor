@@ -567,7 +567,9 @@ class MeetingMain extends SqlElement {
   
   // gautier ticket #2315
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false, $copyToWithVersionProjects=false){
-    $result = parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    if($this->isPeriodic != 1){
+      $result = parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks,null,null,$toProject);
+    }
     $ass=new Assignment();
     $crit=array('refId'=>$this->id,'refType'=>'Meeting');
     $list=$ass->getSqlElementsFromCriteria($crit);

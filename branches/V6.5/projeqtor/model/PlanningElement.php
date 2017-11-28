@@ -1557,7 +1557,7 @@ class PlanningElement extends SqlElement {
     $pe=new PlanningElement();
     $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
     foreach ($list as $pe) { // each planning element corresponding to item to copy
-      if ($pe->refType!='Meeting' and $pe->refType!='TestSession' and $pe->refType!='PeriodicMeeting') continue;
+      if ($pe->refType!='Meeting' and $pe->refType!='TestSession' and $pe->refType!='PeriodicMeeting' and $pe->refType!='Project') continue;
       if ($pe->refType=='Project' and ! $copySubProjects) continue;
       $item=new $pe->refType($pe->refId);
       $type=null;
@@ -1565,14 +1565,10 @@ class PlanningElement extends SqlElement {
         $type='idMeetingType';
       } else {
         $type='id'.get_class($item).'Type';
-      }
-      if(get_class($item)=='PeriodicMeeting'){
-        $newItem=$item->copy();
-      } else {
-        $newItem=$item->copyTo(get_class($item),$item->$type, $item->name, $copyToOrigin,
-            $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks,
-            $copyAssignments, $copyAffectations, $toProject, (get_class($newObj)=='Activity')?$newObj->id:null );
-      }
+      }   
+      $newItem=$item->copyTo(get_class($item),$item->$type, $item->name, $copyToOrigin,
+          $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks,
+          $copyAssignments, $copyAffectations, $toProject,null );
       $resultItem=$newItem->_copyResult;
       unset($newItem->_copyResult);
       if (! stripos($resultItem,'id="lastOperationStatus" value="OK"')>0 ) {
