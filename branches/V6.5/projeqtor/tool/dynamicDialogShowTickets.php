@@ -30,7 +30,7 @@
  */
   require_once "../tool/projeqtor.php";
   require_once "../tool/formatter.php";
-  scriptLog('   ->/view/dynamicDialogShowTichets.php');
+  scriptLog('   ->/view/dynamicDialogShowTickets.php');
   if (! array_key_exists('refType',$_REQUEST)) {
     throwError('refType parameter not found in REQUEST');
   }

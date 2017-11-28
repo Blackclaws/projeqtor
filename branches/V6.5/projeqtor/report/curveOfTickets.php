@@ -63,13 +63,13 @@ if ($paramProject != "") {
   $where .= " and idProject in " . getVisibleProjectsList ( false, $paramProject );
 }
 if ($paramProduct != "") {
-  $where .= " and idProduct=" . Sql::fmtId ( $paramProduct ) . "'";
+  $where .= " and idProduct=" . Sql::fmtId ( $paramProduct );
 }
 if ($paramVersion != "") {
-  $where .= " and idVersion=" . Sql::fmtId ( $paramVersion ) . "'";
+  $where .= " and idVersion=" . Sql::fmtId ( $paramVersion ) ;
 }
 if ($paramPriority != "") {
-  $where .= " and idPriority=" . Sql::fmtId ( $paramPriority ) . "'";
+  $where .= " and idPriority=" . Sql::fmtId ( $paramPriority );
 }
 
 $startDate = '';
@@ -143,11 +143,11 @@ $created = array();
 if ($nbDay != 0) {
   for($i = 1; $i <= $nbDay; $i ++) {
     foreach ( $lstTicNew as $t ) {
-      if ($t->idleDateTime != '') {
-        $startTicket = strtotime ( $t->idleDateTime );
-        if ($startTicket < (strtotime ( $startDate ) + ($i * 24 * 60 * 60)) and $t->idleDateTime != '') {
+      if ($t->doneDateTime != '') {
+        $startTicket = strtotime ( $t->doneDateTime );
+        if ($startTicket < (strtotime ( $startDate ) + ($i * 24 * 60 * 60)) and $t->doneDateTime != '') {
           $nbTicket = $nbTicket - 1;
-          $t->idleDateTime = '';
+          $t->doneDateTime = '';
         }
       }
     }
@@ -161,6 +161,18 @@ if ($nbDay != 0) {
 }
 $month = getNbMonth ( 4, true );
 $arrDays = array();
+if (($month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ))) == $month [date ( 'n', strtotime ( $endDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $endDate ) ))
+{
+  for($i = 1; $i <= $nbDay; $i ++) {
+    $arrDays [$i] = '';
+    if ($i == 1) {
+      $arrDays [1] =date ( 'd', strtotime($startDate)). '/' . $month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) );
+    }
+    else if ($i == $nbDay){
+      $arrDays [$i] =date ( 'd', strtotime($endDate)). '/' . $month [date ( 'n', strtotime ( $endDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $endDate ) );
+    }
+  }
+}else {
 for($i = 1; $i <= $nbDay; $i ++) {
   $arrDays [$i] = '';
   if ($i == 1) {
@@ -170,6 +182,7 @@ for($i = 1; $i <= $nbDay; $i ++) {
   } else if (date ( 'd', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01') {
     $arrDays [$i] = $month [date ( 'n', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) - 1];
   }
+}
 }
 
 // Render graph
@@ -199,10 +212,10 @@ $graph->setColorPalette ( 2, 100, 100, 200 );
 $graph->setColorPalette ( 3, 200, 100, 100 );
 $graph->setColorPalette ( 4, 100, 200, 100 );
 $graph->setColorPalette ( 5, 100, 100, 200 );
-$graph->setGraphArea ( 40, 30, $width - 140, 200 );
+$graph->setGraphArea ( 40, 30, $width - 140, 160 );
 $graph->drawGraphArea ( 252, 252, 252 );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 0, 1, true );
+$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 60, 1, true );
 $graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
 
 // Draw the line graph
@@ -216,7 +229,7 @@ $graph->drawArea ( $dataSet->GetData (), "created", "perfect", 127, 127, 127 );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
 $graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
 
-$graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 0, 1, true );
+$graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 60, 1, true );
 
 $imgName = getGraphImgName ( "Curve Of Tickets" );
 $graph->Render ( $imgName );

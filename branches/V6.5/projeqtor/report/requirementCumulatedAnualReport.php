@@ -170,9 +170,43 @@ if ($filterByPriority and in_array ( 'undefined', $paramPriorities )) {
   $whereC .= " and idPriority is not null";
 }
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$whereD = getAccesRestrictionClause ( 'Requirement', false );
 
+$whereD .= " and ( (    doneDate >= '" . $paramYear . "-$paramMonth-01'";
+$whereD .= "        and doneDate <= '" . ($paramYear + 1) . "-" . ($paramMonth - 1) . "-31' ) )";
+if ($paramProject != "") {
+  $whereD .= " and idProject in " . getVisibleProjectsList ( false, $paramProject );
+}
+
+if (isset ( $paramProduct ) and $paramProduct != "") {
+  $whereD .= " and idProduct='" . Sql::fmtId ( $paramProduct ) . "'";
+}
+
+if (isset ( $paramVersion ) and $paramVersion != "") {
+  $whereD .= " and idOriginalProductVersion='" . Sql::fmtId ( $paramVersion ) . "'";
+}
+
+$filterByPriority = false;
+if (! empty ( $paramPriorities ) and $paramPriorities [0] != 'undefined') {
+  $filterByPriority = true;
+  $whereD .= " and idPriority in (";
+  foreach ( $paramPriorities as $idDisplayedPriority ) {
+    if ($idDisplayedPriority == 'undefined')
+      continue;
+      $whereD .= $idDisplayedPriority . ', ';
+  }
+  $whereD = substr ( $where, 0, - 2 ); // To remove the last comma and space
+  $whereD .= ")";
+}
+if ($filterByPriority and in_array ( 'undefined', $paramPriorities )) {
+  $whereD .= " or idPriority is null";
+} else if (in_array ( 'undefined', $paramPriorities )) {
+  $whereD .= " and idPriority is null";
+} else if ($filterByPriority) {
+  $whereD .= " and idPriority is not null";
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $order = "";
-// echo $where;
 $req = new Requirement ();
 $lstReq = $req->getSqlElementsFromCriteria ( null, false, $where, $order );
 $created = array();
@@ -180,6 +214,7 @@ $closed = array();
 for($i = 1; $i <= 13; $i ++) {
   $created [$i] = 0;
   $closed [$i] = 0;
+  $done[$i] = 0;
 }
 $sumProj = array();
 foreach ( $lstReq as $t ) {
@@ -196,6 +231,7 @@ foreach ( $lstReq as $t ) {
     }
   }
 }
+
 $orderC = "";
 $reqC = new Requirement ();
 $lstReqC = $reqC->getSqlElementsFromCriteria ( null, false, $whereC, $orderC );
@@ -213,8 +249,26 @@ foreach ( $lstReqC as $k ) {
     }
   }
 }
-if (checkNoData ( $lstReq ))
-  return;
+
+  $orderD = "";
+  $reqD = new Requirement ();
+  $lstReqD = $reqD->getSqlElementsFromCriteria ( null, false, $whereD, $orderD );
+  foreach ( $lstReqD as $d ) {
+    $month = intval ( substr ( $d->doneDate, 5, 2 ) );
+    if (substr ( $d->doneDate, 0, 4 ) == $paramYear or substr ( $d->doneDate, 0, 4 ) == ($paramYear + 1)) {
+      if (substr ( $d->doneDate, 0, 4 ) == $paramYear and $month >= $paramMonth) {
+        $done [$month - $paramMonth + 1] += 1;
+      } else if (substr ( $d->doneDate, 0, 4 ) == $paramYear + 1) {
+        if (($month - $paramMonth) > 0) {
+          $done[$month - $paramMonth] += 1;
+        } else {
+          $done[$month + 13 - $paramMonth] += 1;
+        }
+      }
+    }
+  }
+  if (checkNoData ( $lstReq ) and checkNoData ( $lstReqC) and checkNoData ( $lstReqD))
+    return;
 
 // title;
 
@@ -242,6 +296,11 @@ for($line = 1; $line <= 2; $line ++) {
     $caption = i18n ( 'closed' );
     $serie = "closed";
   }
+  else if ($line == 3) {
+    $tab = $done;
+    $caption = i18n ( 'done' );
+    $serie = "done";
+  }
 }
 
 // Render graph
@@ -255,6 +314,8 @@ $createdSum = array('', '', '', '', '', '', '', '', '', '', '', '', $created [13
 $created [13] = "";
 $closedSum = array('', '', '', '', '', '', '', '', '', '', '', '', $closed [13]);
 $closed [13] = "";
+$doneSum = array('', '', '', '', '', '', '', '', '', '', '', '', $done [13]);
+$done [13] = "";
 $rightScale = array('', '', '', '', '', '', '', '', '', '', '', '', i18n ( 'sum' ));
 $dataSet->AddPoint ( $created, "created" );
 $dataSet->SetSerieName ( i18n ( "created" ), "created" );
@@ -262,6 +323,9 @@ $dataSet->AddSerie ( "created" );
 $dataSet->AddPoint ( $closed, "closed" );
 $dataSet->SetSerieName ( i18n ( "closed" ), "closed" );
 $dataSet->AddSerie ( "closed" );
+$dataSet->AddPoint ( $done, "done" );
+$dataSet->SetSerieName ( i18n ( "done" ), "done" );
+$dataSet->AddSerie ( "done" );
 $arrMonth [13] = "";
 $dataSet->AddPoint ( $arrMonth, "months" );
 $dataSet->SetAbsciseLabelSerie ( "months" );
@@ -299,6 +363,7 @@ $graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240
 $graph->clearScale ();
 $dataSet->RemoveSerie ( "created" );
 $dataSet->RemoveSerie ( "closed" );
+$dataSet->RemoveSerie ( "done" );
 $dataSet->RemoveSerie ( "month" );
 $dataSet->SetYAxisName ( i18n ( "sum" ) );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 8 );
