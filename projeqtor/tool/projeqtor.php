@@ -1069,6 +1069,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $paramMailSmtpUsername = Parameter::getGlobalParameter ( 'paramMailSmtpUsername' );
   $paramMailSmtpPassword = Parameter::getGlobalParameter ( 'paramMailSmtpPassword' );
   $paramMailSenderName = Parameter::getGlobalParameter ( 'paramMailReplyToName' );
+  $paramMailerHelo = Parameter::getGlobalParameter('paramMailerHelo');
   $eol = Parameter::getGlobalParameter ( 'mailEol' );
   if ($paramMailSmtpServer == null or strtolower ( $paramMailSmtpServer ) == 'null' or ! $paramMailSmtpServer) {
     return "";
@@ -1103,6 +1104,10 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer = new PHPMailer ();
   ob_start ();
   if ($logLevel>='3') $phpmailer->SMTPDebug=1;
+  //if #3077
+  if($paramMailerHelo == 'YES'){
+    $phpmailer->Helo = '['.$_SERVER['SERVER_ADDR'].']';
+  }
   $phpmailer->isSMTP (); // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer; // Specify main smtp server
   $phpmailer->Port = $paramMailSmtpPort;
