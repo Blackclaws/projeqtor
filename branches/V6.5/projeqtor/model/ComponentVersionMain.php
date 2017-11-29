@@ -404,6 +404,16 @@ class ComponentVersionMain extends Version {
   	$this->plannedEndDate=null;
   	$this->realEndDate=null;
   	$this->idle=null;
+  	//add atrancoso ticket #135
+	  $this->initialStartDate = NULL;
+	  $this->plannedStartDate = NULL;
+	  $this->realStartDate = NULL;
+	  $this->isStarted=null;
+	  $this->initialDeliveryDate = NULL;
+	  $this->plannedDeliveryDate = NULL;
+	  $this->realDeliveryDate = NULL;
+	  $this->isDelivered=null;
+  	//end add adtrancoso ticket #135
     $result=parent::copy();
     
     $pvs=new ProductVersionStructure();
