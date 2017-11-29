@@ -123,8 +123,6 @@ ALTER TABLE `${prefix}indicatordefinition` ADD isProject int(1) unsigned DEFAULT
 
 INSERT INTO `${prefix}parameter` (`parameterCode`, `parameterValue`) VALUES ('autoSetAssignmentByResponsible', 'YES');
 
-ALTER TABLE `${prefix}subscription` ADD `idProject` int(12) unsigned;
-
 ALTER TABLE `${prefix}projecthistory` ADD COLUMN `validatedWork` DECIMAL(9,5) UNSIGNED;
 ALTER TABLE `${prefix}projecthistory` ADD COLUMN `validatedCost` DECIMAL(11,2) UNSIGNED;
 
