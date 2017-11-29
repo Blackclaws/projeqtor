@@ -6350,61 +6350,58 @@ function dialogMailToOtherChange() {
   }
 }
 
-
-//function addNote() {
-//	  if (dijit.byId("noteToolTip")) {
-//	    dijit.byId("noteToolTip").destroy();
-//	    dijit.byId("noteNote").set("class", "");
-//	  }
-//	  var callBack=function() {
-//	    var editorType=dojo.byId("noteEditorType").value;
-//	    if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
-//	      ckEditorReplaceEditor("noteNote",999);
-//	    } else if (editorType=="text") {
-//	      dijit.byId("noteNote").focus();
-//	      dojo.byId("noteNote").style.height=(screen.height*0.6)+'px';
-//	      dojo.byId("noteNote").style.width=(screen.width*0.6)+'px';
-//	    } else if (dijit.byId("noteNoteEditor")) { // Dojo type editor
-//	      dijit.byId("noteNoteEditor").set("class", "input");
-//	      dijit.byId("noteNoteEditor").focus();
-//	      dijit.byId("noteNoteEditor").set("height", (screen.height*0.6)+'px'); // Works on first time
-//	      dojo.byId("noteNoteEditor_iframe").style.height=(screen.height*0.6)+'px'; // Works after first time
-//	    }
-//	  };
-//	  var params="&objectClass="+dojo.byId("objectClass").value;
-//	  params+="&objectId="+dojo.byId("objectId").value;
-//	  params+="&noteId="; // Null    
-//	  loadDialog('dialogNote', callBack, true, params, true);
-//
-//	}
-
 //mehdi #3019
 function mailerTextEditor(){
-  var callBack=function() {
-    ckEditorReplaceEditor("mailEditor",999);
+  var callBack= function() {
+	var editorType=dojo.byId("mailEditorType").value;
+	console.log(editorType);
+	if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
+      ckEditorReplaceEditor("mailEditor",999);
+	} else if (editorType=="text") {
+      dijit.byId("mailEditor").focus();
+      dojo.byId("mailEditor").style.height=(screen.height*0.6)+'px';
+      dojo.byId("mailEditor").style.width=(screen.width*0.6)+'px';
+    } else if (dijit.byId("mailMessageEditor")) { // Dojo type editor
+      dijit.byId("mailMessageEditor").set("class", "input");
+      dijit.byId("mailMessageEditor").focus();
+      dijit.byId("mailMessageEditor").set("height", (screen.height*0.6)+'px'); // Works on first time
+      dojo.byId("mailMessageEditor_iframe").style.height=(screen.height*0.6)+'px'; // Works after first time
+    }
   };
-  loadDialog('dialogMailEditor', callBack, true, null, true);
+  loadDialog('dialogMailEditor', callBack, true, null, true, true);
 }
-//
-function saveMessageMail(){
-  mailEditor=CKEDITOR.instances['mailEditor'];
-  mailEditor.updateElement();
-//
-  var tmpCkEditor=mailEditor.document.getBody().getText();
-  var tmpCkEditorData=mailEditor.getData();
-  if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
-    var msg=i18n('messageMandatory', new Array(i18n('Message')));
-    mailEditor.focus();
-    showAlert(msg);
-    return;
-  }
-  var callBack=function() {
-	dojo.byId('mailerTestMessage').value=tmpCkEditorData;
-	var mail = dojo.byId('mailerTestMessage').value;
+
+function saveMailMessage(event) {
+  var editorType=dojo.byId("mailEditorType").value;
+  if (editorType=="CK" || editorType=="CKInline") {
+    noteEditor=CKEDITOR.instances['mailEditor'];
+    noteEditor.updateElement();
+    var tmpCkEditor=noteEditor.document.getBody().getText();
+    var tmpCkEditorData=noteEditor.getData();
+    console.log(tmpCkEditorData);
+    if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
+      var msg=i18n('messageMandatory', new Array(i18n('Message')));
+      noteEditor.focus();
+      showAlert(msg);
+      return;
+    }
+  } else if (dijit.byId("messageMailEditor")) {
+    if (dijit.byId("mailEditor").getValue() == '') {
+      dijit.byId("messageMailEditor").set("class", "input required");
+      var msg=i18n('messageMandatory', new Array(i18n('Message')));
+      dijit.byId("messageMailEditor").focus();
+      dojo.byId("messageMailEditor").focus();
+      showAlert(msg);
+      return;
+    }
+  } 
+  var callBack = function(){
+	dojo.byId("mailerTestMessage").value = tmpCkEditorData; 
   };
-  loadDiv("../tool/saveParameter.php","resultDiv", "messageForm", callBack);
+  loadDiv("../tool/saveParameter.php", "resultDiv", "parameterForm", callBack);
   dijit.byId('dialogMailEditor').hide();
 }
+//end
 
 
 //gautier #2935
@@ -6885,9 +6882,10 @@ function showHtml2(id, file, className) {
   + id + '&showHtml=true&msg=true';
   dijit.byId("dialogShowTest").show();
 }
-function displayTestPreview(){
+/*function displayTestPreview(){
 	var toto = dojo.byId('testPreview');
-}
+}*/
+
 // *******************************************************
 // Dojo code to position into a tree
 // *******************************************************
@@ -7065,7 +7063,7 @@ function changeProjectSelectorType(displayMode) {
 	  loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
 	};
 	
-	saveDataToSession('projectSelectorDisplayMode', displayMode, null, callBack);
+	saveDataToSession('projectSelectorDisplayMode', displayMode, true, callBack);
   /*dojo.xhrPost({
         url : "../tool/saveDataToSession.php?saveUserParam=true&idData=projectSelectorDisplayMode&value="
             + displayMode,

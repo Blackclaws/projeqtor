@@ -422,6 +422,16 @@ class ProductVersionMain extends Version {
   	$this->plannedEndDate=null;
   	$this->realEndDate=null;
   	$this->idle=null;
+  	//add pbe ticket #135
+  	$this->initialStartDate = NULL;
+  	$this->plannedStartDate = NULL;
+  	$this->realStartDate = NULL;
+  	$this->isStarted=null;
+  	$this->initialDeliveryDate = NULL;
+  	$this->plannedDeliveryDate = NULL;
+  	$this->realDeliveryDate = NULL;
+  	$this->isDelivered=null;
+  	//end pbe ticket #135
     $result=parent::copy(); 
     $pp=new VersionProject();
     $crit=array('idVersion'=>$this->id);
