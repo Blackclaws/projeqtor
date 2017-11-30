@@ -3313,7 +3313,7 @@ function getWeek(day, month, year) {
   var paramDate = new Date(year, month - 1, day);
   return dateGetWeek(paramDate, 1);
 }
-
+/*
 function moveTask(source, destination) {
   var mode = '';
   var nodeList = dndSourceTable.getAllNodes();
@@ -3327,6 +3327,23 @@ function moveTask(source, destination) {
     }
   }
   var url = '../tool/moveTask.php?from=' + source + '&to=' + destination
+      + '&mode=' + mode;
+  loadContent(url, "planResultDiv", null, true, null);
+}*/
+function moveTasks(source, destination) {
+  var mode = '';
+  var nodeList = dndSourceTable.getAllNodes();
+  for (i = 0; i < nodeList.length; i++) {
+    if  (nodeList[i].id == destination) {
+      mode = 'after';
+      break;
+    } else {
+      mode = 'before';
+      break;
+    }
+  }
+  
+  var url = '../tool/moveTask.php?from=' + source.join() + '&to=' + destination
       + '&mode=' + mode;
   loadContent(url, "planResultDiv", null, true, null);
 }
