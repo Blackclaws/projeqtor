@@ -34,6 +34,11 @@ if (! array_key_exists('from',$_REQUEST)) {
 }
 $from=$_REQUEST['from'];
 
+debugLog($from);
+$arrayFrom=explode(',', $from);
+debugLog($arrayFrom);
+//$from=$arrayFrom[0]; // debugLog(to remove)
+
 if (! array_key_exists('to',$_REQUEST)) {
   throwError('to parameter not found in REQUEST');
 }
@@ -47,14 +52,18 @@ if ($mode!='before' and $mode!='after') {
   $mode='before';
 }
 
-$idFrom=substr($from, 6); // validated to be numeric value in SqlElement base constructor
-$idTo=substr($to, 6); // validated to be numeric value in SqlElement base constructor
 Sql::beginTransaction();
-$task=new PlanningElement($idFrom);
-$result=$task->moveTo($idTo,$mode);
-//$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
-if ($task->refType=='Project') {
-  echo '<input type="hidden" id="needProjectListRefresh" value="true" />';
+
+foreach ($arrayFrom as $from) {
+  $idFrom=substr($from, 6); // validated to be numeric value in SqlElement base constructor
+  $idTo=substr($to, 6); // validated to be numeric value in SqlElement base constructor
+  $task=new PlanningElement($idFrom);
+  $result=$task->moveTo($idTo,$mode);
+  if (getLastOperationStatus($result)!='OK') break;
+  //$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
+  if ($task->refType=='Project') {
+    echo '<input type="hidden" id="needProjectListRefresh" value="true" />';
+  }
 }
 displayLastOperationStatus($result);
 ?>
