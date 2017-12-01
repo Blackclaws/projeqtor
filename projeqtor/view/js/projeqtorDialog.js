@@ -6378,7 +6378,6 @@ function saveMailMessage(event) {
     noteEditor.updateElement();
     var tmpCkEditor=noteEditor.document.getBody().getText();
     var tmpCkEditorData=noteEditor.getData();
-    console.log(tmpCkEditorData);
     if (tmpCkEditor.trim()=="" && tmpCkEditorData.indexOf('<img')<=0) {
       var msg=i18n('messageMandatory', new Array(i18n('Message')));
       noteEditor.focus();
@@ -6396,7 +6395,7 @@ function saveMailMessage(event) {
     }
   } 
   var callBack = function(){
-	dojo.byId("mailerTestMessage").value = tmpCkEditorData; 
+    dojo.byId("mailerTestMessage").value = tmpCkEditorData; 
   };
   loadDiv("../tool/saveParameter.php", "resultDiv", "parameterForm", callBack);
   dijit.byId('dialogMailEditor').hide();

@@ -3330,7 +3330,7 @@ function moveTask(source, destination) {
       + '&mode=' + mode;
   loadContent(url, "planResultDiv", null, true, null);
 }*/
-function moveTasks(source, destination) {
+function moveTask(source, destination) {
   var mode = '';
   var nodeList = dndSourceTable.getAllNodes();
   for (i = 0; i < nodeList.length; i++) {
@@ -3342,7 +3342,6 @@ function moveTasks(source, destination) {
       break;
     }
   }
-  
   var url = '../tool/moveTask.php?from=' + source.join() + '&to=' + destination
       + '&mode=' + mode;
   loadContent(url, "planResultDiv", null, true, null);
