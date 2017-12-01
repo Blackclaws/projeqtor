@@ -215,10 +215,9 @@ function drawTableFromObjectList($objectList) {
 				echo ' style="width: 200px;" ';
 				echo ' class="input" ';
 				if ($format=='password') echo ' type="password" ';
-				echo ' value="' .  htmlEncode($obj->parameterValue)  . '" ';
+				echo ' value="' .  strip_tags(html_entity_decode($obj->parameterValue)) . '" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);
-				debugLog(htmlEncode($obj->parameterValue));
 				echo '</div>';
 				//if 
 				if ($code=='mailerTestMessage'){

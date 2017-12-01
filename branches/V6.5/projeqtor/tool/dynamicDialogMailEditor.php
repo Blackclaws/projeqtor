@@ -36,7 +36,6 @@ if (sessionValueExists('screenWidth') and getSessionValue('screenWidth')) {
 if (sessionValueExists('screenHeight')) {
 	$detailHeight=round(getSessionValue('screenHeight')*0.60);
 }
-debugLog(getEditorType());
 ?>
 <div >
   <table style="width:100%;">
@@ -48,11 +47,9 @@ debugLog(getEditorType());
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
           name="mailEditor" id="mailEditor"><?php
           if (!isTextFieldHtmlFormatted($testMessage)) {
-debugLog(getEditorType());
-          	echo formatPlainTextForHtmlEditing($testMessage);
+          	echo $testMessage;
           } else {
           	echo htmlspecialchars($testMessage);
-          	debugLog("cas 2");
           } ?></textarea>
         <?php } else if (getEditorType()=="text"){
           debugLog("cas text");
@@ -60,7 +57,6 @@ debugLog(getEditorType());
           	$text=new Html2Text($testMessage);
           	$val=$text->getText();
           } else {
-debugLog("cas autre");
             $val=str_replace(array("\n",'<br>','<br/>','<br />'),array("","\n","\n","\n"),$text);
           }?>
           <textarea dojoType="dijit.form.Textarea" 
@@ -95,60 +91,10 @@ debugLog("cas autre");
         <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMailEditor').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton"  id="dialogMailEditorSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveMailMessage(event);return false;">
+        <button class="mediumTextButton"  id="dialogMailEditorSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveMailMessage(event);">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
     </tr>
   </table>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php 
-
-
-
-/*
-<!-- <div> -->
-  <table style="width:100%;">
-<!--     <tr> -->
-<!--       <td> -->
-       <form id='mailEditorType' name='mailEditorType' onSubmit="return false;" >
-          <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px" name="mailEditor" id="mailEditor">
-          <?php if (getEditorType()=="CK" or getEditorType()=="CKInline") { 
-          echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
-          name="mailEditor" id="mailEditor"><?php
-//             if (!isTextFieldHtmlFormatted($testMessage)) {
-//           	 echo formatPlainTextForHtmlEditing($testMessage);
-//             }
-//           }?>
-<!--           </textarea> -->
-<!--        </form> -->
-<!--       </td> -->
-<!--     </tr> -->
-<!--     <tr> -->
-<!--       <td align="center"> -->
-<!--         <input type="hidden" id="dialogMailEditor"> -->
-        <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMailEditor').hide();">
-          <?php echo i18n("buttonCancel");?>
-<!--         </button> -->
-        <button class="mediumTextButton"  id="dialogMailSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveMailMessage();return false;">
-          <?php echo i18n("buttonOK");?>
-<!--         </button> -->
-<!--       </td> -->
-<!--     </tr> -->
-<!--   </table> -->
-<!-- </div> -->*/?>

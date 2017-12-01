@@ -209,7 +209,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            } 
         });
         if (moveTasks) {
-          moveTasks(arrayTasks, moveTasks);
+          moveTask(arrayTasks, moveTasks);
         }
       }
     });
