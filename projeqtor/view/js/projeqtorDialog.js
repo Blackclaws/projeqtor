@@ -6351,10 +6351,9 @@ function dialogMailToOtherChange() {
 }
 
 //mehdi #3019
-function mailerTextEditor(){
+function mailerTextEditor(msg){
   var callBack= function() {
 	var editorType=dojo.byId("mailEditorType").value;
-	console.log(editorType);
 	if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
       ckEditorReplaceEditor("mailEditor",999);
 	} else if (editorType=="text") {
@@ -6367,6 +6366,7 @@ function mailerTextEditor(){
       dijit.byId("mailMessageEditor").set("height", (screen.height*0.6)+'px'); // Works on first time
       dojo.byId("mailMessageEditor_iframe").style.height=(screen.height*0.6)+'px'; // Works after first time
     }
+	  dojo.byId("mailEditor").innerHTML=dojo.byId("mailerTestMessage").value;
   };
   loadDialog('dialogMailEditor', callBack, true, null, true, true);
 }
@@ -6396,6 +6396,7 @@ function saveMailMessage(event) {
   } 
   var callBack = function(){
     dojo.byId("mailerTestMessage").value = tmpCkEditorData; 
+    dojo.byId("mailerTestMessage_display").innerHTML = tmpCkEditorData;
   };
   loadDiv("../tool/saveParameter.php", "resultDiv", "parameterForm", callBack);
   dijit.byId('dialogMailEditor').hide();

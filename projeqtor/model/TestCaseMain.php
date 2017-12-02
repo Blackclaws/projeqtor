@@ -37,8 +37,9 @@ class TestCaseMain extends SqlElement {
   public $name;
   public $idTestCaseType;
   public $idProject;
-  public $idProduct;
-  public $idVersion;
+  //ADD Adrien Trancoso ticket #121
+  public $idBusinessFeature;
+  //END ADD Adrien Trancoso ticket #121
   public $externalReference;
   public $creationDateTime;
   public $idContext1;
@@ -46,6 +47,12 @@ class TestCaseMain extends SqlElement {
   public $idContext3;
   public $idUser;
   public $description;
+  //add atrancoso  ticket #92
+  public $_sec_productComponent;
+  public $idProduct;
+  public $idVersion; // This is a ProductVersion
+  public $idComponentVersion;
+  //end add atrancoso  ticket #92
   public $_sec_treatment;
   public $idTestCase;
   public $idStatus;
@@ -114,9 +121,9 @@ class TestCaseMain extends SqlElement {
                                                    'result'=>'expectedResult',
                                                    'runStatusName'=>'testSummary',
                                                    'runStatusIcon'=>'testSummary',
-                                                   'idRunStatus'=>'testSummary'
-                                                   );
-  
+                                                   'idRunStatus'=>'testSummary',
+      														                 "idVersion"=>"idProductVersion"
+  );
   //private static $_databaseColumnName = array();
   private static $_databaseColumnName = array();
     
