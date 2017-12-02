@@ -4616,3 +4616,13 @@ function redirectMobile(){
   };
   showConfirm(i18n('confirmRedirectionMobile'), redirectMobileFunction);
 }
+
+function displayImageEditMessageMail(){
+  var iconMessageMail = dojo.byId('iconMessageMail');
+  iconMessageMail.style.display = "inline-block";
+}
+
+function hideImageEditMessageMail(){
+  var iconMessageMail = dojo.byId('iconMessageMail');
+  iconMessageMail.style.display = "none";
+}

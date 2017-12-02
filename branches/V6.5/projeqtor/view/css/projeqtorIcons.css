@@ -622,6 +622,10 @@
 .iconPluginManagement22 { background-image: url(images/iconPlugin22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconPluginManagement16 { background-image: url(images/iconPlugin16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconTranslationApplication32 { background-image: url(images/iconPluginTranslationApplication.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconTranslationApplication22 { background-image: url(images/iconPluginTranslationApplication.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconTranslationApplication16 { background-image: url(images/iconPluginTranslationApplication.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconPortfolioPlanning32 { background-image: url(images/iconPortfolioPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconPortfolioPlanning22 { background-image: url(images/iconPortfolioPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconPortfolioPlanning16 { background-image: url(images/iconPortfolioPlanning16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

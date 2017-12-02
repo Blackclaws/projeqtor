@@ -215,16 +215,21 @@ function drawTableFromObjectList($objectList) {
 				echo ' style="width: 200px;" ';
 				echo ' class="input" ';
 				if ($format=='password') echo ' type="password" ';
-				echo ' value="' .  strip_tags(html_entity_decode($obj->parameterValue)) . '" ';
+				echo ' value="' .  htmlEncode($obj->parameterValue) . '" ';
 				echo ' >';
 				echo $obj->getValidationScript($code);
 				echo '</div>';
-				//if 
-				if ($code=='mailerTestMessage'){
-				  echo '<div style="float:right;display:block">';
-				  echo '<a onclick="mailerTextEditor();" id="mailerTextEditor">'.formatSmallButton('Add').'</a>';
+		  }else if ($format=='display') {
+		      echo '<div class="input" style="width:200px;position:relative">';
+				  echo '<input type="hidden" name="'.$code.'" id="'.$code.'" value="'.htmlEncode($obj->parameterValue).'"/>';
+				  echo '<div id="iconMessageMail" name="iconMessageMail" style="display:none;right:0;position:absolute">';
+				  echo '<a onclick="mailerTextEditor();" id="mailerTextEditor" title="' . i18n('editMailerTestMessageIcon') . '">'.formatSmallButton('Edit').'</a>';
 				  echo '</div>';
-				}
+				  echo '<div name="'.$code.'_display" id="'.$code.'_display" onmouseover="displayImageEditMessageMail()" onmouseout="hideImageEditMessageMail()" onclick="mailerTextEditor();" style="word-wrap:break-word;width:200px;display:inline-block"';
+				  echo '</div>';
+				  echo $obj->parameterValue;
+				  echo '</div>';
+				  echo '</div>';
 			}else if ($format=='longtext') {
 				echo '<textarea dojoType="dijit.form.Textarea" ';
 				echo ' name="' . $code . '" id="' . $code . '"';
