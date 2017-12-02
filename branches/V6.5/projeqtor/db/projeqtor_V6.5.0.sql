@@ -115,6 +115,14 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 182, 0),
 (8, 182, 0);
 
+--add atrancoso #ticket121
+ALTER TABLE `${prefix}testcase` ADD `idBusinessFeature` int(12) DEFAULT NULL;
+--end add atrancoso #ticket121
+--add atrancoso #ticket92
+ALTER TABLE `${prefix}testcase` ADD `idComponentVersion` int(12) DEFAULT NULL;
+--end add atrancoso #ticket92
+
+
 ALTER TABLE `${prefix}statusmail` ADD isProject int(1) unsigned DEFAULT '0';
 
 ALTER TABLE `${prefix}delay` ADD isProject int(1) unsigned DEFAULT '0';

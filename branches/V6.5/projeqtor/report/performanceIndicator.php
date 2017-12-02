@@ -252,14 +252,16 @@ if($element == "both"){
     }
     ksort($tabDate2[$idResource]);
   }
-  
   //no value ticket and activity
+  
   if(!isset($tabDate) && !isset($tabDate2) ){
     echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
     echo i18n('reportNoData');
     echo '</div>';
     exit;
   }
+  
+  if(isset($tabDate2)){
   
   $tabValues2 = array();
   foreach ($tabDate2 as $idResource=>$val){
@@ -324,6 +326,7 @@ if($element == "both"){
         }   
     }
   }
+  }
 }
 
 $start = $startDateReport;
@@ -374,6 +377,11 @@ if ($startDatePeriod or $endDatePeriod) {
 $graphWidth=1000;
 $graphHeight=600;
 $indexToday=0;
+
+// $graphWidth=1250;
+// $graphHeight=720;
+// $indexToday=0;
+
 $cpt=0;
 
 $modulo=intVal(50*count($dateAct)/$graphWidth);
@@ -498,24 +506,44 @@ $myPicture->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /* title */
+// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
+//     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+//     "FontR"=>55,"FontG"=>55,"FontB"=>55,
+//     "Margin"=>5));
+// $myPicture->drawText($graphWidth/2,50,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+// /* Draw the scale */
+// $myPicture->setGraphArea(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75));
+// $myPicture->drawFilledRectangle(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
+// $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
+//     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+//     "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+//     "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+// $myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+// $myPicture->drawScale($formatGrid);
+
+
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
+$myPicture->drawLegend($graphWidth-160,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
-$myPicture->drawText($graphWidth/2,50,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
-/* Draw the scale */
-$myPicture->setGraphArea(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75));
-$myPicture->drawFilledRectangle(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?75:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
-$formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
-    "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
-    "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
-    "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
 $myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceIndicatorValue"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->setGraphArea(50,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75));
+$myPicture->drawFilledRectangle(50,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
+$formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
+    "Mode"=>SCALE_MODE_FLOATING, "GridTicks"=>0,
+    "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200,
+    "ScaleModeAuto"=>TRUE
+);
 $myPicture->drawScale($formatGrid);
+
+
+
 $myPicture->Antialias = TRUE;
 
 //curve and color
@@ -568,21 +596,46 @@ $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>1
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /*title */
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
-   "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
-   "FontR"=>55,"FontG"=>55,"FontB"=>55,
-   "Margin"=>5));
-$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceNumber"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+
+
+
 
 /* Draw the scale */
-$myPicture->setGraphArea(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?100:75));
-$myPicture->drawFilledRectangle(60,30,$graphWidth-20,$graphHeight-(($scale=='month')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
-$formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
-   "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
-   "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
-   "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
-$myPicture->drawScale($formatGrid);
+
+
+ 
+$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$myPicture->drawLegend($graphWidth-160,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+    "Margin"=>5));
+$myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceNumber"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+
+//  $myPicture->setGraphArea(50,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75));
+//  $myPicture->drawFilledRectangle(50,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
+//  $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
+//      "Mode"=>SCALE_MODE_FLOATING, "GridTicks"=>0,
+//      "DrawYLines"=>(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+//      "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200,
+//      "ScaleModeAuto"=>TRUE
+//  );
+//  $myPicture->drawScale($formatGrid);
+ 
+// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+//     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+//     "FontR"=>55,"FontG"=>55,"FontB"=>55,
+//     "Margin"=>5));
+// $myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceNumber"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+
+
+  $myPicture->setGraphArea(60,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75));
+  $myPicture->drawFilledRectangle(60,30,$graphWidth-180,$graphHeight-(($scale=='month')?100:75),array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>230));
+  $formatGrid=array("LabelSkip"=>$modulo, "SkippedAxisAlpha"=>(($modulo>9)?0:20), "SkippedGridTicks"=>0,
+     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+     "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>60, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+  $myPicture->drawScale($formatGrid);
 
 $myPicture->Antialias = TRUE;
 

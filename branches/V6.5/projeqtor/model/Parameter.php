@@ -750,7 +750,7 @@ class Parameter extends SqlElement {
                             'sectionMailTest'=>'section',
                               'mailerTestDest'=>'text',
                               'mailerTestTitle'=>'text',
-                              'mailerTestMessage'=>'text', 
+                              'mailerTestMessage'=>'display', 
                               'mailerTestSender'=>'list',
                               'mailerTest'=>'specific',
     	                    'newColumnMailBottom'=>'newColumnFull',

@@ -4037,7 +4037,7 @@ abstract class SqlElement {
     }
     
     // Gautier #1816
-    if (get_class ( $this ) == 'Activity' or get_class ( $this ) == 'Project' or get_class ( $this ) == 'Milestones' or get_class ( $this ) == 'Meeting' or get_class ( $this ) == 'TestSession') {
+    if (property_exists($this,get_class($this).'PlanningElement')) {
       $classe = get_class ( $this );
       $classeType = $classe . 'Type';
       $idClasseType = 'id' . $classeType;
@@ -4063,7 +4063,7 @@ abstract class SqlElement {
       }
     }
     // Particular case for Ticket
-    if (get_class ( $this ) == 'Ticket') {
+    if (property_exists($this,'WorkElement')) {
       $classe = 'Ticket';
       $classeType = 'TicketType';
       $idClasseType = 'id' . $classeType;
@@ -4567,9 +4567,12 @@ abstract class SqlElement {
         }
       }
       if ($statusMail->mailToSubscribers) {
-        $crit = array('refType' => get_class ( $this ), 'refId' => $this->id);
+        $crit ="(refType='".get_class($this)."' and refId=".Sql::fmtId($this->id).")";
+        if (property_exists($this, 'idProject')) {
+          $crit.=" or (refType='Project' and refId=".Sql::fmtId($this->idProject).")";
+        }
         $sub = new Subscription ();
-        $lstSub = $sub->getSqlElementsFromCriteria ( $crit );
+        $lstSub = $sub->getSqlElementsFromCriteria ( null, null,$crit );
         foreach ( $lstSub as $sub ) {
           $resource = new Affectable ( $sub->idAffectable );
           $newDest = "###" . $resource->email . "###";

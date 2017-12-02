@@ -66,7 +66,7 @@ if (sessionValueExists('screenHeight')) {
           onClick="dijit.byId('mailEditorType').setAttribute('class','');"><?php echo $val;?></textarea>
         <?php } else {?>
           <textarea dojoType="dijit.form.Textarea" type="hidden" id="mailEditor" name="mailEditor" style="display:none;">
-            <?php echo htmlspecialchars($testMessage); debugLog("dojo"); ?></textarea>
+            <?php echo htmlspecialchars($testMessage); ?></textarea>
              <div data-dojo-type="dijit.Editor" id="messageMailEditor"
              data-dojo-props="onChange:function(){top.dojo.byId('mailEditorType').value=arguments[0];}
              ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 

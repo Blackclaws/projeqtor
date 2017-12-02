@@ -29,6 +29,12 @@
      <copy todir="${deploy.dir}/external/dojox">
        <fileset dir="${src.dir}/external/dojox"/>
      </copy>
+     <copy todir="${deploy.dir}/external/dgrid">
+       <fileset dir="${src.dir}/external/dgrid"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/dstore">
+       <fileset dir="${src.dir}/external/dstore"/>
+     </copy>
      <copy todir="${deploy.dir}/external/pChart">
        <fileset dir="${src.dir}/external/pChart"/>
      </copy>

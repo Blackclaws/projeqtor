@@ -171,8 +171,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dojox.fx");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.image.Lightbox");
-    dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
-      if (target.id.indexOf('dialogRow')!=-1 && source.id!=target.id){
+    dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){  
+      if(target.id == null){
+      //gautier #translationApplication
+        //if (target.id == null) we are in dgrid DROP , nothing to do.
+      }else if (target.id.indexOf('dialogRow')!=-1 && source.id!=target.id){
         var idRow=nodes[0].id.split('itemRow')[1].split('-')[0];
         var typeRow=nodes[0].id.split('-')[1];
         var newStatut=target.id.split('dialogRow')[1];
