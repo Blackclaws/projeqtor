@@ -42,6 +42,7 @@ class StatusMail extends SqlElement {
   public $_sec_SendMail;
   public $mailToContact;
   public $mailToUser;
+  public $mailToAccountable;
   public $mailToResource;
   public $mailToSponsor;
   public $mailToProject;
@@ -83,12 +84,15 @@ class StatusMail extends SqlElement {
                                   "idType"=>"nocombo", 
   		                            "mailToSponsor"=>"hidden,calculated",
                                   "isProject"=>"hidden",
-                                  "mailToProjectIncludingParentProject" => "nobr"
+                                  "mailToProjectIncludingParentProject" => "nobr",
+                                  "mailToAccountable"=>"invisible",
+                                  "mailToAssigned"=>"invisible"
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus',
   'otherMail'=>'email',
   'idEvent'=>'orOtherEvent',
+  "mailToAccountable"=>"idAccountable",
   'idType'=>'type');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -119,9 +123,24 @@ class StatusMail extends SqlElement {
       self::$_fieldsAttributes["idMailable"]='readonly';
       $mailable=SqlList::getNameFromId('Mailable', $this->idMailable,false);
       if ($mailable!="Activity" and $mailable!="TestSession" and $mailable!="Meeting" and $mailable!="PeriodicMeeting") {
-        self::$_fieldsAttributes["mailToAssigned"]='readonly';
+        self::$_fieldsAttributes["mailToAssigned"]='invisible';
+      } else {
+        self::$_fieldsAttributes["mailToAssigned"]='';
+      }
+      if (Parameter::getGlobalParameter('manageAccountable')!='YES') {
+        self::$_fieldsAttributes["mailToAccountable"]='invisible';
+      } else if (!property_exists($mailable,'idAccountable')) {
+        self::$_fieldsAttributes["mailToAccountable"]='invisible';
+      } else {
+        self::$_fieldsAttributes["mailToAccountable"]='';
       }
     } 
+    if ($this->mailToOther=='1') {
+      self::$_fieldsAttributes['otherMail']='';
+    } else {
+      self::$_fieldsAttributes['otherMail']='invisible';
+    }
+    
   }
   
   public function control() {
@@ -163,6 +182,7 @@ class StatusMail extends SqlElement {
     }
     return $result;    
   }
+  
   public function save() {
     if ($this->idProject) $this->isProject=1;
     else $this->isProject=0;
@@ -218,22 +238,19 @@ class StatusMail extends SqlElement {
    * @return the validation javascript (for dojo frameword)
    */
   public function getValidationScript($colName) {
-    if ($this->mailToOther=='1') {
-      self::$_fieldsAttributes['otherMail']='';
-    } else {
-      self::$_fieldsAttributes['otherMail']='invisible';
-    } 
     
     $colScript = parent::getValidationScript($colName);
-
+    $colScript = " ";
     if ($colName=="mailToOther") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
+      $colScript .= '  var fld = dijit.byId("otherMail").domNode;';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
+      $colScript .= '    dojo.query(".generalColClass.otherMailClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      //$colScript .= '    dojo.style(fld, {visibility:"visible"});';
       $colScript .= '  } else {';
-      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
-      $colScript .= '    fld.set("value","");';
+      //$colScript .= '    dojo.style(fld, {visibility:"hidden"});';
+      $colScript .= '    dojo.query(".generalColClass.otherMailClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '    dijit.byId("otherMail").set("value","");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -263,15 +280,31 @@ class StatusMail extends SqlElement {
     } else if ($colName=='idMailable') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
       $colScript .=' var mailable=mailableArray[this.value];';
+      $colScript .=' var isAccountableArray=new Array();';
+      if (parameter::getGlobalParameter('manageAccountable')=='YES') {
+        $list=SqlList::getListNotTranslated('Mailable');
+        foreach ($list as $id=>$name) {
+          if (property_exists($name, 'idAccountable')) {
+            $colScript .= "isAccountableArray['" . $name . "']='" . $name . "';";
+          }
+        }
+      }
       $colScript .= '  dijit.byId("idType").set("value",null);';
       $colScript .= '  refreshList("idType","scope", mailable);';
       $colScript .= '  dijit.byId("idEvent").reset();';
       $colScript .= '  refreshList("idEvent","scope", mailable, null);';
       $colScript .= '  if (mailable=="Activity" || mailable=="TestSession" || mailable=="Meeting" || mailable=="PeriodicMeeting") {';
-      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",false);';
+      $colScript .= '    dojo.query(".generalRowClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="inline-block";});';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("mailToAssigned").set("checked",false);';
-      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",true);';
+      $colScript .= '    dojo.query(".mailToAssignedClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '  }';
+      $colScript .= ' if(isAccountableArray[mailable]==mailable) {';
+      $colScript .= '    dojo.query(".generalRowClass.mailToAccountableClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.mailToAccountableClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      $colScript .= '  } else {';
+      $colScript .= '    dojo.query(".mailToAccountableClass").forEach(function(domNode){domNode.style.display="none";});';
       $colScript .= '  }';
       $colScript .= '</script>';
     }

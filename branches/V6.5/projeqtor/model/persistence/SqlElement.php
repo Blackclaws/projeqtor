@@ -3424,9 +3424,13 @@ abstract class SqlElement {
         }
         if ($colName == 'idProject' and property_exists ( $this, 'idResource' )) {
           $required = 'false';
-          if ($this->isAttributeSetToField ( 'idResource', 'required' ))
-            $required = 'true';
+          if ($this->isAttributeSetToField ( 'idResource', 'required' )) $required = 'true';
           $colScript .= '   refreshList("idResource","idProject", this.value, "' . htmlEncode ( $this->idResource ) . '",null,' . $required . ',null,null,"' . get_class ( $this ) . '");';
+        }
+        if ($colName == 'idProject' and property_exists ( $this, 'idAccountable' )) {
+          $required = 'false';
+          if ($this->isAttributeSetToField ( 'idAccountable', 'required' )) $required = 'true';
+          $colScript .= '   refreshList("idAccountable","idProject", this.value, "' . htmlEncode ( $this->idAccountable ) . '",null,' . $required . ',null,null,"' . get_class ( $this ) . '");';
         }
         if ($colName == 'idProject' and property_exists ( $this, 'idProduct' )) {
           $colScript .= '   refreshList("idProduct","idProject", this.value, dijit.byId("idProduct").get("value"));';
@@ -4443,7 +4447,7 @@ abstract class SqlElement {
           $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
       }
     }
-    if (count ( $statusMailList ) == 0 || (! $directStatusMail && ! $canBeSend)) {
+    if (count($statusMailList)== 0 || (! $directStatusMail && ! $canBeSend) ) {
       return false; // exit not a status for mail sending (or disabled)
     }
     $dest = "";
@@ -4457,7 +4461,7 @@ abstract class SqlElement {
           continue; // exist : not corresponding type
         }
       }
-      if ($statusMail->mailToUser == 0 and $statusMail->mailToResource == 0 and $statusMail->mailToProject == 0 and $statusMail->mailToLeader == 0 and $statusMail->mailToContact == 0 and $statusMail->mailToOther == 0 and $statusMail->mailToManager == 0 and $statusMail->mailToAssigned == 0 and $statusMail->mailToSubscribers == 0 and $statusMail->mailToSponsor == 0 and $statusMail->mailToProjectIncludingParentProject == 0) {
+      if ($statusMail->mailToUser == 0 and $statusMail->mailToAccountable == 0 and $statusMail->mailToResource == 0 and $statusMail->mailToProject == 0 and $statusMail->mailToLeader == 0 and $statusMail->mailToContact == 0 and $statusMail->mailToOther == 0 and $statusMail->mailToManager == 0 and $statusMail->mailToAssigned == 0 and $statusMail->mailToSubscribers == 0 and $statusMail->mailToSponsor == 0 and $statusMail->mailToProjectIncludingParentProject == 0) {
         continue; // exit not a status for mail sending (or disabled)
       }
       if ($statusMail->mailToUser) {
@@ -4465,6 +4469,16 @@ abstract class SqlElement {
           $user = new User ( $this->idUser );
           $newDest = "###" . $user->email . "###";
           if ($user->email and strpos ( $dest, $newDest ) === false) {
+            $dest .= ($dest) ? ', ' : '';
+            $dest .= $newDest;
+          }
+        }
+      }
+      if ($statusMail->mailToAccountable) {
+        if (property_exists ( $this, 'idAccountable' )) {
+          $resource = new Resource ( $this->idAccountable );
+          $newDest = "###" . $resource->email . "###";
+          if ($resource->email and strpos ( $dest, $newDest ) === false) {
             $dest .= ($dest) ? ', ' : '';
             $dest .= $newDest;
           }
@@ -5463,7 +5477,7 @@ abstract class SqlElement {
   }
 
   public static function isThumbableField($col) {
-    return ($col == 'idResource' or $col == 'idUser' or $col == 'idContact') ? true : false;
+    return ($col == 'idResource' or $col == 'idUser' or $col == 'idContact'  or $col=='idAccountable' or $col=='idResponsible') ? true : false;
   }
 
   public static function isColorableField($col) {
@@ -6142,7 +6156,7 @@ abstract class SqlElement {
     }
   }
   //public function setAttributes() {
-  //  parent::setAttributes();
+  //  DO NOT SET GLOBAL DEFINITION AS SIGNATURE DEPENDS ON ITEM
   //}
 }
 

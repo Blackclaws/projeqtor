@@ -317,6 +317,7 @@ class Parameter extends SqlElement {
       case 'manageTicketCustomer' :  //ADD qCazelles - Manage ticket at customer level - Ticket #87
       //ADD qCazelles
       case 'productVersionOnDelivery' :
+      case 'manageAccountable':
       //END ADD qCazelles    
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
@@ -457,7 +458,7 @@ class Parameter extends SqlElement {
           $list=array('phpmailer'=>i18n('libraryPHPMailer'),
                       'mail'=>i18n('functionPHPMail'),
                       'socket'=>i18n('connexionSocket'));
-        break;
+        break; 
       case 'paramMailerHelo':
         $list = array('NO'=>i18n('displayNo'),
                       'YES'=>i18n('displayYes'));
@@ -665,6 +666,7 @@ class Parameter extends SqlElement {
                               'manageTicketCustomer'=>'list', //ADD qCazelles - Manage ticket at customer level - Ticket #87
          	                //'sectionAction'=>'section',
           	              //    'enablePredefinedActions'=>'list',
+      	                      'manageAccountable'=>'list',
           	              'sectionOrganization'=>'section',
           	                  'useOrganizationBudgetElement'=>'list', // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
       	                  'columnPlanningRight'=>'newColumn',

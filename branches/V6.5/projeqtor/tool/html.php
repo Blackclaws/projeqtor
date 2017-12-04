@@ -89,7 +89,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $critFld='id';
     $critVal=$listPrf;
   }
-  if ($col=='idResource' and $critFld=='idProject') {
+  if (($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and $critFld=='idProject') {
   	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
@@ -388,7 +388,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	return ;
     }
   }
-  if ($col=='idResource' and Affectable::getVisibilityScope()!="all") {
+  if ( ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and Affectable::getVisibilityScope()!="all") {
 // CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
         $restrictArray = getUserVisibleResourcesList(true);
     // Old    
@@ -454,7 +454,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (! $required) {
     echo '<option value=" " ></option>';
   }
-  if ($selection and $col=='idResource' and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
+  if ($selection and ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
     $table[$selection]=SqlList::getNameFromId('Affectable', $selection);
   }
   if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' or $listType=='Mailable'
@@ -535,7 +535,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }      
 // END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
 
-      if ($col=='idResource') {
+      if ($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') {
       	if ($key==$user->id) {
       		$next=$key;
       	}

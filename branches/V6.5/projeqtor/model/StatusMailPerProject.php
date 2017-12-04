@@ -42,6 +42,7 @@ class StatusMailPerProject extends StatusMail {
   public $_sec_SendMail;
   public $mailToContact;
   public $mailToUser;
+  public $mailToAccountable;
   public $mailToResource;
   public $mailToSponsor;
   public $mailToProject;  
@@ -84,12 +85,15 @@ class StatusMailPerProject extends StatusMail {
   		                            "mailToSponsor"=>"hidden,calculated",
                                   "idProject"=>"required",
                                   "isProject"=>"hidden",
-                                  "mailToProjectIncludingParentProject" => "nobr"
+                                  "mailToProjectIncludingParentProject" => "nobr",
+                                  "mailToAccountable"=>"invisible",
+                                  "mailToAssigned"=>"invisible"
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus',
   'otherMail'=>'email',
   'idEvent'=>'orOtherEvent',
+  "mailToAccountable"=>"idAccountable",
   'idType'=>'type');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -117,55 +121,12 @@ class StatusMailPerProject extends StatusMail {
     parent::__destruct();
   }
 
-  public function setAttributes() {
-    if ($this->id) {
-      self::$_fieldsAttributes["idMailable"]='readonly';
-      $mailable=SqlList::getNameFromId('Mailable', $this->idMailable,false);
-      if ($mailable!="Activity" and $mailable!="TestSession" and $mailable!="Meeting" and $mailable!="PeriodicMeeting") {
-        self::$_fieldsAttributes["mailToAssigned"]='readonly';
-      }
-    } 
+ public function setAttributes() {
+   parent::setAttributes();
+   self::$_fieldsAttributes=array_merge_preserve_keys(self::$_fieldsAttributes,parent::getStaticFieldsAttributes());
   }
   
-  public function control() {
-    $result="";
-    if (! trim($this->idMailable)) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
-    }
-    $crit="idMailable='" . Sql::fmtId($this->idMailable) . "'";
-    if (trim($this->idStatus)) {
-    	$crit.=" and idStatus='" . Sql::fmtId($this->idStatus) . "'";
-    }
-    if (trim($this->idEvent)) {
-      $crit.=" and idEvent='" . Sql::fmtId($this->idEvent) . "'";
-    }
-    if (trim($this->idType)) {
-      $crit.=" and idType='" . Sql::fmtId($this->idType) . "'";
-    } else {
-      $crit.=" and idType is null";	
-    }
-    if(property_exists($this, 'idProject') and $this->idProject){
-      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
-    } else {
-      $crit.=  " and idProject is null";
-    }
-    $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
-    $list=$this->getSqlElementsFromCriteria(null, false, $crit);
-    if (count($list)>0) {
-      $result.="<br/>" . i18n('errorDuplicateStatusMail',null);
-    }
-    if (!trim($this->idStatus) and !trim($this->idEvent)) {
-    	$result.="<br/>" . i18n('messageMandatory',array(i18n('colNewStatus')." ".i18n('colOrOtherEvent')));
-    }
-    $defaultControl=parent::control();
-    if ($defaultControl!='OK') {
-      $result.=$defaultControl;
-    }
-    if ($result=="") {
-      $result='OK';
-    }
-    return $result;    
-  }
+
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
@@ -219,69 +180,5 @@ class StatusMailPerProject extends StatusMail {
     return $paramDbPrefix . self::$_databaseTableName;
   }
   
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo frameword)
-   */
-  public function getValidationScript($colName) {
-    if ($this->mailToOther=='1') {
-      self::$_fieldsAttributes['otherMail']='';
-    } else {
-      self::$_fieldsAttributes['otherMail']='invisible';
-    } 
-    
-    $colScript = parent::getValidationScript($colName);
-
-    if ($colName=="mailToOther") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
-      $colScript .= '  } else {';
-      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
-      $colScript .= '    fld.set("value","");';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="idStatus") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.value!=" ") { ';
-      $colScript .= '    dijit.byId("idEvent").set("value"," ");';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="idEvent") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.value!=" ") { ';
-      $colScript .= '    dijit.byId("idStatus").set("value"," ");';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="mailToAssigned") {
-    	$colScript .= '<script type="dojo/connect" event="onClick" >';
-    	$colScript .= ' mailable=dijit.byId("idMailable");';
-    	$colScript .= ' mVal=mailable.get("displayedValue");';
-    	$colScript .= ' if (this.checked && mVal!=i18n("Activity") && mVal!=i18n("Meeting") && mVal!=i18n("TestSession")) { ';
-    	$colScript .= '   showAlert(i18n("msgIncorrectReceiver"));';
-    	$colScript .= '   this.checked=false;';
-    	$colScript .= ' }'; 
-    	$colScript .= '</script>';
-    } else if ($colName=='idMailable') { 
-      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
-      $colScript .=' var mailable=mailableArray[this.value];';
-      $colScript .= '  dijit.byId("idType").set("value",null);';
-      $colScript .= '  refreshList("idType","scope", mailable);';
-      $colScript .= '  dijit.byId("idEvent").reset();';
-      $colScript .= '  refreshList("idEvent","scope", mailable, null);';
-      $colScript .= '  if (mailable=="Activity" || mailable=="TestSession" || mailable=="Meeting" || mailable=="PeriodicMeeting") {';
-      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",false);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("mailToAssigned").set("checked",false);';
-      $colScript .= '    dijit.byId("mailToAssigned").set("disabled",true);';
-      $colScript .= '  }';
-      $colScript .= '</script>';
-    }
-    return $colScript;
-  }
 }
 ?>
