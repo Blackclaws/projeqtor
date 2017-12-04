@@ -133,7 +133,7 @@ foreach ( $lstTicNew as $t ) {
 }
 $start = date_create ( $startDate );
 $end = date_create ( $endDate );
-$nbDay = $start->diff ( $end )->days;
+$nbDay = $start->diff ( $end )->days + 1;
 
 $perfect = array();
 for($i = 1; $i <= $nbDay; $i ++) {
@@ -167,22 +167,27 @@ if (($month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', str
     $arrDays [$i] = '';
     if ($i == 1) {
       $arrDays [1] =date ( 'd', strtotime($startDate)). '/' . $month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) );
-    }
-    else if ($i == $nbDay){
-      $arrDays [$i] =date ( 'd', strtotime($endDate)). '/' . $month [date ( 'n', strtotime ( $endDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $endDate ) );
+    } else {
+      $arrDays [$i] = date ( 'd', strtotime($startDate)+ (($i-1) * 24 * 60 * 60)) . '/' . $month [date ( 'n', strtotime ( $startDate ) + (($i-1)* 24 * 60 * 60) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) + (($i)* 24 * 60 * 60) );
+    }if ($i == $nbDay){
+      $arrDays [$i] = date ( 'd', strtotime($endDate) ). '/' . $month [date ( 'n', strtotime ( $endDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $endDate ) );
     }
   }
 }else {
-for($i = 1; $i <= $nbDay; $i ++) {
-  $arrDays [$i] = '';
-  if ($i == 1) {
-    $arrDays [1] = $month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) );
-  } else if (date ( 'm', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01' and (date ( 'd', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01')) {
-    $arrDays [$i] = $month [date ( 'n', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) + ($i * 24 * 60 * 60) );
-  } else if (date ( 'd', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01') {
-    $arrDays [$i] = $month [date ( 'n', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) - 1];
+  for($i = 1; $i <= $nbDay; $i ++) {
+    $arrDays [$i] = '';
+    if ($i == 1) {
+      $arrDays [1] = date ( 'd', strtotime($startDate)). '/' .$month [date ( 'n', strtotime ( $startDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) );
+    } else if (date ( 'm', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01' and (date ( 'd', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01')) {
+      $arrDays [$i] = date ( 'd', strtotime($startDate)+ (($i) * 24 * 60 * 60)) . '/' . $month [date ( 'n', strtotime ( $startDate ) + (($i)* 24 * 60 * 60) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) + (($i)* 24 * 60 * 60) );
+    }
+    else if (date ( 'd', strtotime ( $startDate ) + ($i * 24 * 60 * 60) ) == '01') {
+      $arrDays [$i] = date ( 'd', strtotime($startDate)+ (($i) * 24 * 60 * 60)) . '/' . $month [date ( 'n', strtotime ( $startDate ) + (($i)* 24 * 60 * 60) ) - 1] . '/' . date ( 'Y', strtotime ( $startDate ) + (($i)* 24 * 60 * 60) );
+    }
+    if ($i == $nbDay){
+      $arrDays [$i] = date ( 'd', strtotime($endDate) ). '/' . $month [date ( 'n', strtotime ( $endDate ) ) - 1] . '/' . date ( 'Y', strtotime ( $endDate ) );
+    }
   }
-}
 }
 
 // Render graph
@@ -220,14 +225,16 @@ $graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
 
 // Draw the line graph
 $graph->drawLineGraph ( $dataSet->GetData (), $dataSet->GetDataDescription () );
-$graph->drawPlotGraph ( $dataSet->GetData (), $dataSet->GetDataDescription (), 3, 2, 255, 255, 255 );
+if ($nbDay < 30){
+  $graph->drawPlotGraph ( $dataSet->GetData (), $dataSet->GetDataDescription (), 3, 2, 255, 255, 255 );
+}
 
 // Draw the area between points
 $graph->drawArea ( $dataSet->GetData (), "created", "perfect", 127, 127, 127 );
 
 // Finish the graph
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
+$graph->drawLegend ( $width - 135, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
 
 $graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 60, 1, true );
 

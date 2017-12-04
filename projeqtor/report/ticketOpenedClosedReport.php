@@ -155,12 +155,16 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
   $created [$i] = 0;
   $closed [$i] = 0;
   $arrDays [$i] = '';
+  if ($paramNbOfDays <= 45){
+    $arrDays [$i] = date ( 'd', $prevDate + ($i * 24 * 60 * 60)) . ' ' . $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1] . ' ' . date ( 'Y', $prevDate + ($i * 24 * 60 * 60));
+  }else{
   if ($i == 1) {
     $arrDays [1] = $month [date ( 'n', $prevDate ) - 1] . date ( 'Y', $prevDate );
   } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01' and date ( 'm', $prevDate + ($i * 24 * 60 * 60) ) == '01'){
     $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1] . date ( 'Y', $prevDate + ($i * 24 * 60 * 60) );
   } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01') {
     $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1];
+  }
   }
 }
 
@@ -223,10 +227,10 @@ $graph->setColorPalette(2,100,100,200);
 $graph->setColorPalette(3,200,100,100);
 $graph->setColorPalette(4,100,200,100);
 $graph->setColorPalette(5,100,100,200);
-$graph->setGraphArea(40,30,$width-140,200);
+$graph->setGraphArea(40,30,$width-140,155);
 $graph->drawGraphArea(252,252,252);
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,TRUE,0,1, true);
+$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,TRUE,60,1, true);
 $graph->drawGrid(0,TRUE,230,230,230,255);
 
 // Draw the line graph
@@ -240,7 +244,7 @@ $graph->drawArea($dataSet->GetData(),"created","closed",127,127,127);
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 $graph->drawLegend($width-100,35,$dataSet->GetDataDescription(),240,240,240);
 
-$graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,true,0,1, true);
+$graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,true,60,1, true);
 
 $imgName=getGraphImgName("ticketOpenClosedReport");
 $graph->Render($imgName);

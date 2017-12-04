@@ -36,6 +36,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
 	Security::checkValidClass($objectClass);
 
 	$obj=new $objectClass();
+	if (method_exists($obj, 'setAttributes')) $obj->setAttributes();
 }
 ?>
 <input type="hidden" name="dialogMailObjectClass" id="dialogMailObjectClass" value="<?php echo htmlEncode($objectClass);?>" />
@@ -45,7 +46,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
         <form dojoType="dijit.form.Form" id='mailForm' name='mailForm' onSubmit="return false;">
           <input id="mailRefType" name="mailRefType" type="hidden" value="" />
           <input id="mailRefId" name="mailRefId" type="hidden" value="" />
-          <table>
+          <table style="white-space:nowrap">
           <?php if (property_exists($objectClass, 'idContact')) { ?>
             <tr>
               <td class="dialogLabel">
@@ -63,6 +64,16 @@ if (array_key_exists("objectClass", $_REQUEST)) {
               </td>
               <td>
                 <div id="dialogMailToUser" name="dialogMailToUser" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+          <?php } ?>
+          <?php if (property_exists($objectClass, 'idAccountable') and !$obj->isAttributeSetToField('idAccountable','hidden') ) {?>   
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToAccountable"><?php echo htmlEncode($obj->getColCaption("idAccountable")); ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToAccountable" name="dialogMailToAccountable" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
               </td>
             </tr>
           <?php } ?>

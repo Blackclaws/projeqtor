@@ -79,6 +79,7 @@ class ColumnSelector extends SqlElement {
 		// retrieve from database, in correct order
 		$user=getSessionUser();
 		$obj=new $classObj();
+		if (method_exists($obj, 'setAttributes')) $obj->setAttributes();
 		$cs=new ColumnSelector();
 		$crit=array('scope'=>'list', 'objectClass'=>$classObj, 'idUser'=>$user->id);
 		$csList=$cs->getSqlElementsFromCriteria($crit, false, null, 'sortOrder asc');

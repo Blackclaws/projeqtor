@@ -55,6 +55,20 @@ $periodValue = $paramYear;
 
 // Header
 $headerParameters = "";
+
+if ($periodType=='year' and $paramMonth!="01") {
+  if(!$paramMonth){
+    $paramMonth="01";
+  }
+  $headerParameters.= i18n("startMonth") . ' : ' . i18n(date('F', mktime(0,0,0,$paramMonth,10))) . '<br/>';
+}
+if ($periodType=='month') {
+  $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
+}
+if ( $periodType=='week') {
+  $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
+}
+
 if ($paramProject != "") {
   $headerParameters .= i18n ( "colIdProject" ) . ' : ' . htmlEncode ( SqlList::getNameFromId ( 'Project', $paramProject ) ) . '<br/>';
 }
@@ -95,6 +109,10 @@ if (! empty ( $paramPriorities )) {
   }
 }
 include "header.php";
+
+if(!$paramMonth){
+  $paramMonth="01";
+}
 
 $includedReport = true;
 // //////////////////////////////////////////////////////////////////////////////////////////////////////

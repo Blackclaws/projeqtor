@@ -51,6 +51,7 @@ class IndicatorDefinition extends SqlElement {
   public $_sec_SendMail;
   public $mailToContact;
   public $mailToUser;
+  public $mailToAccountable;
   public $mailToResource;
   public $mailToProject;
   public $mailToProjectIncludingParentProject;
@@ -64,6 +65,7 @@ class IndicatorDefinition extends SqlElement {
   public $_sec_InternalAlert;
   public $alertToContact;
   public $alertToUser;
+  public $alertToAccountable;
   public $alertToResource;
   public $alertToProject;
   public $alertToProjectIncludingParentProject;
@@ -106,7 +108,11 @@ class IndicatorDefinition extends SqlElement {
                                   "otherMail"=>"",
                                   "isProject"=>"hidden",
                                   "mailToProjectIncludingParentProject" => "nobr",
-                                  "alertToProjectIncludingParentProject" => "nobr"
+                                  "alertToProjectIncludingParentProject" => "nobr",
+                                  "mailToAccountable"=>"invisible",
+                                  "mailToAssigned"=>"invisible",
+                                  "alertToAccountable"=>"invisible",
+                                  "alertToAssigned"=>"invisible"
   );  
     
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
@@ -114,6 +120,8 @@ class IndicatorDefinition extends SqlElement {
                                                      'warningValue'=>'warning',
                                                      'alertValue'=>'alert',
                                                      'alertToUser'=>'mailToUser',
+                                                     'mailToAccountable'=>'idAccountable',
+                                                     'alertToAccountable'=>'idAccountable',
                                                      'alertToResource'=>'mailToResource',
                                                      'alertToProject'=>'mailToProject',
                                                      'alertToContact'=>'mailToContact',
@@ -132,11 +140,6 @@ class IndicatorDefinition extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    
-    if ($this->id) {
-      self::$_fieldsAttributes["idIndicatorable"]='readonly'; 
-      self::$_fieldsAttributes["idIndicator"]='readonly';
-    }
   }
 
   
@@ -230,31 +233,59 @@ class IndicatorDefinition extends SqlElement {
    */
   
   public function getValidationScript($colName) {
-    if ($this->mailToOther=='1') {
-      self::$_fieldsAttributes['otherMail']='';
-    } else {
-      self::$_fieldsAttributes['otherMail']='invisible';
-    } 
     
-    $colScript = parent::getValidationScript($colName);
+    $colScript = " ";
 
     if ($colName=="mailToOther") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
+      $colScript .= '  var fld = dijit.byId("otherMail").domNode;';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
+      $colScript .= '    dojo.query(".generalColClass.otherMailClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      //$colScript .= '    dojo.style(fld, {visibility:"visible"});';
       $colScript .= '  } else {';
-      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
-      $colScript .= '    fld.set("value","");';
+      //$colScript .= '    dojo.style(fld, {visibility:"hidden"});';
+      $colScript .= '    dojo.query(".generalColClass.otherMailClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '    dijit.byId("otherMail").set("value","");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=='idIndicatorable') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .=' var indicatorable=indicatorableArray[this.value];';
+      $colScript .=' var isIndicatorableArray=new Array();';
+      if (parameter::getGlobalParameter('manageAccountable')=='YES') {
+        $list=SqlList::getListNotTranslated('Indicatorable');
+        foreach ($list as $id=>$name) {
+          if (property_exists($name, 'idAccountable')) {
+            $colScript .= "isIndicatorableArray['" . $name . "']='" . $name . "';";
+          }
+        }
+      }
       $colScript .= '  dijit.byId("idIndicator").set("value",null);';
       $colScript .= '  dijit.byId("idType").set("value",null);';
       $colScript .= '  refreshList("idIndicator","idIndicatorable", this.value, null, null, true);';
       $colScript .= '  refreshList("idType","scope", indicatorableArray[this.value]);';
+      $colScript .= '  if (indicatorable=="Activity" || indicatorable=="TestSession" || indicatorable=="Meeting" || indicatorable=="PeriodicMeeting") {';
+      $colScript .= '    dojo.query(".generalRowClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      $colScript .= '    dojo.query(".generalRowClass.alertToAssignedClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.alertToAssignedClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      $colScript .= '  } else {';
+      $colScript .= '    dijit.byId("mailToAssigned").set("checked",false);';
+      $colScript .= '    dojo.query(".mailToAssignedClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '    dijit.byId("alertToAssigned").set("checked",false);';
+      $colScript .= '    dojo.query(".alertToAssignedClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '  }';
+      $colScript .= ' if(isIndicatorableArray[indicatorable]==indicatorable) {';
+      $colScript .= '    dojo.query(".generalRowClass.mailToAccountableClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.mailToAccountableClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      $colScript .= '    dojo.query(".generalRowClass.alertToAccountableClass").forEach(function(domNode){domNode.style.display="table-row";});';
+      $colScript .= '    dojo.query(".generalColClass.alertToAccountableClass").forEach(function(domNode){domNode.style.display="inline-block";});';
+      $colScript .= '  } else {';
+      $colScript .= '    dojo.query(".mailToAccountableClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '    dojo.query(".alertToAccountableClass").forEach(function(domNode){domNode.style.display="none";});';
+      $colScript .= '  }';
+      
       $colScript .= '</script>';
     }
     if ($colName=='idIndicator') { 
@@ -307,6 +338,36 @@ class IndicatorDefinition extends SqlElement {
       $result='OK';
     }
     return $result;
+  }
+  
+  public function setAttributes() {
+    if ($this->id) {
+      self::$_fieldsAttributes["idIndicatorable"]='readonly'; 
+      self::$_fieldsAttributes["idIndicator"]='readonly';
+      $indicatorable=SqlList::getNameFromId('Indicatorable', $this->idIndicatorable,false);
+      if ($indicatorable!="Activity" and $indicatorable!="TestSession" and $indicatorable!="Meeting" and $indicatorable!="PeriodicMeeting") {
+        self::$_fieldsAttributes["mailToAssigned"]='invisible';
+        self::$_fieldsAttributes["alertToAssigned"]='invisible';
+      } else {
+        self::$_fieldsAttributes["mailToAssigned"]='';
+        self::$_fieldsAttributes["alertToAssigned"]='';
+      }
+      if (Parameter::getGlobalParameter('manageAccountable')!='YES') {
+        self::$_fieldsAttributes["mailToAccountable"]='invisible';
+        self::$_fieldsAttributes["alertToAccountable"]='invisible';
+      } else if (!property_exists($indicatorable,'idAccountable')) {
+        self::$_fieldsAttributes["mailToAccountable"]='invisible';
+        self::$_fieldsAttributes["alertToAccountable"]='invisible';
+      } else {
+        self::$_fieldsAttributes["mailToAccountable"]='';
+        self::$_fieldsAttributes["alertToAccountable"]='';
+      }
+    }
+    if ($this->mailToOther=='1') {
+      self::$_fieldsAttributes['otherMail']='';
+    } else {
+      self::$_fieldsAttributes['otherMail']='invisible';
+    }
   }
   
 }
