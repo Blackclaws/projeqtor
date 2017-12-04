@@ -1047,7 +1047,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         
       }
       if (strpos($obj->getFieldAttributes($col), 'invisible') !== false) {
-        $specificStyle.=' visibility:hidden';
+        $specificStyle.=' display:none';
       }
       if (strpos($obj->getFieldAttributes($col), 'title') !== false) {
         $attributes.=' title="' . $obj->getTitle($col) . '"';
@@ -1708,7 +1708,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($displayComboButtonCol or $displayDirectAccessButton) {
           $idMenu='menu' . substr($col, 2);
           $comboClass=substr($col, 2);
-          if ($col == "idResourceSelect") {
+          if ($col == "idResourceSelect" or $col == 'idAccountable' or $col == 'idResponsible') {
             $idMenu='menuResource';
             $comboClass='Resource';
           } else if (substr($col,-14)=="ProductVersion") {
@@ -1750,7 +1750,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
             // Special case for idResource, idLocker, idAuthor, idResponsive
             // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
-            $arrayIdSpecial = array('idResource','idLocker', 'idAuthor', 'idResponsive');
+            $arrayIdSpecial = array('idResource','idLocker', 'idAuthor', 'idResponsible', 'idAccountable');
             if (in_array($col,$arrayIdSpecial)) {
                 $idList = getUserVisibleResourcesList(true, "List");
                 if ($val and !array_key_exists($val, $idList)) {
@@ -1790,7 +1790,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' 
+        if ($col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible' or $col == 'idActivity' or $col == 'idProduct' 
             or $col == 'idComponent' or $col == 'idProductOrComponent' 
             or $col == 'idProductVersion' or $col == 'idComponentVersion'
             or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
@@ -1949,8 +1949,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
         }
         $showExtraButton=false;
-        if ($col == 'idStatus' or $col == 'idResource') {
-          if ( (($col == 'idStatus') or ($col == 'idResource' and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
+        if ($col == 'idStatus' or $col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') {
+          if ( (($col == 'idStatus') or ( ($col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
             and $classObj!='Document' and $classObj!='StatusMail'  and $classObj!="TicketSimple" and $canUpdate) {
             $showExtraButton=true;
             $fieldWidth=round($fieldWidth / 2) - 5;
@@ -2023,7 +2023,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . SqlList::getNameFromId('Status', $next) . '<div>';
           echo '</div>';
         }
-        if ($col == 'idResource' and $next and $showExtraButton) {
+        if (($col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') and $next and $showExtraButton) {
 // ADD BY Marc TABARY - 2017-03-09 - EXTRA BUTTON (Assign to me) IS VISIBLE EVEN IDLE=1
           if ($obj->idle==1 and $classObj=='Organization') { } 
           else {

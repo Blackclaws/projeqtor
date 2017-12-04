@@ -425,10 +425,12 @@ class IndicatorValue extends SqlElement {
     $def=new IndicatorDefinition($this->idIndicatorDefinition);
     $obj=new $this->refType($this->refId);
     $arrayAlertDest=array();
-  	if ($def->mailToUser==0 and $def->mailToResource==0 and $def->mailToProject==0
+  	if ($def->mailToUser==0 and $def->mailToAccountable==0 and $def->mailToResource==0 
+  	and $def->mailToProject==0 and $def->mailToProjectIncludingParentProject==0
     and $def->mailToLeader==0  and $def->mailToContact==0 and $def->mailToAssigned==0
     and $def->mailToManager==0 and $def->mailToOther==0 and $def->mailToSubscribers==0
-    and $def->alertToUser==0 and $def->alertToResource==0 and $def->alertToProject==0
+    and $def->alertToUser==0 and $def->alertToAccountable==0 and $def->alertToResource==0 
+  	and $def->alertToProject==0 and $def->alertToProjectIncludingParentProject==0
     and $def->alertToLeader==0  and $def->alertToContact==0 and $def->alertToAssigned==0
     and $def->alertToManager==0 and $def->alertToSubscribers) {
       return false; // exit not a status for mail sending (or disabled) 
@@ -459,6 +461,19 @@ class IndicatorValue extends SqlElement {
           $dest.= $newDest;
         }
       }    
+    }
+    if ($def->mailToAccountable or $def->alertToAccountable) {
+      if (property_exists($obj, 'idAccountable')) {
+        $resource=new Resource($obj->idAccountable);
+        if ($def->alertToAccountable and $resource->isUser) {
+          $arrayAlertDest[$resource->id]=$resource->name;
+        }
+        $newDest = "###" . $resource->email . "###";
+        if ($def->mailToAccountable and $resource->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
     }
     if ($def->mailToProject or $def->mailToLeader or $def->alertToProject or $def->alertToLeader) {
       $aff=new Affectation();
@@ -568,7 +583,7 @@ class IndicatorValue extends SqlElement {
       if ($affList and count ( $affList ) > 0) {
         foreach ( $affList as $aff ) {
           $resource = new Resource ( $aff->idResource );
-          if ($def->alertToProjectIncludingParentProject) {
+          if ($def->alertToProjectIncludingParentProject and $resource->isUser) {
             $arrayAlertDest[$resource->id]=$resource->name;
           }
           if ($def->mailToProjectIncludingParentProject) {

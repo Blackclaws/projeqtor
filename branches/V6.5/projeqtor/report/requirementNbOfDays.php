@@ -34,11 +34,13 @@ if (! isset ( $includedReport )) {
     $paramVersion = Security::checkValidId ( $paramVersion ); // only allow digits
   }
   ;
-  
   if (array_key_exists ( 'nbOfDays', $_REQUEST )) {
     $paramNbOfDays = trim ( $_REQUEST ['nbOfDays'] );
   } else {
     $paramNbOfDays = 30;
+  }
+  if ($paramNbOfDays == ''){
+   //TODO cast an error 
   }
   
   $paramPriorities = array();
@@ -141,8 +143,6 @@ $where .= " and creationDateTime>='" . date ( 'Y-m-d', $prevDate ) . "' ";
 $order = "";
 // echo $where;
 $req = new Requirement ();
-debugLog($where);
-debugLog($whereDone);
 $lstReqNew = $req->getSqlElementsFromCriteria ( null, false, $where, $order );
 $lstReqclosed = $req->getSqlElementsFromCriteria ( null, false, $whereClosed, $order );
 $lstReqDone = $req->getSqlElementsFromCriteria ( null, false, $whereDone, $order );
@@ -158,6 +158,9 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
   $closed [$i] = 0;
   $done [$i] = 0;
   $arrDays [$i] = '';
+  if ($paramNbOfDays <= 45){
+    $arrDays [$i] = date ( 'd', $prevDate + ($i * 24 * 60 * 60)) . ' ' . $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1] . ' ' . date ( 'Y', $prevDate + ($i * 24 * 60 * 60));
+  }else {
   if ($i == 1) {
     $arrDays [1] = $month [date ( 'n', $prevDate ) - 1] . date ( 'Y', $prevDate );
   } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01' and date ( 'm', $prevDate + ($i * 24 * 60 * 60) ) == '01'){
@@ -165,8 +168,8 @@ for($i = 1; $i <= $paramNbOfDays; $i ++) {
   } else if (date ( 'd', $prevDate + ($i * 24 * 60 * 60) ) == '01') {
     $arrDays [$i] = $month [date ( 'n', $prevDate + ($i * 24 * 60 * 60) ) - 1];
   }
+  }
 }
-debugLog($arrDays);
 
 foreach ( $lstReqNew as $t ) {
   if (strtotime ( $t->creationDateTime ) > $prevDate) {
@@ -191,7 +194,6 @@ foreach ( $lstReqclosed as $t ) {
     }
   }
 }
-debugLog($lstReqDone);
 foreach ( $lstReqDone as $t ) {
   if (strtotime ( $t->doneDate ) > $prevDate) {
     $i = ceil ( (strtotime ( $t->doneDate ) - $prevDate) / (24 * 60 * 60) );
@@ -246,7 +248,7 @@ $graph->setColorPalette ( 2, 100, 100, 200 );
 $graph->setColorPalette ( 3, 200, 100, 100 );
 $graph->setColorPalette ( 4, 100, 200, 100 );
 $graph->setColorPalette ( 5, 100, 100, 200 );
-$graph->setGraphArea ( 40, 30, $width - 140, 170 );
+$graph->setGraphArea ( 40, 30, $width - 140, 155 );
 $graph->drawGraphArea ( 252, 252, 252 );
 $graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
 $graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 60, 1, true );

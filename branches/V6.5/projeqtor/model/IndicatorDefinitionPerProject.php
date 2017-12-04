@@ -28,7 +28,7 @@
  * Habilitation defines right to the application for a menu and a profile.
  */ 
 require_once('_securityCheck.php');
-class IndicatorDefinitionPerProject extends SqlElement {
+class IndicatorDefinitionPerProject extends IndicatorDefinition {
 
   // extends SqlElement, so has $id
   public $_sec_description;
@@ -51,6 +51,7 @@ class IndicatorDefinitionPerProject extends SqlElement {
   public $_sec_SendMail;
   public $mailToContact;
   public $mailToUser;
+  public $mailToAccountable;
   public $mailToResource;
   public $mailToProject;
   public $mailToProjectIncludingParentProject;
@@ -64,6 +65,7 @@ class IndicatorDefinitionPerProject extends SqlElement {
   public $_sec_InternalAlert;
   public $alertToContact;
   public $alertToUser;
+  public $alertToAccountable;
   public $alertToResource;
   public $alertToProject;
   public $alertToProjectIncludingParentProject;
@@ -104,10 +106,14 @@ class IndicatorDefinitionPerProject extends SqlElement {
                                   "codeWarningDelayUnit"=>"hidden",
                                   "codeAlertDelayUnit"=>"hidden",
                                   "mailToOther"=>"nobr",
-                                  "otherMail"=>"",
+                                  "otherMail"=>"invisible",
                                   "isProject"=>"hidden",
                                   "mailToProjectIncludingParentProject" => "nobr",
-                                  "alertToProjectIncludingParentProject" => "nobr"
+                                  "alertToProjectIncludingParentProject" => "nobr",
+                                  "mailToAccountable"=>"invisible",
+                                  "mailToAssigned"=>"invisible",
+                                  "alertToAccountable"=>"invisible",
+                                  "alertToAssigned"=>"invisible"
   );  
   
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
@@ -115,6 +121,8 @@ class IndicatorDefinitionPerProject extends SqlElement {
                                                      'warningValue'=>'warning',
                                                      'alertValue'=>'alert',
                                                      'alertToUser'=>'mailToUser',
+                                                     'mailToAccountable'=>'idAccountable',
+                                                     'alertToAccountable'=>'idAccountable',
                                                      'alertToResource'=>'mailToResource',
                                                      'alertToProject'=>'mailToProject',
                                                      'alertToContact'=>'mailToContact',
@@ -136,11 +144,6 @@ class IndicatorDefinitionPerProject extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    
-    if ($this->id) {
-      self::$_fieldsAttributes["idIndicatorable"]='readonly'; 
-      self::$_fieldsAttributes["idIndicator"]='readonly';
-    }
   }
 
   
@@ -197,138 +200,9 @@ class IndicatorDefinitionPerProject extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
-  public function save() {
-    $old=$this->getOld();
-  	$indicatorable=new Indicatorable($this->idIndicatorable);
-  	$this->nameIndicatorable=$indicatorable->name;
-  	$delayUnit=new DelayUnit($this->idWarningDelayUnit);
-  	$this->codeWarningDelayUnit=$delayUnit->code;
-  	$delayUnit=new DelayUnit($this->idAlertDelayUnit);
-    $this->codeAlertDelayUnit=$delayUnit->code;
-  	$indicator=new Indicator($this->idIndicator);
-    $this->codeIndicator=$indicator->code;
-  	$this->typeIndicator=$indicator->type;
-  	$this->name=$indicator->name;
-  	$result=parent::save();
-  	if (!$old->idle and $this->idle) {
-  	  $this->purgeExistingIndicatorValue();
-  	} else if ($this->warningValue!=$old->warningValue or $this->idWarningDelayUnit!=$old->idWarningDelayUnit
-       or $this->alertValue!=$old->alertValue or $this->idAlertDelayUnit!=$old->idAlertDelayUnit){
-  	  $this->updateExistingIndicatorValue();
-  	}
-  	return $result;
-  }
-  
-  public function delete() {
-    $result=parent::delete();
-    $this->purgeExistingIndicatorValue();
-    return $result;
-  }
-  
-  private function purgeExistingIndicatorValue() {
-    $iv=new IndicatorValue();
-    $iv->purge("idIndicatorDefinition='".$this->id."'");
-  }
-  
-  private function updateExistingIndicatorValue() {
-    $iv=new IndicatorValue();
-    $ivList=$iv->getSqlElementsFromCriteria(array('idIndicatorDefinition'=>$this->id));
-    foreach ($ivList as $iv) {
-      $obj=new $iv->refType($iv->refId);
-      if ($obj->id) {
-        IndicatorValue::addIndicatorValue($this,$obj);
-      } else {
-        $iv->delete();
-      }
-    }
-  }
-  
-   /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  
-  public function getValidationScript($colName) {
-    if ($this->mailToOther=='1') {
-      self::$_fieldsAttributes['otherMail']='';
-    } else {
-      self::$_fieldsAttributes['otherMail']='invisible';
-    } 
-    
-    $colScript = parent::getValidationScript($colName);
-
-    if ($colName=="mailToOther") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
-      $colScript .= '  } else {';
-      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
-      $colScript .= '    fld.set("value","");';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=='idIndicatorable') { 
-      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
-      $colScript .= '  dijit.byId("idIndicator").set("value",null);';
-      $colScript .= '  dijit.byId("idType").set("value",null);';
-      $colScript .= '  refreshList("idIndicator","idIndicatorable", this.value, null, null, true);';
-      $colScript .= '  refreshList("idType","scope", indicatorableArray[this.value]);';
-      $colScript .= '</script>';
-    }
-    if ($colName=='idIndicator') { 
-      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
-      $colScript .= '  dijit.byId("idWarningDelayUnit").set("value",null);';
-      $colScript .= '  dijit.byId("idAlertDelayUnit").set("value",null);';
-      $colScript .= '  dijit.byId("warningValue").set("value",null);';
-      $colScript .= '  dijit.byId("alertValue").set("value",null);';
-      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, false);';
-      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, false);';
-      $colScript .= '</script>';
-    }  
-    return $colScript;
-  }
-  
-  public function control(){
-    $result="";
-    if (! trim($this->idIndicatorable)) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
-    }
-    if (! trim($this->idIndicator)) {
-      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicator')));
-    }
-    if (! trim($this->idProject)) {
-      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
-    }
-    if ($this->alertValue!="" and ! trim($this->idAlertDelayUnit) ) {
-      $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
-    }
-    if ($this->warningValue!="" and ! trim($this->idWarningDelayUnit) ) {
-      $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
-    }    
-    //if (! trim($this->idType)) {
-    //  $result.='<br/>' . i18n('messageMandatory',array(i18n('colType')));
-    //}
-    $crit="idIndicatorable='" . trim($this->idIndicatorable) . "' and idIndicator='" . trim($this->idIndicator) . "' and idType='" . trim($this->idType) . "'";
-//     $crit=array('idIndicatorable'=>trim($this->idIndicatorable),
-//                 'idIndicator'=>trim($this->idIndicator),
-//                 'idType'=>trim($this->idType));
-    if(property_exists($this, 'idProject') and $this->idProject){
-      $crit.=  " and idProject='" . Sql::fmtId($this->idProject) . "'";
-    } else {
-      $crit.=  " and idProject is null";
-    }
-    $elt=$this->getSqlElementsFromCriteria(null, false, $crit);
-    if ($elt and $elt->id and $elt->id!=$this->id) {
-      $result.='<br/>' . i18n('errorDuplicateIndicator');
-    }
-    $defaultControl=parent::control();
-    if ($defaultControl!='OK') {
-      $result.=$defaultControl;
-    }if ($result=="") {
-      $result='OK';
-    }
-    return $result;
+  public function setAttributes() {
+    parent::setAttributes();
+    self::$_fieldsAttributes=array_merge_preserve_keys(self::$_fieldsAttributes,parent::getStaticFieldsAttributes());
   }
   
 }

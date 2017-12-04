@@ -59,7 +59,7 @@
     // If type = 'list' and $dataType = idResource : execute the listResourceProject type
     $required=true; // when directly requesting 'listResourceProject', required is by default
     if ($type=='list'
-    and array_key_exists('dataType', $_REQUEST) and $_REQUEST['dataType']=='idResource' 
+    and array_key_exists('dataType', $_REQUEST) and ($_REQUEST['dataType']=='idResource' or $_REQUEST['dataType']=='idAccountable' or $_REQUEST['dataType']=='idResponsible')
     and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)
     and $_REQUEST['critField']=='idProject') {
     	$type='listResourceProject';

@@ -66,6 +66,7 @@
   	$id=$_REQUEST['mailRefId'];
   	$mailToContact=(array_key_exists('dialogMailToContact', $_REQUEST))?true:false;
     $mailToUser=(array_key_exists('dialogMailToUser', $_REQUEST))?true:false;
+    $mailToAccountable=(array_key_exists('dialogMailToAccountable', $_REQUEST))?true:false;
     $mailToResource=(array_key_exists('dialogMailToResource', $_REQUEST))?true:false;
     $mailToSponsor=(array_key_exists('dialogMailToSponsor', $_REQUEST))?true:false;
     $mailToProject=(array_key_exists('dialogMailToProject', $_REQUEST))?true:false;
@@ -83,6 +84,7 @@
     $directStatusMail=new StatusMail();
     $directStatusMail->mailToContact=$mailToContact;
     $directStatusMail->mailToUser=$mailToUser;
+    $directStatusMail->mailToAccountable=$mailToAccountable;
     $directStatusMail->mailToResource=$mailToResource;
     $directStatusMail->mailToSponsor=$mailToSponsor;
     $directStatusMail->mailToProject=$mailToProject;

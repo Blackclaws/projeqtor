@@ -298,7 +298,7 @@ class Affectable extends SqlElement {
   public static function isAffectable($objectClass=null) {
     if ($objectClass) {
       if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' 
-       or $objectClass=='Affectable' or $objectClass=='ResourceSelect') {
+       or $objectClass=='Affectable' or $objectClass=='ResourceSelect' or $objectClass=='Accountable' or $objectClass=='Responsible') {
         return true;
       }
     }

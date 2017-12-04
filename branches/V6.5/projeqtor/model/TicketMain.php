@@ -57,6 +57,7 @@ class TicketMain extends SqlElement {
   public $idStatus;
   public $idResolution;
   public $isRegression;
+  public $idAccountable;
   public $idResource;
   public $idCriticality;
   public $idPriority;
@@ -129,7 +130,6 @@ class TicketMain extends SqlElement {
                                   "solved"=>"nobr",
                                   "idActivity"=>"title",
                                   "delayReadOnly"=>"hidden"
-      
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -395,6 +395,9 @@ class TicketMain extends SqlElement {
   	    }
   	  }
   	}
+  	if ($this->idResource and ! $this->idAccountable) { // Set Accountable (if not set) to Responsible (if set) 
+  	  $this->idAccountable=$this->idResource;
+  	}
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -432,6 +435,9 @@ class TicketMain extends SqlElement {
     if ($this->delayReadOnly == "1") {
       self::$_fieldsAttributes['initialDueDateTime']='readonly';     
     }  
+    if (Parameter::getGlobalParameter('manageAccountable')!='YES') {
+      self::$_fieldsAttributes['idAccountable']='hidden';
+    }
   }
 }
 ?>
