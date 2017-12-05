@@ -127,6 +127,7 @@ if ($type=='habilitation') {
                                      'requirement'=>i18n('requirementUnlockRight'),
                                      'reportResourceAll'=>i18n('reportResourceAll'),
                                      'canForceDelete'=>i18n('canForceDelete'),
+                                     'canForceClose'=>i18n('canForceClose'),
                                      'canUpdateCreation'=>i18n('canUpdateCreationInfo'), 
                                      'viewComponents'=>i18n('viewComponents'),
                                      'resVisibilityList'=>i18n('resourceVisibilityList'),
