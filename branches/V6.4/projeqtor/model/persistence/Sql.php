@@ -125,6 +125,7 @@ class Sql {
     self::$lastQuery=$sqlRequest;
     self::$lastQueryResult=$result;
     self::$lastQueryType= (is_resource($result)) ? "SELECT" : "UPDATE";
+    //if (strtoupper(substr($sqlRequest,0,6)=='SELECT')) self::$lastQueryType='SELECT';
     self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? $result->rowCount() : $result->rowCount();
     self::$lastQueryNewid=null;
     // Specific update of sequence in pgsql mode.

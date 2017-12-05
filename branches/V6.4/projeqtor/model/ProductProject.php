@@ -72,7 +72,7 @@ class ProductProject extends SqlElement {
 
     // Create or update VersionProject for each Version of the Product 
     $vers=new Version();
-    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct));
+    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct,'scope'=>'product'));
     foreach ($versList as $vers) {
       $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$this->idProject, 'idVersion'=>$vers->id));
       if (! $vp->id) {
