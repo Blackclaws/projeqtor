@@ -468,7 +468,7 @@ function drawTableFromObjectList($objectList) {
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
   	echo ' title="' . i18n('sectionDelete') . '">';
-  	htmlDrawCrossTable(array('canForceDelete'=>i18n('canForceDelete'),'canUpdateCreation'=>i18n('canUpdateCreationInfo'),'viewComponents'=>i18n('viewComponents')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	htmlDrawCrossTable(array('canForceDelete'=>i18n('canForceDelete'), 'canForceClose'=>i18n('canForceClose'),'canUpdateCreation'=>i18n('canUpdateCreationInfo'),'viewComponents'=>i18n('viewComponents')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
   	$titlePane="habilitationOther_ResourceVisibility";
   	echo '<div dojoType="dijit.TitlePane"';
