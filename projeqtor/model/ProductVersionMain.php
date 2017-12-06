@@ -466,6 +466,17 @@ class ProductVersionMain extends Version {
     	$vc->save();
     }
     //END ADD qCazelles - Version compatibility
+    //add atrancoso ticket#149
+    // Copy language
+    $lang = new VersionLanguage();
+    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    foreach($listLang as $lang){
+      $lang->id = NULL;
+      $lang->idVersion = $result->id;
+      $lang->save();
+    }
+    //end add atrancoso ticket#149
+    
     return $result;
   } 
 }

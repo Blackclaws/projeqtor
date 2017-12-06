@@ -616,8 +616,61 @@ if (beforeVersion($currVersion,'V6.5.0')) {
       $res=$delivery->save();
     }
   }
+  //END ADD qCazelles
+  
+  $pl=new ProductLanguage();
+  $critWhere='scope is null';
+  $list=$pl->getSqlElementsFromCriteria(null,null,$critWhere);
+  if (count($list)>0) {
+    traceLog("Purge of ProductLanguage");
+    $cpt=0;
+    $cptCommit=100;
+    Sql::beginTransaction();
+    traceLog("   => ".count($list)." to remove");
+    foreach($list as $pl) {
+      errorLog("***** ProductLanguage cannot be identified as Product or Version for language '".Sqllist::getNameFromId('Language', $pl->idLanguage)."', as it could be :");
+      errorLog("            Product #".$pl->idProduct." - ".Sqllist::getNameFromId('Product', $pl->idProduct));
+      errorLog("            Version #".$pl->idProduct." - ".Sqllist::getNameFromId('Version', $pl->idProduct));
+      errorLog("----- ProductLanguage deleted");
+  		$res=$pl->delete();
+  		$cpt++;
+  		$nbErrors++;
+  		if ( ($cpt % $cptCommit) == 0) {
+  			Sql::commitTransaction();
+  			traceLog("   => $cpt ProductLanguage done...");
+  			Sql::beginTransaction();
+  		}
+  	}
+  	Sql::commitTransaction();
+  	traceLog("   => $cpt ProductLanguage deleted");
+  }
+  $pc=new ProductContext();
+  $critWhere='scope is null';
+  $list=$pc->getSqlElementsFromCriteria(null,null,$critWhere);
+  if (count($list)>0) {
+    traceLog("Purge of ProductContext");
+    $cpt=0;
+    $cptCommit=100;
+    Sql::beginTransaction();
+    traceLog("   => ".count($list)." to remove");
+    foreach($list as $pc) {
+      errorLog("***** ProductContext cannot be identified as Product or Version for context '".Sqllist::getNameFromId('Context', $pc->idContext)."', as it could be :");
+      errorLog("            Product #".$pc->idProduct." - ".Sqllist::getNameFromId('Product', $pc->idProduct));
+      errorLog("            Version #".$pc->idProduct." - ".Sqllist::getNameFromId('Version', $pc->idProduct));
+      errorLog("----- ProductContext deleted");
+    		$res=$pc->delete();
+    		$cpt++;
+    		$nbErrors++;
+    		if ( ($cpt % $cptCommit) == 0) {
+    		  Sql::commitTransaction();
+    		  traceLog("   => $cpt ProductContext done...");
+    		  Sql::beginTransaction();
+    		}
+    }
+    Sql::commitTransaction();
+    traceLog("   => $cpt ProductContext deleted");
+  }
 }
-//END ADD qCazelles
 
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();

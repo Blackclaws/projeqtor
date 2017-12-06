@@ -4,11 +4,11 @@
  */
 //Link languages to a Product
 require_once('_securityCheck.php');
-class ProductLanguage extends SqlElement {
+class VersionLanguage extends SqlElement {
 	
 	// extends SqlElement, so has $id
 	public $id;    // redefine $id to specify its visible place
-	public $idProduct;
+	public $idVersion;
 	public $scope;
 	public $idLanguage;
 	public $creationDate;

@@ -34,10 +34,7 @@ if (! array_key_exists('from',$_REQUEST)) {
 }
 $from=$_REQUEST['from'];
 
-debugLog($from);
 $arrayFrom=explode(',', $from);
-debugLog($arrayFrom);
-//$from=$arrayFrom[0]; // debugLog(to remove)
 
 if (! array_key_exists('to',$_REQUEST)) {
   throwError('to parameter not found in REQUEST');

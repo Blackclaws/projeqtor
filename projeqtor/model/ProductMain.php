@@ -389,7 +389,14 @@ class ProductMain extends ProductOrComponent {
       $ps->creationDate=date('Y-m-d');
       $ps->save();
     }
-    
+    // Copy language
+    $lang = new ProductLanguage();
+    $listLang=$lang->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    foreach($listLang as $lang){
+      $lang->id = NULL;
+      $lang->idProduct = $result->id;
+      $lang->save();
+    }
     return $result;
   }
 

@@ -5,22 +5,11 @@
 require_once "../tool/projeqtor.php";
 
 // Get the link info
-if (! array_key_exists('productContextObjectClass',$_REQUEST)) {
-	throwError('productContextObjectClass parameter not found in REQUEST');
-}
-$objectClass=$_REQUEST['productContextObjectClass'];
-Security::checkValidClass($objectClass);
-
-if (! array_key_exists('productContextObjectId',$_REQUEST)) {
-	throwError('productContextObjectId parameter not found in REQUEST');
-}
-$objectId=$_REQUEST['productContextObjectId'];
-Security::checkValidId($objectId);
-
-if (! array_key_exists('productContextListId',$_REQUEST)) {
-	throwError('productContextListId parameter not found in REQUEST');
-}
-$listId=$_REQUEST['productContextListId'];
+$objectClass=RequestHandler::getClass('productContextObjectClass',true);
+$objectId=RequestHandler::getId('productContextObjectId',true);
+$listId=RequestHandler::getValue('productContextListId',true);
+$scopeClass=RequestHandler::getClass('productContextScopeClass',true);
+$scope=RequestHandler::getClass('productContextScope',true);
 
 $arrayId=array();
 if (is_array($listId)) {
@@ -33,8 +22,16 @@ Sql::beginTransaction();
 $result="";
 
 foreach ($arrayId as $id) {
-	$str=new ProductContext();
-	$str->idProduct=$objectId;
+	$str=new $scopeClass();
+	if ($scopeClass=='ProductContext') {
+	  $str->idProduct=$objectId;
+	}	else if ($scopeClass=='VersionContext') {
+	  $str->idVersion=$objectId;
+	}	else {
+	  errorLog("ERROR : saveProductContext to neither 'ProductContext' nor 'VersionContext' but to  '$scopeClass'");
+	  exit;
+	}
+	$str->scope=$scope;
 	$str->idContext=$id;
 	$str->idUser=$user->id;
 	$str->creationDate=date("Y-m-d");

@@ -442,6 +442,14 @@ class ComponentVersionMain extends Version {
 	      $pvs->save();
 	    }
     }
+    // Copy language
+    $lang = new VersionLanguage();
+    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    foreach($listLang as $lang){
+      $lang->id = NULL;
+      $lang->idVersion = $result->id;
+      $lang->save();
+    }
     return $result;
   }
 }
