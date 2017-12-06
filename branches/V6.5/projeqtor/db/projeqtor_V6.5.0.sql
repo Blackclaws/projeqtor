@@ -231,3 +231,86 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (82, 'nbOfDays', 'intInput', 40, 0, 30, 0), 
 (82, 'idPriority', 'priorityList', 50, 0, NULL, 0);
 -- ============= IGE END ===================
+
+CREATE TABLE `${prefix}versionlanguage` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idVersion` int(12) unsigned DEFAULT NULL,
+  `scope` varchar(100) DEFAULT NULL,
+  `idLanguage` int(12) unsigned NOT NULL,
+  `creationDate` date NOT NULL,
+  `idUser` int(12) unsigned NOT NULL,
+  `idle` int(1) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `${prefix}productlanguage` ADD `scope` varchar(100) DEFAULT NULL;
+
+CREATE TABLE `${prefix}versioncontext` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idVersion` int(12) unsigned DEFAULT NULL,
+  `scope` varchar(100) DEFAULT NULL,
+  `idContext` int(12) unsigned NOT NULL,
+  `creationDate` date NOT NULL,
+  `idUser` int(12) unsigned NOT NULL,
+  `idle` int(1) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `${prefix}productcontext` ADD `scope` varchar(100) DEFAULT NULL;
+
+--
+-- FIX EXISTING PRODUCTLANGUAGE : versions were stored as product 
+--
+-- If id does not exist as a product : it is a version
+UPDATE `${prefix}productlanguage` SET `scope`='ProductVersion'
+WHERE NOT exists (select 'x' from `${prefix}product` p where p.id=`${prefix}productlanguage`.idProduct);
+-- If id does not exist as a version : it is a product
+UPDATE `${prefix}productlanguage` SET `scope`='Product'
+WHERE NOT exists (select 'x' from `${prefix}version` v where v.id=`${prefix}productlanguage`.idProduct);
+-- If id is not a version of a product potentially having same language, it is a product 
+DELETE FROM `${prefix}tempupdate` where 1=1;
+INSERT INTO `${prefix}tempupdate` (id, idOther) 
+ select v.id, pl.idLanguage 
+ from `${prefix}version` v, `${prefix}product` p, `${prefix}productlanguage` pl 
+ where v.idProduct=p.id and p.id=pl.idProduct and pl.scope!='ProductVersion';
+UPDATE `${prefix}productlanguage` SET `scope`='Product'
+where `scope` is null and idProduct not in (select id FROM `${prefix}tempupdate` tmp where tmp.idOther=`${prefix}productlanguage`.idLanguage );
+DELETE FROM `${prefix}tempupdate` where 1=1;
+-- Then, copy Versions to versionlanguage and remove them from productlanguage
+INSERT INTO `${prefix}versionlanguage` (`idVersion`, `scope`, `idLanguage`, `creationDate`, `idUser`, `idle`)
+ select `idProduct`, `scope`, `idLanguage`, `creationDate`, `idUser`, `idle`
+ from  `${prefix}productlanguage`
+ where `scope`='ProductVersion';
+DELETE FROM `${prefix}productlanguage` where `scope`='ProductVersion';
+-- At the end change scope for components
+UPDATE `${prefix}productlanguage` SET `scope`=(select `scope` from `${prefix}product` p where p.id=`${prefix}productlanguage`.idProduct) where `scope`='Product';
+UPDATE `${prefix}versionlanguage` SET `scope`=(select `scope` from `${prefix}version` v where v.id=`${prefix}versionlanguage`.idVersion) where `scope`='ProductVersion';
+-- NB : will need to purge productlanguage with no scope
+--
+-- FIX EXISTING PRODUCTCONTEXT : versions were stored as product 
+--
+-- If id does not exist as a product : it is a version
+UPDATE `${prefix}productcontext` SET `scope`='ProductVersion'
+WHERE NOT exists (select 'x' from `${prefix}product` p where p.id=`${prefix}productcontext`.idProduct);
+-- If id does not exist as a version : it is a product
+UPDATE `${prefix}productcontext` SET `scope`='Product'
+WHERE NOT exists (select 'x' from `${prefix}version` v where v.id=`${prefix}productcontext`.idProduct);
+-- If id is not a version of a product potentially having same context, it is a product 
+DELETE FROM `${prefix}tempupdate` where 1=1;
+INSERT INTO `${prefix}tempupdate` (id, idOther) 
+ select v.id, pl.idContext 
+ from `${prefix}version` v, `${prefix}product` p, `${prefix}productcontext` pl 
+ where v.idProduct=p.id and p.id=pl.idProduct and pl.scope!='ProductVersion';
+UPDATE `${prefix}productcontext` SET `scope`='Product'
+where `scope` is null and idProduct not in (select id FROM `${prefix}tempupdate` tmp where tmp.idOther=`${prefix}productcontext`.idContext );
+DELETE FROM `${prefix}tempupdate` where 1=1;
+-- Then, copy Versions to versioncontext and remove them from productcontext
+INSERT INTO `${prefix}versioncontext` (`idVersion`, `scope`, `idContext`, `creationDate`, `idUser`, `idle`)
+ select `idProduct`, `scope`, `idContext`, `creationDate`, `idUser`, `idle`
+ from  `${prefix}productcontext`
+ where `scope`='ProductVersion';
+DELETE FROM `${prefix}productcontext` where `scope`='ProductVersion';
+-- At the end change scope for components
+UPDATE `${prefix}productcontext` SET `scope`=(select `scope` from `${prefix}product` p where p.id=`${prefix}productcontext`.idProduct) where `scope`='Product';
+UPDATE `${prefix}versioncontext` SET `scope`=(select `scope` from `${prefix}version` v where v.id=`${prefix}versioncontext`.idVersion) where `scope`='ProductVersion';
+-- NB : will need to purge productcontext with no scope

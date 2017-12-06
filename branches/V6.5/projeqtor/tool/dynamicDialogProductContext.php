@@ -24,7 +24,18 @@ if (array_key_exists('contextId',$_REQUEST)) {
 }
 
 $listClass = 'Context';
-$str=new ProductContext($contextId);
+$scopeClass='ProductContext';
+if ($objectClass=='Product' or $objectClass=='Component') {
+  $scope=$objectClass;
+  $scopeClass='ProductContext';
+} else if ($objectClass=='ProductVersion' or $objectClass=='ComponentVersion') {
+  $scope=str_replace('Version','',$objectClass);
+  $scopeClass='VersionContext';
+} else {
+  errorLog("ERROR : dynamicDialogProductContext to neither 'Product' nor 'Component' nor 'ProductVersion' nor 'ComponentVersion' but to  '$objectClass'");
+  exit;  
+}
+$str=new $scopeClass($contextId);
 $listId = $str->idContext;
 
 $object=new $objectClass($objectId);
@@ -36,6 +47,8 @@ $object=new $objectClass($objectId);
       <form id='productContextForm' name='productContextForm' onSubmit="return false;">
       	<input id="productContextObjectClass" name="productContextObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="productContextObjectId" name="productContextObjectId" type="hidden" value="<?php echo $objectId;?>" /> 
+        <input id="productContextScopeClass" name="productContextScopeClass" type="hidden" value="<?php echo $scopeClass;?>" />  
+        <input id="productContextScope" name="productContextScope" type="hidden" value="<?php echo $scope;?>" />
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('sectionProductContext',array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>
@@ -46,8 +59,8 @@ $object=new $objectClass($objectId);
             </td>
             <td>
 				<select size="14" id="productContextListId" name="productContextListId[]"
-                <?php if (!$contextId) echo 'multiple'; ?> class="selectList" onchange="enableWidget('dialogProductContextSubmit');"  ondblclick="saveProductContext();" value="">
-                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, null, true);?>
+                <?php if (!$contextId) echo 'multiple'; ?> class="selectList" onchange="enableWidget('dialogProductContextSubmit');"  ondblclick="if (this.value) saveProductContext();" value="">
+                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, $object, true);?>
               </select>
             </td>
           </tr>

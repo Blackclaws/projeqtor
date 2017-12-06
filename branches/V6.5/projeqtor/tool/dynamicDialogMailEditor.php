@@ -52,7 +52,6 @@ if (sessionValueExists('screenHeight')) {
           	echo htmlspecialchars($testMessage);
           } ?></textarea>
         <?php } else if (getEditorType()=="text"){
-          debugLog("cas text");
         	if (isTextFieldHtmlFormatted($testMessage)) {
           	$text=new Html2Text($testMessage);
           	$val=$text->getText();
@@ -74,7 +73,7 @@ if (sessionValueExists('screenHeight')) {
              ,onKeyDown:function(event){top.onKeyDownFunction(event,'messageMailEditor',this);}
              ,onBlur:function(event){top.editorBlur('messageMailEditor',this);}
              ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
-             style="color:#606060 !important; background:none;padding:3px 0px 3px 3px;margin-right:2px;width:<?php echo $detailWidth; debugLog($detailWidth); ?>px;overflow:auto;"
+             style="color:#606060 !important; background:none;padding:3px 0px 3px 3px;margin-right:2px;width:<?php echo $detailWidth;?>px;overflow:auto;"
              class="input"><?php 
              if (!isTextFieldHtmlFormatted($testMessage)) {
 			         echo formatPlainTextForHtmlEditing($testMessage,'single');

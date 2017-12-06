@@ -1722,7 +1722,7 @@ function debugDisplayObj($obj) {
   if (is_object($obj)) {
     return get_class($obj).' #'.$obj->id;
   } else if (is_array($obj)) {
-    retrun ("array(".count($obj).")");    
+    return ("array(".count($obj).")");    
   } else {
     return $obj;
   }

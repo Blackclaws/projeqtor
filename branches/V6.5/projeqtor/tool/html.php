@@ -40,10 +40,8 @@ require_once "../tool/projeqtor.php";
  */
 // CHANGE BY Marc TABARY - 2017-02-17
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true, $limitToActiveOrganizations=true) {
-// Old
-//function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
-// END CHANGE BY Marc TABARY - 2017-02-17
-	//scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" . debugDisplayObj($obj).",required=$required,critFld=$critFld,critval=$critVal)");
+	scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" .debugDisplayObj($obj).",required=$required,critFld=".debugDisplayObj($critFld).",critVal=".debugDisplayObj($critVal).")");
+  // Take into account array of $critFld // TODO : check where it is used 
   if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
 	    $crtName='critFld'.$tempId;
@@ -51,6 +49,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	  }
 	  $critFld=$critFld[0];
 	}
+	// Take into account array of $critVal // TODO : check where it is used
 	if (is_array($critVal)) {
 	  foreach ($critVal as $tempId=>$tempVal) {
 	    $valName='critVal'.$tempId;
@@ -74,10 +73,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
+	// idProductOrComponent is an idProduct
   if (($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idProductOrComponent')) {
     $critFld='idProduct';
   }
-  if($col=='idProfile'){
+  if ($col=='idProfile'){
+    // Limit list of profiles to profiles with sortOrder >= sortOrder of user profile
     $idPrj = $obj->id;
     $user=new User();
     $prf = new Profile(getSessionUser()->getProfile($idPrj));
@@ -88,8 +89,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     $critFld='id';
     $critVal=$listPrf;
+    // Attention, this case will then use standard process$table is not retreived yet)
   }
   if (($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and $critFld=='idProject') {
+    // List of "affectable" with restriction to project : restrict on allocation to project (object Affectation)
   	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
     $in=transformValueListIntoInClause($lstTopPrj);
@@ -119,6 +122,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     asort($table);
   } else if ($critFld and ($col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idVersion' or $critFld=='idComponentVersion' or $critFld=='idProductVersion') ) {
+    // Limit Versions depending on product structure
     $critClass=substr($critFld,2);
     $versionField=str_replace('Version', '', $critFld);
     $version=new Version($critVal,true);
@@ -134,6 +138,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $table[$selection]=SqlList::getNameFromId('Version', $selection);
     }
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
+    // Limit on criteria : this is main case for criteria selection
+    // but not for Product and Component depending on Project (will be managed with restriction table)
     $critArray=array($critFld=>$critVal);
     $limitPlanning=Parameter::getGlobalParameter('limitPlanningActivity');
     $class=null;
@@ -153,9 +159,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }
   } else if ($col=='idBill') {
+    // Limit Bills list to done but not paid (this isd used on Payment screen to list bills to link to the payment)
     $crit=array('paymentDone'=>'0','done'=>'1');
     $table=SqlList::getListWithCrit($listType, $crit,$column,$selection, (! $obj)?!$limitToActiveProjects:false);
-  }else if ($col=='idLinkable' || $col=='idCopyable'){
+  } else if ($col=='idLinkable' || $col=='idCopyable'){
+    // Limit list of object to Link or to Copy to to objects visible to the user (depending on his access rights
     $typeRight='read';
     if($col=='idCopyable')$typeRight='update';
     $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
@@ -178,52 +186,59 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     foreach($arrayToDel as $key)unset($table[$key]);
-  } else if ($col=='idActivity' or $col=='idTicket') { // List Activity or ticket without a criteria
+  } else if ($col=='idActivity' or $col=='idTicket') { 
+    // List Activity or Ticket without a criteria // TODO : analyse effect of this... 
   	$cls=substr($col,2);
   	$table=SqlList::getList($cls,'name',$selection,false,true);
-  } else if ($col=='idTestCase') { // List Test case with criteria on project or visible product
+  } else if ($col=='idTestCase') { 
+    // List Test case with criteria on project or visible product
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false,true );
   } else {
+    // None of the previous cases : no criteria and not of the expected above cases
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject" or $col=="planning") { 
+      // $wbsList will able to order list depending on WBS
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     } 
-// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
     if ($col=="idOrganization") { 
+      // Spmecificity for list of organisation // TODO : study if no other way is possible
     	$orgaList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveOrganizations:true );
     }
-// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
     if ($selection) {
+      // Add selected value in the table // TODO : possibly move this after the closing } because it may be used in all cases (to be studied)
       $refTable=$listType;
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
       $table[$selection]=SqlList::getFieldFromId($refTable, $selection,$column);
     } 
   }
-  $restrictArray=array();
-  $excludeArray=array();
+  // Here $table is full with items to list
+  $restrictArray=array();  // Prepare restriction array : if empty, no restriction will be applied, if not empty, will limit list the these items
+  $excludeArray=array();   // Prepare exclusion array : all items in this list will not be listed
   if ($obj) {
+    // Current object is passed to the function, use it to apply restrictions or exclusions 
+    // All lists froms objectDetail.php come here
   	$class=get_class($obj);
-    if ( $class=='Project' and $col=="idProject" and $obj->id!=null) { // on "is sub-project of", remove subproject and current project
+    if ( $class=='Project' and $col=="idProject" and $obj->id!=null) { 
+      // on "is sub-project of", remove subprojects of current project and current project itself
       $excludeArray=$obj->getRecursiveSubProjectsFlatList();
       $excludeArray[$obj->id]=$obj->name;
     } 
-
-// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
-    if ( $class=='Organization' and $col=="idOrganization" and $obj->id!=null) { // on "is sub-organization of", remove suborganization and current organization
+    if ( $class=='Organization' and $col=="idOrganization" and $obj->id!=null) { 
+      // on "is sub-organization of", remove suborganization of current organization and current organization itself
       $excludeArray=$obj->getRecursiveSubOrganizationsFlatList();
       $excludeArray[$obj->id]=$obj->name;
     }  
-// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
-
     if ($col=="idProject") {
+      // On list of project, restrict list to the one the user has visibility, depending on access rights
     	$menuClass=$obj->getMenuClass();
     	if ($class=='DocumentDirectory') {
+    	  // Document directory has no specific access rights, retreive them from Document
     		$doc=new Document();
     		$menuClass=$doc->getMenuClass();
     	}
       $controlRightsTable=$user->getAccessControlRights($obj);
       if (! array_key_exists($menuClass,$controlRightsTable)) {
-	      // If AccessRight notdefined for object and user profile => empty list + log error
+	      // If AccessRight not defined for object and for user profile => empty list + log error
 	      traceLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
         return;		
 	    }
@@ -270,7 +285,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         $lstChild = $proj->getRecursiveSubProjectsFlatList(true,true);
         $restrictArray=$lstChild;
       }
+      // end of $col=="idProject"
     } else if ($col=='idStatus') {
+      // On list of Status, limit list depending on workflow
     	if ($class=='TicketSimple') $class='Ticket';        
       $idType='id' . $class . 'Type';
       $typeClass=$class . 'Type';
@@ -305,7 +322,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         	$table[$firstKey]=$firstName;
         }
       }
+      // End $col=='idStatus'
     } else if (($col=='idProduct' or $col=='idComponent' or  $col=='idProductOrComponent') and $critFld=='idProject' and $critVal) {
+      // Limit list of products and components depending on Project : list only items with version linked to the project
     	$restrictArray=array();
     	$versProj=new VersionProject();
     	$proj=new Project($critVal,true);
@@ -334,13 +353,17 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	  $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
     	}
     	if (isset($restrictArray[$selection])) unset($restrictArray[$selection]);
+    	// End ($col=='idProduct' or $col=='idComponent') and $critFld=='idProject'
     } else if ($col=='idComponent' and $critFld=='idProduct' and $critVal) {
+      // Limit list of components depending on Product (only components linked to the product) 
       $prod=new Product($critVal,true);
       $table=$prod->getComposition(true,true);
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
       }
+      // End $col=='idComponent' and $critFld=='idProduct'
     } else if (substr($col,-16)=='ComponentVersion' and $critFld=='idProductVersion' and $critVal) {
+      // Limit Component version (target, source or else) depending on Product Version
       $prodVers=new ProductVersion($critVal,true);
       $table=$prodVers->getComposition(true,true);
       if (isset($critFld1) and isset($critVal1) and $critFld1=='idComponent') {
@@ -350,7 +373,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId('ComponentVersion', $selection);
       }
+      // End Limit Component version (target, source or else) depending on Product Version
     } else if ($col=='id'.$class.'Type' and property_exists($obj, 'idProject')) {
+      // List of type on the item, where item has project : 
       if (! isset($idProject)) {
         if ($obj->idProject and $class!='Project' ) {
           $idProject=$obj->idProject;
@@ -370,9 +395,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
         if ($selection) {$restrictArray[$selection]="OK";}
       }
+      // End List of type on the item, where item has project 
     }
-  } else { // (! $obj)
+    // End of $obj set
+  } else { 
+    // $obj not set. For lists not on Object context (on most cases combos)
   	if ($col=="idProject") {
+  	  // Restrict list f project depending on user rights
       $user=getSessionUser();
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
@@ -381,102 +410,98 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       	$restrictArray=$user->getVisibleProjects($limitToActiveProjects);
   	  }
     } else if ($col=="planning") {
+      // Restrict planning depending on user rights
       $user=getSessionUser();
       $restrictArray=$user->getListOfPlannableProjects();
     } else if (($col=="idProduct" or $col=="idProductOrComponent" or $col=="idComponent") and $critFld=='idProject') {
+      // List of products with crit on project : propose empty value // TODO : identify why 
    		echo '<option value=" " ></option>';
     	return ;
     }
+    // End of $obj not set
   }
   if ( ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and Affectable::getVisibilityScope()!="all") {
-// CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
-        $restrictArray = getUserVisibleResourcesList(true);
-    // Old    
-//      $restrictArray=array();
-// END CHANGE BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP
-
-// COMMENT BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
-//    $res=new Resource();
-//    $scope=Affectable::getVisibilityScope();
-//    if ($scope=='orga') {
-//      $crit="idOrganization in (". Organization::getUserOrganisationList().")";
-//    } else if ($scope=='team') {
-//      $aff=new Affectable(getSessionUser()->id,true);
-//      $crit="idTeam='$aff->idTeam'";
-//    } else {
-//      traceLog("Error on htmlDrawOptionForReference() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga'");
-//      $crit=array('id'=>'0');
-//    }
-//    $list=$res->getSqlElementsFromCriteria(null,false,$crit);
-//    foreach ($list as $res) {
-//      $restrictArray[$res->id]=$res->name;
-//    }
-// END COMMENT BY Marc TABARY - 2017-02-21 - GENERIC FUNCTION IN PROJEQTOR.PHP        
+    // Restrict List of affectables : restrict visibility (same Organization, or same Team or All)
+    $restrictArray = getUserVisibleResourcesList(true);
     if ($selection) $restrictArray[$selection]="OK";
   }
-  
-  // ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER
   if ($col=='idResource' and $obj and get_class($obj)==='Organization') {
-    // -----------------------------------------------------------------------------------------------
-    // Implement the organization's manager rule :
     // An organization's manager must belong to the organization (no cascade on parent organizations)
-    // -----------------------------------------------------------------------------------------------
     // Get resources linked by id to organization
     $resourcesOfThisOrga = $obj->getResourcesOfOrganizationsListAsArray();
     $restrictArray = array_intersect_key($restrictArray, $resourcesOfThisOrga);
   }    
-// END ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER         
 
-// ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
   if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
+    // Restrict list of Organizations
     $restrictArray=array();
-        $orga=new Organization();
-        $scope=Affectable::getOrganizationVisibilityScope();
-        // Can see his organization et sub-organization
-        if ($scope=='subOrga') {
-          $crit="id in (". Organization::getUserOrganizationList().")";
-        } else if ($scope=='orga') { // Can see only his organization
+    $orga=new Organization();
+    $scope=Affectable::getOrganizationVisibilityScope();
+    if ($scope=='subOrga') {     // Can see his organization et sub-organization
+      $crit="id in (". Organization::getUserOrganizationList().")";
+    } else if ($scope=='orga') { // Can see only his organization
       $aff=new Affectable(getSessionUser()->id,true);
-          $crit="id='$aff->idOrganization'";
+      $crit="id='$aff->idOrganization'";
     } else {
-          traceLog("Error on htmlDrawOptionForReference() : Organization::getOrganizationVisibilityScope returned something different from 'all', 'subOrga', 'orga'");
+      traceLog("Error on htmlDrawOptionForReference() : Organization::getOrganizationVisibilityScope returned something different from 'all', 'subOrga', 'orga'");
       $crit=array('id'=>'0');
     }
-        $list=$orga->getSqlElementsFromCriteria(null,false,$crit);
-        foreach ($list as $orga) {
-          $restrictArray[$orga->id]=$orga->name;
+    $list=$orga->getSqlElementsFromCriteria(null,false,$crit);
+    foreach ($list as $orga) {
+      $restrictArray[$orga->id]=$orga->name;
     }
-    if ($selection) $restrictArray[$selection]="OK";
-        
+    if ($selection) $restrictArray[$selection]="OK";    
   }
-// END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY    
   
+  // Add empty selectiopn if not required
   if (! $required) {
     echo '<option value=" " ></option>';
   }
+  // For affectables, get the correct name
   if ($selection and ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
     $table[$selection]=SqlList::getNameFromId('Affectable', $selection);
   }
+  // Sort array of classes
   if ($listType=='Linkable' or $listType=='Copyable' or $listType=='Importable' or $listType=='Mailable'
    or $listType=='Indicatorable' or $listType=='Checklistable' or $listType=='Dependable' or $listType=='Originable'
    or $listType=='Referencable') {
     asort($table);
   }
+  // Retreive the char to indent projects structure
   if ($col=="idProject") {
     $sepChar=Parameter::getUserParameter('projectIndentChar');
     if (!$sepChar) $sepChar='__';
     $wbsLevelArray=array();
   }
-  
-// ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
+  // Retreive the char to indent organizations structure
   if ($col=="idOrganization") {
     $sepChar=Parameter::getUserParameter('projectIndentChar');
     if (!$sepChar) $sepChar='__';
     $orgaLevelArray=array();      
   }
-// END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
-// KROWRY
-
+  // Exclude in list of languages and contexts the already selected ones
+  if ( ($col=='idLanguage' or $col=='idContext') and $obj) {
+    $crtProd='idProduct';
+    if ($col=='idLanguage'){
+      $productContext = new ProductLanguage();
+      $fldCtx='idLanguage';
+    } else if ($col=='idContext'){
+      $productContext = new ProductContext();
+      $fldCtx='idContext';
+    }
+    if (substr(get_class($obj),-7)=='Version') {
+      $crtProd='idVersion';
+      if ($col=='idLanguage'){
+        $productContext = new VersionLanguage();
+      } else if ($col=='idContext'){
+        $productContext = new VersionContext();
+      }
+    }
+    $listProductContext = $productContext->getSqlElementsFromCriteria(array($crtProd=>$obj->id));
+    foreach ($listProductContext as $context){
+      $excludeArray[$context->$fldCtx]=$context->$fldCtx;
+    }
+  }
   
   $pluginObjectClass=substr($col,2);
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
@@ -547,7 +572,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ( $selection and $key==$selection ) { 
       	echo ' SELECTED ';
       	$selectedFound=true; 
-      } 
+      }
       echo '><span >'. htmlEncode($val) . '</span></option>';
     }
   }

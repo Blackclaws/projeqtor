@@ -24,7 +24,18 @@ if (array_key_exists('languageId',$_REQUEST)) {
 }
 
 $listClass = 'Language';
-$str=new ProductLanguage($languageId);
+$scopeClass='ProductLanguage';
+if ($objectClass=='Product' or $objectClass=='Component') {
+  $scope=$objectClass;
+  $scopeClass='ProductLanguage';
+} else if ($objectClass=='ProductVersion' or $objectClass=='ComponentVersion') {
+  $scope=str_replace('Version','',$objectClass);
+  $scopeClass='VersionLanguage';
+} else {
+  errorLog("ERROR : dynamicDialogProductLanguage to neither 'Product' nor 'Component' nor 'ProductVersion' nor 'ComponentVersion' but to  '$objectClass'");
+  exit;  
+}
+$str=new $scopeClass($languageId);
 $listId = $str->idLanguage;
 
 $object=new $objectClass($objectId);
@@ -49,7 +60,9 @@ if ($objectClass == 'ProductVersion' or $objectClass == 'ComponentVersion') {
     <td>
       <form id='productLanguageForm' name='productLanguageForm' onSubmit="return false;">
       	<input id="productLanguageObjectClass" name="productLanguageObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
-        <input id="productLanguageObjectId" name="productLanguageObjectId" type="hidden" value="<?php echo $objectId;?>" /> 
+        <input id="productLanguageObjectId" name="productLanguageObjectId" type="hidden" value="<?php echo $objectId;?>" />
+        <input id="productLanguageScopeClass" name="productLanguageScopeClass" type="hidden" value="<?php echo $scopeClass;?>" />  
+        <input id="productLanguageScope" name="productLanguageScope" type="hidden" value="<?php echo $scope;?>" />
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('sectionProductLanguage',array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>
@@ -60,7 +73,7 @@ if ($objectClass == 'ProductVersion' or $objectClass == 'ComponentVersion') {
             </td>
             <td>
 				<select size="14" id="productLanguageListId" name="productLanguageListId[]"
-                <?php if (!$languageId) echo 'multiple'; ?> class="selectList" onchange="enableWidget('dialogProductLanguageSubmit');"  ondblclick="saveProductLanguage();" value="">
+                <?php if (!$languageId) echo 'multiple'; ?> class="selectList" onchange="enableWidget('dialogProductLanguageSubmit');"  ondblclick="if (this.value) saveProductLanguage();" value="">
                   <?php htmlDrawOptionForReference('id'.$listClass, $listId, $object, true, $critFld, $critVals);?>
               </select>
             </td>

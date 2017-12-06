@@ -5,22 +5,12 @@
 require_once "../tool/projeqtor.php";
 
 // Get the link info
-if (! array_key_exists('productLanguageObjectClass',$_REQUEST)) {
-	throwError('productLanguageObjectClass parameter not found in REQUEST');
-}
-$objectClass=$_REQUEST['productLanguageObjectClass'];
-Security::checkValidClass($objectClass);
 
-if (! array_key_exists('productLanguageObjectId',$_REQUEST)) {
-	throwError('productLanguageObjectId parameter not found in REQUEST');
-}
-$objectId=$_REQUEST['productLanguageObjectId'];
-Security::checkValidId($objectId);
-
-if (! array_key_exists('productLanguageListId',$_REQUEST)) {
-	throwError('productLanguageListId parameter not found in REQUEST');
-}
-$listId=$_REQUEST['productLanguageListId'];
+$objectClass=RequestHandler::getClass('productLanguageObjectClass',true);
+$objectId=RequestHandler::getId('productLanguageObjectId',true);
+$listId=RequestHandler::getValue('productLanguageListId',true);
+$scopeClass=RequestHandler::getClass('productLanguageScopeClass',true);
+$scope=RequestHandler::getClass('productLanguageScope',true);
 
 $arrayId=array();
 if (is_array($listId)) {
@@ -33,8 +23,16 @@ Sql::beginTransaction();
 $result="";
 
 foreach ($arrayId as $id) {
-	$str=new ProductLanguage();
-	$str->idProduct=$objectId;
+	$str=new $scopeClass();
+	if ($scopeClass=='ProductLanguage') {
+	  $str->idProduct=$objectId;
+	}	else if ($scopeClass=='VersionLanguage') {
+	  $str->idVersion=$objectId;
+	}	else {
+	  errorLog("ERROR : saveProductLanguage to neither 'ProductLanguage' nor 'VersionLanguage' but to  '$scopeClass'");
+	  exit;
+	} 
+	$str->scope=$scope;
 	$str->idLanguage=$id;
 	$str->idUser=$user->id;
 	$str->creationDate=date("Y-m-d");

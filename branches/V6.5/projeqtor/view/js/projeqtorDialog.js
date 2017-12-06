@@ -1569,9 +1569,9 @@ function removeProductLanguage(productLanguageId, refType) {
 		return;
 	}
 	actionOK=function() {
-		loadContent("../tool/removeProductLanguage.php?productLanguageId="+productLanguageId, "resultDiv", null, true, 'ProductLanguage');
+		loadContent("../tool/removeProductLanguage.php?refType="+refType+"&productLanguageId="+productLanguageId, "resultDiv", null, true, 'ProductLanguage');
 	};
-	msg=i18n('confirmDeleteProductLanguage', new Array(refType, productLanguageId));
+	msg=i18n('confirmDeleteProductLanguage');
 	showConfirm(msg, actionOK);
 }
 
@@ -1609,9 +1609,9 @@ function removeProductContext(productContextId, refType) {
 		return;
 	}
 	actionOK=function() {
-		loadContent("../tool/removeProductContext.php?productContextId="+productContextId, "resultDiv", null, true, 'ProductContext');
+		loadContent("../tool/removeProductContext.php?refType="+refType+"&productContextId="+productContextId, "resultDiv", null, true, 'ProductContext');
 	};
-	msg=i18n('confirmDeleteProductContext', new Array(refType, productContextId));
+	msg=i18n('confirmDeleteProductContext');
 	showConfirm(msg, actionOK);
 }
 //END ADD qCazelles - Lang-Context
