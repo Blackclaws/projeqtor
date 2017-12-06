@@ -2,15 +2,14 @@
 /*
  *	@author: qCazelles 
  */
-//Link languages to a Product
+//Link Contexts to a Product
 require_once('_securityCheck.php');
-class ProductLanguage extends SqlElement {
+class VersionContext extends SqlElement {
 	
-	// extends SqlElement, so has $id
-	public $id;    // redefine $id to specify its visible place
-	public $idProduct;
+	public $id;
+	public $idVersion;
 	public $scope;
-	public $idLanguage;
+	public $idContext;
 	public $creationDate;
 	public $idUser;
 	public $idle;
@@ -33,5 +32,5 @@ class ProductLanguage extends SqlElement {
 		parent::__destruct();
 	}
 	
-	
 }
+?>

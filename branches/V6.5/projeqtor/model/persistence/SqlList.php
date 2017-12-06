@@ -243,7 +243,7 @@ class SqlList {
           $val[$k] = Sql::str($v);
         }
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . ' IN (' . implode(',', $val) . ')';
-      } else {
+        } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
         } else {

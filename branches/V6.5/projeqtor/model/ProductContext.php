@@ -8,6 +8,7 @@ class ProductContext extends SqlElement {
 	
 	public $id;
 	public $idProduct;
+	public $scope;
 	public $idContext;
 	public $creationDate;
 	public $idUser;

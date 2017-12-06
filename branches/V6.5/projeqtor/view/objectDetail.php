@@ -3746,8 +3746,19 @@ function drawBusinessFeatures($obj, $refresh=false) {
 //ADD qCazelles - Lang-Context
 function drawLanguageSection($obj, $refresh=false) {
 	$crit=array();
-	$crit['idProduct']=$obj->id;
-	$langsProduct=new ProductLanguage();
+	$scope=get_class($obj);
+	if ($scope=='Product' or $scope=='Component') {
+	  $crit['idProduct']=$obj->id;
+	  $crit['scope']=$scope;
+	  $langClass='ProductLanguage';
+	} else if (get_class($obj)=='ProductVersion' or get_class($obj)=='ComponentVersion') {
+	  $crit['idVersion']=$obj->id;
+	  $crit['scope']=str_replace('Version', '', $scope);
+	  $langClass='VersionLanguage';
+	} else {
+	  errorLog("drawLanguageSection for item not taken into account : ".get_class($obj));
+	}
+	$langsProduct=new $langClass();
 	$list=$langsProduct->getSqlElementsFromCriteria($crit);
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
@@ -3784,7 +3795,7 @@ function drawLanguageSection($obj, $refresh=false) {
 			if ($canUpdate) {
 				echo '  <a onClick="editProductLanguage(' . htmlEncode($lang->id). ');" '
       		.'title="' . i18n('editProductLanguage') . '" > '.formatSmallButton('Edit').'</a>';
-      		echo '  <a onClick="removeProductLanguage(' . "'" . htmlEncode($lang->id) . "','" . get_class($lang) . "'" . ');" '
+      		echo '  <a onClick="removeProductLanguage(' . "'" . htmlEncode($lang->id) . "','" . get_class($obj) . "'" . ');" '
   		.'title="' . i18n('removeProductLanguage') . '" > '.formatSmallButton('Remove').'</a>';
 			}
 			echo '</td>';
@@ -3812,8 +3823,19 @@ function drawLanguageSection($obj, $refresh=false) {
 
 function drawContextSection($obj, $refresh=false) {
 	$crit=array();
-	$crit['idProduct']=$obj->id;
-	$contextProduct=new ProductContext();
+	$scope=get_class($obj);
+	if ($scope=='Product' or $scope=='Component') {
+	  $crit['idProduct']=$obj->id;
+	  $crit['scope']=$scope;
+	  $langClass='ProductContext';
+	} else if (get_class($obj)=='ProductVersion' or get_class($obj)=='ComponentVersion') {
+	  $crit['idVersion']=$obj->id;
+	  $crit['scope']=str_replace('Version', '', $scope);
+	  $langClass='VersionContext';
+	} else {
+	  errorLog("drawLanguageSection for item not taken into account : ".get_class($obj));
+	}
+	$contextProduct=new $langClass();
 	$list=$contextProduct->getSqlElementsFromCriteria($crit);
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
@@ -3850,7 +3872,7 @@ function drawContextSection($obj, $refresh=false) {
 			if ($canUpdate) {
 				echo '  <a onClick="editProductContext(' . htmlEncode($context->id). ');" '
         		.'title="' . i18n('editProductContext') . '" > '.formatSmallButton('Edit').'</a>';
-        		echo '  <a onClick="removeProductContext(' . "'" . htmlEncode($context->id) . "','" . get_class($context) . "'" . ');" '
+        		echo '  <a onClick="removeProductContext(' . "'" . htmlEncode($context->id) . "','" . get_class($obj) . "'" . ');" '
           		.'title="' . i18n('removeProductContext') . '" > '.formatSmallButton('Remove').'</a>';
 			}
 			echo '</td>';
