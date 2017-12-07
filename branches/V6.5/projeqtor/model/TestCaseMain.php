@@ -58,6 +58,7 @@ class TestCaseMain extends SqlElement {
   public $idStatus;
   public $idResource;
   public $idPriority;
+  public $plannedWork; //add by atrancoso ticket 120
   public $handled;
   public $handledDate;
   public $done;
@@ -122,6 +123,7 @@ class TestCaseMain extends SqlElement {
                                                    'runStatusName'=>'testSummary',
                                                    'runStatusIcon'=>'testSummary',
                                                    'idRunStatus'=>'testSummary',
+                                                   'plannedWork'=>'estimatedEffort',
       														                 "idVersion"=>"idProductVersion"
   );
   //private static $_databaseColumnName = array();

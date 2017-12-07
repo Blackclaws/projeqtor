@@ -4617,12 +4617,14 @@ function redirectMobile(){
   showConfirm(i18n('confirmRedirectionMobile'), redirectMobileFunction);
 }
 
-function displayImageEditMessageMail(){
-  var iconMessageMail = dojo.byId('iconMessageMail');
+function displayImageEditMessageMail(code){
+  var codeParam = code.name;
+  var iconMessageMail = dojo.byId(codeParam+'_iconMessageMail');
   iconMessageMail.style.display = "inline-block";
 }
 
-function hideImageEditMessageMail(){
-  var iconMessageMail = dojo.byId('iconMessageMail');
+function hideImageEditMessageMail(code){
+  var codeParam = code.name;
+  var iconMessageMail = dojo.byId(codeParam+'_iconMessageMail');
   iconMessageMail.style.display = "none";
 }
