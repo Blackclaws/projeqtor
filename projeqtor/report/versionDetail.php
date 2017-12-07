@@ -132,12 +132,12 @@ foreach ($lstVersion as $versId=>$versName) {
   echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colLeft') . '</td>';
   echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . strtolower(i18n('sum')) . '</td>';
   echo '</tr>';
-  $sumInitial='';
-  $sumReal='';
-  $sumLeft='';
-  $sumPlanned='';
-  $sumHandled='';
-  $sumDone='';
+  $sumInitial=0;
+  $sumReal=0;
+  $sumLeft=0;
+  $sumPlanned=0;
+  $sumHandled=0;
+  $sumDone=0;
   $cpt=0;
 	foreach ($lstObj as $obj) {
 	  $crit=$where.' and ';

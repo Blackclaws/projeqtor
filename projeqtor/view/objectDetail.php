@@ -2045,6 +2045,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' >';
         if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
           echo $val;
+        } else if ($dataType == 'decimal' and substr($col, -4, 4) == 'Work') {
+          echo Work::displayWorkWithUnit($val);
         } else {
           echo htmlEncode($val);
         }

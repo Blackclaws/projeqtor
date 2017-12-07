@@ -220,12 +220,21 @@ function drawTableFromObjectList($objectList) {
 				echo $obj->getValidationScript($code);
 				echo '</div>';
 		  }else if ($format=='display') {
-		      echo '<div class="input" style="width:200px;position:relative">';
+		      if($code=="mailerTestMessage"){
+		        echo '<div class="input" style="width:200px;position:relative">';
+		      } else {
+		        echo '<div class="input" style="width:'.$longTextWidth.';position:relative">';
+		      }
 				  echo '<input type="hidden" name="'.$code.'" id="'.$code.'" value="'.htmlEncode($obj->parameterValue).'"/>';
-				  echo '<div id="iconMessageMail" name="iconMessageMail" style="display:none;right:0;position:absolute">';
-				  echo '<a onclick="mailerTextEditor();" id="mailerTextEditor" title="' . i18n('editMailerTestMessageIcon') . '">'.formatSmallButton('Edit').'</a>';
+				  echo '<div id="'.$code.'_iconMessageMail" name="'.$code.'_iconMessageMail" style="display:none;right:0;position:absolute;pointer-events:none">';
+				  echo '<a onclick="mailerTextEditor('.$code.');" id="mailerTextEditor" title="' . i18n('editMailerTestMessageIcon') . '">'.formatSmallButton('Edit').'</a>';
 				  echo '</div>';
-				  echo '<div name="'.$code.'_display" id="'.$code.'_display" onmouseover="displayImageEditMessageMail()" onmouseout="hideImageEditMessageMail()" onclick="mailerTextEditor();" style="word-wrap:break-word;width:200px;display:inline-block"';
+				  echo '<div name="'.$code.'_display" id="'.$code.'_display" onmouseover="displayImageEditMessageMail('.$code.')" onmouseout="hideImageEditMessageMail('.$code.')" onclick="mailerTextEditor('.$code.');"';
+				  if($code=="mailerTestMessage"){
+				   	echo ' style="word-wrap:break-word;width:200px;display:inline-block" ';
+				  } else {
+				    echo ' style="width:'.$longTextWidth.';word-wrap:break-word;display:inline-block;';
+				  }
 				  echo '</div>';
 				  echo $obj->parameterValue;
 				  echo '</div>';

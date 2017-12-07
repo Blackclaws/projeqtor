@@ -64,12 +64,15 @@ class TestSessionMain extends SqlElement {
   public $_sec_Progress;
   public $TestSessionPlanningElement;
   public $_sec_testCaseSummary;
-  public $_tab_5_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'workElementCount','');
+  //add atrancoso ticket 92-120
+  public $_tab_6_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed','work','workElementCount','');
+  //end add a trancoso
   public $countTotal;
   public $countPlanned;
   public $countPassed;
   public $countBlocked;
   public $countFailed;
+  public $sumPlannedWork;
   public $_void_1;
   public $pctPlanned;
   public $pctPassed;
@@ -125,6 +128,7 @@ class TestSessionMain extends SqlElement {
                                   "countPlanned"=>"display",
                                   "countPassed"=>"display",
                                   "countFailed"=>"display",
+                                  "sumPlannedWork"=>"display",
                                   "countBlocked"=>"display",
                                   "countIssues"=>"display",
                                   "noDisplay1"=>"calculated,hidden",
@@ -146,7 +150,7 @@ class TestSessionMain extends SqlElement {
                                                    'idActivity'=>'parentActivity',
                                                    'idTestSession'=>'parentTestSession',
                                                    'idRunStatus'=>'testSummary'
-                                                   );
+  );
   
   //private static $_databaseColumnName = array();
   private static $_databaseColumnName = array();
@@ -365,12 +369,15 @@ class TestSessionMain extends SqlElement {
   	$this->_noHistory=true;
   	$this->countBlocked=0;
   	$this->countFailed=0;
+  	//add atrancoso ticket 120
+  	$this->sumPlannedWork=0;
+  	//end add atrancoso ticket 120
   	$this->countIssues=0;
   	$this->countPassed=0;
   	$this->countPlanned=0;
   	$this->countTotal=0;
   	foreach($this->_TestCaseRun as $tcr) {
-  		$this->countTotal+=1;
+  	  $this->countTotal+=1;
       if ($tcr->idRunStatus==1) {
         $this->countPlanned+=1;
       }
@@ -383,6 +390,10 @@ class TestSessionMain extends SqlElement {
   	  if ($tcr->idRunStatus==4) {
         $this->countBlocked+=1;
       }
+      //add atrancoso ticket 120
+      $tc=SqlElement::getSingleSqlElementFromCriteria('TestCase',array('id'=>$tcr->idTestCase));
+      $this->sumPlannedWork+=($tc->plannedWork)?$tc->plannedWork:0;
+      //end add ticket 120 
   	}
   	foreach($this->_Link as $link) {
   		if ($link->ref2Type=='Ticket') {

@@ -28,8 +28,10 @@
 include_once '../tool/projeqtor.php';
 
 if (! isset($includedReport)) {
-  include("../external/pChart/pData.class");  
-  include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");
+  include("../external/pChart2/class/pPie.class.php");
   
 	$paramYear='';
 	if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -394,17 +396,16 @@ function drawsynthesisGraph($scope, $lst) {
   
   $hgt=count($lst)*20;
   $hgt=($hgt<110)?110:$hgt;
-  $graph = new pChart(220,$hgt);
+  $dataSet=new pData;
   if (array_key_exists('0', $lst)) {
     $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
     $lstColorRef[0]='#cccccc';
     $colorTicket = hex2rgb($lstColorRef[0]);
-    $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
+    $serieSettings = array("R"=>$colorTicket['R'],"G"=>$colorTicket['G'],"B"=>$colorTicket['B']);
+    $dataSet->setPalette($nbItem,$serieSettings);
     $nbItem++;
   }
- 
-  
   foreach ($lstRef as $code=>$val) {
     if (array_key_exists($code, $lst)) {
       $valArr[]=$lst[$code];
@@ -415,27 +416,31 @@ function drawsynthesisGraph($scope, $lst) {
         $color=$arrayColors[$code%count($arrayColors)];
       }
       $colorTicket = hex2rgb($color);
-      $graph->setColorPalette($nbItem,$colorTicket['R'],$colorTicket['G'],$colorTicket['B']);
+      $serieSettings = array("R"=>$colorTicket['R'],"G"=>$colorTicket['G'],"B"=>$colorTicket['B']);
+      $dataSet->setPalette($nbItem,$serieSettings);
       $nbItem++;
     }
   }
-  $dataSet=new pData;
-  $dataSet->AddPoint($valArr,$scope); 
-  $dataSet->SetSerieName(i18n($scope),$scope);  
-  $dataSet->AddSerie($scope);
-  $dataSet->AddPoint($legArr,"legend");  
-  $dataSet->SetAbsciseLabelSerie("legend"); 
+  $dataSet->addPoints($valArr,$scope);
+  $dataSet->setSerieDescription(i18n($scope),$scope);
+  $dataSet->setSerieOnAxis($scope,0);
+  $dataSet->addPoints($legArr,"legend");
   
-  // Initialise the graph
- 
-  //$graph->drawRoundedRectangle(2,2,196,96,2,230,230,230);    
-  $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);
-    
-  $graph->drawPieGraph($dataSet->GetData(),$dataSet->GetDataDescription(),52,50,50,PIE_NOLABEL,TRUE,80,10,0);
-  //$graph->drawFlatPieGraph($dataSet->GetData(),$dataSet->GetDataDescription(),52,52,50,PIE_NOLABEL,0);
-  //$graph->clearShadow();
-  $graph->SetShadowProperties(0,0,255,255,255); 
-  $graph->drawPieLegend(110,10,$dataSet->GetData(),$dataSet->GetDataDescription(),240,240,240);  
+  $dataSet->setAbscissa("legend");
+  // Initialise the graph 
+  $graph = new pImage(300,$hgt,$dataSet);
+  
+  /* Draw the background */
+  $graph->Antialias = FALSE;
+  
+  $pieChart = new pPie($graph,$dataSet);
+  
+  /* Set the default font */
+  $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8));
+  $formSettings = array("R"=>255,"G"=>255,"B"=>255,"Alpha"=>0,"Surrounding"=>0);
+  $graph->setShadow(TRUE,$formSettings);
+  $pieChart->draw3DPie(90,($hgt/2)+7,array("Border"=>FALSE));
+  $pieChart->drawPieLegend(180,20,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_VERTICAL));
   $imgName=getGraphImgName("ticketYearlySynthesis");
   
   $graph->Render($imgName);
