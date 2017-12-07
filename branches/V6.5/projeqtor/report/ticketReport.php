@@ -28,8 +28,6 @@ include_once '../tool/projeqtor.php';
 //echo 'ticketReport.php';
 
 if (! isset($includedReport)) {
-  include("../external/pChart/pData.class");  
-  include("../external/pChart/pChart.class");  
   
 	$paramYear='';
 	if (array_key_exists('yearSpinner',$_REQUEST)) {

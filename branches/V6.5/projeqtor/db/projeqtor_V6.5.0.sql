@@ -30,7 +30,7 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (75, 'endDate', 'date', 50, null),
 (75, 'activityOrTicket', 'element', 60, null),
 (75, 'idTeam', 'teamList', 70, null),
-(75, 'idResource', 'resourceList', 80, 'null');
+(75, 'idResource', 'resourceList', 80, null);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`) VALUES 
 (76, 'reportGlobalWorkPlanningPerResourceWeekly', 2, 'globalWorkPlanningPerResource.php?scale=week', 276, 0, 'L', 0),
@@ -230,6 +230,10 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (82, 'idVersion', 'versionList', 30, 0, NULL, 0), 
 (82, 'nbOfDays', 'intInput', 40, 0, 30, 0), 
 (82, 'idPriority', 'priorityList', 50, 0, NULL, 0);
+
+--ticket #92 estimated time test case
+ALTER TABLE `${prefix}testcase` ADD COLUMN `plannedWork` decimal(14,5) UNSIGNED DEFAULT NULL;
+ALTER TABLE `${prefix}testsession` ADD COLUMN `sumPlannedWork` decimal(14,5) DEFAULT 0;
 -- ============= IGE END ===================
 
 CREATE TABLE `${prefix}versionlanguage` (

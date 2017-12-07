@@ -30,7 +30,7 @@ $idProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $idProject=trim($_REQUEST['idProject']);
   $idProject=Security::checkValidId($idProject); // only allow digits
-  $idProject=1*$idProject; // don't think this is needed, but left it just in case (will convert type to number from string)...
+  $idProject=1*intval($idProject); // don't think this is needed, but left it just in case (will convert type to number from string)...
 };
 
 

@@ -270,55 +270,80 @@ echo '</td></tr></table>';
 
 // Graph
 if (! testGraphEnabled()) { return;}
-  include("../external/pChart/pData.class");  
-  include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");
 $dataSet=new pData;
 $nbItem=0;
-$width=900;
-$graph = new pChart($width,360);
 foreach($sumProjUnit as $id=>$vals) {
-  $dataSet->AddPoint($vals,$id);
-  $dataSet->SetSerieName($tab[$id]['name'],$id);
-  $dataSet->AddSerie($id);
-  $rsc=new Resource($id);
-  $graph->setColorPalette($nbItem,$rgbPalette[($nbItem % 12)]['R'],$rgbPalette[($nbItem % 12)]['G'],$rgbPalette[($nbItem % 12)]['B']);
+  $dataSet->setAxisPosition(0,AXIS_POSITION_LEFT);
+  $dataSet->addPoints($vals,$tab[$id]['name']);
+  $dataSet->setSerieDescription($tab[$id]['name'],$tab[$id]['name']);
+  $dataSet->setSerieOnAxis($tab[$id]['name'],0);
+  
+  //$rsc=new Resource($id);
+  // A FAIRE
+  //$graph->setColorPalette($nbItem,$rgbPalette[($nbItem % 12)]['R'],$rgbPalette[($nbItem % 12)]['G'],$rgbPalette[($nbItem % 12)]['B']);
+  //$dataSet->setAxisName(0,i18n("cumulated"));
   $nbItem++;
 }
 $arrLabel=array();
 foreach($arrDates as $date){
   $arrLabel[]=substr($date,0,4) . '-' . substr($date,4,2);
 }
-$dataSet->AddPoint($arrLabel,"dates");  
-$dataSet->SetAbsciseLabelSerie("dates");   
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawRoundedRectangle(5,5,$width-5,358,5,230,230,230);  
-$graph->setGraphArea(40,30,$width-300,300);  
-$graph->drawGraphArea(252,252,252);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(), SCALE_ADDALLSTART0 ,0,0,0,TRUE,90,1, true);  
-$graph->drawGrid(5,TRUE,230,230,230,255);  
-$graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),TRUE);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-$graph->drawLegend($width-250,15,$dataSet->GetDataDescription(),240,240,240);  
-$graph->clearScale();
-$serie=0;  
+
+$dataSet->addPoints($arrLabel,"dates");
+$dataSet->setAbscissa("dates");
+
+$width=1000;
+$graphHeight=600;
+$graph = new pImage($width+400, $graphHeight/2,$dataSet);
+/* Draw the background */
+$graph->Antialias = FALSE;
+
+/* Add a border to the picture */
+$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph->drawRoundedRectangle(5,5,$width+400,$graphHeight+500,5,$settings);
+
+/* Set the default font */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8));
+
+/* title */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->drawLegend($width+30,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+    "Margin"=>5));
+
+/* Draw the scale */
+$graph->setGraphArea(60,50,$width-20,250);
+$formatGrid=array("Mode"=>SCALE_MODE_ADDALL_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+$graph->drawScale($formatGrid);
+$graph->Antialias = TRUE;
+$graph->drawStackedBarChart(array("DisplayColor"=>DISPLAY_AUTO,"DisplaySize"=>6,"BorderR"=>255, "BorderG"=>255,"BorderB"=>255));
+
 foreach($sumProjUnit as $id=>$vals) {
-  $serie+=1;
-  $dataSet->RemoveSerie($id);
+  $dataSet->removeSerie($tab[$id]['name']);
 }
-$dataSet->AddPoint($cumulUnit,"sum");
-$dataSet->SetSerieName(i18n("cumulated"),"sum");  
-$dataSet->AddSerie("sum");
-$dataSet->SetYAxisName(i18n("cumulated"));
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);
-$graph->setColorPalette($serie,0,0,0);  
-$graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,true,90,1, true);
-$graph->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());  
-$graph->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);  
+
+$dataSet->setAxisPosition(0,AXIS_POSITION_RIGHT);
+$dataSet->addPoints($cumulUnit,"sum");
+$dataSet->setSerieDescription(i18n("cumulated"),"sum");
+$dataSet->setSerieOnAxis("sum",0);
+$dataSet->setAxisName(0,i18n("cumulated"));
+
+$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 );
+$graph->drawScale($formatGrid);
+
+$graph->drawLineChart();
+$graph->drawPlotChart();
+
 
 $imgName=getGraphImgName("globalWorkPlanning");
 $graph->Render($imgName);
-echo '<table width="95%" align="center"><tr><td align="center">';
+echo '<table width="95%" style="margin-top:35px" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 
 echo '</td></tr></table>';
 echo '<br/>';

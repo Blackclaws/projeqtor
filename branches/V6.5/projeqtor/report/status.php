@@ -28,8 +28,9 @@ include_once '../tool/projeqtor.php';
 //echo "status.php";
 
 if (! isset($includedReport)) {
-  include("../external/pChart/pData.class");  
-  include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");
   
 	$paramProject='';
 	if (array_key_exists('idProject',$_REQUEST)) {

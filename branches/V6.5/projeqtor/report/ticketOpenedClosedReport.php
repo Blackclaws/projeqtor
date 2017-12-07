@@ -6,8 +6,9 @@
 include_once '../tool/projeqtor.php';
 
 if (! isset($includedReport)) {
-	include("../external/pChart/pData.class");
-	include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");
 	
 	$paramYear='';
 	if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -194,10 +195,10 @@ foreach ($lstTicketclosed as $t) {
 
 for ($i = 1; $i <= $paramNbOfDays; $i++) {
 	if ($created[$i]==0) {
-		$created[$i]='';
+		$created[$i]=0;
 	}
 	if ($closed[$i]==0) {
-		$closed[$i]='';
+		$closed[$i]=0;
 	}
 }
 
@@ -206,48 +207,54 @@ for ($i = 1; $i <= $paramNbOfDays; $i++) {
 if (! testGraphEnabled()) { return;}
 
 $dataSet=new pData;
-$dataSet->AddPoint($created,"created");
-$dataSet->SetSerieName(i18n("created"),"created");
-$dataSet->AddSerie("created");
-$dataSet->AddPoint($closed,"closed");
-$dataSet->SetSerieName(i18n("done"),"closed");
-$dataSet->AddSerie("closed");
-$dataSet->AddPoint($arrDays,"days");
-$dataSet->SetAbsciseLabelSerie("days");
+
+$dataSet->addPoints($created,"created");
+$dataSet->setSerieDescription("created",i18n("created"));
+$dataSet->setSerieOnAxis("created",0);
+$dataSet->addPoints($closed,"closed");
+$dataSet->setSerieDescription("closed",i18n("done"));
+$dataSet->setSerieOnAxis("closed",0);
+$dataSet->addPoints($arrDays,"days");
+$dataSet->setAbscissa("days");
 
 // Initialise the graph
 $width=1000;
 
-$graph = new pChart($width,230);
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
+//$graph = new pChart($width,230);
+$graph = new pImage($width+100, 280,$dataSet);
 
-$graph->setColorPalette(0,200,100,100);
-$graph->setColorPalette(1,100,200,100);
-$graph->setColorPalette(2,100,100,200);
-$graph->setColorPalette(3,200,100,100);
-$graph->setColorPalette(4,100,200,100);
-$graph->setColorPalette(5,100,100,200);
-$graph->setGraphArea(40,30,$width-140,155);
-$graph->drawGraphArea(252,252,252);
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,TRUE,60,1, true);
-$graph->drawGrid(0,TRUE,230,230,230,255);
+/* Draw the background */
+$graph->Antialias = FALSE;
+
+/* Add a border to the picture */
+$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph->drawRoundedRectangle(5,5,$width+400,280,5,$settings);
+$graph->drawRectangle(0,0,$width+400,279,array("R"=>150,"G"=>150,"B"=>150));
+
+/* Set the default font */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+
+/* title */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->drawLegend($width-10,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+    "Margin"=>5));
+
+/* Draw the scale */
+$graph->setGraphArea(60,30,$width-20,200);
+$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+$graph->drawScale($formatGrid);
+$graph->drawZoneChart("created", "closed");
+$graph->Antialias = TRUE;
+$graph->drawLineChart();
+$graph->drawPlotChart();
 
 // Draw the line graph
-$graph->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());
-$graph->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
-
-//Draw the area between points
-$graph->drawArea($dataSet->GetData(),"created","closed",127,127,127);
-
-// Finish the graph
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawLegend($width-100,35,$dataSet->GetDataDescription(),240,240,240);
-
-$graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0,0,0,0,true,60,1, true);
-
 $imgName=getGraphImgName("ticketOpenClosedReport");
-$graph->Render($imgName);
+$graph->render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />';
 echo '</td></tr></table>';

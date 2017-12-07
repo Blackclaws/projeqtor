@@ -27,8 +27,9 @@
 include_once '../tool/projeqtor.php';
 
 if (! isset($includedReport)) {
-  include("../external/pChart/pData.class");  
-  include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");
   
 	$paramProject='';
 	if (array_key_exists('idProject',$_REQUEST)) {
@@ -182,36 +183,52 @@ if (count($lstStatus)>0) {
 	    if (array_key_exists($is,$arrType)) {
 	      $temp[$is]=$arrType[$is];
 	    } else {
-	      $temp[$is]="";
+	      $temp[$is]=0;
 	    }
 	  } 
-	  $dataSet->AddPoint($temp,$id);
+	 
+	  $idName = SqlList::getNameFromId('Type', $id);
+	  $dataSet->addPoints($temp,$idName);
 	  if (isset($lstType[$id])) {
-	  $dataSet->SetSerieName($lstType[$id],$id);
-	  $dataSet->AddSerie($id);
-	  $nbItem++;
+	    $dataSet->setSerieDescription($lstType[$id],$idName);
+	    $dataSet->setSerieOnAxis($idName,0);
+  	  $nbItem++;
 	  }
 	}
-	$dataSet->AddPoint($lstStatus,"status");  
-	$dataSet->SetAbsciseLabelSerie("status");   
-	$width=650;
-	$graph = new pChart($width,250);  
-	for ($i=0;$i<=$nbItem;$i++) {
-	  $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
-	}
-	$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-	$graph->drawRoundedRectangle(5,5,$width-5,248,5,230,230,230);  
-	$graph->setGraphArea(40,30,$width-160,220);  
-	$graph->drawGraphArea(252,252,252);  
-	$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-	$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_ADDALLSTART0,0,0,0,TRUE,0,1, true);  
-	$graph->drawGrid(5,TRUE,230,230,230,255);  
-	$graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),TRUE);  
-	$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-	$graph->drawLegend($width-150,35,$dataSet->GetDataDescription(),240,240,240);  
+	$dataSet->addPoints($lstStatus,"status");
+	$dataSet->setAbscissa("status");
+	$width=1000;
+	$graph = new pImage($width+400, 300,$dataSet);
+	/* Draw the background */
+	$graph->Antialias = FALSE;
 	
+	/* Add a border to the picture */
+	$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+	$graph->drawRoundedRectangle(5,5,$width+400,299,5,$settings);
+	$graph->drawRectangle(0,0,$width+399,299,array("R"=>150,"G"=>150,"B"=>150));
+	
+	/* Set the default font */
+	$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+	
+	/* title */
+	$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+	$graph->drawLegend($width-10,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+	    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+	    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+	    "Margin"=>5));
+	
+	/* Draw the scale */
+	$graph->setGraphArea(60,30,$width-20,200);
+	$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+	    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+	    "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+	$graph->drawScale($formatGrid);
+	$graph->Antialias = TRUE;	
+	$graph->drawStackedBarChart();
+	
+	/* Render the picture (choose the best way) */
 	$imgName=getGraphImgName("statusDetail");
-	$graph->Render($imgName);
+	$graph->render($imgName);
 	echo '<table width="95%" align="center"><tr><td align="center">';
 	echo '<img src="' . $imgName . '" />'; 
 	echo '</td></tr></table>';

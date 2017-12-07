@@ -43,6 +43,7 @@ if (sessionValueExists('screenHeight')) {
       <td>
        <form id='mailForm' name='mailForm' onSubmit="return false;" >
          <input id="mailEditorType" name="mailEditorType" type="hidden" value="<?php echo getEditorType();?>" />
+         <input id="codeParam" name="codeParam" type="hidden" value="<?php echo "toto";?>" />
          <?php if (getEditorType()=="CK" or getEditorType()=="CKInline") {?> 
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
           name="mailEditor" id="mailEditor"><?php
@@ -90,7 +91,7 @@ if (sessionValueExists('screenHeight')) {
         <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMailEditor').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton"  id="dialogMailEditorSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveMailMessage(event);">
+        <button class="mediumTextButton"  id="dialogMailEditorSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveMailMessage();">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

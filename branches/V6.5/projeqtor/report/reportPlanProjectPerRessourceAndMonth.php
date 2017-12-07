@@ -256,7 +256,7 @@ foreach($tab as $proj=>$projet) {
     
     $sum=0;
     foreach($arrDates as $date) {
-      $val="";
+      $val=0;
       if (array_key_exists ($date, $tab[$proj][$resource]) ) {
         $val=$tab[$proj][$resource][$date];
       }

@@ -98,79 +98,101 @@ foreach ($result as $as) {
 
 // Graph
 if (! testGraphEnabled()) { echo "pChart not enabled. See log file."; return;}
-include("../external/pChart/pData.class");  
-include("../external/pChart/pChart.class");  
+  include("../external/pChart2/class/pData.class.php");
+  include("../external/pChart2/class/pDraw.class.php");
+  include("../external/pChart2/class/pImage.class.php");  
 
 // Graph 1 : connections per day
-$DataSet = new pData;  
-$DataSet->AddPoint($nb,'Serie1');
-$DataSet->AddSerie('Serie1');  
-$DataSet->SetSerieName("Connexions","Serie1");  
-$DataSet->AddPoint($days,'Serie2');
-$DataSet->SetAbsciseLabelSerie("Serie2");  
+$dataSet = new pData;  
+$dataSet->addPoints($nb,'Serie1');
+$dataSet->setSerieDescription("Connexions","Serie1");
+$dataSet->setSerieOnAxis('Serie1',0);
+$dataSet->addPoints($days,'Serie2');
+$dataSet->setAbscissa("Serie2");
+ 
+$width=1000;
+$graphHeight=600;
+$graph = new pImage($width+400, $graphHeight/2,$dataSet);
 
-// Initialise the graph  
-$width=700;
-$graph = new pChart($width,260);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawRoundedRectangle(5,5,$width-5,258,5,230,230,230);  
-$graph->setColorPalette(0,100,100,250);
-$graph->setGraphArea(80,30,$width-30,230);  
-$graph->drawGraphArea(252,252,252);  
-$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);  
-$graph->drawGrid(4,TRUE,230,230,230,255);    
-// Draw the line graph  
-$graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());  
-$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);  
-// Finish the graph  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10); 
-//$graph->drawLegend(45,35,$DataSet->GetDataDescription(),255,255,255);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawTitle(60,22,i18n('connectionsNumberPerDay'),50,50,50,585);   
+/* Draw the background */
+$graph->Antialias = FALSE;
+
+/* Add a border to the picture */
+$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph->drawRoundedRectangle(5,5,$width+400,$graphHeight,5,$settings);
+$graph->drawRectangle(0,0,$width+399,$graphHeight,array("R"=>150,"G"=>150,"B"=>150));
+
+/* Set the default font */
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+
+/* title */
+$graph->drawText(500,22,i18n('connectionsNumberPerDay'),array("FontSize"=>10,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+
+/* Draw the scale */
+$graph->setGraphArea(60,30,$width-20,200);
+$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+$graph->drawScale($formatGrid);
+$graph->Antialias = TRUE;
+$graph->drawLineChart();
+$graph->drawPlotChart();
+
 $imgName=getGraphImgName("auditNb");
-$graph->Render($imgName);
+$graph->render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
-echo '<img src="' . $imgName . '" />'; 
+echo '<img src="' . $imgName . '" />';
 echo '</td></tr></table>';
 echo '<br/>';
 
 // Graph 2: connection duration per day
-$DataSet = new pData;  
-$DataSet->AddPoint($max,'Serie3');
-$DataSet->AddSerie('Serie3');  
-$DataSet->SetSerieName(i18n("max"),"Serie3");     
-$DataSet->AddPoint($mean,'Serie1');
-$DataSet->AddSerie('Serie1');  
-$DataSet->SetSerieName(i18n("mean"),"Serie1");  
-$DataSet->AddPoint($min,'Serie2');
-$DataSet->AddSerie('Serie2');  
-$DataSet->SetSerieName(i18n("min"),"Serie2");
+$dataSet2 = new pData;  
+$dataSet2->addPoints($max,'max');
+$dataSet2->setSerieDescription(i18n("max"),"max");
+$dataSet2->setSerieOnAxis('max',0);
+$dataSet2->addPoints($mean,'mean');
+$dataSet2->setSerieDescription(i18n("mean"),"mean");
+$dataSet2->setSerieOnAxis('mean',0);
+$dataSet2->addPoints($min,'min');
+$dataSet2->setSerieDescription(i18n("min"),"min");
+$dataSet2->setSerieOnAxis('min',0);
+$dataSet2->addPoints($days,'SerieX');
+$dataSet2->setAbscissa("SerieX");
 
-$DataSet->AddPoint($days,'SerieX');
-$DataSet->SetAbsciseLabelSerie("SerieX");
-$DataSet->SetYAxisFormat("time");  
 // Initialise the graph  
-$width=700;
-$graph = new pChart($width,260);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawRoundedRectangle(5,5,$width-5,258,5,230,230,230);  
-$graph->setColorPalette(0,255,100,100); 
-$graph->setColorPalette(1,100,100,250);
-$graph->setColorPalette(2,100,190,100);
-$graph->setGraphArea(80,30,$width-30,230);  
-$graph->drawGraphArea(252,252,252);  
-$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);  
-$graph->drawGrid(4,TRUE,230,230,230,255);    
-// Draw the line graph  
-$graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());  
-$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);  
-// Finish the graph  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10); 
-$graph->drawLegend(620,10,$DataSet->GetDataDescription(),255,255,255);  
-$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
-$graph->drawTitle(60,22,i18n('connectionsDurationPerDay'),50,50,50,585);   
+$graph2 = new pImage($width+400, $graphHeight/2,$dataSet2);
+/* Draw the background */
+$graph2->Antialias = FALSE;
+
+/* Add a border to the picture */
+$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph2->drawRoundedRectangle(5,5,$width+400,$graphHeight,5,$settings);
+$graph2->drawRectangle(0,0,$width+399,$graphHeight,array("R"=>150,"G"=>150,"B"=>150));
+
+/* Set the default font */
+$graph2->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+
+/* title */
+$graph2->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph2->drawLegend($width-10,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+    "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
+    "FontR"=>55,"FontG"=>55,"FontB"=>55,
+    "Margin"=>5));
+
+/* Draw the scale */
+$graph2->setGraphArea(60,30,$width-20,200);
+$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+    "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
+$graph2->drawScale($formatGrid);
+$graph2->Antialias = TRUE;
+$graph2->drawLineChart();
+$graph2->drawPlotChart();
+
 $imgName=getGraphImgName("auditNb");
-$graph->Render($imgName);
+$graph2->render($imgName);
+
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 
 echo '</td></tr></table>';

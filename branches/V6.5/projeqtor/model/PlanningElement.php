@@ -1552,13 +1552,14 @@ class PlanningElement extends SqlElement {
   
   static function copyOtherStructure($obj, $newObj, $copyToOrigin=false,
     $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false,
-    $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
+    $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false, $copyToWithVersionProjects=false, $copyStructure=false) {
     self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
     $pe=new PlanningElement();
     $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
     foreach ($list as $pe) { // each planning element corresponding to item to copy
       if ($pe->refType!='Meeting' and $pe->refType!='TestSession' and $pe->refType!='PeriodicMeeting' and $pe->refType!='Project') continue;
-      if ($pe->refType=='Project' and ! $copySubProjects) continue;
+      if ($pe->refType=='Project' and  $copySubProjects) continue;
+      if ($pe->refType=='Project' and  $copyStructure) continue;
       $item=new $pe->refType($pe->refId);
       $type=null;
       if(get_class($item)=='PeriodicMeeting'){
@@ -1592,7 +1593,7 @@ class PlanningElement extends SqlElement {
       // recursively call copy structure
       $res=self::copyOtherStructure($item, $newItem, $copyToOrigin,
           $copyToWithNotes, $copyToWithAttachments, $copyToWithLinks,
-          $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects);
+          $copyAssignments, $copyAffectations, ($pe->refType=='Project')?$newItem->id:$toProject,$copySubProjects,$copyToWithVersionProjects,$copyStructure);
       if ($res!='OK') {
         return $res;
       }

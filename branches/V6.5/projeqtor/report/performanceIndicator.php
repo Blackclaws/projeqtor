@@ -86,15 +86,7 @@ if ($idProject AND ($startDateReport == null OR $endDateReport == null)) {
     }
   }
   if($endDateReport == null){
-    if($proj->realEndDate != null){
-      $endDateReport = $proj->realEndDate;
-    }elseif ($proj->plannedEndDate != null){
-      $endDateReport = $proj->plannedEndDate;
-    }elseif ($proj->validatedEndDate != null){
-      $endDateReport = $proj->validatedEndDate;
-    }elseif ($proj->initialEndDate != null){
-      $endDateReport = $proj->initialEndDate;
-    }
+    $endDateReport = $today;
   }
 }
 $start="";

@@ -265,7 +265,7 @@ echo '</tr>';
 
 $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {
-  $globalSum[$startDate+$i-1]='';
+  $globalSum[$startDate+$i-1]=0;
 }
 asort($resources);
 foreach ($resources as $idR=>$nameR) {
@@ -276,7 +276,7 @@ foreach ($resources as $idR=>$nameR) {
   if (!$paramTeam or $res->idTeam==$paramTeam) {
 	  $sum=array();
 	  for ($i=1; $i<=$nbDays;$i++) {
-	    $sum[$startDate+$i-1]='';
+	    $sum[$startDate+$i-1]=0;
 	  }
 	  echo '<tr height="20px">';
 	  $cpt=0;
@@ -301,7 +301,7 @@ foreach ($resources as $idR=>$nameR) {
 		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($projects[$idP]) . '</td>';
 		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($activities[$idA]) . '</td>';
 	        
-		      $lineSum='';
+		      $lineSum=0;
 		      for ($i=1; $i<=$nbDays;$i++) {
 		        $day=$startDate+$i-1;
 		        $style="";
@@ -339,7 +339,7 @@ foreach ($resources as $idR=>$nameR) {
 	    }
 	  }
 	  echo '<td class="reportTableLineHeader" colspan="2">' . i18n('sum') . '</td>';
-	  $lineSum='';
+	  $lineSum=0;
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $style='';
 	    $day=$startDate+$i-1;
@@ -357,7 +357,7 @@ foreach ($resources as $idR=>$nameR) {
 
 echo '<tr><td colspan="' . ($nbDays+3) . '">&nbsp;</td></tr>';
 echo '<tr><td class="reportTableHeader" colspan="3">' . i18n('sum') . '</td>';
-$lineSum='';
+$lineSum=0;
 for ($i=1; $i<=$nbDays;$i++) {
   $style='';
   $day=$startDate+$i-1;
