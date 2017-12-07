@@ -332,6 +332,9 @@ class ComponentVersionMain extends Version {
       $separator=Parameter::getGlobalParameter('versionNameAutoformatSeparator');
       $this->name=SqlList::getNameFromId('Component', $this->idComponent).$separator.$this->versionNumber;
     }
+    if (!$this->idComponent) {
+      $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdComponent')));
+    }
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
