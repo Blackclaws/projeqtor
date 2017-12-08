@@ -343,19 +343,19 @@ class ProductVersionMain extends Version {
   	}
   	$compList=array();
   	if ($old->idProduct!=$this->idProduct) {
-  	  $p=new Product($this->idProduct);
+  	  $p=new Product($this->idProduct,true);
   	  $compList=$p->getComposition(false,true);
-  	  $pold=new Product($old->idProduct);
+  	  $pold=new Product($old->idProduct,true);
   	  $compList=array_merge_preserve_keys($pold->getComposition(false,true),$compList);
   	}
   	foreach($compList as $compId=>$compName) {
-  	  $comp=new Component($compId);
+  	  $comp=new Component($compId,true);
   	  $comp->updateAllVersionProject();
   	}
   	// Propagate Product-Project link to Version-Project link
   	if ($old->idProduct and $old->idProduct!=$this->idProduct) {
   	  $pp=new ProductProject();
-  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$old->idProduct));
+  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$old->idProduct),null,null,null,null,true);
   	  foreach ($ppList as $pp) {
   	    $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idVersion'=>$this->id, 'idProject'=>$pp->idProject));
   	    if ($vp->id) $vp->delete();
@@ -363,7 +363,7 @@ class ProductVersionMain extends Version {
   	}
   	if ($this->idProduct) {
   	  $pp=new ProductProject();
-  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct));
+  	  $ppList=$pp->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct),null,null,null,null,true);
   	  foreach ($ppList as $pp) {
   	    $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idVersion'=>$this->id, 'idProject'=>$pp->idProject));
   	    if (! $vp->id) {
@@ -387,7 +387,7 @@ class ProductVersionMain extends Version {
   public function getLinkedProjects($withName=true) {
     $vp=new VersionProject();
     $result=array();
-    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach ($vpList as $vp) {
       $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Project', $vp->idProject):$vp->idProject;
     }
@@ -407,7 +407,7 @@ class ProductVersionMain extends Version {
     $result=parent::delete();
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pvs) {
       $pvs->delete();
     }
@@ -435,7 +435,7 @@ class ProductVersionMain extends Version {
     $result=parent::copy(); 
     $pp=new VersionProject();
     $crit=array('idVersion'=>$this->id);
-    $list=$pp->getSqlElementsFromCriteria($crit);
+    $list=$pp->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pp) {
       $pp->idVersion=$result->id;
       $pp->id=null;
@@ -443,7 +443,7 @@ class ProductVersionMain extends Version {
     }
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pvs) {
       $pvs->idProductVersion=$result->id;
       $pvs->id=null;
@@ -453,9 +453,9 @@ class ProductVersionMain extends Version {
     //ADD qCazelles - Version compatibility
     $vc=new VersionCompatibility();
     $crit=array('idVersionA'=>$this->id);
-    $list=$vc->getSqlElementsFromCriteria($crit);
+    $list=$vc->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     $crit=array('idVersionB'=>$this->id);
-    foreach ($vc->getSqlElementsFromCriteria($crit) as $vcItem) {
+    foreach ($vc->getSqlElementsFromCriteria($crit,null,null,null,null,true) as $vcItem) {
     	$list[]=$vcItem;
     }
     foreach ($list as $vc) {
@@ -469,7 +469,7 @@ class ProductVersionMain extends Version {
     //add atrancoso ticket#149
     // Copy language
     $lang = new VersionLanguage();
-    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idVersion = $result->id;

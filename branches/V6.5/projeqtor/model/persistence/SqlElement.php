@@ -2480,7 +2480,7 @@ abstract class SqlElement {
    *          indicating if no result returns en initialised element or not
    * @return an array of objects
    */
-  public static function getSingleSqlElementFromCriteria($class, $critArray) {
+  public static function getSingleSqlElementFromCriteria($class, $critArray, $withoutDepedentElements=false) {
     $obj = new $class ();
     if ($class == 'Attachment') {
       if (array_key_exists ( 'refType', $critArray )) {
@@ -2489,7 +2489,7 @@ abstract class SqlElement {
         }
       }
     }
-    $objList = $obj->getSqlElementsFromCriteria ( $critArray, true );
+    $objList = $obj->getSqlElementsFromCriteria ( $critArray, true,null,null,null,$withoutDepedentElements );
     if (count ( $objList ) == 1) {
       return $objList [0];
     } else {

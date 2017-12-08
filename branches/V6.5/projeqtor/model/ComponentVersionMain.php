@@ -340,10 +340,10 @@ class ComponentVersionMain extends Version {
   		VersionProject::updateIdle('Version', $this->id);
   	}
   	if ($this->idComponent!=$old->idComponent) {
-  	  $comp=new Component($this->idComponent);
+  	  $comp=new Component($this->idComponent,true);
   	  $comp->updateAllVersionProject();
   	  if (trim($old->idComponent)) {
-  	    $comp=new Component($old->idComponent);
+  	    $comp=new Component($old->idComponent,true);
   	    $comp->updateAllVersionProject();
   	  }
   	}
@@ -357,18 +357,18 @@ class ComponentVersionMain extends Version {
   public function delete() {
     $result=parent::delete();
     $vp=new VersionProject();
-    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach ($vpList as $vp) {
       $vp->delete();
     }
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pvs) {
       $pvs->delete();
     }
     $crit=array('idComponentVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pvs) {
       $pvs->delete();
     }
@@ -377,7 +377,7 @@ class ComponentVersionMain extends Version {
   public function getLinkedProjects($withName=true) {
     $vp=new VersionProject();
     $result=array();
-    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach ($vpList as $vp) {
       $result[$vp->idProject]=($withName)?SqlList::getNameFromId('Project', $vp->idProject):$vp->idProject;
     }
@@ -419,7 +419,7 @@ class ComponentVersionMain extends Version {
     $pvs=new ProductVersionStructure();
     // Copy Composition
     $crit=array('idProductVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pvs) {
       $pvs->idProductVersion=$result->id;
       $pvs->id=null;
@@ -432,7 +432,7 @@ class ComponentVersionMain extends Version {
     }
     if ($this->_copyVersionStructure=='Copy' or $this->_copyVersionStructure=='Replace') {
 	    $crit=array('idComponentVersion'=>$this->id);
-	    $list=$pvs->getSqlElementsFromCriteria($crit);
+	    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
 	    foreach ($list as $pvs) {
 	      $pvs->idComponentVersion=$result->id;
 	      if ($this->_copyVersionStructure=='Copy') {
@@ -444,7 +444,7 @@ class ComponentVersionMain extends Version {
     }
     // Copy language
     $lang = new VersionLanguage();
-    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id));
+    $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idVersion = $result->id;

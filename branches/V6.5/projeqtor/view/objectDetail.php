@@ -395,7 +395,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
  *          indicating wether the function is called recursively or not
  * @return void
  */
-function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
+function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $globalHidden=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
    $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF,
@@ -636,7 +636,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $arrStart++;
         if ($arrStart>=$arrStop) break;
         if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_' or substr($arrCol,0,8)=='_button_') { continue; }
-        if ($obj->isAttributeSetToField($arrCol, "hidden")) continue;
+        if ($obj->isAttributeSetToField($arrCol, "hidden") or $globalHidden) continue;
         if (in_array($arrCol,$extraHiddenFields)) continue;
         $indCol=$arrStart%$internalTableCols;
         $indLin=floor($arrStart/$internalTableCols);
@@ -1057,6 +1057,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $hide=true;
         }
       }
+      if ($globalHidden) {
+        $hide=true;
+      }
 // CHANGE BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
       if (!$canUpdate or 
           (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or
@@ -1236,7 +1239,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $specificStyleWithoutCustom=$specificStyle;
       $specificStyle.=";".$fieldStyle;
       if (is_object($val)) {
-        if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
+        //if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
           if ($col == 'Origin') {
             drawOrigin($obj->Origin,$val->originType, $val->originId, $obj, $col, $print);
           } else {
@@ -1251,12 +1254,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
                 }
               }
             }
-            if ($visibileSubObject) {
-              drawTableFromObject($val, true, $readOnly);
-              $hide=true; // to avoid display of an extra field for the object and an additional carriage return
+            if ($hide or $obj->isAttributeSetToField($col, 'hidden') or in_array($col,$extraHiddenFields)) {
+              $visibileSubObject=false;
             }
+            //if () {
+              drawTableFromObject($val, true, $readOnly,!$visibileSubObject);
+              $hide=true; // to avoid display of an extra field for the object and an additional carriage return
+            //}
           }
-        }
+        //}
       } else if (is_array($val)) {
         // Draw an array ====================================================== Type Array
         traceLog("Error : array fileds management not implemented for fiels $col");
@@ -1270,7 +1276,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
         }
       } else if (substr($col, 0, 8) == '_button_') {
-        if (! $print and !$comboDetail and !$obj->isAttributeSetToField($col,'hidden')) {
+        if (! $print and !$comboDetail and !$obj->isAttributeSetToField($col,'hidden') and !$hide) {
           $item=substr($col, 8);
           echo $obj->drawSpecificItem($item);
         }

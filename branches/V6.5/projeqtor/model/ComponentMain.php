@@ -218,13 +218,13 @@ class ComponentMain extends ProductOrComponent {
     if ($this->id and $this->id==$this->idComponent) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->idComponent){
-    	$parent=new Component($this->idComponent);
+    	$parent=new Component($this->idComponent,true);
     	while ($parent->id) {
     	  if ($parent->id==$this->id) {
           $result.='<br/>' . i18n('errorHierarchicLoop');
           break;
         }
-        $parent=new Component($parent->idComponent);
+        $parent=new Component($parent->idComponent,true);
     	}
     }
         
@@ -248,7 +248,7 @@ class ComponentMain extends ProductOrComponent {
     $sorted=SqlList::getListWithCrit('Component',$crit,'name');
   	$subComponents=array();
     foreach($sorted as $prodId=>$prodName) {
-      $subComponents[$prodId]=new Component($prodId);
+      $subComponents[$prodId]=new Component($prodId,true);
     }
     return $subComponents;
   }
@@ -273,7 +273,7 @@ class ComponentMain extends ProductOrComponent {
       $crit['idle']='0';
     }
     $obj=new Component();
-    $subComponents=$obj->getSqlElementsFromCriteria($crit, false) ;
+    $subComponents=$obj->getSqlElementsFromCriteria($crit, false,null,null,null,true) ;
     $subComponentList=null;
     foreach ($subComponents as $subProd) {
       $recursiveList=null;
@@ -310,27 +310,29 @@ class ComponentMain extends ProductOrComponent {
   }
   
   public function updateAllVersionProject() {
+    global $doNotUpdateAllVersionProject;
+    if ($doNotUpdateAllVersionProject) return;
     $vers=new ComponentVersion();
-    $versList=$vers->getSqlElementsFromCriteria(array('idComponent'=>$this->id));
+    $versList=$vers->getSqlElementsFromCriteria(array('idComponent'=>$this->id),null,null,null,null,true);
     foreach ($versList as $vers) {
       $existing=$vers->getLinkedProjects(false); // List of projects linked
       $target=array(); // List of project that should be linked
       $productVersions=$vers->getLinkedProductVersions(false);
       foreach ($productVersions as $pvId) {
-        $pv=new ProductVersion($pvId);
+        $pv=new ProductVersion($pvId,true);
         $arr=$pv->getLinkedProjects(false);
         $target=array_merge_preserve_keys($target,$arr);
       }
       foreach ($existing as $projId) {
         if (! in_array($projId,$target)) { // Existing not in target => delete VersionProject for all versions
-          $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id));
+          $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id),true);
           if ($vp->id) {
             $res=$vp->delete();
           }
         }
       }
       foreach ($target as $projId) {
-        $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id));
+        $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id),true);
         if (! $vp->id) {
           $res=$vp->save();
         }
@@ -340,12 +342,12 @@ class ComponentMain extends ProductOrComponent {
   
   public function getComposition($withName=true,$reculsively=false) {
     $ps=new ProductStructure();
-    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id),null,null,null,null,true);
     $result=array();
     foreach ($psList as $ps) {
       $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
       if ($reculsively) {
-        $comp=new Component($ps->idComponent);
+        $comp=new Component($ps->idComponent,true);
         $result=array_merge_preserve_keys($comp->getComposition($withName,true),$result);
       }
     }
@@ -366,12 +368,12 @@ class ComponentMain extends ProductOrComponent {
     $result=parent::delete();
     $ps=new ProductStructure();
     $crit=array('idProduct'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->delete();
     }
     $crit=array('idComponent'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->delete();
     }
@@ -382,7 +384,7 @@ class ComponentMain extends ProductOrComponent {
   
     $ps=new ProductStructure();
     $crit=array('idProduct'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->idProduct=$result->id;
       $ps->id=null;
@@ -390,7 +392,7 @@ class ComponentMain extends ProductOrComponent {
       $ps->save();
     }
     $crit=array('idComponent'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->idComponent=$result->id;
       $ps->id=null;
@@ -399,7 +401,7 @@ class ComponentMain extends ProductOrComponent {
     }
     // Copy language
     $lang = new ProductLanguage();
-    $listLang=$lang->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    $listLang=$lang->getSqlElementsFromCriteria(array('idProduct'=>$this->id),null,null,null,null,true);
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idProduct = $result->id;
