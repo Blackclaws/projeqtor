@@ -8,7 +8,7 @@ $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword
 $paramDbName='projeqtor_v65';$paramDbPrefix='';
 // --- PostgreSql Default
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor_maaf'; $paramDbPassword='projeqtor';
-//$paramDbName='projeqtor';$paramDbPrefix=''; 
+//$paramDbName='support_ige';$paramDbPrefix=''; 
 $paramDbHost='127.0.0.1';         // With MySql on Windows, better use "127.0.0.1" rather than "localhost"
 
 // ========== Log file configuration =====================================================
@@ -32,7 +32,7 @@ $debugReport=true;                 // Displays report file name on report header
 $i18nNocache=true;                 // Will not cache i18n table, so that new values are automatically displayed without needing disconnection
 $debugIEcompatibility=false;       // If set to true, will allow compatibility mode (mode IE9 on IE11), otherwise, edge mode is forced
 //$pdfPlanningBeta='true';           // Force new PDF Export planning with all browsers (by default it only works on Chrome)
-$scaytAutoStartup='YES';
+$scaytAutoStartup='NO';
 //$filenameCharsetForImport="WINDOWS-1252";
 //$paramReorg=false;
 //======= END

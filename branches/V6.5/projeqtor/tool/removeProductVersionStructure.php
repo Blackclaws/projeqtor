@@ -42,8 +42,12 @@ if ($structureId=='') {
 if ($structureId==null) {
   throwError('structure id parameter not found in REQUEST');
 }
+global $doNotUpdateAllVersionProject;
+$doNotUpdateAllVersionProject=true;
 Sql::beginTransaction();
 $obj=new ProductVersionStructure($structureId);
+$prod=new ProductOrComponent($obj->idProductVersion);
+$doNotUpdateAllVersionProject=($prod->scope=='Product')?false:true;// If link is between component versions, do not update all version
 $result=$obj->delete();
 
 // Message of correct saving

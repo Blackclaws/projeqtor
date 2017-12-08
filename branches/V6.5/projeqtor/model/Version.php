@@ -355,7 +355,6 @@ class Version extends SqlElement {
       }
     }
   
-    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -399,7 +398,7 @@ class Version extends SqlElement {
     if(Parameter::getGlobalParameter('subscriptionAuto')!='YES'){ return;}
     $sub = new Subscription();
     $crit = array('refId'=>$this->id, 'refType'=> $this->scope.'Version', 'isAutoSub'=>'1');
-    $list=$sub->getSqlElementsFromCriteria($crit);
+    $list=$sub->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $subList){
       $subList->delete();
     }
@@ -411,7 +410,7 @@ class Version extends SqlElement {
     $prod = new ProductOrComponent($this->idProduct);
     $sub = new Subscription();
     $crit = array('refId'=>$prod->id, 'refType'=> $prod->scope);
-    $list=$sub->getSqlElementsFromCriteria($crit);
+    $list=$sub->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach($list as $subs){
       if($prod->scope == 'Product'){
         $sub2RefType='ProductVersion';
@@ -614,7 +613,7 @@ class Version extends SqlElement {
   protected function hasRedChild() {
     if (!$this->hasChild()) return false;
     foreach (ProductVersionStructure::getComposition($this->id) as $key => $idComponentVersion) {
-      $comp=new ComponentVersion($idComponentVersion);
+      $comp=new ComponentVersion($idComponentVersion,true);
       if ($comp->isRed($this,'composition')) {
         return true;
       }
@@ -625,7 +624,7 @@ class Version extends SqlElement {
   protected function hasRedParent() {
     foreach (ProductVersionStructure::getStructure($this->id) as $key => $idVersion) {
       if ( !in_array($idVersion, self::$idVersionsDisplayed)) continue;
-      $version=new Version($idVersion);
+      $version=new Version($idVersion,true);
       if ($version->scope=='Product') $version=new ProductVersion($version->id);
       else $version=new ComponentVersion($version->id);
       if ($version->isRed($this,'structure')) {
@@ -675,7 +674,7 @@ class Version extends SqlElement {
     //New
     $pvs=new ProductVersionStructure();
     $crit=array('idComponentVersion'=>$this->id,'idProductVersion'=>$parentVersion->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     if (count($list)>0) {
     //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $directChild = true;
@@ -701,7 +700,7 @@ class Version extends SqlElement {
     //New
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
-    $list=$pvs->getSqlElementsFromCriteria($crit);
+    $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     if (count($list)>0) {
     //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $hasChild = true;

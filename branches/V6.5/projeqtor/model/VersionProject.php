@@ -123,45 +123,51 @@ class VersionProject extends SqlElement {
   }
   
   public function save() {
+    global $doNotUpdateAllVersionProject;
     $new=($this->id)?false:true;
     $old=$this->getOld();
     $result=parent::save();
-    if ($new) { // On new version, must create VersionProject for components of Product
-      $v=new Version($this->idVersion);
-      if ($v->scope=='Product') {
-        $p=new Product($v->idProduct);
-        $compList=$p->getComposition(false,true);
-        foreach ($compList as $compId=>$compName) {
-          $comp=new Component($compId);
-          $comp->updateAllVersionProject();
-        } 
-      }
-    } else if ($this->idProject!=$old->idProject or $this->idVersion!=$old->idVersion) {
-      $v=new Version($this->idVersion);
-      if ($v->scope=='Product') {
-        $p=new Product($v->idProduct);
-        $compList=$p->getComposition(false,true);
-        if ($this->idVersion!=$old->idVersion) {
-          $v=new Version($old->idVersion);
-          $p=new Product($v->idProduct);
-          $compList=array_merge_preserve_keys($p->getComposition(false,true),$compList);
+    if (!$doNotUpdateAllVersionProject) {
+      if ($new) { // On new link Version<->Project, must create VersionProject for components of Product
+        $v=new Version($this->idVersion,true);
+        if ($v->scope=='Product') {
+          $p=new Product($v->idProduct,true);
+          $compList=$p->getComposition(false,true);
+          foreach ($compList as $compId=>$compName) {
+            $comp=new Component($compId,true);
+            $comp->updateAllVersionProject();
+          } 
         }
-        foreach($compList as $compId=>$compName) {
-          $comp=new Component($compId);
-          $comp->updateAllVersionProject();
-        } 
+      } else if ($this->idProject!=$old->idProject or $this->idVersion!=$old->idVersion) {
+        $v=new Version($this->idVersion,true);
+        if ($v->scope=='Product') {
+          $p=new Product($v->idProduct,true);
+          $compList=$p->getComposition(false,true);
+          if ($this->idVersion!=$old->idVersion) {
+            $v=new Version($old->idVersion,true);
+            $p=new Product($v->idProduct,true);
+            $compList=array_merge_preserve_keys($p->getComposition(false,true),$compList);
+          }
+          foreach($compList as $compId=>$compName) {
+            $comp=new Component($compId,true);
+            $comp->updateAllVersionProject();
+          } 
+        }
       }
     }
     return $result;
   }
   public function delete() {
+    global $doNotUpdateAllVersionProject;
     $result=parent::delete();
-    $v=new Version($this->idVersion);
-    $p=new Product($v->idProduct);
-    $compList=$p->getComposition(false,true);
-    foreach ($compList as $compId=>$compName) {
-      $comp=new Component($compId);
-      $comp->updateAllVersionProject();
+    if (!$doNotUpdateAllVersionProject) {
+      $v=new Version($this->idVersion,true);
+      $p=new Product($v->idProduct,true);
+      $compList=$p->getComposition(false,true);
+      foreach ($compList as $compId=>$compName) {
+        $comp=new Component($compId,true);
+        $comp->updateAllVersionProject();
+      }
     }
     return $result;
   }
@@ -170,7 +176,7 @@ class VersionProject extends SqlElement {
   	$result="";
   	if (! $this->id) {
   	  $crit=array('idProject'=>$this->idProject, 'idVersion'=>$this->idVersion);
-  	  $list=$this->getSqlElementsFromCriteria($crit, false);
+  	  $list=$this->getSqlElementsFromCriteria($crit, false,null,null,null,true);
   	  if (count($list)>0) {
         $result.='<br/>' . i18n('errorDuplicateVersionProject');
       }     
@@ -187,7 +193,7 @@ class VersionProject extends SqlElement {
   
   public static function updateIdle($type,$id) {
     $vp=new VersionProject();
-    $vps=$vp->getSqlElementsFromCriteria(array("id".$type=>$id, "idle"=>'0'), false);
+    $vps=$vp->getSqlElementsFromCriteria(array("id".$type=>$id, "idle"=>'0'), false,null,null,null,true);
     foreach ($vps as $vp) {
       $vp->idle=1;
       $vp->save();

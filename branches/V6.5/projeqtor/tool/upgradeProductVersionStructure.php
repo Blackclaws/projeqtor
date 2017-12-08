@@ -29,7 +29,6 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
-
 // Get the link info
 $objectClass=RequestHandler::getClass('objectClass',true);
 $objectId=RequestHandler::getId('objectId',true);
@@ -42,6 +41,8 @@ if ($strId) {
 	$crit=array('id'=>$strId);
 }
 $strList=$str->getSqlElementsFromCriteria($crit);
+global $doNotUpdateAllVersionProject;
+$doNotUpdateAllVersionProject=true;
 Sql::beginTransaction();
 $result="";
 //Retrieve the existing list of versions 
@@ -89,6 +90,8 @@ foreach ($strList as $str) {
 		}
 	}
 	if ($confirm) {
+	  $prod=new ProductOrComponent($str->idProductVersion);
+	  $doNotUpdateAllVersionProject=($prod->scope=='Product')?false:true;// If link is between component versions, do not update all version
 	  $res=$str->save();
 	} else {
 		echo '<tr><td class="noteData">'.$oldLabel.'</td><td class="noteData">'.$newLabel.'</td></tr>';

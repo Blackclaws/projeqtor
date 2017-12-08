@@ -66,14 +66,15 @@ class ProductProject extends SqlElement {
   }
   
   public function save() {
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
     $new=($this->id)?false:true;
     $old=$this->getOld();
     $result=parent::save();
-
     // Create or update VersionProject for each Version of the Product 
     $vers=new Version();
-    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct,'scope'=>'product'));
-      foreach ($versList as $vers) {
+    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct,'scope'=>'product'),null,null,null,null,true);
+    foreach ($versList as $vers) {
       $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$this->idProject, 'idVersion'=>$vers->id));
       if (! $vp->id) {
         $vp->idProject=$this->idProject;
@@ -84,22 +85,37 @@ class ProductProject extends SqlElement {
       $vp->idle=$this->idle;
       $vp->save();
     }
-
+    $doNotUpdateAllVersionProject=false;
+    if ($new) { // On new link Version<->Project, must create VersionProject for components of Product
+      $p=new Product($this->idProduct,true);
+      $compList=$p->getComposition(false,true);
+      foreach ($compList as $compId=>$compName) {
+        $comp=new Component($compId,true);
+        $comp->updateAllVersionProject();
+      }
+    } 
     return $result;
   }
   public function delete() {
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
     $result=parent::delete();
-    
     // Delete all VersionProject for all versions of Product
     $vers=new Version();
-    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct));
+    $versList=$vers->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct),null,null,null,null,true);
     foreach ($versList as $vers) {
       $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$this->idProject, 'idVersion'=>$vers->id));
       if ($vp->id) {
         $vp->delete();
       }
     }
-    
+    // Update links of components
+    $p=new Product($this->idProduct,true);
+    $compList=$p->getComposition(false,true);
+    foreach ($compList as $compId=>$compName) {
+      $comp=new Component($compId,true);
+      $comp->updateAllVersionProject();
+    }
     return $result;
   }
 
@@ -107,7 +123,7 @@ class ProductProject extends SqlElement {
   	$result="";
   	if (! $this->id) {
   	  $crit=array('idProject'=>$this->idProject, 'idProduct'=>$this->idProduct);
-  	  $list=$this->getSqlElementsFromCriteria($crit, false);
+  	  $list=$this->getSqlElementsFromCriteria($crit, false,null,null,null,true);
   	  if (count($list)>0) {
         $result.='<br/>' . i18n('errorDuplicateProductProject');
       }     

@@ -283,14 +283,18 @@ foreach($sumProj as $id=>$vals) {
   $dataSet->addPoints($vals,$proj);
   $dataSet->setSerieDescription($tab[$id]['name'],$proj);
   $dataSet->setSerieOnAxis($proj,0);
-  $dataSet->setAxisName(0,i18n("cumulated"));
   // take color of project   
   $proje=new Project($id);
   $projCol = $proje->color;
   $projectColor=$proje->getColor();
   $colorProj=hex2rgb($projectColor);
-  $serieSettings = array("R"=>$colorProj['R'],"G"=>$colorProj['G'],"B"=>$colorProj['B']);
-  $dataSet->setPalette($proj,$serieSettings);  
+  if($projCol){
+    $serieSettings = array("R"=>$colorProj['R'],"G"=>$colorProj['G'],"B"=>$colorProj['B']);
+    $dataSet->setPalette($proj,$serieSettings);
+  } else {
+    $serieSettings = array("R"=>$rgbPalette[($nbItem % 12)]['R'],"G"=>$rgbPalette[($nbItem % 12)]['G'],"B"=>$rgbPalette[($nbItem % 12)]['B']);
+    $dataSet->setPalette($proj,$serieSettings);
+  }
   //
   $nbItem++;
 }
@@ -303,41 +307,62 @@ $dataSet->addPoints($arrLabel,"dates");
 $dataSet->setAbscissa("dates");
 $dataSet->setSerieOnAxis("dates",0);  
 
-$width=1000; 
-$graphHeight=600; 
-$graph = new pImage($width+400, $graphHeight/2,$dataSet);
+$width=1000;
+$legendWidth=300;
+$height=400;
+$legendHeight=100;
+$graph = new pImage($width+$legendWidth, $height,$dataSet);
 /* Draw the background */
 $graph->Antialias = FALSE;
 
 /* Add a border to the picture */
 $settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
-$graph->drawRoundedRectangle(5,5,$width+400,$graphHeight,5,$settings);
-$graph->drawRectangle(0,0,$width+399,$graphHeight,array("R"=>150,"G"=>150,"B"=>150));
+$graph->drawRoundedRectangle(5,5,$width+$legendWidth-8,$height-5,5,$settings);
+$graph->drawRectangle(0,0,$width+$legendWidth-1,$height-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8));
 
 /* title */
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$graph->drawLegend($width-10,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+$graph->drawLegend($width+30,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
 
 /* Draw the scale */
-$graph->setGraphArea(60,30,$width-20,200);
-$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
-    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
+$graph->setGraphArea(60,50,$width-20,$height-$legendHeight);
+$formatGrid=array("Mode"=>SCALE_MODE_ADDALL_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>false,"Pos"=>SCALE_POS_LEFTRIGHT,
     "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
 $graph->drawScale($formatGrid);
 $graph->Antialias = TRUE;
 $graph->drawStackedBarChart();
 
+$serie = 0 ;
+foreach($sumProj as $id=>$vals) {
+  $serie+=1;
+  $dataSet->RemoveSerie($tab[$id]['name']);
+}
+
+$dataSet->setAxisPosition(0,AXIS_POSITION_RIGHT);
+$dataSet->addPoints($cumul,"sum");
+$dataSet->setSerieDescription(i18n("cumulated"),"sum");
+$dataSet->setSerieOnAxis("sum",0);
+$dataSet->setAxisName(0,i18n("cumulated"));
+
+$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 );
+$graph->drawScale($formatGrid);
+
+$dataSet->setPalette("sum",array("R"=>0,"G"=>0,"B"=>0));
+$graph->drawLineChart();
+$dataSet->setPalette("sum",array("R"=>255,"G"=>255,"B"=>255));
+$graph->drawPlotChart();
 /* Render the picture (choose the best way) */
 $imgName=getGraphImgName("globalCostPlanning");
 $graph->render($imgName);
 
-echo '<table width="95%" align="center"><tr><td align="center">';
+echo '<table width="95%" style="margin-top:20px;" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />';
 echo '</td></tr></table>';
 echo '<br/>';

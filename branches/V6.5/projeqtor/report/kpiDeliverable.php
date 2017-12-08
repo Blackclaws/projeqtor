@@ -757,11 +757,11 @@ if ($showThreshold) {
     $cpt++;
     $arrTh=array();
     foreach ($arrDates as $dt) {$arrTh[]=$th->thresholdValue*(($displayAsPct)?100:1);}
-    $dataSet->addPoints($arrTh,"th"+$cpt);
+    $dataSet->addPoints($arrTh,"th".$cpt);
     $format=array_merge(hex2rgb($th->thresholdColor),array("Alpha"=>255));
-    $dataSet->setPalette("th"+$cpt,$format);
-    $dataSet->setSerieDrawable("th"+$cpt,true);
-    $dataSet->setSerieWeight("th"+$cpt,1);
+    $dataSet->setPalette("th".$cpt,$format);
+    $dataSet->setSerieDrawable("th".$cpt,true);
+    $dataSet->setSerieWeight("th".$cpt,1);
     //$dataSet->setSerieOnAxis("th"+$cpt,0);
   }
 }
@@ -783,7 +783,7 @@ if (count($arrDates)==1) {
 } 
 foreach ($thresholds as $th) {
   $cpt++;
-  $dataSet->setSerieDrawable("th"+$cpt,false);
+  $dataSet->setSerieDrawable("th".$cpt,false);
 }
 $graph->drawLineChart();
 if (count($arrDates)<$maxPlotted) {

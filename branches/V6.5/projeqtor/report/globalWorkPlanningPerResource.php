@@ -296,14 +296,17 @@ $dataSet->addPoints($arrLabel,"dates");
 $dataSet->setAbscissa("dates");
 
 $width=1000;
-$graphHeight=600;
-$graph = new pImage($width+400, $graphHeight/2,$dataSet);
+$legendWidth=300;
+$height=400;
+$legendHeight=100;
+$graph = new pImage($width+$legendWidth, $height,$dataSet);
 /* Draw the background */
 $graph->Antialias = FALSE;
 
 /* Add a border to the picture */
 $settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
-$graph->drawRoundedRectangle(5,5,$width+400,$graphHeight+500,5,$settings);
+$graph->drawRoundedRectangle(5,5,$width+$legendWidth-8,$height-5,5,$settings);
+$graph->drawRectangle(0,0,$width+$legendWidth-1,$height-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8));
@@ -316,7 +319,7 @@ $graph->drawLegend($width+30,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_
     "Margin"=>5));
 
 /* Draw the scale */
-$graph->setGraphArea(60,50,$width-20,250);
+$graph->setGraphArea(60,50,$width-20,$height-$legendHeight);
 $formatGrid=array("Mode"=>SCALE_MODE_ADDALL_START0, "GridTicks"=>0,
     "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
     "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
@@ -343,7 +346,7 @@ $graph->drawPlotChart();
 
 $imgName=getGraphImgName("globalWorkPlanning");
 $graph->Render($imgName);
-echo '<table width="95%" style="margin-top:35px" align="center"><tr><td align="center">';
+echo '<table width="95%" style="margin-top:20px" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 
 echo '</td></tr></table>';
 echo '<br/>';
