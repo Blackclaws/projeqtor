@@ -227,13 +227,13 @@ class ProductMain extends ProductOrComponent {
     if ($this->id and $this->id==$this->idProduct) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->idProduct){
-    	$parent=new Product($this->idProduct);
+    	$parent=new Product($this->idProduct,true);
     	while ($parent->id) {
     	  if ($parent->id==$this->id) {
           $result.='<br/>' . i18n('errorHierarchicLoop');
           break;
         }
-        $parent=new Product($parent->idProduct);
+        $parent=new Product($parent->idProduct,true);
     	}
     }
         
@@ -282,7 +282,7 @@ class ProductMain extends ProductOrComponent {
       $crit['idle']='0';
     }
     $obj=new Product();
-    $subProducts=$obj->getSqlElementsFromCriteria($crit, false) ;
+    $subProducts=$obj->getSqlElementsFromCriteria($crit, false,null,null,null,true) ;
     $subProductList=null;
     foreach ($subProducts as $subProd) {
       $recursiveList=null;
@@ -330,12 +330,12 @@ class ProductMain extends ProductOrComponent {
   // Retrive composition in terms of components (will not retreive products in the composition of the product)
   public function getComposition($withName=true,$reculsively=false) {
     $ps=new ProductStructure();
-    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->id),null,null,null,null,true);
     $result=array();
     foreach ($psList as $ps) {
       $result[$ps->idComponent]=($withName)?SqlList::getNameFromId('Component', $ps->idComponent):$ps->idComponent;
       if ($reculsively) {
-        $comp=new Component($ps->idComponent);
+        $comp=new Component($ps->idComponent,true);
         $result=array_merge_preserve_keys($comp->getComposition($withName,true),$result);
       }
     }
@@ -362,7 +362,7 @@ class ProductMain extends ProductOrComponent {
     $result=parent::delete();
     $ps=new ProductStructure();
     $crit=array('idProduct'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->delete();
     }
@@ -374,7 +374,7 @@ class ProductMain extends ProductOrComponent {
   
     $pp=new ProductProject();
     $crit=array('idProduct'=>$this->id);
-    $list=$pp->getSqlElementsFromCriteria($crit);
+    $list=$pp->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $pp) {
       $pp->idProduct=$result->id;
       $pp->id=null;
@@ -382,7 +382,7 @@ class ProductMain extends ProductOrComponent {
     }
     $ps=new ProductStructure();
     $crit=array('idProduct'=>$this->id);
-    $list=$ps->getSqlElementsFromCriteria($crit);
+    $list=$ps->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     foreach ($list as $ps) {
       $ps->idProduct=$result->id;
       $ps->id=null;
@@ -391,7 +391,7 @@ class ProductMain extends ProductOrComponent {
     }
     // Copy language
     $lang = new ProductLanguage();
-    $listLang=$lang->getSqlElementsFromCriteria(array('idProduct'=>$this->id));
+    $listLang=$lang->getSqlElementsFromCriteria(array('idProduct'=>$this->id),null,null,null,null,true);
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idProduct = $result->id;

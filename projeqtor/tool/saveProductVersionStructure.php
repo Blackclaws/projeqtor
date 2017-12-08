@@ -76,6 +76,8 @@ if (is_array($listId)) {
 	$arrayId[]=$listId;
 }
 Sql::beginTransaction();
+global $doNotUpdateAllVersionProject;
+$doNotUpdateAllVersionProject=true;
 $result="";
 // get the modifications (from request)
 foreach ($arrayId as $id) {
@@ -89,6 +91,8 @@ foreach ($arrayId as $id) {
 	} else {
 	  throwError("way '$way' is not an expected value");
 	}
+	$prod=new ProductOrComponent($str->idProductVersion);
+	$doNotUpdateAllVersionProject=($prod->scope=='Product')?false:true;// If link is between component versions, do not update all version
   $str->comment=$comment;
   $str->idUser=$user->id;
   $str->creationDate=date("Y-m-d");

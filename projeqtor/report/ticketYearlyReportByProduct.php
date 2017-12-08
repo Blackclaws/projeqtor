@@ -5,8 +5,9 @@
 
 include_once '../tool/projeqtor.php';
 
-include("../external/pChart/pData.class");
-include("../external/pChart/pChart.class");
+include("../external/pChart2/class/pData.class.php");
+include("../external/pChart2/class/pDraw.class.php");
+include("../external/pChart2/class/pImage.class.php");
 
 $paramProduct='';
 if (array_key_exists('idProduct',$_REQUEST)) {
