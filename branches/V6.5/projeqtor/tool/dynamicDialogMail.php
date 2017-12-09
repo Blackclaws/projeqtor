@@ -178,7 +178,8 @@ if (array_key_exists("objectClass", $_REQUEST)) {
                  <button id="otherMailDetailButton" dojoType="dijit.form.Button" showlabel="false"
                          style="display:none" title="<?php echo i18n('showDetail')?>"iconClass="iconView">
                    <script type="dojo/connect" event="onClick" args="evt">
-                        showDetail('dialogMailObjectIdEmail', 0, 'Resource', true);
+                      dijit.byId('dialogMailObjectIdEmail').set('value',null);
+                      showDetail('dialogMailObjectIdEmail', 0, 'Resource', true);
                    </script>
                  </button>
                 </td> 
