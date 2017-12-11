@@ -82,6 +82,7 @@ class Sql {
     
     // Execute query
     $cnx = self::getConnection();
+    debugLog($cnx);
     self::$lastQueryErrorMessage=NULL;
     self::$lastQueryErrorCode=NULL;
     enableCatchErrors();
@@ -89,7 +90,9 @@ class Sql {
     $checkResult="OK";
     try { 
     	$startMicroTime=microtime(true);
-      $result = $cnx->query($sqlRequest);  
+    	debugLog("before : $sqlRequest");
+      $result = $cnx->query($sqlRequest);
+      debugLog("after");
       if (isset($debugQuery) and $debugQuery) {
         debugTraceLog(round((microtime(true) - $startMicroTime)*1000000)/1000000 . ";" . $sqlRequest);
       }
@@ -411,6 +414,14 @@ class Sql {
       return "year($str)";
     }
   }
-  
+  public static function resetConnection() {
+    self::$connexion = NULL;
+    self::$dbType = NULL;
+    self::$dbHost = NULL;
+    self::$dbPort = NULL;
+    self::$dbUser = NULL;
+    self::$dbPassword = NULL;
+    self::$dbName = NULL;
+  }
 }
 ?>

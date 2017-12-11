@@ -67,6 +67,8 @@ class AuditSummary extends SqlElement {
 // ============================================================================**********
   
   static function updateAuditSummary($day) {
+    global $remoteDb;
+    if (isset($remoteDb) and $remoteDb) return;
   	AuditSummary::finishOldSessions($day);
   	$audit=new Audit();
   	$crit=array('auditDay'=>$day);
@@ -116,6 +118,8 @@ class AuditSummary extends SqlElement {
   }
     
    static function finishOldSessions($day) {
+     global $remoteDb;
+     if (isset($remoteDb) and $remoteDb) return;
    	 $crit="auditDay < '" . $day . "' and idle=0";
    	 $audit=new Audit();
    	 $list=$audit->getSqlElementsFromCriteria(null, false, $crit);
