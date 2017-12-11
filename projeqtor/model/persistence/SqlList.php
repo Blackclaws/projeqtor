@@ -93,7 +93,7 @@ class SqlList {
     	$calculated=true;
     }
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() ;
-    if ($showIdle) {
+    if ($showIdle or !property_exists($obj, 'idle')) {
       $query.= " where (1=1 ";
     } else {
       $query.= " where (idle=0 ";

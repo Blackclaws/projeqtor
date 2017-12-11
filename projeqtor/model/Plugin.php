@@ -55,6 +55,8 @@ class Plugin extends SqlElement {
     
     public function load($file) {
       global $globalCatchErrors;
+      global $remoteDb;
+      if (isset($remoteDb) and $remoteDb) return "OK";
       traceLog("New plugin found : ".$file['name']);
       $this->name=str_replace('.zip','',$file['name']);
       $pos=strpos(strtolower($this->name),'_v');
@@ -452,6 +454,8 @@ class Plugin extends SqlElement {
     }
     
     public static function getEventScripts($event, $className) {
+      global $remoteDb;
+      if (isset($remoteDb) and $remoteDb) return array();
       if (version_compare(Sql::getDbVersion(), 'V5.2.0')<0) return array();
       if (!self::$_triggeredEventList) {
         self::getTriggeredEventList();
@@ -464,6 +468,11 @@ class Plugin extends SqlElement {
     }
     
     private static function getTriggeredEventList() {
+      global $remoteDb;
+      if (isset($remoteDb) and $remoteDb) {
+        self::$_triggeredEventList=array();
+        return;
+      }
       $sessionList=getSessionValue('triggeredEventList',null,true);
       if ($sessionList) {
         self::$_triggeredEventList=$sessionList;
