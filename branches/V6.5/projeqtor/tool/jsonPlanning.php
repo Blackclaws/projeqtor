@@ -113,6 +113,12 @@
       $headerParameters.= i18n("colEndDate") . ' : ' . dateFormatter($_REQUEST['endDate']) . '<br/>';
     }
     if (array_key_exists('format',$_REQUEST)) {
+      if(! RequestHandler::getValue("format")){
+          echo '<div style="background: #FFDDDD;font-size:150%;margin-top:20px;color:#808080;text-align:center;padding:20px">';
+          echo i18n('messageNoData',array(i18n('colFormat'))); // TODO i18n message
+          echo '</div>';
+          exit;
+      }
 		  Security::checkValidPeriodScale(trim($_REQUEST['format']));
       $headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
     }
