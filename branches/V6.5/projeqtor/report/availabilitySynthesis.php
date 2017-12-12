@@ -73,6 +73,12 @@ foreach($affLst as $aff){
 $where="1=1"; // Ticket #2532 : must show availability whatever the project
 if ($paramPeriodScale=="month") {
 	$start=date('Y-m-').'01';
+	if (!$paramPeriodValue) {
+	  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+	  echo i18n('messageNoData',array(i18n('colPeriod'))); // TODO i18n message
+	  echo '</div>';
+	  exit;
+	}
 	$startYear=substr($start,0,4);
 	$startMonth=substr($start,5,2);
 	$startValue=$startYear.$startMonth;
