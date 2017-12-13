@@ -214,8 +214,9 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
       exit ();
     }
   }
+  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
   if (isset ( $user )) {
-    if ($user->isLdap == 0) {
+    if ($user->isLdap == 0 or !isset($paramLdap_allow_login) or strtolower($paramLdap_allow_login)!='true') {
       if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
         $changePassword = false;
         if (array_key_exists ( 'changePassword', $_REQUEST )) {
@@ -1792,6 +1793,7 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
   $class=substr ( $menuName, 4 );
+  //return "YES"; debugLog("To remove");
   if (! SqlElement::class_exists ($class ) and $obj) {
     $class=get_class($obj);
   }

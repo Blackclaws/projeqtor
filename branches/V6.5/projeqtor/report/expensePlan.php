@@ -320,7 +320,7 @@ $dataSet->setSerieDescription(i18n("cumulated"),"sum");
 $dataSet->setSerieOnAxis("sum",0);
 $dataSet->setAxisName(0,i18n("cumulated"));
 
-$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 );
+$formatGrid=array("LabelRotation"=>90,"DrawXLines"=>FALSE,"DrawYLines"=>NONE);
 $graph->drawScale($formatGrid);
 
 $graph->drawLineChart();
