@@ -599,7 +599,8 @@ class Parameter extends SqlElement {
                            'image'=>'photo'
         );
         $lockPassword=Parameter::getGlobalParameter('lockPassword');
-        if (! getBooleanValue($lockPassword) and !getSessionUser()->isLdap) {
+        $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+        if (! getBooleanValue($lockPassword) and ! (getSessionUser()->isLdap and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true')) {
           $parameterList['sectionPassword']='section';
           $parameterList['password']='specific';
         }
