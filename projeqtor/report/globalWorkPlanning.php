@@ -294,19 +294,6 @@ foreach($sumProjUnit as $id=>$vals) {
     $dataSet->setPalette($proj,$serieSettings);
   }
   $nbItem++;
-//   $dataSet->AddPoint($vals,$id);
-//   $dataSet->SetSerieName($tab[$id]['name'],$id);
-//   $dataSet->AddSerie($id);
-//   $proje=new Project($id);
-//   $projCol = $proje->color;
-//   $projectColor=$proje->getColor();
-//   $colorProj=hex2rgb($projectColor);
-//   if($projCol){
-//     $graph->setColorPalette($nbItem,$colorProj['R'],$colorProj['G'],$colorProj['B']);
-//   } else {
-//     $graph->setColorPalette($nbItem,$rgbPalette[($nbItem % 12)]['R'],$rgbPalette[($nbItem % 12)]['G'],$rgbPalette[($nbItem % 12)]['B']);
-//   }
-//   $nbItem++;
 }
 $arrLabel=array();
 foreach($arrDates as $date){
@@ -314,11 +301,6 @@ foreach($arrDates as $date){
 }
 $dataSet->addPoints($arrLabel,"dates");
 $dataSet->setAbscissa("dates");
-//$dataSet->setSerieOnAxis("dates",0);
-
-// $dataSet->AddPoint($arrLabel,"dates");  
-// $dataSet->SetAbsciseLabelSerie("dates");   
-// $graph = new pChart($width,360);
 $width=1000;
 $legendWidth=300;
 $height=400;
@@ -364,12 +346,11 @@ $dataSet->setSerieDescription(i18n("cumulated"),"sum");
 $dataSet->setSerieOnAxis("sum",0);
 $dataSet->setAxisName(0,i18n("cumulated"));
 
-$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 );
+$formatGrid=array("LabelRotation"=>90,"DrawXLines"=>FALSE,"DrawYLines"=>NONE);
 $graph->drawScale($formatGrid);
 
 $dataSet->setPalette("sum",array("R"=>0,"G"=>0,"B"=>0));
 $graph->drawLineChart();
-$dataSet->setPalette("sum",array("R"=>255,"G"=>255,"B"=>255));
 $graph->drawPlotChart();
 
 $imgName=getGraphImgName("globalWorkPlanning");

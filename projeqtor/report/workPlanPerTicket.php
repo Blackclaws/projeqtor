@@ -64,7 +64,7 @@
 
   if (Sql::$lastQueryNbRows > 0) {
     // Header
-    echo '<table>';
+    echo '<table align="center">';
     echo '<TR>';
     echo '  <TD class="reportTableHeader" style="width:10px; border-right: 0px;"></TD>';
     echo '  <TD class="reportTableHeader" style="width:200px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';

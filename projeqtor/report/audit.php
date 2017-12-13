@@ -72,9 +72,13 @@ $crit="auditDay like '" . $periodValue . "%'";
 $as=new AuditSummary();
 $result=$as->getSqlElementsFromCriteria(null, false, $crit);
 
+if (!$paramYear or !$paramMonth) {
+  $result=array();
+}
 if (checkNoData($result)) exit;
 
-$monthDays = date('t',mktime(0, 0, 0, $paramMonth, 1, $paramYear)); 
+if ($paramMonth) $monthDays = date('t',mktime(0, 0, 0, $paramMonth, 1, $paramYear));
+else  $monthDays=365;
 $days=array();
 $nb=array();
 $min=array();
