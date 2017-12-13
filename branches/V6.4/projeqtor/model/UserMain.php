@@ -153,7 +153,8 @@ class UserMain extends SqlElement {
 	    if (securityCheckDisplayMenu($menu->id)) {
 	      self::$_fieldsAttributes["isContact"]="";
 	    }
-	    if ($this->isLdap!=0) {
+	    $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+	    if ($this->isLdap!=0 and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 	    	self::$_fieldsAttributes["name"]="readonly, truncatedWidth100";
 	    	//self::$_fieldsAttributes["resourceName"]="readonly";
 	    	self::$_fieldsAttributes["email"]="readonly, truncatedWidth100";
@@ -1037,7 +1038,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 	 	  debugTraceLog("User->authenticate : some plugin error (exit)");	 	  
 	 	  return $plgErrorLogin;
 	 	}
-		if ($this->isLdap == 0) {
+		if ($this->isLdap == 0 or !isset($paramLdap_allow_login) or strtolower($paramLdap_allow_login)!='true') {
 			if ($this->crypto=='sha256') {
 			  debugTraceLog("User->authenticate : sha256 encryption");
         $expected=$this->password.getSessionValue('sessionSalt');
@@ -1149,7 +1150,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 				return "login";
 			}
 			disableCatchErrors();
-			if (! $this->id and $this->isLdap) {
+			if (! $this->id and $this->isLdap and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 				if (!count($first_user) == 0) {
 					Sql::beginTransaction();
 					// Contact information based on the inetOrgPerson class schema

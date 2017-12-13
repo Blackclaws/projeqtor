@@ -48,7 +48,8 @@ $crit=array('name'=>$username);
 $user=SqlElement::getSingleSqlElementFromCriteria('User', $crit);
 $sessionSalt=md5("projeqtor".date('YmdHis'));
 setSessionValue('sessionSalt', $sessionSalt);
-if (isset($user->crypto) and ! $user->isLdap) {
+$paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+if (isset($user->crypto) and ! ($user->isLdap and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true')) {
   echo $user->crypto.";".$user->salt.";".$sessionSalt;
 } else {
 	echo ";;".$sessionSalt;
