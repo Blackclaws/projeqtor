@@ -49,7 +49,6 @@ if($isId == 'true'){
   
   $adress=RequestHandler::getValue('adress');
   if($adress != null){
-    $adress2 = $adress;
     $listTeam=array_map('strtolower',SqlList::getList('Team','name'));
     $listName=array_map('strtolower',SqlList::getList('Affectable'));
     $listUserName=array_map('strtolower',SqlList::getList('Affectable','userName'));
@@ -59,29 +58,37 @@ if($isId == 'true'){
     $adressMail = explode(",",$adress);
     $stockAdress = "";
     
+    foreach($adressMail as $email){
+      if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+        $stockAdress.=$email.',';
+      } 
+    }
+
     $adress="";
   
-    foreach ($listAttendees as $attendee) {
+    foreach($listAttendees as $attendee){
       $attendee=strtolower(trim($attendee));
-      if (in_array($attendee,$listName)) {
+      if(in_array($attendee,$listName)) {
         $adress.=($adress)?',':'';
         $aff=new Affectable(array_search($attendee,$listName));
-        if ($aff->email) {
-          $adress.='' . $aff->email . '';
+        if($aff->email) {
+          $adress.='' . $aff->email . ',';
         }
-      } else if (in_array($attendee,$listUserName)) {
+      }else if(in_array($attendee,$listUserName)) {
         $adress.=($adress)?', ':'';
         $aff=new Affectable(array_search($attendee,$listUserName));
         if ($aff->email) {
           $adress.='' . $aff->email . '';
         }
-      } else if (in_array($attendee,$listInitials)) {
-        $adress.=($adress)?',':'';
-        $aff=new Affectable(array_search($attendee,$listInitials));
-        if ($aff->email) {
-          $adress.='' . $aff->email . '';
+      }else if(in_array($attendee,$listInitials)) {
+        if($attendee != null){
+          $adress.=($adress)?',':'';
+          $aff=new Affectable(array_search($attendee,$listInitials));
+          if ($aff->email) {
+            $adress.='' . $aff->email . '';
+          }
         }
-      } else if (in_array($attendee,$listTeam)) {
+      }else if(in_array($attendee,$listTeam)) {
         $adress.=($adress)?',':'';
         $id=array_search($attendee,$listTeam);
         $aff=new Affectable();
@@ -92,31 +99,17 @@ if($isId == 'true'){
             $adress.='' .$aff->email. '';
           }
         }
-      } else {
-        $adress.=($adress)?',':'';
+      }else{
+        if(filter_var($attendee,FILTER_VALIDATE_EMAIL)){
+          $adress.=($adress)?',':'';
+        }else{
+          $adress.=''.$attendee.',';
+        }
       }
     }
     $adress=str_ireplace(',',',',$adress);
-    $adressTab = explode(",",$adress);
-
-    foreach ($adressMail as $email){
-      if(filter_var($email, FILTER_VALIDATE_EMAIL) and !array_key_exists($email  , $adressTab ) and $email != $adress2){
-        if($email != ',' or $email != null){
-          $stockAdress.=','.$email;
-        }
-      }else{
-        foreach ($listEmail as $val){
-          if($email == $val and $adress==""){
-            $stockAdress.=$email;
-          }elseif($email == $val ){
-            if($email != ',' or $email != null){
-              $stockAdress.=','.$email;
-            } 
-          }
-        }
-      }
-    }
-    echo $adress.$stockAdress;
+   
+    echo $stockAdress.$adress;
   }else{
     echo "";
   }

@@ -356,7 +356,6 @@ $graph->drawScale($formatGrid);
 
 $dataSet->setPalette("sum",array("R"=>0,"G"=>0,"B"=>0));
 $graph->drawLineChart();
-$dataSet->setPalette("sum",array("R"=>255,"G"=>255,"B"=>255));
 $graph->drawPlotChart();
 /* Render the picture (choose the best way) */
 $imgName=getGraphImgName("globalCostPlanning");

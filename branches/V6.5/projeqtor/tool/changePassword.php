@@ -50,7 +50,8 @@ scriptLog("changePassword.php");
   if ( $user->idle!=0) {
     passwordError();
   } 
-  if ($user->isLdap<>0) {
+  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+  if ($user->isLdap<>0 and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
     passwordError();
   } 
   $passwordLength=$_POST['passwordLength'];

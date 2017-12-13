@@ -92,6 +92,8 @@ if ($idProject AND ($startDateReport == null OR $endDateReport == null)) {
 $start="";
 $end="";
 
+$proj=new Project($idProject,true);
+
 if($element == 'activities' or $element =='both'){
   
   $querySelect = " SELECT DISTINCT  assignment.idResource,
@@ -103,7 +105,7 @@ if($element == 'activities' or $element =='both'){
   $queryFrom = "   FROM assignment ";
   
   $queryWhere = "  WHERE assignment.refType = 'Activity'";
-  $queryWhere .= " AND  assignment.idProject = ".$idProject;
+  $queryWhere.= " AND assignment.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
   if($resource != ' '){
     $queryWhere .= " AND assignment.idResource = ".$resource;
   }else{
@@ -370,10 +372,6 @@ $graphWidth=1000;
 $graphHeight=600;
 $indexToday=0;
 
-// $graphWidth=1250;
-// $graphHeight=720;
-// $indexToday=0;
-
 $cpt=0;
 
 $modulo=intVal(50*count($dateAct)/$graphWidth);
@@ -549,7 +547,9 @@ foreach ($indice2 as $id=>$val){
 $myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
 $myPicture->drawLineChart();
 //draw today
-$myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
+if($indexToday != 0){
+  $myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
+}
 /* Render the picture (choose the best way) */
 $imgName=getGraphImgName("performanceIndicator");
 $myPicture->Render($imgName);
@@ -588,8 +588,6 @@ $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>1
 $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /*title */
-
-
 
 
 /* Draw the scale */
@@ -645,8 +643,9 @@ foreach ($datesResource as $val){
   }
 }
 $myPicture->drawPlotChart(array("DisplayValues"=>false,"PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-40,"BorderAlpha"=>50));
-
-$myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
+if($indexToday != 0){
+  $myPicture->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
+}
 $myPicture->drawLineChart();
 
 /* Render the picture (choose the best way) */
@@ -660,7 +659,7 @@ echo '<br/>';
 
 //FUNCTION
 function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
-  
+  $proj=new Project($idProject,true);
   $querySelect = " SELECT DISTINCT  ticket.idResource,
                           workelement.refId as idTicket,
 			                    workelement.realwork,
@@ -671,8 +670,7 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   $queryFrom = "   FROM ticket,workelement ";
   
   $queryWhere = "  WHERE  ticket.id = workelement.refId";
-  $queryWhere .=  " AND workelement.idProject = ".$idProject;
-  
+  $queryWhere.= " AND assignment.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
   if($resource != ' '){
     $queryWhere .= " AND ticket.idResource = ".$resource;
   }else{
