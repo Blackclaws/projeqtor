@@ -355,6 +355,8 @@ class ComponentVersionMain extends Version {
   	return $result;
   }
   public function delete() {
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
     $result=parent::delete();
     $vp=new VersionProject();
     $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
@@ -372,6 +374,9 @@ class ComponentVersionMain extends Version {
     foreach ($list as $pvs) {
       $pvs->delete();
     }
+    $doNotUpdateAllVersionProject=false;
+    $comp=new Component($this->idComponent);
+    $comp->updateAllVersionProject();
     return $result;
   }
   public function getLinkedProjects($withName=true) {
@@ -395,7 +400,8 @@ class ComponentVersionMain extends Version {
     return $result;
   }
   public function copy() {
-  	
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
   	$this->initialEisDate=null;
   	$this->plannedEisDate=null;
   	$this->realEisDate=null;
@@ -450,6 +456,9 @@ class ComponentVersionMain extends Version {
       $lang->idVersion = $result->id;
       $lang->save();
     }
+    $doNotUpdateAllVersionProject=false;
+    $comp=new Component($result->idComponent);
+    $comp->updateAllVersionProject();
     return $result;
   }
 }

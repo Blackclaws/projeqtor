@@ -395,7 +395,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
  *          indicating wether the function is called recursively or not
  * @return void
  */
-function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $globalHidden=false) {
+function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $parentHidden=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
    $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF,
@@ -636,7 +636,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $glob
         $arrStart++;
         if ($arrStart>=$arrStop) break;
         if (substr($arrCol,0,6)=='_void_' or substr($arrCol,0,7)=='_label_' or substr($arrCol,0,8)=='_button_') { continue; }
-        if ($obj->isAttributeSetToField($arrCol, "hidden") or $globalHidden) continue;
+        if ($obj->isAttributeSetToField($arrCol, "hidden") or $parentHidden) continue;
         if (in_array($arrCol,$extraHiddenFields)) continue;
         $indCol=$arrStart%$internalTableCols;
         $indLin=floor($arrStart/$internalTableCols);
@@ -1057,7 +1057,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $glob
           $hide=true;
         }
       }
-      if ($globalHidden) {
+      if ($parentHidden) {
         $hide=true;
       }
 // CHANGE BY Marc TABARY - 2017-03-01 - DATA CONSTRUCTED BY FUNCTION
@@ -3684,7 +3684,7 @@ function drawBusinessFeatures($obj, $refresh=false) {
 	$crit=array();
 	$crit['idProduct']=$obj->id;
 	$pcs=new BusinessFeature();
-	$list=$pcs->getSqlElementsFromCriteria($crit);
+	$list=$pcs->getSqlElementsFromCriteria($crit, null, null, 'name asc');
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
 		return;

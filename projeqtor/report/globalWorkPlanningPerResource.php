@@ -101,6 +101,10 @@ if ($paramMonth) {
 if ( $paramWeek) {
 	$queryWhere.=  " and week=".Sql::str($periodValue);
 }
+if ( $idResource) {
+  $queryWhere.=  " and t1.idResource=".Sql::fmtId($idResource);
+}
+
 if ($paramTeam) {
 	$res=new Resource();
 	$lstRes=$res->getSqlElementsFromCriteria(array('idTeam'=>$paramTeam));

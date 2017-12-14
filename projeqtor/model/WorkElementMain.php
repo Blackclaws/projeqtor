@@ -421,7 +421,7 @@ class WorkElementMain extends SqlElement {
 	 * @return an html string able to display a specific item
 	 *         must be redefined in the inherited class
 	 */
-	public function drawSpecificItem($item, $included=false) {
+	public function drawSpecificItem($item, $readOnly=false) {
 		global $print, $comboDetail, $nbColMax;
 		$result = "";
 		if ($this->refType) {
@@ -429,7 +429,7 @@ class WorkElementMain extends SqlElement {
 		} else {
 		  $refObj = new Ticket();
 		}
-		if ($item == 'run' and ! $comboDetail and ! $this->idle) {
+		if ($item == 'run' and ! $comboDetail and ! $this->idle and !$readOnly) {
 			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
 			}
@@ -479,7 +479,7 @@ class WorkElementMain extends SqlElement {
 			}
 			$result .= '</div>';
 			return $result;
-		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and $included) {
+		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and ! $readOnly) {
 			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
 			}
