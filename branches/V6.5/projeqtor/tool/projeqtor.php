@@ -1793,7 +1793,12 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
   $class=substr ( $menuName, 4 );
-  //return "YES"; debugLog("To remove");
+  global $remoteDb;
+  if (isset($remoteDb) and $remoteDb==true) {
+    if ($class=='Parameter' or $class=='History' or $class=='TranslationCode' or $class=='TranslationValue') {
+      return "YES";
+    }
+  }
   if (! SqlElement::class_exists ($class ) and $obj) {
     $class=get_class($obj);
   }

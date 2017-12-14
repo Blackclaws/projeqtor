@@ -118,8 +118,8 @@
     echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="OK" />';
-  } else if ($result=="NO") {
-    echo '<div class="messageWARNING" >' . i18n('noMailSent',array($dest, i18n('noEmailReceiver'))) . '</div>';
+  } else if ($result=="NO" or $dest=='0') {
+    echo '<div class="messageWARNING" >' .i18n('noEmailReceiver') . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="OK" />';
   } else {
