@@ -6406,7 +6406,6 @@ function saveMailMessage() {
 }
 //end
 
-
 //gautier #2935
 function findAutoEmail(){
   var adress=dijit.byId('dialogOtherMail').get('value');

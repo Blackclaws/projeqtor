@@ -404,6 +404,8 @@ class ProductVersionMain extends Version {
     return $result;
   }
   public function delete() {
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
     $result=parent::delete();
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
@@ -411,9 +413,18 @@ class ProductVersionMain extends Version {
     foreach ($list as $pvs) {
       $pvs->delete();
     }
+    $doNotUpdateAllVersionProject=false;
+    $ps=new ProductStructure();
+    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$this->idProduct));
+    foreach($psList as $ps) {
+      $comp=new Component($ps->idComponent);
+      $comp->updateAllVersionProject();
+    }
     return $result;
   }
   public function copy() {
+    global $doNotUpdateAllVersionProject;
+    $doNotUpdateAllVersionProject=true;
   	$this->initialEisDate=null;
   	$this->plannedEisDate=null;
   	$this->realEisDate=null;
@@ -476,7 +487,13 @@ class ProductVersionMain extends Version {
       $lang->save();
     }
     //end add atrancoso ticket#149
-    
+    $doNotUpdateAllVersionProject=false;
+    $ps=new ProductStructure();
+    $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$result->idProduct));
+    foreach($psList as $ps) {
+      $comp=new Component($ps->idComponent);
+      $comp->updateAllVersionProject();
+    }
     return $result;
   } 
 }
