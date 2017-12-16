@@ -85,6 +85,10 @@ class SqlList {
   private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true,$applyRestrictionClause=false) {
 //scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
     $res=array();
+    if (! SqlElement::class_exists($listType)) {
+      debugTraceLog("WARNING : SqlElement::fetchList() called for not valid class '$listType'");
+      return array();
+    }
     $obj=new $listType();
     $calculated=false;
     $field=$obj->getDatabaseColumnName($displayCol);

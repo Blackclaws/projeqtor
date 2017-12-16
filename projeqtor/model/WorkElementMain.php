@@ -145,7 +145,7 @@ class WorkElementMain extends SqlElement {
 		$user = getSessionUser();
 		// Update left work
 		$this->leftWork = $this->plannedWork - $this->realWork;
-		if ($this->leftWork < 0 or $this->done) {
+		if ($this->leftWork < 0 or $this->done or $this->idle) {
 			$this->leftWork = 0;
 		}
 		

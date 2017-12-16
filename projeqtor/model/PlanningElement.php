@@ -252,6 +252,7 @@ class PlanningElement extends SqlElement {
    * @return the result of parent::save() function
    */
   public function save() {
+    global $canForceClose;
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
     if (! $this->idProject) {
@@ -266,7 +267,7 @@ class PlanningElement extends SqlElement {
     	$this->idProject=$this->refId;
     }
     // If done and no work, set up end date
-    if (  $this->leftWork==0 and $this->realWork==0) {
+    if ($this->leftWork==0 and $this->realWork==0) {
       $refType=$this->refType;
       if ($refType) {
         $refObj=new $refType($this->refId);
@@ -292,9 +293,9 @@ class PlanningElement extends SqlElement {
         $ass=new Assignment();
         $critArray=array('refType'=>$this->refType,'refId'=>$this->refId);
         $this->realEndDate=$ass->getMaxValueFromCriteria('realEndDate', $critArray);
-      } else if ($this->leftWork>0 and $this->realEndDate) {
+      } else if ($this->leftWork>0 and $this->realEndDate and !$canForceClose) {
         $this->realEndDate=null;
-      }
+      } 
     	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
     }
     if ($this->validatedWork!=0) {
@@ -305,7 +306,7 @@ class PlanningElement extends SqlElement {
     	  $this->expectedProgress=0;
     	}  
     }
-    
+
     // update topId if needed
     $topElt=null;
     if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
@@ -401,11 +402,12 @@ class PlanningElement extends SqlElement {
     	$this->plannedStartDate=$this->realStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
+    
+    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
-
     // Update dependant objects
     if ($dispatchNeeded and ! self::$_noDispatch) {
     	projeqtor_set_time_limit(600);
@@ -476,6 +478,7 @@ class PlanningElement extends SqlElement {
     	$pe=new PlanningElement($old->topId);
     	$pe->renumberWbs();
     }
+   
     return $result;
   }
   public function setHandledOnRealWork ($action='check') {
@@ -851,8 +854,9 @@ class PlanningElement extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function control(){
+    global $canForceClose;
     $result="";
-    if ($this->idle and $this->leftWork>0) {
+    if ($this->idle and $this->leftWork>0 and !SqlElement::isSaveConfirmed() and !$canForceClose) {
       $result.='<br/>' . i18n('errorIdleWithLeftWork');
     }
     $stat=array('initial','validated','planned','real');
