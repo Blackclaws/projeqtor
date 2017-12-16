@@ -39,6 +39,10 @@ projeqtor_set_time_limit(3600); // 60mn
 $attachmentMaxSize=Parameter::getGlobalParameter('paramAttachmentMaxSize');
 
 if (array_key_exists('upload',$_FILES)) {
+  if(!is_dir($targetDir)){
+	  //Directory does not exist, so lets create it.
+	  mkdir('../files/images');
+  }
   $uploadedFile=$_FILES['upload'];
 } else {
   $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));

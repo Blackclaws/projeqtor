@@ -3016,6 +3016,8 @@ function getSessionUser() {
   if ($user===null) {
     return new User();
   } else {
+    $crit = array('idProfile' => $user->getProfile($user), 'scope' => 'canForceClose');
+    $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', $crit);
     $user->_isRetreivedFromSession=true;
     return $user;  
   }

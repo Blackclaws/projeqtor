@@ -135,6 +135,9 @@ class Assignment extends SqlElement {
     if (! $this->idRole) {
       $this->idRole=$r->idRole;
     }
+    if($this->idle){
+      $this->leftWork=0;
+    }
     $newCost=$r->getActualResourceCost($this->idRole);
     $this->newDailyCost=$newCost;
     $this->leftCost=$this->leftWork*$newCost;
