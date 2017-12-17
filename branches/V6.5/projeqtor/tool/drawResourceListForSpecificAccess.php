@@ -41,21 +41,32 @@ if (! $user->isResource) {
 $table = getListForSpecificRights($specific);
 
 $selectedProject=getSessionValue('project');
-if ($selectedProject and $selectedProject!='*' and (!isset($limitResourceByProj) or $limitResourceByProj=='on') ) {
-	$restrictTable=array();
+if ($selectedProject and $selectedProject!='*' and (isset($limitResourceByProj) and $limitResourceByProj=='on') ) {
+  $restrictTableProjectSelected=array();
 	$prj=new Project( $selectedProject , true);
 	$lstTopPrj=$prj->getTopProjectList(true);
-	$in=transformValueListIntoInClause($lstTopPrj);
+	$sub=$prj->getRecursiveSubProjectsFlatList();
+	$in=transformValueListIntoInClause(array_merge($lstTopPrj,array_keys($sub)));
 	$crit='idProject in ' . $in;
 	$aff=new Affectation();
 	$lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
 	foreach ($lstAff as $id=>$aff) {
-		if (array_key_exists($aff->idResource,$table)) {
-			$restrictTable[$aff->idResource]=$table[$aff->idResource];
-		}
+			$restrictTableProjectSelected[$aff->idResource]=$aff->idResource;
 	}
-	$table=$restrictTable;
 }
+
+$restrictArrayVisibility = getUserVisibleResourcesList(true);
+foreach ($table as $idR=>$nameR) {
+  if (isset($restrictTableProjectSelected) and !isset($restrictTableProjectSelected[$idR])) {
+    unset($table[$idR]);
+    continue;
+  }
+  if (!isset($restrictArrayVisibility[$idR])) {
+    unset($table[$idR]);
+    continue;
+  }
+}
+
 if (!isset($table[$user->id])) {
   $table[$user->id]=$user->name;
 }

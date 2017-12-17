@@ -813,7 +813,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo '<tr><td colspan=2>';
       }
 // CHANGE BY Marc TABARY - 2017-03-08 - FORCE DRAWING A SPECIFIC ITEM      
-      if ((!$hide and !$obj->isAttributeSetToField($col,'hidden') and !in_array($col,$extraHiddenFields)) or $obj->isAttributeSetToField($col,'drawforce')==true) {
+      if ((!$hide and !$parentHidden and !$obj->isAttributeSetToField($col,'hidden') and !in_array($col,$extraHiddenFields)) or $obj->isAttributeSetToField($col,'drawforce')==true) {
         echo $obj->drawSpecificItem($item,($included?$parentReadOnly:$readOnly)); // the method must be implemented in the corresponidng class  
       }
       // Old 

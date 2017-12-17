@@ -174,6 +174,7 @@ class OrganizationMain extends SqlElement {
   	parent::__construct($id,$withoutDependentObjects);
   	$currentDetailObj=SqlElement::getCurrentObject(null,null,true,false);
   	if (!$withoutDependentObjects and $currentDetailObj and get_class($currentDetailObj)==get_class($this) and $currentDetailObj->id=$this->id) $this->setAttributesForBudget();
+  	if (!$this->id) $this->setAttributesForBudget();
   	if($budgetElement!=null and $id!=null and trim($id)!='') {
   	  $this->updateBudgetElementSynthesis($budgetElement);
   	  return;
@@ -514,7 +515,9 @@ class OrganizationMain extends SqlElement {
         }
     }
     }
-
+    if (!$this->alertOverPct) $this->alertOverPct=0;
+    if (!$this->warningOverPct) $this->warningOverPct=0;
+    if (!$this->okUnderPct) $this->okUnderPct=0;
     $result = parent::save();
     $lastStatus = getLastOperationStatus($result);
     if ($lastStatus!='OK') {

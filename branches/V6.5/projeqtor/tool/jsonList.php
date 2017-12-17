@@ -140,26 +140,32 @@
       } else if ($dataType=='imputationResource') {
         $class='Affectable';
         $specific='imputation';
-        $table = getListForSpecificRights($specific);
-        
+        $list = getListForSpecificRights($specific);
         $selectedProject=getSessionValue('project');
         $limitResourceByProj=Parameter::getUserParameter("limitResourceByProject");
         if ($selectedProject and $selectedProject!='*' and $limitResourceByProj=='on') {
-          $restrictTable=array();
-          $prj=new Project( $selectedProject , true);
-          $lstTopPrj=$prj->getTopProjectList(true);
-          $in=transformValueListIntoInClause($lstTopPrj);
-          $crit='idProject in ' . $in;
-          $aff=new Affectation();
-          $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
-          foreach ($lstAff as $id=>$aff) {
-            if (array_key_exists($aff->idResource,$table)) {
-              $restrictTable[$aff->idResource]=$table[$aff->idResource];
-            }
+          $restrictTableProjectSelected=array();
+        	$prj=new Project( $selectedProject , true);
+        	$lstTopPrj=$prj->getTopProjectList(true);
+        	$sub=$prj->getRecursiveSubProjectsFlatList();
+        	$in=transformValueListIntoInClause(array_merge($lstTopPrj,array_keys($sub)));
+        	$crit='idProject in ' . $in;
+        	$aff=new Affectation();
+        	$lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
+        	foreach ($lstAff as $id=>$aff) {
+        			$restrictTableProjectSelected[$aff->idResource]=$aff->idResource;
+        	}
+        }
+        $restrictArrayVisibility = getUserVisibleResourcesList(true);
+        foreach ($list as $idR=>$nameR) {
+          if (isset($restrictTableProjectSelected) and !isset($restrictTableProjectSelected[$idR])) {
+            unset($list[$idR]);
+            continue;
           }
-          $list=$restrictTable;
-        } else {
-          $list=$table;
+          if (!isset($restrictArrayVisibility[$idR])) {
+            unset($list[$idR]);
+            continue;
+          }
         }
         $user=getSessionUser();
         if (!isset($list[$user->id])) {
