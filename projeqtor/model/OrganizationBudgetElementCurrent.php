@@ -76,7 +76,7 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
         // Get Parent organization of BudgetElement
         $parentOrga = $this->getOrganizationParent();
         // If exists
-        if ($parentOrga != null) {
+        if ($parentOrga != null and $parentOrga->id) {
             // Calculate new budgets for parent organization
             $diffBudgetWork = $this->budgetWork - $old->budgetWork;
             $diffBudgetCost = $this->budgetCost - $old->budgetCost;

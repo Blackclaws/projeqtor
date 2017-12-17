@@ -421,7 +421,7 @@ class WorkElementMain extends SqlElement {
 	 * @return an html string able to display a specific item
 	 *         must be redefined in the inherited class
 	 */
-	public function drawSpecificItem($item, $readOnly=false) {
+	public function drawSpecificItem($item, $readOnly=false, $included=false) {
 		global $print, $comboDetail, $nbColMax;
 		$result = "";
 		if ($this->refType) {
@@ -456,7 +456,7 @@ class WorkElementMain extends SqlElement {
 				
 			}
 			if ($canUpdate and $this->id and property_exists($this,'_spe_dispatch')) {
-			  $result.=$this->drawSpecificItem('dispatch', true);
+			  $result.=$this->drawSpecificItem('dispatch', $readOnly, true); // Attention : must be kept call here, to preserve correct position
 			}
 			if ($this->ongoing) {
 				if ($this->idUser == $user->id) {
@@ -479,7 +479,7 @@ class WorkElementMain extends SqlElement {
 			}
 			$result .= '</div>';
 			return $result;
-		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and ! $readOnly) {
+		} else if ($item == 'dispatch' and ! $comboDetail and ! $this->idle and ! $readOnly and $included) {
 			if ($print or $this->isAttributeSetToField('realWork', 'readonly')) {
 				return "";
 			}

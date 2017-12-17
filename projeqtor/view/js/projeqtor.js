@@ -2362,10 +2362,11 @@ function setSelectedProject(idProject, nameProject, selectionField) {
         loadContent("../view/dashboardTicketMain.php", "centerDiv");
       } else if (dojo.byId('currentPhpPage') && dojo.byId('currentPhpPage').value) {
         loadContent("../view/dashboardTicketMain.php", "centerDiv");
-      } else if (dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
-        refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true);
       } else if (currentPluginPage) {
         loadContent(currentPluginPage, "centerDiv");
+      }
+      if (dijit.byId('imputationButtonDiv') && dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
+        refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true); 
       }
 	};
 	saveDataToSession('project', idProject, null, callBack);
