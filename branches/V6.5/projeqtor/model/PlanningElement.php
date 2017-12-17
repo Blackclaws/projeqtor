@@ -400,6 +400,7 @@ class PlanningElement extends SqlElement {
     }
     if ($this->realStartDate){
     	$this->plannedStartDate=$this->realStartDate;
+    	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
     
@@ -569,6 +570,7 @@ class PlanningElement extends SqlElement {
   
   // Save without extra save() feature and without controls
   public function simpleSave() {
+    if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     if ($this->validatedStartDate and $this->validatedEndDate) {
     	$this->validatedDuration=workDayDiffDates($this->validatedStartDate, $this->validatedEndDate);
