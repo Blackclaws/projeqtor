@@ -2,11 +2,11 @@
 <project name="ProjeQtOr V6.5" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V6.5.1" />
+  <property name="version"       value="V7.0.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="${drive}/www/projeqtorV6.5" />
+  <property name="src.dir"       value="${drive}/www/projeqtorV7.0" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
