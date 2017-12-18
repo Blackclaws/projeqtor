@@ -173,7 +173,7 @@ class OrganizationMain extends SqlElement {
       
   	parent::__construct($id,$withoutDependentObjects);
   	$currentDetailObj=SqlElement::getCurrentObject(null,null,true,false);
-  	if (!$withoutDependentObjects and $currentDetailObj and get_class($currentDetailObj)==get_class($this) and $currentDetailObj->id=$this->id) $this->setAttributesForBudget();
+  	if (!$withoutDependentObjects and $currentDetailObj and get_class($currentDetailObj)==get_class($this) and $currentDetailObj->id==$this->id) $this->setAttributesForBudget();
   	if (!$this->id) $this->setAttributesForBudget();
   	if($budgetElement!=null and $id!=null and trim($id)!='') {
   	  $this->updateBudgetElementSynthesis($budgetElement);
