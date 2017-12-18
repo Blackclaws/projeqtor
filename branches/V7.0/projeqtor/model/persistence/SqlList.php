@@ -194,7 +194,8 @@ class SqlList {
     }
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
-      if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user') and $col=='idProject') {
+      if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user' 
+      or strtolower($listType)=='accountable' or strtolower($listType)=='affectable') and $col=='idProject') {
         $aff=new Affectation();
         $user=new Resource();
         if ($val=='*' or ! $val) {$val=0;}
