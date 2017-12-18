@@ -134,7 +134,9 @@
       } else {
         $class=substr($dataType,2);
       }
-      if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
+      if ($dataType=='idContact' and $critField=='idProject') {
+        $list=SqlList::getListWithCrit('Contact', array($critField=>$critValue));
+      } else if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
       	$user=getSessionUser();
       	$list=$user->getVisibleProjects();
       } else if ($dataType=='imputationResource') {
