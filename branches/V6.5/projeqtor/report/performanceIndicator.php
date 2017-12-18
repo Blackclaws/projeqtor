@@ -95,33 +95,34 @@ $end="";
 $proj=new Project($idProject,true);
 
 if($element == 'activities' or $element =='both'){
+  $ass=new Assignment();
+  $assTable=$ass->getDatabaseTableName();
+  $querySelect = " SELECT DISTINCT  $assTable.idResource,
+                                    $assTable.refId as idActivite,
+          			                    $assTable.plannedWork,
+                                    $assTable.assignedWork,
+                                    $assTable.realEndDate ";
   
-  $querySelect = " SELECT DISTINCT  assignment.idResource,
-                                    assignment.refId as idActivite,
-          			                    assignment.plannedWork,
-                                    assignment.assignedWork,
-                                    assignment.realEndDate ";
+  $queryFrom = "   FROM $assTable ";
   
-  $queryFrom = "   FROM assignment ";
-  
-  $queryWhere = "  WHERE assignment.refType = 'Activity'";
-  $queryWhere.= " AND assignment.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
+  $queryWhere = "  WHERE $assTable.refType = 'Activity'";
+  $queryWhere.= " AND $assTable.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
   if($resource != ' '){
-    $queryWhere .= " AND assignment.idResource = ".$resource;
+    $queryWhere .= " AND $assTable.idResource = ".$resource;
   }else{
-    $queryWhere .= " AND assignment.idResource <> 'NULL' ";
+    $queryWhere .= " AND $assTable.idResource is not null ";
   }
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
-      $queryWhere .=  " AND   (assignment.realEndDate >= '$startDateReport'";
-      $queryWhere .= "         OR assignment.realEndDate IS NULL )";
+      $queryWhere .=  " AND   ($assTable.realEndDate >= '$startDateReport'";
+      $queryWhere .= "         OR $assTable.realEndDate IS NULL )";
     }else{
-      $queryWhere .= "  AND assignment.realEndDate >= '$startDateReport'";
+      $queryWhere .= "  AND $assTable.realEndDate >= '$startDateReport'";
     }
   }
   if($endDateReport != null ){
-    $queryWhere .=  "  AND ( assignment.realStartDate <= '$endDateReport'";
-    $queryWhere .= "      OR assignment.realStartDate IS NULL )";
+    $queryWhere .=  "  AND ( $assTable.realStartDate <= '$endDateReport'";
+    $queryWhere .= "      OR $assTable.realStartDate IS NULL )";
  }
 
   $queryOrder = " order by idResource, idActivite ;";
@@ -414,6 +415,7 @@ foreach ($arrLabel as $val){
 }
 
 $datesResource = array();
+$idDateResource=null;
 foreach ($nb2 as $id=>$value){
  foreach ($value as $idddd=>$val){
    $datesResource[$id][]= $idddd;
@@ -435,9 +437,11 @@ if($scale!='day'){
     $today=$year.'-Q'.$quarter;
   }
 
-  foreach ($datesResource[$idDateResource] as $val){
-    if ($val<$today){
-      $indexToday++;
+  if ($idDateResource) {
+    foreach ($datesResource[$idDateResource] as $val){
+      if ($val<$today){
+        $indexToday++;
+      }
     }
   }
 }
@@ -660,34 +664,38 @@ echo '<br/>';
 //FUNCTION
 function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   $proj=new Project($idProject,true);
-  $querySelect = " SELECT DISTINCT  ticket.idResource,
-                          workelement.refId as idTicket,
-			                    workelement.realwork,
-                          workelement.leftWork,
-                          workelement.plannedWork,
-                          ticket.doneDateTime as date";
+  $tk=new Ticket();
+  $tkTable=$tk->getDatabaseTableName();
+  $we=new WorkElement();
+  $weTable=$we->getDatabaseTableName();
+  $querySelect = " SELECT DISTINCT  $tkTable.idResource,
+                          $weTable.refId as idTicket,
+			                    $weTable.realwork,
+                          $weTable.leftWork,
+                          $weTable.plannedWork,
+                          $tkTable.doneDateTime as date";
   
-  $queryFrom = "   FROM ticket,workelement ";
+  $queryFrom = "   FROM $tkTable,$weTable ";
   
-  $queryWhere = "  WHERE  ticket.id = workelement.refId";
-  $queryWhere.= " AND assignment.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
+  $queryWhere = "  WHERE  $tkTable.id = $weTable.refId and $weTable.refType='Ticket'";
+  $queryWhere.= " AND $tkTable.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
   if($resource != ' '){
-    $queryWhere .= " AND ticket.idResource = ".$resource;
+    $queryWhere .= " AND $tkTable.idResource = ".$resource;
   }else{
-    $queryWhere .= " AND ticket.idResource <> 'NULL' ";
+    $queryWhere .= " AND $tkTable.idResource is not null ";
   }
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
-      $queryWhere .=  "  AND   (ticket.doneDateTime >= '$startDateReport'";
-      $queryWhere .= " OR ticket.doneDateTime IS NULL )";
+      $queryWhere .=  "  AND   ($tkTable.doneDateTime >= '$startDateReport'";
+      $queryWhere .= " OR $tkTable.doneDateTime IS NULL )";
     }else{
-      $queryWhere .=  "  AND ticket.doneDateTime >= '$startDateReport'";
+      $queryWhere .=  "  AND $tkTable.doneDateTime >= '$startDateReport'";
     }
   }
   
   if($endDateReport != null ){
-    $queryWhere .=  "  AND  (ticket.doneDateTime <= '$endDateReport'";
-    $queryWhere .= " OR ticket.doneDateTime IS NULL )";
+    $queryWhere .=  "  AND  ($tkTable.doneDateTime <= '$endDateReport'";
+    $queryWhere .= " OR $tkTable.doneDateTime IS NULL )";
   }
   
   $queryOrder = " order by idResource, idTicket, date ;";
