@@ -1227,9 +1227,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $fieldId=$col;
       }
       // prepare the javascript code to be executed
-      $colScript=$obj->getValidationScript($col);
+      $colScript="";
+      if ($outMode != 'pdf') $colScript=$obj->getValidationScript($col);
       $colScriptBis="";
-      if ($dataType == 'datetime') {
+      if ($dataType == 'datetime' and $outMode != 'pdf') {
         $colScriptBis=$obj->getValidationScript($col . "Bis");
       }
       // if ($comboDetail) {
@@ -2076,7 +2077,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
 // END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER        
       } else if ($dataType == 'int' or $dataType == 'decimal' ) {
         // Draw a number field ================================================ NUMBER
-        $colScript=NumberFormatter52::completeKeyDownEvent($colScript);
+        $colScript=($outMode != 'pdf')?NumberFormatter52::completeKeyDownEvent($colScript):'';
         $isCost=false;
         $isWork=false;
         $isDuration=false;
