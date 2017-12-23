@@ -594,8 +594,11 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used
    */
   public function save() {
-    global $debugTraceUpdates;
-    if ( isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);}
+    global $debugTraceUpdates, $debugTraceHistory;
+    if ( isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+    }
     $peName=get_class($this).'PlanningElement';
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) and !isset($old)) {
       $old=$this->getOld();
@@ -723,7 +726,10 @@ abstract class SqlElement {
         }
       }
     }
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("End SAVE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);}
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("End SAVE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+    }
     return $result;
   }
 
@@ -792,9 +798,12 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used
    */
   public function delete() {
-    global $debugTraceUpdates;
+    global $debugTraceUpdates, $debugTraceHistory;
     // PlugIn Management
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("Start DELETE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);}
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("Start DELETE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+    }
     $list = Plugin::getEventScripts ( 'beforeDelete', get_class ( $this ) );
     foreach ( $list as $script ) {
       require $script; // execute code
@@ -805,7 +814,10 @@ abstract class SqlElement {
     foreach ( $list as $script ) {
       require $script; // execute code
     }
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("End DELETE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);}
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("End DELETE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+    }
     return $result;
   }
 
@@ -816,19 +828,32 @@ abstract class SqlElement {
    * @return the new object
    */
   public function copy() {
-    global $debugTraceUpdates;
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("Start COPY for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);}
+    global $debugTraceUpdates,$debugTraceHistory;
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("Start COPY for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+    }
     self::setCopyInProgress();
     $result= $this->copySqlElement ();
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("End COPY for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);}
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("End COPY for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+    }
     return $result;
   }
 
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = null, $toActivity = null, $copyToWithResult = false, $copyToWithVersionProjects = false) {
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("Start COPYTO for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);}
+    global $debugTraceUpdates,$debugTraceHistory;
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("Start COPYTO for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+    }
     self::setCopyInProgress();
     $result=$this->copySqlElementTo ( $newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments, $withAffectations, $toProject, $toActivity, $copyToWithResult );
-    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {debugTraceLog("End COPYTO for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);}
+    if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
+      if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
+        debugTraceLog("End COPYTO for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+    }
     return $result;
   }
   
