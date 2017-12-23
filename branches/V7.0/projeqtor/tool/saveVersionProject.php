@@ -69,7 +69,13 @@ $versionProject->idle=$idle;
 $versionProject->startDate=$startDate;
 $versionProject->endDate=$endDate;
 
+global $doNotUpdateAllVersionProject; // for Perfs improvment
+$doNotUpdateAllVersionProject=true;
+
 $result=$versionProject->save();
+
+$versionProject->propagateCreationToComponentVersions();
+$doNotUpdateAllVersionProject=false; // Finish perfs improvment
 
 // Message of correct saving
 displayLastOperationStatus($result);

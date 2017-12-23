@@ -311,17 +311,17 @@ class ComponentMain extends ProductOrComponent {
   
   public function updateAllVersionProject() {
     global $doNotUpdateAllVersionProject;
-    if ($doNotUpdateAllVersionProject) return;
+    if ($doNotUpdateAllVersionProject) return; // This will avoid unexpected recursive call in some cases
     $vers=new ComponentVersion();
-    $versList=$vers->getSqlElementsFromCriteria(array('idComponent'=>$this->id),null,null,null,null,true);
+    $versList=$vers->getSqlElementsFromCriteria(array('idComponent'=>$this->id),null,null,null,null,true); // List all versions of the component
     foreach ($versList as $vers) {
-      $existing=$vers->getLinkedProjects(false); // List of projects linked
-      $target=array(); // List of project that should be linked
-      $productVersions=$vers->getLinkedProductVersions(false);
+      $existing=$vers->getLinkedProjects(false); // List of projects linked to the version of the component
+      $target=array(); // Will list of project that should be linked to the version of the component
+      $productVersions=$vers->getLinkedProductVersions(false); // List all product versions using this component version
       foreach ($productVersions as $pvId) {
         $pv=new ProductVersion($pvId,true);
         $arr=$pv->getLinkedProjects(false);
-        $target=array_merge_preserve_keys($target,$arr);
+        $target=array_merge_preserve_keys($target,$arr); // If product version is linked to project, component version should also be linked
       }
       foreach ($existing as $projId) {
         if (! in_array($projId,$target)) { // Existing not in target => delete VersionProject for all versions
@@ -331,9 +331,9 @@ class ComponentMain extends ProductOrComponent {
           }
         }
       }
-      foreach ($target as $projId) {
+      foreach ($target as $projId) { 
         $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$projId,'idVersion'=>$vers->id),true);
-        if (! $vp->id) {
+        if (! $vp->id) { // targt not existing yet : create it
           $res=$vp->save();
         }
       }
