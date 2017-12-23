@@ -41,9 +41,17 @@ if ($versionProjectId=='') {
 if ($versionProjectId==null) {
   throwError('versionProjectId parameter not found in REQUEST');
 }
+
 Sql::beginTransaction();
 $obj=new VersionProject($versionProjectId);
+
+global $doNotUpdateAllVersionProject; // for Perfs improvment
+$doNotUpdateAllVersionProject=true;
+
 $result=$obj->delete();
+
+$obj->propagateDeletionToComponentVersions();
+$doNotUpdateAllVersionProject=false; // Finish perfs improvment
 
 // Message of correct saving
 displayLastOperationStatus($result);
