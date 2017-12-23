@@ -199,5 +199,46 @@ class VersionProject extends SqlElement {
       $vp->save();
     }
   }
+  
+  public function propagateCreationToComponentVersions() {
+    $pv=new ProductVersion($this->idVersion,true);
+    $listCV=$pv->getComposition(false,true);
+    $listIn="(0";
+    foreach ($listCV as $cv=>$cvId) {
+      $listIn.=",".$cvId;
+    }
+    $listIn.=')';
+    $vp=new VersionProject();
+    $listVP=$vp->getSqlElementsFromCriteria(null,null,"idProject=$this->idProject and idVersion in $listIn");
+    $listVPkey=array();
+    foreach ($listVP as $vp) {
+      $listVPkey[$vp->idVersion]=$vp->idVersion;
+    }
+    foreach ($listCV as $cv) {
+      if (! isset($listVPkey[$cv])) {
+        $vp=new VersionProject();
+        $vp->idProject=$this->idProject;
+        $vp->idVersion=$cv;
+        $vp->idle=$this->idle;
+        $vp->startDate=$this->startDate;
+        $vp->endDate=$this->endDate;
+        $vp->save();
+      }
+    }  
+  }
+  public function propagateDeletionToComponentVersions() {
+    $pv=new ProductVersion($this->idVersion,true);
+    $listCV=$pv->getComposition(false,true);
+    $listIn="(0";
+    foreach ($listCV as $cv=>$cvId) {  
+        $listIn.=",".$cvId;
+    }
+    $listIn.=')';
+    $vp=new VersionProject();
+    $listVP=$vp->getSqlElementsFromCriteria(null,null,"idProject=$this->idProject and idVersion in $listIn");
+    foreach ($listVP as $vp) {
+      $vp->delete();
+    }
+  }
 }
 ?>
