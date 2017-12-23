@@ -84,16 +84,9 @@ class ProductProject extends SqlElement {
       $vp->endDate=$this->endDate;
       $vp->idle=$this->idle;
       $vp->save();
+      $vp->propagateCreationToComponentVersions();
     }
-    $doNotUpdateAllVersionProject=false;
-    if ($new) { // On new link Version<->Project, must create VersionProject for components of Product
-      $p=new Product($this->idProduct,true);
-      $compList=$p->getComposition(false,true);
-      foreach ($compList as $compId=>$compName) {
-        $comp=new Component($compId,true);
-        $comp->updateAllVersionProject();
-      }
-    } 
+    
     return $result;
   }
   public function delete() {
@@ -107,14 +100,8 @@ class ProductProject extends SqlElement {
       $vp=SqlElement::getSingleSqlElementFromCriteria('VersionProject', array('idProject'=>$this->idProject, 'idVersion'=>$vers->id));
       if ($vp->id) {
         $vp->delete();
+        $vp->propagateDeletionToComponentVersions();
       }
-    }
-    // Update links of components
-    $p=new Product($this->idProduct,true);
-    $compList=$p->getComposition(false,true);
-    foreach ($compList as $compId=>$compName) {
-      $comp=new Component($compId,true);
-      $comp->updateAllVersionProject();
     }
     return $result;
   }
