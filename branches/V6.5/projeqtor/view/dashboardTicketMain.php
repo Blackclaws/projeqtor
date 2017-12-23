@@ -102,39 +102,39 @@
 			style="width: 97%; margin: 0 auto; height: 90px; padding-bottom: 15px; border-bottom: 1px solid #CCC;">
 			<table width="100%" class="dashboardTicketMain">
 				<tr>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left" ><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainAllTicket=0')"
 									href="#"><?php echo i18n("dashboardTicketMainAllIssues").addSelected("dashboardTicketMainAllTicket",0);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainAllTicket=2')"
 									href="#"><?php echo i18n("dashboardTicketMainUnclosed").addSelected("dashboardTicketMainAllTicket",2);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainAllTicket=1')"
 									href="#"><?php echo i18n("dashboardTicketMainUnresolved").addSelected("dashboardTicketMainAllTicket",1);?></a></td>
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainRecent=1')"
 									href="#"><?php echo i18n("dashboardTicketMainAddedRecently").addSelected("dashboardTicketMainRecent",1);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainRecent=2')"
 									href="#"><?php echo i18n("dashboardTicketMainResolvedRecently").addSelected("dashboardTicketMainRecent",2);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainRecent=3')"
 									href="#"><?php echo i18n("dashboardTicketMainUpdatedRecently").addSelected("dashboardTicketMainRecent",3);?></a></td>
 							</tr>
@@ -149,30 +149,30 @@
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainToMe=1')"
 									href="#"><?php echo i18n("dashboardTicketMainAssignedToMe").addSelected("dashboardTicketMainToMe",1);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainToMe=2')"
 									href="#"><?php echo i18n("dashboardTicketMainReportedByMe").addSelected("dashboardTicketMainToMe",2);?></a></td>
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:20%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardTicket('dashboardTicketMainUnresolved=1')"
 									href="#"><?php echo i18n("dashboardTicketMainUnscheduled").addSelected("dashboardTicketMainUnresolved",1);?></a></td>
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<button id="updateTabDashboardTicketMain"
 							dojoType="dijit.form.Button" showlabel="false"
 							title="<?php echo i18n('menuParameter');?>"

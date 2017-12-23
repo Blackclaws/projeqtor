@@ -2994,7 +2994,7 @@ table.dijitCalendarContainer {
   text-decoration: none;
   font-size: 14px;
   line-height: 20px;
-  cursor: auto;
+  /* cursor: auto; */
 }
 
 .tabDashboardTicketMain tr{

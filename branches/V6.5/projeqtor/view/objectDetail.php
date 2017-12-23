@@ -4804,12 +4804,14 @@ function drawProductProjectsFromObject($list, $obj, $refresh=false) {
     }
     $goto="";
     if ($idProj) {
-      if (!$print and securityCheckDisplayMenu(null, 'Product') and securityGetAccessRightYesNo('menuProduct', 'read', '') == "YES") {
+      $p=new Product($pp->idProduct,true);
+      if (!$print and securityCheckDisplayMenu(null, 'Product') and securityGetAccessRightYesNo('menuProduct', 'read', $p) == "YES") {
         $goto=' onClick="gotoElement(\'Product\',\'' . htmlEncode($pp->idProduct) . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Product', $pp->idProduct)) . '</td>';
     } else {
-      if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '') == "YES") {
+      $p=new Project($pp->idProject,true);
+      if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', $p) == "YES") {
         $goto=' onClick="gotoElement(\'Project\',\'' . htmlEncode($pp->idProject) . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $pp->idProject)) . '</td>';
