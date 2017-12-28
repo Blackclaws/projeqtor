@@ -3032,6 +3032,13 @@ function billLineUpdateAmount() {
   var amount=price*quantity;
   dijit.byId('billLineAmount').set('value',amount);
 }
+function billLineUpdateNumberDays() {
+  if (dijit.byId('billLineUnit') && dijit.byId('billLineUnit').get("value")=='3' ) { // If unit = day
+    if (dijit.byId('billLineNumberDays') && dijit.byId('billLineQuantity') && dijit.byId('billLineQuantity').get("value")>0) {
+      dijit.byId('billLineNumberDays').set("value",dijit.byId('billLineQuantity'));
+    }
+  }
+}
 
 // =============================================================================
 // = ChecklistDefinitionLine
