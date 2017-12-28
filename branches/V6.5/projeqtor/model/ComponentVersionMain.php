@@ -325,6 +325,7 @@ class ComponentVersionMain extends Version {
   
   
   public function save() {
+    $this->idProduct=$this->idComponent; // idProduct set from Version parent object, but may be not set, so avoid erasing.
     $old=$this->getOld();
     $this->scope='Component';
     $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
