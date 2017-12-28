@@ -313,6 +313,7 @@ if ($line->line) {
                     <select dojoType="dijit.form.FilteringSelect" 
                     <?php echo autoOpenFilteringSelect();?>
                     id="billLineUnit" name="billLineUnit" 
+                    onChange="billLineUpdateNumberDays();"
                     style="width: 100px;"
                     <?php if (isset($readOnly['unit'])) echo " readonly ";?>
                     class="input" value="<?php if ($line->idMeasureUnit) echo $line->idMeasureUnit; else echo ' ';?>" >
@@ -332,7 +333,7 @@ if ($line->line) {
                 id="billLineQuantity" name="billLineQuantity"
                 <?php if (isset($readOnly['quantity'])) echo " readonly ";?>
                 style="width:100px;"
-                onChange="billLineUpdateAmount();"
+                onChange="billLineUpdateAmount();billLineUpdateNumberDays();"
                 class="input"  value="<?php echo $line->quantity;?>">
                 <?php echo $keyDownEventScript;?>  
                </div>
@@ -363,7 +364,6 @@ if ($line->line) {
                <div dojoType="dijit.form.NumberTextBox" 
                 id="billLineNumberDays" name="billLineNumberDays"
                 style="width:100px;"
-                onChange="billLineUpdateNumberDays();"
                 class="input"  value="<?php echo $line->numberDays;?>">
                 <?php echo $keyDownEventScript;?>  
                </div> 
