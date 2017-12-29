@@ -78,7 +78,7 @@ class Habilitation extends SqlElement {
  
     // Set Main menu to accessible if one of sub-menu is available
     $query="select distinct h.idProfile profile, m.idMenu menu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
-    $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0 and m.idle=0";
+    $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0 and (m.idle=0 or m.type='menu')";
     $result=Sql::query($query);
     $critList="";
     $critListInsert="";

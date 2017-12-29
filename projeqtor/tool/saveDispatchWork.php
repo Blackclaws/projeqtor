@@ -30,7 +30,6 @@
  */
 
 require_once "../tool/projeqtor.php";
-
 // Get the note info
 if (! array_key_exists('dispatchWorkObjectClass',$_REQUEST)) {
   throwError('dispatchWorkObjectClass parameter not found in REQUEST');
@@ -97,6 +96,7 @@ foreach ($dateList as $idx=>$date) {
   if ( (trim($date) and isset($resourceList[$idx]) and trim($resourceList[$idx])) or (isset($workIdList[$idx]) and $workIdList[$idx]) ) {
     $id=(isset($workIdList[$idx]))?$workIdList[$idx]:null;
     $work=new Work($id);
+    $oldWork=new Work($id);;
     if (trim($date)) $work->setDates($date);
     if (isset($resourceList[$idx]) and trim($resourceList[$idx])) $work->idResource=$resourceList[$idx];
     $work->idProject=$obj->idProject;
@@ -116,6 +116,10 @@ foreach ($dateList as $idx=>$date) {
     $work->dailyCost=null; // set to null to force refresh 
     $work->cost=null;
     $work->save();
+    if ($work->idResource != $oldWork->idResource) {
+      $oldAss=WorkElement::updateAssignment($oldWork, $oldWork->work*(-1));
+      $diff=$newWork;
+    }
     $ass=WorkElement::updateAssignment($work, $diff);
     $work->idAssignment=($ass)?$ass->id:null;
     $resWork="";

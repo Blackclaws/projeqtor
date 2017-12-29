@@ -324,13 +324,6 @@ foreach ($lstTicket as $t) {
 
 if (checkNoData($lstTicket)) return;
 
-$createdSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$created[13]);
-$created[13]=VOID;
-$doneSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$done[13]);
-$done[13]=VOID;
-$closedSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$closed[13]);
-$closed[13]=VOID;
-
 // title
 echo '<table width="95%" align="center">';
 echo '<tr><td class="reportTableHeader" rowspan="2">' . i18n('Ticket') . '</td>';
@@ -394,6 +387,13 @@ for ($line=1; $line<=3; $line++) {
 }
 echo '</table>';
   
+$createdSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$created[13]);
+$doneSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$done[13]);
+$closedSum=array(VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,VOID,$closed[13]);
+$closed[13]=VOID;
+$created[13]=VOID;
+$done[13]=VOID;
+
 // Render graph
 // pGrapg standard inclusions     
 if (! testGraphEnabled()) { return;}
@@ -439,30 +439,35 @@ $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.t
 
 /* title */
 $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
-$graph->drawLegend($width+30,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
+$graph->drawLegend($width+18,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
     "Margin"=>5));
 
 /* Draw the scale */
-$graph->setGraphArea(60,50,$width-20,$height-$legendHeight);
-$formatGrid=array("Mode"=>SCALE_MODE_ADDALL_START0, "GridTicks"=>0,
-    "DrawYLines"=>array(0), "DrawXLines"=>false,"Pos"=>SCALE_POS_LEFTRIGHT,
+$graph->setGraphArea(60,20,$width-20,$height-40);
+$formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
+    "DrawYLines"=>array(0), "DrawXLines"=>true,"Pos"=>SCALE_POS_LEFTRIGHT,
     "LabelRotation"=>90, "GridR"=>200,"GridG"=>200,"GridB"=>200);
-$graph->drawScale($formatGrid);
+//$graph->drawScale($formatGrid);
 $graph->Antialias = TRUE;
 
-$dataSet->setAxisPosition(0,AXIS_POSITION_RIGHT);
-
 $dataSet->addPoints($createdSum,"createdSum");
-$dataSet->setSerieOnAxis("createdSum",0);
+$dataSet->setSerieOnAxis("createdSum",1);
 $dataSet->addPoints($doneSum,"doneSum");
-$dataSet->setSerieOnAxis("doneSum",0);
+$dataSet->setSerieOnAxis("doneSum",1);
 $dataSet->addPoints($closedSum,"closedSum");
-$dataSet->setSerieOnAxis("closedSum",0);
+$dataSet->setSerieOnAxis("closedSum",1);
 $dataSet->setAxisName(0,i18n("sum"));
+$dataSet->setAxisPosition(1,AXIS_POSITION_RIGHT);
+$serieSettings = array("R"=>200,"G"=>100,"B"=>100);
+$dataSet->setPalette("createdSum",$serieSettings);
+$serieSettings = array("R"=>100,"G"=>200,"B"=>100);
+$dataSet->setPalette("doneSum",$serieSettings);
+$serieSettings = array("R"=>100,"G"=>100,"B"=>200);
+$dataSet->setPalette("closedSum",$serieSettings);
 
-$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 ,"AutoAxisLabels"=>FALSE,"Mode"=>SCALE_MODE_ADDALL_START0);
+//$formatGrid=array("LabelRotation"=>90,"GridTicks"=>0 ,"AutoAxisLabels"=>FALSE,"Mode"=>SCALE_MODE_START0);
 $graph->drawScale($formatGrid);
 
 $dataSet->setSerieDrawable("created",true);
