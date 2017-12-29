@@ -59,6 +59,13 @@ class ProjectHistory extends SqlElement {
     parent::__destruct();
   }
 
+  function save() {
+    if ($this->realCost<0) $this->realCost=0;
+    if ($this->leftCost<0) $this->leftCost=0;
+    if ($this->totalRealCost<0) $this->totalRealCost=0;
+    if ($this->totalLeftCost<0) $this->totalLeftCost=0;
+    return parent::save();
+  }
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
