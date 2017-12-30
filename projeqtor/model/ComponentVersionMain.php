@@ -80,6 +80,8 @@ class ComponentVersionMain extends Version {
   public $_productLanguage;
   public $_sec_context;
   public $_productContext;
+  public $_sec_Ticket;
+  public $_spe_tickets;
   //END ADD qCazelles - LANG 2
   public $_sec_Link;
   public $_Link = array();
@@ -155,6 +157,10 @@ class ComponentVersionMain extends Version {
       self::$_fieldsAttributes['realDeliveryDate']='hidden';
       self::$_fieldsAttributes['isDelivered']='hidden';
     }
+    if (Parameter::getGlobalParameter('manageTicketVersion') != 'YES') {
+      self::$_fieldsAttributes["_sec_Ticket"]='hidden';
+      self::$_fieldsAttributes["_spe_tickets"]='hidden';
+    }    
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
