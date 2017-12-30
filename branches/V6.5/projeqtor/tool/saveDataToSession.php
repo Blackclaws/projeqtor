@@ -78,7 +78,7 @@ if ($id=='browserLocaleDateFormat') {
  if ($id=='browserLocaleTimeFormat') {
    setSessionValue('browserLocaleTimeFormatJs', $value);
  }
-
+ 
 //$userParamArray=getSessionValue('userParamatersArray');
 if (sessionValueExists('userParamatersArray')) {
   setSessionTableValue('userParamatersArray', $id, $value);

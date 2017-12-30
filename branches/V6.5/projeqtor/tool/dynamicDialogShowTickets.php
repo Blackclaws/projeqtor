@@ -60,7 +60,7 @@
     $canGoto=(securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', $ticket) == "YES")?true:false;
     echo '<tr>';
     $className=i18n($class);
-    echo '<td class="linkData" style="white-space:nowrap;width:15%"><img src="css/images/icon'.$class.'16.png" />&nbsp;'.$className .' #' . $ticket->id;
+    echo '<td class="linkData" style="white-space:nowrap;width:15%"><table><tr><td>'.formatIcon($class,16).'</td><td>&nbsp;'.$className .' #' . $ticket->id.'</td></tr></table>';
     echo '</td>';
     $goto="";
     if ($canGoto) {
