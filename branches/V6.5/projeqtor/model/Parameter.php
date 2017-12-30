@@ -316,6 +316,7 @@ class Parameter extends SqlElement {
       //END ADD qCazelles
       case 'manageTicketCustomer' :  //ADD qCazelles - Manage ticket at customer level - Ticket #87
       //ADD qCazelles
+      case 'manageTicketVersion' :
       case 'productVersionOnDelivery' :
       case 'manageAccountable':
       //END ADD qCazelles    
@@ -665,6 +666,7 @@ class Parameter extends SqlElement {
           	                  'limitPlanningActivity'=>'list',
           	                  'filterTicketReportPriority'=>'list',
                               'manageTicketCustomer'=>'list', //ADD qCazelles - Manage ticket at customer level - Ticket #87
+                              'manageTicketVersion'=>'list',
          	                //'sectionAction'=>'section',
           	              //    'enablePredefinedActions'=>'list',
       	                      'manageAccountable'=>'list',
