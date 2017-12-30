@@ -800,6 +800,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       } else {
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt,$included,$obj);
       }
+    //ADD qCazelles - Manage ticket at customer level - Ticket #87
+    } else if ($col == '_spe_tickets' and ! $obj->isAttributeSetTofield($col,'hidden')) {
+        drawTicketsList($obj);
+        //END ADD qCazelles - Manage ticket at customer level - Ticket #87
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr($col, 5);
       if ($internalTable) {
@@ -860,10 +864,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
  	  }  else if ($col == '_productBusinessFeatures' and Parameter::getGlobalParameter('displayBusinessFeature') == 'YES') {
     	drawBusinessFeatures($obj);
     //END ADD
-    //ADD qCazelles - Manage ticket at customer level - Ticket #87
- 	  } else if ($col == '_spe_tickets' and Parameter::getGlobalParameter('manageTicketCustomer') == 'YES') {
- 	    drawTicketsList($obj);
- 	  //END ADD qCazelles - Manage ticket at customer level - Ticket #87
    	//ADD qCazelles - Version compatibility
    	} else if ($col == '_productVersionCompatibility' and Parameter::getGlobalParameter('versionCompatibility') == 'YES') {
    		drawVersionCompatibility($obj);
@@ -3910,6 +3910,7 @@ function drawContextSection($obj, $refresh=false) {
 
 //ADD qCazelles - Manage ticket at customer level - Ticket #87
 function drawTicketsList($obj, $refresh=false) {  
+  debugLog("drawTicketsList");
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
@@ -3926,14 +3927,12 @@ function drawTicketsList($obj, $refresh=false) {
   echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n($listClass) . '</td>';
   echo '<td class="linkHeader" style="width:60%">' . i18n('colName') . '</td>';
   echo '<td class="linkHeader" style="width:40%">' . i18n('colIdStatus') . '</td>';
-  echo '</tr>';
-
+  echo '</tr>'; 
   if (get_class($obj)=='Contact') {
     $crit=array('idContact'=>$obj->id,'idle'=>'0');
     $ticket=new Ticket();
     $list=$ticket->getSqlElementsFromCriteria($crit);
-  }
-  if (get_class($obj)=='Client') {
+  } else if (get_class($obj)=='Client') {
     $contact=new Contact();
     $crit=array('idClient'=>$obj->id);
     $listContacts=$contact->getSqlElementsFromCriteria($crit);
@@ -3945,7 +3944,16 @@ function drawTicketsList($obj, $refresh=false) {
     $clauseWhere.=') and idle=0';
     $ticket=new Ticket();
     $list=$ticket->getSqlElementsFromCriteria(null, false, $clauseWhere);
+  } else if ( get_class($obj)=='Product' or get_class($obj)=='Component' ) {
+    $crit=array('id'.get_class($obj)=>$obj->id);
+    $ticket=new Ticket();
+    $list=$ticket->getSqlElementsFromCriteria($crit);
+  } else if ( get_class($obj)=='ProductVersion' or get_class($obj)=='ComponentVersion' ) {
+    $crit=array('idTarget'.get_class($obj)=>$obj->id);
+    $ticket=new Ticket();
+    $list=$ticket->getSqlElementsFromCriteria($crit);
   }
+  if (!isset($list)) $list=array();
 
   foreach ( $list as $ticket ) {
     $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu' . $listClass, 'read', $ticket) == "YES")?true:false;

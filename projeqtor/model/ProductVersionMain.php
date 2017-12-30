@@ -81,6 +81,8 @@ class ProductVersionMain extends Version {
   public $_sec_delivery;
   public $_versionDelivery;
   //END ADD qCazelles
+  public $_sec_Ticket;
+  public $_spe_tickets;
   public $_sec_Link;
   public $_Link = array();
   public $_Attachment=array();
@@ -159,7 +161,10 @@ class ProductVersionMain extends Version {
     	self::$_fieldsAttributes['_sec_delivery']='hidden';
     	self::$_fieldsAttributes['_versionDelivery']='hidden';
     }
-    
+    if (Parameter::getGlobalParameter('manageTicketVersion') != 'YES') {
+      self::$_fieldsAttributes["_sec_TicketsVersion"]='hidden';
+      self::$_fieldsAttributes["_spe_tickets"]='hidden';
+    }   
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
