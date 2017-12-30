@@ -390,5 +390,12 @@ class ContactMain extends SqlElement {
     }
     return $result;
   }
+  
+  public function setAttributes() {
+    if (Parameter::getGlobalParameter('manageTicketCustomer') != 'YES') {
+      self::$_fieldsAttributes["_sec_TicketsClient"]='hidden';
+      self::$_fieldsAttributes["_spe_tickets"]='hidden';
+    }
+  }
 }
 ?>
