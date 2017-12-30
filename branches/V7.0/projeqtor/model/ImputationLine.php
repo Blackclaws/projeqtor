@@ -514,7 +514,6 @@ class ImputationLine {
       $width=($width) - 155 - 30;
     }
     $tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
-    
     if (!$print) {
       echo '<div dojoType="dijit.layout.BorderContainer">';
       echo '<div dojoType="dijit.layout.ContentPane" id="topRegionImputation" data-dojo-props="splitter: true" region="top" style="overflow-y: scroll;height: auto;">';
