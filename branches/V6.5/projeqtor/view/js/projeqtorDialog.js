@@ -3035,7 +3035,7 @@ function billLineUpdateAmount() {
 function billLineUpdateNumberDays() {
   if (dijit.byId('billLineUnit') && dijit.byId('billLineUnit').get("value")=='3' ) { // If unit = day
     if (dijit.byId('billLineNumberDays') && dijit.byId('billLineQuantity') && dijit.byId('billLineQuantity').get("value")>0) {
-      dijit.byId('billLineNumberDays').set("value",dijit.byId('billLineQuantity'));
+      dijit.byId('billLineNumberDays').set("value",dijit.byId('billLineQuantity').get("value"));
     }
   }
 }
