@@ -278,12 +278,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           $restrictArray[0]=0;
         }
       }
-      if(Parameter::getUserParameter("restrictProjectList")=="true") {
+      if(Parameter::getUserParameter("restrictProjectList")=="true" and getSessionValue("project") and getSessionValue("project")!='*') {
         $class=get_class($obj);
-        $toto = array();
         $proj = new Project(getSessionValue("project"));
         $lstChild = $proj->getRecursiveSubProjectsFlatList(true,true);
-        $restrictArray=$lstChild;
+        $restrictArray=array_intersect_assoc($restrictArray,$lstChild);
       }
       // end of $col=="idProject"
     } else if ($col=='idStatus') {
