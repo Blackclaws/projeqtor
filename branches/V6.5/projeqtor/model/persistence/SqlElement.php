@@ -1395,7 +1395,7 @@ abstract class SqlElement {
           if ($col_name == 'idle') {
             $idleChange = true;
           }
-          if ($col_name == 'idProject') {
+          if ($col_name == 'idProject' and get_class($this)!='Project') {
             $projectChange = true;
           }
           $insertableColName = $this->getDatabaseColumnName ( $col_name );
