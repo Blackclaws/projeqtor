@@ -116,8 +116,8 @@ if ($paramTeam) {
 	$queryWhere.= " and t1.idResource in ".$inClause;
 }
 
-$querySelect= 'select sum(work) as sumWork, ' . $scale . ' as scale , t2.id as idresource '; 
-$queryGroupBy = $scale . ', t1.idResource, t2.id';
+$querySelect= 'select sum(work) as sumWork, ' . $scale . ' as scale , t1.idResource as idresource '; 
+$queryGroupBy = $scale . ', t1.idResource';
 // constitute query and execute
 
 $tab=array();
