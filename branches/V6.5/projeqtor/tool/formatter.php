@@ -437,6 +437,7 @@ function privateFormatter($value) {
 
 function activityStreamDisplayNote ($note,$origin){
   global $print,$user, $userRessource;
+  
   $rightWidthScreen=RequestHandler::getNumeric('destinationWidth');
   $userId = $note->idUser;
   $userName = SqlList::getNameFromId ( 'User', $userId );
@@ -451,6 +452,10 @@ function activityStreamDisplayNote ($note,$origin){
   $objectId=$note->refId;
   $obj=new $objectClass($objectId,true);
   $canUpdate=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj) == "YES";
+  $canRead=securityGetAccessRightYesNo('menu' . $objectClass, 'read', $obj) == "YES";
+  if ($origin=='activityStream' and !$canRead) {
+    return ;
+  }
   $isNoteClosed=getSessionTableValue("closedNotes", $note->id);
   if ($note->idPrivacy == 1 or ($note->idPrivacy == 3 and $user->id == $note->idUser) or ($note->idPrivacy == 2 and $userRessource->idTeam == $note->idTeam)) {
     echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
@@ -484,9 +489,9 @@ function activityStreamDisplayNote ($note,$origin){
      echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
     }
     if($rightWidthScreen<100){
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>&nbsp'; 
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>&nbsp'; 
     } else {
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>&nbsp';
     } 
   }
 }
