@@ -761,6 +761,14 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconEfficiency22 { background-image: url(customIcons/blue/iconEfficiency.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconEfficiency16 { background-image: url(customIcons/blue/iconEfficiency.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/* begin add Gmartin   Ticket #157 */
+
+.ProjeQtOrFlatBlue .iconEmailTemplate32 { background-image: url(customIcons/blue/iconEmailTemplate.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconEmailTemplate22 { background-image: url(customIcons/blue/iconEmailTemplate.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconEmailTemplate16 { background-image: url(customIcons/blue/iconEmailTemplate.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* end add Gmartin */
+
 .ProjeQtOrFlatBlue .iconEnvironmentalParameter32 { background-image: url(customIcons/blue/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconEnvironmentalParameter22 { background-image: url(customIcons/blue/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconEnvironmentalParameter16 { background-image: url(customIcons/blue/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -2027,6 +2035,14 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconEfficiency32 { background-image: url(customIcons/red/iconEfficiency.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconEfficiency22 { background-image: url(customIcons/red/iconEfficiency.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconEfficiency16 { background-image: url(customIcons/red/iconEfficiency.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* begin add Gmartin */
+
+.ProjeQtOrFlatRed .iconEmailTemplate32 { background-image: url(customIcons/red/iconEmailTemplate.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconEmailTemplate22 { background-image: url(customIcons/red/iconEmailTemplate.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconEmailTemplate16 { background-image: url(customIcons/red/iconEmailTemplate.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* end add Gmartin */
 
 .ProjeQtOrFlatRed .iconEnvironmentalParameter32 { background-image: url(customIcons/red/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconEnvironmentalParameter22 { background-image: url(customIcons/red/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3296,6 +3312,14 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconEfficiency22 { background-image: url(customIcons/green/iconEfficiency.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconEfficiency16 { background-image: url(customIcons/green/iconEfficiency.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/* begin add Gmartin */
+
+.ProjeQtOrFlatGreen .iconEmailTemplate32 { background-image: url(customIcons/green/iconEmailTemplate.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconEmailTemplate22 { background-image: url(customIcons/green/iconEmailTemplate.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconEmailTemplate16 { background-image: url(customIcons/green/iconEmailTemplate.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* end add Gmartin */
+
 .ProjeQtOrFlatGreen .iconEnvironmentalParameter32 { background-image: url(customIcons/green/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconEnvironmentalParameter22 { background-image: url(customIcons/green/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconEnvironmentalParameter16 { background-image: url(customIcons/green/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -4561,6 +4585,14 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconEfficiency32 { background-image: url(customIcons/grey/iconEfficiency.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconEfficiency22 { background-image: url(customIcons/grey/iconEfficiency.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconEfficiency16 { background-image: url(customIcons/grey/iconEfficiency.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* begin add Gmartin */
+
+.ProjeQtOrFlatGrey .iconEmailTemplate32 { background-image: url(customIcons/grey/iconEmailTemplate.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconEmailTemplate22 { background-image: url(customIcons/grey/iconEmailTemplate.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconEmailTemplate16 { background-image: url(customIcons/grey/iconEmailTemplate.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* end add Gmartin */
 
 .ProjeQtOrFlatGrey .iconEnvironmentalParameter32 { background-image: url(customIcons/grey/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconEnvironmentalParameter22 { background-image: url(customIcons/grey/iconEnvironmentalParameter.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

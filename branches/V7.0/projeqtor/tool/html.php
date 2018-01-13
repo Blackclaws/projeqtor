@@ -158,6 +158,17 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if ($col=="idProject" or $col=="planning") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }
+    if ($col=='idEmailTemplate') {
+    	$mailable=($critVal0)?$critVal0:'0';
+    	$type=($critVal1)?$critVal1:'0';
+    	$crit=array('idMailable'=>$mailable,'idType'=>$type);
+    	$list = SqlList::getListWithCrit ( "EmailTemplate", $crit, 'name', $selection, false );
+    	$crit=array('idMailable'=>null);
+    	$listAll = SqlList::getListWithCrit ( "EmailTemplate", $crit, 'name', $selection, false );
+    	$crit=array('idMailable'=>$mailable, 'idType'=>null);
+    	$listAllType = SqlList::getListWithCrit ( "EmailTemplate", $crit, 'name', $selection, false );
+    	$table=array_merge_preserve_keys($list,$listAll,$listAllType);
+    }
   } else if ($col=='idBill') {
     // Limit Bills list to done but not paid (this isd used on Payment screen to list bills to link to the payment)
     $crit=array('paymentDone'=>'0','done'=>'1');
@@ -1301,12 +1312,13 @@ function htmlDisplaySharedFilter($filterArray,$filterObjectClass,$currentFilter=
   }
 }
 
-function htmlDisplayCheckbox ($value) {
+function htmlDisplayCheckbox ($value, $remote=false) {
   $checkImg="checkedKO.png";
-  if ($value!='0' and ! $value==null) { 
+  if ($value!='0' and ! $value==null) {
     $checkImg= 'checkedOK.png';
   } 
-  return '<img src="img/' . $checkImg . '" />';
+  $baseUrl=($remote)?SqlElement::getBaseUrl().'/view/':'';
+  return '<img src="'.$baseUrl.'img/' . $checkImg . '" />';
 }
 
 function htmlDisplayColored($value,$color) {
