@@ -4982,6 +4982,7 @@ function showHelp() {
  * Refresh a list (after update)
  */
 function refreshList(field, param, paramVal, selected, destination, required, param1, paramVal1,objectClass) {
+  console.log("refreshList('"+field+"', '"+param+"', '"+paramVal+"', '"+selected+"', '"+destination+"', '"+required+"', '"+param1+"', '"+paramVal1+"', '"+objectClass+")");
   var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
   if (param) {
     urlList+='&critField=' + param;

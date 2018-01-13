@@ -93,6 +93,72 @@ Once defined, a workflow can be linked to any type of any item.
 
     \newpage
 
+.. index:: ! Email (template)
+
+.. _email-template:
+
+Email Templates
+---------------
+
+The user is able to format mails that are sent automaticaly on events (see Mails on event).
+When using template, the standard email formating is replaced with selected one.
+Just define your templates, and select it on the "Mail on Events"
+
+
+.. rubric:: Section: Description
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+   
+   * - `Id`
+     - Unique Id for the template.
+   * - name
+     - email template name
+   * - Element updated
+     - elements that will be able to use this template
+   * - Type
+     - Type of the selected element that will be able to use this template 
+   * - title
+     - title of sent mails
+   * - template
+     - template of sent mails
+   * - :term:`Closed`
+     - Flag to indicate that email template is archived.
+
+
+
+.. topic:: Field: element updated and type
+
+   * If not set, the template is valid for every type of the element
+   * If element is set, only these elements will be able to select the template
+   * if element and type are set, only these elements of the correspondiong type will be able to select the template
+   
+.. note::
+  
+   * in the template, user can use any property of the updated object to show in the mail, just use ${propertyName}
+     for instance ${name} will display the name of the item, ${id} will display its id
+   * for properties referencing external item, such as idXxxxx, use ${nameXxxxx} to display name of item instead of its id
+     for instance ${nameProject} will display the name of the project, as ${idProject} will display the id of the project
+   * other tags are available as parameters for email titles (see Global Parameters > emails)
+   * some specific tags can also be used
+   
+     - ${item} : class of the item 
+     - ${dbName} : display name of current instance
+     - ${responsible} : synonym for ${nameResource}
+     - ${sender} : name of user sending the email
+     - ${project} : synonym for ${nameProject}
+     - ${url} : url to get the direct link to the item
+     - ${goto} : display Class and Id of item, clickable to have direct link to the item
+   * 3 other tags are available except in the mail title because they display a table.
+   
+     - ${HISTORY} : displays the last changes of an object.
+     - ${LINK} : list linked elements to the item
+     - ${NOTE} : lists the notes of the item 
+    
+
 .. index:: ! Email (Event)
 
 .. _mail-on-event:
@@ -109,6 +175,7 @@ Events are defined on an element and element type.
 
    * The mail message is formatted to display item information.
    * Mail titles is defined in :ref:`Global parameters<mail-titles>` screen.
+   * Selecting a Template will use the formating of the template instead of default standard formating.
 
 .. rubric:: Section: Description
 

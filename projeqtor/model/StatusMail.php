@@ -38,6 +38,7 @@ class StatusMail extends SqlElement {
   public $idProject;
   public $idStatus;
   public $idEvent;
+  public $idEmailTemplate; //add Gmartin Ticket #157
   public $idle;
   public $_sec_SendMail;
   public $mailToContact;
@@ -66,16 +67,17 @@ class StatusMail extends SqlElement {
     <th field="nameProject" width="7%">${idProject}</th>
     <th field="colorNameStatus" width="6%" formatter="colorNameFormatter">${newStatus}</th>
     <th field="nameEvent" formatter="translateFormatter" width="10%" >${orOtherEvent}</th>
-    <th field="mailToContact" width="6%" formatter="booleanFormatter" >${mailToContact}</th>    
-    <th field="mailToUser" width="6%" formatter="booleanFormatter" >${mailToUser}</th>
-    <th field="mailToResource" width="6%" formatter="booleanFormatter" >${mailToResource}</th>
-    <th field="mailToProject" width="6%" formatter="booleanFormatter" >${mailToProject}</th>
-    <th field="mailToLeader" width="6%" formatter="booleanFormatter" >${mailToLeader}</th>
-    <th field="mailToManager" width="6%" formatter="booleanFormatter" >${mailToManager}</th>
-    <th field="mailToAssigned" width="6%" formatter="booleanFormatter" >${mailToAssigned}</th>
-    <th field="mailToSubscribers" width="6%" formatter="booleanFormatter" >${mailToSubscribers}</th>  
-    <th field="mailToOther" width="6%" formatter="booleanFormatter" >${mailToOther}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
+    <th field="mailToContact" width="5%" formatter="booleanFormatter" >${mailToContact}</th>    
+    <th field="mailToUser" width="5%" formatter="booleanFormatter" >${mailToUser}</th>
+    <th field="mailToResource" width="5%" formatter="booleanFormatter" >${mailToResource}</th>
+    <th field="mailToProject" width="5%" formatter="booleanFormatter" >${mailToProject}</th>
+    <th field="mailToProjectIncludingParentProject" width="5%" formatter="booleanFormatter" >${mailToProjectIncludingParentProject}</th>
+    <th field="mailToLeader" width="5%" formatter="booleanFormatter" >${mailToLeader}</th>
+    <th field="mailToManager" width="5%" formatter="booleanFormatter" >${mailToManager}</th>
+    <th field="mailToAssigned" width="5%" formatter="booleanFormatter" >${mailToAssigned}</th>
+    <th field="mailToSubscribers" width="5%" formatter="booleanFormatter" >${mailToSubscribers}</th>  
+    <th field="mailToOther" width="5%" formatter="booleanFormatter" >${mailToOther}</th>
+    <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("idMailable"=>"", 
@@ -293,6 +295,14 @@ class StatusMail extends SqlElement {
       $colScript .= '  refreshList("idType","scope", mailable);';
       $colScript .= '  dijit.byId("idEvent").reset();';
       $colScript .= '  refreshList("idEvent","scope", mailable, null);';
+      //gmartin begin Ticket #157 - Fixed PBE
+      $colScript .= '  dijit.byId("idEmailTemplate").set("value", null);';
+      $colScript .= '  if (this.value) {';
+      $colScript .= '    refreshList("idEmailTemplate","idMailable", this.value, null, null, null, "idType",null);';
+      $colScript .= '  } else {';
+      $colScript .= '    refreshList("idEmailTemplate","idMailable", null);';
+      $colScript .= '  }';
+      //gmartin end - Fixed PBE
       $colScript .= '  if (mailable=="Activity" || mailable=="TestSession" || mailable=="Meeting" || mailable=="PeriodicMeeting") {';
       $colScript .= '    dojo.query(".generalRowClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="table-row";});';
       $colScript .= '    dojo.query(".generalColClass.mailToAssignedClass").forEach(function(domNode){domNode.style.display="inline-block";});';
@@ -307,6 +317,21 @@ class StatusMail extends SqlElement {
       $colScript .= '    dojo.query(".mailToAccountableClass").forEach(function(domNode){domNode.style.display="none";});';
       $colScript .= '  }';
       $colScript .= '</script>';
+    }
+    if ($colName=='idType') {
+    	//Ticket #157 - Fixed PBE
+    	$colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+    	$colScript .= '  dijit.byId("idEmailTemplate").set("value", null);';
+    	$colScript .= '  var mailable=dijit.byId("idMailable").get("value");';
+    	$colScript .= '  if (!mailable) {';
+    	$colScript .= '    refreshList("idEmailTemplate","idMailable", null);';
+    	$colScript .= '  } else if (this.value) {';
+    	$colScript .= '    refreshList("idEmailTemplate","idMailable", mailable, null, null, null, "idType",this.value);';
+    	$colScript .= '  } else {';
+    	$colScript .= '    refreshList("idEmailTemplate","idMailable", mailable, null, null, null, "idType",null);';
+    	$colScript .= '  }';
+    	$colScript .= '</script>';
+    	//Fixed PBE
     }
     return $colScript;
   }
