@@ -5,7 +5,7 @@
 // ========== Database configuration =====================================================
 // --- MySql Degfault
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-$paramDbName='projeqtor_v65';$paramDbPrefix='';
+$paramDbName='projeqtor_v70';$paramDbPrefix='';
 // --- PostgreSql Default
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor_maaf'; $paramDbPassword='projeqtor';
 //$paramDbName='support_ige';$paramDbPrefix=''; 
@@ -25,7 +25,7 @@ $pdfNamePrefix="ProjeQtOr - ";
 
 // ========== Debugging configuration ====================================================
 $debugQuery=false;                 // Debug all queries : trace Query and running time for each query
-$debugJsonQuery=false;             // Trace only JsonQuery queries  (retrieving lists)
+$debugJsonQuery=true;             // Trace only JsonQuery queries  (retrieving lists)
 $debugPerf=true;                   // Add some timestamps and execution time at all debug lines
 $debugTraceUpdates=false;           // Will add trace on each save() or delete(), except for History and Audit
 $debugTraceHistory=false;           // Will add trace on each save() or delete() of History and Audit (only if $debugTraceUpdates=true;)

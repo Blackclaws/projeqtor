@@ -4419,9 +4419,6 @@ abstract class SqlElement {
         return false; // exit if not mailable object
       }
       $crit = "idle='0'";
-      if(property_exists($this, "idProject")){
-        $crit .= "and idProject='" . $this->idProject ."'";
-      }
       $crit .= "and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
         $crit .= "  or idStatus='" . $this->idStatus . "' ";
@@ -4467,59 +4464,63 @@ abstract class SqlElement {
       }
       $crit .= ")";
       $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
-      if(!$statusMailList){
-          $crit = "idle='0' and idProject is null and idMailable='" . $mailable->id . "' and ( false ";
-          if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
-            $crit .= "  or idStatus='" . $this->idStatus . "' ";
-          }
-          if ($responsibleChange) {
-            $crit .= " or idEvent='1' ";
-          }
-          if ($noteAdd) {
-            $crit .= " or idEvent='2' ";
-          }
-          if ($attachmentAdd) {
-            $crit .= " or idEvent='3' ";
-          }
-          if ($noteChange) {
-            $crit .= " or idEvent='4' ";
-          }
-          if ($descriptionChange) {
-            $crit .= " or idEvent='5' ";
-          }
-          if ($resultChange) {
-            $crit .= " or idEvent='6' ";
-          }
-          if ($assignmentAdd) {
-            $crit .= " or idEvent='7' ";
-          }
-          if ($assignmentChange) {
-            $crit .= " or idEvent='8' ";
-          }
-          if ($anyChange) {
-            $crit .= " or idEvent='9' ";
-          }
-          if ($affectationAdd) {
-            $crit .= " or idEvent='10' ";
-          }
-          if ($affectationChange) {
-            $crit .= " or idEvent='11' ";
-          }
-          if ($linkAdd) {
-            $crit .= " or idEvent='12' ";
-          }
-          if ($linkDelete) {
-            $crit .= " or idEvent='13' ";
-          }
-          $crit .= ")";
-          $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
+      // $statusMailList contains all events compatible with current change.
+      // Now, we must resctrict : if several lines exist for same event, we must limit to 1 only (depending on project and/or type 
+      $statusMailListOrganized=array();
+      $typeName='id'.get_class($this).'Type';
+      $proj=null;
+      $type=null;
+      if(property_exists($this, "idProject")){
+        $proj=(get_class($this)=='Project')?$this->id:$this->idProject;
       }
+      if(property_exists($this, $typeName)){
+        $type=$this->$typeName;
+      }
+      foreach ($statusMailList as $stm) {
+        if ($proj and $stm->idProject and $stm->idProject!=$proj) { // Does not concern current project, must not apply
+          continue;
+        }
+        if ($type and $stm->idType and $stm->idType!=$type) { // Does not concern current type, must not apply
+          continue;
+        }
+        if (! isset($statusMailListOrganized[$stm->idEvent])) { // No other already selected : OK
+          $statusMailListOrganized[$stm->idEvent]=$stm;
+          continue;
+        }
+        // Now we are treating duplicates (already exists for event, we have another one that may fit, so we must select on Project and / or Type
+        if ($proj and $stm->idProject and $stm->idProject==$proj) { // OK, dedicated to correct project
+          if ($type and $stm->idType and $stm->idType==$type) { // Same project and same type : this is this one !!!!
+            $statusMailListOrganized[$stm->idEvent]=$stm;
+          } else { // Same project but not same type, replace if previous not on same project
+            if (!$statusMailListOrganized[$stm->idEvent]->idProject) {
+              $statusMailListOrganized[$stm->idEvent]=$stm;
+            }
+          }
+        } else { // Not same project, will check on type
+          if ($type and $stm->idType and $stm->idType==$type) { // Same type but not same project, replace if previous not on same project
+            if (!$statusMailListOrganized[$stm->idEvent]->idProject) {
+              $statusMailListOrganized[$stm->idEvent]=$stm;
+            }
+          }
+        }
+      }
+      
     }
-    if (count($statusMailList)== 0 || (! $directStatusMail && ! $canBeSend) ) {
+    if (count($statusMailListOrganized)== 0 || (! $directStatusMail && ! $canBeSend) ) {
       return false; // exit not a status for mail sending (or disabled)
     }
-    $dest = "";
-    foreach ( $statusMailList as $statusMail ) {
+    //    BEGIN modif gmartin / handle Email templates  Ticket #157
+    $destTab = array('basic' => null);    //store the mail adressses and the templates names that will be used to send the mails. replace : $dest
+    $emailTemplateTab = array();
+    $i = 0;
+    foreach ( $statusMailListOrganized as $statusMail ) {
+      $emailTemplateTab[] = new EmailTemplate($statusMail->idEmailTemplate);
+      if ($emailTemplateTab[$i]->name == null) {
+        $emailTemplateTab[$i]->name = 'basic';
+        $emailTemplateTab[$i]->id = '0';
+      }
+      $destTab[$emailTemplateTab[$i]->id] = null;
+      
       if ($statusMail->idType) {
         if (property_exists ( $this, 'idType' ) and $this->idType != $statusMail->idType) {
           continue; // exist : not corresponding type
@@ -4536,9 +4537,9 @@ abstract class SqlElement {
         if (property_exists ( $this, 'idUser' )) {
           $user = new User ( $this->idUser );
           $newDest = "###" . $user->email . "###";
-          if ($user->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($user->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4546,9 +4547,9 @@ abstract class SqlElement {
         if (property_exists ( $this, 'idAccountable' )) {
           $resource = new Resource ( $this->idAccountable );
           $newDest = "###" . $resource->email . "###";
-          if ($resource->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($resource->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4556,9 +4557,9 @@ abstract class SqlElement {
         if (property_exists ( $this, 'idResource' )) {
           $resource = new Resource ( $this->idResource );
           $newDest = "###" . $resource->email . "###";
-          if ($resource->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($resource->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4566,9 +4567,9 @@ abstract class SqlElement {
         if (property_exists ( $this, 'idSponsor' )) {
           $sponsor = new Sponsor ( $this->idSponsor );
           $newDest = "###" . $sponsor->email . "###";
-          if ($sponsor->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($sponsor->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4594,9 +4595,9 @@ abstract class SqlElement {
               }
               if (! $resource->dontReceiveTeamMails) {
                 $newDest = "###" . $resource->email . "###";
-                if ($resource->email and strpos ( $dest, $newDest ) === false) {
-                  $dest .= ($dest) ? ', ' : '';
-                  $dest .= $newDest;
+                if ($resource->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+                    $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+                    $destTab[$emailTemplateTab[$i]->id] .= $newDest;
                 }
               }
             }
@@ -4605,9 +4606,9 @@ abstract class SqlElement {
               $prf = new Profile ( $profile );
               if ($prf->profileCode == 'PL') {
                 $newDest = "###" . $resource->email . "###";
-                if ($resource->email and strpos ( $dest, $newDest ) === false) {
-                  $dest .= ($dest) ? ', ' : '';
-                  $dest .= $newDest;
+                if ($resource->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+                  $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+                  $destTab[$emailTemplateTab[$i]->id] .= $newDest;
                 }
               }
             }
@@ -4619,9 +4620,9 @@ abstract class SqlElement {
           $project = new Project ( $idProject );
           $manager = new Affectable ( $project->idResource );
           $newDest = "###" . $manager->email . "###";
-          if ($manager->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($manager->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4632,9 +4633,9 @@ abstract class SqlElement {
         foreach ( $assList as $ass ) {
           $res = new Resource ( $ass->idResource );
           $newDest = "###" . $res->email . "###";
-          if ($res->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($res->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4642,9 +4643,9 @@ abstract class SqlElement {
         if (property_exists ( $this, 'idContact' )) {
           $contact = new Contact ( $this->idContact );
           $newDest = "###" . $contact->email . "###";
-          if ($contact->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($contact->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4658,9 +4659,9 @@ abstract class SqlElement {
         foreach ( $lstSub as $sub ) {
           $resource = new Affectable ( $sub->idAffectable );
           $newDest = "###" . $resource->email . "###";
-          if ($resource->email and strpos ( $dest, $newDest ) === false) {
-            $dest .= ($dest) ? ', ' : '';
-            $dest .= $newDest;
+          if ($resource->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+            $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+            $destTab[$emailTemplateTab[$i]->id] .= $newDest;
           }
         }
       }
@@ -4672,19 +4673,32 @@ abstract class SqlElement {
           foreach ( $split as $adr ) {
             if ($adr and $adr != '') {
               $newDest = "###" . $adr . "###";
-              if (strpos ( $dest, $newDest ) === false) {
-                $dest .= ($dest) ? ', ' : '';
-                $dest .= $newDest;
+              if (strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
+                $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
+                $destTab[$emailTemplateTab[$i]->id] .= $newDest;
               }
             }
           }
         }
       }
+      $i++;
     }
-    if ($dest == "") {
-      return false; // exit no addressees
+
+    $msgWithoutDest = 0;      //check if something went wrong in retreiving email adresses
+    $j = $i;
+    while ($i--)
+    {
+      if ($destTab[$emailTemplateTab[$i]->id] == '' or $destTab[$emailTemplateTab[$i]->id] == null)
+        $msgWithoutDest++;
+      else 
+        $destTab[$emailTemplateTab[$i]->id] = str_replace('###', '', $destTab[$emailTemplateTab[$i]->id]);
     }
-    $dest = str_replace ( '###', '', $dest );
+    if ($j <= $msgWithoutDest)
+    {
+      traceLog('sendMailIfMailable : Mails without dest');
+      return false;         // exit bcause no adresses
+    }
+    //    END modif gmartin Ticket #157
     if ($newItem) {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitleNew' );
     } else if ($noteAdd) {
@@ -4721,20 +4735,36 @@ abstract class SqlElement {
       $paramMailTitle = Parameter::getGlobalParameter ( 'paramMailTitle' ); // default
     }
     $title = $this->parseMailMessage ( $paramMailTitle );
+    $references = $objectClass . "-" . $this->id;
     $message = $this->getMailDetail ();
     if ($directStatusMail and isset ( $directStatusMail->message )) {
-      $message = $this->parseMailMessage ( $directStatusMail->message ) . '<br/><br/>' . $message;
+      $emailTemplateTab[0]->template = $this->parseMailMessage ( $directStatusMail->message ) . '<br/><br/>' . $emailTemplateTab[0]->template;
     }
-    
-    $message = '<html>' . '<head>' . '<title>' . $title . '</title>' . '</head>' . '<body style="font-family: Verdana, Arial, Helvetica, sans-serif;">' . $message . '</body>' . '</html>';
-    $references = $objectClass . "-" . $this->id;
-    $message = wordwrap ( $message, 70 ); // wrapt text so that line do not exceed 70 cars per line
-    $resultMail = sendMail ( $dest, $title, $message, $this, null, $sender, null, null, $references );
+    //    BEGIN add gmartin Ticket #157
+    while ($j--) {
+      if ($emailTemplateTab[$j]->name == 'basic') {
+        $emailTemplateTab[$j]->template = $this->getMailDetail();
+        $emailTemplateTab[$j]->title = $title;
+        $emailTemplateTab[$j]->template = '<html><head><title>' . $title .
+            '</title></head><body style="font-family: Verdana, Arial, Helvetica, sans-serif;">' .
+            $emailTemplateTab[$j]->template . '</body></html>';
+      } else {
+        $emailTemplateTab[$j]->template = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->template);
+        if ($emailTemplateTab[$j]->title == '' or $emailTemplateTab[$j]->title == null)
+          $emailTemplateTab[$j]->title = $title;
+        else 
+          $emailTemplateTab[$j]->title = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->title);
+      }
+      $resultMail[] = sendMail($destTab[$emailTemplateTab[$j]->id], $emailTemplateTab[$j]->title,
+          $emailTemplateTab[$j]->template,
+          $this, null, $sender, null, null, $references );
+    }
+    //END add gmartin 
     if ($directStatusMail) {
       if ($resultMail) {
-        return array('result' => 'OK', 'dest' => $dest);
+        return array('result' => 'OK', 'dest' => $destTab['basic']);
       } else {
-        return array('result' => '', 'dest' => $dest);
+        return array('result' => '', 'dest' => $destTab['basic']);
       }
     }
     return $resultMail;
@@ -5130,6 +5160,324 @@ abstract class SqlElement {
     return $msg;
   }
 
+/** ========================================================================
+ * Return the HTML last changes history table of an object.
+ * It is a copy of drawHistoryFromObjects();
+ * @return string
+ */
+public function getLastChangeTabForObject($obj) {
+  global $cr, $print, $treatedObjects;
+  require_once "../tool/formatter.php";
+  $inList="( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
+    if ($obj->id) {
+      $inList.=", ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ")";
+    }
+  $showWorkHistory=true;
+  $inList.=')';
+  $where=' (refType, refId) in ' . $inList;
+  $order=' operationDate desc, id asc';
+  $hist=new History();
+  $historyList=$hist->getSqlElementsFromCriteria(null, false, $where, $order, false, false);
+  $style = 'border-top: 1px solid #7b7b7b ; border-bottom: 1px solid #7b7b7b;
+            background-color:#dddddd; padding:4px;';
+  $historyTabHtml =  '<table style="width:95%; border-collapse:collapse; border:1px solid #7b7b7b;">';
+
+  $historyTabHtml .=  '<tr><td style="'. $style . 'text-align:center;"colspan="6">Last Changes</td></tr>' .//
+                      '<tr><td style="' . $style . '" width="10%">' . i18n('colOperation') . '</td>
+                      <td style="' . $style . '" width="14%">' . i18n('colColumn') . '</td>
+                      <td style="' . $style . '" width="23%">' . i18n('colValueBefore') . '</td>
+                      <td style="' . $style . '" width="23%">' . i18n('colValueAfter') . '</td>
+                      <td style="' . $style . '" width="15%">' . i18n('colDate') . '</td>
+                      <td style="' . $style . '" width="15%">' . i18n('colUser') . '</td>
+                      </tr>';   
+  $stockDate=null;               
+  $stockUser=null;
+  $stockOper=null;
+  if (is_array($historyList) and is_object($historyList[0]))
+    $dateCmp = new DateTime($historyList[0]->operationDate);
+  else
+    return $html . '</table>';
+  foreach ( $historyList as $hist ) {
+    $date = new DateTime($hist->operationDate);
+    if ($date != $dateCmp)
+      return $historyTabHtml .'</table>';
+    if (substr($hist->colName, 0, 24) == 'subDirectory|Attachment|' or substr($hist->colName, 0, 18) == 'idTeam|Attachment|'
+        or substr($hist->colName, 0, 25) == 'subDirectory|Attachement|' or substr($hist->colName, 0, 19) == 'idTeam|Attachement|') {
+          continue;
+        }
+        $colName=($hist->colName == null)?'':$hist->colName;
+        $split=explode('|', $colName);
+        if (count($split) == 3) {
+          $colName=$split [0];
+          $refType=$split [1];
+          $refId=$split [2];
+          $refObject='';
+        } else if (count($split) == 4) {
+          $refObject=$split [0];
+          $colName=$split [1];
+          $refType=$split [2];
+          $refId=$split [3];
+        } else {
+          $refType='';
+          $refId='';
+          $refObject='';
+        }
+        if ($refType=='Attachement') {
+          $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
+        }
+        $curObj=null;
+        $dataType="";
+        $dataLength=0;
+        $hide=false;
+        $oper=i18n('operation' . ucfirst($hist->operation));
+        $user=$hist->idUser;
+        $user=SqlList::getNameFromId('User', $user);
+        $date=htmlFormatDateTime($hist->operationDate);
+        $class="NewOperation";
+        if ($stockDate == $hist->operationDate and $stockUser == $hist->idUser and $stockOper == $hist->operation) {
+          $oper="";
+          $user="";
+          $date="";
+          $class="ContinueOperation";
+        }
+        if ($colName != '' or $refType != "") {
+          if ($refType) {
+            if ($refType == "TestCase") {
+              $curObj=new TestCaseRun();
+            } else {
+              $curObj=new $refType();
+            }
+          } else {
+            $curObj=new $hist->refType();
+          }
+          if ($curObj) {
+            if ($refType) {
+              $colCaption=i18n($refType) . ' #' . $refId . ' ' . $curObj->getColCaption($colName);
+              if ($refObject) {
+                $colCaption=i18n($refObject) . ' - ' . $colCaption;
+              }
+            } else {
+              $colCaption=$curObj->getColCaption($colName);
+            }
+            $dataType=$curObj->getDataType($colName);
+            $dataLength=$curObj->getDataLength($colName);
+            if (strpos($curObj->getFieldAttributes($colName), 'hidden') !== false) {
+              $hide=true;
+            }
+          }
+        } else {
+          $colCaption='';
+        }
+        if (substr($hist->refType, -15) == 'PlanningElement' and $hist->operation == 'insert') {
+          $hide=true;
+        }
+        if ($hist->isWorkHistory and ! $showWorkHistory) {
+          $hide=true;
+        }
+        if (!$hide) {
+          $historyTabHtml .=  '<tr>';
+          $historyTabHtml .=  '<td class="historyData' . $class .
+                              '" style=" padding:4px; width:10%; border: 1px solid #7b7b7b;">' .
+                              $oper . '</td>';
+          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:14%; border: 1px solid #7b7b7b;">' .
+                              $colCaption . '</td>';
+          $oldValue=$hist->oldValue;
+          $newValue=$hist->newValue;
+          if ($dataType == 'int' and $dataLength == 1) { // boolean
+            $oldValue=htmlDisplayCheckbox($oldValue,true);
+            $newValue=htmlDisplayCheckbox($newValue,true);
+          } else if (substr($colName, 0, 2) == 'id' and strlen($colName) > 2 and strtoupper(substr($colName, 2, 1)) == substr($colName, 2, 1)) {
+            if ($oldValue != null and $oldValue != '') {
+              if ($oldValue == 0 and $colName == 'idStatus') {
+                $oldValue='';
+              } else {
+                $oldValue=SqlList::getNameFromId(substr($colName, 2), $oldValue);
+              }
+            }
+            if ($newValue != null and $newValue != '') {
+              $newValue=SqlList::getNameFromId(substr($colName, 2), $newValue);
+            }
+          } else if ($colName == "color") {
+            $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oldValue);
+            $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $newValue);
+          } else if ($dataType == 'date') {
+            $oldValue=htmlFormatDate($oldValue);
+            $newValue=htmlFormatDate($newValue);
+          } else if ($dataType == 'datetime') {
+            $oldValue=htmlFormatDateTime($oldValue);
+            $newValue=htmlFormatDateTime($newValue);
+          } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
+            $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
+            $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
+          } else if ($dataType == 'decimal' and (substr($colName, -4, 4) == 'Cost' or strtolower(substr($colName,-6,6))=='amount')) {
+            $oldValue=htmlDisplayCurrency($oldValue);
+            $newValue=htmlDisplayCurrency($newValue);
+          } else if (substr($colName, -8, 8) == 'Duration') {
+            $oldValue=$oldValue . ' ' . i18n('shortDay');
+            $newValue=$newValue . ' ' . i18n('shortDay');
+          } else if (substr($colName, -8, 8) == 'Progress') {
+            $oldValue=$oldValue . ' ' . i18n('colPct');
+            $newValue=$newValue . ' ' . i18n('colPct');
+          } else if ($colName=='password' or $colName=='apiKey') {
+            $allstars="**********";
+            if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
+            if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
+          } else {
+            if (! isTextFieldHtmlFormatted($oldValue)) {
+              $oldValue = htmlEncode($oldValue, 'print');
+              $oldValue=wordwrap($oldValue, 30, '<wbr>', false);
+            }
+            if (! isTextFieldHtmlFormatted($newValue)) {
+              $newValue = htmlEncode($newValue, 'print');        
+              $newValue=wordwrap($newValue, 30, '<wbr>', false);
+            }
+          }
+          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
+                              $oldValue . '</td>';
+          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
+                              $newValue . '</td>';
+          $historyTabHtml .=  '<td class="historyData' . $class . '" style="width:15%; border: 1px solid #7b7b7b;">';
+          $historyTabHtml .=   $date . '</td>';
+          $historyTabHtml .=  '<td class="historyData' . $class .
+                              '" style=" padding:4px; width:15%; border-right: 1px solid #AAAAAA;" >';
+          if ($user) {
+            $historyTabHtml .=  formatUserThumb($hist->idUser, $user, null,'16','left').'&nbsp;';
+          }
+          $historyTabHtml .=  $user .
+                              '</td>
+                              </tr>';
+          $stockDate=$hist->operationDate;
+          $stockUser=$hist->idUser;
+          $stockOper=$hist->operation;
+        }
+  }
+  return $historyTabHtml . '</table>';
+}
+  
+function getLinksHtmlTab() {
+  $link = new Link;
+  $critArray = array('ref1Type' => get_class($this), 'ref1Id' => $this->id);
+  $linkList = $link->getSqlElementsFromCriteria($critArray);
+  $style = 'border-top: 1px solid #7b7b7b ; border-bottom: 1px solid #7b7b7b;
+            background-color:#dddddd; padding:4px;';
+  $html = '<table style="width:95%; border-collapse:collapse;border:1px solid #7b7b7b;">
+          <tr>' .
+          '<td style="' . $style . '" width="12%"></td>
+          <td  style="' . $style . ' text-align:center;" width="76%">Linked Items</td>
+          <td  style="' . $style . '" width="12%"></td>
+          </tr>';
+  $html .= '<tr>' .
+          '<td style="' . $style . '">' . ucfirst(i18n('colType')) . '</td>
+          <td  style="' . $style . '">' . ucfirst(i18n('colName')) . '</td>
+          <td  style="' . $style . '">' . ucfirst(i18n('Status')) . '</td>
+          </tr>';
+  
+  $status = '';
+  foreach ($linkList as $link) {
+    $obj = new $link->ref2Type($link->ref2Id);
+    $goto = $obj->getReferenceUrl ();
+    $html .= '<tr><td style="border: 1px solid #7b7b7b; padding:4px;"><a href="' . $goto . '">' .
+              $link->ref2Type . ' #' . $link->ref2Id . '</a></td>' .
+              '<td style="border: 1px solid #7b7b7b; padding:4px;">' . $obj->name . '</td>';
+    if (property_exists($obj, 'idStatus'))
+      $status = colorNameFormatter(SqlList::getNameFromId('Status', $obj->idStatus) . "#split#" .
+          SqlList::getFieldFromId('Status', $obj->idStatus, 'color'));
+    $html .=  '<td style="border: 1px solid #7b7b7b; padding:4px;">' . $status . '</td></tr>';
+    $status = '';
+  }
+  return $html . '</table>';
+}
+
+function getNotesHtmlTab() {
+  $html = '';
+  $note = new Note;
+  $critArray = array('refType' => get_class($this), 'refId' => $this->id);
+  $noteList = $note->getSqlElementsFromCriteria($critArray);
+  $style = 'border-top: 1px solid #7b7b7b ; border-bottom: 1px solid #7b7b7b;
+            background-color:#dddddd; padding:4px;';
+  $html = '<table style="width:95%; border-collapse:collapse;border:1px solid #7b7b7b;">
+          <tr>' .
+          '<td style="' . $style . '" width="12%"></td>
+          <td  style="' . $style . ' text-align:center;" width="76%">Notes</td>
+          <td  style="' . $style . '" width="12%"></td>
+          </tr>';
+  $html .= '<tr>' .
+          '<td style="' . $style . '">' . ucfirst(i18n('colId')) . '</td>
+          <td  style="' . $style . '">' . ucfirst(i18n('colName')) . '</td>
+          <td  style="' . $style . '">' . ucfirst(i18n('colDate')) . '</td>
+          </tr>';
+  $status = '';
+  foreach ($noteList as $note) {
+    $html .= '<tr><td style="border: 1px solid #7b7b7b; padding:4px;">' .
+            $note->id . '</td>' . '<td style="border: 1px solid #7b7b7b; padding:4px;">'
+            //. wordwrap($note->note, 50, '<wbr>', false)
+            . $note->note
+            . '</td>';
+    if (property_exists($note, 'updateDate') and $note->updateDate != '')
+      $date = $note->updateDate;
+    else if (property_exists($note, 'creationDate') and isset($note->creationDate))
+      $date = $note->creationDate;
+    $html .= '<td style="border: 1px solid #7b7b7b; padding:4px;">' . $date . '</td></tr>';
+  }
+  return $html . '</table>';
+}
+
+/*
+ * Fill a mail or a title mail template (EmailTemplate class), 
+ * with properties of the "mailable" object, by replacing "${property}" 
+ * by the property and "${HISTORY} by a table representing the last changes
+ * of the object. ${LINK} and ${NOTE} by a table displaying links and notes
+ */
+public function getMailDetailFromTemplate($templateToReplace) {
+  $templateToReplace = $this->parseMailMessage($templateToReplace);
+  return preg_replace_callback('(\$\{[a-zA-Z0-9_\-]+\})',
+    function ($matches) {
+      $property = trim($matches[0], '${}');
+      if (property_exists($this, $property)) {
+        if (isset($this, $property) and $this->$property != '') {
+          return $this->$property;
+        } else {
+          return "-";
+        }
+      } else if (substr($property,0,4)=='name' and $property!='name' and substr($property,4,1)==strtoupper(substr($property,4,1)) ){
+        $cls=substr($property,4);
+        $fld='id'.$cls;
+        if (property_exists($this, $fld)) {
+          return SqlList::getNameFromId($cls, $this->$fld);
+        } else {
+          return "\$$fld not a property to define $property of " . get_class($this);
+        }
+      } else if ($property == 'responsible' and property_exists($this, 'idResource')) { 
+        return SqlList::getNameFromId('Affectable', $this->idResource);
+      } else if ($property == 'dbName') {
+        return Parameter::getGlobalParameter('paramDbName');
+      } else if ($property == 'goto') {
+        $goto = $this->getReferenceUrl ();
+        return '<a href="' . $goto . '">'.i18n(get_class($this)) . ' #' . $this->id . '</a>';
+      } else if ($property == 'project') {
+        if (property_exists($this, 'idProject')) {
+          return SqlList::getNameFromId('Project', $this->idProject);
+        } else {
+          return "-";
+        }
+      } else if ($property == 'sender') {
+        return SqlList::getNameFromId('Affectable', getCurrentUserId());
+      } else if ($property == 'url') {
+        return $this->getReferenceUrl();
+      } else if ($property == 'HISTORY') {
+        return $this->getLastChangeTabForObject($this);
+      } else if ($property == 'LINK') {
+        return $this->getLinksHtmlTab();
+      } else if ($property == 'NOTE') {
+        return $this->getNotesHtmlTab();
+      } else {
+        return "\$$property not a property of " . get_class($this);
+      }
+    },
+    $templateToReplace);
+}
+  
+  
   public function getReferenceUrl() {
     $ref = self::getBaseUrl ();
     $ref .= '/view/main.php?directAccess=true&objectClass=' . get_class ( $this ) . '&objectId=' . $this->id;
