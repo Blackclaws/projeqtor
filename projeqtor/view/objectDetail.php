@@ -532,8 +532,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       }
     }
   }
-  $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
-  $extraReadonlyFields=$obj->getExtraReadonlyFields( ($objType)?$objType->id:null );
   if (!$included) $section='';
   $nbLineSection=0;
   
@@ -569,6 +567,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
   }
   $obj->setAllDefaultValues();
   $arrayRequired=$obj->getExtraRequiredFields(($objType)?$objType->id:null ); // will define extra required fields, depending on status, planning mode...
+  $extraHiddenFields=$obj->getExtraHiddenFields( ($objType)?$objType->id:null );
+  $extraReadonlyFields=$obj->getExtraReadonlyFields( ($objType)?$objType->id:null );
+  
   // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {

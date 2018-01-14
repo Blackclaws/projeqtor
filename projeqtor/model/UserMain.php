@@ -123,7 +123,9 @@ class UserMain extends SqlElement {
   private $_hierarchicalViewOfVisibleProjects;
   private $_hierarchicalViewOfVisibleProjectsNotClosed;
   public $_visibleProducts;
+  public $_visibleVersions;
   private $_visibleProductsIncludingClosed;
+  private $_visibleVersionsIncludingClosed;
   
   
    /** ==========================================================================
@@ -661,7 +663,7 @@ class UserMain extends SqlElement {
     $clauseWhere="id in "
         ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
             ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($prjList)
-            .")))";
+            .")";
     $prd=new Product();
     $prdList=$prd->getSqlElementsFromCriteria(null,false,$clauseWhere);
     foreach ($prdList as $prd) {
@@ -674,6 +676,40 @@ class UserMain extends SqlElement {
     }
     return $result;
   }
+  
+  /** =========================================================================
+   * Get the list of all product versions the user should have readable access to,
+   * this means the product versions linked to projects the resource corresponding to the user is affected to
+   * and their sub projects
+   * @return a list of projects id
+   */
+  public function getVisibleVersions($limitToActiveProjects=true) {
+    if ($limitToActiveProjects and $this->_visibleVersions) {
+      return $this->_visibleVersions;
+    }
+    if (! $limitToActiveProjects and $this->_visibleVersionsIncludingClosed) {
+      return $this->_visibleVersionsIncludingClosed;
+    }
+    $result=array();
+    $prjList=$this->getVisibleProjects($limitToActiveProjects);
+    $v = new Version ();
+    $vp = new VersionProject ();
+    $clauseWhere="id in "
+        ."(select existV.id from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
+            ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($prjList)
+            .")";
+    $versList=$v->getSqlElementsFromCriteria(null,false,$clauseWhere);
+    foreach ($versList as $vers) {
+      $result[$vers->id]=$vers->name;
+    }
+    if ($limitToActiveProjects) {
+      $this->_visibleVersions=$result;
+    } else {
+      $this->_visibleVersionsIncludingClosed=$result;
+    }
+    return $result;
+  }
+  
   public function getHierarchicalViewOfVisibleProjects($hideClosed=false) {
 //scriptLog("getHierarchicalViewOfVisibleProjects()");
     if (!$hideClosed and is_array($this->_hierarchicalViewOfVisibleProjects)) {
