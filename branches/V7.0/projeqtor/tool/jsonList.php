@@ -301,8 +301,6 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
     } else {
       // END ADD qCazelles
       $list = SqlList::getListWithCrit ( $class, $crit, 'name', null, $showIdle );
-      debugLog("LIST INIT FOR $dataType");
-      debugLog($list);
       // Begin add gmartin /handle emailTemplates Ticket #157 - FIXED PBE
       if ($dataType=='idEmailTemplate' and isset ( $_REQUEST ['critField'] ) and isset ( $_REQUEST ['critValue'] ) ) {
         $list = array_merge_preserve_keys ( $list, SqlList::getListWithCrit ( $class, array($_REQUEST ['critField']=>null), 'name', null, false ) );
@@ -384,6 +382,16 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
    * $list = getUserVisibleResourcesList(true); // Try ?
    * }
    */
+  if ($dataType=='idTargetProductVersion' or $dataType=='idProductVersion' or $dataType=='idOriginProductVersion') {
+    // Must restrict to versions visible to user
+    $restrictArray=getSessionUser()->getVisibleVersions();
+    $list=array_intersect_key($list, $restrictArray);
+  }
+  if ($dataType=='idProduct') {
+    // Must restrict to products visible to user
+    $restrictArray=getSessionUser()->getVisibleProducts();
+    $list=array_intersect_key($list, $restrictArray);
+  }
   if ($selected) {
     $name = SqlList::getNameFromId ( $class, $selected );
     if ($name == $selected and ($class == 'Resource' or $class == 'User' or $class == 'Contact')) {
@@ -549,7 +557,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
     $list = $term->getSqlElementsFromCriteria ( null, null, $where );
     $listFinal = array();
     foreach ( $list as $term ) {
-      // on récupère les trigger
+      // we get triggers
       $dep = new Dependency ();
       $crit = array("successorRefType" => "Term", "successorRefId" => $term->id);
       $depList = $dep->getSqlElementsFromCriteria ( $crit, false );
@@ -571,7 +579,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
             break;
         }
       }
-      // si tous les trigger sont clos alors on ajoute le term à la liste des term disponibles
+      // if all triggers are closed, so add term to list
       if ($idle == 1) {
         if ($term->date != null) {
           $now = date ( 'Y-m-d' );
