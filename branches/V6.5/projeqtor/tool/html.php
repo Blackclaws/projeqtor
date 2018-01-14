@@ -431,7 +431,16 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $resourcesOfThisOrga = $obj->getResourcesOfOrganizationsListAsArray();
     $restrictArray = array_intersect_key($restrictArray, $resourcesOfThisOrga);
   }    
-
+  if ($col=='idTargetProductVersion' or $col=='idProductVersion' or $col=='idOriginProductVersion') {
+    // Must restrict to versions visible to user
+    $restrictArray=getSessionUser()->getVisibleVersions();
+  } 
+  if ($col=='idProduct') {
+    // Must restrict to products visible to user
+    $restrictArray=getSessionUser()->getVisibleProducts();
+  }
+    
+    
   if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
     // Restrict list of Organizations
     $restrictArray=array();

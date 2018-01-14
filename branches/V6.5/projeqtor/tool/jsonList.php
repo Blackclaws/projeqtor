@@ -384,6 +384,16 @@
         }
         $list = getUserVisibleResourcesList(true); // Try ?
       }*/
+      if ($dataType=='idTargetProductVersion' or $dataType=='idProductVersion' or $dataType=='idOriginProductVersion') {
+        // Must restrict to versions visible to user
+        $restrictArray=getSessionUser()->getVisibleVersions();
+        $list=array_intersect_key($list, $restrictArray);
+      }
+      if ($dataType=='idProduct') {
+        // Must restrict to products visible to user
+        $restrictArray=getSessionUser()->getVisibleProducts();
+        $list=array_intersect_key($list, $restrictArray);
+      }
       if ($selected) {
       	$name=SqlList::getNameFromId($class, $selected);
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
