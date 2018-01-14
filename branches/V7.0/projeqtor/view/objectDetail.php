@@ -536,8 +536,6 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false, $
       }
     }
   }
-  $extraHiddenFields = $obj->getExtraHiddenFields ( ($objType) ? $objType->id : null );
-  $extraReadonlyFields = $obj->getExtraReadonlyFields ( ($objType) ? $objType->id : null );
   if (! $included)
     $section = '';
   $nbLineSection = 0;
@@ -574,7 +572,10 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false, $
   }
   $obj->setAllDefaultValues ();
   $arrayRequired = $obj->getExtraRequiredFields ( ($objType) ? $objType->id : null ); // will define extra required fields, depending on status, planning mode...
-                                                                              // Loop on each property of the object
+  $extraHiddenFields = $obj->getExtraHiddenFields ( ($objType) ? $objType->id : null );
+  $extraReadonlyFields = $obj->getExtraReadonlyFields ( ($objType) ? $objType->id : null );
+  
+  // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
       $colWidth = round ( (intval ( $displayWidth )) / $nbCol ); // 3 columns should be displayable
@@ -3951,7 +3952,6 @@ function drawContextSection($obj, $refresh = false) {
 
 // ADD qCazelles - Manage ticket at customer level - Ticket #87
 function drawTicketsList($obj, $refresh = false) {
-  debugLog ( "drawTicketsList" );
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;

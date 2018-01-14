@@ -258,7 +258,6 @@ class SqlList {
       }
     }
     $query .=')';
-    debugLog($query);
     if ($listType=='Report') {
       $hr=new HabilitationReport();
       $user=getSessionUser();
