@@ -289,6 +289,7 @@ if ($displayWidthList<1400) {
               </td>
               <?php }?>
               <?php  //ADD qCazelles - Filter by Status
+                /*
               if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
               	<td style="vertical-align: middle;" width="5px">
                 	<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -309,7 +310,7 @@ if ($displayWidthList<1400) {
 			            </button>
                 </td>              
               <?php } 
-              //END ADD qCazelles ?>
+              //END ADD qCazelles */ ?>
               <?php 
                  $elementable=null;
                  if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
@@ -370,6 +371,26 @@ if ($displayWidthList<1400) {
                  ?>
             <td >&nbsp;</td>
             <td width="5px"><span class="nobr">&nbsp;</span></td>
+            <!-- CHANGE qCazelles - Filter by status button is moved here -->
+            <?php //Filter by status button is moved here
+              if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
+            <td width="36px">
+            	<button title="<?php echo i18n('filterByStatus');?>"
+			             dojoType="dijit.form.Button"
+			             id="iconStatusButton" name="iconStatusButton"
+			             iconClass="dijitButtonIcon dijitButtonIconStatusChange" class="detailButton" showLabel="false">
+			             <script type="dojo/connect" event="onClick" args="evt">
+						         if (dijit.byId('barFilterByStatus').domNode.style.display == 'none') {
+							         dijit.byId('barFilterByStatus').domNode.style.display = 'block';
+						         } else {
+							         dijit.byId('barFilterByStatus').domNode.style.display = 'none';
+						         }
+						         dijit.byId('barFilterByStatus').getParent().resize();
+                     saveDataToSession("displayByStatusList_<?php echo $objectClass;?>", dijit.byId('barFilterByStatus').domNode.style.display, true);
+          				 </script>
+			        </button>
+			      </td>
+			      <?php } ?>
 <?php if (! $comboDetail or 1) {?>            
             <td width="36px">
               <button title="<?php echo i18n('quickSearch')?>"  
