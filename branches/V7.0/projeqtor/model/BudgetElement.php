@@ -292,6 +292,9 @@ class BudgetElement extends SqlElement {
   }
   
   public function getFieldAttributes($fieldName) {
+    if (isset(self::$_fieldsAttributes[$fieldName])) {
+      return self::$_fieldsAttributes[$fieldName];
+    }
     return parent::getFieldAttributes($fieldName);
   }  
 
