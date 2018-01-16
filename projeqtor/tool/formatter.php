@@ -337,6 +337,66 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22,$addN
 	$res.='</span>';  
 	return $res;
 }
+
+//ADD qCazelles - Ticket #170
+function formatDateThumbWithText($date,$text,$float='right',$size=22,$addName="") {
+  global $print;
+  if ($print) return "";//htmlFormatDate($creationDate);
+  $today=date('Y-m-d');
+  $dateTrunc=substr($date,0,10);
+  $color="White";
+  if ($dateTrunc==$today) {
+    $color='Red';
+  } else if (addWorkDaysToDate($dateTrunc,2)==$today) {
+    $color='Yellow';
+  }
+  $title=i18n($text,array('<b>'.htmlFormatDate($date).'</b>'));
+  $title=htmlEncode($title,'quotes');
+  $file="../view/css/images/calendar$color$addName$size.png";
+  $res='<span style="position:relative;float:'.$float.';padding-right:3px">';
+  $res.='<a ';
+  //$res.=' src="'.$file.'" ';
+  if (! $print) {
+    $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+  }
+  $res.='>';
+  $res.="<div class='calendar$color$addName$size' style=';width:".$size."px;height:".$size."px;' >&nbsp;</div>";
+  $res.='</a>';
+  
+  $month=getMonthName(substr($date, 5,2),5);
+  $day=substr($date, 8,2);
+  $dispDate=htmlFormatDate($date,true);
+  if (substr($dispDate,4,1)=='-') {
+    $dispDate=substr($dispDate,5);
+  } else {
+    $dispDate=substr($dispDate,0,5);
+  }
+  switch ($size) {
+    case 22:
+      $fontSize=6.5;
+      $width=20;
+      $float="float:right;";
+      $top=8;
+      break;
+    case 32:
+      $fontSize=8;
+      $dispDate.='<br/>'.substr($date, 0,4);
+      $width=31;
+      $float="";
+      $top=10;
+      break;
+    default:
+      $fontSize=11;
+      $width=10;
+      $float="";
+  }
+  $res.='<div style="z-index:0;color:#000;background: transparent;pointer-events:none;text-align:center;'
+      .'width:'.$width.'px;'.$float.';position:absolute;top:'.$top.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';
+      $res.='</span>';
+      return $res;
+}
+//END ADD qCazelles - Ticket #170
+
 function formatPrivacyThumb($privacy, $team) {
   // privacy=3 => private
   // privacy=2 => team
