@@ -4268,15 +4268,34 @@ function drawDeliverysFromObject($obj) {
     echo '<td class="linkData">' . htmlEncode ( $status->name );
     echo formatUserThumb ( $userId, $userName, 'Creator' );
     
+    //CHANGE qCazelles - Ticket #170
+    //Old
+//     if ($delivery->idle) {
+//       echo formatDateThumb($delivery->idleDateTime, null);
+//     } else if ($delivery->done) {
+//       echo formatDateThumb($delivery->doneDateTime, null);
+//     } else if ($delivery->handled) {
+//       echo formatDateThumb($delivery->handledDateTime, null);
+//     } else if ($delivery->plannedDate) {
+//       echo formatDateThumb($delivery->plannedDate, null);
+//     } else {
+//       echo formatDateThumb($delivery->creationDateTime, null);
+//     }
+    //New
     if ($delivery->idle) {
-      echo formatDateThumb ( $delivery->creationDateTime, $delivery->idleDateTime );
+      echo formatDateThumbWithText($delivery->idleDateTime, 'thumbIdleDateTitle');
+    } else if ($delivery->cancelled) {
+      echo formatDateThumbWithText(null, 'cancelled');
     } else if ($delivery->done) {
-      echo formatDateThumb ( $delivery->creationDateTime, $delivery->doneDateTime );
+      echo formatDateThumbWithText($delivery->doneDateTime, 'thumbDoneDateTitle');
     } else if ($delivery->handled) {
-      echo formatDateThumb ( $delivery->creationDateTime, $delivery->handledDateTime );
+      echo formatDateThumbWithText($delivery->handledDateTime, 'thumbHandledDateTitle');
+    } else if ($delivery->plannedDate) {
+      echo formatDateThumbWithText($delivery->plannedDate, 'thumbPlannedDateTitle');
     } else {
-      echo formatDateThumb ( $delivery->creationDateTime, null );
+      echo formatDateThumb($delivery->creationDateTime, null);
     }
+    //END CHANGE qCazelles - Ticket #170
     echo '</td>';
     echo '</tr>';
   }
