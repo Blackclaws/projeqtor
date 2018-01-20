@@ -3642,8 +3642,8 @@ abstract class SqlElement {
         $colScript .= '   getExtraRequiredFields();';
       }
       if ($colName == 'id' . get_class ( $this ) . 'Type' or $colName == 'idStatus') {
-        $colScript .= '   getExtraHiddenFields(this.value,"","");';
         $colScript .= '   getExtraReadonlyFields(this.value,"","");';
+        $colScript .= '   getExtraHiddenFields(this.value,"","");';
       }
       $colScript .= '</script>';
     }
