@@ -2483,6 +2483,7 @@ table.dijitCalendarContainer {
 .dojoxGridRowOver {
 	border-top-color: #BEBEBE;
 	border-bottom-color: #BEBEBE;
+  cursor: pointer;
 }
 .dojoxGridRowOdd {
 	background-color: #FDFDFD;

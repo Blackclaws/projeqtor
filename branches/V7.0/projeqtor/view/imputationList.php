@@ -47,6 +47,7 @@ $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));
 $rangeValue=$currentYear . $currentWeek;
 
 $showPlanned=Parameter::getUserParameter('imputationShowPlannedWork');
+if ($showPlanned===null or $showPlanned==='') $showPlanned=1;
 $hideDone=Parameter::getUserParameter('imputationHideDone');
 $displayHandledGlobal=Parameter::getGlobalParameter('displayOnlyHandled');
 $hideNotHandled=Parameter::getUserParameter('imputationHideNotHandled');
