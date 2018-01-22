@@ -35,6 +35,9 @@ class Cron {
     
   private static $sleepTime;
   private static $checkDates;
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  private static $checkNotifications;
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
   private static $checkImport;
   private static $checkEmails;
   private static $runningFile;
@@ -104,7 +107,11 @@ class Cron {
     fwrite($handle,'SleepTime='.self::getSleepTime()
                  .'|CheckDates='.self::getCheckDates()
                  .'|CheckImport='.self::getCheckImport()
-                 .'|CheckEmails='.self::getCheckEmails() );
+                 .'|CheckEmails='.self::getCheckEmails()
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM            
+                 .(isNotificationSystemActiv()?'|CheckNotifications='.self::getCheckNotifications():'')
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+           );
     fclose($handle);
   }
   
@@ -129,6 +136,23 @@ class Cron {
     self::$checkDates=$checkDates;
     return self::$checkDates;
   }
+
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  public static function getCheckNotifications() {
+    self::init();
+    if (!isNotificationSystemActiv()) {
+        self::$checkNotifications=-1;
+        return self::$checkNotifications;        
+    }  
+    if (self::$checkNotifications) {
+      return self::$checkNotifications;
+    }
+    $checkNotifications=Parameter::getGlobalParameter('cronCheckNotifications'); 
+    if (! $checkNotifications) {$checkNotifications=3600;}
+    self::$checkNotifications=$checkNotifications;
+    return self::$checkNotifications;
+  }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
 
   public static function getCheckImport() {
   	self::init();
@@ -293,6 +317,11 @@ class Cron {
     error_reporting(0);
     session_write_close();
     error_reporting(E_ERROR);
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if (isNotificationSystemActiv()) {
+        $cronCheckNotifications=self::getCheckNotifications();
+    }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
     $cronCheckEmails=self::getCheckEmails();
@@ -355,12 +384,58 @@ class Cron {
         }
       }
       
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+      // CheckNotifications : automatically generate notifications
+      if ($cronCheckNotifications>0 and isNotificationSystemActiv()) {
+            $cronCheckNotifications-=$cronSleepTime;
+            if ($cronCheckNotifications<=0) {
+                try { 
+                  self::checkNotifications();
+                } catch (Exception $e) {
+                        traceLog("Cron::run() - Error on checkNotifications()");
+                }
+                $cronCheckNotifications=Cron::getCheckNotifications();
+            }
+      }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      
       // Sleep to next check
       sleep($cronSleepTime);
-    }
+    } // While 1
   }
   
-  public static function checkDates() {
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  public static function checkNotifications() {      
+//scriptLog('Cron::checkNotifications()');
+    global $globalCronMode;
+    if (!isNotificationSystemActiv()) {exit;}
+    self::init();
+    $globalCronMode=true;  
+    // Generates notification from notification Definition
+    $notifDef = new NotificationDefinition();
+    $crit = array("idle" => '0');
+    $lstNotifDef=$notifDef->getSqlElementsFromCriteria($crit);    
+    foreach($lstNotifDef as $notifDef) {
+        $notifDef->generateNotifications();
+  }
+  
+    // Generates email notification
+    $currentDate = new DateTime();
+    $theCurrentDate = $currentDate->format('Y-m-d');
+    $crit = array(
+                    "idle" => '0',
+                    "sendEmail" => '1',
+                    "emailSent" => '0',
+                    "notificationDate" => $theCurrentDate,
+                 );
+    $notif = new Notification();
+    $lstNotif = $notif->getSqlElementsFromCriteria($crit);
+    foreach($lstNotif as $notif) {
+        $notif->sendEmail();
+    }
+  }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+    public static function checkDates() {
 //scriptLog('Cron::checkDates()');
   	global $globalCronMode;
     self::init();

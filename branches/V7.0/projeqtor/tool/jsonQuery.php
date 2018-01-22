@@ -857,6 +857,10 @@
 	            if (!isset($arrayWidth[$numField]) or $arrayWidth[$numField]=='') continue;
 	            if ($formatter[$numField]=="colorNameFormatter") {
 	              $disp=colorNameFormatter($val);
+// BEGIN - ADD BY TABARY - COLOR TRANSLATE NAME FORMATER                      
+              } else if ($formatter[$numField]=="colorTranslateNameFormatter") {
+	              $disp=colorTranslateNameFormatter($val);                        
+// END - ADD BY TABARY - COLOR TRANSLATE NAME FORMATER                      
 	            } else if ($formatter[$numField]=="booleanFormatter") {
 	              $disp=booleanFormatter($val);
 	            } else if ($formatter[$numField]=="colorFormatter") {

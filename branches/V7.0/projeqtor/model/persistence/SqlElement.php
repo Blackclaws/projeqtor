@@ -77,6 +77,10 @@ abstract class SqlElement {
   // Define the specific field attributes
   private static $_fieldsAttributes = array("name" => "required");
 
+// BEGIN - ADD BY TABARY - TOOLTIP
+  private static $_fieldsTooltip = array();
+// END - ADD BY TABARY - TOOLTIP    
+  
   private static $_defaultValues = array();
   
   public static $_doNotSaveLastUpdateDateTime=false;
@@ -247,6 +251,12 @@ abstract class SqlElement {
       "MessageType" => array("Message" => "controlStrict"), 
       "Milestone" => array("Attachment" => "cascade", "Dependency" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
       "MilestoneType" => array("Milestone" => "controlStrict"), 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
+      "Notifiable" => array("NotificationDefinition" => "controlStrict",
+                             "Notification" => "controlStrict"
+                            ),
+      "NotificationDefinition" => array("Notification" => "controlStrict"),
+// END - ADD BY TABARY - NOTIFICATION SYSTEM      
       "OverallProgress" => array("Project" => "controlStrict"), 
       "OpportunityType" => array("Opportunity" => "controlStrict"), 
       // ADD BY Marc TABARY - 2017-02-08
@@ -490,6 +500,10 @@ abstract class SqlElement {
       "DocumentDirectory" => array(
           "Document" => "control", 
           "DocumentDirectory" => "control"), 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
+      "Notifiable" => array(
+          "NotificationDefinition" => "confirm"),
+// END - ADD BY TABARY - NOTIFICATION SYSTEM      
       "PeriodicMeeting" => array(
           "Meeting" => "control"), 
       "Product" => array(
@@ -2524,6 +2538,38 @@ abstract class SqlElement {
     return $groupRes;
   }
 
+// BEGIN - ADD BY TABARY - GET FIRST OBJECT FROM SELECT
+  /**
+   * ==========================================================================
+   * Retrieve the first object from the Database
+   * Called from an empty object of the expected class
+   *
+   * @param string $class
+   *          The object class
+   * @param array $critArray 
+   *                the critera as an array
+   * @return array : an array of objects
+   */
+  public static function getFirstSqlElementFromCriteria($class, $critArray) {
+    $obj = new $class ();
+    if ($class == 'Attachment') {
+      if (array_key_exists ( 'refType', $critArray )) {
+        if ($critArray ['refType'] == 'User' or $critArray ['refType'] == 'Contact') {
+          $critArray ['refType'] = 'Resource';
+        }
+      }
+    }
+    $objList = $obj->getSqlElementsFromCriteria ( $critArray, true );
+    if (count ( $objList ) == 0) {
+      $obj->_singleElementNotFound = true;
+      return $obj;
+    } else {
+        return $objList [0];
+    }
+  }
+  
+// END - ADD BY TABARY - GET FIRST OBJECT FROM SELECT
+  
   /**
    * ==========================================================================
    * Retrieve a single object from the Database
@@ -3039,6 +3085,23 @@ abstract class SqlElement {
   }
   // END ADD BY Marc TABARY - 2017-03-06 - ALLOW DISABLED SPECIFIC WIDGET
   
+// BEGIN - ADD BY TABARY - TOOLTIP  
+  /**
+   * ========================================================================
+   * return the tooltip of a given field.
+   * @return array of fields with tooltip
+   */
+  public function getFieldTooltip($fieldName) {
+    $fieldsTooltip = $this->getStaticFieldsTooltip();
+    if (array_key_exists ( $fieldName, $fieldsTooltip )) {
+      return $fieldsTooltip[$fieldName];
+    } else {
+      return '';
+    }
+  }
+// END - ADD BY TABARY - TOOLTIP  
+
+  
   /**
    * ========================================================================
    * return the generic attributes (required, disabled, .
@@ -3381,6 +3444,19 @@ abstract class SqlElement {
     return self::$_spinnersAttributes;
   }
   // END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
+  
+// BEGIN - ADD BY TABARY - TOOLTIP    
+  /**
+   * ==========================================================================
+   * Return the generic fieldsTooltip
+   *
+   * @return array the fieldsTooltip array
+   */
+  protected function getStaticFieldsTooltip() {
+    return self::$_fieldsTooltip;
+  }
+// END - ADD BY TABARY - TOOLTIP    
+
   
   /**
    * ==========================================================================
@@ -5069,7 +5145,15 @@ abstract class SqlElement {
             $msg .= ' />';
           }
         } else if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) { // Idxxx
-          $msg .= htmlEncode ( SqlList::getNameFromId ( substr ( $col, 2 ), $val ), 'print' );
+         	$msg .= htmlEncode ( SqlList::getNameFromId ( substr ( $col, 2 ), $val ), 'print' );
+// BEGIN - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION          
+        } else if (isForeignKey( $col, $this)) { // Idxxx
+//        } else if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) { // Idxxx
+// END - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION
+// BEGIN -  ADD BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
+          $col_withoutAlias = foreignKeyWithoutAlias($col);
+          $msg .= htmlEncode ( SqlList::getNameFromId ( substr($col_withoutAlias,2), $val ), 'print' );                            
+// END -  ADD BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           $msg .= htmlEncode ( $val, 'print' );
         } else if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Cost' or substr ( $col, - 6, 6 ) == 'Amount' or $col == 'amount')) {
@@ -5897,7 +5981,10 @@ public function getMailDetailFromTemplate($templateToReplace) {
   }
 
   public static function isColorableField($col) {
-    return ($col == 'idProject' or $col == 'idStatus' or $col == 'idQuality' or $col == 'idHealth' or $col == 'idTrend' or $col == 'idLikelihood' or $col == 'idCriticality' or $col == 'idSeverity' or $col == 'idUrgency' or $col == 'idPriority' or $col == 'idRiskLevel' or $col == 'idFeasibility' or $col == 'idEfficiency' or $col == 'idResolution' or $col == 'idTenderStatus' or $col == 'idDeliverableWeight' or $col == 'idDeliverableStatus' or $col == 'idIncomingWeight' or $col == 'idIncomingStatus') ? true : false;
+// BEGIN - CHANGE BY TABARY - NOTIFICATION SYSTEM      
+//    return ($col == 'idProject' or $col == 'idStatus' or $col == 'idQuality' or $col == 'idHealth' or $col == 'idTrend' or $col == 'idLikelihood' or $col == 'idCriticality' or $col == 'idSeverity' or $col == 'idUrgency' or $col == 'idPriority' or $col == 'idRiskLevel' or $col == 'idFeasibility' or $col == 'idEfficiency' or $col == 'idResolution' or $col == 'idTenderStatus' or $col == 'idDeliverableWeight' or $col == 'idDeliverableStatus' or $col == 'idIncomingWeight' or $col == 'idIncomingStatus') ? true : false;
+    return ($col == 'idStatusNotification' or $col == 'idProject' or $col == 'idStatus' or $col == 'idQuality' or $col == 'idHealth' or $col == 'idTrend' or $col == 'idLikelihood' or $col == 'idCriticality' or $col == 'idSeverity' or $col == 'idUrgency' or $col == 'idPriority' or $col == 'idRiskLevel' or $col == 'idFeasibility' or $col == 'idEfficiency' or $col == 'idResolution' or $col == 'idTenderStatus' or $col == 'idDeliverableWeight' or $col == 'idDeliverableStatus' or $col == 'idIncomingWeight' or $col == 'idIncomingStatus') ? true : false;
+// END - CHANGE BY TABARY - NOTIFICATION SYSTEM      
   }
 
   public static function isIconableField($col) {
@@ -6443,8 +6530,13 @@ public function getMailDetailFromTemplate($templateToReplace) {
       if ($dataLength>4000) { // Big text html formatted : must be transformed into plain text
         $text=new Html2Text($value);
         $result[$fld.'Text']=$text->getText();
-      } else if ($dataType=='int' and $dataLength=='12' and substr($fld,0,2)=='id' and strlen($fld)>2) { // idXxx : also add nameXxx
-        $class=substr($fld,2);
+// BEGIN - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION
+      } else if (isForeignKey ($fld, $this)) { // idXxx : also add nameXxx
+//      } else if ($dataType=='int' and $dataLength=='12' and substr($fld,0,2)=='id' and strlen($fld)>2) { // idXxx : also add nameXxx
+// END - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION        
+// BEGIN - ADD BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
+          $class = substr(foreignKeyWithoutAlias($fld),2);
+// END - ADD BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
         if ($class=='Resource' or $class=='User' or $class=='Contact') {
           $result['name'.$class]=SqlList::getFieldFromId('Affectable', $value, 'fullName');
         } else if (SqlElement::class_exists($class)) {

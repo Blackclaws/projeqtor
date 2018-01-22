@@ -61,7 +61,9 @@ class Type extends SqlElement {
   public $showInFlash;
   public $internalData;
   public $scope;
-  
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  public $color;
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
   public static $_cacheClassList=array();
   public static $_cacheRestrictedTypesClass;
   public static $_cacheListRestritedTypesForClass;
@@ -77,6 +79,9 @@ class Type extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required", 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+                                          "color"=>"hidden",
+// END - ADD BY TABARY - NOTIFICATION SYSTEM                                          
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
                                           "mandatoryResourceOnHandled"=>"nobr",

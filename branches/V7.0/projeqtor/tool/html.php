@@ -42,6 +42,11 @@ require_once "../tool/projeqtor.php";
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true, $limitToActiveOrganizations=true) {
 	scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" .debugDisplayObj($obj).",required=$required,critFld=".debugDisplayObj($critFld).",critVal=".debugDisplayObj($critVal).")");
   // Take into account array of $critFld // TODO : check where it is used 
+
+// BEGIN - ADD BY TABARY - POSSIBILITY TO HAVE AT X TIMES SAME idXXXX IN THE SAME OBJECT
+    $col = foreignKeyWithoutAlias($col);
+// END - ADD BY TABARY - POSSIBILITY TO HAVE AT X TIMES SAME idXXXX IN THE SAME OBJECT
+    
   if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
 	    $crtName='critFld'.$tempId;
@@ -449,8 +454,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     // Must restrict to products visible to user
     $restrictArray=getSessionUser()->getVisibleProducts();
   }
-    
-    
   if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
     // Restrict list of Organizations
     $restrictArray=array();
@@ -592,7 +595,16 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       	echo ' SELECTED ';
       	$selectedFound=true; 
       }
-      echo '><span >'. htmlEncode($val) . '</span></option>';
+// BEGIN - CHANGE BY TABARY - NOTIFICATION SYSTEM
+      if ($col=="idNotificationType" or $col=="idStatusNotification") {          
+          echo '><span >'. htmlEncode(i18n($val)) . '</span></option>';
+          if ($col=="idStatusNotification") {
+              if ($selection==1) { $next=2; } else { $next=1;}
+          }
+      } else {
+        echo '><span >'. htmlEncode($val) . '</span></option>';
+      }
+// END - CHANGE BY TABARY - NOTIFICATION SYSTEM      
     }
   }
   // This function is not expected to return value, but is used to return next value (for status)
@@ -1321,6 +1333,13 @@ function htmlDisplaySharedFilter($filterArray,$filterObjectClass,$currentFilter=
   }
 }
 
+// BEGIN - ADD BY TABARY - TOOLTIP
+function htmlDisplayTooltip($value="", $colName="", $print=false, $outMode="") {
+    if ($value=="" or $print or $outMode!="" or $colName=="") { return "";}
+    return '<div class="generalColClass" dojoType="dijit.Tooltip" position="before" connectId="'.$colName.'">'. i18n($value).'</div>';
+}
+// END - ADD BY TABATY - TOOLTIP
+
 function htmlDisplayCheckbox ($value, $remote=false) {
   $checkImg="checkedKO.png";
   if ($value!='0' and ! $value==null) {
@@ -1405,6 +1424,9 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
     $step=1;
     $bkColor='';
     
+// BEGIN - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE    
+    $display = (strpos($attributes,'hidden')===false?' display:block':' display:none');
+// END - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE    
     // List of spinner Attributes
     $spinnerAttrList = explode(',',$spinnerAttributes);
     foreach($spinnerAttrList as $spinnerAttr) {
@@ -1446,8 +1468,10 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
     // <div ...            
     $result=  '<div ';
     // Style
-    $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;" ';
-    // dojoType
+// BEGIN - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE    
+//    $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;" ';
+    $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;'.$display.';" ';
+// END - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE        // dojoType
     $result.= 'dojoType="dijit.form.NumberSpinner" ';
     // Constraints
     $result.= 'constraints="{min:'.$min.',max:'.$max.',places:0,pattern:\'###0\'}" ';

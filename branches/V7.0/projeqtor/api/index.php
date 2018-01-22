@@ -308,13 +308,23 @@ function jsonDumpObj($obj, $included=false) {
 		} else {
 		  if ($fld=='name' and property_exists($obj, '_isNameTranslatable') and $obj->_isNameTranslatable) { $val=i18n($val); }
 		  if ($res!="") { $res.=", ";}
-		  $res.='"' . htmlEncode($fld) . '":"' . htmlEncodeJson($val) . '"';
+// BEGIN -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
+		  $res.='"' . htmlEncode(foreignKeyOnlyAlias($fld)) . '":"' . htmlEncodeJson($val) . '"';
+//		  $res.='"' . htmlEncode($fld) . '":"' . htmlEncodeJson($val) . '"';
+// END -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
 		  if (substr($fld,0,2)=='id' and strlen($fld)>2) {
-		  	$idclass=substr($fld,2);
+//      $idclass=substr($fld,2);
+// BEGIN -  ADD BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
+        $fld__ = foreignKeyWithoutAlias($fld);
+        $idclass=substr($fld__,2);                        
+// END -  ADD BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
 		  	if (strtoupper(substr($idclass,0,1))==substr($idclass,0,1) and property_exists($idclass, 'name')) {
 		  		$res.=", ";
 		  		$val2=SqlList::getNameFromId($idclass, $val);
-		  		$res.='"name' . $idclass . '":"' . htmlEncodeJson($val2) . '"';
+// BEGIN -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
+		  		$res.='"name' . substr(foreignKeyOnlyAlias($fld),2) . '":"' . htmlEncodeJson($val2) . '"';
+//		  		$res.='"name' . $idclass . '":"' . htmlEncodeJson($val2) . '"';
+// END -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT		  	
 		  	}
 		  } 
 		}  

@@ -4739,6 +4739,123 @@ function selectLinkObjectItem() {
 }
 // END ADD BY Marc TABARY - 2017-02-23 - LIST - ADD - REMOVE OBJECTS LINKED BY ID TO MAIN OBJECT
 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+
+/**
+ * Save the new status of the object
+ */
+function saveChangedStatusObject() {
+    // The selected status
+    list=dojo.byId("changeStatusId");
+    if (list.options) {
+        selected=0;
+        for (var i=0; i < list.options.length; i++) {
+          if (list.options[i].selected) {
+            selected=list.options[i].value;
+            i = list.options.length+10;
+          }
+        }
+    
+    // The class object
+    var objectClass = dojo.byId("objectClassChangeStatus").value;
+    
+    // The Object id
+    var objectId = dojo.byId("idInstanceOfClassChangeStatus").value;
+    
+    url = "";
+    
+    param="?newStatusId="+selected;
+    param+="&objectClass="+objectClass;
+    param+="&idInstanceOfClass="+objectId;
+
+    loadContent("../tool/changeObjectStatus.php"+param, "resultDiv", "objectForm", true, objectClass);
+    dijit.byId('dialogChangeStatus').hide();
+    }  
+}
+
+function selectChangeStatusItem() {
+  var nbSelected=0;
+  list=dojo.byId('changeStatusId');
+  if (list.options) {
+    for (var i=0; i < list.options.length; i++) {
+      if (list.options[i].selected) {
+        nbSelected=1;
+        break;
+      }
+    }
+  }
+  if (nbSelected > 0) {
+    enableWidget('dialogChangeStatusSubmit');
+  } else {
+    disableWidget('dialogChangeStatusSubmit');
+  }
+}
+
+/**
+ * Refresh the allowed status for the object
+ * @param objClass      : The object's class for which change the status
+ * @param objId         : The object's id
+ * @param obTypeId      : The object's type
+ * @param objStatusId   : The object's status
+ * 
+ */
+function changeObjectStatus(objClass, objId, objTypeId, objStatusId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  
+  // empty select of previous options
+  if (typeof dojo.byId('changeStatusId') !== 'undefined') {
+    var node = document.getElementById("changeStatusId");
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+  
+  var param='';
+    
+  disableWidget('dialogChangeStatusSubmit');
+  var url='../tool/dynamicListChangeStatus.php';
+
+  param = '?objectId=' + objId;
+  param += '&objectClass=' + objClass;
+  param += '&idType=' + objTypeId;
+  param += '&idStatus=' + objStatusId;
+
+  url+=param;
+  loadContent(url, 'dialogChangeStatusList', 'changeStatusForm', false);
+  selectChangeStatusItem();
+
+  dijit.byId("dialogChangeStatus").show();
+
+  dojo.byId("objectClassChangeStatus").value = objClass;
+  dojo.byId("idInstanceOfClassChangeStatus").value = objId;
+  dojo.byId("idStatusOfInstanceOfClassChangeStatus").value = objStatusId;
+  dojo.byId("idTypeOfInstanceOfClassChangeStatus").value = objTypeId;
+}
+
+
+/**
+ * Refresh the allowed status for the object
+ * @param objId         : The object's id
+ * @param objStatusId   : The object's status
+ * 
+ */
+function changeStatusNotification(objId, objStatusId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  
+  if (objStatusId == 1) { newStatusId = 2; } else { newStatusId = 1;}
+  param="?newStatusId="+newStatusId;
+  param+="&idInstanceOfClass="+objId;
+
+  loadContent("../tool/changeStatusNotification.php"+param, "resultDiv", "objectForm", true, "Notification");
+  refreshNotificationTree(false);
+}
+
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+
 // =============================================================================
 // = Affectation
 // =============================================================================

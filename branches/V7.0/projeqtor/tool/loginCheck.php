@@ -241,7 +241,34 @@
     echo '<div id="validated" name="validated" type="hidden" dojoType="dijit.form.TextBox">OK';
     echo '</div>';
     echo '</div>';
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if(!isNotificationSystemActiv() or !securityCheckDisplayMenu(null,'Notification')) { return; }
+    $notif = new Notification();
+    $notificationCounts = $notif->countUnreadNotifications();
+    
+    if ($notificationCounts['total']>0) {
+        echo '<div class="messageNotificationTotal">';
+        echo '  <br>';
+        echo '<div>';
+        echo i18n("unreadNotifications", array($notificationCounts['total']));
+        echo '</div>';
+        if ($notificationCounts['alert']>0) {
+            echo '<div class="messageNotificationAlert">';
+            echo $notificationCounts['alert']. " ".strtoupper(i18n("Alert"))."(s)";
+            echo '</div>';
   }
+        if ($notificationCounts['warning']>0) {
+            echo '<div class="messageNotificationWarning">';
+            echo $notificationCounts['warning']. " ".strtoupper(i18n("Warning"))."(s)";
+            echo '</div>';
+        }
+        if ($notificationCounts['information']>0) {
+            echo '<div class="messageNotificationInfo">';
+            echo $notificationCounts['information']. " ".strtoupper(i18n("Information"))."(s)";
+            echo '</div>';
+        }
+        echo '</div>';
+    }    
   
-
-?>
+// END - ADD BY TABARY - NOTIFICATION SYSTEM 
+  }?>
