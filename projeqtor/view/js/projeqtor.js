@@ -1108,6 +1108,36 @@ function submitForm(page, destination, formName) {
   }
 }
 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+/**
+ * ============================================================================
+ * Refresh the Notification tree on the 'Unread Notifications' Accordion
+ * @param bCheckFormChangeInProgress : True if FormChangeInProgress is to check
+ * @return void
+ */
+function refreshNotificationTree(bCheckFormChangeInProgress) {
+    if (paramNotificationSystemActiv == "NO") {
+        return;
+    }
+    if (bCheckFormChangeInProgress && waitingForReply) {
+        return;
+    }
+    dijit.byId("notificationTree").model.store.clearOnClose = true;
+    dijit.byId("notificationTree").model.store.close();
+    // Completely delete every node from the dijit.Tree
+    dijit.byId("notificationTree")._itemNodesMap = {};
+    dijit.byId("notificationTree").rootNode.state = "UNCHECKED";
+    dijit.byId("notificationTree").model.root.children = null;
+    // Destroy the widget
+    dijit.byId("notificationTree").rootNode.destroyRecursive();
+    // Recreate the model, (with the model again)
+    dijit.byId("notificationTree").model.constructor(dijit.byId("notificationTree").model);
+    // Rebuild the tree
+    dijit.byId("notificationTree").postMixInProperties();
+    dijit.byId("notificationTree")._load();
+}
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+
 /**
  * ============================================================================
  * Finalize some operations after receiving validation message of treatment
@@ -1567,6 +1597,11 @@ function finalizeMessageDisplay(destination, validationType) {
       dijit.byId("documentDirectoryTree").postMixInProperties();
       dijit.byId("documentDirectoryTree")._load();
     }
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if (classObj && (classObj.value == 'Notification' || classObj.value == 'NotificationDefinition')) {
+      refreshNotificationTree(false);
+    }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
     if (dojo.byId("forceRefreshMenu")
         && dojo.byId("forceRefreshMenu").value != "") {
       forceRefreshMenu = dojo.byId("forceRefreshMenu").value;
@@ -4222,6 +4257,324 @@ function setDefaultPlanningMode(typeValue) {
   });
 }
 
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+function refreshTargetDateFieldNotification(notificationItemValue) {
+    url='../tool/getDateFieldsNotifiable.php?idNotifiable='+ notificationItemValue;
+
+    var selectTarget = "_spe_targetDateNotifiableField";
+    dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+    dijit.byId(selectTarget).set('value','');
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(data) {
+            var obj = JSON.parse(data);
+            if(data){
+                for ( var key in obj) {
+                    var o = dojo.create("option", {label: i18n(obj[key]), value: key});     
+                    dijit.byId(selectTarget).addOption(o); 
+                }
+            }
+        }
+    });
+}
+
+function refreshAllowedWordsForNotificationDefinition(notificationItemValue,context) {
+    if(context==='Novice') {
+        url='../tool/getAllowedWordsForNotificationDefinition_.php?idNotifiable='+ notificationItemValue;
+    } else {
+        url='../tool/getAllowedWordsForNotificationDefinition.php?idNotifiable='+ notificationItemValue;
+    }
+    var allowedWords = "_spe_allowedWords";
+    var element = document.getElementById(allowedWords);
+    element.innerHTML = "";
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(data) {
+            if(data){
+                var dataP = JSON.parse(data);
+                element.innerHTML = dataP; 
+            }
+        }
+    });
+    
+    if (context==='Novice') {
+        url='../tool/getAllowedWordsForNotificationDefinition.php?idNotifiable='+ notificationItemValue;
+
+        var allowedWordsNotTranslated = "_spe_allowedWordsNotTranslated";
+        var elementNotTranslated = document.getElementById(allowedWordsNotTranslated);
+        elementNotTranslated.innerHTML = "";
+        dojo.xhrGet({
+            url : url,
+            handleAs : "text",
+            load : function(data) {
+                if(data){
+                    var dataP = JSON.parse(data);
+                    elementNotTranslated.innerHTML = dataP; 
+                }
+            }
+        });
+    }
+}
+
+function refreshAllowedReceiversForNotificationDefinition(notificationItemValue, context) {
+    if (context==='Novice') {
+        url='../tool/getAllowedReceiversForNotificationDefinition_.php?idNotifiable='+ notificationItemValue;
+    } else {
+        url='../tool/getAllowedReceiversForNotificationDefinition.php?idNotifiable='+ notificationItemValue;        
+    }
+    var allowedReceivers = "_spe_allowedReceivers";
+    var element = document.getElementById(allowedReceivers);
+    element.innerHTML="";
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(data) {
+            if(data){
+                var dataP = JSON.parse(data);
+                element.innerHTML = dataP; 
+            }
+        }
+    });
+
+    if (context==='Novice') {
+        url='../tool/getAllowedReceiversForNotificationDefinition.php?idNotifiable='+ notificationItemValue;
+
+        var allowedReceiversNotTranslated = "_spe_allowedReceiversNotTranslated";
+        var elementNotTranslated = document.getElementById(allowedReceiversNotTranslated);
+        elementNotTranslated.innerHTML="";
+        dojo.xhrGet({
+            url : url,
+            handleAs : "text",
+            load : function(data) {
+                if(data){
+                    var dataP = JSON.parse(data);
+                    elementNotTranslated.innerHTML = dataP; 
+                }
+            }
+        });
+    }
+}
+
+function refreshListItemsInNotificationDefinition(idNotifiable, forReceivers) {
+    url='../tool/getAFieldForAClassById.php?Class=Notifiable&field=notifiableItem&id=' + idNotifiable;
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(notifItem) {
+            if(notifItem){
+                var notifiableItem = JSON.parse(notifItem);
+                url='../tool/getListItemsForNotificationDefinition.php?notifiableItem='+notifiableItem+'&forReceivers='+forReceivers;
+                dojo.xhrGet({
+                    url : url,
+                    handleAs : "text",
+                    load : function(data) {
+                        if(data){
+                            var obj = JSON.parse(data);
+                            if(forReceivers==="NO") {
+                                var selectTarget = '_spe_listItemsTitle';
+                                dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+                                dijit.byId(selectTarget).set('value','');
+                                first = true;
+                                for ( var key in obj) {
+                                    var o = dojo.create("option", {label: obj[key], value: key});
+                                    dijit.byId(selectTarget).addOption(o);
+                                    if (first===true) {
+                                        refreshListFieldsInNotificationDefinition(key, "Title");
+                                        first=false;
+                                    }
+                                }
+                                var selectTarget = '_spe_listItemsContent';
+                                dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+                                dijit.byId(selectTarget).set('value','');
+                                first = true;
+                                for ( var key in obj) {
+                                    var o = dojo.create("option", {label: obj[key], value: key});
+                                    dijit.byId(selectTarget).addOption(o);
+                                    if (first===true) {
+                                        refreshListFieldsInNotificationDefinition(key, "Content");
+                                        first=false;
+                                    }
+                                }
+                                var selectTarget = '_spe_listItemsRule';
+                                dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+                                dijit.byId(selectTarget).set('value','');
+                                first = true;
+                                for ( var key in obj) {
+                                    var o = dojo.create("option", {label: obj[key], value: key});
+                                    dijit.byId(selectTarget).addOption(o);
+                                    if (first===true) {
+                                        refreshListFieldsInNotificationDefinition(key, "Rule");
+                                        first=false;
+                                    }
+                                }
+                            } else {
+                                var selectTarget = '_spe_listItemsReceiver';
+                                dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+                                dijit.byId(selectTarget).set('value','');
+                                first = true;
+                                for ( var key in obj) {
+                                    var o = dojo.create("option", {label: obj[key], value: key});     
+                                    dijit.byId(selectTarget).addOption(o);
+                                    if (first===true) {
+                                        refreshListFieldsInNotificationDefinition(key, "Receiver");
+                                        first=false;
+                                    }
+                                }                                
+                            }
+                        }
+                    }
+                });                
+            }
+        }
+    });   
+}
+
+function refreshListFieldsInNotificationDefinition(table, context) {
+    url='../tool/getListFieldsForNotificationDefinition.php?table='+ table + '&context=' + context;
+
+    var selectTarget = '_spe_listFields' + context;
+    dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+    dijit.byId(selectTarget).set('value','');
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(data) {
+            if(data){
+                var obj = JSON.parse(data);
+                for ( var key in obj) {
+                    var o = dojo.create("option", {label: obj[key], value: key});     
+                    dijit.byId(selectTarget).addOption(o); 
+                }
+            }
+        }
+    });
+}
+
+function addFieldInTextBoxForNotificationItem(context, textBox) {
+                
+    var selectItems = '_spe_listItems' + context;
+    var selectedItemLabel = dijit.byId(selectItems).attr('displayedValue');
+    var selectedItem = dijit.byId(selectItems).getValue();
+    var selectFields = '_spe_listFields' + context;
+    var selectedField = dijit.byId(selectFields).getValue();
+    var selectedNotifiable = document.getElementById('idNotifiable').value;
+
+    oldText = dijit.byId(textBox).getValue();
+    element = document.getElementById(textBox);
+    var val = element.value;
+    cursPos = val.slice(0, element.selectionStart).length;
+
+    if (context === 'Receiver') {
+        textToAdd=';';            
+    } else {
+        textToAdd = '#{';
+    }    
+    if (selectedItemLabel!==selectedNotifiable) {
+        textToAdd=textToAdd + 'id' + selectedItem + '.';
+    }
+    textToAdd=textToAdd + selectedField;
+    if (context !== 'Receiver') {
+        textToAdd=textToAdd + "}";            
+    }
+    if (context==="Receiver") {
+        newText = oldText + textToAdd;
+    } else {
+        newText = oldText.substr(0, cursPos) + textToAdd + oldText.substr(cursPos);        
+    }
+    dijit.byId(textBox).setValue(newText);
+}
+
+function addOperatorOrFunctionInTextBoxForNotificationItem(textBox) {                
+    var selectItems = '_spe_listOperatorsAndFunctionsRule';
+    var selectedItem = dijit.byId(selectItems).getValue();
+
+    oldText = dijit.byId(textBox).getValue();
+    element = document.getElementById(textBox);
+    var val = element.value;
+    cursPos = val.slice(0, element.selectionStart).length;
+
+    textToAdd=selectedItem;
+    newText = oldText.substr(0, cursPos) + textToAdd + oldText.substr(cursPos);        
+    dijit.byId(textBox).setValue(newText);
+}
+
+function setFixedMonthDayAttributes(colName) {
+    if (colName==='everyMonth') {
+        if(dijit.byId('everyMonth').checked) {
+            dijit.byId('everyYear').set('checked', false);
+            dojo.byId('widget_fixedDay').style.display = 'block';
+            dojo.byId('widget_fixedMonth').style.display = 'none';
+            dojo.byId('widget__drawLike_fixedDay').style.display = 'none';
+            dojo.addClass('_spe_targetDateNotifiableField', 'required');
+            dijit.byId('fixedMonth').setValue(null);
+            dijit.byId('_drawLike_fixedDay').setValue(null);
+        } else{
+            dojo.byId('widget_fixedDay').style.display = 'none';
+            dijit.byId('fixedDay').setValue(null);
+        }
+    }
+    
+    if (colName==='everyYear') {
+        if(dijit.byId('everyYear').checked) {
+            dijit.byId('everyMonth').set('checked', false);            
+            dojo.byId('widget_fixedDay').style.display = 'none';
+            dojo.byId('widget_fixedMonth').style.display = 'block';
+            dojo.byId('widget__drawLike_fixedDay').style.display = 'block';
+            dijit.byId('fixedDay').setValue('');
+            if (dijit.byId('fixedMonth').getValue()>0 && dijit.byId('_drawLike_fixedDay').getValue()>0) {
+                dojo.removeClass('_spe_targetDateNotifiableField', 'required');
+            } else {
+                dojo.addClass('_spe_targetDateNotifiableField', 'required');
+            }
+        } else{
+            dojo.byId('widget_fixedMonth').style.display = 'none';
+            dojo.byId('widget__drawLike_fixedDay').style.display = 'none';            
+            dijit.byId('fixedMonth').setValue(null);
+            dijit.byId('_drawLike_fixedDay').setValue(null);
+        }
+    }
+        
+}
+
+function setDrawLikeFixedDayWhenFixedMonthChange(value, name) {
+    var arrayMonth30 = new Array(4,6,9,11);
+    var dLFixedDay='';
+    if (name==='fixedMonth') {
+        if (value===null || value<1 || value>12) {return;}
+        var dLFixedDay = '_drawLike_fixedDay';
+        var dayValue = dijit.byId(dLFixedDay).getValue();
+        var monthValue = value;
+    }
+    if (name==='_drawLike_fixedDay') {
+        var dLFixedDay = name;
+        var dayValue = value;
+        var monthValue = dijit.byId('fixedMonth').getValue();        
+    }
+    
+    if(dijit.byId('everyYear').checked) {
+        if (monthValue>0 && dayValue>0) {
+            dojo.removeClass('_spe_targetDateNotifiableField', 'required');
+        } else {
+            dojo.addClass('_spe_targetDateNotifiable', 'required');
+        }        
+    }
+    
+    if (dLFixedDay==='' || dayValue < 29) { return;}
+    
+    if (monthValue=== 2 && dayValue>28) {
+        dijit.byId(dLFixedDay).setValue(28);        
+    }
+
+    if (arrayMonth30.includes(monthValue) && dayValue===31) {
+        dijit.byId(dLFixedDay).setValue(30);
+        return;
+    }
+    
+}
+
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
 function setDefaultPriority(typeValue) {
   url='../tool/getSingleData.php?dataType=defaultPriority&idType='
     + typeValue + "&objectClass=" + dojo.byId('objectClass').value;

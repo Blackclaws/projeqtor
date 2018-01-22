@@ -29,7 +29,18 @@
 
 
 .iconView { background-image: url(images/iconView.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
-.iconGoto { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
+.iconGoto { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; background-size: 16px 16px}
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
+.iconNotificationManual16 { background-image: url(images/iconNotificationManual.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconNotificationManual22 { background-image: url(images/iconNotificationManual.png); background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconNotificationManual32 { background-image: url(images/iconNotificationManual.png); background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconGoto16 { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconGoto22 { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconGoto32 { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconSum16 { background-image: url(images/iconSum.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconSum22 { background-image: url(images/iconSum.png); background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconSum32 { background-image: url(images/iconSum.png); background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 .iconAdd { background-image: url(images/buttonAdd16.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
 
 .iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 24px; height: 24px;}
@@ -494,6 +505,12 @@
 .iconIndividualExpenseType22 { background-image: url(images/iconIndividualExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconIndividualExpenseType16 { background-image: url(images/iconIndividualExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
+.iconInfo16 { background-image: url(images/iconInformation.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconInfo22 { background-image: url(images/iconInformation.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconInfo32 { background-image: url(images/iconInformation.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
+
 .iconInvoice32 { background-image: url(images/iconInvoice32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconInvoice22 { background-image: url(images/iconInvoice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconInvoice16 { background-image: url(images/iconInvoice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -565,6 +582,18 @@
 .iconMilestoneType32 { background-image: url(images/iconMilestoneType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconMilestoneType22 { background-image: url(images/iconMilestoneType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMilestoneType16 { background-image: url(images/iconMilestoneType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
+.iconNotification32 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconNotification22 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconNotification16 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconNotificationDefinition32 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconNotificationDefinition22 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconNotificationDefinition16 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconNotificationRefresh32 { background-image: url(images/iconNotificationRefresh.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
+.iconNotificationRefresh22 { background-image: url(images/iconNotificationRefresh.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconNotificationRefresh16 { background-image: url(images/iconNotificationRefresh.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 
 .iconOpportunity32 { background-image: url(images/iconOpportunity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconOpportunity22 { background-image: url(images/iconOpportunity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -892,6 +921,12 @@
 .iconVersionsPlanning32 { background-image: url(images/iconVersionsPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconVersionsPlanning22 { background-image: url(images/iconVersionsPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconVersionsPlanning16 { background-image: url(images/iconVersionsPlanning16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
+.iconWarning32 { background-image: url(images/iconWarning.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconWarning22 { background-image: url(images/iconWarning.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconWarning16 { background-image: url(images/iconWarning.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 
 .iconWork32 { background-image: url(images/iconWork32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconWork22 { background-image: url(images/iconWork22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

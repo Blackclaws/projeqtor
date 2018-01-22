@@ -181,8 +181,10 @@ function colorTranslateNameFormatter(value) {
           foreColor = '#FFFFFF';
         }
       }
-      return '<span style="display:none;">' + order
-          + '</span><table width="100%"><tr><td style="background-color: '
+      return '<span style="display:none;">'
+          + order
+          + '</span>'
+          + '<table width="100%" style="min-height:20px !important;"><tr style="height:100% !important;"><td style="text-align: center;border-radius: 10px; padding: 5px 5px !important;background-color: '
           + color + '; color:' + foreColor + ';width: 100%;">' + i18n(val)
           + '</td></tr></table>';
     } else {
