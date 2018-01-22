@@ -244,6 +244,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') echo "defaultOffDays[5]=5;"; 
     if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') echo "defaultOffDays[6]=6;"; 
     ?>
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    var paramNotificationSystemActiv="<?php echo Parameter::getGlobalParameter("notificationSystemActiv")?>";
+    var totalUnreadNotificationsCount=0;
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
     var draftSeparator='<?php echo Parameter::getGlobalParameter('draftSeparator');?>';
     var paramCurrency='<?php echo $currency;?>';
     var paramCurrencyPosition='<?php echo $currencyPosition;?>';
@@ -684,9 +688,99 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                   +"&value="+dojo.byId("leftBottomDiv").offsetHeight
              });;*/
           </script>
-          <div dojoType="dijit.layout.AccordionContainer" persists="true">
+          <div id="accordionLeftBottomDiv" dojoType="dijit.layout.AccordionContainer" persists="true">
             <?php $selectedAccordionBottom=Parameter::getUserParameter('accordionPaneBottom');
                 if (! $selectedAccordionBottom) $selectedAccordionBottom='projectLinkDiv';?>
+<!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->
+            <?php if (securityCheckDisplayMenu(null,'Notification') and isNotificationSystemActiv() ) {?>
+            <div id="notificationAccordion"
+                 dojoType="dijit.layout.ContentPane" 
+                 class="background" 
+                 title="<?php echo i18n('accordionNotification');?>" 
+                 <?php if ($selectedAccordionBottom=='notification') echo 'selected="true"';?>>
+                <div dojoType="dojo.data.ItemFileReadStore" 
+                     id="notificationStore" 
+                    jsId="notificationStore" url="../tool/jsonNotification.php">
+                </div>
+                <div style="position: absolute; float:right; right: 5px; cursor:pointer;"
+                     title="<?php echo i18n("notificationAccess");?>"
+                     onclick="if (checkFormChangeInProgress()){return false;};loadContent('objectMain.php?objectClass=Notification','centerDiv');"
+                     class="iconNotification22">
+                </div>
+                <div style="position: absolute; float:right; right: 45px; cursor:pointer;"
+                     title="<?php echo i18n("notificationRefresh");?>"
+                     onclick="if (checkFormChangeInProgress()){return false;};refreshNotificationTree(true);"
+                     class="iconNotificationRefresh22">
+                </div>
+                <div dojoType="dijit.tree.ForestStoreModel" id="notificationModel" jsId="notificationModel" store="notificationStore"
+                     query="{id:'*'}" rootId="notificationRoot" rootLabel="Notifications"
+                     childrenAttrs="children">
+                </div>             
+                <div dojoType="dijit.Tree" id="notificationTree" model="notificationModel" openOnClick="false" showRoot='false'>
+                    <script type="dojo/method" event="onLoad" args="evt">;
+                        var cronCheckNotification = <?php echo Parameter::getGlobalParameter('cronCheckNotifications'); ?>;
+                        var intervalNotificationTreeDelay = cronCheckNotification*1000;
+                        var intervalNotificationTree = setInterval(function() {
+                                                                                refreshNotificationTree(true);
+                                                                              },
+                                                                   intervalNotificationTreeDelay);
+                    </script>
+                    <script type="dojo/method" event="onClick" args="item">;
+                        if (notificationStore.getValue(item, "objClass")==="") {return false;}
+                        if (checkFormChangeInProgress()){return false;}
+                        var objectId = "";
+                        var objClass = notificationStore.getValue(item, "objClass");
+                        if (objClass=="NotificationManual") {
+                                objClass="Notification";                            
+                        }
+                        if (notificationStore.getValue(item, "objId")!=="") {
+                            objectId = notificationStore.getValue(item, "objId");
+                            gotoElement(objClass, objectId, true);
+                        } else {
+                            loadContent("objectMain.php?objectClass="+objClass,"centerDiv");
+                        }                            
+                    </script>
+                    <script type="dojo/method" event="getIconClass" args="item">
+                        if (item == this.model.root) {
+                          return "checkBox";
+                        } else {
+                            var isTotal = notificationStore.getValue(item,"isTotal");
+                            if (isTotal==="YES") {
+                                var totalCount = notificationStore.getValue(item,"count");
+                                totalUnreadNotificationsCount = totalCount;
+                                var ac = dijit.byId('accordionLeftBottomDiv');
+                                if (totalCount>0) {
+                                    ac.selectChild(dijit.byId('notificationAccordion'));
+                                } else {
+//                                    ac.selectChild(dijit.byId('messageDiv'));                                    
+                                }
+                                // Update the Title Panel
+                                var titlePane = totalCount + ' ';
+                                titlePane += i18n('accordionNotification');
+                                var pane = dijit.byId('notificationAccordion');
+                                pane.set("title",titlePane);
+                                
+                                // Hide menuBarNotificationCount if totalCount=0
+                                if (totalCount==0) {
+                                    document.getElementById("notificationTree").style.visibility = "hidden";
+                                    document.getElementById("menuBarNotificationCount").style.visibility = "hidden";
+                                } else {
+                                    // Show and Update the Notification count in menuBar
+                                    document.getElementById("notificationTree").style.visibility = "visible";
+                                    document.getElementById("menuBarNotificationCount").style.visibility = "visible";
+                                    document.getElementById("countNotifications").innerHTML = totalCount;
+                                }
+                            }
+                            return notificationStore.getValue(item, "iconClass");
+                        }
+                    </script>
+                </div>
+                <script type="dojo/connect" event="onShow" args="evt">
+                    saveDataToSession("accordionPaneBottom", "notification", true);
+                </script>
+            </div>
+            <?php }?>
+<!-- END - ADD BY TABARY - NOTIFICATION SYSTEM -->
             <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" <?php if ($selectedAccordionBottom=='projectLinkDiv') echo 'selected="true"';?> title="<?php echo i18n('ExternalShortcuts');?>">
               <?php include "../view/shortcut.php"?>
               <script type="dojo/connect" event="onShow" args="evt">
@@ -822,11 +916,32 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
               </table>    
             </div>
           </td>  
-          <td width="64%" style="vertical-align: middle;" >
+<!-- BEGIN - CHANGE BY TABARY - NOTIFICATION SYSTEM -->          
+<!--          <td width="64%" style="vertical-align: middle;" > -->
+          <td width="59%" style="vertical-align: middle;" >
+<!-- END - CHANGE BY TABARY - NOTIFICATION SYSTEM -->          
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
+          
+<!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->          
+        <?php if(isNotificationSystemActiv() and securityCheckDisplayMenu(null,'Notification')) {?>
+          <td title="<?php echo i18n('sectionNotification');?>" width="5%" style="vertical-align: middle;" >
+            <div id="statusBarNotificationDiv" style="text-align: center;">
+                    <div id="menuBarNotificationCount" class="iconNotification32" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;" 
+                           onClick="
+                                      var ac = dijit.byId('accordionLeftBottomDiv');
+                                      ac.selectChild(dijit.byId('notificationAccordion'));
+                                      loadContent('objectMain.php?objectClass=Notification','centerDiv');
+                                  " >
+                        <div id="countNotifications" class="menuBarNotificationCount" style="text-align: center;">0</div>
+                    </div>
+            </div>
+          </td>
+        <?php } ?>          
+<!-- END - ADD BY TABARY - NOTIFICATION SYSTEM -->                    
+          
           <td width="10%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
             <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
@@ -1227,6 +1342,56 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </table>
 </div>
 <!-- END ADD BY Marc TABARY - 2017-02-23 - CHOICE OBJECTS LINKED BY ID TO MAIN OBJECT -->
+
+<!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->
+<!-- DIALOG - What is show on Change Status submit -->
+<div id="dialogChangeStatus" dojoType="dijit.Dialog" title="<?php echo i18n("dialogChangeStatus");?>">
+  <table>
+    <tr>
+      <td>
+        <!-- FORM -->
+        <form id="changeStatusForm" name="changeStatusForm" onSubmit="return false;">
+          <!-- Store the class name of the object -->  
+          <input id="objectClassChangeStatus" name="objectClassChangeStatus" type="hidden" value="" />
+          <!-- Store the id of the instance of the object -->            
+          <input id="idInstanceOfClassChangeStatus" name="idInstanceOfClassChangeStatus" type="hidden" value="" />
+          <!-- Store the idStatus of the instance of the object -->  
+          <input id="idStatusOfInstanceOfClassChangeStatus" name="idStatusOfInstanceOfClassChangeStatus" type="hidden" value="" />
+          <!-- Store the idType of the instance of the object -->  
+          <input id="idTypeOfInstanceOfClassChangeStatus" name="idTypeOfInstanceOfClassChangeStatus" type="hidden" value="" />
+         <table>
+            <tr>
+              <td class="dialogLabel" >
+                <label for="dialogChangeStatusList" ><?php echo i18n("colChangeStatus") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <table><tr><td>
+                  <div id="dialogChangeStatusList" dojoType="dijit.layout.ContentPane" region="center">
+                    <!-- Place of select construct dynamicaly by (dymanicListObject) -->  
+                    <input id="changeStatusId" name="changeStatusId" type="hidden" value="" />
+                  </div>
+                </td></tr></table>
+              </td>
+            </tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </table>
+         </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="changeStatusAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogChangeStatus').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogChangeStatusSubmit" onclick="protectDblClick(this);saveChangedStatusObject();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- END - ADD BY TABARY - NOTIFICATION SYSTEM -->
 
 <div id="dialogApprover" dojoType="dijit.Dialog" title="<?php echo i18n("dialogApprover");?>">
   <table>

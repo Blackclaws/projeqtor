@@ -159,7 +159,13 @@ function maintenance() {
 	  Sql::rollbackTransaction();
 	  exit;
   }
-  if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit' and $item!="Logfile")) {
+  if (! trim($item) or ($item!='Alert' and 
+                        $item!='Mail' and 
+                        $item!='Audit' and
+// BEGIN - ADD BY TABARY -NOTIFICATION SYSTEM
+                        $item!='Notification' and
+// END - ADD BY TABARY -NOTIFICATION SYSTEM          
+                        $item!="Logfile")) {
     $ctrl.='ERROR<br/>';
 	  traceHack("invalid item value - $item");
 	  Sql::rollbackTransaction();
@@ -186,6 +192,11 @@ function maintenance() {
     $clauseWhere="disconnectionDateTime<'" . $targetDate . "'";
   } else if ($item=="Logfile") {
     $clauseWhere=$targetDate;
+// BEGIN - ADD BY TABARY -NOTIFICATION SYSTEM
+  } else if ($item=="Notification") {
+    $targetDate=addDaysToDate(date('Y-m-d'), (-1)*$nbDays );
+    $clauseWhere="notificationDate<'" . $targetDate . "'";      
+// END - ADD BY TABARY -NOTIFICATION SYSTEM  
   }
   if ($operation=="close") {
   	if ($item=="Alert") {

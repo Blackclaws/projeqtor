@@ -138,6 +138,21 @@ html, body {
     border: 0px solid #ffffff;
     text-align:center;
   }
+  
+  .bottomNotification {
+    position:relative;
+    cursor:pointer;
+    margin:0px 0px 0px 4px;
+    width:22px; height:22px;
+    padding:15px 1px 0px 1px; 
+    border-radius: 10px 10px 0px 0px;
+    vertical-align:middle;
+    background: transparent;
+    background: rgba(255,255,255,0.5);
+    border: 0px solid #ffffff;
+    text-align:center;
+  }
+  
   .menuBarItemNoWidth {
      width:0px;
   }
@@ -157,7 +172,7 @@ html, body {
      background: rgba(255,255,255,0.7);
      /*overflow:hidden;*/
   }
-  .menuBarItem:hover {
+  .menuBarItem:hover .bottomNotification:hover {
     border-color: #a5a5a5;
     border-bottom-color: #757575;
     color: #3C3C3C;
@@ -495,7 +510,7 @@ label, .label, .smallLabel {
   text-shadow: 1px 1px #FFFFFF;
 }
 .labelWithThumb {
-  width: 120px; !important
+  width: 120px !important
 }
 .largeLabel {
   width: 300px;
@@ -725,6 +740,52 @@ label, .label, .smallLabel {
   height:100%;
   box-shadow: 5px 5px 10px #656565;
 }
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
+.messageNotificationInfo, .messageNotificationInformation, .messageNotificationAlert, .messageNotificationWarning, .messageNotificationTotal {
+  top:0px;
+  overflow:visible;
+  vertical-align: middle;
+  padding: 5px 5px;
+  border: 1px solid #CCCCCC;
+  border-radius: 10px;
+  min-height:16px; max-height:200px;
+  min-width: 100px;
+  overflow-y:auto; overflox-x: hidden;
+  width:95%;
+  height:100%;
+  box-shadow: 5px 5px 10px #656565;
+  font-weight: 600;
+  background-repeat:no-repeat;
+}
+.messageNotificationTotal {
+  text-align:center;
+  color:#000000; 
+  background-position:top;
+  background-color: #F0F0F0;
+  background-image: url(images/iconNotification16.png);
+}
+.messageNotificationAlert {
+  text-align: left;
+  color:#FFFFFF; 
+  background-position: right;
+  background-color: #FF0000;
+  background-image: url(images/iconAlert16.png);
+}
+.messageNotificationWarning {
+  text-align: left;
+  color:#000000; 
+  background-position: right;
+  background-color: #FFDDDD;
+  background-image: url(images/iconWarning16.png);
+}
+.messageNotificationInfo, .messageNotificationInformation {
+  text-align: left;
+  color:#FFFFFF; 
+  background-position: right;
+  background-color: #0000FF;
+  background-image: url(images/iconInformation16.png);
+}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 .messageOK {
   background: #DDFFDD url();
   font-weight: 600;
@@ -1114,6 +1175,19 @@ label, .label, .smallLabel {
   cursor: pointer;
 }
 
+/* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */ 
+.menuBarNotificationCount {
+  font-weight: bold; 
+  font-size: 12pt;
+  color: #D2691E; 
+  text-align: center;
+  vertical-align: middle;
+}
+/* END - ADD BY TABARY - NOTIFICATION SYSTEM */
+
+.menuBarNotificationCount:hover {
+  cursor: pointer;    
+}
 
 .gridRowCount, .gridRowCountShadow1, .gridRowCountShadow2 {
   font-weight: bold; 
@@ -3051,7 +3125,7 @@ label, .label, .smallLabel {
     color: #545254;
 }
 
-.ProjectomLight .menuBarItem {
+.ProjectomLight .menuBarItem .bottomNotification {
     /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
     border-color: #c0c0c0 #c0c0c0 #9b9b9b;
     border-image: none;
@@ -3259,8 +3333,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', end
 
 
 
-.Projectom .menuBarItem {
-    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+.Projectom .menuBarItem .bottomNotification {    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
     border-color: #c0c0c0 #c0c0c0 #9b9b9b;
     border-image: none;
     border-style: solid;

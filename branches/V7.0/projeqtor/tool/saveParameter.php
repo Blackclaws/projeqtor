@@ -36,6 +36,9 @@ $errors="";
 $type=$_REQUEST['parameterType'];
 Sql::beginTransaction();
 $forceRefreshMenu='';
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+$changeNotificationSystemActiv=false;
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
 if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable('menu', 'profile', 'habilitation') ;
   $hab=new Habilitation();
@@ -246,6 +249,9 @@ if ($type=='habilitation') {
 } else if ($type=='globalParameter') {
   $parameterList=Parameter::getParamtersList($type);
   $changeImputationAlerts=false;
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  $changeNotificationSystemActiv = false;
+// END - ADD BY TABARY - NOTIFICATION SYSTEM  
   foreach($_REQUEST as $fld => $val) { // TODO (SECURITY) : forbit writting of db and prefix params
     if (array_key_exists($fld, $parameterList)) {
       $crit['parameterCode']=$fld;
@@ -268,6 +274,11 @@ if ($type=='habilitation') {
           $changeImputationAlerts=true;
         }
       }
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+      if ($obj->parameterValue!=$val) {
+          $changeNotificationSystemActiv = true;
+      }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM      
       $obj->parameterValue=$val;
       $obj->idUser=null;
       $obj->idProject=null;
@@ -321,6 +332,13 @@ if ($type=='habilitation') {
     $errors=i18n("cronRestartRequired");
     $status='WARNING';
   }
+
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  if ($changeNotificationSystemActiv) {
+        $forceRefreshMenu="globalParameter";
+        resetUser();
+  }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM    
   Parameter::clearGlobalParameters();// force refresh 
 } else {
    $errors="Save not implemented";

@@ -86,6 +86,12 @@
                     	if (isset($arrayTimes['CheckImport'])) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckImport', array($arrayTimes['CheckImport'])) . '</i>';
                     	}
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+                      if (isset($arrayTimes['CheckNotifications']) and isNotificationSystemActiv()) {
+                        $nbMinutes = $arrayTimes['CheckNotifications'];
+                        echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckNotifications', array($nbMinutes)) . '</i>';
+                      }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM                        
                       if (isset($arrayTimes['CheckEmails'])) {
                         echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckEmails', array($arrayTimes['CheckEmails'])) . '</i>';
                       }
@@ -385,8 +391,36 @@
               </tr>
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
+<!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->
               <td class="label" style="width:200px">
-                <?php echo i18n("deleteAudit"). "&nbsp;:&nbsp;";?>
+                  <?php echo i18n("deleteNotifications"). "&nbsp;:&nbsp;";?>
+                </td>
+                <td class="display">
+                  <?php echo i18n('sentSinceMore');?>&nbsp;
+                   <div dojoType="dijit.form.NumberTextBox" constraints="{min:0,max:999}"
+                    style="width:30px;"
+                    value="30"
+                    name="deleteNotificationDays" id="deleteNotificationDays">
+                  </div>
+                  &nbsp;<?php echo i18n('days');?>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button id="deleteNotifications" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('deleteButton'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       maintenance('delete','Notification');
+                       return false;
+                     </script>
+                 </button>
+                </td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+<!-- END - ADD BY TABARY - NOTIFICATION SYSTEM -->
+              <td class="label" style="width:200px">                <?php echo i18n("deleteAudit"). "&nbsp;:&nbsp;";?>
                 </td>
                 <td class="display">
                   <?php echo i18n('closedSinceMore');?>&nbsp;

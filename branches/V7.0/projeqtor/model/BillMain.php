@@ -34,6 +34,7 @@ class BillMain extends SqlElement {
   public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
+  public $billId;
   public $name;
   public $idBillType;
   public $idProject;
@@ -48,7 +49,6 @@ class BillMain extends SqlElement {
   public $Origin;
   public $_spe_billingType;
   public $_sec_treatment;  
-  public $billId;
   public $idStatus;
   public $idResource;
   public $sendDate;
@@ -97,10 +97,12 @@ class BillMain extends SqlElement {
   
   private static $_fieldsAttributes=array('name'=>'required','id'=>'nobr',
   										'idStatus'=>'required',
+                      'reference'=>'nobr,size1/3',
                       'idBillType'=>'required',
                       'idProject'=>'required',
-  										'billId'=>'hidden',
-                      'taxAmount'=>'calculated,readonly',
+// BEGIN - ADD BY TABARY - See billId      
+                      'billId'=>'size1/2,readonly,display',
+// END - ADD BY TABARY - See billId                            'taxAmount'=>'calculated,readonly',
   										'idPrec'=>'required',
                       'billingType'=>'hidden',
                       'fullAmount'=>'readonly',

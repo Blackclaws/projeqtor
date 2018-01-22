@@ -97,6 +97,23 @@ class Parameter extends SqlElement {
       //$colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
       //$colScript .= '     }  });';
     	$colScript .= '</script>';
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM        
+    } else if ($colName=="notificationSystemActiv") {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  newValue=this.value;';
+    	$colScript .= '  var callBack = function(){ 
+    	                     showWait(); 
+    	                     noDisconnect=true; 
+    	                     quitConfirmed=true;
+    	                     dojo.byId("directAccessPage").value="parameter.php";
+    	                     dojo.byId("menuActualStatus").value=menuActualStatus;
+    	                     dojo.byId("p1name").value="type";
+    	                     dojo.byId("p1value").value="userParameter";
+    	                     dojo.byId("directAccessForm").submit();
+    	                   };';
+    	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
+        $colScript .= '</script>'; 
+// END - ADD BY TABARY - NOTIFICATION SYSTEM        
     } else if ($colName=="defaultProject") {
       //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -328,6 +345,9 @@ class Parameter extends SqlElement {
 // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
       case 'useOrganizationBudgetElement' :
 // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+      case 'notificationSystemActiv':
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
       case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
       case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
       case 'scaytAutoStartup':
@@ -808,7 +828,11 @@ class Parameter extends SqlElement {
                 	            'cronSleepTime'=>'number',
                 	            'cronCheckDates'=>'number',
                 	            'alertCheckTime'=>'number',                	            
-                	          'sectionCronImport'=>'section',
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+                                    'notificationSystemActiv'=>'list',
+                                    'cronCheckNotifications'=>'number',
+// END - ADD BY TABARY - NOTIFICATION SYSTEM                	          
+                              'sectionCronImport'=>'section',
                 	            'cronImportDirectory'=>'text',
                 	            'cronCheckImport'=>'number',
                 	            'cronImportLogDestination'=>'list',

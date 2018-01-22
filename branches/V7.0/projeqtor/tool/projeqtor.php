@@ -263,6 +263,52 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
  * ============================================================================ functions ============================================================================
  */
 
+// ADD BY TABARY - CLASS FIELD WITHOUT ALIAS FOREIGN KEY
+/** ===========================================================
+ * @param  $field : The class field to test
+ * @return string : the real foreign Key
+  */
+function foreignKeyWithoutAlias($field) {
+    $realFkPos = strpos($field, "__id");
+    $realFk = ($realFkPos==false?$field:substr($field, $realFkPos+2));
+    return $realFk;
+}
+// END : ADD BY TABARY - CLASS WITHOUT ALIAS FOREIGN KEY
+
+// ADD BY TABARY - CLASS FIELD WITH ONLY ALIAS FOREIGN KEY
+/** ===========================================================
+ * @param  $field : The class field to test
+ * @return string : the real foreign Key
+  */
+function foreignKeyOnlyAlias($field) {
+    $realFkPos = strpos($field, "__id");
+    $realFk = ($realFkPos==false?$field:substr($field, 0, $realFkPos));
+    return $realFk;
+}
+// END : ADD BY TABARY - CLASS WITHOUT ALIAS FOREIGN KEY
+
+
+// ADD BY TABARY - IS CLASS'S FIELD A FOREIGN KEY
+/** ===========================================================
+ * @param  $field : The class's field to test
+ * @param $class : The class
+ * @return boolean : true if field passed in parameter is a foreign Key
+  */
+function isForeignKey($field, $class) {
+    if (substr($field,0,2)=='id' and 
+        strlen($field)>2 and 
+        $field!='idle' and
+        substr ( $field, 2, 1 ) == strtoupper ( substr ( $field, 2, 1 ) )
+        )
+    {
+        $dataLength=$class->getDataLength($field);
+        $dataType = $class->getDataType( $field );
+        return ($dataLength==12 and $dataType=='int');
+    } else {
+        return false;
+    }    
+}
+// END : ADD BY TABARY - IS CLASS'S FIELD A FOREIGN KEY
 
 // ADD BY Marc TABARY - 2017-03-15 - GENERIC FUNCTION TO GET VISIBILITY ON WORK & COST FOR CONNECTED USER
 /** ============================================================================================
@@ -335,6 +381,576 @@ function getUserVisibleObjectsList($objName, $limitToActiveObjects=false, $listS
     
 }
 // END ADD BY Marc TABARY - 2017-02-23 - GENERIC FUNCTION TO GET VISIBLE OBJECT's LIST IN FUNCTION OF USER HABILITATION
+
+// BEGIN - ADD BY TABARY - GENERIC FUNCTION TO GET VISIBLE CLASS's LIST IN FUNCTION OF USER's PROFILE HABILITATION
+/** =============================================================================================================
+ * Return an array () of classes that are visible by the connected user in function of its habilitation
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $listScreen          : Must be "List" (combobox list or list) - "Screen" (Screen lists on objects) 
+ * @param string $user                : The user to get visible classe - If null, the current user
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key - className)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getUserVisibleObjectClassesList('List')
+ *      return the classes list for combobox list or selection list and current user
+ */
+function getUserVisibleObjectClassesList($listScreen="List", $user =NULL) {
+    if ($listScreen != 'List' and $listScreen!='Screen') {return array();}
+    
+    if (is_null($user)) { $user=getSessionUser();}
+    
+    $query = "SELECT substr(menu.name,5) AS 'class' ";
+    $query .= "FROM menu ";
+    $query .= "INNER JOIN habilitation ON habilitation.idMenu = menu.id ";
+    $query .= "WHERE habilitation.allowAccess=1 AND habilitation.idProfile=";
+    $query .= $user->idProfile;
+    
+    $result = Sql::query($query);
+    $array_result = array();
+    $i=1;
+    if (Sql::$lastQueryNbRows > 0) {
+        $line = Sql::fetchLine($result);
+        while ($line) {
+            $theClass = $line['class'];
+            if (SqlElement::class_exists($theClass) && 
+                strpos($theClass,'Type')==false) {
+                $array_result[] = $theClass;
+                $i++;
+            }
+            $line = Sql::fetchLine($result);
+        }
+    }
+    
+    return $array_result;
+}
+// END - ADD BY TABARY - GENERIC FUNCTION TO GET VISIBLE CLASS's LIST IN FUNCTION OF USER's PROFILE HABILITATION
+
+
+// BEGIN - ADD BY TABARY - GENERIC FUNCTION TO GET CLASSES LIST ASSOCIATED TO RESOURCE DATABASE TABLE
+/** =============================================================================================================
+ * Return an array () of classes that are associated to database table 'resource'
+ * --------------------------------------------------------------------------------------------------------------
+ * @return array (fieldName)
+ * --------------------------------------------------------------------------------------------------------------
+ */
+function getObjectClassesAssociatedToResourceDatabaseTable() {
+    $classesList = getUserVisibleObjectClassesList();
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    
+    $classesResourceList=[];
+    foreach( $classesList as $key => $class) {
+        $refClass = new ReflectionClass($class);
+        try {
+            $refProp = $refClass->getProperty('_databaseTableName');        
+        } catch (Exception $ex) {
+            $pClass= get_parent_class($class);
+            if (substr($pClass,-4)==="Main") {
+                $refClass = new ReflectionClass($pClass);
+                try {
+                    $refProp = $refClass->getProperty('_databaseTableName');                        
+                } catch (Exception $ex) {
+                    $refProp="";
+                }                
+            } else {
+                $refProp="";                
+            }
+        }
+        $databaseTableName="";
+        if ($refProp!="") {
+            if ($refProp->isPrivate()) { $refProp->setAccessible(true); }
+            $refValue = $refProp->getValue();
+            if ($refProp->isPrivate()) { $refProp->setAccessible(false); }
+            $databaseTableName = strtolower(str_replace($paramDbPrefix,"",$refValue));           
+        }
+        if (strtolower($class)==='resource') {
+            $classesResourceList[] = $class;
+        } elseif ($databaseTableName!="") {
+            if ($databaseTableName==='resource') {
+                $classesResourceList[] = $class;
+            }
+        }
+    }
+    return $classesResourceList;
+}
+// END - ADD BY TABARY - GENERIC FUNCTION TO GET CLASSES LIST ASSOCIATED TO RESOURCE DATABASE TABLE
+
+
+// BEGIN - ADD BY TABARY - GENERIC FUNCTION TO GET CLASS's AND FOREIGN CLASSES's FIELDS LIST
+/** =============================================================================================================
+ * Return an array () of class's fields
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objectClassName      : The class name to get the field's list and the foreign class field's list 
+ * @param boolean $onlyResource        : Get only idField that reference a resource
+ * @param boolean $withoutCreationDate : If true, the creationDate field is'nt take
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (fieldName)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getObjectClassFieldsList('Project')
+ *      return the fields list for 'Project'
+ */
+function getObjectClassAndForeignClassFieldsList($objectClassName="", $onlyResource=false, $withoutCreationDate=true) {
+    if($objectClassName==="") { return array();}
+    
+    $allFields = getObjectClassFieldsList($objectClassName);
+    
+    if (!$onlyResource) {
+        $fieldsWithCalculated = $allFields;        
+    } else {
+        $resourceClasses = getObjectClassesAssociatedToResourceDatabaseTable();
+        $fieldsWithCalculated = [];
+        foreach($allFields as $field) {
+            if($field==="id") {
+                if (in_array($objectClassName, $resourceClasses)) {
+                    $fieldsWithCalculated[] = $field;
+                }
+            } else {
+                if (substr($field,0,2)=="id" and 
+                    strpos($field,"idle")===false and 
+                    substr($field,-4)!='Type'
+                ) {
+                    $fieldsWithCalculated[]=$field;
+                }
+            }
+        }
+    }
+    
+    // Don't take calculated fields
+    $fields=[];
+    $obj = new $objectClassName();
+    foreach($fieldsWithCalculated as $field) {
+        if (!$obj->isAttributeSetToField($field, "calculated")) {
+            $fields[] = $field;
+        }
+    }
+    
+    $fFields=[];
+    foreach($fields as $field) {
+        if (substr($field,0,2)=="id" and 
+            strpos($field,"idle")===false and 
+            substr($field,-4)!='Type' and
+            $field!="id"
+           ) {
+            // Foreign Class
+            $fClass = substr($field,2);
+            if(class_exists($fClass)) {
+                $fFieldsFullListWithCalculated = getObjectClassFieldsList($fClass, $withoutCreationDate);
+                
+                // Don't take calculated fields
+                $fFieldsFullList = [];
+                $obj = new $fClass();
+                foreach($fFieldsFullListWithCalculated as $theField) {
+                    if (!$obj->isAttributeSetToField($field, "calculated")) {
+                        $fFieldsFullList[] = $theField;
+                    }
+                }
+                if ($onlyResource) {
+                    $fFieldsList = [];
+                    foreach($fFieldsFullList as $fld) {
+                        if (substr($fld,0,2)=="id" and 
+                            strpos($fld,"idle")===false and 
+                            substr($fld,-4)!='Type' and
+                            $fld!="id"
+                           ) {
+                                $class = substr($fld,2);
+                                if (in_array($class,$resourceClasses)) {$fFieldsList[] = $fld;}
+                        }
+                    }       
+                } else {
+                    $fFieldsList = $fFieldsFullList;
+                }
+
+                for($i=0; $i<count($fFieldsList); $i++) {
+                    $fFieldsList[$i] = $field.'.'.$fFieldsList[$i];                    
+                }
+                $fFields = array_merge($fFields, $fFieldsList);
+            }
+        }
+    }
+    
+    if ($onlyResource) {
+        $tFields = $fields;
+        $fields = [];
+        foreach($tFields as $field) {
+            $class = substr($field,2);
+            if (in_array($class,$resourceClasses)) {$fields[] = $field;}
+        }
+    }
+    
+    $fullFields = array_merge($fields, $fFields);
+    return $fullFields;
+}
+
+/** =============================================================================================================
+ * Return an array () of class's fields
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objectClassName      : The class name to get the field's list and the foreign class field's list 
+ * @param boolean $onlyResource        : Get only idField that reference a resource
+ * @param boolean $withoutCreationDate : If true, the creationDate field is'nt take
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (fieldName)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getObjectClassFieldsList('Project')
+ *      return the fields list for 'Project'
+ */
+function getObjectClassAndForeignClassFieldsList_($objectClassName="", $onlyResource=false, $withoutCreationDate=true) {
+    if($objectClassName==="") { return array();}
+    
+    $allFields = getObjectClassFieldsList($objectClassName);
+    
+    if (!$onlyResource) {
+        $fieldsWithCalculated = $allFields;        
+    } else {
+        $resourceClasses = getObjectClassesAssociatedToResourceDatabaseTable();
+        $fieldsWithCalculated = [];
+        foreach($allFields as $field) {
+            if($field==="id") {
+                if (in_array($objectClassName, $resourceClasses)) {
+                    $fieldsWithCalculated[] = $field;
+                }
+            } else {
+                if (substr($field,0,2)=="id" and 
+                    strpos($field,"idle")===false and 
+                    substr($field,-4)!='Type'
+                ) {
+                    $fieldsWithCalculated[]=$field;
+                }
+            }
+        }
+    }
+    
+    $fields=[];
+    $obj = new $objectClassName();
+    foreach($fieldsWithCalculated as $field) {
+        // Don't take calculated fields AND hidden fields
+        if (!$obj->isAttributeSetToField($field, "calculated") and !$obj->isAttributeSetToField($field, "hidden")) {
+            $fields[] = $field;
+        }
+    }
+    
+    $fFields=[];
+    foreach($fields as $field) {
+        if (substr($field,0,2)=="id" and 
+            strpos($field,"idle")===false and 
+            substr($field,-4)!='Type' and
+            $field!="id"
+           ) {
+            // Foreign Class
+            $fClass = substr($field,2);
+            if(class_exists($fClass)) {
+                $fFieldsFullListWithCalculated = getObjectClassFieldsList($fClass, $withoutCreationDate);
+                
+                $fFieldsFullList = [];
+                $fObj = new $fClass();
+                foreach($fFieldsFullListWithCalculated as $theField) {
+                    // Don't take calculated fields and hidden fields
+                    if (!$fObj->isAttributeSetToField($field, "calculated") and !$fObj->isAttributeSetToField($field, "hidden")) {
+                        $fFieldsFullList[] = $theField;
+                    }
+                }
+                if ($onlyResource) {
+                    $fFieldsList = [];
+                    foreach($fFieldsFullList as $fld) {
+                        if (substr($fld,0,2)=="id" and 
+                            strpos($fld,"idle")===false and 
+                            substr($fld,-4)!='Type' and
+                            $fld!="id"
+                           ) {
+                                $class = substr($fld,2);
+                                if (in_array($class,$resourceClasses)) {$fFieldsList[] = $fld;}
+                        }
+                    }       
+                } else {
+                    $fFieldsList = $fFieldsFullList;
+                }
+
+                for($i=0; $i<count($fFieldsList); $i++) {
+                    $fFieldsList[$i] = $field.'.'.$fFieldsList[$i];                    
+                }
+                $fFields = array_merge($fFields, $fFieldsList);
+            }
+        }
+    }
+    
+    if ($onlyResource) {
+        $tFields = $fields;
+        $fields = [];
+        foreach($tFields as $field) {
+            $class = substr($field,2);
+            if (in_array($class,$resourceClasses)) {$fields[] = $field;}
+        }
+    }
+        
+    $fullFields = array_merge($fields, $fFields);
+    
+    $fieldsTranslated = [];
+    $objectClassNameTranslated = str_replace(' ', '_', i18n($objectClassName));
+    for($i=0; $i<count($fullFields); $i++) {
+        if (strpos($fullFields[$i],'.')===false) {
+            $fieldTranslated = $obj->getColCaption($fullFields[$i]);
+            if (substr($fieldTranslated,0,1)!=='[') {
+                $fieldsTranslated[] = $objectClassNameTranslated.".".str_replace(' ', '_', $fieldTranslated);
+            }    
+        } else {
+            $posDot = strpos($fullFields[$i],'.');
+            // The foreign Table
+            $table = substr($fullFields[$i],2,$posDot-2);
+            // The foreign field
+            $field = substr($fullFields[$i],$posDot+1);
+            
+            $obj = new $table();
+            $fieldTranslated = $obj->getColCaption($field);
+            if (substr($fieldTranslated,0,1)!=='[') {
+                $fieldTranslated = str_replace(' ', '_', $fieldTranslated);
+                $tableTranslated = str_replace(' ', '_', i18n($table));
+                $fieldsTranslated[] = $tableTranslated.'.'.$fieldTranslated;
+            }
+        }
+    }
+    return $fieldsTranslated;
+}
+
+/** =============================================================================================================
+ * Return an array () of classes corresponding to the class passed in parameters and its foreign keys classes
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objectClassName      : The class name to get the fereign keys classes list 
+ * @param boolean $onlyResource        : Get only classes that have at less one field which references a resource
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key => value) 
+ *                  - key   = the class name
+ *                  - value = the translate class name
+ * --------------------------------------------------------------------------------------------------------------
+ */
+function getTranslatedClassAndFKeyClasses($objectClassName="", $onlyResource=false) {
+    if(trim($objectClassName)=="") { return array();}
+    
+    $resourceClasses = getObjectClassesAssociatedToResourceDatabaseTable();
+    
+    if (!$onlyResource) {
+        $classesList[$objectClassName] = i18n($objectClassName);
+    }
+    
+    $allFields = getObjectClassFieldsList($objectClassName);
+    
+    if ($onlyResource) {
+        $hasFieldThatReferenceAResource = false;
+        foreach($allFields as $field) {
+            $theClass = substr($field,2);
+              if (in_array($theClass, $resourceClasses) and substr($field,0,2)=='id') {
+                $hasFieldThatReferenceAResource = true;
+                break;
+              }
+        }
+        if ($hasFieldThatReferenceAResource) {
+            $classesList[$objectClassName] = i18n($objectClassName);        
+        } else {
+            $classesList=[];
+        }
+    }
+    
+    $fClasses=[];
+    foreach($allFields as $field) {
+        if (substr($field,0,2)=="id" and 
+            strpos($field,"idle")===false and 
+            substr($field,-4)!='Type' and
+            $field!="id"
+           ) {
+            // Foreign Class
+            $fClass = substr($field,2);
+
+            if ($onlyResource)  {
+              $allFields_ = getObjectClassFieldsList($fClass);
+              $hasFieldThatReferenceAResource = false;
+              foreach ($allFields_ as $field) {
+                  $theClass = substr($field, 2);
+                  if (in_array($theClass, $resourceClasses) and substr($field,0,2)=='id') {
+                      $hasFieldThatReferenceAResource=true;
+                      break;
+                  }  
+              }
+              if ($hasFieldThatReferenceAResource) {
+                $fClasses[$fClass]=i18n($fClass);
+              }
+            } else {
+                $fClasses[$fClass]=i18n($fClass);
+            }
+        }
+    }
+    
+    return array_merge_preserve_keys($classesList, $fClasses);
+}
+
+
+/** =============================================================================================================
+ * Return an array () of class's fields
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objectClassName     : The class name to get the field's list 
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (fieldName)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getObjectClassFieldsList('Project')
+ *      return the fields list for 'Project'
+ */
+function getObjectClassFieldsList($objectClassName="", $withoutCreationDate=true, $allFields=false) {
+    $reflect = new ReflectionClass($objectClassName);
+    $props   = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
+
+    $nItem=[];
+    foreach($props as $prop) {
+        if (substr($prop->getName(), 0,1)!="_") {
+            if (($prop->getName()==='creationDate' or $prop->getName()==='creationDateTime') and $withoutCreationDate) {} else {
+                $nItem[]= $prop->getName();
+            }
+        } elseif ($allFields) {
+            $nItem[]= $prop->getName();            
+        }
+    }
+    return $nItem;
+}
+
+/** =============================================================================================================
+ * Return an array () of class's fields (key = name - value = translated name)
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $objectClassName      : The class name to get the field's list
+ * @param boolean $onlyResource        : Only field that reference a resource
+ * @param boolean $withoutIdFkFields   : Don't take the idXXX fields
+ * @param boolean $withoutCreationDate : Don't take the creationDate and creationDateTime field
+ * @param boolean $allFields           : Take fields like _spe, _label, etc.
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key : fieldName => value : i18n(fieldName))
+ * --------------------------------------------------------------------------------------------------------------
+ */
+function getObjectClassTranslatedFieldsList($objectClassName="", 
+                                            $onlyResource=false, 
+                                            $withoutIdFkFields=false, 
+                                            $withoutCreationDate=true, 
+                                            $allFields=false) {
+    if (trim($objectClassName)=="") { return []; }
+    
+    $fieldsList = getObjectClassFieldsList($objectClassName, $withoutCreationDate, $allFields);
+    if (count($fieldsList)==0) { return $fieldsList; }
+
+    $resourceClasses = getObjectClassesAssociatedToResourceDatabaseTable();
+    
+    $obj = new $objectClassName();
+    $arrayFields=[];
+    
+    foreach($fieldsList as $field) {
+        // Don't take calculated fields
+        //          AND
+        // hidden fields
+        if (!$obj->isAttributeSetToField($field, "calculated") and 
+            !$obj->isAttributeSetToField($field, "hidden")
+           ) {
+            if (substr($field,0,2)=="id" and strlen($field)>2 and $withoutIdFkFields) { continue; }
+            $arrayFields[] = $field;
+        }
+    }
+    
+    $translatedArrayFields=[];
+    foreach( $arrayFields as $field) {
+      // Don't take not translated fields
+      if (substr($obj->getColCaption($field),0,4)=='[col') { continue; }
+      if ($onlyResource) {
+        $class = substr($field,2);
+        if (in_array($class,$resourceClasses)) {
+            $translatedArrayFields[$field] = $obj->getColCaption($field);
+        }          
+      } else {
+        $translatedArrayFields[$field] = $obj->getColCaption($field);          
+      }  
+    }
+    
+    return $translatedArrayFields;
+}
+
+
+// END - ADD BY TABARY - GENERIC FUNCTION TO GET CLASS's FIELDS LIST
+
+// BEGIN - ADD BY TABARY - GENERIC FUNCTION TO GET CLASS's FIELDS LIST THAT HAVE 'Date' IN THEIR NAME
+/** =============================================================================================================
+ * Return an array () of fields that have the dateType - Based on the field name
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string  $objectClassName     : The class name to get the field's list 
+ * @param boolean $withCreationDate    : If true = creationDate field is'nt take
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key - fieldName)
+ * --------------------------------------------------------------------------------------------------------------
+ * Ex : getUserObjectClassFieldsListWithDateType('Project')
+ *      return the fields list for 'Project' that have the data type 'Date'
+ */
+function getObjectClassFieldsListWithDateType($objectClassName='', $withoutCreationDate=true) {
+    if (trim($objectClassName)=='') {return array();}
+    
+    $reflect = new ReflectionClass($objectClassName);
+    $props   = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
+    
+    $array_fieldsDateType = array();
+    $i=0;
+    foreach($props as $prop) {
+        $colName = $prop->getName();
+        if (strpos($colName,'Date')>0 && substr($colName,0,1)!='_') {
+            if (($colName === 'creationDate' or $colName === 'creationDateTime') and $withoutCreationDate===true) {} else { 
+                $array_fieldsDateType[$i]=$colName;
+                $i++;
+            }
+        }
+    }
+    return $array_fieldsDateType;
+}
+// END - ADD BY TABARY - GENERIC FUNCTION TO GET CLASS's FIELDS LIST THAT HAVE 'Date' IN THEIR NAME
+
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+
+
+/** =============================================================================================================
+ * Determine if the class passed in parameter is a notifiable class
+ * --------------------------------------------------------------------------------------------------------------
+ * @param string $className : The class to determine if it is notifiable
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return boolean True if the className is notificable
+ * --------------------------------------------------------------------------------------------------------------
+ */
+function isNotifiable($className) {
+    $crit = array("idle" => '0',
+                  "notifiableItem" => $className
+                 );
+    $obj = SqlElement::getSingleSqlElementFromCriteria ( 'Notifiable', $crit );
+    return isset($obj->id);
+}
+
+/** =============================================================================================================
+ * Return an array () of class that have one or more field with the dateType - Based on the field name
+ * --------------------------------------------------------------------------------------------------------------
+ * --------------------------------------------------------------------------------------------------------------  
+ * @return array (key - ClassName)
+ * --------------------------------------------------------------------------------------------------------------
+ */
+function getUserVisibleObjectClassWithFieldDateType() {
+    $arrayClass = getUserVisibleObjectClassesList();
+    $arrayClassWithDateTypeFields = array();
+    $i=0;
+    foreach( $arrayClass as $key => $className) {
+        if (    $className != "Plugin" and 
+                $className != "NotificationDefinition" and 
+                !empty(getObjectClassFieldsListWithDateType($className))) {
+            $arrayClassWithDateTypeFields[$i] = $className;
+            $i++;
+        }
+    }
+    sort($arrayClassWithDateTypeFields);
+    return $arrayClassWithDateTypeFields;    
+}
+
+/**
+ * ================================================================
+ * Return true if notification system is activ
+ * @return boolean
+ */
+function isNotificationSystemActiv() {
+    return (Parameter::getGlobalParameter ( 'notificationSystemActiv' )==="NO"?false:true);
+}
+
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
 
 // ADD BY Marc TABARY - 2017-02-21 - RESOURCE VISIBILITY FUNCTION OF 'teamOrga'
 // Adding because, used in html.php, jsonList.php, objectDetail.php and other
@@ -887,7 +1503,11 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
 
 function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = false, $excludeUserClause=false, $excludeResourceClause=false) {
   global $reportContext;
-  if (! property_exists($objectClass,'idProject')) return '(1=1)'; // If not project depedant, no extra clause
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  if (! property_exists($objectClass,'idProject') and $objectClass!='Notification') return '(1=1)'; // If not project depedant, no extra clause
+  
+//  if (! property_exists($objectClass,'idProject')) return '(1=1)'; // If not project depedant, no extra clause
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
   
   $obj = new $objectClass ();
   $user=getSessionUser();
@@ -951,38 +1571,88 @@ function getAccesRestrictionClause($objectClass, $alias = null, $showIdle = fals
             ."where existV.id=existVP.idVersion and existVP.idProject in ".$listALLPRO
             .")))";
   } else {
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if($objectClass=='Notification') {
+        $clauseALLPRO = "(1=10)";
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
     //$clausePRO= "(".$tableAlias.$fieldProj." in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle)).")";
-    $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO.")";
+      $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO.")";
+    }
   }
   
   $clauseALL='(1=1)'; // Will distinct the ALL
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+  if ($extraFieldCriteriaReverse=="" and $objectClass=="Notification") {
+      $extraFieldCriteriaReverse="(1=1)";
+  }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
   
   // Build where clause depending 
   if ($accessRightRead=='NO') { // Default profile is No Access
     $queryWhere=$clauseNO;
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if ($objectClass=='Notification') {
+        if ($listOWN) $queryWhere.=" or ($clauseOWN $extraFieldCriteria)";
+        if ($listRES) $queryWhere.=" or ($clauseRES $extraFieldCriteria)";        
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+      if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+    }
     $queryWhere.=" or ($clauseALLPRO)";
   } else if ($accessRightRead=='OWN') {
     $queryWhere="($clauseOWN";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
-    $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if ($objectClass=='Notification') {
+        if ($listRES) $queryWhere.=" or ($clauseRES $extraFieldCriteria)";        
+        $queryWhere.=" or ($clauseALLPRO)";
+        $queryWhere.=") and ($extraFieldCriteriaReverse)";
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+      $queryWhere.=" or ($clauseALLPRO)";
+      $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+    }
   } else if ($accessRightRead=='RES') {
     $queryWhere="($clauseRES";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    $queryWhere.=" or ($clauseALLPRO)";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if ($objectClass=='Notification') {
+        if ($listOWN) $queryWhere.=" or ($clauseOWN $extraFieldCriteria)";        
+        $queryWhere.=" or ($clauseALLPRO)";
+        $queryWhere.=") and ($extraFieldCriteriaReverse)";
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+      $queryWhere.=" or ($clauseALLPRO)";
+      $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+    }
   } else if ($accessRightRead=='PRO') {
     $queryWhere="($clauseALLPRO";
-    if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
-    if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
-    //$queryWhere.=" or (".$clauseALLPRO.")";
-    $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-    } else if ($accessRightRead=='ALL') {
-    $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
-    if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES $extraFieldCriteriaReverse)";
-    if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if ($objectClass=='Notification') {
+        if ($listRES) $queryWhere.=" or ($clauseRES $extraFieldCriteria)";        
+        if ($listOWN) $queryWhere.=" or ($clauseOWN $extraFieldCriteria)";        
+        $queryWhere.=") and ($extraFieldCriteriaReverse)";
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      if ($listRES) $queryWhere.=" or ($clauseRES and $tableAlias$fieldProj in $listRES $extraFieldCriteria)";
+      if ($listOWN) $queryWhere.=" or ($clauseOWN and $tableAlias$fieldProj in $listOWN $extraFieldCriteria)";
+      //$queryWhere.=" or (".$clauseALLPRO.")";
+      $queryWhere.=") and ($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+    }
+  } else if ($accessRightRead=='ALL') {
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    if ($objectClass=='Notification') {
+        $queryWhere="($extraFieldCriteriaReverse)";
+        if ($listRES) $queryWhere.=" and ($clauseRES $extraFieldCriteria)";        
+        if ($listOWN) $queryWhere.=" and ($clauseOWN $extraFieldCriteria)";        
+    } else {
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+      $queryWhere="($tableAlias$fieldProj not in $listNO or $tableAlias$fieldProj is null $extraFieldCriteriaReverse)";
+      if ($listRES) $queryWhere.=" and ($tableAlias$fieldProj not in $listRES or $tableAlias$fieldProj is null or $clauseRES $extraFieldCriteriaReverse)";
+      if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
+    }
   }
   return " " . $queryWhere . " ";
 }
@@ -1901,6 +2571,12 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
           if (array_key_exists ( $obj->idProject, $user->getAffectedProjects ( $limitToActiveProjects ) ) or $obj->id == null) {
             $accessRight = 'YES';
           }
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+        } else if (get_class($obj)== 'Notification') {
+          if ($obj->idUser == $user->id) {
+            $accessRight = 'YES';
+          }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM          
         }
       } else {
         // TODO : IF NO OBJ and AccesRight = PRO : should return YES ???
