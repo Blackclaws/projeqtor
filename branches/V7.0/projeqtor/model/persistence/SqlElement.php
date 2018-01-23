@@ -3718,8 +3718,8 @@ abstract class SqlElement {
         $colScript .= '   getExtraRequiredFields();';
       }
       if ($colName == 'id' . get_class ( $this ) . 'Type' or $colName == 'idStatus') {
-        $colScript .= '   getExtraReadonlyFields(this.value,"","");';
-        $colScript .= '   getExtraHiddenFields(this.value,"","");';
+        $colScript .= '   getExtraReadonlyFields("","","");';
+        $colScript .= '   getExtraHiddenFields("","","");';
       }
       $colScript .= '</script>';
     }
@@ -4038,6 +4038,7 @@ abstract class SqlElement {
     global $cronnedScript, $loginSave, $mode, $canForceClose;
     $user = getSessionUser ();
     $arrayExtraRequired = $this->getExtraRequiredFields ();
+    $arrayExtraHidden = $this->getExtraHiddenFields ();
     $result = "";
     $right = "";
     // Manage Exceptions
@@ -4098,7 +4099,8 @@ abstract class SqlElement {
           }
         } else {
           // check if required
-          if ((strpos ( $this->getFieldAttributes ( $col ), 'required' ) !== false or array_key_exists ( $col, $arrayExtraRequired )) and ! $isCopy) {
+          if ((strpos ( $this->getFieldAttributes ( $col ), 'required' ) !== false or array_key_exists ( $col, $arrayExtraRequired )) 
+              and ! $isCopy and !in_array( $col, $arrayExtraHidden ) ) {
             if ($col == 'idResource' and ! trim ( $this->idResource ) and $user->isResource and Parameter::getGlobalParameter ( 'setResponsibleIfNeeded' ) != 'NO') {
               $this->idResource = $user->id;
               $val = $this->idResource;

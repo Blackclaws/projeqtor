@@ -75,7 +75,52 @@ if ($way=='structure') {
 } else {
   $critClass='ProductVersion';
 }
-
+//ADD qCazelles - Ticket 165
+$directAccessToList='false';
+if ($way=='composition') {
+  $paramDirect=Parameter::getUserParameter('directAccessToComponentList');
+  if ($paramDirect=='YES') {
+    $directAccessToList='true';
+  }
+}
+if ($way=='composition' and $directAccessToList=='true') {
+  $user=getSessionUser();
+  if ($objectClass=='ProductVersion') {
+    $productOrComponent=new Product($object->idProduct);
+  } else {
+    $productOrComponent=new Component($object->idComponent);
+  }
+  $cvListId='(';
+  $cvListName='';
+  foreach ($productOrComponent->getComposition(false) as $idComponent) {
+    $cvs=new ComponentVersion();
+    foreach ($cvs->getSqlElementsFromCriteria(array('idComponent' => $idComponent)) as $cv) {
+      $cvListId.=$cv->id.', ';
+      $cvListName.="'".$cv->name."', ";
+    }
+  }
+  $cvListId=substr($cvListId, 0, -2).')';
+  $cvListName=substr($cvListName, 0, -2);
+  if (!isset($user->_arrayFiltersDetail['ComponentVersion'])) {
+    $user->_arrayFiltersDetail['ComponentVersion']=array();
+    $index=0;
+  } else if (count($user->_arrayFiltersDetail['ComponentVersion'])==0) {
+    $index=0;
+  } else {
+    $index=max(array_keys($user->_arrayFiltersDetail['ComponentVersion']))+1;
+  }
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['disp']['attribute']=i18n('colIdComponentVersion');
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['disp']['operator']=i18n('amongst');
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['disp']['value']=$cvListName;
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['sql']['attribute']='id';
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['sql']['operator']='IN';
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['sql']['value']=$cvListId;
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['isDynamic']="0";
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['orOperator']="0";
+  $user->_arrayFiltersDetail['ComponentVersion'][$index]['hidden']="1";
+  setSessionUser($user);
+} 
+//END ADD qCazelles - Ticket 165
 ?>
 <table>
   <tr>
@@ -86,6 +131,10 @@ if ($way=='structure') {
         <input id="productVersionStructureListClass" name="productVersionStructureListClass" type="hidden" value="<?php echo $listClass;?>" />
         <input id="productVersionStructureId" name="productVersionStructureId" type="hidden" value="<?php echo $structureId;?>" />
         <input id="productVersionStructureWay" name="productVersionStructureWay" type="hidden" value="<?php echo $way;?>" />
+        <?php //ADD qCazelles - Ticket 165 ?>
+        <input id="directAccessToList" name="directAccessToList" type="hidden" value="<?php echo $directAccessToList;?>" />
+        <input id="directAccessToListButton" name="directAccessToListButton" type="hidden" value="dialogProductVersionStructureSubmit" />
+        <?php //END ADD qCazelles - Ticket 165 ?>
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('sectionVersion'.ucfirst($way),array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  

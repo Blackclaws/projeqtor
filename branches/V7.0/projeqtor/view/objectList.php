@@ -123,7 +123,6 @@ if ($displayWidthList<1400) {
     }
   }
 }
-
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
@@ -360,7 +359,12 @@ if ($displayWidthList<1400) {
                      	//$activeFilter=true;
                      	//New
                      	foreach (getSessionUser()->_arrayFiltersDetail[$objectClass] as $filter) {
-                     		if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
+                     	  //CHANGE qCazelles - Ticket 165
+                     	  //Old
+                     	  //if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
+                     	  //New
+                     		if ((!isset($filter['isDynamic']) or $filter['isDynamic']=="0") and (!isset($filter['hidden']) or $filter['hidden']=="0")) {
+                     		//END CHANGE qCazelles - Ticket 165
                      			$activeFilter=true;
                      		}
                      	}
