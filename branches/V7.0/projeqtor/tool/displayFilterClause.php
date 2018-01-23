@@ -70,18 +70,41 @@ if (! $comboDetail and array_key_exists($filterObjectClass . "FilterName", $user
 //When removing filter criterias, the first one can not be defined by an OR operator
 if (!empty($filterArray)) {
 	$filterArray=array_values($filterArray);
-	if (isset($filterArray[0]['orOperator']) and $filterArray[0]['orOperator']=='1') {
-		$filterArray[0]['orOperator']='0';
+	//CHANGE qCazelles - Ticket 165
+	//Old
+// 	if (isset($filterArray[0]['orOperator']) and $filterArray[0]['orOperator']=='1') {
+// 		$filterArray[0]['orOperator']='0';
 		
-		if (! $comboDetail) {
-			$user->_arrayFilters[$filterObjectClass]=$filterArray;
-			$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
-		} else {
-			$user->_arrayFiltersDetail[$filterObjectClass]=$filterArray;
-			$user->_arrayFiltersDetail[$filterObjectClass . "FilterName"]=$name;
-		}
-		setSessionUser($user);
+// 		if (! $comboDetail) {
+// 			$user->_arrayFilters[$filterObjectClass]=$filterArray;
+// 			$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+// 		} else {
+// 			$user->_arrayFiltersDetail[$filterObjectClass]=$filterArray;
+// 			$user->_arrayFiltersDetail[$filterObjectClass . "FilterName"]=$name;
+// 		}
+// 		setSessionUser($user);
+// 	}
+	//New
+	$index=0;
+	foreach ($filterArray as $key => $filter) {
+	  if (!isset($filter['hidden']) or $filter['hidden']=='0') {
+	    $index=$key;
+	    break;
+	  }
 	}
+	if (isset($filterArray[$index]['orOperator']) and $filterArray[$index]['orOperator']=='1') {
+	  $filterArray[$index]['orOperator']='0';
+	  
+	  if (! $comboDetail) {
+	    $user->_arrayFilters[$filterObjectClass]=$filterArray;
+	    $user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+	  } else {
+	    $user->_arrayFiltersDetail[$filterObjectClass]=$filterArray;
+	    $user->_arrayFiltersDetail[$filterObjectClass . "FilterName"]=$name;
+	  }
+	  setSessionUser($user);
+	}
+	//END CHANGE qCazelles - Ticket 165
 }
 //END ADD qCazelles - Dynamic filter - Ticket #78
 

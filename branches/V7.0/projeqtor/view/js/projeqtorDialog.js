@@ -1668,7 +1668,25 @@ function addProductVersionStructure(way) {
   var objectClass=dojo.byId("objectClass").value;
   var objectId=dojo.byId("objectId").value;
   var param="&objectClass="+objectClass+"&objectId="+objectId+"&way="+way;
-  loadDialog('dialogProductVersionStructure',null, true, param, true);
+  //CHANGE qCazelles - Ticket 165
+  //Old
+  //loadDialog('dialogProductVersionStructure', null, false, param, true);
+  //New
+  var callBackFunc=function() {
+	  if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true') {
+		  showDetail('productVersionStructureListId', 0, 'ComponentVersion', true);
+		  dijit.byId('dialogDetail').on('hide', function(evt) {
+			  dojo.xhrGet({
+				  url : "../tool/removeHiddenFilterDetail.php?objectClass=ComponentVersion"
+			  });
+			  dijit.byId('dialogDetail').on('hide', null);
+		  });
+	  } else {
+		  dijit.byId('dialogProductVersionStructure').show();
+	  }
+  }
+  loadDialog('dialogProductVersionStructure', callBackFunc, false, param, true);
+  //END CHANGE qCazelles - Ticket 165
 }
 
 function editProductVersionStructure(way, productVersionStructureId) {
@@ -3487,8 +3505,13 @@ function filterSelectAtribute(value) {
           }
           var urlListFilter='../tool/jsonList.php?required=true&listType=list&dataType='+value;
           
-          if (currentSelectedProject && currentSelectedProject!='' && currentSelectedProject!='*') {
-            if (value=='idActivity') {
+          //CHANGE qCazelles - Ticket 165 //Empty lists on filter in comboDetail
+          //Old
+          //if (currentSelectedProject && currentSelectedProject!='' && currentSelectedProject!='*') {
+          //New
+          if (typeof currentSelectedProject!='undefined' && currentSelectedProject!='' && currentSelectedProject!='*') {
+          //END CHANGE qCazelles - Ticket 165
+        	if (value=='idActivity') {
               urlListFilter+='&critField=idProjectSub&critValue='+currentSelectedProject;
             } if (value=='idComponent') {
               // noting
@@ -3944,14 +3967,22 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
       } else {
         dojo.byId('noFilterSelected').value='false';
       }
-	    //ADD qCazelles - Dynamic filter - Ticket #78
-	  	if (dojo.byId('dynamicFilterId'+idFilter)) {
-	  		
-	  		var param="&idFilter="+idFilter;
-	  		loadDialog('dialogDynamicFilter', null, true, param, true);
-	  	}
-	  	//END ADD qCazelles - Dynamic filter - Ticket #78
+	//ADD qCazelles - Ticket 165
+    } else if (top.dojo.byId('noFilterSelected')) {
+    	if (idFilter == '0') {
+            top.dojo.byId('noFilterSelected').value='true';
+          } else {
+            top.dojo.byId('noFilterSelected').value='false';
+          }
     }
+    //END ADD qCazelles - Ticket 165
+    //ADD qCazelles - Dynamic filter - Ticket #78 //Moved here to correct dynamic filter in comboDetail - qCazelles - Ticket 165
+  	if (dojo.byId('dynamicFilterId'+idFilter)) {
+  		
+  		var param="&idFilter="+idFilter;
+  		loadDialog('dialogDynamicFilter', null, true, param, true);
+  	}
+  	//END ADD qCazelles - Dynamic filter - Ticket #78
 
     if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
