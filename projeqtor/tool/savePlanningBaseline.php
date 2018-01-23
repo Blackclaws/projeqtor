@@ -32,33 +32,15 @@ scriptLog('   ->/tool/savePlanningBaseline.php');
 if (! array_key_exists('idProjectPlanBaseline',$_REQUEST)) {
   throwError('idProjectPlanBaseline parameter not found in REQUEST');
 }
-$idProject=$_REQUEST['idProjectPlanBaseline']; // validated to be numeric in SqlElement base constructor
-Security::checkValidId($idProject);
+$idProject=RequestHandler::getId('idProjectPlanBaseline',true); // validated to be id
 
-if (! array_key_exists('namePlanBaseline',$_REQUEST)) {
-  throwError('namePlanBaseline parameter not found in REQUEST');
-}
-$name=$_REQUEST['namePlanBaseline']; // validated to be numeric in SqlElement base constructor
-$name=htmlEncode($name);
+$name=RequestHandler::getValue('namePlanBaseline',true); // validated during insertion
 
-if (! array_key_exists('datePlanBaseline',$_REQUEST)) {
-  throwError('datePlanBaseline parameter not found in REQUEST');
-}
-$date=$_REQUEST['datePlanBaseline']; // validated to be numeric in SqlElement base constructor
-Security::checkValidDateTime($date);
+$date=RequestHandler::getDatetime('datePlanBaseline',true); // validated to be date 
 
-if (! array_key_exists('planBaselinePrivacy',$_REQUEST)) {
-  throwError('planBaselinePrivacy parameter not found in REQUEST');
-}
-$privacy=$_REQUEST['planBaselinePrivacy']; // validated to be numeric in SqlElement base constructor
-Security::checkValidInteger($privacy);
+$privacy=RequestHandler::getNumeric('planBaselinePrivacy',true); // validated to be numeric 
 
-
-$id=null;
-if (array_key_exists('idBaselinePlanBaseline',$_REQUEST)) {
-  $id=$_REQUEST['idBaselinePlanBaseline'];
-}
-Security::checkValidId($id);
+$id=RequestHandler::getId('idBaselinePlanBaseline',false);
 $mode=($id)?'edit':'add'; 
 
 projeqtor_set_time_limit(600);
