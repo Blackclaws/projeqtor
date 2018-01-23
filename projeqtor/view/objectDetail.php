@@ -1386,7 +1386,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       } else if (($nobr_before or $nobr) and $fieldWidth > $mediumWidth) {
         $fieldWidth = $fieldWidth / 2 - 2;
       }
-      debugLog("$col=>$fieldWidth");
       if (is_object( $val )) {
         //if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
 // BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
@@ -6006,7 +6005,6 @@ function endBuffering($prevSection,$included) {
     if (isset ( $sectionPosition [$sectionName] ) and isset ( $sectionPosition [$sectionName] [$nbColMax] )) {
       $position = $sectionPosition [$sectionName] [$nbColMax];
     }
-    debugLog("section=$sectionName, cols=$nbColMax, position=$position");
     if ($position == 'extra') {
       $extraPane .= $display;
     } else if ($position == 'bottom') {

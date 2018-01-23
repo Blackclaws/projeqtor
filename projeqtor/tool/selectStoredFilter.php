@@ -79,8 +79,16 @@ if (is_array($filter->_FilterCriteriaArray)) {
   	$filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql,"isDynamic"=>$filterCriteria->isDynamic,"orOperator"=>$filterCriteria->orOperator);
   	//END CHANGE qCazelles - Dynamic filter - Ticket #78
   }
-} 
-
+}
+//ADD qCazelles - Ticket 165
+if ($comboDetail and isset($user->_arrayFiltersDetail[$filterObjectClass])) {
+  foreach ($user->_arrayFiltersDetail[$filterObjectClass] as $filterCriteria) {
+    if (isset($filterCriteria['hidden']) and $filterCriteria['hidden']=='1') {
+      $filterArray[]=$filterCriteria;
+    }
+  }
+}
+//END ADD qCazelles - Ticket 165
 if (! $comboDetail) {
   $user->_arrayFilters[$filterObjectClass]=$filterArray;
   $user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;

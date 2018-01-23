@@ -129,9 +129,9 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
                  constraints="{datePattern:browserLocaleDateFormatJs}"
                  invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
                  type="text" maxlength="10"
-                 style="width:100px; text-align: center;" class="input"
+                 style="width:100px; text-align: center;" class="input <?php if (count($listeBase)==0) {echo 'required';}?>"
                  hasDownArrow="true"
-                 <?php if (count($listeBase)>0) { echo "readonly"; }?>
+                 <?php if (count($listeBase)>0) { echo "readonly"; } else {echo 'required';}?>
                  value="<?php echo ($mode=='edit')?$currentBaseline->baselineDate:date('Y-m-d');?>" >
                </div>
              </td>

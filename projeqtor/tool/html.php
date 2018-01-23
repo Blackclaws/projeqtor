@@ -1176,8 +1176,13 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   $nbDynamicFilterCriteria=0;
   $nbFilters=0;
   //END ADD qCazelles - Dynamic filter - Ticket #78
+  $nbHiddenFilters=0;   //ADD qCazelles - Ticket 165
   if (count($filterArray)>0) { 
     foreach ($filterArray as $id=>$filter) {
+      if (isset($filter['hidden']) and $filter['hidden']=='1') {    //ADD qCazelles - Ticket 165
+        $nbHiddenFilters+=1;
+        continue;
+      }
       echo "<tr>";
       echo "<td class='filterData'>";
       //ADD qCazelles - Dynamic filter - Ticket #78
@@ -1214,11 +1219,21 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
       }
       //END ADD qCazelles - Dynamic filter - Ticket #78
     }
-  } else {
+  }
+  //CHANGE qCazelles - Ticket 165
+  //Old
+  //else {
+  //  echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noFilterClause") . "</i></td></tr>";
+  //}
+  //echo "</table>";
+  //echo '<input id="nbFilterCriteria" name="nbFilterCriteria" type="hidden" value="' . count($filterArray) . '" />';
+  //New
+  if (count($filterArray)==$nbHiddenFilters) {
     echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noFilterClause") . "</i></td></tr>";
   }
   echo "</table>";
-  echo '<input id="nbFilterCriteria" name="nbFilterCriteria" type="hidden" value="' . count($filterArray) . '" />';
+  echo '<input id="nbFilterCriteria" name="nbFilterCriteria" type="hidden" value="' . (count($filterArray) - $nbHiddenFilters) . '" />';
+  //END CHANGE qCazelles - Ticket 165
   //ADD qCazelles - Dynamic filter - Ticket #78
   echo '<input id="nbDynamicFilterCriteria" name="nbDynamicFilterCriteria" type="hidden" value="'.$nbDynamicFilterCriteria.'" />';
   //END ADD qCazelles - Dynamic filter - Ticket #78
