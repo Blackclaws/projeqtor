@@ -5428,8 +5428,46 @@ function drawVersionProjectsFromObject($list, $obj, $refresh = false) {
       }
       echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode ( SqlList::getNameFromId ( 'Project', $vp->idProject ) ) . '</td>';
     }
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $vp->startDate ) . '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $vp->endDate ) . '</td>';
+    //CHANGE qCazelles - Ticket #119
+    //Old
+    //echo '<td class="assignData" align="center">' . htmlFormatDate($vp->startDate) . '</td>';
+    //echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
+    //New
+    if (Parameter::getGlobalParameter('displayMilestonesStartDelivery')!='YES') {
+      echo '<td class="assignData" align="center">' . htmlFormatDate($vp->startDate) . '</td>';
+      echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
+    }
+    else {
+      $hasStartDate = false;
+      if ($vers->isStarted) {
+        $startDate=$vers->realStartDate;
+        $hasStartDate = true;
+      } else if ($vers->plannedStartDate) {
+        $startDate=$vers->plannedStartDate;
+      } else {
+        $startDate='';
+      }
+      $hasEndDate = false;
+      if ($vers->isDelivered) {
+        $endDate=$vers->realDeliveryDate;
+        $hasEndDate = true;
+      } else if ($vers->plannedDeliveryDate) {
+        $endDate=$vers->plannedDeliveryDate;
+      } else {
+        $endDate='';
+      }
+      echo '<td class="assignData" align="center">';
+      if (!$hasStartDate and $startDate != '') echo '<span style="color: red;">[';
+      echo htmlFormatDate($startDate);
+      if (!$hasStartDate and $startDate != '') echo ']</span>';
+      echo '</td>';
+      echo '<td class="assignData" align="center">';
+      if (!$hasEndDate and $endDate != '') echo '<span style="color: red;">[';
+      echo htmlFormatDate($endDate);
+      if (!$hasEndDate and $endDate != '') echo ']</span>';
+      echo '</td>';
+    }
+    //END CHANGE qCazelles - Ticket #119
     echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($vp->idle) ? 'OK' : 'KO') . '.png" /></td>';
     
     echo '</tr>';
