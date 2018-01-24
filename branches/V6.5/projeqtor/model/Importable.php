@@ -232,6 +232,7 @@ class Importable extends SqlElement {
 		}
 		$title=null;
 		$idxId=-1;
+		$idxRefType=-1;
 		$htmlResult="";
 		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
 		foreach($data as $nbl=>$fields){
@@ -257,6 +258,9 @@ class Importable extends SqlElement {
 						$colCaption=$obj->getColCaption($title[$idx]);
 						if ($title[$idx]=='id') {
 							$idxId=$idx;
+						}
+					  if ($title[$idx]=='refType') {
+							$idxRefType=$idx;
 						}
 					} else if (property_exists($obj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
 					  $title[$idx]=$testIdTitle;
@@ -337,18 +341,27 @@ class Importable extends SqlElement {
 				}
 				$id = ($idxId >= 0) ? trim($fields[$idxId]) : null;
 				if ($id and ! is_numeric($id)) {
-				  $line="";
-          foreach($fields as $field){
-            $line.=$field." ;; ";
-          }
-					self::$cptError+=1;
-          $htmlResult.= '<td colspan="' . count($title) . '" class="messageData" style="border:1px solid black;">';
-          $htmlResult.= $line;
-          $htmlResult.= '</td>';
-          $htmlResult.= '<td class="messageData" style="border:1px solid black;">';
-          $htmlResult.= '<div class="messageERROR" >ERROR : id provided is not a number</div>';
+				  self::$cptError+=1;
+				  foreach($fields as $tmpIdx=>$tmpfield){
+				    $htmlResult.='<td class="messageData" style="'.(($tmpIdx==$idxId)?'color:red;font-weight:bold':'').'">'.$tmpfield."</td>";
+				  }
+				  $htmlResult.= '<td class="messageData" style="border:1px solid black;">';
+          $htmlResult.= '<div class="messageERROR" >'.i18n('messageInvalidNumeric',array('id')).'</div>';
           $htmlResult.= '</td>';
           continue;
+				}
+				if ($idxRefType>=0) {
+				  $classTest=$fields[$idxRefType];
+				  if (! SqlElement::class_exists($classTest)) {
+				    foreach($fields as $tmpIdx=>$tmpfield){
+				      $htmlResult.='<td class="messageData" style="'.(($tmpIdx==$idxRefType)?'color:red;font-weight:bold':'').'">'.$tmpfield."</td>";
+				    }
+				    self::$cptError+=1;
+				    $htmlResult.= '<td class="messageData" style="border:1px solid black;">';
+				    $htmlResult.= '<div class="messageERROR" >'.i18n('invalidClassName',array($classTest,' (refId)')).'</div>';
+				    $htmlResult.= '</td>';
+				    continue;
+				  }
 				}
 				$obj = new $class($id);
 				$forceInsert = (!$obj->id and $id and !Sql::isPgsql()) ? true : false;
