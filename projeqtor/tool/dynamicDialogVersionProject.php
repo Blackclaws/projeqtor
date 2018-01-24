@@ -132,6 +132,7 @@ $idProduct=$vers->idProduct;
 								<?php }?>
 								</td>
 						</tr>
+						<?php if (Parameter::getGlobalParameter('displayMilestonesStartDelivery')!='YES') { //ADD qCazelles - Ticket #119 ?>
 						<tr>
 							<td class="dialogLabel"><label for="versionProjectStartDate"><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
 							</td>
@@ -152,6 +153,12 @@ $idProduct=$vers->idProduct;
 									style="width: 100px" class="input" hasDownArrow="true"></div>
 							</td>
 						</tr>
+												<?php //ADD qCazelles - Ticket #119
+ 						  } else {
+ 						    echo '<input type="hidden" name="versionProjectStartDate" />';
+ 						    echo '<input type="hidden" name="versionProjectEndDate" />';
+ 						  }
+ 						  //END ADD qCazelles - Ticket #119 ?>
 						<tr>
 							<td class="dialogLabel"><label for="versionProjectIdle"><?php echo i18n("colIdle");?>&nbsp;:&nbsp;</label>
 							</td>
