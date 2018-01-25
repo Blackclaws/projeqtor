@@ -42,6 +42,7 @@ class ComponentMain extends ProductOrComponent {
   public $idComponent;
   public $creationDate;
   public $idUser;
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $idle;
   public $description;
   public $_sec_ComponentVersions;
@@ -63,10 +64,11 @@ class ComponentMain extends ProductOrComponent {
   
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="30%" >${componentName}</th>
-    <th field="designation" width="25%" >${identifier}</th>  
-    <th field="nameComponent" width="30%" >${isSubComponentOf}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="name" width="35%" >${componentName}</th>
+    <th field="designation" width="25%" >${identifier}</th>
+    <th field="nameComponentType" width="15%" >${type}</th>
+    <th field="nameStatus" width="15%" >${idStatus}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -75,7 +77,9 @@ class ComponentMain extends ProductOrComponent {
        "idClient"=>"hidden", 
        "idContact"=>"hidden", 
        "idProduct"=>"hidden", 
-       "idComponent"=>"hidden"
+       "idComponent"=>"hidden",
+       "idStatus"=>"required", //ADD qCazelles - Ticket #53
+       "idComponentType"=>"required" // ADD PBE - Ticket #53
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor',

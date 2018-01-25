@@ -36,6 +36,7 @@ class StatusMain extends SqlElement {
   public $name;
   public $setHandledStatus;
   public $setDoneStatus;
+  public $setIntoserviceStatus; //ADD qCazelles - Ticket #53
   public $setIdleStatus;
   public $setCancelledStatus;
   public $color;

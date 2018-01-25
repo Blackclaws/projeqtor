@@ -7,7 +7,6 @@ class PredefinedAction extends SqlElement {
 
 	public $_sec_description;
 	public $id;    // redefine $id to specify its visible place
-	//public $reference;
 	public $name;
 	public $idActionType;
 	public $idProject;

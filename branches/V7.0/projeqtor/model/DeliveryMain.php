@@ -34,7 +34,7 @@ class DeliveryMain extends SqlElement {
   public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
-  public $scope;
+  //public $scope;    //REMOVED qCazelles - bug scope Delivery
   public $name;
   //public $idDeliverableType;  //REMOVED qCazelles
   public $idDeliveryType;
@@ -100,7 +100,7 @@ class DeliveryMain extends SqlElement {
                                   "idDeliveryType"=>"required",
                                   "idUser"=>"hidden",
                                   "creationDateTime"=>"hidden",
-                                  "scope"=>"hidden",
+                                  //"scope"=>"hidden",    //REMOVED qCazelles - bug scope Delivery
                                   "idActivity"=>"title",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
@@ -116,7 +116,12 @@ class DeliveryMain extends SqlElement {
   private static $_databaseColumnName = array();
   
   private static $_databaseTableName = 'delivery';
-  private static $_databaseCriteria = array('scope'=>'Delivery');
+  //CHANGE qCazelles - bug scope Delivery
+  //Old
+  //private static $_databaseCriteria = array('scope'=>'Delivery');
+  //New
+  private static $_databaseCriteria = array();
+  //END CHANGE qCazelles - bug scope Delivery
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

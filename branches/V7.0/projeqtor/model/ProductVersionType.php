@@ -30,29 +30,63 @@
 require_once('_securityCheck.php');
 class ProductVersionType extends Type {
 
-  // Define the layout that will be used for lists
-    
+  // extends SqlElement, so has $id
+  public $_sec_Description;
+  public $id;    // redefine $id to specify its visible place
+  public $name;
+  public $code;
+  public $idWorkflow;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_sec_Behavior;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
+  public $mandatoryResourceOnHandled;
+  public $_lib_mandatoryOnHandledStatus;
+  public $mandatoryResultOnDone;
+  public $_lib_mandatoryOnDoneStatus;
+  public $mandatoryResolutionOnDone;
+  public $_lib_mandatoryResolutionOnDoneStatus;
+  public $lockHandled;
+  public $_lib_statusMustChangeHandled;
+  public $lockDone;
+  public $_lib_statusMustChangeDone;
+  public $lockIntoservice;
+  public $_lib_statusMustChangeIntoservice;
+  public $lockIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
+  public $lockNoLeftOnDone;
+  public $_lib_statusMustChangeLeftDone;
+  public $showInFlash;
+  public $internalData;
+  public $scope;
   
-   private static $_fieldsAttributes=array('idWorkflow'=>'hidden',
+   private static $_fieldsAttributes=array(//'idWorkflow'=>'hidden', //CHANGE qCazelles - Ticket #53
     "mandatoryResultOnDone"=>"hidden",
     "_lib_mandatoryOnDoneStatus"=>"hidden",
-    "lockHandled"=>"hidden",
-    "_lib_statusMustChangeHandled"=>"hidden",
-    "lockDone"=>"hidden",
-    "_lib_statusMustChangeDone"=>"hidden",
-    "lockIdle"=>"hidden",
-    "_lib_statusMustChangeIdle"=>"hidden",
+//     "lockHandled"=>"hidden",
+//     "_lib_statusMustChangeHandled"=>"hidden",
+//     "lockDone"=>"hidden",
+//     "_lib_statusMustChangeDone"=>"hidden",
+//     "lockIdle"=>"hidden",
+//     "_lib_statusMustChangeIdle"=>"hidden",
     "lockCancelled"=>"hidden",
     "_lib_statusMustChangeCancelled"=>"hidden",
-    "mandatoryResourceOnHandled"=>"hidden",
-    "_lib_mandatoryOnHandledStatus"=>"hidden");
+//     "mandatoryResourceOnHandled"=>"hidden",
+//     "_lib_mandatoryOnHandledStatus"=>"hidden"
+       "lockIntoservice"=>"nobr"
+);
 
    // Define the layout that will be used for lists
    private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="70%">${name}</th>
+    <th field="name" width="50%">${name}</th>
     <th field="code" width="10%">${code}</th>
     <th field="sortOrder" width="5%">${sortOrderShort}</th>
+    <th field="nameWorkflow" width="20%">${idWorkflow}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
    
@@ -74,6 +108,18 @@ class ProductVersionType extends Type {
    */ 
   function __destruct() {
     parent::__destruct();
+  }
+  
+  public function setAttributes() {
+    $displayMilestonesStartDelivery=Parameter::getGlobalParameter('displayMilestonesStartDelivery');
+    if ($displayMilestonesStartDelivery!='YES') {
+      self::$_fieldsAttributes['lockHandled']='hidden';
+      self::$_fieldsAttributes['_lib_statusMustChangeHandled']='hidden';
+      self::$_fieldsAttributes['lockDone']='hidden';
+      self::$_fieldsAttributes['_lib_statusMustChangeDone']='hidden';
+      self::$_fieldsAttributes['mandatoryResourceOnHandled']='hidden';
+      self::$_fieldsAttributes['_lib_mandatoryOnHandledStatus']='hidden';
+    }
   }
 
 // ============================================================================**********

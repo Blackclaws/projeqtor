@@ -39,7 +39,10 @@ class ProductOrComponent extends SqlElement {
   public $idClient;
   public $idContact;
   public $idProduct;
+  public $idProductType; //ADD PBE - Ticket #53
+  public $idComponentType; //ADD PBE - Ticket #53
   public $creationDate;
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $idle;
   public $description;
   public $_Attachment=array();
@@ -64,7 +67,8 @@ class ProductOrComponent extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required",
-      "scope"=>"hidden"
+      "scope"=>"hidden",
+      "idStatus"=>"required" //ADD qCazelles - Ticket #53
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf'

@@ -64,6 +64,8 @@ class Version extends SqlElement {
   public $plannedEndDate;
   public $realEndDate;
   public $idle;
+  public $idVersionType; //ADD PBE - Ticket #53
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $description;
   public $_Attachment=array();
   public $_Note=array();
@@ -81,7 +83,9 @@ class Version extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", 
+      "idProduct"=>"required",
+      "idStatus"=>"required" //ADD qCazelles - Ticket #53
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
@@ -173,6 +177,14 @@ class Version extends SqlElement {
       $colScript .= '  if (! dijit.byId("realEisDate").get("value")) {';
       $colScript .= '    var curDate = new Date();';
       $colScript .= '    dijit.byId("realEisDate").set("value", curDate); ';
+      //ADD qCazelles - Ticket #53
+      $colScript .= '    if (dijit.byId("isStarted") && !dijit.byId("isStarted").checked) {';
+      $colScript .= '       dijit.byId("isStarted").set("checked", true);';
+      $colScript .= '    }';
+      $colScript .= '    if (dijit.byId("isDelivered") && !dijit.byId("isDelivered").checked) {';
+      $colScript .= '       dijit.byId("isDelivered").set("checked", true);';
+      $colScript .= '    }';
+      //END ADD qCazelles - Ticket #53
       $colScript .= '  }';
       $colScript .= '} else {;';    
       $colScript .= '  dijit.byId("realEisDate").set("value", null); ';
@@ -259,6 +271,11 @@ class Version extends SqlElement {
     	$colScript .= '  if (! dijit.byId("realDeliveryDate").get("value")) {';
     	$colScript .= '    var curDate = new Date();';
     	$colScript .= '    dijit.byId("realDeliveryDate").set("value", curDate); ';
+    	//ADD qCazelles - Ticket #53
+    	$colScript .= '    if (!dijit.byId("isStarted").checked) {';
+    	$colScript .= '       dijit.byId("isStarted").set("checked", true);';
+      $colScript .= '    }';
+      //END ADD qCazelles - Ticket #53
     	$colScript .= '  }';
     	$colScript .= '} else {;';
     	$colScript .= '  dijit.byId("realDeliveryDate").set("value", null); ';
@@ -267,6 +284,49 @@ class Version extends SqlElement {
     	$colScript .= '</script>';
     }
     //END ADD qCazelles - dateComposition
+    //ADD qCazelles - Ticket #53
+    if ($colName=="idStatus") {
+      if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') == 'YES') {
+        $colScript .= '<script type="dojo/connect" event="onChange" >';
+        $colScript .= htmlGetJsTable ( 'Status', 'setHandledStatus', 'tabStatusHandled' );
+        $colScript .= '  var setHandled=0;';
+        $colScript .= '  var filterStatusHandled=dojo.filter(tabStatusHandled, function(item){return item.id==dijit.byId("idStatus").value;});';
+        $colScript .= '  dojo.forEach(filterStatusHandled, function(item, i) {setHandled=item.setHandledStatus;});';
+        $colScript .= '  if (setHandled==1) {';
+        $colScript .= '    dijit.byId("isStarted").set("checked", true);';
+        $colScript .= '    dijit.byId("isDelivered").set("checked", false);';
+        $colScript .= '    dijit.byId("isEis").set("checked", false);';
+        $colScript .= '    dijit.byId("idle").set("checked", false);';
+        $colScript .= '  }';
+        $colScript .= htmlGetJsTable ( 'Status', 'setDoneStatus', 'tabStatusDone' );
+        $colScript .= '  var setDone=0;';
+        $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
+        $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
+        $colScript .= '  if (setDone==1) {';
+        $colScript .= '    dijit.byId("isDelivered").set("checked", true);';
+        $colScript .= '    dijit.byId("isEis").set("checked", false);';
+        $colScript .= '    dijit.byId("idle").set("checked", false);';
+        $colScript .= '  }';
+      }
+      $colScript .= htmlGetJsTable ( 'Status', 'setIntoserviceStatus', 'tabStatusIntoservice' );
+      $colScript .= '  var setIntoservice=0;';
+      $colScript .= '  var filterStatusIntoservice=dojo.filter(tabStatusIntoservice, function(item){return item.id==dijit.byId("idStatus").value});';
+      $colScript .= '  dojo.forEach(filterStatusIntoservice, function(item, i) {setIntoservice=item.setIntoserviceStatus;});';
+      $colScript .= '  if (setIntoservice==1) {';
+      $colScript .= '     dijit.byId("isEis").set("checked", true);';
+      $colScript .= '     dijit.byId("idle").set("chekced", false);';
+      $colScript .= '  }';
+      $colScript .= htmlGetJsTable ( 'Status', 'setIdleStatus', 'tabStatusIdle' );
+      $colScript .= '  var setIdle=0;';
+      $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
+      $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
+      $colScript .= '  if (setIdle==1) {';
+      $colScript .= '    dijit.byId("idle").set("checked", true);';
+      $colScript .= '  }';
+      $colScript .= '</script>';
+    }
+    //END ADD qCazelles - Ticket #53
+    
     return $colScript;
   }
   
