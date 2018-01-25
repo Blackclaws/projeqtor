@@ -4165,6 +4165,18 @@ abstract class SqlElement {
           }
         }
       }
+      //ADD qCazelles - Ticket #53
+      if (property_exists ( $objType, 'mandatoryResourceOnHandled' ) and $objType->mandatoryResourceOnHandled and property_exists ( $this, 'idResource' ) and property_exists ( $this, 'isStarted' )) {
+        if ($this->isStarted and ! trim ( $this->idResource )) {
+          if ($user->isResource and Parameter::getGlobalParameter ( 'setResponsibleIfNeeded' ) != 'NO') {
+            $this->idResource = $user->id;
+          } else {
+            $result = str_replace ( '<br/>' . i18n ( 'messageMandatory', array($this->getColCaption ( 'idResource' )) ), '', $result );
+            $result .= '<br/>' . i18n ( 'messageMandatory', array($this->getColCaption ( 'idResource' )) );
+          }
+        }
+      }
+      //END ADD qCazelles - Ticket #53
       if (property_exists ( $objType, 'mandatoryResultOnDone' ) and $objType->mandatoryResultOnDone and property_exists ( $this, 'result' ) and property_exists ( $this, 'done' )) {
         if ($this->done and ! $this->result) {
           $result = str_replace ( '<br/>' . i18n ( 'messageMandatory', array($this->getColCaption ( 'result' )) ), '', $result );

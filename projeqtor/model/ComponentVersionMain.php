@@ -66,6 +66,7 @@ class ComponentVersionMain extends Version {
   public $plannedEndDate;
   public $realEndDate;
   public $idle;
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $description;
   public $_sec_ComponentVersionStructure;
   public $_componentVersionStructure=array();
@@ -92,11 +93,13 @@ class ComponentVersionMain extends Version {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="20%" >${versionName}</th>
-    <th field="nameComponent" width="25%" >${componentName}</th>
-    <th field="plannedEisDate" width="10%" formatter="dateFormatter">${plannedEis}</th>
-    <th field="realEisDate" width="10%" formatter="dateFormatter">${realEis}</th>
-    <th field="plannedEndDate" width="10%" formatter="dateFormatter">${plannedEnd}</th>
-    <th field="realEndDate" width="10%" formatter="dateFormatter">${realEnd}</th>
+    <th field="nameComponent" width="15%" >${componentName}</th>
+    <th field="nameComponentVersionType" width="10%" >${type}</th>
+    <th field="nameStatus" width="10%" >${idStatus}</th>
+    <th field="plannedEisDate" width="7.5%" formatter="dateFormatter">${plannedEis}</th>
+    <th field="realEisDate" width="7.5%" formatter="dateFormatter">${realEis}</th>
+    <th field="plannedEndDate" width="7.5%" formatter="dateFormatter">${plannedEnd}</th>
+    <th field="realEndDate" width="7.5%" formatter="dateFormatter">${realEnd}</th>
     <th field="isEis" width="5%" formatter="booleanFormatter" >${isEis}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
@@ -105,7 +108,9 @@ class ComponentVersionMain extends Version {
       "idComponent"=>"required",
       "idContact"=>"hidden",
       "scope"=>"hidden",
-      "idProduct"=>"hidden"
+      "idProduct"=>"hidden",
+      "idStatus"=>"required", //ADD qCazelles - Ticket #53
+      "idComponentVersionType"=>"required", //ADD PBE - Ticket #53
   );   
 
   //CHANGE qCazelles - dateComposition
