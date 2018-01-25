@@ -44,6 +44,7 @@ class ProductMain extends ProductOrComponent {
   public $idProduct;
   public $creationDate;
   public $idUser;
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $idle;
   public $description;
   public $_sec_ProductprojectProjects;
@@ -71,17 +72,21 @@ class ProductMain extends ProductOrComponent {
 
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="25%" >${productName}</th>
-  	<th field="designation" width="15%" >${designation}</th>
-    <th field="nameProduct" width="25%" >${isSubProductOf}</th>
-    <th field="nameClient" width="15%" >${clientName}</th>
-    <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="name" width="25" >${productName}</th>
+    <th field="designation" width="20%" >${designation}</th>
+    <th field="nameProductType" width="10%" >${type}</th>
+    <th field="nameStatus" width="10%" >${idStatus}</th>
+    <th field="nameProduct" width="15%" >${isSubProductOf}</th>
+    <th field="nameClient" width="10%" >${clientName}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
    private static $_fieldsAttributes=array(
        "name"=>"required", 
-       "scope"=>"hidden"
+       "scope"=>"hidden",
+       "idStatus"=>"required", //ADD qCazelles - Ticket #53
+       "idProductType"=>"required" // ADD PBE - Ticket #53
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf',

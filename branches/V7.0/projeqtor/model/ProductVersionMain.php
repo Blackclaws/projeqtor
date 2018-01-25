@@ -60,6 +60,7 @@ class ProductVersionMain extends Version {
   public $plannedEndDate;
   public $realEndDate;
   public $idle;
+  public $idStatus; //ADD qCazelles - Ticket #53
   public $description;
   public $_sec_VersionprojectProjects;
   public $_VersionProject=array();
@@ -92,11 +93,13 @@ class ProductVersionMain extends Version {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="20%" >${versionName}</th>
-    <th field="nameProduct" width="25%" >${productName}</th>
-    <th field="plannedEisDate" width="10%" formatter="dateFormatter">${plannedEis}</th>
-    <th field="realEisDate" width="10%" formatter="dateFormatter">${realEis}</th>
-    <th field="plannedEndDate" width="10%" formatter="dateFormatter">${plannedEnd}</th>
-    <th field="realEndDate" width="10%" formatter="dateFormatter">${realEnd}</th>
+    <th field="nameProduct" width="15%" >${productName}</th>
+    <th field="nameProductVersionType" width="10%" >${type}</th>
+    <th field="nameStatus" width="10%" >${idStatus}</th>
+    <th field="plannedEisDate" width="7.5%" formatter="dateFormatter">${plannedEis}</th>
+    <th field="realEisDate" width="7.5%" formatter="dateFormatter">${realEis}</th>
+    <th field="plannedEndDate" width="7.5%" formatter="dateFormatter">${plannedEnd}</th>
+    <th field="realEndDate" width="7.5%" formatter="dateFormatter">${realEnd}</th>
     <th field="isEis" width="5%" formatter="booleanFormatter" >${isEis}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
@@ -104,7 +107,9 @@ class ProductVersionMain extends Version {
   private static $_fieldsAttributes=array(
       "name"=>"required", 
       "idProduct"=>"required",
-      "scope"=>"hidden"
+      "scope"=>"hidden",
+      "idStatus"=>"required", //ADD qCazelles - Ticket #53
+      "idProductVersionType"=>"required" // ADD PBE - Ticket #53
   );   
 
   //CHANGE qCazelles - dateComposition

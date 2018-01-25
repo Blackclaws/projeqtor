@@ -115,10 +115,11 @@ if ($noselect) {
   }
   if (array_key_exists ( 'refreshLinks', $_REQUEST )) {
     $refreshLinks = $_REQUEST ['refreshLinks'];
-    if (property_exists ( $obj, '_Link' ) && $refreshLinks == 'true') {
+    if (property_exists ( $obj, '_Link_'.$refreshLinks )) {
+      $lnkFld='_Link_'.$refreshLinks;
+      drawLinksFromObject ( $obj->$lnkFld, $obj, $refreshLinks, true );
+    } else if (property_exists ( $obj, '_Link' ) && $refreshLinks ) {
       drawLinksFromObject ( $obj->_Link, $obj, null, true );
-    } else {
-      drawLinksFromObject ( $obj->_Link_Deliverable, $obj, "Deliverable", true );
     }
     exit ();
   }
@@ -1084,6 +1085,40 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           $readOnly = true;
         }
       }
+      //ADD qCazelles - Ticket #53
+      if (($col == "realStartDate" or $col == "isStarted") and $objType) {
+        $lock='lockHandled';
+        if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
+          $attributes.=' readonly tabindex="-1"';
+          $notReadonlyClass="";
+          $readOnly=true;
+        }
+      }
+      if (($col == "realDeliveryDate" or $col == "isDelivered") and $objType) {
+        $lock='lockDone';
+        if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
+          $attributes.=' readonly tabindex="-1"';
+          $notReadonlyClass="";
+          $readOnly=true;
+        }
+      }
+      if (($col == "realEisDate" or $col == "isEis") and $objType) {
+        $lock='lockIntoservice';
+        if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
+          $attributes.=' readonly tabindex="-1"';
+          $notReadonlyClass="";
+          $readOnly=true;
+        }
+      }
+      if (($col == "realEndDate" or $col == "idle") and $objType) {
+        $lock='lockIdle';
+        if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
+          $attributes.=' readonly tabindex="-1"';
+          $notReadonlyClass="";
+          $readOnly=true;
+        }
+      }
+      //END ADD qCazelles - Ticket #53
       if (strpos ( $obj->getFieldAttributes ( $col ), 'required' ) !== false) {
         // $attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
         $isRequired = true;
@@ -4177,7 +4212,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh = false) {
           echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '">' . formatSmallButton ( 'Download' ) . '</a>';
         }
         if ($canUpdate) {
-          echo '  <a onClick="removeLink(' . "'" . htmlEncode ( $link->id ) . "','" . get_class ( $linkObj ) . "','" . htmlEncode ( $linkObj->id ) . "','" . $classLinkName . "'" . ');" title="' . i18n ( 'removeLink' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
+          echo '  <a onClick="removeLink(' . "'" . htmlEncode ( $link->id ) . "','" . get_class ( $linkObj ) . "','" . htmlEncode ( $linkObj->id ) . "','" . $classLinkName . "','" . $classLink. "'".');" title="' . i18n ( 'removeLink' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
         }
         echo '</td>';
       }

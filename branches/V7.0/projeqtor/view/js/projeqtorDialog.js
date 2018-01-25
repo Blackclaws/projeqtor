@@ -1369,14 +1369,13 @@ function saveLink() {
  * Display a delete Link Box
  * 
  */
-function removeLink(linkId, refType, refId, refTypeName) {
+function removeLink(linkId, refType, refId, refTypeName, fixedClass) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  var fixedClass = refTypeName;
   actionOK=function() {
-    if(fixedClass=='Deliverable' && refType=='Deliverable'){
+    if(fixedClass && fixedClass==refType){
       loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
           +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
           +"&linkRef2Id="+refId, "resultDiv", null, true, 'link'+fixedClass);

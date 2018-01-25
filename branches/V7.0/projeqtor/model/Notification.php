@@ -50,8 +50,8 @@ class Notification extends SqlElement {
     public $idStatusNotification;
     public $emailSent=0;
     public $idle;  
-  public $_sec_Link;
-    public $_Link=array();
+  //public $_sec_Link;
+    //public $_Link=array();
     public $_Attachment=array();
     public $_Note=array();
 

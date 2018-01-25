@@ -33,15 +33,15 @@ class ProductType extends Type {
   // Define the layout that will be used for lists
     
   
-   private static $_fieldsAttributes=array('idWorkflow'=>'hidden',
+   private static $_fieldsAttributes=array(//'idWorkflow'=>'hidden', //CHANGE qCazelles - Ticket #53
     "mandatoryResultOnDone"=>"hidden",
     "_lib_mandatoryOnDoneStatus"=>"hidden",
     "lockHandled"=>"hidden",
     "_lib_statusMustChangeHandled"=>"hidden",
     "lockDone"=>"hidden",
     "_lib_statusMustChangeDone"=>"hidden",
-    "lockIdle"=>"hidden",
-    "_lib_statusMustChangeIdle"=>"hidden",
+//     "lockIdle"=>"hidden",
+//     "_lib_statusMustChangeIdle"=>"hidden",
     "lockCancelled"=>"hidden",
     "_lib_statusMustChangeCancelled"=>"hidden",
     "mandatoryResourceOnHandled"=>"hidden",
@@ -50,9 +50,10 @@ class ProductType extends Type {
    // Define the layout that will be used for lists
    private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="70%">${name}</th>
+    <th field="name" width="50%">${name}</th>
     <th field="code" width="10%">${code}</th>
     <th field="sortOrder" width="5%">${sortOrderShort}</th>
+    <th field="nameWorkflow" width="20%">${idWorkflow}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
    
