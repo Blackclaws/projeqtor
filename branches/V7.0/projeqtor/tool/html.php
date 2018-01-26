@@ -448,11 +448,21 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   }    
   if ($col=='idTargetProductVersion' or $col=='idProductVersion' or $col=='idOriginProductVersion') {
     // Must restrict to versions visible to user
-    $restrictArray=getSessionUser()->getVisibleVersions();
+    $restrictArrayVersion=getSessionUser()->getVisibleVersions();
+    if (isset($restrictArray) && count($restrictArray)>0) {
+      $restrictArray=array_intersect_key($restrictArray, $restrictArrayVersion);
+    } else {
+      $restrictArray=$restrictArrayVersion;
+    }
   } 
   if ($col=='idProduct') {
     // Must restrict to products visible to user
-    $restrictArray=getSessionUser()->getVisibleProducts();
+    $restrictArrayProduct=getSessionUser()->getVisibleProducts();
+    if (isset($restrictArray) && count($restrictArray)>0) {
+      $restrictArray=array_intersect_key($restrictArray, $restrictArrayProduct);
+    } else { 
+      $restrictArray=$restrictArrayProduct;
+    }
   }
   if ($col=='idOrganization' and Affectable::getOrganizationVisibilityScope()!="all") {
     // Restrict list of Organizations
