@@ -112,14 +112,15 @@ if ($noselect) {
     drawTestCaseRunFromObject($obj->_TestCaseRun, $obj, true);
     exit();
   }
-  if (array_key_exists('refreshLinks', $_REQUEST)) {
-    $refreshLinks=$_REQUEST ['refreshLinks'];
-    if (property_exists($obj, '_Link') && $refreshLinks =='true') {
-      drawLinksFromObject($obj->_Link, $obj, null, true);
-    } else {
-      drawLinksFromObject($obj->_Link_Deliverable, $obj, "Deliverable", true);
+  if (array_key_exists ( 'refreshLinks', $_REQUEST )) {
+    $refreshLinks = $_REQUEST ['refreshLinks'];
+    if (property_exists ( $obj, '_Link_'.$refreshLinks )) {
+      $lnkFld='_Link_'.$refreshLinks;
+      drawLinksFromObject ( $obj->$lnkFld, $obj, $refreshLinks, true );
+    } else if (property_exists ( $obj, '_Link' ) && $refreshLinks ) {
+      drawLinksFromObject ( $obj->_Link, $obj, null, true );
     }
-    exit();
+    exit ();
   }
   if (array_key_exists('refreshHistory', $_REQUEST)) {
     $treatedObjects []=$obj;
@@ -3521,9 +3522,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
                .'</a>';
         }
         if ($canUpdate) {
-          echo '  <a onClick="removeLink(' . "'" . htmlEncode($link->id) . "','" . get_class($linkObj) . "','" . htmlEncode($linkObj->id) . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" > '
-                  .formatSmallButton('Remove')
-               .'</a>';
+          echo '  <a onClick="removeLink(' . "'" . htmlEncode ( $link->id ) . "','" . get_class ( $linkObj ) . "','" . htmlEncode ( $linkObj->id ) . "','" . $classLinkName . "','" . $classLink. "'".');" title="' . i18n ( 'removeLink' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
         }
         echo '</td>';
       }
