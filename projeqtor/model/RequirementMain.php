@@ -97,6 +97,8 @@ class RequirementMain extends SqlElement {
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
   public $_Dependency_Successor=array();
+  public $_sec_TestCaseList;
+  public $_Link_TestCase=array();
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();

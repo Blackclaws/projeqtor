@@ -6051,6 +6051,7 @@ function endBuffering($prevSection,$included) {
       'progress_left' => array('2' => 'left', '3' => 'extra'), 
       'resourcecost' => array('2' => 'right', '3' => 'extra'), 
       'submissions' => array('2' => 'right', '3' => 'extra'), 
+      'testcaselist' => array('2' => 'bottom', '3' => 'extra'),
       'testcaserun' => array('2' => 'bottom', '3' => 'bottom'), 
       'testcaserunsummary' => array('2' => 'left', '3' => 'extra'), 
       'testcasesummary' => array('2' => 'right', '3' => 'extra'), 
