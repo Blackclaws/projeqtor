@@ -42,8 +42,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V6.5.3"; // Version of application : Major / Minor / Release
-$build = "0186"; // Build number. To be increased on each release
+$version = "V6.5.4"; // Version of application : Major / Minor / Release
+$build = "0187"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -2135,6 +2135,7 @@ function addDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addMonthsToDate($date, $months) {
+  if (!$date) return addMonthsToDate(date('Y-m-d'),$months);
   $tDate = explode ( "-", $date );
   return date ( "Y-m-d", mktime ( 0, 0, 0, $tDate [1] + $months, $tDate [2], $tDate [0] ) );
 }
@@ -2389,6 +2390,10 @@ function getForeColor($color) {
  * calculate the first day of a given week
  */
 function firstDayofWeek($week, $year) {
+  if (!$week or ! $year) {
+    $now=date('Y-m-d');
+    return firstDayofWeek(weekNumber($now),substr($now,0,4));
+  }
   $Jan1 = mktime ( 1, 1, 1, 1, 1, $year );
   $MondayOffset = (11 - date ( 'w', $Jan1 )) % 7 - 3;
   $desiredMonday = strtotime ( ($week - 1) . ' weeks ' . $MondayOffset . ' days', $Jan1 );
