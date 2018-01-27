@@ -476,7 +476,7 @@
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedStartDate');?>&nbsp;:&nbsp;</td>
               <td>
-                <div dojoType="dijit.form.FilteringSelect" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
+                <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
                 <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
 										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
