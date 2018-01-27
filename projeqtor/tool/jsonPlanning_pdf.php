@@ -187,7 +187,7 @@
   **/
 
   function displayGantt($result) {
-  	global $displayResource, $outMode, $showMilestone, $portfolio;
+  	global $displayResource, $outMode, $showMilestone, $portfolio, $columnsDescription;
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
@@ -264,23 +264,73 @@
         }
         $line['pstart']=$pStart;
         $line['pend']=$pEnd;
-        //if ($showResource) {
-          $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
-          $ass=new Assignment();
-          $assList=$ass->getSqlElementsFromCriteria($crit,false);
+        if($line['reftype'] == 'Project') {
+          $project = new Project($line['refid']);
+          $line['color'] = $project->color;
+          $type = new Type($project->idProjectType);
+          $line['type'] = $type->name;
+          $status = new Status($project->idStatus);
+          $line['status'] = $status->name;
+          $line['statuscolor'] = $status->color;
+        } else if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
+          $ref=$line['reftype'];
+          if ($ref=='PeriodicMeeting') $ref='Meeting';
+          $type='id'.$ref.'Type';
+          $item=new $ref($line['refid'],true);
+          $line["type"]=SqlList::getNameFromId('Type',$item->$type);
+          if (property_exists($item,"idStatus")) {
+            $status = new Status($item->idStatus);
+            $line['status'] = $status->name;
+            $line['statuscolor'] = $status->color;
+          } else {
+            $line['status'] = '';
+            $line['statuscolor'] = '';
+          }
+        }
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction') { // 'Fixed' and 'Construction' are projects !!!!
           $arrayResource=array();
-          $objElt=new $line['reftype']($line['refid']);
-          foreach ($assList as $ass) {
-            $res=new Resource($ass->idResource);
-            if ($res->$displayResource) {
-              $arrayResource[$res->id]=$res->$displayResource;
-              if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
-                $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
+          if (isset($columnsDescription['Resource']) and $columnsDescription['Resource']['show']==1) { // Must always retreive resource to display value in column, even if not displayed
+            $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
+            $ass=new Assignment();
+            $assList=$ass->getSqlElementsFromCriteria($crit,false);
+            $resp="";
+            if (isset($arrayObj[$line['reftype']])) {
+              $objElt=$arrayObj[$line['reftype']];
+            } else {
+              $objElt=new $line['reftype']();
+              if (! property_exists($objElt,'idResource')) {
+                $objElt=null;
+              }
+              $arrayObj[$line['reftype']]=$objElt;
+            }
+            if ($objElt) {
+              $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
+            }
+            foreach ($assList as $ass) {
+              $res=new Resource($ass->idResource,true);
+              if (! isset($arrayResource[$res->id])) {
+                $display=$res->$displayResource;
+                if ($displayResource=='initials' and ! $display) {
+                  $words=mb_split(' ',str_replace(array('"',"'"), ' ', $res->name));
+                  $display='';
+                  foreach ($words as $word) {
+                    $display.=(mb_substr($word,0,1,'UTF-8'));
+                  }
+                }
+                if ($display)	{
+                  $arrayResource[$res->id]=htmlEncode($display);
+                  if ($resp and $resp==$res->id ) {
+                    $arrayResource[$res->id]='<b>'.htmlEncode($display).'</b>';
+                  }
+                }
               }
             }
           }
-          $line["resource"]=implode(', ',$arrayResource);
-        //}
+          //$res=new Resource($ass->idResource);
+          $line["resource"]= htmlEncodeJson(implode(', ',$arrayResource));
+        } else {
+          $line["resource"]="";
+        }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
@@ -378,13 +428,14 @@
 	  $fontsize_global = $left_size * 1.5;
 
       // Header
-      $sortArray=Parameter::getPlanningColumnOrder();
-      $cptSort=0;
-      foreach ($sortArray as $name) { if (substr($name,0,6)!='Hidden') $cptSort++; }
-      //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+    $sortArray=array_merge(array(), Parameter::getPlanningColumnOrder());
+    $cptSort=0;
+    foreach ($columnsDescription as $ganttCol) { 
+      if ($ganttCol['show']==1) $cptSort++; 
+    }
       echo '<table style="font-size:'.($fontsize_global*100).'%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;height: 100%;width:'.$table_witdh.'">';
       echo '<tr style="height: 2%;width:100%;padding:0px;margin:0px;">
-			<td colspan="' . (2+$cptSort) . '" style="width:'.($left_size*100).'%;padding:0px;margin:0px;">&nbsp;</td>';
+			<td colspan="' . (1+$cptSort) . '" style="width:'.($left_size*100).'%;padding:0px;margin:0px;">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
         $span=$topUnit;
@@ -425,19 +476,27 @@
       echo '<TR style="height: 2%;width:100%;padding:0px;margin:0px;">';
       echo '  <TD class="reportTableHeader" style="border-right:0px;width:'.(5*$left_size).'%padding:0px;margin:0px;"></TD>';
       echo '  <TD class="reportTableHeader" style=" border-left:0px; text-align: left;width:'.(19*$left_size).'%;padding:0px;margin:0px;">' . i18n('colTask') . '</TD>';
-      foreach ($sortArray as $col) {
+      foreach ($sortArray as $col) {   
+        if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue;
         if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colValidated') . '</TD>' ;
-      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
+        if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
         if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReal') . '</TD>' ;
         if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeft') . '</TD>' ;
         if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReassessed') . '</TD>' ;
+        if ($col=='ValidatedCost') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'. i18n('colValidatedCost') . '</TD>' ;
+        if ($col=='AssignedCost') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssignedCost') . '</TD>' ;
+        if ($col=='RealCost') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colRealCost') . '</TD>' ;
+        if ($col=='LeftCost') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeftCost') . '</TD>' ;
+        if ($col=='PlannedCost') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colPlannedCost') . '</TD>' ;
+        if ($col=='Type') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colType') . '</TD>' ;
+        if ($col=='IdStatus') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colIdStatus') . '</TD>' ;
         if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colDuration') . '</TD>' ;
         if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPct') . '</TD>' ;
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:'.(8*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colStart') . '</TD>' ;
         if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:'.(8*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colEnd') . '</TD>' ;
         if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colResource') . '</TD>' ;
-        if ($col=='Priority') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPriority') . '</TD>' ;
-        if ($col=='IdPlanningMode') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colIdPlanningMode') . '</TD>' ;
+        if ($col=='Priority') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPriorityShort') . '</TD>' ;
+        if ($col=='IdPlanningMode') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colIdPlanningMode') . '</TD>' ;        
       }
       $weekendColor="#cfcfcf";
       $day=$minDate;
@@ -558,18 +617,26 @@
         echo '</span>&nbsp;';
         echo $pName . '</span></TD>';
         foreach ($sortArray as $col) {
+          if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue;
           if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;
           if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["realwork"])  . '</TD>' ;
           if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["leftwork"])  . '</TD>' ;
           if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["plannedwork"])  . '</TD>' ;
+          if ($col=='ValidatedCost') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . costFormatter($line["validatedcost"])  . '</TD>' ;
+          if ($col=='AssignedCost') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  costFormatter($line["assignedcost"])  . '</TD>' ;
+          if ($col=='RealCost') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  costFormatter($line["realcost"])  . '</TD>' ;
+          if ($col=='LeftCost') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  costFormatter($line["leftcost"])  . '</TD>' ;
+          if ($col=='PlannedCost') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  costFormatter($line["plannedcost"])  . '</TD>' ;
+          if ($col=='Type') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . ($line["type"])  . '</TD>' ;
+          if ($col=='IdStatus') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  ($line["status"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $duration  . '</TD>' ;
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . percentFormatter($progress) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(8*$left_size).'%;">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(8*$left_size).'%;">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;" >' . $line["resource"]  . '</TD>' ;
-          if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $line["priority"]  . '</TD>' ;
-          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;" >' . SqlList::getNameFromId('PlanningMode',$line["idplanningmode"])  . '</TD>' ;
+          if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:center;' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $line["priority"]  . '</TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;white-space:nowrap" >' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '</TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';

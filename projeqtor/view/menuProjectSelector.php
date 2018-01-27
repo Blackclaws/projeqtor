@@ -87,9 +87,9 @@ if ($proj=='*') {
    <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
 </select>
 <?php } else if($displayMode=="search") {?>
-<select id="projectSelectorFiletering" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  
+<select id="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  
 <?php echo autoOpenFilteringSelect();?>
-name="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect"
+name="projectSelectorFiletering" 
     data-dojo-props="
         queryExpr: '*${0}*',
         autoComplete:false">
