@@ -2811,6 +2811,7 @@ function addDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addMonthsToDate($date, $months) {
+  if (!$date) return addMonthsToDate(date('Y-m-d'),$months);
   $tDate = explode ( "-", $date );
   return date ( "Y-m-d", mktime ( 0, 0, 0, $tDate [1] + $months, $tDate [2], $tDate [0] ) );
 }
@@ -3065,6 +3066,10 @@ function getForeColor($color) {
  * calculate the first day of a given week
  */
 function firstDayofWeek($week, $year) {
+  if (!$week or ! $year) {
+    $now=date('Y-m-d');
+    return firstDayofWeek(weekNumber($now),substr($now,0,4));
+  }
   $Jan1 = mktime ( 1, 1, 1, 1, 1, $year );
   $MondayOffset = (11 - date ( 'w', $Jan1 )) % 7 - 3;
   $desiredMonday = strtotime ( ($week - 1) . ' weeks ' . $MondayOffset . ' days', $Jan1 );
