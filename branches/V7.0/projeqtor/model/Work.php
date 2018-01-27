@@ -209,5 +209,8 @@ class Work extends GeneralWork {
     return $resultAss;
   }
   
+  public function getMenuClass() {
+    return "menuActivity";
+  }
 }
 ?>

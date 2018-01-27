@@ -490,23 +490,6 @@
         }
         $line['pstart']=$pStart;
         $line['pend']=$pEnd;
-        //if ($showResource) {
-          $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
-          $ass=new Assignment();
-          $assList=$ass->getSqlElementsFromCriteria($crit,false);
-          $arrayResource=array();
-          $objElt=new $line['reftype']($line['refid'],true);
-          foreach ($assList as $ass) {
-            $res=new Resource($ass->idResource,true);
-            if ($res->$displayResource) {
-              $arrayResource[$res->id]=$res->$displayResource;
-              if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
-                $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
-              }
-            }
-          }
-          $line["resource"]=implode(', ',$arrayResource);
-        //}
         $line['type'] = '';
         if($line['reftype'] == 'Project') {
             $project = new Project($line['refid']);
@@ -530,6 +513,50 @@
             $line['status'] = '';
             $line['statuscolor'] = '';
           }
+        }
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction') { // 'Fixed' and 'Construction' are projects !!!!
+          $arrayResource=array();
+          if (isset($columnsDescription['Resource']) and $columnsDescription['Resource']['show']==1) { // Must always retreive resource to display value in column, even if not displayed
+            $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
+            $ass=new Assignment();
+            $assList=$ass->getSqlElementsFromCriteria($crit,false);
+            $resp="";
+            if (isset($arrayObj[$line['reftype']])) {
+              $objElt=$arrayObj[$line['reftype']];
+            } else {
+              $objElt=new $line['reftype']();
+              if (! property_exists($objElt,'idResource')) {
+                $objElt=null;
+              }
+              $arrayObj[$line['reftype']]=$objElt;
+            }
+            if ($objElt) {
+              $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
+            }
+            foreach ($assList as $ass) {
+              $res=new Resource($ass->idResource,true);
+              if (! isset($arrayResource[$res->id])) {
+                $display=$res->$displayResource;
+                if ($displayResource=='initials' and ! $display) {
+                  $words=mb_split(' ',str_replace(array('"',"'"), ' ', $res->name));
+                  $display='';
+                  foreach ($words as $word) {
+                    $display.=(mb_substr($word,0,1,'UTF-8'));
+                  }
+                }
+                if ($display)	{
+                  $arrayResource[$res->id]=htmlEncode($display);
+                  if ($resp and $resp==$res->id ) {
+                    $arrayResource[$res->id]='<b>'.htmlEncode($display).'</b>';
+                  }
+                }
+              }
+            }
+          }
+          //$res=new Resource($ass->idResource);
+          $line["resource"]= htmlEncodeJson(implode(', ',$arrayResource));
+        } else {
+          $line["resource"]="";
         }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
@@ -587,14 +614,16 @@
       //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;
       // Header
       //$sortArray=Parameter::getPlanningColumnOrder();
-	  $sortArray=array_merge(array('Color', 'Type', 'Status', 'StatusColor'), Parameter::getPlanningColumnOrder());
-      $cptSort=0;
-      foreach ($sortArray as $name) {	if (substr($name,0,6)!='Hidden') $cptSort++; }
+	  $sortArray=array_merge(array(), Parameter::getPlanningColumnOrder());
+    $cptSort=0;
+    foreach ($columnsDescription as $ganttCol) { 
+      if ($ganttCol['show']==1) $cptSort++; 
+    }
 	  if($outMode != 'csv') {
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
       echo '<div style="overflow:auto;">';
       echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<tr style="height: 20px;"><td colspan="' . (2+$cptSort) . '">&nbsp;</td>';
+      echo '<tr style="height: 20px;"><td colspan="' . (1+$cptSort) . '">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
         $span=$topUnit;
@@ -635,12 +664,21 @@
       echo '<TR style="height: 20px;">';
       echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
       echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
+      debugLog($sortArray);
       foreach ($sortArray as $col) {
+        if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue; 
         if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;
       	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssigned') . '</TD>' ;
         if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReal') . '</TD>' ;
         if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colLeft') . '</TD>' ;
         if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReassessed') . '</TD>' ;
+        if ($col=='ValidatedCost') echo '  <TD class="reportTableHeader" style="width:30px">'. i18n('colValidatedCost') . '</TD>' ;
+        if ($col=='AssignedCost') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssignedCost') . '</TD>' ;
+        if ($col=='RealCost') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colRealCost') . '</TD>' ;
+        if ($col=='LeftCost') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colLeftCost') . '</TD>' ;
+        if ($col=='PlannedCost') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colPlannedCost') . '</TD>' ;
+        if ($col=='Type') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colType') . '</TD>' ;
+        if ($col=='IdStatus') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colIdStatus') . '</TD>' ;
         if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colDuration') . '</TD>' ;
         if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
@@ -682,30 +720,30 @@
       }
       echo '</TR>';
 	  } else {
+	      $currency=' ('.Parameter::getGlobalParameter('currency').')';
+	      $workUnit=' ('.Work::displayShortWorkUnit().')';
         echo chr(239) . chr(187) . chr(191); // Needed by Microsoft Excel to make it CSV
-        echo i18n('colId') . $csvSep . i18n('colTask') . $csvSep;
+        echo i18n('colElement') . $csvSep . i18n('colId') . $csvSep . i18n('colTask') . $csvSep  ; 
         foreach ($sortArray as $col) {
-          if ($col=='Color') echo i18n('colColor') . $csvSep ;
+          if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue; 
+          if ($col=='ValidatedWork') echo i18n('colValidatedWork') . $workUnit . $csvSep ;
+          if ($col=='AssignedWork') echo i18n('colAssignedWork') . $workUnit . $csvSep ;
+          if ($col=='RealWork') echo i18n('colRealWork') . $workUnit . $csvSep ;
+          if ($col=='LeftWork') echo i18n('colLeftWork') . $workUnit . $csvSep ;
+          if ($col=='PlannedWork') echo i18n('colPlannedWork') . $workUnit . $csvSep ;
+          if ($col=='ValidatedCost') echo i18n('colValidatedCost') . $currency . $csvSep ;
+          if ($col=='AssignedCost') echo i18n('colAssignedCost') . $currency . $csvSep ;
+          if ($col=='RealCost') echo i18n('colRealCost') . $currency . $csvSep ;
+          if ($col=='LeftCost') echo i18n('colLeftCost') . $currency . $csvSep ;
+          if ($col=='PlannedCost') echo i18n('colPlannedCost') . $currency . $csvSep ;
           if ($col=='Type') echo i18n('colType') . $csvSep ;
-          if ($col=='Status' and $columnsDescription['IdStatus']['show']==1) echo i18n('colIdStatus') . $csvSep ;
-          if ($col=='StatusColor' and $columnsDescription['IdStatus']['show']==1) echo i18n('colStatusColor') . $csvSep ;
-          if ($col=='ValidatedWork') echo i18n('colValidated') . $csvSep ;
-          if ($col=='AssignedWork') echo i18n('colAssigned') . $csvSep ;
-          if ($col=='RealWork') echo i18n('colReal') . $csvSep ;
-          if ($col=='LeftWork') echo i18n('colLeft') . $csvSep ;
-          if ($col=='PlannedWork') echo i18n('colReassessed') . $csvSep ;
-          if ($col=='Duration') echo i18n('colDuration') . $csvSep ;
-          if ($col=='Progress') echo i18n('colPct') . $csvSep ;
-          if ($col=='StartDate') {
-            echo i18n('colValidatedStartDate') . $csvSep ;
-            echo i18n('colPlannedStartDate') . $csvSep ;
-          }
-          if ($col=='EndDate') {
-            echo i18n('colValidatedEndDate') . $csvSep ;
-            echo i18n('colPlannedEndDate') . $csvSep ;
-          }
+          if ($col=='IdStatus') echo i18n('colIdStatus') . $csvSep . i18n('colStatusColor') . $csvSep ;      
+          if ($col=='Duration') echo i18n('colDuration') . ' ('.i18n('shortDay') . ')' . $csvSep ;
+          if ($col=='Progress') echo i18n('colProgress'). ' (' .i18n('colPct') . ')' . $csvSep ;
+          if ($col=='StartDate') echo i18n('colStart') . $csvSep ;
+          if ($col=='EndDate') echo i18n('colEnd') . $csvSep ;
           if ($col=='Resource') echo i18n('colResource') . $csvSep ;
-          if ($col=='Priority') echo i18n('colPriorityShort') . $csvSep ;
+          if ($col=='Priority') echo i18n('colPriority') . $csvSep ;
           if ($col=='IdPlanningMode') echo i18n('colIdPlanningMode') . $csvSep ;
         }
         echo "\n";
@@ -766,7 +804,9 @@
         }
         $pName=($showWbs)?$line['wbs']." ":"";
         $pName.= htmlEncode($line['refname']);
-        $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
+        
+        $durationNumeric=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd);
+        $duration=$durationNumeric . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
 
         if ($closedWbs and $closedWbs!=$line['wbssortable']) {
@@ -797,11 +837,19 @@
         echo '</span>&nbsp;';
         echo $pName . '</span></TD>';
         foreach ($sortArray as $col) {
+          if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue;
           if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;
           if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realwork"])  . '</TD>' ;
           if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftwork"])  . '</TD>' ;
           if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedwork"])  . '</TD>' ;
+          if ($col=='ValidatedCost') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . costFormatter($line["validatedcost"])  . '</TD>' ;
+          if ($col=='AssignedCost') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  costFormatter($line["assignedcost"])  . '</TD>' ;
+          if ($col=='RealCost') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  costFormatter($line["realcost"])  . '</TD>' ;
+          if ($col=='LeftCost') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  costFormatter($line["leftcost"])  . '</TD>' ;
+          if ($col=='PlannedCost') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  costFormatter($line["plannedcost"])  . '</TD>' ;
+          if ($col=='Type') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . ($line["type"])  . '</TD>' ;
+          if ($col=='IdStatus') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  ($line["status"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
@@ -903,28 +951,26 @@
         }
         echo '</TR>';
       } else {
-          echo $line['refid'] . $csvSep . html_entity_decode(strip_tags($tab), ENT_COMPAT, 'UTF-8') . html_entity_decode($pName) . $csvSep;
-          foreach ($sortArray as $col) {
-            if ($col=='Color') echo ((isset($line["color"]))?$line["color"]:'') . $csvSep;
+          echo i18n($line['reftype']) . $csvSep . $line['refid'] . $csvSep . html_entity_decode(strip_tags($tab), ENT_QUOTES, 'UTF-8') . html_entity_decode($pName, ENT_QUOTES, 'UTF-8') . $csvSep;
+          foreach ($sortArray as $col) {          
+            if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue;
+            if ($col=='ValidatedWork') echo formatNumericOutput(Work::displayWork($line["validatedwork"]))  . $csvSep;
+            if ($col=='AssignedWork') echo formatNumericOutput(Work::displayWork($line["assignedwork"]))  . $csvSep;
+            if ($col=='RealWork') echo formatNumericOutput(Work::displayWork($line["realwork"]))  . $csvSep;
+            if ($col=='LeftWork') echo formatNumericOutput(Work::displayWork($line["leftwork"]))  . $csvSep;
+            if ($col=='PlannedWork') echo formatNumericOutput(Work::displayWork($line["plannedwork"]))  . $csvSep;
+            if ($col=='ValidatedCost') echo formatNumericOutput($line["validatedcost"])  . $csvSep;
+            if ($col=='AssignedCost') echo formatNumericOutput($line["assignedcost"])  . $csvSep;
+            if ($col=='RealCost') echo formatNumericOutput($line["realcost"])  . $csvSep;
+            if ($col=='LeftCost') echo formatNumericOutput($line["leftcost"])  . $csvSep;
+            if ($col=='PlannedCost') echo formatNumericOutput($line["plannedcost"])  . $csvSep;
             if ($col=='Type') echo $line["type"]  . $csvSep;
-            if ($col=='Status' and $columnsDescription['IdStatus']['show']==1) echo $line["status"]  . $csvSep;
-            if ($col=='StatusColor' and $columnsDescription['IdStatus']['show']==1) echo $line["statuscolor"]  . $csvSep;
-            if ($col=='ValidatedWork') echo $line["validatedwork"]  . $csvSep;
-            if ($col=='AssignedWork') echo $line["assignedwork"]  . $csvSep;
-            if ($col=='RealWork') echo $line["realwork"]  . $csvSep;
-            if ($col=='LeftWork') echo $line["leftwork"]  . $csvSep;
-            if ($col=='PlannedWork') echo $line["plannedwork"]  . $csvSep;
-            if ($col=='Duration') echo (($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd))  . $csvSep;
+            if ($col=='IdStatus') echo $line["status"]  . $csvSep . $line["statuscolor"]  . $csvSep;
+            if ($col=='Duration') echo $durationNumeric . $csvSep;
             if ($col=='Progress') echo $progress . $csvSep;
-            if ($col=='StartDate') {
-              echo (($line['validatedstartdate'])?$line['validatedstartdate']:'-') . $csvSep;
-              echo (($pStart)?$pStart:'-') . $csvSep;
-            }
-            if ($col=='EndDate') {
-              echo (($line['validatedenddate'])?$line['validatedenddate']:'-') . $csvSep;
-              echo (($pEnd)?$pEnd:'-') . $csvSep;
-            }
-            if ($col=='Resource') echo $line["resource"]  . $csvSep;
+            if ($col=='StartDate') echo (($pStart)?dateFormatter($pStart):'-'). $csvSep;
+            if ($col=='EndDate') echo (($pEnd)?dateFormatter($pEnd):'-'). $csvSep;
+            if ($col=='Resource') echo strip_tags($line["resource"])  . $csvSep;
             if ($col=='Priority') echo $line["priority"]  . $csvSep;
             if ($col=='IdPlanningMode') echo SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . $csvSep;
           }

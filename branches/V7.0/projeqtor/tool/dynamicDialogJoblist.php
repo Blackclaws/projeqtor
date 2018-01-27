@@ -131,7 +131,7 @@ $status = array('done' => '#a5eda5',
               <label for="dialogJobInfoCreator" ><?php echo i18n("colResponsible") ?>&nbsp;:&nbsp;</label>
             </td>
             <td>
-              <select dojoType="dijit.form.FilteringSelect" id="dialogJobInfoCreator" class="input" value="" >
+              <select dojoType="dijit.form.FilteringSelect" id="dialogJobInfoCreator" class="input" value="" <?php echo autoOpenFilteringSelect ();?>>
                 <?php htmlDrawOptionForReference('idUser', null, null, true);?>
               </select>
             </td>
