@@ -113,6 +113,11 @@ var menuData = {
 <?php  
   $obj=new Menu();
   $menuList=$obj->getSqlElementsFromCriteria(null, false);
+
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM  
+  $isNotificationSystemActiv = isNotificationSystemActiv();
+// END - ADD BY TABARY - NOTIFICATION SYSTEM
+  
   $pluginObjectClass='Menu';
   $tableObject=$menuList;
   $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
@@ -123,7 +128,9 @@ var menuData = {
   $idMenu=null;
   $prioMenuType=null;
   foreach ($menuList as $menu) {
-    //echo "id=" . htmlEncode($menu->id) . "     idMenu=" . htmlEncode($menu->idMenu) . "     level=" . $level . "\n";
+// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM  
+    if (!$isNotificationSystemActiv and strpos($menu->name, "Notification")!==false) { continue; }
+// END - ADD BY TABARY - NOTIFICATION SYSTEM          //echo "id=" . htmlEncode($menu->id) . "     idMenu=" . htmlEncode($menu->idMenu) . "     level=" . $level . "\n";
     if ($level>0 and securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
       while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
         drawMenuCloseChildren();
