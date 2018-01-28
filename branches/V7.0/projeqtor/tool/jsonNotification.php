@@ -64,9 +64,16 @@
         $innerJoin .= "LEFT JOIN notifiable ON notifiable.id = notification.idNotifiable ";
         $innerJoin .= "LEFT JOIN notificationDefinition ON notificationDefinition.id = notification.idNotificationDefinition ";
         
+        // Only unread notifications with notificationDate <= current date
+        $theDate = new DateTime();
+        $theCurrentDate = $theDate->format('Y').'-'.$theDate->format('m').'-'.$theDate->format('d');        
+        
         // Where party of SqlQuery
-//        $where = " WHERE notification.idle=0 AND notification.idStatus=$idStatus AND notification.idUser=$userId ";
-        $where = " WHERE notification.idle=0 AND notification.idStatusNotification=$idStatusNotification AND notification.idUser=$userId ";
+        $where  = " WHERE notification.idle=0";
+        $where .= " AND notification.idStatusNotification=$idStatusNotification";
+        $where .= " AND notification.idUser=$userId";
+        $where .= " AND notification.notificationDate<='".$theCurrentDate."' ";
+        $where .= " AND IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1=1),notification.notificationTime<TIME(NOW()))";
         
         // Order By party of SqlQuery
         $orderBy = "ORDER BY typeId asc, objectClassName asc, definition asc";

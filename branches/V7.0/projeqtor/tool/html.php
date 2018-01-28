@@ -1449,8 +1449,11 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
     $step=1;
     $bkColor='';
     
+    // Take nobr
+    $nobr = (strpos($attributes,'nobr')===false?false:true);
+    
 // BEGIN - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE    
-    $display = (strpos($attributes,'hidden')===false?' display:block':' display:none');
+    $display = (strpos($attributes,'hidden')===false?($nobr?' display:inline-block':' display:block'):' display:none');
 // END - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE    
     // List of spinner Attributes
     $spinnerAttrList = explode(',',$spinnerAttributes);
@@ -1497,15 +1500,15 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
 //    $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;" ';
     $result.=  'style="width:'.$fieldWidth.'px; text-align: center; color: #000000;'.$display.';" ';
 // END - ADD BY TABARY - TAKE DISPLAY ATTRIBUTE        // dojoType
-    $result.= 'dojoType="dijit.form.NumberSpinner" ';
+    $readOnly = (strpos($attributes,'readonly')===false?'':' readOnly');
+    $result.= 'dojoType="dijit.form.NumberSpinner"'. $readOnly.' ';
     // Constraints
     $result.= 'constraints="{min:'.$min.',max:'.$max.',places:0,pattern:\'###0\'}" ';
     // Change and maxlength
     $result.= 'intermediateChanges="true" maxlength="'.$maxlength.'" ';
     // Class
     $required = (strpos($attributes,'required')!==false?'required':'');
-    $result.= ' class="input '.$required.' generalColClass '.$col.'Class" ';
-    // Value
+    $result.= ' class="input '.$required.$readOnly.' generalColClass '.$col.'Class" ';    // Value
     $result.= ' value="'. $val.'" ';
     // Step
     $result.= 'smallDelta="'.$step.'" ';

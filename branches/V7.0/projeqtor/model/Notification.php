@@ -42,6 +42,7 @@ class Notification extends SqlElement {
     public $idMenu;
     public $title;
     public $notificationDate;
+    public $notificationTime;
     public $sendEmail=0;
     public $content;
   public $_sec_treatment;
@@ -73,7 +74,7 @@ class Notification extends SqlElement {
                                             "notifiedObjectId"          => "hidden",
                                             "idNotificationType"        => "required",
                                             "idStatusNotification"      => "required",
-                                            "notificationDate"          => "required",
+                                            "notificationDate"          => "required,nobr",
                                             "idUser"                    => "required",
                                             "idResource"                => "readonly",
                                             "title"                     => "required",
@@ -92,6 +93,7 @@ class Notification extends SqlElement {
                                                    "idResource"         => "issuer",
                                                    "notificationDate"   => "targetDate",
                                                    "idStatusNotification"=> "idStatus",
+                                                   "notificationTime"   => "time",
       "idNotificationType"=>"type"
                                                   );
   
@@ -117,12 +119,20 @@ class Notification extends SqlElement {
             self::$_fieldsAttributes['name'] = 'readonly';
             self::$_fieldsAttributes['title'] = 'readonly';
             self::$_fieldsAttributes['content'] = 'readonly';
-            self::$_fieldsAttributes['notificationDate'] = 'readonly';
+            self::$_fieldsAttributes['notificationDate'] = 'readonly,nobr';
+            if (is_null($this->notificationTime)) {
+                self::$_fieldsAttributes['notificationTime'] = 'hidden';                
+            } else {
+                self::$_fieldsAttributes['notificationTime'] = 'readonly';                
+            }
             self::$_fieldsAttributes['content'] = 'readonly';
             self::$_fieldsAttributes['idResource'] = 'readonly';
             self::$_fieldsAttributes['idUser'] = 'readonly';
             self::$_fieldsAttributes['notificationType'] = 'readonly';
             self::$_fieldsAttributes['sendEmail'] = 'readonly';
+            if ($this->sendEmail) {
+                self::$_fieldsAttributes['emailSent'] = 'readonly';
+            }
         }
     }
     if ($this->id<=0) {
@@ -218,6 +228,10 @@ class Notification extends SqlElement {
         $this->emailSent = 1;
     }
     
+    // Idle = 1 => status = 'read'
+    if ($this->idle) {
+        $this->idStatusNotification = 2;
+    }
     $result = parent::save();
     
     return $result;
@@ -245,9 +259,9 @@ class Notification extends SqlElement {
   public function countUnreadNotifications($idMenu=null) {
       $arrayCountUnreadNofications = [ 
                                         "total"       => 0,
-                                        "alert"       => 0,
-                                        "warning"     => 0,
-                                        "information" => 0
+                                        "ALERT"       => 0,
+                                        "WARNING"     => 0,
+                                        "INFO"        => 0
                                      ];
       // Unread status
 //      $unreadStatusId = SqlElement::getSingleSqlElementFromCriteria("Status", array("name" => "unread"))->id;
@@ -272,6 +286,7 @@ class Notification extends SqlElement {
       $where .= " AND notification.idle = 0";
       $where .= " AND notification.idUser = $userId";
       $where .= " AND notification.notificationDate <= '$theCurrentDate'";
+      $where .= " AND IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1=1),notification.notificationTime<TIME(NOW()))";
       
       if (!is_null($idMenu)) {
           $where .= " AND notification.idMenu = $idMenu";
@@ -286,22 +301,21 @@ class Notification extends SqlElement {
       $arrayCountUnreadNofications['total'] = count($lstNotif);
       foreach($lstNotif as $notif) {
           // Alerts
-          $keyType = array_search('Alert', $lstTypesIdName);
+          $keyType = array_search('ALERT', $lstTypesIdName);
           if ($notif->idNotificationType == $keyType) {
-              $arrayCountUnreadNofications['alert']++;          
+              $arrayCountUnreadNofications['ALERT']++;          
           }
           
           // Warnings
-          $keyType = array_search('Warning', $lstTypesIdName);
+          $keyType = array_search('WARNING', $lstTypesIdName);
           if ($notif->idNotificationType == $keyType) {
-              $arrayCountUnreadNofications['warning']++;          
+              $arrayCountUnreadNofications['WARNING']++;          
           }
 
           // Informations
-          $keyType = array_search('Information', $lstTypesIdName);
+          $keyType = array_search('INFO', $lstTypesIdName);
           if ($notif->idNotificationType == $keyType) {
-              $arrayCountUnreadNofications['information']++;          
-          }
+              $arrayCountUnreadNofications['INFO']++;                    }
       }
       
       return $arrayCountUnreadNofications;
