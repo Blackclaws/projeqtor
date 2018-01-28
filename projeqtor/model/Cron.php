@@ -431,18 +431,20 @@ class Cron {
     $notif = new Notification();
     $lstNotif = $notif->getSqlElementsFromCriteria($crit);
     foreach($lstNotif as $notif) {
+      if ($notif->notificationTime->format('H:i:s')>=$currentDate->format('H:i:s')) {
         $notif->sendEmail();
+      }
     }
-  }
-// END - ADD BY TABARY - NOTIFICATION SYSTEM
-    public static function checkDates() {
+  }// END - ADD BY TABARY - NOTIFICATION SYSTEM
+    
+  public static function checkDates() {
 //scriptLog('Cron::checkDates()');
   	global $globalCronMode;
     self::init();
     $globalCronMode=true;  
     $indVal=new IndicatorValue();
     $where="idle='0' and (";
-	// If YEARLY, even if warning and alert have been sent, check if we need to update targetDateTime
+	  // If YEARLY, even if warning and alert have been sent, check if we need to update targetDateTime
     $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and (warningSent='0' or code = 'YEARLY'))" ;
     $where.=" or ( alertTargetDateTime<='" . date('Y-m-d H:i:s') . "' and (alertSent='0' or code = 'YEARLY'))" ;
     $where.=")";

@@ -762,29 +762,28 @@ label, .label, .smallLabel {
   color:#000000; 
   background-position:top;
   background-color: #F0F0F0;
-  background-image: url(images/iconNotification16.png);
+  background-image: url(images/iconNotification.png);
 }
 .messageNotificationAlert {
   text-align: left;
   color:#FFFFFF; 
   background-position: right;
   background-color: #FF0000;
-  background-image: url(images/iconAlert16.png);
+  background-image: url(images/iconAlert.png);
 }
 .messageNotificationWarning {
   text-align: left;
   color:#000000; 
   background-position: right;
   background-color: #FFDDDD;
-  background-image: url(images/iconWarning16.png);
+  background-image: url(images/iconWarning.png);
 }
 .messageNotificationInfo, .messageNotificationInformation {
   text-align: left;
   color:#FFFFFF; 
   background-position: right;
   background-color: #0000FF;
-  background-image: url(images/iconInformation16.png);
-}
+  background-image: url(images/iconInformation.png);}
 /* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 .messageOK {
   background: #DDFFDD url();
