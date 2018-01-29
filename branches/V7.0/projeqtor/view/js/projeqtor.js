@@ -4520,7 +4520,7 @@ function addOperatorOrFunctionInTextBoxForNotificationItem(textBox) {
 function setGenerateBeforeWhenNotificationDayBeforeChange(colValue) {
     isFixedDay = false;
     if ((dijit.byId('everyMonth').checked && dijit.byId('fixedDay').getValue()>0) ||
-        (dijit.byId('everyYear').checked && dijit.byId('_drawLike_01_fixedDay').getValue()>0)) {
+        (dijit.byId('everyYear').checked && dijit.byId('fixedMonthDay').getValue()>0)) {
         isFixedDay = true;   
     }
     if (colValue<0 || isFixedDay || dijit.byId('everyDay').checked ) {
@@ -4553,10 +4553,11 @@ function setFixedMonthDayAttributes(colName) {
             dijit.byId('everyYear').set('checked', false);
             dojo.byId('widget_fixedDay').style.display = 'none';
             dojo.byId('widget_fixedMonth').style.display = 'none';
-            dojo.byId('widget__drawLike_01_fixedDay').style.display = 'none';
+            dojo.byId('widget_fixedMonthDay').style.display = 'none';
             dojo.addClass('_spe_targetDateNotifiableField', 'required');
             dijit.byId('fixedMonth').setValue(null);
-            dijit.byId('_drawLike_01_fixedDay').setValue(null);
+            dijit.byId('fixedMonthDay').setValue(null);
+            dijit.byId('fixedDay').setValue(null);
             dijit.byId('notificationGenerateBefore').set('readOnly', true);
             dijit.byId('notificationGenerateBefore').setValue(null);
             dojo.addClass('notificationGenerateBefore', 'readonly');
@@ -4570,10 +4571,11 @@ function setFixedMonthDayAttributes(colName) {
             dijit.byId('everyYear').set('checked', false);
             dojo.byId('widget_fixedDay').style.display = 'none';
             dojo.byId('widget_fixedMonth').style.display = 'none';
-            dojo.byId('widget__drawLike_01_fixedDay').style.display = 'none';
+            dojo.byId('widget_fixedMonthDay').style.display = 'none';
             dojo.addClass('_spe_targetDateNotifiableField', 'required');
             dijit.byId('fixedMonth').setValue(null);
-            dijit.byId('_drawLike_01_fixedDay').setValue(null);
+            dijit.byId('fixedMonthDay').setValue(null);
+            dijit.byId('fixedDay').setValue(null);
             dijit.byId('notificationGenerateBefore').set('readOnly', false);
             dojo.removeClass('notificationGenerateBefore', 'readonly');
         }
@@ -4586,10 +4588,10 @@ function setFixedMonthDayAttributes(colName) {
             dijit.byId('everyYear').set('checked', false);
             dojo.byId('widget_fixedDay').style.display = 'block';
             dojo.byId('widget_fixedMonth').style.display = 'none';
-            dojo.byId('widget__drawLike_01_fixedDay').style.display = 'none';
+            dojo.byId('widget_fixedMonthDay').style.display = 'none';
             dojo.addClass('_spe_targetDateNotifiableField', 'required');
             dijit.byId('fixedMonth').setValue(null);
-            dijit.byId('_drawLike_01_fixedDay').setValue(null);
+            dijit.byId('fixedMonthDay').setValue(null);
             if (dijit.byId('fixedDay').getValue()>0 || dijit.byId('fixedDay').getValue() == "" || dijit.byId('notificationDaysBefore').getValue()<0) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', true);
                 dijit.byId('notificationGenerateBefore').setValue(null);
@@ -4611,9 +4613,9 @@ function setFixedMonthDayAttributes(colName) {
             dijit.byId('everyMonth').set('checked', false);            
             dojo.byId('widget_fixedDay').style.display = 'none';
             dojo.byId('widget_fixedMonth').style.display = 'block';
-            dojo.byId('widget__drawLike_01_fixedDay').style.display = 'block';
+            dojo.byId('widget_fixedMonthDay').style.display = 'block';
             dijit.byId('fixedDay').setValue('');
-            if (dijit.byId('_drawLike_01_fixedDay').getValue()>0 || dijit.byId('_drawLike_01_fixedDay').getValue()=="" || dijit.byId('notificationDaysBefore').getValue()<0) {
+            if (dijit.byId('fixedMonthDay').getValue()>0 || dijit.byId('fixedMonthDay').getValue()=="" || dijit.byId('notificationDaysBefore').getValue()<0) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', true);
                 dijit.byId('notificationGenerateBefore').setValue(null);
                 dojo.addClass('notificationGenerateBefore', 'readonly');                                
@@ -4621,16 +4623,16 @@ function setFixedMonthDayAttributes(colName) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', false);
                 dojo.removeClass('notificationGenerateBefore', 'readonly');                
             }
-//            if (dijit.byId('fixedMonth').getValue()>0 && dijit.byId('_drawLike_01_fixedDay').getValue()>0) {
+//            if (dijit.byId('fixedMonth').getValue()>0 && dijit.byId('fixedMonthDay').getValue()>0) {
 //                dojo.removeClass('_spe_targetDateNotifiableField', 'required');
 //            } else {
 //                dojo.addClass('_spe_targetDateNotifiableField', 'required');
 //            }
         } else{
             dojo.byId('widget_fixedMonth').style.display = 'none';
-            dojo.byId('widget__drawLike_01_fixedDay').style.display = 'none';            
+            dojo.byId('widget_fixedMonthDay').style.display = 'none';            
             dijit.byId('fixedMonth').setValue(null);
-            dijit.byId('_drawLike_01_fixedDay').setValue(null);
+            dijit.byId('fixedMonthDay').setValue(null);
         }
     }
         
@@ -4651,11 +4653,11 @@ function setDrawLikeFixedDayWhenFixedMonthChange(value, name) {
     var dLFixedDay='';
     if (name==='fixedMonth') {
         if (value===null || value<1 || value>12) {return;}
-        var dLFixedDay = '_drawLike_01_fixedDay';
+        var dLFixedDay = 'fixedMonthDay';
         var dayValue = dijit.byId(dLFixedDay).getValue();
         var monthValue = value;
     }
-    if (name==='_drawLike_01_fixedDay') {
+    if (name==='fixedMonthDay') {
         var dLFixedDay = name;
         var dayValue = value;
         var monthValue = dijit.byId('fixedMonth').getValue();        

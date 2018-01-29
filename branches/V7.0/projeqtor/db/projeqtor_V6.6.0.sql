@@ -229,6 +229,15 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`)
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
                              VALUES( 7,           302,    1000002);
 
+-- -------------------------------------------------------- --
+-- PBE - Change Meeting structure so that we can have       -- 
+--       notification "minutes" before start of meeting     --
+-- -------------------------------------------------------- --
+ALTER TABLE `${prefix}meeting` ADD `meetingStartDateTime` DATETIME DEFAULT NULL,
+ADD `meetingEndDateTime` DATETIME DEFAULT NULL;
+UPDATE `${prefix}meeting` SET meetingStartDateTime=concat(meetingDate,' ',meetingStartTime),
+meetingEndDateTime=concat(meetingDate,' ',meetingEndTime);
+
 -- ===========================================================
 -- LifeCycle on Products, Components, Versions
 -- ===========================================================
@@ -269,6 +278,7 @@ UPDATE `${prefix}version` set idVersionType=(SELECT id FROM `${prefix}type` WHER
 WHERE idVersionType is null and scope='Product';
 UPDATE `${prefix}version` set idVersionType=(SELECT id FROM `${prefix}type` WHERE scope='ComponentVersion' ORDER BY sortOrder, id LIMIT 1)
 WHERE idVersionType is null and scope='Component';
+
 
 -- ===========================================================
 -- FIXINGS
