@@ -63,19 +63,20 @@ class NotificationDefinition extends SqlElement {
     public $targetDateNotifiableField;
     public $_spe_targetDateNotifiableField;
     public $_spe_repeatNotification;
-    public $_tab_3_4_DNF=array('each','fixedMonth','fixedDay','day','week','month','year');
-        public $everyDay=0;
-        public $_void_1;
-        public $_void_2;
-        public $everyWeek=0;
-        public $_void_11;
-        public $_void_12;
+    public $_tab_3_4_DNF=array('frequency','fixedMonth','fixedDay','everyYear','everyMonth','everyWeek','everyDay');
+        public $everyYear=0;
+        public $fixedMonth=null;
+        public $fixedMonthDay=null;    
         public $everyMonth=0;
         public $_void_3;
         public $fixedDay=null;
-        public $everyYear=0;
-        public $fixedMonth=null;
-        public $_drawLike_01_fixedDay=null;
+        public $everyWeek=0;
+        public $_void_11;
+        public $_void_12;
+        public $everyDay=0;
+        public $_void_1;
+        public $_void_2;
+        
     public $notificationDaysBefore=0;
     public $_lib_days;
     public $notificationGenerateBefore=0;
@@ -130,11 +131,10 @@ class NotificationDefinition extends SqlElement {
                                         );  
   
   private static $_colCaptionTransposition = array(
-      "idNotificationType"=>"type",
-      "everyDay"=>"day",
+      "idNotificationType"=>"type"
   );
   
-  private static $_databaseColumnName = array();
+  private static $_databaseColumnName = array('fixedMonthDay'=>'fixedDay');
   
 // TOOLTIP - TABARY
   private static $_fieldsTooltip = array(
@@ -151,7 +151,7 @@ class NotificationDefinition extends SqlElement {
                                             "everyYear"                                   => "tooltipNotificationEveryYear",
                                             "fixedMonth"                                  => "tooltipNotificationFixedMonth",
                                             "fixedDay"                                    => "tooltipNotificationFixedDay",
-                                            "_drawLike_01_fixedDay"                       => "tooltipNotificationFixedDay",
+                                            "fixedMonthDay"                               => "tooltipNotificationFixedDay",
                                             "notificationGenerateBefore"                  => "tooltipNotificationGenerateBefore",
                                             "notificationGenerateBeforeInMin"             => "tooltipNotificationGenerateBeforeInMin",
                                             "notificationDaysBefore"                      => "tooltipNotificationDaysBefore"
@@ -162,6 +162,7 @@ class NotificationDefinition extends SqlElement {
   private static $_spinnersAttributes = array(
       'fixedMonth'=>'min:1,max:12,step:1,showLabelInTab',
       'fixedDay'=>'min:1,max:31,step:1,showLabelInTab',
+      'fixedMonthDay'=>'min:1,max:31,step:1,showLabelInTab',
       'notificationDaysBefore'=>'min:-1,max:1000,step:1,showLabelInTab',
       'notificationGenerateBefore'=>'min:0,max:1000,step:1,showLabelInTab',
       'notificationGenerateBeforeInMin'=>'min:0,max:720,step:5,showLabelInTab'
@@ -207,16 +208,17 @@ class NotificationDefinition extends SqlElement {
         }
         
         if ($this->everyYear) {
-            $this->_drawLike_01_fixedDay = ($this->fixedDay==0?"":$this->fixedDay);
+            //$this->fixedMonthDay = ($this->fixedDay==0?"":$this->fixedDay);
             $this->fixedDay="";
-            if ($this->_drawLike_01_fixedDay>0) {
+            if ($this->fixedMonthDay>0) {
                 $this->setFieldAttributeReadonly('notificationGenerateBefore', true);
                 $this->notificationGenerateBefore="";
-        } else {
+            } else {
                 $this->setFieldAttributeReadonly('notificationGenerateBefore', false);
             }
-        } elseif($this->everyMonth) {
+        } else if($this->everyMonth) {
             $this->fixedMonth="";
+            $this->fixedMonthDay="";
             if ($this->fixedDay>0) {
                 $this->setFieldAttributeReadonly('notificationGenerateBefore', true);
                 $this->notificationGenerateBefore="";
@@ -331,18 +333,6 @@ class NotificationDefinition extends SqlElement {
   public function control() {
     $result = "";
     $spe_targetDateField = $_REQUEST['_spe_targetDateNotifiableField'];
-    $drawLikeFixedDay = $_REQUEST['_drawLike_01_fixedDay'];
-
-//    $isTargetDateNotRequired = ($this->everyYear and 
-//                               ($this->fixedMonth!=null and $this->fixedMonth!="") and 
-//                               ($drawLikeFixedDay!=null and $drawLikeFixedDay!="")
-//                              );
-//
-//    if(!$isTargetDateNotRequired and $spe_targetDateField==="-1"){
-//        // The TargetDateNotifiableField
-//        $this->_spe_targetDateNotifiableField=null;
-//        $this->targetDateNotifiableField=null;
-//    }
 
     // The ObjectClass's fields
     $notificationItem = new Notifiable($this->idNotifiable);
@@ -414,12 +404,15 @@ class NotificationDefinition extends SqlElement {
 
     if ($this->everyDay or $this->everyWeek) {
         $this->fixedDay=0;
+        $this->fixedMonthDay=0;
+        $this->fixedMonth=0;
+    } else if ($this->everyMonth) {
+      $this->fixedMonth=0;
+      $this->fixedMonthDay=$this->fixedDay;
+    } else if ($this->everyYear) {
+        $this->fixedDay=$this->fixedMonthDay;
     }
-
-    if ($this->everyYear) {
-        $drawLikeFixedDay = $_REQUEST['_drawLike_01_fixedDay'];
-        $this->fixedDay=$drawLikeFixedDay;
-    }
+    
     
     $result = parent::save();
     // If notification definition has changed
@@ -427,12 +420,17 @@ class NotificationDefinition extends SqlElement {
         // Delete the notifications issued of this notification definition
         // with notificationDate > currentDate
         $theCurrentDate = new DateTime();
+        //$query  = "DELETE FROM notification ";
+        //$query .= "WHERE notification.idNotificationDefinition=".$this->id;
+        //$query .= " AND (notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
+        //$query .= "      OR (IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1<>1),notification.notificationTime>TIME(NOW()))))";
+        $clause = "  notification.idNotificationDefinition=".$this->id;
+        $clause .= " AND (      notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
+        $clause .= "       OR ( notificationDate='".$theCurrentDate->format('Y-m-d')."' AND notification.notificationTime IS NOT NULL AND notification.notificationTime>TIME(NOW()) )";
+        $clause .= "     )";
+        $this->purge($clause);
         
-        $query  = "DELETE FROM notification ";
-        $query .= "WHERE notification.idNotificationDefinition=".$this->id;
-        $query .= " AND (notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
-        $query .= "      OR (IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1<>1),notification.notificationTime>TIME(NOW()))))";
-        SqlDirectElement::execute($query);
+        //SqlDirectElement::execute($query);
         
         if ($this->idle===0) {
             // Generate Notifications with modified notification definition
@@ -714,20 +712,20 @@ class NotificationDefinition extends SqlElement {
     $itemLab = "listOperatorsAndFunctions";
 
     $arrayFields = [
-                    "OR"            => strtoupper(i18n('or')),
-                    "AND"           => strtoupper(i18n('and')),
-                    "="             => strtoupper(i18n('equal')),
-                    "<>"            => strtoupper(i18n('different')),
-                    ">="            => strtoupper(i18n('greaterOrEqual')),
-                    ">"             => strtoupper(i18n('greaterThan')),
-                    "<="            => strtoupper(i18n('lessOrEqual')),
-                    "<"             => strtoupper(i18n('lessThan')),
-                    "now()"         => strtoupper(i18n('nowDate')),
-                    "year(date)"        => strtoupper(i18n('yearOf')),
-                    "month(date)"       => strtoupper(i18n('monthOf')),
-                    "day(date)"         => strtoupper(i18n('dayOf')),
-                    "isnull(field)"      => strtoupper(i18n('isNull')),
-                    "substr(field,start,length)" => strtoupper(i18n('subString'))
+                    "OR"            => (i18n('OR')),
+                    "AND"           => (i18n('AND')),
+                    "="             => (i18n('equal')),
+                    "<>"            => (i18n('different')),
+                    ">="            => (i18n('greaterOrEqual')),
+                    ">"             => (i18n('greaterThan')),
+                    "<="            => (i18n('lessOrEqual')),
+                    "<"             => (i18n('lessThan')),
+                    "now()"         => (i18n('nowDate')),
+                    "year(date)"        => (i18n('yearOf')),
+                    "month(date)"       => (i18n('monthOf')),
+                    "day(date)"         => (i18n('dayOf')),
+                    "isnull(field)"      => (i18n('isNull')),
+                    "substr(field,start,length)" => (i18n('subString'))
                    ];    
     $fieldAttributes=$this->getFieldAttributes($item);
     if(strpos($fieldAttributes,'required')!==false) {
@@ -936,9 +934,9 @@ class NotificationDefinition extends SqlElement {
       $colScript .= '  readOnlyNotificationGenerateBeforeInMin();';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';        
-    } elseif ($colName == "fixedMonth" || $colName == "_drawLike_01_fixedDay") {
+    } elseif ($colName == "fixedMonth" || $colName == "fixedMonthDay") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      if ($colName == "_drawLike_01_fixedDay") {
+      if ($colName == "fixedMonthDay") {
         $colScript .= '  setGenerateBeforeWhenFixedDayChange(this.value);';          
       }
       $colScript .= '  setDrawLikeFixedDayWhenFixedMonthChange(this.value, this.name);';
@@ -1729,7 +1727,7 @@ traceLog("theField[$theField]");
         if ($this->everyDay) {
             $this->setFieldAttributeHidden('fixedDay', true);
             $this->setFieldAttributeHidden('fixedMonth', true);
-            $this->setFieldAttributeHidden('_drawLike_01_fixedDay', true);
+            $this->setFieldAttributeHidden('fixedMonthDay', true);
             $this->everyWeek=false;
             $this->everyYear=false;
             $this->everyMonth=false;            
@@ -1738,7 +1736,7 @@ traceLog("theField[$theField]");
         if ($this->everyWeek) {
             $this->setFieldAttributeHidden('fixedDay', true);
             $this->setFieldAttributeHidden('fixedMonth', true);
-            $this->setFieldAttributeHidden('_drawLike_01_fixedDay', true);
+            $this->setFieldAttributeHidden('fixedMonthDay', true);
             $this->everyDay=false;
             $this->everyYear=false;
             $this->everyMonth=false;            
@@ -1747,7 +1745,7 @@ traceLog("theField[$theField]");
         if ($this->everyMonth) {
             $this->setFieldAttributeHidden('fixedDay', false);
             $this->setFieldAttributeHidden('fixedMonth', true);
-            $this->setFieldAttributeHidden('_drawLike_01_fixedDay', true);
+            $this->setFieldAttributeHidden('fixedMonthDay', true);
             $this->everyWeek=false;
             $this->everyDay=false;
             $this->everyYear=false;
@@ -1757,13 +1755,13 @@ traceLog("theField[$theField]");
         
         if ($this->everyYear) {
             $this->setFieldAttributeHidden('fixedDay', true);
-            $this->setFieldAttributeHidden('_drawLike_01_fixedDay', false);
+            $this->setFieldAttributeHidden('fixedMonthDay', false);
             $this->setFieldAttributeHidden('fixedMonth', false);
             $this->everyWeek=false;
             $this->everyDay=false;
             $this->everyMonth=false;
         } else {
-            $this->setFieldAttributeHidden('_drawLike_01_fixedDay', true);            $this->setFieldAttributeHidden('fixedMonth', true);
+            $this->setFieldAttributeHidden('fixedMonthDay', true);            $this->setFieldAttributeHidden('fixedMonth', true);
         }        
     }
     
