@@ -927,8 +927,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           
 <!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->          
         <?php if(isNotificationSystemActiv() and securityCheckDisplayMenu(null,'Notification')) {?>
-          <td title="<?php echo i18n('sectionNotification');?>" width="5%" style="vertical-align: middle;" >
-            <div id="statusBarNotificationDiv" style="text-align: center;">
+          <td title="<?php echo i18n('sectionNotification');?>" width="5%" style="vertical-align: middle;position: relative" >
+            <div id="statusBarNotificationDiv" style="text-align: center;position: absolute;top:-1px">
                     <div id="menuBarNotificationCount" class="iconNotification32" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;" 
                            onClick="
                                       var ac = dijit.byId('accordionLeftBottomDiv');

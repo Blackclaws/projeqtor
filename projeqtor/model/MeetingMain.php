@@ -76,7 +76,9 @@ class MeetingMain extends SqlElement {
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-
+  public $meetingStartDateTime;
+  public $meetingEndDateTime;
+  
   public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
@@ -107,14 +109,19 @@ class MeetingMain extends SqlElement {
 																  "isPeriodic"=>"readonly",
 																  "periodicOccurence"=>"hidden",
                                   "idleDate"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "meetingStartDateTime"=>"hidden",
+                                  "meetingEndDateTime"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('result'=>'minutes', 
   'description'=>'meetingAgenda',
   'idResource'=>'responsible', 
   'idActivity'=>'parentActivity',
-  'attendees'=>'otherAttendees');
+  'attendees'=>'otherAttendees',
+  'meetingStartDateTime'=>'meetingStartTime',
+  'meetingEndDateTime'=>'meetingEndTime'
+  );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -426,6 +433,8 @@ class MeetingMain extends SqlElement {
       $meetingType = new MeetingType($this->idMeetingType);
       $this->description=$meetingType->description;
     }
+    $this->meetingStartDateTime=$this->meetingDate.' '.$this->meetingStartTime;
+    $this->meetingEndDateTime=$this->meetingDate.' '.$this->meetingEndTime;
     return parent::save();
   }
 
