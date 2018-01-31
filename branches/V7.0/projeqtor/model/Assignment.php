@@ -356,5 +356,8 @@ class Assignment extends SqlElement {
     	}
     }
   }
+  public function getMenuClass() {
+    return "menuActivity";
+  }
 }
 ?>

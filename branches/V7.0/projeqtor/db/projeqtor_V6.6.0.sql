@@ -279,6 +279,14 @@ WHERE idVersionType is null and scope='Product';
 UPDATE `${prefix}version` set idVersionType=(SELECT id FROM `${prefix}type` WHERE scope='ComponentVersion' ORDER BY sortOrder, id LIMIT 1)
 WHERE idVersionType is null and scope='Component';
 
+-- ===========================================================
+-- Component Version on Requirements 
+-- ===========================================================
+
+--ADD qCazelles - Add Component to Requirement - Ticket 171
+ALTER TABLE `${prefix}requirement` ADD `idComponent` INT(12) UNSIGNED DEFAULT NULL;
+ALTER TABLE `${prefix}requirement` ADD `idTargetComponentVersion` INT(12) UNSIGNED DEFAULT NULL;
+ALTER TABLE `${prefix}requirement` CHANGE `idTargetVersion` `idTargetProductVersion` INT(12) UNSIGNED DEFAULT NULL;
 
 -- ===========================================================
 -- FIXINGS
