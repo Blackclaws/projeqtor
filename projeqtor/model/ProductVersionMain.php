@@ -497,6 +497,16 @@ class ProductVersionMain extends Version {
       $lang->save();
     }
     //end add atrancoso ticket#149
+    //add atrancoso ticket#160
+    // Copy context
+    $cont = new VersionContext();
+    $listCont=$cont->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
+    foreach($listCont as $cont){
+      $cont->id = NULL;
+      $cont->idVersion = $result->id;
+      $cont->save();
+    }
+    //end add atrancoso ticket#160
     $doNotUpdateAllVersionProject=false;
     $ps=new ProductStructure();
     $psList=$ps->getSqlElementsFromCriteria(array('idProduct'=>$result->idProduct));

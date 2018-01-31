@@ -337,6 +337,7 @@ class Parameter extends SqlElement {
       case 'productVersionOnDelivery' :
       case 'manageAccountable':
       //END ADD qCazelles    
+      case 'manageComponentOnRequirement' :   //ADD qCazelles - Add Component to Requirement - Ticket 171
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
         break;
@@ -751,10 +752,11 @@ class Parameter extends SqlElement {
                              	'directAccessToComponentList'=>'list',
                             	'versionNameAutoformat'=>'list',
                              	'versionNameAutoformatSeparator'=>'text',
-                             	'versionCompatibility'=>'list',
                              	'subscriptionAuto'=>'list',
+                             	'versionCompatibility'=>'list',
                               //'sectionDelivery'=>'section', //ADD qCazelles
                               'productVersionOnDelivery'=>'list',
+                              'manageComponentOnRequirement'=>'list',   //ADD qCazelles - Add Component to Requirement - Ticket 171
                         'tabMail'=>"tab",   
                           'newColumnMailLeft'=>'newColumn',
                             'sectionMail'=>'section',

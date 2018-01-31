@@ -468,6 +468,16 @@ class ComponentVersionMain extends Version {
       $lang->idVersion = $result->id;
       $lang->save();
     }
+    //add atrancoso ticket#160
+    // Copy context
+    $cont = new VersionContext();
+    $listCont=$cont->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
+    foreach($listCont as $cont){
+      $cont->id = NULL;
+      $cont->idVersion = $result->id;
+      $cont->save();
+    }
+    //end add atrancoso ticket#160
     $doNotUpdateAllVersionProject=false;
     $comp=new Component($result->idComponent);
     $comp->updateAllVersionProject();
