@@ -38,6 +38,7 @@ class RequirementMain extends SqlElement {
   public $idRequirementType;
   public $idProject;
   public $idProduct;
+  public $idComponent;  //ADD qCazelles - Add Component to Requirement - Ticket 171
   public $externalReference;
   public $creationDateTime;
   public $idUser;
@@ -59,6 +60,7 @@ class RequirementMain extends SqlElement {
   public $idPriority; //ADDED BY atrancoso ticket #84
   public $plannedWork;
   public $idTargetProductVersion;
+  public $idTargetComponentVersion;  //ADD qCazelles - Add Component to Requirement - Ticket 171
   public $handled;
   public $handledDate;
   public $done;
@@ -114,7 +116,7 @@ class RequirementMain extends SqlElement {
     <th field="colorNameRunStatus" width="6%" formatter="colorNameFormatter">${testSummary}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="10%" >${responsible}</th>
-    <th field="nameTargetProductVersion" width="10%" >${idVersion}</th>
+    <th field="nameTargetProductVersion" width="10%" >${idTargetProductVersion}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -155,7 +157,7 @@ class RequirementMain extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idTargetProductVersion'=>'targetVersion',
+                                                   //'idTargetProductVersion'=>'targetVersion', //REMOVE qCazelles - Add Component to Requirement - Ticket 171
                                                    'idRiskLevel'=>'technicalRisk',
                                                    'plannedWork'=>'estimatedEffort',
                                                    'idContact' => 'requestor',
@@ -163,8 +165,8 @@ class RequirementMain extends SqlElement {
                                                    );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  //private static $_databaseColumnName = array();
-  private static $_databaseColumnName = array('idTargetProductVersion'=>'idTargetVersion');
+  private static $_databaseColumnName = array();
+  //private static $_databaseColumnName = array('idTargetProductVersion'=>'idTargetVersion'); //REMOVE qCazelles - Add Component to Requirement - Ticket 171
     
    /** ==========================================================================
    * Constructor
@@ -184,7 +186,16 @@ class RequirementMain extends SqlElement {
   function __destruct() {
     parent::__destruct();
   }
-
+  
+  //ADD qCazelles - Add Component to Requirement - Ticket 171
+  public function setAttributes() {
+    $manageComponentOnRequirement=Parameter::getGlobalParameter('manageComponentOnRequirement');
+    if ($manageComponentOnRequirement!='YES') {
+      self::$_fieldsAttributes['idComponent']='hidden';
+      self::$_fieldsAttributes['idTargetComponentVersion']='hidden';
+    }
+  }
+  //END ADD qCazelles - Add Component to Requirement - Ticket 171
 
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
