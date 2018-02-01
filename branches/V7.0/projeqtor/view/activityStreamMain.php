@@ -31,7 +31,7 @@ require_once "../tool/projeqtor.php";
 ?>
 <div dojoType="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;width:100%;">
 	<input type="hidden" name="objectClassManual" id="objectClassManual" value="ActivityStream" />
-	<div dojoType="dijit.layout.ContentPane" id="activityStreamParameterDiv" class="listTitle" style="z-index: 3; overflow: visible;width:100%;height:111px;" region="top">
+	<div dojoType="dijit.layout.ContentPane" id="activityStreamParameterDiv" class="listTitle" style="z-index: 3; overflow: visible;width:100%;height:125px;" region="top">
 	  <?php include "../view/activityStreamParameter.php";?>
   </div>
 	<div dojoType="dijit.layout.ContentPane" id="activityStreamListDiv" region="center" style="overflow-y:overlay;width:100%;overflow-y:hidden;">

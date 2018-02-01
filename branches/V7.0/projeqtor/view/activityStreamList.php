@@ -153,13 +153,13 @@ if ($activityStreamNumberDays!==""){
 if ($activityStreamShowClosed!='1') {
 	$critWhere.=" and idle=0";
 }
-echo '<br/>';
+//echo '<br/>';
 $order = "COALESCE (updateDate,creationDate) ASC";
 $notes=$note->getSqlElementsFromCriteria(null,false,$critWhere,$order,null,null,$activityStreamNumberElement);
 
 $countIdNote = count ( $notes );
 if ($countIdNote == 0) {
-  echo i18n ( "noNoteToDisplay" );
+  echo "<div style='padding:10px'>".i18n ( "noNoteToDisplay" )."</div>";
   exit ();
 }
 $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : false;
