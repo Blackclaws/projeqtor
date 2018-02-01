@@ -45,7 +45,7 @@
   }
   
   $enterTextHere = '<p style="color:red;">'.i18n("textareaEnterText").'</p>';
-  $noNotes = '<p><br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n("noNote").'</p>';
+  $noNotes = "<div style='padding:10px'>".i18n("noNote").'</div>';
   // get the modifications (from request)
   $note=new Note();
   $order = "COALESCE (updateDate,creationDate) ASC";
@@ -75,20 +75,18 @@
 	  <span class="title" ><?php echo i18n("titleStream");?></span>
 	</div>
 	<div id="activityStreamCenter" dojoType="dijit.layout.ContentPane" region="center" style="overflow-x:hidden;">
-	  <script type="dojo/connect" event="onLoad" args="evt">
+	<script type="dojo/connect" event="onLoad" args="evt">
         scrollInto();
-	  </script>
-<?php }?>	
+	  </script><?php }?>
 	  <table id="objectStream" style="width:100%;"> 
 	    <?php foreach ( $notes as $note ) {
 	      echo activityStreamDisplayNote ($note,"objectStream");
 	    };?>
-	    
 	    <tr><td><div id="scrollToBottom" style="display:block"></div></td></tr>
 	  </table>
 	   
 <?php if (!$onlyCenter) {?>   
-<?php if($countIdNote==0){ echo $noNotes;}	?>  
+<?php if($countIdNote==0){ echo "<div style='padding:10px'>".$noNotes."</div>";}	?>  
 	</div>
 	<div id="activityStreamBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="height:70px;overflow-x:hidden;">
 	  <form id='noteFormStream' name='noteFormStream' onSubmit="return false;" >

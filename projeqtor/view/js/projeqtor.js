@@ -4950,7 +4950,7 @@ function switchActivityStreamListShowClosed() {
     dojo.byId('activityStreamShowClosedCheck').style.display='none';
   } else {
     dojo.byId('activityStreamShowClosed').value=1;
-    dojo.byId('activityStreamShowClosedCheck').style.display='block';
+    dojo.byId('activityStreamShowClosedCheck').style.display='inline-block';
   }
   setTimeout("refreshActivityStreamList();", 100);
 }
@@ -4962,7 +4962,7 @@ function switchActivityStreamListAddedRecently() {
     dojo.byId('activityStreamAddedRecentlyCheck').style.display='none';
   } else {
     dojo.byId('activityStreamAddedRecently').value="added";
-    dojo.byId('activityStreamAddedRecentlyCheck').style.display='block';
+    dojo.byId('activityStreamAddedRecentlyCheck').style.display='inline-block';
   }
   setTimeout("refreshActivityStreamList();", 100);
 }
@@ -4974,7 +4974,7 @@ function switchActivityStreamListUpdatedRecently() {
     dojo.byId('activityStreamUpdatedRecentlyCheck').style.display='none';
   } else {
     dojo.byId('activityStreamUpdatedRecently').value="updated";
-    dojo.byId('activityStreamUpdatedRecentlyCheck').style.display='block';
+    dojo.byId('activityStreamUpdatedRecentlyCheck').style.display='inline-block';
   }
 }
 
