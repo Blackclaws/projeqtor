@@ -549,9 +549,9 @@ function activityStreamDisplayNote ($note,$origin){
      echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
     }
     if($rightWidthScreen<100){
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>&nbsp'; 
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>'; 
     } else {
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>&nbsp';
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>';
     } 
   }
 }
