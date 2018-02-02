@@ -29,6 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
+
 $user = getSessionUser ();
 $showClosed=Parameter::getUserParameter("activityStreamShowClosed");
 $addedRecently=Parameter::getUserParameter("activityStreamAddedRecently");
@@ -39,6 +40,7 @@ $activityStreamNumberDays=Parameter::getUserParameter("activityStreamNumberDays"
 if(!$activityStreamNumberDays){
   $activityStreamNumberDays="7";
 }
+$inputWidth=(RequestHandler::getValue('destinationWidth')<1000)?100:150;
 ?>
 <div id="resultDiv" style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: 999">
 </div>
@@ -49,36 +51,35 @@ if(!$activityStreamNumberDays){
 	</tr>
 </table>
 
-<div style="width: 100%; margin: 0 auto; height: 90px; padding-bottom: 15px; border-bottom: 1px solid #CCC;background-color:#FFFFFF">
+<div style="width: 100%; margin: 0 auto; height: 90px; padding-bottom: 2px; border-bottom: 1px solid #CCC;background-color:#FFFFFF">
   <form id="activityStreamForm" name="activityStreamForm">
 		<table width="100%" class="activityStream">
 			<tr>
 				<td valign="top" width="20%">
-				  <table>
+				  <table >
 					  <input type="hidden" id="activityStreamShowClosed" name="activityStreamShowClosed" value="<?php echo $showClosed;?>" />
-			      <tr style="height:20px;"></tr>
+			      <tr style="height:20px;"><td colspan="2"></td></tr>
 						<tr>
-							<td align="left" style="white-space:nowrap;padding-right:20px">
+							<td colspan="2" align="left" style="white-space:nowrap;padding-right:20px">
 							  <a onclick="resetActivityStreamListParameters();refreshActivityStreamList();" href="#" style="cursor: pointer;">
 							    <?php echo i18n("activityStreamResetParameters");?>
-							  </a>
-							  
+							  </a>							  
 							</td>
 						</tr>
 						<tr>
-						  <td align="left" style="white-space:nowrap;padding-right:20px;display:flex;">
+						  <td colspan="2" align="left" style="white-space:nowrap;padding-right:20px;">
 							  <a onclick="switchActivityStreamListShowClosed();refreshActivityStreamList();" href="#" style="cursor: pointer;">
 							    <?php echo ucfirst(i18n("labelShowIdle"));?>
-							  </a><?php $displayShowClosedCheck=($showClosed)?'block':'none';?><span id="activityStreamShowClosedCheck" style="display:<?php echo $displayShowClosedCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>
+							  </a><?php $displayShowClosedCheck=($showClosed)?'inline-block':'none';?><span id="activityStreamShowClosedCheck" style="display:<?php echo $displayShowClosedCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>
 							</td>
 						</tr>
 						<tr>
-  					  <td align="left">
+  					  <td align="left" style="width:10%;white-space:nowrap;">
   						 <?php echo i18n("limitDisplayActivityStream");?>&nbsp;:
   						</td>
-  						<td align="left" style="margin-top:10px;">
+  						<td align="left" style="margin-top:10px;padding-right:20px;">
     						<select title="<?php echo i18n('limitDisplayActivityStream')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
-    						value="<?php echo $activityStreamNumberElement;?>"
+    						value="<?php echo $activityStreamNumberElement;?>" 
                 <?php echo autoOpenFilteringSelect();?> 
                 id="activityStreamNumberElement" name="activityStreamNumberElement" style="width:80px;margin-left:16px;height:20px;font-size:8pt;" onChange="refreshActivityStreamList();">
                     <option value="10">10</option>
@@ -101,9 +102,9 @@ if(!$activityStreamNumberDays){
 							<td style="width:10%" align="right">
 							 <?php echo ucfirst(i18n('colIdAuthor'));?>&nbsp;:&nbsp;
 							</td>
-							<td align="left" style="margin-top:10px;">
+							<td align="left" style="margin-top:10px;padding-right:20px">
 							  <select title="<?php echo i18n('filterOnAuthor')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
-                <?php echo autoOpenFilteringSelect();?> 
+                <?php echo autoOpenFilteringSelect();?> style="width:<?php echo $inputWidth;?>px;"
                 id="activityStreamAuthorFilter" name="activityStreamAuthorFilter" >
                   <?php 
                     $selectedAuthor=Parameter::getUserParameter('activityStreamAuthorFilter');
@@ -119,9 +120,9 @@ if(!$activityStreamNumberDays){
 					   <td align="right">
 							 <?php echo ucfirst(i18n('colIdTeam'));?>&nbsp;:&nbsp;
 						 </td>
-						 <td align="left">
+						 <td align="left" style="padding-right:20px">
 							  <select title="<?php echo i18n('filterOnTeam')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
-                <?php echo autoOpenFilteringSelect();?> 
+                <?php echo autoOpenFilteringSelect();?> style="width:<?php echo $inputWidth;?>px;"
                 id="activityStreamTeamFilter" name="activityStreamTeamFilter" >
                   <?php 
                     $selectedTeam=Parameter::getUserParameter('activityStreamTeamFilter');
@@ -141,12 +142,12 @@ if(!$activityStreamNumberDays){
 						</tr>
 						<tr style="height:5px;"></tr>
 						<tr>
-						  <td style="width:10%" align="right">
+						  <td style="width:10%;" align="right">
 							 <?php echo ucfirst(i18n('colType'));?>&nbsp;:&nbsp;
 							</td>
-						  <td align="left" style="margin-top:10px;">
+						  <td align="left" style="margin-top:10px;padding-right:20px">
 							  <select title="<?php echo i18n('filterOnElement')?>" type="text" class="filterField roundedLeft inputParameter" dojoType="dijit.form.FilteringSelect"
-                <?php echo autoOpenFilteringSelect();?> 
+                <?php echo autoOpenFilteringSelect();?> style="width:<?php echo $inputWidth;?>px;"
                 id="activityStreamTypeNote" name="activityStreamTypeNote">
                   <?php 
                     $selectedElementType=Parameter::getUserParameter('activityStreamElementType');
@@ -162,7 +163,7 @@ if(!$activityStreamNumberDays){
 						<td align="right" style="width:10%">
 					   <?php echo ucfirst(i18n('colId'));?>&nbsp;:&nbsp;
 					  </td>
-					  <td align="left">
+					  <td align="left" style="padding-right:20px;">
               <div style="width:30px;font-size:8pt;" class="filterField rounded" dojoType="dijit.form.TextBox" value="<?php echo $activityStreamIdNote;?>"
                type="text" id="activityStreamIdNote" name="activityStreamIdNote" onChange="refreshActivityStreamList();" <?php echo (trim($selectedElementType)=="")?"readonly=readonly":"";?>>
               </div>
@@ -179,25 +180,25 @@ if(!$activityStreamNumberDays){
 					</tr>      
 					<tr style="height:5px;"></tr>
 					<tr>             
-          <td style="width:50%" align="right">
+          <td colspan="2" style="width:50%;white-space:nowrap;" align="right">
                <a onclick="switchActivityStreamListAddedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
                  <?php echo i18n("dashboardTicketMainAddedRecently");?>
-                 <?php $displayAddedRecentlyCheck=($addedRecently)?'block':'none';?>
-                 <span id="activityStreamAddedRecentlyCheck" style="display:<?php echo $displayAddedRecentlyCheck;?>;";><img src="css/images/iconSelect.png"/></span>
+                 <?php $displayAddedRecentlyCheck=($addedRecently)?'inline-block':'none';?>
+                 <span id="activityStreamAddedRecentlyCheck" style="display:<?php echo $displayAddedRecentlyCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>
                </a>
           </td>
           </tr>
 					<tr>
-						<td align="left" style="width:50%">
+						<td colspan="2" align="left" style="width:50%;white-space:nowrap;">
 							 <a onClick="switchActivityStreamListUpdatedRecently();refreshActivityStreamList();" href="#" style="cursor: pointer;display:flex;">
 							   <?php echo i18n("dashboardTicketMainUpdatedRecently");?>
-							   <?php $displayUpdatedRecentlyCheck=($updatedRecently)?'block':'none';?>
-							   <span id="activityStreamUpdatedRecentlyCheck" style="display:<?php echo $displayUpdatedRecentlyCheck;?>";><img src="css/images/iconSelect.png"/></span>							   
+							   <?php $displayUpdatedRecentlyCheck=($updatedRecently)?'inline-block':'none';?>
+							   <span id="activityStreamUpdatedRecentlyCheck" style="display:<?php echo $displayUpdatedRecentlyCheck;?>;margin-left:10px;";><img src="css/images/iconSelect.png"/></span>							   
 							 </a>
 						</td>
 					</tr>
 				  <tr>
-						<td style="width:20%" align="right">
+						<td style="width:10%;white-space:nowrap;" align="left">
 							<?php echo ucfirst(i18n('colDays'));?>&nbsp;:
 						</td>
 						<td align="left">		
@@ -208,10 +209,11 @@ if(!$activityStreamNumberDays){
           </tr>		
 				</table>
        </td>
-       <td valign="top" width="5%">
-       <table><tr><td>
-          <div style="position:absolute;top:59%" onClick="refreshActivityStreamList();"><?php echo formatBigButton('Refresh');?></div>
-       </td></tr></table></td>      
+       <td valign="top" width="">
+         <table><tr><td>
+          <div style="position:absolute;top:42px; right:10px" onClick="refreshActivityStreamList();"><?php echo formatBigButton('Refresh');?></div>
+         </td></tr></table>
+       </td>      
 			</tr>
 		</table>
 	</form>
