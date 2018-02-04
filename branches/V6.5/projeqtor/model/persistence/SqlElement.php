@@ -4422,11 +4422,15 @@ abstract class SqlElement {
       }
       $crit = "idle='0'";
       if(property_exists($this, "idProject")){
-        $crit .= "and idProject='" . $this->idProject ."'";
+        if (get_class($this)=='Project') {
+          $crit .= "and idProject=" . Sql::fmtId($this->id) ."";
+        } else if ($this->idProject) {
+          $crit .= "and idProject=" . Sql::fmtId($this->idProject) ."";
+        }
       }
-      $crit .= "and idMailable='" . $mailable->id . "' and ( false ";
+      $crit .= " and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
-        $crit .= "  or idStatus='" . $this->idStatus . "' ";
+        $crit .= "  or idStatus=" . Sql::fmtId($this->idStatus) . " ";
       }
       if ($responsibleChange) {
         $crit .= " or idEvent='1' ";
