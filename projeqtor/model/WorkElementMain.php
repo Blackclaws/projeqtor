@@ -354,6 +354,29 @@ class WorkElementMain extends SqlElement {
 		
 		return $result;
 	}
+  function control() {
+    $result="";
+    $old = $this->getOld ();
+    $diff=$this->realWork-$old->realWork;
+    if ($diff < 0) {
+      $crit = array (
+          'idWorkElement' => $this->id,
+          'idResource' => getSessionUser()->id
+      );
+      $w=new Work();
+      $sum=$w->sumSqlElementsFromCriteria('work', $crit);  
+      if ($sum+$diff<0) {
+        $result.='<br/>' . i18n('errorRemoveTooMuchWork',array(Work::displayImputationWithUnit($sum)));
+      }
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
 	
 	public static function updateAssignment($work, $diff) {
 		if ($work->refType != 'Activity') {

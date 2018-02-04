@@ -4509,7 +4509,7 @@ abstract class SqlElement {
         return false; // exit if not mailable object
       }
       $crit = "idle='0'";
-      $crit .= "and idMailable='" . $mailable->id . "' and ( false ";
+      $crit .= " and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
         $crit .= "  or idStatus='" . $this->idStatus . "' ";
       }
