@@ -617,6 +617,9 @@ abstract class SqlElement {
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) and !isset($old)) {
       $old=$this->getOld();
     }
+    if (property_exists($this,'idMilestone') and !isset($old)) {
+      $old=$this->getOld();
+    }
     if (isset ( $this->_onlyCallSpecificSaveFunction ) and $this->_onlyCallSpecificSaveFunction == true)
       return;
     $this->setAllDefaultValues ( true );
@@ -633,6 +636,7 @@ abstract class SqlElement {
         $this->idProduct = $getVersion->idProduct;
       }
     }
+    
     $result = $this->saveSqlElement ();
     if (! property_exists ( $this, '_onlyCallSpecificSaveFunction' ) or ! $this->_onlyCallSpecificSaveFunction) {
       // PlugIn Management
@@ -641,7 +645,13 @@ abstract class SqlElement {
         require $script; // execute code
       }
     }
-    
+    if (property_exists($this,'idMilestone') and $this->idMilestone and $old->idMilestone!=$this->idMilestone ) {
+      $pe=SqlElement::getSingleSqlElementFromCriteria('MilestonePlanningElement', array('refType'=>'Milestone','refId'=>$this->idMilestone));
+      if ($pe and $pe->id) {
+        $pe->updateMilestonableItems(get_class($this),$this->id);
+      }
+      
+    }
     // ticket #2822 - mehdi
     //$arrayStatusable("Project","Activity","Milestone","Meeting","TestSession");
     //$peName=get_class($this).'PlanningElement';
@@ -3579,6 +3589,9 @@ abstract class SqlElement {
         if ($colName == 'idProject' and property_exists ( $this, 'id' . get_class ( $this ) . 'Type' )) {
           $colScript .= '   refreshList("id' . get_class ( $this ) . 'Type","idProject", this.value, dijit.byId("id' . get_class ( $this ) . 'Type").get("value"),null,true);';
         }
+        if ($colName == 'idProject' and property_exists ( $this, 'idMilestone' )) {
+          $colScript .= '   refreshList("idMilestone","idProject", this.value);';
+        }
         $arrVers = array(
             'idVersion', 
             'idProductVersion', 
@@ -5910,7 +5923,7 @@ public function getMailDetailFromTemplate($templateToReplace) {
 
   public function getOld() {
     $class = get_class ( $this );
-    return new $class ( $this->id );
+    return new $class ( $this->id, true);
   }
 
   public function splitLongFields() {

@@ -61,6 +61,7 @@ class RequirementMain extends SqlElement {
   public $plannedWork;
   public $idTargetProductVersion;
   public $idTargetComponentVersion;  //ADD qCazelles - Add Component to Requirement - Ticket 171
+  public $idMilestone;
   public $handled;
   public $handledDate;
   public $done;
@@ -194,6 +195,9 @@ class RequirementMain extends SqlElement {
       self::$_fieldsAttributes['idComponent']='hidden';
       self::$_fieldsAttributes['idTargetComponentVersion']='hidden';
     }
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
+    }
   }
   //END ADD qCazelles - Add Component to Requirement - Ticket 171
 
@@ -315,6 +319,12 @@ class RequirementMain extends SqlElement {
   public function save() {
 
   	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
+  	if (Parameter::getGlobalParameter('milestoneFromVersion')=='YES' and $this->idTargetProductVersion) {
+  	  $pv=new ProductVersion($this->idTargetProductVersion);
+  	  if ($pv->idMilestone) {
+  	    $this->idMilestone=$pv->idMilestone;
+  	  }
+  	}
   	$result=parent::save();
     return $result;
   }
