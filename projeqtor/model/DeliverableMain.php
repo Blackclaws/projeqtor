@@ -46,6 +46,7 @@ class DeliverableMain extends SqlElement {
   public $idDeliverableStatus;
   public $idDeliverableWeight;
   public $idResource;
+  public $idMilestone;
   public $plannedDate;
   public $realDate;
   public $validationDate;
@@ -224,6 +225,11 @@ class DeliverableMain extends SqlElement {
     }
     KpiValue::calculateKpi($this);
     return $result;
+  }
+  public function setAttributes() {
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
+    }
   }
 }
 ?>

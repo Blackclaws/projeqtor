@@ -309,6 +309,9 @@ class PlanningElement extends SqlElement {
 
     // update topId if needed
     $topElt=null;
+    if (! $this->wbs or trim($this->wbs)=='') { //
+      $this->topId==null; // Will force redefine $topElt, to be sure to get correct wbs
+    }
     if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
       $crit=array("refType"=>$this->topRefType, "refId"=>$this->topRefId);
       $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
@@ -1656,6 +1659,76 @@ class PlanningElement extends SqlElement {
       }
     }
     $result="OK";
+  }
+  
+  public static function getMilestonableList() {
+    $dir='../model/';
+    $handle = opendir($dir);
+    $result=array();
+    while ( ($file = readdir($handle)) !== false) {
+      if ($file == '.' || $file == '..' || $file=='index.php' // exclude ., .. and index.php
+          || substr($file,-4)!='.php'                           // exclude non php files
+          || substr($file,-8)=='Main.php') {                    // exclude the *Main.php
+        continue;
+      }
+      $class=pathinfo($file,PATHINFO_FILENAME);
+      $ext=pathinfo($file,PATHINFO_EXTENSION);
+      if (file_exists($dir.$class.'Main.php')) {
+        if (property_exists($class, 'idMilestone') and property_exists($class, 'idle')) $result[$class]=i18n($class);
+      }
+    }
+    closedir($handle);
+    asort($result);
+    return $result;
+  }
+  
+  /**
+   * Will update all items referencing the milstone to set planned date to new Milstone planned date
+   * @param string $restrictType => if set will restrict to items of this class
+   * @param string $restrictId => if setand $restricType also set) will restrict to single item 
+   */
+  public function updateMilestonableItems($restrictType=null,$restrictId=null) {
+    if ($restrictType) {
+      $list=array($restrictType);
+    } else {
+      $list=Self::getMilestonableList();
+    }
+    $critMilestone=array('idMilestone'=>$this->refId,'idle'=>'0');
+    if ($restrictType && $restrictId) {
+      $critMilestone=array('id'=>$restrictId);
+    }
+    foreach ($list as $class) {
+      $dt="";
+      $arrayDate=array('actualDueDate', 'actualDueDateTime','actualEndDate','plannedDate','plannedDeliveryDate','plannedEisDate','expectedTenderDateTime','expensePlannedDate');
+      foreach($arrayDate as $date) {
+        if (property_exists($class, $date)) {
+          if ($date=='plannedDeliveryDate' and substr($class,-7)=='Version' and Parameter::getGlobalParameter('displayMilestonesStartDelivery')!='YES') continue;
+          $dt=$date;
+          break;
+        }
+      }
+      if ($dt) {
+        $ref=new $class();
+        $refList=$ref->getSqlElementsFromCriteria($critMilestone);
+        foreach ($refList as $ref) {
+          $ref->$dt=$this->plannedStartDate;
+          $ref->save();
+          if (Parameter::getGlobalParameter('autoLinkMilestone')=='YES') { // Add a link to milestone
+            if ($class<'Milestone') {
+              $crit=array('ref1Type'=>$class, 'ref1Id'=>$ref->id,'ref2Type'=>'Milestone','ref2Id'=>$this->refId);
+            } else {
+              $crit=array('ref2Type'=>$class, 'ref2Id'=>$ref->id,'ref1Type'=>'Milestone','ref1Id'=>$this->refId);
+            }
+            $link=SqlElement::getSingleSqlElementFromCriteria('Link', $crit);
+            if (!$link->id) {
+              $link->creationDate=date('Y-m-d');
+              $resLn=$link->save();
+              debugLog($resLn);
+            }
+          }
+        }
+      }
+    }
   }
 }
 ?>

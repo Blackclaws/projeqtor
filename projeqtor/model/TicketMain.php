@@ -61,6 +61,7 @@ class TicketMain extends SqlElement {
   public $idResource;
   public $idCriticality;
   public $idPriority;
+  public $idMilestone;
   public $_tab_2_1 = array('initial', 'actual','dueDate');
   public $initialDueDateTime; // is an object
   public $actualDueDateTime;
@@ -349,6 +350,12 @@ class TicketMain extends SqlElement {
   	if (! trim($this->creationDateTime)) {
   	  $this->creationDateTime=date('Y-m-d H:i');
   	}
+  	if (Parameter::getGlobalParameter('milestoneFromVersion')=='YES' and $this->idTargetProductVersion) {
+  	  $pv=new ProductVersion($this->idTargetProductVersion);
+  	  if ($pv->idMilestone) {
+  	    $this->idMilestone=$pv->idMilestone;
+  	  }
+  	}
   	if ($this->idTicketType != $old->idTicketType 
   	 or $this->idUrgency != $old->idUrgency
   	 or $this->creationDateTime != $old->creationDateTime or $this->idProject != $old->idProject) {
@@ -437,6 +444,9 @@ class TicketMain extends SqlElement {
     }  
     if (Parameter::getGlobalParameter('manageAccountable')!='YES') {
       self::$_fieldsAttributes['idAccountable']='hidden';
+    }
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
     }
   }
 }

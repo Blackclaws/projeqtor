@@ -46,6 +46,7 @@ public $_sec_description;
   public $idIncomingStatus;
   public $idIncomingWeight;
   public $idResource;
+  public $idMilestone;
   public $plannedDate;
   public $realDate;
   public $validationDate;
@@ -252,6 +253,11 @@ public $_sec_description;
       
     }
     return $result;
+  }
+  public function setAttributes() {
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
+    }
   }
 }
 ?>
