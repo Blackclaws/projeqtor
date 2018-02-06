@@ -39,6 +39,11 @@ if ($right) {
     $canPlan=true;
   }
 }
+$plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
+if (! $canPlan) {
+  $canPlan=(count($plannableProjectsList)>0)?true:false;
+}
+
 $startDate=date('Y-m-d');
 $endDate=null;
 $user=getSessionUser();

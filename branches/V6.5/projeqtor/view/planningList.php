@@ -71,7 +71,7 @@ if ($right) {
   }
 }
 $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
-if ($canPlan) {
+if (! $canPlan) {
   $canPlan=(count($plannableProjectsList)>0)?true:false;
 }
 
