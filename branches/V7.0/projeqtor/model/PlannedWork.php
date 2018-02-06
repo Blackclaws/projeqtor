@@ -828,7 +828,10 @@ class PlannedWork extends GeneralWork {
     
     foreach ($fullListPlan as $pe) {
    	  $pe->simpleSave();
-    }
+   	  if ($pe->refType=='Milestone') {
+   	    $pe->updateMilestonableItems();
+   	  }
+     }
     
     $messageOn = false;
     $endTime=time();

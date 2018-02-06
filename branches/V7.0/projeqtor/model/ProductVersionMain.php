@@ -60,6 +60,7 @@ class ProductVersionMain extends Version {
   public $plannedEndDate;
   public $realEndDate;
   public $idle;
+  public $idMilestone;
   public $idStatus; //ADD qCazelles - Ticket #53
   public $description;
   public $_sec_VersionprojectProjects;
@@ -170,6 +171,9 @@ class ProductVersionMain extends Version {
       self::$_fieldsAttributes["_sec_TicketsVersion"]='hidden';
       self::$_fieldsAttributes["_spe_tickets"]='hidden';
     }   
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
+    }
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

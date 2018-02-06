@@ -1421,6 +1421,7 @@ function array_sum_preserve_keys() {
  * @return boolean, true if displayable, false either
  */
 function securityCheckDisplayMenu($idMenu, $class = null) {
+  
   $user = null;
   $menu = $idMenu;
   if (! $idMenu and $class) {
@@ -1433,8 +1434,8 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
     return false;
   }
   $result=false;
-  $type=SqlList::getFieldFromId('Menu', $idMenu, 'type');
-  if ($type=='Project' or $class=='Project') {
+  $typeAdmin=SqlList::getFieldFromId('Menu', $idMenu, 'isAdminMenu',false);
+  if ($typeAdmin==0) { 
     $allProfiles=$user->getAllProfiles();
     foreach ($allProfiles as $profile) {
       $crit = array ();

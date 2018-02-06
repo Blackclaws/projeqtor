@@ -664,7 +664,6 @@
       echo '<TR style="height: 20px;">';
       echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
       echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-      debugLog($sortArray);
       foreach ($sortArray as $col) {
         if (isset($columnsDescription[$col]) and $columnsDescription[$col]['show']!=1) continue; 
         if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;

@@ -151,6 +151,7 @@ class MilestonePlanningElementMain extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+    $old=$this->getOld();
     $this->initialStartDate=$this->initialEndDate;
     $this->validatedStartDate=$this->validatedEndDate;
     $this->plannedStartDate=$this->plannedEndDate;
@@ -165,7 +166,12 @@ class MilestonePlanningElementMain extends PlanningElement {
     $this->notPlannedWork=0;
     $this->realWork=0;
     $this->elementary=1;
-    return parent::save();
+    $result = parent::save();
+    if ($this->plannedStartDate!=$old->plannedStartDate) {
+      $this->updateMilestonableItems();
+    }
+    
+    return $result;
   }
   
 }

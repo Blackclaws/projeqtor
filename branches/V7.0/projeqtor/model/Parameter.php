@@ -87,15 +87,6 @@ class Parameter extends SqlElement {
     	                     dojo.byId("directAccessForm").submit();
     	                   };';
     	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
-    	//$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue,';
-      //$colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
-      //$colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
-      //$colScript .= '     dojo.byId("menuActualStatus").value=menuActualStatus;';
-      //$colScript .= '     dojo.byId("p1name").value="type";';
-      //$colScript .= '     dojo.byId("p1value").value="userParameter";';
-      //$colScript .= '     dojo.byId("directAccessForm").submit();';
-      //$colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
-      //$colScript .= '     }  });';
     	$colScript .= '</script>';
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM        
     } else if ($colName=="notificationSystemActiv") {
@@ -115,11 +106,9 @@ class Parameter extends SqlElement {
         $colScript .= '</script>'; 
 // END - ADD BY TABARY - NOTIFICATION SYSTEM        
     } else if ($colName=="defaultProject") {
-      //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
       $colScript .= '  saveDataToSession(\''.$colName.'\', newValue);';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';             
     } else if ($colName=="hideMenu") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -132,7 +121,6 @@ class Parameter extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
       $colScript .= '  saveDataToSession(\''.$colName.'\', newValue);';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else if ($colName=="switchedMode") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -146,7 +134,6 @@ class Parameter extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
       $colScript .= '  saveDataToSession(\''.$colName.'\', newValue); ';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';    
     } else  if ($colName=="printInNewWindow"){
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -157,7 +144,6 @@ class Parameter extends SqlElement {
       $colScript .= '    printInNewWindow=false;';
       $colScript .= '  }';
       $colScript .= '  saveDataToSession(\'' .$colName. '\', newValue); ';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else  if ($colName=="pdfInNewWindow"){
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -168,7 +154,6 @@ class Parameter extends SqlElement {
       $colScript .= '    pdfInNewWindow=false;';
       $colScript .= '  }';
       $colScript .= ' saveDataToSession(\''.$colName.'\', newValue);';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else if ($colName=='versionNameAutoformat') {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -180,16 +165,11 @@ class Parameter extends SqlElement {
       $colScript .= '    separator.set("value",null);';
       $colScript .= '  }';
       $colScript .= ' saveDataToSession(\''.$colName.'\', newValue);';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      //if (! $this->idUser and ! $this->idProject) {
-      //  $colScript .= '  formChanged();';
-      //}
       $colScript .= '  newValue=this.value;';
       $colScript .= ' saveDataToSession(\''.$colName.'\', newValue);';
-      //$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?idData=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';
     }
     return $colScript;
@@ -294,11 +274,10 @@ class Parameter extends SqlElement {
                     'YES'=>i18n('displayYes'),
                     'YESW'=>i18n('displayYesWithWork'),
                     'REQ'=>i18n('displayOnRequest') );
-        //if () {unset($list['YESW']);}
         break;
       case 'displayChecklist':
         $list=array('YES'=>i18n('displayYes'),
-            'REQ'=>i18n('displayOnRequest'));
+                    'REQ'=>i18n('displayOnRequest'));
         break;
       case 'printHistory': 
       case 'csvExportUTF8': 
@@ -309,17 +288,14 @@ class Parameter extends SqlElement {
       case 'initializePassword': case 'setResponsibleIfNeeded': 
       case 'autoSetAssignmentByResponsible':
         $list=array('YES'=>i18n('displayYes'),
-        'NO'=>i18n('displayNo'));
+                    'NO'=>i18n('displayNo'));
         break;
       case 'setResponsibleIfSingle': case 'allocateResponsibleToProject':
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
       case 'limitPlanningActivity' :
-      // Mehdi  #parameter
       case 'autoUpdateActivityStatus':
-      // Gautier #
       case 'subscriptionAuto':
-      //ADD qCazelles - Business features
       case 'displayBusinessFeature':
       case 'filterByStatus':
       case 'displayLanguage' :
@@ -330,25 +306,21 @@ class Parameter extends SqlElement {
       case 'enablePredefinedActions' :
       case 'versionCompatibility' :
       case 'paramMailerSendAsCurrentUser' :
-      //END ADD qCazelles
       case 'manageTicketCustomer' :  //ADD qCazelles - Manage ticket at customer level - Ticket #87
-      //ADD qCazelles
       case 'manageTicketVersion' :
       case 'productVersionOnDelivery' :
       case 'manageAccountable':
-      //END ADD qCazelles    
       case 'manageComponentOnRequirement' :   //ADD qCazelles - Add Component to Requirement - Ticket 171
+      case 'manageMilestoneOnItems' :
+      case 'autoLinkMilestone' :
+      case 'milestoneFromVersion' :
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
         break;
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
       case 'dependencyStrictMode': 
-// ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
       case 'useOrganizationBudgetElement' :
-// END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT          
-// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
       case 'notificationSystemActiv':
-// END - ADD BY TABARY - NOTIFICATION SYSTEM
       case 'updateMilestoneResponsibleFromDeliverable': case 'updateMilestoneResponsibleFromIncoming':
       case 'updateDeliverableResponsibleFromMilestone': case 'updateIncomingResponsibleFromMilestone': 
       case 'scaytAutoStartup':
@@ -369,10 +341,6 @@ class Parameter extends SqlElement {
           $list=array('NO'=>i18n('displayNo'));          
         }
         break;
-      /* case 'refreshUpdates':
-        $list=array('YES'=>i18n('refreshUpdatesYes'),
-                    'NO'=>i18n('refreshUpdatesNo'));
-        break; */
       case 'hideMenu':
         $list=array('NO'=>i18n('displayNo'),
                     'AUTO'=>i18n('displayYesShowOnMouse'),
@@ -383,7 +351,6 @@ class Parameter extends SqlElement {
                     'AUTO'=>i18n('displayYesShowOnMouse'),
                     'CLICK'=>i18n('displayYesShowOnClick'));
         break;
-  /////KEVIN////      
       case 'OpenDayMonday':
         $list=array('openDays'=>i18n('openDays'),
                     'offDays'=>i18n('offDays'));
@@ -607,14 +574,9 @@ class Parameter extends SqlElement {
                            'paramIconSize'=>'list',
                            "paramShowThumb"=>"list",
                            "paramShowThumbList"=>"list",
-                           //'paramTopIconSize'=>'list',
-                           //'sectionObjectDetail'=>'section', 
-                           //"displayAttachment"=>"list",
-                           //"displayNote"=>"list",
                          'sectionIHM'=>'section',
                            "displayHistory"=>"list",
                            "displayChecklist"=>"list",  
-                           //"hideMenu"=>"list",
                            "switchedMode"=>"list",
                            "paramConfirmQuit"=>"list",
                            "startPage"=>"list",
@@ -705,6 +667,10 @@ class Parameter extends SqlElement {
       	                      'updateDeliverableResponsibleFromMilestone'=>'list',
       	                      'updateIncomingResponsibleFromMilestone'=>'list',
       	                      'autoUpdateActivityStatus'=>'list',
+      	                    'menuMilestone'=>'section',
+      	                      'manageMilestoneOnItems'=>'list',
+      	                      'autoLinkMilestone'=>'list',
+      	                      'milestoneFromVersion'=>'list',
       	                    'sectionPlanningControl'=>'section',
       	                      'allowTypeRestrictionOnProject'=>'list',
       	                'tabDisplay'=>"tab",

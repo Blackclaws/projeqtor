@@ -1109,7 +1109,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 	  	$parampassword=AesCtr::decrypt($parampassword, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength'));
 	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
-	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        
+	    	errorLog('Ldap not installed on your PHP server. Check php-ldap extension or you should not set $paramLdap_allow_login to "true"');        
         return "ldap";
 	    }
 			try { 
@@ -1498,8 +1498,8 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
     if (isset($accessList['menuProject'])) {                        // Retrieve acces rights for projects
       $access=$accessList['menuProject']['update'];                 // Retrieve update acces right for projects
     }
-    if ($access=='ALL' and $canPlan) {        // Update rights for project = "ALL" (admin type) and Can Plan for defaut project
-      // List of plannable project is list of all project minus list of affected with no plan right
+    if ($access=='ALL' and $canPlan) {        // Update rights for project = "ALL" (admin type) and Can Plan for defaut profile
+      // List of plannable project is list of all projects minus list of affected with no plan right
       $result=$this->getVisibleProjects();
       foreach ($affProjects as $prj=>$prf) {
         if (isset($rightsList['NO'][$prf])) {
@@ -1507,7 +1507,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
         }
       }
     } else {
-      // List of plannable project is list of all project minus list of affected with no plan right
+      // List of plannable project is list of projects with plannable rights
       if (! isset ($rightsList['YES'])) return $result; // Return empty array
       foreach ($affProjects as $prj=>$prf) {
         if (isset($rightsList['YES'][$prf])) {

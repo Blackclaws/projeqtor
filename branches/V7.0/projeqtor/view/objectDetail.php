@@ -2164,7 +2164,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
             or $col == 'idOriginalProductVersion' or $col == 'idTargetProductVersion'
             or $col == 'idOriginalComponentVersion' or $col == 'idTargetComponentVersion' 
-            or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' 
+            or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col=='idMilestone'
             or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
 // END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
@@ -2319,39 +2319,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           }
         }
         //ADD by qCazelles - Business features
-        //if (get_class($obj) == 'Ticket') { // Commented by babynus (not to be restricted to tickets)
 // BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//	        if ($col=='idBusinessFeature') {
+//	    if ($col=='idBusinessFeature') {
 	        if ($col=='idBusinessFeature') {
 // END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $critFld = 'idProduct';
           $critVal = $obj->idProduct;
         }
-        // }
         // END ADD qCazelles
-        
-        // ADD qCazelles - Project restriction
-        // Babynus : feature disabled do to regressions
-        /*
-         * if ($col == 'idProject') {
-         * if (sessionValueExists('project') and getSessionValue('project') != '*') {
-         * $critFld = 'id';
-         * $proj = new Project(getSessionValue('project'));
-         * //if (!empty($proj->getSubProjects())) {
-         * if (!$uniqueProjectRestriction) {
-         * $critProjs=array();
-         * foreach ($proj->getRecursiveSubProjectsFlatList() as $idProject => $subProj) {
-         * $critProjs[]=$idProject;
-         * }
-         * $critVal[]=$critProjs;
-         * }
-         * else {
-         * //continue;
-         * }
-         * }
-         * }
-         */
-        // END ADD qCazelles - Project restriction
         
         if (SqlElement::is_a ( $obj, 'PlanningElement' )) {
           $planningModeName = 'id' . $obj->refType . 'PlanningMode';
