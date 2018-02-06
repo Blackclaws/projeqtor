@@ -584,6 +584,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           dojo.byId("rightClickDependencyId").value=depListSplit[1];
           var vTask = this.getArrayLocationByID(depListSplit[0]);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
+            if (g.getEndDateView() && vList[vTask].getEnd()>g.getEndDateView() && vList[i].getStart()>g.getEndDateView()) continue;
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
                             vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
           }
