@@ -249,12 +249,6 @@ class DeliveryMain extends SqlElement {
     
   public function save() {
     $old=$this->getOld();
-    if (Parameter::getGlobalParameter('milestoneFromVersion')=='YES' and $this->idProductVersion) {
-      $pv=new ProductVersion($this->idProductVersion);
-      if ($pv->idMilestone) {
-        $this->idMilestone=$pv->idMilestone;
-      }
-    }
     $result=parent::save();
     if ($this->idResource!=$old->idResource and Parameter::getGlobalParameter('updateMilestoneResponsibleFromDeliverable')!='NO') {
       $link=new Link();
