@@ -1674,7 +1674,7 @@ class PlanningElement extends SqlElement {
       $class=pathinfo($file,PATHINFO_FILENAME);
       $ext=pathinfo($file,PATHINFO_EXTENSION);
       if (file_exists($dir.$class.'Main.php')) {
-        if (property_exists($class, 'idMilestone') and property_exists($class, 'idle')) $result[$class]=i18n($class);
+        if (property_exists($class, 'idMilestone') and property_exists($class, 'idle')) $result[]=$class;
       }
     }
     closedir($handle);
@@ -1697,6 +1697,7 @@ class PlanningElement extends SqlElement {
     if ($restrictType && $restrictId) {
       $critMilestone=array('id'=>$restrictId);
     }
+    
     foreach ($list as $class) {
       $dt="";
       $arrayDate=array('actualDueDate', 'actualDueDateTime','actualEndDate','plannedDate','plannedDeliveryDate','plannedEisDate','expectedTenderDateTime','expensePlannedDate');
@@ -1723,7 +1724,6 @@ class PlanningElement extends SqlElement {
             if (!$link->id) {
               $link->creationDate=date('Y-m-d');
               $resLn=$link->save();
-              debugLog($resLn);
             }
           }
         }
