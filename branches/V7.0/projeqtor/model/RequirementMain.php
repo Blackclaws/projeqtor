@@ -319,12 +319,6 @@ class RequirementMain extends SqlElement {
   public function save() {
 
   	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
-  	if (Parameter::getGlobalParameter('milestoneFromVersion')=='YES' and $this->idTargetProductVersion) {
-  	  $pv=new ProductVersion($this->idTargetProductVersion);
-  	  if ($pv->idMilestone) {
-  	    $this->idMilestone=$pv->idMilestone;
-  	  }
-  	}
   	$result=parent::save();
     return $result;
   }

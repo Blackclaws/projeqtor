@@ -636,7 +636,15 @@ abstract class SqlElement {
         $this->idProduct = $getVersion->idProduct;
       }
     }
-    
+    if (property_exists($this,'idMilestone') and Parameter::getGlobalParameter('milestoneFromVersion')=='YES' 
+    and (   ( property_exists($this,'idTargetProductVersion') and $this->idTargetProductVersion) 
+         or ( property_exists($this,'idProductVersion') and $this->idProductVersion) 
+        ) ) {
+      $pv=new ProductVersion((property_exists($this,'idTargetProductVersion'))?$this->idTargetProductVersion:$this->idProductVersion);
+      if ($pv->idMilestone) {
+        $this->idMilestone=$pv->idMilestone;
+      }
+    }
     $result = $this->saveSqlElement ();
     if (! property_exists ( $this, '_onlyCallSpecificSaveFunction' ) or ! $this->_onlyCallSpecificSaveFunction) {
       // PlugIn Management
@@ -650,7 +658,6 @@ abstract class SqlElement {
       if ($pe and $pe->id) {
         $pe->updateMilestonableItems(get_class($this),$this->id);
       }
-      
     }
     // ticket #2822 - mehdi
     //$arrayStatusable("Project","Activity","Milestone","Meeting","TestSession");
@@ -6357,10 +6364,17 @@ public function getMailDetailFromTemplate($templateToReplace) {
         $listProfile = $list ['Profile'] [$class] [$profile];
       }
     }
-    // if ($newStatus=='*' and $newProfile=='*') return $listType;
-    // if ($newType=='*' and $newProfile=='*') return $listStatus;
-    // if ($newType=='*' and $newStatus=='*') return $listProfile;
-    return array_unique ( array_merge ( $listType, $listStatus, $listProfile ) );
+    $listOther=array();
+    if (property_exists($class, 'idMilestone') and Parameter::getGlobalParameter('milestoneFromVersion')
+    and (   ( property_exists($class, 'idTargetProductVersion') and $this->idTargetProductVersion)
+         or ( property_exists($class, 'idProductVersion') and $this->idProductVersion)
+        ) ) {
+      $pv=new ProductVersion((property_exists($class, 'idTargetProductVersion'))?$this->idTargetProductVersion:$this->idProductVersion);
+      if ($pv->idMilestone) {
+        $listOther[]='idMilestone';
+      }
+    }
+    return array_unique ( array_merge ( $listType, $listStatus, $listProfile, $listOther) );
   }
 
   private static function getExtraReadonlyFieldsFullList() {

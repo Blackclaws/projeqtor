@@ -350,12 +350,6 @@ class TicketMain extends SqlElement {
   	if (! trim($this->creationDateTime)) {
   	  $this->creationDateTime=date('Y-m-d H:i');
   	}
-  	if (Parameter::getGlobalParameter('milestoneFromVersion')=='YES' and $this->idTargetProductVersion) {
-  	  $pv=new ProductVersion($this->idTargetProductVersion);
-  	  if ($pv->idMilestone) {
-  	    $this->idMilestone=$pv->idMilestone;
-  	  }
-  	}
   	if ($this->idTicketType != $old->idTicketType 
   	 or $this->idUrgency != $old->idUrgency
   	 or $this->creationDateTime != $old->creationDateTime or $this->idProject != $old->idProject) {
