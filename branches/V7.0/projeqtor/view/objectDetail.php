@@ -620,10 +620,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     $notRequiredClass=" generalColClassNotRequired ";
     $nobr_before=$nobr;
     $nobr=false;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//    if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
       $hide=true;
     }
     if (substr ( $col, 0, 7 ) == '_label_') {
@@ -1046,30 +1043,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     } else if (substr ( $col, 0, 1 ) == '_' and strpos ( $section, 'sOfObject' ) > 0 and strpos ( $col, '_colSpan' ) == false) {
       drawObjectLinkedByIdToObject ( $obj, substr ( $col, 1 ), false );
       // END ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//    } else if (substr($col, 0, 1) == '_' and                                                                                                                           //
-//// CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION            
-//                substr($col, 0, 6) != '_void_' and 
-//                substr($col, 0, 7) != '_label_' and 
-//                substr($col, 0, 8) != '_button_' and
-//                substr($col, 0, 7) != '_byMet_') { // field not to be displayed
     } else if (substr($col, 0, 1) == '_' and                                                                                                                           //
                                              // CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
                 substr($col, 0, 6) != '_void_' and 
                 substr($col, 0, 7) != '_label_' and 
                 substr($col, 0, 8) != '_button_' and
                 substr($col, 0, 7) != '_byMet_') { // field not to be displayed
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
     //Old
 //    substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
 // END CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION                                                                                                                                  //
     } else {
       $attributes = '';
       // ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      $isSpinner=($obj->getSpinnerAttributes($col)==''?false:true);
       $isSpinner=($obj->getSpinnerAttributes($col)==''?false:true);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
       // END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
       $isRequired = false;
       $readOnly = false;
@@ -1122,28 +1108,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $isRequired = true;
         $notRequiredClass = "";
       }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if (array_key_exists($col, $arrayRequired)) {
       if (array_key_exists($col, $arrayRequired)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $attributes .= ' required="true" missingMessage="' . i18n ( 'messageMandatory', array($obj->getColCaption ( $col )) ) . '" invalidMessage="' . i18n( 'messageMandatory', array(
             $obj->getColCaption ( $col )) ) . '"';
         $isRequired = true;
       }
       if (strpos ( $obj->getFieldAttributes ( $col ), 'hidden' ) !== false) {
         $hide = true;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if (in_array($col,$extraHiddenFields)) {
       } else if (in_array( $col, $extraHiddenFields )) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $specificStyle.=' display:none';
         if ($print)
           $hide = true;
       }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if ($col=='idBusinessFeature' and Parameter::getGlobalParameter('displayBusinessFeature') != 'YES') {
       if ($col == 'idBusinessFeature' and Parameter::getGlobalParameter( 'displayBusinessFeature' ) != 'YES') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $hide = true;
       }
       //ADD qCazelles
@@ -1152,10 +1129,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       //}
       //END ADD qCazelles
       //ADD qCazelles - Project restriction
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if ($col=='idProject' ) {
       if ($col=='idProject' ) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $uniqueProjectRestriction = false;
         if (getSessionValue ( 'project' ) != "" and getSessionValue ( 'project' ) != "*" and Parameter::getGlobalParameter ( 'projectRestriction' ) == 'YES') {
           $proj = new Project ( getSessionValue ( 'project' ) );
@@ -1172,10 +1146,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       //	$hide=true; //continue;
       //}
       //END ADD qCazelles - dateComposition
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
       if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime' or $col=='lastUpdateDateTime') and !$print) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $hide = true;
       }
       if ($obj->isAttributeSetToField ( $col, 'nobr' )) {
@@ -1205,10 +1176,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       if (strpos ( $obj->getFieldAttributes ( $col ), 'title' ) !== false) {
         $attributes .= ' title="' . $obj->getTitle ( $col ) . '"';
       }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if ($col=='idComponent' or $col=='idComponentVersion' or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion') {
       if ($col=='idComponent' or $col=='idComponentVersion' or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         if (Component::canViewComponentList ( $obj ) != 'YES') {
           $hide = true;
         }
@@ -1230,10 +1198,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           $notReadonlyClass = "";
           $readOnly = true;
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if (in_array($col,$extraReadonlyFields)) {
       } else if (in_array($col,$extraReadonlyFields)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $attributes .= ' readonly tabindex="-1"';
         $readOnly = true;
       }
@@ -1249,36 +1214,22 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       } else {
         // END ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      $dataType=$obj->getDataType($col);
-//      $dataLength=$obj->getDataLength($col);
       $dataType = $obj->getDataType( $col );
       $dataLength = $obj->getDataLength( $col );
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
       }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if ( $obj->isAttributeSetToField($col,'calculated') and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
       if ( $obj->isAttributeSetToField($col,'calculated') and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $dataType = 'decimal';
       }
       if ($internalTable == 0) {
         if (! is_object ( $val ) and ! is_array( $val ) and ! $hide and ! $nobr_before) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo '<tr class="detail'.((!$nobr)?' generalRowClass '.$col.'Class':'').'" style="'.((!$nobr)?$specificStyle:'').'">';
           echo '<tr class="detail'.((!$nobr)?' generalRowClass '.$col.'Class':'').'" style="'.((!$nobr)?$specificStyle:'').'">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           if ($dataLength > 4000 and getEditorType()!='text') {
             // Will have to add label
             echo '<td colspan="2">';
           } else {
             echo '<td class="label" style="position:relative;width:' . $labelStyleWidth . ';">';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            $thumbRes=SqlElement::isThumbableField($col);
-//            $thumbColor=SqlElement::isColorableField($col);
             $thumbRes=SqlElement::isThumbableField($col);
             $thumbColor=SqlElement::isColorableField($col);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $formatedThumb = '';
             if ($thumbRes) {
               $formatedThumb = formatUserThumb ( $val, null, null, 22, 'right' );
@@ -1287,10 +1238,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             }
             // $thumbIcon=SqlElement::isIconableField($col);
             $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.';'.$labelStyle.'">';
             echo '<label for="' . $col . '" class="' . (($thumb)?'labelWithThumb ':'').'generalColClass '.$col.'Class" style="'.$specificStyle.';'.$labelStyle.'">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             if ($outMode == 'pdf') {
               echo str_replace ( ' ', '&nbsp;', htmlEncode ( $obj->getColCaption ( $col ), 'stipAllTags' ) );
             } else {
@@ -1300,17 +1248,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             if ($thumb) {
               //echo $formatedThumb;
               if (!$print) echo '<div style="position:absolute;top:1px;right:0px;float:right;">';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//              if($col=='idStatus'){
               if($col=='idStatus'){
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
                 echo '<a onmouseover="drawGraphStatus();">';
               }
               echo $formatedThumb;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//              if($col=='idStatus'){
               if($col=='idStatus'){
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
                 echo '</a>';
                 echo '<div id="graphStatusDiv" dojoType="dijit.layout.ContentPane" region="center" class="graphStatusDiv">';
                 echo '</div>';
@@ -1369,10 +1311,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           $fieldWidth = $largeWidth;
         }
       }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
       if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $fieldWidth = $largeWidth;
       }
       if (strpos ( $obj->getFieldAttributes ( $col ), 'Width' ) !== false) {
@@ -1421,12 +1360,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       }
       if (is_object( $val )) {
         //if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'Origin') {
-//            drawOrigin($obj->Origin,$val->originType, $val->originId, $obj, $col, $print);
           if ($col == 'Origin') {
             drawOrigin($obj->Origin,$val->originType, $val->originId, $obj, $col, $print);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         } else {
           // Draw an included object (recursive call) =========================== Type Object
           $visibileSubObject = true;
@@ -1485,10 +1420,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             echo $val;
           }
           echo '</span>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        } else if ($col == 'id') { // id
         } else if ($col == 'id') { // id
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<span style="color:grey;'.$fieldStyle.'">#' . $val . "&nbsp;&nbsp;&nbsp;</span>";
         } else if ($col == 'password') {
           echo "..."; // nothing
@@ -1505,10 +1437,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '<span style="' . $fieldStyle . '">';
           echo htmlFormatTime ( $val, false );
           echo '</span>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        } else if ($col == 'color' and $dataLength == 7) { // color
         } else if ($col == 'color' and $dataLength == 7) { // color
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
           echo '  value="' . htmlEncode ( $val ) . '" ';
@@ -1531,18 +1460,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             echo "&nbsp;&nbsp;&nbsp;";
           echo '<img src="img/' . $checkImg . '" />';
 // BEGIN - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION          
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        } else if (isForeignKey($col, $obj)) { // Idxxx
         } else if (isForeignKey($col, $obj)) { // Idxxx
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 //        } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) { // Idxxx
 // END - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION          
           echo '<span style="'.$fieldStyle.'">';
 // BEGIN - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//             echo htmlEncode(SqlList::getNameFromId(substr(foreignKeyWithoutAlias($col),2), $val));              
              echo htmlEncode(SqlList::getNameFromId(substr(foreignKeyWithoutAlias($col),2), $val));              
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 //              echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));          
 // END - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
           echo '</span>';
@@ -1564,18 +1487,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           echo '<span style="' . $fieldStyle . '">';
           echo htmlEncode ( $val, 'print' );
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          $fldFull='_' . $col . '_full';
           $fldFull='_' . $col . '_full';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           if ($outMode == 'pdf' and isset( $obj->$fldFull )) {
             echo '<img src="../view/css/images/doubleArrowDown.png" />';
           }
           echo '</span>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        } else if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
         } else if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<span style="' . $fieldStyle . '">';
           if ($currencyPosition == 'after') {
             echo htmlEncode ( $val, 'print' ) . ' ' . $currency;
@@ -1591,18 +1508,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '<span style="' . $fieldStyle . '">';
           echo $val . '&nbsp;%';
           echo '</span>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        } else if ($col == 'icon') {
         } else if ($col == 'icon') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           if ($val) {
             echo '<img src="../view/icons/' . $val . '" />';
           }
         } else {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($obj->isFieldTranslatable($col)) {
           if ($obj->isFieldTranslatable($col)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $val = i18n ( $val );
           }
           if (0 and $internalTable == 0) {
@@ -1631,22 +1542,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
         if (!$print) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
           if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $val = date ( 'Y-m-d' );
           }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
           if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $val = date ( 'Y-m-d H:i:s' );
           }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idUser' and ($val == '' or $val == null) and !$obj->id) {
           if ($col == 'idUser' and ($val == '' or $val == null) and !$obj->id) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $val = $user->id;
           }
 // BEGIN - ADD BY TABARY - IF SPINNER AND HIDE => Draw but display:none
@@ -1671,16 +1573,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
         // Display full HTML ================================================== Simple Display html field
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo '<div class="displayHtml generalColClass '.$col.'Class" style="'.$specificStyle.'">';
         echo '<div class="displayHtml generalColClass '.$col.'Class" style="'.$specificStyle.'">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo $val;
         echo '</div>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if ($col == 'id') {
       } else if ($col == 'id') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         // Draw Id (only visible) ============================================= ID
         // id is only visible
         $ref = $obj->getReferenceUrl ();
@@ -1716,18 +1612,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo $alertLevelArray ['description'];
           echo '</div>';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if ($col == 'reference') {
       } else if ($col == 'reference') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         // Draw reference (only visible) ============================================= ID
         // id is only visible
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' class="display generalColClass '.$col.'Class" ';
         echo ' class="display generalColClass '.$col.'Class" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         $refWidth=$largeWidth - $smallWidth - 40;
         if ($fieldWidth<$refWidth) $refWidth=$fieldWidth;
         echo ' readonly tabindex="-1" style="' . $specificStyle . ';width: ' . $refWidth . 'px;" ';
@@ -1759,10 +1649,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo ' value="' . htmlEncode ( $val ) . '" />';
       } else if ($col == 'color' and $dataLength == 7) {
         // Draw a color selector ============================================== COLOR
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'"><tr><td class="detail">';
         echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'"><tr><td class="detail">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 // BEGIN - ADD BY TABARY - TOOLTIP        
         echo htmlDisplayTooltip($toolTip,$col,$print,$outMode);
 // END - ADD BY TABARY - TOOLTIP        
@@ -1812,19 +1699,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '</button>';
         }
         echo '</td></tr></table>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if ($col == 'durationSla') {
       } else if ($col == 'durationSla') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         // Draw a color selector ============================================== SLA as a duration
         echo '<div class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="width: 30px;'.$specificStyleWithoutCustom.'">';
 // BEGIN - ADD BY TABARY - TOOLTIP        
         echo htmlDisplayTooltip($toolTip,$col,$print,$outMode);
 // END - ADD BY TABARY - TOOLTIP        
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" type="text"  ';
         echo '<div dojoType="dijit.form.TextBox" class="colorDisplay generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" type="text"  ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode ( $val ) . '" ';
@@ -1849,18 +1730,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo "</div>";
       } else if ($dataType == 'date') {
         // Draw a date ======================================================== DATE
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
         if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $val = date ( 'Y-m-d' );
         }
         $negative = '';
         if (property_exists ( $obj, 'validatedEndDate' )) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
           $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         }
 // BEGIN - ADD BY TABARY - TOOLTIP        
         echo htmlDisplayTooltip($toolTip,$col,$print,$outMode);
@@ -1873,17 +1748,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if (sessionValueExists ( 'browserLocaleDateFormatJs' )) {
           $min = '';
           if (substr ( $col, -7 ) == "EndDate" and ! $readOnly) {    
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            $start=str_replace("EndDate", "StartDate", $col);
             $start=str_replace("EndDate", "StartDate", $col);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             if (property_exists($obj, $start) && property_exists($obj, 'refType') && $obj->refType!="Milestone")  {
               $min = $obj->$start;
             }else{
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//             $start=str_replace("EndDate", "EisDate", $col);
              $start=str_replace("EndDate", "EisDate", $col);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
               if (property_exists( $obj, $start )) {
                 $min = $obj->$start;
               }
@@ -1911,10 +1780,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           $valDate = $val;
           $valTime = '';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
         if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $valDate = date ( 'Y-m-d' );
           $valTime = date ( "H:i" );
         }
@@ -1929,10 +1795,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if (sessionValueExists ( 'browserLocaleDateFormatJs' )) {
           echo ' constraints="{datePattern:\'' . getSessionValue ( 'browserLocaleDateFormatJs' ) . '\'}" ';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo ' value="' . $valDate . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1956,10 +1819,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo '</div>';
       } else if ($dataType == 'time') {
         // Draw a date ======================================================== TIME
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'creationTime' and ($val == '' or $val == null) and !$obj->id) {
         if ($col == 'creationTime' and ($val == '' or $val == null) and !$obj->id) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $val = date ( "H:i" );
         }
         $fmtDT=($classObj == "Audit" && strlen($val) > 5 && strpos($attributes, 'readonly') !== false)?'text':'time'; // valTime=substr($valTime,0,5);
@@ -1975,10 +1835,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' constraints="{timePattern:\'' . getSessionValue ( 'browserLocaleTimeFormat' ) . '\'}" ';
         }
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' style="width:' . (($fmtDT == 'time')?'60':'65') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo ' value="' . (($fmtDT == 'time') ? 'T' : '') . $val . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1993,10 +1850,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
 // END - ADD BY TABARY - TOOLTIP        
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' class="greyCheck generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
         echo ' class="greyCheck generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo $attributes;
         echo ' style="' . $specificStyle . '" ';
         // echo ' value="' . $col . '" ' ;
@@ -2012,10 +1866,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         echo '</div>';
 // BEGIN - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION        
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if (isForeignKey($col, $obj)) {
       } else if (isForeignKey($col, $obj)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 //      } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
 // END - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION      
         // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox (as a FilteringSelect)
@@ -2031,32 +1882,20 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         if ($displayComboButtonCol or $displayDirectAccessButton) {
 // BEGIN -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          $colWithoutAlias = foreignKeyWithoutAlias($col);
           $colWithoutAlias = foreignKeyWithoutAlias($col);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $idMenu='menu' . substr($colWithoutAlias, 2);
           $comboClass=substr($colWithoutAlias, 2);
             
 //          $idMenu='menu' . substr($col, 2);
 //          $comboClass=substr($col, 2);
 // END -  REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == "idResourceSelect" or $col == 'idAccountable' or $col == 'idResponsible') {
           if ($col == "idResourceSelect" or $col == 'idAccountable' or $col == 'idResponsible') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $idMenu='menuResource';
             $comboClass='Resource';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          } else if (substr($col,-14)=="ProductVersion") {
           } else if (substr($col,-14)=="ProductVersion") {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $idMenu='menuProductVersion';
             $comboClass='ProductVersion';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          } else if (substr($col,-16)=="ComponentVersion") {
           } else if (substr($col,-16)=="ComponentVersion") {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $idMenu='menuComponentVersion';
             $comboClass='ComponentVersion';
           }
@@ -2081,10 +1920,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             // ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION PARENT
             // Special case for Organization Parent - Can access to parent only if the user is link
             // directly (idOrganization) to the parent or on one of the parent's of the parent organization
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            if ($col=='idOrganization') {
             if ($col=='idOrganization') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
               $orga = new Organization ();
               $listOrga = $orga->getUserOrganizationsListAsArray ();
               if (! array_key_exists ( $val, $listOrga )) {
@@ -2098,10 +1934,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             // Special case for idResource, idLocker, idAuthor, idResponsive
             // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
             $arrayIdSpecial = array('idResource', 'idLocker', 'idAuthor', 'idResponsible', 'idAccountable');
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            if (in_array($col,$arrayIdSpecial)) {
             if (in_array($col,$arrayIdSpecial)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
               $idList = getUserVisibleResourcesList ( true, "List" );
               if ($val and ! array_key_exists ( $val, $idList )) {
                 $displayComboButtonCol = false;
@@ -2114,22 +1947,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $displayDirectAccessButton = false;
           }
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ( $col=='idProfile' and !$obj->id and !$val and ($classObj=='Resource' or $classObj=='User')) { // set default 
         if ( $col=='idProfile' and !$obj->id and !$val and ($classObj=='Resource' or $classObj=='User')) { // set default 
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $val = Parameter::getGlobalParameter ( 'defaultProfile' );
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'idProject') {
         if ($col == 'idProject') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           if ($obj->id == null) {
             $projSelected = new Project ( getSessionValue ( 'project' ) );
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            if ((sessionValueExists('project') and !$obj->$col) and $projSelected->idle != '1') { 
             if ((sessionValueExists('project') and !$obj->$col) and $projSelected->idle != '1') { 
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
               $val = getSessionValue ( 'project' );
             }
             $accessRight = securityGetAccessRight ( 'menu' . $classObj, 'create' ); // TODO : study use of this variable...
@@ -2148,16 +1972,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $critFld = null;
         $critVal = null;
         $valStore = '';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'idResource' or $col="idAccountable" or $col == 'idActivity' or $col == 'idProduct' 
-//            or $col == 'idComponent' or $col == 'idProductOrComponent' 
-//            or $col == 'idProductVersion' or $col == 'idComponentVersion'
-//            or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' 
-//            or $col == 'idOriginalProductVersion' or $col == 'idTargetProductVersion'
-//            or $col == 'idOriginalComponentVersion' or $col == 'idTargetComponentVersion' 
-//            or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' 
-//            or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
-//          if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
         if ($col == 'idResource' or $col == "idAccountable" or $col == 'idActivity' or $col == 'idProduct' 
             or $col == 'idComponent' or $col == 'idProductOrComponent' 
             or $col == 'idProductVersion' or $col == 'idComponentVersion'
@@ -2167,13 +1981,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col=='idMilestone'
             or $col == 'idTicket' or $col == 'idUser' or $col=='id'.$classObj.'Type') {
           if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'idClient';
             $critVal = $obj->idClient;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          } else   if ($col == 'idContact' and property_exists($obj, 'idProvider') and $obj->idProvider) {
           } else   if ($col == 'idContact' and property_exists($obj, 'idProvider') and $obj->idProvider) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'idProvider';
             $critVal = $obj->idProvider;
           } else if (property_exists ( $obj, 'idProject' ) and get_class ( $obj ) != 'Project' and get_class ( $obj ) != 'Affectation') {
@@ -2188,27 +1998,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             }
           }
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col=='idComponent' and isset($obj->idProduct)) {
         if ($col=='idComponent' and isset($obj->idProduct)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $critFld = 'idProduct';
           $critVal = $obj->idProduct;
         }
         // if version and idProduct exists and is set : criteria is product
         if ((isset ( $obj->idProduct ) or isset ( $obj->idComponent ) or isset ( $obj->idProductOrComponent ) ) 
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        and ($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion' 
-//            or $col=='idOriginalVersion' or $col=='idTargetVersion'
-//            or $col=='idOriginalProductVersion' or $col=='idTargetProductVersion'
-//            or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion' 
-//            or $col=='idTestCase' or ($col=='idRequirement' and (isset($obj->idProductOrComponent) or isset($obj->idProduct) )))) {
-//          if (isset($obj->idProduct) and ($col=='idVersion' or $col=='idTargetVersion' or $col=='idProductVersion'
-//                                       or $col=='idOriginalProductVersion' or $col=='idTargetProductVersion' or $col=='idRequirement')) {
-//            $critFld='idProduct';
-//            $critVal=$obj->idProduct;
-//          } else if (isset($obj->idComponent) and ($col=='idComponentVersion'
-//                                       or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion' )) { 
         and ($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion' 
             or $col=='idOriginalVersion' or $col=='idTargetVersion'
             or $col=='idOriginalProductVersion' or $col=='idTargetProductVersion'
@@ -2220,7 +2015,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $critVal=$obj->idProduct;
           } else if (isset($obj->idComponent) and ($col=='idComponentVersion'
                                        or $col=='idOriginalComponentVersion' or $col=='idTargetComponentVersion' )) { 
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld='idProduct';
             $critVal=$obj->idComponent;
           } else if (isset($obj->idProductOrComponent)) {
@@ -2228,12 +2022,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $critVal=$obj->idProductOrComponent;
           }
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if (substr($col,-16)=='ComponentVersion') {
-//          $prodVers=str_replace('Component','Product',$col);
         if (substr($col,-16)=='ComponentVersion') {
           $prodVers = str_replace ( 'Component', 'Product', $col );
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           if (property_exists ( $obj, $prodVers ) and $obj->$prodVers) {
             $critFld = 'idProductVersion';
             $critVal = $obj->$prodVers;
@@ -2244,42 +2034,27 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           }
         }
         if (get_class ( $obj ) == 'IndicatorDefinition') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idIndicator') {
           if ($col == 'idIndicator') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'idIndicatorable';
             $critVal = $obj->idIndicatorable;
           }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idType') {
           if ($col == 'idType') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'scope';
             $critVal = SqlList::getNameFromId ( 'Indicatorable', $obj->idIndicatorable );
           }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idWarningDelayUnit' or $col == 'idAlertDelayUnit') {
           if ($col == 'idWarningDelayUnit' or $col == 'idAlertDelayUnit') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'idIndicator';
             $critVal = $obj->idIndicator;
           }
         }
         if (get_class($obj) == 'PredefinedNote') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idType') {
           if ($col == 'idType') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'scope';
             $critVal = SqlList::getNameFromId ( 'Textable', $obj->idTextable, false );
           }
         }
         if (get_class ( $obj ) == 'StatusMail') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idType') {
           if ($col == 'idType') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'scope';
             $critVal = SqlList::getNameFromId ( 'Mailable', $obj->idMailable, false );
           }           // BEGIN add Gmartin Ticket #157
@@ -2310,19 +2085,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         // END add Gmartin
         if (get_class ( $obj ) == 'ChecklistDefinition' || get_class ( $obj ) == 'JoblistDefinition') { // Can be replaced by a specific table Joblistable if needed
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col == 'idType') {
           if ($col == 'idType') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $critFld = 'scope';
             $critVal = SqlList::getNameFromId ( 'Checklistable', $obj->idChecklistable, false );
           }
         }
         //ADD by qCazelles - Business features
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//	    if ($col=='idBusinessFeature') {
-	        if ($col=='idBusinessFeature') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
+	      if ($col=='idBusinessFeature') {
           $critFld = 'idProduct';
           $critVal = $obj->idProduct;
         }
@@ -2330,10 +2099,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         
         if (SqlElement::is_a ( $obj, 'PlanningElement' )) {
           $planningModeName = 'id' . $obj->refType . 'PlanningMode';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col==$planningModeName and !$obj->id and $objType) {      
           if ($col==$planningModeName and !$obj->id and $objType) {      
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             if (property_exists ( $objType, $planningModeName )) {
               $obj->$planningModeName = $objType->$planningModeName;
               $val = $obj->$planningModeName;
@@ -2348,31 +2114,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $hasOtherVersion = false;
         $versionType = '';
         $otherVersion = '';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ( (substr($col, 7) == 'Version' and SqlElement::is_a(substr($col,2), 'Version') )
-//            or ($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion' ) 
-//            or ($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion' )  ) {
-//          $versionType=substr($col, 2);
-//          $otherVersion='_Other' . $versionType;
-//          if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {
         if ( (substr($col, 7) == 'Version' and SqlElement::is_a(substr($col,2), 'Version') )
             or ($col == 'idOriginalVersion' or $col == 'idOriginalProductVersion' or $col == 'idOriginalComponentVersion' ) 
             or ($col == 'idTargetVersion' or $col == 'idTargetProductVersion' or $col == 'idTargetComponentVersion' )  ) {
           $versionType = substr ( $col, 2 );
           $otherVersion = '_Other' . $versionType;
           if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             $hasOtherVersion = true;
             $fieldWidth -= 28;
           }
         }
         $showExtraButton = false;
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'idStatus' or $col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') {
-//          if ( (($col == 'idStatus') or ( ($col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
         if ($col == 'idStatus' or $col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') {
           if ( (($col == 'idStatus') or ( ($col == 'idResource' or $col == 'idAccountable' or $col == 'idResponsible') and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             and $classObj!='Document' and $classObj!='StatusMail'  and $classObj!="TicketSimple" and $canUpdate) {
             $showExtraButton = true;
             $fieldWidth = round ( $fieldWidth / 2 ) - 5;
@@ -2394,10 +2148,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo $name;
         
         // ADD BY Marc TABARY - 2017-02-24 - ORGANIZATION MANAGER
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if (get_class($obj)=='Resource' and $col=='idOrganization') {
         if (get_class($obj)=='Resource' and $col=='idOrganization') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           // Implement the rule : A manager of an organization can't be dissocied from it.
           $orga = new Organization ( $val );
           if ($obj->id == $orga->idResource) {
@@ -2413,10 +2164,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo $valStore;
         echo autoOpenFilteringSelect ();
         echo ' >';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($classObj=='IndividualExpense' and $col=='idResource' and securityGetAccessRight('menuIndividualExpense', 'read', $obj, $user )=='OWN') {
         if ($classObj=='IndividualExpense' and $col=='idResource' and securityGetAccessRight('menuIndividualExpense', 'read', $obj, $user )=='OWN') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $next = htmlDrawOptionForReference ( $col, $val, $obj, $isRequired, 'id', $user->id );
         } else {
           $next = htmlDrawOptionForReference ( $col, $val, $obj, $isRequired, $critFld, $critVal );
@@ -2426,10 +2174,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonGoto" ';
           echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo ' class="roundedButton  generalColClass '.$col.'Class">';
           echo ' class="roundedButton  generalColClass '.$col.'Class">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<div class="iconGoto" ';
           $jsFunction = "var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . $comboClass . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
           echo ' onclick="' . $jsFunction . '"';
@@ -2439,10 +2184,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if ($displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonDetail" ';
           echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo ' class="roundedButton generalColClass '.$col.'Class">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<div class="iconView" ';
           echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol) ? 1 : 0) . ',\'' . $comboClass . '\')"';
           echo '></div>';
@@ -2450,10 +2192,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            echo '<a class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyleWithoutCustom.'" ';
             echo '<a class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyleWithoutCustom.'" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
             echo ' title="' . i18n ( 'otherVersionAdd' ) . '">';
             echo formatSmallButton ( 'Add' );
@@ -2463,12 +2202,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             drawOtherVersionFromObject ( $obj->$otherVersion, $obj, $versionType );
           }
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col == 'idStatus' and $next and $showExtraButton) {
-//          echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
         if ($col == 'idStatus' and $next and $showExtraButton) {
           echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
           echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyleWithoutCustom.'"';
           $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
@@ -2497,10 +2232,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // ADD BY Marc TABARY - 2017-03-09 - EXTRA BUTTON (Assign to me) IS VISIBLE EVEN IDLE=1
           if ($obj->idle == 1 and $classObj == 'Organization') {} else {
             // END ADD BY Marc TABARY - 2017-03-09 - EXTRA BUTTON (Assign to me) IS VISIBLE EVEN IDLE=1
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//            echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
             echo '<div class="roundedVisibleButton roundedButton generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class"';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             echo ' title="' . i18n("assignToMe") . '"';
             echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px;'.$specificStyle.'"';
             $saveFunction=($comboDetail)?'top.saveDetailItem();':'saveObject()';
@@ -2513,10 +2245,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       } else if (strpos ( $obj->getFieldAttributes ( $col ), 'display' ) !== false) {
         echo '<div ';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' class="display generalColClass '.$col.'Class" style="'.$specificStyle.'"';
         echo ' class="display generalColClass input'.$col.'Class" style="text-align:right;'.$specificStyle.';width:'.$fieldWidth.'px;display:inline-block;position:relative;top:1px"';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo ' >';
         if (strpos ( $obj->getFieldAttributes ( $col ), 'html' ) !== false) {
           echo $val;
@@ -2538,27 +2267,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
       } else if ($isSpinner and is_integer ( intval ( $val ) )) {
         // Draw an integer as spinner ================================================ SPINNER
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        $title = ' title="' . $obj->getTitle($col) . '"';
         $title = ' title="' . $obj->getTitle($col) . '"';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 // BEGIN - ADD BY TABARY - TOOLTIP        
         echo htmlDisplayTooltip($toolTip,$col,$print,$outMode);
 // END - ADD BY TABARY - TOOLTIP        
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo htmlDrawSpinner($col, $val, 
-//                             $obj->getSpinnerAttributes($col), $obj->getFieldAttributes($col), 
-//                             $name,
-//                             $title,
-//                             $smallWidth,
-//                             $colScript);
         echo htmlDrawSpinner($col, $val, 
                              $obj->getSpinnerAttributes($col), $obj->getFieldAttributes($col), 
                              $name,
                              $title,
                              $smallWidth,
                              $colScript);
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         // END ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
       } else if ($dataType == 'int' or $dataType == 'decimal') {
         // Draw a number field ================================================ NUMBER
@@ -2568,20 +2286,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $isDuration = false;
         $isPercent = false;
         if (SqlElement::is_a ( $obj, 'PlanningElement' )) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          if ($col=='priority' and !$obj->id and $objType) {        
           if ($col=='priority' and !$obj->id and $objType) {        
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
             if (property_exists ( $objType, 'priority' ) && $objType->priority ) {
               $obj->priority = $objType->priority;
               $val = $obj->priority;
             }
           }
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
         if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $isCost = true;
           $fieldWidth = $smallWidth;
         }
@@ -2613,10 +2325,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $ent = intval ( $spl [0] ) - $dec;
         $max = substr ( '99999999999999999999', 0, $ent );
         if ($isCost and $currencyPosition == 'before') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;height:100%;'.$specificStyleWithoutCustom.$labelStyle.'">'.$currency.'</span>';
           echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;height:100%;'.$specificStyleWithoutCustom.$labelStyle.'">'.$currency.'</span>';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         }
         // ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         if ($isPercent and (strpos ( $obj->getFieldAttributes ( $col ), 'alertOver' ) !== false or strpos ( $obj->getFieldAttributes ( $col ), 'warningOver' ) !== false or strpos ( $obj->getFieldAttributes ( $col ), 'okUnder' ) !== false)) {
@@ -2659,16 +2368,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         // $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':'';
         // END COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col=='workElementEstimatedWork' and property_exists($obj, 'assignedWork')) {
         if ($col=='workElementEstimatedWork' and property_exists($obj, 'assignedWork')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $negative = ($obj->workElementEstimatedWork > $obj->assignedWork) ? 'background-color: #FFAAAA !important;' : '';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($col=='workElementLeftWork' and property_exists($obj, 'leftWork')) {
         if ($col=='workElementLeftWork' and property_exists($obj, 'leftWork')) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $negative = ($obj->workElementLeftWork > $obj->leftWork) ? 'background-color: #FFAAAA !important;' : '';
         }
 // BEGIN - ADD BY TABARY - TOOLTIP        
@@ -2680,10 +2383,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="' . $negative . 'width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         // ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if (strpos(strtolower($col),'year')!==false) {
         if (strpos(strtolower($col),'year')!==false) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           // END ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
@@ -2692,10 +2392,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // END COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
           echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         // echo ' layoutAlign ="right" ';
         if ($isWork) {
           if ($classObj == 'WorkElement') {
@@ -2714,16 +2411,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo $colScript;
         echo '</div>';
         if ($isCost and $currencyPosition == 'after') {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">'.$currency.'</span>';
           echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">'.$currency.'</span>';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         }
         if ($isWork or $isDuration or $isPercent) {
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">';
           echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         }
         if ($isWork) {
           if ($classObj == 'WorkElement') {
@@ -2755,10 +2446,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" >';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" >';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         /*if (isTextFieldHtmlFormatted($val)) {
           $text=new Html2Text($val);
           $val=$text->getText();
@@ -2908,17 +2596,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // echo $val;
           echo '</div>';
         }
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//      } else if ($col == 'icon') {
       } else if ($col == 'icon') {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
 // BEGIN - ADD BY TABARY - TOOLTIP        
         echo htmlDisplayTooltip($toolTip,$col,$print,$outMode);
 // END - ADD BY TABARY - TOOLTIP        
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -2940,10 +2622,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo '</div>';
       } else {
         // Draw defaut data (text medium size) ================================ TEXT (default)
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($obj->isFieldTranslatable($col)) {
         if ($obj->isFieldTranslatable($col)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           $fieldWidth = $fieldWidth / 2;
         }
 // BEGIN - ADD BY TABARY - TOOLTIP        
@@ -2955,19 +2634,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . ';" ';
         echo ' trim="true" maxlength="' . $dataLength . '" class="input ' . (($isRequired) ? 'required' : '') . ' generalColClass ' . $notReadonlyClass . $notRequiredClass . $col . 'Class" ';
         echo ' value="' . htmlEncode ( $val ) . '" ';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($obj->isFieldTranslatable($col)) {
         if ($obj->isFieldTranslatable($col)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo ' title="' . i18n ( "msgTranslatable" ) . '" ';
         }
         echo ' >';
         echo $colScript;
         echo '</div>';
-// BEGIN - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
-//        if ($obj->isFieldTranslatable($col)) {
         if ($obj->isFieldTranslatable($col)) {
-// END - ADD BY TABARY - DRAW FIELD LIKE ANOTHER FIELD
           echo '<div dojoType="dijit.form.TextBox" type="text"  ';
           echo ' class="display" ';
           echo ' readonly tabindex="-1" style="width: ' . $fieldWidth . 'px;" ';

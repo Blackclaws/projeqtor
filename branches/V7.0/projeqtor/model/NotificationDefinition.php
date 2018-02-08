@@ -62,6 +62,10 @@ class NotificationDefinition extends SqlElement {
   public $_sec_target;  
     public $targetDateNotifiableField;
     public $_spe_targetDateNotifiableField;
+    public $notificationGenerateBefore=0;
+    public $_lib_daysBefore;
+    public $notificationGenerateBeforeInMin=0;
+    public $_lib_minutesBefore;    
     public $_spe_repeatNotification;
     public $_tab_3_4_DNF=array('frequency','fixedMonth','fixedDay','everyYear','everyMonth','everyWeek','everyDay');
         public $everyYear=0;
@@ -76,13 +80,7 @@ class NotificationDefinition extends SqlElement {
         public $everyDay=0;
         public $_void_1;
         public $_void_2;
-        
-    public $notificationDaysBefore=0;
-    public $_lib_days;
-    public $notificationGenerateBefore=0;
-    public $_lib_daysBefore;
-    public $notificationGenerateBeforeInMin=0;
-    public $_lib_minutesBefore;    
+    public $notificationNbRepeatsBefore=0;
   public $_sec_receivers;  
     public $notificationReceivers;
     public $_spe_addNotificationReceiver;
@@ -124,7 +122,6 @@ class NotificationDefinition extends SqlElement {
                                             "idle"                                          => "nobr",
                                             "_sec_helpAllowedWords"                         => "hidden,noPrint",
                                             "_sec_helpAllowedReceivers"                     => "hidden,noPrint",
-                                            "notificationDaysBefore"                        => "nobr",
                                             "notificationGenerateBefore"                    => "nobr",
                                             "_lib_daysBefore"                               => "nobr",
                                             "notificationGenerateBeforeInMin"               => "nobr",
@@ -154,7 +151,7 @@ class NotificationDefinition extends SqlElement {
                                             "fixedMonthDay"                               => "tooltipNotificationFixedDay",
                                             "notificationGenerateBefore"                  => "tooltipNotificationGenerateBefore",
                                             "notificationGenerateBeforeInMin"             => "tooltipNotificationGenerateBeforeInMin",
-                                            "notificationDaysBefore"                      => "tooltipNotificationDaysBefore"
+                                            "notificationNbRepeatsBefore"                 => "tooltipNotificationNbRepeatsBefore"
                                         );
 // TOOLTIP - TABARY
 
@@ -163,7 +160,7 @@ class NotificationDefinition extends SqlElement {
       'fixedMonth'=>'min:1,max:12,step:1,showLabelInTab',
       'fixedDay'=>'min:1,max:31,step:1,showLabelInTab',
       'fixedMonthDay'=>'min:1,max:31,step:1,showLabelInTab',
-      'notificationDaysBefore'=>'min:-1,max:1000,step:1,showLabelInTab',
+      'notificationNbRepeatsBefore'=>'min:-1,max:20,step:1,showLabelInTab',
       'notificationGenerateBefore'=>'min:0,max:1000,step:1,showLabelInTab',
       'notificationGenerateBeforeInMin'=>'min:0,max:720,step:5,showLabelInTab'
       );  
@@ -187,9 +184,9 @@ class NotificationDefinition extends SqlElement {
             $this->setFieldAttributeHidden('idle', true);
             $this->notificationGenerateBefore="";
             $this->notificationGenerateBeforeInMin="";
-            $this->notificationDaysBefore="";
+            $this->notificationNbRepeatsBefore="";
         } else {
-            if ($this->notificationDaysBefore==0) { $this->notificationDaysBefore = "";}
+            if ($this->notificationNbRepeatsBefore==0) { $this->notificationNbRepeatsBefore = "";}
             if ($this->notificationGenerateBefore==0) { $this->notificationGenerateBefore = "";}
             if ($this->notificationGenerateBeforeInMin==0) { $this->notificationGenerateBeforeInMin = "";}
         }
@@ -200,11 +197,17 @@ class NotificationDefinition extends SqlElement {
             $this->notificationGenerateBeforeInMin = $cronCheckNotifications;
         }
                 
+        if ($this->fixedDay==0) { $this->fixedDay="";}
+        if ($this->fixedMonth==0) { $this->fixedMonth="";}
+        if ($this->fixedMonthDay==0) { $this->fixedMonthDay="";}
+                
         if (!$this->everyDay and !$this->everyWeek and !$this->everyMonth and !$this->everyYear) {
-            $this->notificationDaysBefore = "";
-            $this->setFieldAttributeReadonly('notificationDaysBefore', true);            
+            $this->notificationNbRepeatsBefore = "";
+            $this->setFieldAttributeReadonly('notificationNbRepeatsBefore', true);
         } else {
-            $this->setFieldAttributeReadonly('notificationDaysBefore', false);
+            $this->setFieldAttributeReadonly('notificationNbRepeatsBefore', false);
+            $this->setFieldAttributeReadonly('notificationGenerateBeforeInMin', true);
+            $this->notificationGenerateBeforeInMin="";
         }
         
         if ($this->everyYear) {
@@ -239,18 +242,22 @@ class NotificationDefinition extends SqlElement {
             $this->setFieldAttributeReadonly('notificationGenerateBefore', false);                        
         }
 
-        if ($this->notificationDaysBefore<0) {
+        if ($this->notificationNbRepeatsBefore<0) {
             $this->setFieldAttributeReadonly('notificationGenerateBefore', true);            
             $this->notificationGenerateBefore= "";            
         }
 
         if ($this->notificationGenerateBefore>0 or 
-            $this->notificationDaysBefore>0 or 
+            $this->notificationNbRepeatsBefore>0 or 
             substr($this->targetDateNotifiableField,-8)!=='DateTime') {
                 $this->setFieldAttributeReadonly('notificationGenerateBeforeInMin', true);        
                 $this->notificationGenerateBeforeInMin="";
         }
         
+        if ($this->notificationGenerateBeforeInMin>0) {
+            $this->setFieldAttributeReadonly('notificationGenerateBefore', true);            
+            $this->notificationGenerateBefore= "";                        
+        }
         
         $this->setTargetDateNotifiableField();
   }
@@ -384,18 +391,10 @@ class NotificationDefinition extends SqlElement {
   public function save() {
       
     $spe_targetDateField = $_REQUEST['_spe_targetDateNotifiableField'];
-//    $notifiableItem = new Notifiable($this->idNotifiable);
-//    $array_fields = getObjectClassFieldsListWithDateType($notifiableItem->notifiableItem);
-    
-//    $array_without[-1]="without";
-//    $array_without = array_merge_preserve_keys($array_without,$array_fields);
-//    $this->targetDateNotifiableField = $array_without[$spe_targetDateField];
-//    $this->targetDateNotifiableField = $array_fields[$spe_targetDateField];
     $this->targetDateNotifiableField = $spe_targetDateField;
     
-    
-    if (is_null($this->notificationDaysBefore) or $this->notificationDaysBefore=="") {
-        $this->notificationDaysBefore= 0;
+    if (is_null($this->notificationNbRepeatsBefore) or $this->notificationNbRepeatsBefore=="") {
+        $this->notificationNbRepeatsBefore= 0;
     }
     
     if (is_null($this->notificationGenerateBefore) or $this->notificationGenerateBefore=="") {
@@ -428,7 +427,8 @@ class NotificationDefinition extends SqlElement {
         $clause .= " AND (      notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
         $clause .= "       OR ( notificationDate='".$theCurrentDate->format('Y-m-d')."' AND notification.notificationTime IS NOT NULL AND notification.notificationTime>TIME(NOW()) )";
         $clause .= "     )";
-        $this->purge($clause);
+        $notif = new Notification();
+        $notif->purge($clause);
         
         //SqlDirectElement::execute($query);
         
@@ -952,7 +952,7 @@ class NotificationDefinition extends SqlElement {
       $colScript .= '  setGenerateBeforeWhenFixedDayChange(this.value);';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';                              
-    } elseif ($colName == "notificationDaysBefore") {
+    } elseif ($colName == "notificationNbRepeatsBefore") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  setGenerateBeforeWhenNotificationDayBeforeChange(this.value);';
       $colScript .= '  readOnlyNotificationGenerateBeforeInMin();';
@@ -968,6 +968,11 @@ class NotificationDefinition extends SqlElement {
       $colScript .= '  if (this.value>0) {';
       $colScript .= '       dijit.byId("notificationGenerateBefore").set("readOnly",true);';
       $colScript .= '       dijit.byId("notificationGenerateBefore").setValue("");';
+      $colScript .= '  } else {';
+      $colScript .= '       dijit.byId("notificationGenerateBefore").set("readOnly",false);';
+      $colScript .= '       dijit.byId("notificationGenerateBefore").setValue("");';
+      $colScript .= '       dijit.byId("notificationGenerateBeforeInMin").set("readOnly",true);';
+      $colScript .= '       dijit.byId("notificationGenerateBeforeInMin").setValue("");';
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';                                      
@@ -1075,7 +1080,6 @@ class NotificationDefinition extends SqlElement {
       
       
     $theField = str_replace('${', '#{', $theField);
-traceLog("theField[$theField]");    
     while (strpos($theField,'#{')!==false) {
         $class = "";
         $field = "";
@@ -1239,12 +1243,12 @@ traceLog("theField[$theField]");
     $fixedDay = $this->fixedDay;
     $fixedMonth = $this->fixedMonth;
     
-    // Delay Before
+    // nbRepeats Before
     $doAfter = false;
-    $delayBefore = $this->notificationDaysBefore;
-    if ($delayBefore<0 and $delayBefore != "") {
+    $nbRepeatsBefore = $this->notificationNbRepeatsBefore;
+    if ($nbRepeatsBefore<0 and $nbRepeatsBefore != "") {
         $doAfter = true;
-        $delayBefore=0;
+        $nbRepeatsBefore=0;
     }
     
     // Generate Before
@@ -1319,7 +1323,16 @@ traceLog("theField[$theField]");
         }
 
         $minusDate = new DateTime($theTargetDate->format('Y-m-d'));
-        $minusDate->modify("-{$delayBefore} days");
+        if ($this->everyDay) {
+            $minusDate->modify("-{$nbRepeatsBefore} days");
+        } elseif ($this->everyWeek) {
+            $theNbDays = $nbRepeatsBefore*7;
+            $minusDate->modify("-{$theNbDays} days");
+        } elseif ($this->everyMonth) {
+            $minusDate->modify("-{$nbRepeatsBefore} months");            
+        } elseif ($this->everyYear) {
+            $minusDate->modify("-{$nbRepeatsBefore} years");            
+        }
         
         $time = null;
         // Calculate the notification date
@@ -1404,7 +1417,8 @@ traceLog("theField[$theField]");
                 }
             } else {
                 $theDate->modify("-7 days");                
-                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+//                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d') and $theDate->format('Y-m-d') >= $minusDate->format('Y-m-d')) {
                     $theNotificationDate = new DateTime($theDate->format('Y-m-d'));
                     $theDate->modify("-7 days");
                 }
@@ -1413,13 +1427,7 @@ traceLog("theField[$theField]");
             $theDate->modify("-{$generateBefore} days");
             if ($theDate->format('Y-m-d') > $theCurrentDate->format('Y-m-d')) {
                 continue;
-            } else {
-                $theDate = new DateTime($theTargetDate->format('Y-m-d'));
-                $theDate->modify("-{$delayBefore} days");
-                if ($theDate->format('Y-m-d') > $theNotificationDate->format('Y-m-d')) {
-                    continue;
                 }
-            }
         } elseif ($everyMonth) {
             // EveryMonth checked
         $theNotificationDate = new DateTime($dateString);
@@ -1432,7 +1440,8 @@ traceLog("theField[$theField]");
                 }                                
             } else {
                $theDate->modify("-1 months");
-                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+//                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d') and $theDate->format('Y-m-d') >= $minusDate->format('Y-m-d')) {
                     $theNotificationDate = new DateTime($theDate->format('Y-m-d'));
                     $theDate->modify("-1 months");
                 }                
@@ -1441,13 +1450,7 @@ traceLog("theField[$theField]");
             $theDate->modify("-{$generateBefore} days");
             if ($theDate->format('Y-m-d') > $theCurrentDate->format('Y-m-d')) {
                 continue;
-            } else {
-                $theDate = new DateTime($theTargetDate->format('Y-m-d'));
-                $theDate->modify("-{$delayBefore} days");
-                if ($theDate->format('Y-m-d') > $theNotificationDate->format('Y-m-d')) {
-                    continue;
                 }
-            }
         } elseif ($everyYear) {
             // EveryYear checked            
             $theNotificationDate = new DateTime($dateString);
@@ -1460,7 +1463,8 @@ traceLog("theField[$theField]");
                 }                
             } else {
                 $theDate->modify("-1 years");
-                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+//                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d')) {
+                while($theDate->format('Y-m-d') >= $theCurrentDate->format('Y-m-d') and $theDate->format('Y-m-d') >= $minusDate->format('Y-m-d')) {
                     $theNotificationDate = new DateTime($theDate->format('Y-m-d'));
                     $theDate->modify("-1 years");
                 }                
@@ -1469,20 +1473,14 @@ traceLog("theField[$theField]");
             $theDate->modify("-{$generateBefore} days");
             if ($theDate->format('Y-m-d') > $theCurrentDate->format('Y-m-d')) {
                 continue;
-            } else {
-                $theDate = new DateTime($theTargetDate->format('Y-m-d'));
-                $theDate->modify("-{$delayBefore} days");
-                if ($theDate->format('Y-m-d') > $theNotificationDate->format('Y-m-d')) {
-                    continue;
                 }
-            }
         } else {
             // Nothing is checked
             $theNotificationDate = new DateTime($dateString);
+            // Minus the notification date with generateBefore
+            $theNotificationDate->modify("-{$generateBefore} days");
         }
         
-        // Minus the notification date with delay before
-        $theNotificationDate->modify("-{$generateBefore} days");
         // If the notification date < current date
         // ==> Nothing to do
         if ($theNotificationDate->format('Y-m-d') < $theCurrentDate->format('Y-m-d')) {
