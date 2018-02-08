@@ -4268,19 +4268,23 @@ function readOnlyNotificationGenerateBeforeInMin(theTargetDate) {
     } else {
         everyChecked = dijit.byId("everyDay").checked + dijit.byId("everyWeek").checked + dijit.byId("everyMonth").checked + dijit.byId("everyYear").checked;
         genBefore = dijit.byId("notificationGenerateBefore").getValue();
-        daysBefore = dijit.byId("notificationDaysBefore").getValue();
-        if ( everyChecked==0 && !(genBefore>0) && !(daysBefore>0) ) {
+        nbRepeatsBefore = dijit.byId("notificationNbRepeatsBefore").getValue();
+        if ( everyChecked==0 && !(genBefore>0) && !(nbRepeatsBefore>0) ) {
             dijit.byId("notificationGenerateBeforeInMin").set("readOnly",false);
             dijit.byId("notificationGenerateBeforeInMin").setValue("");
             dijit.byId("notificationGenerateBefore").set("readOnly",true);
             dijit.byId("notificationGenerateBefore").setValue("");
-            dijit.byId("notificationDaysBefore").set("readOnly",true);
-            dijit.byId("notificationDaysBefore").setValue("");
+            dijit.byId("notificationNbRepeatsBefore").set("readOnly",true);
+            dijit.byId("notificationNbRepeatsBefore").setValue("");
         } else {
             dijit.byId("notificationGenerateBeforeInMin").set("readOnly",true);
             dijit.byId("notificationGenerateBeforeInMin").setValue("");            
+            if (dijit.byId("everyDay").checked) {
+                dijit.byId("notificationGenerateBefore").set("readOnly",true);
+                dijit.byId("notificationGenerateBefore").setValue("");
         }
     }
+}
 }
 
 function refreshTargetDateFieldNotification(notificationItemValue) {
@@ -4535,7 +4539,7 @@ function setGenerateBeforeWhenNotificationDayBeforeChange(colValue) {
 }
 
 function setGenerateBeforeWhenFixedDayChange(colValue) {
-    if (colValue>0 || colValue=="" || dijit.byId('notificationDaysBefore').getValue()<0) {
+    if (colValue>0 || colValue=="" || dijit.byId('notificationNbRepeatsBefore').getValue()<0) {
         dijit.byId('notificationGenerateBefore').set('readOnly', true);
         dijit.byId('notificationGenerateBefore').setValue(null);
         dojo.addClass('notificationGenerateBefore', 'readonly');        
@@ -4592,7 +4596,7 @@ function setFixedMonthDayAttributes(colName) {
             dojo.addClass('_spe_targetDateNotifiableField', 'required');
             dijit.byId('fixedMonth').setValue(null);
             dijit.byId('fixedMonthDay').setValue(null);
-            if (dijit.byId('fixedDay').getValue()>0 || dijit.byId('fixedDay').getValue() == "" || dijit.byId('notificationDaysBefore').getValue()<0) {
+            if (dijit.byId('fixedDay').getValue()>0 || dijit.byId('fixedDay').getValue() == "" || dijit.byId('notificationNbRepeatsBefore').getValue()<0) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', true);
                 dijit.byId('notificationGenerateBefore').setValue(null);
                 dojo.addClass('notificationGenerateBefore', 'readonly');                                
@@ -4615,7 +4619,7 @@ function setFixedMonthDayAttributes(colName) {
             dojo.byId('widget_fixedMonth').style.display = 'block';
             dojo.byId('widget_fixedMonthDay').style.display = 'block';
             dijit.byId('fixedDay').setValue('');
-            if (dijit.byId('fixedMonthDay').getValue()>0 || dijit.byId('fixedMonthDay').getValue()=="" || dijit.byId('notificationDaysBefore').getValue()<0) {
+            if (dijit.byId('fixedMonthDay').getValue()>0 || dijit.byId('fixedMonthDay').getValue()=="" || dijit.byId('notificationNbRepeatsBefore').getValue()<0) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', true);
                 dijit.byId('notificationGenerateBefore').setValue(null);
                 dojo.addClass('notificationGenerateBefore', 'readonly');                                
@@ -4623,11 +4627,6 @@ function setFixedMonthDayAttributes(colName) {
                 dijit.byId('notificationGenerateBefore').set('readOnly', false);
                 dojo.removeClass('notificationGenerateBefore', 'readonly');                
             }
-//            if (dijit.byId('fixedMonth').getValue()>0 && dijit.byId('fixedMonthDay').getValue()>0) {
-//                dojo.removeClass('_spe_targetDateNotifiableField', 'required');
-//            } else {
-//                dojo.addClass('_spe_targetDateNotifiableField', 'required');
-//            }
         } else{
             dojo.byId('widget_fixedMonth').style.display = 'none';
             dojo.byId('widget_fixedMonthDay').style.display = 'none';            
@@ -4637,15 +4636,25 @@ function setFixedMonthDayAttributes(colName) {
     }
         
     if (!dijit.byId('everyDay').checked && !dijit.byId('everyWeek').checked && !dijit.byId('everyMonth').checked && !dijit.byId('everyYear').checked) {
-       dijit.byId('notificationDaysBefore').set('readOnly', true); 
-       dijit.byId('notificationDaysBefore').setValue(""); 
-       dojo.addClass('notificationDaysBefore', 'readonly');
+       dijit.byId('notificationNbRepeatsBefore').set('readOnly', true); 
+       dijit.byId('notificationNbRepeatsBefore').setValue(""); 
+       dojo.addClass('notificationNbRepeatsBefore', 'readonly');
        dijit.byId('notificationGenerateBefore').set('readOnly', false);
        dojo.removeClass('notificationGenerateBefore', 'readonly');
     } else {
-       dijit.byId('notificationDaysBefore').set('readOnly', false);         
-       dojo.removeClass('notificationDaysBefore', 'readonly');
+       dijit.byId('notificationNbRepeatsBefore').set('readOnly', false);         
+       dojo.removeClass('notificationNbRepeatsBefore', 'readonly');
     }
+    if (!dijit.byId('everyDay').checked && !dijit.byId('everyWeek').checked && !dijit.byId('everyMonth').checked && !dijit.byId('everyYear').checked) {
+       dijit.byId('notificationNbRepeatsBefore').set('readOnly', true); 
+       dijit.byId('notificationNbRepeatsBefore').setValue(""); 
+       dojo.addClass('notificationNbRepeatsBefore', 'readonly');
+       dijit.byId('notificationGenerateBefore').set('readOnly', false);
+       dojo.removeClass('notificationGenerateBefore', 'readonly');
+    } else {
+       dijit.byId('notificationNbRepeatsBefore').set('readOnly', false);         
+       dojo.removeClass('notificationNbRepeatsBefore', 'readonly');
+}
 }
 
 function setDrawLikeFixedDayWhenFixedMonthChange(value, name) {
@@ -4663,13 +4672,6 @@ function setDrawLikeFixedDayWhenFixedMonthChange(value, name) {
         var monthValue = dijit.byId('fixedMonth').getValue();        
     }
     
-//    if(dijit.byId('everyYear').checked) {
-//        if (monthValue>0 && dayValue>0) {
-//            dojo.removeClass('_spe_targetDateNotifiableField', 'required');
-//        } else {
-//            dojo.addClass('_spe_targetDateNotifiable', 'required');
-//        }        
-//    }    
     if (dLFixedDay==='' || dayValue < 29) { return;}
     
     if (monthValue=== 2 && dayValue>28) {
