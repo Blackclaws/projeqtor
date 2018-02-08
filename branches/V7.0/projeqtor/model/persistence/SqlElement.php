@@ -640,7 +640,7 @@ abstract class SqlElement {
     and (   ( property_exists($this,'idTargetProductVersion') and $this->idTargetProductVersion) 
          or ( property_exists($this,'idProductVersion') and $this->idProductVersion) 
         ) ) {
-      $pv=new ProductVersion((property_exists($this,'idTargetProductVersion'))?$this->idTargetProductVersion:$this->idProductVersion);
+      $pv=new ProductVersion(((property_exists($this,'idTargetProductVersion'))?$this->idTargetProductVersion:$this->idProductVersion),true);
       if ($pv->idMilestone) {
         $this->idMilestone=$pv->idMilestone;
       }
