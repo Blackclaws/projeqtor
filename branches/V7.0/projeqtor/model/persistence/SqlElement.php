@@ -4513,10 +4513,12 @@ abstract class SqlElement {
     }
     //KROWRY
     $statusMailList = array();
+    $statusMailListOrganized=array();
     $statusMail = new StatusMail ();
     $sender = Parameter::getGlobalParameter ( 'paramMailSender' );
     if ($directStatusMail) { // Direct Send Mail
       $statusMailList = array($directStatusMail->id => $directStatusMail);
+      $statusMailListOrganized=$statusMailList;
       if (getSessionUser ()->email)
         $sender = getSessionUser ()->email;
     } else if ($canBeSend) {
@@ -4576,7 +4578,6 @@ abstract class SqlElement {
       $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
       // $statusMailList contains all events compatible with current change.
       // Now, we must resctrict : if several lines exist for same event, we must limit to 1 only (depending on project and/or type 
-      $statusMailListOrganized=array();
       $typeName='id'.get_class($this).'Type';
       $proj=null;
       $type=null;
@@ -4872,9 +4873,9 @@ abstract class SqlElement {
     //END add gmartin 
     if ($directStatusMail) {
       if ($resultMail) {
-        return array('result' => 'OK', 'dest' => $destTab['basic']);
+        return array('result' => 'OK', 'dest' => $destTab[0]);
       } else {
-        return array('result' => '', 'dest' => $destTab['basic']);
+        return array('result' => '', 'dest' => $destTab[0]);
       }
     }
     return $resultMail;
