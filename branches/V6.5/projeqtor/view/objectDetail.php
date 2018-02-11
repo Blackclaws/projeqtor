@@ -4993,7 +4993,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   }
   $class=get_class($obj);
   $otherClass=($class == 'TestCase')?'TestSession':'TestCase';
-  $nameWidth=67;
+  $nameWidth=($print)?45:25;
   $canCreate=securityGetAccessRightYesNo('menu' . $class, 'update', $obj) == "YES";
   $canUpdate=$canCreate;
   $canDelete=$canCreate;
@@ -5007,24 +5007,21 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   echo '<table style="width:100%;">';
   echo '<tr>';
   if (!$print and $class == 'TestSession') {
-    $nameWidth-=10;
     echo '<td class="assignHeader" style="width:10%;">';
     if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
       echo '<a onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" > '.formatSmallButton('Add').'</a>';
     }
     echo '</td>';
-    // also count colDetail size
-    $nameWidth-=10;
   }
-  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth) . '%">' . i18n('col' . $otherClass) . '</td>';
+  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth+20) . '%">' . i18n('col' . $otherClass) . '</td>';
   //gautier #1716
-  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n('colResult') . '</td>';
-  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n('colComment') . '</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:10%">' . i18n('colResult') . '</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:10%">' . i18n('colComment') . '</td>';
   //
   if (!$print and $class == 'TestSession') {
-    echo '<td class="assignHeader" style="width:7%">' . i18n('colDetail') . '</td>';
+    echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
   }
-  echo '<td class="assignHeader" colspan="2" style="width:10%">' . i18n('colIdStatus') . '</td>'; 
+  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>'; 
   echo '</tr>';
   foreach ( $list as $tcr ) {
     if ($otherClass == 'TestCase') {
@@ -5069,13 +5066,13 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . htmlEncode($tc->id) . '\');" style="cursor: pointer;" ';
     }
     $typeClass='id' . $otherClass . 'Type';
-    echo '<td class="assignData" align="center" style="width:3%">' . htmlEncode($tcr->sortOrder) . '</td>';
+    echo '<td class="assignData" align="center" style="width:5%">' . htmlEncode($tcr->sortOrder) . '</td>';
     echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';    
     echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
-    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
+    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name).'</td>';
     //gautier #1716
     $checkImg='savedOk.png';
-    echo '<td class="assignData" >' ;
+    echo '<td class="assignData" style="width:10%">' ;
     if (! $print or $tcr->result) {
       if (! $print) {
         echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_'.$tcr->id.'" name="tcrResult_'.$tcr->id.'"
@@ -5089,8 +5086,8 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     }
     echo '</td>';
     
-    echo '<td class="assignData" >' ;   
-     if (! $print or $tcr->comment) {
+    echo '<td class="assignData" style="width:10%">' ;   
+    if (! $print or $tcr->comment) {
       if (! $print) {
         echo '<img  id="idImageComment'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
         echo '<textarea dojoType="dijit.form.Textarea" id="tcrComment_'.$tcr->id.'" name="tcrComment_'.$tcr->id.'"
@@ -5103,7 +5100,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     }
     echo '</td>';
     //
-    echo '</td>';
+    //echo '</td>';
     if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {

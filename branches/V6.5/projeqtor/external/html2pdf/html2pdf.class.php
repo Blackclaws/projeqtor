@@ -5174,6 +5174,21 @@ class HTML2PDF
 
         return true;
     }
+    
+    protected function _tag_open_SCRIPT($param)
+    {
+      // there is nothing to do here
+    
+      return true;
+    }
+    
+    protected function _tag_close_SCRIPT($param)
+    {
+      // there is nothing to do here
+    
+      return true;
+    }
+    
 
     /**
      * tag : TR
