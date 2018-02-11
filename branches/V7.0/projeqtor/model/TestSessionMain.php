@@ -64,9 +64,7 @@ class TestSessionMain extends SqlElement {
   public $_sec_Progress;
   public $TestSessionPlanningElement;
   public $_sec_testCaseSummary;
-  //add atrancoso ticket 92-120
   public $_tab_6_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed','work','workElementCount','');
-  //end add a trancoso
   public $countTotal;
   public $countPlanned;
   public $countPassed;

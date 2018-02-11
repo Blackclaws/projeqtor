@@ -5368,145 +5368,147 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
   echo '</table>';
 }
 
-function drawTestCaseRunFromObject($list, $obj, $refresh = false) {
+function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $class = get_class ( $obj );
-  $otherClass = ($class == 'TestCase') ? 'TestSession' : 'TestCase';
-  $nameWidth = 67;
-  $canCreate = securityGetAccessRightYesNo ( 'menu' . $class, 'update', $obj ) == "YES";
-  $canUpdate = $canCreate;
-  $canDelete = $canCreate;
+  $class=get_class($obj);
+  $otherClass=($class == 'TestCase')?'TestSession':'TestCase';
+  $nameWidth=($print)?45:25;
+  $canCreate=securityGetAccessRightYesNo('menu' . $class, 'update', $obj) == "YES";
+  $canUpdate=$canCreate;
+  $canDelete=$canCreate;
   if ($obj->idle == 1) {
-    $canUpdate = false;
-    $canCreate = false;
-    $canDelete = false;
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
   }
-  usort ( $list, "TestCaseRun::sort" );
+  usort($list, "TestCaseRun::sort");
   echo '<tr><td colspan="2" style="width:100%;">';
   echo '<table style="width:100%;">';
   echo '<tr>';
-  if (! $print and $class == 'TestSession') {
-    $nameWidth -= 10;
+  if (!$print and $class == 'TestSession') {
     echo '<td class="assignHeader" style="width:10%;">';
-    if ($obj->id != null and ! $print and $canCreate and ! $obj->idle) {
-      echo '<a onClick="addTestCaseRun();" title="' . i18n ( 'addTestCaseRun' ) . '" > ' . formatSmallButton ( 'Add' ) . '</a>';
+    if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
+      echo '<a onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" > '.formatSmallButton('Add').'</a>';
     }
     echo '</td>';
-    // also count colDetail size
-    $nameWidth -= 10;
   }
-  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth) . '%">' . i18n ( 'col' . $otherClass ) . '</td>';
-  // gautier #1716
-  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n ( 'colResult' ) . '</td>';
-  echo '<td class="assignHeader" colspan="1" style="width:15%">' . i18n ( 'colComment' ) . '</td>';
+  echo '<td class="assignHeader" colspan="4" style="width:' . ($nameWidth+20) . '%">' . i18n('col' . $otherClass) . '</td>';
+  //gautier #1716
+  echo '<td class="assignHeader" colspan="1" style="width:10%">' . i18n('colResult') . '</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:10%">' . i18n('colComment') . '</td>';
   //
-  if (! $print and $class == 'TestSession') {
-    echo '<td class="assignHeader" style="width:7%">' . i18n ( 'colDetail' ) . '</td>';
+  if (!$print and $class == 'TestSession') {
+    echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
   }
-  echo '<td class="assignHeader" colspan="2" style="width:10%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>'; 
   echo '</tr>';
   foreach ( $list as $tcr ) {
     if ($otherClass == 'TestCase') {
-      $tc = new TestCase ( $tcr->idTestCase );
+      $tc=new TestCase($tcr->idTestCase);
     } else {
-      $tc = new TestSession ( $tcr->idTestSession );
+      $tc=new TestSession($tcr->idTestSession);
     }
-    $st = new RunStatus ( $tcr->idRunStatus );
+    $st=new RunStatus($tcr->idRunStatus);
     echo '<tr>';
-    if (! $print and $class == 'TestSession') {
+    if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%;text-align:center;">';
       echo '<table style="width:100%"><tr><td style="width:30%;white-space:nowrap;">';
-      if ($canUpdate and ! $print) {
-        echo '  <a onClick="editTestCaseRun(\'' . htmlEncode ( $tcr->id ) . '\', null, null);" ' . 'title="' . i18n ( 'editTestCaseRun' ) . '" > ' . formatSmallButton ( 'Edit' ) . '</a>';
+      if ($canUpdate and !$print) {
+        echo '  <a onClick="editTestCaseRun(\''.htmlEncode($tcr->id).'\', null, null);" ' 
+      . 'title="' . i18n('editTestCaseRun') . '" > '.formatSmallButton('Edit').'</a>';
       }
-      if ($canDelete and ! $print) {
-        echo '  <a onClick="removeTestCaseRun(' . "'" . htmlEncode ( $tcr->id ) . "'" . ",'" . htmlEncode ( $tcr->idTestCase ) . "'" . ');" ' . 'title="' . i18n ( 'removeTestCaseRun' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
+      if ($canDelete and !$print) {
+        echo '  <a onClick="removeTestCaseRun(' . "'" . htmlEncode($tcr->id) . "'" . ",'" . htmlEncode($tcr->idTestCase) . "'" . ');" ' 
+      . 'title="' . i18n('removeTestCaseRun') . '" > '.formatSmallButton('Remove').'</a>';
       }
-      if (! $print) {
-        echo '<input type="hidden" id="comment_' . htmlEncode ( $tcr->id ) . '" value="' . htmlEncode ( $tcr->comment, 'none' ) . '"/>';
+      if (!$print) {
+        echo '<input type="hidden" id="comment_' . htmlEncode($tcr->id) . '" value="' . htmlEncode($tcr->comment, 'none') . '"/>';
       }
       echo '</td><td>&nbsp;&nbsp;&nbsp;</td><td style="white-space:nowrap;">';
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3 or $tcr->idRunStatus == 4) {
-        echo '  <a onClick="passedTestCaseRun(\'' . htmlEncode ( $tcr->id ) . '\');" ' . 'title="' . i18n ( 'passedTestCaseRun' ) . '" /> ' . formatSmallButton ( 'Passed' ) . '</a>';
+        echo '  <a onClick="passedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" ' 
+        . 'title="' . i18n('passedTestCaseRun') . '" /> '.formatSmallButton('Passed').'</a>';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 4) {
-        echo '  <a onClick="failedTestCaseRun(\'' . htmlEncode ( $tcr->id ) . '\');" ' . 'title="' . i18n ( 'failedTestCaseRun' ) . '" > ' . formatSmallButton ( 'Failed' ) . '</a>';
+        echo '  <a onClick="failedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" '  
+      . 'title="' . i18n('failedTestCaseRun') . '" > '.formatSmallButton('Failed').'</a>';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3) {
-        echo '  <a onClick="blockedTestCaseRun(\'' . htmlEncode ( $tcr->id ) . '\');" ' . 'title="' . i18n ( 'blockedTestCaseRun' ) . '" > ' . formatSmallButton ( 'Blocked' ) . '</a>';
+        echo '  <a onClick="blockedTestCaseRun(\'' . htmlEncode($tcr->id) . '\');" '  
+            . 'title="' . i18n('blockedTestCaseRun') . '" > '.formatSmallButton('Blocked').'</a>';
       }
       echo '</td></tr></table>';
       echo '</td>';
     }
-    $goto = "";
-    if (! $print and securityCheckDisplayMenu ( null, 'TestCase' ) and securityGetAccessRightYesNo ( 'menuTestCase', 'read', $tc ) == "YES") {
-      $goto = ' onClick="gotoElement(\'' . $otherClass . '\',\'' . htmlEncode ( $tc->id ) . '\');" style="cursor: pointer;" ';
+    $goto="";
+    if (!$print and securityCheckDisplayMenu(null, 'TestCase') and securityGetAccessRightYesNo('menuTestCase', 'read', $tc) == "YES") {
+      $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . htmlEncode($tc->id) . '\');" style="cursor: pointer;" ';
     }
-    $typeClass = 'id' . $otherClass . 'Type';
-    echo '<td class="assignData" align="center" style="width:3%">' . htmlEncode ( $tcr->sortOrder ) . '</td>';
-    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode ( SqlList::getNameFromId ( $otherClass . 'Type', $tc->$typeClass ) ) . '</td>';
-    echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode ( $tc->id ) . '</td>';
-    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode ( $tc->name );
-    // gautier #1716
-    $checkImg = 'savedOk.png';
-    echo '<td class="assignData" >';
+    $typeClass='id' . $otherClass . 'Type';
+    echo '<td class="assignData" align="center" style="width:5%">' . htmlEncode($tcr->sortOrder) . '</td>';
+    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';    
+    echo '<td class="assignData" align="center" style="width:5%">#' . htmlEncode($tc->id) . '</td>';
+    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name).'</td>';
+    //gautier #1716
+    $checkImg='savedOk.png';
+    echo '<td class="assignData" style="width:10%">' ;
     if (! $print or $tcr->result) {
       if (! $print) {
-        echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_' . $tcr->id . '" name="tcrResult_' . $tcr->id . '"
-                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData(' . $tcr->id . ',\'Result\');">';
+        echo '<textarea dojoType="dijit.form.Textarea" id="tcrResult_'.$tcr->id.'" name="tcrResult_'.$tcr->id.'"
+                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData('.$tcr->id.',\'Result\');">';
         echo $tcr->result;
         echo '</textarea>';
-        echo '<img  id="idImageResult' . $tcr->id . '" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
-      } else {
-        echo htmlEncode ( $tcr->result );
+        echo '<img  id="idImageResult'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
+      }else {
+        echo htmlEncode($tcr->result);
       }
     }
     echo '</td>';
     
-    echo '<td class="assignData" >';
+    echo '<td class="assignData" style="width:10%">' ;   
     if (! $print or $tcr->comment) {
       if (! $print) {
-        echo '<img  id="idImageComment' . $tcr->id . '" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
-        echo '<textarea dojoType="dijit.form.Textarea" id="tcrComment_' . $tcr->id . '" name="tcrComment_' . $tcr->id . '"
-                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData(' . $tcr->id . ',\'Comment\');">';
+        echo '<img  id="idImageComment'.$tcr->id.'" src="img/' . $checkImg . '" style="display: none; float:right; top:2px;right:5px; height:16px;"/>';
+        echo '<textarea dojoType="dijit.form.Textarea" id="tcrComment_'.$tcr->id.'" name="tcrComment_'.$tcr->id.'"
+                style="float:left;width: 125px;min-height: 25px;font-size: 90%; background:none;display:block;border:none;" maxlength="4000" onchange="saveTcrData('.$tcr->id.',\'Comment\');">';
         echo $tcr->comment;
         echo '</textarea>';
-      } else {
-        echo htmlEncode ( $tcr->comment );
+      }else {
+        echo htmlEncode($tcr->comment);
       }
     }
     echo '</td>';
     //
-    echo '</td>';
-    if (! $print and $class == 'TestSession') {
+    //echo '</td>';
+    if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {
-        echo formatCommentThumb ( '<b>' . i18n ( 'colDescription' ) . ":</b>\n\n" . $tc->description, '../view/css/images/description.png' );
-        // echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
+        echo formatCommentThumb('<b>'.i18n('colDescription') . ":</b>\n\n" . $tc->description,'../view/css/images/description.png');
+        //echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
         echo '&nbsp;';
       }
       if ($tc->result) {
-        echo formatCommentThumb ( '<b>' . i18n ( 'colExpectedResult' ) . ":</b>\n\n" . $tc->result, '../view/css/images/result.png' );
-        // echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result,'protectQuotes') . '" alt="desc" />';
+        echo formatCommentThumb('<b>'.i18n('colExpectedResult') . ":</b>\n\n" . $tc->result,'../view/css/images/result.png');
+        //echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result,'protectQuotes') . '" alt="desc" />';
         echo '&nbsp;';
       }
-      if (isset ( $tc->prerequisite ) and $tc->prerequisite) {
-        echo formatCommentThumb ( '<b>' . i18n ( 'colPrerequisite' ) . ":</b>\n\n" . $tc->prerequisite, '../view/css/images/prerequisite.png' );
-        // echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite,'protectQuotes') . '" alt="desc" />';
+      if (isset($tc->prerequisite) and $tc->prerequisite) {
+        echo formatCommentThumb('<b>'.i18n('colPrerequisite') . ":</b>\n\n" . $tc->prerequisite,'../view/css/images/prerequisite.png');
+        //echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite,'protectQuotes') . '" alt="desc" />';
       }
       echo '</td>';
     }
     echo '<td class="assignData" style="width:8%;text-align:left;border-right:0px;">';
-    echo colorNameFormatter ( i18n ( $st->name ) . '#split#' . $st->color );
+    echo colorNameFormatter(i18n($st->name) . '#split#' . $st->color);
     echo '</td>';
-    echo '<td class="assignData" style="width:7%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3') ? '100' : '80') . '%; text-align: center;">';
+    echo '<td class="assignData" style="width:7%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3')?'100':'80') . '%; text-align: center;">';
     if ($tcr->idTicket and $tcr->idRunStatus == '3') {
-      echo i18n ( 'Ticket' ) . ' #' . $tcr->idTicket;
+      echo i18n('Ticket') . ' #' . $tcr->idTicket;
     } else if ($tcr->statusDateTime) {
-      echo ' <i>(' . htmlFormatDateTime ( $tcr->statusDateTime, false ) . ')</i> ';
+      echo ' <i>(' . htmlFormatDateTime($tcr->statusDateTime, false) . ')</i> ';
     }
     echo '</td>';
     echo '</tr>';
