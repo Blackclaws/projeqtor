@@ -309,7 +309,12 @@ Global parameters screen allows configuration of application settings.
 
 .. rubric:: Section: Localization
 
-* Localization and internationalization (i18n) parameters.
+Localization and internationalization (i18n) parameters.
+
+* **charset to save files on server**
+
+    keep empty for Linux servers, files names will be stored in UTF8. For windows OS server, define charset as "windows-1252" (for western europe) or similar corresponding to your localization.
+
 
 .. rubric:: Section: Miscellanous
 
