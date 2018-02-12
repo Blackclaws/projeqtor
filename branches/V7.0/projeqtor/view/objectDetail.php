@@ -1472,7 +1472,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">' . htmlEncode ( $obj->getColCaption ( $col ), 'stipAllTags' ) . '&nbsp;:&nbsp;</div>';
-          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;padding:5px;' . $fieldStyle . '">';
+          echo '<div style="border:1px dotted #AAAAAA;width:' . ($colWidth-20) . 'px;padding:5px;' . $fieldStyle . '">';
           if (isTextFieldHtmlFormatted ( $val ))
             $val = htmlEncode ( $val, 'formatted' );
           if ($outMode == "pdf") { // Must purge data, otherwise will never be generated
@@ -3814,9 +3814,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh = false) {
     echo '<td class="linkHeader" style="width:' . (($print) ? '10' : '5') . '%">' . i18n ( 'colId' ) . '</td>';
   }
   
-  echo '<td class="linkHeader" style="width:' . (($classLink) ? '70' : '60') . '%">' . i18n ( 'colName' ) . '</td>';
+  echo '<td class="linkHeader" style="width:' . (($classLink) ? '65' : '55') . '%">' . i18n ( 'colName' ) . '</td>';
   // if ($classLink and property_exists($classLink, 'idStatus')) {
-  echo '<td class="linkHeader" style="width:10%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
   echo '<td class="linkHeader" style="width:10%">' . i18n ( 'colResponsibleShort' ) . '</td>';
   // }
   // echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
@@ -3884,7 +3884,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh = false) {
         echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print) ? '10' : '5') . '%">#' . $linkObj->id;
       }
       echo '</td>';
-      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink) ? '45' : '35') . '%">';
+      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink) ? '65' : '55') . '%">';
       
       echo (get_class ( $linkObj ) == 'DocumentVersion') ? htmlEncode ( $linkObj->fullName ) : htmlEncode ( $linkObj->name );
       
@@ -4818,7 +4818,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh = false) {
       }
     }
     if (! $print and $canUpdate) {
-      echo '<td class="assignData" style="text-align:center;white-space:nowrap;vertical-align:middle">';
+      echo '<td class="assignData" style="width:10%;text-align:center;white-space:nowrap;vertical-align:middle">';
       if ($canUpdate and ! $print and $workVisible) {
         echo '  <a onClick="editAssignment(' . "'" . htmlEncode ( $assignment->id ) . "'" . ",'" . htmlEncode ( $assignment->idResource ) . "'" . ",'" . htmlEncode ( $assignment->idRole ) . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . htmlEncode ( $assignment->rate ) . "'" . ",'" . Work::displayWork ( $assignment->assignedWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->realWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->leftWork ) * 100 . "'" . ",'" . Work::displayShortWorkUnit () . "'" . "," . $assignment->optional . ');" ' . 'title="' . i18n ( 'editAssignment' ) . '" > ' . formatSmallButton ( 'Edit' ) . '</a>';
         echo '<textarea style="display:none" id="comment_assignment_' . htmlEncode ( $assignment->id ) . '" >' . htmlEncode ( $assignment->comment ) . "</textarea>";
@@ -4831,7 +4831,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh = false) {
         echo '</td>';
       }
     }
-    echo '<td class="assignData" style="vertical-align:middle">';
+    echo '<td class="assignData" style="width:' . (($print) ? '40' : '30') . '%;vertical-align:middle">';
     echo '<table width="100%"><tr>';
     $goto = "";
     if (! $print and $isResource and securityCheckDisplayMenu ( null, 'Resource' ) and securityGetAccessRightYesNo ( 'menuResource', 'read', '' ) == "YES") {
@@ -4858,14 +4858,14 @@ function drawAssignmentsFromObject($list, $obj, $refresh = false) {
     }
     echo '</tr></table>';
     echo '</td>';
-    echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode ( $assignment->rate ) . '</td>';
+    echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">' . htmlEncode ( $assignment->rate ) . '</td>';
     if ($workVisible) {
       $keyDownEventScript = NumberFormatter52::getKeyDownEvent ();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
       // mehdi======================ticket#1776
-      echo '<input type="hidden" id="initAss_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->assignedWork ) . '"/>';
-      echo '<td class="assignData" align="right" style="vertical-align:middle;">';
-      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting') {
+      if (!$print) echo '<input type="hidden" id="initAss_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->assignedWork ) . '"/>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
+      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting' and !$print) {
         echo '<img  id="idImageAssignedWork' . $assignment->id . '" src="img/savedOk.png" 
                 style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
         echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_' . $assignment->id . '" name="assAssignedWork_' . $assignment->id . '"
@@ -4885,11 +4885,11 @@ function drawAssignmentsFromObject($list, $obj, $refresh = false) {
       echo '</td>';
       
       echo '<input type="hidden" id="RealWork_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->realWork ) . '"/>';
-      echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format ( Work::displayWork ( $assignment->realWork ) ) . '</td>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">' . $fmt->format ( Work::displayWork ( $assignment->realWork ) ) . '</td>';
       
-      echo '<input type="hidden" id="initLeft_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->leftWork ) . '"/>';
-      echo '<td class="assignData" align="right" style="vertical-align:middle; ">';
-      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting') {
+      if (!$print) echo '<input type="hidden" id="initLeft_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->leftWork ) . '"/>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
+      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting' and !$print) {
         echo '<img  id="idImageLeftWork' . $assignment->id . '" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
         echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_' . $assignment->id . '" name="assLeftWork_' . $assignment->id . '"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
