@@ -3435,152 +3435,153 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   }
 }
 
-function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
-  if ($obj->isAttributeSetToField("_Link", "hidden")) {
+function drawLinksFromObject($list, $obj, $classLink, $refresh = false) {
+  if ($obj->isAttributeSetToField ( "_Link", "hidden" )) {
     return;
   }
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  if (get_class($obj) == 'Document') {
-    $dv=new DocumentVersion();
-    $lstVers=$dv->getSqlElementsFromCriteria(array('idDocument' => $obj->id));
+  if (get_class ( $obj ) == 'Document') {
+    $dv = new DocumentVersion ();
+    $lstVers = $dv->getSqlElementsFromCriteria ( array('idDocument' => $obj->id) );
     foreach ( $lstVers as $dv ) {
-      $crit="(ref1Type='DocumentVersion' and ref1Id=" . htmlEncode($dv->id) . ")";
-      $crit.="or (ref2Type='DocumentVersion' and ref2Id=" . htmlEncode($dv->id) . ")";
-      $lnk=new Link();
-      $lstLnk=$lnk->getSqlElementsFromCriteria(null, null, $crit);
+      $crit = "(ref1Type='DocumentVersion' and ref1Id=" . htmlEncode ( $dv->id ) . ")";
+      $crit .= "or (ref2Type='DocumentVersion' and ref2Id=" . htmlEncode ( $dv->id ) . ")";
+      $lnk = new Link ();
+      $lstLnk = $lnk->getSqlElementsFromCriteria ( null, null, $crit );
       foreach ( $lstLnk as $lnk ) {
         if ($lnk->ref1Type == 'DocumentVersion') {
-          $lnk->ref1Type='Document';
-          $lnk->ref1Id=$obj->id;
+          $lnk->ref1Type = 'Document';
+          $lnk->ref1Id = $obj->id;
         } else {
-          $lnk->ref2Type='Document';
-          $lnk->ref2Id=$obj->id;
+          $lnk->ref2Type = 'Document';
+          $lnk->ref2Id = $obj->id;
         }
-        $list []=$lnk;
+        $list [] = $lnk;
       }
     }
   }
-  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate=false;
+    $canUpdate = false;
   }
-  if (!$refresh) echo '<tr><td colspan="2">';
+  if (! $refresh)
+    echo '<tr><td colspan="2">';
   echo '<table style="width:100%;">';
   echo '<tr>';
-  if (!$print) {
+  if (! $print) {
     echo '<td class="linkHeader" style="width:5%">';
-    if ($obj->id != null and !$print and $canUpdate) {
-      $linkable=SqlElement::getSingleSqlElementFromCriteria('Linkable', array('name' => get_class($obj)));
-      $default=$linkable->idDefaultLinkable;
-      echo '<a onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="roundedButtonSmall">'.formatSmallButton('Add').'</a>';
+    if ($obj->id != null and ! $print and $canUpdate) {
+      $linkable = SqlElement::getSingleSqlElementFromCriteria ( 'Linkable', array('name' => get_class ( $obj )) );
+      $default = $linkable->idDefaultLinkable;
+      echo '<a onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n ( 'addLink' ) . '" class="roundedButtonSmall">' . formatSmallButton ( 'Add' ) . '</a>';
     }
     echo '</td>';
   }
-  if (!$classLink) {
-    echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n('colElement') . '</td>';
+  if (! $classLink) {
+    echo '<td class="linkHeader" style="width:' . (($print) ? '20' : '15') . '%">' . i18n ( 'colElement' ) . '</td>';
   } else {
-    echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
+    echo '<td class="linkHeader" style="width:' . (($print) ? '10' : '5') . '%">' . i18n ( 'colId' ) . '</td>';
   }
   
-  echo '<td class="linkHeader" style="width:' . (($classLink)?'70':'60') . '%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:' . (($classLink) ? '65' : '55') . '%">' . i18n ( 'colName' ) . '</td>';
   // if ($classLink and property_exists($classLink, 'idStatus')) {
-  echo '<td class="linkHeader" style="width:10%">' . i18n('colIdStatus') . '</td>';
-  echo '<td class="linkHeader" style="width:10%">' . i18n('colResponsibleShort') . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="linkHeader" style="width:10%">' . i18n ( 'colResponsibleShort' ) . '</td>';
   // }
-  //echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
-  //echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
+  // echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  // echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
   echo '</tr>';
   foreach ( $list as $link ) {
-    $linkObj=null;
-    if ($link->ref1Type == get_class($obj) and $link->ref1Id == $obj->id) {
-      $linkObj=new $link->ref2Type($link->ref2Id);
+    $linkObj = null;
+    if ($link->ref1Type == get_class ( $obj ) and $link->ref1Id == $obj->id) {
+      $linkObj = new $link->ref2Type ( $link->ref2Id );
     } else {
-      $linkObj=new $link->ref1Type($link->ref1Id);
+      $linkObj = new $link->ref1Type ( $link->ref1Id );
     }
-    $userId=$link->idUser;
-    $userName=SqlList::getNameFromId('User', $userId);
-    $creationDate=$link->creationDate;
-    $prop='_Link_' . get_class($linkObj);
-    if ($classLink or !property_exists($obj, $prop)) {
-      $gotoObj=(get_class($linkObj) == 'DocumentVersion')?new Document($linkObj->idDocument):$linkObj;
-      $canGoto=(securityCheckDisplayMenu(null, get_class($gotoObj)) and securityGetAccessRightYesNo('menu' . get_class($gotoObj), 'read', $gotoObj) == "YES")?true:false;
+    $userId = $link->idUser;
+    $userName = SqlList::getNameFromId ( 'User', $userId );
+    $creationDate = $link->creationDate;
+    $prop = '_Link_' . get_class ( $linkObj );
+    if ($classLink or ! property_exists ( $obj, $prop )) {
+      $gotoObj = (get_class ( $linkObj ) == 'DocumentVersion') ? new Document ( $linkObj->idDocument ) : $linkObj;
+      $canGoto = (securityCheckDisplayMenu ( null, get_class ( $gotoObj ) ) and securityGetAccessRightYesNo ( 'menu' . get_class ( $gotoObj ), 'read', $gotoObj ) == "YES") ? true : false;
       echo '<tr>';
-      if (substr(get_class($linkObj), 0, 7) == 'Context') {
-        $classLinkName=SqlList::getNameFromId('ContextType', substr(get_class($linkObj), 7, 1));
+      if (substr ( get_class ( $linkObj ), 0, 7 ) == 'Context') {
+        $classLinkName = SqlList::getNameFromId ( 'ContextType', substr ( get_class ( $linkObj ), 7, 1 ) );
       } else {
-        $classLinkName=i18n(get_class($linkObj));
+        $classLinkName = i18n ( get_class ( $linkObj ) );
       }
-      if (!$print) {
+      if (! $print) {
         echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
-        if ($canGoto and (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') and isset($gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion) {
-          echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id=' . htmlEncode($linkObj->id) . '"';
-          echo ' target="printFrame" title="' . i18n('helpDownload') . '">'
-               .formatSmallButton('Download')
-               .'</a>';
+        if ($canGoto and (get_class ( $linkObj ) == 'DocumentVersion' or get_class ( $linkObj ) == 'Document') and isset ( $gotoObj->idDocumentVersion ) and $gotoObj->idDocumentVersion) {
+          echo '<a href="../tool/download.php?class=' . get_class ( $linkObj ) . '&id=' . htmlEncode ( $linkObj->id ) . '"';
+          echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '">' . formatSmallButton ( 'Download' ) . '</a>';
         }
         if ($canUpdate) {
           echo '  <a onClick="removeLink(' . "'" . htmlEncode ( $link->id ) . "','" . get_class ( $linkObj ) . "','" . htmlEncode ( $linkObj->id ) . "','" . $classLinkName . "','" . $classLink. "'".');" title="' . i18n ( 'removeLink' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
         }
         echo '</td>';
       }
-      $goto="";
-      if (!$print and $canGoto) {
-      	$goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . htmlEncode($gotoObj->id) . "'" . ');" style="cursor: pointer;" ';
+      $goto = "";
+      if (! $print and $canGoto) {
+        $goto = ' onClick="gotoElement(' . "'" . get_class ( $gotoObj ) . "','" . htmlEncode ( $gotoObj->id ) . "'" . ');" style="cursor: pointer;" ';
       }
-      if (!$classLink) {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"> <table><tr><td>';
+      if (! $classLink) {
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print) ? '20' : '15') . '%"> <table><tr><td>';
         
-        if (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') {
-          if (get_class($linkObj) == 'DocumentVersion') $version=$linkObj;
-          else $version=new DocumentVersion($linkObj->idDocumentVersion);
-          if ($version->isThumbable()) {
-            $ext = pathinfo($version->fileName, PATHINFO_EXTENSION);
-            if (file_exists("../view/img/mime/$ext.png")) {
-              $img="../view/img/mime/$ext.png";
+        if (get_class ( $linkObj ) == 'DocumentVersion' or get_class ( $linkObj ) == 'Document') {
+          if (get_class ( $linkObj ) == 'DocumentVersion')
+            $version = $linkObj;
+          else
+            $version = new DocumentVersion ( $linkObj->idDocumentVersion );
+          if ($version->isThumbable ()) {
+            $ext = pathinfo ( $version->fileName, PATHINFO_EXTENSION );
+            if (file_exists ( "../view/img/mime/$ext.png" )) {
+              $img = "../view/img/mime/$ext.png";
             } else {
-              $img= "../view/img/mime/unknown.png";
+              $img = "../view/img/mime/unknown.png";
             }
-            echo '<img src="' . $img . '" ' . ' title="' . htmlEncode($version->fileName) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode($version->id) . '\',\'' . htmlEncode($version->fileName,'protectQuotes') . '\');" />';
+            echo '<img src="' . $img . '" ' . ' title="' . htmlEncode ( $version->fileName ) . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'DocumentVersion\',\'' . htmlEncode ( $version->id ) . '\',\'' . htmlEncode ( $version->fileName, 'protectQuotes' ) . '\');" />';
           } else {
-            echo htmlGetMimeType($version->mimeType, $version->fileName , $version->id,'DocumentVersion');
+            echo htmlGetMimeType ( $version->mimeType, $version->fileName, $version->id, 'DocumentVersion' );
           }
         } else {
-          echo formatIcon(get_class($linkObj),16);
+          echo formatIcon ( get_class ( $linkObj ), 16 );
         }
-        echo '</td><td ' . $goto . ' style="vertical-align:top">&nbsp;'.$classLinkName .' #' . $linkObj->id.'</td></tr></table>';
+        echo '</td><td ' . $goto . ' style="vertical-align:top">&nbsp;' . $classLinkName . ' #' . $linkObj->id . '</td></tr></table>';
       } else {
-        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
+        echo '<td ' . $goto . ' class="linkData" style="white-space:nowrap;width:' . (($print) ? '10' : '5') . '%">#' . $linkObj->id;
       }
       echo '</td>';
-      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%">';
-     
-      echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
+      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink) ? '65' : '55') . '%">';
       
-      echo formatUserThumb($userId, $userName, 'Creator');
-      echo formatDateThumb($creationDate, null);
-      echo formatCommentThumb($link->comment);
+      echo (get_class ( $linkObj ) == 'DocumentVersion') ? htmlEncode ( $linkObj->fullName ) : htmlEncode ( $linkObj->name );
+      
+      echo formatUserThumb ( $userId, $userName, 'Creator' );
+      echo formatDateThumb ( $creationDate, null );
+      echo formatCommentThumb ( $link->comment );
       
       echo '</td>';
-      $idStatus='idStatus';
-      $statusClass='Status';
-      if (! property_exists($linkObj, $idStatus) and property_exists($linkObj, 'id'.get_class($linkObj).'Status')) {
-        $idStatus='id'.get_class($linkObj).'Status';
-        $statusClass=get_class($linkObj).'Status';
+      $idStatus = 'idStatus';
+      $statusClass = 'Status';
+      if (! property_exists ( $linkObj, $idStatus ) and property_exists ( $linkObj, 'id' . get_class ( $linkObj ) . 'Status' )) {
+        $idStatus = 'id' . get_class ( $linkObj ) . 'Status';
+        $statusClass = get_class ( $linkObj ) . 'Status';
       }
-      if (property_exists($linkObj, $idStatus)) {
-        $objStatus=new $statusClass($linkObj->$idStatus);
-        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+      if (property_exists ( $linkObj, $idStatus )) {
+        $objStatus = new $statusClass ( $linkObj->$idStatus );
+        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter ( $objStatus->name . "#split#" . $objStatus->color ) . '</td>';
       } else {
         echo '<td class="dependencyData"  style="width:15%">&nbsp;</td>';
       }
-      ////KROWRY
-      if (property_exists($linkObj, 'idResource') && $linkObj->idResource != null) {
-        $objR = get_class($linkObj);
-        $objResp=new $objR($linkObj->id);
-        echo '<td class="dependencyData"  style="width:10%">' . formatLetterThumb($objResp->idResource, 22) . '</td>';
+      // //KROWRY
+      if (property_exists ( $linkObj, 'idResource' ) && $linkObj->idResource != null) {
+        $objR = get_class ( $linkObj );
+        $objResp = new $objR ( $linkObj->id );
+        echo '<td class="dependencyData"  style="width:10%">' . formatLetterThumb ( $objResp->idResource, 22 ) . '</td>';
       } else {
         echo '<td class="dependencyData"  style="width:10%">&nbsp;</td>';
       }
@@ -3588,9 +3589,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     }
   }
   echo '</table>';
-  if (!$refresh) echo '</td></tr>';
+  if (! $refresh)
+    echo '</td></tr>';
   if (! $print) {
-    echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
+    echo '<input id="LinkSectionCount" type="hidden" value="' . count ( $list ) . '" />';
   }
 }
 
@@ -4404,156 +4406,158 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   }
 }
 
-function drawAssignmentsFromObject($list, $obj, $refresh=false) {
+function drawAssignmentsFromObject($list, $obj, $refresh = false) {
   global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct, $outMode, $profile;
   if ($comboDetail) {
     return;
   }
-  $pluginObjectClass='Assignment';
-  $tableObject=$list;
-  $lstPluginEvt=Plugin::getEventScripts('list',$pluginObjectClass);
-  foreach ($lstPluginEvt as $script) {
+  $pluginObjectClass = 'Assignment';
+  $tableObject = $list;
+  $lstPluginEvt = Plugin::getEventScripts ( 'list', $pluginObjectClass );
+  foreach ( $lstPluginEvt as $script ) {
     require $script; // execute code
   }
-  $list=$tableObject;
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
+  $list = $tableObject;
+  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
+      'idProfile' => $profile, 
+      'scope' => 'assignmentView') );
   if ($habil and $habil->rightAccess != 1) {
     return;
   }
   // $section='Assignment';
   // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes", $nbCol);
-  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentEdit'));
+  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
+      'idProfile' => $profile, 
+      'scope' => 'assignmentEdit') );
   if ($habil and $habil->rightAccess != 1) {
-    $canUpdate=false;
+    $canUpdate = false;
   }
-  $pe=new PlanningElement();
-  $pe->setVisibility();
-  $workVisible=($pe->_workVisibility == 'ALL')?true:false;
+  $pe = new PlanningElement ();
+  $pe->setVisibility ();
+  $workVisible = ($pe->_workVisibility == 'ALL') ? true : false;
   if ($obj->idle == 1) {
-    $canUpdate=false;
+    $canUpdate = false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (!$print and $canUpdate) {
+  if (! $print and $canUpdate) {
     echo '<td class="assignHeader" style="width:10%;vertical-align:middle;">';
-    if ($obj->id != null and !$print and $canUpdate and !$obj->idle and $workVisible) {
-      echo '<a onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\',\'' . Work::getWorkUnit() . '\',\'' . Work::getHoursPerDay() . '\');" ';
-      echo ' title="' . i18n('addAssignment') . '" > '.formatSmallButton('Add').'</a>';
+    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle and $workVisible) {
+      echo '<a onClick="addAssignment(\'' . Work::displayShortWorkUnit () . '\',\'' . Work::getWorkUnit () . '\',\'' . Work::getHoursPerDay () . '\');" ';
+      echo ' title="' . i18n ( 'addAssignment' ) . '" > ' . formatSmallButton ( 'Add' ) . '</a>';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdResource') . '</td>';
-  echo '<td class="assignHeader" style="width:15%" >' . i18n('colRate') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print) ? '40' : '30') . '%">' . i18n ( 'colIdResource' ) . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n ( 'colRate' ) . '</td>';
   if ($workVisible) {
-    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
-    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
-    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colAssigned' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
+    echo '<td class="assignHeader"style="width:15%">' . i18n ( 'colReal' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colLeft' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
   }
   echo '</tr>';
-  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+  $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
   foreach ( $list as $assignment ) {
     echo '<tr>';
-    $isResource=true;
-    $resName=SqlList::getNameFromId('Resource', $assignment->idResource);
+    $isResource = true;
+    $resName = SqlList::getNameFromId ( 'Resource', $assignment->idResource );
     if ($resName == $assignment->idResource) {
-      $affName=SqlList::getNameFromId('Affectable', $assignment->idResource);
+      $affName = SqlList::getNameFromId ( 'Affectable', $assignment->idResource );
       if ($affName != $resName) {
-        $isResource=false;
-        $resName=$affName;
+        $isResource = false;
+        $resName = $affName;
       }
     }
-    if (!$print and $canUpdate) {
-      echo '<td class="assignData" style="text-align:center;white-space:nowrap;vertical-align:middle">';
-      if ($canUpdate and !$print and $workVisible) {
-        echo '  <a onClick="editAssignment(' . "'" . htmlEncode($assignment->id) . "'" . ",'" . htmlEncode($assignment->idResource) . "'" . ",'" . htmlEncode($assignment->idRole) . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . htmlEncode($assignment->rate) . "'" . ",'" .
-             Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ",".$assignment->optional.');" ' . 'title="' . i18n('editAssignment') .
-             '" > '.formatSmallButton('Edit').'</a>';
-        echo '<textarea style="display:none" id="comment_assignment_' . htmlEncode($assignment->id) . '" >'.htmlEncode($assignment->comment)."</textarea>";
+    if (! $print and $canUpdate) {
+      echo '<td class="assignData" style="width:10%;text-align:center;white-space:nowrap;vertical-align:middle">';
+      if ($canUpdate and ! $print and $workVisible) {
+        echo '  <a onClick="editAssignment(' . "'" . htmlEncode ( $assignment->id ) . "'" . ",'" . htmlEncode ( $assignment->idResource ) . "'" . ",'" . htmlEncode ( $assignment->idRole ) . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . htmlEncode ( $assignment->rate ) . "'" . ",'" . Work::displayWork ( $assignment->assignedWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->realWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->leftWork ) * 100 . "'" . ",'" . Work::displayShortWorkUnit () . "'" . "," . $assignment->optional . ');" ' . 'title="' . i18n ( 'editAssignment' ) . '" > ' . formatSmallButton ( 'Edit' ) . '</a>';
+        echo '<textarea style="display:none" id="comment_assignment_' . htmlEncode ( $assignment->id ) . '" >' . htmlEncode ( $assignment->comment ) . "</textarea>";
       }
-      if ($assignment->realWork == 0 and $canUpdate and !$print and $workVisible) {
-        echo '  <a onClick="removeAssignment(' . "'" . htmlEncode($assignment->id) . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 
-        'title="' . i18n('removeAssignment') . '" > '.formatSmallButton('Remove').'</a>';
+      if ($assignment->realWork == 0 and $canUpdate and ! $print and $workVisible) {
+        echo '  <a onClick="removeAssignment(' . "'" . htmlEncode ( $assignment->id ) . "','" . Work::displayWork ( $assignment->realWork ) * 100 . "','" . htmlEncode ( $resName, 'quotes' ) . "'" . ');" ' . 'title="' . i18n ( 'removeAssignment' ) . '" > ' . formatSmallButton ( 'Remove' ) . '</a>';
       }
-      if ($canUpdate and !$print and $workVisible) {
-        echo '  <a onClick="divideAssignment(' . htmlEncode($assignment->id) . ',\'' . Work::displayShortWorkUnit() . '\');" ' . 'title="' . i18n('divideAssignment') . '" > '.formatSmallButton('Split').'</a>';
+      if ($canUpdate and ! $print and $workVisible) {
+        echo '  <a onClick="divideAssignment(' . htmlEncode ( $assignment->id ) . ',\'' . Work::displayShortWorkUnit () . '\');" ' . 'title="' . i18n ( 'divideAssignment' ) . '" > ' . formatSmallButton ( 'Split' ) . '</a>';
         echo '</td>';
       }
     }
-    echo '<td class="assignData" style="vertical-align:middle">';
+    echo '<td class="assignData" style="width:' . (($print) ? '40' : '30') . '%;vertical-align:middle">';
     echo '<table width="100%"><tr>';
-    $goto="";
-    if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '') == "YES") {
-      $goto=' onClick="gotoElement(\'Resource\',\'' . htmlEncode($assignment->idResource) . '\');" style="cursor: pointer;" ';
+    $goto = "";
+    if (! $print and $isResource and securityCheckDisplayMenu ( null, 'Resource' ) and securityGetAccessRightYesNo ( 'menuResource', 'read', '' ) == "YES") {
+      $goto = ' onClick="gotoElement(\'Resource\',\'' . htmlEncode ( $assignment->idResource ) . '\');" style="cursor: pointer;" ';
     }
     echo '<td ' . $goto . '>' . $resName;
-    echo ($assignment->idRole)?' (' . SqlList::getNameFromId('Role', $assignment->idRole) . ')':'';
+    echo ($assignment->idRole) ? ' (' . SqlList::getNameFromId ( 'Role', $assignment->idRole ) . ')' : '';
     echo '</td>';
-    if ($assignment->notPlannedWork> 0) {
+    if ($assignment->notPlannedWork > 0) {
       echo '<td>';
-      echo '&nbsp;<span style="float:right;background-color:#FFAAAA; color:#696969; border:1px solid #A9A9A9;" title="' . i18n("colNotPlannedWork") . '">&nbsp;' . Work::displayWorkWithUnit($assignment->notPlannedWork). '&nbsp;</span>';
+      echo '&nbsp;<span style="float:right;background-color:#FFAAAA; color:#696969; border:1px solid #A9A9A9;" title="' . i18n ( "colNotPlannedWork" ) . '">&nbsp;' . Work::displayWorkWithUnit ( $assignment->notPlannedWork ) . '&nbsp;</span>';
       echo '</td>';
     }
-    if ($assignment->comment and !$print) {
+    if ($assignment->comment and ! $print) {
       echo '<td>';
-      echo formatCommentThumb($assignment->comment);
+      echo formatCommentThumb ( $assignment->comment );
       echo '</td>';
     }
-    //gautier #1702
-    if (! $assignment->optional and (get_class($obj)== 'Meeting' or get_class($obj)== 'PeriodicMeeting' ) ) {
+    // gautier #1702
+    if (! $assignment->optional and (get_class ( $obj ) == 'Meeting' or get_class ( $obj ) == 'PeriodicMeeting')) {
       echo '<td>';
-      echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Favorite',16,i18n('mandatoryAttendant')).'</a>';
+      echo '<a style="float:right; vertical-align:middle;"> ' . formatIcon ( 'Favorite', 16, i18n ( 'mandatoryAttendant' ) ) . '</a>';
       echo '</td>';
     }
     echo '</tr></table>';
     echo '</td>';
-    echo '<td class="assignData" align="center" style="vertical-align:middle">' . htmlEncode($assignment->rate) . '</td>';
+    echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">' . htmlEncode ( $assignment->rate ) . '</td>';
     if ($workVisible) {
-    	$keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+      $keyDownEventScript = NumberFormatter52::getKeyDownEvent ();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
-      //mehdi======================ticket#1776
-    	echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="' . Work::displayWork($assignment->assignedWork) . '"/>';
-    	echo '<td class="assignData" align="right" style="vertical-align:middle;">';  
-    	if ($canUpdate and get_class($obj)!='PeriodicMeeting' ) { 	
-    			echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
+      // mehdi======================ticket#1776
+      if (!$print) echo '<input type="hidden" id="initAss_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->assignedWork ) . '"/>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
+      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting' and !$print) {
+        echo '<img  id="idImageAssignedWork' . $assignment->id . '" src="img/savedOk.png" 
                 style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
-    			echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
+        echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_' . $assignment->id . '" name="assAssignedWork_' . $assignment->id . '"
     						  class="dijitReset dijitInputInner dijitNumberTextBox"
-      					  value="'.Work::displayWork($assignment->assignedWork).'"
+      					  value="' . Work::displayWork ( $assignment->assignedWork ) . '"
                   style="padding:1px;background:none;max-width:100%; box-sizing:border-box;display:block;border:1px solid #A0A0A0 !important;margin:2px 0px" >
                    <script type="dojo/method" event="onChange">
-                    assUpdateLeftWork('.$assignment->id.'); 
-                    saveLeftWork('.$assignment->id.',\'AssignedWork\'); 
-                    //saveLeftWork('.$assignment->id.',\'LeftWork\');
+                    assUpdateLeftWork(' . $assignment->id . '); 
+                    saveLeftWork(' . $assignment->id . ',\'AssignedWork\'); 
+                    //saveLeftWork(' . $assignment->id . ',\'LeftWork\');
                    </script>';
-    			echo $keyDownEventScript;
-    			echo '</div>';
-    	} else {
-    	  echo $fmt->format(Work::displayWork($assignment->assignedWork));
-    	}
-    	echo '</td>';
-    	
-    	echo '<input type="hidden" id="RealWork_'.$assignment->id.'" value="' . Work::displayWork($assignment->realWork) . '"/>';
-    	echo '<td class="assignData" align="right" style="vertical-align:middle">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
-     
-    	echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="' . Work::displayWork($assignment->leftWork) . '"/>';
-      echo '<td class="assignData" align="right" style="vertical-align:middle; ">' ;    
-      if ($canUpdate and get_class($obj)!='PeriodicMeeting' ) {
-       	echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
-      	  echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
+        echo $keyDownEventScript;
+        echo '</div>';
+      } else {
+        echo $fmt->format ( Work::displayWork ( $assignment->assignedWork ) );
+      }
+      echo '</td>';
+      
+      echo '<input type="hidden" id="RealWork_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->realWork ) . '"/>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">' . $fmt->format ( Work::displayWork ( $assignment->realWork ) ) . '</td>';
+      
+      if (!$print) echo '<input type="hidden" id="initLeft_' . $assignment->id . '" value="' . Work::displayWork ( $assignment->leftWork ) . '"/>';
+      echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
+      if ($canUpdate and get_class ( $obj ) != 'PeriodicMeeting' and !$print) {
+        echo '<img  id="idImageLeftWork' . $assignment->id . '" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
+        echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_' . $assignment->id . '" name="assLeftWork_' . $assignment->id . '"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
-        				value="'.Work::displayWork($assignment->leftWork).'"
+        				value="' . Work::displayWork ( $assignment->leftWork ) . '"
                 style="padding:1px;max-width:100%; background:none;box-sizing:border-box;display:block;border:1px solid #A0A0A0 !important;margin:2px 0px"  >
                 <script type="dojo/method" event="onChange">
-                    saveLeftWork('.$assignment->id.',\'LeftWork\');
-                </script>';      
-      	  echo $keyDownEventScript;
-      	  echo '</div>';
+                    saveLeftWork(' . $assignment->id . ',\'LeftWork\');
+                </script>';
+        echo $keyDownEventScript;
+        echo '</div>';
       } else {
-         echo $fmt->format(Work::displayWork($assignment->leftWork));
-      }	   
-      echo '</td>'; }
-     echo '</tr>';
+        echo $fmt->format ( Work::displayWork ( $assignment->leftWork ) );
+      }
+      echo '</td>';
+    }
+    echo '</tr>';
   }
   echo '</table></td></tr>';
 }
