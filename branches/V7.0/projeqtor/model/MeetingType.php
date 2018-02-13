@@ -50,6 +50,7 @@ class MeetingType extends Type {
                                           "lockNoLeftOnDone"=>"nobr",
                                           "scope"=>"hidden");
   private static $_databaseCriteria = array('scope'=>'Meeting');
+  private static $_colCaptionTransposition = array('description'=>'meetingAgenda');
   
    /** ==========================================================================
    * Constructor
@@ -89,6 +90,14 @@ class MeetingType extends Type {
    */
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
+  }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld=null) {
+    return self::$_colCaptionTransposition;
   }
   
 }
