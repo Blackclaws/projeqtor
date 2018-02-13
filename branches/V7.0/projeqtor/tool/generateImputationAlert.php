@@ -51,7 +51,7 @@ function generateImputationAlert() {
   $sendToProjectLeader=Parameter::getGlobalParameter('imputationAlertSendToProjectLeader');
   $sendToTeamManager=Parameter::getGlobalParameter('imputationAlertSendToTeamManager');
 
-  $lstResource=SqlList::getList('Resource');
+  $lstResource=SqlList::getList('Resource',null,null,false);
   $lstProject=SqlList::getList('Project');
   // Initialize list of resources
   $lstRes=array();

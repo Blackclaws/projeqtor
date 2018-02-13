@@ -270,7 +270,7 @@ class PlannedWork extends GeneralWork {
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);          
         } else {
           $startPlan=$plan->validatedStartDate;
-          $startFraction=$plan->validatedStartFraction;
+          //$startFraction=$plan->validatedStartFraction; // TODO : implement control of time on meeting
         }
         $endPlan=$plan->validatedEndDate;
         $step=1;
