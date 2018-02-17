@@ -876,7 +876,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   }
   
   public function getColor() {
-    $color="#eeeeee";
+    $color="#777777";
     if ($this->color) {
       $color=$this->color;
     } else if ($this->idProject) {

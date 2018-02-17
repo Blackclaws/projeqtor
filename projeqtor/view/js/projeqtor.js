@@ -798,7 +798,7 @@ function loadContent(page, destination, formName, isResultMessage,
             }
           }
           hideBigImage(); // Will avoid resident pop-up always displayed
-          if(!editorInFullScreen())contentWidget.set('content', data);
+          if(!editorInFullScreen()) contentWidget.set('content', data);
           checkDestination(destination);
           // Create instances of CKEDITOR
           if (page.substr(0, 16) == 'objectDetail.php'
@@ -877,10 +877,10 @@ function loadContent(page, destination, formName, isResultMessage,
                 } else {
                   var elemDiv = document.createElement('div');
                   elemDiv.id='testFade';
-                  var leftMsg=(window.innerWidth - 200)/2;
-                  elemDiv.style.cssText = 'position:absolute;text-align:center;width:200px;height:16px;z-index:10000;top:50px;left:'+leftMsg+'px';
-                  elemDiv.className='messageOK';
-                  elemDiv.innerHTML=i18n('resultSave');
+                  var leftMsg=(window.innerWidth - 400)/2;
+                  elemDiv.style.cssText = 'position:absolute;text-align:center;width:400px;height:auto;z-index:10000;top:50px;left:'+leftMsg+'px';
+                  //elemDiv.className='messageOK';
+                  elemDiv.innerHTML=data;
                   document.body.appendChild(elemDiv);
                   resultDivFadingOut = dojo.fadeOut({
                     node : elemDiv,
@@ -3314,12 +3314,13 @@ function getWeek(day, month, year) {
   var paramDate = new Date(year, month - 1, day);
   return dateGetWeek(paramDate, 1);
 }
-/*
+
 function moveTask(source, destination) {
-  var mode = '';
+  var mode = 'before';
+  dndSourceTable.sync();
   var nodeList = dndSourceTable.getAllNodes();
   for (i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].id == source) {
+    if  (nodeList[i].id == source[0]) {
       mode = 'before';
       break;
     } else if (nodeList[i].id == destination) {
@@ -3327,25 +3328,10 @@ function moveTask(source, destination) {
       break;
     }
   }
-  var url = '../tool/moveTask.php?from=' + source + '&to=' + destination
-      + '&mode=' + mode;
-  loadContent(url, "planResultDiv", null, true, null);
-}*/
-function moveTask(source, destination) {
-  var mode = '';
-  var nodeList = dndSourceTable.getAllNodes();
-  for (i = 0; i < nodeList.length; i++) {
-    if  (nodeList[i].id == destination) {
-      mode = 'after';
-      break;
-    } else {
-      mode = 'before';
-      break;
-    }
-  }
   var url = '../tool/moveTask.php?from=' + source.join() + '&to=' + destination
       + '&mode=' + mode;
   loadContent(url, "planResultDiv", null, true, null);
+  
 }
 
 function indentTask(way) {
