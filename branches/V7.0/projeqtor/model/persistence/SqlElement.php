@@ -1240,7 +1240,7 @@ abstract class SqlElement {
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
       if (sessionTableValueExist ( 'directAccessIndex', $_REQUEST ['directAccessIndex'] . (($isComboDetail) ? '_comboDetail' : '') )) {
         $testObject = getSessionTableValue ( 'directAccessIndex', $_REQUEST ['directAccessIndex'] . (($isComboDetail) ? '_comboDetail' : '') );
-        if (! $objectClass or get_class ( $testObject ) == $objectClass) {
+        if (! $objectClass or (get_class ( $testObject ) == $objectClass and $testObject->id==$objectId) ) {
           $oldObject = $testObject;
         } else if ($throwError) {
           throwError ( 'currentObject (' . get_class ( $testObject ) . ' #' . $obj->id . ') is not of the expectec class (' . $objectClass . ')' );
@@ -1252,7 +1252,7 @@ abstract class SqlElement {
       }
     } else if (sessionValueExists ( 'currentObject' . (($isComboDetail) ? '_comboDetail' : '') )) {
       $testObject = getSessionValue ( 'currentObject' . (($isComboDetail) ? '_comboDetail' : '') );
-      if (! $objectClass or get_class ( $testObject ) == $objectClass) {
+      if (! $objectClass or (get_class ( $testObject ) == $objectClass and $testObject->id==$objectId) ) {
         $oldObject = $testObject;
       } else if ($throwError) {
         throwError ( 'currentObject (' . get_class ( $testObject ) . ' #' . $obj->id . ') is not of the expectec class (' . $objectClass . ')' );

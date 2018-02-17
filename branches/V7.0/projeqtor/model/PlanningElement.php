@@ -1032,10 +1032,11 @@ class PlanningElement extends SqlElement {
   }
 
   public function moveTo($destId,$mode,$recursive=false) {
-    $status="ERROR";
+    $status="WARNING";
     $result="";
     $returnValue="";
     $task=null;
+    $changeParent=false;
     
     $checkClass=get_class($this);
     if (SqlElement::is_a($this, 'PlanningElement')) {
@@ -1052,33 +1053,58 @@ class PlanningElement extends SqlElement {
     
     $dest=new PlanningElement($destId);
     if ($dest->topRefType!=$this->topRefType
-    or $dest->topRefId!=$this->topRefId) {
+    or $dest->topRefId!=$this->topRefId) {    // Change parent
       $objectClass=$this->refType;
       $objectId=$this->refId;
-      $task=new $objectClass($objectId);
-      if ($dest->topRefType=="Project") {
+      $task=new $objectClass($objectId);     // Object to move
+      if ($dest->topRefType=="Project") {    // Move directly under project
       	$task->idProject=$dest->topRefId;
       	if (property_exists($task, 'idActivity')) {
       		$task->idActivity=null;
       	}
+      	$changeParent='projet';
       	$status="OK";
-      } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {
-      	$task->idProject=$dest->idProject;
-      	$task->idActivity=$dest->topRefId;
+      } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {  // Move under (new) activity
+      	$task->idProject=$dest->idProject;   // Move to same project
+      	$task->idActivity=$dest->topRefId;   // Move under same activity
+      	$changeParent='activity';
       	$status="OK";
-      } else if (! $dest->topRefType and $objectClass=='Project') {
+      } else if (! $dest->topRefType and $objectClass=='Project') { // Moving a project to root
       	$task->idProject=null;
+      	$changeParent='root';
       	$status="OK";
       }
-  		if ($status=="OK") {
-  		  //$task->save();
-  		  //$this->__construct($this->id);
-  		  //$result=i18n('moveDone');
-  		} else {
+  		if ($status!="OK") {
   			$returnValue=i18n('moveCancelled');
   		}
-    } 
-    if (! $returnValue) {
+  		if (!$this->idle and $dest->idle) { // Move non idle after/before idle : check if new parent is idle
+  		  $destParent=new PlanningElement($dest->topId);
+  		  if ($destParent->idle) { // Move non closed item under closed item : forbidden
+  		    $returnValue=i18n('moveCancelledIdle');
+  		    $status="WARNING";
+  		  }
+  		}
+    } else { // Don't change parent => just reorder at same level
+      $status="OK"; 
+      $changeParent=false;
+    }
+    $parent=new PlanningElement($dest->topId);
+    
+    if ($status=="OK" and $task and !$recursive) { // Change parent, then will recursively call moveTo to reorder correctly
+      $peName=get_Class($task).'PlanningElement';
+      $task->$peName->topRefType=$dest->topRefType;
+      $task->$peName->topRefId=$dest->topRefId;
+      $task->$peName->topId=$dest->topId;
+    	$resultTask=$task->save();
+    	if (stripos($resultTask,'id="lastOperationStatus" value="OK"')>0 ) {
+    		$pe=new PlanningElement($this->id);
+    		$pe->moveTo($destId,$mode,true);
+    		$returnValue=i18n('moveDone');
+      } else {
+      	$returnValue=$resultTask;//i18n('moveCancelled');
+      	$status="ERROR";
+      }
+    } else if ($status=="OK") { // Just reorder on same level
       if ($this->topRefType) {
         $where="topRefType='" . $this->topRefType . "' and topRefId=" . Sql::fmtId($this->topRefId) ;
       } else {
@@ -1098,6 +1124,7 @@ class PlanningElement extends SqlElement {
           }
           $idx++;
           $root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
+          //$root=$parent->wbs;
           $pe->wbs=($root=='')?$idx:$root.'.'.$idx;
           if ($pe->refType) {
             $pe->save();
@@ -1113,18 +1140,8 @@ class PlanningElement extends SqlElement {
       $this->save();
       $returnValue=i18n('moveDone');
       $status="OK";
-    }
-    if ($status=="OK" and $task and !$recursive) {
-    	$resultTask=$task->save();
-    	if (stripos($resultTask,'id="lastOperationStatus" value="OK"')>0 ) {
-    		$pe=new PlanningElement($this->id);
-    		$pe->moveTo($destId,$mode,true);
-    		$returnValue=i18n('moveDone');
-      } else {
-      	$returnValue=$resultTask;//i18n('moveCancelled');
-      	$status="ERROR";
-      }
-    }
+    } 
+      
     $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
     $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
     $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';

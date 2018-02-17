@@ -22,11 +22,6 @@ $listHeight=($topDetailDivHeight)?$topDetailDivHeight.'px':$listHeight;
     <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
              saveDataToSession("contentPaneTopPlanningDivHeight", dojo.byId("listDiv").offsetHeight, true);
-             /*dojo.xhrPost({
-               url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneTopPlanningDivHeight"
-                  +"&value="+dojo.byId("listDiv").offsetHeight
-             });;*/
     </script>
    <?php include 'versionsPlanningList.php'?>
   </div>

@@ -76,33 +76,13 @@ class Parameter extends SqlElement {
     } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  newValue=this.value;';
-    	$colScript .= '  var callBack = function(){ 
-    	                     showWait(); 
-    	                     noDisconnect=true; 
-    	                     quitConfirmed=true;
-    	                     dojo.byId("directAccessPage").value="parameter.php";
-    	                     dojo.byId("menuActualStatus").value=menuActualStatus;
-    	                     dojo.byId("p1name").value="type";
-    	                     dojo.byId("p1value").value="userParameter";
-    	                     dojo.byId("directAccessForm").submit();
-    	                   };';
-    	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
+    	$colScript .= '  saveDataToSessionAndReload("'.$colName.'", newValue, false);';
     	$colScript .= '</script>';
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM        
     } else if ($colName=="notificationSystemActiv") {
         $colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript .= '  newValue=this.value;';
-    	$colScript .= '  var callBack = function(){ 
-    	                     showWait(); 
-    	                     noDisconnect=true; 
-    	                     quitConfirmed=true;
-    	                     dojo.byId("directAccessPage").value="parameter.php";
-    	                     dojo.byId("menuActualStatus").value=menuActualStatus;
-    	                     dojo.byId("p1name").value="type";
-    	                     dojo.byId("p1value").value="userParameter";
-    	                     dojo.byId("directAccessForm").submit();
-    	                   };';
-    	$colScript .= '  saveDataToSession("'.$colName.'", newValue, false, callBack);';
+    	$colScript .= '  saveDataToSessionAndReload("'.$colName.'", newValue, false);';
         $colScript .= '</script>'; 
 // END - ADD BY TABARY - NOTIFICATION SYSTEM        
     } else if ($colName=="defaultProject") {
