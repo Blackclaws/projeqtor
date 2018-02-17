@@ -86,7 +86,6 @@ class ProductProject extends SqlElement {
       $vp->save();
       $vp->propagateCreationToComponentVersions();
     }
-    
     return $result;
   }
   public function delete() {

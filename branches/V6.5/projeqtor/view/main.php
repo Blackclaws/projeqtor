@@ -196,9 +196,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         dojo.forEach(nodes, function(selectedItem) {
            var idFrom = selectedItem.id;
            var idTo = target.current.id;                   
-           if (target.id=='dndSourceTable') {
-          	 //showWait();  
-             //setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
+           if (target.id=='dndSourceTable') { 
              moveTasks=idTo;
              arrayTasks.push(idFrom);
            } else  if (target.id=='dndPlanningColumnSelector') {
@@ -212,7 +210,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
            } 
         });
         if (moveTasks) {
-          moveTask(arrayTasks, moveTasks);
+        //setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
+          var execMove=setTimeout(function() { moveTask(arrayTasks, moveTasks); },20);
         }
       }
     });

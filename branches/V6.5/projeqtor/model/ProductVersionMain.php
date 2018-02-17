@@ -332,6 +332,7 @@ class ProductVersionMain extends Version {
   }
   
   public function save() {
+    global $doNotUpdateAllVersionProject;
     $old=$this->getOld();
     $this->scope='Product';
     $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
@@ -352,6 +353,8 @@ class ProductVersionMain extends Version {
   	  $compList=$p->getComposition(false,true);
   	  $pold=new Product($old->idProduct,true);
   	  $compList=array_merge_preserve_keys($pold->getComposition(false,true),$compList);
+  	} else {
+  	  $doNotUpdateAllVersionProject=true;
   	}
   	foreach($compList as $compId=>$compName) {
   	  $comp=new Component($compId,true);
@@ -386,7 +389,6 @@ class ProductVersionMain extends Version {
   	  parent::changeVersionOfProduct();
   	}
   	parent::addVersionSubProduct();
-  	
   	return $result;
   }
   public function getLinkedProjects($withName=true) {
