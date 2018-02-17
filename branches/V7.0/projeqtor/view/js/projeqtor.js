@@ -371,11 +371,6 @@ function changeTheme(newTheme) {
       addMessage("Theme=" + newTheme); 
     };
     saveDataToSession('theme',newTheme, null, callBack);
-    /*dojo.xhrPost({
-      url : "../tool/saveDataToSession.php?idData=theme&value=" + newTheme,
-      handleAs : "text"
-    // , load: function(data,args) { addMessage("Theme=" + newTheme ); }
-    });*/
   }
 }
 
@@ -400,13 +395,6 @@ function saveBrowserLocaleToSession() {
   browserLocale = dojo.locale;
   //#2887
   saveDataToSession('browserLocale', browserLocale, null);
-/*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=browserLocale&value="
-        + browserLocale,
-    handleAs : "text",
-    load : function(data, args) {
-    }
-  });*/
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
   if (browserLocaleDateFormat) {
     format = browserLocaleDateFormat;
@@ -428,41 +416,15 @@ function saveBrowserLocaleToSession() {
         .replace(/Y/g, 'y');
   }
   saveDataToSession('browserLocaleDateFormat', encodeURI(format));
-// #2887
-//  dojo.xhrPost({
-//    url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
-//        + encodeURI(format),
-//    handleAs : "text",
-//    load : function(data, args) {
-//    }
-//  });
   var fmt = "" + dojo.number.format(1.1) + " ";
   var decPoint = fmt.substr(1, 1);
   saveDataToSession('browserLocaleDecimalPoint', decPoint);
-  //#2887
-//  dojo.xhrPost({
-//        url : "../tool/saveDataToSession.php?idData=browserLocaleDecimalPoint&value="
-//            + decPoint,
-//        handleAs : "text",
-//        load : function(data, args) {
-//        }
-//      });
   var fmt = dojo.number.format(100000) + ' ';
   var thousandSep = fmt.substr(3, 1);
   if (thousandSep == '0') {
     thousandSep = '';
   }
   saveDataToSession('browserLocaleThousandSeparator', thousandSep);
-  // #2887
-//  dojo
-//      .xhrPost({
-//        url : "../tool/saveDataToSession.php?idData=browserLocaleThousandSeparator&value="
-//            + thousandSep,
-//        handleAs : "text",
-//        load : function(data, args) {
-//        }
-//      });
-
 }
 
 /**
@@ -491,39 +453,7 @@ function saveDataToSessionAndReload(param, value, saveUserParameter) {
 function changeLocale(locale) {
   if (locale != "") {
     currentLocale = locale;
-    /*var callBack = function() { 
-    	showWait();
-        noDisconnect = true;
-        quitConfirmed = true;
-        dojo.byId("directAccessPage").value = "parameter.php";
-        dojo.byId("menuActualStatus").value = menuActualStatus;
-        dojo.byId("p1name").value = "type";
-        dojo.byId("p1value").value = "userParameter";
-        dojo.byId("directAccessForm").submit(); 
-    };
-    saveDataToSession('currentLocale', locale,null, callBack);*/
     saveDataToSessionAndReload('currentLocale', locale, null);
-    /*dojo.xhrPost({
-      url : "../tool/saveDataToSession.php?idData=currentLocale&value="
-          + locale,
-      handleAs : "text",
-      load : function(data, args) {
-        // action = function() {
-        showWait();
-        noDisconnect = true;
-        quitConfirmed = true;
-        dojo.byId("directAccessPage").value = "parameter.php";
-        dojo.byId("menuActualStatus").value = menuActualStatus;
-        dojo.byId("p1name").value = "type";
-        dojo.byId("p1value").value = "userParameter";
-        dojo.byId("directAccessForm").submit();
-        // };
-        // showConfirm (i18n('confirmLocaleChange'), action);
-        // showInfo(i18n('infoLocaleChange'));
-      },
-      error : function(error, args) {
-      }
-    });*/
   }
 }
 
@@ -541,21 +471,6 @@ function changeBrowserLocaleForDates(newFormat) {
     dojo.byId("directAccessForm").submit();
   };
   saveDataToSession('browserLocaleDateFormat', newFormat,null, callBack);
-  /*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=browserLocaleDateFormat&value="
-        + newFormat,
-    handleAs : "text",
-    load : function(data, args) {
-      showWait();
-      noDisconnect = true;
-      quitConfirmed = true;
-      dojo.byId("directAccessPage").value = "parameter.php";
-      dojo.byId("menuActualStatus").value = menuActualStatus;
-      dojo.byId("p1name").value = "type";
-      dojo.byId("p1value").value = "userParameter";
-      dojo.byId("directAccessForm").submit();
-    }
-  });*/
 }
 //gautier
 function changeBrowserLocaleTimeFormat(newFormat) {
@@ -572,21 +487,6 @@ function changeBrowserLocaleTimeFormat(newFormat) {
 	dojo.byId("directAccessForm").submit();
   };
   saveDataToSession('browserLocaleTimeFormat', newFormat,null, callBack);
-  /*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=browserLocaleTimeFormat&value="
-        + newFormat,
-    handleAs : "text",
-    load : function(data, args) {
-      showWait();
-      noDisconnect = true;
-      quitConfirmed = true;
-      dojo.byId("directAccessPage").value = "parameter.php";
-      dojo.byId("menuActualStatus").value = menuActualStatus;
-      dojo.byId("p1name").value = "type";
-      dojo.byId("p1value").value = "userParameter";
-      dojo.byId("directAccessForm").submit();
-    }
-  });*/
 }
 
 function requestPasswordChange() {
@@ -610,20 +510,7 @@ function saveResolutionToSession() {
   var width = screen.width;
   //#2887
   saveDataToSession("screenWidth", width);
-  /*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=screenWidth&value=" + width,
-    handleAs : "text",
-    load : function(data, args) {
-    }
-  });*/
-  //#2887
   saveDataToSession("screenHeight", height);
-  /*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?idData=screenHeight&value=" + height,
-    handleAs : "text",
-    load : function(data, args) {
-    }
-  });*/
 }
 
 /**
@@ -798,7 +685,7 @@ function loadContent(page, destination, formName, isResultMessage,
             }
           }
           hideBigImage(); // Will avoid resident pop-up always displayed
-          if(!editorInFullScreen())contentWidget.set('content', data);
+          if(!editorInFullScreen()) contentWidget.set('content', data);
           checkDestination(destination);
           // Create instances of CKEDITOR
           if (page.substr(0, 16) == 'objectDetail.php'
@@ -877,10 +764,10 @@ function loadContent(page, destination, formName, isResultMessage,
                 } else {
                   var elemDiv = document.createElement('div');
                   elemDiv.id='testFade';
-                  var leftMsg=(window.innerWidth - 200)/2;
-                  elemDiv.style.cssText = 'position:absolute;text-align:center;width:200px;height:16px;z-index:10000;top:50px;left:'+leftMsg+'px';
-                  elemDiv.className='messageOK';
-                  elemDiv.innerHTML=i18n('resultSave');
+                  var leftMsg=(window.innerWidth - 400)/2;
+                  elemDiv.style.cssText = 'position:absolute;text-align:center;width:400px;height:auto;z-index:10000;top:50px;left:'+leftMsg+'px';
+                  //elemDiv.className='messageOK';
+                  elemDiv.innerHTML=data;
                   document.body.appendChild(elemDiv);
                   resultDivFadingOut = dojo.fadeOut({
                     node : elemDiv,
@@ -2374,41 +2261,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   }
   currentSelectedProject = idProject;
   if (idProject != "") {
-	//#2887
-	var callBack = function(){
-      addMessage(i18n("Project") + "=" + nameProject);
-      if (dojo.byId("GanttChartDIV")) {
-        if (dojo.byId("resourcePlanning")) {
-          loadContent("resourcePlanningList.php", "listDiv", 'listForm');
-        } else if (dojo.byId("portfolioPlanning")) {
-          loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
-        } else {
-          loadContent("planningList.php", "listDiv", 'listForm');
-        }
-      } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
-        refreshJsonList(dojo.byId('objectClass').value);
-      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Today') {
-        loadContent("../view/today.php", "centerDiv");
-      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
-        loadContent("../plugin/kanban/kanbanViewMain.php", "centerDiv");        
-      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'ActivityStream') {
-        loadContent("../view/activityStreamList.php", "activityStreamListDiv", "activityStreamForm");      
-      } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'DashboardTicket') {
-        loadContent("../view/dashboardTicketMain.php", "centerDiv");
-      } else if (dojo.byId('currentPhpPage') && dojo.byId('currentPhpPage').value) {
-        loadContent("../view/dashboardTicketMain.php", "centerDiv");
-      } else if (currentPluginPage) {
-        loadContent(currentPluginPage, "centerDiv");
-      }
-      if (dijit.byId('imputationButtonDiv') && dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
-        refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true); 
-      }
-	};
-	saveDataToSession('project', idProject, null, callBack);
-    /*dojo.xhrPost({
-      url : "../tool/saveDataToSession.php?idData=project&value=" + idProject,
-      handleAs : "text",
-      load : function(data, args) {
+  	var callBack = function(){
         addMessage(i18n("Project") + "=" + nameProject);
         if (dojo.byId("GanttChartDIV")) {
           if (dojo.byId("resourcePlanning")) {
@@ -2418,30 +2271,26 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }
-        } else if (dijit.byId("listForm") && dojo.byId('objectClass')
-            && dojo.byId('listShowIdle')) {
+        } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
           refreshJsonList(dojo.byId('objectClass').value);
-        } else if (dojo.byId('objectClassManual')
-            && dojo.byId('objectClassManual').value == 'Today') {
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Today') {
           loadContent("../view/today.php", "centerDiv");
-        } else if (dojo.byId('objectClassManual')
-            && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Plugin_kanban') {
           loadContent("../plugin/kanban/kanbanViewMain.php", "centerDiv");        
         } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'ActivityStream') {
           loadContent("../view/activityStreamList.php", "activityStreamListDiv", "activityStreamForm");      
-        } else if (dojo.byId('objectClassManual')
-            && dojo.byId('objectClassManual').value == 'DashboardTicket') {
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'DashboardTicket') {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");
-        } else if (dojo.byId('currentPhpPage')
-            && dojo.byId('currentPhpPage').value) {
+        } else if (dojo.byId('currentPhpPage') && dojo.byId('currentPhpPage').value) {
           loadContent("../view/dashboardTicketMain.php", "centerDiv");
-        } else if (dijit.byId('limitResByProj').get('value')=="on"){
-          refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true);
         } else if (currentPluginPage) {
           loadContent(currentPluginPage, "centerDiv");
         }
-      }
-    });*/
+        if (dijit.byId('imputationButtonDiv') && dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
+          refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true); 
+        }
+  	};
+  	saveDataToSession('project', idProject, null, callBack);
   }
   if (idProject != "" && idProject != "*" && dijit.byId("idProjectPlan")) {
     dijit.byId("idProjectPlan").set("value", idProject);
@@ -2470,19 +2319,7 @@ function disconnect(cleanCookieHash) {
     var callBack = function(){
     	window.location = "../index.php";
     }
-    saveDataToSession("disconnect", extUrl, null, callBack);/*
-    saveDataToSession("disconnect"+extUrl, "origin=disconnect");
-    dojo.xhrPost({
-      url : "../tool/saveDataToSession.php?origin=disconnect&idData=disconnect"
-          + extUrl,
-      handleAs : "text",
-      load : function(data, args) {
-        if (data)
-          showError(data);
-        else
-          window.location = "../index.php";
-      }
-    });/**/
+    saveDataToSession("disconnect", extUrl, null, callBack);
   };
   if (!checkFormChangeInProgress()) {
     if (paramConfirmQuit != "NO") {
@@ -2511,12 +2348,6 @@ function quit() {
   if (!noDisconnect) {
     showWait();
     saveDataToSession('disconnect', '&origin==quit');
-    /*dojo.xhrGet({
-      url : "../tool/saveDataToSession.php?origin==quit&idData=disconnect",
-      load : function(data, args) {
-        hideWait();
-      }
-    });*/
     if(dojo.isFF || dojo.isSafari){
       sleep(1000);
     }
@@ -3349,12 +3180,13 @@ function getWeek(day, month, year) {
   var paramDate = new Date(year, month - 1, day);
   return dateGetWeek(paramDate, 1);
 }
-/*
+
 function moveTask(source, destination) {
-  var mode = '';
+  var mode = 'before';
+  dndSourceTable.sync();
   var nodeList = dndSourceTable.getAllNodes();
   for (i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].id == source) {
+    if  (nodeList[i].id == source[0]) {
       mode = 'before';
       break;
     } else if (nodeList[i].id == destination) {
@@ -3362,25 +3194,10 @@ function moveTask(source, destination) {
       break;
     }
   }
-  var url = '../tool/moveTask.php?from=' + source + '&to=' + destination
-      + '&mode=' + mode;
-  loadContent(url, "planResultDiv", null, true, null);
-}*/
-function moveTask(source, destination) {
-  var mode = '';
-  var nodeList = dndSourceTable.getAllNodes();
-  for (i = 0; i < nodeList.length; i++) {
-    if  (nodeList[i].id == destination) {
-      mode = 'after';
-      break;
-    } else {
-      mode = 'before';
-      break;
-    }
-  }
   var url = '../tool/moveTask.php?from=' + source.join() + '&to=' + destination
       + '&mode=' + mode;
   loadContent(url, "planResultDiv", null, true, null);
+  
 }
 
 function indentTask(way) {

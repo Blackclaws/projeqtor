@@ -45,11 +45,6 @@
     <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
              saveDataToSession("contentPaneTopPortfolioPlanningDivHeight", dojo.byId("listDiv").offsetHeight, true);
-             /*dojo.xhrPost({
-               url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneTopPortfolioPlanningDivHeight"
-                  +"&value="+dojo.byId("listDiv").offsetHeight
-             });;*/
     </script>
    <?php include 'portfolioPlanningList.php'?>
   </div>

@@ -90,7 +90,8 @@ class Sql {
     try { 
     	$startMicroTime=microtime(true);
       $result = $cnx->query($sqlRequest);
-      if (isset($debugQuery) and $debugQuery) {
+      if (isset($debugQuery) and $debugQuery 
+      and ( $debugQuery===true or strtolower($debugQuery)==strtolower(substr($sqlRequest,0,strlen($debugQuery) ) ) )  ) {
         debugTraceLog(round((microtime(true) - $startMicroTime)*1000000)/1000000 . ";" . $sqlRequest);
       }
       if (! $result) {
