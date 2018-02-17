@@ -275,7 +275,7 @@ if ($type=='habilitation') {
         }
       }
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
-      if ($obj->parameterValue!=$val) {
+      if ($obj->parameterValue!=$val and $obj->parameterCode=="notificationSystemActiv") {
           $changeNotificationSystemActiv = true;
       }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM      
@@ -335,8 +335,8 @@ if ($type=='habilitation') {
 
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
   if ($changeNotificationSystemActiv) {
-        $forceRefreshMenu="globalParameter";
-        resetUser();
+     $forceRefreshMenu="globalParameter";
+     resetUser();
   }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM    
   Parameter::clearGlobalParameters();// force refresh 

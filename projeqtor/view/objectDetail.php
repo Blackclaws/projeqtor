@@ -923,7 +923,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo '&nbsp;';
       }
       
-      if (! $nobr) {
+      if (! $nobr and (!$hide or !$print)) {
         echo "</td></tr>";
       }
     } else if (substr ( $col, 0, 5 ) == '_Link' and ! $comboDetail) { // Display links to other objects
@@ -3494,7 +3494,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   if (! $refresh and ! $print)
     echo '</td></tr>';
   if (! $print) {
-    echo '<input id="NoteSectionCount" type="hidden" value="' . count ( $nbNotes ++ ) . '" />';
+    echo '<input id="NoteSectionCount" type="hidden" value="' . count ( $notes ) . '" />';
   }
 }
 

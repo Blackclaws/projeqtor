@@ -6814,8 +6814,6 @@ function startMultipleUpdateMode(objectClass) {
     return;
   }
   multiSelection=true;
-  // dojo.xhrPost({url:
-  // "../tool/saveDataToSession.php?idData=multipleMode&value=true"});
   formChangeInProgress=true;
   switchedModeBeforeMultiSelection=switchedMode;
   if (switchedModeBeforeMultiSelection) {
@@ -6855,8 +6853,6 @@ function endMultipleUpdateMode(objectClass) {
     unselectAllRows("objectGrid");
   }
   multiSelection=false;
-  // dojo.xhrPost({url:
-  // "../tool/saveDataToSession.php?idData=multipleMode&value=false"});
   formChangeInProgress=false;
   var sm='';
   if (switchedModeBeforeMultiSelection) {
@@ -7220,13 +7216,6 @@ function changeProjectSelectorType(displayMode) {
 	};
 	
 	saveDataToSession('projectSelectorDisplayMode', displayMode, true, callBack);
-  /*dojo.xhrPost({
-        url : "../tool/saveDataToSession.php?saveUserParam=true&idData=projectSelectorDisplayMode&value="
-            + displayMode,
-        load : function() {
-          loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
-        }
-      });*/
   if (dijit.byId('dialogProjectSelectorParameters')) {
     dijit.byId('dialogProjectSelectorParameters').hide();
   }
@@ -7632,13 +7621,6 @@ function historyShowHideWork() {
 	showHistory(dojo.byId('objectClass').value);
   };
   saveDataToSession("showWorkHistory", historyShowHideWorkStatus, null, callBack);
-  /*
-  dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?saveUserParam=false&idData=showWorkHistory&value="+historyShowHideWorkStatus,
-    load : function() {
-      showHistory(dojo.byId('objectClass').value);  
-    }
-  });*/
 }
 
 // ====================================================
@@ -8870,11 +8852,6 @@ function storePaneSize(paneName,sizeValue) {
   }
   arrayPaneSize[paneName]=sizeValue;
   saveDataToSession(paneName, sizeValue, true);
-  /*dojo.xhrPost({
-    url : "../tool/saveDataToSession.php?saveUserParam=true"
-       +"&idData="+paneName
-       +"&value="+sizeValue
-  });;*/
 }
 
 //gautier #showHideMenu

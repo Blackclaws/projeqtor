@@ -58,11 +58,6 @@
 		   <script type="dojo/connect" event="resize" args="evt">
          if (switchedMode) return;
            saveDataToSession("contentPaneTopDetailDivHeight<?php echo $objectClass;?>", dojo.byId("listDiv").offsetHeight, true);
-           /*dojo.xhrPost({
-               url : "../tool/saveDataToSession.php?saveUserParam=true"
-                  +"&idData=contentPaneTopDetailDivHeight<?php echo $objectClass;?>"
-                  +"&value="+dojo.byId("listDiv").offsetHeight
-             });;*/
        </script>
 		   <?php include 'objectList.php'?>
 		  </div>

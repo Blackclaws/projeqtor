@@ -133,7 +133,8 @@ class CommandMain extends SqlElement {
                                   "validatedWork"=>"readonly",
                                   "initialPricePerDayAmount"=>"hidden",
                                   "addPricePerDayAmount"=>"hidden",
-                                  "validatedPricePerDayAmount"=>"hidden"
+                                  "validatedPricePerDayAmount"=>"hidden",
+                                  "idProject"=>"required"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
