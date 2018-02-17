@@ -38,6 +38,11 @@ class Origin extends SqlElement {
   public $refId;
   public $idle;
   
+  private static $_fieldsAttributes = array(
+      "refType" => "hidden",
+      "refId" => "hidden",
+      "idle" => "hidden"
+  );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -60,5 +65,14 @@ class Origin extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
 
+  /**
+   * ==========================================================================
+   * Return the specific fieldsAttributes
+   *
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
 }
 ?>

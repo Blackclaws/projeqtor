@@ -795,28 +795,23 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             +'</span>';
         } else {
         	
-        	//ADD qCazelles - GANTT
-        	var tmp = vTaskList[i].getClass();
+        	var iconName = vTaskList[i].getClass();
         	if (vTaskList[i].getClass() == 'ComponentVersionhasChild') {
-        		tmp = 'ComponentVersion';
+        	  iconName = 'ComponentVersion';
         	}
         	else if (vTaskList[i].getClass() == 'ProductVersionhasChild') {
-        		tmp = 'ProductVersion';
+        	  iconName = 'ProductVersion';
         	}
-        	//END ADD qCazelles - GANTT
         	
-          vLeftTable += '<span class="dojoDndHandle handleCursor">'
-            + '<table><tr><td>'
-            + '<img style="width:8px" src="css/images/iconDrag.gif" />'
-            + '</td><td class="ganttIconBackground">'
-            //MODIF qCazelles - GANTT
-            //Old
-            //+ '<div class="icon'+ vTaskList[i].getClass() +'16" style="width:16px;height:16px;" >&nbsp;</div>'
-            //New
-            + '<div class="icon'+ tmp +'16" style="width:16px;height:16px;" >&nbsp;</div>'
-            //END MODIF qCazelles - GANTT
-            + '</td></tr></table>'
-            +'</span>';
+          vLeftTable += 
+              '<span class="dojoDndHandle handleCursor">'
+            + ' <table><tr>'
+            + '  <td class="ganttIconBackground">'
+            + '   <div class="icon'+ iconName +'16" style="width:16px;height:16px;" >&nbsp;</div>'
+            + '  </td>'
+            + '  <td><img style="width:8px" src="css/images/iconDrag.gif" /></td>'
+            + ' </tr></table>'
+            + '</span>';
         }
         vLeftTable += '</TD>'
           +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap title="' + vTaskList[i].getName() + '">';

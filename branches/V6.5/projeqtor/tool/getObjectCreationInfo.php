@@ -74,8 +74,10 @@ if (isset($_REQUEST ['destinationWidth'])) {
   </div>
   <div class="statusBar" id="directChangeStatusDiv" style="display:none;position:absolute;width:133px;zoom:0.9; -moz-transform: scale(0.9);padding:0px 4px 4px 4px;">
     <?php 
-  	$idType='id' . get_class($obj) . 'Type';
-  	$typeClass=get_class($obj) . 'Type';
+    $tmpClass=$objectClass;
+    if ($tmpClass=='TicketSimple') $tmpClass='Ticket';
+  	$idType='id' . $tmpClass . 'Type';
+  	$typeClass=$tmpClass . 'Type';
   	$table=SqlList::getList('Status','name',$obj->idStatus, false );
   	if (property_exists($obj,$idType) ) {
   		reset($table);
