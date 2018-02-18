@@ -1150,7 +1150,7 @@ class PlanningElement extends SqlElement {
 
   public function indent($way) {
   	$result=i18n('moveCancelled');
-  	$status="ERROR";
+  	$status="WARNING";
   	$objectClass=$this->refType;
   	$objectId=$this->refId;
   	$task=new $objectClass($objectId);
@@ -1214,7 +1214,10 @@ class PlanningElement extends SqlElement {
   				  } 
   				}
   			}
-  			if ($prec and $prec->refType=='Project' and $prec->refId!=$task->idProject) {
+  			if ($prec and $prec->idle and !$this->idle) {
+  			  $result=i18n('moveCancelledIdle');
+  			  $status="WARNING";
+  			} else if ($prec and $prec->refType=='Project' and $prec->refId!=$task->idProject) {
   				$task->idProject=$prec->refId;
     			$resTmp=$task->save();
     			if (getLastOperationStatus($resTmp)=="OK") {
