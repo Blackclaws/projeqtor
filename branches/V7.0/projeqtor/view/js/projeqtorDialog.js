@@ -6114,7 +6114,7 @@ function adminLaunchScript(scriptName,needRefresh) {
     }
   });
   if (scriptName == 'cronRun') {
-    if(needRefresh)setTimeout('loadContent("admin.php","centerDiv");', 1000);
+    if(needRefresh)setTimeout('loadContent("admin.php","centerDiv");', 3000);
   } else if (scriptName == 'cronStop' && needRefresh) {
     i=120;
     cronCheckIteration=5;
