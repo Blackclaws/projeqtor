@@ -318,6 +318,7 @@ class Cron {
     session_write_close();
     error_reporting(E_ERROR);
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
+    $cronCheckNotifications=-1;
     if (isNotificationSystemActiv()) {
         $cronCheckNotifications=self::getCheckNotifications();
     }
@@ -386,16 +387,16 @@ class Cron {
       
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
       // CheckNotifications : automatically generate notifications
-      if ($cronCheckNotifications>0 and isNotificationSystemActiv()) {
-            $cronCheckNotifications-=$cronSleepTime;
-            if ($cronCheckNotifications<=0) {
-                try { 
-                  self::checkNotifications();
-                } catch (Exception $e) {
-                        traceLog("Cron::run() - Error on checkNotifications()");
-                }
-                $cronCheckNotifications=Cron::getCheckNotifications();
-            }
+      if (isNotificationSystemActiv() and $cronCheckNotifications>0 ) {
+        $cronCheckNotifications-=$cronSleepTime;
+        if ($cronCheckNotifications<=0) {
+          try { 
+            self::checkNotifications();
+          } catch (Exception $e) {
+            traceLog("Cron::run() - Error on checkNotifications()");
+          }
+          $cronCheckNotifications=Cron::getCheckNotifications();
+        }
       }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
       
