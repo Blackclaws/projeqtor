@@ -79,7 +79,8 @@ class ComponentMain extends ProductOrComponent {
        "idProduct"=>"hidden", 
        "idComponent"=>"hidden",
        "idStatus"=>"required", //ADD qCazelles - Ticket #53
-       "idComponentType"=>"required" // ADD PBE - Ticket #53
+       "idComponentType"=>"required", // ADD PBE - Ticket #53
+       "idProductType"=>"hidden"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor',

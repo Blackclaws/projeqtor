@@ -585,12 +585,14 @@ class Plugin extends SqlElement {
       } else {
         echo '<br/><div class="messageWARNING" style="text-align:left;height:40px">';
         traceLog("=== SCREEN CUSTOMIZATION ISSUE =====================================");
-        echo "Some screen customizations are not consistant any more with current version :<br/>";
-        traceLog("Some screen customizations are not consistant any more with current version :");
+        $msg=i18n("screenCustomizationErrorExist");
+        if (substr($msg,0,1)=='[') $msg="Some screen customizations are not consistent any more with current version";
+        echo "$msg :<br/>";
+        traceLog("$msg :");
         $allFixed=true;
         foreach ($errorClass as $class) {
-          echo " - $class ";
-          traceLog(" - $class");
+          echo " - ".i18n($class);
+          traceLog(" - ".i18n($class));
           if (function_exists('screenCustomizationFixDefinition')) {
             if (screenCustomizationFixDefinition($class)=='OK') {
             } else {
@@ -602,11 +604,15 @@ class Plugin extends SqlElement {
           echo "<br/>";
         }
         if (!$allFixed) {
-          echo "Please access each screen on customization plugin to fix the issue (Plugin V5.0 or over is required)";
-          traceLog("Please access each screen customization with plugin to fix the issue (Plugin V5.0 or over is required)");
+          $msg=i18n("screenCustomizationErrorRemaining");
+          if (substr($msg,0,1)=='[') $msg="Please access each screen on customization plugin to fix the issue (Plugin V5.0 or over is required)";
+          echo $msg;
+          traceLog($msg);
         } else {
-          echo "Screen customizations have been fixed automatically ;)";
-          traceLog("Screen customizations have been fixed automatically ;)");
+          $msg=i18n("screenCustomizationErrorFixed");
+          if (substr($msg,0,1)=='[') $msg="Screen customizations have been fixed automatically ;)";
+          echo $msg;
+          traceLog($msg);
         }
         echo '</div>';
         return ($allFixed)?"OK":"KO";

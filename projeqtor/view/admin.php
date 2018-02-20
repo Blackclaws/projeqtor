@@ -77,24 +77,39 @@
                     echo i18n($cronStatus);
                     if ($cronStatus=='running') {
                     	$arrayTimes=Cron::getActualTimes();
-                    	if (isset($arrayTimes['SleepTime'])) {
+                    	$arrayDisabled=array();
+                    	if (isset($arrayTimes['SleepTime']) and $arrayTimes['SleepTime']!=-1 ) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronSleepTime', array($arrayTimes['SleepTime'])) . '</i>';
-                    	}
-                    	if (isset($arrayTimes['CheckDates'])) {
+                    	} 
+                    	if (isset($arrayTimes['CheckDates']) and $arrayTimes['CheckDates']!=-1) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckDates', array($arrayTimes['CheckDates'])) . '</i>';
+                    	} else {
+                    	  $arrayDisabled[]="CheckDates";
                     	}
-                    	if (isset($arrayTimes['CheckImport'])) {
+                    	if (isset($arrayTimes['CheckImport']) and $arrayTimes['CheckImport']!=-1) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckImport', array($arrayTimes['CheckImport'])) . '</i>';
+                    	} else {
+                    	  $arrayDisabled[]="CheckImport";
                     	}
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
-                      if (isset($arrayTimes['CheckNotifications']) and isNotificationSystemActiv()) {
+                      if (isset($arrayTimes['CheckNotifications']) and isNotificationSystemActiv() and $arrayTimes['CheckNotifications']!=-1) {
                         $nbMinutes = $arrayTimes['CheckNotifications'];
                         echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckNotifications', array($nbMinutes)) . '</i>';
-                      }
+                      } else {
+                    	  $arrayDisabled[]="CheckNotifications";
+                    	}
 // END - ADD BY TABARY - NOTIFICATION SYSTEM                        
-                      if (isset($arrayTimes['CheckEmails'])) {
+                      if (isset($arrayTimes['CheckEmails']) and $arrayTimes['CheckEmails']!=-1) {
                         echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckEmails', array($arrayTimes['CheckEmails'])) . '</i>';
-                      }
+                      }else {
+                    	  $arrayDisabled[]="CheckEmails";
+                    	}
+                    	if (count($arrayDisabled)>0) {
+                    	  echo '<br/>'.i18n("disabled");
+                    	  foreach ($arrayDisabled as $disabled) {
+                    	    echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n($disabled) . '</i>';
+                    	  }
+                    	}
                     }
                   ?>
                 </td>
