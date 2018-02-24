@@ -40,6 +40,7 @@ class Cron {
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
   private static $checkImport;
   private static $checkEmails;
+  private static $checkMailGroup;
   private static $runningFile;
   private static $timesFile;
   private static $stopFile;
@@ -108,6 +109,7 @@ class Cron {
                  .'|CheckDates='.self::getCheckDates()
                  .'|CheckImport='.self::getCheckImport()
                  .'|CheckEmails='.self::getCheckEmails()
+                 .( Mail::isMailGroupingActiv() ?'|CheckMailGroup='.self::getCheckMailGroup():'')
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM            
                  .(isNotificationSystemActiv()?'|CheckNotifications='.self::getCheckNotifications():'')
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
@@ -174,6 +176,25 @@ class Cron {
     if (! $checkEmails) {$checkEmails=5*60;} // Default=every 5 mn
     self::$checkEmails=$checkEmails;
     return self::$checkEmails;
+  }  
+  public static function getCheckMailGroup() {
+    self::init();
+    if (self::$checkMailGroup) {
+      return self::$checkMailGroup;
+    }
+    $checkMailGroup=Mail::getMailGroupPeriod(); 
+    if (! $checkMailGroup or $checkMailGroup<0) {
+      $checkMailGroup=-1;
+    } else {
+      $checkMailGroup=$checkMailGroup/2; // Check every half period
+      if ($checkMailGroup<self::getSleepTime()) {
+        $checkMailGroup=self::getSleepTime();
+      } else if ($checkMailGroup>60) { // check at least every minute;
+        $checkMailGroup=60;
+      }
+    }
+    self::$checkMailGroup=$checkMailGroup;
+    return self::$checkMailGroup;
   }  
   
   public static function check() {
@@ -326,6 +347,7 @@ class Cron {
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
     $cronCheckEmails=self::getCheckEmails();
+    $cronCheckMailGroup=self::getCheckMailGroup();
     $cronSleepTime=self::getSleepTime();
     self::setActualTimes();
     self::removeStopFlag();
@@ -371,6 +393,18 @@ class Cron {
 	        }
 	        $cronCheckEmails=Cron::getCheckEmails();
 	      }
+      }
+      // CheckEmails : automatically import notes from Reply to mails
+      if ($cronCheckMailGroup>0) {
+        $cronCheckMailGroup-=$cronSleepTime;
+        if ($cronCheckMailGroup<=0) {
+          try {
+            self::checkMailGroup();
+          } catch (Exception $e) {
+            traceLog("Cron::run() - Error on checkMailGroup()");
+          }
+          $cronCheckMailGroup=Cron::getCheckMailGroup();
+        }
       }
       // Check Database Execution
       foreach (self::$listCronExecution as $key=>$cronExecution){
@@ -688,6 +722,130 @@ class Cron {
   		} else {
   		  $mailbox->markMailAsUnread($mailId);
   		}
+    }
+  }
+  
+  public static function checkMailGroup() {
+    self::init();
+    global $globalCronMode, $globalCatchErrors;
+    $globalCronMode=true;
+    $globalCatchErrors=true;
+    $period=Mail::getMailGroupPeriod();
+    if ($period<=0) return;
+    // Direct SQL : allowed here because very technical query, requiring high performance
+    //              attention, in postgresql, fields are always returned in lowercase
+    $mts=new MailToSend();
+    $mtsTable=$mts->getDatabaseTableName();
+    $dateToCheck=date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")) - $period);
+    // Get list of items with last stored email (in MailToSend) older than period : must send the emails 
+    $query="select refType as reftype, refId as refid, max(recordDateTime) as lastdate from $mtsTable group by refType, refId having max(recordDateTime)<'$dateToCheck'";
+    $result = Sql::query($query);
+    $arrayMailToSend=array();
+    if (Sql::$lastQueryNbRows > 0) {
+      $line = Sql::fetchLine($result);
+      while ($line) {
+        $arrayMailToSend[]=array('refType'=>$line['reftype'], 'refId'=>$line['refid'],'date'=>$line['lastdate']);
+        $line = Sql::fetchLine($result);
+      }
+    } else {
+      return;
+    }
+    // Here, $arrayMailToSend contains 1 line per element for wich mails have to be sent 
+    $error=false;
+    Sql::beginTransaction();
+    $groupRule=Parameter::getGlobalParameter('mailGroupDifferent');
+    if (!$groupRule) $groupRule='LAST';
+    $idToPurge=array();
+    $sepLine="<table style='width:95%'><tr><td style='border-bottom:3px solid #545381'>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table>";
+    foreach ($arrayMailToSend as $toSendItem) { // For each item in $arrayMailToSend
+      // List all emails stored in MailToSend for the item
+      $refType=$toSendItem['refType'];
+      $refId=$toSendItem['refId'];
+      $crit=array('refType'=>$refType, 'refId'=>$refId);
+      $list=$mts->getSqlElementsFromCriteria($crit,false,null,'recordDateTime desc');
+      $item=new $refType($refId);
+      $arrayMail=array();
+      foreach ($list as $toSend) { // For each email to send
+        if ($toSend->recordDateTime>$toSendItem['date']) continue; // Found a brand new email, do not take it into account, will be included in next period loop 
+        $idToPurge[]=$toSend->id; // Store ids of MailToSend that need to be purge after sending email
+        $key=0; // For $groupRule=='ALL' or $groupRule=='MERGE'
+        if ($groupRule=='ALL') $key=$toSend->idEmailTemplate;
+        if ( !isset($arrayMail[$key])) {
+          if ($toSend->template=='basic') {
+            $template=$item->getMailDetail();
+          } else {
+            $templateObj=new EmailTemplate($toSend->idEmailTemplate);
+            $template=$item->getMailDetailFromTemplate($templateObj->template);
+          }
+          $arrayMail[$key]=array(
+            'newerDate'=>$toSend->recordDateTime,
+            'olderdate'=>$toSend->recordDateTime,
+            'idEmailTemplate'=>$toSend->idEmailTemplate,
+            'nameTemplate'=>$toSend->template,
+            'template'=>$template,
+            'title'=>$toSend->title,
+            'allTitles'=>array($toSend->title),
+            'allDates'=>array($toSend->recordDateTime),
+            'allTemplates'=>array($toSend->template),
+            'dest'=>$toSend->dest      
+          );
+        } else {
+          // Merge dest
+          $arr1=explode(',',$arrayMail[$key]['dest']);
+          $arr2=explode(',',$toSend->dest);
+          $arrMerged=array_unique(array_merge($arr1, $arr2));
+          $arrayMail[$key]['dest']=implode(',', $arrMerged);
+          // Merge titles
+          $arrayMail[$key]['allTitles'][]=$toSend->title;
+          $arrayMail[$key]['allDates'][]=$toSend->recordDateTime;
+          // Merge template (if option is to merge templates)
+          if ($groupRule=='MERGE' and ! in_array($toSend->template, $arrayMail[$key]['allTemplates'])) {
+            $arrayMail[$key]['allTemplates'][]=$toSend->template;
+            $body=$arrayMail[$key]['template'];
+            if ($toSend->template=='basic') {
+              $template=$item->getMailDetail();
+            } else {
+              $templateObj=new EmailTemplate($toSend->idEmailTemplate);
+              $template=$item->getMailDetailFromTemplate($templateObj->template);
+            }
+            $body.=$sepLine.$template;
+            $arrayMail[$key]['template']=$body;
+          }
+        }
+      }
+      foreach ($arrayMail as $mail) {
+        $dest=$mail['dest'];
+        $title=$mail['title'];
+        $body='<html>';
+        $body.='<head><title>' . $title .'</title></head>';
+        $body.='<body style="font-family: Verdana, Arial, Helvetica, sans-serif;">';
+        if (count($mail['allTitles'])>1) {
+          $body.="<table style='width:95%'>";
+          $body.="<tr><td colspan='2' style='text-align:center;background-color: #E0E0E0;font-weight:bold'>".i18n("mailGroupTitles")."</td></tr>";
+          foreach ($mail['allTitles'] as $idx=>$title) {
+            $body.="<tr><td style='width:10%;padding:3px 10px'>".htmlFormatDateTime($mail['allDates'][$idx])."</td><td style='padding:3px 10px'>$title</td></tr>";
+          }
+          $body.="";
+          $body.="";
+          $body.="</table>";
+          $body.=$sepLine;
+        }
+        $body.=$mail['template'];
+        $body.='</body>';
+        $body.='</html>';
+        $resultMail[] = sendMail($dest, $title, $body, $item, null, null, null, null, null );
+      }
+    }
+    
+    // Puge sent emails from MailToSend
+    $listId=implode(',',$idToPurge);
+    $resPurge=$mts->purge("id in ($listId)");
+    
+    // Finalize
+    if ($error) {
+      Sql::rollbackTransaction();
+    } else {
+      Sql::commitTransaction();
     }
   }
 }

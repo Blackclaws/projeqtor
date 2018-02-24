@@ -55,7 +55,7 @@ if (getLastOperationStatus($result)=='OK') {
 if ($mailResult1 or $mailResult2) {
   $pos=strpos($result,'<input type="hidden"');
   if ($pos) {
-    $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+    $result=substr($result, 0,$pos).' - ' . Mail::getResultMessage( ($mailResult1=='TEMP')?$mailResult1:$mailResult2 ).substr($result, $pos);
   }
 }
 // Message of correct saving

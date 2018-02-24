@@ -24,10 +24,10 @@ CREATE TABLE `${prefix}emailtemplate` (
 CREATE INDEX `emailtemplateMailable` ON `${prefix}emailtemplate` (`idMailable`);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
-(305,'menuEmailTemplate', 88, 'object', 585, 'ReadWriteEnvironment', 0, 'Automation');
+(184,'menuEmailTemplate', 88, 'object', 585, 'ReadWriteEnvironment', 0, 'Automation');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
-(1, 305, 1);
+(1, 184, 1);
 
 ALTER TABLE `${prefix}statusmail`
 ADD `idEmailTemplate` int(12) UNSIGNED DEFAULT NULL;
@@ -171,64 +171,64 @@ INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`) VALUES
 -- MENU                  For notification                   --
 -- -------------------------------------------------------- --
 INSERT INTO `${prefix}menu` (`id`, `name`,           `idMenu`,`type`,  `sortOrder`,`level`,  `idle`,`menuClass`) 
-                      VALUES(301, 'menuNotification', 11,     'object', 431,       'Project', 0,    'Admin Notification');
+                      VALUES(185, 'menuNotification', 11,     'object', 431,       'Project', 0,    'Admin Notification');
 -- -------------------------------------------------------- --
 -- MENU               For notificationDefinition            --
 -- -------------------------------------------------------- --
 INSERT INTO `${prefix}menu` (`id`,`name`,                     `idMenu`,`type`,  `sortOrder`,`level`,               `idle`,`menuClass`) 
-                      VALUES(302, 'menuNotificationDefinition',88,    'object', 672,       'ReadWriteEnvironment', 0,     'Automation Notification');
+                      VALUES(186, 'menuNotificationDefinition',88,    'object', 672,       'ReadWriteEnvironment', 0,     'Automation Notification');
 
 -- -------------------------------------------------------- --
 --                     HABILITATION                         --
 -- -------------------------------------------------------- --
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 1,           301,    1);
+                             VALUES( 1,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 1,           302,    1);
+                             VALUES( 1,           186,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 2,           301,    1);
+                             VALUES( 2,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 3,           301,    1);
+                             VALUES( 3,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 4,           301,    1);
+                             VALUES( 4,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 5,           301,    1);
+                             VALUES( 5,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 6,           301,    1);
+                             VALUES( 6,           185,    1);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`,`allowAccess`) 
-                             VALUES( 7,           301,    1);
+                             VALUES( 7,           185,    1);
 
 -- -------------------------------------------------------- --
 --                     ACCESS RIGHT                         --
 -- -------------------------------------------------------- --
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 1,           301,    8);
+                             VALUES( 1,           185,    8);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 2,           301,    3);
+                             VALUES( 2,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 3,           301,    3);
+                             VALUES( 3,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 4,           301,    3);
+                             VALUES( 4,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 5,           301,    3);
+                             VALUES( 5,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 6,           301,    3);
+                             VALUES( 6,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 7,           301,    3);
+                             VALUES( 7,           185,    3);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 1,           302,    1000001);
+                             VALUES( 1,           186,    1000001);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 2,           302,    1000002);
+                             VALUES( 2,           186,    1000002);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 3,           302,    1000002);
+                             VALUES( 3,           186,    1000002);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 4,           302,    1000002);
+                             VALUES( 4,           186,    1000002);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 5,           302,    1000002);
+                             VALUES( 5,           186,    1000002);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 6,           302,    1000002);
+                             VALUES( 6,           186,    1000002);
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`) 
-                             VALUES( 7,           302,    1000002);
+                             VALUES( 7,           186,    1000002);
 
 -- -------------------------------------------------------- --
 -- PBE - Change Meeting structure so that we can have       -- 

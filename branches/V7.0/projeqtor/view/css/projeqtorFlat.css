@@ -984,6 +984,10 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconMail22 { background-image: url(customIcons/blue/iconMail.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconMail16 { background-image: url(customIcons/blue/iconMail.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatBlue .iconMailToSend32 { background-image: url(customIcons/blue/iconMailToSend.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconMailToSend22 { background-image: url(customIcons/blue/iconMailToSend.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconMailToSend16 { background-image: url(customIcons/blue/iconMailToSend.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatBlue .iconMeasureUnit32 { background-image: url(customIcons/blue/iconMeasureUnit.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconMeasureUnit22 { background-image: url(customIcons/blue/iconMeasureUnit.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconMeasureUnit16 { background-image: url(customIcons/blue/iconMeasureUnit.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -2328,6 +2332,10 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconMail32 { background-image: url(customIcons/red/iconMail.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconMail22 { background-image: url(customIcons/red/iconMail.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconMail16 { background-image: url(customIcons/red/iconMail.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconMailToSend32 { background-image: url(customIcons/red/iconMailToSend.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconMailToSend22 { background-image: url(customIcons/red/iconMailToSend.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconMailToSend16 { background-image: url(customIcons/red/iconMailToSend.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatRed .iconMeasureUnit32 { background-image: url(customIcons/red/iconMeasureUnit.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconMeasureUnit22 { background-image: url(customIcons/red/iconMeasureUnit.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -3675,6 +3683,10 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconMail22 { background-image: url(customIcons/green/iconMail.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconMail16 { background-image: url(customIcons/green/iconMail.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGreen .iconMailToSend32 { background-image: url(customIcons/green/iconMailToSend.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconMailToSend22 { background-image: url(customIcons/green/iconMailToSend.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconMailToSend16 { background-image: url(customIcons/green/iconMailToSend.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatGreen .iconMeasureUnit32 { background-image: url(customIcons/green/iconMeasureUnit.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconMeasureUnit22 { background-image: url(customIcons/green/iconMeasureUnit.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconMeasureUnit16 { background-image: url(customIcons/green/iconMeasureUnit.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -5019,6 +5031,10 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconMail32 { background-image: url(customIcons/grey/iconMail.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconMail22 { background-image: url(customIcons/grey/iconMail.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconMail16 { background-image: url(customIcons/grey/iconMail.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconMailToSend32 { background-image: url(customIcons/grey/iconMailToSend.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconMailToSend22 { background-image: url(customIcons/grey/iconMailToSend.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconMailToSend16 { background-image: url(customIcons/grey/iconMailToSend.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGrey .iconMeasureUnit32 { background-image: url(customIcons/grey/iconMeasureUnit.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconMeasureUnit22 { background-image: url(customIcons/grey/iconMeasureUnit.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

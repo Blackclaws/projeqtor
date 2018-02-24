@@ -1003,7 +1003,7 @@ abstract class SqlElement {
       if (stripos ( $returnValue, 'id="lastOperationStatus" value="OK"' ) > 0) {
         $mailResult = $this->sendMailIfMailable ( $newItem, $statusChanged, false, $responsibleChanged, false, false, false, $descriptionChange, $resultChange, false, false, true,false,false );
         if ($mailResult) {
-          $returnValue = str_replace ( '${mailMsg}', ' - ' . i18n ( 'mailSent' ), $returnValue );
+          $returnValue = str_replace ( '${mailMsg}', ' - ' . Mail::getResultMessage($mailResult), $returnValue );
         } else {
           $returnValue = str_replace ( '${mailMsg}', '', $returnValue );
         }
@@ -4852,23 +4852,42 @@ abstract class SqlElement {
       $emailTemplateTab[0]->template = $this->parseMailMessage ( $directStatusMail->message ) . '<br/><br/>' . $emailTemplateTab[0]->template;
     }
     //    BEGIN add gmartin Ticket #157
+    $groupMails=Parameter::getGlobalParameter('mailGroupActive');
+    if ($directStatusMail) $groupMails='NO';
     while ($j--) {
-      if ($emailTemplateTab[$j]->name == 'basic') {
-        $emailTemplateTab[$j]->template = $this->getMailDetail();
-        $emailTemplateTab[$j]->title = $title;
-        $emailTemplateTab[$j]->template = '<html><head><title>' . $title .
-            '</title></head><body style="font-family: Verdana, Arial, Helvetica, sans-serif;">' .
-            $emailTemplateTab[$j]->template . '</body></html>';
-      } else {
-        $emailTemplateTab[$j]->template = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->template);
-        if ($emailTemplateTab[$j]->title == '' or $emailTemplateTab[$j]->title == null)
+      if ($groupMails=='YES') {
+        $temp=new MailToSend();
+        $temp->idUser=getCurrentUserId();
+        $temp->refType=get_class($this);
+        $temp->refId=$this->id;
+        $temp->idEmailTemplate=$emailTemplateTab[$j]->id;
+        $temp->template=$emailTemplateTab[$j]->name;
+        $temp->title=$title;
+        $temp->dest=$destTab[$emailTemplateTab[$j]->id];
+        $temp->recordDateTime=date('Y-m-d H:i:s');
+        $tempRes=$temp->save();
+        $resultMail='TEMP';
+      } else { 
+        if ($emailTemplateTab[$j]->name == 'basic') {
+          $emailTemplateTab[$j]->template = $this->getMailDetail();
+          if ($directStatusMail and isset ( $directStatusMail->message )) {
+            $emailTemplateTab[$j]->template = $this->parseMailMessage ( $directStatusMail->message ) . '<br/><br/>' . $emailTemplateTab[$j]->template;
+          }
           $emailTemplateTab[$j]->title = $title;
-        else 
-          $emailTemplateTab[$j]->title = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->title);
+          $emailTemplateTab[$j]->template = '<html><head><title>' . $title .
+              '</title></head><body style="font-family: Verdana, Arial, Helvetica, sans-serif;">' .
+              $emailTemplateTab[$j]->template . '</body></html>';
+        } else {
+          $emailTemplateTab[$j]->template = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->template);
+          if ($emailTemplateTab[$j]->title == '' or $emailTemplateTab[$j]->title == null)
+            $emailTemplateTab[$j]->title = $title;
+          else 
+            $emailTemplateTab[$j]->title = $this->getMailDetailFromTemplate($emailTemplateTab[$j]->title);
+        }
+        $resultMail[] = sendMail($destTab[$emailTemplateTab[$j]->id], $emailTemplateTab[$j]->title,
+            $emailTemplateTab[$j]->template,
+            $this, null, $sender, null, null, $references );
       }
-      $resultMail[] = sendMail($destTab[$emailTemplateTab[$j]->id], $emailTemplateTab[$j]->title,
-          $emailTemplateTab[$j]->template,
-          $this, null, $sender, null, null, $references );
     }
     //END add gmartin 
     if ($directStatusMail) {
