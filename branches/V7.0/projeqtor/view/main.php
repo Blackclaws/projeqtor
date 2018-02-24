@@ -568,11 +568,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
      if ($hideMenu){
        $leftWidth="32px";
      }
-    //$IconSizeMenuHide=Parameter::getUserParameter('paramIconSize');
-    $IconSizeMenuHide = 16;
+     //$IconSizeMenuHide = 16;
+    $IconSizeMenuHide=Parameter::getUserParameter('paramIconSize');
     $IconSizeMenuHide2 = $IconSizeMenuHide+5;
    ?>
-  <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:51px; bottom:32px; width:<?php echo $IconSizeMenuHide2;?>px;">
+  <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:81px; bottom:0px; width:<?php echo $IconSizeMenuHide2;?>px;">
     <?php include "menuHideMenu.php"; ?> 
     <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-22px; bottom:2px;z-index:949">
 		  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
@@ -583,7 +583,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 		</div>
   </div> 
   
-  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $leftWidth ?>; bottom:35px;z-index:999998">
+  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $IconSizeMenuHide2 ?>; bottom:0px;z-index:999998">
 	  <a onClick="hideMenuBarShowMode2();" id="buttonSwitchedMenuBarShow" title="" >
 	    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
 	      <div class='iconHideStream22' style='' >&nbsp;</div>
@@ -592,7 +592,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	</div>
 	
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
-    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $leftWidth;?>">
+    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $IconSizeMenuHide2;?>">
       <script type="dojo/connect" event="resize" args="evt">
          if (hideShowMenuInProgress) return;
          if (dojo.byId("leftDiv").offsetWidth>35) 
@@ -751,7 +751,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                                     document.getElementById("menuBarNotificationCount").style.visibility = "visible";
                                     document.getElementById("countNotifications").innerHTML = totalCount;
                                 }
+                                loadContent("../view/menuNotificationRead.php", "drawNotificationUnread");  
                             }
+                            
                             return notificationStore.getValue(item, "iconClass");
                         }
                     </script>
@@ -786,180 +788,141 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     $showMenuBar='YES';
     //if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
     $iconSize+=9;?>
-    <div id="toolBarDiv" style="height:<?php echo ($iconSize+10);?>px" dojoType="dijit.layout.ContentPane" region="top"  >
+    <div id="toolBarDiv" style="height:30px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
+    
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center">
     </div>
-    <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom" style="height:28px; position:absolute; bottom:0px;">
+    
+    <div id="statusBarDivBottom" dojoType="dijit.layout.ContentPane" region="bottom" style="overflow:visible;display:block;height:0px; position:absolute; bottom:0px;">
+       <div id="dialogReminder" >
+         <div id="reminderDiv" style="width:100%;height: 150px"></div>
+          <div style="width:100%; height:15%; text-align:right">
+            <?php echo i18n("remindMeIn");?>
+           <input type="input" dojoType="dijit.form.TextBox" id="remindAlertTime" name="remindAletTime" value="15" style="width:25px" />
+            <?php echo i18n("shortMinute");?>
+           <button dojoType="dijit.form.Button" onclick="setAlertRemindMessage();">
+                    <?php echo i18n("remind");?>
+           </button>
+         </div>
+         <div style="width:100%; height:50px; text-align:right">
+           <table><tr><td width="80%">
+           <span id="markAllAsReadButtonDiv" >
+        	 <button  dojoType="dijit.form.Button" id="markAllAsReadButton" onclick="setAllAlertReadMessage();">
+        	          <?php echo i18n("markAllAsRead");?>
+        	 </button>
+        	 &nbsp;
+        	 </span>
+        	 </td><td>
+        	 <button  dojoType="dijit.form.Button" onclick="setAlertReadMessage();">
+        	          <?php echo i18n("markAsRead");?>
+        	 </button>
+        	 </td></tr></table>
+         </div>
+        </div>
+       
+    </div>
+    
+    <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:48px; position:absolute; top:30px;">
       <table width="100%">
-        <tr>
-          <td width="5%;"  >
-            <div class="pseudoButton disconnectTextClass" style="min-width:100px;" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
-              <table style="width:100%">
-                <tr>
-                  <td>
-                    <div class="disconnectClass">&nbsp;</div>
-                  </td>
-                  <td>
-                    &nbsp;<?php echo i18n('disconnect'); ?>&nbsp;&nbsp;
-                  </td>
-                </tr>
-              </table>    
-            </div>
-          </td>
-          <td width="1px">&nbsp;</td>
-          <!--           KROWRY -->      
-          <td width="1px">
-            <div  class="pseudoButtonFullScreen" style="width:28px;" onclick="toggleFullScreen()">
-              <table>
-                <tr>
-                  <td style="width:28px">
-                    <?php echo formatIcon('FullScreen', 32);?>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </td> 
-          <td width="1px">&nbsp;</td>
-          <td width="5%">
-            <?php 
-            $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menuUserParameter'));
-            $buttonUserParameter=securityCheckDisplayMenu($menu->id,substr($menu->name,4));
-            if ($buttonUserParameter) {?>
-            <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
-              <table style="width:100%">
-                <tr>
-                <?php $user=getSessionUser();
-                       $imgUrl=Affectable::getThumbUrl('User',$user->id, 22,true);
-                  if ($imgUrl) {?>  
-                  <td style="width:24px;position:relative;vertical-align:middle;position:relative;">          
-                    <img style="border-radius:13px;height:26px" src="<?php echo $imgUrl; ?>" />
-                  </td>
-                <?php } else {?>
-                  <td style="width:24px;padding-top:2px;">
-                    <div class="iconUserParameter22">&nbsp;</div> 
-                  </td>
-                <?php }?>
-                  <td style="vertical-align:middle;">&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
-                </tr>
-              </table>      
-            </div>
-            <?php } else {?>
-            <table >
-              <tr>
-                <td>
-                  <img style="height:24px" src="css/images/iconUser22.png" />
-                </td>
-                <td>&nbsp;<?php echo getSessionUser()->name; ?>&nbsp;&nbsp;</td>
-              </tr>
-            </table>    
-            <?php }?>
-          </td> 
-          <td width="1px">&nbsp;</td>
-          <td width="5%" style="vertical-align: top;">  
-            <div class="pseudoButton" onclick="hideShowMenu();" style="width:150px">
-              <table >
-                <tr>
-                  <td style="width:40px">
-                    <div class="dijitButtonIcon dijitButtonIconHideMenu"></div>
-                  </td>
-                  <td id="buttonHideMenuLabel"><?php echo i18n("buttonHideMenu");?></td>
-                </tr>
-              </table>    
-            </div>
-          </td>
-          <td width="1px">&nbsp;</td>
-          <td width="5%" style="vertical-align: top;">  
-            <div class="pseudoButton" onclick="switchMode();" style="width:150px">
-              <table >
-                <tr>
-                  <td style="width:40px">
-                    <div class="dijitButtonIcon dijitButtonIconSwitchMode"></div>
-                  </td>
-                  <td id="buttonSwitchModeLabel">
-                    <?php 
-                    if (sessionValueExists('switchedMode') and getSessionValue('switchedMode')!='NO') {
-                      echo i18n("buttonStandardMode");
-                    } else {
-                      echo i18n("buttonSwitchedMode");
-                    }?>
-                  </td>
-                </tr>
-              </table>    
-            </div>
-          </td>  
-<!-- BEGIN - CHANGE BY TABARY - NOTIFICATION SYSTEM -->          
-<!--          <td width="64%" style="vertical-align: middle;" > -->
-          <td width="59%" style="vertical-align: middle;" >
-<!-- END - CHANGE BY TABARY - NOTIFICATION SYSTEM -->          
-            <div id="statusBarMessageDiv" style="text-align: left">
-              <?php htmlDisplayDatabaseInfos();?>
-            </div>
-          </td>
-          
-<!-- BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM -->          
-        <?php if(isNotificationSystemActiv() and securityCheckDisplayMenu(null,'Notification')) {?>
-          <td title="<?php echo i18n('sectionNotification');?>" width="5%" style="vertical-align: middle;position: relative" >
-            <div id="statusBarNotificationDiv" style="text-align: center;position: absolute;top:-1px">
-                    <div id="menuBarNotificationCount" class="iconNotification32" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;" 
-                           onClick="
-                                      var ac = dijit.byId('accordionLeftBottomDiv');
-                                      ac.selectChild(dijit.byId('notificationAccordion'));
-                                      loadContent('objectMain.php?objectClass=Notification','centerDiv');
-                                  " >
-                        <div id="countNotifications" class="menuBarNotificationCount" style="text-align: center;">0</div>
-                    </div>
-            </div>
-          </td>
-        <?php } ?>          
-<!-- END - ADD BY TABARY - NOTIFICATION SYSTEM -->                    
-          
-          <td width="10%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
-            <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
-              <table style="width:100%">
-                  <tr>
-                    <td class="dijitTreeRow" style="position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
-                      <?php echo "$copyright<br>$version";?>
-                    </td>
-                    <td  style="width:35px">
-                      <img style="height:28px;width:28px" src="img/logoSmall.png" />
-                    </td>
-                  </tr>
-                </table>
-            </a></div>            
-          </td>
-        </tr>
-      </table>  
-    </div>    
-  </div>
+      
+       <td width="220px" id="menuBarLeft" >
+      
+        <div style="overflow:hidden;position: absolute; left:2px; top: 8px;width:205px; background: transparent; color: #FFFFFF !important; border:1px solid #FFF;vertical-align:middle;" 
+        onChange="menuFilter(this.value);" id="menuSelector" id="menuSelector"
+        onMouseEnter="showMenuList();" onMouseLeave="hideMenuList(300);"
+        dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
+        ><?php foreach ($allMenuClass as $cl=>$clVal) {
+          $selected=($defaultMenu==$cl)?' selected=selected ':'';
+          echo '<option value="'.$cl.'" '.$selected.' style="color:#fff !important;">';
+          echo '<div style="z-index:9999;height:25px;vertical-align:middle;top:2px;width:190px;" value="'.$cl.'" '.$selected.' class="menuSelectList" onMouseOver="clearTimeout(closeMenuListTimeout);" onMouseLeave="hideMenuList(200,\''.$cl.'\');">';
+          echo '  <div style="z-index:9;position:absolute;height:23px;width:25px;left:1px;background-color:#ffffff;border-radius:5px;opacity: 0.5;">&nbsp;</div>';
+          echo '  <span style="z-index:10;position:absolute;height:22px;left:2px;" class="icon'.ucfirst($cl).'22">&nbsp;</span>';
+          echo '  <span style="z-index:11;position:absolute;left:30px;top:9px;">'. i18n('menu'.ucfirst($clVal)).'</span>';
+          echo '</div>';
+          echo '</option>';
+      }?></div>
+      
+      <?php if ($showMenuBar!='NO') {?>    
+      
+        <button id="menuBarMoveLeft" dojoType="dijit.form.Button" showlabel="false"
+         title="<?php echo i18n('menuBarMoveLeft');?>" class="buttonMove"
+         iconClass="leftBarIcon" style="position:relative; left:220px; width: 14px;height:48px;margin:0;vertical-align:middle">
+           <script type="dojo/method" event="onMouseDown">         
+           menuBarMove=true;
+           moveMenuBar('left');
+         </script>
+           <script type="dojo/method" event="onMouseUp">
+           moveMenuBarStop();
+         </script>
+           <script type="dojo/method" event="onClick">
+           moveMenuBarStop();
+         </script>
+        </button>    
+      </td>
+     
+     <td width="85%">       
+          <div id="menuBarVisibleDiv" style="height:<?php echo $iconSize+9;?>px;width:<?php echo ($cptAllMenu*56);?>px; position: absolute; top: 0px; left:248px; z-index:0">
+          <div style="width: 100%; height:48px; position: absolute; left: 0px; top:1px; overflow:hidden; z-index:0">
+    	    <div name="menubarContainer" id="menubarContainer" style="width:<?php echo ($cptAllMenu*56);?>px; position: relative; left:0px; overflow:hidden;z-index:0">
+    	      <table><tr>
+    	       <?php drawAllMenus($menuList);?>
+    	     </tr></table>
+    	    </div>
+          </div>
+          </div>
+      </td>
+<?php } else {?>
+    <td style="width:80%"><div id="menuBarVisibleDiv"></div></td>
+<?php }?>
+    <td width="35px" align="center" id="menuBarRight" class="statusBar" style="right:0;position:absolute;z-index:30;">
+      <table><tr><td rowspan="2">
+<?php if ($showMenuBar!='NO') {?>   
+           <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false"
+         title="<?php echo i18n('menuBarMoveRight');?>" class="buttonMove"
+         iconClass="rightBarIcon" style="position:relative; width: 14px;height:48px;margin:0;vertical-align:middle">
+             <script type="dojo/method" event="onMouseDown">         
+           menuBarMove=true;
+           moveMenuBar('right');
+         </script>
+             <script type="dojo/method" event="onMouseUp">
+           moveMenuBarStop();
+         </script>
+             <script type="dojo/method" event="onClick">
+           moveMenuBarStop();
+         </script>
+          </button>
+          <?php }?>
+      </td>
+      </table>
+</td>
+</table>
 </div>
 
-<div id="dialogReminder" >
- <div id="reminderDiv" style="width:100%;height: 150px"></div>
-  <div style="width:100%; height:15%; text-align:right">
-    <?php echo i18n("remindMeIn");?>
-   <input type="input" dojoType="dijit.form.TextBox" id="remindAlertTime" name="remindAletTime" value="15" style="width:25px" />
-    <?php echo i18n("shortMinute");?>
-   <button dojoType="dijit.form.Button" onclick="setAlertRemindMessage();">
-            <?php echo i18n("remind");?>
-   </button>
- </div>
- <div style="width:100%; height:50px; text-align:right">
-   <table><tr><td width="80%">
-   <span id="markAllAsReadButtonDiv" >
-	 <button  dojoType="dijit.form.Button" id="markAllAsReadButton" onclick="setAllAlertReadMessage();">
-	          <?php echo i18n("markAllAsRead");?>
-	 </button>
-	 &nbsp;
-	 </span>
-	 </td><td>
-	 <button  dojoType="dijit.form.Button" onclick="setAlertReadMessage();">
-	          <?php echo i18n("markAsRead");?>
-	 </button>
-	 </td></tr></table>
- </div>
-</div>
+    <div id="dialogAlert" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAlert");?>">
+      <table>
+        <tr>
+          <td width="50px">
+               <?php echo formatIcon('Alert', 32);?>
+          </td>
+          <td>
+            <div id="dialogAlertMessage">
+            </div>
+          </td>
+        </tr>
+        <tr><td colspan="2" align="center">&nbsp;</td></tr>
+        <tr>
+          <td colspan="2" align="center">
+            <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogAlert').acceptCallback();dijit.byId('dialogAlert').hide();">
+              <?php echo i18n("buttonOK");?>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+
 <div id="dialogInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogInformation");?>">
   <table>
     <tr>
@@ -1009,27 +972,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </table>
 </div>
 
-<div id="dialogAlert" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAlert");?>">
-  <table>
-    <tr>
-      <td width="50px">
-           <?php echo formatIcon('Alert', 32);?>
-      </td>
-      <td>
-        <div id="dialogAlertMessage">
-        </div>
-      </td>
-    </tr>
-    <tr><td colspan="2" align="center">&nbsp;</td></tr>
-    <tr>
-      <td colspan="2" align="center">
-        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogAlert').acceptCallback();dijit.byId('dialogAlert').hide();">
-          <?php echo i18n("buttonOK");?>
-        </button>
-      </td>
-    </tr>
-  </table>
-</div>
+
 
 <div id="dialogQuestion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogQuestion");?>">
   <table>

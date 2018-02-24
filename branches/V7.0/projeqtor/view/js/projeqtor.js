@@ -450,10 +450,11 @@ function saveDataToSessionAndReload(param, value, saveUserParameter) {
   saveDataToSession(param, value, saveUserParameter, callBack);
 }
 
-function changeLocale(locale) {
+function changeLocale(locale, saveAsUserParam) {
   if (locale != "") {
     currentLocale = locale;
-    saveDataToSessionAndReload('currentLocale', locale, null);
+    if (saveAsUserParam) saveDataToSession('lang', locale, true);
+    saveDataToSessionAndReload('currentLocale', locale);
   }
 }
 
@@ -4899,13 +4900,13 @@ function redirectMobile(){
 }
 
 function displayImageEditMessageMail(code){
-  var codeParam = code.name;
-  var iconMessageMail = dojo.byId(codeParam+'_iconMessageMail');
+  //var codeParam = code.name;
+  var iconMessageMail = dojo.byId(code+'_iconMessageMail');
   iconMessageMail.style.display = "inline-block";
 }
 
 function hideImageEditMessageMail(code){
-  var codeParam = code.name;
-  var iconMessageMail = dojo.byId(codeParam+'_iconMessageMail');
+  //var codeParam = code.name;
+  var iconMessageMail = dojo.byId(code+'_iconMessageMail');
   iconMessageMail.style.display = "none";
 }

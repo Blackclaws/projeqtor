@@ -254,11 +254,9 @@ echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['object
 	<?php 
 	$showPassword=true;
 	$lockPassword=Parameter::getGlobalParameter('lockPassword');
-	if (isset($lockPassword)) {
-	  if (getBooleanValue($lockPassword)) {
-	    $showPassword=false;
-	  }
-	}
+	if (getBooleanValue($lockPassword)) { $showPassword=false; }
+	$hidePasswordOnLogin=Parameter::getGlobalParameter('lockPasswordOnLogin');
+	if (getBooleanValue($hidePasswordOnLogin)) { $showPassword=false; }
 	if ($showPassword) { 
 	?>               <tr style="height:5px"><td colspan="3" ></td></tr>
 			              <tr>

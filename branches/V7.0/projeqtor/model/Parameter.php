@@ -294,6 +294,7 @@ class Parameter extends SqlElement {
       case 'manageMilestoneOnItems' :
       case 'autoLinkMilestone' :
       case 'milestoneFromVersion' :
+      case 'mailGroupActive' :
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
         break;
@@ -531,11 +532,18 @@ class Parameter extends SqlElement {
         );
         break;
       case 'mailerTestSender' :
-          $list=array(
+        $list=array(
           'sender'=>i18n('paramParamMailSender'),
           'self'=>i18n('paramParamMailerSendAsCurrentUser')
-          );
-          break;
+        );
+        break;
+      case 'mailGroupDifferent' :
+        $list=array(
+            'ALL'=>i18n('paramMailGroupAll'),
+            'LAST'=>i18n('paramMailGroupLast'),
+            'MERGE'=>i18n('paramMailGroupMerge')
+        );
+        break;
     } 
     return $list;
   }
@@ -720,6 +728,10 @@ class Parameter extends SqlElement {
                               'paramMailerHelo'=>'list',
                               'paramMailerSendAsCurrentUser'=>'list',
                           'newColumnMailRight'=>'newColumn',
+                            'sectionMailGrouping'=>'section',
+                              'mailGroupActive'=>'list',
+                              'mailGroupPeriod'=>'number',
+                              'mailGroupDifferent'=>'list',
                             'sectionMailTest'=>'section',
                               'mailerTestDest'=>'text',
                               'mailerTestTitle'=>'text',

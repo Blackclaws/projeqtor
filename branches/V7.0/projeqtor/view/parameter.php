@@ -221,22 +221,22 @@ function drawTableFromObjectList($objectList) {
 				echo '</div>';
 		  }else if ($format=='display') {
 		      if($code=="mailerTestMessage"){
-		        echo '<div class="input" style="width:200px;position:relative">';
+		        echo '<div class="input" style="width:200px;position:relative;min-height:18px">';
 		      } else {
-		        echo '<div class="input" style="width:'.$longTextWidth.';position:relative">';
+		        echo '<div class="input" style="width:'.$longTextWidth.';position:relative;min-height:18px">';
 		      }
 				  echo '<input type="hidden" name="'.$code.'" id="'.$code.'" value="'.htmlEncode($obj->parameterValue).'"/>';
 				  echo '<div id="'.$code.'_iconMessageMail" name="'.$code.'_iconMessageMail" style="display:none;right:0;position:absolute;pointer-events:none">';
 				  echo '<a onclick="mailerTextEditor('.$code.');" id="mailerTextEditor" title="' . i18n('editMailerTestMessageIcon') . '">'.formatSmallButton('Edit').'</a>';
 				  echo '</div>';
-				  echo '<div name="'.$code.'_display" id="'.$code.'_display" onmouseover="displayImageEditMessageMail('.$code.')" onmouseout="hideImageEditMessageMail('.$code.')" onclick="mailerTextEditor('.$code.');"';
+				  echo '<div name="'.$code.'_display" id="'.$code.'_display" onmouseover="displayImageEditMessageMail(\''.$code.'\');" onmouseout="hideImageEditMessageMail(\''.$code.'\');" onclick="mailerTextEditor(\''.$code.'\');"';
 				  if($code=="mailerTestMessage"){
-				   	echo ' style="word-wrap:break-word;width:200px;display:inline-block" ';
+				   	echo ' style="word-wrap:break-word;width:200px;display:inline-block;min-height:18px" ';
 				  } else {
-				    echo ' style="width:'.$longTextWidth.';word-wrap:break-word;display:inline-block;';
+				    echo ' style="width:'.$longTextWidth.';word-wrap:break-word;display:inline-block;min-height:18px';
 				  }
 				  echo '</div>';
-				  echo $obj->parameterValue;
+				  echo ($obj->parameterValue)?$obj->parameterValue:"&nbsp;";
 				  echo '</div>';
 				  echo '</div>';
 			}else if ($format=='longtext') {

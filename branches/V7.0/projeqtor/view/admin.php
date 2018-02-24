@@ -93,12 +93,16 @@
                     	}
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
                       if (isset($arrayTimes['CheckNotifications']) and isNotificationSystemActiv() and $arrayTimes['CheckNotifications']!=-1) {
-                        $nbMinutes = $arrayTimes['CheckNotifications'];
-                        echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckNotifications', array($nbMinutes)) . '</i>';
+                        echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckNotifications', array($arrayTimes['CheckNotifications'])) . '</i>';
                       } else {
                     	  $arrayDisabled[]="CheckNotifications";
                     	}
-// END - ADD BY TABARY - NOTIFICATION SYSTEM                        
+// END - ADD BY TABARY - NOTIFICATION SYSTEM     
+                    	if (isset($arrayTimes['CheckMailGroup']) and MAil::isMailGroupingActiv() and $arrayTimes['CheckMailGroup']!=-1) {
+                    	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckMailGroup', array($arrayTimes['CheckMailGroup'],Mail::getMailGroupPeriod())) . '</i>';
+                    	}else {
+                    	  $arrayDisabled[]="CheckMailGroup";
+                    	}
                       if (isset($arrayTimes['CheckEmails']) and $arrayTimes['CheckEmails']!=-1) {
                         echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckEmails', array($arrayTimes['CheckEmails'])) . '</i>';
                       }else {
