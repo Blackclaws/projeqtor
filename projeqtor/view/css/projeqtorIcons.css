@@ -556,6 +556,10 @@
 .iconMail22 { background-image: url(images/iconMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMail16 { background-image: url(images/iconMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconMailToSend32 { background-image: url(images/iconMailToSend32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMailToSend22 { background-image: url(images/iconMailToSend22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMailToSend16 { background-image: url(images/iconMailToSend16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconMeasureUnit32 { background-image: url(images/iconMeasureUnit32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconMeasureUnit22 { background-image: url(images/iconMeasureUnit22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMeasureUnit16 { background-image: url(images/iconMeasureUnit16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -585,9 +589,9 @@
 .iconMilestoneType16 { background-image: url(images/iconMilestoneType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 /* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
-.iconNotification32 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.iconNotification22 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.iconNotification16 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconNotification32 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; background-position:top left;}
+.iconNotification22 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;background-position:top left;}
+.iconNotification16 { background-image: url(images/iconNotification.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;background-position:top left;}
 .iconNotificationDefinition32 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconNotificationDefinition22 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconNotificationDefinition16 { background-image: url(images/iconNotificationDefinition.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}

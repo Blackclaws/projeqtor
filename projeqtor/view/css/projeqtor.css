@@ -421,7 +421,7 @@ html, body {
   position: absolute;
   margin: -25px -25px;
   width: 20%;
-  bottom: 30px; right: 30px; 
+  top: 30px; right: 390px; 
   z-index: 9999;
   display: none;
   text-align: center;

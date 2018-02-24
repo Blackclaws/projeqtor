@@ -99,7 +99,7 @@ if ($note->idPrivacy==1) { // send mail if new note is public
   if ($mailResult) {
   	$pos=strpos($result,'<input type="hidden"');
   	if ($pos) {
-  	  $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+  	  $result=substr($result, 0,$pos).' - ' . Mail::getResultMessage($mailResult).substr($result, $pos);
   	}
   }
 }

@@ -25,48 +25,57 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Habilitation defines right to the application for a menu and a profile.
+ * MailToSend stores emails to be sent grouped.
+ * When parameter to group email is off, this table is always empty
+ * Items are deleted when emails are sent (trace is then is email table)
  */ 
 require_once('_securityCheck.php');
-class Mail extends SqlElement {
+class MailToSend extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idUser;
-  public $mailDateTime;
-  public $mailTo;
-  public $mailStatus;
-  public $idle;
-  public $mailTitle;
-  public $_sec_MailItem;
-  public $idProject;
-  public $idMailable;
+  public $refType;
   public $refId;
-  public $idStatus;
-  public $_sec_MailText;
-  public $_mailText_colSpan="2";
-  public $mailBody;
+  public $idEmailTemplate;
+  public $template;
+  public $title;
+  public $dest;
+  public $recordDateTime;
+  public $idle;
   
-  private static $_lastErrorMessage=null;
   public $_noHistory=true;
   
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameUser" formatter="thumbName22" width="10%" >${sender}</th>
-    <th field="mailTitle" width="50%" >${mailTitle}</th>
-    <th field="mailDateTime" width="10%" >${mailDateTime}</th>
-    <th field="mailStatus" width="10%" >${mailStatus}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    <th field="refType" width="7%" >${refType}</th>
+    <th field="refId" width="3%" >${id}</th>
+    <th field="title" width="35%" >${mailTitle}</th>
+    <th field="dest" width="20%" >${recipient}</th>
+    <th field="nameEmailTemplate" width="10%" >${template}</th>
+    <th field="recordDateTime" width="10%" >${recordDate}</th>
     ';
     
-    private static $_fieldsAttributes=array('mailBody'=>'displayHtml',
-        'mailTitle'=>'readonly');
-       
-    private static $_databaseColumnName = array('idMailable'=>'refType');
+    private static $_fieldsAttributes=array('idUser'=>'readonly',
+        'mailTitle'=>'readonly',
+        'refType'=>'readonly,size1/3, nobr',
+        'refId'=>'readonly, size1/3',
+        'idEmailTemplate'=>'readonly',
+        'template'=>'hidden',
+        'title'=>'readonly',
+        'dest'=>'readonly',
+        'recordDateTime'=>'readonly',
+        'idle'=>'hidden'
+    );
     
-    private static $_colCaptionTransposition = array('refId'=> 'id');
+    private static $_colCaptionTransposition = array(
+        'refType'=>'notifiableItem',
+        'refId'=> 'id', 
+        'recordDateTime'=>'recordDate',
+        'dest'=>'recipient'
+    );
     
    /** ==========================================================================
    * Constructor
@@ -97,14 +106,7 @@ class Mail extends SqlElement {
   protected function getStaticLayout() {
     return self::$_layout;
   }
-  
-    /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseColumnName() {
-    return self::$_databaseColumnName;
-  }
+
   
     /** ============================================================================
    * Return the specific colCaptionTransposition
@@ -126,33 +128,10 @@ class Mail extends SqlElement {
 // ============================================================================**********
   
   public function save() {
-  	$this->mailBody=substr($this->mailBody,0,65536); // Limit for MySql Text field
+    if (!$this->recordDateTime) $this->recordDateTime=date('Y-m-d H:i:s');
+    if (!$this->idUser) $this->idUser=getCurrentUserId();
   	return parent::save();
   }
-  
-  public static function getLastErrorMessage() {
-    return self::$_lastErrorMessage;
-  } 
-  public static function setLastErrorMessage($msg) {
-    self::$_lastErrorMessage=$msg;
-  }
-  
-  public static function isMailGroupingActiv() {
-    return (Parameter::getGlobalParameter('mailGroupActive')=="YES"?true:false);
-  }
-  public static function getMailGroupPeriod() {
-    if (!self::isMailGroupingActiv()) return -1;
-    $period=Parameter::getGlobalParameter('mailGroupPeriod');
-    return (($period)?$period:'60');
-  }
-  public static function getResultMessage($mailResult) {
-    if ($mailResult) {
-      if ($mailResult=='TEMP') {
-        return i18n('emailScheduled');
-      } else {
-        return i18n('mailSend');
-      }
-    }
-  }
+
 }
 ?>

@@ -174,7 +174,7 @@ if ($assignmentId) {
 if ($mailResult) {
   $pos=strpos($result,'<input type="hidden"');
   if ($pos) {
-    $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+    $result=substr($result, 0,$pos).' - ' . Mail::getResultMessage($mailResult).substr($result, $pos);
   }
 }
 if ($refType=='Meeting' or $refType=='PeriodicMeeting') {
