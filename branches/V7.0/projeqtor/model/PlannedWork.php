@@ -117,7 +117,7 @@ class PlannedWork extends GeneralWork {
 // PLAN
 // ================================================================================================================================
 
-  public static function plan($projectIdArray, $startDate) {
+  public static function plan($projectIdArray, $startDate,$withCriticalPath=false,$mode='normal') {
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	

@@ -172,7 +172,7 @@ html, body {
      background: rgba(255,255,255,0.7);
      /*overflow:hidden;*/
   }
-  .menuBarItem:hover .bottomNotification:hover {
+  .menuBarItem:hover, .bottomNotification:hover {
     border-color: #a5a5a5;
     border-bottom-color: #757575;
     color: #3C3C3C;
@@ -218,6 +218,11 @@ html, body {
   border-left: 1px solid #ffffff;
   border-right: 1px solid #A0A0A0;  
   border-top: 1px solid #eeeeee;
+  -webkit-transition: top 0.3s linear, height 0.3s linear;
+  -moz-transition: top 0.3s linear, height 0.3s linear;
+  -o-transition: top 0.3s linear, height 0.3s linear;
+  -ms-transition: top 0.3s linear, height 0.3s linear;
+  transition: top 0.3s linear, height 0.3s linear;  
 }
   #listDiv {
     height: 40%;
@@ -316,6 +321,11 @@ html, body {
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #A0A0A0;
   vertical-align:middle;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear; 
 }
 #statusBarMessageDiv {
   font-size:125%;
@@ -421,7 +431,7 @@ html, body {
   position: absolute;
   margin: -25px -25px;
   width: 20%;
-  top: 30px; right: 390px; 
+  top: 30px; right: 400px; 
   z-index: 9999;
   display: none;
   text-align: center;
@@ -1362,14 +1372,11 @@ label, .label, .smallLabel {
   background: transparent;
   background: rgba(255,255,255,0.5);
   border: 1px solid #ffffff;
-  border-radius:5px;
   z-index:3000;
   color: #000000;
   text-shadow: 1px 1px #FFFFFF  ;
   cursor:pointer;
   height: 26px;
-  margin-left:3px;
-  float:left;
 }
 .pseudoButtonFullScreen:hover {
   background: rgba(255,255,255,1);
@@ -3124,7 +3131,7 @@ label, .label, .smallLabel {
     color: #545254;
 }
 
-.ProjectomLight .menuBarItem .bottomNotification {
+.ProjectomLight .menuBarItem, .ProjectomLight .bottomNotification {
     /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
     border-color: #c0c0c0 #c0c0c0 #9b9b9b;
     border-image: none;
@@ -3332,7 +3339,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', end
 
 
 
-.Projectom .menuBarItem .bottomNotification {    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+.Projectom .menuBarItem,.Projectom .bottomNotification {    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
     border-color: #c0c0c0 #c0c0c0 #9b9b9b;
     border-image: none;
     border-style: solid;
