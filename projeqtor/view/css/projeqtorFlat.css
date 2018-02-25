@@ -343,14 +343,14 @@
 .ProjeQtOrFlatBlue #menuBarShow {
   border-right:1px solid #545381;
 }
-.ProjeQtOrFlatBlue .menuBarItem .bottomNotification {
+.ProjeQtOrFlatBlue .menuBarItem, .ProjeQtOrFlatBlue .bottomNotification {
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -ms-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-.ProjeQtOrFlatBlue .menuBarItem:hover .bottomNotification:hover {
+.ProjeQtOrFlatBlue .menuBarItem:hover, .ProjeQtOrFlatBlue .bottomNotification:hover {
   -ms-transform: rotate(-7deg); /* IE 9 */
     -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
     transform: rotate(-7deg);
@@ -1741,14 +1741,14 @@ body .ProjeQtOrFlatBlue {
   border-right:1px solid #833e3e;
 }
 
-.ProjeQtOrFlatRed .menuBarItem .bottomNotification  {
+.ProjeQtOrFlatRed .menuBarItem, .ProjeQtOrFlatRed .bottomNotification  {
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -ms-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-.ProjeQtOrFlatRed .menuBarItem:hover .bottomNotification:hover {
+.ProjeQtOrFlatRed .menuBarItem:hover, .ProjeQtOrFlatRed .bottomNotification:hover {
   -ms-transform: rotate(-7deg); /* IE 9 */
     -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
     transform: rotate(-7deg);
@@ -3089,14 +3089,14 @@ body .ProjeQtOrFlatRed {
   border-right:1px solid #537665;
 }
 
-.ProjeQtOrFlatGreen .menuBarItem .bottomNotification {
+.ProjeQtOrFlatGreen .menuBarItem, .ProjeQtOrFlatGreen .bottomNotification {
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -ms-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-.ProjeQtOrFlatGreen .menuBarItem:hover .bottomNotification:hover {
+.ProjeQtOrFlatGreen .menuBarItem:hover, .ProjeQtOrFlatGreen .bottomNotification:hover {
   -ms-transform: rotate(-7deg); /* IE 9 */
     -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
     transform: rotate(-7deg);
@@ -4440,14 +4440,14 @@ body .ProjeQtOrFlatGreen {
   border-right:1px solid #656565;
 }
 
-.ProjeQtOrFlatGrey .menuBarItem .bottomNotification {
+.ProjeQtOrFlatGrey .menuBarItem, .ProjeQtOrFlatGrey .bottomNotification {
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -ms-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-.ProjeQtOrFlatGrey .menuBarItem:hover .bottomNotification:hover {
+.ProjeQtOrFlatGrey .menuBarItem:hover, .ProjeQtOrFlatGrey .bottomNotification:hover {
   -ms-transform: rotate(-7deg); /* IE 9 */
     -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
     transform: rotate(-7deg);

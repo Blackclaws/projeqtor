@@ -5360,16 +5360,24 @@ function hideMenuBarShowMode2() {
 }
 //gautier menu top
 function hideMenuBarShowModeTop(){ 
-  if(dojo.byId('statusBarDiv').style.display == 'none'){
-    dojo.byId('statusBarDiv').style.display='block';
+  if(dojo.byId('statusBarDiv').style.height == '0px'){
+    //dojo.byId('statusBarDiv').style.display='block';
+    dojo.byId('statusBarDiv').style.height="48px";
+    dojo.byId('statusBarDiv').style.padding="1px";
     dojo.byId('leftDiv').style.top='82px';
     dojo.byId('centerDiv').style.top='82px';
     dojo.byId('menuBarShow').style.top='82px';
+    var height=parseInt(dojo.byId('mainDiv').offsetHeight)-82;
+    dijit.byId('centerDiv').resize({h:height});
   }else{
-    dojo.byId('statusBarDiv').style.display='none';
+    //dojo.byId('statusBarDiv').style.display='none';
+    dojo.byId('statusBarDiv').style.height="0px";
+    dojo.byId('statusBarDiv').style.padding="0px";
     dojo.byId('leftDiv').style.top='30px';
     dojo.byId('centerDiv').style.top='30px';
     dojo.byId('menuBarShow').style.top='30px';
+    var height=parseInt(dojo.byId('mainDiv').offsetHeight)-30;
+    dijit.byId('centerDiv').resize({h:height});
   }
 }
 

@@ -50,7 +50,7 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
 }
 ?>
 <?php if ($displayMode=='standard') {?>
-<span maxsize="160px" style="position: absolute; left:223px; top:1px; height: 20px; width: 165px; color:#202020;" 
+<span maxsize="160px" style="position: absolute; left:0px; top:-4px; height: 20px; width: 165px; color:#202020;" 
   dojoType="dijit.form.DropDownButton" 
   id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
   <span style="width:140px; text-align: left;">
