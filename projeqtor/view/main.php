@@ -1636,10 +1636,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                  id="startDatePlan" name="startDatePlan" 
                  constraints="{datePattern:browserLocaleDateFormatJs}"
                  invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
-                 type="text" maxlength="10"
+                 type="text" maxlength="10" 
                  style="width:100px; text-align: center;" class="input"
                  required="true"
-                 hasDownArrow="true"
+                 hasDownArrow="false"
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colStartDate')));?>"
                  value="<?php echo date('Y-m-d');?>" >
                </div>

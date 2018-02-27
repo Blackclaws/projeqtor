@@ -531,7 +531,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       y += dy;
     };
   };
-  this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
+  this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey,vType) { // For compatibility
+    if (vType=='E-E') {
+      this.drawDependencyEE(x1,y1,x2,y2,color,temp,keyDep,dependencyKey);
+    } else if (vType=='S-S') {
+      this.drawDependencySS(x1,y1,x2,y2,color,temp,keyDep,dependencyKey);
+    } else  {
+      this.drawDependencyES(x1,y1,x2,y2,color,temp,keyDep,dependencyKey);
+    }
+  }
+  this.drawDependencyES =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
     if (x1 <= x2+4) {
       if (y1 <= y2) {
         this.sLine(x1,y1,x2+4,y1,color,temp,keyDep,dependencyKey);
@@ -568,12 +577,47 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
     }
   };
+  this.drawDependencySS =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
+    if (x1 <= x2-4) {
+      this.sLine(x1,y1,x1-4,y1,color,temp,keyDep,dependencyKey);
+      this.sLine(x1-4,y1,x1-4,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x1-4,y2,x2,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep,dependencyKey);
+    } else {
+      this.sLine(x1,y1,x2-8,y1,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-8,y1,x2-8,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-8,y2,x2,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp,keyDep,dependencyKey);
+    }
+  };
+  this.drawDependencyEE =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey) {
+    if (x1 >= x2+4) {
+      this.sLine(x1,y1,x1+4,y1,color,temp,keyDep,dependencyKey);
+      this.sLine(x1+4,y1,x1+4,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x1+4,y2,x2,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+3,y2+3,x2+3,y2-3,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+2,y2+2,x2+2,y2-2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+1,y2+1,x2+1,y2-1,color,temp,keyDep,dependencyKey);
+    } else {
+      this.sLine(x1,y1,x2+8,y1,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+8,y1,x2+8,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+8,y2,x2,y2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+3,y2+3,x2+3,y2-3,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+2,y2+2,x2+2,y2-2,color,temp,keyDep,dependencyKey);
+      this.sLine(x2+1,y2+1,x2+1,y2-1,color,temp,keyDep,dependencyKey);
+    }
+  };
   this.DrawDependencies = function () {
     this.CalcTaskXY();
     this.clearDependencies();
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
+      console.log(vDepend);
       if(vDepend) {       
         var vDependStr = vDepend + '';
         var vDepList = vDependStr.split(',');
@@ -583,10 +627,23 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           dependencyKey=depListSplit[1];
           dojo.byId("rightClickDependencyId").value=depListSplit[1];
           var vTask = this.getArrayLocationByID(depListSplit[0]);
+          var vType="E-S";
+          if (depListSplit[3]) {
+            vType=depListSplit[3];
+          }
+          console.log(vType);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             if (g.getEndDateView() && vList[vTask].getEnd()>g.getEndDateView() && vList[i].getStart()>g.getEndDateView()) continue;
-            this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
+            if (vType=='S-S' || vList[vTask].getMile()) {
+              this.drawDependencySS(vList[vTask].getStartX()-1,vList[vTask].getStartY(),vList[i].getStartX()-1,
+                  vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+            } else if (vType=='E-S') {
+              this.drawDependencyES(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
                             vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+            } else  if (vType=='E-E') {
+              this.drawDependencyEE(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getEndX()-1,
+                  vList[i].getEndY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+            }
           }
         }
       }
@@ -2255,11 +2312,6 @@ function removeDependencyRightClick(dependencyId,evt){
 }
 
 function saveDependencyRightClick() {
-//    var formVar=dijit.byId('dynamicDependencyForm');
-//    if (!formVar) {
-//      showAlert(i18n("alertInvalidForm"));
-//      return;
-//    }
     if (!dojo.byId('delayDependency').value
         && !dojo.byId('commentDependency').value)
       return;

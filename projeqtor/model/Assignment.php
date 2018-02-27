@@ -120,6 +120,7 @@ class Assignment extends SqlElement {
    */
   public function save() {
     
+    $old=$this->getOld();
     if ($this->billedWork==null){
       $this->billedWork=0;
     }
@@ -211,23 +212,23 @@ class Assignment extends SqlElement {
     PlanningElement::updateSynthesis($this->refType, $this->refId);
     // Recalculate indicators
     if (SqlList::getIdFromTranslatableName('Indicatorable',$this->refType)) {
-        $indDef=new IndicatorDefinition();
-        $crit=array('nameIndicatorable'=>$this->refType);
-        $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
-        if (count($lstInd)>0) {
-        	$item=new $this->refType($this->refId);
-	        foreach ($lstInd as $ind) {
-	          $fldType='id'. $this->refType .'Type';
-	          if (! $ind->idType or $ind->idType==$item->$fldType) {
-	            IndicatorValue::addIndicatorValue($ind,$item);
-	          }
-	        }
+      $indDef=new IndicatorDefinition();
+      $crit=array('nameIndicatorable'=>$this->refType);
+      $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
+      if (count($lstInd)>0) {
+      	$item=new $this->refType($this->refId);
+        foreach ($lstInd as $ind) {
+          $fldType='id'. $this->refType .'Type';
+          if (! $ind->idType or $ind->idType==$item->$fldType) {
+            IndicatorValue::addIndicatorValue($ind,$item);
+          }
         }
       }
+    }
     
-    /*if ($limitedRate==true) {
-      $result = i18n("limitedRate", array($affectation->rate)) . $result;      
-    }*/
+    if ($old->leftWork!=$this->leftWork or $old->realWork!=$this->realWork) {
+      Project::setNeedReplan($this->idProject);
+    }
     
     // Dispatch value
     return $result;
@@ -263,7 +264,9 @@ class Assignment extends SqlElement {
     
     // Update planning elements
     PlanningElement::updateSynthesis($this->refType, $this->refId);
-    
+    if ($this->leftWork!=0) {
+      Project::setNeedReplan($this->idProject);
+    }
     // Dispatch value
     return $result;
   }

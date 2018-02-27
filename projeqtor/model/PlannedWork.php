@@ -287,13 +287,19 @@ class PlannedWork extends GeneralWork {
       }
       //-- Take into accound predecessors
       $precList=$plan->_predecessorListWithParent;
-      foreach ($precList as $precId=>$precVal) { // $precVal = dependency delay
+      foreach ($precList as $precId=>$precValArray) { // $precValArray = array(dependency delay,dependency type)
+        $precVal=$precValArray['delay'];
+        $precTyp=$precValArray['type'];
       	$prec=$fullListPlan[$precId];
         $precEnd=$prec->plannedEndDate;
+        $precStart=$prec->plannedStartDate;
         $precFraction=$prec->plannedEndFraction;       
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
         	$precFraction=1;
+        }
+        if ($prec->realStartDate) {
+          $precStart=$prec->realStartDate;
         }
         if ($strictDependency or $precVal!=0 or $precFraction==1) {
           if ( ( $prec->refType!='Milestone' and $plan->refType!='Milestone') or $precFraction==1) {
@@ -311,14 +317,37 @@ class PlannedWork extends GeneralWork {
           $startPossible=$precEnd;
           $startPossibleFraction=$precFraction;
         }
-        if ($profile=="ALAP") {
+        if ($precTyp=='S-S') {
+          if ($precVal>0) {
+            $startPossible=addWorkDaysToDate($precStart,$precVal+1);
+          } else if ($precVal<0) {
+            $startPossible=addWorkDaysToDate($precStart,$precVal);
+          } else {
+            $startPossible=$precStart;
+          }
+          $startPossibleFraction=0;
+        }
+        if ($precTyp=='E-E' and $profile=="FDUR" ) {
+          $startPlan=addWorkDaysToDate($precEnd, $plan->validatedDuration *(-1) + 1 + $precVal);
+        } else if ($precTyp=='E-E' and ($profile=="ASAP" or $profile=="GROUP") ) {
+          //$profile="ALAP";
+          $step=-1;
+          $endPlan=$startPlan;
+          if ($precVal>0) {
+            $startPlan=addWorkDaysToDate($precEnd,$precVal+1);
+          } else if ($precVal<0) {
+            $startPlan=addWorkDaysToDate($precEnd,$precVal);
+          } else {
+            $startPlan=$precEnd;
+          }
+        } else if ($profile=="ALAP") {
           if ($startPossible>=$endPlan) {
             $endPlan=$startPossible;
             if ($startPlan<$endPlan) {
               $startPlan=$endPlan;
               $endPlan=null;
               $step=1;
-              $profile=="ASAP";
+              $profile="ASAP";
             }
           }
         } else if ($startPossible>=$startPlan or ($startPossible==$startPlan and $startPossibleFraction>$startFraction)) { // #77       
@@ -408,7 +437,7 @@ class PlannedWork extends GeneralWork {
         $groupAss=array();
         //$groupMaxLeft=0;
         //$groupMinLeft=99999;           
-        if ($profile=='GROUP' and count($listAss<2)) {
+        if ($profile=='GROUP' and count($listAss)<2) {
         	$profile=='ASAP';
         }
         if ($profile=='GROUP') {
@@ -773,8 +802,8 @@ class PlannedWork extends GeneralWork {
               }            
             }
             $currentDate=addDaysToDate($currentDate,$step);
-            if ($currentDate<$startDate and $step=-1) {
-              $currentDate=$startPlan;
+            if ($currentDate<$endPlan and $step==-1) {
+              $currentDate=$endPlan;
               $step=1;
             }
           }
@@ -826,13 +855,17 @@ class PlannedWork extends GeneralWork {
       $ass->simpleSave();
     }
     
+    $arrayProj=array();
     foreach ($fullListPlan as $pe) {
+      $arrayProj[$pe->idProject]=$pe->idProject;
    	  $pe->simpleSave();
    	  if ($pe->refType=='Milestone') {
    	    $pe->updateMilestonableItems();
    	  }
      }
-    
+    foreach ($arrayProj as $idP) {
+      Project::unsetNeedReplan($idP);
+    }
     $messageOn = false;
     $endTime=time();
     $endMicroTime=microtime(true);
@@ -915,7 +948,7 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   }
   
   private static function specificSort($list) {
-  	// Sort to teake dependencies into account
+  	// Sort to take dependencies into account
   	$wait=array(); // array to store elements that has predecessors not sorted yet
   	$result=array(); // target array for sorted elements
   	foreach($list as $id=>$pe) {
@@ -980,7 +1013,7 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   		debugTraceLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - Left='.$pe->leftWork.' - '.$pe->_sortCriteria);
   		if (count($pe->_predecessorListWithParent)>0) {
   			foreach($pe->_predecessorListWithParent as $idPrec=>$prec) {
-  				debugTraceLog('   ' . $idPrec.'=>'.$prec);
+  				debugTraceLog('   ' . $idPrec.'=>'.$prec['delay'].' ('.$prec['type'].')');
   			}
   		}
   	}

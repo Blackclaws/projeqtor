@@ -789,8 +789,8 @@ class Parameter extends SqlElement {
                 	            'cronCheckDates'=>'number',
                 	            'alertCheckTime'=>'number',                	            
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
-                                    'notificationSystemActiv'=>'list',
-                                    'cronCheckNotifications'=>'number',
+                              'notificationSystemActiv'=>'list',
+                              'cronCheckNotifications'=>'number',
 // END - ADD BY TABARY - NOTIFICATION SYSTEM                	          
                               'sectionCronImport'=>'section',
                 	            'cronImportDirectory'=>'text',
@@ -811,6 +811,9 @@ class Parameter extends SqlElement {
             	                'imputationAlertSendToResource'=>'list',
             	                'imputationAlertSendToProjectLeader'=>'list',
             	                'imputationAlertSendToTeamManager'=>'list',
+            	              'sectionAutomaticPlanning'=>'section',
+            	                'automaticPlanningDifferential'=>'specific',
+            	                'automaticPlanningComplete'=>'specific',
           	            'tabSystem'=>"tab",
           	              'newColumnbSystemLeft'=>'newColumn',
             	              'sectionFiles'=>'section',
