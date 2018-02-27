@@ -187,6 +187,8 @@ class GeneralWork extends SqlElement {
   public static function convertImputation($val) {
     self::setImputationUnit();
     $coef=self::$imputationCoef;
+    if (!$coef) return $val;
+    if (!$val) return 0;
     return (round($val/$coef,5));
   }
   

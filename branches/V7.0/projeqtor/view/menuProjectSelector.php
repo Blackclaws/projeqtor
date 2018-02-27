@@ -50,7 +50,7 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
 }
 ?>
 <?php if ($displayMode=='standard') {?>
-<span maxsize="160px" style="position: absolute; left:0px; top:-4px; height: 20px; width: 165px; color:#202020;" 
+<span maxsize="160px" style="position: absolute; left:0px; top:0px; height: 20px; width: 165px; color:#202020;" 
   dojoType="dijit.form.DropDownButton" 
   id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
   <span style="width:140px; text-align: left;">
@@ -75,7 +75,7 @@ if ($proj=='*') {
 </span>
 <?php } else if ($displayMode=='select') {?>
 <select dojoType="dijit.form.FilteringSelect" class="input" 
-   style="position: absolute; left:75px; top:25px; width: 165px;" 
+   style="position: absolute; left:4px; top:1px; width: 165px;height:22px;" 
    <?php echo autoOpenFilteringSelect();?>
    name="projectSelectorFiletering" id="projectSelectorFiletering" >
    <script type="dojo/connect" event="onChange" args="evt">
@@ -87,7 +87,7 @@ if ($proj=='*') {
    <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
 </select>
 <?php } else if($displayMode=="search") {?>
-<select id="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect" class="input" style="position: absolute; left:75px; top:25px; width: 165px;"  
+<select id="projectSelectorFiletering" data-dojo-type="dijit.form.FilteringSelect" class="input" style="position: absolute; left:4px; top:1px; width: 165px;height:22px;"  
 <?php echo autoOpenFilteringSelect();?>
 name="projectSelectorFiletering" 
     data-dojo-props="

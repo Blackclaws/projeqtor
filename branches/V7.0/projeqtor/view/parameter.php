@@ -318,6 +318,8 @@ function drawTableFromObjectList($objectList) {
 			    echo '<div id="testEmailResult" style="padding-left:10px;display:inline-block;"></div>';
 			    echo '<div id="testEmailSaveResult" style="display:none;"></div>';
 			    echo '</div>';
+			  } else if ($code=='automaticPlanningDifferential' or $code=='automaticPlanningComplete') {
+			    CronExecution::drawCronExecutionDefintion(substr($code,9));
 			  }
 			}
 			//if ($format!='photo') {

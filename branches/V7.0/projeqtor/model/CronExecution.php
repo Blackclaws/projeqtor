@@ -90,5 +90,46 @@ class CronExecution extends SqlElement {
       errorLog("Can't find next time for cronexecution because too many execution #".$this->id);
     }
   }
+  
+  public static function drawCronExecutionDefintion($scope) {
+    $cronExecution=null;
+    $cronExecution=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.$scope));
+    if (!$cronExecution->id) {
+      $cronExecution->idle=1;
+    }
+    echo "</br></br>";
+    $splitCron=explode(" ",$cronExecution->cron);
+    foreach ($splitCron as $key=>$line){
+      if($line=="*")$splitCron[$key]=i18n("all");
+    }
+    $minutes=$splitCron[0];
+    $hours=$splitCron[1];
+    $dayOfMonth=$splitCron[2];
+    $month=$splitCron[3];
+    $dayOfWeek=$splitCron[4];
+    echo "<table style='float:left;'>";
+    echo "  <tr><td class='linkHeader' style='padding:0px 5px'>".i18n('colFrequency')."</td><td class='linkHeader' style='padding:0px 5px'>".i18n('colValue')."</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('minute')."</td><td class='linkData'>$minutes</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('hour')."</td><td class='linkData'>$hours</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('colFixedDay')."</td><td class='linkData'>$dayOfMonth</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('month')."</td><td class='linkData'>$month</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('colFixedDayOfWeek')."</td><td class='linkData'>$dayOfWeek</td></tr>";
+    echo " </table>";
+    echo "&nbsp;&nbsp;";
+    echo "<button id='cronExecution$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
+    echo i18n("cronDefineParameters");
+    echo "  <script type='dojo/connect' event='onClick' args='evt'>";
+    echo "    loadDialog('dialogCronDefinition', null, true, '&cronScope=$scope', true);";
+    echo "  </script>";
+    echo "</button>";
+    echo "&nbsp;&nbsp;";
+    echo "<button id='cronExecutionActivate$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
+    echo $cronExecution->idle ? i18n("cronExecutionActivate") : i18n("cronExecutiondDesactivate");
+    echo "  <script type='dojo/connect' event='onClick' args='evt'>";
+    echo "    cronActivation('$scope');";
+    echo "  </script>";
+    echo "</button>";
+    echo "<div style='height:83px; '>&nbsp;&nbsp;".($cronExecution->idle==1 ? i18n('cronExecutionNotRunning') : '')."</div>";
+  }
 }
 ?>

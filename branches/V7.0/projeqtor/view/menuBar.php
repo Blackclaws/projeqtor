@@ -211,8 +211,10 @@
       <span class="titleProject" style="position: relative; left:20px; top:-6px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;
       </span>
-      <span style="display:inline-block;height:100%;width:170px; position:relative;left:10px;top:-7px; margin:0;padding:0" id="projectSelectorDiv" title="<?php echo i18n("projectSelector");?>">
-        &nbsp;<?php include "menuProjectSelector.php"?>
+      <span style="display:inline-block;width:170px; position:relative;left : 10px; top:-6px" title="<?php echo i18n("projectSelector");?>" >
+        <span style="postion:absolute;height:16px;" dojoType="dijit.layout.ContentPane" region="center"   id="projectSelectorDiv">
+          &nbsp;<?php include "menuProjectSelector.php"?>
+        </span>
       </span>
       <span style="position: relative; left:7px; top:-7px; height: 20px">
         <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
@@ -228,7 +230,7 @@
       <div style="position:absolute;font-size:130%;top:5px;left:50%;width:300px;margin-left:-150px;"><?php htmlDisplayDatabaseInfos();?></div>
     </td>    
     <?php if(isNotificationSystemActiv() and securityCheckDisplayMenu(null,'Notification')) {?>
-    <td  width="63px"> 
+    <td  width="63px" style=""> 
      <div dojoType="dijit.layout.ContentPane" id="menuBarNotificationCount"  style="text-align: center; position:relative;top:-4px">
        <div dojoType="dijit.form.DropDownButton"  id=""
             style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;" >
@@ -245,7 +247,7 @@
      </div>
     </td>
     <?php } ?>    
-    <td title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;width:105px"> 
+    <td title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;width:105px;"> 
       <div class="pseudoButton"  style="height:28px; position:relative;top:-5px; z-index:30; width:100px;" >
         <a target="#" href="<?php echo $website;?>" >
           <table style="width:100%">
@@ -262,10 +264,6 @@
       </div>  
     </td>
     <td title="<?php echo i18n('menuUserParameter');?>" width="105px" style="">
-    <?php 
-      $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menuUserParameter'));
-      $buttonUserParameter=securityCheckDisplayMenu($menu->id,substr($menu->name,4));
-      if ($buttonUserParameter) {?>
       <div dojoType="dijit.layout.ContentPane"  class="pseudoButton" style="position:absolute;overflow:hidden; height:28px; min-width:100px;top:0px;" title="<?php echo i18n('menuUserParameter');?>">
         <div dojoType="dijit.form.DropDownButton"  id="" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;top:-3px" >
 			    <table style="width:100%">
@@ -285,25 +283,15 @@
     			  </tr>
 			    </table>
 			    <div id="drawMenuUser" dojoType="dijit.TooltipDialog"
-             style="  max-width:360px; overflow-x:hidden; height:300px;  max-height:500px;  width:300px;">
+             style="max-width:600px; overflow-x:hidden; height:300px;  max-height:500px;  width:350px;">
              <?php include "menuUserTop.php" ?>          
           </div> 
 		    </div>
       </div>
-      <?php } else {?>
-      <table >
-        <tr>
-          <td>
-            <img style="height:24px" src="css/images/iconUser22.png" />
-          </td>
-          <td>&nbsp;<?php echo getSessionUser()->name; ?>&nbsp;&nbsp;</td>
-        </tr>
-      </table>    
-    <?php }?>
     </td> 
       
-    <td width="35px" > 
-      <div class="pseudoButton" onclick="switchMode();" style="height:28px; position:relative;top:-5px; z-index:30; width:30px">
+    <td width="<?php echo (isIE())?37:35;?>px" style="" > 
+      <div class="pseudoButton" onclick="switchMode();" style="height:28px; position:relative;top:-5px; z-index:30; width:30px;">
         <table >
           <tr>
             <td style="width:28x;text-align:center">
@@ -314,7 +302,7 @@
      </div>
     </td>
      <?php if (! isIE()) {?>
-    <td  width="30px" title="<?php echo i18n("fullScreen");?>"> 
+    <td  width="35px" title="<?php echo i18n("fullScreen");?>" > 
       <div  class="pseudoButtonFullScreen" style="height:28px; position:relative; top:-5px; z-index:30; width:28px;" onclick="toggleFullScreen()" title="<?php echo i18n("fullScreen");?>">
         <table>
           <tr>
@@ -326,10 +314,10 @@
       </div>
     </td>
      <?php }?>  
-    <td width="29px">   
+    <td width="24px">   
       <div id="hideMenuBarShowButtonTop" style="cursor:pointer;position:relative; top:-11px;right:0px; z-index:949" >
   		  <a onClick="hideMenuBarShowModeTop();" id="buttonSwitchedMenuBarTopShow" title="<?php echo i18n("buttonShowMenu");?>" >
-  		    <span style='display:inline-block;width:28px;height:22px;'>
+  		    <span style='display:inline-block;width:24px;height:22px;'>
   		     <div style="position:absolute;top:1px;right:0px;height:26px;width:24px" dojoType="dijit.form.Button" iconClass="dijitButtonIcon iconHideStream22" class="detailButton">&nbsp;</div>
   		    </span>
   		  </a>

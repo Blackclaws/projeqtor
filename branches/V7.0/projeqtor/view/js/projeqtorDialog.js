@@ -5369,6 +5369,7 @@ function hideMenuBarShowModeTop(){
     dojo.byId('menuBarShow').style.top='82px';
     var height=parseInt(dojo.byId('mainDiv').offsetHeight)-82;
     dijit.byId('centerDiv').resize({h:height});
+    dijit.byId('leftDiv').resize({h:height});
   }else{
     //dojo.byId('statusBarDiv').style.display='none';
     dojo.byId('statusBarDiv').style.height="0px";
@@ -5378,6 +5379,7 @@ function hideMenuBarShowModeTop(){
     dojo.byId('menuBarShow').style.top='30px';
     var height=parseInt(dojo.byId('mainDiv').offsetHeight)-30;
     dijit.byId('centerDiv').resize({h:height});
+    dijit.byId('leftDiv').resize({h:height});
   }
 }
 
@@ -8964,3 +8966,20 @@ function readNotification (id){
   });
 }
 //end
+
+// CRON
+
+function cronActivation(idCronExec){
+  showWait();
+  dojo.xhrGet({
+    url : "../tool/cronActivation.php?idCronExec="+idCronExec,
+    load : function(data) {
+      loadContent("../view/parameter.php?type=globalParameter", "centerDiv");
+      adminLaunchScript("cronStop",false);
+      plgCronCheckStop();
+    },
+    error : function(data) {
+      hideWait();
+    }
+  });
+}

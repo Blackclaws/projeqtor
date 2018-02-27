@@ -942,6 +942,17 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
     return $result;
   } 
+  
+  public static function setNeedReplan($id) {
+    $proj=SqlElement::getSingleSqlElementFromCriteria("ProjectPlanningElement",array('refType'=>'Project','refId'=>$id),true);
+    $proj->needReplan=true;
+    $proj->simpleSave();
+  }
+  public static function unsetNeedReplan($id) {
+    $proj=SqlElement::getSingleSqlElementFromCriteria("ProjectPlanningElement",array('refType'=>'Project','refId'=>$id),true);
+    $proj->needReplan=false;
+    $proj->simpleSave();
+  }
 // END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT  
   
 // COMMENT BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
