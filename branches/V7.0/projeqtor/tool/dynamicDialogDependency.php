@@ -32,51 +32,56 @@ $commentDep=$dep->comment;
 
 ?>
 <div class="contextMenuDiv" id="contextMenuDiv" style="height:135px;z-index:99999999999;">
-  <table >
-    <tr>
-      <td>
-        <span>
-        <div style="width:180px;border-radius:1px 1px 0px 0px;">
-          <div class="section" style="display: inline-block;width:100%; border-radius:0px" >
-            <p  style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("operationUpdate");?></p>
-          <div style="float:right;">
-	             <a onclick="hideDependencyRightClick();" <?php echo formatSmallButton('Mark') ;?></a>
-        </div>
-       </div>
-       </div>
 
-			     <form dojoType="dijit.form.Form" id='dynamicRightClickDependencyForm' 
-					       name='dynamicRightClickDependencyForm' onSubmit="return false;" style="padding:5px;">
-					     <input id="dependencyRightClickId" name="dependencyRightClickId" type="hidden"
-						          value="<?php echo $id;?>" />
-				       <label for="dependencyDelay" style="text-align: left;display:inline-block;width:100px;"><?php echo i18n("colDependencyDelay");?>&nbsp;:&nbsp;</label>
-					     <input id="delayDependency" name="delayDependency" dojoType="dijit.form.NumberTextBox" 
-                   constraints="{min:-999, max:999}" 
-	                 style="width:25px; text-align: right;display:inline-block;margin-left:-23px;" 
-						       value="<?php echo $delayDep;?>" />
-						   <div style="display:inline-block;margin-left:38px;">
-				          <a id="dependencyRightClickSave" onclick="saveDependencyRightClick(<?php $typeDep;?>);">
-                      <?php echo formatMediumButton('Save') ;?>
-                  </a> 
-               </div>   
-					     <label for="commentDependency" style="text-align: left;"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
-					     <input id="commentDependency" name="commentDependency"  dojoType="dijit.form.Textarea"
-						             value="<?php echo $commentDep;?>" />                        
-				   </form>
-
-				  <div style="width:180px;height:25px;"> 
-				     <label for="removeDependency" style="height:25px;margin-top:7px;"><?php echo i18n("deleteButton");?>&nbsp;:&nbsp;</label>               		      		 
-	          <div style="float:right;">		 
-	               <a onclick="removeDependencyRightClick();" <?php echo formatMediumButton('Remove') ;?></a>	
-	          </div>
-			    </div> 
-			    	
-			    
-			    
-			 </span>
-			</td>
-		</tr>
-    <span></span>
-
-  </table>
+  <div style="width:215px;border-radius:1px 1px 0px 0px;">
+    <div class="section" style="display: inline-block;width:100%; border-radius:0px" >
+      <p  style="text-align:center;color:white;height:20px;font-size:15px;display:inline-block;"><?php echo i18n("operationUpdate");?></p>
+      <div style="float:right;">
+        <a onclick="hideDependencyRightClick();" <?php echo formatSmallButton('Mark') ;?></a>
+      </div>
+    </div>
+  </div>
+  <form dojoType="dijit.form.Form" id='dynamicRightClickDependencyForm' name='dynamicRightClickDependencyForm' onSubmit="return false;" style="padding:5px;">
+	  <table style="width:100%">
+	    <tr style="height:28px">
+	      <td style="text-align:right; width:100px;">
+	        <input id="dependencyRightClickId" name="dependencyRightClickId" type="hidden" value="<?php echo $id;?>" />
+          <label for="dependencyDelay" style="width:100px"><?php echo i18n("colDependencyDelay");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td style="text-align:left; white-space:nowrap">
+	        <input id="delayDependency" name="delayDependency" dojoType="dijit.form.NumberTextBox" constraints="{min:-999, max:999}" 
+            style="width:25px; text-align: center;" value="<?php echo $delayDep;?>" />
+		      <?php echo i18n("days");?>
+		    </td>
+		    <td style="padding-left:5px;width:24px;">
+		      <a id="dependencyRightClickSave" onclick="saveDependencyRightClick();"><?php echo formatMediumButton('Save') ;?></a> 
+        </td>
+      </tr>
+      <tr style="height:28px">
+	      <td style="text-align:right;">
+	        <label for="modeDependency" style="width:100px"><?php echo i18n("colType");?>&nbsp;:&nbsp;</label> 
+	      </td>
+	      <td colspan="2">
+	        <select dojoType="dijit.form.FilteringSelect" class="input" name="dependencyType" id="dependencyType"
+            <?php echo autoOpenFilteringSelect();?> style="width:115px;height:20px">
+            <?php $depType=array('E-S','E-E','S-S');
+            foreach ($depType as $type) {
+              $select=($dep->dependencyType==$type)?' selected ':'';
+              $lib=( (substr($type,0,1)=='E')?i18n('colEnd'):i18n('colStart') ).' - '.( (substr($type,-1)=='E' )?i18n('colEnd'):i18n('colStart') );
+              echo "<option value='$type' $select >$lib</option>";
+            }?>
+          </select>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td colspan="2">
+	        <label for="commentDependency" style="text-align: left;"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
+					<input id="commentDependency" name="commentDependency"  dojoType="dijit.form.Textarea" value="<?php echo $commentDep;?>" />                        
+	      </td>
+	      <td style="text-align:right;vertical-align:bottom;">
+	        <a onclick="removeDependencyRightClick();" <?php echo formatMediumButton('Remove') ;?></a> 
+	      </td>
+	    </tr>
+    </table>  
+  </form>		  
 </div>

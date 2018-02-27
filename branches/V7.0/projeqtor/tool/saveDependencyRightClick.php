@@ -32,6 +32,8 @@ require_once "../tool/projeqtor.php";
 // Get the link info
 $dependencyDelay=RequestHandler::getNumeric('delayDependency',true);
 $dependencyComment=RequestHandler::getValue('commentDependency',true);
+$dependencyType=RequestHandler::getValue('dependencyType',false);
+if (! $dependencyType) $dependencyType='E-S';
 $id=RequestHandler::getId('dependencyRightClickId',true);
 
 Sql::beginTransaction();
@@ -39,6 +41,7 @@ Sql::beginTransaction();
   $dep=new Dependency($id);
   $dep->dependencyDelay=$dependencyDelay;
   $dep->comment=$dependencyComment;
+  $dep->dependencyType=$dependencyType;
   $result=$dep->save();
   displayLastOperationStatus($result);
 

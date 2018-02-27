@@ -202,6 +202,29 @@ class Dependency extends SqlElement {
     }
     return $result;    
   }
+  public function save() {
+    $old=$this->getOld();
+    $result=parent::save();
+    if (!$old->id or $this->dependencyType!=$old->dependencyType or $this->dependencyDelay!=$old->dependencyDelay ) {
+      $peP=new PlanningElement($this->predecessorId);
+      Project::setNeedReplan($peP->idProject);
+      $peS=new PlanningElement($this->successorId);
+      if ($peS->idProject!=$peP->idProject) {
+        Project::setNeedReplan($peS->idProject);
+      }
+    }
+    return $result;
+  }
+  public function delete() {
+    $result=parent::delete();
+    $peP=new PlanningElement($this->predecessorId);
+    Project::setNeedReplan($peP->idProject);
+    $peS=new PlanningElement($this->successorId);
+    if ($peS->idProject!=$peP->idProject) {
+      Project::setNeedReplan($peS->idProject);
+    }
+    return $result;
+  }
   
 }
 ?>

@@ -78,7 +78,6 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $workElementLeftWork;
   public $_button_showTickets;
   
-  
   //public $_label_wbs;
   
   //public $_label_progress;

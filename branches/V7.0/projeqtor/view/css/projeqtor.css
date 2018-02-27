@@ -3585,7 +3585,7 @@ p {
 	border:2px solid black;
 	border-radius:5px;
 	border-color:#656565;
-	width:190px;
+	width:225px;
 }
 
 .inputParameter{
@@ -3636,4 +3636,9 @@ li.section {
   padding:0;
 	margin-left:-85px;
 	margin-top:23px;
+}
+
+#projectSelectorDiv .dijitReset.dijitRight.dijitButtonNode,
+#userMenuPopup .dijitReset.dijitRight.dijitButtonNode{
+  height:20px;
 }
