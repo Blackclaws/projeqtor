@@ -617,7 +617,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
-      console.log(vDepend);
       if(vDepend) {       
         var vDependStr = vDepend + '';
         var vDepList = vDependStr.split(',');
@@ -631,7 +630,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           if (depListSplit[3]) {
             vType=depListSplit[3];
           }
-          console.log(vType);
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             if (g.getEndDateView() && vList[vTask].getEnd()>g.getEndDateView() && vList[i].getStart()>g.getEndDateView()) continue;
             if (vType=='S-S' || vList[vTask].getMile()) {

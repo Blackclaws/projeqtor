@@ -98,7 +98,7 @@ class CronExecution extends SqlElement {
       $cronExecution->idle=1;
     }
     echo "</br></br>";
-    $splitCron=explode(" ",$cronExecution->cron);
+    $splitCron=($cronExecution->cron)?explode(" ",$cronExecution->cron):array('0','*','*','*','*');
     foreach ($splitCron as $key=>$line){
       if($line=="*")$splitCron[$key]=i18n("all");
     }
@@ -108,12 +108,12 @@ class CronExecution extends SqlElement {
     $month=$splitCron[3];
     $dayOfWeek=$splitCron[4];
     echo "<table style='float:left;'>";
-    echo "  <tr><td class='linkHeader' style='padding:0px 5px'>".i18n('colFrequency')."</td><td class='linkHeader' style='padding:0px 5px'>".i18n('colValue')."</td></tr>";
+    echo "  <tr><td class='linkHeader' style='width:100px;padding:0px 5px'>".i18n('colFrequency')."</td><td class='linkHeader' style='width:80px;padding:0px 5px'>".i18n('colValue')."</td></tr>";
     echo "  <tr><td class='linkData'>".i18n('minute')."</td><td class='linkData'>$minutes</td></tr>";
     echo "  <tr><td class='linkData'>".i18n('hour')."</td><td class='linkData'>$hours</td></tr>";
     echo "  <tr><td class='linkData'>".i18n('colFixedDay')."</td><td class='linkData'>$dayOfMonth</td></tr>";
-    echo "  <tr><td class='linkData'>".i18n('month')."</td><td class='linkData'>$month</td></tr>";
-    echo "  <tr><td class='linkData'>".i18n('colFixedDayOfWeek')."</td><td class='linkData'>$dayOfWeek</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('month')."</td><td class='linkData'>".self::getMonthName($month)."</td></tr>";
+    echo "  <tr><td class='linkData'>".i18n('colFixedDayOfWeek')."</td><td class='linkData'>".self::getWeekDayName($dayOfWeek)."</td></tr>";
     echo " </table>";
     echo "&nbsp;&nbsp;";
     echo "<button id='cronExecution$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
@@ -123,13 +123,28 @@ class CronExecution extends SqlElement {
     echo "  </script>";
     echo "</button>";
     echo "&nbsp;&nbsp;";
-    echo "<button id='cronExecutionActivate$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
-    echo $cronExecution->idle ? i18n("cronExecutionActivate") : i18n("cronExecutiondDesactivate");
-    echo "  <script type='dojo/connect' event='onClick' args='evt'>";
-    echo "    cronActivation('$scope');";
-    echo "  </script>";
-    echo "</button>";
-    echo "<div style='height:83px; '>&nbsp;&nbsp;".($cronExecution->idle==1 ? i18n('cronExecutionNotRunning') : '')."</div>";
+    if ($cronExecution->id) {
+      echo "<button id='cronExecutionActivate$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
+      echo $cronExecution->idle ? i18n("cronExecutionActivate") : i18n("cronExecutionDesactivate");
+      echo "  <script type='dojo/connect' event='onClick' args='evt'>";
+      echo "    cronActivation('$scope');";
+      echo "  </script>";
+      echo "</button>";
+    }
+    echo "<div style='white-space:nowrapo;height:83px; width:400px;'>&nbsp;&nbsp;".($cronExecution->idle==1 ? i18n('cronExecutionNotRunning') : '')."</div>";
+  }
+  public static function getObjectFromScope($scope) {
+    $obj=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.$scope));
+    if (! trim($obj->cron)) $obj->cron='0 * * * *';
+    return $obj;
+  }
+  public static function getWeekDayName($day) {
+    if ($day=='*' or $day=='all' or $day==i18n('all')) return i18n('all');
+    return i18n(jddayofweek($day-1,1));
+  }
+  public static function getMonthName($month) {
+    if ($month=='*' or $month=='all' or $month==i18n('all')) return i18n('all');
+    return getMonth(0,$month-1);
   }
 }
 ?>
