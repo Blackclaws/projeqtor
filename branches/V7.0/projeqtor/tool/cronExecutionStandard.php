@@ -25,61 +25,45 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 require_once "../tool/projeqtor.php";
+$operation=RequestHandler::getValue('operation');
+if ($operation=='saveDefinition') {
+  cronSaveDefinition();
+} else if ($operation=='activate') {
+  cronActivate();
+}
 
-function cronPlanningDifferentrial(){
+function cronPlanningDifferential(){
   debugLog("cronPlanningDifferentrial");
 }
 function cronPlanningComplete(){
   debugLog("cronPlanningComplete");
 }
 
+function cronSaveDefinition() {
+  $minutes=RequestHandler::getValue('cronDefinitonMinutes');
+  $hours=RequestHandler::getValue('cronDefinitonHours');
+  $dayOfMonth=RequestHandler::getValue('cronDefinitonDayOfMonth');
+  $month=RequestHandler::getValue('cronDefinitonMonth');
+  $dayOfWeek=RequestHandler::getValue('cronDefinitonDayOfWeek');
   
-  /*
-  $minutes=$_REQUEST['plgBackupMinutes'];
-  $hours=$_REQUEST['plgBackupHours'];
-  $dayOfMonth=$_REQUEST['plgBackupDayOfMonth'];
-    $month=$_REQUEST['plgBackupMonth'];
-    $dayOfWeek=$_REQUEST['plgBackupDayOfWeek'];
-    
-    $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
-    $cronExecution=new CronExecution();
-    if(Parameter::getGlobalParameter("plgBackupCron")!=null){
-      $cronExecution=new CronExecution(Parameter::getGlobalParameter("plgBackupCron"));
-    }else{
-      $cronExecution->idle=0;
-    }
-
-    $cronExecution->fileExecuted="../tool/plgBackupCron.php";
-    $cronExecution->fonctionName="startPlgBackupCron";
-    $cronExecution->cron=$cronStr;
-    $cronExecution->nextTime=null;
-    traceLog($cronExecution->save());
+  $scope=RequestHandler::getValue('cronExecutionScope');
+  $cronExecution=CronExecution::getObjectFromScope($scope);
   
-    if(Parameter::getGlobalParameter("plgBackupCron")==null){
-      Parameter::storeGlobalParameter("plgBackupCron",$cronExecution->id);
-    }
-  }else{
-    
-    Parameter::clearGlobalParameters();
-    $nbFiles=5;
-    if(Parameter::getGlobalParameter("plgBackupNbFiles")!=null){
-      $nbFiles=Parameter::getGlobalParameter("plgBackupNbFiles");
-    }
-    $bk = new BackupMySQL(array(
-    	'username' => $paramDbUser,
-    	'passwd' => $paramDbPassword,
-    	'dbname' => $paramDbName,
-    	'dbprefix' => $paramDbPrefix,
-    	'port' => $paramDbPort,
-    	'dossier' => '../plugin/backupDatabase/backupDatabase/',
-    	'anonymize' => false,
-      'nbr_fichiers' => $nbFiles
-    	));
-      traceLog("BackupDatabase has been done by the Cron");*/
-  }
+  $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
+  $cronExecution->idle=1; // Désactivate after save (will force réactivate and then CRON relaunch
+  
+  if (! $cronExecution->fileExecuted) $cronExecution->fileExecuted="../tool/cronExecutionStandard.php";
+  if (! $cronExecution->fonctionName) $cronExecution->fonctionName="cron$scope";
+  $cronExecution->cron=$cronStr;
+  $cronExecution->nextTime=null;
+  $result=$cronExecution->save();
 }
-//if(!isset($inCronBlockFonctionCustom) || $inCronBlockFonctionCustom==null || isset($_REQUEST['forcePlgBackupCronStart'])){
-//  startPlgBackupCron();
-//
+
+function cronActivate() {
+  $scope=RequestHandler::getValue('cronExecutionScope');
+  $cronExecution=CronExecution::getObjectFromScope($scope);
+  $cronExecution->idle=($cronExecution->idle==0)?1:0;
+  $cronExecution->nextTime=null;
+  $result=$cronExecution->save();
 }
 ?>

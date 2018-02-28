@@ -36,23 +36,17 @@ $month='*';
 $dayOfWeek='*';
 $scope=RequestHandler::getValue('cronScope');
 if (!$scope) return;
-$cronExecution=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.$scope));
-if(!$cronExecution->id) {
-  $minutes=0;
-  $hours='*';
-  $dayOfMonth='*';
-  $month='*';
-  $dayOfWeek='*';
-}else{
-  $cron=explode(" ",$cronExecution->cron);
-  $minutes=$cron[0];
-  $hours=$cron[1];
-  $dayOfMonth=$cron[2];
-  $month=$cron[3];
-  $dayOfWeek=$cron[4];
-}
+$cronExecution=CronExecution::getObjectFromScope($scope);
+$cron=explode(" ",$cronExecution->cron);
+$minutes=$cron[0];
+$hours=$cron[1];
+$dayOfMonth=$cron[2];
+$month=$cron[3];
+$dayOfWeek=$cron[4];
+
 ?>
 <form id='cronDefiniton' name='cronDefiniton' onSubmit="return false;" >
+<input type="hidden" name="cronExecutionScope" value="<?php echo $scope;?>" />
 <table style="width:100%;">
 <tr>
   <td colspan="2" style="font-weight:bold;text-align:center"><?php echo i18n("colFrequency");?></td>
@@ -64,6 +58,7 @@ if(!$cronExecution->id) {
   <td class="dialogLabel"><label><?php echo i18n("minute");?>&nbsp;:&nbsp;</label></td>
   <td>
     <select dojoType="dijit.form.FilteringSelect" class="input required" required="true"
+    <?php echo autoOpenFilteringSelect();?>
     style="width: 98%;" name="cronDefinitonMinutes" id="cronDefinitonMinutes">
     <?php 
       echo htmlReturnOptionForMinutesHoursCron($minutes);
@@ -75,7 +70,8 @@ if(!$cronExecution->id) {
   <td class="dialogLabel"><label><?php echo i18n("hour");?>&nbsp;:&nbsp;</label></td>
   <td>
     <select dojoType="dijit.form.FilteringSelect" class="input required" required="true"
-    style="width: 98%;" name="plgBackupHours" id="plgBackupHours">
+    <?php echo autoOpenFilteringSelect();?>
+    style="width: 98%;" name="cronDefinitonHours" id="cronDefinitonHours">
     <?php 
       echo htmlReturnOptionForMinutesHoursCron($hours,true);
     ?>
@@ -86,7 +82,8 @@ if(!$cronExecution->id) {
   <td class="dialogLabel"><label><?php echo i18n("colFixedDay");?>&nbsp;:&nbsp;</label></td>
   <td>
     <select dojoType="dijit.form.FilteringSelect" class="input required" required="true"
-    style="width: 98%;" name="plgBackupDayOfMonth" id="plgBackupDayOfMonth">
+    <?php echo autoOpenFilteringSelect();?>
+    style="width: 98%;" name="cronDefinitonDayOfMonth" id="cronDefinitonDayOfMonth">
     <?php 
       echo htmlReturnOptionForMinutesHoursCron($dayOfMonth,false,true);
     ?>
@@ -97,9 +94,12 @@ if(!$cronExecution->id) {
   <td class="dialogLabel"><label><?php echo i18n("month");?>&nbsp;:&nbsp;</label></td>
   <td>
     <select dojoType="dijit.form.FilteringSelect" class="input required" required="true"
-    style="width: 98%;" name="plgBackupMonth" id="plgBackupMonth">
+    <?php echo autoOpenFilteringSelect();?>
+    style="width: 98%;" name="cronDefinitonMonth" id="cronDefinitonMonth">
     <?php 
-      echo htmlReturnOptionForMonthsCron($month);
+    echo '<option value="*" >'.i18n('all').'</option>';
+      //echo htmlReturnOptionForMonthsCron($month);
+      echo htmlReturnOptionForMonths($month,true);
     ?>
     </select>
   </td>
@@ -108,9 +108,12 @@ if(!$cronExecution->id) {
   <td class="dialogLabel"><label><?php echo i18n("colFixedDayOfWeek");?>&nbsp;:&nbsp;</label></td>
   <td>
     <select dojoType="dijit.form.FilteringSelect" class="input required" required="true"
-    style="width: 98%;" name="plgBackupDayOfWeek" id="plgBackupDayOfWeek">
+    <?php echo autoOpenFilteringSelect();?>
+    style="width: 98%;" name="cronDefinitonDayOfWeek" id="cronDefinitonDayOfWeek">
     <?php 
-      echo htmlReturnOptionForWeekdaysCron($dayOfWeek);
+      echo '<option value="*" >'.i18n('all').'</option>';
+      //echo htmlReturnOptionForWeekdaysCron($dayOfWeek);
+      echo htmlReturnOptionForWeekdays($dayOfWeek,true);
     ?>
     </select>
   </td>
@@ -120,11 +123,11 @@ if(!$cronExecution->id) {
 </tr>
 <tr>
   <td align="center" colspan="2">
-    <input type="hidden" id="dialogKanbanResultAction">
+    <input type="hidden" id="dialogCronDefinitonAction">
     <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCronDefinition').hide();formChangeInProgress=false;">
       <?php echo i18n("buttonCancel");?>
     </button>
-    <button class="mediumTextButton"  id="dialogKanbanResultSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);plgBackupSendCronUpdate();return false;">
+    <button class="mediumTextButton"  id="dialogCronDefinitonSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);cronExecutionDefinitionSave();return false;">
       <?php echo i18n("buttonOK");?>
     </button>
   </td>
@@ -134,60 +137,32 @@ if(!$cronExecution->id) {
 <?php 
 function htmlReturnOptionForMinutesHoursCron($selection, $isHours=false, $isDayOfMonth=false, $required=false) {
   $arrayWeekDay=array();
-  $nbTot=60;
+  $max=59;
   $start=0;
+  $modulo=5;
   if($isHours){
-    $nbTot=24;
+    $max=23;
     $start=0;
+    $modulo=1;
   }
   if($isDayOfMonth){
-    $nbTot=32;
+    $max=31;
     $start=1;
+    $modulo=1;
   }
-  for($i=$start;$i<$nbTot;$i++){
+  for($i=$start;$i<=$max;$i++){
     $key=$i;
-    $line=$key;
-    if($key<10)$key='0'.$key;
-    $arrayWeekDay[$key]=$key;
+    //if($key<10)$key='0'.$key;
+    if ( $i % $modulo==0) $arrayWeekDay[$key]=$key;
   }
   $result="";
   if (! $required) {
-    $result.='<option value="*" >'.i18n('all').'</option>';
+    $result.='<option value="*" '.(($selection=='*')?'selected':'').'>'.i18n('all').'</option>';
   }
   foreach($arrayWeekDay as $key=>$line) {
     $result.= '<option value="' . $key . '"';
     if ($selection!==null and $key==$selection ) { $result.= ' SELECTED '; }
     $result.= '>'.$line.'</option>';
-  }
-  return $result;
-}
-function htmlReturnOptionForWeekdaysCron($selection, $required=false) {
-  $arrayWeekDay=array('1'=>'Monday', '2'=>'Tuesday', '3'=>'Wednesday', '4'=>'Thursday',
-      '5'=>'Friday', '6'=>'Saturday', '7'=>'Sunday');
-  $result="";
-  if (! $required) {
-    $result.='<option value="*" >'.i18n('all').'</option>';
-  }
-  for ($key=1; $key<=7; $key++) {
-    $result.= '<option value="' . $key . '"';
-    if ( $selection and $key==$selection ) { $result.= ' SELECTED '; }
-    $result.= '>'. i18n($arrayWeekDay[$key]) . '</option>';
-  }
-  return $result;
-}
-
-function htmlReturnOptionForMonthsCron($selection, $required=false) {
-  $arrayMonth=array('01'=>'January', '02'=>'February', '03'=>'March', '04'=>'April',
-      '05'=>'May', '06'=>'June', '07'=>'July','08'=>'August',
-      '09'=>'September', '10'=>'October', '11'=>'November','12'=>'December');
-  $result="";
-  if (! $required) {
-    $result.='<option value="*" >'.i18n('all').'</option>';
-  }
-  foreach($arrayMonth as $key=>$line) {
-    $result.= '<option value="' . $key . '"';
-    if ( $selection and $key==$selection ) { $result.= ' SELECTED '; }
-    $result.= '>'. i18n($line) . '</option>';
   }
   return $result;
 }

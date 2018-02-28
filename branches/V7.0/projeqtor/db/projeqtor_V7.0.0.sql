@@ -49,5 +49,5 @@ ADD `isOnCriticalPath` int(1) UNSIGNED DEFAULT 0;
 -- Automatic Planning                                       --
 -- ======================================================== --
 INSERT INTO `${prefix}cronexecution` (`cron`, `fileExecuted`, `idle`, `fonctionName`, `nextTime`) VALUES 
-('0 * * * *', '../tool/cronExecutionStandardCron.php', '1', 'cronPlanningDifferential', NULL),
-('0 2 * * *', '../tool/cronExecutionStandardCron.php', '1', 'cronPlanningComplete', NULL);
+('0 * * * *', '../tool/cronExecutionStandard.php', '1', 'cronPlanningDifferential', NULL),
+('0 2 * * *', '../tool/cronExecutionStandard.php', '1', 'cronPlanningComplete', NULL);
