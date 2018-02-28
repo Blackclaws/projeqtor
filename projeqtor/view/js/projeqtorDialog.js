@@ -6183,6 +6183,41 @@ function adminCronRelaunch() {
   });
 }
 
+function adminCronRestart() {
+  if (cronCheckCount>0) return;
+  cronCheckCount=1;
+  dojo.xhrGet({
+    url : "../tool/cronStop.php",
+    handleAs : "text",
+    load : function(data, args) {
+      setTimeout("adminCronRestartCheck();",1000);
+    }
+  });
+}
+var cronCheckCount=0;
+function adminCronRestartCheck() {
+  dojo.xhrGet({
+    url : "../tool/cronCheck.php",
+    handleAs : "text",
+    load : function(data, args) {
+      if (data == 'running') {
+        cronCheckCount++;
+        if (cronCheckCount<60) setTimeout("adminCronRestartCheck();",1000);
+      } else {
+        adminCronRestartRun();
+      }
+    }
+  });
+}
+function adminCronRestartRun() {
+  dojo.xhrGet({
+    url : "../tool/cronRun.php",
+    handleAs : "text",
+    load : function(data, args) {
+    }
+  });
+  cronCheckCount=0;
+}
 function adminSendAlert() {
   formVar=dijit.byId("adminForm");
   if (formVar.validate()) {
@@ -8967,18 +9002,37 @@ function readNotification (id){
 }
 //end
 
-// CRON
+// ====================================
+// CRON FEATURES
+// ====================================
 
-function cronActivation(idCronExec){
+function cronActivation(scope){
   showWait();
   dojo.xhrGet({
-    url : "../tool/cronActivation.php?idCronExec="+idCronExec,
+    url : "../tool/cronExecutionStandard.php?operation=activate&cronExecutionScope="+scope,
     load : function(data) {
       loadContent("../view/parameter.php?type=globalParameter", "centerDiv");
-      adminLaunchScript("cronStop",false);
-      plgCronCheckStop();
+      adminCronRestart();
     },
     error : function(data) {
+      hideWait();
+    }
+  });
+}
+
+function cronExecutionDefinitionSave(){
+  var finish=false;
+  showWait();
+  dojo.xhrPost({
+    url : "../tool/cronExecutionStandard.php?operation=saveDefinition",
+    form: "cronDefiniton",
+    handleAs : "text",
+    load : function(data, args) {
+      dijit.byId('dialogCronDefinition').hide();
+      loadContent("../view/parameter.php?type=globalParameter", "centerDiv");
+      hideWait();
+    },
+    error : function() {
       hideWait();
     }
   });

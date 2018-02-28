@@ -25,4 +25,4 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 require_once "../tool/projeqtor.php";
-return Cron::check();
+echo Cron::check();
