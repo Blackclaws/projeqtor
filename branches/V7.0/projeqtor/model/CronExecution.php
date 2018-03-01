@@ -97,7 +97,7 @@ class CronExecution extends SqlElement {
     if (!$cronExecution->id) {
       $cronExecution->idle=1;
     }
-    echo "</br></br>";
+    echo "<br/>";
     $splitCron=($cronExecution->cron)?explode(" ",$cronExecution->cron):array('0','*','*','*','*');
     foreach ($splitCron as $key=>$line){
       if($line=="*")$splitCron[$key]=i18n("all");
@@ -121,7 +121,7 @@ class CronExecution extends SqlElement {
     echo "  <script type='dojo/connect' event='onClick' args='evt'>";
     echo "    loadDialog('dialogCronDefinition', null, true, '&cronScope=$scope', true);";
     echo "  </script>";
-    echo "</button>";
+    echo "</button><br/>";
     echo "&nbsp;&nbsp;";
     if ($cronExecution->id) {
       echo "<button id='cronExecutionActivate$scope' dojoType='dijit.form.Button' showlabel='true' style='position:relative;top:-2px'>";
@@ -131,7 +131,11 @@ class CronExecution extends SqlElement {
       echo "  </script>";
       echo "</button>";
     }
-    echo "<div style='white-space:nowrapo;height:83px; width:400px;'>&nbsp;&nbsp;".($cronExecution->idle==1 ? i18n('cronExecutionNotRunning') : '')."</div>";
+    if ($cronExecution->idle==1) {
+      echo "<div style='white-space:nowrapo;height:30px; width:400px;color:#A00000'>&nbsp;&nbsp;".i18n('cronExecutionNotRunning')."</div>";
+    } else {
+      echo "<div style='white-space:nowrapo;height:30px; width:400px;color:#00A000'>&nbsp;&nbsp;".i18n('cronExecutionRunning')."</div>";
+    }
   }
   public static function getObjectFromScope($scope) {
     $obj=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.$scope));

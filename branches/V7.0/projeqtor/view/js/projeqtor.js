@@ -947,7 +947,11 @@ function checkLogin() {
     if (changePassword) {
       quitConfirmed = true;
       noDisconnect = true;
-      window.location = "main.php?changePassword=true";
+      var tempo=300;
+      if (dojo.byId('notificationOnLogin')) {
+        tempo=1500;
+      } 
+      setTimeout('window.location = "main.php?changePassword=true";',tempo);
     } else {
       quitConfirmed = true;
       noDisconnect = true;
@@ -957,7 +961,11 @@ function checkLogin() {
             + dojo.byId("objectClass").value + "&objectId="
             + dojo.byId("objectId").value;
       }
-      window.location = url;
+      var tempo=400;
+      if (dojo.byId('notificationOnLogin')) {
+        tempo=1500;
+      } 
+      setTimeout('window.location ="'+url+'";',tempo);
     }
   } else {
     hideWait();

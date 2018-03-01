@@ -600,7 +600,7 @@ class PeriodicMeetingMain extends SqlElement {
   private function saveMeeting($currentDate, $nb, $old) {
   	projeqtor_set_time_limit(300);
   	$critArray=array("idPeriodicMeeting"=>$this->id, "isPeriodic"=>'1',"periodicOccurence"=>$nb);
-  	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray);
+  	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray,false);
   	$isNew=($meeting->id)?false:true;
   	$meeting->idProject=$this->idProject;
     $meeting->idMeetingType=$this->idMeetingType;

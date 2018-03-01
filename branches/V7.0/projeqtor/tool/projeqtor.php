@@ -3064,9 +3064,9 @@ function getForeColor($color) {
 }
 
 /*
- * calculate the first day of a given week
+ * calculate the first day of a given week. Returns a timestamp
  */
-function firstDayofWeek($week, $year) {
+function firstDayofWeek($week=null, $year=null) {
   if (!$week or ! $year) {
     $now=date('Y-m-d');
     return firstDayofWeek(weekNumber($now),substr($now,0,4));
