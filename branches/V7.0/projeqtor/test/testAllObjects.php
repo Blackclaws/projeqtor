@@ -104,10 +104,10 @@ function fillObj($obj) {
 		$bool=($obj->id)?0:1;	
 		for ($i=1;$i<=4;$i++) {$var.=$var;}
 		$dbType=$obj->getDataType($fld);
-		$dbLength=$obj->getDataLength($fld);		
+		$dbLength=$obj->getDataLength($fld);	
 		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase' or $fld=='idOrganization' or $fld=='id'.get_Class($obj)) {
 			// Nothing => would lead to invalid controls
-		} else if ($fld=='refType' or $fld=='originType') {
+		} else if ($fld=='refType' or $fld=='originType' or $fld=='topRefType' or $fld=='notifiableItem') {
 			$pos=strpos(get_class($obj),'PlanningElement');
 			if ($pos>0) {
 				$obj->$fld=substr(get_class($obj),0,$pos);
@@ -116,13 +116,17 @@ function fillObj($obj) {
 			}
 		} else if (isset($dbCrit[$fld])) {
 			// Nothing : field is a database criteria : will be set automatically	
+		} else if (SqlElement::is_a($obj,'Bill') and $fld=='done') {
+		  $obj->$fld=0;
+		} else if ($fld=='notificationRule') {
+		  $obj->$fld='';
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
 		} else if ($fld=='refId') {
 			$obj->$fld='9999';
-		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
+		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topId') {
 			// Nothing
-		} if ($fld=='periodicityTimes') {
+		} else if ($fld=='periodicityTimes') {
 		  $obj->$fld=1;
 		} else if (substr($fld,0,1)==strtoupper(substr($fld,0,1))) {
 			if (is_object($obj->$fld)) {

@@ -33,10 +33,56 @@ if ($operation=='saveDefinition') {
 }
 
 function cronPlanningDifferential(){
-  debugLog("cronPlanningDifferentrial");
+  $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningDifferentialDate"));
+  $arrayProj=array();
+  $pe=new PlanningElement();
+  $lst=$pe->getSqlElementsFromCriteria(array('refType'=>'Project','needReplan'=>1));
+  foreach ($lst as $pe) {
+    $arrayProj[]=$pe->refId;
+  }
+  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - ".i18n('projects').' : ' .((count($arrayProj))?implode(',',$arrayProj):i18n('paramNone')));
+  if (count($arrayProj)>0) {
+    Sql::beginTransaction();
+    $result=PlannedWork::plan($arrayProj, $startDatePlan);
+    $status = getLastOperationStatus ( $result );
+    if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+      Sql::commitTransaction ();
+    } else {
+      Sql::rollbackTransaction ();
+    }
+    traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - $status");
+  } else {
+    $status='NO_CHANGE';
+  }
 }
 function cronPlanningComplete(){
-  debugLog("cronPlanningComplete");
+  $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningCompleteDate"));
+  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - ".i18n('projects').' : '.i18n('all'));
+  Sql::beginTransaction();
+  $result=PlannedWork::plan(array(' '), $startDatePlan);
+  $status = getLastOperationStatus ( $result );
+  if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+    Sql::commitTransaction ();
+  } else {
+    Sql::rollbackTransaction ();
+  }
+  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - $status");
+}
+function cronPlanningStartDate($param) {
+  if ($param=="W") {
+    return date('Y-m-d',firstDayofWeek()); // Call with no parameter will return first day of current week
+  } else if ($param=="M") {
+    return date('Y-m').'-01';
+  } else if (substr($param,0,1)=='J') {
+    $day=substr($param,1);
+    if ( is_numeric($day) and $day!=0) {
+      return addDaysToDate(date('Y-m-d'), $day);
+    } else {
+      return date('Y-m-d');
+    }
+  } else {
+    return date('Y-m-d',firstDayofWeek());
+  }
 }
 
 function cronSaveDefinition() {

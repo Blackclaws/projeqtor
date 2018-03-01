@@ -40,7 +40,7 @@ $versionHistory = array(
   "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.2.5", "V5.3.0.a", "V5.3.0", "V5.3.2", "V5.3.3", 
   "V5.4.0", "V5.4.2", "V5.4.3", "V5.4.4", "V5.4.5", "V5.5.0", "V5.5.2", "V5.5.3", 
   "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1", "V6.1.3", "V6.2.0", "V6.3.0", "V6.3.2", "V6.3.3", "V6.4.0", "V6.4.1", "V6.4.2", "V6.4.3", "V6.5.0", "V6.5.1", "V6.5.5",
-	"V6.6.0" // Pseudo version, never deployed as community, no branch
+	"V6.6.0", "V7.0.0" // Pseudo version, never deployed as community, no branch
 );
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -263,12 +263,6 @@ if (beforeVersion($currVersion,"V3.3.0") and $currVersion!='V0.0.0') {
   }
 }
 
-$tstTable=new TodayParameter();
-$tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
-if (! $tst or count($tst)==0) {
-  $nbErrors+=runScript('V3.3.1.linux');
-}
-
 if (beforeVersion($currVersion,"V3.4.0")) {
   traceLog("set default profile [V3.4.0]");
 	$defProf=Parameter::getGlobalParameter('defaultProfile');
@@ -332,11 +326,6 @@ if (beforeVersion($currVersion,"V4.0.0")) {
   }
   error_reporting(E_ALL);
   enableCatchErrors();
-}
-$tstTable=new OverallProgress();
-$tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
-if (! $tst or count($tst)==0) {
-  $nbErrors+=runScript('V4.0.1.linux');
 }
 
 if (beforeVersion($currVersion,"V4.1.-")) {

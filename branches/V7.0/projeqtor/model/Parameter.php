@@ -544,6 +544,21 @@ class Parameter extends SqlElement {
             'MERGE'=>i18n('paramMailGroupMerge')
         );
         break;
+      case 'automaticPlanningCompleteDate' :
+      case 'automaticPlanningDifferentialDate' :
+        $list=array(
+          'W'=>i18n('firstDayOfWeek'),
+          'M'=>i18n('firstDayOfMonth'),
+          'J0'=>i18n('today'),
+          'J-1'=>i18n('yesterday',array('1')),
+          'J-2'=>i18n('daysBeforeToday',array('2')),
+          'J-3'=>i18n('daysBeforeToday',array('3')),
+          'J-7'=>i18n('daysBeforeToday',array('7')),
+          'J-10'=>i18n('daysBeforeToday',array('10')),
+          'J-15'=>i18n('daysBeforeToday',array('15')),
+          'J-30'=>i18n('daysBeforeToday',array('30'))
+        );
+        break;
     } 
     return $list;
   }
@@ -813,7 +828,9 @@ class Parameter extends SqlElement {
             	                'imputationAlertSendToTeamManager'=>'list',
             	              'sectionAutomaticPlanning'=>'section',
             	                'automaticPlanningDifferential'=>'specific',
+            	                'automaticPlanningDifferentialDate'=>'list',
             	                'automaticPlanningComplete'=>'specific',
+            	                'automaticPlanningCompleteDate'=>'list',
           	            'tabSystem'=>"tab",
           	              'newColumnbSystemLeft'=>'newColumn',
             	              'sectionFiles'=>'section',
