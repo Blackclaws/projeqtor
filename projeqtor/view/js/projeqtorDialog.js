@@ -6127,7 +6127,7 @@ function closeAlertBox() {
 // ADMIN functionalities
 // ===========================================================================================
 //
-var cronCheckIteration=5; // Number of cronCheckTimeout to way max
+var cronCheckIteration=50; // Number of cronCheckTimeout to wait max
 function adminLaunchScript(scriptName,needRefresh) {
   if(typeof needRefresh == 'undefined')needRefresh=true;
   var url="../tool/" + scriptName + ".php";
@@ -6144,8 +6144,8 @@ function adminLaunchScript(scriptName,needRefresh) {
     if(needRefresh)setTimeout('loadContent("admin.php","centerDiv");', 3000);
   } else if (scriptName == 'cronStop' && needRefresh) {
     i=120;
-    cronCheckIteration=5;
-    setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
+    cronCheckIteration=5 * cronSleepTime;
+    setTimeout('adminCronCheckStop();', 1000);
   }
 }
 
@@ -6159,7 +6159,7 @@ function adminCronCheckStop() {
       } else {
         cronCheckIteration--;
         if (cronCheckIteration > 0) {
-          setTimeout('adminCronCheckStop();', 1000 * cronSleepTime);
+          setTimeout('adminCronCheckStop();', 1000);
         } else {
           loadContent("admin.php", "centerDiv");
         }

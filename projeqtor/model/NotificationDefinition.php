@@ -339,7 +339,7 @@ class NotificationDefinition extends SqlElement {
    */
   public function control() {
     $result = "";
-    $spe_targetDateField = $_REQUEST['_spe_targetDateNotifiableField'];
+    $spe_targetDateField = RequestHandler::getValue('_spe_targetDateNotifiableField');
 
     // The ObjectClass's fields
     $notificationItem = new Notifiable($this->idNotifiable);
@@ -390,7 +390,7 @@ class NotificationDefinition extends SqlElement {
    */
   public function save() {
       
-    $spe_targetDateField = $_REQUEST['_spe_targetDateNotifiableField'];
+    $spe_targetDateField = RequestHandler::getValue('_spe_targetDateNotifiableField');
     $this->targetDateNotifiableField = $spe_targetDateField;
     
     if (is_null($this->notificationNbRepeatsBefore) or $this->notificationNbRepeatsBefore=="") {
