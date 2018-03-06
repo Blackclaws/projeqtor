@@ -117,7 +117,7 @@ class PlannedWork extends GeneralWork {
 // PLAN
 // ================================================================================================================================
 
-  public static function plan($projectIdArray, $startDate,$withCriticalPath=false,$mode='normal') {
+  public static function plan($projectIdArray, $startDate,$withCriticalPath=true) {
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	
@@ -856,8 +856,19 @@ class PlannedWork extends GeneralWork {
       $ass->simpleSave();
     }
     
+    
+    if ($withCriticalPath) {
+      if ($allProjects) {
+        $proj=new Project(' ',true);
+        $projectIdArray=array_keys($proj->getRecursiveSubProjectsFlatList(true, true));
+      }
+      foreach ($projectIdArray as $idP) {
+        $fullListPlan=self::calculateCriticalPath($idP,$fullListPlan);
+      }
+    }
     $arrayProj=array();
     foreach ($fullListPlan as $pe) {
+      if (!$pe->refType) continue;
       $arrayProj[$pe->idProject]=$pe->idProject;
    	  $pe->simpleSave();
    	  if ($pe->refType=='Milestone') {
@@ -892,6 +903,143 @@ class PlannedWork extends GeneralWork {
 // End of PLAN
 // ================================================================================================================================
   
+  private static function calculateCriticalPath($idProject,$fullListPlan) {
+    debugLog("calculateCriticalPath($idProject)");
+    if (!trim($idProject) or $idProject=='*') return $fullListPlan;
+    $start=null;
+    $end=null;
+    $arrayStep=array('early'=>null,'late'=>null,'before'=>array(),'after'=>array());
+    $arrayTask=array('duration'=>null,'start'=>null,'end'=>null,'type'=>'task','class'=>'','name'=>'');
+    if ($fullListPlan) {
+      $peList=array();
+      foreach ($fullListPlan as $id=>$plan) {
+        if ($plan->idProject==$idProject and $plan->refType!='Project') {
+          $peList[$id]=$plan;
+        }
+        if ($plan->refType=='Project' and $plan->refId==$idProject) {
+          $start=$plan->plannedStartDate;
+          $end=$plan->plannedEndDate;
+        }
+      }
+    } else {
+      $pe=new PlanningElement();
+      $peList=$pe->getSqlElementsFromCriteria(null,null, "(idProject=$idProject and refType!='Project') or ( refType=='Project' and refId=$idProject)", "wbsSortable asc", true);
+      foreach ($peList as $id=>$plan) {
+        if ($plan->refType=='Project' and $plan->refId==$idProject) {
+          $start=$plan->plannedStartDate;
+          $end=$plan->plannedEndDate;
+          unset($peList[$id]);
+          break;
+        }
+      } 
+      // TODO : get predecessors
+    }
+    $cp=array('node'=>array(),'task'=>array());
+    $cp['node']['S']=$arrayStep; 
+    $cp['node']['S']['early']=$start;
+    $cp['node']['E']=$arrayStep;
+    $cp['node']['E']['early']=$end;
+    $cp['node']['E']['late']=$end;
+    foreach($peList as $id=>$plan) {
+      $cp['task'][$id]=$arrayTask;
+      $cp['task'][$id]['duration']=$plan->plannedDuration;
+      $cp['task'][$id]['name']=$plan->refName;
+      $cp['task'][$id]['class']=$plan->refType;
+      $cp['task'][$id]['start']='S'.$id;
+      if (!isset($cp['node']['S'.$id])) $cp['node']['S'.$id]=$arrayStep;
+      $cp['node']['S'.$id]['early']=$plan->plannedStartDate;
+      if (!in_array($id,$cp['node']['S'.$id]['after'])) $cp['node']['S'.$id]['after'][]=$id;
+      $cp['task'][$id]['end']='E'.$id;
+      if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayStep;
+      $cp['node']['E'.$id]['early']=$plan->plannedEndDate;
+      if (!in_array($id,$cp['node']['E'.$id]['before'])) $cp['node']['E'.$id]['before'][]=$id;
+      foreach ($plan->_directPredecessorList as $idPrec=>$prec) {
+        if (!isset($peList[$idPrec]) ) continue; // Predecessor not in current project
+        if (!isset($cp['task'][$idPrec.'-'.$id])) $cp['task'][$idPrec.'-'.$id]=$arrayTask;
+        $cp['task'][$idPrec.'-'.$id]['type']='dependency';
+        if ($peList[$idPrec]->refType=='Milestone') {
+          $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay'];
+        } else {
+          $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay']+1;
+        }
+        $typS=substr($prec['type'],0,1);
+        $typE=substr($prec['type'],-1);
+        $cp['task'][$idPrec.'-'.$id]['start']=$typS.$idPrec;
+        if (!isset($cp['node'][$typS.$idPrec])) $cp['node'][$typS.$idPrec]=$arrayStep;
+        if (!in_array($idPrec.'-'.$id,$cp['node'][$typS.$idPrec]['after'])) $cp['node'][$typS.$idPrec]['after'][]=$idPrec.'-'.$id;
+        $cp['task'][$idPrec.'-'.$id]['end']=$typE.$id;
+        if (!isset($cp['node'][$typE.$id])) $cp['node'][$typE.$id]=$arrayStep;
+        if (!in_array($idPrec.'-'.$id,$cp['node'][$typE.$id]['before'])) $cp['node'][$typE.$id]['before'][]=$idPrec.'-'.$id;
+      }
+    }
+    foreach ($cp['node'] as $id=>$node) { // Attach loose nodes to S or E
+      if ($id=='S' or $id=='E') continue;
+      if (count($node['before'])==0) { // No predecessor 
+        $cp['task']['S-'.$id]=$arrayTask;
+        $cp['task']['S-'.$id]['type']='fake';
+        $cp['task']['S-'.$id]['duration']=0;
+        $cp['task']['S-'.$id]['start']='S';
+        $cp['task']['S-'.$id]['end']=$id;
+        if (!in_array('S-'.$id,$cp['node']['S']['after'])) $cp['node']['S']['after'][]='S-'.$id;
+      }
+      if (count($node['after'])==0) { // No successor
+        $cp['task'][$id.'-E']=$arrayTask;
+        $cp['task'][$id.'-E']['type']='fake';
+        $cp['task'][$id.'-E']['duration']=0;
+        $cp['task'][$id.'-E']['start']=$id;
+        $cp['task'][$id.'-E']['end']='E';
+        if (!in_array($id.'-E',$cp['node']['E']['before'])) $cp['node']['E']['before'][]=$id.'-E';
+      }
+    }
+    self::reverse('E',$cp);
+    //debugLog($cp);
+    foreach ($cp['task'] as $idP=>$plan) {
+      if ($plan['type']!='task') continue;
+      $pe=$fullListPlan[$idP];
+      $pe->latestStartDate=$cp['node'][$plan['start']]['late'];
+      $pe->latestEndDate=$cp['node'][$plan['end']]['late'];
+      if ($pe->latestStartDate==$pe->plannedStartDate and $pe->latestEndDate==$pe->plannedEndDate) {
+        $pe->isOnCriticalPath=1;
+      } else {
+        $pe->isOnCriticalPath=0;
+      }
+      $fullListPlan[$idP]=$pe;
+    }
+    return $fullListPlan;
+  }
+  private static function reverse($nodeId,&$cp) {
+    $node=$cp['node'][$nodeId];
+    $cp['TEST']='OK';
+    foreach ($cp['node'][$nodeId]['before'] as $taskId) {
+      $task=$cp['task'][$taskId];
+      $diff=($task['duration'])*(-1);
+      if ($nodeId=='E' or $nodeId=='S') {
+        $diff==0;
+      } else if ($task['type']=='task' and $diff!=0) {
+        $diff+=1;
+      } else if ($diff>0) {
+        $diff+=1;
+      }
+      /*if ($task['type']!='task') {
+        if ($task['duration']>0) {
+          $diff=($task['duration']+1)*(-1);
+        } else {
+          $diff=($task['duration'])*(-1);
+        }
+      } else if ($task['duration']>=0) {
+        $diff=($task['duration']-1)*(-1);
+      } else {
+        $diff=$task['duration']*(-1);
+      }*/
+      
+      
+      
+      debugLog( $task['start'].'->'.$nodeId.' - '.$taskId.' '.$task['name'].' duration='.$task['duration'].' diff='.$diff);
+      $start=addWorkDaysToDate($node['late'],$diff);
+      if (!$cp['node'][$task['start']]['late'] or $start<$cp['node'][$task['start']]['late']) $cp['node'][$task['start']]['late']=$start;
+      self::reverse($task['start'],$cp);
+    }
+  }
   
   private static function storeListPlan($listPlan,$plan) {
 scriptLog("storeListPlan(listPlan,$plan->id)");

@@ -765,6 +765,8 @@ class Cron {
       $list=$mts->getSqlElementsFromCriteria($crit,false,null,'recordDateTime desc');
       $item=new $refType($refId);
       $arrayMail=array();
+      $last=end($list);
+      $lastDate=$last->recordDateTime;
       foreach ($list as $toSend) { // For each email to send
         if ($toSend->recordDateTime>$toSendItem['date']) continue; // Found a brand new email, do not take it into account, will be included in next period loop 
         $idToPurge[]=$toSend->id; // Store ids of MailToSend that need to be purge after sending email
@@ -775,7 +777,7 @@ class Cron {
             $template=$item->getMailDetail();
           } else {
             $templateObj=new EmailTemplate($toSend->idEmailTemplate);
-            $template=$item->getMailDetailFromTemplate($templateObj->template);
+            $template=$item->getMailDetailFromTemplate($templateObj->template,$lastDate);
           }
           $arrayMail[$key]=array(
             'newerDate'=>$toSend->recordDateTime,
@@ -806,7 +808,7 @@ class Cron {
               $template=$item->getMailDetail();
             } else {
               $templateObj=new EmailTemplate($toSend->idEmailTemplate);
-              $template=$item->getMailDetailFromTemplate($templateObj->template);
+              $template=$item->getMailDetailFromTemplate($templateObj->template,$lastDate);
             }
             $body.=$sepLine.$template;
             $arrayMail[$key]['template']=$body;

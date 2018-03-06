@@ -35,21 +35,21 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDate', 'endDate', 'duration');
+  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', 'latest', 'requested', 'startDate', 'endDate', 'duration');
   public $validatedStartDate;
   public $plannedStartDate;
   public $realStartDate;
-  public $_void_1_4;
+  public $latestStartDate;
   public $initialStartDate;
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
-  public $_void_2_4;
+  public $latestEndDate;
   public $initialEndDate;
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_void_3_4;
+  public $isOnCriticalPath;
   public $initialDuration;
   public $_tab_5_2_smallLabel_1 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
@@ -113,7 +113,10 @@ class ActivityPlanningElementMain extends PlanningElement {
     "plannedStartFraction"=>"hidden",
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
-    "validatedEndFraction"=>"hidden"
+    "validatedEndFraction"=>"hidden",
+    "latestStartDate"=>"readonly",
+    "latestEndDate"=>"readonly",
+    "isOnCriticalPath"=>"readonly"
   );   
   
   private static $_databaseTableName = 'planningelement';

@@ -68,7 +68,7 @@ $dependencyId=null;
 if (array_key_exists('dependencyId',$_REQUEST)) {
   $dependencyId=$_REQUEST['dependencyId'];
 }
-
+$typeOfDependency=RequestHandler::getValue('typeOfDependency');
 // KEVIN TICKET #2038 
 $dependencyComment=$_REQUEST['dependencyComment'];
 
@@ -77,6 +77,7 @@ if ($dependencyId) { // Edit Mode
 	$dep=new Dependency($dependencyId);
 	$dep->dependencyDelay=$dependencyDelay;
 	$dep->comment=$dependencyComment;
+	$dep->dependencyType=$typeOfDependency;
 	$result=$dep->save();
 } else { // Add Mode
   $arrayDependencyRefIdDep=array();
@@ -106,7 +107,7 @@ if ($dependencyId) { // Edit Mode
 		$dep->predecessorRefType=$predecessor->refType;
 		$dep->predecessorRefId=$predecessor->refId;
 		$dep->comment=$dependencyComment;
-		$dep->dependencyType='E-S';
+		$dep->dependencyType=$typeOfDependency;
 		//$dep->dependencyDelay=0;
 		$dep->dependencyDelay=$dependencyDelay;
 	  $res=$dep->save();

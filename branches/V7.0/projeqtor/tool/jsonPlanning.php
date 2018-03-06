@@ -220,13 +220,12 @@
     . ' where ' . str_replace('planningelement','planningelementbaseline',$queryWhere) . ' and idBaseline='.Sql::fmtId($id)
     . ' order by ' . str_replace('planningelement','planningelementbaseline',$queryOrderBy);
     $resBase=Sql::query($query);
-     while ($base = Sql::fetchLine($resBase)) {
-       if ($base['startdate'] and $base['enddate'] and $base['itemtype'] and $base['itemid']) {
-         $arrayBase[$pos][$base['itemtype'].'_'.$base['itemid']]=array('start'=>$base['startdate'],'end'=>$base['enddate']);
-       }
+   while ($base = Sql::fetchLine($resBase)) {
+     if ($base['startdate'] and $base['enddate'] and $base['itemtype'] and $base['itemid']) {
+       $arrayBase[$pos][$base['itemtype'].'_'.$base['itemid']]=array('start'=>$base['startdate'],'end'=>$base['enddate']);
      }
+   }
   }
-  
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect
@@ -313,9 +312,10 @@
         	}
         	if ($proj->fixPlanning) {
         	  $line['reftype']='Fixed';
-        	}
-        	if ( ! isset($plannableProjectsList[$line["refid"]]) ) {
+        	} else if ( ! isset($plannableProjectsList[$line["refid"]]) ) {
         	  $line['reftype']='Fixed';
+        	} else if ($line["needreplan"]) {
+        	  $line['reftype']='Replan';
         	}
         } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {
           $line["topid"]=$topProjectArray[$line['idproject']];
@@ -348,7 +348,7 @@
           echo ',"baseBottomStart":"'.$arrayBase['bottom'][$refItem]['start'].'"';
           echo ',"baseBottomEnd":"'.$arrayBase['bottom'][$refItem]['end'].'"';
         }
-        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction') {
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction' and $line['reftype']!='Replan') {
           $arrayResource=array();
           // if ($showResource) { //
           if (1) { // Must always retreive resource to display value in column, even if not displayed 
@@ -514,7 +514,7 @@
             $line['statuscolor'] = '';
           }
         }
-        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction') { // 'Fixed' and 'Construction' are projects !!!!
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction' and $line['reftype']!='Replan') { // 'Fixed' and 'Construction' are projects !!!!
           $arrayResource=array();
           if (isset($columnsDescription['Resource']) and $columnsDescription['Resource']['show']==1) { // Must always retreive resource to display value in column, even if not displayed
             $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
@@ -763,6 +763,7 @@
         // pGroup : is the task a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
         if ($line['reftype']=='Fixed') $pGroup=1;
+        if ($line['reftype']=='Replan') $pGroup=1;
         if ($closedWbs and strlen($line['wbssortable'])<=strlen($closedWbs)) {
           $closedWbs="";
         }

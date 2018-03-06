@@ -1187,6 +1187,8 @@ function saveAttachmentAck(dataArray) {
   dojo.byId('resultAck').value=result.message;
   loadContent("../tool/ack.php", "resultDiv", "attachmentAckForm", true,
       'attachment');
+//gautier #menuUserTop
+  loadContent("../view/menuUserTop.php", "drawMenuUser");
 }
 
 function saveAttachmentProgress(data) {
@@ -1225,6 +1227,8 @@ function removeAttachment(attachmentId) {
   actionOK=function() {
     loadContent("../tool/removeAttachment.php", "resultDiv", "attachmentForm",
         true, 'attachment');
+    loadContent("../view/menuUserTop.php", "drawMenuUser");
+    //loadContent("../view/menuBar.php", "iconMenuUserPhoto");
   };
   msg=i18n('confirmDelete', new Array(i18n('Attachment'), attachmentId));
   showConfirm(msg, actionOK);
@@ -2859,7 +2863,7 @@ function addDependency(depType) {
   
 }
 
-function editDependency(depType, id, refType, refTypeName, refId, delay) {
+function editDependency(depType, id, refType, refTypeName, refId, delay, typeOfDependency) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
@@ -2873,16 +2877,19 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
+    dojo.byId("dependencyTypeDiv").style.display="none";
   } else if (objectClass == 'TestCase') {
     refreshList('idDependable', 'scope', 'TC', refType, 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
+    dojo.byId("dependencyTypeDiv").style.display="none";
   } else {
     refreshList('idDependable', 'scope', 'PE', refType, 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', refType);
     dijit.byId("dependencyDelay").set('value', delay);
     dojo.byId("dependencyDelayDiv").style.display="block";
+    dojo.byId("dependencyTypeDiv").style.display="block";
   }
   // refreshDependencyList();
   refreshList('id' + refTypeName, 'idProject', '0', refId,'dependencyRefIdDepEdit', true);
@@ -2890,6 +2897,8 @@ function editDependency(depType, id, refType, refTypeName, refId, delay) {
   dojo.byId("dependencyId").value=id;
   dojo.byId("dependencyRefType").value=objectClass;
   dojo.byId("dependencyRefId").value=objectId;
+  dojo.byId("dependencyType").value=depType;
+  dijit.byId("typeOfDependency").set('value', typeOfDependency);
   dijit.byId("dialogDependency").set('title', message);
   dijit.byId("dialogDependency").show();
   dojo.byId('dependencyAddDiv').style.display='none';
@@ -5097,7 +5106,7 @@ function showHelpOld() {
 }
 var manualWindow=null;
 var helpTimer=false;
-function showHelp() {
+function showHelp(link) {
   if (helpTimer) return; // avoid double open
   helpTimer=true;
   if (manualWindow) manualWindow.close();
@@ -5108,6 +5117,9 @@ function showHelp() {
     section=objectClassManual.value;
   } else if (objectClass) {
     section=objectClass.value;
+  }
+  if(link == 'ShortCut'){
+    section = link;
   }
   dojo.xhrGet({
     url : "../tool/getManualUrl.php?section=" + section,
@@ -5358,9 +5370,12 @@ function hideMenuBarShowMode() {
 function hideMenuBarShowMode2() {
   hideShowMenu(true);
 }
+
 //gautier menu top
 function hideMenuBarShowModeTop(){ 
   if(dojo.byId('statusBarDiv').style.height == '0px'){
+    console.log('test3');
+    saveDataToSession("hideMenuTop","NO",true);
     //dojo.byId('statusBarDiv').style.display='block';
     dojo.byId('statusBarDiv').style.height="48px";
     dojo.byId('statusBarDiv').style.padding="1px";
@@ -5371,6 +5386,8 @@ function hideMenuBarShowModeTop(){
     dijit.byId('centerDiv').resize({h:height});
     dijit.byId('leftDiv').resize({h:height});
   }else{
+    console.log('test4');
+    saveDataToSession("hideMenuTop","YES",true);
     //dojo.byId('statusBarDiv').style.display='none';
     dojo.byId('statusBarDiv').style.height="0px";
     dojo.byId('statusBarDiv').style.padding="0px";

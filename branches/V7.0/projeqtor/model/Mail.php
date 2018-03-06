@@ -150,7 +150,7 @@ class Mail extends SqlElement {
       if ($mailResult=='TEMP') {
         return i18n('emailScheduled');
       } else {
-        return i18n('mailSend');
+        return i18n('mailSent');
       }
     }
   }

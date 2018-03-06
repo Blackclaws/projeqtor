@@ -264,8 +264,8 @@
       </div>  
     </td>
     <td title="<?php echo i18n('menuUserParameter');?>" width="105px" style="">
-      <div dojoType="dijit.layout.ContentPane"  class="pseudoButton" style="position:absolute;overflow:hidden; height:28px; min-width:100px;top:0px;" title="<?php echo i18n('menuUserParameter');?>">
-        <div dojoType="dijit.form.DropDownButton"  id="" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;top:-3px" >
+      <div dojoType="dijit.layout.ContentPane"   class="pseudoButton" style="position:absolute;overflow:hidden; height:28px; min-width:100px;top:0px;" title="<?php echo i18n('menuUserParameter');?>">
+        <div dojoType="dijit.form.DropDownButton"  id="iconMenuUserPhoto" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;top:-3px" >
 			    <table style="width:100%">
     			  <tr>
       			  <?php $user=getSessionUser();
@@ -283,7 +283,7 @@
     			  </tr>
 			    </table>
 			    <div id="drawMenuUser" dojoType="dijit.TooltipDialog"
-             style="max-width:600px; overflow-x:hidden; height:300px;  max-height:500px;  width:350px;">
+             style="max-width:600px; overflow-x:hidden; height:450px;  max-height:500px;  width:350px;">
              <?php include "menuUserTop.php" ?>          
           </div> 
 		    </div>

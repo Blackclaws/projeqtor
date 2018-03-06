@@ -823,7 +823,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         </div>
        
     </div>
-    
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:48px; position:absolute; top:30px;">
       <table width="100%">
       
@@ -848,7 +847,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       
         <button id="menuBarMoveLeft" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('menuBarMoveLeft');?>" class="buttonMove"
-         iconClass="leftBarIcon" style="position:relative; left:220px; width: 14px;height:48px;margin:0;vertical-align:middle">
+         iconClass="leftBarIcon" style="position:relative; left:232px; width: 14px;top:-2px;height:48px;margin:0;vertical-align:middle">
            <script type="dojo/method" event="onMouseDown">         
            menuBarMove=true;
            moveMenuBar('left');
@@ -876,12 +875,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 <?php } else {?>
     <td style="width:80%"><div id="menuBarVisibleDiv"></div></td>
 <?php }?>
-    <td width="35px" align="center" id="menuBarRight" class="statusBar" style="right:0;position:absolute;z-index:30;">
+    <td width="25px" align="center" id="menuBarRight" class="statusBar" style="right:0;position:absolute;z-index:30;">
       <table><tr><td rowspan="2">
 <?php if ($showMenuBar!='NO') {?>   
            <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('menuBarMoveRight');?>" class="buttonMove"
-         iconClass="rightBarIcon" style="position:relative; width: 14px;height:48px;margin:0;vertical-align:middle">
+         iconClass="rightBarIcon" style="position:relative; left:-3px; top:-2px;width: 14px;height:48px;margin:0;vertical-align:middle">
              <script type="dojo/method" event="onMouseDown">         
            menuBarMove=true;
            moveMenuBar('right');
@@ -899,7 +898,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 </td>
 </table>
 </div>
-
     <div id="dialogAlert" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAlert");?>">
       <table>
         <tr>
@@ -1754,12 +1752,33 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 	           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 	         </table>
           </div>
+          <div id="dependencyTypeDiv">
+	         <table>
+	           <tr>
+	             <td class="dialogLabel" >
+	               <label for="dependencyType" ><?php echo i18n("colType");?>&nbsp;:&nbsp;</label>
+	             </td>
+	             <td><span class="nobr">
+                <select dojoType="dijit.form.FilteringSelect" class="input" name="typeOfDependency" id="typeOfDependency"
+                  <?php echo autoOpenFilteringSelect();?> style="width:115px;height:20px">
+                  <?php $depType=array('E-S','E-E','S-S');
+                  foreach ($depType as $type) {
+                    $lib=( (substr($type,0,1)=='E')?i18n('colEnd'):i18n('colStart') ).' - '.( (substr($type,-1)=='E' )?i18n('colEnd'):i18n('colStart') );
+                    echo "<option value='$type'>$lib</option>";
+                  }?>
+                </select>
+                 </td>
+	           </tr>
+	           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	         </table>
+          </div>
           <!--KEVIN TICKET #2038 -->
           	<table>
 							<tr>
 								<td><label for="dependencyComment"><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label></td>															
 								<td><input id="dependencyComment" name="dependencyComment" value="" dojoType="dijit.form.Textarea" class="input"/></td>
 							</tr>
+							<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 						</table>
 					</form>
 				</td>
