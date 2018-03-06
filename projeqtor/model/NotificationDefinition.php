@@ -1298,7 +1298,6 @@ class NotificationDefinition extends SqlElement {
     }
     $query = "SELECT $fieldsInSelect FROM $className $leftJoin $where";
     $listObjClasses = $this->getLines($query);
-    
     // Error in query => Provide from $where and then from rule
     if (in_array("KO", $listObjClasses)) {
         $listObjClasses=array();

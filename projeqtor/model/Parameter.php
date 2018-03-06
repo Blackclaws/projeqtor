@@ -59,7 +59,11 @@ class Parameter extends SqlElement {
     } else if ($colName=="scaytAutoStartup") {
         $colScript .= '<script type="dojo/connect" event="onChange" >';
         $colScript .= '  saveDataToSessionAndReload("scaytAutoStartup", this.value, null);';
-        $colScript .= '</script>'; 
+        $colScript .= '</script>';
+    } else if ($colName=="startPage") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  saveUserParameter(\''.$colName.'\', this.value);';
+      $colScript .= '</script>';
     } else if ($colName=="browserLocaleDateFormat") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  changeBrowserLocaleForDates(this.value);';
@@ -205,21 +209,6 @@ class Parameter extends SqlElement {
                     'random'=>i18n('themeRandom')); // keep 'random' as last value to assure it is not selected via getTheme()
       break;
       case 'lang':case 'paramDefaultLocale':
-        $list=array('en'=>i18n('langEn'), 
-                    'fr'=>i18n('langFr'), 
-                    'fr-ca'=>i18n('langFrCa'),
-                    'de'=>i18n('langDe'),
-                    'es'=>i18n('langEs'),
-                    'pt'=>i18n('langPt'),
-                    'pt-br'=>i18n('langPtBr'),
-                    'ru'=>i18n('langRu'),
-                    'zh'=>i18n('langZh'),
-                    'nl'=>i18n('langNl'),
-                    'fa'=>i18n('langFa'),
-                    'ja'=>i18n('langJa'),
-                    'el'=>i18n('langEl'),
-                    'ua'=>i18n('langUa'),
-                    'hr'=>i18n('langHr'));
         $list=self::getLangList();
         //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;

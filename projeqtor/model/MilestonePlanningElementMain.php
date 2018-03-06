@@ -30,16 +30,16 @@
 require_once('_securityCheck.php');
 class MilestonePlanningElementMain extends PlanningElement {
 
-    public $id;
+  public $id;
   public $idProject;
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_5_1_smallLabel = array('validated', 'planned', 'real','','requested', 'dueDate');
+  public $_tab_5_1_smallLabel = array('validated', 'planned', 'real','latest','requested', 'dueDate');
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
-  public $_void_1_4;
+  public $latestEndDate;
   public $initialEndDate;
   public $_tab_3_1_smallLabel = array('', '', '','wbs');
   public $wbs;
@@ -81,7 +81,8 @@ class MilestonePlanningElementMain extends PlanningElement {
     "plannedStartFraction"=>"hidden",
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
-    "validatedEndFraction"=>"hidden"
+    "validatedEndFraction"=>"hidden",
+    "latestEndDate"=>"readonly"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -125,7 +126,7 @@ class MilestonePlanningElementMain extends PlanningElement {
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
-  protected function getStaticFieldsAttributes() {
+  protected function getStaticFieldsAttributes() {  
     return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
   }
 

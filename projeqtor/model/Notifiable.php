@@ -135,9 +135,9 @@ class Notifiable extends SqlElement {
    */
   public function save() {
 
-    $spe_notifiableItem = RequestHandler::getValue('_spe_notifiableItem');    
-    $array_class = getUserVisibleObjectClassWithFieldDateType();
-    $this->notifiableItem = (isset($array_class[$spe_notifiableItem]))?_spe_notifiableItem:'';
+    //$spe_notifiableItem = RequestHandler::getValue('_spe_notifiableItem');    
+    //$array_class = getUserVisibleObjectClassWithFieldDateType();
+    //$this->notifiableItem = (isset($array_class[$spe_notifiableItem]))?$_spe_notifiableItem:'';
     $this->name = i18n($this->notifiableItem);
     
     $result = parent::save();

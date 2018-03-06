@@ -136,7 +136,7 @@ $userLink['IncomingStatus']='ListsOfValues.html#incoming-status';
 $userLink['DeliverableWeight']='ListsOfValues.html#deliverabl-eweight';
 $userLink['IncomingWeight']='ListsOfValues.html#incoming-weight';
 $userLink['VersionsPlanning']='ConfigurationManagement.html#versions-planning';
-
+$userLink['ShortCut']='Gui.html#keyboard-functionality';
 $section=null;
 if (isset($_REQUEST['section'])) {
   $section=$_REQUEST['section']; // Note: can only be a valid index in $userLink. Value is not echo'ed in HTML.

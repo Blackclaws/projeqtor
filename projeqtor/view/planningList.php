@@ -110,7 +110,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">
 		          <tr>
-		            <td style="width:70px">
+		            <td style="width:70px; position:relative;">
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
 		              &nbsp;&nbsp;&nbsp;
@@ -131,6 +131,17 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                           saveUserParameter('automaticRunPlanning',((this.checked)?'1':'0'));
                         </script>                    
                   </span>&nbsp;<?php if ($displayWidthPlan>1250) echo i18n('automaticRunPlan'); else echo i18n('automaticRunPlanShort');?>
+                  </div>
+                  <?php ?>
+                  <div style="white-space:nowrap; position:absolute; bottom:4px;left:-170px;">
+  		              <span title="<?php echo i18n('criticalPatch');?>" dojoType="dijit.form.CheckBox"
+                          type="checkbox" id="criticalPathPlanning" name="criticalPathPlanning" class="whiteCheck"
+                          <?php if ( Parameter::getUserParameter('criticalPathPlanning')=='1') {echo 'checked="checked"'; } ?>  >  
+                          <script type="dojo/connect" event="onChange" args="evt">
+                          saveUserParameter('criticalPathPlanning',((this.checked)?'1':'0'));
+                          refreshJsonPlanning();
+                        </script>                    
+                    </span>&nbsp;<?php echo i18n('criticalPath');?>
                   </div>
 <?php }?>             
 		            </td>

@@ -64,6 +64,7 @@
 .iconMenuBarItem32 { background-image: url(../img/logoSmall.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
 
 .iconMenuBarCustom16 { background-image: url(images/iconMenuBarCustom16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.iconMenuBarCustom22 { background-image: url(images/iconMenuBarCustom22.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
 .iconButtonMark16 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
@@ -512,6 +513,8 @@
 .iconInfo32 { background-image: url(images/iconInformation.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 /* END - ADD BY TABARY - NOTIFICATION SYSTEM */
 
+.iconShortCut { background-image: url(images/iconShortCut.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+
 .iconInvoice32 { background-image: url(images/iconInvoice32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconInvoice22 { background-image: url(images/iconInvoice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconInvoice16 { background-image: url(images/iconInvoice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -705,6 +708,10 @@
 .iconFixed32 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .iconFixed22 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconFixed16 { background-image: url(images/iconFixed.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconReplan32 { background-image: url(images/iconReplan.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconReplan22 { background-image: url(images/iconReplan.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconReplan16 { background-image: url(images/iconReplan.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 
 .iconProjectExpense32 { background-image: url(images/iconProjectExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProjectExpense22 { background-image: url(images/iconProjectExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

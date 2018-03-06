@@ -43,7 +43,10 @@ ALTER TABLE `${prefix}planningelement`
 ADD `latestStartDate` date DEFAULT NULL,
 ADD `latestEndDate` date DEFAULT NULL,
 ADD `isOnCriticalPath` int(1) UNSIGNED DEFAULT 0;
-
+ALTER TABLE `${prefix}planningelementbaseline`
+ADD `latestStartDate` date DEFAULT NULL,
+ADD `latestEndDate` date DEFAULT NULL,
+ADD `isOnCriticalPath` int(1) UNSIGNED DEFAULT 0;
 
 -- ======================================================== --
 -- Automatic Planning                                       --
