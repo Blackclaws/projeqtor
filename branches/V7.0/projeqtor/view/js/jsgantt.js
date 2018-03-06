@@ -60,6 +60,7 @@ var vBenchTime = new Date().getTime();
 var arrayClosed=new Array();
 var vGanttCurrentLine=-1;
 var linkInProgress=false;
+var vCriticalPathColor='#FF0040';
 var planningFieldsDescription=new Array(
     {name:"Name",           show:false,  order:0,  width:100, showSpecif:true},
     {name:"Resource",       show:false,  order:1,  width:100, showSpecif:true},
@@ -141,7 +142,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
                             pPriority, pPlanningMode,
                             pStatus, pType, 
                             pValidatedCost, pAssignedCost, pRealCost, pLeftCost, pPlannedCost,
-                            pBaseTopStart, pBaseTopEnd, pBaseBottomStart, pBaseBottomEnd) {
+                            pBaseTopStart, pBaseTopEnd, pBaseBottomStart, pBaseBottomEnd, pIsOnCriticalPath) {
   var vID    = pID;
   var vName  = pName;
   var vStart = new Date();  
@@ -187,6 +188,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   var vBaseTopEnd=new Date(); ;
   var vBaseBottomStart=new Date(); ;
   var vBaseBottomEnd=new Date(); ;
+  var vIsOnCriticalPath=pIsOnCriticalPath;
   
   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
@@ -246,6 +248,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.getBaseTopEnd     = function(){ return vBaseTopEnd;  };
   this.getBaseBottomStart     = function(){ return vBaseBottomStart;  };
   this.getBaseBottomEnd     = function(){ return vBaseBottomEnd;  };
+  this.getIsOnCriticalPath     = function(){ if (g.getShowCriticalPath()) {return vIsOnCriticalPath;} else {return 0;}  };
   this.getColor    = function(){ return vColor;};
   this.getLink     = function(){ return vLink; };
   this.getContextMenu = function(){ return vContextMenu; };
@@ -325,6 +328,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.setBaseTopEnd  = function(pBaseTopEnd) {vBaseTopEnd = pBaseTopEnd; };
   this.setBaseBottomStart  = function(pPlanningMode) {vBaseBottomStart = pBaseBottomStart; };
   this.setBaseBottomEnd  = function(pBaseBottomEnd) {vBaseBottomEnd = pBaseBottomEnd; };
+  this.setIsOnCriticalPath  = function(pIsOnCriticalPath) {vIsOnCriticalPath = pIsOnCriticalPath; };
 };  
   
 /**
@@ -353,6 +357,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vNumUnits  = 0;
   var vCaptionType;
   var vDepId = 1;
+  var vShowCriticalPath=0;
   var vTaskList     = new Array();  
   var vFormatArr  = new Array("day","week","month","quarter");
   var vQuarterArr   = new Array(1,1,1,2,2,2,3,3,3,4,4,4);
@@ -399,6 +404,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.setWidth = function (pWidth) {vGanttWidth=pWidth;};
   this.setStartDateView = function (pStartDateView) { vStartDateView=pStartDateView; };
   this.setEndDateView = function (pEndDateView) { vEndDateView=pEndDateView; };
+  this.setShowCriticalPath = function (pShowCriticalPath) { vShowCriticalPath=pShowCriticalPath;};
   this.resetStartDateView = function () {
     if (dijit.byId('startDatePlanView')) {
       vStartDateView=dijit.byId('startDatePlanView').get('value');
@@ -433,6 +439,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.getFormat = function(){ return vFormat; };
   this.getBaseBottomName = function() { return vBaseBottomName; };
   this.getBaseTopName = function() { return vBaseTopName; };
+  this.getShowCriticalPath = function () { return vShowCriticalPath;};
   this.CalcTaskXY = function () { 
     var vList = this.getList();
     var vTaskDiv;
@@ -499,11 +506,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
     oDiv.setAttribute('dependencyid',dependencyKey);
-    oDiv.style.zIndex = 50000;
+    if (color==vCriticalPathColor) oDiv.style.zIndex = 60000; else oDiv.style.zIndex = 50000;
     oDiv.style.cursor = "pointer";
     oDiv.className="dependencyLine"+keyDep;
     if (!color) color="#000000";
-    color="#000000";
+    
+    //color="#000000";
     oDiv.style.backgroundColor = color;
     oDiv.style.left = vLeft + "px";
     oDiv.style.top = vTop + "px";
@@ -514,7 +522,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.addEventListener('mouseout', outHighlightDependency, false);
     vDoc.appendChild(oDiv);
   };
-  this.dLine = function(x1,y1,x2,y2,color) {
+  /*this.dLine = function(x1,y1,x2,y2,color) {
     var dx = x2 - x1;
     var dy = y2 - y1;
     var x = x1;
@@ -530,7 +538,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       x += dx;
       y += dy;
     };
-  };
+  };*/
   this.drawDependency =function(x1,y1,x2,y2,color,temp,keyDep,dependencyKey,vType) { // For compatibility
     if (vType=='E-E') {
       this.drawDependencyEE(x1,y1,x2,y2,color,temp,keyDep,dependencyKey);
@@ -630,17 +638,19 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           if (depListSplit[3]) {
             vType=depListSplit[3];
           }
+          var color='#000000';
+          if (vList[vTask].getIsOnCriticalPath()=='1' && vList[i].getIsOnCriticalPath()=='1') color=vCriticalPathColor;
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             if (g.getEndDateView() && vList[vTask].getEnd()>g.getEndDateView() && vList[i].getStart()>g.getEndDateView()) continue;
-            if (vType=='S-S' || vList[vTask].getMile()) {
+            if (vType=='S-S' || (vList[vTask].getMile() && vType!='E-E')) {
               this.drawDependencySS(vList[vTask].getStartX()-1,vList[vTask].getStartY(),vList[i].getStartX()-1,
-                  vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+                  vList[i].getStartY(),color,null,'_'+i+'_'+k,dependencyKey);
             } else if (vType=='E-S') {
               this.drawDependencyES(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
-                            vList[i].getStartY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+                            vList[i].getStartY(),color,null,'_'+i+'_'+k,dependencyKey);
             } else  if (vType=='E-E') {
               this.drawDependencyEE(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getEndX()-1,
-                  vList[i].getEndY(),"#"+vList[vTask].getColor(),null,'_'+i+'_'+k,dependencyKey);
+                  vList[i].getEndY(),color,null,'_'+i+'_'+k,dependencyKey);
             }
           }
         }
@@ -882,21 +892,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var levlWidth = (levl-1) * 16;
         vLeftTable +='<table><tr><td>';
         vLeftTable += '<div style="width:' + levlWidth + 'px;">';
-        
-        
-        //MODIF qCazelles - GANTT
-        //Old
-        //if (vTaskList[i].getGroup())
-        //New
         if (vTaskList[i].getGroup() && vTaskList[i].getClass() != 'ProductVersionhasChild' &&  vTaskList[i].getClass() != 'ComponentVersionhasChild') {
-        //END MODIF qCazelles - GANTT
           vLeftTable += '<div style="margin-left:3px;width:8px;">&nbsp</div>';
         } else {
           vLeftTable += '<div style="margin-left:3px;width:8px;background-color:#'+vTaskList[i].getColor()+'">&nbsp</div>';
-        }
-        
-        
-        
+        }        
         vLeftTable += '</div>';
         vLeftTable +='</td><td>';
         if( vTaskList[i].getGroup()) {
@@ -926,10 +926,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><span class="nobr">' + vTaskList[i].getName() + '</span></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        //CHANGE qCazelles - GANTT (Correction)
-        //ADD
         if (!dojo.byId('versionsPlanning')) {
-        //END ADD
 	        for (var iSort=0;iSort<sortArray.length;iSort++) {
 	          var field=sortArray[iSort];
 	          if (field.substr(0,6)=='Hidden') field=field.substr(6);
@@ -942,9 +939,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	          }
 	        }
 	        vLeftTable += '</TR>';
-        }
-        //ADD
-        else {
+        } else {
         	for (var iSort=0;iSort<sortArray.length;iSort++) {
   	          var field=sortArray[iSort];
   	          if (field.substr(0,6)=='Hidden') field=field.substr(6);
@@ -1368,6 +1363,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '</div>';
             }
             var vBaselineBottomTitle="";
+            console.log(vTaskList[i].getName()+" "+vTaskList[i].getBaseBottomStart()+" "+vTaskList[i].getBaseBottomEnd());
             if (vTaskList[i].getBaseBottomStart() && vTaskList[i].getBaseBottomEnd()) {              
               vBaseEnd=vTaskList[i].getBaseBottomEnd();
               vBaseStart=vTaskList[i].getBaseBottomStart();
@@ -1383,6 +1379,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + 'style="width:'+vBarBaseWidth+'px;left:'+vBarBaseLeft+'px;" >'
               + '</div>';
             }
+            vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
             vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
 	            + ' left:' + vBarLeft + 'px; height:11px; '
@@ -1402,9 +1399,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	        		tmpColor='999999';
   	        		vBarWidth=vBarWidthReal;
   	        	}
+  	        	vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
+  	        	console.log('vIsOnCriticalPath='+vIsOnCriticalPath);
   	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
-  	            + ' class="ganttTaskrowBar" style="background-color:#' + tmpColor +'; '
-  	            + ' width:' + vBarWidth + 'px; " ' 
+  	            + ' class="ganttTaskrowBar" style="background-color:'+((vIsOnCriticalPath=='1')?vCriticalPathColor:'#'+tmpColor) + '; '
+  	            + ' width:' + vBarWidth + 'px;'+ ((vIsOnCriticalPath=='1')?' border-bottom: 5px solid #'+tmpColor+';border-top: 5px solid #'+tmpColor+';height:3px;':'')+'" ' 
         		    + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
@@ -2205,7 +2204,7 @@ JSGantt.enterBarLink = function (idRow) {
 		if (idRow!=ongoingJsLink) {
 		  g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
 			              vTaskList[idRow].getStartX()-1,vTaskList[idRow].getStartY(),
-			              "#"+vTaskList[ongoingJsLink].getColor(),true);
+			              "#5050FF",true);
 		}
 		document.body.style.cursor="url('css/images/dndLink.png'),help";
 	} else {
@@ -2320,6 +2319,7 @@ function saveDependencyRightClick() {
   hideDependencyRightClick();
 }
 
+var oldDependencyColor=null;
 function highlightDependency(event) { 
   var className=null;
   f = navigator.userAgent.search("Firefox");
@@ -2329,6 +2329,7 @@ function highlightDependency(event) {
     className=event.srcElement.getAttribute('class');
   }
   dojo.query("."+className).forEach(function(node, index, nodelist) {
+    oldDependencyColor=node.style.backgroundColor;
     if (node.style.width=='1px') {
       node.style.width='3px';
       node.style.backgroundColor="#E97B2D";
@@ -2347,15 +2348,17 @@ function outHighlightDependency(event){
   }else{
     className=event.srcElement.getAttribute('class');
   }
+  var color=(oldDependencyColor)?oldDependencyColor:"#000000";
   dojo.query("."+className).forEach(function(node, index, nodelist) {
     if (node.style.backgroundColor=="rgb(233, 123, 45)" || node.style.backgroundColor=="#E97B2D" )  {
       node.style.width='1px';
-      node.style.backgroundColor="#000000";
+      node.style.backgroundColor=color;
     } else if (node.style.backgroundColor=="rgb(233, 123, 44)" || node.style.backgroundColor=="#E97B2C" ) {
       node.style.height='1px';
-      node.style.backgroundColor="#000000";
+      node.style.backgroundColor=color;
     }
   });
+  oldDependencyColor=null;
 }
 
 function hideDependencyRightClick(){

@@ -27,7 +27,7 @@
 include_once "../tool/projeqtor.php";
 include_once "testTools.php";
 header ('Content-Type: text/html; charset=UTF-8');
-projeqtor_set_time_limit(3600);
+projeqtor_set_time_limit(60);
 
 // PREPARE TESTS
 // => remove mail sending, to avoid spamming
@@ -68,6 +68,7 @@ function testObject($obj) {
 	if (! in_array(get_class($obj),$arrayUpdateOnly)) {
 		testSubTitle('Create');
 	  $obj=fillObj($obj);
+	  //if (get_class($obj)!='PeriodicMeeting') 
 	  $res=$obj->save();
 	  testResult($res, testCheck($res,'insert'));
 	} 
@@ -97,7 +98,7 @@ function testObject($obj) {
 
 function fillObj($obj) {
   $dbCrit=$obj->getDatabaseCriteria();
-  $id=($obj->id)?9:8;
+  $id=($obj->id)?2:1;
 	foreach($obj as $fld=>$val){
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
 		$num=(substr($fld,0,4)=='real' and substr(get_class($obj),-7)!='Expense')?0:(($obj->id)?2:1);
@@ -107,31 +108,49 @@ function fillObj($obj) {
 		$dbLength=$obj->getDataLength($fld);	
 		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase' or $fld=='idOrganization' or $fld=='id'.get_Class($obj)) {
 			// Nothing => would lead to invalid controls
-		} else if ($fld=='refType' or $fld=='originType' or $fld=='topRefType' or $fld=='notifiableItem') {
+		} else if ($fld=='refType' or $fld=='originType' or $fld=='topRefType' ) {
 			$pos=strpos(get_class($obj),'PlanningElement');
 			if ($pos>0) {
 				$obj->$fld=substr(get_class($obj),0,$pos);
 			} else {
 			  $obj->$fld='Project';
 			}
+	  } else if ($fld=='refId') {
+			$obj->$fld=9;  
+		} else if ($fld=='topId') {
+		  $obj->$fld="";
+	  } else if ($fld=='idProject' or $fld=='topRefId') {
+			  $obj->$fld=1;
+			  PlanningElement::$_noDispatch=true;
 		} else if (isset($dbCrit[$fld])) {
 			// Nothing : field is a database criteria : will be set automatically	
 		} else if (SqlElement::is_a($obj,'Bill') and $fld=='done') {
 		  $obj->$fld=0;
+		} else if ($fld=='periodicityTimes') {
+		  $obj->$fld=2;
 		} else if ($fld=='notificationRule') {
 		  $obj->$fld='';
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
-		} else if ($fld=='refId') {
-			$obj->$fld='9999';
+		} else if ($fld=='idStatus') {
+		    $obj->$fld=1;
+		} else if ($fld=='notifiableItem') {
+		  $obj->$fld=($obj->id)?'Action':'Ticket';
+		} else if ($fld=='notificationReceivers') {
+		  $obj->$fld='idResource';
+		} else if ($fld=='targetDateNotifiableField') {
+		  $_REQUEST['_spe_targetDateNotifiableField']='creationDateTime';
+		  $obj->$fld='doneDate';
+		} else if ($fld=='idProductVersion' and get_class($obj)=='Delivery') {     
+		  $obj->$fld=null;
+	  } else if ($fld=='idProject' and get_class($obj)!='Project') {
+			  $obj->$fld=1;
 		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topId') {
 			// Nothing
 		} else if ($fld=='periodicityTimes') {
 		  $obj->$fld=1;
 		} else if (substr($fld,0,1)==strtoupper(substr($fld,0,1))) {
 			if (is_object($obj->$fld)) {
-				//$subObj=new $fld($obj->$fld->id);
-				//$obj->$fld=fillObj($subObj);
 				$obj->$fld=fillObj($obj->$fld);
 			}
 		} else if ($obj->id and $fld=='idBill') {

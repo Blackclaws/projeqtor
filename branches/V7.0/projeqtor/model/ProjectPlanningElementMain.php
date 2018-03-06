@@ -93,9 +93,9 @@ class ProjectPlanningElementMain extends PlanningElement {
   public $marginCost;
   public $marginCostPct;
   public $_void_7_5;
-  public $_tab_1_1_smallLabel_3 = array('',
-      'priority');
+  public $_tab_2_1_smallLabel_3 = array('','','priority');
   public $priority;
+  public $_spe_needReplan;
   public $wbsSortable;
   public $topId;
   public $topRefType;
@@ -410,6 +410,13 @@ class ProjectPlanningElementMain extends PlanningElement {
 	  	$colScript .= '</script>';
   	}
   	return $colScript;
+  }
+  public function drawSpecificItem($item){
+    $result="";
+    if ($item=='needReplan') {
+      $result .='<div style=";color:#A00000;font-weight:bold;">'.i18n('colNeedReplan').'</div>';
+      return $result;
+    }
   }
   
 }

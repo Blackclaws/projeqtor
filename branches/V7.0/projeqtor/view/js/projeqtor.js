@@ -370,7 +370,7 @@ function changeTheme(newTheme) {
     var callBack = function() { 
       addMessage("Theme=" + newTheme); 
     };
-    saveDataToSession('theme',newTheme, null, callBack);
+    saveDataToSession('theme',newTheme, true, callBack);
   }
 }
 
@@ -453,8 +453,8 @@ function saveDataToSessionAndReload(param, value, saveUserParameter) {
 function changeLocale(locale, saveAsUserParam) {
   if (locale != "") {
     currentLocale = locale;
-    if (saveAsUserParam) saveDataToSession('lang', locale, true);
-    saveDataToSessionAndReload('currentLocale', locale);
+    //if (saveAsUserParam) saveDataToSession('lang', locale, true);
+    saveDataToSessionAndReload('currentLocale', locale,true);
   }
 }
 
@@ -2440,6 +2440,7 @@ function drawGantt() {
   }
   g.setStartDateView(startDateView);
   g.setEndDateView(endDateView);
+  g.setShowCriticalPath(dijit.byId('criticalPathPlanning').get('checked'));
   var contentNode = dojo.byId('gridContainerDiv');
   if (contentNode) {
     g.setWidth(dojo.style(contentNode, "width"));
@@ -2520,7 +2521,7 @@ function drawGantt() {
       // pGroup : is the task a group one ?
       var pGroup = (item.elementary == '0') ? 1 : 0;
       //MODIF qCazelles - GANTT
-      if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Construction' || item.reftype=='ProductVersionhasChild' || item.reftype=='ComponentVersionhasChild' ) pGroup=1;
+      if (item.reftype=='Project' || item.reftype=='Fixed' || item.reftype=='Replan' || item.reftype=='Construction' || item.reftype=='ProductVersionhasChild' || item.reftype=='ComponentVersionhasChild' ) pGroup=1;
      //END MODIF qCazelles - GANTT
       // runScript : JavaScript to run when click on task (to display the
       // detail of the task)
@@ -2546,25 +2547,13 @@ function drawGantt() {
         pColor = 'aec5ae';
       }
       
-      //CHANGE by qCazelles - Correction GANTT - Ticket #100
-      //Old
-//      if (item.ownDate == '1') {
-//    	  pColor = 'BB5050';
-//      }
-//      else if(item.ownDate == '0') {
-//    	  pColor = '50BB50';
-//      }
-      //New
       if (item.redElement == '1') {
     	  pColor = 'BB5050';
       }
       else if(item.redElement == '0') {
     	  pColor = '50BB50';
-      }
-      //END CHANGE qCazelles - Correction GANTT - Ticket #100
+      }      
       
-      
-      // pColor = '9099BB';
       // pMile : is it a milestone ?      
       var pMile = (item.reftype == 'Milestone') ? 1 : 0;
       if (pMile) {
@@ -2595,6 +2584,7 @@ function drawGantt() {
       if (keys.indexOf(topKey) == -1) {
         topId = '';
       }
+      console.log(item);
       keys += "#" + curKey + "#";
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor,
           runScript, contextMenu, pMile, pResource, progress, pGroup, 
@@ -2604,7 +2594,7 @@ function drawGantt() {
           item.priority, item.planningmode, 
           item.status, item.type, 
           item.validatedcostdisplay, item.assignedcostdisplay, item.realcostdisplay, item.leftcostdisplay, item.plannedcostdisplay,
-          item.baseTopStart, item.baseTopEnd, item.baseBottomStart, item.baseBottomEnd));
+          item.baseTopStart, item.baseTopEnd, item.baseBottomStart, item.baseBottomEnd, item.isoncriticalpath));
     }
     g.Draw();
     g.DrawDependencies();
@@ -2616,7 +2606,7 @@ function drawGantt() {
 }
 
 function runScript(refType, refId, id) {
-  if (refType == 'Fixed' || refType=='Construction') {
+  if (refType == 'Fixed' || refType=='Construction' || refType=='Replan') {
     refType = 'Project';
   }
   //ADD by qCazelles - GANTT

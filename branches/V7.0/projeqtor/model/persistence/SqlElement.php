@@ -5308,15 +5308,19 @@ abstract class SqlElement {
  * It is a copy of drawHistoryFromObjects();
  * @return string
  */
-public function getLastChangeTabForObject($obj) {
+public function getLastChangeTabForObject($obj,$lastChangeDate) {
   global $cr, $print, $treatedObjects;
+  if (!$lastChangeDate) {
+    $lastChangeDate=date('Y-m-d H:i:s');
+  }
+  $lastChangeToShow=date('Y-m-d H:i:s',strtotime($lastChangeDate)-10); // Get last changes (including last 10 seconds, not only last change)
   require_once "../tool/formatter.php";
-  $inList="( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
-    if ($obj->id) {
-      $inList.=", ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ")";
-    }
+  if ($obj->id) {
+    $inList="( ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ") )";
+  } else {
+    $inList="( ('x',0) )";
+  }
   $showWorkHistory=true;
-  $inList.=')';
   $where=' (refType, refId) in ' . $inList;
   $order=' operationDate desc, id asc';
   $hist=new History();
@@ -5341,158 +5345,156 @@ public function getLastChangeTabForObject($obj) {
   else
     return $html . '</table>';
   foreach ( $historyList as $hist ) {
-    $date = new DateTime($hist->operationDate);
-    if ($date != $dateCmp)
-      return $historyTabHtml .'</table>';
-    if (substr($hist->colName, 0, 24) == 'subDirectory|Attachment|' or substr($hist->colName, 0, 18) == 'idTeam|Attachment|'
-        or substr($hist->colName, 0, 25) == 'subDirectory|Attachement|' or substr($hist->colName, 0, 19) == 'idTeam|Attachement|') {
-          continue;
-        }
-        $colName=($hist->colName == null)?'':$hist->colName;
-        $split=explode('|', $colName);
-        if (count($split) == 3) {
-          $colName=$split [0];
-          $refType=$split [1];
-          $refId=$split [2];
-          $refObject='';
-        } else if (count($split) == 4) {
-          $refObject=$split [0];
-          $colName=$split [1];
-          $refType=$split [2];
-          $refId=$split [3];
+    if ($hist->operationDate<$lastChangeToShow) break;
+    if (substr($hist->colName, 0, 24) == 'subDirectory|Attachment|'  or substr($hist->colName, 0, 18) == 'idTeam|Attachment|'
+     or substr($hist->colName, 0, 25) == 'subDirectory|Attachement|' or substr($hist->colName, 0, 19) == 'idTeam|Attachement|') {
+      continue;
+    }
+    $colName=($hist->colName == null)?'':$hist->colName;
+    $split=explode('|', $colName);
+    if (count($split) == 3) {
+      $colName=$split [0];
+      $refType=$split [1];
+      $refId=$split [2];
+      $refObject='';
+    } else if (count($split) == 4) {
+      $refObject=$split [0];
+      $colName=$split [1];
+      $refType=$split [2];
+      $refId=$split [3];
+    } else {
+      $refType='';
+      $refId='';
+      $refObject='';
+    }
+    if ($refType=='Attachement') {
+      $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
+    }
+    $curObj=null;
+    $dataType="";
+    $dataLength=0;
+    $hide=false;
+    $oper=i18n('operation' . ucfirst($hist->operation));
+    $user=$hist->idUser;
+    $user=SqlList::getNameFromId('User', $user);
+    $date=htmlFormatDateTime($hist->operationDate);
+    $class="NewOperation";
+    if ($stockDate == $hist->operationDate and $stockUser == $hist->idUser and $stockOper == $hist->operation) {
+      $oper="";
+      $user="";
+      $date="";
+      $class="ContinueOperation";
+    }
+    if ($colName != '' or $refType != "") {
+      if ($refType) {
+        if ($refType == "TestCase") {
+          $curObj=new TestCaseRun();
         } else {
-          $refType='';
-          $refId='';
-          $refObject='';
+          $curObj=new $refType();
         }
-        if ($refType=='Attachement') {
-          $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
-        }
-        $curObj=null;
-        $dataType="";
-        $dataLength=0;
-        $hide=false;
-        $oper=i18n('operation' . ucfirst($hist->operation));
-        $user=$hist->idUser;
-        $user=SqlList::getNameFromId('User', $user);
-        $date=htmlFormatDateTime($hist->operationDate);
-        $class="NewOperation";
-        if ($stockDate == $hist->operationDate and $stockUser == $hist->idUser and $stockOper == $hist->operation) {
-          $oper="";
-          $user="";
-          $date="";
-          $class="ContinueOperation";
-        }
-        if ($colName != '' or $refType != "") {
-          if ($refType) {
-            if ($refType == "TestCase") {
-              $curObj=new TestCaseRun();
-            } else {
-              $curObj=new $refType();
-            }
-          } else {
-            $curObj=new $hist->refType();
-          }
-          if ($curObj) {
-            if ($refType) {
-              $colCaption=i18n($refType) . ' #' . $refId . ' ' . $curObj->getColCaption($colName);
-              if ($refObject) {
-                $colCaption=i18n($refObject) . ' - ' . $colCaption;
-              }
-            } else {
-              $colCaption=$curObj->getColCaption($colName);
-            }
-            $dataType=$curObj->getDataType($colName);
-            $dataLength=$curObj->getDataLength($colName);
-            if (strpos($curObj->getFieldAttributes($colName), 'hidden') !== false) {
-              $hide=true;
-            }
+      } else {
+        $curObj=new $hist->refType();
+      }
+      if ($curObj) {
+        if ($refType) {
+          $colCaption=i18n($refType) . ' #' . $refId . ' ' . $curObj->getColCaption($colName);
+          if ($refObject) {
+            $colCaption=i18n($refObject) . ' - ' . $colCaption;
           }
         } else {
-          $colCaption='';
+          $colCaption=$curObj->getColCaption($colName);
         }
-        if (substr($hist->refType, -15) == 'PlanningElement' and $hist->operation == 'insert') {
+        $dataType=$curObj->getDataType($colName);
+        $dataLength=$curObj->getDataLength($colName);
+        if (strpos($curObj->getFieldAttributes($colName), 'hidden') !== false) {
           $hide=true;
         }
-        if ($hist->isWorkHistory and ! $showWorkHistory) {
-          $hide=true;
-        }
-        if (!$hide) {
-          $historyTabHtml .=  '<tr>';
-          $historyTabHtml .=  '<td class="historyData' . $class .
-                              '" style=" padding:4px; width:10%; border: 1px solid #7b7b7b;">' .
-                              $oper . '</td>';
-          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:14%; border: 1px solid #7b7b7b;">' .
-                              $colCaption . '</td>';
-          $oldValue=$hist->oldValue;
-          $newValue=$hist->newValue;
-          if ($dataType == 'int' and $dataLength == 1) { // boolean
-            $oldValue=htmlDisplayCheckbox($oldValue,true);
-            $newValue=htmlDisplayCheckbox($newValue,true);
-          } else if (substr($colName, 0, 2) == 'id' and strlen($colName) > 2 and strtoupper(substr($colName, 2, 1)) == substr($colName, 2, 1)) {
-            if ($oldValue != null and $oldValue != '') {
-              if ($oldValue == 0 and $colName == 'idStatus') {
-                $oldValue='';
-              } else {
-                $oldValue=SqlList::getNameFromId(substr($colName, 2), $oldValue);
-              }
-            }
-            if ($newValue != null and $newValue != '') {
-              $newValue=SqlList::getNameFromId(substr($colName, 2), $newValue);
-            }
-          } else if ($colName == "color") {
-            $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oldValue);
-            $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $newValue);
-          } else if ($dataType == 'date') {
-            $oldValue=htmlFormatDate($oldValue);
-            $newValue=htmlFormatDate($newValue);
-          } else if ($dataType == 'datetime') {
-            $oldValue=htmlFormatDateTime($oldValue);
-            $newValue=htmlFormatDateTime($newValue);
-          } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
-            $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
-            $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
-          } else if ($dataType == 'decimal' and (substr($colName, -4, 4) == 'Cost' or strtolower(substr($colName,-6,6))=='amount')) {
-            $oldValue=htmlDisplayCurrency($oldValue);
-            $newValue=htmlDisplayCurrency($newValue);
-          } else if (substr($colName, -8, 8) == 'Duration') {
-            $oldValue=$oldValue . ' ' . i18n('shortDay');
-            $newValue=$newValue . ' ' . i18n('shortDay');
-          } else if (substr($colName, -8, 8) == 'Progress') {
-            $oldValue=$oldValue . ' ' . i18n('colPct');
-            $newValue=$newValue . ' ' . i18n('colPct');
-          } else if ($colName=='password' or $colName=='apiKey') {
-            $allstars="**********";
-            if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
-            if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
+      }
+    } else {
+      $colCaption='';
+    }
+    if (substr($hist->refType, -15) == 'PlanningElement' and $hist->operation == 'insert') {
+      $hide=true;
+    }
+    if ($hist->isWorkHistory and ! $showWorkHistory) {
+      $hide=true;
+    }
+    if (!$hide) {
+      $historyTabHtml .=  '<tr>';
+      $historyTabHtml .=  '<td class="historyData' . $class .
+                          '" style=" padding:4px; width:10%; border: 1px solid #7b7b7b;">' .
+                          $oper . '</td>';
+      $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:14%; border: 1px solid #7b7b7b;">' .
+                          $colCaption . '</td>';
+      $oldValue=$hist->oldValue;
+      $newValue=$hist->newValue;
+      if ($dataType == 'int' and $dataLength == 1) { // boolean
+        $oldValue=htmlDisplayCheckbox($oldValue,true);
+        $newValue=htmlDisplayCheckbox($newValue,true);
+      } else if (substr($colName, 0, 2) == 'id' and strlen($colName) > 2 and strtoupper(substr($colName, 2, 1)) == substr($colName, 2, 1)) {
+        if ($oldValue != null and $oldValue != '') {
+          if ($oldValue == 0 and $colName == 'idStatus') {
+            $oldValue='';
           } else {
-            if (! isTextFieldHtmlFormatted($oldValue)) {
-              $oldValue = htmlEncode($oldValue, 'print');
-              $oldValue=wordwrap($oldValue, 30, '<wbr>', false);
-            }
-            if (! isTextFieldHtmlFormatted($newValue)) {
-              $newValue = htmlEncode($newValue, 'print');        
-              $newValue=wordwrap($newValue, 30, '<wbr>', false);
-            }
+            $oldValue=SqlList::getNameFromId(substr($colName, 2), $oldValue);
           }
-          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
-                              $oldValue . '</td>';
-          $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
-                              $newValue . '</td>';
-          $historyTabHtml .=  '<td class="historyData' . $class . '" style="width:15%; border: 1px solid #7b7b7b;">';
-          $historyTabHtml .=   $date . '</td>';
-          $historyTabHtml .=  '<td class="historyData' . $class .
-                              '" style=" padding:4px; width:15%; border-right: 1px solid #AAAAAA;" >';
-          if ($user) {
-            $historyTabHtml .=  formatUserThumb($hist->idUser, $user, null,'16','left').'&nbsp;';
-          }
-          $historyTabHtml .=  $user .
-                              '</td>
-                              </tr>';
-          $stockDate=$hist->operationDate;
-          $stockUser=$hist->idUser;
-          $stockOper=$hist->operation;
         }
+        if ($newValue != null and $newValue != '') {
+          $newValue=SqlList::getNameFromId(substr($colName, 2), $newValue);
+        }
+      } else if ($colName == "color") {
+        $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oldValue);
+        $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $newValue);
+      } else if ($dataType == 'date') {
+        $oldValue=htmlFormatDate($oldValue);
+        $newValue=htmlFormatDate($newValue);
+      } else if ($dataType == 'datetime') {
+        $oldValue=htmlFormatDateTime($oldValue);
+        $newValue=htmlFormatDateTime($newValue);
+      } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
+        $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
+        $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
+      } else if ($dataType == 'decimal' and (substr($colName, -4, 4) == 'Cost' or strtolower(substr($colName,-6,6))=='amount')) {
+        $oldValue=htmlDisplayCurrency($oldValue);
+        $newValue=htmlDisplayCurrency($newValue);
+      } else if (substr($colName, -8, 8) == 'Duration') {
+        $oldValue=$oldValue . ' ' . i18n('shortDay');
+        $newValue=$newValue . ' ' . i18n('shortDay');
+      } else if (substr($colName, -8, 8) == 'Progress') {
+        $oldValue=$oldValue . ' ' . i18n('colPct');
+        $newValue=$newValue . ' ' . i18n('colPct');
+      } else if ($colName=='password' or $colName=='apiKey') {
+        $allstars="**********";
+        if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
+        if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
+      } else {
+        if (! isTextFieldHtmlFormatted($oldValue)) {
+          $oldValue = htmlEncode($oldValue, 'print');
+          $oldValue=wordwrap($oldValue, 30, '<wbr>', false);
+        }
+        if (! isTextFieldHtmlFormatted($newValue)) {
+          $newValue = htmlEncode($newValue, 'print');        
+          $newValue=wordwrap($newValue, 30, '<wbr>', false);
+        }
+      }
+      $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
+                          $oldValue . '</td>';
+      $historyTabHtml .=  '<td class="historyData" style=" padding:4px; width:23%; border: 1px solid #7b7b7b;">' .
+                          $newValue . '</td>';
+      $historyTabHtml .=  '<td class="historyData' . $class . '" style="width:15%; border: 1px solid #7b7b7b;">';
+      $historyTabHtml .=   $date . '</td>';
+      $historyTabHtml .=  '<td class="historyData' . $class .
+                          '" style=" padding:4px; width:15%; border-right: 1px solid #AAAAAA;" >';
+      if ($user) {
+        $historyTabHtml .=  formatUserThumb($hist->idUser, $user, null,'16','left').'&nbsp;';
+      }
+      $historyTabHtml .=  $user .
+                          '</td>
+                          </tr>';
+      $stockDate=$hist->operationDate;
+      $stockUser=$hist->idUser;
+      $stockOper=$hist->operation;
+    }
   }
   return $historyTabHtml . '</table>';
 }
@@ -5571,10 +5573,13 @@ function getNotesHtmlTab() {
  * by the property and "${HISTORY} by a table representing the last changes
  * of the object. ${LINK} and ${NOTE} by a table displaying links and notes
  */
-public function getMailDetailFromTemplate($templateToReplace) {
+public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=null) {
+  global $lastEmailChangeDate;
+  $lastEmailChangeDate=$lastChangeDate;
   $templateToReplace = $this->parseMailMessage($templateToReplace);
   return preg_replace_callback('(\$\{[a-zA-Z0-9_\-]+\})',
     function ($matches) {
+      global $lastEmailChangeDate;
       $property = trim($matches[0], '${}');
       if (property_exists($this, $property)) {
         if (isset($this, $property) and $this->$property != '') {
@@ -5608,7 +5613,7 @@ public function getMailDetailFromTemplate($templateToReplace) {
       } else if ($property == 'url') {
         return $this->getReferenceUrl();
       } else if ($property == 'HISTORY') {
-        return $this->getLastChangeTabForObject($this);
+        return $this->getLastChangeTabForObject($this,$lastEmailChangeDate);
       } else if ($property == 'LINK') {
         return $this->getLinksHtmlTab();
       } else if ($property == 'NOTE') {

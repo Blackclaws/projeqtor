@@ -23,6 +23,9 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
+//use PHPMailer\PHPMailer\PHPMailer;
+//use PHPMailer\PHPMailer\Exception;
+
 $projeqtor = 'loaded';
 spl_autoload_register ( 'projeqtorAutoload', true );
 //include_once ('../model/User.php');
@@ -1773,6 +1776,10 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   
   require_once '../external/PHPMailer/class.phpmailer.php';
   require_once '../external/PHPMailer/class.smtp.php';
+  //require_once '../external/PHPMailer6/src/PHPMailer.php';
+  //require_once '../external/PHPMailer6/src/Exception.php';
+  //require_once '../external/PHPMailer6/src/SMTP.php';
+  
   $phpmailer = new PHPMailer ();
   ob_start ();
   if ($logLevel>='3') $phpmailer->SMTPDebug=1;

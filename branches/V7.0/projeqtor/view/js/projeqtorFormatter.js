@@ -267,11 +267,11 @@ function numericFormatter(value) {
   // result=dojo.number.format(value);
   var result = value.replace(/^0+/g, '');
   // result = value.replace(/^0+/g,'');
-  return result;
+  return '<div style="width:100%;text-align:right;">' + result + '</div>';
 }
 function decimalFormatter(value) {
   var roundedValue = dojo.number.format(Math.round(value * 100) / 100);
-  return roundedValue;
+  return '<div style="width:100%;text-align:right;">' + roundedValue + '</div>';
 }
 
 
@@ -291,25 +291,25 @@ function workFormatter(value) {
   if (paramUnit != 'days') {
        value = value * top.paramHoursPerDay;
     }
-  roundedValue = dojo.number.format(Math.round(value * 100) / 100);
+  roundedValue = dojo.number.format(Math.round(value * 100) / 100, { places:1} );
   // var result = roundedValue.replace(/^0+/g,'');
   // result = value.replace(/^0+/g,'');
   var unit = (paramUnit == 'days') ? i18n('shortDay')
       : i18n('shortHour');
-  return roundedValue + '&nbsp;' + unit;
+  return '<div style="width:100%;text-align:right;">' + roundedValue + '&nbsp;' + unit + '</div>';
 }
 
 function costFormatter(value) {
   if (value == null) return null;
   if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
-  roundedValue = dojo.number.format(Math.round(value * 100) / 100);
+  roundedValue = dojo.number.format(Math.round(value * 100) / 100, { places:2} );
   // var result = roundedValue.replace(/^0+/g,'');
   // result = value.replace(/^0+/g,'');
   if (top.paramCurrencyPosition == 'before') {
-    return top.paramCurrency + '&nbsp;' + roundedValue;
+    return '<div style="width:100%;text-align:right;">'+top.paramCurrency + '&nbsp;' + roundedValue + '</div>';
   } else {
-    return roundedValue + '&nbsp;' + top.paramCurrency;
+    return '<div style="width:100%;text-align:right;">'+roundedValue + '&nbsp;' + top.paramCurrency + '</div>';
   }
 }
 /**
