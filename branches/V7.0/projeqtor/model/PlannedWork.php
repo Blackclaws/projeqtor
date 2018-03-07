@@ -908,7 +908,7 @@ class PlannedWork extends GeneralWork {
     if (!trim($idProject) or $idProject=='*') return $fullListPlan;
     $start=null;
     $end=null;
-    $arrayStep=array('early'=>null,'late'=>null,'before'=>array(),'after'=>array());
+    $arrayNode=array('early'=>null,'late'=>null,'before'=>array(),'after'=>array());
     $arrayTask=array('duration'=>null,'start'=>null,'end'=>null,'type'=>'task','class'=>'','name'=>'');
     if ($fullListPlan) {
       $peList=array();
@@ -935,41 +935,53 @@ class PlannedWork extends GeneralWork {
       // TODO : get predecessors
     }
     $cp=array('node'=>array(),'task'=>array());
-    $cp['node']['S']=$arrayStep; 
+    $cp['node']['S']=$arrayNode; 
     $cp['node']['S']['early']=$start;
-    $cp['node']['E']=$arrayStep;
+    $cp['node']['E']=$arrayNode;
     $cp['node']['E']['early']=$end;
     $cp['node']['E']['late']=$end;
     foreach($peList as $id=>$plan) {
       $cp['task'][$id]=$arrayTask;
-      $cp['task'][$id]['duration']=$plan->plannedDuration;
+      $cp['task'][$id]['duration']=workDayDiffDates($plan->plannedStartDate, $plan->plannedEndDate);//$plan->plannedDuration;
       $cp['task'][$id]['name']=$plan->refName;
       $cp['task'][$id]['class']=$plan->refType;
       $cp['task'][$id]['start']='S'.$id;
-      if (!isset($cp['node']['S'.$id])) $cp['node']['S'.$id]=$arrayStep;
+      if (!isset($cp['node']['S'.$id])) $cp['node']['S'.$id]=$arrayNode;
       $cp['node']['S'.$id]['early']=$plan->plannedStartDate;
       if (!in_array($id,$cp['node']['S'.$id]['after'])) $cp['node']['S'.$id]['after'][]=$id;
       $cp['task'][$id]['end']='E'.$id;
-      if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayStep;
+      if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayNode;
       $cp['node']['E'.$id]['early']=$plan->plannedEndDate;
       if (!in_array($id,$cp['node']['E'.$id]['before'])) $cp['node']['E'.$id]['before'][]=$id;
+      debugLog($plan->_directPredecessorList);
       foreach ($plan->_directPredecessorList as $idPrec=>$prec) {
         if (!isset($peList[$idPrec]) ) continue; // Predecessor not in current project
         if (!isset($cp['task'][$idPrec.'-'.$id])) $cp['task'][$idPrec.'-'.$id]=$arrayTask;
         $cp['task'][$idPrec.'-'.$id]['type']='dependency';
-        if ($peList[$idPrec]->refType=='Milestone') {
+        if ($peList[$idPrec]->refType=='Milestone' or $prec['type']=='S-S' or $prec['type']=='E-E') {
           $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay'];
         } else {
           $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay']+1;
         }
         $typS=substr($prec['type'],0,1);
         $typE=substr($prec['type'],-1);
-        $cp['task'][$idPrec.'-'.$id]['start']=$typS.$idPrec;
-        if (!isset($cp['node'][$typS.$idPrec])) $cp['node'][$typS.$idPrec]=$arrayStep;
-        if (!in_array($idPrec.'-'.$id,$cp['node'][$typS.$idPrec]['after'])) $cp['node'][$typS.$idPrec]['after'][]=$idPrec.'-'.$id;
-        $cp['task'][$idPrec.'-'.$id]['end']=$typE.$id;
-        if (!isset($cp['node'][$typE.$id])) $cp['node'][$typE.$id]=$arrayStep;
-        if (!in_array($idPrec.'-'.$id,$cp['node'][$typE.$id]['before'])) $cp['node'][$typE.$id]['before'][]=$idPrec.'-'.$id;
+        if ($prec['type']!='E-E') {
+          $cp['task'][$idPrec.'-'.$id]['start']=$typS.$idPrec;
+          if (!isset($cp['node'][$typS.$idPrec])) $cp['node'][$typS.$idPrec]=$arrayNode;
+          if (!in_array($idPrec.'-'.$id,$cp['node'][$typS.$idPrec]['after'])) $cp['node'][$typS.$idPrec]['after'][]=$idPrec.'-'.$id;
+          $cp['task'][$idPrec.'-'.$id]['end']=$typE.$id;
+          if (!isset($cp['node'][$typE.$id])) $cp['node'][$typE.$id]=$arrayNode;
+          if (!in_array($idPrec.'-'.$id,$cp['node'][$typE.$id]['before'])) $cp['node'][$typE.$id]['before'][]=$idPrec.'-'.$id;
+        } else {
+          $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay']-1;
+          //if ($cp['task'][$id]) $cp['task'][$id]['duration']+=1;
+          $cp['task'][$idPrec.'-'.$id]['start']='E'.$id;
+          if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayNode;
+          if (!in_array($idPrec.'-'.$id,$cp['node']['E'.$id]['after'])) $cp['node']['E'.$id]['after'][]=$idPrec.'-'.$id;
+          $cp['task'][$idPrec.'-'.$id]['end']='E'.$idPrec;
+          if (!isset($cp['node']['E'.$idPrec])) $cp['node']['E'.$idPrec]=$arrayNode;
+          if (!in_array($idPrec.'-'.$id,$cp['node']['E'.$idPrec]['before'])) $cp['node']['E'.$idPrec]['before'][]=$idPrec.'-'.$id;
+        }
       }
     }
     foreach ($cp['node'] as $id=>$node) { // Attach loose nodes to S or E
@@ -998,7 +1010,7 @@ class PlannedWork extends GeneralWork {
       $pe=$fullListPlan[$idP];
       $pe->latestStartDate=$cp['node'][$plan['start']]['late'];
       $pe->latestEndDate=$cp['node'][$plan['end']]['late'];
-      if ($pe->latestStartDate==$pe->plannedStartDate and $pe->latestEndDate==$pe->plannedEndDate) {
+      if ($pe->latestStartDate<=$pe->plannedStartDate ) {
         $pe->isOnCriticalPath=1;
       } else {
         $pe->isOnCriticalPath=0;
