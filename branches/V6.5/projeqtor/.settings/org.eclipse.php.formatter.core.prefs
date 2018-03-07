@@ -185,10 +185,10 @@ org.eclipse.php.formatter.core.formatter.insert_space_between_brackets_in_array_
 org.eclipse.php.formatter.core.formatter.insert_space_between_empty_parens_in_method_declaration=false
 org.eclipse.php.formatter.core.formatter.insert_space_between_empty_parens_in_method_invocation=false
 org.eclipse.php.formatter.core.formatter.join_lines_in_comments=true
-org.eclipse.php.formatter.core.formatter.keep_else_statement_on_same_line=false
+org.eclipse.php.formatter.core.formatter.keep_else_statement_on_same_line=true
 org.eclipse.php.formatter.core.formatter.keep_elseif_statement_on_same_line=true
-org.eclipse.php.formatter.core.formatter.keep_imple_if_on_one_line=false
-org.eclipse.php.formatter.core.formatter.keep_then_statement_on_same_line=false
+org.eclipse.php.formatter.core.formatter.keep_imple_if_on_one_line=true
+org.eclipse.php.formatter.core.formatter.keep_then_statement_on_same_line=true
 org.eclipse.php.formatter.core.formatter.lineSplit=132
 org.eclipse.php.formatter.core.formatter.never_indent_block_comments_on_first_column=false
 org.eclipse.php.formatter.core.formatter.never_indent_line_comments_on_first_column=false
