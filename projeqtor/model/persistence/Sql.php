@@ -131,15 +131,15 @@ class Sql {
     self::$lastQueryNewid=null;
     // Specific update of sequence in pgsql mode.
     if (self::$lastQueryType=="UPDATE") {
-      if (self::isPgsql() and ! self::$maintenanceMode) {
+      if (self::isPgsql()) {
       	if (strtolower(substr($sqlRequest,0,11))=='insert into') {
       		$table=substr($sqlRequest,12,strpos($sqlRequest,'(')-13);
       		$seq=trim(strtolower($table)).'_id_seq';
-      		//try {
-      		$lastId=$cnx->lastInsertId($seq);
-      		//} catch (PDOException $e) {
-      		//	$lastId=null;
-      		//}
+      		try {
+      		  $lastId=$cnx->lastInsertId($seq);
+      		} catch (PDOException $e) {
+      			$lastId=null;
+      		}
       		self::$lastQueryNewid =($lastId)?$lastId:NULL;
       	}
       } else {   	
@@ -281,7 +281,7 @@ class Sql {
   try {
       
       //KEVIN
-      $sslArray=null;
+      $sslArray=array();
       $sslKey=Parameter::getGlobalParameter("SslKey");
       if($sslKey and !file_exists($sslKey)){
         traceLog("Error for SSL Key : file $sslKey do not exist");
@@ -307,6 +307,7 @@ class Sql {
           PDO::MYSQL_ATTR_SSL_CA   => $sslCa
         );
 	    }
+	    $sslArray[PDO::ATTR_ERRMODE]=PDO::ERRMODE_SILENT;
     	$dsn = self::$dbType.':host='.self::$dbHost.';port='.self::$dbPort.';dbname='.self::$dbName;
     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword, $sslArray);
 //     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword,

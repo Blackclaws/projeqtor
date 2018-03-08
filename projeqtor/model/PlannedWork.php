@@ -909,7 +909,7 @@ class PlannedWork extends GeneralWork {
     $start=null;
     $end=null;
     $arrayNode=array('early'=>null,'late'=>null,'before'=>array(),'after'=>array());
-    $arrayTask=array('duration'=>null,'start'=>null,'end'=>null,'type'=>'task','class'=>'','name'=>'');
+    $arrayTask=array('duration'=>null,'start'=>null,'end'=>null,'type'=>'task','class'=>'','name'=>'', 'mode'=>'');
     if ($fullListPlan) {
       $peList=array();
       foreach ($fullListPlan as $id=>$plan) {
@@ -953,7 +953,6 @@ class PlannedWork extends GeneralWork {
       if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayNode;
       $cp['node']['E'.$id]['early']=$plan->plannedEndDate;
       if (!in_array($id,$cp['node']['E'.$id]['before'])) $cp['node']['E'.$id]['before'][]=$id;
-      debugLog($plan->_directPredecessorList);
       foreach ($plan->_directPredecessorList as $idPrec=>$prec) {
         if (!isset($peList[$idPrec]) ) continue; // Predecessor not in current project
         if (!isset($cp['task'][$idPrec.'-'.$id])) $cp['task'][$idPrec.'-'.$id]=$arrayTask;
@@ -973,14 +972,16 @@ class PlannedWork extends GeneralWork {
           if (!isset($cp['node'][$typE.$id])) $cp['node'][$typE.$id]=$arrayNode;
           if (!in_array($idPrec.'-'.$id,$cp['node'][$typE.$id]['before'])) $cp['node'][$typE.$id]['before'][]=$idPrec.'-'.$id;
         } else {
-          $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay']-1;
-          //if ($cp['task'][$id]) $cp['task'][$id]['duration']+=1;
+          $cp['task'][$idPrec.'-'.$id]['duration']=$prec['delay'];
+          if ($cp['task'][$id]) $cp['task'][$id]['duration'];
           $cp['task'][$idPrec.'-'.$id]['start']='E'.$id;
           if (!isset($cp['node']['E'.$id])) $cp['node']['E'.$id]=$arrayNode;
           if (!in_array($idPrec.'-'.$id,$cp['node']['E'.$id]['after'])) $cp['node']['E'.$id]['after'][]=$idPrec.'-'.$id;
           $cp['task'][$idPrec.'-'.$id]['end']='E'.$idPrec;
           if (!isset($cp['node']['E'.$idPrec])) $cp['node']['E'.$idPrec]=$arrayNode;
           if (!in_array($idPrec.'-'.$id,$cp['node']['E'.$idPrec]['before'])) $cp['node']['E'.$idPrec]['before'][]=$idPrec.'-'.$id;
+          if (!isset($cp['task'][$id])) $cp['task'][$id]=$arrayTask;
+          $cp['task'][$id]['mode']='reverse';
         }
       }
     }
@@ -1010,7 +1011,8 @@ class PlannedWork extends GeneralWork {
       $pe=$fullListPlan[$idP];
       $pe->latestStartDate=$cp['node'][$plan['start']]['late'];
       $pe->latestEndDate=$cp['node'][$plan['end']]['late'];
-      if ($pe->latestStartDate<=$pe->plannedStartDate ) {
+      if ( ($pe->latestStartDate<=$pe->plannedStartDate and $plan['mode']!='reverse') 
+          or ( $plan['mode']=='reverse' and $pe->latestStartDate<$pe->plannedStartDate) ) {
         $pe->isOnCriticalPath=1;
       } else {
         $pe->isOnCriticalPath=0;
@@ -1031,21 +1033,7 @@ class PlannedWork extends GeneralWork {
         $diff+=1;
       } else if ($diff>0) {
         $diff+=1;
-      }
-      /*if ($task['type']!='task') {
-        if ($task['duration']>0) {
-          $diff=($task['duration']+1)*(-1);
-        } else {
-          $diff=($task['duration'])*(-1);
-        }
-      } else if ($task['duration']>=0) {
-        $diff=($task['duration']-1)*(-1);
-      } else {
-        $diff=$task['duration']*(-1);
-      }*/
-      
-      
-      
+      } 
       debugLog( $task['start'].'->'.$nodeId.' - '.$taskId.' '.$task['name'].' duration='.$task['duration'].' diff='.$diff);
       $start=addWorkDaysToDate($node['late'],$diff);
       if (!$cp['node'][$task['start']]['late'] or $start<$cp['node'][$task['start']]['late']) $cp['node'][$task['start']]['late']=$start;
