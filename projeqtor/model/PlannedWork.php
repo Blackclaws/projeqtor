@@ -904,7 +904,6 @@ class PlannedWork extends GeneralWork {
 // ================================================================================================================================
   
   private static function calculateCriticalPath($idProject,$fullListPlan) {
-    debugLog("calculateCriticalPath($idProject)");
     if (!trim($idProject) or $idProject=='*') return $fullListPlan;
     $start=null;
     $end=null;
@@ -1034,7 +1033,7 @@ class PlannedWork extends GeneralWork {
       } else if ($diff>0) {
         $diff+=1;
       } 
-      debugLog( $task['start'].'->'.$nodeId.' - '.$taskId.' '.$task['name'].' duration='.$task['duration'].' diff='.$diff);
+      //debugLog( $task['start'].'->'.$nodeId.' - '.$taskId.' '.$task['name'].' duration='.$task['duration'].' diff='.$diff);
       $start=addWorkDaysToDate($node['late'],$diff);
       if (!$cp['node'][$task['start']]['late'] or $start<$cp['node'][$task['start']]['late']) $cp['node'][$task['start']]['late']=$start;
       self::reverse($task['start'],$cp);

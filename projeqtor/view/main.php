@@ -574,6 +574,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
    ?>
   <div id="menuBarShow" class="dijitAccordionTitle2 reportTableColumnHeader2 largeReportHeader2"  style="position:absolute;left:0px; top:81px; bottom:0px; width:<?php echo $IconSizeMenuHide2;?>px;">
     <?php include "menuHideMenu.php"; ?> 
+    
     <div id="hideMenuBarShowButton" style="cursor:pointer;position:absolute; right:-22px; bottom:2px;z-index:949">
 		  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
 		    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
@@ -583,7 +584,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 		</div>
   </div> 
   
-  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $IconSizeMenuHide2 ?>; bottom:0px;z-index:999998">
+  <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $IconSizeMenuHide2 ?>; bottom:2px;z-index:999998">
 	  <a onClick="hideMenuBarShowMode2();" id="buttonSwitchedMenuBarShow" title="" >
 	    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
 	      <div class='iconHideStream22' style='' >&nbsp;</div>
@@ -788,10 +789,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     $showMenuBar='YES';
     //if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
     $iconSize+=9;?>
+    
     <div id="toolBarDiv" style="height:30px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
-    
+          
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center">
     </div>
     
@@ -823,7 +825,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         </div>
        
     </div>
-    <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:48px; position:absolute; top:30px;">
+    
+     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:48px; position:absolute; top:30px;">
       <table width="100%">
       
        <td width="220px" id="menuBarLeft" >
@@ -887,6 +890,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          </script>
              <script type="dojo/method" event="onMouseUp">
            moveMenuBarStop();
+
          </script>
              <script type="dojo/method" event="onClick">
            moveMenuBarStop();
@@ -895,9 +899,37 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
           <?php }?>
       </td>
       </table>
-</td>
-</table>
-</div>
+    </td>
+    </table>
+    </div>
+    
+    <?php
+      $hideMenuLeftParam = Parameter::getGlobalParameter ( 'MenuBarLeft' ); 
+      if (sessionValueExists('MenuBarLeft') and getSessionValue('MenuBarLeft')=='false'){
+        $hideMenuLeftParam = 'true';
+      }
+        if($hideMenuLeftParam == 'false') { ?>
+        <script type="text/javascript">
+           hideShowMenu(true);
+        </script>
+     <?php } ?>
+    
+     <?php 
+      $hideMenuTopParam = Parameter::getGlobalParameter ( 'MenuBarTop' );
+      if (sessionValueExists('hideMenuTop') and getSessionValue('hideMenuTop')!='YES'){
+        $hideMenuTopParam = 'YES';
+      }
+      if (sessionValueExists('hideMenuTop') and getSessionValue('hideMenuTop')=='YES' or $hideMenuTopParam == 'NO') {?>
+      <script>
+        dojo.byId('statusBarDiv').style.height="0px";
+        dojo.byId('statusBarDiv').style.padding="0px";
+        dojo.byId('leftDiv').style.top='30px';
+        dojo.byId('centerDiv').style.top='30px';
+        dojo.byId('menuBarShow').style.top='30px';
+        var height=parseInt(dojo.byId('mainDiv').offsetHeight)-30;
+      </script>
+    <?php }?>
+    
     <div id="dialogAlert" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAlert");?>">
       <table>
         <tr>
