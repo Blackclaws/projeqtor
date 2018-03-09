@@ -128,16 +128,15 @@ class Sql {
     //if (strtoupper(substr($sqlRequest,0,6)=='SELECT')) self::$lastQueryType='SELECT';
     self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? $result->rowCount() : $result->rowCount();
     self::$lastQueryNewid=null;
-    // Specific update of sequence in pgsql mode.
     if (self::$lastQueryType=="UPDATE") {
-      if (self::isPgsql()) {
-      	if (strtolower(substr($sqlRequest,0,11))=='insert into') {
+      if (self::isPgsql()) { // Specific update of sequence in pgsql mode.
+      	if (strtolower(substr($sqlRequest,0,11))=='insert into' and !Sql::$maintenanceMode) {
       		$table=substr($sqlRequest,12,strpos($sqlRequest,'(')-13);
       		$seq=trim(strtolower($table)).'_id_seq';
-      		try {
+      		if ($result->rowCount()) {
       		  $lastId=$cnx->lastInsertId($seq);
-      		} catch (PDOException $e) {
-      			$lastId=null;
+      		} else {
+      		  $lastId=null;
       		}
       		self::$lastQueryNewid =($lastId)?$lastId:NULL;
       	}
