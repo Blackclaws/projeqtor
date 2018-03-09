@@ -3641,7 +3641,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '<div style="float:left;cursor:pointer" onClick="showLink(\''.htmlEncode(urldecode($attachment->link)).'\');">';
         echo '<img src="../view/img/mime/html.png" title="'.htmlEncode($attachment->link).'" />';
         echo '</div>';
-      } else {
+      } else{
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
       }
       echo '</td><td class="attachmentData" style="border-left:none;width:'.(($print)?'90':'80').'%" >';
