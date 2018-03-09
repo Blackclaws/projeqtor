@@ -408,7 +408,15 @@ class Parameter extends SqlElement {
         $list=array('16'=>i18n('iconSizeSmall'), 
                     '22'=>i18n('iconSizeMedium'), 
                     '32'=>i18n('iconSizeBig'));
-        break; 
+        break;
+      case 'MenuBarTop':
+          $list=array('YES'=>i18n('Visible'),
+          'NO'=>i18n('Hidden'));
+          break;
+      case 'MenuBarLeft':
+        $list=array('false'=>i18n('Hidden'),
+        'true'=>i18n('Visible'));
+        break;   
       case 'paramMailEol':
       	 $list=array('CRLF'=>i18n('eolDefault'), 
                      'LF'=>i18n('eolPostfix'));
@@ -683,6 +691,8 @@ class Parameter extends SqlElement {
       	                      'defaultTheme'=>'list',
       	                      'startPage'=>'list',
       	                      'paramIconSize'=>'list',
+      	                      'MenuBarTop'=>'list',
+      	                      'MenuBarLeft'=>'list',
       	                      'displayHistory'=>'list',
       	                      "editor"=>'list',
       	                      "scaytAutoStartup"=>'list',

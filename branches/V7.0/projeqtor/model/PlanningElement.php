@@ -295,6 +295,7 @@ class PlanningElement extends SqlElement {
         }
       }
     } else {
+      if ($this->realWork==0 and $this->leftWork>0) $this->realStartDate=null;
       if ($this->leftWork==0 and !$this->realEndDate) {
         $ass=new Assignment();
         $critArray=array('refType'=>$this->refType,'refId'=>$this->refId);
@@ -1500,7 +1501,8 @@ class PlanningElement extends SqlElement {
         $pe->_directPredecessorList=array();
       } 
       $visited=array();
-      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result,'main', $visited, 1);
+      //$pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result,'main', $visited, 1); // #3212
+      $pe->_predecessorList=$pe->_directPredecessorList;  // #3212 : do not get recursive predecessors, only direct
       $pe->_predecessorListWithParent=$pe->_predecessorList;
       foreach ($pe->_parentList as $idParent=>$parent) {
       	$visited=array();

@@ -5374,7 +5374,6 @@ function hideMenuBarShowMode2() {
 //gautier menu top
 function hideMenuBarShowModeTop(){ 
   if(dojo.byId('statusBarDiv').style.height == '0px'){
-    console.log('test3');
     saveDataToSession("hideMenuTop","NO",true);
     //dojo.byId('statusBarDiv').style.display='block';
     dojo.byId('statusBarDiv').style.height="48px";
@@ -5386,7 +5385,6 @@ function hideMenuBarShowModeTop(){
     dijit.byId('centerDiv').resize({h:height});
     dijit.byId('leftDiv').resize({h:height});
   }else{
-    console.log('test4');
     saveDataToSession("hideMenuTop","YES",true);
     //dojo.byId('statusBarDiv').style.display='none';
     dojo.byId('statusBarDiv').style.height="0px";
@@ -7106,13 +7104,6 @@ function showHtml(id, file, className) {
   dijit.byId("dialogShowHtml").show();
   window.frames['showHtmlFrame'].focus();
 } 
-function showHtml2(id, file, className) {
-  dijit.byId("dialogShowTest").title=file;
-  dijit.byId("dialogShowTest").clearOnHide=false;
-  window.frames['showHtmlFrame'].location.href='../tool/download.php?class='+className+'&id='
-  + id + '&showHtml=true&msg=true';
-  dijit.byId("dialogShowTest").show();
-}
 /*function displayTestPreview(){
 	var toto = dojo.byId('testPreview');
 }*/

@@ -75,7 +75,6 @@ class Habilitation extends SqlElement {
     $query.=" FROM " . $profObj->getDatabaseTableName() . " profile, " . $menuObj->getDatabaseTableName() . " menu";
     $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from " . $habiObj->getDatabaseTableName() . ")";
   	$result=Sql::query($query);
- 
     // Set Main menu to accessible if one of sub-menu is available
     $query="select distinct h.idProfile profile, m.idMenu menu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
     $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0 and (m.idle=0 or m.type='menu')";
@@ -93,7 +92,7 @@ class Habilitation extends SqlElement {
       }
       $critList.=')';
       $query='update ' . $habiObj->getDatabaseTableName() . ' set allowAccess=1 where (idMenu,idProfile) in ' . $critList;
-      Sql::query($query);
+      $result=Sql::query($query);
     }
     
     // Set Main menu to not accessible if none of sub-menu is available
@@ -103,11 +102,11 @@ class Habilitation extends SqlElement {
     $query.=" GROUP BY h.idProfile, m.idMenu";
     $query.=" HAVING m.idMenu<>0 and Sum(h.allowAccess) = 0";
     $result=Sql::query($query);
-    $critList="";
+    $critList="((0,0)";
     if (Sql::$lastQueryNbRows > 0) {
       $line = Sql::fetchLine($result);
       while ($line) {
-        $critList.=($critList=='')?'(':',';
+        $critList.=',';
         $critList.="('" . $line['menu'] . "', '" . $line['profile'] . "')";
         $line = Sql::fetchLine($result);
       }

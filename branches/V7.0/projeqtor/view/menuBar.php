@@ -263,8 +263,9 @@
         </a>
       </div>  
     </td>
-    <td title="<?php echo i18n('menuUserParameter');?>" width="105px" style="">
-      <div dojoType="dijit.layout.ContentPane"   class="pseudoButton" style="position:absolute;overflow:hidden; height:28px; min-width:100px;top:0px;" title="<?php echo i18n('menuUserParameter');?>">
+      
+    <td title="<?php echo i18n('menuUserParameter');?>"  style="position:relative;width:100px;">
+      <div dojoType="dijit.layout.ContentPane"  id="menuUserParameterTop" class="pseudoButton" style="position:relative;overflow:hidden; height:28px; min-width:100px;top:-5px;" title="<?php echo i18n('menuUserParameter');?>">
         <div dojoType="dijit.form.DropDownButton"  id="iconMenuUserPhoto" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;top:-3px" >
 			    <table style="width:100%">
     			  <tr>
@@ -289,8 +290,8 @@
 		    </div>
       </div>
     </td> 
-      
-    <td width="<?php echo (isIE())?37:35;?>px" style="" > 
+    
+    <td width="<?php echo (isIE())?37:35;?>px" style="padding-left:3px;" > 
       <div class="pseudoButton" onclick="switchMode();" style="height:28px; position:relative;top:-5px; z-index:30; width:30px;">
         <table >
           <tr>

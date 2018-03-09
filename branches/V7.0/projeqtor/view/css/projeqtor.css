@@ -3492,6 +3492,11 @@ a.cke_combo_button {
   height: auto !important;
   padding-top: 3px !important;
 }*/
+.cke_button__source_label {
+	display:none !important;
+}
+
+
 p {
  font-size: 1em;
  margin-top: 0 !important;
