@@ -289,6 +289,7 @@ class PlanningElement extends SqlElement {
         }
       }
     } else {
+      if ($this->realWork==0 and $this->leftWork>0) $this->realStartDate=null;
       if ($this->leftWork==0 and !$this->realEndDate) {
         $ass=new Assignment();
         $critArray=array('refType'=>$this->refType,'refId'=>$this->refId);
