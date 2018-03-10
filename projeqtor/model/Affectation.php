@@ -348,8 +348,16 @@ public $_noCopy;
     //  $result.='<br/>' . i18n('confirmDeleteOwnAffectation');
     //  $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="delete" />';
     //} 
-    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
+    /*$prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder');
     $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder');
+    if ($usrPrfOrder>$prfOrder) {
+      $result.='<br/>' . i18n('errorDeleteRights');
+    }*/
+    $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder',false);
+    if (!$prfOrder) $prfOrder=0;
+    $usrPrfOrder=SqlList::getFieldFromId('Profile', getSessionUser()->getProfile($this->idProject),'sortOrder',false);
+    if (!$usrPrfOrder) $usrPrfOrder=0;
+    debugLog(" $usrPrfOrder > $prfOrder ");
     if ($usrPrfOrder>$prfOrder) {
       $result.='<br/>' . i18n('errorDeleteRights');
     }
