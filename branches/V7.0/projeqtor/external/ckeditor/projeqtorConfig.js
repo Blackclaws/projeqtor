@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
     { name: 'tools', items: [ 'Print','Maximize'] },
     { name: 'styles', items: [ 'Font', 'FontSize' ] },
-    { name: 'links', items: [ 'Link', 'Unlink', 'Image','Table','SpecialChar','PasteFromWord'] }
+    { name: 'links', items: [ 'Link', 'Unlink', 'Image','Table','SpecialChar','PasteFromWord','Source'] }
   ];
   // 'showBlocks'
   config.enterMode = CKEDITOR.ENTER_DIV;
@@ -25,6 +25,8 @@ CKEDITOR.editorConfig = function( config ) {
   config.extraAllowedContent = 'span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style;';
   config.pasteFilter='span(*){*};div(*){*};p(*){*};table(*){*};tr(*){*};td(*){*};pre(*){*};blockquote(*){*};br[clear];style';
   config.resize_minHeight = 150;
+  config.extraPlugins = 'openlink';
+  config.extraPlugins += ',sourcearea';
   //gautier
   if (dojo.byId('ckeditorType')){
     var cktype=dojo.byId('ckeditorType').value;

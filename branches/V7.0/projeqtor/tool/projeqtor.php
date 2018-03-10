@@ -1782,7 +1782,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   
   $phpmailer = new PHPMailer ();
   ob_start ();
-  if ($logLevel>='3') $phpmailer->SMTPDebug=1;
+  if ($logLevel>='3') $phpmailer->SMTPDebug=4;
   //if #3077
   if($paramMailerHelo == 'YES'){
     $phpmailer->Helo = '['.$_SERVER['SERVER_ADDR'].']';

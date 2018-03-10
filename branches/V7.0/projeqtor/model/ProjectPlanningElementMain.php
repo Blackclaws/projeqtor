@@ -414,6 +414,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   public function drawSpecificItem($item){
     $result="";
     if ($item=='needReplan') {
+      if (!$this->needReplan) return '';
       $result .='<div style=";color:#A00000;font-weight:bold;">'.i18n('colNeedReplan').'</div>';
       return $result;
     }
