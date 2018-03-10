@@ -54,7 +54,6 @@ class ProjectMain extends SqlElement {
   public $creationDate;
   public $lastUpdateDateTime;
   public $color;
- 
   public $longitude;
   public $latitude;
   public $description;
@@ -952,6 +951,15 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $proj=SqlElement::getSingleSqlElementFromCriteria("ProjectPlanningElement",array('refType'=>'Project','refId'=>$id),true);
     $proj->needReplan=false;
     $proj->simpleSave();
+    /*if ($proj->topId) {
+      $top=new ProjectPlanningElement($proj->topId);
+      if ($top->needReplan) {
+        $count=$top->countSqlElementsFromCriteria(array('refType'=>'Project','topId'=>$top->id, 'needReplan'=>'1'));
+        if ($count==0) {
+          self::unsetNeedReplan($top->id);
+        }
+      }
+    }*/
   }
 // END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT  
   

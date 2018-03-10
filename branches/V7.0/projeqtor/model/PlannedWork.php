@@ -428,6 +428,22 @@ class PlannedWork extends GeneralWork {
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);
           //$plan->save();
         }
+        if ($profile=="ASAP" and $plan->assignedWork==0 and $plan->realWork==0 and $plan->leftWork==0 and $plan->validatedWork>0) {
+          if (! $plan->realStartDate) {
+            if ($plan->elementary) {
+              $plan->plannedStartDate=$startPlan;
+              $endPlan=addWorkDaysToDate($startPlan,$plan->validatedWork);
+            }
+          } else {
+            $endPlan=addWorkDaysToDate($plan->realStartDate,$plan->validatedWork);
+          }
+          if (! $plan->realEndDate) {
+            $plan->plannedEndDate=$endPlan;
+          }
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+          //$plan->save();
+        }
+        
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {
           $proj = new Project($plan->idProject,true);
@@ -869,7 +885,7 @@ class PlannedWork extends GeneralWork {
     $arrayProj=array();
     foreach ($fullListPlan as $pe) {
       if (!$pe->refType) continue;
-      $arrayProj[$pe->idProject]=$pe->idProject;
+      if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
    	  $pe->simpleSave();
    	  if ($pe->refType=='Milestone') {
    	    $pe->updateMilestonableItems();
@@ -1025,7 +1041,7 @@ class PlannedWork extends GeneralWork {
     $cp['TEST']='OK';
     foreach ($cp['node'][$nodeId]['before'] as $taskId) {
       $task=$cp['task'][$taskId];
-      $diff=($task['duration'])*(-1);
+      $diff=($task['duration'])?($task['duration'])*(-1):0;
       if ($nodeId=='E' or $nodeId=='S') {
         $diff==0;
       } else if ($task['type']=='task' and $diff!=0) {
