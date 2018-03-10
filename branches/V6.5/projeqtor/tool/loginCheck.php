@@ -77,7 +77,15 @@
     loginError();
    	exit;
   } else {
-  	$user=new User();
+    $user=new User();
+    $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login'); // If ldap is enabled, look for username without case sensitive, as it will be stored this way.
+    if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
+      $crit=array('name'=>strtolower($login));
+      $users=$user->getSqlElementsFromCriteria($crit,true);
+      if ( count($users)==1 ) {
+        $user=$users[0];
+      }
+    }
   }  
   if (!$user->crypto) {
   	$currVersion=Sql::getDbVersion();
