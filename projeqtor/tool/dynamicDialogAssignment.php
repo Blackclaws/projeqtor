@@ -50,11 +50,38 @@ if ($assignmentObj->realWork==null){
 if($assignmentObj->leftWork==null){
   $assignmentObj->leftWork="0";
 }
+$obj=new $refType($refId);
 if($refType=="Meeting" || $refType=="PeriodicMeeting") {
-	$obj=new $refType($refId);
 	$delay=Work::displayWork(workTimeDiffDateTime('2000-01-01T'.$obj->meetingStartTime,'2000-01-01T'.$obj->meetingEndTime));
 }
 $mode = RequestHandler::getValue('mode',false,true);
+
+$arrayDefaultOffDays=array();
+if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') $arrayDefaultOffDays[]=1;
+if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') $arrayDefaultOffDays[]=2;
+if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') $arrayDefaultOffDays[]=3;
+if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') $arrayDefaultOffDays[]=4;
+if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') $arrayDefaultOffDays[]=5;
+if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') $arrayDefaultOffDays[]=6;
+if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') $arrayDefaultOffDays[]=7;
+
+$planningMode=null;
+$peName=$refType.'PlanningElement';
+if (property_exists($obj, $peName)) {
+  $idPm=$obj->$peName->idPlanningMode;
+  $pmObj=new PlanningMode($idPm);
+  $planningMode=$pmObj->code;
+}
+$assRec=array();
+if ($planningMode=='RECW') {
+  for ($i=1;$i<=7;$i++) $assRec[$i]=null;
+  $ar=new AssignmentRecurring();
+  $arList=$ar->getSqlElementsFromCriteria(array('idAssignment'=>$idAssignment));
+  debugLog($arList);
+  foreach($arList as $ar) {
+    $assRec[$ar->day]=$ar->value;
+  }
+}
 ?>
   <table>
     <tr>
@@ -139,17 +166,18 @@ $mode = RequestHandler::getValue('mode',false,true);
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="assignmentRate" name="assignmentRate" value="<?php echo ($mode=='edit')?$assignmentObj->rate:"100";?>" 
+               <div id="assignmentRate" name="assignmentRate" value="<?php echo ($mode=='edit' and $planningMode!='RECW')?$assignmentObj->rate:"100";?>" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:999}" 
                  style="width:97px" 
+                 <?php if ($planningMode=='RECW') echo ' readonly';?>
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 
                  required="true" >
                  <?php echo $keyDownEventScript;?>
                  </div>
              </td>
            </tr>
-           <tr>
+           <tr style="<?php if ($planningMode=='RECW') echo 'display:none;';?>">
              <td class="dialogLabel" >
                <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
              </td>
@@ -174,6 +202,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999999.99}" 
                  style="width:97px"
+                 <?php if ($planningMode=='RECW') echo ' readonly';?>
                  onchange="assignmentUpdateLeftWork('assignment');"
                  onblur="assignmentUpdateLeftWork('assignment');" >
                  <?php echo $keyDownEventScript;?>
@@ -185,7 +214,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                  style="width:97px"/>  
              </td>    
            </tr>
-           <tr>
+           <tr style="<?php if ($planningMode=='RECW') echo 'display:none;';?>">
              <td class="dialogLabel" >
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
@@ -201,7 +230,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
              </td>
            </tr>
-           <tr>
+           <tr style="<?php if ($planningMode=='RECW') echo 'display:none;';?>">
              <td class="dialogLabel" >
                <label for="assignmentLeftWork" ><?php echo i18n("colLeftWork");?>&nbsp;:&nbsp;</label>
              </td>
@@ -223,7 +252,8 @@ $mode = RequestHandler::getValue('mode',false,true);
                               } 
                  ?>" 
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:9999999.99}" 
+                 constraints="{min:0,max:9999999.99}"
+                 <?php if ($planningMode=='RECW') echo ' readonly';?> 
                  onchange="assignmentUpdatePlannedWork('assignment');"
                  onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" >
@@ -236,7 +266,7 @@ $mode = RequestHandler::getValue('mode',false,true);
                  style="width:97px"/>  
              </td>
            </tr>
-           <tr>
+           <tr style="<?php if ($planningMode=='RECW') echo 'display:none;';?>">
              <td class="dialogLabel" >
                <label for="assignmentPlannedWork" ><?php echo i18n("colPlannedWork");?>&nbsp;:&nbsp;</label>
              </td>
@@ -291,6 +321,48 @@ $mode = RequestHandler::getValue('mode',false,true);
         </table>
       </div>
          
+      <div id="recurringAssignmentDiv" style="<?php if ($planningMode=='RECW'){echo "display:block;";}else {echo "display:none;";}?>">
+        <table style="margin-left:143px;">
+          <tr><td colspan="7">&nbsp;</td></tr>
+          <tr>
+            <td colspan="7" class="section"><?php echo i18n("sectionRecurringWeek");?></td>
+          </tr>
+          <tr>
+            <?php for ($i=1; $i<=7; $i++) {?>
+            <td class="dialogLabel" style="text-align:center"><?php echo i18n('colWeekday' . $i);?></td>
+            <?php }?>
+          </tr>
+          <tr>
+            <?php for ($i=1; $i<=7; $i++) {?>
+            <td>
+            <?php  $value=Work::displayWork($assRec[$i]);?>
+              <div dojoType="dijit.form.NumberTextBox"  style="width:53px;" name="recurringAssignmentW<?php echo $i;?>" id="recurringAssignmentW<?php echo $i;?>" value="<?php echo $value;?>" 
+              constraints="{min:0,max:999.99}" class="input <?php if (in_array($i,$arrayDefaultOffDays)) echo ' offDay';?>" >
+              <?php echo $keyDownEventScript;?> 
+              </div>
+            </td>
+            <?php }?>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button class="smallTextButton" dojoType="dijit.form.Button" type="button" >
+              <script type="dojo/connect" event="onClick" >
+                var val1=dijit.byId('recurringAssignmentW1').get('value');
+                for (var i=2; i<=7; i++) {
+                  if (! dojo.hasClass('widget_recurringAssignmentW'+i,'offDay')) dijit.byId('recurringAssignmentW'+i).set("value",val1);
+                }
+              </script>
+               <?php echo i18n("copy");?>
+              </button>
+            </td>
+            <td colspan="5" style="text-align:right">
+            <?php echo i18n('paramWorkUnit').'&nbsp;=&nbsp;'.Work::getWorkUnit();?> 
+            </td>
+          </tr> 
+           <tr><td colspan="5">&nbsp;</td></tr>
+        </table>
+      </div>
+      
         </form>
       </td>
     </tr>

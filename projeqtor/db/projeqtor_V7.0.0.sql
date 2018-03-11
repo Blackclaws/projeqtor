@@ -54,3 +54,29 @@ ADD `isOnCriticalPath` int(1) UNSIGNED DEFAULT 0;
 INSERT INTO `${prefix}cronexecution` (`cron`, `fileExecuted`, `idle`, `fonctionName`, `nextTime`) VALUES 
 ('0 * * * *', '../tool/cronExecutionStandard.php', '1', 'cronPlanningDifferential', NULL),
 ('0 2 * * *', '../tool/cronExecutionStandard.php', '1', 'cronPlanningComplete', NULL);
+
+CREATE TABLE `${prefix}assignmentrecurring` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idAssignment` int(12) unsigned DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
+  `day` int(3) DEFAULT NULL,
+  `value` decimal(12,5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX `idAssignmentAssignmentRecurring` ON `${prefix}assignmentrecurring` (`idAssignment`);
+
+UPDATE `${prefix}planningmode` set sortOrder=100 where code='ASAP';
+UPDATE `${prefix}planningmode` set sortOrder=200 where code='GROUP';
+UPDATE `${prefix}planningmode` set sortOrder=300 where code='FDUR';
+UPDATE `${prefix}planningmode` set sortOrder=400 where code='START';
+UPDATE `${prefix}planningmode` set sortOrder=500 where code='ALAP';
+UPDATE `${prefix}planningmode` set sortOrder=700 where code='REGUL';
+UPDATE `${prefix}planningmode` set sortOrder=710 where code='FULL';
+UPDATE `${prefix}planningmode` set sortOrder=720 where code='HALF';
+UPDATE `${prefix}planningmode` set sortOrder=730 where code='QUART';
+
+INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
+(22, 'Activity', 'PlanningModeRECW', 'RECW', 800, 0 , 0, 0);
+  
+  

@@ -944,9 +944,14 @@ label, .label, .smallLabel {
   width: 30px;
   height: 20px;
 }
+.offDay {
+  background: #DDDDDD;
+}
+
 .calendar .offDay {
   background: #DDDDDD;
 }
+
 
 .historyHeader, .noteHeader, .attachmentHeader, .messageHeader, .linkHeader, .assignHeader, 
 .dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {

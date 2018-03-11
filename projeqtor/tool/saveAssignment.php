@@ -116,6 +116,20 @@ if (array_key_exists('attendantIsOptional',$_REQUEST)) {
   }
 }
 
+$planningMode=null;
+$obj=new $refType($refId);
+$peName=$refType.'PlanningElement';
+if (property_exists($obj, $peName)) {
+  $idPm=$obj->$peName->idPlanningMode;
+  $pmObj=new PlanningMode($idPm);
+  $planningMode=$pmObj->code;
+}
+$assRec=array();
+if ($planningMode=='RECW') {
+  for ($i=1;$i<=7;$i++) $assRec[$i]=RequestHandler::getValue('recurringAssignmentW'.$i);
+}
+
+
 //$comment=htmlEncode($_REQUEST['assignmentComment']);
 $comment=$_REQUEST['assignmentComment']; // Must not escape : will be done on display
 
@@ -163,6 +177,31 @@ if(isset($optional)){
   $assignment->optional=$optional;
 }
 $result=$assignment->save();
+
+// 
+//$ar=new AssignmentRecurring();
+if ($planningMode=='RECW') {
+  for ($i=1;$i<=7;$i++) {
+    $res='';
+    $ar=SqlElement::getSingleSqlElementFromCriteria('AssignmentRecurring', array('idAssignment'=>$assignment->id, 'day'=>$i));
+    if (!$assRec[$i]) {
+      if ($ar->id) $res=$ar->delete();
+    } else {
+      $ar->idAssignment=$assignment->id;
+      $ar->type=$planningMode;
+      $ar->day=$i;
+      $ar->value=Work::convertWork($assRec[$i]);
+      $res=$ar->save();
+    }
+    debugLog($res);
+    if (getLastOperationStatus($result)=='NO_CHANGE' and getLastOperationStatus($res)=='OK') {
+      $result=str_replace('NO_CHANGE', 'OK', $result);
+      $result=i18n("Assignment").' #'.htmlEncode($assignment->id).' '.i18n('resultUpdated').substr($result,strpos($result,'<input'));
+    }
+  }
+} else {
+  if ($assignment->id) $ar->purge("idAssignment=$assignment->id");
+}
 
 $elt=new $assignment->refType($assignment->refId);
 $mailResult=null;
