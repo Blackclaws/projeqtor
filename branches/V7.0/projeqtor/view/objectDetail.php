@@ -4671,6 +4671,13 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   if ($obj->idle==1) {
     $canUpdate=false;
   }
+  $planningMode=null;
+  $peName=get_class($obj).'PlanningElement';
+  if (property_exists($obj, $peName)) {
+    $idPm=$obj->$peName->idPlanningMode;
+    $pmObj=new PlanningMode($idPm);
+    $planningMode=$pmObj->code;
+  }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (!$print and $canUpdate) {
@@ -4749,7 +4756,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       // mehdi======================ticket#1776
       if (!$print) echo '<input type="hidden" id="initAss_'.$assignment->id.'" value="'.Work::displayWork($assignment->assignedWork).'"/>';
       echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
-      if ($canUpdate and get_class($obj)!='PeriodicMeeting' and !$print) {
+      if ($canUpdate and get_class($obj)!='PeriodicMeeting' and !$print and $planningMode!='RECW') {
         echo '<img  id="idImageAssignedWork'.$assignment->id.'" src="img/savedOk.png" 
                 style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
         echo '<div dojoType="dijit.form.NumberTextBox" id="assAssignedWork_'.$assignment->id.'" name="assAssignedWork_'.$assignment->id.'"
@@ -4773,7 +4780,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       
       if (!$print) echo '<input type="hidden" id="initLeft_'.$assignment->id.'" value="'.Work::displayWork($assignment->leftWork).'"/>';
       echo '<td class="assignData" align="right" style="width:15%;vertical-align:middle;">';
-      if ($canUpdate and get_class($obj)!='PeriodicMeeting' and !$print) {
+      if ($canUpdate and get_class($obj)!='PeriodicMeeting' and !$print and $planningMode!='RECW') {
         echo '<img  id="idImageLeftWork'.$assignment->id.'" src="img/savedOk.png" style="display: none; position:relative;top:2px;left:5px; height:16px;float:left;"/>';
         echo '<div dojoType="dijit.form.NumberTextBox" id="assLeftWork_'.$assignment->id.'" name="assLeftWork_'.$assignment->id.'"
         				class="dijitReset dijitInputInner dijitNumberTextBox"
