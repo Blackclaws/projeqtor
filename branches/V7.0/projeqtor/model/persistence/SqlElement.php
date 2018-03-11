@@ -1483,7 +1483,7 @@ abstract class SqlElement {
             $returnStatus = 'NO_CHANGE';
           }
         } else {
-          $returnValue = i18n ( get_class ( $this ) ) . ' #' . htmlEncode ( $this->id ) . ' ' . i18n ( 'resultUpdated' );
+          $returnValue = i18n(get_class($this)).' #'.htmlEncode($this->id).' '.i18n('resultUpdated');
           $returnStatus = 'OK';
         }
       } else {
