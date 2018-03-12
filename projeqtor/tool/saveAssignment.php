@@ -188,12 +188,14 @@ if ($planningMode=='RECW') {
       if ($ar->id) $res=$ar->delete();
     } else {
       $ar->idAssignment=$assignment->id;
-      $ar->type=$planningMode;
+      $ar->type=substr($planningMode,-1);
       $ar->day=$i;
       $ar->value=Work::convertWork($assRec[$i]);
+      $ar->refType=$refType;
+      $ar->refId=$refId;
+      $ar->idResource=$idResource;
       $res=$ar->save();
     }
-    debugLog($res);
     if (getLastOperationStatus($result)=='NO_CHANGE' and getLastOperationStatus($res)=='OK') {
       $result=str_replace('NO_CHANGE', 'OK', $result);
       $result=i18n("Assignment").' #'.htmlEncode($assignment->id).' '.i18n('resultUpdated').substr($result,strpos($result,'<input'));

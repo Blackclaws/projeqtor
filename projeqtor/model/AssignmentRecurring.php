@@ -34,6 +34,9 @@ class AssignmentRecurring extends SqlElement {
   public $_sec_Description;
   public $id;
   public $idAssignment;
+  public $refType;
+  public $refId;
+  PUBLIC $idResource;
   public $type;
   public $day;
   public $value;
