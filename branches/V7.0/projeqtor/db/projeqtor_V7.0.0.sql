@@ -58,6 +58,9 @@ INSERT INTO `${prefix}cronexecution` (`cron`, `fileExecuted`, `idle`, `fonctionN
 CREATE TABLE `${prefix}assignmentrecurring` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idAssignment` int(12) unsigned DEFAULT NULL,
+  `refType` varchar(100) DEFAULT NULL,
+  `refId` int(12) unsigned DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
   `day` int(3) DEFAULT NULL,
   `value` decimal(12,5) unsigned DEFAULT NULL,
@@ -65,6 +68,7 @@ CREATE TABLE `${prefix}assignmentrecurring` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX `idAssignmentAssignmentRecurring` ON `${prefix}assignmentrecurring` (`idAssignment`);
+CREATE INDEX `referenceAssignmentRecurring` ON `${prefix}assignmentrecurring` (`refTYpe`, `refId`);
 
 UPDATE `${prefix}planningmode` set sortOrder=100 where code='ASAP';
 UPDATE `${prefix}planningmode` set sortOrder=200 where code='GROUP';

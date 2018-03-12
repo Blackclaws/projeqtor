@@ -1442,6 +1442,13 @@ class PlanningElement extends SqlElement {
         }
         $pe->_parentList['#'.$pe->topId]=$pe->topId;
       }
+      if (! $pe->idPlanningMode) {
+        $profile="ASAP";
+      } else {
+        $pm=new PlanningMode($pe->idPlanningMode,true);
+        $profile=$pm->code;
+      }
+      $pe->_profile=$profile;
       $result[$id]=$pe;
     }
     $reverse=array_reverse($result, true);

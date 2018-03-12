@@ -77,7 +77,6 @@ if ($planningMode=='RECW') {
   for ($i=1;$i<=7;$i++) $assRec[$i]=null;
   $ar=new AssignmentRecurring();
   $arList=$ar->getSqlElementsFromCriteria(array('idAssignment'=>$idAssignment));
-  debugLog($arList);
   foreach($arList as $ar) {
     $assRec[$ar->day]=$ar->value;
   }
@@ -187,10 +186,9 @@ if ($planningMode=='RECW') {
                                   echo $delay;
                               } else if ($mode=="edit"){
                                   echo Work::displayWork($assignmentObj->assignedWork);
-                              } 
-                                else if($mode=="add") { 
+                              } else if($mode=="add") { 
                                   $assignedWork = GeneralWork::convertWork($validatedWorkPe)-GeneralWork::convertWork($assignedWorkPe);
-                                  if($assignedWork < 0){
+                                  if($assignedWork < 0 or $planningMode=='RECW'){
                                     echo "0";
                                   } else {
                                     echo Work::displayWork($assignedWork);
@@ -244,7 +242,7 @@ if ($planningMode=='RECW') {
                                   echo Work::displayWork($assignmentObjOrigin->leftWork/2);                                                       
                               } else { 
                                   $assignedWork = GeneralWork::convertWork($validatedWorkPe)-GeneralWork::convertWork($assignedWorkPe);
-                                    if($assignedWork < 0){
+                                    if($assignedWork < 0 or $planningMode=='RECW'){
                                       echo "0";
                                     } else {
                                       echo Work::displayWork($assignedWork) ;
