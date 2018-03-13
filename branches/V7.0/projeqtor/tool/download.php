@@ -1,4 +1,5 @@
 <?php
+use Composer\Autoload\includeFile;
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -32,6 +33,18 @@
  */
 
 require_once "../tool/projeqtor.php";
+include_once '../external/mailParser/Parser.php';
+include_once '../external/mailParser/Contracts/CharsetManager.php';
+include_once '../external/mailParser/Contracts/Middleware.php';
+include_once'../external/mailParser/MimePart.php';
+include_once '../external/mailParser/Charset.php';
+include_once '../external/mailParser/Attachment.php';
+include_once '../external/mailParser/Middleware.php';
+include_once '../external/mailParser/MiddlewareStack.php';
+include_once '../external/mailParser/Exception.php';
+
+use PhpMimeMailParser;
+
 scriptLog('   ->/tool/download.php');
 $id=Security::checkValidId($_REQUEST['id']);
 if ($_REQUEST['class']=='Logfile') { // Specific class that can be downloaded even if not a SqlElement
@@ -46,7 +59,6 @@ if ($_REQUEST['class']=='Logfile') { // Specific class that can be downloaded ev
 $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
 
 $obj=new $class($id);
-
 $preserveFileName=Parameter::getGlobalParameter('preserveUploadedFileName');
 if (!$preserveFileName) $preserveFileName="NO";
 
@@ -111,7 +123,16 @@ if (($file != "") && (file_exists($file))) {
     ob_clean();
   }
   flush();
-  
+  // gautier #3033
+  $findme   = '.msg';
+  $pos = strpos($name, $findme);
+  if($pos == true){
+    $fileName = $path.$name;
+    $Parser = new PhpMimeMailParser\Parser();
+    $Parser->setPath($fileName);
+     $to = $Parser->getHeader('to');
+     //$text = $Parser->getMessageBody('text');
+  }
   readfile($file);  
 } else {
 	errorLog("download.php : ".$file . ' not found');

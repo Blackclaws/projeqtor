@@ -44,6 +44,7 @@
   function drawMenuItem($idMenu,$menuName,$type,$hasChildren=false,$force=false, $class=null) {
     global  $menuNextIsFirst, $level, $menuLevel;
     $paramIconSize=Parameter::getUserParameter('paramIconSize');
+    if (!$paramIconSize) $paramIconSize=22;
     $menu=substr($menuName,4);
     if (securityCheckDisplayMenu($idMenu,$menu) or $force) {
       if (! $menuNextIsFirst) {

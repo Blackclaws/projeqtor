@@ -60,6 +60,7 @@
   $menuNameI18n = i18n($menuName);
   $menuName2 = addslashes(i18n($menuName));
   $paramIconSize=Parameter::getUserParameter('paramIconSize');
+  if (!$paramIconSize) $paramIconSize=22;
   $isUnderMenu = false;
  // $paramIconSize = 16;
     $paramIconSize2 = $paramIconSize+13;
