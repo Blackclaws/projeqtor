@@ -1,4 +1,5 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -1774,18 +1775,19 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   enableCatchErrors ();
   $resultMail = "NO";
   
-  require_once '../external/PHPMailer/class.phpmailer.php';
-  require_once '../external/PHPMailer/class.smtp.php';
-  //require_once '../external/PHPMailer6/src/PHPMailer.php';
-  //require_once '../external/PHPMailer6/src/Exception.php';
-  //require_once '../external/PHPMailer6/src/SMTP.php';
+// require_once '../external/PHPMailer/class.phpmailer.php';
+// require_once '../external/PHPMailer/class.smtp.php';
+  require_once '../external/PHPMailer/src/Exception.php';
+  require_once '../external/PHPMailer/src/PHPMailer.php';
+  require_once '../external/PHPMailer/src/SMTP.php';
   
-  $phpmailer = new PHPMailer ();
+  $phpmailer = new PHPMailer();
   ob_start ();
   if ($logLevel>='3') $phpmailer->SMTPDebug=4;
   //if #3077
   if($paramMailerHelo == 'YES'){
     $phpmailer->Helo = '['.$_SERVER['SERVER_ADDR'].']';
+    //$phpmailer->Helo = '82.243.121.187';
   }
   $phpmailer->isSMTP (); // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer; // Specify main smtp server
@@ -1795,6 +1797,8 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
     $phpmailer->Username = $paramMailSmtpUsername; // SMTP username
     $phpmailer->Password = $paramMailSmtpPassword; // SMTP password
     $phpmailer->SMTPSecure = 'tls'; // default (for ports 25 and 587
+    //gautier phpMailer version 6.0.3
+    $phpmailer->SMTPOptions = array('ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true] );
     if ($paramMailSmtpPort == '465')
       $phpmailer->SMTPSecure = 'ssl'; // 465 is default for ssl
     if (strpos ( $phpmailer->Host, '://' )!==false) {

@@ -142,6 +142,7 @@ abstract class SqlElement {
       "AccessScopeDelete" => array(
           "AccessProfile" => "controlStrict"), 
       "Assignment" => array(
+          "AssignmentRecurring"=>"cascade",
           "PlannedWork" => "cascade", 
           "Work" => "controlStrict"), 
       "Action" => array(

@@ -2477,6 +2477,7 @@ planDatesNotSaved: "δεν αποθηκεύτηκε ημερ. προγραμμ."
 planDatesSaved: "οι προγραμμ. ημερ. αποθηκεύτηκαν",
 planDone: "Ο προγραμμ. έγινε σε ${1} δευτερόλεπτα",
 planDoneWithLimits: "Παρακάτω εργασία δεν ήταν δυνατό να προγραμματιστούν πλήρως &#58;",
+planImpossibleForREC: "Could not determine ${1} for recurring task",
 planned: "προγραμμ.",
 PlannedCostOverAssignedCost: "προγραμμ. κόστος σε σύγκριση με εκχωρ. κόστος",
 PlannedCostOverValidatedCost: "προγραμμ. κόστος σε σύγκριση με επικυρ. κόστος",

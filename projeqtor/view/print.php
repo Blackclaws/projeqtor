@@ -1,4 +1,5 @@
 <?php
+use Spipu\Html2Pdf\Html2Pdf;
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -219,15 +220,68 @@
     $content = ob_get_clean();   
     if ($pdfLib=='html2pdf') {
       /* HTML2PDF way */
-      include_once('../external/html2pdf/_class/tcpdfConfig.php');
-      require_once('../external/html2pdf/html2pdf.class.php');
+//       include_once('../external/html2pdf/_class/tcpdfConfig.php');
+//       require_once('../external/html2pdf/html2pdf.class.php');
+//       include_once('../external/html2pdf/vendor/tecnickcom/tcpdf/tcpdf.php');
+//       include_once('../external/html2pdf/_class/locale.class.php');
+//       include_once('../external/html2pdf/_class/myPdf.class.php');
+//       include_once('../external/html2pdf/_class/exception.class.php');
+//       include_once('../external/html2pdf/_class/parsingCss.class.php');
+//       include_once('../external/html2pdf/_class/parsingHtml.class.php');
+
+      include_once('../external/html2pdf/src/config/tcpdf.config.php');
+      require_once('../external/html2pdf/src/Html2Pdf.php');
       include_once('../external/html2pdf/vendor/tecnickcom/tcpdf/tcpdf.php');
-      include_once('../external/html2pdf/_class/locale.class.php');
-      include_once('../external/html2pdf/_class/myPdf.class.php');
-      include_once('../external/html2pdf/_class/exception.class.php');
-      include_once('../external/html2pdf/_class/parsingCss.class.php');
-      include_once('../external/html2pdf/_class/parsingHtml.class.php');
-      $html2pdf = new HTML2PDF($orientation,'A4','en');
+      include_once('../external/html2pdf/src/Locale.php');
+      include_once('../external/html2pdf/src/MyPdf.php');
+      include_once('../external/html2pdf/src/CssConverter.php');
+      include_once('../external/html2pdf/src/SvgDrawer.php');
+      include_once('../external/html2pdf/src/Parsing/TextParser.php');
+      include_once('../external/html2pdf/src/Parsing/Css.php');
+      include_once('../external/html2pdf/src/Parsing/TagParser.php');
+      include_once('../external/html2pdf/src/Parsing/HtmlLexer.php');
+      include_once('../external/html2pdf/src/Parsing/Html.php');
+      include_once('../external/html2pdf/src/Extension/ExtensionInterface.php');
+      include_once('../external/html2pdf/src/Extension/AbstractExtension.php');
+      include_once('../external/html2pdf/src/Extension/Core/HtmlExtension.php');
+      include_once('../external/html2pdf/src/Extension/Core/SvgExtension.php');
+      include_once('../external/html2pdf/src/Parsing/Token.php');
+      include_once('../external/html2pdf/src/Parsing/Node.php');
+      include_once('../external/html2pdf/src/Tag/TagInterface.php');
+      include_once('../external/html2pdf/src/Tag/AbstractTag.php');
+      include_once('../external/html2pdf/src/Tag/AbstractHtmlTag.php');
+      include_once('../external/html2pdf/src/Tag/Html/I.php');
+      include_once('../external/html2pdf/src/Tag/Html/U.php');
+      include_once('../external/html2pdf/src/Tag/Html/Span.php');
+      include_once('../external/html2pdf/src/Tag/Html/S.php');
+      include_once('../external/html2pdf/src/Tag/Html/Address.php');
+      include_once('../external/html2pdf/src/Tag/Html/B.php');
+      include_once('../external/html2pdf/src/Tag/Html/Big.php');
+      include_once('../external/html2pdf/src/Tag/Html/Bookmark.php');
+      include_once('../external/html2pdf/src/Tag/Html/Cite.php');
+      include_once('../external/html2pdf/src/Tag/Html/Del.php');
+      include_once('../external/html2pdf/src/Tag/Html/Em.php');
+      include_once('../external/html2pdf/src/Tag/Html/Font.php');
+      include_once('../external/html2pdf/src/Tag/Html/Ins.php');
+      include_once('../external/html2pdf/src/Tag/Html/Label.php');
+      include_once('../external/html2pdf/src/Tag/Html/Samp.php');
+      include_once('../external/html2pdf/src/Tag/Html/Small.php');
+      include_once('../external/html2pdf/src/Tag/Html/Strong.php');
+      include_once('../external/html2pdf/src/Tag/Html/Sub.php');
+      include_once('../external/html2pdf/src/Tag/Html/Sup.php');
+      include_once('../external/html2pdf/src/Tag/AbstractSvgTag.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Circle.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Ellipse.php');
+      include_once('../external/html2pdf/src/Tag/Svg/G.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Line.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Path.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Polygon.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Polyline.php');
+      include_once('../external/html2pdf/src/Tag/Svg/Rect.php');
+      
+      $html2pdf = new Html2Pdf($orientation,'A4','en');
+      //$html2pdf = new HTML2PDF($orientation,'A4','en');
+      
       //$html2pdf->setModeDebug();
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->pdf->SetMargins(10,10,10,10);
@@ -238,7 +292,10 @@
       //$html2pdf->setModeDebug(); 
       //$content=str_replace("à","&agrave;",$content);
 //traceExecutionTime($includeFile,true);
-      $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
+
+     $html2pdf->writeHTML($content);
+     // $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
+     
       if (ob_get_length()) {
         ob_end_clean();
       }
