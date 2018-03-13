@@ -333,7 +333,7 @@ if ($planningMode=='RECW') {
           <tr>
             <?php for ($i=1; $i<=7; $i++) {?>
             <td>
-            <?php  $value=Work::displayWork($assRec[$i]);?>
+            <?php  $value=(isset($assRec[$i]))?Work::displayWork($assRec[$i]):0;?>
               <div dojoType="dijit.form.NumberTextBox"  style="width:53px;" name="recurringAssignmentW<?php echo $i;?>" id="recurringAssignmentW<?php echo $i;?>" value="<?php echo $value;?>" 
               constraints="{min:0,max:999.99}" class="input <?php if (in_array($i,$arrayDefaultOffDays)) echo ' offDay';?>" >
               <?php echo $keyDownEventScript;?> 

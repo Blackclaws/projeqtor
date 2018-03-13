@@ -222,47 +222,48 @@ class PlannedWork extends GeneralWork {
     // $reserved['allPreds'][idPE]=idPE                         // List of all PE who are predecessors of RECW task
     // $reserved['allSuccs'][idPE]=idPE                         // List of all PE who are successors of RECW task
     foreach ($listPlan as $plan) { // Store RECW to reserve avaialbility
-      if ($plan->_profile=='RECW') {
+      if (property_exists($plan, '_profile') and $plan->_profile=='RECW') { // $plan->_profile may not be set for top Project when calculating for all project (then $plan->id is null)
         $ar=new AssignmentRecurring();
-        $arList=$ar->getSqlElementsFromCriteria(array('refType'=>$plan->refType, 'refId'=>$plan->refId));
+        $artype=substr($plan->_profile,-1);
+        $arList=$ar->getSqlElementsFromCriteria(array('refType'=>$plan->refType, 'refId'=>$plan->refId, 'type'=>$artype));
+        if (!isset($reserved[$artype])) $reserved[$artype]=array();
+        if (!isset($reserved[$artype][$plan->id])) $reserved[$artype][$plan->id]=array();
+        if (!isset($reserved[$artype]['sum'])) $reserved[$artype]['sum']=array();
         foreach ($arList as $ar) {
-          if (!isset($reserved[$ar->type])) $reserved[$ar->type]=array();
-          if (!isset($reserved[$ar->type][$plan->id])) $reserved[$ar->type][$plan->id]=array();
-          if (!isset($reserved[$ar->type][$plan->id][$ar->idResource])) $reserved[$ar->type][$plan->id][$ar->idResource]=array();
-          if (!isset($reserved[$ar->type]['sum'])) $reserved[$ar->type]['sum']=array();
-          if (!isset($reserved[$ar->type]['sum'][$ar->idResource])) $reserved[$ar->type]['sum'][$ar->idResource]=array();
-          $reserved[$ar->type][$plan->id][$ar->idResource][$ar->day]=$ar->value;
-          if (!isset($reseved[$ar->type]['sum'][$ar->idResource][$ar->day])) $reserved[$ar->type]['sum'][$ar->idResource][$ar->day]=0;
-          $reserved[$ar->type]['sum'][$ar->idResource][$ar->day]+=$ar->value;
-          //if (! isset($reserved[$ar->type][$plan->id]['start']) and !isset($reserved[$ar->type][$plan->id]['end'])) {
-          $reserved[$ar->type][$plan->id]['start']=null;
-          $reserved[$ar->type][$plan->id]['end']=null;
-          $reserved[$ar->type][$plan->id]['pred']=array();
-          $reserved[$ar->type][$plan->id]['succ']=array();
-          $crit="successorId=$plan->id or predecessorId=$plan->id";
-          $dep=new Dependency();
-          $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
-          foreach ($depList as $dep ) {
-            if ($dep->successorId==$plan->id) 
-              $reserved[$ar->type][$plan->id]['pred'][$dep->predecessorId]=array('id'=>$dep->predecessorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
-              $reserved['allPreds'][$dep->predecessorId]=$dep->predecessorId;
-            if ($dep->predecessorId==$plan->id) 
-              $reserved[$ar->type][$$plan->id]['succ'][$dep->successorId]=array('id'=>$dep->successorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
-            $reserved['allSuccs'][$dep->successorId]=$dep->successorId;
-          }          
-          //}
+          if (!isset($reserved[$artype][$plan->id][$ar->idResource])) $reserved[$artype][$plan->id][$ar->idResource]=array();
+          if (!isset($reserved[$artype]['sum'][$ar->idResource])) $reserved[$artype]['sum'][$ar->idResource]=array();
+          $reserved[$artype][$plan->id][$ar->idResource][$ar->day]=$ar->value;
+          if (!isset($reseved[$artype]['sum'][$ar->idResource][$ar->day])) $reserved[$artype]['sum'][$ar->idResource][$ar->day]=0;
+          $reserved[$artype]['sum'][$ar->idResource][$ar->day]+=$ar->value;
+          if (!isset($reseved[$artype][$plan->id]['assignments'])) $reseved[$artype][$plan->id]['assignments']=array();
+          $reseved[$artype][$plan->id]['assignments'][$ar->idAssignment]=$ar->idAssignment;
         }
-        foreach ($reserved as $artype=>$array)
-          if (count($reserved[$artype][$plan->id]['pred'])==0 and $plan->validatedStartDate) {
-            $reserved[$artype][$plan->id]['start']=$plan->validatedStartDate;
+        $reserved[$artype][$plan->id]['start']=null;
+        $reserved[$artype][$plan->id]['end']=null;
+        $reserved[$artype][$plan->id]['pred']=array();
+        $reserved[$artype][$plan->id]['succ']=array();
+        $crit="successorId=$plan->id or predecessorId=$plan->id";
+        $dep=new Dependency();
+        $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
+        foreach ($depList as $dep ) {
+          if ($dep->successorId==$plan->id) {
+            $reserved[$artype][$plan->id]['pred'][$dep->predecessorId]=array('id'=>$dep->predecessorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
+            $reserved['allPreds'][$dep->predecessorId]=$dep->predecessorId;
           }
-          if (count($reserved[$artype][$plan->id]['succ'])==0 and $plan->validatedEndDate) {
-            $reserved[$artype][$plan->id]['end']=$plan->validatedEndDate;
+          if ($dep->predecessorId==$plan->id) {
+            $reserved[$artype][$$plan->id]['succ'][$dep->successorId]=array('id'=>$dep->successorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
+            $reserved['allSuccs'][$dep->successorId]=$dep->successorId;
           }
+        }
+        if (count($reserved[$artype][$plan->id]['pred'])==0 and $plan->validatedStartDate) {
+          $reserved[$artype][$plan->id]['start']=$plan->validatedStartDate;
+        }
+        if (count($reserved[$artype][$plan->id]['succ'])==0 and $plan->validatedEndDate) {
+          $reserved[$artype][$plan->id]['end']=$plan->validatedEndDate;
         }
       }
     }
-    debugLog($reserved);
+    //debugLog($reserved);
     $arrayNotPlanned=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
@@ -279,7 +280,7 @@ class PlannedWork extends GeneralWork {
       }
       if (isset($plan->_noPlan) and $plan->_noPlan) {
       	continue;
-      } 
+      }
       $startPlan=$startDate;
       $startFraction=0;
       $endPlan=null;
@@ -332,8 +333,31 @@ class PlannedWork extends GeneralWork {
         $step=1;
         $profile='ASAP'; // Once start is set, treat as ASAP mode (as soon as possible)
       } else if ($profile=="RECW") {
-        //$startPlan
-        //$endPlan
+        //$startPlan=$plan->validatedStartDate;
+        //$endPlan=$plan->validatedEndDate;
+        $plan->assignedWork=$plan->realWork;
+        $plan->leftWork=0;
+        $plan->plannedWork=$plan->realWork;
+        if (isset($reserved['W'][$plan->id]['start']) and $reserved['W'][$plan->id]['start'] ) {
+          $startPlan=$reserved['W'][$plan->id]['start'];
+        } 
+        if (isset($reserved['W'][$plan->id]['end'])   and $reserved['W'][$plan->id]['end'] ) {
+          $endPlan=$reserved['W'][$plan->id]['end'];
+        } 
+        if (!$endPlan or !$startPlan) {
+          foreach ($reseved[$artype][$plan->id]['assignments'] as $idAssignment) {
+            $dates='';
+            if (!isset($reserved['W'][$plan->id]['start']) or ! $reserved['W'][$plan->id]['start'] ) {
+              $dates="'".i18n('colStartDate')."'";
+            } 
+            if (!isset($reserved['W'][$plan->id]['end']) or ! $reserved['W'][$plan->id]['end'] ) {
+              if ($dates) $dates.=' '.mb_strtolower(i18n('AND')).' ';
+              $dates.="'".i18n('colEndDate')."'";
+            }
+            $arrayNotPlanned[$idAssignment]=i18n('planImpossibleForREC',array($dates));
+          }   
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+        }
       } else {
         $profile=="ASAP"; // Default is ASAP
         $startPlan=$startDate;
@@ -357,7 +381,7 @@ class PlannedWork extends GeneralWork {
           $precStart=$prec->realStartDate;
         }
         if ($strictDependency or $precVal!=0 or $precFraction==1) {
-          if ( ( $prec->refType!='Milestone' and $plan->refType!='Milestone') or $precFraction==1) {
+          if ( ( $prec->refType!='Milestone' and $plan->refType!='Milestone') or $precFraction==1 or ($strictDependency and $plan->refType=='Milestone') ) {
           //if ($prec->refType!='Milestone') {
             $startPossible=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77
           } else {
@@ -641,7 +665,20 @@ class PlannedWork extends GeneralWork {
               $regulTarget=0;
             }
           }
+          if ($profile=='RECW') {
+            $ass->assignedWork=$ass->realWork;
+            $ass->leftWork=0;
+            $ass->plannedWork=$ass->realWork;
+          }
+          debugLog("  $startPlan => $endPlan");
           while (1) {           
+            if ($profile=='RECW') {
+              if ($currentDate<=$endPlan) {
+                $left=$capacity;
+              } else {
+                $left=0;
+              } 
+            }
             if ($left<0.01) {
               break;
             }
@@ -668,20 +705,17 @@ class PlannedWork extends GeneralWork {
               // Specific reservaction for RECW that are not planned yet but will be when start and end are known
               $dow=date('N',strtotime($currentDate));  
               if (isset($reserved['W']['sum'][$ass->idResource][$dow]) ) {
-                debugLog("to reserve for ".$dow." up to ".$reserved['W']['sum'][$ass->idResource][$dow]);
-                foreach($reserved['W'] as $idPe=>$resW) {
+//                debugLog("  to reserve for ".$dow." up to ".$reserved['W']['sum'][$ass->idResource][$dow]);
+                foreach($reserved['W'] as $idPe=>$arPeW) {
                   if ($idPe=='sum') continue;
                   if ($idPe==$plan->id) continue; // we are treating the one we reserved for
-                  debugLog("start=".$resW['start']."  end=".$resW['end']." current=".$currentDate);
-                  if ( ($resW['start'] and $resW['start']<=$currentDate) and (!$resW['end'] or $resW['end']>=$currentDate) and isset($resW[$dow])) {
-                    debugLog("reserved $resW[$dow] for $dow");
-                    $planned+=$resW[$dow];
+//                  debugLog("  start=".$arPeW['start'].",  end=".$arPeW['end'].",  current=".$currentDate);
+                  if ( ($arPeW['start'] and $arPeW['start']<=$currentDate) and (!$arPeW['end'] or $arPeW['end']>=$currentDate) and isset($arPeW[$ass->idResource][$dow])) {
+//                    debugLog("  reserved ".$arPeW[$ass->idResource][$dow]." for $dow");
+                    $planned+=$arPeW[$ass->idResource][$dow];
                   }
                 }
-              }
-              
-              // TODO : plan RECW and remove $reserved when planned 
-                
+              } 
               if ($regul) {
               	if (! isset($ress['real'][$keyElt][$currentDate])) {
                   $interval+=$step;
@@ -689,6 +723,21 @@ class PlannedWork extends GeneralWork {
               }
               if ($planned < $capacity)  {
                 $value=$capacity-$planned; 
+                if ($profile=='RECW') {
+                  $dow=date('N',strtotime($currentDate));  
+                  if (isset($reserved['W'][$plan->id][$ass->idResource][$dow]) ) {
+                    $value=$reserved['W'][$plan->id][$ass->idResource][$dow];
+                    $ass->assignedWork+=$value;
+                    $ass->leftWork+=$value;
+                    $ass->plannedWork+=$value;
+                    $plan->assignedWork+=$value;
+                    $plan->leftWork+=$value;
+                    $plan->plannedWork+=$value;
+                    debugLog("  RECW to plan = $value");
+                  } else {
+                    $value=0; 
+                  }
+                }
                 if ($value>$capacityRate) {
                	  $value=$capacityRate;
                 }
@@ -730,6 +779,7 @@ class PlannedWork extends GeneralWork {
                   }
                 }
                 $value=($value>$left)?$left:$value;
+                debugLog("  $currentDate : left=$left, value=$value");
                 if ($currentDate==$startPlan and $value>((1-$startFraction)*$capacity)) {
                   $value=((1-$startFraction)*$capacity);
                 }
@@ -917,7 +967,17 @@ class PlannedWork extends GeneralWork {
           }
         }
       }
-      // TODO : remove $reserved when planned for RECW
+      if (isset($reserved['W'][$plan->id]) ) { // remove $reserved when planned for RECW
+        foreach ($reserved['W'][$plan->id] as $idRes=>$resRes) {
+          if (!is_numeric($idRes)) continue;
+          foreach ($resRes as $day=>$val) {
+            if (isset($reserved['W']['sum'][$idRes][$day])) {
+              $reserved['W']['sum'][$idRes][$day]-=$val;
+            }
+          }
+        }
+        unset($reserved['W'][$plan->id]);
+      }
       if (isset($reserved['allSuccs'])) {
         // TODO : take into acount E-S dependency to determine end
       }
@@ -974,7 +1034,14 @@ class PlannedWork extends GeneralWork {
     foreach ($fullListPlan as $pe) {
       if (!$pe->refType) continue;
       if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
-   	  $pe->simpleSave();
+      if ($pe->_profile=='RECW') { 
+        PlanningElement::updateSynthesis($pe->refType, $pe->refId);
+        $resPe=$pe->save();
+        debugLog($pe);
+      } else {
+   	    $resPe=$pe->simpleSave();
+      }
+   	  debugLog($resPe);
    	  if ($pe->refType=='Milestone') {
    	    $pe->updateMilestonableItems();
    	  }
@@ -987,16 +1054,17 @@ class PlannedWork extends GeneralWork {
     $endMicroTime=microtime(true);
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
     if (count($arrayNotPlanned)>0) {
-    	//$result='<div class="messageWARNING">'
     	$result=i18n('planDoneWithLimits', array($duration));
+    	$result.='<br/><br/><table style="width:100%">';
+    	$result .='<tr style="color:#888888;font-weight:bold;border:1px solid #aaaaaa"><td style="width:50%">'.i18n('colElement').'</td><td style="width:30%">'.i18n('colCause').'</td><td style="width:20%">'.i18n('colIdResource').'</td></tr>';
     	foreach ($arrayNotPlanned as $assId=>$left) {
     		$ass=new Assignment($assId,true);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
-    		  //$messageOn = true;
-    		  $result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName; 
+    		$msg = (is_numeric($left))?i18n('colNotPlannedWork').' : '.Work::displayWorkWithUnit($left):$left;
+    		$result .='<tr style="border:1px solid #aaaaaa;"><td style="padding:1px 10px;">'.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName. '</td><td style="padding:1px 10px;">'.$msg.'</td><td style="padding:1px 10px;">'.$rName.'</td></tr>'; 
     	}	
-    	//$result.='</div>';
+    	$result.='</table>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
     } else {
     	$result=i18n('planDone', array($duration));

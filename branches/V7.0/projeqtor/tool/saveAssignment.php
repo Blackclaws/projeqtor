@@ -202,6 +202,7 @@ if ($planningMode=='RECW') {
     }
   }
 } else {
+  $ar=new AssignmentRecurring();
   if ($assignment->id) $ar->purge("idAssignment=$assignment->id");
 }
 
