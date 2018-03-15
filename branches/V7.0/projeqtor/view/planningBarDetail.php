@@ -63,6 +63,10 @@ foreach($wkLst as $wk) {
     $work[$wk->idAssignment][$wk->workDate]=array('work'=>$wk->work,'type'=>'planned');
   }
 }
+if ($pe->idPlanningMode=='22') { // RECW
+  $start=$pe->plannedStartDate;
+  $end=$pe->plannedEndDate;
+}
 if (!$start or !$end) {
 	echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay').'<br/>'.i18n('planningCalculationRequired')."</div>";
 	return;
