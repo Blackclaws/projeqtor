@@ -211,7 +211,7 @@
       <span class="titleProject" style="position: relative; left:20px; top:-6px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;
       </span>
-      <span style="display:inline-block;width:170px; position:relative;left : 10px; top:-6px" title="<?php echo i18n("projectSelector");?>" >
+      <span style="display:inline-block;width:170px; position:relative;left : 10px; top:-6px" title="<?php echo i18n("projectSelectorHelp");?>" >
         <span style="postion:absolute;height:16px;" dojoType="dijit.layout.ContentPane" region="center"   id="projectSelectorDiv">
           &nbsp;<?php include "menuProjectSelector.php"?>
         </span>
@@ -292,23 +292,23 @@
     </td> 
     
     <td width="<?php echo (isIE())?37:35;?>px" style="padding-left:3px;" > 
-      <div class="pseudoButton" onclick="switchMode();" style="height:28px; position:relative;top:-5px; z-index:30; width:30px;">
+      <div class="pseudoButton" onclick="switchMode();" style="height:28px; position:relative;top:-5px; z-index:30; width:30px;" title="<?php echo i18n("buttonSwitchedMode");?>">
         <table >
           <tr>
             <td style="width:28x;text-align:center">
-              <div class="dijitButtonIcon dijitButtonIconSwitchMode" style="position:absolute;top:2px;left:3px"></div>
+              <div class="dijitButtonIcon dijitButtonIconSwitchMode" style="position:absolute;top:2px;left:3px" ></div>
             </td>
           </tr>
         </table>    
      </div>
     </td>
      <?php if (! isIE()) {?>
-    <td  width="35px" title="<?php echo i18n("fullScreen");?>" > 
-      <div  class="pseudoButtonFullScreen" style="height:28px; position:relative; top:-5px; z-index:30; width:28px;" onclick="toggleFullScreen()" title="<?php echo i18n("fullScreen");?>">
+    <td  width="35px" > 
+      <div  class="pseudoButtonFullScreen" style="height:28px; position:relative; top:-5px; z-index:30; width:28px;" onclick="toggleFullScreen()" >
         <table>
           <tr>
-            <td style="width:28px" title="<?php echo i18n("fullScreen");?>">
-              <?php echo formatIcon('FullScreen', 32);?>
+            <td style="width:28px" >
+              <?php echo formatIcon('FullScreen', 32,i18n("fullScreen"));?>
             </td>
           </tr>
         </table>

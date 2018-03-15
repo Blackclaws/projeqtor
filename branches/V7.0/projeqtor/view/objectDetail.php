@@ -4297,14 +4297,24 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
         $deliveryDate=$compObj->initialDeliveryDate;
       }
       
-      $errorDatesDelivery=false;
-      if ($way=='composition') {
-        if (isset($deliveryDate) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate<$deliveryDate) {
-          $errorDatesDelivery=true;
+      $errorDatesDelivery = false;
+      if ($way == 'composition') {
+        //CHANGE qCazelles - Correction red dates - Ticket 186
+        //Old
+        //if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate) {
+        //New
+        if (isset ( $deliveryDate ) and (($obj->isDelivered and $obj->realDeliveryDate < $deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate))) {
+        //END CHANGE qCazelles - Correction red dates - Ticket 186
+          $errorDatesDelivery = true;
         }
-      } elseif ($way=='structure') {
-        if (isset($deliveryDate) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate>$deliveryDate) {
-          $errorDatesDelivery=true;
+      } elseif ($way == 'structure') {
+        //CHANGE qCazelles - Correction red dates - Ticket 186
+        //Old
+        //if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate) {
+        //New
+        if (isset ( $deliveryDate ) and (($obj->isDelivered and $obj->realDeliveryDate > $deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate))) {
+        //END CHANGE qCazelles - Correction red dates - Ticket 186
+          $errorDatesDelivery = true;
         }
       }
       

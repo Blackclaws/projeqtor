@@ -2440,7 +2440,7 @@ function drawGantt() {
   }
   g.setStartDateView(startDateView);
   g.setEndDateView(endDateView);
-  g.setShowCriticalPath(dijit.byId('criticalPathPlanning').get('checked'));
+  if (dijit.byId('criticalPathPlanning')) g.setShowCriticalPath(dijit.byId('criticalPathPlanning').get('checked'));
   var contentNode = dojo.byId('gridContainerDiv');
   if (contentNode) {
     g.setWidth(dojo.style(contentNode, "width"));

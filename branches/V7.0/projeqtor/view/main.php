@@ -597,7 +597,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:<?php echo $IconSizeMenuHide2;?>">
       <script type="dojo/connect" event="resize" args="evt">
          if (hideShowMenuInProgress) return;
-         if (dojo.byId("leftDiv").offsetWidth>35) 
+         if (dojo.byId("leftDiv").offsetWidth>52) 
          saveDataToSession("contentPaneLeftDivWidth", dojo.byId("leftDiv").offsetWidth, true);
          dojo.byId("hideMenuBarShowButton2").style.left=dojo.byId("leftDiv").offsetWidth+3+"px";
       </script>

@@ -502,7 +502,7 @@ div .scrollRightTop {
 	height:100px;
 	position: absolute;
 	/*background-color:#E0E0E0;*/
-	z-index:60000;
+	z-index:70000;
 	display:none;
 }
 

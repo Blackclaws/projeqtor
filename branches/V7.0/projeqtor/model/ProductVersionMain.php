@@ -168,7 +168,7 @@ class ProductVersionMain extends Version {
     	self::$_fieldsAttributes['_versionDelivery']='hidden';
     }
     if (Parameter::getGlobalParameter('manageTicketVersion') != 'YES') {
-      self::$_fieldsAttributes["_sec_TicketsVersion"]='hidden';
+      self::$_fieldsAttributes["_sec_Ticket"]='hidden';
       self::$_fieldsAttributes["_spe_tickets"]='hidden';
     }   
     if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES') {
