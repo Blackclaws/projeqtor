@@ -231,10 +231,11 @@ foreach ($lstActivity as $activity) {
     }
     if ($outMode == 'csv') {
         //echo mb_strtoupper(str_replace("\n", " / ", htmlTransformRichtextToPlaintext($activity->description, 'UTF-8')));
-        echo formatAnyTextToPlainText($activity->description);
+        echo formatAnyTextToPlainText(html_entity_decode($activity->description));
         echo "\n";
     } else {
-        echo '<td class="reportTableLineHeader">' . mb_strtoupper($activity->description, 'UTF-8') . '</td>';
+        //echo '<td class="reportTableLineHeader">' . mb_strtoupper($activity->description, 'UTF-8') . '</td>';
+      echo '<td class="reportTableLineHeader">' . $activity->description . '</td>';
         echo '</tr>';
     }
 }

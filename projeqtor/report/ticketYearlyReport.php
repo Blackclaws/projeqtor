@@ -299,7 +299,12 @@ foreach ($lstTicket as $t) {
     }
   }
   //ADD qCazelles
-  else if (substr($t->doneDateTime,0,4)==$paramYear) {
+  //CHANGE qCazelles - Error on report - Ticket 153
+  //Old
+  //else if (substr($t->doneDateTime,0,4)==$paramYear) {
+  //New
+  else if (substr($t->doneDateTime,0,4)==$endYear) {
+  //END CHANGE qCazelles - Error on report - Ticket 153
     $month=intval(substr($t->doneDateTime,5,2));
     $done[12 - $paramMonth + $month + 1]+=1;
     $done[13]+=1;
