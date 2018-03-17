@@ -5637,6 +5637,8 @@ function getTargetFromCurrentScreen(currentScreen){
     target="importData.php";
   } else if (currentScreen=="DashboardTicket") {
     target="dashboardTicketMain.php";
+  } else if (currentScreen=="DashboardRequirement") { //ADD qCazelles - Requirements dashboard - Ticket 90
+	target="dashboardRequirementMain.php";
   } else if (currentScreen=="ActivityStream") {
     target="activityStreamMain.php";
   } else if (currentScreen=="Plugin"){ 
@@ -5924,6 +5926,8 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("galleryMain.php", "centerDiv");
   } else if (item == 'DashboardTicket') {
     loadContent("dashboardTicketMain.php", "centerDiv");
+  } else if (item == 'DashboardRequirement') {  //ADD qCazelles - Requirements dashboard - Ticket 90
+	loadContent("dashboardRequirementMain.php", "centerDiv");
   } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
     loadMenuBarPlugin(item, itemName, from);
   } else {  
@@ -8335,8 +8339,22 @@ function changeDashboardTicketMainTabPos(){
   }
   iddleList+="]";
   toSend+=addRight+iddleList+"}";
-  loadContent('dashboardTicketMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardTicketMainForm');
+//CHANGE qCazelles - Requirement dashboard - Ticket 90
+//Old
+//	loadContent('dashboardTicketMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardTicketMainForm');
+//}
+//New
+  if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='DashboardRequirement') {
+	  loadContent('dashboardRequirementMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardRequirementMainForm');
+  } else {
+	  loadContent('dashboardTicketMain.php?updatePosTab='+toSend, 'centerDiv', 'dashboardTicketMainForm');
+  }
 }
+
+function changeParamDashboardRequirement(paramToSend){
+  loadContent('dashboardRequirementMain.php?'+paramToSend, 'centerDiv', 'dashboardRequirementMainForm');
+}
+//END CHANGE qCazelles - Requirement dashboard - Ticket 90
 
 function getLocalLocation(){
   var availableScaytLocales=["en_US", "en_GB", "pt_BR", "da_DK", "nl_NL", "en_CA", "fi_FI", "fr_FR", "fr_CA", "de_DE", "el_GR", "it_IT", "nb_NO", "pt_PT", "es_ES", "sv_SE"];

@@ -260,7 +260,6 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
-      debugLog($plan->refName);
       if (! $plan->id) {
         continue;
       }
@@ -375,7 +374,6 @@ class PlannedWork extends GeneralWork {
           }   
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);
         }
-        debugLog("  RECW : start=$startPlan end=$endPlan");
       } else {
         $profile=="ASAP"; // Default is ASAP
         $startPlan=$startDate;
@@ -488,15 +486,12 @@ class PlannedWork extends GeneralWork {
         	if ($plan->plannedWork==0 and $plan->elementary==1) {
 	        	if ($plan->validatedStartDate and $plan->validatedStartDate>$startPlan) {
 	            $plan->plannedStartDate=$plan->validatedStartDate;
-	            debugLog("SET 1");
 	          } else if ($plan->initialStartDate and $plan->initialStartDate>$startPlan) {
 	            $plan->plannedStartDate=$plan->initialStartDate;
-	            debugLog("SET 2");
 	          } else {
 	            // V5.1.0 : should never start before startplan
 	            //$plan->plannedStartDate=date('Y-m-d');
 	            $plan->plannedStartDate=$startPlan;
-	            debugLog("SET 3");
 	          }
         	}
         }
@@ -693,7 +688,6 @@ class PlannedWork extends GeneralWork {
             $ass->leftWork=0;
             $ass->plannedWork=$ass->realWork;
           }
-          debugLog("  Plan from $startPlan to $endPlan");
           while (1) {           
             if ($profile=='RECW') {
               if ($currentDate<=$endPlan) {
@@ -729,25 +723,35 @@ class PlannedWork extends GeneralWork {
               // Specific reservation for RECW that are not planned yet but will be when start and end are known
               $dow=date('N',strtotime($currentDate));  
               if (isset($reserved['W']['sum'][$ass->idResource][$dow]) ) {
-                foreach($reserved['W'] as $idPe=>$arPeW) {
-                  
+                foreach($reserved['W'] as $idPe=>$arPeW) {                  
                   if ($idPe=='sum') continue;
-                  if ($idPe==$plan->id) continue; // we are treating the one we reserved for 
-                  debugLog ("Reserve ".$arPeW['start']. ' '.$arPeW['end']);
-                  $startReserving=(isset($reserved['W'][$idPe]['pred'][$plan->id]) and ($reserved['W'][$idPe]['pred'][$plan->id]['type']=='S-S'))?true:false; // If current is predecessor and S-S
-                  if ($arPeW['start'] ) {
-                    if ($arPeW['start']<=$currentDate) $startReserving=true; // Start is defined (from predecessor) and passed
-                  } else if (count($reserved['W'][$idPe]['pred'])==0) {
-                    $startReserving=true; // No predecessor, so start is start of project
-                  } else { // Start Date not Set, some predecessor : do not count E-E
+                  if ($idPe==$plan->id) continue; // we are treating the one we reserved for
+                  // === Determine if we must start to reserve work on this task for RECW tasks that will be planned after
+                  $startReserving=false;
+                  if ($arPeW['start'] ) { // Start is defined from predecessor
+                    if ($arPeW['start']<=$currentDate) { // Start is defined (from predecessor) and passed
+                      $startReserving=true;  
+                    }
+                  } else if (count($reserved['W'][$idPe]['pred'])==0) { // No predecessor, so start is start of project
+                    $startReserving=true; 
+                  } else if (isset($reserved['W'][$idPe]['pred'][$plan->id]) and ($reserved['W'][$idPe]['pred'][$plan->id]['type']=='S-S')) { // Current is predecessor type S-S
+                    $delayPred=$reserved['W'][$idPe]['pred'][$plan->id]['delay'];
+                    if ($delayPred<=0 or addWorkDaysToDate($startPlan,$delayPred+1)<=$currentDate) { // ... and delay make it started 
+                      $startReserving=true;
+                    } 
+                  } else { // Start Date not Set, check if some predecessor exist (but do not count E-E wich are not real predecessors)
                     $cpt=0;
                     foreach ($reserved['W'][$idPe]['pred'] as $idPredTmp=>$predTmp) {
                       if ($predTmp['type']!='E-E') $cpt++;
                     }
                     if ($cpt==0) $startReserving=true;
                   }
-                  $endReserving=($arPeW['end'] and $arPeW['end']<$currentDate)?true:false;
-                  debugLog("startReserving=$startReserving, endReserving=$endReserving");
+                  // === Determine if we must end to reserve work on this task for RECW tasks that will be planned after
+                  $endReserving=false;
+                  if ($arPeW['end'] and $arPeW['end']<$currentDate) {
+                    $endReserving=true;
+                  } // NB : cannot take into account E-E with negative delay : we don't know yet when current task will end to determine [end - x days] 
+                  // OK, reserve work ...
                   if ( $startReserving and ! $endReserving and isset($arPeW[$ass->idResource][$dow]) ) {
                     $planned+=$arPeW[$ass->idResource][$dow];
                     $plannedReserved+=$arPeW[$ass->idResource][$dow];
@@ -816,7 +820,6 @@ class PlannedWork extends GeneralWork {
                   }
                 }
                 $value=($value>$left)?$left:$value;
-                debugLog("  $currentDate : left=$left, value=$value");
                 if ($currentDate==$startPlan and $value>((1-$startFraction)*$capacity)) {
                   $value=((1-$startFraction)*$capacity);
                 }
@@ -990,7 +993,6 @@ class PlannedWork extends GeneralWork {
       }
       $fullListPlan=self::storeListPlan($fullListPlan,$plan);
       if (isset($reserved['allPreds'][$plan->id]) ) {
-        debugLog("  $plan->id is a predecessor");
         foreach($reserved['W'] as $idPe=>$pe) {
           if (isset($pe['pred'][$plan->id])) {
             $typePred=$pe['pred'][$plan->id]['type'];
@@ -998,14 +1000,30 @@ class PlannedWork extends GeneralWork {
             if ($typePred=='E-S') { // TODO : check existing start / end
               $tmpPred=$fullListPlan['#'.$plan->id];
               if ($tmpPred->refType=='Milestone') {
-                $reserved['W'][$idPe]['start']=$plan->plannedEndDate;
+                if ($delayPred>0) {
+                  $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedEndDate,$delayPred+1);
+                } else {
+                  $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedEndDate,$delayPred);
+                }
               } else {
-                $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedEndDate,2);
+                if ($delayPred>=0) {
+                  $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedEndDate,$delayPred+2);
+                } else {
+                  $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedEndDate,$delayPred+1);
+                }
               }
             } else if ($typePred=='S-S') {
-              $reserved['W'][$idPe]['start']=$plan->plannedStartDate;
+              if ($delayPred>0) {
+                $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedStartDate,$delayPred+1);
+              } else { // delay <= 0 
+                $reserved['W'][$idPe]['start']=addWorkDaysToDate($plan->plannedStartDate,$delayPred);
+              }              
             } else if ($typePred=='E-E') {
-              $reserved['W'][$idPe]['end']=$plan->plannedEndDate;
+              if ($delayPred>0) {
+                $reserved['W'][$idPe]['end']=addWorkDaysToDate($plan->plannedEndDate,$delayPred+1);
+              } else { // delay <= 0
+                $reserved['W'][$idPe]['end']=addWorkDaysToDate($plan->plannedEndDate,$delayPred);
+              }
             }
           }
         }

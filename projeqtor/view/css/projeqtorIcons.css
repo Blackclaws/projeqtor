@@ -335,6 +335,14 @@
 .iconCriticality22 { background-image: url(images/iconCriticality22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCriticality16 { background-image: url(images/iconCriticality16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+/* BEGIN - ADD qCazelles - Requirement dashboard - Ticket 90 */
+
+.iconDashboardRequirement32 { background-image: url(images/iconDashboardRequirement32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDashboardRequirement22 { background-image: url(images/iconDashboardRequirement22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDashboardRequirement16 { background-image: url(images/iconDashboardRequirement16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+/* END - ADD qCazelles - Requirement dashboard - Ticket 90 */
+
 .iconDashboardTicket32 { background-image: url(images/iconDashboardTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconDashboardTicket22 { background-image: url(images/iconDashboardTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconDashboardTicket16 { background-image: url(images/iconDashboardTicket16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

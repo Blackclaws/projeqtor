@@ -2584,7 +2584,6 @@ function drawGantt() {
       if (keys.indexOf(topKey) == -1) {
         topId = '';
       }
-      console.log(item);
       keys += "#" + curKey + "#";
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor,
           runScript, contextMenu, pMile, pResource, progress, pGroup, 

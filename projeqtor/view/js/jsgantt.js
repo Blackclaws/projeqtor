@@ -1363,7 +1363,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '</div>';
             }
             var vBaselineBottomTitle="";
-            console.log(vTaskList[i].getName()+" "+vTaskList[i].getBaseBottomStart()+" "+vTaskList[i].getBaseBottomEnd());
             if (vTaskList[i].getBaseBottomStart() && vTaskList[i].getBaseBottomEnd()) {              
               vBaseEnd=vTaskList[i].getBaseBottomEnd();
               vBaseStart=vTaskList[i].getBaseBottomStart();
@@ -1400,7 +1399,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	        		vBarWidth=vBarWidthReal;
   	        	}
   	        	vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
-  	        	console.log('vIsOnCriticalPath='+vIsOnCriticalPath);
   	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
   	            + ' class="ganttTaskrowBar" style="background-color:'+((vIsOnCriticalPath=='1')?vCriticalPathColor:'#'+tmpColor) + '; '
   	            + ' width:' + vBarWidth + 'px;'+ ((vIsOnCriticalPath=='1')?' border-bottom: 5px solid #'+tmpColor+';border-top: 5px solid #'+tmpColor+';height:3px;':'')+'" ' 

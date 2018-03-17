@@ -131,6 +131,19 @@ class DocumentDirectory extends SqlElement {
     if (count($dirList)>0) {
       $result.="<br/>" . i18n('existingDirectoryName',null);
     }
+    //gautier
+    if($this->idDocumentDirectory != ""){
+      $dir=new DocumentDirectory($this->idDocumentDirectory);
+      $proj = new Project($dir->idProject);
+      if($dir->idProject != ""){
+        $subProjList= $proj->getSubProjectsList(false);
+        $subProjList = array_flip($subProjList);
+        array_push($subProjList, $dir->idProject);
+        if(!in_array($this->idProject, $subProjList)){
+          $result.="<br/>" . i18n('repertoryIsNotValid',null);
+        }
+      }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -138,6 +151,7 @@ class DocumentDirectory extends SqlElement {
     if ($result=="") {
       $result='OK';
     }
+    
     return $result;    
   }
   
@@ -194,8 +208,35 @@ class DocumentDirectory extends SqlElement {
         rename($oldLocation,$newLocation);    	
     	}
     } 
+    //gautier 
+    $tabIdSubdirectories = $this->getAllSubdirectories($this->id);
+    $proj = new Project($this->idProject);
+    $subProjList= $proj->getSubProjectsList(false);
+    $subProjList = array_flip($subProjList);
+    foreach ($tabIdSubdirectories as $id){
+      $dir=new DocumentDirectory($id);
+      if(in_array($dir->idProject, $subProjList) ){
+        continue;
+      }else{
+        $dir->idProject = $this->idProject;
+      }
+      $dir->save();
+    }
+    
   	return $result;
   }
+  
+  function getAllSubdirectories($id) {
+    $tabIdSubdirectories = array(); 
+    $dir=new DocumentDirectory();
+    $dirList=$dir->getSqlElementsFromCriteria(array('idDocumentDirectory'=>$id),false,null,'location asc');
+    foreach ($dirList as $dir) {
+      $tabIdSubdirectories[$dir->id] = $dir->id;
+      $dir->getAllSubdirectories($dir->id);
+    }
+    return $tabIdSubdirectories;
+  }
+  
   
   function createDirectory() {
   	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
