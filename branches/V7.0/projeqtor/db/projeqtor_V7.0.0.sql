@@ -83,4 +83,9 @@ UPDATE `${prefix}planningmode` set sortOrder=730 where code='QUART';
 INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
 (22, 'Activity', 'PlanningModeRECW', 'RECW', 800, 0 , 0, 0);
   
-  
+--BEGIN - ADD qCazelles - Requirements dashboard - Ticket 90
+-- INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+-- (188, 'menuDashboardRequirement', 110, 'item', 165, NULL, 0, 'RequirementTest');
+-- INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowaccess`) VALUES
+-- (1, 188, 1);
+--END - ADD qCazelles - Requirements dashboard - Ticket 90

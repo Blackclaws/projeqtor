@@ -35,7 +35,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', 'latest', 'requested', 'startDate', 'endDate', 'duration');
+  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDate', 'endDate', 'duration');
   public $validatedStartDate;
   public $plannedStartDate;
   public $realStartDate;
@@ -49,7 +49,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $isOnCriticalPath;
+  public $_spe_isOnCriticalPath;
   public $initialDuration;
   public $_tab_5_2_smallLabel_1 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
@@ -77,13 +77,9 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $workElementRealWork;
   public $workElementLeftWork;
   public $_button_showTickets;
-  
   //public $_label_wbs;
-  
   //public $_label_progress;
-  
   //public $_label_expected;
- 
   public $wbsSortable;
   public $topId;
   public $topRefType;
@@ -116,7 +112,8 @@ class ActivityPlanningElementMain extends PlanningElement {
     "validatedEndFraction"=>"hidden",
     "latestStartDate"=>"readonly",
     "latestEndDate"=>"readonly",
-    "isOnCriticalPath"=>"readonly"
+    "isOnCriticalPath"=>"hidden",
+    "_spe_isOnCriticalPath"=>""
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -156,6 +153,11 @@ class ActivityPlanningElementMain extends PlanningElement {
     and $this->isAttributeSetToField('workElementRealWork', 'hidden')
     and $this->isAttributeSetToField('workElementLeftWork', 'hidden')) {
       self::$_fieldsAttributes['_button_showTickets']='hidden';
+    }
+    $showLatest=Parameter::getGlobalParameter('showLatestDates');
+    if (!$showLatest) {
+      self::$_fieldsAttributes['latestStartDate']="hidden";
+      self::$_fieldsAttributes['latestEndDate']="hidden";
     }
   }
   /** ==========================================================================
@@ -279,7 +281,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   }
   
   public function drawSpecificItem($item) {
-    if ($item='showTickets') {
+    if ($item=='showTickets') {
       echo '<div id="' . $item . 'Button" ';
       echo ' title="' . i18n('showTickets') . '" style="float:right;margin-right:3px;"';
       echo ' class="roundedButton">';
@@ -288,7 +290,12 @@ class ActivityPlanningElementMain extends PlanningElement {
       echo ' onclick="' . $jsFunction . '"';
       echo '></div>';
       echo '</div>';
+    } else if ($item=='isOnCriticalPath') {
+      if ($this->id and $this->isOnCriticalPath and RequestHandler::getValue('criticalPathPlanning')) {
+        echo '<div style="position:relative;"><div style="color:#AA0000;margin:0px 10px;text-align:center;position:absolute;top:-55px;height:60px;">'.i18n('colIsOnCriticalPath').'</div></div>';
+      }
     }
+    
   }
 }
 ?>

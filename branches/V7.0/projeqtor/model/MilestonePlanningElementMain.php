@@ -173,6 +173,12 @@ class MilestonePlanningElementMain extends PlanningElement {
     
     return $result;
   }
-  
+  public function setAttributes() {
+    $showLatest=Parameter::getGlobalParameter('showLatestDates');
+    if (!$showLatest) {
+      self::$_fieldsAttributes['latestStartDate']="hidden";
+      self::$_fieldsAttributes['latestEndDate']="hidden";
+    }
+  }
 }
 ?>
