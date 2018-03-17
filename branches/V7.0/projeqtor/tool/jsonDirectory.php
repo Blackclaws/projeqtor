@@ -33,23 +33,60 @@
     echo 'label: "name",';
     echo ' "items":[';
     
-    getSubdirectories(null);
-    
+    $arrayDir=getSubdirectories(null);
+    $arrayDir=updateParents($arrayDir);
+    displayDirectories($arrayDir,0);
     echo ' ] }';
     
     function getSubdirectories($id) {
-    	$dir=new DocumentDirectory();
-    	$dirList=$dir->getSqlElementsFromCriteria(array('idDocumentDirectory'=>$id),false,null,'location asc');
-      $nbRows=0;
+      $result=array();
+    	$dirParent=new DocumentDirectory($id);
+    	$dirList=$dirParent->getSqlElementsFromCriteria(array('idDocumentDirectory'=>$id),false,null,'location asc');
+    	$id=($id)?$id:0;
+    	
+    	$result[$id]=array('name'=>$dirParent->name,'show'=>false,'children'=>array(),'parent'=>$dirParent->idDocumentDirectory);
+    	
+    	if ($dirParent->idProject==null) {
+    	 $result[$id]['show']=true;
+    	} else {
+    	  $doc=new Document();
+    	  $doc->id=1;
+    	  $doc->idProject=$dirParent->idProject;
+    	  $right=securityGetAccessRightYesNo('menuDocument','read',$doc);
+    	  if ($right=='YES') {
+    	    $result[$id]['show']=true;
+    	  }
+    	}
       foreach ($dirList as $dir) {
+        $result[$id]['children'][]=$dir->id;
+        $result=array_merge_preserve_keys($result,getSubdirectories($dir->id));
+      }   
+      return $result;
+    }
+    
+    function updateParents($arrayDir) {
+      $arrayDir=array_reverse($arrayDir,true);
+      foreach ($arrayDir as $id=>$dir) {
+        if ($dir['show'] and $dir['parent']) {
+          $arrayDir[$dir['parent']]['show']=true;
+        }
+      }
+      $arrayDir=array_reverse($arrayDir,true);
+      return $arrayDir;
+    }
+    
+    function displayDirectories($arrayDir,$indice) {
+      $nbRows=0;
+      foreach ($arrayDir[$indice]['children'] as $id) {
+        $dir=$arrayDir[$id];
+        if ($dir['show']==false) continue;
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $dir->id . '", name:"'. str_replace('"', "''",$dir->name) . '", type:"folder"';
+        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",$dir['name']). '", type:"folder"';
         echo ', children : [';
-        getSubdirectories($dir->id);
+        displayDirectories($arrayDir,$id);
         echo ' ]';
         echo '}' ;
         $nbRows+=1;
-      }   
+      }
     }
-    
 ?>

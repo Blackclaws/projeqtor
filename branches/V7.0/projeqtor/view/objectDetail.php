@@ -4628,9 +4628,15 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '>'.htmlEncode($depObj->name);
     // //KEVIN TICKET #2038
-    echo formatCommentThumb($dep->comment);
+    $titleType=(substr($dep->dependencyType,0,1)=='E')?i18n('colEnd'):i18n('colStart');
+    $titleType.='-';
+    $titleType.=(substr($dep->dependencyType,-1)=='E')?i18n('colEnd'):i18n('colStart');
+    echo '<img style="float:right;margin: 0px 2px;" title="'.$titleType.'" src="../view/css/images/dependency_'.$dep->dependencyType.'.png"/>';
     if ($dep->dependencyDelay!=0 and $canEdit) {
-      echo '&nbsp;<span style="float:right;background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;" title="'.i18n("colDependencyDelay").'">&nbsp;'.htmlEncode($dep->dependencyDelay).'&nbsp;'.i18n('shortDay').'&nbsp;</span>';
+      echo '<span style="float:right;background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;" title="'.i18n("colDependencyDelay").'">&nbsp;'.htmlEncode($dep->dependencyDelay).'&nbsp;'.i18n('shortDay').'&nbsp;</span>';
+    }
+    if ($dep->comment) {
+      echo '<div style="float:right;margin: 0px 2px;">'.formatCommentThumb($dep->comment).'</div>';
     }
     echo '</td>';
     if (property_exists($depObj, 'idStatus')) {

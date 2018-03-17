@@ -1085,7 +1085,8 @@ function htmlGetMimeType($mimeType,$fileName, $id=null, $type='Attachment') {
       $img= "../view/img/mime/unknown.png";
     }
     $image='<img src="' . $img . '" title="' . $mimeType . '" ';
-    if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf" or $ext=="txt" or $ext=="log" or $ext=='msg' or $ext=='emg')) {
+    //or $ext=='msg' or $ext=='emg'
+    if ($id and ($ext=="htm" or $ext=="html" or $ext=="pdf" or $ext=="txt" or $ext=="log" )) {
     	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.htmlEncode($fileName,'quotes').'\',\''.$type.'\')" ';
     }
     else {

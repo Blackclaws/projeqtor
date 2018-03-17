@@ -134,7 +134,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                   </div>
                   <?php ?>
                   <div style="white-space:nowrap; position:absolute; bottom:4px;left:-170px;">
-  		              <span title="<?php echo i18n('criticalPatch');?>" dojoType="dijit.form.CheckBox"
+  		              <span title="<?php echo i18n('criticalPath');?>" dojoType="dijit.form.CheckBox"
                           type="checkbox" id="criticalPathPlanning" name="criticalPathPlanning" class="whiteCheck"
                           <?php if ( Parameter::getUserParameter('criticalPathPlanning')=='1') {echo 'checked="checked"'; } ?>  >  
                           <script type="dojo/connect" event="onChange" args="evt">

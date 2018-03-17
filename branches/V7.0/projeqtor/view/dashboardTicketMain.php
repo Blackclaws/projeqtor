@@ -76,6 +76,63 @@
     }
     Parameter::storeUserParameter("dashboardTicketMainTabPosition", json_encode($tabPosition));
   }
+  //BEGIN - ADD qCazelles - Dashboard : filter by type - Ticket 154
+  $filterTypes = '';
+  $filterTypesArray = array();
+  if (Parameter::getUserParameter("dashboardTicketMainTypes")) {
+    $filterTypes = Parameter::getUserParameter("dashboardTicketMainTypes");
+    $filterTypesArray = explode(', ', $filterTypes);
+  }
+  $defaultProject = null;
+  if (sessionValueExists ( 'project' ) and getSessionValue ( 'project' ) != '*') {
+    $defaultProject = getSessionValue ( 'project' );
+  } else {
+    $table = SqlList::getList ( 'Project', 'name', null );
+    $restrictArray = array();
+    if (! $user->_accessControlVisibility) {
+      $user->getAccessControlRights (); // Force setup of accessControlVisibility
+    }
+    if ($user->_accessControlVisibility != 'ALL') {
+      $restrictArray = $user->getVisibleProjects ( true );
+    }
+    if (count ( $table ) > 0) {
+      foreach ( $table as $idTable => $valTable ) {
+        if (count ( $restrictArray ) == 0 or isset ( $restrictArray [$idTable] )) {
+          $firstId = $idTable;
+          break;
+        }
+      }
+      $defaultProject = $firstId;
+    }
+  }
+  $listRestrictedType = Type::listRestritedTypesForClass('TicketType', $defaultProject, null, null);
+  if (count( $listRestrictedType ) == 0) {
+    $listType = SqlList::getList ( 'TicketType' );
+  } else {
+    $listType = array();
+    foreach ($listRestrictedType as $idType) {
+      $listType[$idType] = SqlList::getNameFromId('Type', $idType);
+    }
+  }
+  if (count($listType) <= 12) {
+    $colWidthType = round(80 / count($listType));
+  } else {
+    $colWidthType = 8;
+  }
+  $filterOnType = null;
+  //if no checkbox is used but the combobox is
+  if ($filterTypes == '' and array_key_exists('dashboardTicketMainType', $_REQUEST)) {
+    $filterOnType = ($_REQUEST['dashboardTicketMainType'] == 'null') ? '' : $_REQUEST['dashboardTicketMainType'];
+  }
+  if ($filterTypes != '' or $filterOnType != null) {
+    unset($tabPosition['TicketType']);
+    if (in_array('TicketType', $tabPosition['orderListLeft'])) {
+      unset($tabPosition['orderListLeft'][array_search('TicketType', $tabPosition['orderListLeft'])]);
+    } elseif (in_array('TicketType', $tabPosition['orderListRight'])) {
+      unset($tabPosition['orderListRight'][array_search('TicketType', $tabPosition['orderListRight'])]);
+    }
+  }
+  //END - ADD qCazelles - Dashboard : filter by type - Ticket 154
 
   if(isset($_REQUEST['goToTicket'])){
     addParamToUser($user);
@@ -84,19 +141,93 @@
 <div dojo-type="dijit.layout.BorderContainer" class="container">
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="DashboardTicket" />
 	<div dojo-type="dijit.layout.ContentPane" id="parameterButtonDiv"
-		class="listTitle" style="z-index: 3; overflow: visible" region="top">
+		class="listTitle" style="z-index: 9999; overflow: visible" region="top">
+<?php /* CHANGE qCazelles - Dashboard : filter by type - Ticket 154
+    Old
 		<div id="resultDiv" region="top"
-			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: 999"></div>
-
-		<table width="100%">
+			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: 999; padding-right: 800px"></div>
+    <table width="100%">
+    <tr height="32px" >
+    <td width="50px" align="center"><?php echo formatIcon('TicketDashboard', 32, null, true);?></td>
+    New */
+			?>
+		<div id="resultDiv" region="top"
+			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: -1; padding-right: 800px"></div>
+		<table width="40%">
 			<tr height="32px" >
-				<td width="50px" align="center"><?php echo formatIcon('TicketDashboard', 32, null, true);?></td>
+			<?php //Here i correct a bug with standard themes (no icon) ?>
+				<td width="50px" align="center"><?php echo formatIcon('DashboardTicket', 32, null, true);?></td>
+<?php //END CHANGE qCazelles - Dashboard : filter by type - Ticket 154 ?>
 				<td><span class="title"><?php echo i18n('dashboardTicketMainTitle');?>&nbsp;</span>
 				</td>
+				<?php //BEGIN - ADD qCazelles - Dashboard : filter by type - Ticket 154 ?>
+        <td style="vertical-align: middle; text-align:right;" width="5px">
+           <span class="nobr">&nbsp;&nbsp;&nbsp;
+          <?php echo i18n("colType");?>
+          &nbsp;</span>
+        </td>
+				<td width="5px">
+        	<select title="<?php echo i18n('filterOnType'); ?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+        	<?php echo autoOpenFilteringSelect();
+        	if ($filterTypes != '') echo ' readOnly'; ?>
+        	id="typeFilter" name="typeFilter" style="width:200px">
+              <?php htmlDrawOptionForReference('idTicketType', $filterOnType); ?>
+          	<script type="dojo/method" event="onChange" >
+              if (this.value != ' ') {
+                changeParamDashboardTicket('dashboardTicketMainType=' + this.value);
+              } else {
+                changeParamDashboardTicket('dashboardTicketMainType=null');
+              }
+            </script>
+           </select>
+        </td>
+        <td width="36px">
+        	<button title="<?php echo i18n('filterOnType');?>"
+	             dojoType="dijit.form.Button"
+	             id="iconTypeButton" name="iconTypeButton"
+	             iconClass="dijitButtonIcon dijitButtonIconFilter" class="detailButton" showLabel="false">
+	             <script type="dojo/connect" event="onClick" args="evt">
+               <?php if ($filterTypes == '') { ?>
+			           if (dijit.byId('barFilterByType').domNode.style.display == 'none') {
+							     dijit.byId('barFilterByType').domNode.style.display = 'block';
+						     } else {
+							     dijit.byId('barFilterByType').domNode.style.display = 'none';
+						     }
+						     dijit.byId('barFilterByType').getParent().resize();
+                 saveDataToSession("displayByTypeList_TicketDashboard", dijit.byId('barFilterByType').domNode.style.display, true);
+               <?php } ?>
+          		  </script>
+	        </button>
+		  	</td>
 			</tr>
 		</table>
-
-	</div>
+		<?php 
+		$displayTypes=Parameter::getUserParameter("displayByTypeList_TicketDashboard");
+		if (!$displayTypes) $displayTypes='none';
+		?>
+    <div class="listTitle" id="barFilterByType"
+    data-dojo-type="dijit/layout/ContentPane" region="top"
+    style="height:20px; display: <?php echo $displayTypes;?>">
+    	<table style="position:relative;top:3px;left:3px">
+    		<tr>
+    			<td style="font-weight:bold"><?php echo i18n('filterOnType'); ?>&nbsp;:&nbsp;</td>
+    <?php
+    foreach ($listType as $idType => $nameType) {
+  	?>
+  				<td>
+  					<div dojoType="dijit.form.CheckBox" type="checkbox" <?php echo ((in_array($idType, $filterTypesArray)) ? 'checked' : ''); ?>
+  					id="showType<?php echo $idType; ?>" name="showType<?php echo $idType; ?>" title="<?php echo htmlEncode($nameType); ?>"
+  					onClick="changeParamDashboardTicket('dashboardTicketMainTypes=<?php echo $idType ?>')"></div>
+  					<?php echo htmlEncode($nameType); ?>&nbsp;&nbsp;
+  				</td>
+  	<?php
+  	}
+  	?>
+    		</tr>
+    	</table>
+    </div>
+  </div>
+  <?php //END - ADD qCazelles - Dashboard : filter by type - Ticket 154 ?>
 	<div dojo-type="dijit.layout.ContentPane" region="center" style="height:100%;overflow:auto;">
 		<div
 			style="width: 97%; margin: 0 auto; height: 90px; padding-bottom: 15px; border-bottom: 1px solid #CCC;">
@@ -255,6 +386,14 @@ function addTab($param){
     $totT=0;
     while ($line = Sql::fetchLine($result)) {
       $object= new $param["groupBy"]($line['idneed'],true);
+      //BEGIN - ADD qCazelles - Dashboard : filter by type - Ticket 154
+      //The name of a entered into service version was not displayed, by definition a TargetProductVersion can't be eis
+      if (!$object->id and property_exists($object, '_constructForName')) {
+        if ($param["groupBy"]=='TargetProductVersion') $classObject='OriginalProductVersion';
+        if ($param["groupBy"]=='TargetComponentVersion') $classObject='OriginalComponentVersion';
+        $object=new $classObject($line['idneed'], true);
+      }
+      //END - ADD qCazelles - Dashboard : filter by type - Ticket 154
       $idU=$object->name;
       if(isset($object->sortOrder)){
         $idU=$object->sortOrder.'-'.$object->id;
@@ -439,6 +578,32 @@ function addParametersDashboardTicketMain($prefix="t"){
     $unresolved=Parameter::getUserParameter("dashboardTicketMainUnresolved");
   }
   if($unresolved=="1")$result.=" AND $prefix.idTargetProductVersion is null ";
+  
+  //BEGIN - ADD qCazelles - Dashboard : filter by type - Ticket 154
+  $filterTypes = '';
+  if (Parameter::getUserParameter("dashboardTicketMainTypes")) {
+    $filterTypes = Parameter::getUserParameter("dashboardTicketMainTypes");
+  }
+  if (isset($_REQUEST['dashboardTicketMainTypes'])) {
+    if ($filterTypes == '') {
+      $filterTypes = $_REQUEST['dashboardTicketMainTypes'];
+      $filterTypesArray = array($filterTypes);
+    } else {
+      $filterTypesArray = explode(', ', $filterTypes);
+      if (in_array($_REQUEST['dashboardTicketMainTypes'], $filterTypesArray)) {
+        unset($filterTypesArray[array_search($_REQUEST['dashboardTicketMainTypes'], $filterTypesArray)]);
+      } else {
+        $filterTypesArray[] = $_REQUEST['dashboardTicketMainTypes'];
+      }
+      $filterTypes = implode(', ', $filterTypesArray);
+    }
+    Parameter::storeUserParameter("dashboardTicketMainTypes", $filterTypes);
+  }
+  if ($filterTypes == '' and array_key_exists('dashboardTicketMainType', $_REQUEST)) {
+    $filterTypes = ($_REQUEST['dashboardTicketMainType'] == 'null') ? '' : $_REQUEST['dashboardTicketMainType'];
+  }
+  if ($filterTypes != '') $result .= " AND $prefix.idTicketType in (" . $filterTypes . ")";
+  //END - ADD qCazelles - Dashboard : filter by type - Ticket 154
 
   return $result;
 }
@@ -585,6 +750,25 @@ function addParamToUser($user){
       $user->_arrayFilters['Ticket'][$iterateur]['disp']['value']='';
       $iterateur++;
     }
+    //BEGIN - ADD qCazelles - Dashboard : filter by type - Ticket 154
+    $types = '';
+    if (Parameter::getUserParameter("dashboardTicketMainTypes") != null) {
+      $types = Parameter::getUserParameter("dashboardTicketMainTypes");
+      $typesArray = explode(', ', $types);
+      $typesNames = '';
+      foreach ($typesArray as $idType) {
+        $typesNames .= htmlEncode(SqlList::getNameFromId('Type', $idType)) . ', ';
+      }
+      $typesNames = substr($typesNames, 0, -2);
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['attribute'] = 'idTicketType';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['operator'] = 'IN';
+      $user->_arrayFilters['Ticket'][$iterateur]['sql']['value'] = '(' . $types . ')';
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['attribute'] = $obRef->getColCaption('idTicketType');
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['operator'] = i18n('amongst');
+      $user->_arrayFilters['Ticket'][$iterateur]['disp']['value'] = $typesNames;
+      $iterateur++;
+    }
+    //END - ADD qCazelles - Dashboard : filter by type - Ticket 154
   }else{
     $user->_arrayFilters['Ticket'][$iterateur]['disp']["attribute"]=i18n('labelShowIdle');
     $user->_arrayFilters['Ticket'][$iterateur]['disp']["operator"]="";

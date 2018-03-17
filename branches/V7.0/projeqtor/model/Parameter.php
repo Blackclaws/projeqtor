@@ -414,8 +414,8 @@ class Parameter extends SqlElement {
           'NO'=>i18n('Hidden'));
           break;
       case 'MenuBarLeft':
-        $list=array('false'=>i18n('Hidden'),
-        'true'=>i18n('Visible'));
+        $list=array('false'=>i18n('singleIcon'),
+        'true'=>i18n('wideMode'));
         break;   
       case 'paramMailEol':
       	 $list=array('CRLF'=>i18n('eolDefault'), 
