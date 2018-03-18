@@ -4979,6 +4979,16 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   echo '<td class="assignHeader" style="width:10%">'.i18n('colIdle').'</td>';
   
   echo '</tr>';
+  if (get_class($obj)=='Project') {
+    SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
+    //ADD qCazelles - Sorting Project versions list - Ticket 182
+    usort ($list, function($vp1, $vp2) {
+      $version1 = new Version($vp1->idVersion, false);
+      $version2 = new Version($vp2->idVersion, false);
+      return strnatcmp($version2->name, $version1->name);
+    });
+    //END ADD qCazelles - Sorting Project versions list - Ticket 182
+  }
   foreach ($list as $vp) {
     $vers=new Version($vp->idVersion);
     if ($vers->scope!='Product') continue;
