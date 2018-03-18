@@ -277,6 +277,10 @@ class SqlList {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
     } else if (property_exists($obj,'baselineDate')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.baselineDate, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
+    //ADD qCazelles - Sort versions in combobox - Ticket 89
+    } else if (Parameter::getGlobalParameter('sortVersionComboboxNameDesc') == 'YES' and SqlElement::is_a($obj, 'Version') and $displayCol == 'name') {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol) . ' desc'; 
+    //END ADD qCazelles - Sort versions in combobox - Ticket 89
     } else{
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     }
