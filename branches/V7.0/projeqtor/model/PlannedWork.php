@@ -251,7 +251,7 @@ class PlannedWork extends GeneralWork {
             $reserved['allPreds'][$dep->predecessorId]=$dep->predecessorId;
           }
           if ($dep->predecessorId==$plan->id) {
-            $reserved[$artype][$$plan->id]['succ'][$dep->successorId]=array('id'=>$dep->successorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
+            $reserved[$artype][$plan->id]['succ'][$dep->successorId]=array('id'=>$dep->successorId,'delay'=>$dep->dependencyDelay, 'type'=>$dep->dependencyType);
             $reserved['allSuccs'][$dep->successorId]=$dep->successorId;
           }
         }
@@ -1095,7 +1095,7 @@ class PlannedWork extends GeneralWork {
     foreach ($fullListPlan as $pe) {
       if (!$pe->refType) continue;
       if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
-      if ($pe->_profile=='RECW') { 
+      if (property_exists($pe,'_profile') and $pe->_profile=='RECW') { 
         PlanningElement::updateSynthesis($pe->refType, $pe->refId);
         $resPe=$pe->simpleSave();
       } else {

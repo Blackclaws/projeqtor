@@ -82,7 +82,7 @@ class MilestonePlanningElementMain extends PlanningElement {
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
     "validatedEndFraction"=>"hidden",
-    "latestEndDate"=>"readonly"
+    "latestEndDate"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -175,9 +175,9 @@ class MilestonePlanningElementMain extends PlanningElement {
   }
   public function setAttributes() {
     $showLatest=Parameter::getGlobalParameter('showLatestDates');
-    if (!$showLatest) {
-      self::$_fieldsAttributes['latestStartDate']="hidden";
-      self::$_fieldsAttributes['latestEndDate']="hidden";
+    if ($showLatest) {
+      self::$_fieldsAttributes['latestStartDate']="readonly";
+      self::$_fieldsAttributes['latestEndDate']="readonly";
     }
   }
 }

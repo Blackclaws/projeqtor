@@ -1582,6 +1582,7 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
       vDate.setFullYear(pList[i].getStart().getFullYear(), pList[i].getStart().getMonth(), pList[i].getStart().getDate());
     }
   }
+  vDate.setDate(vDate.getDate() - 7); // Propose to display 1 week before start (to show Start-Start dependencies) 
   if (pStartDateView && vDate<pStartDateView) {
     vDate=g.getStartDateView();
   }

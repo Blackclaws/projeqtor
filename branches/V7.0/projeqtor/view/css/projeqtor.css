@@ -211,6 +211,14 @@ html, body {
     height: 30%; padding: 5px;
   }
 
+#leftDiv_splitter{
+	-webkit-transition: top 0.3s linear, height 0.3s linear;
+  -moz-transition: top 0.3s linear, height 0.3s linear;
+  -o-transition: top 0.3s linear, height 0.3s linear;
+  -ms-transition: top 0.3s linear, height 0.3s linear;
+  transition: top 0.3s linear, height 0.3s linear;  
+}
+
 #centerDiv { /* do not include in global definition : width: 100% brings incorrect display on FireFox and Chrome */
   overflow: hidden;
   border: 0; margin: 0px; padding: 0px;

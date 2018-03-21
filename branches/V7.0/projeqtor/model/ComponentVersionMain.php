@@ -111,6 +111,7 @@ class ComponentVersionMain extends Version {
       "idProduct"=>"hidden",
       "idStatus"=>"required", //ADD qCazelles - Ticket #53
       "idComponentVersionType"=>"required", //ADD PBE - Ticket #53
+      "idVersionType"=>"hidden"
   );   
 
   //CHANGE qCazelles - dateComposition
@@ -166,6 +167,23 @@ class ComponentVersionMain extends Version {
       self::$_fieldsAttributes["_sec_Ticket"]='hidden';
       self::$_fieldsAttributes["_spe_tickets"]='hidden';
     }    
+    if ($this->id and $this->isStarted) {
+      self::$_fieldsAttributes["initialStartDate"]='readonly';
+      self::$_fieldsAttributes["plannedStartDate"]='readonly';
+      self::$_fieldsAttributes["realStartDate"]='readonly';
+    }
+    if ($this->id and $this->isDelivered) {
+      self::$_fieldsAttributes["initialDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["plannedDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["realDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["isStarted"]='readonly';
+    }
+    if ($this->id and $this->isEis) {
+      self::$_fieldsAttributes["initialEisDate"]='readonly';
+      self::$_fieldsAttributes["plannedEisDate"]='readonly';
+      self::$_fieldsAttributes["realEisDate"]='readonly';
+      self::$_fieldsAttributes["isDelivered"]='readonly';
+    }
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

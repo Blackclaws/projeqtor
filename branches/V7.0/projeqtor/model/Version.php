@@ -186,8 +186,20 @@ class Version extends SqlElement {
       $colScript .= '    }';
       //END ADD qCazelles - Ticket #53
       $colScript .= '  }';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialEisDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("plannedEisDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("realEisDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("isDelivered").set("readOnly", true);';
+      //END - ADD qCazelles #187
       $colScript .= '} else {;';    
       $colScript .= '  dijit.byId("realEisDate").set("value", null); ';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialEisDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("plannedEisDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("realEisDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("isDelivered").set("readOnly", false);';
+      //END - ADD qCazelles #187
       $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
@@ -208,9 +220,21 @@ class Version extends SqlElement {
       $colScript .= '  if (! dijit.byId("realEndDate").get("value")) {';
       $colScript .= '    var curDate = new Date();';
       $colScript .= '    dijit.byId("realEndDate").set("value", curDate); ';
-      $colScript .= '  }';   
+      $colScript .= '  }';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialEndDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("plannedEndDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("realEndDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("isEis").set("readOnly", true);';
+      //END - ADD qCazelles #187
       $colScript .= '} else {;';    
       $colScript .= '  dijit.byId("realEndDate").set("value", null); '; 
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialEndDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("plannedEndDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("realEndDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("isEis").set("readOnly", false);';
+      //END - ADD qCazelles #187
       $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';  
@@ -241,8 +265,18 @@ class Version extends SqlElement {
     	$colScript .= '    var curDate = new Date();';
     	$colScript .= '    dijit.byId("realStartDate").set("value", curDate); ';
     	$colScript .= '  }';
+    	//BEGIN - ADD qCazelles #187
+    	$colScript .= '  dijit.byId("initialStartDate").set("readOnly", true);';
+    	$colScript .= '  dijit.byId("plannedStartDate").set("readOnly", true);';
+    	$colScript .= '  dijit.byId("realStartDate").set("readOnly", true);';
+    	//END - ADD qCazelles #187
     	$colScript .= '} else {;';
     	$colScript .= '  dijit.byId("realStartDate").set("value", null); ';
+    	//BEGIN - ADD qCazelles #187
+    	$colScript .= '  dijit.byId("initialStartDate").set("readOnly", false);';
+    	$colScript .= '  dijit.byId("plannedStartDate").set("readOnly", false);';
+    	$colScript .= '  dijit.byId("realStartDate").set("readOnly", false);';
+    	//END - ADD qCazelles #187
     	$colScript .= '};';
     	$colScript .= '  formChanged();';
     	$colScript .= '</script>';
@@ -277,8 +311,20 @@ class Version extends SqlElement {
       $colScript .= '    }';
       //END ADD qCazelles - Ticket #53
     	$colScript .= '  }';
+    	//BEGIN - ADD qCazelles #187
+    	$colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", true);';
+    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", true);';
+    	$colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", true);';
+    	$colScript .= '  dijit.byId("isStarted").set("readOnly", true);';
+    	//END - ADD qCazelles #187
     	$colScript .= '} else {;';
     	$colScript .= '  dijit.byId("realDeliveryDate").set("value", null); ';
+    	//BEGIN - ADD qCazelles #187
+    	$colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", false);';
+    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", false);';
+    	$colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", false);';
+    	$colScript .= '  dijit.byId("isStarted").set("readOnly", false);';
+    	//END - ADD qCazelles #187
     	$colScript .= '};';
     	$colScript .= '  formChanged();';
     	$colScript .= '</script>';
