@@ -5653,28 +5653,72 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
       return;
     }
     $type = new $typeClass ( $this->$fldType );
-    if (((property_exists ( $type, 'lockHandled' ) and $type->lockHandled) or $force) and property_exists ( $this, 'handled' )) {
-      if ($status->setHandledStatus) {
-        $this->handled = 1;
-        if (property_exists ( $this, 'handledDate' ) and ! $this->handledDate)
-          $this->handledDate = date ( "Y-m-d" );
-        if (property_exists ( $this, 'handledDateTime' ) and ! $this->handledDateTime)
-          $this->handledDateTime = date ( "Y-m-d H:i:s" );
-      } else {
-        $this->handled = 0;
+    //BEGIN - CHANGE qCazelles #187
+    //Old
+//     if (((property_exists ( $type, 'lockHandled' ) and $type->lockHandled) or $force) and property_exists ( $this, 'handled' )) {
+//       if ($status->setHandledStatus) {
+//         $this->handled = 1;
+//         if (property_exists ( $this, 'handledDate' ) and ! $this->handledDate)
+//           $this->handledDate = date ( "Y-m-d" );
+//         if (property_exists ( $this, 'handledDateTime' ) and ! $this->handledDateTime)
+//           $this->handledDateTime = date ( "Y-m-d H:i:s" );
+//       } else {
+//         $this->handled = 0;
+//       }
+//     }
+    //New
+    if (((property_exists ( $type, 'lockHandled' ) and $type->lockHandled) or $force)) {
+      if (property_exists ( $this, 'handled' )) {
+        if ($status->setHandledStatus) {
+          $this->handled = 1;
+          if (property_exists ( $this, 'handledDate' ) and ! $this->handledDate)
+            $this->handledDate = date ( "Y-m-d" );
+            if (property_exists ( $this, 'handledDateTime' ) and ! $this->handledDateTime)
+              $this->handledDateTime = date ( "Y-m-d H:i:s" );
+        } else {
+          $this->handled = 0;
+        }
+      } else if (property_exists ( $this, 'isStarted' )) {
+        if ($status->setHandledStatus) {
+          $this->isStarted = 1;
+          if (property_exists ( $this, 'realStartDate' ) and ! $this->realStartDate)
+            $this->realStartDate = date ( "Y-m-d" );
+        }
       }
     }
-    if (((property_exists ( $type, 'lockDone' ) and $type->lockDone) or $force) and property_exists ( $this, 'done' )) {
-      if ($status->setDoneStatus) {
-        $this->done = 1;
-        if (property_exists ( $this, 'doneDate' ) and ! $this->doneDate)
-          $this->doneDate = date ( "Y-m-d" );
-        if (property_exists ( $this, 'doneDateTime' ) and ! $this->doneDateTime)
-          $this->doneDateTime = date ( "Y-m-d H:i:s" );
-      } else {
-        $this->done = 0;
+    //Old
+//     if (((property_exists ( $type, 'lockDone' ) and $type->lockDone) or $force) and property_exists ( $this, 'done' )) {
+//       if ($status->setDoneStatus) {
+//         $this->done = 1;
+//         if (property_exists ( $this, 'doneDate' ) and ! $this->doneDate)
+//           $this->doneDate = date ( "Y-m-d" );
+//         if (property_exists ( $this, 'doneDateTime' ) and ! $this->doneDateTime)
+//           $this->doneDateTime = date ( "Y-m-d H:i:s" );
+//       } else {
+//         $this->done = 0;
+//       }
+//     }
+    //New
+    if (((property_exists ( $type, 'lockDone' ) and $type->lockDone) or $force)) {
+      if (property_exists ( $this, 'done' )) {
+        if ($status->setDoneStatus) {
+          $this->done = 1;
+          if (property_exists ( $this, 'doneDate' ) and ! $this->doneDate)
+            $this->doneDate = date ( "Y-m-d" );
+            if (property_exists ( $this, 'doneDateTime' ) and ! $this->doneDateTime)
+              $this->doneDateTime = date ( "Y-m-d H:i:s" );
+        } else {
+          $this->done = 0;
+        }
+      } else if (property_exists ( $this, 'isDelivered' )) {
+        if ($status->setDoneStatus) {
+          $this->isDelivered = 1;
+          if (property_exists ( $this, 'realDeliveryDate' ))
+            $this->realDeliveryDate = date ( "Y-m-d" );
+        }
       }
     }
+    //END - CHANGE qCazelles #187
     if (((property_exists ( $type, 'lockSolved' ) and $type->lockSolved) or $force) and property_exists ( $this, 'solved' ) and property_exists ( $this, 'idResolution' )) {
       $resolution = new Resolution ( $this->idResolution );
       if ($resolution->solved) {
@@ -5692,6 +5736,10 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
             $this->idleDate = date ( "Y-m-d" );
           if (property_exists ( $this, 'idleDateTime' ) and ! $this->idleDateTime)
             $this->idleDateTime = date ( "Y-m-d H:i:s" );
+          //BEGIN - ADD qCazelles #187
+          if (property_exists ( $this, 'realEndDate' ) and ! $this->realEndDate)
+            $this->realEndDate = date ( "Y-m-d" );
+          //END -ADD qCazelles #187
         } else {
           $this->idle = 0;
         }
@@ -5700,6 +5748,15 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     if (((property_exists ( $type, 'lockCancelled' ) and $type->lockCancelled) or $force) and property_exists ( $this, 'cancelled' )) {
       $this->cancelled = ($status->setCancelledStatus) ? 1 : 0;
     }
+    //BEGIN - ADD qCazelles #187
+    if (((property_exists ( $this, 'lockIntoService' ) and $type->lockIntoService) or $force) and property_exists ( $this, 'isEis' )) {
+      if ($status->setIntoserviceStatus) {
+        $this->isEis = 1;
+        if (property_exists ( $this, 'realEisDate' ) and ! $this->realEisDate)
+          $this->realEisDate = date ( "Y-m-d" );
+      }
+    }
+    //END -ADD qCazelles #187
   }
 
   public function getAlertLevel($withIndicator = false) {
@@ -5945,6 +6002,8 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
   }
 
   public function getTitle($col) {
+    if ($this->getFieldTooltip($col)) return ''; // If field has hint, don't show title
+    
     $arrayTest = array('title', 'col', '');
     foreach ( $arrayTest as $testPrefix ) {
       $test = $testPrefix . ucfirst ( $col );

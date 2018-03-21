@@ -2,7 +2,7 @@
 <project name="ProjeQtOr V7.0" default="buildFull">
 
   <property name="drive"       value="D:" />
-  <property name="version"       value="V7.0.0" />
+  <property name="version"       value="V7.0.1" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -91,6 +91,9 @@
     </copy>
     <copy todir="${deploy.dir}/external/tbs">
        <fileset dir="${src.dir}/external/tbs"/>
+    </copy>
+    <copy todir="${deploy.dir}/external/mailParser">
+       <fileset dir="${src.dir}/external/mailParser"/>
     </copy>
   </target>
   

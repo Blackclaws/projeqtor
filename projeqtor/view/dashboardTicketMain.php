@@ -501,7 +501,7 @@ foreach ($tabPosition['orderListRight'] as $tableauBordRightItem) {
 }
 echo '</table></td></tr>
               <tr><td></td><td></td><td></td></tr>
-              <tr><td align="right"></td><td></td><td align="left">
+              <tr><td align="center" colspan="3">
               <button style="margin-right:15px;" class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'popUpdatePositionTab\').hide();">
                 '.i18n("buttonCancel").'
               </button>

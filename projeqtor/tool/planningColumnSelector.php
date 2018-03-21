@@ -44,7 +44,7 @@ foreach ($columnsAll as $order=>$col) {
 	} else {
 	  if ($col=='Name') {
 		  echo '<div style="padding: 2px;" id="columnSelector'.$col.'" >';		
-		  echo '<span style="display:inline-block;width:15px">&nbsp;</span>'; 
+		  echo '<span style="display:inline-block;width:15px;"><img style="width:6px" src="css/images/iconNoDrag.gif" />&nbsp;&nbsp;</span>'; 
 		} else {
 		  echo '<div class="dojoDndItem" id="columnSelector'.$col.'" dndType="planningColumn">';
 		  echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';

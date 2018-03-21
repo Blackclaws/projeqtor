@@ -33,17 +33,17 @@ use Composer\Autoload\includeFile;
  */
 
 require_once "../tool/projeqtor.php";
-include_once '../external/mailParser/Parser.php';
-include_once '../external/mailParser/Contracts/CharsetManager.php';
-include_once '../external/mailParser/Contracts/Middleware.php';
-include_once'../external/mailParser/MimePart.php';
-include_once '../external/mailParser/Charset.php';
-include_once '../external/mailParser/Attachment.php';
-include_once '../external/mailParser/Middleware.php';
-include_once '../external/mailParser/MiddlewareStack.php';
-include_once '../external/mailParser/Exception.php';
+// include_once '../external/mailParser/Parser.php';
+// include_once '../external/mailParser/Contracts/CharsetManager.php';
+// include_once '../external/mailParser/Contracts/Middleware.php';
+// include_once'../external/mailParser/MimePart.php';
+// include_once '../external/mailParser/Charset.php';
+// include_once '../external/mailParser/Attachment.php';
+// include_once '../external/mailParser/Middleware.php';
+// include_once '../external/mailParser/MiddlewareStack.php';
+// include_once '../external/mailParser/Exception.php';
 
-use PhpMimeMailParser;
+//use PhpMimeMailParser;
 
 scriptLog('   ->/tool/download.php');
 $id=Security::checkValidId($_REQUEST['id']);
@@ -124,15 +124,15 @@ if (($file != "") && (file_exists($file))) {
   }
   flush();
   // gautier #3033
-  $findme   = '.msg';
-  $pos = strpos($name, $findme);
-  if($pos == true){
-    $fileName = $path.$name;
-    $Parser = new PhpMimeMailParser\Parser();
-    $Parser->setPath($fileName);
-     $to = $Parser->getHeader('to');
-     //$text = $Parser->getMessageBody('text');
-  }
+//   $findme   = '.msg';
+//   $pos = strpos($name, $findme);
+//   if($pos == true){
+//     $fileName = $path.$name;
+//     $Parser = new PhpMimeMailParser\Parser();
+//     $Parser->setPath($fileName);
+//      $to = $Parser->getHeader('to');
+//      //$text = $Parser->getMessageBody('text');
+//   }
   readfile($file);  
 } else {
 	errorLog("download.php : ".$file . ' not found');

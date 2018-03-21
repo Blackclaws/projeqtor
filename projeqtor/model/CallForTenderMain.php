@@ -114,6 +114,11 @@ class CallForTenderMain extends SqlElement {
       'expectedTenderDateTime'=>'expectedTenderDate',
   );
   
+  private static $_fieldsTooltip = array(
+      "fixValue"                                       => "tooltipLevelNote",
+      "_lib_colFixValue"                                       => "tooltipLevelNote",
+  );    
+  
   private static $_databaseColumnName = array();
   
    /** ==========================================================================
@@ -379,6 +384,9 @@ class CallForTenderMain extends SqlElement {
       $this->evaluationMaxValue=$sum;
       if ($withSave) $this->save();
     }
+  }
+  protected function getStaticFieldsTooltip() {
+    return self::$_fieldsTooltip;
   }
 }
 ?>
