@@ -110,8 +110,8 @@ class ActivityPlanningElementMain extends PlanningElement {
     "plannedEndFraction"=>"hidden",
     "validatedStartFraction"=>"hidden",
     "validatedEndFraction"=>"hidden",
-    "latestStartDate"=>"readonly",
-    "latestEndDate"=>"readonly",
+    "latestStartDate"=>"hidden",
+    "latestEndDate"=>"hidden",
     "isOnCriticalPath"=>"hidden",
     "_spe_isOnCriticalPath"=>""
   );   
@@ -155,9 +155,9 @@ class ActivityPlanningElementMain extends PlanningElement {
       self::$_fieldsAttributes['_button_showTickets']='hidden';
     }
     $showLatest=Parameter::getGlobalParameter('showLatestDates');
-    if (!$showLatest) {
-      self::$_fieldsAttributes['latestStartDate']="hidden";
-      self::$_fieldsAttributes['latestEndDate']="hidden";
+    if ($showLatest) {
+      self::$_fieldsAttributes['latestStartDate']="readonly";
+      self::$_fieldsAttributes['latestEndDate']="readonly";
     }
   }
   /** ==========================================================================

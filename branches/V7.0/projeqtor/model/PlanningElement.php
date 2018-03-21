@@ -1463,11 +1463,13 @@ class PlanningElement extends SqlElement {
           $parent->_predecessorListWithParent=array();
           $parent->_noPlan=true;
           $parent->_childList=array();
+          $parent->_profile='';
           $result['#'.$pe->topId]=$parent;
         } 
         $parent=$result['#'.$pe->topId];
         $parent->_childList=array_merge_preserve_keys($pe->_childList,$parent->_childList);
         $parent->_childList['#'.$pe->id]=$pe->id;
+        $parent->_profile='';
         $result['#'.$pe->topId]=$parent;
       }
     }

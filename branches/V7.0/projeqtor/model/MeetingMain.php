@@ -507,9 +507,10 @@ class MeetingMain extends SqlElement {
     $vcal .= "SUMMARY:$this->name\r\n";
     $vcal .= "PRIORITY:5\r\n";
     if (trim($this->description) != ""){
-    $html2text=new Html2Text($this->description);
+      $html2text=new Html2Text($this->description);
       $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$html2text->gettext())."\r\n";
     }
+    $vcal .= "TRANSP:OPAQUE\r\n";
     /*$vcal .= "BEGIN:VALARM\r\n";
     $vcal .= "TRIGGER:-PT15M\r\n";
     $vcal .= "ACTION:DISPLAY\r\n";
@@ -523,6 +524,8 @@ class MeetingMain extends SqlElement {
     $headers .= "Reply-To: $replyTo\r\n";
     $headers .= "MIME-version: 1.0\r\n";
     $headers .= "Content-Type: text/calendar\r\n";
+    //$headers .= "Content-Type: multipart/alternative\r\n";
+    //$headers .="boundary=--boundary_1016_7f2c68a5-e9c8-4b05-ad1c-d8886a0b573a\r\n";
     //$headers .= "Content-Transfer-Encoding: 8bit\r\n";
     $headers .= "X-Mailer: Microsoft Office Outlook 12.0";
     //mail($to, $this->description, $vcal, $headers);

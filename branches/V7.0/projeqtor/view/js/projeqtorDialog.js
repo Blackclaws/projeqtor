@@ -5384,6 +5384,11 @@ function hideMenuBarShowModeTop(){
     var height=parseInt(dojo.byId('mainDiv').offsetHeight)-82;
     dijit.byId('centerDiv').resize({h:height});
     dijit.byId('leftDiv').resize({h:height});
+    if(dojo.byId('menuBarShow').style.display=='none' || dojo.byId('menuBarShow').style.display == ''){
+      dojo.byId('leftDiv_splitter').style.top='82px';
+      var height = dojo.byId("leftDiv").offsetHeight+50;
+      dojo.byId('leftDiv_splitter').style.height=height+'px';
+    }
   }else{
     saveDataToSession("hideMenuTop","YES",true);
     //dojo.byId('statusBarDiv').style.display='none';
@@ -5395,6 +5400,11 @@ function hideMenuBarShowModeTop(){
     var height=parseInt(dojo.byId('mainDiv').offsetHeight)-30;
     dijit.byId('centerDiv').resize({h:height});
     dijit.byId('leftDiv').resize({h:height});
+    if(dojo.byId('menuBarShow').style.display=='none' || dojo.byId('menuBarShow').style.display == '' ){
+      dojo.byId('leftDiv_splitter').style.top='32px';
+      var height = dojo.byId("leftDiv").offsetHeight;
+      dojo.byId('leftDiv_splitter').style.height=height+'px';
+    }
   }
 }
 

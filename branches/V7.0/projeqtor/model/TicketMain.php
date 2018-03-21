@@ -399,6 +399,37 @@ class TicketMain extends SqlElement {
   	if ($this->idResource and ! $this->idAccountable) { // Set Accountable (if not set) to Responsible (if set) 
   	  $this->idAccountable=$this->idResource;
   	}
+  	//ADD qCazelles - Assign auto CV to ticket - Ticket 95
+    if ($this->idComponent and $this->idTargetProductVersion and !$this->idTargetComponentVersion) {
+      $pvs = new ProductVersionStructure();
+      $crit = array('idProductVersion' => $this->idTargetProductVersion);
+      $pvss = $pvs->getSqlElementsFromCriteria($crit, false);
+      if (count($pvss) > 0) {
+        $clauseWhere = 'id in (';
+        foreach ($pvss as $pvs) {
+          $clauseWhere .= $pvs->idComponentVersion . ', ';
+        }
+        $clauseWhere = substr($clauseWhere, 0, -2);
+        $clauseWhere .= ')';
+        $cv = new ComponentVersion();
+        $cvs = $cv->getSqlElementsFromCriteria(null, false, $clauseWhere);
+        $cvAssigned = null;
+        foreach ($cvs as $cv) {
+          if ($cv->idComponent == $this->idComponent) {
+            if ($cvAssigned == null) {
+              $cvAssigned = $cv;
+            } else {
+              $cvAssigned = null;
+              break;
+            }
+          }
+        }
+        if ($cvAssigned != null) {
+          $this->idTargetComponentVersion = $cvAssigned->id;
+        }
+      }
+    }
+  	//END ADD qCazelles - Assign auto CV to ticket - Ticket 95
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
