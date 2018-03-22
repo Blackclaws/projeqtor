@@ -246,7 +246,7 @@ if ($displayWidthList<1400) {
                }else{
                   $proj = '*';
                }
-                if($comboDetail && $proj != '*'){
+            if($comboDetail && property_exists($objectClass,'idProject') && $proj != '*'){
                ?> 
             <td style="width:200px;text-align: right; align: right;min-width:150px" >
                 &nbsp;&nbsp;<?php echo i18n("showAllProjects");?>
@@ -255,11 +255,12 @@ if ($displayWidthList<1400) {
                 <div title="<?php echo i18n('showAllProjects')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
                   id="showAllProjects" name="showAllProjects">
                   <script type="dojo/method" event="onChange" >
-                    if (this.get('value') == false){
+                    /*if (this.get('value') == false){
 	                   return setSelectedProject('<?php echo $proj;?>');
                     }else {
                      return setSelectedProject('*');
-                    }
+                    }*/
+                    refreshJsonList('<?php echo $objectClass;?>');
                   </script>
                 </div>&nbsp;
               </td>

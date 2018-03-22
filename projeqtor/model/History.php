@@ -77,6 +77,14 @@ class History extends SqlElement {
   public static function store ($obj, $refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
     
     if ($operation!='insert' and SqlElement::isCopyInProgress()) return true; // On copy, only save history for inserts, not for all following updates during same operation
+    if (!$refType or !$refId) {
+      if ($obj and $obj->id) {
+        $refType=get_class($obj);
+        $refId=$obj->id;
+      } else {
+        return true;
+      }
+    }
     
   	$user=getSessionUser();
     $hist=new History();

@@ -639,8 +639,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vType=depListSplit[3];
           }
           var color='#000000';
-          if (vList[vTask].getIsOnCriticalPath()=='1' && vList[i].getIsOnCriticalPath()=='1') color=vCriticalPathColor;
+          
           if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
+            if (vList[vTask].getIsOnCriticalPath()=='1' && vList[i].getIsOnCriticalPath()=='1') color=vCriticalPathColor;
             if (g.getEndDateView() && vList[vTask].getEnd()>g.getEndDateView() && vList[i].getStart()>g.getEndDateView()) continue;
             if (vType=='S-S' || (vList[vTask].getMile() && vType!='E-E')) {
               this.drawDependencySS(vList[vTask].getStartX()-1,vList[vTask].getStartY(),vList[i].getStartX()-1,
