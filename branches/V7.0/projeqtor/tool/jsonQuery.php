@@ -57,6 +57,11 @@
     if ( array_key_exists('comboDetail',$_REQUEST) ) {
       $comboDetail=true;
     }
+    $showAllProjects=false;
+    if (RequestHandler::isCodeSet('showAllProjects') and RequestHandler::getBoolean('showAllProjects')==true) {
+      $showAllProjects=true;
+    }
+    
     $quickSearch=false;
     if ( array_key_exists('quickSearch',$_REQUEST) ) {
       $quickSearch=Sql::fmtStr($_REQUEST['quickSearch']);
@@ -197,7 +202,7 @@
     }  
     // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
     if (property_exists($obj, 'idProject') and sessionValueExists('project')) {
-        if (getSessionValue('project')!='*') {
+        if (getSessionValue('project')!='*' and !$showAllProjects) {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
             $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdleProjects) ;

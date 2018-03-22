@@ -92,6 +92,11 @@ function refreshJsonList(className, keepUrl) {
         dojo.byId('comboDetailId').value = '';
       }
     }
+    if (dojo.byId('showAllProjects')) {
+      if (dojo.byId('showAllProjects').checked) {
+        url = url + "&showAllProjects=true";
+      }
+    }
     if (dojo.byId('listShowIdle')) {
       if (dojo.byId('listShowIdle').checked) {
         url = url + "&idle=true";
