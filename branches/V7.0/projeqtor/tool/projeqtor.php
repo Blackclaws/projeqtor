@@ -46,8 +46,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.0.0"; // Version of application : Major / Minor / Release
-$build = "0191"; // Build number. To be increased on each release
+$version = "V7.0.1"; // Version of application : Major / Minor / Release
+$build = "0192"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -441,7 +441,7 @@ function getObjectClassesAssociatedToResourceDatabaseTable() {
     $classesList = getUserVisibleObjectClassesList();
     $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     
-    $classesResourceList=[];
+    $classesResourceList=array();
     foreach( $classesList as $key => $class) {
         $refClass = new ReflectionClass($class);
         try {
@@ -519,7 +519,7 @@ function getObjectClassAndForeignClassFieldsList($objectClassName="", $onlyResou
     }
     
     // Don't take calculated fields
-    $fields=[];
+    $fields=array();
     $obj = new $objectClassName();
     foreach($fieldsWithCalculated as $field) {
         if (!$obj->isAttributeSetToField($field, "calculated")) {
@@ -527,7 +527,7 @@ function getObjectClassAndForeignClassFieldsList($objectClassName="", $onlyResou
         }
     }
     
-    $fFields=[];
+    $fFields=array();
     foreach($fields as $field) {
         if (substr($field,0,2)=="id" and 
             strpos($field,"idle")===false and 
@@ -622,7 +622,7 @@ function getObjectClassAndForeignClassFieldsList_($objectClassName="", $onlyReso
         }
     }
     
-    $fields=[];
+    $fields=array();
     $obj = new $objectClassName();
     foreach($fieldsWithCalculated as $field) {
         // Don't take calculated fields AND hidden fields
@@ -631,7 +631,7 @@ function getObjectClassAndForeignClassFieldsList_($objectClassName="", $onlyReso
         }
     }
     
-    $fFields=[];
+    $fFields=array();
     foreach($fields as $field) {
         if (substr($field,0,2)=="id" and 
             strpos($field,"idle")===false and 
@@ -747,11 +747,11 @@ function getTranslatedClassAndFKeyClasses($objectClassName="", $onlyResource=fal
         if ($hasFieldThatReferenceAResource) {
             $classesList[$objectClassName] = i18n($objectClassName);        
         } else {
-            $classesList=[];
+            $classesList=array();
         }
     }
     
-    $fClasses=[];
+    $fClasses=array();
     foreach($allFields as $field) {
         if (substr($field,0,2)=="id" and 
             strpos($field,"idle")===false and 
@@ -798,7 +798,7 @@ function getObjectClassFieldsList($objectClassName="", $withoutCreationDate=true
     $reflect = new ReflectionClass($objectClassName);
     $props   = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
-    $nItem=[];
+    $nItem=array();
     foreach($props as $prop) {
         if (substr($prop->getName(), 0,1)!="_") {
             if (($prop->getName()==='creationDate' or $prop->getName()==='creationDateTime') and $withoutCreationDate) {} else {
@@ -836,7 +836,7 @@ function getObjectClassTranslatedFieldsList($objectClassName="",
     $resourceClasses = getObjectClassesAssociatedToResourceDatabaseTable();
     
     $obj = new $objectClassName();
-    $arrayFields=[];
+    $arrayFields=array();
     
     foreach($fieldsList as $field) {
         // Don't take calculated fields
@@ -850,7 +850,7 @@ function getObjectClassTranslatedFieldsList($objectClassName="",
         }
     }
     
-    $translatedArrayFields=[];
+    $translatedArrayFields=array();
     foreach( $arrayFields as $field) {
       // Don't take not translated fields
       if (substr($obj->getColCaption($field),0,4)=='[col') { continue; }

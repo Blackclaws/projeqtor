@@ -1053,7 +1053,7 @@ class NotificationDefinition extends SqlElement {
   }
   
   private function transformReceiversInArrayClassField($className, $classesAndFields, &$receiversList) {
-    $receiversList=[];
+    $receiversList=array();
     
     $arrReceivers = explode(';',$this->notificationReceivers);
     foreach ($arrReceivers as $receiver) {
@@ -1161,7 +1161,7 @@ class NotificationDefinition extends SqlElement {
     $listFields = $this->transformWordsInArrayClassField($this->notificationRule, $className, $listFields);
 
     // Fields in the receivers
-    $receiverList=[];
+    $receiverList=array();
     $listFields = $this->transformReceiversInArrayClassField($className, $listFields, $receiverList);
     
     foreach($listFields as $classAndField) {
