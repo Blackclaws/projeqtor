@@ -60,8 +60,8 @@ CREATE TABLE `${prefix}statusnotification` (
   `id` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) DEFAULT NULL,
   `color` VARCHAR(7) DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = INNODB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `${prefix}statusnotification` (`id`, `name`, `color`) VALUES(1, 'unread', '#ff7f50');
 INSERT INTO `${prefix}statusnotification` (`id`, `name`, `color`) VALUES(2, 'read',   '#32CD32');
 
@@ -77,8 +77,8 @@ CREATE TABLE `${prefix}notification` (
   `idNotifiable` INT(12) UNSIGNED DEFAULT NULL,
   `idMenu` INT(12) UNSIGNED DEFAULT NULL,
   `idNotificationType` INT(12) UNSIGNED DEFAULT NULL,
-  `idUser` INT(12) UNSIGNED DEFAULT NULL COMMENT 'notification''s sender',
-  `idResource` INT(12) UNSIGNED DEFAULT NULL COMMENT 'Resource to whom the notification is intended',
+  `idUser` INT(12) UNSIGNED DEFAULT NULL,
+  `idResource` INT(12) UNSIGNED DEFAULT NULL,
   `idStatusNotification` INT(12) UNSIGNED DEFAULT NULL,  
   `title` VARCHAR(4000) DEFAULT NULL,
   `content` MEDIUMTEXT DEFAULT NULL,
@@ -89,15 +89,14 @@ CREATE TABLE `${prefix}notification` (
   `sendEmail` INT(1) NOT NULL DEFAULT 0,
   `emailSent` INT(1) NOT NULL DEFAULT 0,
   `idle` INT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  INDEX `hasNotificationDefinition_idx` (`idNotificationDefinition`),
-  INDEX `hasNotifiable_idx` (`idNotifiable`),
-  INDEX `hasStatus_idx` (`idStatusNotification`),
-  INDEX `hasType_idx` (`idNotificationType`),
-  INDEX `isBubbledInMenu_idx` (`idMenu`),
-  INDEX `isForResource_idx` (`idResource`)
-)
-ENGINE = INNODB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX `notificationHasNotificationDefinition_idx` ON `${prefix}notification` (`idNotificationDefinition`);
+CREATE INDEX `notificationNotifiable_idx` ON `${prefix}notification` (`idNotifiable`);
+CREATE INDEX `notificationStatusNotification_idx` ON `${prefix}notification` (`idStatusNotification`);
+CREATE INDEX `notificationNotificationType_idx` ON `${prefix}notification` (`idNotificationType`);
+CREATE INDEX `notificationMenu_idx` ON `${prefix}notification` (`idMenu`);
+CREATE INDEX `notificationResource_idx` ON `${prefix}notification` (`idResource`);
 
 -- -------------------------------------------------------- --
 --                   NOTIFICATIONDEFINITION                 --
@@ -127,12 +126,11 @@ CREATE TABLE `${prefix}notificationdefinition` (
   `notificationGenerateBefore` INT(5) DEFAULT NULL,
   `notificationGenerateBeforeInMin` INT(5) DEFAULT NULL,  
   `idle` INT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  INDEX `hasNotifiable_idx` (`idNotifiable`),
-  INDEX `hasType_idx` (`idNotificationType`),
-  INDEX `isBubbledInMenu_idx` (`idMenu`)
-)
-ENGINE = INNODB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX `notificationdefinitionNotifiable_idx` ON `${prefix}notificationdefinition` (`idNotifiable`);
+CREATE INDEX `notificationdefinitionNotificationType_idx` ON `${prefix}notificationdefinition` (`idNotificationType`);
+CREATE INDEX `notificationdefinitionMenu_idx` ON `${prefix}notificationdefinition` (`idMenu`);
 
 -- -------------------------------------------------------- --
 --                          NOTIFIABLE                      --
@@ -145,8 +143,7 @@ CREATE TABLE `${prefix}notifiable` (
   `name` VARCHAR(100) DEFAULT NULL,
   `idle` INT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-)
-ENGINE = INNODB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`) VALUES
  ('Action','Action'),
@@ -236,8 +233,9 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`,`idAccessProfile`)
 -- -------------------------------------------------------- --
 ALTER TABLE `${prefix}meeting` ADD `meetingStartDateTime` DATETIME DEFAULT NULL,
 ADD `meetingEndDateTime` DATETIME DEFAULT NULL;
-UPDATE `${prefix}meeting` SET meetingStartDateTime=concat(meetingDate,' ',meetingStartTime),
-meetingEndDateTime=concat(meetingDate,' ',meetingEndTime);
+
+UPDATE `${prefix}meeting` SET meetingStartDateTime=STR_TO_DATE(concat(meetingDate,' ',meetingStartTime),'%Y-%m-%d %H:%i:%s'),
+meetingEndDateTime=STR_TO_DATE(concat(meetingDate,' ',meetingEndTime),'%Y-%m-%d %H:%i:%s');
 
 -- ===========================================================
 -- LifeCycle on Products, Components, Versions
