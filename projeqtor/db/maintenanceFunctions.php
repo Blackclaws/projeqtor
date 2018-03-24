@@ -333,6 +333,9 @@ function formatForDbType($query,$dbType=null) {
     $from[]='\\\'';                                       $to[]='\'\'';
     $from[]='ENGINE=InnoDB';                              $to[]='';
     $from[]='DEFAULT CHARSET=utf8';                       $to[]='';
+    $from[]='STR_TO_DATE';                                $to[]='to_timestamp';
+    $from[]='str_to_date';                                $to[]='to_timestamp';
+    $from[]='%Y-%m-%d %H:%i:%s';                          $to[]='YYYY-MM-DD HH24:MI:SS';
     $res=str_ireplace($from, $to, $query);
     // ALTER TABLE : very different from MySql !!!
     if (substr($res,0,11)=='ALTER TABLE') {
