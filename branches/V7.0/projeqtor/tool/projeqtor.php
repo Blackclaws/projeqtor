@@ -403,7 +403,7 @@ function getUserVisibleObjectClassesList($listScreen="List", $user =NULL) {
     
     if (is_null($user)) { $user=getSessionUser();}
     
-    $query = "SELECT substr(menu.name,5) AS 'class' ";
+    $query = "SELECT substr(menu.name,5) AS class ";
     $query .= "FROM menu ";
     $query .= "INNER JOIN habilitation ON habilitation.idMenu = menu.id ";
     $query .= "WHERE habilitation.allowAccess=1 AND habilitation.idProfile=";
