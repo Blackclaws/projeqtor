@@ -2827,11 +2827,13 @@ function addDependency(depType) {
     dijit.byId("dependencyRefTypeDep").set('value', '4');
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
+    dojo.byId("dependencyTypeDiv").style.display="none";
   } else if (objectClass == 'TestCase') {
     refreshList('idDependable', 'scope', 'TC', '5', 'dependencyRefTypeDep',true);
     dijit.byId("dependencyRefTypeDep").set('value', '5');
     dijit.byId("dependencyDelay").set('value', '0');
     dojo.byId("dependencyDelayDiv").style.display="none";
+    dojo.byId("dependencyTypeDiv").style.display="none";
   } else {
     if (objectClass == 'Project') {
       dijit.byId("dependencyRefTypeDep").set('value', '3');
@@ -2842,8 +2844,10 @@ function addDependency(depType) {
     }
     if (objectClass == 'Term') {
       dojo.byId("dependencyDelayDiv").style.display="none";
+      dojo.byId("dependencyTypeDiv").style.display="none";
     } else {
       dojo.byId("dependencyDelayDiv").style.display="block";
+      dojo.byId("dependencyTypeDiv").style.display="block";
     }
   }
   refreshDependencyList();
@@ -2859,8 +2863,6 @@ function addDependency(depType) {
   dijit.byId("dependencyRefTypeDep").set('readOnly', false);
   dijit.byId("dependencyComment").set('value',null);
   disableWidget('dialogDependencySubmit');
-  
-  
 }
 
 function editDependency(depType, id, refType, refTypeName, refId, delay, typeOfDependency) {

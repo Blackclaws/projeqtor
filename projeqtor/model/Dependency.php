@@ -205,6 +205,11 @@ class Dependency extends SqlElement {
   public function save() {
     $old=$this->getOld();
     $result=parent::save();
+    if ($this->predecessorRefType=='Term' or $this->successorRefType=='Term'
+     or $this->predecessorRefType=='TestCase' or $this->successorRefType=='TestCase'
+     or $this->predecessorRefType=='Requirement' or $this->successorRefType=='Requirement') {
+      return $result;
+    }
     if (!$old->id or $this->dependencyType!=$old->dependencyType or $this->dependencyDelay!=$old->dependencyDelay ) {
       $peP=new PlanningElement($this->predecessorId);
       Project::setNeedReplan($peP->idProject);
@@ -220,6 +225,11 @@ class Dependency extends SqlElement {
     $peP=new PlanningElement($this->predecessorId);
     Project::setNeedReplan($peP->idProject);
     $peS=new PlanningElement($this->successorId);
+    if ($this->predecessorRefType=='Term' or $this->successorRefType=='Term'
+     or $this->predecessorRefType=='TestCase' or $this->successorRefType=='TestCase'
+     or $this->predecessorRefType=='Requirement' or $this->successorRefType=='Requirement') {
+      return $result;
+    }
     if ($peS->idProject!=$peP->idProject) {
       Project::setNeedReplan($peS->idProject);
     }
