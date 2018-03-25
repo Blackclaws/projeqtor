@@ -163,6 +163,14 @@ echo '<input type="hidden" id="objectClass" value="' . $_REQUEST['objectClass'] 
 echo '<input type="hidden" id="objectId" value="' . htmlEncode($_REQUEST['objectId']) . '" />';
 }
 ?>
+  <div style="position:absolute;top:10px;right:10px"><?php ;
+  $dbVersion=Sql::getDbVersion();
+  if ($version==$dbVersion) {
+  	echo $version;
+  } else {
+    echo $dbVersion.' => '.$version;
+  }
+  ?></div>
   <div id="waitLogin" style="display:none" >
   </div>
   <div class="loginMessageContainer">

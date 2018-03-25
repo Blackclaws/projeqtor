@@ -1732,7 +1732,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
              <td><table><tr><td>
                <div id="dialogDependencyList" dojoType="dijit.layout.ContentPane" region="center">
                  <input id="dependencyRefIdDep" name="dependencyRefIdDep" type="hidden" value="" />
-                  OK
                </div>
                </td><td style="vertical-align: top">
                <button id="dependencyDetailButton" dojoType="dijit.form.Button" showlabel="false"
