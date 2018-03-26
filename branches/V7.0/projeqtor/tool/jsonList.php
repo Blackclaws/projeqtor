@@ -247,6 +247,14 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
       }
       // $_REQUEST['required']='true';
     }
+  } else if ($dataType=='idBaselineSelect') {
+    $list=array();
+    $critWhere=  'idProject in ' . getVisibleProjectsList() ;
+    $bl=new Baseline();
+    $lstBaseline=$bl->getSqlElementsFromCriteria(null,null,$critWhere);
+    foreach ($lstBaseline as $bl) {
+      $list[$bl->id]=$bl->name;
+    }
   } else if (array_key_exists ( 'critField', $_REQUEST ) and array_key_exists ( 'critValue', $_REQUEST )) {
     $critField = $_REQUEST ['critField'];
     $critValue = $_REQUEST ['critValue'];
