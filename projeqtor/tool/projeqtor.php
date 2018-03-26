@@ -936,7 +936,7 @@ function getUserVisibleObjectClassWithFieldDateType() {
     foreach( $arrayClass as $key => $className) {
         if (    $className != "Plugin" and 
                 $className != "NotificationDefinition" and 
-                !empty(getObjectClassFieldsListWithDateType($className))) {
+                count(getObjectClassFieldsListWithDateType($className))>0) {
             $arrayClassWithDateTypeFields[$i] = $className;
             $i++;
         }
