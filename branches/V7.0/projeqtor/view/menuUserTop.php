@@ -205,7 +205,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
   </tr>
   <tr style="height:40px">
     <td>
-      <div class="pseudoButton"  title="<?php echo i18n('Keyboard functionality');?>" onClick="showHelp('ShortCut');">
+      <div class="pseudoButton"  title="<?php echo i18n('keyboardShortcuts');?>" onClick="showHelp('ShortCut');">
         <table style="width:100%">
           <tr>
             <td style="width:24px;padding-top:2px;">
