@@ -104,18 +104,19 @@ for ($cptMonth=0;$cptMonth<$nbMonths;$cptMonth++) {
     $periodValue=$paramYear.$paramMonth;
   }
   
-$where=getAccesRestrictionClause('Activity',false,false,true,true);
+$where=getAccesRestrictionClause('Resource',false,false,true,true);
+//$where="1=1";
 $where='('.$where.' or idProject in '.Project::getAdminitrativeProjectList().')';
 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
 if ($paramProject!='') {
-  $where.=  "and ( idProject in " . getVisibleProjectsList(true, $paramProject) ;
-  if ($paramShowAdminProj) {
-    $where.= "or idProject in ".Project::getAdminitrativeProjectList();
-  }
-  $where.= ")";
+//   $where.=  "and ( idProject in " . getVisibleProjectsList(true, $paramProject) ;
+//   if ($paramShowAdminProj) {
+//     $where.= "or idProject in ".Project::getAdminitrativeProjectList();
+//   }
+//   $where.= ")";
 }
 $order="";
 $work=new Work();
@@ -161,6 +162,7 @@ if($paramTeam && $paramProject){
 }
 
 foreach ($lstWork as $work) {
+  if (! isset($resourcesFull2[$work->idResource])) continue;
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
@@ -188,6 +190,7 @@ foreach ($lstWork as $work) {
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
+  if (! isset($resourcesFull2[$work->idResource])) continue;
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
