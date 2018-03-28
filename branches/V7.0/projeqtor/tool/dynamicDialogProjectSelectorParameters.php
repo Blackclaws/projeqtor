@@ -39,18 +39,13 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
            var callBack = function(){
-             loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
+             //loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
              refreshProjectSelectorList();
-           }
-           saveDataToSession('projectSelectorShowIdle', ((this.checked)?1:0));
-           
-         /*dojo.xhrPost({
-             url: "../tool/saveDataToSession.php?idData=projectSelectorShowIdle&value="+((this.checked)?1:0),
-             load: function() {
-               //loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
-               refreshProjectSelectorList();
+             if (dojo.byId("objectClass") ) {
+               refreshGrid();
              }
-           });*/
+           }
+           saveDataToSession('projectSelectorShowIdle', ((this.checked)?1:0),false,callBack);
            dijit.byId('dialogProjectSelectorParameters').hide();
          </script>
 	     </div>

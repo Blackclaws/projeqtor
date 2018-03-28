@@ -507,9 +507,13 @@
 .iconImputation22 { background-image: url(images/iconImputation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconImputation16 { background-image: url(images/iconImputation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconIndicatorDefinition32 { background-image: url(images/iconIndicatorDefinition32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconIndicatorDefinition22 { background-image: url(images/iconIndicatorDefinition22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconIndicatorDefinition16 { background-image: url(images/iconIndicatorDefinition16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconIndicatorDefinition32 { background-image: url(images/iconIndicatorDefinition32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconIndicatorDefinition22 { background-image: url(images/iconIndicatorDefinition32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconIndicatorDefinition16 { background-image: url(images/iconIndicatorDefinition32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconIndicatorDefinitionPerProject32 { background-image: url(images/iconIndicatorDefinitionPerProject32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconIndicatorDefinitionPerProject22 { background-image: url(images/iconIndicatorDefinitionPerProject32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconIndicatorDefinitionPerProject16 { background-image: url(images/iconIndicatorDefinitionPerProject32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconIndividualExpenseType32 { background-image: url(images/iconIndividualExpenseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconIndividualExpenseType22 { background-image: url(images/iconIndividualExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
