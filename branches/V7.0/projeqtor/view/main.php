@@ -828,7 +828,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     </div>
     
      <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:48px; position:absolute; top:30px;">
-      <table width="100%">
+      <table width="100%"><tr>
       
        <td width="220px" id="menuBarLeft" >
       
@@ -898,9 +898,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
          </script>
           </button>
           <?php }?>
-      </td>
+      </td><tr>
       </table>
-    </td>
+    </td></tr>
     </table>
     </div>
     
