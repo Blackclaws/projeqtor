@@ -195,9 +195,7 @@
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
-        //if ($objectClass=='Project') {
-          $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
-        //}
+        $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         $queryWhere.= ')';
     }  
     // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
@@ -210,12 +208,13 @@
              $queryWhere.="1=1";
           } else if ($objectClass=='Document') {
           	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null)";
-          } else {
+          } else if ($obj->isAttributeSetToField('idProject','required') ){
             $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) ;
+          } else {
+            $queryWhere.= "($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)" ;
           }
         }
     }
-
     // --- Take into account restriction visibility clause depending on profile
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
     	// No limit, although idProject exists

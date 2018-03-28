@@ -456,6 +456,10 @@ function saveDataToSessionAndReload(param, value, saveUserParameter) {
 }
 
 function changeLocale(locale, saveAsUserParam) {
+  if (checkFormChangeInProgress()) {
+    dijit.byId("langMenuUserTop").set("value",currentLocale);
+    return;
+  }
   if (locale != "") {
     currentLocale = locale;
     //if (saveAsUserParam) saveDataToSession('lang', locale, true);
