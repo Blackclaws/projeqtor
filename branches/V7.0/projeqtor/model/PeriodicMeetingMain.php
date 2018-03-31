@@ -403,7 +403,7 @@ class PeriodicMeetingMain extends SqlElement {
   
 
   public function save() {
-    $old=$this->getOld();
+    $old=$this->getOld(false);
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType);
   	}
