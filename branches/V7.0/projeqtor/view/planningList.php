@@ -104,6 +104,19 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
               </td>
               <td style="min-width:100px" ><span class="title" style="max-width:250px;white-space:normal"><?php echo i18n('menuPlanning');?></span></td>
       		  </tr>
+      		  <tr><td>
+  		        <div style="white-space:nowrap; position:absolute; bottom:5px;left:10px;">
+	              <span title="<?php echo i18n('criticalPath');?>" dojoType="dijit.form.CheckBox"
+                      type="checkbox" id="criticalPathPlanning" name="criticalPathPlanning" class="whiteCheck"
+                      <?php if ( Parameter::getUserParameter('criticalPathPlanning')=='1') {echo 'checked="checked"'; } ?>  >  
+                      <script type="dojo/connect" event="onChange" args="evt">
+                          saveUserParameter('criticalPathPlanning',((this.checked)?'1':'0'));
+                          refreshJsonPlanning();
+                        </script>                    
+                </span>&nbsp;<?php echo i18n('criticalPath');?>
+              </div>
+            </td></tr> 
+      		  
     		  </table>
 		    </td>
 		    <td>   
@@ -131,17 +144,6 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                           saveUserParameter('automaticRunPlanning',((this.checked)?'1':'0'));
                         </script>                    
                   </span>&nbsp;<?php if ($displayWidthPlan>1250) echo i18n('automaticRunPlan'); else echo i18n('automaticRunPlanShort');?>
-                  </div>
-                  <?php ?>
-                  <div style="white-space:nowrap; position:absolute; bottom:4px;left:-170px;">
-  		              <span title="<?php echo i18n('criticalPath');?>" dojoType="dijit.form.CheckBox"
-                          type="checkbox" id="criticalPathPlanning" name="criticalPathPlanning" class="whiteCheck"
-                          <?php if ( Parameter::getUserParameter('criticalPathPlanning')=='1') {echo 'checked="checked"'; } ?>  >  
-                          <script type="dojo/connect" event="onChange" args="evt">
-                          saveUserParameter('criticalPathPlanning',((this.checked)?'1':'0'));
-                          refreshJsonPlanning();
-                        </script>                    
-                    </span>&nbsp;<?php echo i18n('criticalPath');?>
                   </div>
 <?php }?>             
 		            </td>

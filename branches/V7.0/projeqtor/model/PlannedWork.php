@@ -208,7 +208,7 @@ class PlannedWork extends GeneralWork {
     $a=new Assignment();
     $topList=array();
     $reserved=array();
-    // Will constitute an array $reserved to be sure to reserve to availability of tasks as RECW that will be planned "after" predecessors to get start and end
+    // Will constitute an array $reserved to be sure to reserve the availability of tasks as RECW that will be planned "after" predecessors to get start and end
     // $reserved[type='W'][idPE][idResource][day]=value         // sum of work to reserve for resource on week day for a given task
     // $reserved[type='W'][idPE]['start']=date                  // start date, that will be set when known
     // $reserved[type='W'][idPE]['end']=date                    // end date, that will be set when known
@@ -721,8 +721,19 @@ class PlannedWork extends GeneralWork {
                 $planned=$ress[$currentDate];
               }
               // Specific reservation for RECW that are not planned yet but will be when start and end are known
-              $dow=date('N',strtotime($currentDate));  
-              if (isset($reserved['W']['sum'][$ass->idResource][$dow]) ) {
+              $dow=date('N',strtotime($currentDate));
+              $resourceHasReserved=false;
+              if ($profile=='GROUP') {
+                foreach($groupAss as $assIdResource=>$groupData) {
+                  if (isset($reserved['W']['sum'][$assIdResource][$dow])) {
+                    $resourceHasReserved=true;
+                    break;
+                  }
+                }
+              } else {
+                if (isset($reserved['W']['sum'][$ass->idResource][$dow])) $resourceHasReserved=true;
+              }
+              if ($resourceHasReserved) {
                 foreach($reserved['W'] as $idPe=>$arPeW) {                  
                   if ($idPe=='sum') continue;
                   if ($idPe==$plan->id) continue; // we are treating the one we reserved for
@@ -752,9 +763,19 @@ class PlannedWork extends GeneralWork {
                     $endReserving=true;
                   } // NB : cannot take into account E-E with negative delay : we don't know yet when current task will end to determine [end - x days] 
                   // OK, reserve work ...
-                  if ( $startReserving and ! $endReserving and isset($arPeW[$ass->idResource][$dow]) ) {
-                    $planned+=$arPeW[$ass->idResource][$dow];
-                    $plannedReserved+=$arPeW[$ass->idResource][$dow];
+                  if ( $startReserving and ! $endReserving ) {
+                    $reservedWork=0;
+                    if ($profile=='GROUP') {
+                      foreach($groupAss as $assIdResource=>$groupData) {
+                        if (isset($arPeW[$assIdResource]) and isset($arPeW[$assIdResource][$dow]) and $arPeW[$assIdResource][$dow]>$reservedWork) {
+                          $reservedWork=$arPeW[$assIdResource][$dow];
+                        }
+                      }
+                    } else if (isset($arPeW[$ass->idResource][$dow])) {
+                      $reservedWork=$arPeW[$ass->idResource][$dow];
+                    }
+                    $planned+=$reservedWork;
+                    $plannedReserved+=$reservedWork;
                   }
                 }
               } 
@@ -880,8 +901,8 @@ class PlannedWork extends GeneralWork {
 	                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
 	                		}
                 		}
-                		if ($value>$grpCapacity) {
-                			$value=$grpCapacity;
+                		if ($value>$grpCapacity-$plannedReserved) {
+                			$value=$grpCapacity-$plannedReserved;
                 		}
                 	}
                 	// Check Project Affectation Rate
@@ -905,6 +926,7 @@ class PlannedWork extends GeneralWork {
 	                    }
 	                  }
                 	}
+                	
                 	foreach($groupAss as $id=>$grp) {
                 		$groupAss[$id]['leftWorkTmp']-=$value;
                 		//$groupAss[$id]['weekWorkTmp'][$week]+=$value;

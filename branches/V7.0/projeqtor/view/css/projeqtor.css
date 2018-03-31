@@ -3508,7 +3508,12 @@ a.cke_combo_button {
 .cke_button__source_label {
 	display:none !important;
 }
-
+.cke_combo_text {
+  width: auto !important;
+}
+div#cke_noteNote a.cke_button.cke_button__maximize.cke_button_off {
+	display:none !important;
+} 
 
 p {
  font-size: 1em;
