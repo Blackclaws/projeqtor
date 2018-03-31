@@ -411,6 +411,7 @@ public $_noCopy;
   	foreach ($list as $aff) {
   		$start=($aff->startDate)?$aff->startDate:self::$minAffectationDate;
   		$end=($aff->endDate)?$aff->endDate:self::$maxAffectationDate;
+  		if ($aff->idle) $end=self::$minAffectationDate; // If affectation is closed : no work to plan
   		$arrAffProj=array($aff->idProject=>$aff->rate);
   		foreach($res as $r) {
   			if (!$start or !$end) break;

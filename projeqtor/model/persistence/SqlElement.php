@@ -6018,9 +6018,9 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     unset ( self::$_relationShip [$rel1] [$rel2] );
   }
 
-  public function getOld() {
+  public function getOld($withoutDependingElemnts=true) {
     $class = get_class ( $this );
-    return new $class ( $this->id, true);
+    return new $class ( $this->id, $withoutDependingElemnts);
   }
 
   public function splitLongFields() {
