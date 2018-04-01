@@ -56,7 +56,10 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
   public function save() {
 // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT
     if (Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
-        return;
+      $returnValue= '<input type="hidden" id="lastSaveId" value="" />';
+      $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
+      $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+      return i18n ( 'messageNoChange' ).$returnValue;
     }    
 // END ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT      
     // Update total budget
@@ -100,6 +103,16 @@ class OrganizationBudgetElementCurrent extends OrganizationBudgetElement {
     $result=parent::save();    
 
     return $result;
+  }
+  
+  public function delete() {
+    if (Parameter::getGlobalParameter('useOrganizationBudgetElement')!="YES") {
+      $returnValue= '<input type="hidden" id="lastSaveId" value="" />';
+      $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
+      $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+      return i18n ( 'messageNoChange' ).$returnValue;
+    }
+    return parent::delete();
   }
 // END ADD BY Marc TABARY - 2017-02-27 - ORGANIZATION BUDGET
   

@@ -568,7 +568,6 @@ function periodChanged(theId) {
    */
   public function save() {
     $old=$this->getOld();
-    
     if ($this->id== NULL or trim($this->id)=='') {
         // Initialize year of the new organization's budget element to current year
         $this->year = date('Y');
