@@ -45,6 +45,7 @@ class History extends SqlElement {
   public static $_storeDate;
   public static $_storeItem;
   public $_noHistory=true; // Will never save history for this object
+  public static $_avoidLoop=false;
   
    /** ==========================================================================
    * Constructor
@@ -114,8 +115,10 @@ class History extends SqlElement {
     $hist->operationDate=self::getOperationDate($obj);
     $returnValue=$hist->save();
     // For TestCaseRun : store history for TestSession 
-    if ($refType=='TestCaseRun') {
+    if ($refType=='TestCaseRun' and !self::$_avoidLoop) {
+      self::$_avoidLoop=true;
     	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$obj->idTestCase, $oldValue, $newValue);
+    	self::$_avoidLoop=false;
     } else if ($refType=='Link') {       
     // For link : store History for both referenced items
       self::store ($obj, $obj->ref1Type, $obj->ref1Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref2Type . '|' . $obj->ref2Id, $oldValue, $newValue);

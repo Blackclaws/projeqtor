@@ -71,6 +71,7 @@ class KpiValue extends SqlElement {
  
   public function save() {
     $old=$this->getOld();
+    if ($this->kpiValue>999.99) $this->kpiValue=999.99;
     $result=parent::save();
     if ($this->kpiValue!=$old->kpiValue or $this->kpiDate!=$old->kpiDate) { // Will store every value, but only 1 time same value perday
       $this->storeHistory();
