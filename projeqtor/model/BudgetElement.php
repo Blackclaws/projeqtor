@@ -225,7 +225,6 @@ class BudgetElement extends SqlElement {
     }
   
 // END ADD BY Marc TABARY - 2017-02-09
-
     return $result;
   }
 

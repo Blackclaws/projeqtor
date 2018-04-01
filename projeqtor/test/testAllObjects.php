@@ -64,6 +64,8 @@ function testObject($obj) {
 	$arrayUpdateOnly=array('KpiDefinition');
  //return;
 	//Sql::beginTransaction();
+	SqlElement::setSaveConfirmed();
+	SqlElement::setDeleteConfirmed();
 	
 	if (! in_array(get_class($obj),$arrayUpdateOnly)) {
 		testSubTitle('Create');
@@ -129,7 +131,7 @@ function fillObj($obj) {
 		} else if ($fld=='periodicityTimes') {
 		  $obj->$fld=2;
 		} else if ($fld=='notificationRule') {
-		  $obj->$fld='';
+		  $obj->$fld='1=1';
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
 		} else if ($fld=='idStatus') {
@@ -139,8 +141,12 @@ function fillObj($obj) {
 		} else if ($fld=='notificationReceivers') {
 		  $obj->$fld='idResource';
 		} else if ($fld=='targetDateNotifiableField') {
-		  $_REQUEST['_spe_targetDateNotifiableField']='creationDateTime';
+		  $_REQUEST['_spe_targetDateNotifiableField']='creationDate';
 		  $obj->$fld='doneDate';
+		} else if ($fld=='kpiValue') {
+		  $obj->$fld=0.5;
+		} else if ($fld=='year') {
+		    $obj->$fld=date('Y');
 		} else if ($fld=='idProductVersion' and get_class($obj)=='Delivery') {     
 		  $obj->$fld=null;
 	  } else if ($fld=='idProject' and get_class($obj)!='Project') {
