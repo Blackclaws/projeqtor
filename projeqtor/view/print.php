@@ -242,6 +242,7 @@ use Spipu\Html2Pdf\Html2Pdf;
       if (ob_get_length()) {
         ob_end_clean();
       }
+      if (!$outputFileName) $outputFileName='document.pdf';
       $html2pdf->Output($outputFileName);
 //traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
