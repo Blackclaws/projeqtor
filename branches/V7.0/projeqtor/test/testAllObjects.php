@@ -28,7 +28,7 @@ include_once "../tool/projeqtor.php";
 include_once "testTools.php";
 header ('Content-Type: text/html; charset=UTF-8');
 projeqtor_set_time_limit(60);
-
+Parameter::storeGlobalParameter('useOrganizationBudgetElement','YES');
 // PREPARE TESTS
 // => remove mail sending, to avoid spamming
 //Sql::query('UPDATE statusmail set idle=1');
@@ -102,6 +102,7 @@ function fillObj($obj) {
   $dbCrit=$obj->getDatabaseCriteria();
   $id=($obj->id)?2:1;
 	foreach($obj as $fld=>$val){
+	  if (get_class($obj)=='ProductStructure' and $obj->id and $fld!='comment') continue;
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
 		$num=(substr($fld,0,4)=='real' and substr(get_class($obj),-7)!='Expense')?0:(($obj->id)?2:1);
 		$bool=($obj->id)?0:1;	
@@ -114,6 +115,8 @@ function fillObj($obj) {
 			$pos=strpos(get_class($obj),'PlanningElement');
 			if ($pos>0) {
 				$obj->$fld=substr(get_class($obj),0,$pos);
+			} else if (SqlElement::is_a($obj,'BudgetElement')) {
+			  $obj->$fld='Organization';
 			} else {
 			  $obj->$fld='Project';
 			}

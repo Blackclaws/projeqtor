@@ -232,9 +232,18 @@ class Security
       //$fileName=str_replace(array('/','\\'),array('',''), $fileName);
       $fileName=preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $fileName); // reached only if $activeTraceHack==false
     }
-    if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) or ! ctype_print($fileName)) {
+    if ( preg_match('#[\x00\x08\x0B\x0C\x0E-\x1F]#',$fileName) ) {
       if($activeTraceHack)traceHack("filename $fileName containts non printable characters");
-      $fileName=""; // Not reached as traceHack will exit script
+      $fileName=""; // reached only if $activeTraceHack==false
+    }
+    if ( ! ctype_print($fileName)) {
+      $accents = array('À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ');
+      $woaccts = array('A','p','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y');
+      $fileName = str_replace($accents, $woaccts, $fileName);
+      if ( ! ctype_print($fileName)) {
+        if($activeTraceHack)traceHack("filename $fileName containts non printable characters");
+        $fileName=""; // reached only if $activeTraceHack==false
+      }
     }
     return $fileName;
   }

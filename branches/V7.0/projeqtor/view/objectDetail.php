@@ -3205,7 +3205,7 @@ function drawObjectLinkedByIdToObject($obj, $objLinkedByIdObject='', $refresh=fa
   }
   if (!$refresh and !$print) echo '</td></tr>';
   if (!$print) {
-    echo '<input id="ObjectSectionCount" type="hidden" value="'.count($nbObjects++).'" />';
+    echo '<input id="ObjectSectionCount" type="hidden" value="'.$nbObjects.'" />';
   }
 }
 // END ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
@@ -4158,7 +4158,9 @@ function drawTicketsList($obj, $refresh=false) {
   echo '<td class="linkHeader" style="width:60%">'.i18n('colName').'</td>';
   echo '<td class="linkHeader" style="width:40%">'.i18n('colIdStatus').'</td>';
   echo '</tr>';
-  if (get_class($obj)=='Contact') {
+  if (!$obj->id) {
+    $list=array();
+  } else if (get_class($obj)=='Contact') {
     $crit=array('idContact'=>$obj->id, 'idle'=>'0');
     $ticket=new Ticket();
     $list=$ticket->getSqlElementsFromCriteria($crit);
