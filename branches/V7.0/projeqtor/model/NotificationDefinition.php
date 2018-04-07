@@ -419,13 +419,15 @@ class NotificationDefinition extends SqlElement {
         // Delete the notifications issued of this notification definition
         // with notificationDate > currentDate
         $theCurrentDate = new DateTime();
+        $theCurrentDateFmt=$theCurrentDate->format('Y-m-d');
         //$query  = "DELETE FROM notification ";
-        //$query .= "WHERE notification.idNotificationDefinition=".$this->id;
+        //$query .= "WHERE idNotificationDefinition=".$this->id;
         //$query .= " AND (notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
-        //$query .= "      OR (IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1<>1),notification.notificationTime>TIME(NOW()))))";
-        $clause = "  notification.idNotificationDefinition=".$this->id;
-        $clause .= " AND (      notificationDate>'".$theCurrentDate->format('Y-m-d')."'";
-        $clause .= "       OR ( notificationDate='".$theCurrentDate->format('Y-m-d')."' AND notification.notificationTime IS NOT NULL AND notification.notificationTime>TIME(NOW()) )";
+        //$query .= "      OR (IF(ISNULL(notificationTime) OR notificationDate<DATE(NOW()),(1<>1),notificationTime>TIME(NOW()))))";
+        $clause = "  idNotificationDefinition=".$this->id;
+        $clause .= " AND (      notificationDate>'$theCurrentDateFmt'";
+        $clause .= "       OR ( notificationDate='$theCurrentDateFmt' AND notificationTime IS NULL )";
+        $clause .= "       OR ( notificationDate='$theCurrentDateFmt' AND notificationTime IS NOT NULL AND notificationTime>TIME(NOW()) )";
         $clause .= "     )";
         $notif = new Notification();
         $notif->purge($clause);

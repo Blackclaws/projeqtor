@@ -428,17 +428,22 @@ class UserMain extends SqlElement {
     	$crit["idle"]='0';
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
+    $resultToSort=array();
     foreach ($affList as $aff) {
       $prj=new Project($aff->idProject,true); 
       if (!$prj->id) continue;
-    	if (! isset($result[$aff->idProject])) {
-	      $result[$aff->idProject]=$prj->name;
+    	if (! isset($resultToSort[$prj->sortOrder])) {
+	      $resultToSort[$prj->sortOrder]=array('id'=>$prj->id,'name'=>$prj->name);
 	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
 	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-	      	$result[$idSubPrj]=$nameSubPrj;
+	        $prjSub=new Project($idSubPrj,true);
+	      	$resultToSort[$prjSub->sortOrder]=array('id'=>$prjSub->id,'name'=>$prjSub->name);
 	      }
     	}
-    	
+    }
+    ksort($resultToSort);
+    foreach ($resultToSort as $toSort) {
+      $result[$toSort['id']]=$toSort['name'];
     }
     if ($limitToActiveProjects) {
       $this->_affectedProjects=$result;
@@ -574,7 +579,8 @@ class UserMain extends SqlElement {
    * this means the projects the resource corresponding to the user is affected to
    * and their sub projects
    * @return a list of projects id
-   */  public function getVisibleProjects($limitToActiveProjects=true) {
+   */  
+  public function getVisibleProjects($limitToActiveProjects=true) {
     scriptLog("UserMain::getVisibleProjects(limitToActiveProjects=$limitToActiveProjects)");
     if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;
