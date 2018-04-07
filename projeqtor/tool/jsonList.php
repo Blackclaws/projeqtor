@@ -428,7 +428,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
       $sepChar = '__';
     $wbsLevelArray = array();
   }
-  if ($dataType == 'idLinkable' or $dataType == 'idCopyable' or $dataType == 'idImportable' or $dataType == 'idMailable' or $dataType == 'idIndicatorable' or $dataType == 'idChecklistable' or $dataType == 'idDependable' or $dataType == 'idOriginable' or $dataType == 'idReferencable') {
+  if ($dataType == 'idLinkable' or $dataType == 'idCopyable' or $dataType == 'idImportable' or $dataType == 'idMailable' or $dataType == 'idIndicatorable' or $dataType == 'idChecklistable' or $dataType == 'idDependable' or $dataType == 'idOriginable' or $dataType == 'idReferencable' or $dataType == 'idNotifiable'  ) {
     asort ( $list );
   }
   $pluginObjectClass = substr ( $dataType, 2 );

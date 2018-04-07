@@ -33,9 +33,9 @@ class Notification extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_sec_description;
     public $id;    // redefine $id to specify its visible place 
-    public $notifiedObjectId;
     public $idNotificationDefinition;
     public $idNotifiable;
+    public $notifiedObjectId;
     public $creationDateTime;
     public $name;
     public $idNotificationType;
@@ -114,7 +114,8 @@ class Notification extends SqlElement {
         if (!is_null($this->idNotificationDefinition)) {
             self::$_fieldsAttributes['idNotificationDefinition'] = 'readonly';
 //            self::$_fieldsAttributes['idMenu'] = 'readonly';
-            self::$_fieldsAttributes['idNotifiable'] = 'readonly';
+            self::$_fieldsAttributes['idNotifiable'] = 'readonly,nobr';
+            self::$_fieldsAttributes['notifiedObjectId'] = 'readonly';
             self::$_fieldsAttributes['idNotificationType'] = 'readonly';
             self::$_fieldsAttributes['name'] = 'readonly';
             self::$_fieldsAttributes['title'] = 'readonly';
@@ -282,14 +283,18 @@ class Notification extends SqlElement {
       $theCurrentDate = $currentDate->format('Y-m-d');
       
       // Where for retrieve notifications
-      $where  = "notification.idStatusNotification = 1";
-      $where .= " AND notification.idle = 0";
-      $where .= " AND notification.idUser = $userId";
-      $where .= " AND notification.notificationDate <= '$theCurrentDate'";
-      $where .= " AND IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1=1),notification.notificationTime<TIME(NOW()))";
+      $where  = "idStatusNotification = 1";
+      $where .= " AND idle = 0";
+      $where .= " AND idUser = $userId";
+      //$where .= " AND notificationDate <= '$theCurrentDate'";
+      //$where .= " AND IF(ISNULL(notificationTime) OR notificationDate<DATE(NOW()),(1=1),notificationTime<TIME(NOW()))";
+      $where .= " AND (      notificationDate<'$theCurrentDate'";
+      $where .= "       OR ( notificationDate='$theCurrentDate' AND notificationTime IS NULL )";
+      $where .= "       OR ( notificationDate='$theCurrentDate' AND notificationTime IS NOT NULL AND notificationTime<TIME(NOW()) )";
+      $where .= "     )";
       
       if (!is_null($idMenu)) {
-          $where .= " AND notification.idMenu = $idMenu";
+          $where .= " AND idMenu = $idMenu";
       }
       
       // List of unread notifications for connected user and notificationDate <= current date

@@ -1792,6 +1792,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   $phpmailer->isSMTP (); // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer; // Specify main smtp server
   $phpmailer->Port = $paramMailSmtpPort;
+  $phpmailer->SMTPOptions = array('ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true] ); // To be applied even for not authenticated connections as phpMailer may force TLS/SSL
   if ($paramMailSmtpUsername and $paramMailSmtpPassword) {
     $phpmailer->SMTPAuth = true; // Enable SMTP authentication
     $phpmailer->Username = $paramMailSmtpUsername; // SMTP username

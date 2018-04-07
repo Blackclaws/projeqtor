@@ -49,32 +49,43 @@
         // The connected user
         $userId = getSessionUser()->id;
 
+        $n=new Notification();
+        $nTable=$n->getDatabaseTableName();
+        $nd=new NotificationDefinition();
+        $ndTable=$nd->getDatabaseTableName();
+        $t=new Type();
+        $tTable=$t->getDatabaseTableName();
+        $a=new Notifiable();
+        $aTable=$a->getDatabaseTableName();
         // Select party of SqlQuery
         $select  = "SELECT ";
-        $select .= "notification.id AS id, notification.notifiedObjectId AS idObjectNotif, ";
-        $select .= "type.name AS type, type.id as typeId, ";
-        $select .= "notifiable.name AS objectClassName, notifiable.notifiableItem AS notifiableItem, ";
-        $select .="notificationdefinition.name AS definition";
+        $select .= "$nTable.id AS id, $nTable.notifiedObjectId AS idObjectNotif, ";
+        $select .= "$tTable.name AS type, $tTable.id as typeId, ";
+        $select .= "$aTable.name AS objectClassName, $aTable.notifiableItem AS notifiableItem, ";
+        $select .= "$ndTable.name AS definition";
         
         // From party of SqlQuery
-        $from = " FROM notification ";
+        $from = " FROM $nTable ";
         
         // InnerJoin party of SqlQuery
-        $innerJoin  = "INNER JOIN type ON type.id = notification.idNotificationType ";
-        $innerJoin .= "LEFT JOIN notifiable ON notifiable.id = notification.idNotifiable ";
-        $innerJoin .= "LEFT JOIN notificationDefinition ON notificationDefinition.id = notification.idNotificationDefinition ";
+        $innerJoin  = "INNER JOIN $tTable ON $tTable.id = $nTable.idNotificationType ";
+        $innerJoin .= "LEFT JOIN $aTable ON $aTable.id = $nTable.idNotifiable ";
+        $innerJoin .= "LEFT JOIN $ndTable ON $ndTable.id = $nTable.idNotificationDefinition ";
         
         // Only unread notifications with notificationDate <= current date
         $theDate = new DateTime();
         $theCurrentDate = $theDate->format('Y').'-'.$theDate->format('m').'-'.$theDate->format('d');        
         
         // Where party of SqlQuery
-        $where  = " WHERE notification.idle=0";
-        $where .= " AND notification.idStatusNotification=$idStatusNotification";
-        $where .= " AND notification.idUser=$userId";
-        $where .= " AND notification.notificationDate<='".$theCurrentDate."' ";
-        $where .= " AND IF(ISNULL(notification.notificationTime) OR notification.notificationDate<DATE(NOW()),(1=1),notification.notificationTime<TIME(NOW()))";
-        
+        $where  = " WHERE $nTable.idle=0";
+        $where .= " AND $nTable.idStatusNotification=$idStatusNotification";
+        $where .= " AND $nTable.idUser=$userId";
+        //$where .= " AND $nTable.notificationDate<='".$theCurrentDate."' ";
+        //$where .= " AND IF(ISNULL($nTable.notificationTime) OR $nTable.notificationDate<DATE(NOW()),(1=1),$nTable.notificationTime<TIME(NOW()))";
+        $where .= " AND (      $nTable.notificationDate<'$theCurrentDate'";
+        $where .= "       OR ( $nTable.notificationDate='$theCurrentDate' AND $nTable.notificationTime IS NULL )";
+        $where .= "       OR ( $nTable.notificationDate='$theCurrentDate' AND $nTable.notificationTime IS NOT NULL AND $nTable.notificationTime<TIME(NOW()) )";
+        $where .= "     )";
         // Order By party of SqlQuery
         $orderBy = "ORDER BY typeId asc, objectClassName asc, definition asc";
         
