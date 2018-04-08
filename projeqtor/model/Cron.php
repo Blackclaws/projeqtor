@@ -662,10 +662,9 @@ class Cron {
   		
   		$body=$mail->textPlain;
   		$bodyHtml=$mail->textHtml;
-  		if (! $body and $bodyHtml) {		
+  		if (!$body and $bodyHtml) {		
   		  $toText=new Html2Text($bodyHtml);
   			$body=$toText->getText();
-  			$body=strip_tags($bodyHtml);
   		}
   		$class=null;
   		$id=null;
@@ -681,11 +680,59 @@ class Cron {
   		} else {	
   			continue;
   		}
-  		// Message
-  		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
+  		// Search end of Message (this is valid for text only, treatment of html messages would require other code)  		
+  		$posEndMsg=strpos($body,"\r\n>"); // Search for Thunderbird and Gmail
+  		if ($posEndMsg) {
+  		  $posEndMsg=strrpos(substr($body,0,$posEndMsg-20), "\r\n");
+  		  /*if ($posEndMsg) {
+  		    $posEndMsg=strrpos(substr($body,0,$posEndMsg-20), "\r\n");
+  		    $previousLine=strrpos(substr($body,0,$posEndMsg-20), "\r\n");
+  		    if ($previousLine and preg_match('/<.*?@.*?>/',substr($body,$previousLine,$posEndMsg-$previousLine+1)) ) {
+  		      $posEndMsgNew=strrpos(substr($body,0,$posEndMsg-2), "\r\n");
+  		      if ($posEndMsgNew) $posEndMsg=$posEndMsgNew;
+  		    }
+  		  }*/
+  		} else {
+  		  $posEndMsg=strpos($body,"\n>");
+  		  /*if ($posEndMsg) {
+  		    $posEndMsg=strrpos(substr($body,0,$posEndMsg-20), "\n");
+  		    $previousLine=strrpos(substr($body,0,$posEndMsg-20), "\n");
+  		    if ($previousLine and preg_match('/<.*?@.*?>/',substr($body,$previousLine,$posEndMsg-$previousLine+1)) ) {
+  		      $posEndMsgNew=strrpos(substr($body,0,$posEndMsg-2), "\n");
+  		      if ($posEndMsgNew) $posEndMsg=$posEndMsgNew;
+  		    }
+  		  }*/ 
+  		}
+  		if (!$posEndMsg) { // Search for outlook
+  		  preg_match('/<.*?@.*?> [\r\n]/',$body, $matches);
+  		  if (count($matches)>0) {
+  		    $posEndMsg=strpos($body, $matches[0]);
+  		    $posEndMsg=strrpos(substr($body,0,$posEndMsg-2), "\r\n");
+  		  }
+  		}
+  		if (!$posEndMsg) {
+  		  $posEndMsg=strpos($body,"\r\n\r\n\r\n");
+  		  if (!$posEndMsg) {
+  		    $posEndMsg=strpos($body,"\n\n\n");
+  		  }
+  		}
+
   		if ($posEndMsg) {
   		  $msg=substr($body,0,$posEndMsg);
   		}
+  		// Remove unexpected "tags" // Valid as lon as we treat emails as text
+  		$msg=preg_replace('/<mailto.*?\>/','',$msg);
+  		$msg=preg_replace('/<http.*?\>/','',$msg);
+  		$msg=preg_replace('/<#[A-F0-9\-]*?\>/','',$msg);
+  		$msg=str_replace(" \r\n","\r\n",$msg);
+  		$msg=str_replace(" \r\n","\r\n",$msg);
+  		$msg=str_replace("\r\n\r\n\r\n","\r\n\r\n",$msg);
+  		$msg=str_replace("\r\n\r\n\r\n","\r\n\r\n",$msg);
+  		$msg=str_replace(" \n","\n",$msg);
+  		$msg=str_replace(" \n","\n",$msg);
+  		$msg=str_replace("\n\n\n","\n\n",$msg);
+  		$msg=str_replace("\n\n\n","\n\n",$msg);
+  		
   		// Sender
   		$sender=$mail->fromAddress;
   		$crit=array('email'=>$sender);
