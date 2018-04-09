@@ -112,7 +112,7 @@
       $note->refId=$id;
       $note->idUser=getSessionUser()->id;
       $note->creationDate=date('Y-m-d H:i:s');
-      $note->note=i18n('mailSentTo',array($dest))." :<br/>".$message;
+      $note->note=i18n('mailSentTo',array($dest))." :<br/>".nl2br($message);
       $note->save();
     }
     echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';

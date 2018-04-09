@@ -98,7 +98,7 @@
                     	  $arrayDisabled[]="CheckNotifications";
                     	}
 // END - ADD BY TABARY - NOTIFICATION SYSTEM     
-                    	if (isset($arrayTimes['CheckMailGroup']) and MAil::isMailGroupingActiv() and $arrayTimes['CheckMailGroup']!=-1) {
+                    	if (isset($arrayTimes['CheckMailGroup']) and Mail::isMailGroupingActiv() and $arrayTimes['CheckMailGroup']!=-1) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckMailGroup', array($arrayTimes['CheckMailGroup'],Mail::getMailGroupPeriod())) . '</i>';
                     	}else {
                     	  $arrayDisabled[]="CheckMailGroup";
