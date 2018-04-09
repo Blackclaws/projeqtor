@@ -85,7 +85,9 @@ class TicketSimpleMain extends TicketMain {
     "doneDateTime"=>"nobr,readonly",
     "solved"=>"nobr,readonly",
     "delayReadOnly"=>"hidden",
-    "idAccountable"=>"hidden"
+    "idAccountable"=>"hidden",
+    "idMilestone"=>"hidden",
+    "isRegression"=>"hidden"
   );  
     
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
