@@ -253,21 +253,22 @@ class DocumentMain extends SqlElement {
   		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
   	}
   	//gautier
-  	if($this->idDocumentDirectory != "" and $this->idProject != ""){
+  	if( trim($this->idDocumentDirectory) != "" and trim($this->idProject) != ""){
   	   $dir = new DocumentDirectory($this->idDocumentDirectory);
   	   $proj = new Project($dir->idProject,true);
   	   $subProjList= $proj->getSubProjectsList(false);
   	   $subProjList = array_flip($subProjList);
   	   array_push($subProjList, $dir->idProject);
-  	   if($dir->idProject != "" and !in_array($this->idProject, $subProjList)){
+  	   if(trim($dir->idProject) != "" and !in_array($this->idProject, $subProjList)){
   	     $result.="<br/>" . i18n("projectMustBeIn", array($proj->name));
   	   }
   	}
-  	if($this->idProject == "" and $this->idDocumentDirectory != ""){
+  	if(trim($this->idProject) == "" and trim($this->idDocumentDirectory) != ""){
   	  $dir = new DocumentDirectory($this->idDocumentDirectory);
   	  $proj = new Project($dir->idProject,true);
-  	  //sqlList getnamefromId
-  	  $result.="<br/>" . i18n("projectMustBeIn", array($proj->name));
+  	  if(trim($dir->idProject) ) {
+  	    $result.="<br/>" . i18n("projectMustBeIn", array($proj->name));
+  	  }
   	}
   	//end
   	$defaultControl=parent::control();
