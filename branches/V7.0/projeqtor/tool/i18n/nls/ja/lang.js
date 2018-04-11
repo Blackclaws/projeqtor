@@ -1373,6 +1373,7 @@ enableRefreshDone: "自動更新を有効化しました。<br />レポートお
 end: "終了",
 enterArchiveMode: "Enter the Archive Mode",
 enterRealAsPlanned: "enter real as planned",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "環境",
 eolDefault: "デフォルトフォーマット (&#13;&#10;)",
 eolPostfix: "Postfix2.1未満用の特定フォーマット (&#10;)",

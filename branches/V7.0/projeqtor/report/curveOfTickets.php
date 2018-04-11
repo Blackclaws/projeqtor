@@ -250,9 +250,9 @@ $height=400;
 $graph = new pImage ( $width, $height ,$dataSet);
 $graph->Antialias = FALSE;
 
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $graph->setGraphArea ( 40, 30, $width - 140, $height-80 );
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 
 $formatGrid=array("Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
     "DrawYLines"=>array(0), "DrawXLines"=>false,
@@ -272,7 +272,7 @@ $graph->drawAreaChart ();
 // Finish the graph
 
 /* title */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $graph->drawLegend($width-120,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,

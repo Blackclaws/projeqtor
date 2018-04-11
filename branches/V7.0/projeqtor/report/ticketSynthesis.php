@@ -436,7 +436,7 @@ function drawsynthesisGraph($scope, $lst) {
   $pieChart = new pPie($graph,$dataSet);
   
   /* Set the default font */
-  $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8));
+  $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8));
   $formSettings = array("R"=>255,"G"=>255,"B"=>255,"Alpha"=>0,"Surrounding"=>0);
   $graph->setShadow(TRUE,$formSettings);
   $pieChart->draw3DPie(90,($hgt/2)+7,array("Border"=>FALSE));

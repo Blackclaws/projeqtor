@@ -129,11 +129,11 @@ $graph->drawRoundedRectangle(5,5,$width+$legendWidth-8,$height-5,5,$settings);
 $graph->drawRectangle(0,0,$width+$legendWidth-1,$height-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 
 /* title */
 $graph->drawText(500,22,i18n('connectionsNumberPerDay'),array("FontSize"=>10,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 
 /* Draw the scale */
 $graph->setGraphArea(60,50,$width-20,$height-$legendHeight);
@@ -183,13 +183,13 @@ $graph2->drawRoundedRectangle(5,5,$width+$legendWidth-8,$height-5,5,$settings);
 $graph2->drawRectangle(0,0,$width+$legendWidth-1,$height-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$graph2->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+$graph2->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 
 /* title */
 // A FAIRE 
 $graph2->drawText(500,22,i18n('connectionsDurationPerDay'),array("FontSize"=>10,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 //////////
-$graph2->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$graph2->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $graph2->drawLegend($width+30,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
