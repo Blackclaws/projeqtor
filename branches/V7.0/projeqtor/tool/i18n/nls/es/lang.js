@@ -1373,6 +1373,7 @@ enableRefreshDone: "Se ha activado la actualización automática. <br /> Los inf
 end: "Fin",
 enterArchiveMode: "Ingrese el Modo de Archivo",
 enterRealAsPlanned: "ingresar real como planeado",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "Entorno",
 eolDefault: "Formato por defecto (&#13;&#10;)",
 eolPostfix: "Formato especifico para o Postfix < 2.1 (&#10;)",

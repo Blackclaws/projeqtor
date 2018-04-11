@@ -236,7 +236,7 @@ $graph->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 /* Add a border to the picture */
 $graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 /* Set the default font */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
 /* Draw the scale */
 $dataSet->setAxisUnit(0,' '.$currency.' ');
 $graph->setGraphArea(70,50,$graphWidth-200,$graphHeight-30);
@@ -251,7 +251,7 @@ $dataSet->setPalette("real",array("R"=>120,"G"=>140,"B"=>250,"Alpha"=>255));
 $dataSet->setPalette("validated",array("R"=>255,"G"=>255,"B"=>255,"Alpha"=>255));
 $format=array( "BorderR"=>0,"BorderG"=>0,"BorderB"=>0);
 $graph->drawBarChart($format);
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>12,"R"=>50,"G"=>50,"B"=>50));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>12,"R"=>50,"G"=>50,"B"=>50));
 $name=$kpi->name;
 if ($idProject) {
   $prj=new Project($idProject,true);
@@ -259,7 +259,7 @@ if ($idProject) {
 }
 $name=wordwrap($name,50);
 $graph->drawText($graphWidth/2,25,$name,array("FontSize"=>12,"Align"=>TEXT_ALIGN_MIDDLEMIDDLE));
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
 $graph->drawLegend($graphWidth-180,55,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
@@ -395,7 +395,7 @@ $graph->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 $graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
 
 /* Draw the scale */
 $dataSet->setAxisUnit(0,($displayAsPct)?"%  ":"  ");
@@ -404,7 +404,7 @@ $graph->drawFilledRectangle(55,70,$graphWidth-20,$graphHeight-60,array("R"=>230,
 
 $graph->Antialias = TRUE;
 if ($showThreshold) {
-  $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
+  $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>50,"G"=>50,"B"=>50));
   $cpt=0;
   foreach ($thresholds as $th) {
     if ($th->thresholdValue==0) continue;
@@ -441,7 +441,7 @@ if (count($arrDates)<$maxPlotted) {
   $graph->drawPlotChart();
 }
 //if ($showToday) $graph->drawXThreshold(array($indexToday),array("Alpha"=>70,"Ticks"=>0));
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>12,"R"=>50,"G"=>50,"B"=>50));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>12,"R"=>50,"G"=>50,"B"=>50));
 $name=i18n('kpiProgress').' '.$kpi->name;
 if ($idProject) {
   $prj=new Project($idProject,true);

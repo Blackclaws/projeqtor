@@ -1373,6 +1373,7 @@ enableRefreshDone: "Автоматичне оновлення було увім�
 end: "кінець",
 enterArchiveMode: "Вхід в режим Архіву",
 enterRealAsPlanned: "введіть дійсний&#44; як і заплановано",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "Середовище",
 eolDefault: "формат за замовчуванням (&#13;&#10;)",
 eolPostfix: "особливий формат для Postfix < 2.1 (&#10;)",

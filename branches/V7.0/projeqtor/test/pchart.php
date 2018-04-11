@@ -34,11 +34,11 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"St
 $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the picture title */
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>6));
 $myPicture->drawText(10,13,"drawStepChart() - draw a step chart",array("R"=>255,"G"=>255,"B"=>255));
 
 /* Write the chart title */
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>11));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>11));
 $myPicture->drawText(250,55,"Average temperature",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Draw the scale and the 1st chart */
@@ -46,7 +46,7 @@ $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
 $myPicture->drawScale(array("DrawSubTicks"=>TRUE,"LabelShowBoundaries"=>TRUE,"ScaleModeAuto"=>TRUE));
 $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>6));
 $myPicture->drawStepChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"ScaleModeAuto"=>TRUE));
 $myPicture->setShadow(FALSE);
 

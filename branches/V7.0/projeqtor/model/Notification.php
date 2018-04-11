@@ -115,7 +115,7 @@ class Notification extends SqlElement {
             self::$_fieldsAttributes['idNotificationDefinition'] = 'readonly';
 //            self::$_fieldsAttributes['idMenu'] = 'readonly';
             self::$_fieldsAttributes['idNotifiable'] = 'readonly,nobr';
-            self::$_fieldsAttributes['notifiedObjectId'] = 'readonly';
+            self::$_fieldsAttributes['notifiedObjectId'] = 'readonly,size1/3';
             self::$_fieldsAttributes['idNotificationType'] = 'readonly';
             self::$_fieldsAttributes['name'] = 'readonly';
             self::$_fieldsAttributes['title'] = 'readonly';

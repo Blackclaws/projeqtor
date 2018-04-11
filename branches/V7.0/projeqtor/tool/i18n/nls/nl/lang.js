@@ -1373,6 +1373,7 @@ enableRefreshDone: "Automatisch verversen is ingeschakeld. <br /> Rapporten zull
 end: "einde",
 enterArchiveMode: "Enter the Archive Mode",
 enterRealAsPlanned: "enter real as planned",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "Stamgegevens",
 eolDefault: "standaard formaat (&#13;&#10;)",
 eolPostfix: "specifiek formaat voor Postfix < 2.1 (&#10;)",

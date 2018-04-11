@@ -434,7 +434,7 @@ $graph->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 $graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /* Draw the scale */
 $graph->setGraphArea(60,30,$graphWidth-55,$graphHeight-(($scale=='month')?100:75));
@@ -498,14 +498,14 @@ $dataSet->setSerieDrawable("completedTasks",true);
 $dataSet->setSerieDrawable("completedTasksPlanned",true);
 
 if ($legend=="top") {
-  $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10.8,"R"=>100,"G"=>100,"B"=>100));
+  $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10.8,"R"=>100,"G"=>100,"B"=>100));
   $graph->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
       "R"=>255,"G"=>255,"B"=>255,"Alpha"=>0,
       "FontR"=>55,"FontG"=>55,"FontB"=>55,
       "Margin"=>0));
   $graph->drawText($graphWidth/2,50,i18n("reportBurndownChart"),array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 } else {
-  $graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>11,"R"=>100,"G"=>100,"B"=>100));
+  $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>11,"R"=>100,"G"=>100,"B"=>100));
   $graph->drawLegend($graphWidth-350,50,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
       "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
       "FontR"=>55,"FontG"=>55,"FontB"=>55,

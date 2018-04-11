@@ -500,10 +500,10 @@ $myPicture->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /* title */
-// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 // $myPicture->drawLegend(10,10,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_BOX ,
 //     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
 //     "FontR"=>55,"FontG"=>55,"FontB"=>55,
@@ -520,7 +520,7 @@ $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>1
 // $myPicture->drawScale($formatGrid);
 
 
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $myPicture->drawLegend($graphWidth-160,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
@@ -589,7 +589,7 @@ $myPicture->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 $myPicture->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /*title */
 
@@ -598,7 +598,7 @@ $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verda
 
 
  
-$myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
+$myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8,"R"=>100,"G"=>100,"B"=>100));
 $myPicture->drawLegend($graphWidth-160,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,
@@ -615,7 +615,7 @@ $myPicture->drawText($graphWidth/2,20,i18n("reportPerformanceNumber"),array("Fon
 //  );
 //  $myPicture->drawScale($formatGrid);
  
-// $myPicture->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
+// $myPicture->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
 // $myPicture->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
 //     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
 //     "FontR"=>55,"FontG"=>55,"FontB"=>55,

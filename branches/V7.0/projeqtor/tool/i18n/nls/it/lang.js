@@ -1373,6 +1373,7 @@ enableRefreshDone: "L'aggiornamento automatico è stato attivato. <br /> I repor
 end: "fine",
 enterArchiveMode: "Entrare in Modalità Archivio",
 enterRealAsPlanned: "immettere il reale così come pianificato",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "Ambiente",
 eolDefault: "formato di default (&#13;&#10;)",
 eolPostfix: "specific format for Postfix < 2.1 (&#10;)",

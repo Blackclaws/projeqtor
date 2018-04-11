@@ -1373,6 +1373,7 @@ enableRefreshDone: "Automatsko osvježavanje je omogućeno. <br /> Izvješća ć
 end: "kraj",
 enterArchiveMode: "Ulazite u Archive Mode",
 enterRealAsPlanned: "Unesite stvarno kako je planirano",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "Master Data",
 eolDefault: "standardni format (&#13; &#10;)",
 eolPostfix: "specifična format za Postfix <2&#44;1 (&#10;",
