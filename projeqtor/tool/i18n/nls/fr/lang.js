@@ -1373,6 +1373,7 @@ enableRefreshDone: "L'actualisation automatique de l'écran a été activée.<br
 end: "fin",
 enterArchiveMode: "Entrer en mode Archive",
 enterRealAsPlanned: "Entrer réel comme plannifié",
+enterRealAsPlannedNeedsPlannedWork: "Veuillez activer la case à cocher &#34;montrer le travail planifié&#34; pour activer cette fonctionnalité",
 Environment: "Environnement",
 eolDefault: "format par défaut (&#13;&#10;)",
 eolPostfix: "format spécifique pour Postfix < 2.1 (&#10;)",

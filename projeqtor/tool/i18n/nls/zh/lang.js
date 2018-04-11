@@ -1373,6 +1373,7 @@ enableRefreshDone: "Automatic refresh has been enabled.<br />Reports will scroll
 end: "结束",
 enterArchiveMode: "Enter the Archive Mode",
 enterRealAsPlanned: "enter real as planned",
+enterRealAsPlannedNeedsPlannedWork: "The checkbox &#34;show planned work&#34; must be checked to enable this feature",
 Environment: "环境",
 eolDefault: "default format (&#13;&#10;)",
 eolPostfix: "specific format for Postfix < 2.1 (&#10;)",

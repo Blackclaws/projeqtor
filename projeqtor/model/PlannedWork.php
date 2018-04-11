@@ -360,7 +360,7 @@ class PlannedWork extends GeneralWork {
         }
         $plan->plannedStartDate=$startPlan;
         $plan->plannedEndDate=$endPlan;
-        if (!$endPlan or !$startPlan) {
+        if ( (!$endPlan or !$startPlan) and isset($reseved[$artype][$plan->id]['assignments']) ) {
           foreach ($reseved[$artype][$plan->id]['assignments'] as $idAssignment) {
             $dates='';
             if (!isset($reserved['W'][$plan->id]['start']) or ! $reserved['W'][$plan->id]['start'] ) {

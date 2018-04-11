@@ -302,7 +302,7 @@ $width = 1000;
 
 //$graph = new pChart ( $width, 230 );
 $graph = new pImage( $width, 230,$dataSet );
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 //$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
 // $graph->setColorPalette ( 0, 200, 100, 100 );
 // $graph->setColorPalette ( 1, 100, 200, 100 );
@@ -331,7 +331,7 @@ $graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
 //$graph->drawGraphArea ( 252, 252, 252 );
 //$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
 $graph->setGraphArea(40,30,$width-140,160);
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 $formatGrid=array("SkippedGridTicks"=>0,
     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
     "DrawYLines"=>array(0), "DrawXLines"=>true,
@@ -357,7 +357,7 @@ if ($nbDay < 30){
 $graph->drawAreaChart();
 
 // Finish the graph
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 //$graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
 
 $graph->drawLegend($width - 100,35,array("R"=>240,"G"=>240,"B"=>240));

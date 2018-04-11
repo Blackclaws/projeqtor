@@ -84,4 +84,10 @@ function hex2rgb($hex) {
   //return implode(",", $rgb); // returns the rgb values separated by commas
   return $rgb; // returns an array with the rgb values
 }
+
+function getFontLocation($font) {
+  $current=dirname(__FILE__,2);
+  debugLog($current);
+  return "$current/external/pChart2/fonts/$font.ttf";
+}
 ?>

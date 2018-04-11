@@ -321,7 +321,7 @@ $graph->drawFilledRectangle(0,0,$graphWidth,$graphHeight,$Settings);
 /* Add a border to the picture */
 $graph->drawRectangle(0,0,$graphWidth-1,$graphHeight-1,array("R"=>150,"G"=>150,"B"=>150));
 /* Set the default font */
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>9,"R"=>100,"G"=>100,"B"=>100));
 
 /* Draw the scale */
 $graph->setGraphArea(90,30,$graphWidth-220,$graphHeight-(($scale=='month' or $scale=='quarter')?100:75));
@@ -351,7 +351,7 @@ if ($showToday) {
   $pos=($td-$min)/($max-$min)*(count($arrLabel)-1);
   $graph->drawXThreshold(array($pos),array("Alpha"=>70,"Ticks"=>0));
 }
-$graph->setFontProperties(array("FontName"=>"../external/pChart2/fonts/verdana.ttf","FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
 $graph->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
     "R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,
     "FontR"=>55,"FontG"=>55,"FontB"=>55,

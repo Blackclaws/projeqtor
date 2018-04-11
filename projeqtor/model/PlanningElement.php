@@ -1753,7 +1753,7 @@ class PlanningElement extends SqlElement {
     if ($restrictType) {
       $list=array($restrictType);
     } else {
-      $list=Self::getMilestonableList();
+      $list=self::getMilestonableList();
     }
     $critMilestone=array('idMilestone'=>$this->refId,'idle'=>'0');
     if ($restrictType && $restrictId) {

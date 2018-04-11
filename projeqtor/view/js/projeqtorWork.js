@@ -453,16 +453,25 @@ function submitWorkPeriod(action) {
 }
 
 function enterRealAsPlanned(nbDays){   
+  if (! dojo.byId('listShowPlannedWork').checked) {
+    showAlert(i18n('enterRealAsPlannedNeedsPlannedWork'));
+    return;
+  }
+  var cptUpdates=0;
   var nblines = dojo.byId("nbLines").value;
-    for (line=1;line<=nblines;line++) {
-      for (day=1; day<=nbDays; day++) { 
-        var workValue = dijit.byId('workValue_' + line + '_' + day);
-        var plannedValue = dojo.byId('plannedValue_' + line + '_' + day);
-        if(plannedValue){        
-          workValue.set('value',plannedValue.getAttribute("data-value"));
-        }
+  for (line=1;line<=nblines;line++) {
+    for (day=1; day<=nbDays; day++) { 
+      var workValue = dijit.byId('workValue_' + line + '_' + day);
+      var plannedValue = dojo.byId('plannedValue_' + line + '_' + day);
+      if(plannedValue){        
+        workValue.set('value',plannedValue.getAttribute("data-value"));
+        cptUpdates++;
       }
     }
+  }
+  if (cptUpdates==0) {
+    showAlert(i18n('messageNoImputationChange'));
+  }
 }
 
 function checkCapacity() {
