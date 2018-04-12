@@ -1443,7 +1443,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vRightTable+=vHighlightSpecificDays;
 
-      var editDependencyDiv='<div style="position:fixed;width:193px;height:138px;display:none;z-index:99999999999;" id="editDependencyDiv" class="editDependencyDiv">';    
+      var editDependencyDiv='<div style="position:fixed;width:229px;height:138px;display:none;z-index:99999999999;" id="editDependencyDiv" class="editDependencyDiv">';    
       editDependencyDiv+='</div>';      
       editDependencyDiv+='<input type="hidden" name="rightClickDependencyId" id="rightClickDependencyId" />';
   
@@ -2286,8 +2286,8 @@ function dependencyRightClick(evt){
   }else{
     divNode.style.top=evt.pageY+"px";
   }
-  if (evt.pageX+editDependencyDivWidth>screenWidth-10){
-    divNode.style.left=(screenWidth-10-editDependencyDivWidth)+"px";
+  if (evt.pageX+editDependencyDivWidth>screenWidth-20){
+    divNode.style.left=(screenWidth-20-editDependencyDivWidth)+"px";
   } else{
     divNode.style.left=((evt.pageX)+7)+"px";
   }

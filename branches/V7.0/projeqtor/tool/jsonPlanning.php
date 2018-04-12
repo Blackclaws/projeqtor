@@ -648,7 +648,8 @@
         	$title="Q";
         	$title.=$arrayQuarter[substr($day,5,2)];
         	$title.=" ".substr($day,0,4);
-        	$span=3*numberOfDaysOfMonth($day);
+        	//$span=3*numberOfDaysOfMonth($day);
+        	$span=numberOfDaysOfMonth($day)+numberOfDaysOfMonth(addMonthsToDate($day,1))+numberOfDaysOfMonth(addMonthsToDate($day,2));
         }
         echo '<td class="reportTableHeader" colspan="' . $span . '">';
         echo $title;
@@ -857,7 +858,7 @@
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
           if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:center;' . $compStyle . '" >' . $line["priority"]  . '</TD>' ;
-          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" ><span class="nobr">' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '<span class="nobr"></TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" ><span class="nobr">' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '</span></TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';

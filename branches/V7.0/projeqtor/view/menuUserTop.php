@@ -189,6 +189,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
       </div>
     </td>
   </tr>
+<?php } // End of if ($showUserParameters)?>
   <tr style="height:40px">
       <td>
       <div class="pseudoButton"  title="<?php echo i18n('help');?>" onClick="showHelp();">
@@ -231,5 +232,4 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
       </div>
     </td>
   </tr>
-<?php } // End of if ($showUserParameters)?>
 </table>
