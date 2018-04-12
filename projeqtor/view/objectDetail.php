@@ -3512,7 +3512,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
 }
 
 function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
-  global $cr, $print, $user, $browserLocale;
+  global $cr, $print, $user, $browserLocale, $outMode;
   $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle==1) {
     $canUpdate=false;
@@ -3549,7 +3549,13 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     if ($line->check01) {
-      echo '<td class="noteData" style="width:30%;border-right:0; text-align:right" title="'.htmlEncode($line->title).'">'.'<div style="position: relative;">'.htmlEncode($line->name).'<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">'.htmlEncode($line->sortOrder).'</div>'.' : '.'</div></td>';
+      echo '<td class="noteData" style="width:30%;border-right:0; text-align:right" title="'.htmlEncode($line->title).'">';
+      if ($outMode!='pdf') echo '<div style="position: relative;">';
+      echo htmlEncode($line->name);
+      if ($outMode!='pdf') echo '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">'.htmlEncode($line->sortOrder).'</div>';
+      echo ' : ';
+      if ($outMode!='pdf') echo '</div>';
+      echo '</td>';
       echo '<td class="noteData" style="width:'.(($print)?'65':'60').'%;border-left:0;">';
       echo '<table witdh="100%"><tr>';
       for ($i=1; $i<=5; $i++) {
