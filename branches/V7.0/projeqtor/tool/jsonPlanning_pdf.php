@@ -459,7 +459,7 @@
           $title="Q";
           $title.=$arrayQuarter[substr($day,5,2)];
           $title.=" ".substr($day,0,4);
-          $span=3*numberOfDaysOfMonth($day);
+          $span=numberOfDaysOfMonth($day)+numberOfDaysOfMonth(addMonthsToDate($day,1))+numberOfDaysOfMonth(addMonthsToDate($day,2));
         }
         echo '<td class="reportTableHeader" colspan="' . $span . '" style="width:'.(($right_size*100)/$topUnits).'%;padding:0px;margin:0px;">';
         echo $title;
