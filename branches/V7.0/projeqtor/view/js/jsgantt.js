@@ -2281,13 +2281,17 @@ function dependencyRightClick(evt){
   divNode.style.display="block";
   divNode.style.left=((evt.pageX)+7)+"px";
   divNode.style.top=evt.pageY+"px";
+  var streamWitdh=0;
+  if (dojo.byId("detailRightDiv")) {
+    streamWitdh=parseInt(dojo.byId("detailRightDiv").style.width)+5;
+  }
   if(evt.pageY>divRightGanttChartHeight+divRightGanttChartTop-editDependencyDivHeight){
     divNode.style.top=(divRightGanttChartHeight+divRightGanttChartTop-editDependencyDivHeight)+"px";
   }else{
     divNode.style.top=evt.pageY+"px";
   }
-  if (evt.pageX+editDependencyDivWidth>screenWidth-20){
-    divNode.style.left=(screenWidth-20-editDependencyDivWidth)+"px";
+  if (evt.pageX+editDependencyDivWidth>screenWidth-20-streamWitdh){
+    divNode.style.left=(screenWidth-20-editDependencyDivWidth-streamWitdh)+"px";
   } else{
     divNode.style.left=((evt.pageX)+7)+"px";
   }
