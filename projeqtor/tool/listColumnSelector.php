@@ -40,7 +40,7 @@ foreach ($listColumns as $col) {
 	} else {
 		echo '<div style="width:100%;" class="dojoDndItem" id="listColumnSelectorId'.htmlEncode($col->id).'" dndType="planningColumn">';
 		if ($col->attribute=='id') {
-		  echo '<span style="float:left;width:14px;">&nbsp;</span>';
+		  echo '<span ><img style="width:6px" src="css/images/iconNoDrag.gif" />&nbsp;&nbsp;</span>';
 		} else {
 		  echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
 		}
