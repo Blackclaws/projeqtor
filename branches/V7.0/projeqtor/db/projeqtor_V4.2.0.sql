@@ -173,7 +173,7 @@ CREATE INDEX quotationClient ON `${prefix}quotation` (idClient);
 CREATE INDEX quotationContact ON `${prefix}quotation` (idContact);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
-('Quotation', 'Fixe Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
+('Quotation', 'Fixed Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
 ('Quotation', 'Per day', '20', '0', '1', '0', '0', '0', '0', '1', '1', '');
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
