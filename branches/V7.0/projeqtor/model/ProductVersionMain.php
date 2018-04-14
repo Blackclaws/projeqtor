@@ -96,7 +96,7 @@ class ProductVersionMain extends Version {
     <th field="name" width="20%" >${versionName}</th>
     <th field="nameProduct" width="15%" >${productName}</th>
     <th field="nameProductVersionType" width="10%" >${type}</th>
-    <th field="nameStatus" width="10%" >${idStatus}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="plannedEisDate" width="7.5%" formatter="dateFormatter">${plannedEis}</th>
     <th field="realEisDate" width="7.5%" formatter="dateFormatter">${realEis}</th>
     <th field="plannedEndDate" width="7.5%" formatter="dateFormatter">${plannedEnd}</th>

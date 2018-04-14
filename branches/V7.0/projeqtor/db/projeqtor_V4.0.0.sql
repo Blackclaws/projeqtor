@@ -52,7 +52,7 @@ CREATE INDEX commandStatus ON `${prefix}command` (idStatus);
 CREATE INDEX commandType ON `${prefix}command` (idCommandType);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
-('Command', 'Fixe Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
+('Command', 'Fixed Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
 ('Command', 'Per day', '20', '0', '1', '0', '0', '0', '0', '1', '1', '');
 
