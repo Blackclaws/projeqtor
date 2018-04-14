@@ -68,7 +68,7 @@ class ComponentMain extends ProductOrComponent {
     <th field="name" width="35%" >${componentName}</th>
     <th field="designation" width="25%" >${identifier}</th>
     <th field="nameComponentType" width="15%" >${type}</th>
-    <th field="nameStatus" width="15%" >${idStatus}</th>  
+    <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 

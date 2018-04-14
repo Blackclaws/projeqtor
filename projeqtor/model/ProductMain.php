@@ -76,7 +76,7 @@ class ProductMain extends ProductOrComponent {
     <th field="name" width="25" >${productName}</th>
     <th field="designation" width="20%" >${designation}</th>
     <th field="nameProductType" width="10%" >${type}</th>
-    <th field="nameStatus" width="10%" >${idStatus}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameProduct" width="15%" >${isSubProductOf}</th>
     <th field="nameClient" width="10%" >${clientName}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
