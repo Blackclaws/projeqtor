@@ -87,7 +87,6 @@ function hex2rgb($hex) {
 
 function getFontLocation($font) {
   $current=dirname(__FILE__,2);
-  debugLog($current);
   return "$current/external/pChart2/fonts/$font.ttf";
 }
 ?>
