@@ -127,6 +127,7 @@ class Work extends GeneralWork {
                   'idResource'=>$this->idResource,
                   'workDate'=>$this->workDate);
       $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
+      $needReplanOtherProjects=(count($list)==0)?true:false;
       while ($additionalWork>0 and count($list)>0) {
         $pw=array_shift($list);
         if ($pw->work > $additionalWork) {
@@ -138,8 +139,20 @@ class Work extends GeneralWork {
           $pw->delete();
         }
         if (count($list)==0 and isset($crit['workDate']) ) {
+          $needReplanOtherProjects=true;
           unset($crit['workDate']);
           $list=$pw->getSqlElementsFromCriteria($crit, null, null, 'workDate asc');
+        }
+      }
+      if ($needReplanOtherProjects) {
+        $where="idResource=$this->idResource and workDate='$this->workDate' and idProject!=$this->idProject";
+        $list=$pw->getSqlElementsFromCriteria(null, null, $where, 'workDate asc');
+        $arrayProjTreated=array();
+        foreach ($list as $pw) {
+          if (!isset($arrayProjTreated[$pw->idProject])) {
+            $arrayProjTreated[$pw->idProject]=$pw->idProject;
+            Project::setNeedReplan($pw->idProject);
+          }
         }
       }
     }   

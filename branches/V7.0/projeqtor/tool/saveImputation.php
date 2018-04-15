@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
- * Save some information to session (remotely).
+ * Save real work allocation.
  */
 
 require_once "../tool/projeqtor.php";
@@ -42,6 +42,7 @@ if ($rangeType=='week') {
   $nbDays=7;
 }
 
+// Save main comment
 if (isset($_REQUEST['imputationComment'])) {
 	$comment=$_REQUEST['imputationComment'];
 	$period=new WorkPeriod();
@@ -61,9 +62,18 @@ if (isset($_REQUEST['imputationComment'])) {
   }
 }
 
-ini_set('max_input_vars', 50*$nbLines+20);
-ini_set('suhosin.post.max_vars', 50*$nbLines+20);
-ini_set('suhosin.request.max_vars', 50*$nbLines+20);
+// No need : these vars cannot be changed with ini_set
+//ini_set('max_input_vars', 50*$nbLines+20);
+//ini_set('suhosin.post.max_vars', 50*$nbLines+20);
+//ini_set('suhosin.request.max_vars', 50*$nbLines+20);
+// TODO : try and dynamically create .htaccess on directory when reading data (we yould know max)
+//        but must pay attention to only increase existing never decrease 
+//        (2 users may access on same time, one with many lines, one with few lines  
+//php_value max_input_vars 4000
+//php_value suhosin.get.max_vars 4000
+//php_value suhosin.post.max_vars 4000
+//php_value suhosin.request.max_vars 4000
+
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
 	$imputable=$_REQUEST['imputable'][$i];
