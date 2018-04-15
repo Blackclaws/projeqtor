@@ -1263,7 +1263,7 @@ class PlannedWork extends GeneralWork {
       $pe->latestStartDate=$cp['node'][$plan['start']]['late'];
       $pe->latestEndDate=$cp['node'][$plan['end']]['late'];
       $profile=(isset($pe->_profile))?$pe->_profile:'ASAP';
-      if ($profile=='RECW' or $profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="QUART") {
+      if ($profile=='RECW' or $profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="QUART" or count($pe->_directPredecessorList)==0 or !$pe->elementary) {
         $pe->isOnCriticalPath=0;
       } else if ( ($pe->latestStartDate<=$pe->plannedStartDate and $pe->latestEndDate<=$pe->plannedEndDate and $plan['mode']!='reverse') 
           or ( $plan['mode']=='reverse' and $pe->latestStartDate<$pe->plannedStartDate) ) {

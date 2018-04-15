@@ -183,7 +183,11 @@ class WorkflowMain extends SqlElement {
         $profileIdList.=$profileCode . " ";
       }     
       $nbProfiles=count($profileList);
-      $result .= '<div style="border: 1px solid #A0A0A0;overflow: auto; width: ' . $detailWidth . '">';
+      $height="100%";
+      if (RequestHandler::isCodeSet("destinationHeight")) {
+        $height=(intval(RequestHandler::getValue("destinationHeight"))-100)."px";
+      }
+      $result .= '<div style="border: 1px solid #A0A0A0;overflow: auto; width: ' . $detailWidth . '; height:'.$height.'">';
       $result .= '<table style="zoom:100%;">';
 
       $wsListArray=$this->getWorkflowstatusArray();
