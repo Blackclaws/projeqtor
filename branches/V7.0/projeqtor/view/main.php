@@ -608,7 +608,14 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
             aboutMessage="<?php echo $aboutMessage;?>";
-            aboutMessage+='Dojo '+dojo.version+'<br/><br/>';
+            aboutMessage+='<br/>'+i18n('externalLibrary')+'<br/><br/>';
+            aboutMessage+='Dojo '+dojo.version+'<br/>';
+            aboutMessage+='CK Editor 4.8 '+'<br/>';
+            aboutMessage+='phpMailer 6.0.3 '+'<br/>';
+            aboutMessage+='pdfMake 0.1.36 '+'<br/>';
+            aboutMessage+='html2canvas 1.0.0 '+'<br/>';
+            aboutMessage+='pChart2 2.0 '+'<br/>';
+            aboutMessage+='html2pdf 5.1.0 '+'<br/><br/>';
           </script>
           <?php 
             $width=300;

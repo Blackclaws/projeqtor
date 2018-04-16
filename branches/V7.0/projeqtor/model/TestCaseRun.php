@@ -202,6 +202,8 @@ class TestCaseRun extends SqlElement {
     }
     $session=new TestSession($this->idTestSession);
     $session->updateDependencies();
+    $test=new TestCase($this->idTestCase);
+    $test->updateDependencies();
     return $result;
   }
   

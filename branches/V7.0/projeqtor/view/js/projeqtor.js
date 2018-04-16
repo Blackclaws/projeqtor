@@ -1252,7 +1252,7 @@ function finalizeMessageDisplay(destination, validationType) {
         }
         // hideWait();
       }
-    } else {
+    } else { // ! validationType
       formInitialize();
       // refresh the grid to reflect changes
       var lastSaveId = dojo.byId('lastSaveId');
@@ -3448,10 +3448,10 @@ function updateBillTotal() { // Also used for Qutation !!!
   cancelRecursiveChange_OnGoingChange = false;
 }
 
-function copyDirectLinkUrl() {
-  dojo.byId('directLinkUrlDiv').style.display = 'block';
-  dojo.byId('directLinkUrlDiv').select();
-  setTimeout("dojo.byId('directLinkUrlDiv').style.display='none';", 5000);
+function copyDirectLinkUrl(scope) {
+  dojo.byId('directLinkUrlDiv'+scope).style.display = 'block';
+  dojo.byId('directLinkUrlDiv'+scope).select();
+  setTimeout("dojo.byId('directLinkUrlDiv"+scope+"').style.display='none';", 5000);
   return false;
 }
 
