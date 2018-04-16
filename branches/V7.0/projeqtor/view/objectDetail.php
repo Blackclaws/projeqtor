@@ -1542,7 +1542,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
         // id is only visible
         $ref=$obj->getReferenceUrl();
         echo '<span class="roundedButton" style="padding:1px 5px 5px 5px;font-size:8pt; height: 50px; color:#AAAAAA;'.$specificStyle.'" >';
-        echo '  <a  href="'.$ref.'" onClick="copyDirectLinkUrl();return false;"'.' title="'.i18n("rightClickToCopy").'" style="cursor: pointer;">';
+        echo '  <a  href="'.$ref.'" onClick="copyDirectLinkUrl(\'Detail\');return false;"'.' title="'.i18n("rightClickToCopy").'" style="cursor: pointer;">';
         echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;'.$specificStyle.'">#</span>';
         echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
@@ -1552,7 +1552,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
         echo '    </span>';
         echo '  </a>';
         echo '</span>';
-        echo '<input readOnly type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
+        echo '<input readOnly type="text" onClick="this.select();" id="directLinkUrlDivDetail" style="display:none;font-size:9px; color: #000000;position :absolute; top: 6px; left: 150px; border: 0;background: transparent;width:300px;" value="'.$ref.'" />';
         $alertLevelArray=$obj->getAlertLevel(true);
         $alertLevel=$alertLevelArray['level'];
         $colorAlert="background-color:#FFFFFF";
