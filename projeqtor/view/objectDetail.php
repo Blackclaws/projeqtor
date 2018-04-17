@@ -2063,7 +2063,7 @@ else if ($col=='idEmailTemplate') {
         if ((substr($col, 7)=='Version' and SqlElement::is_a(substr($col, 2), 'Version')) or ($col=='idOriginalVersion' or $col=='idOriginalProductVersion' or $col=='idOriginalComponentVersion') or ($col=='idTargetVersion' or $col=='idTargetProductVersion' or $col=='idTargetComponentVersion')) {
           $versionType=substr($col, 2);
           $otherVersion='_Other'.$versionType;
-          if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {
+          if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and !$readOnly and !$hide and $canUpdate and !$obj->idle) {
             $hasOtherVersion=true;
             $fieldWidth-=28;
           }
@@ -2877,6 +2877,8 @@ function drawOrigin($list, $refType, $refId, $obj, $col, $print) {
 
 function drawHistoryFromObjects($refresh=false) {
   global $cr, $print, $treatedObjects, $comboDetail;
+  SqlElement::$_cachedQuery['Note']=array();
+  SqlElement::$_cachedQuery['Attachment']=array();
   if ($comboDetail) {
     return;
   }
@@ -2981,6 +2983,19 @@ function drawHistoryFromObjects($refresh=false) {
     }
     if ($hist->isWorkHistory and !$showWorkHistory) {
       $hide=true;
+    }
+    if (substr($hist->colName,0,6)=='|Note|' or substr($hist->colName,0,12)=='|Attachment|' ) {
+      $expl=explode('|',$hist->colName);
+      if (count($expl)==3) {
+        $clSub=$expl[1];
+        $idSub=$expl[2];
+        $sub=new $clSub($idSub);
+        if (property_exists($sub,'idPrivacy') and $sub->idPrivacy==3 and $sub->idUser!=getCurrentUserId()) {
+          $hide=true;
+        } else if (property_exists($sub,'idPrivacy') and $sub->idPrivacy==2 and property_exists($sub,'idTeam') and $sub->idTeam!=getSessionUser()->idTeam) {
+          $hide=true;
+        }
+      }
     }
     if (!$hide) {
       echo '<tr>';

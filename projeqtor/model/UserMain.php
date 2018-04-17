@@ -58,6 +58,7 @@ class UserMain extends SqlElement {
   public $dontReceiveTeamMails;
   public $isLdap;
   public $apiKey;
+  public $idTeam;
 
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();
@@ -93,7 +94,8 @@ class UserMain extends SqlElement {
                                           "crypto"=>'hidden',
   		                                    "cookieHash"=>'hidden',
   		                                    "passwordChangeDate"=>'hidden',
-  		                                    "apiKey"=>"readonly"
+  		                                    "apiKey"=>"readonly",
+                                          'idTeam'=>'hidden'
   );  
   
   public $_calculateForColumn=array("name"=>"coalesce(fullName,concat(name,' #'))");
