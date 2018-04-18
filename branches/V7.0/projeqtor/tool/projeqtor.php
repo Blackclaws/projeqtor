@@ -982,14 +982,26 @@ function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen=
             $crit.='(1=1)';
             break;
         case 'orga' :
+          if (Organization::getUserOrganization()) {
             $crit.="idOrganization = ". Organization::getUserOrganization();
+          } else {
+            $crit.="idOrganization is null";
+          }
             break;
         case 'subOrga' :
-            $crit.="idOrganization in (". Organization::getUserOrganizationList().")";
+            if (Organization::getUserOrganization()) {
+              $crit.="idOrganization in (". Organization::getUserOrganizationList().")";
+            } else {
+              $crit.="idOrganization is null";
+            }
             break;
         case 'team' :
             $aff=new Affectable(getSessionUser()->id,true);
-            $crit.="idTeam='$aff->idTeam'";
+            if ($aff->idTeam) {
+              $crit.="idTeam=$aff->idTeam";
+            } else {
+              $crit.="idTeam is null";
+            }
             break;
         default :
             traceLog("Error on getUserVisibleResourcesList() : Resource::getVisibilityScope returned something different from 'all', 'team', 'orga', 'subOrga'");
