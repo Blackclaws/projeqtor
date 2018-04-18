@@ -1128,9 +1128,11 @@ static function addProjectToListLienProject($listLienProject, $listAllProject, $
   if ($idProject != -1) {
     foreach ( $listLienProject [$idProjectOld] as $idLP => $line ) {
       $find=false;
-      foreach ( $listLienProject [$idProject] as $idLP2 => $line2 ) {
-        if ($listLienProject [$idProject] [$idLP2] == $listLienProject [$idProjectOld] [$idLP])
-          $find=true;
+      if (isset($listLienProject [$idProject])) {
+        foreach ( $listLienProject [$idProject] as $idLP2 => $line2 ) {
+          if ($listLienProject [$idProject] [$idLP2] == $listLienProject [$idProjectOld] [$idLP])
+            $find=true;
+        }
       }
       if (!$find)
         $listLienProject [$idProject] []=$listLienProject [$idProjectOld] [$idLP];
