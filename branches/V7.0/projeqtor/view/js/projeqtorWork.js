@@ -51,7 +51,7 @@ function workOpenCloseLine(line, scope) {
     if (wbs.length <= wbsLine.length ) {
       break;
     } 
-    if (wbsTop.substr(0,wbsLineTop.length)!=wbsLineTop) {
+    if (wbsTop.substr(0,wbsLine.length)!=wbsLine) {
       break;
     }
     if (action=="close") {
