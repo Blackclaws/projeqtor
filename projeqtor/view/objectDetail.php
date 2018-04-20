@@ -3280,10 +3280,10 @@ function drawNotificationsLinkedToObject($obj, $unreadOnly=true, $refresh=false)
   echo '<table style="width:100%;">';
   echo '<tr>';
   $listClass='Notification';
-  echo '<td class="linkHeader" style="width:'.(($print)?'20':'15').'">'.i18n($listClass).'</td>';
+  echo '<td class="linkHeader" style="width:10%">'.i18n('colId').'</td>';
   echo '<td class="linkHeader" style="width:50%">'.i18n('colName').'</td>';
   echo '<td class="linkHeader" style="width:20%">'.i18n('colType').'</td>';
-  echo '<td class="linkHeader" style="width:30%">'.i18n('colIdStatus').'</td>';
+  echo '<td class="linkHeader" style="width:20%">'.i18n('colIdStatus').'</td>';
   echo '</tr>';
   
   foreach ($list as $notif) {
@@ -3293,23 +3293,23 @@ function drawNotificationsLinkedToObject($obj, $unreadOnly=true, $refresh=false)
     $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu'.$listClass, 'read', $notif)=="YES")?true:false;
     echo '<tr>';
     $classCompName=i18n($listClass);
-    echo '<td class="linkData" style="white-space:nowrap;width:'.(($print)?'20':'15').'%"><table><tr><td style="vertical-align:top">&nbsp;'.'#'.$notif->id.'</td></tr></table>';
-    echo '</td>';
+    echo '<td class="linkData" style="white-space:nowrap;width:10%">&nbsp;#'.$notif->id.'</td>';
     $goto="";
     if (!$print and $canGoto) {
       $goto=' onClick="gotoElement('."'".$listClass."','".htmlEncode($notif->id)."'".');" style="cursor: pointer;" ';
     }
-    echo '<td class="linkData" '.$goto.' style="position:relative;">';
+    echo '<td class="linkData" '.$goto.' style="position:relative;width:50%">';
     echo htmlEncode($notificationDefinition->name);
     echo '</td>';
-    echo '<td class="linkData" style="position:relative;">';
-    echo colorNameFormatter(i18n(SqlList::getNameFromId('Type', $notif->idNotificationType))."#split#".SqlList::getFieldFromId('Type', $notif->idNotificationType, 'color')).'</td>';
+    echo '<td class="linkData" style="position:relative;width:20%;">';
+    echo colorNameFormatter(i18n(SqlList::getNameFromId('Type', $notif->idNotificationType))."#split#".SqlList::getFieldFromId('Type', $notif->idNotificationType, 'color'));
     echo '</td>';
+    $changeStatus='';
     if (!$print and $canUpdate) {
       $changeStatus=' onClick="changeStatusNotification('."'".htmlEncode($notif->id)."','".htmlEncode($notif->idStatusNotification)."'".');" style="cursor:pointer;" ';
     }
-    echo '<td class="linkData" '.$changeStatus.' style="position:relative;">';
-    echo colorNameFormatter(i18n(SqlList::getNameFromId('StatusNotification', $notif->idStatusNotification))."#split#".SqlList::getFieldFromId('StatusNotification', $notif->idStatusNotification, 'color')).'</td>';
+    echo '<td class="linkData" '.$changeStatus.' style="position:relative;width:20%;">';
+    echo colorNameFormatter(i18n(SqlList::getNameFromId('StatusNotification', $notif->idStatusNotification))."#split#".SqlList::getFieldFromId('StatusNotification', $notif->idStatusNotification, 'color'));
     echo '</td>';
     echo '</tr>';
   }
