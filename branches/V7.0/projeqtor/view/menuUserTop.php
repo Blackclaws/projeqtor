@@ -93,7 +93,7 @@ $showUserParameters=securityCheckDisplayMenu($menu->id,substr($menu->name,4));
 
 <table style="width:99%;" id="userMenuPopup">
   <tr style="height:40px">
-    <td rowspan="2" style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"><?php if ($imgUrl) { echo '<img style="border-radius:40px;height:80px" src="'.$imgUrl.'" />'; } else { ?>
+    <td <?php if ($showUserParameters) echo'rowspan="2"';?> style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"><?php if ($imgUrl) { echo '<img style="border-radius:40px;height:80px" src="'.$imgUrl.'" />'; } else { ?>
             <div style="overflow-x:hidden;position: relative; width:80px;height:80px;border-radius:40px; border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" 
               onClick="addAttachment('file');" title="<?php echo i18n('addPhoto');?> "></br> </br></br><?php echo i18n('addPhoto');?> </div> 
    <?php } ?></td>
@@ -175,7 +175,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
     </td>
   </tr>
   <tr style="height:40px">
-    <td rowspan="4" style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"></td>
+    <td style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"></td>
       <td>
       <div class="pseudoButton"  title="<?php echo i18n('changePassword');?>" onClick="requestPasswordChange();">
         <table style="width:100%">
@@ -191,6 +191,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
   </tr>
 <?php } // End of if ($showUserParameters)?>
   <tr style="height:40px">
+    <td style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"></td>
       <td>
       <div class="pseudoButton"  title="<?php echo i18n('help');?>" onClick="showHelp();">
         <table style="width:100%">
@@ -205,6 +206,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
     </td>
   </tr>
   <tr style="height:40px">
+    <td style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"></td>
     <td>
       <div class="pseudoButton"  title="<?php echo i18n('keyboardShortcuts');?>" onClick="showHelp('ShortCut');">
         <table style="width:100%">
@@ -219,6 +221,7 @@ if ($showUserParameters) { // Do not give access to user parameters if locked ?>
     </td>
   </tr>
   <tr style="height:40px">
+    <td style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"></td>
     <td>
       <div class="pseudoButton"  title="<?php echo i18n('aboutMessage');?>" onClick="showAbout(aboutMessage);">
         <table style="width:100%">
