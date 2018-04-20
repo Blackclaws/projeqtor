@@ -51,7 +51,7 @@ class Mutex
     		$prefix=Parameter::getGlobalParameter('paramDbPrefix');
     		$rs=Sql::query("LOCK TABLE ".$prefix."mutex IN ACCESS EXCLUSIVE MODE");
     		$rs=Sql::query("SELECT * FROM ".$prefix."mutex WHERE name='".$this->lockname."'");
-    		if (count($rs)==0) {
+    		if (!is_array($rs) or count($rs)==0) {
     			$rs=Sql::query("INSERT INTO ".$prefix."mutex (name) VALUES ('".$this->lockname."')");
     		} 
     	}
