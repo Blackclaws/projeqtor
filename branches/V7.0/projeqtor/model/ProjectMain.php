@@ -662,7 +662,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     
     // SAVE
     $result = parent::save();
-    
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     } 
@@ -691,17 +690,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
        
     // Dispatch Organization 
     if ($this->idOrganization) {
-      $subProj=$this->getSubProjects(false,false); // Must refresh subProject, to be sure to get latest values (for instance when moving project, retreive correct WBS)
-      foreach ($subProj as $sp) {
-        if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$old->idOrganization) ) {
-          $sp->idOrganization=$this->idOrganization;
-          $sp->organizationInherited=1;
-          $resSp=$sp->save();
-        } else if ($sp->organizationInherited) {
-          $sp->organizationInherited=0;
-          $sp->save();
-        }
-      }
+      $this->dispatchOrganizationToSubProjects($old->idOrganization);
     }
     
     if ($this->idle) {
@@ -758,7 +747,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $purg=$plw->purge($clause);
     }
     
-    //parent::save(); // DANGER : must not save again, would erase updates from PlanningElement (sortOrder)
     return $result; 
 
   }
@@ -768,6 +756,20 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     return $result;
   }
   
+  public function dispatchOrganizationToSubProjects($oldOrganization) {
+    $subProj=$this->getSubProjects(false,false); // Must refresh subProject, to be sure to get latest values (for instance when moving project, retreive correct WBS)
+    foreach ($subProj as $sp) {
+      if ( ! $sp->idOrganization or ($sp->organizationInherited and $sp->idOrganization==$oldOrganization) ) {
+        $sp->idOrganization=$this->idOrganization;
+        $sp->organizationInherited=1;
+        $resSp=$sp->simpleSave();
+        $sp->dispatchOrganizationToSubProjects($oldOrganization);
+      } else if ($sp->organizationInherited) {
+        $sp->organizationInherited=0;
+        $sp->simpleSave();
+      }
+    }
+  }
   // Ticket #1175
   public function updateValidatedWork() {
   	if (! $this->id) return;

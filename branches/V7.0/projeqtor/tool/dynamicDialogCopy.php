@@ -372,7 +372,7 @@ if($copyType=="copyObjectTo"){
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToWithActivityPrice" style="width:90%;text-align: right;"><?php echo i18n("copyToWithActivityPrice") ?>&nbsp;:&nbsp;</label>
                 <?php $isCheckedActivityPrice=Parameter::getUserParameter('isCheckedActivityPrice'.$objectClass);?>
-               <div id="copyToWithActivityPrice" name="copyToWithActivityPrice" dojoType="dijit.form.CheckBox" <?php if ($isCheckedProjectAssignment=='true') echo " checked ";?> 
+               <div id="copyToWithActivityPrice" name="copyToWithActivityPrice" dojoType="dijit.form.CheckBox" <?php if ($isCheckedActivityPrice=='true') echo " checked ";?> 
                     type="checkbox">
                  <script type="dojo/method" event="onChange" >
                   saveDataToSession('isCheckedActivityPrice<?php echo $objectClass;?>',((this.checked)?true:false),true);
