@@ -227,7 +227,7 @@
       </span>
     </td>
     <td width="" style="text-align:center;">
-      <div style="position:absolute;font-size:130%;top:5px;left:50%;width:300px;margin-left:-150px;z-index:-1"><?php htmlDisplayDatabaseInfos();?></div>
+      <div style="position:absolute;font-size:130%;top:5px;left:50%;width:600px;margin-left:-300px;z-index:-1"><?php htmlDisplayDatabaseInfos();?></div>
     </td>    
     <?php if(isNotificationSystemActiv() and securityCheckDisplayMenu(null,'Notification')) {?>
     <td  width="63px" style=""> 
