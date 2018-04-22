@@ -13,9 +13,9 @@
 Activity Stream
 ---------------
 
-This screen is devoted to display notes.
+This screen is dedicated to display of notes on several items.
 
-To default you will see all visible notes for each items.
+By default you will see all visible notes on all items on which you have visibility.
 
 There are filters to refine the search.
 
