@@ -2162,6 +2162,7 @@ function selectRowById(gridName, id, tryCount) {
             var element = null;
             for (var x = 0; x < indexLength; x++) {
               element = grid._by_idx[x];
+              if (!element) continue;
               if (parseInt(element.item.id) == id) {
                 grid.selection.setSelected(x, true);
                 break;
