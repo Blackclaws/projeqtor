@@ -4189,12 +4189,19 @@ function drawTicketsList($obj, $refresh=false) {
     $contact=new Contact();
     $crit=array('idClient'=>$obj->id);
     $listContacts=$contact->getSqlElementsFromCriteria($crit);
-    $clauseWhere='idContact in (';
-    foreach ($listContacts as $contact) {
-      $clauseWhere.=$contact->id.', ';
+    if (count($listContacts)>0) {
+      $clauseWhere='idContact in (';
+      foreach ($listContacts as $contact) {
+        $clauseWhere.=$contact->id.', ';
+      }
+      $clauseWhere=substr($clauseWhere, 0, -2);
+      $clauseWhere.=') and idle=0';
+    } else {
+      $clauseWhere='1=0';
     }
-    $clauseWhere=substr($clauseWhere, 0, -2);
-    $clauseWhere.=') and idle=0';
+    if (property_exists('Ticket','idClient')) {
+      $clauseWhere='idClient='.Sql::fmtId($obj->id).' and idle=0';
+    }
     $ticket=new Ticket();
     $list=$ticket->getSqlElementsFromCriteria(null, false, $clauseWhere);
   } else if (get_class($obj)=='Product' or get_class($obj)=='Component') {
