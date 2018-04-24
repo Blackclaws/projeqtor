@@ -86,7 +86,14 @@ function hex2rgb($hex) {
 }
 
 function getFontLocation($font) {
-  $current=dirname(__FILE__,2);
+  $current=dirname_recursive(__FILE__,2);
   return "$current/external/pChart2/fonts/$font.ttf";
+}
+function dirname_recursive($path, $count=1){
+  if ($count > 1){
+    return dirname(dirname_recursive($path, --$count));
+  }else{
+    return dirname($path);
+  }
 }
 ?>
