@@ -1367,7 +1367,7 @@ function saveLink() {
   if (dojo.byId("linkRef2Id").value == "")
     return;
   var fixedClass = (dojo.byId('linkFixedClass'))?dojo.byId('linkFixedClass').value:'';
-  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link'+fixedClass);
+  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link');
   dijit.byId('dialogLink').hide();
 }
 
@@ -1384,7 +1384,7 @@ function removeLink(linkId, refType, refId, refTypeName, fixedClass) {
     if(fixedClass && fixedClass==refType){
       loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
           +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
-          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link'+fixedClass);
+          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link');
     } else {
       loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
           +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
