@@ -1,0 +1,7 @@
+_build\html\.buildinfo
+_build\html\genindex.html
+_build\html\Glossaire.html
+_build\html\Glossary.html
+_build\html\index.html
+_build\html\objects.inv
+_build\html\result.txt
