@@ -1,0 +1,287 @@
+.. |iconNotPlanned| image:: images/iconNotPlanned.png
+   :alt: Icon not planned
+   
+.. |iconNoteAdd| image:: images/GUI/iconNoteAdd.png
+   :alt: Icon not planned
+   
+.. |iconenablecalendar| image:: images/iconEnableCalendar.png
+   :alt: Icon not planned
+
+.. |iconPlanned| image:: images/iconPlanned.png
+   :alt: Icon planned
+
+.. |iconPassed| image:: images/iconPassed.png
+   :alt: Icon passed
+
+.. |iconFailed| image:: images/iconFailed.png
+   :alt: Icon failed
+
+.. |iconBlocked| image:: images/iconBlocked.png
+   :alt: Icon blocked
+
+.. |buttonAdd| image:: images/smallButtonAdd.png
+   :alt: Button add
+
+.. |buttonEdit| image:: images/smallButtonEdit.png
+   :alt: Button edit
+
+.. |iconGoto| image:: images/iconGoto.png
+   :alt: Button icon goto 
+
+.. |iconSave| image:: images/iconSave.png
+   :alt: Button icon save 
+
+.. |iconPrint| image:: images/iconPrint.png
+   :alt: Button icon print
+
+.. |iconLink| image:: images/smallButtonLink.png
+   :alt: Icon link
+
+.. |iconDownload| image:: images/smallButtonDownload.png
+   :alt: Icon download 
+
+.. |iconSwitch| image:: images/smallButtonSwitch.png
+   :alt: Button small button switch 
+
+.. |buttonIconHelp| image:: images/iconHelp.png
+   :alt: Button icon help
+
+.. |Note| image:: images/note.png
+   :alt: Note
+
+.. |Description| image:: images/description.png
+   :alt: Icon description
+
+.. |Prerequisite| image:: images/prerequisite.png
+   :alt: Icon prerequisite
+ 
+.. |Result| image:: images/result.png
+   :alt: Icon result
+
+.. |buttonIconParameter| image:: images/iconParameter.png
+   :alt: Button icon parameter 
+
+.. |buttonIconDocDir| image:: images/iconDocumentDirectory.png
+   :alt: Button icon document directory
+
+.. |buttonIconToday| image:: images/iconToday.png
+   :alt: Button icon Today
+
+.. |buttonIconReportFavorite| image:: images/iconReportsFavorite.png
+   :alt: Button icon report favorite
+
+.. |buttonIconDisplay| image:: images/display.png
+   :alt: Button icon display
+
+.. |buttonIconSearch| image:: images/buttonIconSearch.png
+   :alt: button icon search
+
+.. |buttonIconActiveFilter| image:: images/iconActiveFilter.png
+   :alt: Button icon active filter
+
+.. |buttonIconDrag| image:: images/iconDrag.png
+   :alt: Button icon drag
+
+.. |buttonIconFilter| image:: images/iconFilter.png
+   :alt: button icon filter
+
+.. |comboArrowDown| image:: images/comboArrowDown.png
+   :alt: Button combo arrow down
+
+.. |buttonIconColumn| image:: images/buttonIconColumn.png
+   :alt: Button icon column
+
+.. |buttonIconPrint| image:: images/buttonIconPrint.png
+   :alt: icon print button
+
+.. |buttonIconPdf| image:: images/buttonIconPdf.png
+   :alt: icon PDF button
+
+.. |buttonIconCsv| image:: images/buttonIconCSV.png
+   :alt: Button icon CSV
+
+.. |buttonIconNew| image:: images/buttonIconNew.png
+   :alt: Button icon new
+   
+.. |buttonIconStatus| image:: images/buttonIconStatus.png
+   :alt: Button icon status
+
+.. |buttonCollapseOpen| image:: images/buttonCollapseOpen.png
+   :alt: Button Collapse open
+
+.. |buttonCollapseClose| image:: images/buttonCollapseClosed.png
+   :alt: Button Collapse close
+ 
+.. |iconHideStream| image:: images/iconHideStream.png
+   :alt: icon Hide Stream  
+ 
+.. |buttonIconSave| image:: images/buttonIconSave.png
+   :alt: Button icon save
+
+.. |buttonIconCopy| image:: images/buttonIconCopy.png
+   :alt: Button icon copy
+
+.. |buttonIconUndo| image:: images/buttonIconUndo.png
+   :alt: button icon undo
+
+.. |buttonIconDelete| image:: images/buttonIconDelete.png
+   :alt: Button icon delete
+
+.. |buttonIconRefresh| image:: images/buttonIconRefresh.png
+   :alt: Button icon refresh
+
+.. |buttonIconEmail| image:: images/buttonIconEmail.png
+   :alt: Button icon email
+
+.. |buttonIconMultipleUpdate| image:: images/buttonIconMultipleUpdate.png
+   :alt: Button icon multiple update
+
+.. |buttonIconBackNavigation| image:: images/buttonIconBackNavigation.png
+   :alt: Button icon back navigation
+
+.. |buttonIconForwardNavigation| image:: images/buttonIconForwardNavigation.png
+   :alt: Button icon forward navigation
+
+.. |buttonIconSelect| image:: images/buttonIconSelect.png
+   :alt: Button icon select
+ 
+.. |buttonIconShowHistory| image:: images/buttonIconShowHistory.png
+   :alt: Button icon show history
+
+.. |buttonIconShowChecklist| image:: images/buttonIconShowChecklist.png
+   :alt: Button icon show checklist
+
+.. |yes| image:: images/buttonIconSelect.png
+   :alt: Yes icon
+
+.. |no| image:: images/buttonIconDelete.png
+   :alt: No icon
+
+.. |arrowLeft| image:: images/left.png
+   :alt: Arrow left
+
+.. |arrowRight| image:: images/right.png
+   :alt: Arrow right
+
+.. |statusStart| image:: images/statusStart.png
+   :alt: Status start
+
+.. |statusStartKO| image:: images/statusStartKO.png
+   :alt: Status start KO
+
+.. |statusFinish| image:: images/statusFinish.png
+   :alt: Status finish
+
+.. |statusFinishKO| image:: images/statusFinishKO.png
+   :alt: Status finish KO
+
+.. |buttonQuitMultiMode| image:: images/buttonQuitMultipleUpdateMode.png
+   :alt: button quit multiple update mode
+
+.. |closeIcon| image:: images/close.png
+   :alt: close icon
+
+.. |minusButton| image:: images/minusButton.png
+   :alt: minus button
+
+.. |plusButton| image:: images/plusButton.png
+   :alt: plus button
+
+
+.. |calculatePlanning| image:: images/plan.png
+   :alt: calculate planning button
+
+
+.. |storePlannedDates| image:: images/buttonStorePlannedDates.png
+   :alt: store planned dates button
+
+.. |msProject| image:: images/mpp.png
+   :alt: MS Project button
+
+.. |createNewItem| image:: images/createNewItem.png
+   :alt: create new item button
+
+.. |dndLink| image:: images/dndLink.png
+   :alt: DND link
+
+.. |calendarRed| image:: images/calendarRed.png
+   :alt: red calendar
+
+.. |calendarWhite| image:: images/calendarWhite.png
+   :alt: white calendar
+
+.. |calendarYellow| image:: images/calendarYellow.png
+   :alt: yellow calendar
+
+.. |defaultUserThumb| image:: images/thumb.png
+   :alt: Default user thumbnail
+
+.. |privateThumb| image:: images/private.png
+   :alt: private thumbnail
+
+.. |teamThumb| image:: images/team.png
+   :alt: team thumbnail
+
+.. |unShareFilter| image:: images/share.png
+   :alt: unshare filter
+
+.. |sharedFilter| image:: images/shared.png
+   :alt: shared filter
+
+
+.. |pointingHandCursor| image:: images/pointingHandCursor.png
+   :alt: pointing hand cursor
+
+
+.. |one| image:: images/one.png
+   :alt: One
+   :scale: 30
+
+.. |two| image:: images/two.png
+   :alt: Two
+   :scale: 30
+
+.. |three| image:: images/three.png
+   :alt: Three
+   :scale: 30
+
+.. |four| image:: images/four.png
+   :alt: Four
+   :scale: 30
+
+.. |five| image:: images/five.png
+   :alt: Five
+   :scale: 30
+
+.. |six| image:: images/six.png
+   :alt: Six
+   :scale: 30
+
+.. |seven| image:: images/seven.png
+   :alt: Seven
+   :scale: 30
+
+.. |eight| image:: images/eight.png
+   :alt: Eight
+   :scale: 30
+
+.. |nine| image:: images/nine.png
+   :alt: Nine
+   :scale: 30
+
+.. |A| image:: images/A.png
+   :alt: A letter
+   :scale: 30
+
+.. |B| image:: images/B.png
+   :alt: B letter
+   :scale: 30
+
+.. |C| image:: images/C.png
+   :alt: C letter
+   :scale: 30
+
+.. |D| image:: images/D.png
+   :alt: D letter
+   :scale: 30
+
