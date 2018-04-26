@@ -36,14 +36,14 @@ $filter=new Filter($idFilter);
            
            <tr style="vertical-align: top;">
              <td style="width: 210px;" >
-               <input readOnly class="input" value="<?php echo $filterCriteria->dispAttribute;?>" style="width: 200px;" />
+               <input readOnly class="dijit dijitInline dijitLeft input dijitTextBox" value="<?php echo $filterCriteria->dispAttribute;?>" style="width: 200px;padding-left:10px" />
                <input type="hidden" id="idFilterAttribute<?php echo $cpt;?>" name="idFilterAttribute<?php echo $cpt;?>" value="<?php echo $filterCriteria->sqlAttribute;?>" />
              </td>
              <td style="width: 110px;">
-             	<input readOnly class="input" value="<?php echo $filterCriteria->dispOperator;?>" style="width: 100px;" />
+             	<input readOnly class="dijit dijitInline input dijitTextBox" value="<?php echo $filterCriteria->dispOperator;?>" style="width: 100px;text-align:center" />
              	<input type="hidden" id="idFilterOperator<?php echo $cpt;?>" name="idFilterOperator<?php echo $cpt;?>" value="<?php echo $filterCriteria->sqlOperator;?>" />
              </td>
-             <td style="width:410px;vertical-align:middle;">
+             <td style="width:330px;vertical-align:middle;">
                  <?php 
                  if (in_array($filterCriteria->sqlOperator, array('IN', 'NOT IN'))) {
                  	?>

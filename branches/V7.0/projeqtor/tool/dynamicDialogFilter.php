@@ -56,10 +56,11 @@ require_once "../tool/projeqtor.php";
          <input type="hidden" id="filterDataType" name="filterDataType" />
          <input type="hidden" id="filterName" name="filterName" />
          <table width="100%" style="border: 1px solid grey;">
-           <tr><td colspan="4" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
+           <tr><td colspan="5" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
            <tr style="vertical-align: top;">
              <?php //ADD qCazelles - Dynamic filter - Ticket #78?>
-           	 <td id="filterLogicalOperator" style="width: 80px;display: none" title="<?php echo i18n('helpOrInput');?>" >
+           	 <td style="width: 80px;" title="<?php echo i18n('helpOrInput');?>" >
+           	  <div id="filterLogicalOperator" style="width: 80px;display: none">
            	 	<select dojoType="dijit.form.Select"
            	 		id="orOperator" name="orOperator"
            	 		class="input" style="width: 70px;" value="0">
@@ -67,7 +68,8 @@ require_once "../tool/projeqtor.php";
            	 		<!-- BOITE DE DIALOGUE A METTRE SUR LE OR -->						<!-- TODO TODO TODO -->
            	 		<option value="0" selected><?php echo i18n('AND');?></option> <!-- TRANSLATION qCazelles -->
            	 		<option value="1"><?php echo i18n('OR');?></option>			  <!-- TRANSLATION qCazelles -->
-           	 	</select>
+           	 	</select>&nbsp;
+           	 	</div>
            	 </td>
              <?php //END ADD qCazelles - Dynamic filter - Ticket #78?>
              <td style="width: 210px;" >
@@ -96,7 +98,7 @@ require_once "../tool/projeqtor.php";
                   </script>        
                </select>
              </td>
-             <td style="width:410px;vertical-align:middle;">
+             <td style="width:328px;vertical-align:middle;">
              <?php //ADD qCazelles - Dynamic filter - Ticket #78?>
                <div id="filterDynamicParameterPane" dojoType="dijit.layout.ContentPane" region="top">
                	<input type="checkbox" id="filterDynamicParameter" name="filterDynamicParameter" value=""
@@ -105,10 +107,10 @@ require_once "../tool/projeqtor.php";
                <?php //END ADD qCazelles - Dynamic filter - Ticket #78?>
                <input id="filterValue" name="filterValue" value=""  
                  dojoType="dijit.form.TextBox" 
-                 style="width:400px" />
+                 style="width:320px" />
                <select id="filterValueList" name="filterValueList[]" value=""  
                  dojoType="dijit.form.MultiSelect" multiple
-                 style="width:400px" size="10" class="selectList"></select>
+                 style="width:325px;height:150px;" size="10" class="selectList"></select>
                <input type="checkbox" id="filterValueCheckbox" name="filterValueCheckbox" value=""  
                  dojoType="dijit.form.CheckBox" style="padding-top:7px";/> 
                <input id="filterValueDate" name="filterValueDate" value=""  
@@ -119,7 +121,7 @@ require_once "../tool/projeqtor.php";
                  dojoType="dijit.form.FilteringSelect"
                  <?php echo autoOpenFilteringSelect();?>
                  missingMessage="<?php echo i18n('valueNotSelected');?>" 
-                 style="width:400px" size="10" class="input">
+                 style="width:320px" class="input">
                   <option value="asc" SELECTED><?php echo i18n('sortAsc');?></option>
                   <option value="desc"><?php echo i18n('sortDesc');?></option>
                </select> 
