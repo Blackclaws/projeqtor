@@ -21,26 +21,18 @@ if (! $comboDetail and ! $user->_arrayFilters) {
 	$user->_arrayFiltersDetail=array();
 }
 
-if (! array_key_exists('idFilter',$_REQUEST)) {
-	throwError('idFilter parameter not found in REQUEST');
-}
-$idFilter=$_REQUEST['idFilter'];
-Security::checkValidId($idFilter);
+$idFilter=RequestHandler::getId('idFilter',true);
+$filterObjectClass=RequestHandler::getValue('filterObjectClass',true);
+if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
+if ($objectClass=='Planning') $objectClass='Activity';
+Security::checkValidClass($objectClass);
 
-if (! array_key_exists('filterObjectClass',$_REQUEST)) {
-	throwError('filterObjectClass parameter not found in REQUEST');
-}
-$filterObjectClass=$_REQUEST['filterObjectClass'];
-Security::checkValidClass($filterObjectClass);
+debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass");
 
-if (! array_key_exists('nbDynamicFilterClauses',$_REQUEST)) {
-	throwError('nbDynamicFilterClauses parameter not found in REQUEST');
-}
-$nbDynamicFilterClauses=$_REQUEST['nbDynamicFilterClauses'];
-Security::checkValidInteger($nbDynamicFilterClauses);
+$nbDynamicFilterClauses=RequestHandler::getNumeric('nbDynamicFilterClauses',true);
 
 $filter=new Filter($idFilter);
-$obj=new $filterObjectClass();
+$obj=new $objectClass();
 
 // Get existing filter info
 if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {

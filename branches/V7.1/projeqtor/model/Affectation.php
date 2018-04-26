@@ -530,6 +530,98 @@ public $_noCopy;
   	$_resourcePeriodsPerProject[$idResource][$showIdle]=$projects;
   	return $projects; 
   }
+  //gautier #ResourceTeam
+  public static function drawResourceTeamAffectation($idResource, $showIdle=false) {
+    global $print;
+    $periods=self::buildResourcePeriods($idResource,$showIdle);
+    if (count($periods)==0) return;
+    $first=reset($periods);
+    $start=$first['start'];
+    $last=end($periods);
+    $end=$last['end'];
+    $projects=array();
+    $nb=count($periods);
+    if ( ($start==self::$minAffectationDate or $end==self::$maxAffectationDate) and $nb>1) {
+      if ($start==self::$minAffectationDate) {
+        if ($end==self::$maxAffectationDate){
+          $newDur=dayDiffDates($first['end'],$last['start'])+1;
+  
+        } else {
+          $newDur=dayDiffDates($first['end'],$end)+1;
+        }
+      } else {
+        $newDur=dayDiffDates($start,$last['start'])+1;
+      }
+      $gap=ceil(max(30,$newDur)/$nb);
+      $start=($start==self::$minAffectationDate)?addDaysToDate($first['end'], $gap*(-1)):$start;
+      $end=($end==self::$maxAffectationDate)?addDaysToDate($last['start'], $gap):$end;
+    }
+    $duration=dayDiffDates($start, $end)+1;
+    $maxRate=100;
+    $lineHeight=15;
+    $cptProj=0;
+    foreach ($periods as $p) {
+      if ($p['rate']>$maxRate) $maxRate=$p['rate'];
+      foreach($p['projects'] as $idP=>$affP) {
+        if (! isset($projects[$idP])) {
+          $cptProj++;
+          $projects[$idP]=array('position'=>$cptProj,
+              'name'=>SqlList::getNameFromId('Project',$idP),
+              'color'=>SqlList::getFieldFromId('Project', $idP, 'color'));
+        }
+      }
+    }
+    $result='<div style="position:relative;height:5px;"></div>'
+        .'<div style="position:relative;width:99%; height:'.((count($projects)+1)*($lineHeight+4)+4).'px; '
+            .' border: 1px solid #AAAAAA;background-color:#FEFEFE;'
+                .'border-radius:5px; box-shadow:2px 2px 2px #888888; overflow:hidden;">';
+    foreach ($periods as $p) {
+      $len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
+      $width=($duration)?($len/$duration*100):0;
+      $left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
+      $title='['.$p['rate'].'%] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
+      foreach ($p['projects'] as $idP=>$affP) {
+        $title.="\n[".$affP.'%] '.SqlList::getNameFromId('Project',$idP);
+      }
+      $result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:3px;'
+          .' height:'.($lineHeight).'px;'
+              .' background-color:#'.(($p['rate']>100)?'FFDDDD':'EEEEFF').'; '
+                  .' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px;" ';
+      if (! $print)	$result.='title="'.$title.'" ';
+      $result.='>';
+      $result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
+          .'width:100%;text-align:center;color:#'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';">';
+      $result.=$p['rate'].'%';
+      $result.= '</div>';
+      $result.='</div>';
+    }
+    $periodsPerProject=self::buildResourcePeriodsPerProject($idResource, $showIdle);
+    foreach ($periodsPerProject as $idP=>$proj) {
+      foreach ($proj['periods'] as $p) {
+        $len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
+        $width=($len/$duration*100);
+        $left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
+        $title='['.$p['rate'].'%] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
+        $title.="\n".$projects[$idP]['name'];
+        $color=($projects[$idP]['color'])?$projects[$idP]['color']:'#EEEEEE';
+        $result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;'
+            .' top:'.(3+($lineHeight+4)*($proj['position'])).'px;'
+                .' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
+                    .' background-color:'.$color.'; '
+                        .' border:1px solid #222222;border-radius:5px" ';
+        if (! $print)	$result.='title="'.$title.'" ';
+        $result.='>';
+        $result.='<div style="position: absolute; top:0px;left:0px;width:100%;height:'.$lineHeight.'px;overflow:visible;'
+            .'color:'.htmlForeColorForBackgroundColor($color).';text-shadow:1px 1px '.$color.';white-space:nowrap;z-index:9999">';
+        $result.='['.$p['rate'].'%]&nbsp;'.$projects[$idP]['name'];
+        $result.= '</div>';
+        $result.='</div>';
+      }
+    }
+    $result.= '</div>';
+    return $result;
+  }
+  
   
   public static function drawResourceAffectation($idResource, $showIdle=false) {
   	global $print;

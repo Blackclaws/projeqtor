@@ -51,3 +51,15 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (1,188, 1000001);
 
 ALTER TABLE `${prefix}resource` ADD `isResourceTeam` int(1) UNSIGNED DEFAULT 0;
+
+CREATE TABLE `${prefix}resourceTeamAffectation` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idResourceTeam` int(12) unsigned NOT NULL,
+  `idResource` int(12) unsigned NOT NULL,
+  `rate` int(3) unsigned default null,
+  `description`  mediumtext,
+  `idle` int(1) unsigned DEFAULT 0,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

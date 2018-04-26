@@ -92,7 +92,7 @@ class ResourceMain extends SqlElement {
   private static $_databaseColumnName = array('name'=>'fullName',
                                               'userName'=>'name');
 
-  private static $_databaseCriteria = array('isResource'=>'1');
+  private static $_databaseCriteria = array('isResource'=>'1','isResourceTeam'=>'0');
   
   private static $_colCaptionTransposition = array('idRole'=>'mainRole', 'name'=>'realName'
   );
@@ -504,6 +504,17 @@ class ResourceMain extends SqlElement {
     } else if ($item=='image' and $this->id){
     	$result=Affectable::drawSpecificImage(get_class($this),$this->id, $print, $outMode, $largeWidth);
     	echo $result;
+    }
+    //gautier #resourceTeam
+    else if ($item=='affectationsResourceTeam') {
+         $resourceTeamAff = new ResourceTeamAffectation();
+         $critArray=array('idResourceTeam'=>(($this->id)?$this->id:'0'));
+         $affList=$resourceTeamAff->getSqlElementsFromCriteria($critArray, false);
+         drawAffectationsResourceTeamFromObject($affList, $this, 'ResourceTeam', false);
+      return $result;
+    } else if ($item=='affectationGraphResourceTeam') {
+      $result.=Affectation::drawResourceTeamAffectation($this->id);
+      echo $result;
     }
   }
   

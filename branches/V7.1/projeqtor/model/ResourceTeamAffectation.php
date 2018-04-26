@@ -25,29 +25,39 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Stauts defines list stauts an activity or action can get in (lifecylce).
+ * Menu defines list of items to present to users.
  */ 
 require_once('_securityCheck.php');
-class ResourceTeam extends ResourceTeamMain {
-  /** ==========================================================================
+class ResourceTeamAffectation extends SqlElement {
+
+  public $id;
+  public $idResourceTeam;
+  public $idResource;
+  public $rate;
+  public $description;
+  public $startDate;
+  public $endDate;
+  public $idle;
+  
+  
+   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
-   */
-  
-  private static $_databaseTableName = 'resourceTeam';
-  
+   */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
   }
+
   
-  /** ==========================================================================
+   /** ==========================================================================
    * Destructor
    * @return void
-   */
+   */ 
   function __destruct() {
     parent::__destruct();
   }
+  
   
 }
 ?>

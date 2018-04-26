@@ -39,6 +39,10 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
+if ($objectClass=='Planning') $objectClass='Activity';
+Security::checkValidClass($objectClass);
+debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass");
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
@@ -52,7 +56,7 @@ $crit['idProject']=null;
 $crit['parameterCode']="Filter" . $filterObjectClass;
 $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',$crit);
 if ($name) {
-  $critFilter=array("refType"=>$filterObjectClass, "name"=>$name, "idUser"=>$user->id);
+  $critFilter=array("refType"=>$objectClass, "name"=>$name, "idUser"=>$user->id);
   $filter=SqlElement::getSingleSqlElementFromCriteria("Filter", $critFilter);
   if (! $filter->id) {
     echo '<span class="messageERROR" style="z-index:999;position:relative;top:7px">' . i18n('defaultFilterError', array($name)) . '</span>';
@@ -68,7 +72,7 @@ if ($name) {
 echo '</td></tr></table>';
 Sql::commitTransaction();
 $flt=new Filter();
-$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
+$crit=array('idUser'=> $user->id, 'refType'=>$objectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
 htmlDisplayStoredFilter($filterList,$filterObjectClass);
 ?>

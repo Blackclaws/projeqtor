@@ -5228,7 +5228,111 @@ function drawProductProjectsFromObject($list, $obj, $refresh=false) {
   }
   echo '</table></td></tr>';
 }
+//gautier #resourceTeam
+function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  $pluginObjectClass='Affectation';
+  $tableObject=$list;
+  $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $listTemp=$tableObject;
+  $list=array();
+  foreach ($listTemp as $aff) {
+      $name=SqlList::getNameFromId('Resource', $aff->idResource);
+      $aff->name=$name;
+      $list[$name.'#'.$aff->id]=$aff;
+  }
+  ksort($list);
+  if ($comboDetail) {
+    return;
+  }
+  $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create')=="YES";
+  if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+    $canCreate=false;
+    $canUpdate=false;
+    $canDelete=false;
+  }
+  if ($obj->idle==1) {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
 
+  echo '<table style="width:100%">';
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam' ) {
+    $idRess=$obj->id;
+  } else {
+    $idRess=null;
+  }
+  if (!$print) {
+    echo '<td class="assignHeader" style="width:15%">';
+    if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
+        echo '<a onClick="addAffectationResourceTeam(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addAffectation').'" /> '.formatSmallButton('Add').'</a>';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:8%">'.i18n('colId').'</td>';
+  echo '<td class="assignHeader" style="width:'.(($print)?'35':'20').'%">'.i18n('colName').'</td>';
+  echo '<td class="assignHeader" style="width:13%">'.i18n('colStartDate').'</td>';
+  echo '<td class="assignHeader" style="width:13%">'.i18n('colEndDate').'</td>';
+  echo '<td class="assignHeader" style="width:12%">'.i18n('colRate').'</td>';
+
+  echo '</tr>';
+  foreach ($list as $aff) {
+    $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $aff)=="YES";
+    $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete', $aff)=="YES";
+    if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+      $canCreate=false;
+      $canUpdate=false;
+      $canDelete=false;
+    }
+    if ($obj->idle==1) {
+      $canUpdate=false;
+      $canCreate=false;
+      $canDelete=false;
+    }
+    $idleClass=($aff->idle or ($aff->endDate and $aff->endDate<$dateNow=date("Y-m-d")))?' affectationIdleClass':'';
+    $res=new Resource($aff->idResource);
+    $isResource=($res->id)?true:false;
+    $goto="";
+    $name=$aff->name;
+    $typeAffectable='Resource';
+      if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
+        $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+      }
+    if ($aff->idResource!=$name and trim($name)) {
+      echo '<tr>';
+      if (!$print) {
+        echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
+        if ($canUpdate and !$print) {
+          echo '  <a onClick="editAffectationResourceTeam('."'".htmlEncode($aff->id)."'".",'".get_class($obj)."'".",'".$type."'".",'".htmlEncode($aff->idResource)."'".",'".htmlEncode($aff->rate)."'".",'".htmlEncode($aff->idle)."'".",'".$aff->startDate."'".",'".htmlEncode($aff->endDate)."'".');" '.'title="'.i18n('editAffectation').'" > '.formatSmallButton('Edit').'</a>';
+        }
+        if ($canDelete and !$print) {
+          echo '  <a onClick="removeAffectation('."'".htmlEncode($aff->id)."'".','.(($aff->idResource==getSessionUser()->id)?'1':'0').');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
+        }
+        echo '</td>';
+      }
+      echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->id).'</td>';
+
+      echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
+      if ($aff->description and !$print) {
+        echo '<div style="float:right">'.formatCommentThumb($aff->description).'</div>';
+      }
+      echo htmlEncode($name);
+      echo '</td>';
+      echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($aff->startDate).'</td>';
+      echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($aff->endDate).'</td>';
+      echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlEncode($aff->rate).'</td>';
+      echo '</tr>';
+    }
+  }
+  echo '</table></td></tr>';
+  echo '</table>';
+}
 function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   $pluginObjectClass='Affectation';
@@ -5277,7 +5381,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if (get_class($obj)=='Project') {
     $idProj=$obj->id;
     $idRess=null;
-  } else if (get_class($obj)=='Resource' or get_class($obj)=='Contact' or get_class($obj)=='User') {
+  } else if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam'  or get_class($obj)=='Contact' or get_class($obj)=='User') {
     $idProj=null;
     $idRess=$obj->id;
   } else {

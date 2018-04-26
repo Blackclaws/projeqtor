@@ -30,6 +30,12 @@
 require_once('_securityCheck.php');
 class ResourceTeamMain extends Resource {
   // extends SqlElement, so has $id
+  
+  public $_sec_AffectationsResourceTeam;
+  public $_spe_affectationsResourceTeam;
+  public $_spe_affectationResourceTeamGraph;
+  
+  
 	  private static $_layout='
       <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
       <th field="name" width="20%">${realName}</th>
@@ -130,5 +136,6 @@ class ResourceTeamMain extends Resource {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
+  
 }
 ?>

@@ -13,6 +13,11 @@ $idFilter=$_REQUEST['idFilter'];
 Security::checkValidId($idFilter);
 
 $filter=new Filter($idFilter);
+$filterObjectClass=RequestHandler::getValue('filterObjectClass');
+if (!$filterObjectClass) $filterObjectClass=$filter->refType;
+$objectClass=$filterObjectClass;
+if ($objectClass=='Planning') $objectClass='Activity';
+Security::checkValidClass($objectClass);
 ?>
 <table xstyle="border: 1px solid grey;">
 
@@ -25,7 +30,7 @@ $filter=new Filter($idFilter);
         <div id='listDynamicFilterClauses' dojoType="dijit.layout.ContentPane" region="center" style="overflow: hidden"></div>
         <form id='dialogDynamicFilterForm' name='dialogDynamicFilterForm' onSubmit="return false;">
          <input type="hidden" id="idFilter" name="idFilter" value="<?php echo $filter->id;?>" />
-         <input type="hidden" id="filterObjectClass" name="filterObjectClass" value="<?php echo $filter->refType;?>" />
+         <input type="hidden" id="filterObjectClass" name="filterObjectClass" value="<?php echo $filterObjectClass;?>" />
          <table width="100%" style="border: 1px solid grey;">
            
            <?php
@@ -36,14 +41,14 @@ $filter=new Filter($idFilter);
            
            <tr style="vertical-align: top;">
              <td style="width: 210px;" >
-               <input readOnly class="dijit dijitInline dijitLeft input dijitTextBox" value="<?php echo $filterCriteria->dispAttribute;?>" style="width: 200px;padding-left:10px" />
+               <input readOnly class="dijit dijitInline dijitLeft input dijitTextBox" value="<?php echo $filterCriteria->dispAttribute;?>" style="width: 200px;padding:5px 10px;" />
                <input type="hidden" id="idFilterAttribute<?php echo $cpt;?>" name="idFilterAttribute<?php echo $cpt;?>" value="<?php echo $filterCriteria->sqlAttribute;?>" />
              </td>
              <td style="width: 110px;">
-             	<input readOnly class="dijit dijitInline input dijitTextBox" value="<?php echo $filterCriteria->dispOperator;?>" style="width: 100px;text-align:center" />
+             	<input readOnly class="dijit dijitInline input dijitTextBox" value="<?php echo $filterCriteria->dispOperator;?>" style="width: 100px;padding:5px 10px;text-align:center" />
              	<input type="hidden" id="idFilterOperator<?php echo $cpt;?>" name="idFilterOperator<?php echo $cpt;?>" value="<?php echo $filterCriteria->sqlOperator;?>" />
              </td>
-             <td style="width:330px;vertical-align:middle;border:1px solid red">
+             <td style="width:330px;vertical-align:middle;">
                  <?php 
                  if (in_array($filterCriteria->sqlOperator, array('IN', 'NOT IN'))) {
                  	?>
