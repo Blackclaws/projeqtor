@@ -2694,7 +2694,7 @@ function workDayDiffDates($start, $end) {
   if ($end < $start) {
     return 0;
   }
-  $duration = 0;
+  $duration = 1;
   while ( $currentDate <= $endDate ) {
     if (! isOffDay ( $currentDate )) {
       $duration ++;

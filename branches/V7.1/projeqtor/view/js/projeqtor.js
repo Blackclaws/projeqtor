@@ -177,6 +177,7 @@ function refreshJsonList(className, keepUrl) {
  * @return void
  */
 function refreshJsonPlanning() {
+  console.log("refreshJsonPlanning");
   if (dojo.byId("resourcePlanning")) {
     url = "../tool/jsonResourcePlanning.php";
     //ADD qCazelles - GANTT
@@ -746,7 +747,7 @@ function loadContent(page, destination, formName, isResultMessage,
                 dijit.byId("listFilterFilter").set("iconClass",
                     "iconActiveFilter");
               }
-              refreshJsonList(dojo.byId('objectClass').value);
+              refreshGrid(dojo.byId('objectClass').value);
             }
           }
           if (destination == "expenseDetailDiv") {
