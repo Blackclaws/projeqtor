@@ -31,8 +31,8 @@
 require_once "../tool/projeqtor.php";
 
 $id=null;
-if (array_key_exists('otherVersionId',$_REQUEST)) {
-  $id=$_REQUEST['otherVersionId'];
+if (array_key_exists('otherClientId',$_REQUEST)) {
+  $id=$_REQUEST['otherClientId'];
 }
 $id=trim($id);
 if ($id=='') {
@@ -42,29 +42,28 @@ if ($id==null) {
   throwError('linkId parameter not found in REQUEST');
 }
 Sql::beginTransaction();
-$vers=new OtherVersion($id);
-$refType=$vers->refType;
-$refId=$vers->refId;
-$scope=$vers->scope;
-$fld='id'.$vers->scope;
-$fldArray='_Other'.$vers->scope;
+$cli=new OtherClient($id);
+$refType=$cli->refType;
+$refId=$cli->refId;
+$fld='idClient';
+$fldArray='_OtherClient';
 $obj=new $refType($refId);
-$mainVers=$obj->$fld;
-$otherVers=$vers->idVersion;
+$mainClient=$obj->$fld;
+$otherClient=$cli->idClient;
 // save new main
-$obj->$fld=$otherVers;
+$obj->$fld=$otherClient;
 $result=$obj->save();
+$cli->delete();
 // save new other
-if ($mainVers) {
-  $vers=new OtherVersion();
-  $vers->refType=$refType;
-  $vers->refId=$refId;
-  $vers->scope=$scope;
-  $vers->creationDate=date('Y-m-d H:i:s');
+if ($mainClient) {
+  $cli=new OtherClient();
+  $cli->refType=$refType;
+  $cli->refId=$refId;
+  $cli->creationDate=date('Y-m-d H:i:s');
   $user=getSessionUser();
-  $vers->idUser=$user->id;
-  $vers->idVersion=$mainVers;
-  $res=$vers->save();
+  $cli->idUser=$user->id;
+  $cli->idClient=$mainClient;
+  $res=$cli->save();
 }
 // Message of correct saving
 displayLastOperationStatus($result);

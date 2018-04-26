@@ -154,7 +154,14 @@
     if ( array_key_exists('objectClient',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectClient'])!='' and property_exists($obj, 'idClient')) {
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idClient') . "=" . Sql::str($_REQUEST['objectClient']);
+        $queryWhere.= "(" . $table . "." . $obj->getDatabaseColumnName('idClient') . "=" . Sql::str($_REQUEST['objectClient']);
+        if (property_exists($obj, '_OtherClient')) {
+          $otherclient=new OtherClient();
+          $queryWhere.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "
+              ." where other.refType=".Sql::str($objectClass)." and other.refId=".$table.".id and other.idClient=".Sql::fmtId(RequestHandler::getId('objectClient'))
+              .")";
+        }
+        $queryWhere.=")";
       }
     }
     // --- Direct filter on elementable
@@ -654,6 +661,11 @@
 		      	$queryWhereTmp.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
 		      	  ." where VERS.refType=".Sql::str($objectClass)." and VERS.refId=".$table.".id and scope=".Sql::str($scope)
 		      	  ." and VERS.idVersion IN ".$critSqlValue
+		      	  .")";
+		      } else if ($crit['sql']['attribute']=='idClient' and $crit['sql']['operator']=='IN' and property_exists($objectClass, 'idClient') and property_exists($objectClass, '_OtherClient')) {
+		      	$otherclient=new OtherClient();
+		      	$queryWhereTmp.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "
+		      	  ." where other.refType=".Sql::str($objectClass)." and other.refId=".$table.".id and other.idClient IN ".$critSqlValue
 		      	  .")";
 		      }
 		      if ($crit['sql']['operator']=='NOT IN') {

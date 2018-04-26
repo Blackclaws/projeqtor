@@ -49,6 +49,7 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+$objectClass=($filterObjectClass=='Planning')?'Activity':$filterObjectClass;
 
 // Get existing filter info
 if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {
@@ -69,10 +70,10 @@ if (! $name) {
   echo htmlGetErrorMessage((i18n("messageMandatory", array(i18n("filterName")))));
   return;
 } else {
-  $crit=array("refType"=>$filterObjectClass, "name"=>$name, "idUser"=>$user->id);
+  $crit=array("refType"=>$objectClass, "name"=>$name, "idUser"=>$user->id);
   $filter=SqlElement::getSingleSqlElementFromCriteria("Filter", $crit);
   if (! $filter->id) {
-    $filter->refType=$filterObjectClass;
+    $filter->refType=$objectClass;
     $filter->name=$name;
     $filter->idUser=$user->id;
     $filter->isShared=0;
@@ -124,7 +125,7 @@ echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' .
 echo '</td></tr></table>';
 
 $flt=new Filter();
-$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
+$crit=array('idUser'=> $user->id, 'refType'=>$objectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
 htmlDisplayStoredFilter($filterList,$filterObjectClass);
 Sql::commitTransaction();

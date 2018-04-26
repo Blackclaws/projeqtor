@@ -673,6 +673,10 @@ function selectDetailItem(selectedValue, lastSavedName) {
         refreshOtherVersionList(idFldVal);
         setTimeout("dojo.byId('otherVersionIdVersion').focus()", 1000);
         enableWidget('dialogOtherVersionSubmit');
+      } else if (comboName == 'otherClientIdClient') {
+        refreshOtherClientList(idFldVal);
+        setTimeout("dojo.byId('otherClientIdClient').focus()", 1000);
+        enableWidget('dialogOtherClientSubmit');
       } else if (comboName == 'approverId') {
         refreshApproverList(idFldVal);
         setTimeout("dojo.byId('approverId').focus()", 1000);
@@ -1244,10 +1248,10 @@ function removeAttachment(attachmentId) {
  */
 var noRefreshLink=false;
 function addLink(classLink, defaultLink) {
-  /*if (checkFormChangeInProgress()) {
+  if (dojo.byId("objectClass") && dojo.byId("objectClass").value=='Requirement' && classLink=='TestCase' &&checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
-  }*/
+  }
   if (!classLink) {
     var params="&objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
   }
@@ -1367,7 +1371,7 @@ function saveLink() {
   if (dojo.byId("linkRef2Id").value == "")
     return;
   var fixedClass = (dojo.byId('linkFixedClass'))?dojo.byId('linkFixedClass').value:'';
-  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link');
+  loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true, 'link'+fixedClass);
   dijit.byId('dialogLink').hide();
 }
 
@@ -1376,7 +1380,7 @@ function saveLink() {
  * 
  */
 function removeLink(linkId, refType, refId, refTypeName, fixedClass) {
-  if (checkFormChangeInProgress()) {
+  if (dojo.byId("objectClass") && dojo.byId("objectClass").value=='Requirement' && fixedClass=='TestCase' && checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
@@ -1384,7 +1388,7 @@ function removeLink(linkId, refType, refId, refTypeName, fixedClass) {
     if(fixedClass && fixedClass==refType){
       loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
           +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
-          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link');
+          +"&linkRef2Id="+refId, "resultDiv", null, true, 'link'+fixedClass);
     } else {
       loadContent("../tool/removeLink.php?linkId="+linkId+"&linkRef1Type="+dojo.byId("objectClass").value
           +"&linkRef1Id="+dojo.byId("objectId").value+"&linkRef2Type="+refType
@@ -1680,11 +1684,12 @@ function addProductVersionStructure(way) {
   var callBackFunc=function() {
 	  if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true') {
 		  showDetail('productVersionStructureListId', 0, 'ComponentVersion', true);
-		  dijit.byId('dialogDetail').on('hide', function(evt) {
+		  handle=dijit.byId('dialogDetail').on('hide', function(evt) {
 			  dojo.xhrGet({
 				  url : "../tool/removeHiddenFilterDetail.php?objectClass=ComponentVersion"
 			  });
-			  dijit.byId('dialogDetail').on('hide', null);
+			  //dijit.byId('dialogDetail').on('hide', null);
+			  handle.remove();
 		  });
 	  } else {
 		  dijit.byId('dialogProductVersionStructure').show();
@@ -1883,6 +1888,110 @@ function showDetailOtherVersion() {
     else if (typeValue.substr(-14)=='ProductVersion') versionType='ProductVersion';
   }
   showDetail('otherVersionIdVersion', canCreate, versionType, true);
+}
+
+//=============================================================================
+//= OtherClients
+//=============================================================================
+var handle=null;
+function addOtherClient() {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  dojo.byId("otherClientRefType").value=objectClass;
+  dojo.byId("otherClientRefId").value=objectId;
+  //refreshOtherClientList(null);
+  //dijit.byId("dialogOtherClient").show();
+  //disableWidget('dialogOtherClientSubmit');
+  if (1) { // direct Access To List
+    dojo.byId('otherClientIdClient').value=null;
+    showDetail('otherClientIdClient', 0, 'Client', true);
+    console.log(dijit.byId('dialogDetail'));
+    handle=dijit.byId('dialogDetail').on('hide', function(evt) {
+      saveOtherClient();
+      handle.remove();
+      //dijit.byId('dialogDetail').on('hide', function() {console.log("HIDE");});
+    });
+  } else {
+    //refreshOtherClientList(null);
+    //dijit.byId("dialogOtherClient").show();
+    //disableWidget('dialogOtherClientSubmit');
+  }
+}
+
+/**
+* Refresh the link list (after update)
+*/
+function refreshOtherClientList(selected) {
+  disableWidget('dialogOtherClientSubmit');
+  var url='../tool/dynamicListOtherClient.php';
+  if (selected) {
+   url+='?selected=' + selected;
+  }
+  if (!selected) {
+   selectOtherClientItem();
+  }
+  loadContent(url, 'dialogOtherClientList', 'otherClientForm', false);
+}
+
+function selectOtherClientItem() {
+  var nbSelected=0;
+  list=dojo.byId('otherClientIdClient');
+  if (list.options) {
+   for (var i=0; i < list.options.length; i++) {
+     if (list.options[i].selected) {
+       nbSelected++;
+     }
+   }
+  }
+  if (nbSelected > 0) {
+   enableWidget('dialogOtherClientSubmit');
+  } else {
+   disableWidget('dialogOtherClientSubmit');
+  }
+}
+
+function saveOtherClient() {
+  if (dojo.byId("otherClientIdClient").value == "")
+   return;
+  loadContent("../tool/saveOtherClient.php", "resultDiv", "otherClientForm",
+     true, 'otherClient');
+  dijit.byId('dialogOtherClient').hide();
+}
+
+function removeOtherClient(id, name, type) {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  dojo.byId("otherClientId").value=id;
+  actionOK=function() {
+   loadContent("../tool/removeOtherClient.php", "resultDiv",
+       "otherClientForm", true, 'otherClient');
+  };
+  msg=i18n('confirmDeleteOtherClient', new Array(name, i18n('colId' + type)));
+  showConfirm(msg, actionOK);
+}
+
+function swicthOtherClientToMain(id, name, type) {
+  if (checkFormChangeInProgress()) {
+   showAlert(i18n('alertOngoingChange'));
+   return;
+  }
+  dojo.byId("otherClientId").value=id;
+  loadContent("../tool/switchOtherClient.php", "resultDiv",
+     "otherClientForm", true, 'otherClient');
+}
+
+function showDetailOtherClient() {
+  var canCreate=0;
+  if (canCreateArray['Client'] == "YES") {
+   canCreate=1;
+  }
+  showDetail('otherVersionIdVersion', canCreate, 'Client', true);
 }
 // =============================================================================
 // = Approvers
@@ -3369,10 +3478,6 @@ function removeBaseline(baselineId) {
 var filterStartInput=false;
 var filterFromDetail=false;
 function showFilterDialog() {
-  /*
-   * if (checkFormChangeInProgress()) { showAlert(i18n('alertOngoingChange'));
-   * return; }
-   */
   function callBack(){
     filterStartInput=false;
     top.filterFromDetail=false;
@@ -3400,11 +3505,11 @@ function showFilterDialog() {
     dojo.style(dijit.byId('filterSortValueList').domNode, {
       display : 'none'
     });
-    //ADD qCazelles - Dynamic filter - Ticket #78
     dojo.byId('filterDynamicParameterPane').style.display='none';
-    //END ADD qCazelles - Dynamic filter - Ticket #78
     dijit.byId('idFilterAttribute').reset();
-    dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
+    if (dojo.byId('objectClass') && dojo.byId('objectClass').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
+    else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClassManual').value;
+    else dojo.byId('filterObjectClass').value=null;
     filterType="";
     var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
     dojo.xhrPost({
@@ -3415,29 +3520,18 @@ function showFilterDialog() {
       }
     });
     compUrl=(top.dijit.byId("dialogDetail").open) ? '?comboDetail=true' : '';
-    //CHANGE qCazelles - Dynamic filter - Ticket #78
-    //Old
-//    loadContent("../tool/displayFilterClause.php" + compUrl,
-//        "listFilterClauses", "dialogFilterForm", false);
-    //New
     loadContent("../tool/displayFilterClause.php" + compUrl,
     		"listFilterClauses", "dialogFilterForm", false, null, null, null, displayOrOperator);
-    //END CHANGE qCazelles - Dynamic filter - Ticket #78
     loadContent("../tool/displayFilterList.php" + compUrl,
         "listStoredFilters", "dialogFilterForm", false);
     loadContent("../tool/displayFilterSharedList.php" + compUrl,
         "listSharedFilters", "dialogFilterForm", false);
-    /*
-     * var datastore = new dojo.data.ItemFileReadStore({url:
-     * '../tool/jsonList.php?listType=object&objectClass=' +
-     * dojo.byId("objectClass").value}); var store = new
-     * dojo.store.DataStore({store: datastore}); store.query({id:"*"});
-     * dijit.byId('idFilterAttribute').set('store',store);
-     */
-    refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
+    var objectClass='';
+    if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
+    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value && dojo.byId("objectClassManual").value=='Planning') objectClass='Activity';
+    refreshListSpecific('object', 'idFilterAttribute', 'objectClass', objectClass);
     dijit.byId("dialogFilter").show();
   }
-  
   loadDialog('dialogFilter', callBack, true, "", true);
 }
 
@@ -3989,23 +4083,23 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
     }
     //END ADD qCazelles - Ticket 165
     //ADD qCazelles - Dynamic filter - Ticket #78 //Moved here to correct dynamic filter in comboDetail - qCazelles - Ticket 165
-  	if (dojo.byId('dynamicFilterId'+idFilter)) {
-  		
+  	if (dojo.byId('dynamicFilterId'+idFilter)) {  		
   		var param="&idFilter="+idFilter;
   		loadDialog('dialogDynamicFilter', null, true, param, true);
   	}
   	//END ADD qCazelles - Dynamic filter - Ticket #78
-
+    if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
+    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
     if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
-          + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
+          + objectClass + compUrl, "directFilterList", null,
           false);
       loadContent(contentLoad, container);
     }else{
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&filterObjectClass="
-          + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
+          + objectClass + compUrl, "directFilterList", null,
           false);
     }
   } else {

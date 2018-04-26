@@ -38,9 +38,9 @@ class ResourceMain extends SqlElement {
   public $userName;
   public $initials;
   public $email;
-  public $idProfile;
   public $capacity;
   public $idCalendarDefinition;
+  public $idProfile;
   public $idOrganization;
   public $idTeam;
   public $phone;
@@ -59,6 +59,7 @@ class ResourceMain extends SqlElement {
   public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   public $password;
+  public $isResourceTeam;
   public $_nbColMax=3;
   
   private static $_layout='
@@ -81,6 +82,7 @@ class ResourceMain extends SqlElement {
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
                                           "password"=>"hidden" ,
+                                          "isResourceTeam"=>"hidden" ,
                                           "idRole"=>"required",
                                           "idCalendarDefinition"=>"required"
   );    
@@ -130,6 +132,7 @@ class ResourceMain extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
       self::$_fieldsAttributes["isContact"]="";
     }
+    
   }
 
   

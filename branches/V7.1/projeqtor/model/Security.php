@@ -54,6 +54,7 @@ class Security
   */
   public static function checkValidClass($className,$activeTraceHack=true) {
     if ($className=='') return ''; // Allow empty string
+    //if ($className=='Planning') return $className; // Not a real class, but can be concidered as
     // not checking file existence using realpath() due to inconsistent behavior in different versions.
     if (!file_exists('../model/'.$className.'.php') || 
     $className != basename(realpath('../model/'.$className.'.php'), '.php')) {

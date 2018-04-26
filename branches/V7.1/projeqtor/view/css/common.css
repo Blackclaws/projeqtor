@@ -843,6 +843,11 @@ div.imputation input.dijitInputInner {
   border: 1px solid #FFFFFF; 
   border-radius:5px;
 }
+.ProjeQtOrLight .whiteCheck, .Projectom .whiteCheck, .ProjectomLight .whiteCheck,
+.greenLight .whiteCheck, .blueLight .whiteCheck, .redLight .whiteCheck, .orangeLight .whiteCheck, .greyLight .whiteCheck, 
+.ProjectOrRia .whiteCheck, .ProjectOrRiaLight .whiteCheck{
+	background-image: url(images/checkmarkNoBorderGrey.png) !important;
+}
 .whiteCheck:hover {
 	
 }

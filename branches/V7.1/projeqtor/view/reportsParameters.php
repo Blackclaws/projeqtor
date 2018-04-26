@@ -913,7 +913,7 @@ foreach ($listParam as $param) {
     <td>
     <select data-dojo-type="<?php echo (($param->multiple == 1) ? 'dojox.form.CheckedMultiSelect' : 'dijit.form.FilteringSelect') ?>" class="input" 
     <?php echo ($param->multiple == 1) ? '' : autoOpenFilteringSelect(); ?>
-       style="width: 200px<?php echo (($param->multiple == 1) ? '!important; height: 90px" multiple="true' : '') ?>"
+       <?php echo (($param->multiple == 1) ? ' style="border:0px;border-bottom:1px solid #eeeeee;width: 200px !important; height: 90px;" multiple="true"' : ' style="width:200px;"') ?>
        id="<?php echo $param->name;?>" name="<?php echo $param->name . (($param->multiple == 1) ? '[]' : '');?>"
      >
        <?php htmlDrawOptionForReference($param->name, $defaultValue, null, ($class=='Baseline' || $param->multiple)); ?>
@@ -928,7 +928,12 @@ foreach ($listParam as $param) {
     <td></td>
     <td><div style="position:absolute;top:5px" class="nobr">
       <input type="hidden" name="orientation" value="<?php echo $report->orientation;?>" />
-      <input type="hidden" id="objectClass" name="objectClass" value="Job" />
+      <?php 
+      $reportName=$report->name;
+      $reportName=str_replace(array('report','Macro'),array('',''),$reportName);
+      ?>
+      <input type="hidden" id="objectClass" name="objectClass" value="" />
+      <input type="hidden" id="reportCodeName" name="reportCodeName" value="<?php echo $reportName;?>" />
       <?php if($report->hasView) { ?>
       <button title="<?php echo i18n('reportShow')?>"   
          dojoType="dijit.form.Button" type="submit" 
