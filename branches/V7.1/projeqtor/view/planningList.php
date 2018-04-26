@@ -60,6 +60,16 @@ $saveShowClosed=Parameter::getUserParameter('planningShowClosed');
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
+if (is_array( getSessionUser()->_arrayFilters)) {
+  if (array_key_exists('Planning', getSessionUser()->_arrayFilters)) {
+    $arrayFilter=getSessionUser()->_arrayFilters['Planning'];
+    foreach ($arrayFilter as $filter) {
+      if ($filter['sql']['attribute']=='idle' and $filter['sql']['operator']=='>=' and $filter['sql']['value']=='0') {
+        $saveShowClosed=1;
+      }
+    }
+  }
+}
 $automaticRunPlanning=Parameter::getUserParameter('automaticRunPlanning');
 
 $canPlan=false;
@@ -293,7 +303,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                         </span>
                         <span for="listSaveDates"><?php echo i18n("saveDates");?></span>
                       </td>
-                      <td>
+                      <td width="51px">
                        <div dojoType="dijit.form.DropDownButton"
                              class="comboButton"   
                              id="planningNewItem" jsId="planningNewItem" name="planningNewItem" 
@@ -326,6 +336,54 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                           </div>
                         </div>
                       </td>
+                                    
+                      <?php $activeFilter=false;
+                       if (is_array(getSessionUser()->_arrayFilters)) {
+                         if (array_key_exists('Planning', getSessionUser()->_arrayFilters)) {
+                           if (count(getSessionUser()->_arrayFilters['Planning'])>0) {
+                           	foreach (getSessionUser()->_arrayFilters['Planning'] as $filter) {
+                           		if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
+                           			$activeFilter=true;
+                           		}
+                           	}
+                           }
+                         }
+                       }
+                       ?>
+                        <td width="55px" style="padding-left:1px";>
+                          <button 
+                           title="<?php echo i18n('advancedFilter')?>"  
+                           class="comboButton"
+                           dojoType="dijit.form.DropDownButton" 
+                           id="listFilterFilter" name="listFilterFilter"
+                           iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter" showLabel="false">
+                            <script type="dojo/connect" event="onClick" args="evt">
+                              showFilterDialog();
+                            </script>
+                            <script type="dojo/method" event="onMouseEnter" args="evt">
+                              clearTimeout(closeFilterListTimeout);
+                              clearTimeout(openFilterListTimeout);
+                              openFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').openDropDown();",popupOpenDelay);
+                            </script>
+                            <script type="dojo/method" event="onMouseLeave" args="evt">
+                              clearTimeout(openFilterListTimeout);
+                              closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
+                            </script>
+                            <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;<!-- display:none; --> position: absolute;">
+                            <?php 
+                            //RequestHandler::setValue('filterObjectClass','Planning');
+                            $objectClass='Planning';
+                            include "../tool/displayFilterList.php";?>
+                              <script type="dojo/method" event="onMouseEnter" args="evt">
+                                clearTimeout(closeFilterListTimeout);
+                                clearTimeout(openFilterListTimeout);
+                              </script>
+                              <script type="dojo/method" event="onMouseLeave" args="evt">
+                                dijit.byId('listFilterFilter').closeDropDown();
+                              </script>
+                            </div> 
+                          </button>
+                        </td>
                     </tr>
                   </table>
                 </td>

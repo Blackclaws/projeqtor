@@ -31,41 +31,20 @@
 require_once "../tool/projeqtor.php";
 
 $id=null;
-if (array_key_exists('otherVersionId',$_REQUEST)) {
-  $id=$_REQUEST['otherVersionId'];
+if (array_key_exists('otherClientId',$_REQUEST)) {
+  $id=$_REQUEST['otherClientId']; // validated to be numeric value in SqlElement base constructor.
 }
 $id=trim($id);
 if ($id=='') {
   $id=null;
 } 
 if ($id==null) {
-  throwError('linkId parameter not found in REQUEST');
+  throwError('otherClientId parameter not found in REQUEST');
 }
 Sql::beginTransaction();
-$vers=new OtherVersion($id);
-$refType=$vers->refType;
-$refId=$vers->refId;
-$scope=$vers->scope;
-$fld='id'.$vers->scope;
-$fldArray='_Other'.$vers->scope;
-$obj=new $refType($refId);
-$mainVers=$obj->$fld;
-$otherVers=$vers->idVersion;
-// save new main
-$obj->$fld=$otherVers;
-$result=$obj->save();
-// save new other
-if ($mainVers) {
-  $vers=new OtherVersion();
-  $vers->refType=$refType;
-  $vers->refId=$refId;
-  $vers->scope=$scope;
-  $vers->creationDate=date('Y-m-d H:i:s');
-  $user=getSessionUser();
-  $vers->idUser=$user->id;
-  $vers->idVersion=$mainVers;
-  $res=$vers->save();
-}
+$obj=new OtherClient($id);
+$result=$obj->delete();
+
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

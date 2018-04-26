@@ -46,6 +46,17 @@ abstract class RequestHandler {
     return isset($_REQUEST[$code]);
   }
   
+  public static function setValue($code,$value) {
+    
+    $_REQUEST[$code]=$value;
+  }
+  
+  public static function unsetCode($code) {
+    if (isset($_REQUEST[$code])) {
+      unset($_REQUEST[$code]);
+    }
+  }
+  
   public static function getClass($code,$required=false,$default=null) {
     $val=self::getValue($code,$required,$default);
     if ($val==$default) return $val;

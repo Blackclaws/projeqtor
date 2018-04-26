@@ -123,7 +123,8 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
-Security::checkValidClass($filterObjectClass);
+if ($filterObjectClass!='Planning') Security::checkValidClass($filterObjectClass);
+$objectClass=($filterObjectClass=='Planning')?'Activity':$filterObjectClass;
 
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
@@ -140,7 +141,7 @@ if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters))
   $filterArray=array();
 }
 
-$obj=new $filterObjectClass();
+$obj=new $objectClass();
 // Add new filter
 if ($idFilterAttribute and $idFilterOperator) {
   $arrayDisp=array();
@@ -190,7 +191,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   		$refObjTable=$refObj->getDatabaseTableName();
   		$table=$obj->getDatabaseTableName();
   		$arraySql["value"]=" ( select 'x' from $refObjTable "
-  		. " where $refObjTable.refType=".Sql::str($filterObjectClass)." "
+  		. " where $refObjTable.refType=".Sql::str($objectClass)." "
   		. " and $refObjTable.refId=$table.id "
   		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . trim(Sql::str(htmlEncode($filterValue)),"'") . "%' ) ";
   	} else {

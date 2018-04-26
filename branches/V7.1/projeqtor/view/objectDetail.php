@@ -70,6 +70,11 @@ if ($noselect) {
   $objId=$_REQUEST['objectId'];
   $obj=new $objClass($objId);
   $profile=getSessionUser()->getProfile($obj);
+  //gautier   
+  if ($objClass=='Resource' and $obj->isResourceTeam) {
+    $objClass='ResourceTeam';
+    $obj=new ResourceTeam($objId);
+  }
   if (array_key_exists('refreshNotes', $_REQUEST)) {
     drawNotesFromObject($obj, true);
     exit();
@@ -2068,6 +2073,15 @@ else if ($col=='idEmailTemplate') {
             $fieldWidth-=28;
           }
         }
+        $hasOtherClient=false;
+        $otherClient='';
+        if ( $col=='idClient' ) {
+          $otherClient='_OtherClient';
+          if (isset($obj->$otherClient) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and !$readOnly and !$hide and $canUpdate and !$obj->idle) {
+            $hasOtherClient=true;
+            $fieldWidth-=28;
+          }
+        }
         $showExtraButton=false;
         if ($col=='idStatus' or $col=='idResource' or $col=='idAccountable' or $col=='idResponsible') {
           if ((($col=='idStatus') or (($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and $user->isResource and $user->id!=$val and $obj->id and $classObj!='Affectation')) and $classObj!='Document' and $classObj!='StatusMail' and $classObj!="TicketSimple" and $canUpdate) {
@@ -2143,6 +2157,18 @@ else if ($col=='idEmailTemplate') {
           }
           if (count($obj->$otherVersion)>0) {
             drawOtherVersionFromObject($obj->$otherVersion, $obj, $versionType);
+          }
+        }
+        if ($hasOtherClient) {
+          if ($obj->id and $canUpdate) {
+            echo '<a class="generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" style="float:right;margin-right:5px;'.$specificStyleWithoutCustom.'" ';
+            echo ' onClick="addOtherClient();" ';
+            echo ' title="'.i18n('otherClientAdd').'">';
+            echo formatSmallButton('Add');
+            echo '</a>';
+          }
+          if (count($obj->$otherClient)>0) {
+            drawOtherClientFromObject($obj->$otherClient, $obj);
           }
         }
         if ($col=='idStatus' and $next and $showExtraButton) {
@@ -4199,10 +4225,17 @@ function drawTicketsList($obj, $refresh=false) {
     } else {
       $clauseWhere='1=0';
     }
-    if (property_exists('Ticket','idClient')) {
-      $clauseWhere='idClient='.Sql::fmtId($obj->id).' and idle=0';
-    }
     $ticket=new Ticket();
+    if (property_exists('Ticket','idClient')) {      
+      $clauseWhere='idle=0 and (idClient='.Sql::fmtId($obj->id).' ';
+      if (property_exists('Ticket','_OtherClient')) {
+        $otherclient=new OtherClient();
+        $clauseWhere.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "
+            ." where other.refType='Ticket' and other.refId=".$ticket->getDatabaseTableName().".id and other.idClient=".Sql::fmtId($obj->id)
+            .")";
+      }
+      $clauseWhere.=')';
+    }
     $list=$ticket->getSqlElementsFromCriteria(null, false, $clauseWhere);
   } else if (get_class($obj)=='Product' or get_class($obj)=='Component') {
     $crit=array('id'.get_class($obj)=>$obj->id);
@@ -5511,6 +5544,33 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
         echo '</td>';
       }
       echo '<td>'.htmlEncode(SqlList::getNameFromId('Version', $vers->idVersion)).'</td>';
+      echo '</tr>';
+    }
+  }
+  echo '</table>';
+}
+
+function drawOtherClientFromObject($otherClient, $obj) {
+  global $print;
+  usort($otherClient, "OtherClient::sort");
+  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {
+    $canUpdate=false;
+  }
+  if (!$otherClient or count($otherClient)==0) return;
+  echo '<table>';
+  foreach ($otherClient as $client) {
+    if ($client->id) {
+      echo '<tr>';
+      if ($obj->id and $canUpdate and !$print) {
+        echo '<td style="width:20px">';
+        echo '<a onClick="removeOtherClient('."'".htmlEncode($client->id)."'".', \''.SqlList::getNameFromId('Client', $client->idClient).'\');" '.'title="'.i18n('otherClientDelete').'" > '.formatSmallButton('Remove').'</a>';
+        echo '</td>';
+        echo '<td style="width:20px">';
+        echo '<a onClick="swicthOtherClientToMain('."'".htmlEncode($client->id)."'".', \''.SqlList::getNameFromId('Client', $client->idClient).'\');" '.'title="'.i18n('otherClientSetMain').'" > '.formatSmallButton('Switch').'</a>';
+        echo '</td>';
+      }
+      echo '<td>'.htmlEncode(SqlList::getNameFromId('Client', $client->idClient)).'</td>';
       echo '</tr>';
     }
   }

@@ -1150,7 +1150,7 @@ INSERT INTO `${prefix}status` (`id`, `name`, `setEndStatus`, `setIdleStatus`, `c
 (6, 'delivered', 1, 0, '#4169e1', 600, 0),
 (7, 'closed', 1, 1, '#c0c0c0', 700, 0),
 (8, 're-opened', NULL, 0, '#ff0000', 250, 0),
-(9, 'cancelled', 1, 1, '#c0c0c0', 999, 0),
+(9, 'cancelled', 0, 1, '#c0c0c0', 999, 0),
 (10, 'assigned', NULL, 0, '#8b4513', 275, 0),
 (11, 'accepted', NULL, 0, '#a52a2a', 220, 0),
 (12, 'validated', 1, 0, '#98fb98', 650, 0);

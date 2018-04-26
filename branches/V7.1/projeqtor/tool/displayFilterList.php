@@ -26,7 +26,7 @@
 
 /** ===========================================================================
  * Save a filter : call corresponding method in SqlElement Class
- * The new values are fetched in $_REQUEST
+ * The new values are fetched in REQUEST
  */
 
 require_once "../tool/projeqtor.php";
@@ -35,12 +35,12 @@ $user=getSessionUser();
 $context="";
 
 $comboDetail=false;
-if (array_key_exists('comboDetail',$_REQUEST)) {
+if (RequestHandler::isCodeSet('comboDetail')) {
   $comboDetail=true;
 }
 
 // Get the filter info
-if (! array_key_exists('filterObjectClass',$_REQUEST)) {
+if (! RequestHandler::isCodeSet('filterObjectClass')) {
 	if (isset($objectClass)) {
 		$filterObjectClass=$objectClass;
 		$context="directFilterList";
@@ -48,11 +48,13 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
     throwError('filterObjectClass parameter not found in REQUEST');
 	}
 } else {
-  $filterObjectClass=$_REQUEST['filterObjectClass'];
+  $filterObjectClass=RequestHandler::getValue('filterObjectClass');
 }
-if (array_key_exists('context',$_REQUEST)) {
-	$context=$_REQUEST['context'];
-}
+if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
+if ($objectClass=='Planning') $objectClass='Activity';
+if (RequestHandler::isCodeSet('context')) $context=RequestHandler::getValue('context');
+
+debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass, context=$context");
 
 // Get existing filter info
 if (! $comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {
@@ -76,7 +78,7 @@ if (! $comboDetail and array_key_exists($filterObjectClass . "FilterName",$user-
 }
 
 $flt=new Filter();
-$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
+$crit=array('idUser'=> $user->id, 'refType'=>$objectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
 htmlDisplayStoredFilter($filterList,$filterObjectClass,$currentFilter, $context);
 
