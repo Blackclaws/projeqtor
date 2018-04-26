@@ -1206,7 +1206,7 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       } else if (validationType == 'admin') {
         hideWait();
-      } else if (validationType == 'link'  && (dojo.byId('objectClass').value == 'Requirement' || dojo.byId('objectClass').value == 'TestSession')) {
+      } else if (validationType != 'link'  && validationType.substr(0,4)=='link' && (dojo.byId('objectClass').value == 'Requirement' || dojo.byId('objectClass').value == 'TestSession')) {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
@@ -2730,6 +2730,10 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
     return '';
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate
       .getMonth(), paramStartDate.getDate());
+  currentDate.setHours(paramStartDate.getHours());
+  currentDate.setMinutes(paramStartDate.getMinutes());
+  currentDate.setSeconds(paramStartDate.getSeconds());
+  currentDate.setMilliseconds(paramStartDate.getMilliseconds());
   var endDate = paramEndDate;
   if (paramEndDate < paramStartDate) {
     return 0;
