@@ -1249,6 +1249,59 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </table>
 </div>
 
+<div id="dialogOtherClient" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOtherClient");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='otherClientForm' name='otherClientForm' onSubmit="return false;">
+         <input id="otherClientRefType" name="otherClientRefType" type="hidden" value="" />
+         <input id="otherClientRefId" name="otherClientRefId" type="hidden" value="" />
+         <input id="otherClientId" name="otherClientId" type="hidden" value="" />
+         <table>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="otherClientId" ><?php echo i18n("colOtherClients") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <table><tr><td>
+               <div id="dialogOtherClientList" dojoType="dijit.layout.ContentPane" region="center">
+                 
+                 <select id="otherClientIdClient" size="14"" name="otherClientIdClient[]" multiple
+                  onchange="selectOtherClientItem();"  ondblclick="saveOtherClient();"
+                  class="selectList" >
+                 </select>
+               </div>
+               </td><td style="vertical-align: top">
+               <button id="otherClientDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                   showDetailOtherClient();
+                 </script>
+               </button>
+               </td></tr></table>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogOtherClientAction">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogOtherClient').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOtherClientSubmit" onclick="protectDblClick(this);saveOtherClient();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <!-- ADD BY Marc TABARY - 2017-02-23 - CHOICE OBJECTS LINKED BY ID TO MAIN OBJECT -->
 <!-- DIALOG - What is show on Add submit -->
 <div id="dialogObject" dojoType="dijit.Dialog" title="<?php echo i18n("dialogObject");?>">

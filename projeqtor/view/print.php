@@ -64,7 +64,9 @@ use Spipu\Html2Pdf\Html2Pdf;
      }
    } else if ($outMode=='csv')  {
      $contentType="application/force-download";
-     $name="export_" . $_REQUEST['objectClass'] . "_" . date('Ymd_His') . ".csv";
+     $nameReport=RequestHandler::getValue('reportCodeName');
+     $objectClass=RequestHandler::getValue('objectClass');
+     $name="export_" . (($nameReport)?$nameReport:$objectClass) . "_" . date('Ymd_His') . ".csv";
      header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
 	   header("Content-Transfer-Encoding: binary"); 
 	   //header("Content-Length: $size"); 

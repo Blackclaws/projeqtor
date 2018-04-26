@@ -309,31 +309,7 @@ if ($displayWidthList<1400) {
                   </script>
                 </select>
               </td>
-              <?php }?>
-              <?php  //ADD qCazelles - Filter by Status
-                /*
-              if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
-              	<td style="vertical-align: middle;" width="5px">
-                	<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </td>
-                <td width="5px" style="postion:relative">
-					        <button dojoType="dijit.form.Button" showlabel="false"
-			             title="<?php echo i18n('filterByStatus');?>" style="height:18px;position:absolute;top:3px;"
-			             iconClass="iconStatus16" xclass="detailButton">
-			             <script type="dojo/connect" event="onClick" args="evt">
-						         if (dijit.byId('barFilterByStatus').domNode.style.display == 'none') {
-							         dijit.byId('barFilterByStatus').domNode.style.display = 'block';
-						         } else {
-							         dijit.byId('barFilterByStatus').domNode.style.display = 'none';
-						         }
-						         dijit.byId('barFilterByStatus').getParent().resize();
-                     saveDataToSession("displayByStatusList_<?php echo $objectClass;?>", dijit.byId('barFilterByStatus').domNode.style.display, true);
-          				 </script>
-			            </button>
-                </td>              
               <?php } 
-              //END ADD qCazelles */ ?>
-              <?php 
                  $elementable=null;
                  if ( property_exists($obj,'idMailable') ) $elementable='idMailable';
                  else if (property_exists($obj,'idIndicatorable')) $elementable='idIndicatorable';

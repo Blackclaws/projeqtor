@@ -622,7 +622,7 @@
     }
 	  if($outMode != 'csv') {
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<div style="overflow:auto;">';
+      echo '<div style="overflow:hidden;">';
       echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
       echo '<tr style="height: 20px;"><td colspan="' . (1+$cptSort) . '">&nbsp;</td>';
       $day=$minDate;
@@ -648,8 +648,8 @@
         	$title="Q";
         	$title.=$arrayQuarter[substr($day,5,2)];
         	$title.=" ".substr($day,0,4);
-        	//$span=3*numberOfDaysOfMonth($day);
         	$span=numberOfDaysOfMonth($day)+numberOfDaysOfMonth(addMonthsToDate($day,1))+numberOfDaysOfMonth(addMonthsToDate($day,2));
+        	$span=3*30/5;
         }
         echo '<td class="reportTableHeader" colspan="' . $span . '">';
         echo $title;
@@ -708,6 +708,7 @@
           $date= mktime(0, 0, 0, $tDate[1], $tDate[2]+1, $tDate[0]);
           $title=substr($day,5,2);
           $span=numberOfDaysOfMonth($day);
+          $span=30/5;
         }
         echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="width:' . $colWidth . 'px;magin:0px;padding:0px;' . $color . '">';
         echo $title . '</td>';
@@ -829,11 +830,11 @@
             echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
           }
         } else {
-        	if ($line['reftype']=='Milestone') {
-        		echo '<img style="width:12px" src="../view/css/images/mile.gif" />';
-        	} else {
+          if ($line['reftype']=='Milestone') {
+            echo '<img style="width:12px" src="../view/css/images/mile.gif" />';
+          } else {
             echo '<img style="width:12px" src="../view/css/images/none.gif" />';
-        	}
+          }
         }
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
@@ -889,7 +890,7 @@
             }
           } else  if ($format=='quarter') {
             $fontSize='90%';
-            if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
+            if ( substr($days[($i)],-2)!='26' or (substr($days[($i)],5,2)!='03' and substr($days[($i)],5,2)!='06' and substr($days[($i)],5,2)!='09' and substr($days[($i)],5,2)!='12') ) {
                $noBorder="border-left: 0px;border-right: 0px;";
             }
           } else if($format=='week') {
@@ -922,16 +923,24 @@
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
               if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
-                echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'
+                if ($format=='quarter' or $format=='month') {
+                  echo '<div class="" style="float:left; height:4px"></div>';
+                } else { 
+                  echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'
                   . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'
                   . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'
                   . '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>';
+                }
               }
               if ($pGroup and $days[$i]==$pEnd and $outMode!='pdf') {
-	              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'
+                if ($format=='quarter' or $format=='month') {
+                  echo '<div class="" style="float:left; height:4px"></div>';
+                } else { 
+                  echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'
 	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
 	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'
 	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';
+                }
 	            }
               $dispCaption=($showResource)?true:false;
             }
@@ -939,17 +948,29 @@
             echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
             //if($format=='week') {
               //echo '&nbsp;&nbsp;';
-            //}
-            if ($days[$i]>$pEnd and $dispCaption) {
+            //
+            /*if ($days[$i]>$pEnd and $dispCaption) {
             	echo '<div style="position: relative; top: 0px; height: 12px;">';
             	echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
             	echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' . $line['resource'] . '</div>';
             	echo '</div>';
             	echo '</div>';
             	$dispCaption=false;
-            }
+            }*/
+			/*echo '<table width="100%" >';
+            echo '<tr height="' . $height . 'px"><td style="width:100%; ' . 'height:' .  $height . 'px;"></td></tr>';
+            echo '</table>';*/
           }
           echo '</td>';
+          if ($format=="quarter") {
+            $dom=intval(substr($days[$i],8,2));
+            if ($dom>=26) {
+              $lastDayOfMonth=date('t',strtotime($days[$i]));
+              $i=array_search(substr($days[$i],0,8).$lastDayOfMonth,$days);
+            } else {
+              $i+=4;
+            }
+          }
         }
         echo '</TR>';
       } else {

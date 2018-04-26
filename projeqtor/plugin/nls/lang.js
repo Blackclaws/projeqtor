@@ -1,2 +1,3 @@
 {
+colPlgIdClient : "client",
 }
