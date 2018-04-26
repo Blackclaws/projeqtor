@@ -372,7 +372,7 @@ if (count($nl)>0) {
 // FORMATING VALUES
 $height=185;
 $width=277;
-$borderMain="border: 1px solid red;";
+$borderMain="border: 1px solid #ff0000;";
 $borderMain="";
 $border="border: 1px solid #A0A0A0;";
 

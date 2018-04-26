@@ -52,6 +52,7 @@ if (! RequestHandler::isCodeSet('filterObjectClass')) {
 }
 if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
 if ($objectClass=='Planning') $objectClass='Activity';
+Security::checkValidClass($objectClass);
 if (RequestHandler::isCodeSet('context')) $context=RequestHandler::getValue('context');
 
 debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass, context=$context");

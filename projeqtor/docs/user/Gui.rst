@@ -834,15 +834,15 @@ This icon is checked when you subscribed.
 .. figure:: /images/GUI/Subscribe.png
    :alt: Dialog box - Susbcribe
 
-* Ability to subscribe a third party user to the tracking of an element (according to configurable rights).
-You can drag the name of selected ressources and drop them on the right column for subscribe them.
+* | Ability to subscribe a third party user to the tracking of an element (according to configurable rights).
+  | You can drag the name of selected ressources and drop them on the right column for subscribe them.
 
 .. figure:: /images/GUI/ZONE_subscribe_for_other.png
    :alt: Dialog box - Susbcribe for other
 
 
-* Display of list of tracked items.
-To display it, click on button "Show list of subscriptions"
+* | Display of list of tracked items.
+  | To display it, click on button "Show list of subscriptions"
 
 .. figure:: /images/GUI/List_of_subscribe.png
    :alt: Dialog box - Display list of tracked items

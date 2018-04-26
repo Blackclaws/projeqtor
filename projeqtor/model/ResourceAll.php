@@ -28,25 +28,47 @@
  * Stauts defines list stauts an activity or action can get in (lifecylce).
  */ 
 require_once('_securityCheck.php');
-class ResourceTeam extends ResourceTeamMain {
-  /** ==========================================================================
+class ResourceAll extends Resource {
+  // extends SqlElement, so has $id
+  private static $_databaseTableName = 'resource';
+  private static $_databaseCriteria = array('isResource'=>'1');
+   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
-   */
-  
-  private static $_databaseTableName = 'resourceTeam';
-  
+   */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+        
   }
-  
-  /** ==========================================================================
+
+   /** ==========================================================================
    * Destructor
    * @return void
-   */
+   */ 
   function __destruct() {
     parent::__destruct();
+  }
+  
+// ============================================================================**********
+// GET STATIC DATA FUNCTIONS
+// ============================================================================**********
+
+    /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
+  /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
   
 }

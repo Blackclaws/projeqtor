@@ -25,37 +25,38 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ===========================================================================
- * Save a filter : call corresponding method in SqlElement Class
+ * Save a note : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
  */
-
 require_once "../tool/projeqtor.php";
+scriptLog('   ->/tool/saveAffectation.php');
 
-// Get the filter info
-$filterObjectClass=RequestHandler::getValue('filterObjectClass',true);
-if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
-if ($objectClass=='Planning') $objectClass='Activity';
-Security::checkValidClass($objectClass);
+$idResourceTeam = RequestHandler::getId('idResourceTeam');
+$resource= RequestHandler::getId('affectationResourceTeam');
+$rate = RequestHandler::getValue('affectationRateResourceTeam');
+$start = RequestHandler::getValue('affectationStartDateResourceTeam');
+$end = RequestHandler::getValue('affectationEndDateResourceTeam');
+$description = RequestHandler::getValue('affectationDescriptionResourceTeam');
+$idle = RequestHandler::getBoolean('affectationIdleResourceTeam');
 
-$idFilter=RequestHandler::getId('idFilter',true); // validated to be numeric value in SqlElement base constructor.
 Sql::beginTransaction();
-$filter=new Filter($idFilter);
-$name=$filter->name;
-$message=i18n("resultShared");
-if($filter->isShared==1){
-  $message=i18n("resultNoShared");
-  $filter->isShared=0;
-}else{
-  $filter->isShared=1;
-}
-$filter->save();
-echo '<table width="100%"><tr><td align="center" >';
-echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . $message . ' (#'.htmlEncode($filter->id).')</span>';
-echo '</td></tr></table>';
+$result = "";
 
-$flt=new Filter();
-$crit=array('idUser'=> $user->id, 'refType'=>$objectClass );
-$filterList=$flt->getSqlElementsFromCriteria($crit, false);
-htmlDisplayStoredFilter($filterList,$filterObjectClass);
-Sql::commitTransaction();
+$resourceTeam=new ResourceTeamAffectation();
+$resourceTeam->idResourceTeam = $idResourceTeam;
+$resourceTeam->idResource = $resource;
+$resourceTeam->rate = $rate;
+$resourceTeam->description = $description;
+$resourceTeam->idle = $idle;
+$resourceTeam->startDate = $start;
+$resourceTeam->endDate = $end;
+$res=$resourceTeam->save();
+
+if (!$result) {
+  $result=$res;
+}
+
+// Message of correct saving
+displayLastOperationStatus($result);
+
 ?>

@@ -3963,29 +3963,25 @@ function selectFilterContinue() {
     load : function(data, args) {
     }
   });
-  //CHANGE qCazelles - Dynamic filter - Ticket #78
-  //Old
-  //if (dojo.byId("nbFilterCriteria").value > 0) {
-  //New
   if (dojo.byId("nbFilterCriteria").value > 0 && !dijit.byId('filterDynamicParameter').get("checked") && dojo.byId('nbDynamicFilterCriteria').value==0) {
-  //END CHANGE qCazelles - Dynamic filter - Ticket #78
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
   } else {
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
   }
+  if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
+  else if (! top.dijit.byId('dialogDetail').open && dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
   doc.loadContent(
       "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
-          + dojo.byId('objectClass').value + compUrl, "directFilterList", null,
+          + objectClass + compUrl, "directFilterList", null,
       false, 'returnFromFilter', false);
-  if(dojo.byId('objectClassManual')!=null && (dojo.byId('objectClassManual').value=='Plugin_kanban' || dojo.byId('objectClassManual').value=='Plugin_liveMeeting')){
+  if(! top.dijit.byId('dialogDetail').open && dojo.byId('objectClassManual') && (dojo.byId('objectClassManual').value=='Plugin_kanban' || dojo.byId('objectClassManual').value=='Plugin_liveMeeting')){
     loadContent("../plugin/kanban/kanbanView.php?idKanban="+dojo.byId('idKanban').value, "divKanbanContainer");
-  //CHANGE qCazelles - Dynamic filter - Ticket #78
-  //Old
-  //}else {
-  //New
   } else if (!dijit.byId('filterDynamicParameter').get("checked")) {
-  //END CHANGE qCazelles - Dynamic filter - Ticket #78
-    doc.refreshJsonList(dojo.byId('objectClass').value);
+    if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
+      refreshJsonPlanning();
+    } else {
+      doc.refreshJsonList(dojo.byId('objectClass').value);
+    }
   }
   dijit.byId("dialogFilter").hide();
   filterStartInput=false;
@@ -4073,7 +4069,6 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
       } else {
         dojo.byId('noFilterSelected').value='false';
       }
-	//ADD qCazelles - Ticket 165
     } else if (top.dojo.byId('noFilterSelected')) {
     	if (idFilter == '0') {
             top.dojo.byId('noFilterSelected').value='true';
@@ -4081,15 +4076,12 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
             top.dojo.byId('noFilterSelected').value='false';
           }
     }
-    //END ADD qCazelles - Ticket 165
-    //ADD qCazelles - Dynamic filter - Ticket #78 //Moved here to correct dynamic filter in comboDetail - qCazelles - Ticket 165
-  	if (dojo.byId('dynamicFilterId'+idFilter)) {  		
-  		var param="&idFilter="+idFilter;
-  		loadDialog('dialogDynamicFilter', null, true, param, true);
-  	}
-  	//END ADD qCazelles - Dynamic filter - Ticket #78
     if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+  	if (dojo.byId('dynamicFilterId'+idFilter)) {  		
+  		var param="&idFilter="+idFilter+"&filterObjectClass="+objectClass;
+  		loadDialog('dialogDynamicFilter', null, true, param, true);
+  	}
     if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
@@ -4176,11 +4168,17 @@ function selectDynamicFilterContinue() {
 		  dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	  }
 	  doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
+	  if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
+    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
 	  doc.loadContent(
 	      "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
-	          + dojo.byId('objectClass').value, "directFilterList", null,
+	          + objectClass, "directFilterList", null,
 	      false, 'returnFromFilter', false);
-	  doc.refreshJsonList(dojo.byId('objectClass').value);
+	  if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
+      refreshJsonPlanning();
+    } else {
+	    doc.refreshJsonList(dojo.byId('objectClass').value);
+    }
 	  dijit.byId("dialogDynamicFilter").hide();
 }
 //END ADD qCazelles - Dynamic filter - Ticket #78
@@ -5015,6 +5013,19 @@ function addAffectation(objectClass, type, idResource, idProject) {
   loadDialog('dialogAffectation',callBack,false,params);
 }
 
+//gautier #resourceTeam
+function addAffectationResourceTeam(objectClass, type, idResource) {
+var callBack = function () {
+  affectationLoad=true;
+  dijit.byId("dialogAffectationResourceTeam").show();
+  setTimeout("affectationLoad=false", 500);
+};
+var params="&idResource="+idResource;
+params+="&type="+type;
+params+="&mode=add";
+loadDialog('dialogAffectationResourceTeam',callBack,false,params);
+}
+
 function removeAffectation(id,own) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
@@ -5033,6 +5044,49 @@ function removeAffectation(id,own) {
 }
 
 affectationLoad=false;
+//gautier #resourceTeam
+function editAffectationResourceTeam(id, objectClass, type, idResource, rate, idle, startDate, endDate) {
+  affectationLoad=true;
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var callBack = function () {
+  dojo.xhrGet({
+    url : '../tool/saveAffectationResourceTeam.php?dataType=affectationDescription&idAffectation='+id,
+    handleAs : "text",
+    load : function(data) {
+      dijit.byId('affectationDescriptionResourceTeam').set('value', data);
+      enableWidget("affectationDescriptionResourceTeam");
+    }
+  });
+  if (startDate) {
+    dijit.byId("affectationStartDateResourceTeam").set('value', startDate);
+  } else {
+    dijit.byId("affectationStartDateResourceTeam").reset();
+  }
+  if (endDate) {
+    dijit.byId("affectationEndDateResourceTeam").set('value', endDate);
+  } else {
+    dijit.byId("affectationEndDateResourceTeam").reset();
+  }
+  if (idle == 1) {
+    dijit.byId("affectationIdleResourceTeam").set('value', idle);
+  } else {
+    dijit.byId("affectationIdleResourceTeam").reset();
+  }
+  dijit.byId("dialogAffectationResourceTeam").show();
+  setTimeout("affectationLoad=false", 500);
+};
+var params="&id="+id;
+params+="&refType="+dojo.byId("objectClass").value;
+params+="&idResource="+idResource;
+params+="&mode=edit";
+params+="&type="+type;
+params+="&objectClass="+objectClass;
+loadDialog('dialogAffectationResourceTeam',callBack,false,params);
+}
+
 function editAffectation(id, objectClass, type, idResource, idProject, rate,
     idle, startDate, endDate, idProfile) {
   affectationLoad=true;
@@ -5092,6 +5146,26 @@ function saveAffectation() {
     loadContent("../tool/saveAffectation.php", "resultDiv", "affectationForm",
         true, 'affectation');
     dijit.byId('dialogAffectation').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+//gautier #resourceTeam
+function saveAffectationResourceTeam() {
+  var formVar=dijit.byId('affectationResourceTeamForm');
+  if (dijit.byId('affectationStartDate') && dijit.byId('affectationEndDate')) {
+    var start=dijit.byId('affectationStartDate').value;
+    var end=dijit.byId('affectationEndDate').value;
+    if (start && end && dayDiffDates(start, end) < 0) {
+      showAlert(i18n("errorStartEndDates", new Array(i18n("colStartDate"),
+          i18n("colEndDate"))));
+      return;
+    }
+  }
+  if (formVar.validate()) {
+    loadContent("../tool/saveAffectationResourceTeam.php", "resultDiv", "affectationResourceTeamForm",
+        true, 'affectation');
+    dijit.byId('dialogAffectationResourceTeam').hide();
   } else {
     showAlert(i18n("alertInvalidForm"));
   }
