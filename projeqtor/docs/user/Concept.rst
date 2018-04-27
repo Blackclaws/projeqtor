@@ -458,7 +458,7 @@ More detail, see: :ref:`project-planning`, :ref:`predSuces-element-section`.
     .. compound:: **Start to Finish** 
 
        * This dependency type can't be reproduced in ProjeQtOr.
-       * This is a very rare scenario used.
+       * This is a very weird scenario.
 
     .. compound:: **Finish to Finish**
 

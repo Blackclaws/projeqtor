@@ -106,7 +106,7 @@ if ($planningMode=='RECW') {
                 <?php if($mode=='edit'){                      
                           htmlDrawOptionForReference('idResource', $idResource,null,true,'idProject',$idProject);
                 }else{
-                          htmlDrawOptionForReference('idResource', null,null,false,'idProject',$idProject);
+                          htmlDrawOptionForReference('idResourceAll', null,false);
                 }?>
                </select>  
              </td>
