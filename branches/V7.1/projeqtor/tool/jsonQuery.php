@@ -28,6 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php";
+    require_once "../tool/jsonFunctions.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
 	  Security::checkValidClass($objectClass);
@@ -307,18 +308,8 @@
     
     // --- Apply sorting filers --------------------------------------------------------------
     // --- 1) retrieve corresponding filter clauses depending on context
-    $arrayFilter=array();
-    if (! $quickSearch) {
-      if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
-        if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
-        	$arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
-        }
-      } else if ($comboDetail and is_array( getSessionUser()->_arrayFiltersDetail)) {
-        if (array_key_exists($objectClass, getSessionUser()->_arrayFiltersDetail)) {
-          $arrayFilter=getSessionUser()->_arrayFiltersDetail[$objectClass];
-        }
-      }
-    }
+    $arrayFilter=($quickSearch)?array():jsonGetFilterArray($objectClass, $comboDetail, $quickSearch);
+    
     // --- 2) sort from index checked in List Header (only used for printing, as direct filter is done on client side)
     $sortIndex=null;   
     if ($print and $outMode!='csv') {
@@ -350,51 +341,10 @@
     }
     // 3) sort from Filter Criteria
     if (! $quickSearch) {
-	    foreach ($arrayFilter as $crit) {
-	      if ($crit['sql']['operator']=='SORT') {
-	        $doneSort=false;
-          $split=explode('_', $crit['sql']['attribute']);
-	        if (count($split)>1 ) {
-	          $externalClass=$split[0];
-	          $externalObj=new $externalClass();
-	          $externalTable = $externalObj->getDatabaseTableName();          
-	          $idTab+=1;
-	          $externalTableAlias = 'T' . $idTab;
-	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-	           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
-	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-            $queryOrderBy .= " " . $externalTableAlias . '.' . (($split[1]=='wbs' and property_exists($externalObj, 'wbsSortable'))?'wbsSortable':$split[1]) 
-            . " " . $crit['sql']['value'];
-	          $doneSort=true;
-          }
-	        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
-	          $externalClass = substr($crit['sql']['attribute'],2);
-	          $externalObj=new $externalClass();
-	          $externalTable = $externalObj->getDatabaseTableName();
-	          $sortColumn='id';          
-	          if (property_exists($externalObj,'sortOrder')) {
-	          	$sortColumn=$externalObj->getDatabaseColumnName('sortOrder');
-	          } else {
-	          	$sortColumn=$externalObj->getDatabaseColumnName('name');
-	          }
-            $idTab+=1;
-            $externalTableAlias = 'T' . $idTab;
-            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-            $queryOrderBy .= " " . $externalTableAlias . '.' . $sortColumn
-               . " " . str_replace("'","",$crit['sql']['value']);
-            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-            $doneSort=true;
-	        }
-	        if (! $doneSort) {
-	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-	          $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
-	                             . " " . $crit['sql']['value'];
-	        }
-	      }
-	    }
+      jsonBuildSortCriteria($querySelect,$queryFrom,$queryWhere,$queryOrderBy,$idTab,$arrayFilter,$obj);
+      debugLog($queryOrderBy);
     }
+    
     // --- Rest of filter selection will be done later, after building select clause
     
     // ====================== Build restriction clauses ================================================
@@ -561,136 +511,7 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
 
-    // --- Check for an advanced filter (stored in User)
-    //CHANGE qCazelles - Dynamic filter - Ticket #78
-    //Old
-    //foreach ($arrayFilter as $crit) {
-    //New
-    //In this section $queryWhere has been replaced by $queryWhereTmp
-    $queryWhereTmp='';
-    $filterIsDynamic=false;
-    foreach ($arrayFilter as $crit) {
-    	if (array_key_exists('isDynamic', $crit) and $crit['isDynamic']=='1') {
-    		$filterIsDynamic=true;
-    		break;
-    	}
-    }
-    if ( !$filterIsDynamic and count($arrayFilter) > 0) {
-    	$arrayFilter = array_values($arrayFilter);
-
-	    for ($i = 0; $i < count($arrayFilter); $i++) {
-	      $crit = $arrayFilter[$i];
-	//END CHANGE qCazelles - Dynamic filter - Ticket #78
-	      if ($crit['sql']['operator']!='SORT') { // Sorting already applied above
-	      	$split=explode('_', $crit['sql']['attribute']);
-	      	$critSqlValue=$crit['sql']['value'];
-	      	if (substr($crit['sql']['attribute'], -4, 4) == 'Work') {
-	      	  if ($objectClass=='Ticket') {
-	      	    $critSqlValue=Work::convertImputation(trim($critSqlValue,"'"));
-	      	  } else {
-	      	    $critSqlValue=Work::convertWork(trim($critSqlValue,"'"));
-	      	  }
-	      	}
-	      	if ($crit['sql']['operator']=='IN' 
-	      	and ($crit['sql']['attribute']=='idProduct' or $crit['sql']['attribute']=='idProductOrComponent' or $crit['sql']['attribute']=='idComponent')) {
-	          $critSqlValue=str_replace(array(' ','(',')'), '', $critSqlValue);
-	      		$splitVal=explode(',',$critSqlValue);
-	      		$critSqlValue='(0';
-	      		foreach ($splitVal as $idP) {
-	      			$prod=new Product($idP);
-	      			$critSqlValue.=', '.$idP;
-	      	    $list=$prod->getRecursiveSubProductsFlatList(false, false); // Will work only if selected is Product, not for Component 
-	      	    foreach ($list as $idPrd=>$namePrd) {
-	      	    	$critSqlValue.=', '.$idPrd;
-	      	    }
-	      		}      		
-	      		$critSqlValue.=')';
-	      	}
-	        if (count($split)>1 ) {
-	          $externalClass=$split[0];
-	          $externalObj=new $externalClass();
-	          $externalTable = $externalObj->getDatabaseTableName();          
-	          $idTab+=1;
-	          $externalTableAlias = 'T' . $idTab;
-	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-	           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
-	          // FIX #3069 PBE - Start
-	          //$queryWhereTmp.=($queryWhereTmp=='' or $queryWhereTmp=='(')?'':' and ';
-	          if (isset($crit['orOperator']) and $crit['orOperator']=="1") {
-	            $queryWhereTmp.=' or ';
-	          } else if (count($arrayFilter) > 1 and $i+1 < count($arrayFilter) and isset($arrayFilter[$i+1]['orOperator']) and $arrayFilter[$i+1]['orOperator'] == '1') {
-	            $queryWhereTmp.=' and ';
-	            for ($j = $i+1; $j < count($arrayFilter) and $arrayFilter[$j]['orOperator']=='1'; $j++) {
-	              $queryWhereTmp.= '(';
-	            }
-	          } else {
-	            $queryWhereTmp.=' and ';
-	          }
-	          // FIX #3069 PBE - End
-	          $queryWhereTmp.=$externalTableAlias . "." . $split[1] . ' ' 
-	                 . $crit['sql']['operator'] . ' '
-	                 . $critSqlValue;
-	        } else {
-	          //CHANGE qCazelles - Dynamic filter
-	          //Old
-	          //$queryWhere.=($queryWhere=='')?'':' and ';
-	       	  //New
-	          //if (isset($arrayFilter[$key+1]) and $arrayFilter[$key+1]['orOperator']=="1") {
-	          if (isset($crit['orOperator']) and $crit['orOperator']=="1") {
-	          	$queryWhereTmp.=' or ';
-	          } else if (count($arrayFilter) > 1 and $i+1 < count($arrayFilter) and isset($arrayFilter[$i+1]['orOperator']) and $arrayFilter[$i+1]['orOperator'] == '1') {
-	          	$queryWhereTmp.=' and ';
-	          	for ($j = $i+1; $j < count($arrayFilter) and $arrayFilter[$j]['orOperator']=='1'; $j++) {
-	          		$queryWhereTmp.= '(';
-	          	}
-	          } else {
-	          	$queryWhereTmp.=' and ';
-	          }
-	          //END CHANGE qCazelles - Dynamic filter          
-	          
-	          if ($crit['sql']['operator']!=' exists ') {
-	          	$queryWhereTmp.="(".$table . "." . $crit['sql']['attribute'] . ' ';
-	          } 
-	          $queryWhereTmp.= $crit['sql']['operator'] . ' ' . $critSqlValue;
-		      if (strlen($crit['sql']['attribute'])>=9 
-		      and substr($crit['sql']['attribute'],0,2)=='id'
-		      and ( substr($crit['sql']['attribute'],-7)=='Version' and SqlElement::is_a(substr($crit['sql']['attribute'],2), 'Version') )
-		      and $crit['sql']['operator']=='IN') {
-		      	$scope=substr($crit['sql']['attribute'],2);
-		      	$vers=new OtherVersion();
-		      	$queryWhereTmp.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
-		      	  ." where VERS.refType=".Sql::str($objectClass)." and VERS.refId=".$table.".id and scope=".Sql::str($scope)
-		      	  ." and VERS.idVersion IN ".$critSqlValue
-		      	  .")";
-		      } else if ($crit['sql']['attribute']=='idClient' and $crit['sql']['operator']=='IN' and property_exists($objectClass, 'idClient') and property_exists($objectClass, '_OtherClient')) {
-		      	$otherclient=new OtherClient();
-		      	$queryWhereTmp.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "
-		      	  ." where other.refType=".Sql::str($objectClass)." and other.refId=".$table.".id and other.idClient IN ".$critSqlValue
-		      	  .")";
-		      }
-		      if ($crit['sql']['operator']=='NOT IN') {
-		      	$queryWhereTmp.=" or ".$table . "." . $crit['sql']['attribute']. " IS NULL ";
-		      }
-		      if ($crit['sql']['operator']!=' exists ') {
-		      	$queryWhereTmp.=")";
-		      }
-	        }
-	      }
-	//ADD qCazelles - Dynamic filter - Ticket #78
-	      if (isset($crit['orOperator']) and $crit['orOperator']=='1') {
-	      	$queryWhereTmp.=')';
-	      }
-	      //if ((strpos($queryWhereTmp, ' or ')===false and $queryWhereTmp!='') or $crit['orOperator']=='0') {
-// 	      if ((strpos($queryWhereTmp, ' or ')===false  and $queryWhereTmp!='') or $crit['orOperator']=='0') {
-// 	        $queryWhereTmp = ' and '.$queryWhereTmp;
-// 	      }
-//         if ($i==0) {
-//           $queryWhereTmp = ' and '.$queryWhereTmp;
-//         }
-	    }
-	    $queryWhere.=$queryWhereTmp;
-    }
-	//END ADD qCazelles - Dynamic filter - Ticket #78
+    jsonBuildWhereCriteria($querySelect,$queryFrom,$queryWhere,$queryOrderBy,$idTab,$arrayFilter,$obj);
     
     $list=Plugin::getEventScripts('query',$objectClass);
     foreach ($list as $script) {

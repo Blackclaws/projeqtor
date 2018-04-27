@@ -97,7 +97,7 @@ $objTeam=($obj)?get_class($obj):'';
                 onChange="affectationChangeResource();"
                 class="input" value="<?php if($class=="Project" && $type=="Resource"){ echo $affectation->idResource;}else if($class=="Project" && $type=="Contact"){ echo $affectation->idContact;}else{ echo $idResource;}?>" 
                 <?php echo ($objTeam=="Team")?"required=false":"";?> <?php echo ($class!="Project")?"readonly=readonly":"";?>>
-                 <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null):htmlDrawOptionForReference('idResource', $idResource, null,false);?>
+                 <?php ($type=="Contact")?htmlDrawOptionForReference('idContact', $idResource, null):htmlDrawOptionForReference('idResourceAll', $idResource, null,false);?>
                </select> 
              </td>
              <?php if($class=="Project"){?>
