@@ -5043,6 +5043,24 @@ function removeAffectation(id,own) {
   showConfirm(msg, actionOK);
 }
 
+// gautier #resourceTeam
+function removeAffectationResourceTeam(id,own) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeAffectationResourceTeam.php?affectaionId="+id, "resultDiv",
+        null, true, 'affectation');
+  };
+  if (own) {
+    msg='<span style="color:red;font-weight:bold;">'+i18n('confirmDeleteOwnAffectation', new Array(id))+'</span>';
+  } else {
+    msg=i18n('confirmDeleteAffectation', new Array(id));
+  }
+  showConfirm(msg, actionOK);
+}
+
 affectationLoad=false;
 //gautier #resourceTeam
 function editAffectationResourceTeam(id, objectClass, type, idResource, rate, idle, startDate, endDate) {
@@ -5056,10 +5074,13 @@ function editAffectationResourceTeam(id, objectClass, type, idResource, rate, id
     url : '../tool/saveAffectationResourceTeam.php?dataType=affectationDescription&idAffectation='+id,
     handleAs : "text",
     load : function(data) {
-      dijit.byId('affectationDescriptionResourceTeam').set('value', data);
-      enableWidget("affectationDescriptionResourceTeam");
+//      dijit.byId('affectationDescriptionResourceTeam').set('value', data);
+//      enableWidget("affectationDescriptionResourceTeam");
     }
   });
+  if(idResource){
+    dijit.byId("affectationResourceTeam").set('value', idResource);
+  }
   if (startDate) {
     dijit.byId("affectationStartDateResourceTeam").set('value', startDate);
   } else {

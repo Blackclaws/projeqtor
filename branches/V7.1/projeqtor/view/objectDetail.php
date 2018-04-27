@@ -821,6 +821,10 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
         }
         $aff=new Affectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
+      } else if ($section == 'AffectationsResourceTeam') {
+        $crit=array('idResourceTeam'=>$obj->id);
+        $aff=new ResourceTeamAffectation();
+        $cpt=$aff->countSqlElementsFromCriteria($crit);
       } else {
         // ADD BY Marc TABARY - 2017-03-16 - FORCE SECTION ITEM'S COUNT
         // Want a item's count on section header
@@ -2654,7 +2658,6 @@ else if ($col=='idEmailTemplate') {
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null, $included=null, $obj=null) {
   // scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
-  
   if (!$currentColumn) $currentColumn=0;
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
@@ -2731,6 +2734,10 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     }
     $attrs=splitCssAttributes($labelStyle);
     $fontSize=(isset($attrs['font-size']))?intval($attrs['font-size']):'';
+    //gautier #resourceTeam
+//     if($section == 'AffectationsResourceTeam'){
+//       $nbBadge = 2;
+//     }
     echo '<div dojoType="dijit.TitlePane" title="'.i18n('section'.ucfirst($sectionName)).(($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="'.(array_key_exists($titlePane, $collapsedList)?'false':'true').'" ';
     echo ' id="'.$titlePane.'" ';
@@ -5280,7 +5287,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   echo '<td class="assignHeader" style="width:13%">'.i18n('colStartDate').'</td>';
   echo '<td class="assignHeader" style="width:13%">'.i18n('colEndDate').'</td>';
   echo '<td class="assignHeader" style="width:12%">'.i18n('colRate').'</td>';
-
+  
   echo '</tr>';
   foreach ($list as $aff) {
     $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $aff)=="YES";
@@ -5312,7 +5319,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
           echo '  <a onClick="editAffectationResourceTeam('."'".htmlEncode($aff->id)."'".",'".get_class($obj)."'".",'".$type."'".",'".htmlEncode($aff->idResource)."'".",'".htmlEncode($aff->rate)."'".",'".htmlEncode($aff->idle)."'".",'".$aff->startDate."'".",'".htmlEncode($aff->endDate)."'".');" '.'title="'.i18n('editAffectation').'" > '.formatSmallButton('Edit').'</a>';
         }
         if ($canDelete and !$print) {
-          echo '  <a onClick="removeAffectation('."'".htmlEncode($aff->id)."'".','.(($aff->idResource==getSessionUser()->id)?'1':'0').');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
+          echo '  <a onClick="removeAffectationResourceTeam('."'".htmlEncode($aff->id)."'".');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
         }
         echo '</td>';
       }

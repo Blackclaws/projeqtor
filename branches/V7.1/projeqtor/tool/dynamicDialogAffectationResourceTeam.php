@@ -43,7 +43,9 @@ $idResource=RequestHandler::getValue('idResource',false,null);
                <?php echo autoOpenFilteringSelect();?>
                 id="affectationResourceTeam" name="affectationResourceTeam" 
                 class="input"
-                 <?php htmlDrawOptionForReference('idResource', $idResource, null,false);?>
+                <?php 
+                      htmlDrawOptionForReference('idResource',null, null,false);
+                ?>
                </select> 
              </td>
              <td style="vertical-align: top">
@@ -52,7 +54,7 @@ $idResource=RequestHandler::getValue('idResource',false,null);
                    iconClass="iconView">
                    <script type="dojo/connect" event="onClick" args="evt">
                     var canCreate=("<?php echo securityGetAccessRightYesNo('menuResource','create');?>"=="YES")?1:0;
-                    showDetail('affectationResource', canCreate , 'Resource', false);
+                    showDetail('affectationResourceTeam', canCreate , 'Resource', false);
                    </script>
                  </button>
                </td>     

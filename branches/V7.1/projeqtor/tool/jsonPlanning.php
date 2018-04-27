@@ -28,7 +28,8 @@
  * Get the list of objects, in Json format, to display the grid list
  */
   require_once "../tool/projeqtor.php";
-
+  require_once "../tool/jsonFunctions.php";
+  
   scriptLog('   ->/tool/jsonPlanning.php');
   SqlElement::$_cachedQuery['Project']=array();
   SqlElement::$_cachedQuery['Ticket']=array();
@@ -227,6 +228,45 @@
      }
    }
   }
+  
+  // Apply restrictions on Filter
+  $act=new Activity();
+  $pe=new PlanningElement();
+  $peTable=$pe->getDatabaseTableName();
+  $actTable=$act->getDatabaseTableName();
+  $querySelectAct="$actTable.id as id, pet.wbsSortable as wbs";
+  $queryFromAct="$actTable left join $peTable as pet on (pet.refType='Activity' and pet.refId=$actTable.id)";
+  $queryWhereAct="1=1 ";
+  $queryOrderByAct="$actTable.id asc";
+  $applyFilter=false;
+  $arrayFilter=jsonGetFilterArray('Planning', false);
+  $arrayRestrictWbs=array();
+  $cpt=0;
+  if (count($arrayFilter)>0) {
+    $applyFilter=true;
+    jsonBuildWhereCriteria($querySelectAct,$queryFromAct,$queryWhereAct,$queryOrderByAct,$cpt,$arrayFilter,$act);
+    $queryAct='select ' . $querySelectAct
+    . ' from ' . $queryFromAct
+    . ' where ' . $queryWhereAct
+    . ' order by ' . $queryOrderByAct;
+    $resultAct=Sql::query($queryAct);
+    while ($line = Sql::fetchLine($resultAct)) {
+      //$arrayRestrictWbs[$line['wbs']]=$line['id'];
+      $wbsExplode=explode('.',$line['wbs']);
+      $wbsParent="";
+      foreach ($wbsExplode as $wbsTemp) {
+        $wbsParent=$wbsParent.(($wbsParent)?'.':'').$wbsTemp;
+        if (!isset($arrayRestrictWbs[$wbsParent])) {
+          $arrayRestrictWbs[$wbsParent]=$line['id'];
+        } else {
+          //$arrayRestrictWbs[$wbsParent].=','.$line['id'];
+        }
+      }
+    }
+    ksort($arrayRestrictWbs);
+  }
+  //debugLog($arrayRestrictWbs);
+  
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect
@@ -239,12 +279,17 @@
      debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
      debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
   }
+  $nbQueriedRows=Sql::$lastQueryNbRows;
+  
+  if ($applyFilter and count($arrayRestrictWbs)==0) {
+    $nbQueriedRows=0;
+  }
+    
   $nbRows=0;
-  //$nbQueriedRows=Sql::$lastQueryNbRows;
   if ($print) {
     if ( array_key_exists('report',$_REQUEST) ) {
       $test=array();
-      if (Sql::$lastQueryNbRows > 0) $test[]="OK";
+      if ($nbQueriedRows > 0) $test[]="OK";
       if (checkNoData($test))  exit;
     }
     if ($outMode=='mpp') {
@@ -258,11 +303,12 @@
     $d=new Dependency();
     echo '{"identifier":"id",' ;
     echo ' "items":[';
-    if (Sql::$lastQueryNbRows > 0) {
+    if ($nbQueriedRows > 0) {
     	$collapsedList=Collapsed::getCollaspedList();
     	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+      	if ($applyFilter and !isset($arrayRestrictWbs[$line['wbssortable']])) continue; // Filter applied and item is not selected and not a parent of selected
       	if ($line['id'] and !$line['refname']) { // If refName not set, delete corresponding PE (results from incorrect delete
       	  $peDel=new PlanningElement($line['id'],true);
       	  $peDel->delete();
@@ -411,7 +457,7 @@
   }
 
   function displayGantt($result) {
-  	global $displayResource, $outMode, $showMilestone, $portfolio,  $columnsDescription;
+  	global $displayResource, $outMode, $showMilestone, $portfolio,  $columnsDescription, $nbQueriedRows;
   	$csvSep=Parameter::getGlobalParameter('csvSeparator');
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
@@ -456,7 +502,7 @@
     }
     $maxDate = '';
     $minDate = '';
-    if (Sql::$lastQueryNbRows > 0) {
+    if ($nbQueriedRows > 0) {
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
@@ -918,9 +964,7 @@
                 echo '<div class="ganttTaskgroupBarExtInvisible" style="float:left; height:4px"></div>';
               }
               echo '<table width="100%" >';
-              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';
-              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
               if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
                 if ($format=='quarter' or $format=='month') {
@@ -946,20 +990,6 @@
             }
           } else {
             echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
-            //if($format=='week') {
-              //echo '&nbsp;&nbsp;';
-            //
-            /*if ($days[$i]>$pEnd and $dispCaption) {
-            	echo '<div style="position: relative; top: 0px; height: 12px;">';
-            	echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
-            	echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' . $line['resource'] . '</div>';
-            	echo '</div>';
-            	echo '</div>';
-            	$dispCaption=false;
-            }*/
-			/*echo '<table width="100%" >';
-            echo '<tr height="' . $height . 'px"><td style="width:100%; ' . 'height:' .  $height . 'px;"></td></tr>';
-            echo '</table>';*/
           }
           echo '</td>';
           if ($format=="quarter") {
@@ -1001,12 +1031,13 @@
 		}
       }
     }
-	if($outMode != 'csv') {
-	  echo "</table></div>";
-	}
+  	if($outMode != 'csv') {
+  	  echo "</table></div>";
+  	}
   }
 
   function exportGantt($result) {
+    global $nbQueriedRows,$applyFilter,$arrayRestrictWbs;
   	$paramDbDisplayName=Parameter::getGlobalParameter('paramDbDisplayName');
   	$currency=Parameter::getGlobalParameter('currency');
   	$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
@@ -1031,9 +1062,10 @@
     $maxDate = '';
     $minDate = '';
     $resultArray=array();
-    if (Sql::$lastQueryNbRows > 0) {
+    if ($nbQueriedRows > 0) {
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+      	if ($applyFilter and !isset($arrayRestrictWbs[$line['wbssortable']])) continue; // Filter applied and item is not selected and not a parent of selected
         $pStart="";
         $pStart=(trim($line['initialstartdate'])!="")?$line['initialstartdate']:$pStart;
         $pStart=(trim($line['validatedstartdate'])!="")?$line['validatedstartdate']:$pStart;

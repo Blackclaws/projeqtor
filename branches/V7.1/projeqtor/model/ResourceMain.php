@@ -512,8 +512,8 @@ class ResourceMain extends SqlElement {
          $affList=$resourceTeamAff->getSqlElementsFromCriteria($critArray, false);
          drawAffectationsResourceTeamFromObject($affList, $this, 'ResourceTeam', false);
       return $result;
-    } else if ($item=='affectationGraphResourceTeam') {
-      $result.=Affectation::drawResourceTeamAffectation($this->id);
+    } else if ($item=='affectationResourceTeamGraph') {
+      $result.=ResourceTeamAffectation::drawResourceTeamAffectation($this->id);
       echo $result;
     }
   }
