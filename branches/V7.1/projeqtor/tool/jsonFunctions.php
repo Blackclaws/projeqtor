@@ -45,6 +45,7 @@ function jsonGetFilterArray($filterObjectClass, $comboDetail=false) {
 }
 
 function jsonBuildSortCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOrderBy,&$idTab,$arrayFilter,$obj) {
+  $objectClass=($obj)?get_class($obj):'';
   $table=$obj->getDatabaseTableName();
   foreach ($arrayFilter as $crit) {
     if ($crit['sql']['operator']=='SORT') {
@@ -93,6 +94,7 @@ function jsonBuildSortCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOrd
 }
 
 function jsonBuildWhereCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOrderBy,&$idTab,$arrayFilter,$obj) {
+  $objectClass=($obj)?get_class($obj):'';
   $table=$obj->getDatabaseTableName();
   $queryWhereTmp='';
   $filterIsDynamic=false;

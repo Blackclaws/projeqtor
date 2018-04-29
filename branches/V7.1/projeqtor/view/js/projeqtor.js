@@ -177,13 +177,10 @@ function refreshJsonList(className, keepUrl) {
  * @return void
  */
 function refreshJsonPlanning() {
-  console.log("refreshJsonPlanning");
   if (dojo.byId("resourcePlanning")) {
     url = "../tool/jsonResourcePlanning.php";
-    //ADD qCazelles - GANTT
   } else if (dojo.byId("versionsPlanning")) {
-	url = "../tool/jsonVersionsPlanning.php";
-	//END ADD qCazelles - GANTT
+	  url = "../tool/jsonVersionsPlanning.php";
   } else {
     url = "../tool/jsonPlanning.php";
   }
@@ -747,7 +744,11 @@ function loadContent(page, destination, formName, isResultMessage,
                 dijit.byId("listFilterFilter").set("iconClass",
                     "iconActiveFilter");
               }
-              refreshGrid(dojo.byId('objectClass').value);
+              if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
+                refreshJsonPlanning();
+              } else {
+                refreshJsonList(dojo.byId('objectClass').value);
+              }
             }
           }
           if (destination == "expenseDetailDiv") {
@@ -809,7 +810,7 @@ function loadContent(page, destination, formName, isResultMessage,
               || page.indexOf("versionsPlanningMain.php") >= 0 || page.indexOf("versionsPlanningList.php") >= 0
               || (page.indexOf("jsonVersionsPlanning.php") >= 0 && dijit.byId("startDatePlanView"))) {
         	  //END ADD qCazelles - GANTT
-        	drawGantt();
+        	  drawGantt();
             selectPlanningRow();
             if (!silent)
               hideWait();
@@ -2457,11 +2458,11 @@ function drawGantt() {
     g.setWidth(dojo.style(contentNode, "width"));
   }
   jsonData = dojo.byId('planningJsonData');
-  if (jsonData.innerHTML.indexOf('{"identifier"') < 0) {
+  if (jsonData.innerHTML.indexOf('{"identifier"') < 0 || jsonData.innerHTML.indexOf('{"identifier":"id", "items":[ ] }')>=0) {
     if (dijit.byId('leftGanttChartDIV')) dijit.byId('leftGanttChartDIV').set('content',null);
     if (dijit.byId('rightGanttChartDIV')) dijit.byId('rightGanttChartDIV').set('content',null);
     if (dijit.byId('topGanttChartDIV')) dijit.byId('topGanttChartDIV').set('content',null);  
-    if (jsonData.innerHTML.length > 10) {
+    if (jsonData.innerHTML.length > 10 && jsonData.innerHTML.indexOf('{"identifier":"id", "items":[ ] }')<0) {
       showAlert(jsonData.innerHTML);
     }
     hideWait();

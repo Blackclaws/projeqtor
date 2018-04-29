@@ -1903,22 +1903,17 @@ function addOtherClient() {
   var objectId=dojo.byId("objectId").value;
   dojo.byId("otherClientRefType").value=objectClass;
   dojo.byId("otherClientRefId").value=objectId;
-  //refreshOtherClientList(null);
-  //dijit.byId("dialogOtherClient").show();
-  //disableWidget('dialogOtherClientSubmit');
-  if (1) { // direct Access To List
+  if (1) { // direct Access To List : always on
     dojo.byId('otherClientIdClient').value=null;
     showDetail('otherClientIdClient', 0, 'Client', true);
-    console.log(dijit.byId('dialogDetail'));
     handle=dijit.byId('dialogDetail').on('hide', function(evt) {
       saveOtherClient();
       handle.remove();
-      //dijit.byId('dialogDetail').on('hide', function() {console.log("HIDE");});
     });
-  } else {
-    //refreshOtherClientList(null);
-    //dijit.byId("dialogOtherClient").show();
-    //disableWidget('dialogOtherClientSubmit');
+  } else { // No real use, kept in case direct access to list will become parametered
+    refreshOtherClientList(null);
+    dijit.byId("dialogOtherClient").show();
+    disableWidget('dialogOtherClientSubmit');
   }
 }
 
@@ -4071,18 +4066,18 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
       }
     } else if (top.dojo.byId('noFilterSelected')) {
     	if (idFilter == '0') {
-            top.dojo.byId('noFilterSelected').value='true';
-          } else {
-            top.dojo.byId('noFilterSelected').value='false';
-          }
+        top.dojo.byId('noFilterSelected').value='true';
+      } else {
+        top.dojo.byId('noFilterSelected').value='false';
+      }
     }
     if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
   	if (dojo.byId('dynamicFilterId'+idFilter)) {  		
   		var param="&idFilter="+idFilter+"&filterObjectClass="+objectClass;
   		loadDialog('dialogDynamicFilter', null, true, param, true);
-  	}
-    if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
+  	} 
+  	if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
           + objectClass + compUrl, "directFilterList", null,
