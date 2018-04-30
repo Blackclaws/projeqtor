@@ -42,7 +42,6 @@ $filterObjectClass=$_REQUEST['filterObjectClass'];
 if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
 if ($objectClass=='Planning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
-debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass");
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
