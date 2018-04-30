@@ -516,8 +516,10 @@ function requestPasswordChange() {
  * @return void
  */
 function saveResolutionToSession() {
-  var height = screen.height;
-  var width = screen.width;
+  //var height = screen.height;
+  //var width = screen.width;
+  var height=document.documentElement.getBoundingClientRect().height;
+  var width=document.documentElement.getBoundingClientRect().width;
   //#2887
   saveDataToSession("screenWidth", width);
   saveDataToSession("screenHeight", height);
