@@ -249,37 +249,66 @@ class ResourceTeamAffectation extends SqlElement {
   			}
   		}
   	}
+  	
+  	$MaxHeight = 1;
+  	$nb = 0;
+  	foreach ($periods as $p) {
+  	  $nb++;
+  	  if ( $p['rate'] > $MaxHeight){
+  	    $MaxHeight =  $p['rate'];
+  	  }
+  	}
+  	$ratio = 100/$MaxHeight;
+  	if($ratio>10){
+  	  $ratio = 10;
+  	} 
+  	$MaxHeight = $MaxHeight*$ratio;
+  	$nbHeight = 15*$nb;
   	$result='<div style="position:relative;height:5px;"></div>'
-  			.'<div style="position:relative;width:99%; height:'.((count($projects)+1)*($lineHeight+4)+4).'px; '
+  			.'<div style="position:relative;width:99%; height:'.((count($projects))*($lineHeight+4)+4+$MaxHeight).'px; '
   			.' border: 1px solid #AAAAAA;background-color:#FEFEFE;'
-  			.' box-shadow:2px 2px 2px #888888; overflow:hidden;">';
+  			.' box-shadow:2px 2px 2px #888888; ">';
+  	
+  	$result.='<div style="position:absolute; height:'.$MaxHeight.'px; min-height:20px;width:99%; " > ';
+    $nbPeriods = count($periods);
   	foreach ($periods as $p) {
   		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
   		$width=($duration)?($len/$duration*100):0;
   		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
   		$title='['.$p['rate'].'] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
-  		
-  		if($p['rate']<1){
-  		  if($p['rate']<0.5){
-  		    $lineHeight = 15;
+  		$lineHeight2 = $ratio*$p['rate'];
+  		$lineHeight3 = ($lineHeight2-13) / 2;
+  		if($lineHeight2 < 10 and $nbPeriods == 1){
+  		  if($lineHeight2 < 5 ){
+  		  $top = ($MaxHeight-$lineHeight2)+5;
   		  }else{
-  		    $lineHeight = 15;
+  		    $top = ($MaxHeight-$lineHeight2)+8;
   		  }
+  		}else{
+  		  $top = ($MaxHeight-$lineHeight2);
   		}
-  		
-  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:3px;'
+  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:'.$top.'px;'
   		    //height des barres du haut
-  			.' height:'.($lineHeight).'px;'
+  			.' height:'.($lineHeight2).'px;'
   			.' background-color:#'.'EEEEFF'.'; '
   			.' border:1px solid #'.'AAAAEE'.';" ';
   		if (! $print)	$result.='title="'.$title.'" ';
   		$result.='>';
-  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
-  				.'width:100%;text-align:center;color:#'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';">';
+  	
+  		if($lineHeight2 < 10 ){ 
+  		  $result.='<div style="z-index:1;position: absolute; bottom:14px;right:0px;height:'.$lineHeight2.'px;white-space:nowrap;'
+  		      .'width:100%;text-align:center;color:#AAAAEE'.';">';
+  		}else{
+  		  $result.='<div style="z-index:1;margin-top:'.$lineHeight3.'px;white-space:nowrap;'
+  		      .'width:100%;text-align:center;color:#AAAAEE'.';">';
+  		}
   		$result.=$p['rate'].'';
   		$result.= '</div>';
   		$result.='</div>';	
   	}
+  	$result.='</div>';
+  	$MaxHeight = $MaxHeight+3;
+  	$result.='<div style="position:absolute; top:'.$MaxHeight.'px; height:'.$nbHeight.'px;width:99%; " > ';
   	$periodsPerProject=self::buildResourcePeriodsPerResourceTeam($idResourceAff, $showIdle);
   	foreach ($periodsPerProject as $idP=>$proj) {
   	  foreach ($proj['periods'] as $p) {
@@ -290,7 +319,7 @@ class ResourceTeamAffectation extends SqlElement {
   	    $title.="\n".SqlList::getNameFromId('Resource', $projects[$idP]['name']);
   	    $color='#EEEEEE';
   	    $result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;'
-  	        .' top:'.(3+($lineHeight+4)*($proj['position'])).'px;'
+  	        .' top:'.(3+($lineHeight+4)*($proj['position']-1)).'px;'
   	            .' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
   	                .' background-color:'.$color.'; '
   	                    .' border:1px solid #222222;" ';
@@ -303,6 +332,7 @@ class ResourceTeamAffectation extends SqlElement {
   	    $result.='</div>';
   	  }
   	}
+  	$result.= '</div>';
   	$result.= '</div>';
   	return $result;
   }

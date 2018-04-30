@@ -342,7 +342,6 @@
     // 3) sort from Filter Criteria
     if (! $quickSearch) {
       jsonBuildSortCriteria($querySelect,$queryFrom,$queryWhere,$queryOrderBy,$idTab,$arrayFilter,$obj);
-      debugLog($queryOrderBy);
     }
     
     // --- Rest of filter selection will be done later, after building select clause

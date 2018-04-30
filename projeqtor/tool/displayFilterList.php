@@ -55,8 +55,6 @@ if ($objectClass=='Planning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
 if (RequestHandler::isCodeSet('context')) $context=RequestHandler::getValue('context');
 
-debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass, context=$context");
-
 // Get existing filter info
 if (! $comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {
   $filterArray=$user->_arrayFilters[$filterObjectClass];

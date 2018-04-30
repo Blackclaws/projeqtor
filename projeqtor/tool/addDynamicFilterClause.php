@@ -27,8 +27,6 @@ if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
 if ($objectClass=='Planning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
 
-debugLog("filterObjectClass=$filterObjectClass, objectClass=$objectClass");
-
 $nbDynamicFilterClauses=RequestHandler::getNumeric('nbDynamicFilterClauses',true);
 
 $filter=new Filter($idFilter);
