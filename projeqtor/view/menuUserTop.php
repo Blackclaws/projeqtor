@@ -66,6 +66,7 @@ $listTheme=array('ProjeQtOrFlatBlue'=>i18n('themeProjeQtOrFlatBlue'),
     'ProjectOrRiaLight'=>i18n('themeProjectOrRIALight'),
     'random'=>i18n('themeRandom')); // keep 'random' as last value to assure it is not selected via getTheme()
 $userLang = getSessionValue('currentLocale');
+if (!$userLang and isset($currentLocale)) $userLang=$currentLocale;
 $userTheme = getSessionValue('theme');
 $startPage = getSessionValue('startPage');
 $listStartPage=array();
