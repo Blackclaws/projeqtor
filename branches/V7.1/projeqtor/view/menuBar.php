@@ -266,7 +266,7 @@
       
     <td title="<?php echo i18n('menuUserParameter');?>"  style="position:relative;width:100px;">
       <div dojoType="dijit.layout.ContentPane"  id="menuUserParameterTop" class="pseudoButton" style="position:relative;overflow:hidden; height:28px; min-width:100px;top:-5px;" title="<?php echo i18n('menuUserParameter');?>">
-        <div dojoType="dijit.form.DropDownButton"  id="iconMenuUserPhoto" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;top:-3px" >
+        <div dojoType="dijit.form.DropDownButton"  id="iconMenuUserPhoto" style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;position:relative;min-width:100px;top:-3px" >
 			    <table style="width:100%">
     			  <tr>
       			  <?php $user=getSessionUser();
@@ -280,7 +280,7 @@
       				  <div class="iconUserParameter22">&nbsp;</div> 
       				</td>
       			   <?php }?>
-      			  <td style="vertical-align:middle;">&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
+      			  <td style="vertical-align:middle;">&nbsp;<?php echo ($user->resourceName)?$user->resourceName:$user->name; ?>&nbsp;&nbsp;</td>
     			  </tr>
 			    </table>
 			    <div id="drawMenuUser" dojoType="dijit.TooltipDialog"
