@@ -76,13 +76,13 @@ class ResourceMain extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
-                                          "userName"=>"truncatedWidth100",
                                           "email"=>"truncatedWidth100",
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
                                           "password"=>"hidden" ,
                                           "isResourceTeam"=>"hidden" ,
+                                          "userName"=>"readonly,truncatedWidth100",
                                           "idRole"=>"required",
                                           "idCalendarDefinition"=>"required"
   );    
@@ -113,10 +113,11 @@ class ResourceMain extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
       $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");;
       if (! $canUpdateUser) {
-        self::$_fieldsAttributes["idProfile"]="readonly";
+        self::$_fieldsAttributes["idProfile"]="readonly";        
       } else {
       	self::$_fieldsAttributes["isUser"]="";
       	self::$_fieldsAttributes["idProfile"]="";
+      	self::$_fieldsAttributes["userName"]="truncatedWidth100";
       	if ($this->isUser) {
       	  self::$_fieldsAttributes["idProfile"]="required";
       	  self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
