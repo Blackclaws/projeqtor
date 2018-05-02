@@ -315,9 +315,8 @@ foreach ($resourcesFull2 as $idR=>$nameR) {
     }else{
       $capacity=SqlList::getFieldFromId('Resource', $idR, 'capacity');
     }
-    $capacity=htmlDisplayNumericWithoutTrailingZeros($capacity);
 	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
-	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.$capacity.'</div>';
+	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.htmlDisplayNumericWithoutTrailingZeros($capacity).'</div>';
 	  echo '</td>';
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $day=$startDate+$i-1;
