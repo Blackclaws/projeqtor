@@ -86,6 +86,10 @@ function generateImputationAlert() {
   $wk=new Work();
   $workList=$wk->getSqlElementsFromCriteria(null,false,$where);
   foreach ($workList as $wk) {
+    if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=array();
+    if (!isset($lstRes[$wk->idResource]['days'])) $lstRes[$wk->idResource]['days']=array();
+    if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate])) $lstRes[$wk->idResource]['days'][$wk->workDate]=array();
+    if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate]['work'])) $lstRes[$wk->idResource]['days'][$wk->workDate]['work']=0;
     $lstRes[$wk->idResource]['days'][$wk->workDate]['work']+=$wk->work;
   }
   
