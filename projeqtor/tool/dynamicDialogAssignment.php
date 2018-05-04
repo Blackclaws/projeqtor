@@ -101,7 +101,7 @@ if ($planningMode=='RECW') {
               <?php echo autoOpenFilteringSelect();?>
                 id="assignmentIdResource" name="assignmentIdResource"
                 class="input" 
-                onChange="assignmentChangeResource();"
+                onChange="assignmentChangeResource();assignmentChangeResourceTeamForCapacity();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" <?php echo ($realWork!=0 && $mode=='edit')?"readonly=readonly":"";?>>
                 <?php if($mode=='edit'){                      
                           htmlDrawOptionForReference('idResource', $idResource,null,true,'idProject',$idProject);
@@ -160,7 +160,7 @@ if ($planningMode=='RECW') {
                      echo i18n('shortDay'); ?>
              </td>
            </tr>
-           <tr>
+           <tr id="assignmentRate2" name="assignmentRate2">
              <td class="dialogLabel" >
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
@@ -176,6 +176,22 @@ if ($planningMode=='RECW') {
                  </div>
              </td>
            </tr>
+           
+             <tr id="assignmentCapacityResourceTeam" name="assignmentCapacityResourceTeam" style="display:none;">
+               <td class="dialogLabel" >
+                 <label for="assignmentCapacity" ><?php echo i18n("colCapacity");?>&nbsp;:&nbsp;</label>
+               </td>
+               <td>
+                 <div id="assignmentCapacity" name="assignmentCapacity" value=""
+                   dojoType="dijit.form.NumberTextBox" 
+                   style="width:97px" 
+                   <?php if ($planningMode=='RECW') echo ' readonly';?>
+                   missingMessage="<?php echo i18n('messageMandatory',array(i18n('colCapacity')));?>" 
+                   required="true" >
+                   </div>
+               </td>
+             </tr>
+           
            <tr style="<?php if ($planningMode=='RECW') echo 'display:none;';?>">
              <td class="dialogLabel" >
                <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
