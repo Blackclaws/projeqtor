@@ -65,7 +65,8 @@ $idResource=RequestHandler::getValue('idResource',false,null);
              </td>
              <td>
                <div id="affectationRateResourceTeam" name="affectationRateResourceTeam" value="<?php echo '100'; //$affectation->rate; ?>" 
-                 dojoType="dijit.form.NumberTextBox" 
+                 dojoType="dijit.form.NumberTextBox"
+                 constraints="{min:0,max:100}" 
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >

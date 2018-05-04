@@ -38,9 +38,10 @@ $start = RequestHandler::getValue('affectationStartDateResourceTeam');
 $end = RequestHandler::getValue('affectationEndDateResourceTeam');
 $description = RequestHandler::getValue('affectationDescriptionResourceTeam');
 $idle = RequestHandler::getBoolean('affectationIdleResourceTeam');
-
 Sql::beginTransaction();
+
 $result = "";
+$status="NO_CHANGE";
 
 $resourceTeam=new ResourceTeamAffectation();
 $resourceTeam->idResourceTeam = $idResourceTeam;
@@ -52,10 +53,17 @@ $resourceTeam->startDate = $start;
 $resourceTeam->endDate = $end;
 $res=$resourceTeam->save();
 
+if($rate > 100){
+  stripos($result,'id="lastOperationStatus" value="ERROR"');
+  $status='ERROR';
+}
+if ($status=='ERROR') {
+  Sql::rollbackTransaction();
+  echo '<div class="messageERROR" >' . i18n('rate can not be > 100') .  '</div>';
+}
 if (!$result) {
   $result=$res;
 }
-
 // Message of correct saving
 displayLastOperationStatus($result);
 

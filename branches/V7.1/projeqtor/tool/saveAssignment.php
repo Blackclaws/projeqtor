@@ -116,6 +116,9 @@ if (array_key_exists('attendantIsOptional',$_REQUEST)) {
   }
 }
 
+//gautier #resourceTeam
+$etp = RequestHandler::getNumeric('assignmentCapacity');
+
 $planningMode=null;
 $obj=new $refType($refId);
 $peName=$refType.'PlanningElement';
@@ -148,7 +151,26 @@ $assignment->dailyCost=$cost;
 if (! $oldCost or $assignment->dailyCost!=$oldCost) {
   $assignment->newDailyCost=$cost;
 }
-$assignment->rate=$rate;
+
+if($etp){
+  $assignment->capacity=$etp;
+  $periods = ResourceTeamAffectation::buildResourcePeriods($idResource);
+  $today=date('Y-m-d');
+  $maxCapacity = 1;
+  foreach ($periods as $p) {
+    if($p['end']>$today and $maxCapacity < $p['rate']){
+      $maxCapacity = $p['rate'];
+    }
+  }
+  $rate = ($etp/$maxCapacity)*100;
+  if($rate > 100){
+    $rate = 100;
+  }
+  $assignment->rate = $rate;
+}else{
+  $assignment->rate=$rate;
+}
+
 $assignment->assignedWork=Work::convertWork($assignedWork);
 //$assignment->realWork=Work::convertWork($realWork); // Should not be changed here
 $assignment->leftWork=Work::convertWork($leftWork);
