@@ -4809,7 +4809,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="assignHeader" style="width:'.(($print)?'40':'30').'%">'.i18n('colIdResource').'</td>';
-  echo '<td class="assignHeader" style="width:15%" >'.i18n('colRate').'</td>';
+  echo '<td class="assignHeader" style="width:15%" >'.i18n('colRateOrEtp').'</td>';
   if ($workVisible) {
     echo '<td class="assignHeader" style="width:15%">'.i18n('colAssigned').' ('.Work::displayShortWorkUnit().')'.'</td>';
     echo '<td class="assignHeader"style="width:15%">'.i18n('colReal').' ('.Work::displayShortWorkUnit().')'.'</td>';
@@ -4869,7 +4869,12 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     }
     echo '</tr></table>';
     echo '</td>';
-    echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlEncode($assignment->rate).'</td>';
+    //gautier #resourceTeam
+    if($assignment->capacity){
+      echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.$fmt->format(htmlEncode($assignment->capacity)).' '.i18n('unitCapacity').'</td>';
+    }else{
+      echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlEncode($assignment->rate).' '.i18n('percent').'</td>';
+    }   
     if ($workVisible) {
       $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'

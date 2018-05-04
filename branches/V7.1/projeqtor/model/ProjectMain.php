@@ -450,7 +450,7 @@ class ProjectMain extends SqlElement {
       $aff=new Affectation();
       $critArray=array('idProject'=>(($this->id)?$this->id:'0'));
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
-      drawAffectationsFromObject($affList, $this, 'Resource', false);  
+      drawAffectationsFromObject($affList, $this, 'ResourceAll', false);  
       drawAffectationsFromObject($affList, $this, 'Contact', false); 
       return $result;
     } else if ($item=='rf') { 

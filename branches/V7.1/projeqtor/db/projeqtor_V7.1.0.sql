@@ -63,3 +63,5 @@ CREATE TABLE `${prefix}resourceTeamAffectation` (
   `endDate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}assignment` ADD `capacity` decimal(5,2) UNSIGNED DEFAULT NULL;

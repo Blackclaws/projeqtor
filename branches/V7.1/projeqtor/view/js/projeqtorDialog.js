@@ -2340,6 +2340,26 @@ function removeAssignment(assignmentId, realWork, resource) {
   msg=i18n('confirmDeleteAssignment', new Array(resource));
   showConfirm(msg, actionOK);
 }
+//gautier #resourceTeam
+function assignmentChangeResourceTeamForCapacity() {
+  if (editAssignmentLoading)
+    return;
+  var idResource=dijit.byId("assignmentIdResource").get("value");
+  if (!idResource) {return;}
+  dojo.xhrGet({
+    url : '../tool/getIfResourceTeamOrResource.php?idResource='+idResource,
+    handleAs : "text",
+    load : function(data) {
+      if(data == 'isResourceTeam'){
+        dojo.byId('assignmentRate2').style.display="none";
+        dojo.byId('assignmentCapacityResourceTeam').style.display="table-row";
+      }else{
+        dojo.byId('assignmentRate2').style.display="table-row";
+        dojo.byId('assignmentCapacityResourceTeam').style.display="none";
+      }
+    }
+  });
+}
 
 function assignmentChangeResource() {
   if (editAssignmentLoading)
@@ -2351,7 +2371,7 @@ function assignmentChangeResource() {
     url : '../tool/getSingleData.php?dataType=resourceRole&idResource='+idResource,
     handleAs : "text",
     load : function(data) {
-      if (data) dijit.byId('assignmentIdRole').set('value', parseInt(data));
+      if (data) dijit.byId('assignmentCapacity').set('value', parseInt(data));
     }
   });
 }
