@@ -227,8 +227,9 @@ class WorkElementMain extends SqlElement {
 			$work = new Work ();
 			$workList = $work->getSqlElementsFromCriteria ( $crit, true, null, 'day asc' );
 			if (count ( $workList ) > 0) { // If work exists, retrive the last one
-				$idx = count ( $workList ) - 1;
-				$work = $workList [$idx];
+			  $idx=count($workList)-1;
+				$work=$workList [$idx];
+				//$work = end($workList);
 			} else { // If work does not exist, will create new one
 				$work = new Work ();
 				$work->refType = $this->refType;
@@ -262,9 +263,9 @@ class WorkElementMain extends SqlElement {
 				}
 				if ($ass) {
 				  $resAss=$ass->saveWithRefresh();
-				  if (getLastOperationStatus($resAss)!='OK') {
-				    return $resAss;
-				  }
+				  //if (getLastOperationStatus($resAss)!='OK') {
+				  //  return $resAss; // No $ass already updated, so will lead to NO_CHANGE
+				  //}
 				}
 			} else {
 			  // Remove work : so need to remove from existing (reverse loop on date) 
@@ -295,9 +296,9 @@ class WorkElementMain extends SqlElement {
 					}
   				if ($ass) {
   				  $resAss=$ass->saveWithRefresh();
-  				  if (getLastOperationStatus($resAss)!='OK') {
-  				    return $resAss;
-  				  }
+  				  //if (getLastOperationStatus($resAss)!='OK') {
+  				  //  return $resAss; // No $ass already updated, so will lead to NO_CHANGE
+  				  //}
   				}
 					$idx --;
 					if ($idx >= 0) { // Retrieve previous work element
