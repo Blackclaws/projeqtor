@@ -2732,17 +2732,16 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
     return '';
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate
       .getMonth(), paramStartDate.getDate());
-  currentDate.setHours(paramStartDate.getHours());
-  currentDate.setMinutes(paramStartDate.getMinutes());
-  currentDate.setSeconds(paramStartDate.getSeconds());
-  currentDate.setMilliseconds(paramStartDate.getMilliseconds());
+  currentDate.setHours(0,0,0,0);
   var endDate = paramEndDate;
-  if (paramEndDate < paramStartDate) {
+  endDate.setHours(0,0,0,0);
+  if (endDate < currentDate) {
     return 0;
   }
-  var duration = 1;
+  var duration = 0;
+  if (isOffDay(currentDate) && currentDate.valueOf()!=endDate.valueOf()) duration++;
   while (currentDate <= endDate) {
-    if (!isOffDay(currentDate)) {
+    if (!isOffDay(currentDate) || currentDate.valueOf()==endDate.valueOf()) {
       duration++;
     }
     currentDate = addDaysToDate(currentDate, 1);
