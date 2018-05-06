@@ -141,7 +141,7 @@ Imports data from CSV or XLSX files.
    * The password field must be cut and pasted from the database because it is encrypted.
    * If you enter some readable password, the users will not be able to connect.
 
-   .. Attention:: 
+   .. attention:: 
 
       * If you want to create new users **don't put any id** because if id already exists, it will be overridden by the new (with possibility to erase admin user…).
       * Always keep in mind that your import may have some impact on administrator user.
