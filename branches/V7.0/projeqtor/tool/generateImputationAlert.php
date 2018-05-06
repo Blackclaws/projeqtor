@@ -97,7 +97,7 @@ function generateImputationAlert() {
     $tmpDate=$startDate;
     $full=true;
     while ($tmpDate<=$endDate) {
-      if ($res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
+      if ( isset($res['days'][$tmpDate]) and $res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
         $full=false;
       }
       $tmpDate=addDaysToDate($tmpDate, 1);
