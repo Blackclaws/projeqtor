@@ -74,7 +74,7 @@ Current version is V6.3.0
   
   * Automatic dispatch of delivery status to deliverables.
 
-  * See: :ref:`deliverys`
+  * See: :ref:`deliveries`
 
 
 .. rubric:: List of values.
@@ -313,7 +313,7 @@ Administration
    Administration
 
 Activity Stream
-==============
+===============
 
 .. toctree::
    :maxdepth: 1

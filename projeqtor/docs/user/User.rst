@@ -23,7 +23,7 @@ Users
 
 The user is a person that will be able to connect to the application.
 
-.. Note:: 
+.. note:: 
 
    * To be able to connect, the user must have a password and a user profile defined.
 

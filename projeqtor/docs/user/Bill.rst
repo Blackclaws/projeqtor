@@ -1,3 +1,4 @@
+
 .. include:: ImageReplacement.txt
 
 .. raw:: latex
@@ -20,7 +21,7 @@ Bills
 
 A bill is a request for payment for delivered work.
 
-Billing will depend on billing type defined for the project.
+Billing will depend on billing type defined for the project through project type.
 
 ---------------
 
