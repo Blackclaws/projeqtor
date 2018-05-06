@@ -540,14 +540,14 @@ Incomings links with Milestones.
 
     \newpage
 
-.. index:: ! Deliverys
+.. index:: ! Deliveries
     
-.. _deliverys:
+.. _deliveries:
 
-Deliverys
-=========
+Deliveries
+==========
 
-Deliverys items are stored to keep track of deliverys.
+Deliveries items are stored to keep track of deliveries.
 
 Added list of deliverables integrated in delivery.
 
