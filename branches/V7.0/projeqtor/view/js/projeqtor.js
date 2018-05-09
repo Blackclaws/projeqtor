@@ -790,6 +790,7 @@ function loadContent(page, destination, formName, isResultMessage,
                   }).play();
                   hideWait();
                   formInitialize();
+                  if (whichFullScreen>=0 && editorArray[whichFullScreen]) editorArray[whichFullScreen].focus();
                 }
               }
             }).play();
@@ -1305,8 +1306,8 @@ function finalizeMessageDisplay(destination, validationType) {
       }
       // last operations depending on the executed operatoin (insert, delete,
       // ...)
-      if (dojo.byId('id') && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
-        dojo.byId('id').value = lastSaveId.value;
+      if (dojo.byId('id') && lastOperation && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
+        dojo.byId('id').value = (lastSaveId)?lastSaveId.value:null;
         if (dojo.byId('objectClass')
             && dojo.byId('objectClass').value == "Project") {
           needProjectListRefresh = true;
@@ -2733,7 +2734,8 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate
       .getMonth(), paramStartDate.getDate());
   currentDate.setHours(0,0,0,0);
-  var endDate = paramEndDate;
+  var endDate = new Date();
+  endDate.setFullYear(paramEndDate.getFullYear(), paramEndDate.getMonth(), paramEndDate.getDate());
   endDate.setHours(0,0,0,0);
   if (endDate < currentDate) {
     return 0;
