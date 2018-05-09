@@ -253,7 +253,7 @@ class GeneralWork extends SqlElement {
     self::setWorkUnit();
     $coef=self::$workCoef;
     if (!$val) return 0;
-    return round($val*$coef,3);
+    return round(floatval($val)*$coef,3);
   }
   
   public static function displayWorkWithUnit($val) {
@@ -266,7 +266,7 @@ class GeneralWork extends SqlElement {
     self::setWorkUnit();
     $coef=self::$workCoef;
     if (!$val) return 0;
-    return (round($val/$coef,5));
+    return (round(floatval($val)/$coef,5));
   }
   
   public static function displayShortWorkUnit() {
