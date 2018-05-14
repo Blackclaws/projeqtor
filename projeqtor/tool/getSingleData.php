@@ -92,10 +92,14 @@
       $idAffectation=RequestHandler::getId('idAffectation');
       $aff=new Affectation($idAffectation);
       echo formatAnyTextToPlainText($aff->description,false);
+    } else if ($type=='affectationDescriptionResourceTeam') {
+      $idAffectation=RequestHandler::getId('idAffectation');
+      $aff=new ResourceTeamAffectation($idAffectation);
+      echo formatAnyTextToPlainText($aff->description,false);
     } else if ($type=='assignmentDescription') {
-        $idAssignment=RequestHandler::getId('idAssignment');
-        $ass=new Assignment($idAssignment);
-        echo formatAnyTextToPlainText($ass->comment,false);
+      $idAssignment=RequestHandler::getId('idAssignment');
+      $ass=new Assignment($idAssignment);
+      echo formatAnyTextToPlainText($ass->comment,false);
     } else if ($type=='responsible') {
       $responsibleFromProduct=Parameter::getGlobalParameter('responsibleFromProduct');
     	if (!$responsibleFromProduct) $responsibleFromProduct='always';

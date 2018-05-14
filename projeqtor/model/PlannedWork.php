@@ -695,10 +695,11 @@ class PlannedWork extends GeneralWork {
             $ass->leftWork=0;
             $ass->plannedWork=$ass->realWork;
           }
-//          if ($ress['team']) debugLog($ress);
+          if ($ress['team']) debugLog($ress);
           while (1) {           
             if ($ress['team']) { // For team resource, check if unitary resources have enought availability
-              $period=ResourceTeamAffectation::findPeriod($currentDate,$ress['periods']);              
+              $period=ResourceTeamAffectation::findPeriod($currentDate,$ress['periods']); 
+              debugLog("For $currentDate, found period=$period");
               if ($period===null) {
                 $capacity=0;
               } else {
@@ -709,25 +710,29 @@ class PlannedWork extends GeneralWork {
                     $tmpCapa=$ress['periods'][$period]['idResource'][$idMember];
 //                    debugLog("   found period $period and tmpCapa=$tmpCapa");
                     if (isset($member[$currentDate])) {
-                      debugLog("   already planned=".$member[$currentDate]);
+                      debugLog("   already planned for $idMember on $currentDate=".$member[$currentDate]);
                       if (isset($resources[$idMember]) and isset($resources[$idMember]['capacity'])) {
-//                        debugLog("   from capacity".$resources[$idMember]['capacity']);
-                        if ($resources[$idMember]['capacity']-$member[$currentDate]>=$tmpCapa) {
-                          // tmpCapa preserved : enough left 
-                        } else {
-                          $tmpCapa=$resources[$idMember]['capacity']-$member[$currentDate];
-                        }
+                        $capaMember=$resources[$idMember]['capacity'];
                       } else {
-                        $tmpCapa-=$member[$currentDate]; // Should not be used as previous should be true if upper condition is true (just for security)
+                        $capaMember=SqlList::getFieldFromId('Resource', $idMember, 'capacity');
                       }
+                      debugLog("   from capacity ".$capaMember);
+                      if ($capaMember-$member[$currentDate]>=$tmpCapa) {
+                        debugLog("   ".$capaMember."-".$member[$currentDate].">=".$tmpCapa." => nothing");
+                        // tmpCapa preserved : enough left 
+                      } else {
+                        debugLog("   ".$capaMember."-".$member[$currentDate]."<".$tmpCapa." => left is less than capa");
+                        $tmpCapa=$capaMember-$member[$currentDate];
+                      }                      
                     }
 //                    debugLog("   add $tmpCapa to capacity for $idMember");
                     if ($tmpCapa>0) $capacity+=$tmpCapa;
-                  }
+                  }                
                 }
               }
 //              debugLog("Period for $currentDate is $period then capacity is $capacity");
             }
+            debugLog("   for $currentDate capacity=$capacity, capacityRate=$capacityRate");
             if ($profile=='RECW') {
               if ($currentDate<=$endPlan) {
                 $left=$capacity;
@@ -823,6 +828,7 @@ class PlannedWork extends GeneralWork {
                   $interval+=$step;
               	}
               }
+              debugLog("   planned=$planned, capacity=$capacity");
               if ($planned < $capacity)  {
                 $value=$capacity-$planned; 
                 if ($profile=='RECW') {                 
@@ -987,7 +993,14 @@ class PlannedWork extends GeneralWork {
                     foreach($ress['isMemberOf'] as $idRT=>$rt) {
                       if (!isset($resources[$idRT]) ) {
                         $r=new ResourceAll($idRT,true);
-                        $resources[$r->id]=$r->getWork($startDate, $withProjectRepartition);
+                        $resources[$idRT]=$r->getWork($startDate, $withProjectRepartition);
+                      }
+                      if (! isset($resources[$idRT]['periods'])) {
+                        debugLog("no period for $idRT");
+                        debugLog("Assignment $ass->id");
+                        debugLog($ress['isMemberOf']);
+                        debugLog($resources[$idRT]);
+                        
                       }
                       $period=ResourceTeamAffectation::findPeriod($currentDate, $resources[$idRT]['periods']);
 //                      debugLog("   Period found = $period");

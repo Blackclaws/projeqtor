@@ -29,7 +29,7 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
-scriptLog('   ->/tool/saveAffectation.php');
+scriptLog('   ->/tool/saveAffectationResourceTeam.php');
 
 $idResourceTeam = RequestHandler::getId('idResourceTeam');
 $resource= RequestHandler::getId('affectationResourceTeam');
@@ -38,31 +38,48 @@ $start = RequestHandler::getValue('affectationStartDateResourceTeam');
 $end = RequestHandler::getValue('affectationEndDateResourceTeam');
 $description = RequestHandler::getValue('affectationDescriptionResourceTeam');
 $idle = RequestHandler::getBoolean('affectationIdleResourceTeam');
+if($idle){
+  $idle = 1;
+}else{
+  $idle = 0;
+}
+$mode = RequestHandler::getValue('mode');
 Sql::beginTransaction();
-
 $result = "";
 $status="NO_CHANGE";
 
-$resourceTeam=new ResourceTeamAffectation();
-$resourceTeam->idResourceTeam = $idResourceTeam;
-$resourceTeam->idResource = $resource;
-$resourceTeam->rate = $rate;
-$resourceTeam->description = $description;
-$resourceTeam->idle = $idle;
-$resourceTeam->startDate = $start;
-$resourceTeam->endDate = $end;
-$res=$resourceTeam->save();
-
-if($rate > 100){
-  stripos($result,'id="lastOperationStatus" value="ERROR"');
-  $status='ERROR';
-}
-if ($status=='ERROR') {
-  Sql::rollbackTransaction();
-  echo '<div class="messageERROR" >' . i18n('rate can not be > 100') .  '</div>';
-}
-if (!$result) {
-  $result=$res;
+if($mode == 'edit'){
+  $idAffectation = RequestHandler::getId('idAffectation');
+  $resourceTeam=new ResourceTeamAffectation($idAffectation);
+  $resourceTeam->idResource = $resource;
+  $resourceTeam->rate = $rate;
+  $resourceTeam->description = nl2brForPlainText($description);
+  $resourceTeam->idle = $idle;
+  $resourceTeam->startDate = $start;
+  $resourceTeam->endDate = $end;
+  $result=$resourceTeam->save();
+}else{
+  $resourceTeam=new ResourceTeamAffectation();
+  $resourceTeam->idResourceTeam = $idResourceTeam;
+  $resourceTeam->idResource = $resource;
+  $resourceTeam->rate = $rate;
+  $resourceTeam->description = nl2brForPlainText($description);
+  $resourceTeam->idle = $idle;
+  $resourceTeam->startDate = $start;
+  $resourceTeam->endDate = $end;
+  $res=$resourceTeam->save();
+  
+  if($rate > 100){
+    stripos($result,'id="lastOperationStatus" value="ERROR"');
+    $status='ERROR';
+  }
+  if ($status=='ERROR') {
+    Sql::rollbackTransaction();
+    echo '<div class="messageERROR" >' . i18n('rate can not be > 100') .  '</div>';
+  }
+  if (!$result) {
+    $result=$res;
+  }
 }
 // Message of correct saving
 displayLastOperationStatus($result);

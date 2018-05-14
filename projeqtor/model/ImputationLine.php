@@ -106,12 +106,20 @@ class ImputationLine {
     $endDate=date('Y-m-d', strtotime("+$plus days", strtotime($startDate)));
     
     // Get All assignments
-    $crit=array('idResource' => $resourceId);
+    $ressList=Sql::fmtId($resourceId);
+    $rta=new ResourceTeamAffectation();
+    $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$resourceId));
+    foreach($rtaList as $rta) {
+      if ( ($rta->startDate==null or $rta->startDate<=$endDate) and ($rta->endDate==null or $rta->endDate>=$startDate)) {
+        $ressList.=','.Sql::fmtId($rta->idResourceTeam);
+      }
+    }
+    $critWhere="idResource in ($ressList)";
     if (!$showIdle) {
-      $crit ['idle']='0';
+      $critWhere.=" and idle=0";
     }
     $ass=new Assignment();
-    $assList=$ass->getSqlElementsFromCriteria($crit, false, null, null, true, true);
+    $assList=$ass->getSqlElementsFromCriteria(null, false, $critWhere, null, true, true);
     
     // Retrieve realwork and planned work entered for period
     $crit=array('idResource' => $resourceId);
