@@ -339,21 +339,21 @@ class ResourceMain extends SqlElement {
     if ($result['team']) {
       $result['members']=array();
       $rta=new ResourceTeamAffectation();
-      $rtaList=$rta->getSqlElementsFromCriteria(array('idResourceTeam'=>$this->id));
+      $rtaList=$rta->getSqlElementsFromCriteria(array('idResourceTeam'=>$this->id, 'idle'=>'0'));
       $result['periods']=ResourceTeamAffectation::buildResourcePeriods($this->id);
       foreach ($rtaList as $rta) {
         $rr=new Resource($rta->idResource);
         $result['members'][$rr->id]=$rr->getWork($startDate, $withProjectRepartition);
-        foreach($result['members'][$rr->id] as $keyM=>$valM) { // Add work on unit resource to Team to subtract availability
-          if ($keyM=='real' or substr($keyM,0,7)=='Project' or $keyM=='isMemberOf') continue;
-          if (!isset($result[$keyM])) $result[$keyM]=0;
-          $result[$keyM]+=$valM;
-        }
+        //foreach($result['members'][$rr->id] as $keyM=>$valM) { // Add work on unit resource to Team to subtract availability
+          //if ($keyM=='real' or substr($keyM,0,7)=='Project' or $keyM=='isMemberOf') continue;
+          //if (!isset($result[$keyM])) $result[$keyM]=0;
+          //$result[$keyM]+=$valM;
+        //}
       }
     } else {
       $result['isMemberOf']=array();
       $rta=new ResourceTeamAffectation();
-      $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$this->id));
+      $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$this->id, 'idle'=>'0'));
       foreach ($rtaList as $rta) {
         //$result['isMemberOf'][$rta->startDate]=array('team'=>$rta->idResourceTeam,'start'=>$rta->startDate,'end'=>$rta->endDate,'rate'=>$rta->rate);
         $result['isMemberOf'][$rta->idResourceTeam]=$rta->idResourceTeam;

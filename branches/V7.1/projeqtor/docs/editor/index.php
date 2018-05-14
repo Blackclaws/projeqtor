@@ -39,8 +39,8 @@ $dir=File::getDir();
   <meta name="Copyright" content="Pascal BERNARD" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
   <title>RST2HTML</title>
-  <link rel="stylesheet" type="text/css" href="<?php echo $dir;?>html_en/_static/classic.css" />
-  <link rel="stylesheet" type="text/css" href="<?php echo $dir;?>html_en/_static/projeqtor.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo $dir;?>_static/classic.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo $dir;?>_static/projeqtor.css" />
   <link rel="stylesheet" type="text/css" href="editor.css" />
   <script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
   <script type="text/javascript" src="editor.js" ></script>

@@ -27,12 +27,15 @@ include_once ("../tool/projeqtor.php");
 $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 $mode = RequestHandler::getValue('mode',false,null);
 $idResource=RequestHandler::getValue('idResource',false,null);
+$idAffectation=RequestHandler::getValue('id',false,null);
 ?>
   <table>
     <tr>
       <td>
        <form dojoType="dijit.form.Form" id='affectationResourceTeamForm' name='affectationResourceTeamForm' onSubmit="return false;">
         <input id="idResourceTeam" name="idResourceTeam" type="hidden" value="<?php echo $idResource;?>" />
+        <input id="mode" name="mode" type="hidden" value="<?php echo $mode;?>" />
+        <input id="idAffectation" name="idAffectation" type="hidden" value="<?php echo $idAffectation;?>" />
          <table>
            <tr>
              <td class="dialogLabel"  >
@@ -64,7 +67,7 @@ $idResource=RequestHandler::getValue('idResource',false,null);
                <label for="affectationRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="affectationRateResourceTeam" name="affectationRateResourceTeam" value="<?php echo '100'; //$affectation->rate; ?>" 
+               <div id="affectationRateResourceTeam" name="affectationRateResourceTeam" value="<?php echo '100'; ?>" 
                  dojoType="dijit.form.NumberTextBox"
                  constraints="{min:0,max:100}" 
                  style="width:100px" class="input"
@@ -85,8 +88,8 @@ $idResource=RequestHandler::getValue('idResource',false,null);
                      <input id="affectationStartDateResourceTeam" name="affectationStartDateResourceTeam" value=""  
 			                 dojoType="dijit.form.DateTextBox" 
 			                 constraints="{datePattern:browserLocaleDateFormatJs}"
-                       onChange=" var end=dijit.byId('affectationEndDate');end.set('dropDownDefaultValue',this.value);
-                       var start = dijit.byId('affectationStartDate').get('value');end.constraints.min=start;"
+                       onChange=" var end=dijit.byId('affectationEndDateResourceTeam');end.set('dropDownDefaultValue',this.value);
+                       var start = dijit.byId('affectationStartDateResourceTeam').get('value');end.constraints.min=start;"
 			                 style="width:100px" />
                    </td>
                    <td class="dialogLabel" >

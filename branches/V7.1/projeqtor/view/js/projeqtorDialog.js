@@ -5096,16 +5096,19 @@ function editAffectationResourceTeam(id, objectClass, type, idResource, rate, id
     return;
   }
   var callBack = function () {
-  dojo.xhrGet({
-    url : '../tool/saveAffectationResourceTeam.php?dataType=affectationDescription&idAffectation='+id,
-    handleAs : "text",
-    load : function(data) {
-//      dijit.byId('affectationDescriptionResourceTeam').set('value', data);
-//      enableWidget("affectationDescriptionResourceTeam");
-    }
-  });
+    dojo.xhrGet({
+      url : '../tool/getSingleData.php?dataType=affectationDescriptionResourceTeam&idAffectation='+id,
+      handleAs : "text",
+      load : function(data) {
+        dijit.byId('affectationDescriptionResourceTeam').set('value', data);
+        enableWidget("affectationDescriptionResourceTeam");
+      }
+    });
   if(idResource){
     dijit.byId("affectationResourceTeam").set('value', idResource);
+  }
+  if (rate) {
+    dijit.byId("affectationRateResourceTeam").set('value', rate);
   }
   if (startDate) {
     dijit.byId("affectationStartDateResourceTeam").set('value', startDate);
@@ -5134,8 +5137,7 @@ params+="&objectClass="+objectClass;
 loadDialog('dialogAffectationResourceTeam',callBack,false,params);
 }
 
-function editAffectation(id, objectClass, type, idResource, idProject, rate,
-    idle, startDate, endDate, idProfile) {
+function editAffectation(id, objectClass, type, idResource, idProject, rate, idle, startDate, endDate, idProfile) {
   affectationLoad=true;
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
