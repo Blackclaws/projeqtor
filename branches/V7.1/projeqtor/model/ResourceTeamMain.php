@@ -56,9 +56,10 @@ class ResourceTeamMain extends Resource {
 	      "mobile"=>"hidden" ,
 	      "fax"=>"hidden" ,
 	      "isContact"=>"hidden" ,
-	      "isUser"=>"hidden" ,
-	      "_sec_ResourceCost"=>"hidden" ,
-	      "idRole"=>"hidden" ,
+ 	      "isUser"=>"hidden" ,
+// 	      "_sec_ResourceCost"=>"hidden" ,
+//	      "idRole"=>"hidden" ,
+	      "idProfile"=>"hidden" ,
 	      "_sec_Miscellaneous"=>"hidden" ,
 	      "dontReceiveTeamMails"=>"hidden"
 	  );
