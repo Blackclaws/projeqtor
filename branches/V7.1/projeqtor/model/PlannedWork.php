@@ -997,7 +997,8 @@ class PlannedWork extends GeneralWork {
                           $capaRes=$resources[$idRT]['periods'][$period]['idResource'][$ass->idResource];
                           if ($leftOnDate<$capaRes or $leftOnDate<$value) { // there is not enough left for the whole capacity
                             $value=min($capaRes,$leftOnDate);
-                          }                  
+                          }
+                        }                  
                       }
                       if ($period and isset($resources[$idRT]['periods'][$period]['idResource'][$ass->idResource])) {
                         //if (! isset($resources[$idRT][$currentDate])) $resources[$idRT][$currentDate]=0;
