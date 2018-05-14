@@ -1,0 +1,6505 @@
+/*! pdfmake v0.1.34, @license MIT, @link http://pdfmake.org */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["pdfMake"] = __webpack_require__(1);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/* jslint node: true */
+	/* jslint browser: true */
+	'use strict';
+
+	var PdfPrinter = __webpack_require__(6);
+	var isFunction = __webpack_require__(8).isFunction;
+	var FileSaver = __webpack_require__(304);
+	var saveAs = FileSaver.saveAs;
+
+	var defaultClientFonts = {
+		Roboto: {
+			normal: 'Roboto-Regular.ttf',
+			bold: 'Roboto-Medium.ttf',
+			italics: 'Roboto-Italic.ttf',
+			bolditalics: 'Roboto-MediumItalic.ttf'
+		}
+	};
+
+	function Document(docDefinition, tableLayouts, fonts, vfs) {
+		this.docDefinition = docDefinition;
+		this.tableLayouts = tableLayouts || null;
+		this.fonts = fonts || defaultClientFonts;
+		this.vfs = vfs;
+	}
+
+	function canCreatePdf() {
+		// Ensure the browser provides the level of support needed
+		if (!Object.keys) {
+			return false;
+		}
+		return true;
+	}
+
+	Document.prototype._createDoc = function (options, callback) {
+		options = options || {};
+		if (this.tableLayouts) {
+			options.tableLayouts = this.tableLayouts;
+		}
+
+		var printer = new PdfPrinter(this.fonts);
+		printer.fs.bindFS(this.vfs);
+
+		var doc = printer.createPdfKitDocument(this.docDefinition, options);
+		var chunks = [];
+		var result;
+
+		doc.on('readable', function () {
+			var chunk;
+			while ((chunk = doc.read(9007199254740991)) !== null) {
+				chunks.push(chunk);
+			}
+		});
+		doc.on('end', function () {
+			result = Buffer.concat(chunks);
+			callback(result, doc._pdfMakePages);
+		});
+		doc.end();
+	};
+
+	Document.prototype._getPages = function (options, cb) {
+		if (!cb) {
+			throw '_getPages is an async method and needs a callback argument';
+		}
+		this._createDoc(options, function (ignoreBuffer, pages) {
+			cb(pages);
+		});
+	};
+
+	Document.prototype._bufferToBlob = function (buffer) {
+		var blob;
+		try {
+			blob = new Blob([buffer], {type: 'application/pdf'});
+		} catch (e) {
+			// Old browser which can't handle it without making it an byte array (ie10)
+			if (e.name === 'InvalidStateError') {
+				var byteArray = new Uint8Array(buffer);
+				blob = new Blob([byteArray.buffer], {type: 'application/pdf'});
+			}
+		}
+
+		if (!blob) {
+			throw 'Could not generate blob';
+		}
+
+		return blob;
+	};
+
+	Document.prototype._openWindow = function () {
+		// we have to open the window immediately and store the reference
+		// otherwise popup blockers will stop us
+		var win = global.open('', '_blank');
+		if (win === null) {
+			throw 'Open PDF in new window blocked by browser';
+		}
+
+		return win;
+	};
+
+	Document.prototype._openPdf = function (options, win) {
+		if (!win) {
+			win = this._openWindow();
+		}
+		try {
+			this.getBlob(function (result) {
+				var urlCreator = global.URL || global.webkitURL;
+				var pdfUrl = urlCreator.createObjectURL(result);
+				win.location.href = pdfUrl;
+			}, options);
+		} catch (e) {
+			win.close();
+			throw e;
+		}
+	};
+
+	Document.prototype.open = function (options, win) {
+		options = options || {};
+		options.autoPrint = false;
+		win = win || null;
+
+		this._openPdf(options, win);
+	};
+
+
+	Document.prototype.print = function (options, win) {
+		options = options || {};
+		options.autoPrint = true;
+		win = win || null;
+
+		this._openPdf(options, win);
+	};
+
+	Document.prototype.download = function (defaultFileName, cb, options) {
+		if (isFunction(defaultFileName)) {
+			cb = defaultFileName;
+			defaultFileName = null;
+		}
+
+		defaultFileName = defaultFileName || 'file.pdf';
+		this.getBlob(function (result) {
+			saveAs(result, defaultFileName);
+
+			if (isFunction(cb)) {
+				cb();
+			}
+		}, options);
+	};
+
+	Document.prototype.getBase64 = function (cb, options) {
+		if (!cb) {
+			throw 'getBase64 is an async method and needs a callback argument';
+		}
+		this.getBuffer(function (buffer) {
+			cb(buffer.toString('base64'));
+		}, options);
+	};
+
+	Document.prototype.getDataUrl = function (cb, options) {
+		if (!cb) {
+			throw 'getDataUrl is an async method and needs a callback argument';
+		}
+		this.getBuffer(function (buffer) {
+			cb('data:application/pdf;base64,' + buffer.toString('base64'));
+		}, options);
+	};
+
+	Document.prototype.getBlob = function (cb, options) {
+		if (!cb) {
+			throw 'getBlob is an async method and needs a callback argument';
+		}
+		var that = this;
+		this.getBuffer(function (result) {
+			var blob = that._bufferToBlob(result);
+			cb(blob);
+		}, options);
+	};
+
+	Document.prototype.getBuffer = function (cb, options) {
+		if (!cb) {
+			throw 'getBuffer is an async method and needs a callback argument';
+		}
+		this._createDoc(options, function (buffer) {
+			cb(buffer);
+		});
+	};
+
+	module.exports = {
+		createPdf: function (docDefinition) {
+			if (!canCreatePdf()) {
+				throw 'Your browser does not provide the level of support needed';
+			}
+			return new Document(docDefinition, global.pdfMake.tableLayouts, global.pdfMake.fonts, global.pdfMake.vfs);
+		}
+	};
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer, (function() { return this; }())))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/*!
+	 * The buffer module from node.js, for the browser.
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
+	 */
+	/* eslint-disable no-proto */
+
+	'use strict'
+
+	var base64 = __webpack_require__(3)
+	var ieee754 = __webpack_require__(4)
+	var isArray = __webpack_require__(5)
+
+	exports.Buffer = Buffer
+	exports.SlowBuffer = SlowBuffer
+	exports.INSPECT_MAX_BYTES = 50
+
+	/**
+	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
+	 *   === true    Use Uint8Array implementation (fastest)
+	 *   === false   Use Object implementation (most compatible, even IE6)
+	 *
+	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+	 * Opera 11.6+, iOS 4.2+.
+	 *
+	 * Due to various browser bugs, sometimes the Object implementation will be used even
+	 * when the browser supports typed arrays.
+	 *
+	 * Note:
+	 *
+	 *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+	 *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+	 *
+	 *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+	 *
+	 *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+	 *     incorrect length in some situations.
+
+	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+	 * get the Object implementation, which is slower but behaves correctly.
+	 */
+	Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+	  ? global.TYPED_ARRAY_SUPPORT
+	  : typedArraySupport()
+
+	/*
+	 * Export kMaxLength after typed array support is determined.
+	 */
+	exports.kMaxLength = kMaxLength()
+
+	function typedArraySupport () {
+	  try {
+	    var arr = new Uint8Array(1)
+	    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+	    return arr.foo() === 42 && // typed array instances can be augmented
+	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+	        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+	  } catch (e) {
+	    return false
+	  }
+	}
+
+	function kMaxLength () {
+	  return Buffer.TYPED_ARRAY_SUPPORT
+	    ? 0x7fffffff
+	    : 0x3fffffff
+	}
+
+	function createBuffer (that, length) {
+	  if (kMaxLength() < length) {
+	    throw new RangeError('Invalid typed array length')
+	  }
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    // Return an augmented `Uint8Array` instance, for best performance
+	    that = new Uint8Array(length)
+	    that.__proto__ = Buffer.prototype
+	  } else {
+	    // Fallback: Return an object instance of the Buffer class
+	    if (that === null) {
+	      that = new Buffer(length)
+	    }
+	    that.length = length
+	  }
+
+	  return that
+	}
+
+	/**
+	 * The Buffer constructor returns instances of `Uint8Array` that have their
+	 * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+	 * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+	 * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+	 * returns a single octet.
+	 *
+	 * The `Uint8Array` prototype remains unmodified.
+	 */
+
+	function Buffer (arg, encodingOrOffset, length) {
+	  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+	    return new Buffer(arg, encodingOrOffset, length)
+	  }
+
+	  // Common case.
+	  if (typeof arg === 'number') {
+	    if (typeof encodingOrOffset === 'string') {
+	      throw new Error(
+	        'If encoding is specified then the first argument must be a string'
+	      )
+	    }
+	    return allocUnsafe(this, arg)
+	  }
+	  return from(this, arg, encodingOrOffset, length)
+	}
+
+	Buffer.poolSize = 8192 // not used by this implementation
+
+	// TODO: Legacy, not needed anymore. Remove in next major version.
+	Buffer._augment = function (arr) {
+	  arr.__proto__ = Buffer.prototype
+	  return arr
+	}
+
+	function from (that, value, encodingOrOffset, length) {
+	  if (typeof value === 'number') {
+	    throw new TypeError('"value" argument must not be a number')
+	  }
+
+	  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+	    return fromArrayBuffer(that, value, encodingOrOffset, length)
+	  }
+
+	  if (typeof value === 'string') {
+	    return fromString(that, value, encodingOrOffset)
+	  }
+
+	  return fromObject(that, value)
+	}
+
+	/**
+	 * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+	 * if value is a number.
+	 * Buffer.from(str[, encoding])
+	 * Buffer.from(array)
+	 * Buffer.from(buffer)
+	 * Buffer.from(arrayBuffer[, byteOffset[, length]])
+	 **/
+	Buffer.from = function (value, encodingOrOffset, length) {
+	  return from(null, value, encodingOrOffset, length)
+	}
+
+	if (Buffer.TYPED_ARRAY_SUPPORT) {
+	  Buffer.prototype.__proto__ = Uint8Array.prototype
+	  Buffer.__proto__ = Uint8Array
+	  if (typeof Symbol !== 'undefined' && Symbol.species &&
+	      Buffer[Symbol.species] === Buffer) {
+	    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+	    Object.defineProperty(Buffer, Symbol.species, {
+	      value: null,
+	      configurable: true
+	    })
+	  }
+	}
+
+	function assertSize (size) {
+	  if (typeof size !== 'number') {
+	    throw new TypeError('"size" argument must be a number')
+	  } else if (size < 0) {
+	    throw new RangeError('"size" argument must not be negative')
+	  }
+	}
+
+	function alloc (that, size, fill, encoding) {
+	  assertSize(size)
+	  if (size <= 0) {
+	    return createBuffer(that, size)
+	  }
+	  if (fill !== undefined) {
+	    // Only pay attention to encoding if it's a string. This
+	    // prevents accidentally sending in a number that would
+	    // be interpretted as a start offset.
+	    return typeof encoding === 'string'
+	      ? createBuffer(that, size).fill(fill, encoding)
+	      : createBuffer(that, size).fill(fill)
+	  }
+	  return createBuffer(that, size)
+	}
+
+	/**
+	 * Creates a new filled Buffer instance.
+	 * alloc(size[, fill[, encoding]])
+	 **/
+	Buffer.alloc = function (size, fill, encoding) {
+	  return alloc(null, size, fill, encoding)
+	}
+
+	function allocUnsafe (that, size) {
+	  assertSize(size)
+	  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+	    for (var i = 0; i < size; ++i) {
+	      that[i] = 0
+	    }
+	  }
+	  return that
+	}
+
+	/**
+	 * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+	 * */
+	Buffer.allocUnsafe = function (size) {
+	  return allocUnsafe(null, size)
+	}
+	/**
+	 * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+	 */
+	Buffer.allocUnsafeSlow = function (size) {
+	  return allocUnsafe(null, size)
+	}
+
+	function fromString (that, string, encoding) {
+	  if (typeof encoding !== 'string' || encoding === '') {
+	    encoding = 'utf8'
+	  }
+
+	  if (!Buffer.isEncoding(encoding)) {
+	    throw new TypeError('"encoding" must be a valid string encoding')
+	  }
+
+	  var length = byteLength(string, encoding) | 0
+	  that = createBuffer(that, length)
+
+	  var actual = that.write(string, encoding)
+
+	  if (actual !== length) {
+	    // Writing a hex string, for example, that contains invalid characters will
+	    // cause everything after the first invalid character to be ignored. (e.g.
+	    // 'abxxcd' will be treated as 'ab')
+	    that = that.slice(0, actual)
+	  }
+
+	  return that
+	}
+
+	function fromArrayLike (that, array) {
+	  var length = array.length < 0 ? 0 : checked(array.length) | 0
+	  that = createBuffer(that, length)
+	  for (var i = 0; i < length; i += 1) {
+	    that[i] = array[i] & 255
+	  }
+	  return that
+	}
+
+	function fromArrayBuffer (that, array, byteOffset, length) {
+	  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+	  if (byteOffset < 0 || array.byteLength < byteOffset) {
+	    throw new RangeError('\'offset\' is out of bounds')
+	  }
+
+	  if (array.byteLength < byteOffset + (length || 0)) {
+	    throw new RangeError('\'length\' is out of bounds')
+	  }
+
+	  if (byteOffset === undefined && length === undefined) {
+	    array = new Uint8Array(array)
+	  } else if (length === undefined) {
+	    array = new Uint8Array(array, byteOffset)
+	  } else {
+	    array = new Uint8Array(array, byteOffset, length)
+	  }
+
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    // Return an augmented `Uint8Array` instance, for best performance
+	    that = array
+	    that.__proto__ = Buffer.prototype
+	  } else {
+	    // Fallback: Return an object instance of the Buffer class
+	    that = fromArrayLike(that, array)
+	  }
+	  return that
+	}
+
+	function fromObject (that, obj) {
+	  if (Buffer.isBuffer(obj)) {
+	    var len = checked(obj.length) | 0
+	    that = createBuffer(that, len)
+
+	    if (that.length === 0) {
+	      return that
+	    }
+
+	    obj.copy(that, 0, 0, len)
+	    return that
+	  }
+
+	  if (obj) {
+	    if ((typeof ArrayBuffer !== 'undefined' &&
+	        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+	      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+	        return createBuffer(that, 0)
+	      }
+	      return fromArrayLike(that, obj)
+	    }
+
+	    if (obj.type === 'Buffer' && isArray(obj.data)) {
+	      return fromArrayLike(that, obj.data)
+	    }
+	  }
+
+	  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+	}
+
+	function checked (length) {
+	  // Note: cannot use `length < kMaxLength()` here because that fails when
+	  // length is NaN (which is otherwise coerced to zero.)
+	  if (length >= kMaxLength()) {
+	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+	                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+	  }
+	  return length | 0
+	}
+
+	function SlowBuffer (length) {
+	  if (+length != length) { // eslint-disable-line eqeqeq
+	    length = 0
+	  }
+	  return Buffer.alloc(+length)
+	}
+
+	Buffer.isBuffer = function isBuffer (b) {
+	  return !!(b != null && b._isBuffer)
+	}
+
+	Buffer.compare = function compare (a, b) {
+	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+	    throw new TypeError('Arguments must be Buffers')
+	  }
+
+	  if (a === b) return 0
+
+	  var x = a.length
+	  var y = b.length
+
+	  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+	    if (a[i] !== b[i]) {
+	      x = a[i]
+	      y = b[i]
+	      break
+	    }
+	  }
+
+	  if (x < y) return -1
+	  if (y < x) return 1
+	  return 0
+	}
+
+	Buffer.isEncoding = function isEncoding (encoding) {
+	  switch (String(encoding).toLowerCase()) {
+	    case 'hex':
+	    case 'utf8':
+	    case 'utf-8':
+	    case 'ascii':
+	    case 'latin1':
+	    case 'binary':
+	    case 'base64':
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      return true
+	    default:
+	      return false
+	  }
+	}
+
+	Buffer.concat = function concat (list, length) {
+	  if (!isArray(list)) {
+	    throw new TypeError('"list" argument must be an Array of Buffers')
+	  }
+
+	  if (list.length === 0) {
+	    return Buffer.alloc(0)
+	  }
+
+	  var i
+	  if (length === undefined) {
+	    length = 0
+	    for (i = 0; i < list.length; ++i) {
+	      length += list[i].length
+	    }
+	  }
+
+	  var buffer = Buffer.allocUnsafe(length)
+	  var pos = 0
+	  for (i = 0; i < list.length; ++i) {
+	    var buf = list[i]
+	    if (!Buffer.isBuffer(buf)) {
+	      throw new TypeError('"list" argument must be an Array of Buffers')
+	    }
+	    buf.copy(buffer, pos)
+	    pos += buf.length
+	  }
+	  return buffer
+	}
+
+	function byteLength (string, encoding) {
+	  if (Buffer.isBuffer(string)) {
+	    return string.length
+	  }
+	  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+	      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+	    return string.byteLength
+	  }
+	  if (typeof string !== 'string') {
+	    string = '' + string
+	  }
+
+	  var len = string.length
+	  if (len === 0) return 0
+
+	  // Use a for loop to avoid recursion
+	  var loweredCase = false
+	  for (;;) {
+	    switch (encoding) {
+	      case 'ascii':
+	      case 'latin1':
+	      case 'binary':
+	        return len
+	      case 'utf8':
+	      case 'utf-8':
+	      case undefined:
+	        return utf8ToBytes(string).length
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return len * 2
+	      case 'hex':
+	        return len >>> 1
+	      case 'base64':
+	        return base64ToBytes(string).length
+	      default:
+	        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+	        encoding = ('' + encoding).toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+	Buffer.byteLength = byteLength
+
+	function slowToString (encoding, start, end) {
+	  var loweredCase = false
+
+	  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+	  // property of a typed array.
+
+	  // This behaves neither like String nor Uint8Array in that we set start/end
+	  // to their upper/lower bounds if the value passed is out of range.
+	  // undefined is handled specially as per ECMA-262 6th Edition,
+	  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+	  if (start === undefined || start < 0) {
+	    start = 0
+	  }
+	  // Return early if start > this.length. Done here to prevent potential uint32
+	  // coercion fail below.
+	  if (start > this.length) {
+	    return ''
+	  }
+
+	  if (end === undefined || end > this.length) {
+	    end = this.length
+	  }
+
+	  if (end <= 0) {
+	    return ''
+	  }
+
+	  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+	  end >>>= 0
+	  start >>>= 0
+
+	  if (end <= start) {
+	    return ''
+	  }
+
+	  if (!encoding) encoding = 'utf8'
+
+	  while (true) {
+	    switch (encoding) {
+	      case 'hex':
+	        return hexSlice(this, start, end)
+
+	      case 'utf8':
+	      case 'utf-8':
+	        return utf8Slice(this, start, end)
+
+	      case 'ascii':
+	        return asciiSlice(this, start, end)
+
+	      case 'latin1':
+	      case 'binary':
+	        return latin1Slice(this, start, end)
+
+	      case 'base64':
+	        return base64Slice(this, start, end)
+
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return utf16leSlice(this, start, end)
+
+	      default:
+	        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+	        encoding = (encoding + '').toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+
+	// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+	// Buffer instances.
+	Buffer.prototype._isBuffer = true
+
+	function swap (b, n, m) {
+	  var i = b[n]
+	  b[n] = b[m]
+	  b[m] = i
+	}
+
+	Buffer.prototype.swap16 = function swap16 () {
+	  var len = this.length
+	  if (len % 2 !== 0) {
+	    throw new RangeError('Buffer size must be a multiple of 16-bits')
+	  }
+	  for (var i = 0; i < len; i += 2) {
+	    swap(this, i, i + 1)
+	  }
+	  return this
+	}
+
+	Buffer.prototype.swap32 = function swap32 () {
+	  var len = this.length
+	  if (len % 4 !== 0) {
+	    throw new RangeError('Buffer size must be a multiple of 32-bits')
+	  }
+	  for (var i = 0; i < len; i += 4) {
+	    swap(this, i, i + 3)
+	    swap(this, i + 1, i + 2)
+	  }
+	  return this
+	}
+
+	Buffer.prototype.swap64 = function swap64 () {
+	  var len = this.length
+	  if (len % 8 !== 0) {
+	    throw new RangeError('Buffer size must be a multiple of 64-bits')
+	  }
+	  for (var i = 0; i < len; i += 8) {
+	    swap(this, i, i + 7)
+	    swap(this, i + 1, i + 6)
+	    swap(this, i + 2, i + 5)
+	    swap(this, i + 3, i + 4)
+	  }
+	  return this
+	}
+
+	Buffer.prototype.toString = function toString () {
+	  var length = this.length | 0
+	  if (length === 0) return ''
+	  if (arguments.length === 0) return utf8Slice(this, 0, length)
+	  return slowToString.apply(this, arguments)
+	}
+
+	Buffer.prototype.equals = function equals (b) {
+	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  if (this === b) return true
+	  return Buffer.compare(this, b) === 0
+	}
+
+	Buffer.prototype.inspect = function inspect () {
+	  var str = ''
+	  var max = exports.INSPECT_MAX_BYTES
+	  if (this.length > 0) {
+	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+	    if (this.length > max) str += ' ... '
+	  }
+	  return '<Buffer ' + str + '>'
+	}
+
+	Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+	  if (!Buffer.isBuffer(target)) {
+	    throw new TypeError('Argument must be a Buffer')
+	  }
+
+	  if (start === undefined) {
+	    start = 0
+	  }
+	  if (end === undefined) {
+	    end = target ? target.length : 0
+	  }
+	  if (thisStart === undefined) {
+	    thisStart = 0
+	  }
+	  if (thisEnd === undefined) {
+	    thisEnd = this.length
+	  }
+
+	  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+	    throw new RangeError('out of range index')
+	  }
+
+	  if (thisStart >= thisEnd && start >= end) {
+	    return 0
+	  }
+	  if (thisStart >= thisEnd) {
+	    return -1
+	  }
+	  if (start >= end) {
+	    return 1
+	  }
+
+	  start >>>= 0
+	  end >>>= 0
+	  thisStart >>>= 0
+	  thisEnd >>>= 0
+
+	  if (this === target) return 0
+
+	  var x = thisEnd - thisStart
+	  var y = end - start
+	  var len = Math.min(x, y)
+
+	  var thisCopy = this.slice(thisStart, thisEnd)
+	  var targetCopy = target.slice(start, end)
+
+	  for (var i = 0; i < len; ++i) {
+	    if (thisCopy[i] !== targetCopy[i]) {
+	      x = thisCopy[i]
+	      y = targetCopy[i]
+	      break
+	    }
+	  }
+
+	  if (x < y) return -1
+	  if (y < x) return 1
+	  return 0
+	}
+
+	// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+	// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+	//
+	// Arguments:
+	// - buffer - a Buffer to search
+	// - val - a string, Buffer, or number
+	// - byteOffset - an index into `buffer`; will be clamped to an int32
+	// - encoding - an optional encoding, relevant is val is a string
+	// - dir - true for indexOf, false for lastIndexOf
+	function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+	  // Empty buffer means no match
+	  if (buffer.length === 0) return -1
+
+	  // Normalize byteOffset
+	  if (typeof byteOffset === 'string') {
+	    encoding = byteOffset
+	    byteOffset = 0
+	  } else if (byteOffset > 0x7fffffff) {
+	    byteOffset = 0x7fffffff
+	  } else if (byteOffset < -0x80000000) {
+	    byteOffset = -0x80000000
+	  }
+	  byteOffset = +byteOffset  // Coerce to Number.
+	  if (isNaN(byteOffset)) {
+	    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+	    byteOffset = dir ? 0 : (buffer.length - 1)
+	  }
+
+	  // Normalize byteOffset: negative offsets start from the end of the buffer
+	  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+	  if (byteOffset >= buffer.length) {
+	    if (dir) return -1
+	    else byteOffset = buffer.length - 1
+	  } else if (byteOffset < 0) {
+	    if (dir) byteOffset = 0
+	    else return -1
+	  }
+
+	  // Normalize val
+	  if (typeof val === 'string') {
+	    val = Buffer.from(val, encoding)
+	  }
+
+	  // Finally, search either indexOf (if dir is true) or lastIndexOf
+	  if (Buffer.isBuffer(val)) {
+	    // Special case: looking for empty string/buffer always fails
+	    if (val.length === 0) {
+	      return -1
+	    }
+	    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+	  } else if (typeof val === 'number') {
+	    val = val & 0xFF // Search for a byte value [0-255]
+	    if (Buffer.TYPED_ARRAY_SUPPORT &&
+	        typeof Uint8Array.prototype.indexOf === 'function') {
+	      if (dir) {
+	        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+	      } else {
+	        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+	      }
+	    }
+	    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+	  }
+
+	  throw new TypeError('val must be string, number or Buffer')
+	}
+
+	function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+	  var indexSize = 1
+	  var arrLength = arr.length
+	  var valLength = val.length
+
+	  if (encoding !== undefined) {
+	    encoding = String(encoding).toLowerCase()
+	    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+	        encoding === 'utf16le' || encoding === 'utf-16le') {
+	      if (arr.length < 2 || val.length < 2) {
+	        return -1
+	      }
+	      indexSize = 2
+	      arrLength /= 2
+	      valLength /= 2
+	      byteOffset /= 2
+	    }
+	  }
+
+	  function read (buf, i) {
+	    if (indexSize === 1) {
+	      return buf[i]
+	    } else {
+	      return buf.readUInt16BE(i * indexSize)
+	    }
+	  }
+
+	  var i
+	  if (dir) {
+	    var foundIndex = -1
+	    for (i = byteOffset; i < arrLength; i++) {
+	      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+	        if (foundIndex === -1) foundIndex = i
+	        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+	      } else {
+	        if (foundIndex !== -1) i -= i - foundIndex
+	        foundIndex = -1
+	      }
+	    }
+	  } else {
+	    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+	    for (i = byteOffset; i >= 0; i--) {
+	      var found = true
+	      for (var j = 0; j < valLength; j++) {
+	        if (read(arr, i + j) !== read(val, j)) {
+	          found = false
+	          break
+	        }
+	      }
+	      if (found) return i
+	    }
+	  }
+
+	  return -1
+	}
+
+	Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+	  return this.indexOf(val, byteOffset, encoding) !== -1
+	}
+
+	Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+	  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+	}
+
+	Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+	  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+	}
+
+	function hexWrite (buf, string, offset, length) {
+	  offset = Number(offset) || 0
+	  var remaining = buf.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+
+	  // must be an even number of digits
+	  var strLen = string.length
+	  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+	  if (length > strLen / 2) {
+	    length = strLen / 2
+	  }
+	  for (var i = 0; i < length; ++i) {
+	    var parsed = parseInt(string.substr(i * 2, 2), 16)
+	    if (isNaN(parsed)) return i
+	    buf[offset + i] = parsed
+	  }
+	  return i
+	}
+
+	function utf8Write (buf, string, offset, length) {
+	  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+	}
+
+	function asciiWrite (buf, string, offset, length) {
+	  return blitBuffer(asciiToBytes(string), buf, offset, length)
+	}
+
+	function latin1Write (buf, string, offset, length) {
+	  return asciiWrite(buf, string, offset, length)
+	}
+
+	function base64Write (buf, string, offset, length) {
+	  return blitBuffer(base64ToBytes(string), buf, offset, length)
+	}
+
+	function ucs2Write (buf, string, offset, length) {
+	  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+	}
+
+	Buffer.prototype.write = function write (string, offset, length, encoding) {
+	  // Buffer#write(string)
+	  if (offset === undefined) {
+	    encoding = 'utf8'
+	    length = this.length
+	    offset = 0
+	  // Buffer#write(string, encoding)
+	  } else if (length === undefined && typeof offset === 'string') {
+	    encoding = offset
+	    length = this.length
+	    offset = 0
+	  // Buffer#write(string, offset[, length][, encoding])
+	  } else if (isFinite(offset)) {
+	    offset = offset | 0
+	    if (isFinite(length)) {
+	      length = length | 0
+	      if (encoding === undefined) encoding = 'utf8'
+	    } else {
+	      encoding = length
+	      length = undefined
+	    }
+	  // legacy write(string, encoding, offset, length) - remove in v0.13
+	  } else {
+	    throw new Error(
+	      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+	    )
+	  }
+
+	  var remaining = this.length - offset
+	  if (length === undefined || length > remaining) length = remaining
+
+	  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+	    throw new RangeError('Attempt to write outside buffer bounds')
+	  }
+
+	  if (!encoding) encoding = 'utf8'
+
+	  var loweredCase = false
+	  for (;;) {
+	    switch (encoding) {
+	      case 'hex':
+	        return hexWrite(this, string, offset, length)
+
+	      case 'utf8':
+	      case 'utf-8':
+	        return utf8Write(this, string, offset, length)
+
+	      case 'ascii':
+	        return asciiWrite(this, string, offset, length)
+
+	      case 'latin1':
+	      case 'binary':
+	        return latin1Write(this, string, offset, length)
+
+	      case 'base64':
+	        // Warning: maxLength not taken into account in base64Write
+	        return base64Write(this, string, offset, length)
+
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return ucs2Write(this, string, offset, length)
+
+	      default:
+	        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+	        encoding = ('' + encoding).toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+
+	Buffer.prototype.toJSON = function toJSON () {
+	  return {
+	    type: 'Buffer',
+	    data: Array.prototype.slice.call(this._arr || this, 0)
+	  }
+	}
+
+	function base64Slice (buf, start, end) {
+	  if (start === 0 && end === buf.length) {
+	    return base64.fromByteArray(buf)
+	  } else {
+	    return base64.fromByteArray(buf.slice(start, end))
+	  }
+	}
+
+	function utf8Slice (buf, start, end) {
+	  end = Math.min(buf.length, end)
+	  var res = []
+
+	  var i = start
+	  while (i < end) {
+	    var firstByte = buf[i]
+	    var codePoint = null
+	    var bytesPerSequence = (firstByte > 0xEF) ? 4
+	      : (firstByte > 0xDF) ? 3
+	      : (firstByte > 0xBF) ? 2
+	      : 1
+
+	    if (i + bytesPerSequence <= end) {
+	      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+	      switch (bytesPerSequence) {
+	        case 1:
+	          if (firstByte < 0x80) {
+	            codePoint = firstByte
+	          }
+	          break
+	        case 2:
+	          secondByte = buf[i + 1]
+	          if ((secondByte & 0xC0) === 0x80) {
+	            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+	            if (tempCodePoint > 0x7F) {
+	              codePoint = tempCodePoint
+	            }
+	          }
+	          break
+	        case 3:
+	          secondByte = buf[i + 1]
+	          thirdByte = buf[i + 2]
+	          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+	            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+	            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+	              codePoint = tempCodePoint
+	            }
+	          }
+	          break
+	        case 4:
+	          secondByte = buf[i + 1]
+	          thirdByte = buf[i + 2]
+	          fourthByte = buf[i + 3]
+	          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+	            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+	            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+	              codePoint = tempCodePoint
+	            }
+	          }
+	      }
+	    }
+
+	    if (codePoint === null) {
+	      // we did not generate a valid codePoint so insert a
+	      // replacement char (U+FFFD) and advance only 1 byte
+	      codePoint = 0xFFFD
+	      bytesPerSequence = 1
+	    } else if (codePoint > 0xFFFF) {
+	      // encode to utf16 (surrogate pair dance)
+	      codePoint -= 0x10000
+	      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+	      codePoint = 0xDC00 | codePoint & 0x3FF
+	    }
+
+	    res.push(codePoint)
+	    i += bytesPerSequence
+	  }
+
+	  return decodeCodePointsArray(res)
+	}
+
+	// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+	// the lowest limit is Chrome, with 0x10000 args.
+	// We go 1 magnitude less, for safety
+	var MAX_ARGUMENTS_LENGTH = 0x1000
+
+	function decodeCodePointsArray (codePoints) {
+	  var len = codePoints.length
+	  if (len <= MAX_ARGUMENTS_LENGTH) {
+	    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+	  }
+
+	  // Decode in chunks to avoid "call stack size exceeded".
+	  var res = ''
+	  var i = 0
+	  while (i < len) {
+	    res += String.fromCharCode.apply(
+	      String,
+	      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+	    )
+	  }
+	  return res
+	}
+
+	function asciiSlice (buf, start, end) {
+	  var ret = ''
+	  end = Math.min(buf.length, end)
+
+	  for (var i = start; i < end; ++i) {
+	    ret += String.fromCharCode(buf[i] & 0x7F)
+	  }
+	  return ret
+	}
+
+	function latin1Slice (buf, start, end) {
+	  var ret = ''
+	  end = Math.min(buf.length, end)
+
+	  for (var i = start; i < end; ++i) {
+	    ret += String.fromCharCode(buf[i])
+	  }
+	  return ret
+	}
+
+	function hexSlice (buf, start, end) {
+	  var len = buf.length
+
+	  if (!start || start < 0) start = 0
+	  if (!end || end < 0 || end > len) end = len
+
+	  var out = ''
+	  for (var i = start; i < end; ++i) {
+	    out += toHex(buf[i])
+	  }
+	  return out
+	}
+
+	function utf16leSlice (buf, start, end) {
+	  var bytes = buf.slice(start, end)
+	  var res = ''
+	  for (var i = 0; i < bytes.length; i += 2) {
+	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+	  }
+	  return res
+	}
+
+	Buffer.prototype.slice = function slice (start, end) {
+	  var len = this.length
+	  start = ~~start
+	  end = end === undefined ? len : ~~end
+
+	  if (start < 0) {
+	    start += len
+	    if (start < 0) start = 0
+	  } else if (start > len) {
+	    start = len
+	  }
+
+	  if (end < 0) {
+	    end += len
+	    if (end < 0) end = 0
+	  } else if (end > len) {
+	    end = len
+	  }
+
+	  if (end < start) end = start
+
+	  var newBuf
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    newBuf = this.subarray(start, end)
+	    newBuf.__proto__ = Buffer.prototype
+	  } else {
+	    var sliceLen = end - start
+	    newBuf = new Buffer(sliceLen, undefined)
+	    for (var i = 0; i < sliceLen; ++i) {
+	      newBuf[i] = this[i + start]
+	    }
+	  }
+
+	  return newBuf
+	}
+
+	/*
+	 * Need to make sure that buffer isn't trying to write out of bounds.
+	 */
+	function checkOffset (offset, ext, length) {
+	  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+	  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+	}
+
+	Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+	  var val = this[offset]
+	  var mul = 1
+	  var i = 0
+	  while (++i < byteLength && (mul *= 0x100)) {
+	    val += this[offset + i] * mul
+	  }
+
+	  return val
+	}
+
+	Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) {
+	    checkOffset(offset, byteLength, this.length)
+	  }
+
+	  var val = this[offset + --byteLength]
+	  var mul = 1
+	  while (byteLength > 0 && (mul *= 0x100)) {
+	    val += this[offset + --byteLength] * mul
+	  }
+
+	  return val
+	}
+
+	Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 1, this.length)
+	  return this[offset]
+	}
+
+	Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 2, this.length)
+	  return this[offset] | (this[offset + 1] << 8)
+	}
+
+	Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 2, this.length)
+	  return (this[offset] << 8) | this[offset + 1]
+	}
+
+	Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+
+	  return ((this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16)) +
+	      (this[offset + 3] * 0x1000000)
+	}
+
+	Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+
+	  return (this[offset] * 0x1000000) +
+	    ((this[offset + 1] << 16) |
+	    (this[offset + 2] << 8) |
+	    this[offset + 3])
+	}
+
+	Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+	  var val = this[offset]
+	  var mul = 1
+	  var i = 0
+	  while (++i < byteLength && (mul *= 0x100)) {
+	    val += this[offset + i] * mul
+	  }
+	  mul *= 0x80
+
+	  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+	  return val
+	}
+
+	Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+	  var i = byteLength
+	  var mul = 1
+	  var val = this[offset + --i]
+	  while (i > 0 && (mul *= 0x100)) {
+	    val += this[offset + --i] * mul
+	  }
+	  mul *= 0x80
+
+	  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+	  return val
+	}
+
+	Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 1, this.length)
+	  if (!(this[offset] & 0x80)) return (this[offset])
+	  return ((0xff - this[offset] + 1) * -1)
+	}
+
+	Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 2, this.length)
+	  var val = this[offset] | (this[offset + 1] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+
+	Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 2, this.length)
+	  var val = this[offset + 1] | (this[offset] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+
+	Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+
+	  return (this[offset]) |
+	    (this[offset + 1] << 8) |
+	    (this[offset + 2] << 16) |
+	    (this[offset + 3] << 24)
+	}
+
+	Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+
+	  return (this[offset] << 24) |
+	    (this[offset + 1] << 16) |
+	    (this[offset + 2] << 8) |
+	    (this[offset + 3])
+	}
+
+	Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, true, 23, 4)
+	}
+
+	Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, false, 23, 4)
+	}
+
+	Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, true, 52, 8)
+	}
+
+	Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+	  if (!noAssert) checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, false, 52, 8)
+	}
+
+	function checkInt (buf, value, offset, ext, max, min) {
+	  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+	  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+	  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+	}
+
+	Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) {
+	    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+	    checkInt(this, value, offset, byteLength, maxBytes, 0)
+	  }
+
+	  var mul = 1
+	  var i = 0
+	  this[offset] = value & 0xFF
+	  while (++i < byteLength && (mul *= 0x100)) {
+	    this[offset + i] = (value / mul) & 0xFF
+	  }
+
+	  return offset + byteLength
+	}
+
+	Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  byteLength = byteLength | 0
+	  if (!noAssert) {
+	    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+	    checkInt(this, value, offset, byteLength, maxBytes, 0)
+	  }
+
+	  var i = byteLength - 1
+	  var mul = 1
+	  this[offset + i] = value & 0xFF
+	  while (--i >= 0 && (mul *= 0x100)) {
+	    this[offset + i] = (value / mul) & 0xFF
+	  }
+
+	  return offset + byteLength
+	}
+
+	Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  this[offset] = (value & 0xff)
+	  return offset + 1
+	}
+
+	function objectWriteUInt16 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+	      (littleEndian ? i : 1 - i) * 8
+	  }
+	}
+
+	Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value & 0xff)
+	    this[offset + 1] = (value >>> 8)
+	  } else {
+	    objectWriteUInt16(this, value, offset, true)
+	  }
+	  return offset + 2
+	}
+
+	Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = (value & 0xff)
+	  } else {
+	    objectWriteUInt16(this, value, offset, false)
+	  }
+	  return offset + 2
+	}
+
+	function objectWriteUInt32 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffffffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+	  }
+	}
+
+	Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset + 3] = (value >>> 24)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 1] = (value >>> 8)
+	    this[offset] = (value & 0xff)
+	  } else {
+	    objectWriteUInt32(this, value, offset, true)
+	  }
+	  return offset + 4
+	}
+
+	Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = (value & 0xff)
+	  } else {
+	    objectWriteUInt32(this, value, offset, false)
+	  }
+	  return offset + 4
+	}
+
+	Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) {
+	    var limit = Math.pow(2, 8 * byteLength - 1)
+
+	    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+	  }
+
+	  var i = 0
+	  var mul = 1
+	  var sub = 0
+	  this[offset] = value & 0xFF
+	  while (++i < byteLength && (mul *= 0x100)) {
+	    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+	      sub = 1
+	    }
+	    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+	  }
+
+	  return offset + byteLength
+	}
+
+	Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) {
+	    var limit = Math.pow(2, 8 * byteLength - 1)
+
+	    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+	  }
+
+	  var i = byteLength - 1
+	  var mul = 1
+	  var sub = 0
+	  this[offset + i] = value & 0xFF
+	  while (--i >= 0 && (mul *= 0x100)) {
+	    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+	      sub = 1
+	    }
+	    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+	  }
+
+	  return offset + byteLength
+	}
+
+	Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  if (value < 0) value = 0xff + value + 1
+	  this[offset] = (value & 0xff)
+	  return offset + 1
+	}
+
+	Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value & 0xff)
+	    this[offset + 1] = (value >>> 8)
+	  } else {
+	    objectWriteUInt16(this, value, offset, true)
+	  }
+	  return offset + 2
+	}
+
+	Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = (value & 0xff)
+	  } else {
+	    objectWriteUInt16(this, value, offset, false)
+	  }
+	  return offset + 2
+	}
+
+	Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value & 0xff)
+	    this[offset + 1] = (value >>> 8)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 3] = (value >>> 24)
+	  } else {
+	    objectWriteUInt32(this, value, offset, true)
+	  }
+	  return offset + 4
+	}
+
+	Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+	  value = +value
+	  offset = offset | 0
+	  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (value < 0) value = 0xffffffff + value + 1
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = (value & 0xff)
+	  } else {
+	    objectWriteUInt32(this, value, offset, false)
+	  }
+	  return offset + 4
+	}
+
+	function checkIEEE754 (buf, value, offset, ext, max, min) {
+	  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+	  if (offset < 0) throw new RangeError('Index out of range')
+	}
+
+	function writeFloat (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert) {
+	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+	  }
+	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+	  return offset + 4
+	}
+
+	Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, true, noAssert)
+	}
+
+	Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, false, noAssert)
+	}
+
+	function writeDouble (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert) {
+	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+	  }
+	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+	  return offset + 8
+	}
+
+	Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, true, noAssert)
+	}
+
+	Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, false, noAssert)
+	}
+
+	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+	Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+	  if (!start) start = 0
+	  if (!end && end !== 0) end = this.length
+	  if (targetStart >= target.length) targetStart = target.length
+	  if (!targetStart) targetStart = 0
+	  if (end > 0 && end < start) end = start
+
+	  // Copy 0 bytes; we're done
+	  if (end === start) return 0
+	  if (target.length === 0 || this.length === 0) return 0
+
+	  // Fatal error conditions
+	  if (targetStart < 0) {
+	    throw new RangeError('targetStart out of bounds')
+	  }
+	  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+	  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+	  // Are we oob?
+	  if (end > this.length) end = this.length
+	  if (target.length - targetStart < end - start) {
+	    end = target.length - targetStart + start
+	  }
+
+	  var len = end - start
+	  var i
+
+	  if (this === target && start < targetStart && targetStart < end) {
+	    // descending copy from end
+	    for (i = len - 1; i >= 0; --i) {
+	      target[i + targetStart] = this[i + start]
+	    }
+	  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+	    // ascending copy from start
+	    for (i = 0; i < len; ++i) {
+	      target[i + targetStart] = this[i + start]
+	    }
+	  } else {
+	    Uint8Array.prototype.set.call(
+	      target,
+	      this.subarray(start, start + len),
+	      targetStart
+	    )
+	  }
+
+	  return len
+	}
+
+	// Usage:
+	//    buffer.fill(number[, offset[, end]])
+	//    buffer.fill(buffer[, offset[, end]])
+	//    buffer.fill(string[, offset[, end]][, encoding])
+	Buffer.prototype.fill = function fill (val, start, end, encoding) {
+	  // Handle string cases:
+	  if (typeof val === 'string') {
+	    if (typeof start === 'string') {
+	      encoding = start
+	      start = 0
+	      end = this.length
+	    } else if (typeof end === 'string') {
+	      encoding = end
+	      end = this.length
+	    }
+	    if (val.length === 1) {
+	      var code = val.charCodeAt(0)
+	      if (code < 256) {
+	        val = code
+	      }
+	    }
+	    if (encoding !== undefined && typeof encoding !== 'string') {
+	      throw new TypeError('encoding must be a string')
+	    }
+	    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+	      throw new TypeError('Unknown encoding: ' + encoding)
+	    }
+	  } else if (typeof val === 'number') {
+	    val = val & 255
+	  }
+
+	  // Invalid ranges are not set to a default, so can range check early.
+	  if (start < 0 || this.length < start || this.length < end) {
+	    throw new RangeError('Out of range index')
+	  }
+
+	  if (end <= start) {
+	    return this
+	  }
+
+	  start = start >>> 0
+	  end = end === undefined ? this.length : end >>> 0
+
+	  if (!val) val = 0
+
+	  var i
+	  if (typeof val === 'number') {
+	    for (i = start; i < end; ++i) {
+	      this[i] = val
+	    }
+	  } else {
+	    var bytes = Buffer.isBuffer(val)
+	      ? val
+	      : utf8ToBytes(new Buffer(val, encoding).toString())
+	    var len = bytes.length
+	    for (i = 0; i < end - start; ++i) {
+	      this[i + start] = bytes[i % len]
+	    }
+	  }
+
+	  return this
+	}
+
+	// HELPER FUNCTIONS
+	// ================
+
+	var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+	function base64clean (str) {
+	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+	  // Node converts strings with length < 2 to ''
+	  if (str.length < 2) return ''
+	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+	  while (str.length % 4 !== 0) {
+	    str = str + '='
+	  }
+	  return str
+	}
+
+	function stringtrim (str) {
+	  if (str.trim) return str.trim()
+	  return str.replace(/^\s+|\s+$/g, '')
+	}
+
+	function toHex (n) {
+	  if (n < 16) return '0' + n.toString(16)
+	  return n.toString(16)
+	}
+
+	function utf8ToBytes (string, units) {
+	  units = units || Infinity
+	  var codePoint
+	  var length = string.length
+	  var leadSurrogate = null
+	  var bytes = []
+
+	  for (var i = 0; i < length; ++i) {
+	    codePoint = string.charCodeAt(i)
+
+	    // is surrogate component
+	    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+	      // last char was a lead
+	      if (!leadSurrogate) {
+	        // no lead yet
+	        if (codePoint > 0xDBFF) {
+	          // unexpected trail
+	          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+	          continue
+	        } else if (i + 1 === length) {
+	          // unpaired lead
+	          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+	          continue
+	        }
+
+	        // valid lead
+	        leadSurrogate = codePoint
+
+	        continue
+	      }
+
+	      // 2 leads in a row
+	      if (codePoint < 0xDC00) {
+	        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+	        leadSurrogate = codePoint
+	        continue
+	      }
+
+	      // valid surrogate pair
+	      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+	    } else if (leadSurrogate) {
+	      // valid bmp char, but last char was a lead
+	      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+	    }
+
+	    leadSurrogate = null
+
+	    // encode utf8
+	    if (codePoint < 0x80) {
+	      if ((units -= 1) < 0) break
+	      bytes.push(codePoint)
+	    } else if (codePoint < 0x800) {
+	      if ((units -= 2) < 0) break
+	      bytes.push(
+	        codePoint >> 0x6 | 0xC0,
+	        codePoint & 0x3F | 0x80
+	      )
+	    } else if (codePoint < 0x10000) {
+	      if ((units -= 3) < 0) break
+	      bytes.push(
+	        codePoint >> 0xC | 0xE0,
+	        codePoint >> 0x6 & 0x3F | 0x80,
+	        codePoint & 0x3F | 0x80
+	      )
+	    } else if (codePoint < 0x110000) {
+	      if ((units -= 4) < 0) break
+	      bytes.push(
+	        codePoint >> 0x12 | 0xF0,
+	        codePoint >> 0xC & 0x3F | 0x80,
+	        codePoint >> 0x6 & 0x3F | 0x80,
+	        codePoint & 0x3F | 0x80
+	      )
+	    } else {
+	      throw new Error('Invalid code point')
+	    }
+	  }
+
+	  return bytes
+	}
+
+	function asciiToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; ++i) {
+	    // Node's code seems to be doing this and not & 0x7F..
+	    byteArray.push(str.charCodeAt(i) & 0xFF)
+	  }
+	  return byteArray
+	}
+
+	function utf16leToBytes (str, units) {
+	  var c, hi, lo
+	  var byteArray = []
+	  for (var i = 0; i < str.length; ++i) {
+	    if ((units -= 2) < 0) break
+
+	    c = str.charCodeAt(i)
+	    hi = c >> 8
+	    lo = c % 256
+	    byteArray.push(lo)
+	    byteArray.push(hi)
+	  }
+
+	  return byteArray
+	}
+
+	function base64ToBytes (str) {
+	  return base64.toByteArray(base64clean(str))
+	}
+
+	function blitBuffer (src, dst, offset, length) {
+	  for (var i = 0; i < length; ++i) {
+	    if ((i + offset >= dst.length) || (i >= src.length)) break
+	    dst[i + offset] = src[i]
+	  }
+	  return i
+	}
+
+	function isnan (val) {
+	  return val !== val // eslint-disable-line no-self-compare
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+	'use strict'
+
+	exports.byteLength = byteLength
+	exports.toByteArray = toByteArray
+	exports.fromByteArray = fromByteArray
+
+	var lookup = []
+	var revLookup = []
+	var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+	var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	for (var i = 0, len = code.length; i < len; ++i) {
+	  lookup[i] = code[i]
+	  revLookup[code.charCodeAt(i)] = i
+	}
+
+	revLookup['-'.charCodeAt(0)] = 62
+	revLookup['_'.charCodeAt(0)] = 63
+
+	function placeHoldersCount (b64) {
+	  var len = b64.length
+	  if (len % 4 > 0) {
+	    throw new Error('Invalid string. Length must be a multiple of 4')
+	  }
+
+	  // the number of equal signs (place holders)
+	  // if there are two placeholders, than the two characters before it
+	  // represent one byte
+	  // if there is only one, then the three characters before it represent 2 bytes
+	  // this is just a cheap hack to not do indexOf twice
+	  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+	}
+
+	function byteLength (b64) {
+	  // base64 is 4/3 + up to two characters of the original data
+	  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+	}
+
+	function toByteArray (b64) {
+	  var i, l, tmp, placeHolders, arr
+	  var len = b64.length
+	  placeHolders = placeHoldersCount(b64)
+
+	  arr = new Arr((len * 3 / 4) - placeHolders)
+
+	  // if there are placeholders, only get up to the last complete 4 chars
+	  l = placeHolders > 0 ? len - 4 : len
+
+	  var L = 0
+
+	  for (i = 0; i < l; i += 4) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+	    arr[L++] = (tmp >> 16) & 0xFF
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
+	  }
+
+	  if (placeHolders === 2) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+	    arr[L++] = tmp & 0xFF
+	  } else if (placeHolders === 1) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
+	  }
+
+	  return arr
+	}
+
+	function tripletToBase64 (num) {
+	  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+	}
+
+	function encodeChunk (uint8, start, end) {
+	  var tmp
+	  var output = []
+	  for (var i = start; i < end; i += 3) {
+	    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+	    output.push(tripletToBase64(tmp))
+	  }
+	  return output.join('')
+	}
+
+	function fromByteArray (uint8) {
+	  var tmp
+	  var len = uint8.length
+	  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+	  var output = ''
+	  var parts = []
+	  var maxChunkLength = 16383 // must be multiple of 3
+
+	  // go through the array every three bytes, we'll deal with trailing stuff later
+	  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+	    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+	  }
+
+	  // pad the end with zeros, but make sure to not forget the extra bytes
+	  if (extraBytes === 1) {
+	    tmp = uint8[len - 1]
+	    output += lookup[tmp >> 2]
+	    output += lookup[(tmp << 4) & 0x3F]
+	    output += '=='
+	  } else if (extraBytes === 2) {
+	    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+	    output += lookup[tmp >> 10]
+	    output += lookup[(tmp >> 4) & 0x3F]
+	    output += lookup[(tmp << 2) & 0x3F]
+	    output += '='
+	  }
+
+	  parts.push(output)
+
+	  return parts.join('')
+	}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+	  var e, m
+	  var eLen = nBytes * 8 - mLen - 1
+	  var eMax = (1 << eLen) - 1
+	  var eBias = eMax >> 1
+	  var nBits = -7
+	  var i = isLE ? (nBytes - 1) : 0
+	  var d = isLE ? -1 : 1
+	  var s = buffer[offset + i]
+
+	  i += d
+
+	  e = s & ((1 << (-nBits)) - 1)
+	  s >>= (-nBits)
+	  nBits += eLen
+	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+	  m = e & ((1 << (-nBits)) - 1)
+	  e >>= (-nBits)
+	  nBits += mLen
+	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+	  if (e === 0) {
+	    e = 1 - eBias
+	  } else if (e === eMax) {
+	    return m ? NaN : ((s ? -1 : 1) * Infinity)
+	  } else {
+	    m = m + Math.pow(2, mLen)
+	    e = e - eBias
+	  }
+	  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+	}
+
+	exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+	  var e, m, c
+	  var eLen = nBytes * 8 - mLen - 1
+	  var eMax = (1 << eLen) - 1
+	  var eBias = eMax >> 1
+	  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+	  var i = isLE ? 0 : (nBytes - 1)
+	  var d = isLE ? 1 : -1
+	  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+	  value = Math.abs(value)
+
+	  if (isNaN(value) || value === Infinity) {
+	    m = isNaN(value) ? 1 : 0
+	    e = eMax
+	  } else {
+	    e = Math.floor(Math.log(value) / Math.LN2)
+	    if (value * (c = Math.pow(2, -e)) < 1) {
+	      e--
+	      c *= 2
+	    }
+	    if (e + eBias >= 1) {
+	      value += rt / c
+	    } else {
+	      value += rt * Math.pow(2, 1 - eBias)
+	    }
+	    if (value * c >= 2) {
+	      e++
+	      c /= 2
+	    }
+
+	    if (e + eBias >= eMax) {
+	      m = 0
+	      e = eMax
+	    } else if (e + eBias >= 1) {
+	      m = (value * c - 1) * Math.pow(2, mLen)
+	      e = e + eBias
+	    } else {
+	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+	      e = 0
+	    }
+	  }
+
+	  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+	  e = (e << mLen) | m
+	  eLen += mLen
+	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+	  buffer[offset + i - d] |= s * 128
+	}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = Array.isArray || function (arr) {
+	  return toString.call(arr) == '[object Array]';
+	};
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var FontProvider = __webpack_require__(7);
+	var LayoutBuilder = __webpack_require__(9);
+	var PdfKit = __webpack_require__(28);
+	var sizes = __webpack_require__(301);
+	var ImageMeasure = __webpack_require__(302);
+	var textDecorator = __webpack_require__(303);
+	var TextTools = __webpack_require__(13);
+	var isFunction = __webpack_require__(8).isFunction;
+	var isString = __webpack_require__(8).isString;
+	var isNumber = __webpack_require__(8).isNumber;
+	var isBoolean = __webpack_require__(8).isBoolean;
+	var isArray = __webpack_require__(8).isArray;
+
+	////////////////////////////////////////
+	// PdfPrinter
+
+	/**
+	 * @class Creates an instance of a PdfPrinter which turns document definition into a pdf
+	 *
+	 * @param {Object} fontDescriptors font definition dictionary
+	 *
+	 * @example
+	 * var fontDescriptors = {
+	 *	Roboto: {
+	 *		normal: 'fonts/Roboto-Regular.ttf',
+	 *		bold: 'fonts/Roboto-Medium.ttf',
+	 *		italics: 'fonts/Roboto-Italic.ttf',
+	 *		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+	 *	}
+	 * };
+	 *
+	 * var printer = new PdfPrinter(fontDescriptors);
+	 */
+	function PdfPrinter(fontDescriptors) {
+		this.fontDescriptors = fontDescriptors;
+	}
+
+	/**
+	 * Executes layout engine for the specified document and renders it into a pdfkit document
+	 * ready to be saved.
+	 *
+	 * @param {Object} docDefinition document definition
+	 * @param {Object} docDefinition.content an array describing the pdf structure (for more information take a look at the examples in the /examples folder)
+	 * @param {Object} [docDefinition.defaultStyle] default (implicit) style definition
+	 * @param {Object} [docDefinition.styles] dictionary defining all styles which can be used in the document
+	 * @param {Object} [docDefinition.pageSize] page size (pdfkit units, A4 dimensions by default)
+	 * @param {Number} docDefinition.pageSize.width width
+	 * @param {Number} docDefinition.pageSize.height height
+	 * @param {Object} [docDefinition.pageMargins] page margins (pdfkit units)
+	 * @param {Number} docDefinition.maxPagesNumber maximum number of pages to render
+	 *
+	 * @example
+	 *
+	 * var docDefinition = {
+	 * 	info: {
+	 *		title: 'awesome Document',
+	 *		author: 'john doe',
+	 *		subject: 'subject of document',
+	 *		keywords: 'keywords for document',
+	 * 	},
+	 *	content: [
+	 *		'First paragraph',
+	 *		'Second paragraph, this time a little bit longer',
+	 *		{ text: 'Third paragraph, slightly bigger font size', fontSize: 20 },
+	 *		{ text: 'Another paragraph using a named style', style: 'header' },
+	 *		{ text: ['playing with ', 'inlines' ] },
+	 *		{ text: ['and ', { text: 'restyling ', bold: true }, 'them'] },
+	 *	],
+	 *	styles: {
+	 *		header: { fontSize: 30, bold: true }
+	 *	}
+	 * }
+	 *
+	 * var pdfKitDoc = printer.createPdfKitDocument(docDefinition);
+	 *
+	 * pdfKitDoc.pipe(fs.createWriteStream('sample.pdf'));
+	 * pdfKitDoc.end();
+	 *
+	 * @return {Object} a pdfKit document object which can be saved or encode to data-url
+	 */
+	PdfPrinter.prototype.createPdfKitDocument = function (docDefinition, options) {
+		options = options || {};
+
+		var pageSize = fixPageSize(docDefinition.pageSize, docDefinition.pageOrientation);
+		var compressPdf = isBoolean(docDefinition.compress) ? docDefinition.compress : true;
+
+		this.pdfKitDoc = new PdfKit({size: [pageSize.width, pageSize.height], autoFirstPage: false, compress: compressPdf});
+		setMetadata(docDefinition, this.pdfKitDoc);
+
+		this.fontProvider = new FontProvider(this.fontDescriptors, this.pdfKitDoc);
+
+		docDefinition.images = docDefinition.images || {};
+
+		var builder = new LayoutBuilder(pageSize, fixPageMargins(docDefinition.pageMargins || 40), new ImageMeasure(this.pdfKitDoc, docDefinition.images));
+
+		registerDefaultTableLayouts(builder);
+		if (options.tableLayouts) {
+			builder.registerTableLayouts(options.tableLayouts);
+		}
+
+		var pages = builder.layoutDocument(docDefinition.content, this.fontProvider, docDefinition.styles || {}, docDefinition.defaultStyle || {fontSize: 12, font: 'Roboto'}, docDefinition.background, docDefinition.header, docDefinition.footer, docDefinition.images, docDefinition.watermark, docDefinition.pageBreakBefore);
+		var maxNumberPages = docDefinition.maxPagesNumber || -1;
+		if (isNumber(maxNumberPages) && maxNumberPages > -1) {
+			pages = pages.slice(0, maxNumberPages);
+		}
+
+		// if pageSize.height is set to Infinity, calculate the actual height of the page that
+		// was laid out using the height of each of the items in the page.
+		if (pageSize.height === Infinity) {
+			var pageHeight = calculatePageHeight(pages, docDefinition.pageMargins);
+			this.pdfKitDoc.options.size = [pageSize.width, pageHeight];
+		}
+
+		renderPages(pages, this.fontProvider, this.pdfKitDoc, options.progressCallback);
+
+		if (options.autoPrint) {
+			var printActionRef = this.pdfKitDoc.ref({
+				Type: 'Action',
+				S: 'Named',
+				N: 'Print'
+			});
+			this.pdfKitDoc._root.data.OpenAction = printActionRef;
+			printActionRef.end();
+		}
+		return this.pdfKitDoc;
+	};
+
+	function setMetadata(docDefinition, pdfKitDoc) {
+		// PDF standard has these properties reserved: Title, Author, Subject, Keywords,
+		// Creator, Producer, CreationDate, ModDate, Trapped.
+		// To keep the pdfmake api consistent, the info field are defined lowercase.
+		// Custom properties don't contain a space.
+		function standardizePropertyKey(key) {
+			var standardProperties = ['Title', 'Author', 'Subject', 'Keywords',
+				'Creator', 'Producer', 'CreationDate', 'ModDate', 'Trapped'];
+			var standardizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			if (standardProperties.indexOf(standardizedKey) !== -1) {
+				return standardizedKey;
+			}
+
+			return key.replace(/\s+/g, '');
+		}
+
+		pdfKitDoc.info.Producer = 'pdfmake';
+		pdfKitDoc.info.Creator = 'pdfmake';
+
+		if (docDefinition.info) {
+			for (var key in docDefinition.info) {
+				var value = docDefinition.info[key];
+				if (value) {
+					key = standardizePropertyKey(key);
+					pdfKitDoc.info[key] = value;
+				}
+			}
+		}
+	}
+
+	function calculatePageHeight(pages, margins) {
+		function getItemHeight(item) {
+			if (isFunction(item.item.getHeight)) {
+				return item.item.getHeight();
+			} else if (item.item._height) {
+				return item.item._height;
+			} else {
+				// TODO: add support for next item types
+				return 0;
+			}
+		}
+
+		var fixedMargins = fixPageMargins(margins || 40);
+		var height = fixedMargins.top + fixedMargins.bottom;
+		pages.forEach(function (page) {
+			page.items.forEach(function (item) {
+				height += getItemHeight(item);
+			});
+		});
+		return height;
+	}
+
+	function fixPageSize(pageSize, pageOrientation) {
+		function isNeedSwapPageSizes(pageOrientation) {
+			if (isString(pageOrientation)) {
+				pageOrientation = pageOrientation.toLowerCase();
+				return ((pageOrientation === 'portrait') && (size.width > size.height)) ||
+					((pageOrientation === 'landscape') && (size.width < size.height));
+			}
+			return false;
+		}
+
+		// if pageSize.height is set to auto, set the height to infinity so there are no page breaks.
+		if (pageSize && pageSize.height === 'auto') {
+			pageSize.height = Infinity;
+		}
+
+		var size = pageSize2widthAndHeight(pageSize || 'A4');
+		if (isNeedSwapPageSizes(pageOrientation)) { // swap page sizes
+			size = {width: size.height, height: size.width};
+		}
+		size.orientation = size.width > size.height ? 'landscape' : 'portrait';
+		return size;
+	}
+
+	function fixPageMargins(margin) {
+		if (!margin) {
+			return null;
+		}
+
+		if (isNumber(margin)) {
+			margin = {left: margin, right: margin, top: margin, bottom: margin};
+		} else if (isArray(margin)) {
+			if (margin.length === 2) {
+				margin = {left: margin[0], top: margin[1], right: margin[0], bottom: margin[1]};
+			} else if (margin.length === 4) {
+				margin = {left: margin[0], top: margin[1], right: margin[2], bottom: margin[3]};
+			} else {
+				throw 'Invalid pageMargins definition';
+			}
+		}
+
+		return margin;
+	}
+
+	function registerDefaultTableLayouts(layoutBuilder) {
+		/*jshint unused: false */
+		layoutBuilder.registerTableLayouts({
+			noBorders: {
+				hLineWidth: function (i) {
+					return 0;
+				},
+				vLineWidth: function (i) {
+					return 0;
+				},
+				paddingLeft: function (i) {
+					return i && 4 || 0;
+				},
+				paddingRight: function (i, node) {
+					return (i < node.table.widths.length - 1) ? 4 : 0;
+				}
+			},
+			headerLineOnly: {
+				hLineWidth: function (i, node) {
+					if (i === 0 || i === node.table.body.length) {
+						return 0;
+					}
+					return (i === node.table.headerRows) ? 2 : 0;
+				},
+				vLineWidth: function (i) {
+					return 0;
+				},
+				paddingLeft: function (i) {
+					return i === 0 ? 0 : 8;
+				},
+				paddingRight: function (i, node) {
+					return (i === node.table.widths.length - 1) ? 0 : 8;
+				}
+			},
+			lightHorizontalLines: {
+				hLineWidth: function (i, node) {
+					if (i === 0 || i === node.table.body.length) {
+						return 0;
+					}
+					return (i === node.table.headerRows) ? 2 : 1;
+				},
+				vLineWidth: function (i) {
+					return 0;
+				},
+				hLineColor: function (i) {
+					return i === 1 ? 'black' : '#aaa';
+				},
+				paddingLeft: function (i) {
+					return i === 0 ? 0 : 8;
+				},
+				paddingRight: function (i, node) {
+					return (i === node.table.widths.length - 1) ? 0 : 8;
+				}
+			}
+		});
+	}
+
+	function pageSize2widthAndHeight(pageSize) {
+		if (isString(pageSize)) {
+			var size = sizes[pageSize.toUpperCase()];
+			if (!size) {
+				throw 'Page size ' + pageSize + ' not recognized';
+			}
+			return {width: size[0], height: size[1]};
+		}
+
+		return pageSize;
+	}
+
+	function updatePageOrientationInOptions(currentPage, pdfKitDoc) {
+		var previousPageOrientation = pdfKitDoc.options.size[0] > pdfKitDoc.options.size[1] ? 'landscape' : 'portrait';
+
+		if (currentPage.pageSize.orientation !== previousPageOrientation) {
+			var width = pdfKitDoc.options.size[0];
+			var height = pdfKitDoc.options.size[1];
+			pdfKitDoc.options.size = [height, width];
+		}
+	}
+
+	function renderPages(pages, fontProvider, pdfKitDoc, progressCallback) {
+		pdfKitDoc._pdfMakePages = pages;
+		pdfKitDoc.addPage();
+
+		var totalItems = 0;
+		if (progressCallback) {
+			pages.forEach(function (page) {
+				totalItems += page.items.length;
+			});
+		}
+
+		var renderedItems = 0;
+		progressCallback = progressCallback || function () {};
+
+		for (var i = 0; i < pages.length; i++) {
+			if (i > 0) {
+				updatePageOrientationInOptions(pages[i], pdfKitDoc);
+				pdfKitDoc.addPage(pdfKitDoc.options);
+			}
+
+			var page = pages[i];
+			for (var ii = 0, il = page.items.length; ii < il; ii++) {
+				var item = page.items[ii];
+				switch (item.type) {
+					case 'vector':
+						renderVector(item.item, pdfKitDoc);
+						break;
+					case 'line':
+						renderLine(item.item, item.item.x, item.item.y, pdfKitDoc);
+						break;
+					case 'image':
+						renderImage(item.item, item.item.x, item.item.y, pdfKitDoc);
+						break;
+					case 'beginClip':
+						beginClip(item.item, pdfKitDoc);
+						break;
+					case 'endClip':
+						endClip(pdfKitDoc);
+						break;
+				}
+				renderedItems++;
+				progressCallback(renderedItems / totalItems);
+			}
+			if (page.watermark) {
+				renderWatermark(page, pdfKitDoc);
+			}
+		}
+	}
+
+	function renderLine(line, x, y, pdfKitDoc) {
+		if (line._tocItemNode) {
+			var newWidth;
+			var diffWidth;
+			var textTools = new TextTools(null);
+			var pageNumber = line._tocItemNode.positions[0].pageNumber.toString();
+
+			line.inlines[0].text = pageNumber;
+			line.inlines[0].linkToPage = pageNumber;
+			newWidth = textTools.widthOfString(line.inlines[0].text, line.inlines[0].font, line.inlines[0].fontSize, line.inlines[0].characterSpacing, line.inlines[0].fontFeatures);
+			diffWidth = line.inlines[0].width - newWidth;
+			line.inlines[0].width = newWidth;
+
+			switch (line.inlines[0].alignment) {
+				case 'right':
+					line.inlines[0].x += diffWidth;
+					break;
+				case 'center':
+					line.inlines[0].x += diffWidth / 2;
+					break;
+			}
+		}
+
+		x = x || 0;
+		y = y || 0;
+
+		var lineHeight = line.getHeight();
+		var ascenderHeight = line.getAscenderHeight();
+		var descent = lineHeight - ascenderHeight;
+
+		textDecorator.drawBackground(line, x, y, pdfKitDoc);
+
+		//TODO: line.optimizeInlines();
+		for (var i = 0, l = line.inlines.length; i < l; i++) {
+			var inline = line.inlines[i];
+			var shiftToBaseline = lineHeight - ((inline.font.ascender / 1000) * inline.fontSize) - descent;
+			var options = {
+				lineBreak: false,
+				textWidth: inline.width,
+				characterSpacing: inline.characterSpacing,
+				wordCount: 1,
+				link: inline.link
+			};
+
+			if (inline.fontFeatures) {
+				options.features = inline.fontFeatures;
+			}
+
+			pdfKitDoc.fill(inline.color || 'black');
+
+			pdfKitDoc._font = inline.font;
+			pdfKitDoc.fontSize(inline.fontSize);
+			pdfKitDoc.text(inline.text, x + inline.x, y + shiftToBaseline, options);
+
+			if (inline.linkToPage) {
+				var _ref = pdfKitDoc.ref({Type: 'Action', S: 'GoTo', D: [inline.linkToPage, 0, 0]}).end();
+				pdfKitDoc.annotate(x + inline.x, y + shiftToBaseline, inline.width, inline.height, {Subtype: 'Link', Dest: [inline.linkToPage - 1, 'XYZ', null, null, null]});
+			}
+
+		}
+
+		textDecorator.drawDecorations(line, x, y, pdfKitDoc);
+	}
+
+	function renderWatermark(page, pdfKitDoc) {
+		var watermark = page.watermark;
+
+		pdfKitDoc.fill(watermark.color);
+		pdfKitDoc.opacity(watermark.opacity);
+
+		pdfKitDoc.save();
+
+		var angle = Math.atan2(pdfKitDoc.page.height, pdfKitDoc.page.width) * -180 / Math.PI;
+		pdfKitDoc.rotate(angle, {origin: [pdfKitDoc.page.width / 2, pdfKitDoc.page.height / 2]});
+
+		var x = pdfKitDoc.page.width / 2 - watermark.size.size.width / 2;
+		var y = pdfKitDoc.page.height / 2 - watermark.size.size.height / 4;
+
+		pdfKitDoc._font = watermark.font;
+		pdfKitDoc.fontSize(watermark.size.fontSize);
+		pdfKitDoc.text(watermark.text, x, y, {lineBreak: false});
+
+		pdfKitDoc.restore();
+	}
+
+	function renderVector(vector, pdfKitDoc) {
+		//TODO: pdf optimization (there's no need to write all properties everytime)
+		pdfKitDoc.lineWidth(vector.lineWidth || 1);
+		if (vector.dash) {
+			pdfKitDoc.dash(vector.dash.length, {space: vector.dash.space || vector.dash.length, phase: vector.dash.phase || 0});
+		} else {
+			pdfKitDoc.undash();
+		}
+		pdfKitDoc.lineJoin(vector.lineJoin || 'miter');
+		pdfKitDoc.lineCap(vector.lineCap || 'butt');
+
+		//TODO: clipping
+
+		switch (vector.type) {
+			case 'ellipse':
+				pdfKitDoc.ellipse(vector.x, vector.y, vector.r1, vector.r2);
+				break;
+			case 'rect':
+				if (vector.r) {
+					pdfKitDoc.roundedRect(vector.x, vector.y, vector.w, vector.h, vector.r);
+				} else {
+					pdfKitDoc.rect(vector.x, vector.y, vector.w, vector.h);
+				}
+
+				if (vector.linearGradient) {
+					var gradient = pdfKitDoc.linearGradient(vector.x, vector.y, vector.x + vector.w, vector.y);
+					var step = 1 / (vector.linearGradient.length - 1);
+
+					for (var i = 0; i < vector.linearGradient.length; i++) {
+						gradient.stop(i * step, vector.linearGradient[i]);
+					}
+
+					vector.color = gradient;
+				}
+				break;
+			case 'line':
+				pdfKitDoc.moveTo(vector.x1, vector.y1);
+				pdfKitDoc.lineTo(vector.x2, vector.y2);
+				break;
+			case 'polyline':
+				if (vector.points.length === 0) {
+					break;
+				}
+
+				pdfKitDoc.moveTo(vector.points[0].x, vector.points[0].y);
+				for (var i = 1, l = vector.points.length; i < l; i++) {
+					pdfKitDoc.lineTo(vector.points[i].x, vector.points[i].y);
+				}
+
+				if (vector.points.length > 1) {
+					var p1 = vector.points[0];
+					var pn = vector.points[vector.points.length - 1];
+
+					if (vector.closePath || p1.x === pn.x && p1.y === pn.y) {
+						pdfKitDoc.closePath();
+					}
+				}
+				break;
+			case 'path':
+				pdfKitDoc.path(vector.d);
+				break;
+		}
+
+		if (vector.color && vector.lineColor) {
+			pdfKitDoc.fillColor(vector.color, vector.fillOpacity || 1);
+			pdfKitDoc.strokeColor(vector.lineColor, vector.strokeOpacity || 1);
+			pdfKitDoc.fillAndStroke();
+		} else if (vector.color) {
+			pdfKitDoc.fillColor(vector.color, vector.fillOpacity || 1);
+			pdfKitDoc.fill();
+		} else {
+			pdfKitDoc.strokeColor(vector.lineColor || 'black', vector.strokeOpacity || 1);
+			pdfKitDoc.stroke();
+		}
+	}
+
+	function renderImage(image, x, y, pdfKitDoc) {
+		pdfKitDoc.image(image.image, image.x, image.y, {width: image._width, height: image._height});
+		if (image.link) {
+			pdfKitDoc.link(image.x, image.y, image._width, image._height, image.link);
+		}
+	}
+
+	function beginClip(rect, pdfKitDoc) {
+		pdfKitDoc.save();
+		pdfKitDoc.addContent('' + rect.x + ' ' + rect.y + ' ' + rect.width + ' ' + rect.height + ' re');
+		pdfKitDoc.clip();
+	}
+
+	function endClip(pdfKitDoc) {
+		pdfKitDoc.restore();
+	}
+
+	module.exports = PdfPrinter;
+
+
+	/* temporary browser extension */
+	PdfPrinter.prototype.fs = __webpack_require__(54);
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var isArray = __webpack_require__(8).isArray;
+
+	function typeName(bold, italics) {
+		var type = 'normal';
+		if (bold && italics) {
+			type = 'bolditalics';
+		} else if (bold) {
+			type = 'bold';
+		} else if (italics) {
+			type = 'italics';
+		}
+		return type;
+	}
+
+	function FontProvider(fontDescriptors, pdfKitDoc) {
+		this.fonts = {};
+		this.pdfKitDoc = pdfKitDoc;
+		this.fontCache = {};
+
+		for (var font in fontDescriptors) {
+			if (fontDescriptors.hasOwnProperty(font)) {
+				var fontDef = fontDescriptors[font];
+
+				this.fonts[font] = {
+					normal: fontDef.normal,
+					bold: fontDef.bold,
+					italics: fontDef.italics,
+					bolditalics: fontDef.bolditalics
+				};
+			}
+		}
+	}
+
+	FontProvider.prototype.provideFont = function (familyName, bold, italics) {
+		var type = typeName(bold, italics);
+		if (!this.fonts[familyName] || !this.fonts[familyName][type]) {
+			throw new Error('Font \'' + familyName + '\' in style \'' + type + '\' is not defined in the font section of the document definition.');
+		}
+
+		this.fontCache[familyName] = this.fontCache[familyName] || {};
+
+		if (!this.fontCache[familyName][type]) {
+			var def = this.fonts[familyName][type];
+			if (!isArray(def)) {
+				def = [def];
+			}
+			this.fontCache[familyName][type] = this.pdfKitDoc.font.apply(this.pdfKitDoc, def)._font;
+		}
+
+		return this.fontCache[familyName][type];
+	};
+
+	module.exports = FontProvider;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+	/* jslint node: true */
+	'use strict';
+
+	function isString(variable) {
+		return typeof variable === 'string' || variable instanceof String;
+	}
+
+	function isNumber(variable) {
+		return typeof variable === 'number' || variable instanceof Number;
+	}
+
+	function isBoolean(variable) {
+		return typeof variable === 'boolean';
+	}
+
+	function isArray(variable) {
+		return Array.isArray(variable);
+	}
+
+	function isFunction(variable) {
+		return typeof variable === 'function';
+	}
+
+	function isObject(variable) {
+		return variable !== null && typeof variable === 'object';
+	}
+
+	function pack() {
+		var result = {};
+
+		for (var i = 0, l = arguments.length; i < l; i++) {
+			var obj = arguments[i];
+
+			if (obj) {
+				for (var key in obj) {
+					if (obj.hasOwnProperty(key)) {
+						result[key] = obj[key];
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	function offsetVector(vector, x, y) {
+		switch (vector.type) {
+			case 'ellipse':
+			case 'rect':
+				vector.x += x;
+				vector.y += y;
+				break;
+			case 'line':
+				vector.x1 += x;
+				vector.x2 += x;
+				vector.y1 += y;
+				vector.y2 += y;
+				break;
+			case 'polyline':
+				for (var i = 0, l = vector.points.length; i < l; i++) {
+					vector.points[i].x += x;
+					vector.points[i].y += y;
+				}
+				break;
+		}
+	}
+
+	function fontStringify(key, val) {
+		if (key === 'font') {
+			return 'font';
+		}
+		return val;
+	}
+
+	module.exports = {
+		isString: isString,
+		isNumber: isNumber,
+		isBoolean: isBoolean,
+		isArray: isArray,
+		isFunction: isFunction,
+		isObject: isObject,
+		pack: pack,
+		fontStringify: fontStringify,
+		offsetVector: offsetVector
+	};
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var TraversalTracker = __webpack_require__(10);
+	var DocPreprocessor = __webpack_require__(11);
+	var DocMeasure = __webpack_require__(12);
+	var DocumentContext = __webpack_require__(23);
+	var PageElementWriter = __webpack_require__(24);
+	var ColumnCalculator = __webpack_require__(21);
+	var TableProcessor = __webpack_require__(27);
+	var Line = __webpack_require__(26);
+	var isString = __webpack_require__(8).isString;
+	var isArray = __webpack_require__(8).isArray;
+	var pack = __webpack_require__(8).pack;
+	var offsetVector = __webpack_require__(8).offsetVector;
+	var fontStringify = __webpack_require__(8).fontStringify;
+	var isFunction = __webpack_require__(8).isFunction;
+	var TextTools = __webpack_require__(13);
+	var StyleContextStack = __webpack_require__(20);
+
+	function addAll(target, otherArray) {
+		otherArray.forEach(function (item) {
+			target.push(item);
+		});
+	}
+
+	/**
+	 * Creates an instance of LayoutBuilder - layout engine which turns document-definition-object
+	 * into a set of pages, lines, inlines and vectors ready to be rendered into a PDF
+	 *
+	 * @param {Object} pageSize - an object defining page width and height
+	 * @param {Object} pageMargins - an object defining top, left, right and bottom margins
+	 */
+	function LayoutBuilder(pageSize, pageMargins, imageMeasure) {
+		this.pageSize = pageSize;
+		this.pageMargins = pageMargins;
+		this.tracker = new TraversalTracker();
+		this.imageMeasure = imageMeasure;
+		this.tableLayouts = {};
+	}
+
+	LayoutBuilder.prototype.registerTableLayouts = function (tableLayouts) {
+		this.tableLayouts = pack(this.tableLayouts, tableLayouts);
+	};
+
+	/**
+	 * Executes layout engine on document-definition-object and creates an array of pages
+	 * containing positioned Blocks, Lines and inlines
+	 *
+	 * @param {Object} docStructure document-definition-object
+	 * @param {Object} fontProvider font provider
+	 * @param {Object} styleDictionary dictionary with style definitions
+	 * @param {Object} defaultStyle default style definition
+	 * @return {Array} an array of pages
+	 */
+	LayoutBuilder.prototype.layoutDocument = function (docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark, pageBreakBeforeFct) {
+
+		function addPageBreaksIfNecessary(linearNodeList, pages) {
+
+			if (!isFunction(pageBreakBeforeFct)) {
+				return false;
+			}
+
+			linearNodeList = linearNodeList.filter(function (node) {
+				return node.positions.length > 0;
+			});
+
+			linearNodeList.forEach(function (node) {
+				var nodeInfo = {};
+				[
+					'id', 'text', 'ul', 'ol', 'table', 'image', 'qr', 'canvas', 'columns',
+					'headlineLevel', 'style', 'pageBreak', 'pageOrientation',
+					'width', 'height'
+				].forEach(function (key) {
+					if (node[key] !== undefined) {
+						nodeInfo[key] = node[key];
+					}
+				});
+				nodeInfo.startPosition = node.positions[0];
+				nodeInfo.pageNumbers = node.positions.map(function (node) {
+					return node.pageNumber;
+				}).filter(function (element, position, array) {
+					return array.indexOf(element) === position;
+				});
+				nodeInfo.pages = pages.length;
+				nodeInfo.stack = isArray(node.stack);
+
+				node.nodeInfo = nodeInfo;
+			});
+
+			return linearNodeList.some(function (node, index, followingNodeList) {
+				if (node.pageBreak !== 'before' && !node.pageBreakCalculated) {
+					node.pageBreakCalculated = true;
+					var pageNumber = node.nodeInfo.pageNumbers[0];
+
+					var followingNodesOnPage = followingNodeList.slice(index + 1).filter(function (node0) {
+						return node0.nodeInfo.pageNumbers.indexOf(pageNumber) > -1;
+					});
+
+					var nodesOnNextPage = followingNodeList.slice(index + 1).filter(function (node0) {
+						return node0.nodeInfo.pageNumbers.indexOf(pageNumber + 1) > -1;
+					});
+
+					var previousNodesOnPage = followingNodeList.slice(0, index).filter(function (node0) {
+						return node0.nodeInfo.pageNumbers.indexOf(pageNumber) > -1;
+					});
+
+					if (
+						pageBreakBeforeFct(
+							node.nodeInfo,
+							followingNodesOnPage.map(function (node) {
+								return node.nodeInfo;
+							}),
+							nodesOnNextPage.map(function (node) {
+								return node.nodeInfo;
+							}),
+							previousNodesOnPage.map(function (node) {
+								return node.nodeInfo;
+							}))) {
+						node.pageBreak = 'before';
+						return true;
+					}
+				}
+			});
+		}
+
+		this.docPreprocessor = new DocPreprocessor();
+		this.docMeasure = new DocMeasure(fontProvider, styleDictionary, defaultStyle, this.imageMeasure, this.tableLayouts, images);
+
+
+		function resetXYs(result) {
+			result.linearNodeList.forEach(function (node) {
+				node.resetXY();
+			});
+		}
+
+		var result = this.tryLayoutDocument(docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark);
+		while (addPageBreaksIfNecessary(result.linearNodeList, result.pages)) {
+			resetXYs(result);
+			result = this.tryLayoutDocument(docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark);
+		}
+
+		return result.pages;
+	};
+
+	LayoutBuilder.prototype.tryLayoutDocument = function (docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark, pageBreakBeforeFct) {
+
+		this.linearNodeList = [];
+		docStructure = this.docPreprocessor.preprocessDocument(docStructure);
+		docStructure = this.docMeasure.measureDocument(docStructure);
+
+		this.writer = new PageElementWriter(
+			new DocumentContext(this.pageSize, this.pageMargins), this.tracker);
+
+		var _this = this;
+		this.writer.context().tracker.startTracking('pageAdded', function () {
+			_this.addBackground(background);
+		});
+
+		this.addBackground(background);
+		this.processNode(docStructure);
+		this.addHeadersAndFooters(header, footer);
+		/* jshint eqnull:true */
+		if (watermark != null) {
+			this.addWatermark(watermark, fontProvider, defaultStyle);
+		}
+
+		return {pages: this.writer.context().pages, linearNodeList: this.linearNodeList};
+	};
+
+
+	LayoutBuilder.prototype.addBackground = function (background) {
+		var backgroundGetter = isFunction(background) ? background : function () {
+			return background;
+		};
+
+		var pageBackground = backgroundGetter(this.writer.context().page + 1);
+
+		if (pageBackground) {
+			var pageSize = this.writer.context().getCurrentPage().pageSize;
+			this.writer.beginUnbreakableBlock(pageSize.width, pageSize.height);
+			pageBackground = this.docPreprocessor.preprocessDocument(pageBackground);
+			this.processNode(this.docMeasure.measureDocument(pageBackground));
+			this.writer.commitUnbreakableBlock(0, 0);
+		}
+	};
+
+	LayoutBuilder.prototype.addStaticRepeatable = function (headerOrFooter, sizeFunction) {
+		this.addDynamicRepeatable(function () {
+			return JSON.parse(JSON.stringify(headerOrFooter)); // copy to new object
+		}, sizeFunction);
+	};
+
+	LayoutBuilder.prototype.addDynamicRepeatable = function (nodeGetter, sizeFunction) {
+		var pages = this.writer.context().pages;
+
+		for (var pageIndex = 0, l = pages.length; pageIndex < l; pageIndex++) {
+			this.writer.context().page = pageIndex;
+
+			var node = nodeGetter(pageIndex + 1, l, this.writer.context().pages[pageIndex].pageSize);
+
+			if (node) {
+				var sizes = sizeFunction(this.writer.context().getCurrentPage().pageSize, this.pageMargins);
+				this.writer.beginUnbreakableBlock(sizes.width, sizes.height);
+				node = this.docPreprocessor.preprocessDocument(node);
+				this.processNode(this.docMeasure.measureDocument(node));
+				this.writer.commitUnbreakableBlock(sizes.x, sizes.y);
+			}
+		}
+	};
+
+	LayoutBuilder.prototype.addHeadersAndFooters = function (header, footer) {
+		var headerSizeFct = function (pageSize, pageMargins) {
+			return {
+				x: 0,
+				y: 0,
+				width: pageSize.width,
+				height: pageMargins.top
+			};
+		};
+
+		var footerSizeFct = function (pageSize, pageMargins) {
+			return {
+				x: 0,
+				y: pageSize.height - pageMargins.bottom,
+				width: pageSize.width,
+				height: pageMargins.bottom
+			};
+		};
+
+		if (isFunction(header)) {
+			this.addDynamicRepeatable(header, headerSizeFct);
+		} else if (header) {
+			this.addStaticRepeatable(header, headerSizeFct);
+		}
+
+		if (isFunction(footer)) {
+			this.addDynamicRepeatable(footer, footerSizeFct);
+		} else if (footer) {
+			this.addStaticRepeatable(footer, footerSizeFct);
+		}
+	};
+
+	LayoutBuilder.prototype.addWatermark = function (watermark, fontProvider, defaultStyle) {
+		if (isString(watermark)) {
+			watermark = {'text': watermark};
+		}
+
+		if (!watermark.text) { // empty watermark text
+			return;
+		}
+
+		watermark.font = watermark.font || defaultStyle.font || 'Roboto';
+		watermark.color = watermark.color || 'black';
+		watermark.opacity = watermark.opacity || 0.6;
+		watermark.bold = watermark.bold || false;
+		watermark.italics = watermark.italics || false;
+
+		var watermarkObject = {
+			text: watermark.text,
+			font: fontProvider.provideFont(watermark.font, watermark.bold, watermark.italics),
+			size: getSize(this.pageSize, watermark, fontProvider),
+			color: watermark.color,
+			opacity: watermark.opacity
+		};
+
+		var pages = this.writer.context().pages;
+		for (var i = 0, l = pages.length; i < l; i++) {
+			pages[i].watermark = watermarkObject;
+		}
+
+		function getSize(pageSize, watermark, fontProvider) {
+			var width = pageSize.width;
+			var height = pageSize.height;
+			var targetWidth = Math.sqrt(width * width + height * height) * 0.8; /* page diagonal * sample factor */
+			var textTools = new TextTools(fontProvider);
+			var styleContextStack = new StyleContextStack(null, {font: watermark.font, bold: watermark.bold, italics: watermark.italics});
+			var size;
+
+			/**
+			 * Binary search the best font size.
+			 * Initial bounds [0, 1000]
+			 * Break when range < 1
+			 */
+			var a = 0;
+			var b = 1000;
+			var c = (a + b) / 2;
+			while (Math.abs(a - b) > 1) {
+				styleContextStack.push({
+					fontSize: c
+				});
+				size = textTools.sizeOfString(watermark.text, styleContextStack);
+				if (size.width > targetWidth) {
+					b = c;
+					c = (a + b) / 2;
+				} else if (size.width < targetWidth) {
+					a = c;
+					c = (a + b) / 2;
+				}
+				styleContextStack.pop();
+			}
+			/*
+			 End binary search
+			 */
+			return {size: size, fontSize: c};
+		}
+	};
+
+	function decorateNode(node) {
+		var x = node.x, y = node.y;
+		node.positions = [];
+
+		if (isArray(node.canvas)) {
+			node.canvas.forEach(function (vector) {
+				var x = vector.x, y = vector.y, x1 = vector.x1, y1 = vector.y1, x2 = vector.x2, y2 = vector.y2;
+				vector.resetXY = function () {
+					vector.x = x;
+					vector.y = y;
+					vector.x1 = x1;
+					vector.y1 = y1;
+					vector.x2 = x2;
+					vector.y2 = y2;
+				};
+			});
+		}
+
+		node.resetXY = function () {
+			node.x = x;
+			node.y = y;
+			if (isArray(node.canvas)) {
+				node.canvas.forEach(function (vector) {
+					vector.resetXY();
+				});
+			}
+		};
+	}
+
+	LayoutBuilder.prototype.processNode = function (node) {
+		var self = this;
+
+		this.linearNodeList.push(node);
+		decorateNode(node);
+
+		applyMargins(function () {
+			var unbreakable = node.unbreakable;
+			if (unbreakable) {
+				self.writer.beginUnbreakableBlock();
+			}
+
+			var absPosition = node.absolutePosition;
+			if (absPosition) {
+				self.writer.context().beginDetachedBlock();
+				self.writer.context().moveTo(absPosition.x || 0, absPosition.y || 0);
+			}
+
+			var relPosition = node.relativePosition;
+			if (relPosition) {
+				self.writer.context().beginDetachedBlock();
+				self.writer.context().moveTo((relPosition.x || 0) + self.writer.context().x, (relPosition.y || 0) + self.writer.context().y);
+			}
+
+			if (node.stack) {
+				self.processVerticalContainer(node);
+			} else if (node.columns) {
+				self.processColumns(node);
+			} else if (node.ul) {
+				self.processList(false, node);
+			} else if (node.ol) {
+				self.processList(true, node);
+			} else if (node.table) {
+				self.processTable(node);
+			} else if (node.text !== undefined) {
+				self.processLeaf(node);
+			} else if (node.toc) {
+				self.processToc(node);
+			} else if (node.image) {
+				self.processImage(node);
+			} else if (node.canvas) {
+				self.processCanvas(node);
+			} else if (node.qr) {
+				self.processQr(node);
+			} else if (!node._span) {
+				throw 'Unrecognized document structure: ' + JSON.stringify(node, fontStringify);
+			}
+
+			if (absPosition || relPosition) {
+				self.writer.context().endDetachedBlock();
+			}
+
+			if (unbreakable) {
+				self.writer.commitUnbreakableBlock();
+			}
+		});
+
+		function applyMargins(callback) {
+			var margin = node._margin;
+
+			if (node.pageBreak === 'before') {
+				self.writer.moveToNextPage(node.pageOrientation);
+			}
+
+			if (margin) {
+				self.writer.context().moveDown(margin[1]);
+				self.writer.context().addMargin(margin[0], margin[2]);
+			}
+
+			callback();
+
+			if (margin) {
+				self.writer.context().addMargin(-margin[0], -margin[2]);
+				self.writer.context().moveDown(margin[3]);
+			}
+
+			if (node.pageBreak === 'after') {
+				self.writer.moveToNextPage(node.pageOrientation);
+			}
+		}
+	};
+
+	// vertical container
+	LayoutBuilder.prototype.processVerticalContainer = function (node) {
+		var self = this;
+		node.stack.forEach(function (item) {
+			self.processNode(item);
+			addAll(node.positions, item.positions);
+
+			//TODO: paragraph gap
+		});
+	};
+
+	// columns
+	LayoutBuilder.prototype.processColumns = function (columnNode) {
+		var columns = columnNode.columns;
+		var availableWidth = this.writer.context().availableWidth;
+		var gaps = gapArray(columnNode._gap);
+
+		if (gaps) {
+			availableWidth -= (gaps.length - 1) * columnNode._gap;
+		}
+
+		ColumnCalculator.buildColumnWidths(columns, availableWidth);
+		var result = this.processRow(columns, columns, gaps);
+		addAll(columnNode.positions, result.positions);
+
+
+		function gapArray(gap) {
+			if (!gap) {
+				return null;
+			}
+
+			var gaps = [];
+			gaps.push(0);
+
+			for (var i = columns.length - 1; i > 0; i--) {
+				gaps.push(gap);
+			}
+
+			return gaps;
+		}
+	};
+
+	LayoutBuilder.prototype.processRow = function (columns, widths, gaps, tableBody, tableRow, height) {
+		var self = this;
+		var pageBreaks = [], positions = [];
+
+		this.tracker.auto('pageChanged', storePageBreakData, function () {
+			widths = widths || columns;
+
+			self.writer.context().beginColumnGroup();
+
+			for (var i = 0, l = columns.length; i < l; i++) {
+				var column = columns[i];
+				var width = widths[i]._calcWidth;
+				var leftOffset = colLeftOffset(i);
+
+				if (column.colSpan && column.colSpan > 1) {
+					for (var j = 1; j < column.colSpan; j++) {
+						width += widths[++i]._calcWidth + gaps[i];
+					}
+				}
+
+				self.writer.context().beginColumn(width, leftOffset, getEndingCell(column, i));
+				if (!column._span) {
+					self.processNode(column);
+					addAll(positions, column.positions);
+				} else if (column._columnEndingContext) {
+					// row-span ending
+					self.writer.context().markEnding(column);
+				}
+			}
+
+			self.writer.context().completeColumnGroup(height);
+		});
+
+		return {pageBreaks: pageBreaks, positions: positions};
+
+		function storePageBreakData(data) {
+			var pageDesc;
+
+			for (var i = 0, l = pageBreaks.length; i < l; i++) {
+				var desc = pageBreaks[i];
+				if (desc.prevPage === data.prevPage) {
+					pageDesc = desc;
+					break;
+				}
+			}
+
+			if (!pageDesc) {
+				pageDesc = data;
+				pageBreaks.push(pageDesc);
+			}
+			pageDesc.prevY = Math.max(pageDesc.prevY, data.prevY);
+			pageDesc.y = Math.min(pageDesc.y, data.y);
+		}
+
+		function colLeftOffset(i) {
+			if (gaps && gaps.length > i) {
+				return gaps[i];
+			}
+			return 0;
+		}
+
+		function getEndingCell(column, columnIndex) {
+			if (column.rowSpan && column.rowSpan > 1) {
+				var endingRow = tableRow + column.rowSpan - 1;
+				if (endingRow >= tableBody.length) {
+					throw 'Row span for column ' + columnIndex + ' (with indexes starting from 0) exceeded row count';
+				}
+				return tableBody[endingRow][columnIndex];
+			}
+
+			return null;
+		}
+	};
+
+	// lists
+	LayoutBuilder.prototype.processList = function (orderedList, node) {
+		var self = this,
+			items = orderedList ? node.ol : node.ul,
+			gapSize = node._gapSize;
+
+		this.writer.context().addMargin(gapSize.width);
+
+		var nextMarker;
+		this.tracker.auto('lineAdded', addMarkerToFirstLeaf, function () {
+			items.forEach(function (item) {
+				nextMarker = item.listMarker;
+				self.processNode(item);
+				addAll(node.positions, item.positions);
+			});
+		});
+
+		this.writer.context().addMargin(-gapSize.width);
+
+		function addMarkerToFirstLeaf(line) {
+			// I'm not very happy with the way list processing is implemented
+			// (both code and algorithm should be rethinked)
+			if (nextMarker) {
+				var marker = nextMarker;
+				nextMarker = null;
+
+				if (marker.canvas) {
+					var vector = marker.canvas[0];
+
+					offsetVector(vector, -marker._minWidth, 0);
+					self.writer.addVector(vector);
+				} else if (marker._inlines) {
+					var markerLine = new Line(self.pageSize.width);
+					markerLine.addInline(marker._inlines[0]);
+					markerLine.x = -marker._minWidth;
+					markerLine.y = line.getAscenderHeight() - markerLine.getAscenderHeight();
+					self.writer.addLine(markerLine, true);
+				}
+			}
+		}
+	};
+
+	// tables
+	LayoutBuilder.prototype.processTable = function (tableNode) {
+		var processor = new TableProcessor(tableNode);
+
+		processor.beginTable(this.writer);
+
+		var rowHeights = tableNode.table.heights;
+		for (var i = 0, l = tableNode.table.body.length; i < l; i++) {
+			processor.beginRow(i, this.writer);
+
+			var height;
+			if (isFunction(rowHeights)) {
+				height = rowHeights(i);
+			} else if (isArray(rowHeights)) {
+				height = rowHeights[i];
+			} else {
+				height = rowHeights;
+			}
+
+			if (height === 'auto') {
+				height = undefined;
+			}
+
+			var result = this.processRow(tableNode.table.body[i], tableNode.table.widths, tableNode._offsets.offsets, tableNode.table.body, i, height);
+			addAll(tableNode.positions, result.positions);
+
+			processor.endRow(i, this.writer, result.pageBreaks);
+		}
+
+		processor.endTable(this.writer);
+	};
+
+	// leafs (texts)
+	LayoutBuilder.prototype.processLeaf = function (node) {
+		var line = this.buildNextLine(node);
+		var currentHeight = (line) ? line.getHeight() : 0;
+		var maxHeight = node.maxHeight || -1;
+
+		if (node._tocItemRef) {
+			line._tocItemNode = node._tocItemRef;
+		}
+
+		while (line && (maxHeight === -1 || currentHeight < maxHeight)) {
+			var positions = this.writer.addLine(line);
+			node.positions.push(positions);
+			line = this.buildNextLine(node);
+			if (line) {
+				currentHeight += line.getHeight();
+			}
+		}
+	};
+
+	LayoutBuilder.prototype.processToc = function (node) {
+		if (node.toc.title) {
+			this.processNode(node.toc.title);
+		}
+		this.processNode(node.toc._table);
+	};
+
+	LayoutBuilder.prototype.buildNextLine = function (textNode) {
+
+		function cloneInline(inline) {
+			var newInline = inline.constructor();
+			for (var key in inline) {
+				newInline[key] = inline[key];
+			}
+			return newInline;
+		}
+
+		if (!textNode._inlines || textNode._inlines.length === 0) {
+			return null;
+		}
+
+		var line = new Line(this.writer.context().availableWidth);
+		var textTools = new TextTools(null);
+
+		while (textNode._inlines && textNode._inlines.length > 0 && line.hasEnoughSpaceForInline(textNode._inlines[0])) {
+			var inline = textNode._inlines.shift();
+
+			if (!inline.noWrap && inline.text.length > 1 && inline.width > line.maxWidth) {
+				var widthPerChar = inline.width / inline.text.length;
+				var maxChars = Math.floor(line.maxWidth / widthPerChar);
+				if (maxChars < 1) {
+					maxChars = 1;
+				}
+				if (maxChars < inline.text.length) {
+					var newInline = cloneInline(inline);
+
+					newInline.text = inline.text.substr(maxChars);
+					inline.text = inline.text.substr(0, maxChars);
+
+					newInline.width = textTools.widthOfString(newInline.text, newInline.font, newInline.fontSize, newInline.characterSpacing, newInline.fontFeatures);
+					inline.width = textTools.widthOfString(inline.text, inline.font, inline.fontSize, inline.characterSpacing, inline.fontFeatures);
+
+					textNode._inlines.unshift(newInline);
+				}
+			}
+
+			line.addInline(inline);
+		}
+
+		line.lastLineInParagraph = textNode._inlines.length === 0;
+
+		return line;
+	};
+
+	// images
+	LayoutBuilder.prototype.processImage = function (node) {
+		var position = this.writer.addImage(node);
+		node.positions.push(position);
+	};
+
+	LayoutBuilder.prototype.processCanvas = function (node) {
+		var height = node._minHeight;
+
+		if (node.absolutePosition === undefined && this.writer.context().availableHeight < height) {
+			// TODO: support for canvas larger than a page
+			// TODO: support for other overflow methods
+
+			this.writer.moveToNextPage();
+		}
+
+		this.writer.alignCanvas(node);
+
+		node.canvas.forEach(function (vector) {
+			var position = this.writer.addVector(vector);
+			node.positions.push(position);
+		}, this);
+
+		this.writer.context().moveDown(height);
+	};
+
+	LayoutBuilder.prototype.processQr = function (node) {
+		var position = this.writer.addQr(node);
+		node.positions.push(position);
+	};
+
+	module.exports = LayoutBuilder;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	/* jslint node: true */
+	'use strict';
+
+	/**
+	 * Creates an instance of TraversalTracker
+	 *
+	 * @constructor
+	 */
+	function TraversalTracker() {
+		this.events = {};
+	}
+
+	TraversalTracker.prototype.startTracking = function (event, cb) {
+		var callbacks = (this.events[event] || (this.events[event] = []));
+
+		if (callbacks.indexOf(cb) < 0) {
+			callbacks.push(cb);
+		}
+	};
+
+	TraversalTracker.prototype.stopTracking = function (event, cb) {
+		var callbacks = this.events[event];
+
+		if (callbacks) {
+			var index = callbacks.indexOf(cb);
+			if (index >= 0) {
+				callbacks.splice(index, 1);
+			}
+		}
+	};
+
+	TraversalTracker.prototype.emit = function (event) {
+		var args = Array.prototype.slice.call(arguments, 1);
+
+		var callbacks = this.events[event];
+
+		if (callbacks) {
+			callbacks.forEach(function (cb) {
+				cb.apply(this, args);
+			});
+		}
+	};
+
+	TraversalTracker.prototype.auto = function (event, cb, innerBlock) {
+		this.startTracking(event, cb);
+		innerBlock();
+		this.stopTracking(event, cb);
+	};
+
+	module.exports = TraversalTracker;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var isString = __webpack_require__(8).isString;
+	var isNumber = __webpack_require__(8).isNumber;
+	var isBoolean = __webpack_require__(8).isBoolean;
+	var isArray = __webpack_require__(8).isArray;
+	var fontStringify = __webpack_require__(8).fontStringify;
+
+	function DocPreprocessor() {
+
+	}
+
+	DocPreprocessor.prototype.preprocessDocument = function (docStructure) {
+		this.tocs = [];
+		return this.preprocessNode(docStructure);
+	};
+
+	DocPreprocessor.prototype.preprocessNode = function (node) {
+		// expand shortcuts and casting values
+		if (isArray(node)) {
+			node = {stack: node};
+		} else if (isString(node)) {
+			node = {text: node};
+		} else if (isNumber(node) || isBoolean(node)) {
+			node = {text: node.toString()};
+		} else if (node === null) {
+			node = {text: ''};
+		} else if (Object.keys(node).length === 0) { // empty object
+			node = {text: ''};
+		}
+
+		if (node.columns) {
+			return this.preprocessColumns(node);
+		} else if (node.stack) {
+			return this.preprocessVerticalContainer(node);
+		} else if (node.ul) {
+			return this.preprocessList(node);
+		} else if (node.ol) {
+			return this.preprocessList(node);
+		} else if (node.table) {
+			return this.preprocessTable(node);
+		} else if (node.text !== undefined) {
+			return this.preprocessText(node);
+		} else if (node.toc) {
+			return this.preprocessToc(node);
+		} else if (node.image) {
+			return this.preprocessImage(node);
+		} else if (node.canvas) {
+			return this.preprocessCanvas(node);
+		} else if (node.qr) {
+			return this.preprocessQr(node);
+		} else {
+			throw 'Unrecognized document structure: ' + JSON.stringify(node, fontStringify);
+		}
+	};
+
+	DocPreprocessor.prototype.preprocessColumns = function (node) {
+		var columns = node.columns;
+
+		for (var i = 0, l = columns.length; i < l; i++) {
+			columns[i] = this.preprocessNode(columns[i]);
+		}
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessVerticalContainer = function (node) {
+		var items = node.stack;
+
+		for (var i = 0, l = items.length; i < l; i++) {
+			items[i] = this.preprocessNode(items[i]);
+		}
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessList = function (node) {
+		var items = node.ul || node.ol;
+
+		for (var i = 0, l = items.length; i < l; i++) {
+			items[i] = this.preprocessNode(items[i]);
+		}
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessTable = function (node) {
+		var col, row, cols, rows;
+
+		for (col = 0, cols = node.table.body[0].length; col < cols; col++) {
+			for (row = 0, rows = node.table.body.length; row < rows; row++) {
+				var rowData = node.table.body[row];
+				var data = rowData[col];
+				if (data !== undefined) {
+					if (data === null) { // transform to object
+						data = '';
+					}
+					if (!data._span) {
+						rowData[col] = this.preprocessNode(data);
+					}
+				}
+			}
+		}
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessText = function (node) {
+		if (node.tocItem) {
+			if (!isArray(node.tocItem)) {
+				node.tocItem = [node.tocItem];
+			}
+
+			for (var i = 0, l = node.tocItem.length; i < l; i++) {
+				if (!isString(node.tocItem[i])) {
+					node.tocItem[i] = '_default_';
+				}
+
+				var tocItemId = node.tocItem[i];
+
+				if (!this.tocs[tocItemId]) {
+					this.tocs[tocItemId] = {toc: {_items: [], _pseudo: true}};
+				}
+
+				this.tocs[tocItemId].toc._items.push(node);
+			}
+		}
+
+		if (node.text && node.text.text) {
+			node.text = [this.preprocessNode(node.text)];
+		}
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessToc = function (node) {
+		if (!node.toc.id) {
+			node.toc.id = '_default_';
+		}
+
+		node.toc.title = node.toc.title ? this.preprocessNode(node.toc.title) : null;
+		node.toc._items = [];
+
+		if (this.tocs[node.toc.id]) {
+			if (!this.tocs[node.toc.id].toc._pseudo) {
+				throw "TOC '" + node.toc.id + "' already exists";
+			}
+
+			node.toc._items = this.tocs[node.toc.id].toc._items;
+		}
+
+		this.tocs[node.toc.id] = node;
+
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessImage = function (node) {
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessCanvas = function (node) {
+		return node;
+	};
+
+	DocPreprocessor.prototype.preprocessQr = function (node) {
+		return node;
+	};
+
+	module.exports = DocPreprocessor;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var TextTools = __webpack_require__(13);
+	var StyleContextStack = __webpack_require__(20);
+	var ColumnCalculator = __webpack_require__(21);
+	var isString = __webpack_require__(8).isString;
+	var isNumber = __webpack_require__(8).isNumber;
+	var isObject = __webpack_require__(8).isObject;
+	var isArray = __webpack_require__(8).isArray;
+	var fontStringify = __webpack_require__(8).fontStringify;
+	var pack = __webpack_require__(8).pack;
+	var qrEncoder = __webpack_require__(22);
+
+	/**
+	 * @private
+	 */
+	function DocMeasure(fontProvider, styleDictionary, defaultStyle, imageMeasure, tableLayouts, images) {
+		this.textTools = new TextTools(fontProvider);
+		this.styleStack = new StyleContextStack(styleDictionary, defaultStyle);
+		this.imageMeasure = imageMeasure;
+		this.tableLayouts = tableLayouts;
+		this.images = images;
+		this.autoImageIndex = 1;
+	}
+
+	/**
+	 * Measures all nodes and sets min/max-width properties required for the second
+	 * layout-pass.
+	 * @param  {Object} docStructure document-definition-object
+	 * @return {Object}              document-measurement-object
+	 */
+	DocMeasure.prototype.measureDocument = function (docStructure) {
+		return this.measureNode(docStructure);
+	};
+
+	DocMeasure.prototype.measureNode = function (node) {
+
+		var self = this;
+
+		return this.styleStack.auto(node, function () {
+			// TODO: refactor + rethink whether this is the proper way to handle margins
+			node._margin = getNodeMargin(node);
+
+			if (node.columns) {
+				return extendMargins(self.measureColumns(node));
+			} else if (node.stack) {
+				return extendMargins(self.measureVerticalContainer(node));
+			} else if (node.ul) {
+				return extendMargins(self.measureUnorderedList(node));
+			} else if (node.ol) {
+				return extendMargins(self.measureOrderedList(node));
+			} else if (node.table) {
+				return extendMargins(self.measureTable(node));
+			} else if (node.text !== undefined) {
+				return extendMargins(self.measureLeaf(node));
+			} else if (node.toc) {
+				return extendMargins(self.measureToc(node));
+			} else if (node.image) {
+				return extendMargins(self.measureImage(node));
+			} else if (node.canvas) {
+				return extendMargins(self.measureCanvas(node));
+			} else if (node.qr) {
+				return extendMargins(self.measureQr(node));
+			} else {
+				throw 'Unrecognized document structure: ' + JSON.stringify(node, fontStringify);
+			}
+		});
+
+		function extendMargins(node) {
+			var margin = node._margin;
+
+			if (margin) {
+				node._minWidth += margin[0] + margin[2];
+				node._maxWidth += margin[0] + margin[2];
+			}
+
+			return node;
+		}
+
+		function getNodeMargin() {
+
+			function processSingleMargins(node, currentMargin) {
+				if (node.marginLeft || node.marginTop || node.marginRight || node.marginBottom) {
+					return [
+						node.marginLeft || currentMargin[0] || 0,
+						node.marginTop || currentMargin[1] || 0,
+						node.marginRight || currentMargin[2] || 0,
+						node.marginBottom || currentMargin[3] || 0
+					];
+				}
+				return currentMargin;
+			}
+
+			function flattenStyleArray(styleArray) {
+				var flattenedStyles = {};
+				for (var i = styleArray.length - 1; i >= 0; i--) {
+					var styleName = styleArray[i];
+					var style = self.styleStack.styleDictionary[styleName];
+					for (var key in style) {
+						if (style.hasOwnProperty(key)) {
+							flattenedStyles[key] = style[key];
+						}
+					}
+				}
+				return flattenedStyles;
+			}
+
+			function convertMargin(margin) {
+				if (isNumber(margin)) {
+					margin = [margin, margin, margin, margin];
+				} else if (isArray(margin)) {
+					if (margin.length === 2) {
+						margin = [margin[0], margin[1], margin[0], margin[1]];
+					}
+				}
+				return margin;
+			}
+
+			var margin = [undefined, undefined, undefined, undefined];
+
+			if (node.style) {
+				var styleArray = isArray(node.style) ? node.style : [node.style];
+				var flattenedStyleArray = flattenStyleArray(styleArray);
+
+				if (flattenedStyleArray) {
+					margin = processSingleMargins(flattenedStyleArray, margin);
+				}
+
+				if (flattenedStyleArray.margin) {
+					margin = convertMargin(flattenedStyleArray.margin);
+				}
+			}
+
+			margin = processSingleMargins(node, margin);
+
+			if (node.margin) {
+				margin = convertMargin(node.margin);
+			}
+
+			if (margin[0] === undefined && margin[1] === undefined && margin[2] === undefined && margin[3] === undefined) {
+				return null;
+			} else {
+				return margin;
+			}
+		}
+	};
+
+	DocMeasure.prototype.convertIfBase64Image = function (node) {
+		if (/^data:image\/(jpeg|jpg|png);base64,/.test(node.image)) {
+			var label = '$$pdfmake$$' + this.autoImageIndex++;
+			this.images[label] = node.image;
+			node.image = label;
+		}
+	};
+
+	DocMeasure.prototype.measureImage = function (node) {
+		if (this.images) {
+			this.convertIfBase64Image(node);
+		}
+
+		var imageSize = this.imageMeasure.measureImage(node.image);
+
+		if (node.fit) {
+			var factor = (imageSize.width / imageSize.height > node.fit[0] / node.fit[1]) ? node.fit[0] / imageSize.width : node.fit[1] / imageSize.height;
+			node._width = node._minWidth = node._maxWidth = imageSize.width * factor;
+			node._height = imageSize.height * factor;
+		} else {
+			node._width = node._minWidth = node._maxWidth = node.width || imageSize.width;
+			node._height = node.height || (imageSize.height * node._width / imageSize.width);
+
+			if (isNumber(node.maxWidth) && node.maxWidth < node._width) {
+				node._width = node._minWidth = node._maxWidth = node.maxWidth;
+				node._height = node._width * imageSize.height / imageSize.width;
+			}
+
+			if (isNumber(node.maxHeight) && node.maxHeight < node._height) {
+				node._height = node.maxHeight;
+				node._width = node._minWidth = node._maxWidth = node._height * imageSize.width / imageSize.height;
+			}
+
+			if (isNumber(node.minWidth) && node.minWidth > node._width) {
+				node._width = node._minWidth = node._maxWidth = node.minWidth;
+				node._height = node._width * imageSize.height / imageSize.width;
+			}
+
+			if (isNumber(node.minHeight) && node.minHeight > node._height) {
+				node._height = node.minHeight;
+				node._width = node._minWidth = node._maxWidth = node._height * imageSize.width / imageSize.height;
+			}
+		}
+
+		node._alignment = this.styleStack.getProperty('alignment');
+		return node;
+	};
+
+	DocMeasure.prototype.measureLeaf = function (node) {
+
+		// Make sure style properties of the node itself are considered when building inlines.
+		// We could also just pass [node] to buildInlines, but that fails for bullet points.
+		var styleStack = this.styleStack.clone();
+		styleStack.push(node);
+
+		var data = this.textTools.buildInlines(node.text, styleStack);
+
+		node._inlines = data.items;
+		node._minWidth = data.minWidth;
+		node._maxWidth = data.maxWidth;
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureToc = function (node) {
+		if (node.toc.title) {
+			node.toc.title = this.measureNode(node.toc.title);
+		}
+
+		var body = [];
+		var textStyle = node.toc.textStyle || {};
+		var numberStyle = node.toc.numberStyle || textStyle;
+		var textMargin = node.toc.textMargin || [0, 0, 0, 0];
+		for (var i = 0, l = node.toc._items.length; i < l; i++) {
+			var item = node.toc._items[i];
+			var lineStyle = node.toc._items[i].tocStyle || textStyle;
+			var lineMargin = node.toc._items[i].tocMargin || textMargin;
+			body.push([
+				{text: item.text, alignment: 'left', style: lineStyle, margin: lineMargin},
+				{text: '00000', alignment: 'right', _tocItemRef: item, style: numberStyle, margin: [0, lineMargin[1], 0, lineMargin[3]]}
+			]);
+		}
+
+
+		node.toc._table = {
+			table: {
+				dontBreakRows: true,
+				widths: ['*', 'auto'],
+				body: body
+			},
+			layout: 'noBorders'
+		};
+
+		node.toc._table = this.measureNode(node.toc._table);
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureVerticalContainer = function (node) {
+		var items = node.stack;
+
+		node._minWidth = 0;
+		node._maxWidth = 0;
+
+		for (var i = 0, l = items.length; i < l; i++) {
+			items[i] = this.measureNode(items[i]);
+
+			node._minWidth = Math.max(node._minWidth, items[i]._minWidth);
+			node._maxWidth = Math.max(node._maxWidth, items[i]._maxWidth);
+		}
+
+		return node;
+	};
+
+	DocMeasure.prototype.gapSizeForList = function () {
+		return this.textTools.sizeOfString('9. ', this.styleStack);
+	};
+
+	DocMeasure.prototype.buildUnorderedMarker = function (styleStack, gapSize, type) {
+		function buildDisc(gapSize, color) {
+			// TODO: ascender-based calculations
+			var radius = gapSize.fontSize / 6;
+			return {
+				canvas: [{
+						x: radius,
+						y: (gapSize.height / gapSize.lineHeight) + gapSize.descender - gapSize.fontSize / 3,
+						r1: radius,
+						r2: radius,
+						type: 'ellipse',
+						color: color
+					}]
+			};
+		}
+
+		function buildSquare(gapSize, color) {
+			// TODO: ascender-based calculations
+			var size = gapSize.fontSize / 3;
+			return {
+				canvas: [{
+						x: 0,
+						y: (gapSize.height / gapSize.lineHeight) + gapSize.descender - (gapSize.fontSize / 3) - (size / 2),
+						h: size,
+						w: size,
+						type: 'rect',
+						color: color
+					}]
+			};
+		}
+
+		function buildCircle(gapSize, color) {
+			// TODO: ascender-based calculations
+			var radius = gapSize.fontSize / 6;
+			return {
+				canvas: [{
+						x: radius,
+						y: (gapSize.height / gapSize.lineHeight) + gapSize.descender - gapSize.fontSize / 3,
+						r1: radius,
+						r2: radius,
+						type: 'ellipse',
+						lineColor: color
+					}]
+			};
+		}
+
+		var marker;
+		var color = styleStack.getProperty('markerColor') || styleStack.getProperty('color') || 'black';
+
+		switch (type) {
+			case 'circle':
+				marker = buildCircle(gapSize, color);
+				break;
+
+			case 'square':
+				marker = buildSquare(gapSize, color);
+				break;
+
+			case 'none':
+				marker = {};
+				break;
+
+			case 'disc':
+			default:
+				marker = buildDisc(gapSize, color);
+				break;
+		}
+
+		marker._minWidth = marker._maxWidth = gapSize.width;
+		marker._minHeight = marker._maxHeight = gapSize.height;
+
+		return marker;
+	};
+
+	DocMeasure.prototype.buildOrderedMarker = function (counter, styleStack, type, separator) {
+		function prepareAlpha(counter) {
+			function toAlpha(num) {
+				return (num >= 26 ? toAlpha((num / 26 >> 0) - 1) : '') + 'abcdefghijklmnopqrstuvwxyz'[num % 26 >> 0];
+			}
+
+			if (counter < 1) {
+				return counter.toString();
+			}
+
+			return toAlpha(counter - 1);
+		}
+
+		function prepareRoman(counter) {
+			if (counter < 1 || counter > 4999) {
+				return counter.toString();
+			}
+			var num = counter;
+			var lookup = {M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1}, roman = '', i;
+			for (i in lookup) {
+				while (num >= lookup[i]) {
+					roman += i;
+					num -= lookup[i];
+				}
+			}
+			return roman;
+		}
+
+		function prepareDecimal(counter) {
+			return counter.toString();
+		}
+
+		var counterText;
+		switch (type) {
+			case 'none':
+				counterText = null;
+				break;
+
+			case 'upper-alpha':
+				counterText = prepareAlpha(counter).toUpperCase();
+				break;
+
+			case 'lower-alpha':
+				counterText = prepareAlpha(counter);
+				break;
+
+			case 'upper-roman':
+				counterText = prepareRoman(counter);
+				break;
+
+			case 'lower-roman':
+				counterText = prepareRoman(counter).toLowerCase();
+				break;
+
+			case 'decimal':
+			default:
+				counterText = prepareDecimal(counter);
+				break;
+		}
+
+		if (counterText === null) {
+			return {};
+		}
+
+		if (separator) {
+			if (isArray(separator)) {
+				if (separator[0]) {
+					counterText = separator[0] + counterText;
+				}
+
+				if (separator[1]) {
+					counterText += separator[1];
+				}
+				counterText += ' ';
+			} else {
+				counterText += separator + ' ';
+			}
+		}
+
+		var textArray = {text: counterText};
+		var markerColor = styleStack.getProperty('markerColor');
+		if (markerColor) {
+			textArray.color = markerColor;
+		}
+
+		return {_inlines: this.textTools.buildInlines(textArray, styleStack).items};
+	};
+
+	DocMeasure.prototype.measureUnorderedList = function (node) {
+		var style = this.styleStack.clone();
+		var items = node.ul;
+		node.type = node.type || 'disc';
+		node._gapSize = this.gapSizeForList();
+		node._minWidth = 0;
+		node._maxWidth = 0;
+
+		for (var i = 0, l = items.length; i < l; i++) {
+			var item = items[i] = this.measureNode(items[i]);
+
+			if (!item.ol && !item.ul) {
+				item.listMarker = this.buildUnorderedMarker(style, node._gapSize, item.listType || node.type);
+			}
+
+			node._minWidth = Math.max(node._minWidth, items[i]._minWidth + node._gapSize.width);
+			node._maxWidth = Math.max(node._maxWidth, items[i]._maxWidth + node._gapSize.width);
+		}
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureOrderedList = function (node) {
+		var style = this.styleStack.clone();
+		var items = node.ol;
+		node.type = node.type || 'decimal';
+		node.separator = node.separator || '.';
+		node.reversed = node.reversed || false;
+		if (!node.start) {
+			node.start = node.reversed ? items.length : 1;
+		}
+		node._gapSize = this.gapSizeForList();
+		node._minWidth = 0;
+		node._maxWidth = 0;
+
+		var counter = node.start;
+		for (var i = 0, l = items.length; i < l; i++) {
+			var item = items[i] = this.measureNode(items[i]);
+
+			if (!item.ol && !item.ul) {
+				item.listMarker = this.buildOrderedMarker(item.counter || counter, style, item.listType || node.type, node.separator);
+				if (item.listMarker._inlines) {
+					node._gapSize.width = Math.max(node._gapSize.width, item.listMarker._inlines[0].width);
+				}
+			}  // TODO: else - nested lists numbering
+
+			node._minWidth = Math.max(node._minWidth, items[i]._minWidth);
+			node._maxWidth = Math.max(node._maxWidth, items[i]._maxWidth);
+
+			if (node.reversed) {
+				counter--;
+			} else {
+				counter++;
+			}
+		}
+
+		node._minWidth += node._gapSize.width;
+		node._maxWidth += node._gapSize.width;
+
+		for (var i = 0, l = items.length; i < l; i++) {
+			var item = items[i];
+			if (!item.ol && !item.ul) {
+				item.listMarker._minWidth = item.listMarker._maxWidth = node._gapSize.width;
+			}
+		}
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureColumns = function (node) {
+		var columns = node.columns;
+		node._gap = this.styleStack.getProperty('columnGap') || 0;
+
+		for (var i = 0, l = columns.length; i < l; i++) {
+			columns[i] = this.measureNode(columns[i]);
+		}
+
+		var measures = ColumnCalculator.measureMinMax(columns);
+
+		var numGaps = (columns.length > 0) ? (columns.length - 1) : 0;
+		node._minWidth = measures.min + node._gap * numGaps;
+		node._maxWidth = measures.max + node._gap * numGaps;
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureTable = function (node) {
+		extendTableWidths(node);
+		node._layout = getLayout(this.tableLayouts);
+		node._offsets = getOffsets(node._layout);
+
+		var colSpans = [];
+		var col, row, cols, rows;
+
+		for (col = 0, cols = node.table.body[0].length; col < cols; col++) {
+			var c = node.table.widths[col];
+			c._minWidth = 0;
+			c._maxWidth = 0;
+
+			for (row = 0, rows = node.table.body.length; row < rows; row++) {
+				var rowData = node.table.body[row];
+				var data = rowData[col];
+				if (data === undefined) {
+					console.error('Malformed table row ', rowData, 'in node ', node);
+					throw 'Malformed table row, a cell is undefined.';
+				}
+				if (data === null) { // transform to object
+					data = '';
+				}
+
+				if (!data._span) {
+					data = rowData[col] = this.styleStack.auto(data, measureCb(this, data));
+
+					if (data.colSpan && data.colSpan > 1) {
+						markSpans(rowData, col, data.colSpan);
+						colSpans.push({col: col, span: data.colSpan, minWidth: data._minWidth, maxWidth: data._maxWidth});
+					} else {
+						c._minWidth = Math.max(c._minWidth, data._minWidth);
+						c._maxWidth = Math.max(c._maxWidth, data._maxWidth);
+					}
+				}
+
+				if (data.rowSpan && data.rowSpan > 1) {
+					markVSpans(node.table, row, col, data.rowSpan);
+				}
+			}
+		}
+
+		extendWidthsForColSpans();
+
+		var measures = ColumnCalculator.measureMinMax(node.table.widths);
+
+		node._minWidth = measures.min + node._offsets.total;
+		node._maxWidth = measures.max + node._offsets.total;
+
+		return node;
+
+		function measureCb(_this, data) {
+			return function () {
+				if (isObject(data)) {
+					data.fillColor = _this.styleStack.getProperty('fillColor');
+				}
+				return _this.measureNode(data);
+			};
+		}
+
+		function getLayout(tableLayouts) {
+			var layout = node.layout;
+
+			if (isString(layout)) {
+				layout = tableLayouts[layout];
+			}
+
+			/*jshint unused: false */
+			var defaultLayout = {
+				hLineWidth: function (i, node) {
+					return 1;
+				},
+				vLineWidth: function (i, node) {
+					return 1;
+				},
+				hLineColor: function (i, node) {
+					return 'black';
+				},
+				vLineColor: function (i, node) {
+					return 'black';
+				},
+				paddingLeft: function (i, node) {
+					return 4;
+				},
+				paddingRight: function (i, node) {
+					return 4;
+				},
+				paddingTop: function (i, node) {
+					return 2;
+				},
+				paddingBottom: function (i, node) {
+					return 2;
+				},
+				fillColor: function (i, node) {
+					return null;
+				},
+				defaultBorder: true
+			};
+
+			return pack(defaultLayout, layout);
+		}
+
+		function getOffsets(layout) {
+			var offsets = [];
+			var totalOffset = 0;
+			var prevRightPadding = 0;
+
+			for (var i = 0, l = node.table.widths.length; i < l; i++) {
+				var lOffset = prevRightPadding + layout.vLineWidth(i, node) + layout.paddingLeft(i, node);
+				offsets.push(lOffset);
+				totalOffset += lOffset;
+				prevRightPadding = layout.paddingRight(i, node);
+			}
+
+			totalOffset += prevRightPadding + layout.vLineWidth(node.table.widths.length, node);
+
+			return {
+				total: totalOffset,
+				offsets: offsets
+			};
+		}
+
+		function extendWidthsForColSpans() {
+			var q, j;
+
+			for (var i = 0, l = colSpans.length; i < l; i++) {
+				var span = colSpans[i];
+
+				var currentMinMax = getMinMax(span.col, span.span, node._offsets);
+				var minDifference = span.minWidth - currentMinMax.minWidth;
+				var maxDifference = span.maxWidth - currentMinMax.maxWidth;
+
+				if (minDifference > 0) {
+					q = minDifference / span.span;
+
+					for (j = 0; j < span.span; j++) {
+						node.table.widths[span.col + j]._minWidth += q;
+					}
+				}
+
+				if (maxDifference > 0) {
+					q = maxDifference / span.span;
+
+					for (j = 0; j < span.span; j++) {
+						node.table.widths[span.col + j]._maxWidth += q;
+					}
+				}
+			}
+		}
+
+		function getMinMax(col, span, offsets) {
+			var result = {minWidth: 0, maxWidth: 0};
+
+			for (var i = 0; i < span; i++) {
+				result.minWidth += node.table.widths[col + i]._minWidth + (i ? offsets.offsets[col + i] : 0);
+				result.maxWidth += node.table.widths[col + i]._maxWidth + (i ? offsets.offsets[col + i] : 0);
+			}
+
+			return result;
+		}
+
+		function markSpans(rowData, col, span) {
+			for (var i = 1; i < span; i++) {
+				rowData[col + i] = {
+					_span: true,
+					_minWidth: 0,
+					_maxWidth: 0,
+					rowSpan: rowData[col].rowSpan
+				};
+			}
+		}
+
+		function markVSpans(table, row, col, span) {
+			for (var i = 1; i < span; i++) {
+				table.body[row + i][col] = {
+					_span: true,
+					_minWidth: 0,
+					_maxWidth: 0,
+					fillColor: table.body[row][col].fillColor
+				};
+			}
+		}
+
+		function extendTableWidths(node) {
+			if (!node.table.widths) {
+				node.table.widths = 'auto';
+			}
+
+			if (isString(node.table.widths)) {
+				node.table.widths = [node.table.widths];
+
+				while (node.table.widths.length < node.table.body[0].length) {
+					node.table.widths.push(node.table.widths[node.table.widths.length - 1]);
+				}
+			}
+
+			for (var i = 0, l = node.table.widths.length; i < l; i++) {
+				var w = node.table.widths[i];
+				if (isNumber(w) || isString(w)) {
+					node.table.widths[i] = {width: w};
+				}
+			}
+		}
+	};
+
+	DocMeasure.prototype.measureCanvas = function (node) {
+		var w = 0, h = 0;
+
+		for (var i = 0, l = node.canvas.length; i < l; i++) {
+			var vector = node.canvas[i];
+
+			switch (vector.type) {
+				case 'ellipse':
+					w = Math.max(w, vector.x + vector.r1);
+					h = Math.max(h, vector.y + vector.r2);
+					break;
+				case 'rect':
+					w = Math.max(w, vector.x + vector.w);
+					h = Math.max(h, vector.y + vector.h);
+					break;
+				case 'line':
+					w = Math.max(w, vector.x1, vector.x2);
+					h = Math.max(h, vector.y1, vector.y2);
+					break;
+				case 'polyline':
+					for (var i2 = 0, l2 = vector.points.length; i2 < l2; i2++) {
+						w = Math.max(w, vector.points[i2].x);
+						h = Math.max(h, vector.points[i2].y);
+					}
+					break;
+			}
+		}
+
+		node._minWidth = node._maxWidth = w;
+		node._minHeight = node._maxHeight = h;
+		node._alignment = this.styleStack.getProperty('alignment');
+
+		return node;
+	};
+
+	DocMeasure.prototype.measureQr = function (node) {
+		node = qrEncoder.measure(node);
+		node._alignment = this.styleStack.getProperty('alignment');
+		return node;
+	};
+
+	module.exports = DocMeasure;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var isString = __webpack_require__(8).isString;
+	var isNumber = __webpack_require__(8).isNumber;
+	var isObject = __webpack_require__(8).isObject;
+	var isArray = __webpack_require__(8).isArray;
+	var LineBreaker = __webpack_require__(14);
+
+	var LEADING = /^(\s)+/g;
+	var TRAILING = /(\s)+$/g;
+
+	/**
+	 * Creates an instance of TextTools - text measurement utility
+	 *
+	 * @constructor
+	 * @param {FontProvider} fontProvider
+	 */
+	function TextTools(fontProvider) {
+		this.fontProvider = fontProvider;
+	}
+
+	/**
+	 * Converts an array of strings (or inline-definition-objects) into a collection
+	 * of inlines and calculated minWidth/maxWidth.
+	 * and their min/max widths
+	 * @param  {Object} textArray - an array of inline-definition-objects (or strings)
+	 * @param  {Object} styleContextStack current style stack
+	 * @return {Object}                   collection of inlines, minWidth, maxWidth
+	 */
+	TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
+		var measured = measure(this.fontProvider, textArray, styleContextStack);
+
+		var minWidth = 0,
+			maxWidth = 0,
+			currentLineWidth;
+
+		measured.forEach(function (inline) {
+			minWidth = Math.max(minWidth, inline.width - inline.leadingCut - inline.trailingCut);
+
+			if (!currentLineWidth) {
+				currentLineWidth = {width: 0, leadingCut: inline.leadingCut, trailingCut: 0};
+			}
+
+			currentLineWidth.width += inline.width;
+			currentLineWidth.trailingCut = inline.trailingCut;
+
+			maxWidth = Math.max(maxWidth, getTrimmedWidth(currentLineWidth));
+
+			if (inline.lineEnd) {
+				currentLineWidth = null;
+			}
+		});
+
+		if (getStyleProperty({}, styleContextStack, 'noWrap', false)) {
+			minWidth = maxWidth;
+		}
+
+		return {
+			items: measured,
+			minWidth: minWidth,
+			maxWidth: maxWidth
+		};
+
+		function getTrimmedWidth(item) {
+			return Math.max(0, item.width - item.leadingCut - item.trailingCut);
+		}
+	};
+
+	/**
+	 * Returns size of the specified string (without breaking it) using the current style
+	 * @param  {String} text              text to be measured
+	 * @param  {Object} styleContextStack current style stack
+	 * @return {Object}                   size of the specified string
+	 */
+	TextTools.prototype.sizeOfString = function (text, styleContextStack) {
+		text = text ? text.toString().replace(/\t/g, '    ') : '';
+
+		//TODO: refactor - extract from measure
+		var fontName = getStyleProperty({}, styleContextStack, 'font', 'Roboto');
+		var fontSize = getStyleProperty({}, styleContextStack, 'fontSize', 12);
+		var fontFeatures = getStyleProperty({}, styleContextStack, 'fontFeatures', null);
+		var bold = getStyleProperty({}, styleContextStack, 'bold', false);
+		var italics = getStyleProperty({}, styleContextStack, 'italics', false);
+		var lineHeight = getStyleProperty({}, styleContextStack, 'lineHeight', 1);
+		var characterSpacing = getStyleProperty({}, styleContextStack, 'characterSpacing', 0);
+
+		var font = this.fontProvider.provideFont(fontName, bold, italics);
+
+		return {
+			width: widthOfString(text, font, fontSize, characterSpacing, fontFeatures),
+			height: font.lineHeight(fontSize) * lineHeight,
+			fontSize: fontSize,
+			lineHeight: lineHeight,
+			ascender: font.ascender / 1000 * fontSize,
+			descender: font.descender / 1000 * fontSize
+		};
+	};
+
+	TextTools.prototype.widthOfString = function (text, font, fontSize, characterSpacing, fontFeatures) {
+		return widthOfString(text, font, fontSize, characterSpacing, fontFeatures);
+	};
+
+	function splitWords(text, noWrap) {
+		var results = [];
+		text = text.replace(/\t/g, '    ');
+
+		if (noWrap) {
+			results.push({text: text});
+			return results;
+		}
+
+		var breaker = new LineBreaker(text);
+		var last = 0;
+		var bk;
+
+		while (bk = breaker.nextBreak()) {
+			var word = text.slice(last, bk.position);
+
+			if (bk.required || word.match(/\r?\n$|\r$/)) { // new line
+				word = word.replace(/\r?\n$|\r$/, '');
+				results.push({text: word, lineEnd: true});
+			} else {
+				results.push({text: word});
+			}
+
+			last = bk.position;
+		}
+
+		return results;
+	}
+
+	function copyStyle(source, destination) {
+		destination = destination || {};
+		source = source || {}; //TODO: default style
+
+		for (var key in source) {
+			if (key != 'text' && source.hasOwnProperty(key)) {
+				destination[key] = source[key];
+			}
+		}
+
+		return destination;
+	}
+
+	function normalizeTextArray(array, styleContextStack) {
+		function flatten(array) {
+			return array.reduce(function (prev, cur) {
+				var current = isArray(cur.text) ? flatten(cur.text) : cur;
+				var more = [].concat(current).some(Array.isArray);
+				return prev.concat(more ? flatten(current) : current);
+			}, []);
+		}
+
+		var results = [];
+
+		if (!isArray(array)) {
+			array = [array];
+		}
+
+		array = flatten(array);
+
+		for (var i = 0, l = array.length; i < l; i++) {
+			var item = array[i];
+			var style = null;
+			var words;
+
+			var noWrap = getStyleProperty(item || {}, styleContextStack, 'noWrap', false);
+			if (isObject(item)) {
+				words = splitWords(normalizeString(item.text), noWrap);
+				style = copyStyle(item);
+			} else {
+				words = splitWords(normalizeString(item), noWrap);
+			}
+
+			for (var i2 = 0, l2 = words.length; i2 < l2; i2++) {
+				var result = {
+					text: words[i2].text
+				};
+
+				if (words[i2].lineEnd) {
+					result.lineEnd = true;
+				}
+
+				copyStyle(style, result);
+
+				results.push(result);
+			}
+		}
+
+		return results;
+	}
+
+	function normalizeString(value) {
+		if (value === undefined || value === null) {
+			return '';
+		} else if (isNumber(value)) {
+			return value.toString();
+		} else if (isString(value)) {
+			return value;
+		} else {
+			return value.toString();
+		}
+	}
+
+	function getStyleProperty(item, styleContextStack, property, defaultValue) {
+		var value;
+
+		if (item[property] !== undefined && item[property] !== null) {
+			// item defines this property
+			return item[property];
+		}
+
+		if (!styleContextStack) {
+			return defaultValue;
+		}
+
+		styleContextStack.auto(item, function () {
+			value = styleContextStack.getProperty(property);
+		});
+
+		if (value !== null && value !== undefined) {
+			return value;
+		} else {
+			return defaultValue;
+		}
+	}
+
+	function measure(fontProvider, textArray, styleContextStack) {
+		var normalized = normalizeTextArray(textArray, styleContextStack);
+
+		if (normalized.length) {
+			var leadingIndent = getStyleProperty(normalized[0], styleContextStack, 'leadingIndent', 0);
+
+			if (leadingIndent) {
+				normalized[0].leadingCut = -leadingIndent;
+				normalized[0].leadingIndent = leadingIndent;
+			}
+		}
+
+		normalized.forEach(function (item) {
+			var fontName = getStyleProperty(item, styleContextStack, 'font', 'Roboto');
+			var fontSize = getStyleProperty(item, styleContextStack, 'fontSize', 12);
+			var fontFeatures = getStyleProperty(item, styleContextStack, 'fontFeatures', null);
+			var bold = getStyleProperty(item, styleContextStack, 'bold', false);
+			var italics = getStyleProperty(item, styleContextStack, 'italics', false);
+			var color = getStyleProperty(item, styleContextStack, 'color', 'black');
+			var decoration = getStyleProperty(item, styleContextStack, 'decoration', null);
+			var decorationColor = getStyleProperty(item, styleContextStack, 'decorationColor', null);
+			var decorationStyle = getStyleProperty(item, styleContextStack, 'decorationStyle', null);
+			var background = getStyleProperty(item, styleContextStack, 'background', null);
+			var lineHeight = getStyleProperty(item, styleContextStack, 'lineHeight', 1);
+			var characterSpacing = getStyleProperty(item, styleContextStack, 'characterSpacing', 0);
+			var link = getStyleProperty(item, styleContextStack, 'link', null);
+			var linkToPage = getStyleProperty(item, styleContextStack, 'linkToPage', null);
+			var noWrap = getStyleProperty(item, styleContextStack, 'noWrap', null);
+			var preserveLeadingSpaces = getStyleProperty(item, styleContextStack, 'preserveLeadingSpaces', false);
+
+			var font = fontProvider.provideFont(fontName, bold, italics);
+
+			item.width = widthOfString(item.text, font, fontSize, characterSpacing, fontFeatures);
+			item.height = font.lineHeight(fontSize) * lineHeight;
+
+			var leadingSpaces = item.text.match(LEADING);
+
+			if (!item.leadingCut) {
+				item.leadingCut = 0;
+			}
+
+			if (leadingSpaces && !preserveLeadingSpaces) {
+				item.leadingCut += widthOfString(leadingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
+			}
+
+			var trailingSpaces = item.text.match(TRAILING);
+			if (trailingSpaces) {
+				item.trailingCut = widthOfString(trailingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
+			} else {
+				item.trailingCut = 0;
+			}
+
+			item.alignment = getStyleProperty(item, styleContextStack, 'alignment', 'left');
+			item.font = font;
+			item.fontSize = fontSize;
+			item.fontFeatures = fontFeatures;
+			item.characterSpacing = characterSpacing;
+			item.color = color;
+			item.decoration = decoration;
+			item.decorationColor = decorationColor;
+			item.decorationStyle = decorationStyle;
+			item.background = background;
+			item.link = link;
+			item.linkToPage = linkToPage;
+			item.noWrap = noWrap;
+		});
+
+		return normalized;
+	}
+
+	function widthOfString(text, font, fontSize, characterSpacing, fontFeatures) {
+		return font.widthOfString(text, fontSize, fontFeatures) + ((characterSpacing || 0) * (text.length - 1));
+	}
+
+	/****TESTS**** (add a leading '/' to uncomment)
+	 TextTools.prototype.splitWords = splitWords;
+	 TextTools.prototype.normalizeTextArray = normalizeTextArray;
+	 TextTools.prototype.measure = measure;
+	 // */
+
+
+	module.exports = TextTools;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Generated by CoffeeScript 1.7.1
+	(function() {
+	  var AI, AL, BA, BK, CB, CI_BRK, CJ, CP_BRK, CR, DI_BRK, ID, IN_BRK, LF, LineBreaker, NL, NS, PR_BRK, SA, SG, SP, UnicodeTrie, WJ, XX, base64, characterClasses, classTrie, data, fs, pairTable, _ref, _ref1;
+
+	  UnicodeTrie = __webpack_require__(15);
+
+	  
+
+	  base64 = __webpack_require__(17);
+
+	  _ref = __webpack_require__(18), BK = _ref.BK, CR = _ref.CR, LF = _ref.LF, NL = _ref.NL, CB = _ref.CB, BA = _ref.BA, SP = _ref.SP, WJ = _ref.WJ, SP = _ref.SP, BK = _ref.BK, LF = _ref.LF, NL = _ref.NL, AI = _ref.AI, AL = _ref.AL, SA = _ref.SA, SG = _ref.SG, XX = _ref.XX, CJ = _ref.CJ, ID = _ref.ID, NS = _ref.NS, characterClasses = _ref.characterClasses;
+
+	  _ref1 = __webpack_require__(19), DI_BRK = _ref1.DI_BRK, IN_BRK = _ref1.IN_BRK, CI_BRK = _ref1.CI_BRK, CP_BRK = _ref1.CP_BRK, PR_BRK = _ref1.PR_BRK, pairTable = _ref1.pairTable;
+
+	  data = base64.toByteArray("AA4IAAAAAAAAAhqg5VV7NJtZvz7fTC8zU5deplUlMrQoWqmqahD5So0aipYWrUhVFSVBQ10iSTtUtW6nKDVF6k7d75eQfEUbFcQ9KiFS90tQEolcP23nrLPmO+esr/+f39rr/a293t/e7/P8nmfvlz0O6RvrBJADtbBNaD88IOKTOmOrCqhu9zE770vc1pBV/xL5dxj2V7Zj4FGSomFKStCWNlV7hG1VabZfZ1LaHbFrRwzzLjzPoi1UHDnlV/lWbhgIIJvLBp/pu7AHEdRnIY+ROdXxg4fNpMdTxVnnm08OjozejAVsBqwqz8kddGRlRxsd8c55dNZoPuex6a7Dt6L0NNb03sqgTlR2/OT7eTt0Y0WnpUXxLsp5SMANc4DsmX4zJUBQvznwexm9tsMH+C9uRYMPOd96ZHB29NZjCIM2nfO7tsmQveX3l2r7ft0N4/SRJ7kO6Y8ZCaeuUQ4gMTZ67cp7TgxvlNDsPgOBdZi2YTam5Q7m3+00l+XG7PrDe6YoPmHgK+yLih7fAR16ZFCeD9WvOVt+gfNW/KT5/M6rb/9KERt+N1lad5RneVjzxXHsLofuU+TvrEsr3+26sVz5WJh6L/svoPK3qepFH9bysDljWtD1F7KrxzW1i9r+e/NLxV/acts7zuo304J9+t3Pd6Y6u8f3EAqxNRgv5DZjaI3unyvkvHPya/v3mWVYOC38qBq11+yHZ2bAyP1HbkV92vdno7r2lxz9UwCdCJVfd14NLcpO2CadHS/XPJ9doXgz5vLv/1OBVS3gX0D9n6LiNIDfpilO9RsLgZ2W/wIy8W/Rh93jfoz4qmRV2xElv6p2lRXQdO6/Cv8f5nGn3u0wLXjhnvClabL1o+7yvIpvLfT/xsKG30y/sTvq30ia9Czxp9dr9v/e7Yn/O0QJXxxBOJmceP/DBFa1q1v6oudn/e6qc/37dUoNvnYL4plQ9OoneYOh/r8fOFm7yl7FETHY9dXd5K2n/qEc53dOEe1TTJcvCfp1dpTC334l0vyaFL6mttNEbFjzO+ZV2mLk0qc3BrxJ4d9gweMmjRorxb7vic0rSq6D4wzAyFWas1TqPE0sLI8XLAryC8tPChaN3ALEZSWmtB34SyZcxXYn/E4Tg0LeMIPhgPKD9zyHGMxxhxnDDih7eI86xECTM8zodUCdgffUmRh4rQ8zyA6ow/Aei+01a8OMfziQQ+GAEkhwN/cqUFYAVzA9ex4n6jgtsiMvXf5BtXxEU4hSphvx3v8+9au8eEekEEpkrkne/zB1M+HAPuXIz3paxKlfe8aDMfGWAX6Md6PuuAdKHFVH++Ed5LEji94Z5zeiJIxbmWeN7rr1/ZcaBl5/nimdHsHgIH/ssyLUXZ4fDQ46HnBb+hQqG8yNiKRrXL/b1IPYDUsu3dFKtRMcjqlRvONd4xBvOufx2cUHuk8pmG1D7PyOQmUmluisVFS9OWS8fPIe8LiCtjwJKnEC9hrS9uKmISI3Wa5+vdXUG9dtyfr7g/oJv2wbzeZU838G6mEvntUb3SVV/fBZ6H/sL+lElzeRrHy2Xbe7UWX1q5sgOQ81rv+2baej4fP4m5Mf/GkoxfDtT3++KP7do9Jn26aa6xAhCf5L9RZVfkWKCcjI1eYbm2plvTEqkDxKC402bGzXCYaGnuALHabBT1dFLuOSB7RorOPEhZah1NjZIgR/UFGfK3p1ElYnevOMBDLURdpIjrI+qZk4sffGbRFiXuEmdFjiAODlQCJvIaB1rW61Ljg3y4eS4LAcSgDxxZQs0DYa15wA032Z+lGUfpoyOrFo3mg1sRQtN/fHHCx3TrM8eTrldMbYisDLXbUDoXMLejSq0fUNuO1muX0gEa8vgyegkqiqqbC3W0S4cC9Kmt8MuS/hFO7Xei3f8rSvIjeveMM7kxjUixOrl6gJshe4JU7PhOHpfrRYvu7yoAZKa3Buyk2J+K5W+nNTz1nhJDhRUfDJLiUXxjxXCJeeaOe/r7HlBP/uURc/5efaZEPxr55Qj39rfTLkugUGyMrwo7HAglfEjDriehF1jXtwJkPoiYkYQ5aoXSA7qbCBGKq5hwtu2VkpI9xVDop/1xrC52eiIvCoPWx4lLl40jm9upvycVPfpaH9/o2D4xKXpeNjE2HPQRS+3RFaYTc4Txw7Dvq5X6JBRwzs9mvoB49BK6b+XgsZVJYiInTlSXZ+62FT18mkFVcPKCJsoF5ahb19WheZLUYsSwdrrVM3aQ2XE6SzU2xHDS6iWkodk5AF6F8WUNmmushi8aVpMPwiIfEiQWo3CApONDRjrhDiVnkaFsaP5rjIJkmsN6V26li5LNM3JxGSyKgomknTyyrhcnwv9Qcqaq5utAh44W30SWo8Q0XHKR0glPF4fWst1FUCnk2woFq3iy9fAbzcjJ8fvSjgKVOfn14RDqyQuIgaGJZuswTywdCFSa89SakMf6fe+9KaQMYQlKxiJBczuPSho4wmBjdA+ag6QUOr2GdpcbSl51Ay6khhBt5UXdrnxc7ZGMxCvz96A4oLocxh2+px+1zkyLacCGrxnPzTRSgrLKpStFpH5ppKWm7PgMKZtwgytKLOjbGCOQLTm+KOowqa1sdut9raj1CZFkZD0jbaKNLpJUarSH5Qknx1YiOxdA5L6d5sfI/unmkSF65Ic/AvtXt98Pnrdwl5vgppQ3dYzWFwknZsy6xh2llmLxpegF8ayLwniknlXRHiF4hzzrgB8jQ4wdIqcaHCEAxyJwCeGkXPBZYSrrGa4vMwZvNN9aK0F4JBOK9mQ8g8EjEbIQVwvfS2D8GuCYsdqwqSWbQrfWdTRUJMqmpnWPax4Z7E137I6brHbvjpPlfNZpF1d7PP7HB/MPHcHVKTMhLO4f3CZcaccZEOiS2DpKiQB5KXDJ+Ospcz4qTRCRxgrKEQIgUkKLTKKwskdx2DWo3bg3PEoB5h2nA24olwfKSR+QR6TAvEDi/0czhUT59RZmO1MGeKGeEfuOSPWfL+XKmhqpZmOVR9mJVNDPKOS49Lq+Um10YsBybzDMtemlPCOJEtE8zaXhsaqEs9bngSJGhlOTTMlCXly9Qv5cRN3PVLK7zoMptutf7ihutrQ/Xj7VqeCdUwleTTKklOI8Wep9h7fCY0kVtDtIWKnubWAvbNZtsRRqOYl802vebPEkZRSZc6wXOfPtpPtN5HI63EUFfsy7U/TLr8NkIzaY3vx4A28x765XZMzRZTpMk81YIMuwJ5+/zoCuZj1wGnaHObxa5rpKZj4WhT670maRw04w0e3cZW74Z0aZe2n05hjZaxm6urenz8Ef5O6Yu1J2aqYAlqsCXs5ZB5o1JJ5l3xkTVr8rJQ09NLsBqRRDT2IIjOPmcJa6xQ1R5yGP9jAsj23xYDTezdyqG8YWZ7vJBIWK56K+iDgcHimiQOTIasNSua1fOBxsKMMEKd15jxTl+3CyvGCR+UyRwuSI2XuwRIPoNNclPihfJhaq2mKkNijwYLY6feqohktukmI3KDvOpN7ItCqHHhNuKlxMfBAEO5LjW2RKh6lE5Hd1dtAOopac/Z4FdsNsjMhXz/ug8JGmbVJTA+VOBJXdrYyJcIn5+OEeoK8kWEWF+wdG8ZtZHKSquWDtDVyhFPkRVqguKFkLkKCz46hcU1SUY9oJ2Sk+dmq0kglqk4kqKT1CV9JDELPjK1WsWGkEXF87g9P98e5ff0mIupm/w6vc3kCeq04X5bgJQlcMFRjlFWmSk+kssXCAVikfeAlMuzpUvCSdXiG+dc6KrIiLxxhbEVuKf7vW7KmDQI95bZe3H9mN3/77F6fZ2Yx/F9yClllj8gXpLWLpd5+v90iOaFa9sd7Pvx0lNa1o1+bkiZ69wCiC2x9UIb6/boBCuNMB/HYR0RC6+FD9Oe5qrgQl6JbXtkaYn0wkdNhROLqyhv6cKvyMj1Fvs2o3OOKoMYTubGENLfY5F6H9d8wX1cnINsvz+wZFQu3zhWVlwJvwBEp69Dqu/ZnkBf3nIfbx4TK7zOVJH5sGJX+IMwkn1vVBn38GbpTg9bJnMcTOb5F6Ci5gOn9Fcy6Qzcu+FL6mYJJ+f2ZZJGda1VqruZ0JRXItp8X0aTjIcJgzdaXlha7q7kV4ebrMsunfsRyRa9qYuryBHA0hc1KVsKdE+oI0ljLmSAyMze8lWmc5/lQ18slyTVC/vADTc+SNM5++gztTBLz4m0aVUKcfgOEExuKVomJ7XQDZuziMDjG6JP9tgR7JXZTeo9RGetW/Xm9/TgPJpTgHACPOGvmy2mDm9fl09WeMm9sQUAXP3Su2uApeCwJVT5iWCXDgmcuTsFgU9Nm6/PusJzSbDQIMfl6INY/OAEvZRN54BSSXUClM51im6Wn9VhVamKJmzOaFJErgJcs0etFZ40LIF3EPkjFTjGmAhsd174NnOwJW8TdJ1Dja+E6Wa6FVS22Haj1DDA474EesoMP5nbspAPJLWJ8rYcP1DwCslhnn+gTFm+sS9wY+U6SogAa9tiwpoxuaFeqm2OK+uozR6SfiLCOPz36LiDlzXr6UWd7BpY6mlrNANkTOeme5EgnnAkQRTGo9T6iYxbUKfGJcI9B+ub2PcyUOgpwXbOf3bHFWtygD7FYbRhb+vkzi87dB0JeXl/vBpBUz93VtqZi7AL7C1VowTF+tGmyurw7DBcktc+UMY0E10Jw4URojf8NdaNpN6E1q4+Oz+4YePtMLy8FPRP");
+
+	  classTrie = new UnicodeTrie(data);
+
+	  LineBreaker = (function() {
+	    var Break, mapClass, mapFirst;
+
+	    function LineBreaker(string) {
+	      this.string = string;
+	      this.pos = 0;
+	      this.lastPos = 0;
+	      this.curClass = null;
+	      this.nextClass = null;
+	    }
+
+	    LineBreaker.prototype.nextCodePoint = function() {
+	      var code, next;
+	      code = this.string.charCodeAt(this.pos++);
+	      next = this.string.charCodeAt(this.pos);
+	      if ((0xd800 <= code && code <= 0xdbff) && (0xdc00 <= next && next <= 0xdfff)) {
+	        this.pos++;
+	        return ((code - 0xd800) * 0x400) + (next - 0xdc00) + 0x10000;
+	      }
+	      return code;
+	    };
+
+	    mapClass = function(c) {
+	      switch (c) {
+	        case AI:
+	          return AL;
+	        case SA:
+	        case SG:
+	        case XX:
+	          return AL;
+	        case CJ:
+	          return NS;
+	        default:
+	          return c;
+	      }
+	    };
+
+	    mapFirst = function(c) {
+	      switch (c) {
+	        case LF:
+	        case NL:
+	          return BK;
+	        case CB:
+	          return BA;
+	        case SP:
+	          return WJ;
+	        default:
+	          return c;
+	      }
+	    };
+
+	    LineBreaker.prototype.nextCharClass = function(first) {
+	      if (first == null) {
+	        first = false;
+	      }
+	      return mapClass(classTrie.get(this.nextCodePoint()));
+	    };
+
+	    Break = (function() {
+	      function Break(position, required) {
+	        this.position = position;
+	        this.required = required != null ? required : false;
+	      }
+
+	      return Break;
+
+	    })();
+
+	    LineBreaker.prototype.nextBreak = function() {
+	      var cur, lastClass, shouldBreak;
+	      if (this.curClass == null) {
+	        this.curClass = mapFirst(this.nextCharClass());
+	      }
+	      while (this.pos < this.string.length) {
+	        this.lastPos = this.pos;
+	        lastClass = this.nextClass;
+	        this.nextClass = this.nextCharClass();
+	        if (this.curClass === BK || (this.curClass === CR && this.nextClass !== LF)) {
+	          this.curClass = mapFirst(mapClass(this.nextClass));
+	          return new Break(this.lastPos, true);
+	        }
+	        cur = (function() {
+	          switch (this.nextClass) {
+	            case SP:
+	              return this.curClass;
+	            case BK:
+	            case LF:
+	            case NL:
+	              return BK;
+	            case CR:
+	              return CR;
+	            case CB:
+	              return BA;
+	          }
+	        }).call(this);
+	        if (cur != null) {
+	          this.curClass = cur;
+	          if (this.nextClass === CB) {
+	            return new Break(this.lastPos);
+	          }
+	          continue;
+	        }
+	        shouldBreak = false;
+	        switch (pairTable[this.curClass][this.nextClass]) {
+	          case DI_BRK:
+	            shouldBreak = true;
+	            break;
+	          case IN_BRK:
+	            shouldBreak = lastClass === SP;
+	            break;
+	          case CI_BRK:
+	            shouldBreak = lastClass === SP;
+	            if (!shouldBreak) {
+	              continue;
+	            }
+	            break;
+	          case CP_BRK:
+	            if (lastClass !== SP) {
+	              continue;
+	            }
+	        }
+	        this.curClass = this.nextClass;
+	        if (shouldBreak) {
+	          return new Break(this.lastPos);
+	        }
+	      }
+	      if (this.pos >= this.string.length) {
+	        if (this.lastPos < this.string.length) {
+	          this.lastPos = this.string.length;
+	          return new Break(this.string.length);
+	        } else {
+	          return null;
+	        }
+	      }
+	    };
+
+	    return LineBreaker;
+
+	  })();
+
+	  module.exports = LineBreaker;
+
+	}).call(this);
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Generated by CoffeeScript 1.7.1
+	var UnicodeTrie, inflate;
+
+	inflate = __webpack_require__(16);
+
+	UnicodeTrie = (function() {
+	  var DATA_BLOCK_LENGTH, DATA_GRANULARITY, DATA_MASK, INDEX_1_OFFSET, INDEX_2_BLOCK_LENGTH, INDEX_2_BMP_LENGTH, INDEX_2_MASK, INDEX_SHIFT, LSCP_INDEX_2_LENGTH, LSCP_INDEX_2_OFFSET, OMITTED_BMP_INDEX_1_LENGTH, SHIFT_1, SHIFT_1_2, SHIFT_2, UTF8_2B_INDEX_2_LENGTH, UTF8_2B_INDEX_2_OFFSET;
+
+	  SHIFT_1 = 6 + 5;
+
+	  SHIFT_2 = 5;
+
+	  SHIFT_1_2 = SHIFT_1 - SHIFT_2;
+
+	  OMITTED_BMP_INDEX_1_LENGTH = 0x10000 >> SHIFT_1;
+
+	  INDEX_2_BLOCK_LENGTH = 1 << SHIFT_1_2;
+
+	  INDEX_2_MASK = INDEX_2_BLOCK_LENGTH - 1;
+
+	  INDEX_SHIFT = 2;
+
+	  DATA_BLOCK_LENGTH = 1 << SHIFT_2;
+
+	  DATA_MASK = DATA_BLOCK_LENGTH - 1;
+
+	  LSCP_INDEX_2_OFFSET = 0x10000 >> SHIFT_2;
+
+	  LSCP_INDEX_2_LENGTH = 0x400 >> SHIFT_2;
+
+	  INDEX_2_BMP_LENGTH = LSCP_INDEX_2_OFFSET + LSCP_INDEX_2_LENGTH;
+
+	  UTF8_2B_INDEX_2_OFFSET = INDEX_2_BMP_LENGTH;
+
+	  UTF8_2B_INDEX_2_LENGTH = 0x800 >> 6;
+
+	  INDEX_1_OFFSET = UTF8_2B_INDEX_2_OFFSET + UTF8_2B_INDEX_2_LENGTH;
+
+	  DATA_GRANULARITY = 1 << INDEX_SHIFT;
+
+	  function UnicodeTrie(data) {
+	    var isBuffer, uncompressedLength, view;
+	    isBuffer = typeof data.readUInt32BE === 'function' && typeof data.slice === 'function';
+	    if (isBuffer || data instanceof Uint8Array) {
+	      if (isBuffer) {
+	        this.highStart = data.readUInt32BE(0);
+	        this.errorValue = data.readUInt32BE(4);
+	        uncompressedLength = data.readUInt32BE(8);
+	        data = data.slice(12);
+	      } else {
+	        view = new DataView(data.buffer);
+	        this.highStart = view.getUint32(0);
+	        this.errorValue = view.getUint32(4);
+	        uncompressedLength = view.getUint32(8);
+	        data = data.subarray(12);
+	      }
+	      data = inflate(data, new Uint8Array(uncompressedLength));
+	      data = inflate(data, new Uint8Array(uncompressedLength));
+	      this.data = new Uint32Array(data.buffer);
+	    } else {
+	      this.data = data.data, this.highStart = data.highStart, this.errorValue = data.errorValue;
+	    }
+	  }
+
+	  UnicodeTrie.prototype.get = function(codePoint) {
+	    var index;
+	    if (codePoint < 0 || codePoint > 0x10ffff) {
+	      return this.errorValue;
+	    }
+	    if (codePoint < 0xd800 || (codePoint > 0xdbff && codePoint <= 0xffff)) {
+	      index = (this.data[codePoint >> SHIFT_2] << INDEX_SHIFT) + (codePoint & DATA_MASK);
+	      return this.data[index];
+	    }
+	    if (codePoint <= 0xffff) {
+	      index = (this.data[LSCP_INDEX_2_OFFSET + ((codePoint - 0xd800) >> SHIFT_2)] << INDEX_SHIFT) + (codePoint & DATA_MASK);
+	      return this.data[index];
+	    }
+	    if (codePoint < this.highStart) {
+	      index = this.data[(INDEX_1_OFFSET - OMITTED_BMP_INDEX_1_LENGTH) + (codePoint >> SHIFT_1)];
+	      index = this.data[index + ((codePoint >> SHIFT_2) & INDEX_2_MASK)];
+	      index = (index << INDEX_SHIFT) + (codePoint & DATA_MASK);
+	      return this.data[index];
+	    }
+	    return this.data[this.data.length - DATA_GRANULARITY];
+	  };
+
+	  return UnicodeTrie;
+
+	})();
+
+	module.exports = UnicodeTrie;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+	var TINF_OK = 0;
+	var TINF_DATA_ERROR = -3;
+
+	function Tree() {
+	  this.table = new Uint16Array(16);   /* table of code length counts */
+	  this.trans = new Uint16Array(288);  /* code -> symbol translation table */
+	}
+
+	function Data(source, dest) {
+	  this.source = source;
+	  this.sourceIndex = 0;
+	  this.tag = 0;
+	  this.bitcount = 0;
+	  
+	  this.dest = dest;
+	  this.destLen = 0;
+	  
+	  this.ltree = new Tree();  /* dynamic length/symbol tree */
+	  this.dtree = new Tree();  /* dynamic distance tree */
+	}
+
+	/* --------------------------------------------------- *
+	 * -- uninitialized global data (static structures) -- *
+	 * --------------------------------------------------- */
+
+	var sltree = new Tree();
+	var sdtree = new Tree();
+
+	/* extra bits and base tables for length codes */
+	var length_bits = new Uint8Array(30);
+	var length_base = new Uint16Array(30);
+
+	/* extra bits and base tables for distance codes */
+	var dist_bits = new Uint8Array(30);
+	var dist_base = new Uint16Array(30);
+
+	/* special ordering of code length codes */
+	var clcidx = new Uint8Array([
+	  16, 17, 18, 0, 8, 7, 9, 6,
+	  10, 5, 11, 4, 12, 3, 13, 2,
+	  14, 1, 15
+	]);
+
+	/* used by tinf_decode_trees, avoids allocations every call */
+	var code_tree = new Tree();
+	var lengths = new Uint8Array(288 + 32);
+
+	/* ----------------------- *
+	 * -- utility functions -- *
+	 * ----------------------- */
+
+	/* build extra bits and base tables */
+	function tinf_build_bits_base(bits, base, delta, first) {
+	  var i, sum;
+
+	  /* build bits table */
+	  for (i = 0; i < delta; ++i) bits[i] = 0;
+	  for (i = 0; i < 30 - delta; ++i) bits[i + delta] = i / delta | 0;
+
+	  /* build base table */
+	  for (sum = first, i = 0; i < 30; ++i) {
+	    base[i] = sum;
+	    sum += 1 << bits[i];
+	  }
+	}
+
+	/* build the fixed huffman trees */
+	function tinf_build_fixed_trees(lt, dt) {
+	  var i;
+
+	  /* build fixed length tree */
+	  for (i = 0; i < 7; ++i) lt.table[i] = 0;
+
+	  lt.table[7] = 24;
+	  lt.table[8] = 152;
+	  lt.table[9] = 112;
+
+	  for (i = 0; i < 24; ++i) lt.trans[i] = 256 + i;
+	  for (i = 0; i < 144; ++i) lt.trans[24 + i] = i;
+	  for (i = 0; i < 8; ++i) lt.trans[24 + 144 + i] = 280 + i;
+	  for (i = 0; i < 112; ++i) lt.trans[24 + 144 + 8 + i] = 144 + i;
+
+	  /* build fixed distance tree */
+	  for (i = 0; i < 5; ++i) dt.table[i] = 0;
+
+	  dt.table[5] = 32;
+
+	  for (i = 0; i < 32; ++i) dt.trans[i] = i;
+	}
+
+	/* given an array of code lengths, build a tree */
+	var offs = new Uint16Array(16);
+
+	function tinf_build_tree(t, lengths, off, num) {
+	  var i, sum;
+
+	  /* clear code length count table */
+	  for (i = 0; i < 16; ++i) t.table[i] = 0;
+
+	  /* scan symbol lengths, and sum code length counts */
+	  for (i = 0; i < num; ++i) t.table[lengths[off + i]]++;
+
+	  t.table[0] = 0;
+
+	  /* compute offset table for distribution sort */
+	  for (sum = 0, i = 0; i < 16; ++i) {
+	    offs[i] = sum;
+	    sum += t.table[i];
+	  }
+
+	  /* create code->symbol translation table (symbols sorted by code) */
+	  for (i = 0; i < num; ++i) {
+	    if (lengths[off + i]) t.trans[offs[lengths[off + i]]++] = i;
+	  }
+	}
+
+	/* ---------------------- *
+	 * -- decode functions -- *
+	 * ---------------------- */
+
+	/* get one bit from source stream */
+	function tinf_getbit(d) {
+	  /* check if tag is empty */
+	  if (!d.bitcount--) {
+	    /* load next tag */
+	    d.tag = d.source[d.sourceIndex++];
+	    d.bitcount = 7;
+	  }
+
+	  /* shift bit out of tag */
+	  var bit = d.tag & 1;
+	  d.tag >>>= 1;
+
+	  return bit;
+	}
+
+	/* read a num bit value from a stream and add base */
+	function tinf_read_bits(d, num, base) {
+	  if (!num)
+	    return base;
+
+	  while (d.bitcount < 24) {
+	    d.tag |= d.source[d.sourceIndex++] << d.bitcount;
+	    d.bitcount += 8;
+	  }
+
+	  var val = d.tag & (0xffff >>> (16 - num));
+	  d.tag >>>= num;
+	  d.bitcount -= num;
+	  return val + base;
+	}
+
+	/* given a data stream and a tree, decode a symbol */
+	function tinf_decode_symbol(d, t) {
+	  while (d.bitcount < 24) {
+	    d.tag |= d.source[d.sourceIndex++] << d.bitcount;
+	    d.bitcount += 8;
+	  }
+	  
+	  var sum = 0, cur = 0, len = 0;
+	  var tag = d.tag;
+
+	  /* get more bits while code value is above sum */
+	  do {
+	    cur = 2 * cur + (tag & 1);
+	    tag >>>= 1;
+	    ++len;
+
+	    sum += t.table[len];
+	    cur -= t.table[len];
+	  } while (cur >= 0);
+	  
+	  d.tag = tag;
+	  d.bitcount -= len;
+
+	  return t.trans[sum + cur];
+	}
+
+	/* given a data stream, decode dynamic trees from it */
+	function tinf_decode_trees(d, lt, dt) {
+	  var hlit, hdist, hclen;
+	  var i, num, length;
+
+	  /* get 5 bits HLIT (257-286) */
+	  hlit = tinf_read_bits(d, 5, 257);
+
+	  /* get 5 bits HDIST (1-32) */
+	  hdist = tinf_read_bits(d, 5, 1);
+
+	  /* get 4 bits HCLEN (4-19) */
+	  hclen = tinf_read_bits(d, 4, 4);
+
+	  for (i = 0; i < 19; ++i) lengths[i] = 0;
+
+	  /* read code lengths for code length alphabet */
+	  for (i = 0; i < hclen; ++i) {
+	    /* get 3 bits code length (0-7) */
+	    var clen = tinf_read_bits(d, 3, 0);
+	    lengths[clcidx[i]] = clen;
+	  }
+
+	  /* build code length tree */
+	  tinf_build_tree(code_tree, lengths, 0, 19);
+
+	  /* decode code lengths for the dynamic trees */
+	  for (num = 0; num < hlit + hdist;) {
+	    var sym = tinf_decode_symbol(d, code_tree);
+
+	    switch (sym) {
+	      case 16:
+	        /* copy previous code length 3-6 times (read 2 bits) */
+	        var prev = lengths[num - 1];
+	        for (length = tinf_read_bits(d, 2, 3); length; --length) {
+	          lengths[num++] = prev;
+	        }
+	        break;
+	      case 17:
+	        /* repeat code length 0 for 3-10 times (read 3 bits) */
+	        for (length = tinf_read_bits(d, 3, 3); length; --length) {
+	          lengths[num++] = 0;
+	        }
+	        break;
+	      case 18:
+	        /* repeat code length 0 for 11-138 times (read 7 bits) */
+	        for (length = tinf_read_bits(d, 7, 11); length; --length) {
+	          lengths[num++] = 0;
+	        }
+	        break;
+	      default:
+	        /* values 0-15 represent the actual code lengths */
+	        lengths[num++] = sym;
+	        break;
+	    }
+	  }
+
+	  /* build dynamic trees */
+	  tinf_build_tree(lt, lengths, 0, hlit);
+	  tinf_build_tree(dt, lengths, hlit, hdist);
+	}
+
+	/* ----------------------------- *
+	 * -- block inflate functions -- *
+	 * ----------------------------- */
+
+	/* given a stream and two trees, inflate a block of data */
+	function tinf_inflate_block_data(d, lt, dt) {
+	  while (1) {
+	    var sym = tinf_decode_symbol(d, lt);
+
+	    /* check for end of block */
+	    if (sym === 256) {
+	      return TINF_OK;
+	    }
+
+	    if (sym < 256) {
+	      d.dest[d.destLen++] = sym;
+	    } else {
+	      var length, dist, offs;
+	      var i;
+
+	      sym -= 257;
+
+	      /* possibly get more bits from length code */
+	      length = tinf_read_bits(d, length_bits[sym], length_base[sym]);
+
+	      dist = tinf_decode_symbol(d, dt);
+
+	      /* possibly get more bits from distance code */
+	      offs = d.destLen - tinf_read_bits(d, dist_bits[dist], dist_base[dist]);
+
+	      /* copy match */
+	      for (i = offs; i < offs + length; ++i) {
+	        d.dest[d.destLen++] = d.dest[i];
+	      }
+	    }
+	  }
+	}
+
+	/* inflate an uncompressed block of data */
+	function tinf_inflate_uncompressed_block(d) {
+	  var length, invlength;
+	  var i;
+	  
+	  /* unread from bitbuffer */
+	  while (d.bitcount > 8) {
+	    d.sourceIndex--;
+	    d.bitcount -= 8;
+	  }
+
+	  /* get length */
+	  length = d.source[d.sourceIndex + 1];
+	  length = 256 * length + d.source[d.sourceIndex];
+
+	  /* get one's complement of length */
+	  invlength = d.source[d.sourceIndex + 3];
+	  invlength = 256 * invlength + d.source[d.sourceIndex + 2];
+
+	  /* check length */
+	  if (length !== (~invlength & 0x0000ffff))
+	    return TINF_DATA_ERROR;
+
+	  d.sourceIndex += 4;
+
+	  /* copy block */
+	  for (i = length; i; --i)
+	    d.dest[d.destLen++] = d.source[d.sourceIndex++];
+
+	  /* make sure we start next block on a byte boundary */
+	  d.bitcount = 0;
+
+	  return TINF_OK;
+	}
+
+	/* inflate stream from source to dest */
+	function tinf_uncompress(source, dest) {
+	  var d = new Data(source, dest);
+	  var bfinal, btype, res;
+
+	  do {
+	    /* read final block flag */
+	    bfinal = tinf_getbit(d);
+
+	    /* read block type (2 bits) */
+	    btype = tinf_read_bits(d, 2, 0);
+
+	    /* decompress block */
+	    switch (btype) {
+	      case 0:
+	        /* decompress uncompressed block */
+	        res = tinf_inflate_uncompressed_block(d);
+	        break;
+	      case 1:
+	        /* decompress block with fixed huffman trees */
+	        res = tinf_inflate_block_data(d, sltree, sdtree);
+	        break;
+	      case 2:
+	        /* decompress block with dynamic huffman trees */
+	        tinf_decode_trees(d, d.ltree, d.dtree);
+	        res = tinf_inflate_block_data(d, d.ltree, d.dtree);
+	        break;
+	      default:
+	        res = TINF_DATA_ERROR;
+	    }
+
+	    if (res !== TINF_OK)
+	      throw new Error('Data error');
+
+	  } while (!bfinal);
+
+	  if (d.destLen < d.dest.length) {
+	    if (typeof d.dest.slice === 'function')
+	      return d.dest.slice(0, d.destLen);
+	    else
+	      return d.dest.subarray(0, d.destLen);
+	  }
+	  
+	  return d.dest;
+	}
+
+	/* -------------------- *
+	 * -- initialization -- *
+	 * -------------------- */
+
+	/* build fixed huffman trees */
+	tinf_build_fixed_trees(sltree, sdtree);
+
+	/* build extra bits and base tables */
+	tinf_build_bits_base(length_bits, length_base, 4, 3);
+	tinf_build_bits_base(dist_bits, dist_base, 2, 1);
+
+	/* fix a special case */
+	length_bits[28] = 0;
+	length_base[28] = 258;
+
+	module.exports = tinf_uncompress;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+	;(function (exports) {
+		'use strict';
+
+	  var Arr = (typeof Uint8Array !== 'undefined')
+	    ? Uint8Array
+	    : Array
+
+		var PLUS   = '+'.charCodeAt(0)
+		var SLASH  = '/'.charCodeAt(0)
+		var NUMBER = '0'.charCodeAt(0)
+		var LOWER  = 'a'.charCodeAt(0)
+		var UPPER  = 'A'.charCodeAt(0)
+		var PLUS_URL_SAFE = '-'.charCodeAt(0)
+		var SLASH_URL_SAFE = '_'.charCodeAt(0)
+
+		function decode (elt) {
+			var code = elt.charCodeAt(0)
+			if (code === PLUS ||
+			    code === PLUS_URL_SAFE)
+				return 62 // '+'
+			if (code === SLASH ||
+			    code === SLASH_URL_SAFE)
+				return 63 // '/'
+			if (code < NUMBER)
+				return -1 //no match
+			if (code < NUMBER + 10)
+				return code - NUMBER + 26 + 26
+			if (code < UPPER + 26)
+				return code - UPPER
+			if (code < LOWER + 26)
+				return code - LOWER + 26
+		}
+
+		function b64ToByteArray (b64) {
+			var i, j, l, tmp, placeHolders, arr
+
+			if (b64.length % 4 > 0) {
+				throw new Error('Invalid string. Length must be a multiple of 4')
+			}
+
+			// the number of equal signs (place holders)
+			// if there are two placeholders, than the two characters before it
+			// represent one byte
+			// if there is only one, then the three characters before it represent 2 bytes
+			// this is just a cheap hack to not do indexOf twice
+			var len = b64.length
+			placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
+
+			// base64 is 4/3 + up to two characters of the original data
+			arr = new Arr(b64.length * 3 / 4 - placeHolders)
+
+			// if there are placeholders, only get up to the last complete 4 chars
+			l = placeHolders > 0 ? b64.length - 4 : b64.length
+
+			var L = 0
+
+			function push (v) {
+				arr[L++] = v
+			}
+
+			for (i = 0, j = 0; i < l; i += 4, j += 3) {
+				tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
+				push((tmp & 0xFF0000) >> 16)
+				push((tmp & 0xFF00) >> 8)
+				push(tmp & 0xFF)
+			}
+
+			if (placeHolders === 2) {
+				tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
+				push(tmp & 0xFF)
+			} else if (placeHolders === 1) {
+				tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
+				push((tmp >> 8) & 0xFF)
+				push(tmp & 0xFF)
+			}
+
+			return arr
+		}
+
+		function uint8ToBase64 (uint8) {
+			var i,
+				extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
+				output = "",
+				temp, length
+
+			function encode (num) {
+				return lookup.charAt(num)
+			}
+
+			function tripletToBase64 (num) {
+				return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
+			}
+
+			// go through the array every three bytes, we'll deal with trailing stuff later
+			for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
+				temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+				output += tripletToBase64(temp)
+			}
+
+			// pad the end with zeros, but make sure to not forget the extra bytes
+			switch (extraBytes) {
+				case 1:
+					temp = uint8[uint8.length - 1]
+					output += encode(temp >> 2)
+					output += encode((temp << 4) & 0x3F)
+					output += '=='
+					break
+				case 2:
+					temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
+					output += encode(temp >> 10)
+					output += encode((temp >> 4) & 0x3F)
+					output += encode((temp << 2) & 0x3F)
+					output += '='
+					break
+			}
+
+			return output
+		}
+
+		exports.toByteArray = b64ToByteArray
+		exports.fromByteArray = uint8ToBase64
+	}( false ? (this.base64js = {}) : exports))
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+	// Generated by CoffeeScript 1.7.1
+	(function() {
+	  var AI, AL, B2, BA, BB, BK, CB, CJ, CL, CM, CP, CR, EX, GL, H2, H3, HL, HY, ID, IN, IS, JL, JT, JV, LF, NL, NS, NU, OP, PO, PR, QU, RI, SA, SG, SP, SY, WJ, XX, ZW;
+
+	  exports.OP = OP = 0;
+
+	  exports.CL = CL = 1;
+
+	  exports.CP = CP = 2;
+
+	  exports.QU = QU = 3;
+
+	  exports.GL = GL = 4;
+
+	  exports.NS = NS = 5;
+
+	  exports.EX = EX = 6;
+
+	  exports.SY = SY = 7;
+
+	  exports.IS = IS = 8;
+
+	  exports.PR = PR = 9;
+
+	  exports.PO = PO = 10;
+
+	  exports.NU = NU = 11;
+
+	  exports.AL = AL = 12;
+
+	  exports.HL = HL = 13;
+
+	  exports.ID = ID = 14;
+
+	  exports.IN = IN = 15;
+
+	  exports.HY = HY = 16;
+
+	  exports.BA = BA = 17;
+
+	  exports.BB = BB = 18;
+
+	  exports.B2 = B2 = 19;
+
+	  exports.ZW = ZW = 20;
+
+	  exports.CM = CM = 21;
+
+	  exports.WJ = WJ = 22;
+
+	  exports.H2 = H2 = 23;
+
+	  exports.H3 = H3 = 24;
+
+	  exports.JL = JL = 25;
+
+	  exports.JV = JV = 26;
+
+	  exports.JT = JT = 27;
+
+	  exports.RI = RI = 28;
+
+	  exports.AI = AI = 29;
+
+	  exports.BK = BK = 30;
+
+	  exports.CB = CB = 31;
+
+	  exports.CJ = CJ = 32;
+
+	  exports.CR = CR = 33;
+
+	  exports.LF = LF = 34;
+
+	  exports.NL = NL = 35;
+
+	  exports.SA = SA = 36;
+
+	  exports.SG = SG = 37;
+
+	  exports.SP = SP = 38;
+
+	  exports.XX = XX = 39;
+
+	}).call(this);
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+	// Generated by CoffeeScript 1.7.1
+	(function() {
+	  var CI_BRK, CP_BRK, DI_BRK, IN_BRK, PR_BRK;
+
+	  exports.DI_BRK = DI_BRK = 0;
+
+	  exports.IN_BRK = IN_BRK = 1;
+
+	  exports.CI_BRK = CI_BRK = 2;
+
+	  exports.CP_BRK = CP_BRK = 3;
+
+	  exports.PR_BRK = PR_BRK = 4;
+
+	  exports.pairTable = [[PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, CP_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, DI_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, DI_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, PR_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK], [IN_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, IN_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, DI_BRK], [DI_BRK, PR_BRK, PR_BRK, IN_BRK, IN_BRK, IN_BRK, PR_BRK, PR_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK, IN_BRK, DI_BRK, DI_BRK, PR_BRK, CI_BRK, PR_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, DI_BRK, IN_BRK]];
+
+	}).call(this);
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var isString = __webpack_require__(8).isString;
+	var isArray = __webpack_require__(8).isArray;
+
+	/**
+	 * Creates an instance of StyleContextStack used for style inheritance and style overrides
+	 *
+	 * @constructor
+	 * @this {StyleContextStack}
+	 * @param {Object} named styles dictionary
+	 * @param {Object} optional default style definition
+	 */
+	function StyleContextStack(styleDictionary, defaultStyle) {
+		this.defaultStyle = defaultStyle || {};
+		this.styleDictionary = styleDictionary;
+		this.styleOverrides = [];
+	}
+
+	/**
+	 * Creates cloned version of current stack
+	 * @return {StyleContextStack} current stack snapshot
+	 */
+	StyleContextStack.prototype.clone = function () {
+		var stack = new StyleContextStack(this.styleDictionary, this.defaultStyle);
+
+		this.styleOverrides.forEach(function (item) {
+			stack.styleOverrides.push(item);
+		});
+
+		return stack;
+	};
+
+	/**
+	 * Pushes style-name or style-overrides-object onto the stack for future evaluation
+	 *
+	 * @param {String|Object} styleNameOrOverride style-name (referring to styleDictionary) or
+	 *                                            a new dictionary defining overriding properties
+	 */
+	StyleContextStack.prototype.push = function (styleNameOrOverride) {
+		this.styleOverrides.push(styleNameOrOverride);
+	};
+
+	/**
+	 * Removes last style-name or style-overrides-object from the stack
+	 *
+	 * @param {Number} howMany - optional number of elements to be popped (if not specified,
+	 *                           one element will be removed from the stack)
+	 */
+	StyleContextStack.prototype.pop = function (howMany) {
+		howMany = howMany || 1;
+
+		while (howMany-- > 0) {
+			this.styleOverrides.pop();
+		}
+	};
+
+	/**
+	 * Creates a set of named styles or/and a style-overrides-object based on the item,
+	 * pushes those elements onto the stack for future evaluation and returns the number
+	 * of elements pushed, so they can be easily poped then.
+	 *
+	 * @param {Object} item - an object with optional style property and/or style overrides
+	 * @return the number of items pushed onto the stack
+	 */
+	StyleContextStack.prototype.autopush = function (item) {
+		if (isString(item)) {
+			return 0;
+		}
+
+		var styleNames = [];
+
+		if (item.style) {
+			if (isArray(item.style)) {
+				styleNames = item.style;
+			} else {
+				styleNames = [item.style];
+			}
+		}
+
+		for (var i = 0, l = styleNames.length; i < l; i++) {
+			this.push(styleNames[i]);
+		}
+
+		var styleOverrideObject = {};
+		var pushSOO = false;
+
+		[
+			'font',
+			'fontSize',
+			'fontFeatures',
+			'bold',
+			'italics',
+			'alignment',
+			'color',
+			'columnGap',
+			'fillColor',
+			'decoration',
+			'decorationStyle',
+			'decorationColor',
+			'background',
+			'lineHeight',
+			'characterSpacing',
+			'noWrap',
+			'markerColor',
+			'leadingIndent'
+				//'tableCellPadding'
+				// 'cellBorder',
+				// 'headerCellBorder',
+				// 'oddRowCellBorder',
+				// 'evenRowCellBorder',
+				// 'tableBorder'
+		].forEach(function (key) {
+			if (item[key] !== undefined && item[key] !== null) {
+				styleOverrideObject[key] = item[key];
+				pushSOO = true;
+			}
+		});
+
+		if (pushSOO) {
+			this.push(styleOverrideObject);
+		}
+
+		return styleNames.length + (pushSOO ? 1 : 0);
+	};
+
+	/**
+	 * Automatically pushes elements onto the stack, using autopush based on item,
+	 * executes callback and then pops elements back. Returns value returned by callback
+	 *
+	 * @param  {Object}   item - an object with optional style property and/or style overrides
+	 * @param  {Function} function to be called between autopush and pop
+	 * @return {Object} value returned by callback
+	 */
+	StyleContextStack.prototype.auto = function (item, callback) {
+		var pushedItems = this.autopush(item);
+		var result = callback();
+
+		if (pushedItems > 0) {
+			this.pop(pushedItems);
+		}
+
+		return result;
+	};
+
+	/**
+	 * Evaluates stack and returns value of a named property
+	 *
+	 * @param {String} property - property name
+	 * @return property value or null if not found
+	 */
+	StyleContextStack.prototype.getProperty = function (property) {
+		if (this.styleOverrides) {
+			for (var i = this.styleOverrides.length - 1; i >= 0; i--) {
+				var item = this.styleOverrides[i];
+
+				if (isString(item)) {
+					// named-style-override
+
+					var style = this.styleDictionary[item];
+					if (style && style[property] !== null && style[property] !== undefined) {
+						return style[property];
+					}
+				} else {
+					// style-overrides-object
+					if (item[property] !== undefined && item[property] !== null) {
+						return item[property];
+					}
+				}
+			}
+		}
+
+		return this.defaultStyle && this.defaultStyle[property];
+	};
+
+	module.exports = StyleContextStack;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* jslint node: true */
+	'use strict';
+
+	var isString = __webpack_require__(8).isString;
+
+	function buildColumnWidths(columns, availableWidth) {
+		var autoColumns = [],
+			autoMin = 0, autoMax = 0,
+			starColumns = [],
+			starMaxMin = 0,
+			starMaxMax = 0,
+			fixedColumns = [],
+			initial_availableWidth = availableWidth;
+
+		columns.forEach(function (column) {
+			if (isAutoColumn(column)) {
+				autoColumns.push(column);
+				autoMin += column._minWidth;
+				autoMax += column._maxWidth;
+			} else if (isStarColumn(column)) {
+				starColumns.push(column);
+				starMaxMin = Math.max(starMaxMin, column._minWidth);
+				starMaxMax = Math.max(starMaxMax, column._maxWidth);
+			} else {
+				fixedColumns.push(column);
+			}
+		});
+
+		fixedColumns.forEach(function (col) {
+			// width specified as %
+			if (isString(col.width) && /\d+%/.test(col.width)) {
+				col.width = parseFloat(col.width) * initial_availableWidth / 100;
+			}
+			if (col.width < (col._minWidth) && col.elasticWidth) {
+				col._calcWidth = col._minWidth;
+			} else {
+				col._calcWidth = col.width;
+			}
+
+			availableWidth -= col._calcWidth;
+		});
+
+		// http://www.freesoft.org/CIE/RFC/1942/18.htm
+		// http://www.w3.org/TR/CSS2/tables.html#width-layout
+		// http://dev.w3.org/csswg/css3-tables-algorithms/Overview.src.htm
+		var minW = autoMin + starMaxMin * starColumns.length;
+		var maxW = autoMax + starMaxMax * starColumns.length;
+		if (minW >= availableWidth) {
+			// case 1 - there's no way to fit all columns within available width
+			// that's actually pretty bad situation with PDF as we have no horizontal scroll
+			// no easy workaround (unless we decide, in the future, to split single words)
+			// currently we simply use minWidths for all columns
+			autoColumns.forEach(function (col) {
+				col._calcWidth = col._minWidth;
+			});
+
+			starColumns.forEach(function (col) {
+				col._calcWidth = starMaxMin; // starMaxMin already contains padding
+			});
+		} else {
+			if (maxW < availableWidth) {
+				// case 2 - we can fit rest of the table within available space
+				autoColumns.forEach(function (col) {
+					col._calcWidth = col._maxWidth;
+					availableWidth -= col._calcWidth;
+				});
+			} else {
+				// maxW is too large, but minW fits within available width
+				var W = availableWidth - minW;
+				var D = maxW - minW;
+
+				autoColumns.forEach(function (col) {
+					var d = col._maxWidth - col._minWidth;
+					col._calcWidth = col._minWidth + d * W / D;
+					availableWidth -= col._calcWidth;
+				});
+			}
+
+			if (starColumns.length > 0) {
+				var starSize = availableWidth / starColumns.length;
+
+				starColumns.forEach(function (col) {
+					col._calcWidth = starSize;
+				});
+			}
+		}
+	}
+
+	function isAutoColumn(column) {
+		return column.width === 'auto';
+	}
+
+	function isStarColumn(column) {
+		return column.width === null || column.width === undefined || column.width === '*' || column.width === 'star';
+	}
+
+	//TODO: refactor and reuse in measureTable
+	function measureMinMax(columns) {
+		var result = {min: 0, max: 0};
+
+		var maxStar = {min: 0, max: 0};
+		var starCount = 0;
+
+		for (var i = 0, l = columns.length; i < l; i++) {
+			var c = columns[i];
+
+			if (isStarColumn(c)) {
+				maxStar.min = Math.max(maxStar.min, c._minWidth);
+				maxStar.max = Math.max(maxStar.max, c._maxWidth);
+				starCount++;
+			} else if (isAutoColumn(c)) {
+				result.min += c._minWidth;
+				result.max += c._maxWidth;
+			} else {
+				result.min += ((c.width !== undefined && c.width) || c._minWidth);
+				result.max += ((c.width !== undefined && c.width) || c._maxWidth);
+			}
+		}
+
+		if (starCount) {
+			result.min += starCount * maxStar.min;
+			result.max += starCount * maxStar.max;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Calculates column widths
+	 * @private
+	 */
+	module.exports = {
+		buildColumnWidths: buildColumnWidths,
+		measureMinMax: measureMinMax,
+		isAutoColumn: isAutoColumn,
+		isStarColumn: isStarColumn
+	};
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+	/* jslint node: true */
+	'use strict';
+	/*jshint -W004 */
+	/* qr.js -- QR code generator in Javascript (revision 2011-01-19)
+	 * Written by Kang Seonghoon <public+qrjs@mearie.org>.
+	 *
+	 * This source code is in the public domain; if your jurisdiction does not
+	 * recognize the public domain the terms of Creative Commons CC0 license
+	 * apply. In the other words, you can always do what you want.
+	 */
+
+
+	// per-version information (cf. JIS X 0510:2004 pp. 30--36, 71)
+	//
+	// [0]: the degree of generator polynomial by ECC levels
+	// [1]: # of code blocks by ECC levels
+	// [2]: left-top positions of alignment patterns
+	//
+	// the number in this table (in particular, [0]) does not exactly match with
+	// the numbers in the specficiation. see augumenteccs below for the reason.
+	var VERSIONS = [
+		null,
+		[[10, 7, 17, 13], [1, 1, 1, 1], []],
+		[[16, 10, 28, 22], [1, 1, 1, 1], [4, 16]],
+		[[26, 15, 22, 18], [1, 1, 2, 2], [4, 20]],
+		[[18, 20, 16, 26], [2, 1, 4, 2], [4, 24]],
+		[[24, 26, 22, 18], [2, 1, 4, 4], [4, 28]],
+		[[16, 18, 28, 24], [4, 2, 4, 4], [4, 32]],
+		[[18, 20, 26, 18], [4, 2, 5, 6], [4, 20, 36]],
+		[[22, 24, 26, 22], [4, 2, 6, 6], [4, 22, 40]],
+		[[22, 30, 24, 20], [5, 2, 8, 8], [4, 24, 44]],
+		[[26, 18, 28, 24], [5, 4, 8, 8], [4, 26, 48]],
+		[[30, 20, 24, 28], [5, 4, 11, 8], [4, 28, 52]],
+		[[22, 24, 28, 26], [8, 4, 11, 10], [4, 30, 56]],
+		[[22, 26, 22, 24], [9, 4, 16, 12], [4, 32, 60]],
+		[[24, 30, 24, 20], [9, 4, 16, 16], [4, 24, 44, 64]],
+		[[24, 22, 24, 30], [10, 6, 18, 12], [4, 24, 46, 68]],
+		[[28, 24, 30, 24], [10, 6, 16, 17], [4, 24, 48, 72]],
+		[[28, 28, 28, 28], [11, 6, 19, 16], [4, 28, 52, 76]],
+		[[26, 30, 28, 28], [13, 6, 21, 18], [4, 28, 54, 80]],
+		[[26, 28, 26, 26], [14, 7, 25, 21], [4, 28, 56, 84]],
+		[[26, 28, 28, 30], [16, 8, 25, 20], [4, 32, 60, 88]],
+		[[26, 28, 30, 28], [17, 8, 25, 23], [4, 26, 48, 70, 92]],
+		[[28, 28, 24, 30], [17, 9, 34, 23], [4, 24, 48, 72, 96]],
+		[[28, 30, 30, 30], [18, 9, 30, 25], [4, 28, 52, 76, 100]],
+		[[28, 30, 30, 30], [20, 10, 32, 27], [4, 26, 52, 78, 104]],
+		[[28, 26, 30, 30], [21, 12, 35, 29], [4, 30, 56, 82, 108]],
+		[[28, 28, 30, 28], [23, 12, 37, 34], [4, 28, 56, 84, 112]],
+		[[28, 30, 30, 30], [25, 12, 40, 34], [4, 32, 60, 88, 116]],
+		[[28, 30, 30, 30], [26, 13, 42, 35], [4, 24, 48, 72, 96, 120]],
+		[[28, 30, 30, 30], [28, 14, 45, 38], [4, 28, 52, 76, 100, 124]],
+		[[28, 30, 30, 30], [29, 15, 48, 40], [4, 24, 50, 76, 102, 128]],
+		[[28, 30, 30, 30], [31, 16, 51, 43], [4, 28, 54, 80, 106, 132]],
+		[[28, 30, 30, 30], [33, 17, 54, 45], [4, 32, 58, 84, 110, 136]],
+		[[28, 30, 30, 30], [35, 18, 57, 48], [4, 28, 56, 84, 112, 140]],
+		[[28, 30, 30, 30], [37, 19, 60, 51], [4, 32, 60, 88, 116, 144]],
+		[[28, 30, 30, 30], [38, 19, 63, 53], [4, 28, 52, 76, 100, 124, 148]],
+		[[28, 30, 30, 30], [40, 20, 66, 56], [4, 22, 48, 74, 100, 126, 152]],
+		[[28, 30, 30, 30], [43, 21, 70, 59], [4, 26, 52, 78, 104, 130, 156]],
+		[[28, 30, 30, 30], [45, 22, 74, 62], [4, 30, 56, 82, 108, 134, 160]],
+		[[28, 30, 30, 30], [47, 24, 77, 65], [4, 24, 52, 80, 108, 136, 164]],
+		[[28, 30, 30, 30], [49, 25, 81, 68], [4, 28, 56, 84, 112, 140, 168]]];
+
+	// mode constants (cf. Table 2 in JIS X 0510:2004 p. 16)
+	var MODE_TERMINATOR = 0;
+	var MODE_NUMERIC = 1, MODE_ALPHANUMERIC = 2, MODE_OCTET = 4, MODE_KANJI = 8;
+
+	// validation regexps
+	var NUMERIC_REGEXP = /^\d*$/;
+	var ALPHANUMERIC_REGEXP = /^[A-Za-z0-9 $%*+\-./:]*$/;
+	var ALPHANUMERIC_OUT_REGEXP = /^[A-Z0-9 $%*+\-./:]*$/;
+
+	// ECC levels (cf. Table 22 in JIS X 0510:2004 p. 45)
+	var ECCLEVEL_L = 1, ECCLEVEL_M = 0, ECCLEVEL_Q = 3, ECCLEVEL_H = 2;
+
+	// GF(2^8)-to-integer mapping with a reducing polynomial x^8+x^4+x^3+x^2+1
+	// invariant: GF256_MAP[GF256_INVMAP[i]] == i for all i in [1,256)
+	var GF256_MAP = [], GF256_INVMAP = [-1];
+	for (var i = 0, v = 1; i < 255; ++i) {
+		GF256_MAP.push(v);
+		GF256_INVMAP[v] = i;
+		v = (v * 2) ^ (v >= 128 ? 0x11d : 0);
+	}
+
+	// generator polynomials up to degree 30
+	// (should match with polynomials in JIS X 0510:2004 Appendix A)
+	//
+	// generator polynomial of degree K is product of (x-\alpha^0), (x-\alpha^1),
+	// ..., (x-\alpha^(K-1)). by convention, we omit the K-th coefficient (always 1)
+	// from the result; also other coefficients are written in terms of the exponent
+	// to \alpha to avoid the redundant calculation. (see also calculateecc below.)
+	var GF256_GENPOLY = [[]];
+	for (var i = 0; i < 30; ++i) {
+		var prevpoly = GF256_GENPOLY[i], poly = [];
+		for (var j = 0; j <= i; ++j) {
+			var a = (j < i ? GF256_MAP[prevpoly[j]] : 0);
+			var b = GF256_MAP[(i + (prevpoly[j - 1] || 0)) % 255];
+			poly.push(GF256_INVMAP[a ^ b]);
+		}
+		GF256_GENPOLY.push(poly);
+	}
+
+	// alphanumeric character mapping (cf. Table 5 in JIS X 0510:2004 p. 19)
+	var ALPHANUMERIC_MAP = {};
+	for (var i = 0; i < 45; ++i) {
+		ALPHANUMERIC_MAP['0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'.charAt(i)] = i;
+	}
+
+	// mask functions in terms of row # and column #
+	// (cf. Table 20 in JIS X 0510:2004 p. 42)
+	/*jshint unused: false */
+	var MASKFUNCS = [
+		function (i, j) {
+			return (i + j) % 2 === 0;
+		},
+		function (i, j) {
+			return i % 2 === 0;
+		},
+		function (i, j) {
+			return j % 3 === 0;
+		},
+		function (i, j) {
+			return (i + j) % 3 === 0;
+		},
+		function (i, j) {
+			return (((i / 2) | 0) + ((j / 3) | 0)) % 2 === 0;
+		},
+		function (i, j) {
+			return (i * j) % 2 + (i * j) % 3 === 0;
+		},
+		function (i, j) {
+			return ((i * j) % 2 + (i * j) % 3) % 2 === 0;
+		},
+		function (i, j) {
+			return ((i + j) % 2 + (i * j) % 3) % 2 === 0;
+		}];
+
+	// returns true when the version information has to be embeded.
+	var needsverinfo = function (ver) {
+		return ver > 6;
+	};
+
+	// returns the size of entire QR code for given version.
+	var getsizebyver = function (ver) {
+		return 4 * ver + 17;
+	};
+
+	// returns the number of bits available for code words in this version.
+	var nfullbits = function (ver) {
+		/*
+		 * |<--------------- n --------------->|
+		 * |        |<----- n-17 ---->|        |
+		 * +-------+                ///+-------+ ----
+		 * |       |                ///|       |    ^
+		 * |  9x9  |       @@@@@    ///|  9x8  |    |
+		 * |       | # # # @5x5@ # # # |       |    |
+		 * +-------+       @@@@@       +-------+    |
+		 *       #                               ---|
+		 *                                        ^ |
+		 *       #                                |
+		 *     @@@@@       @@@@@       @@@@@      | n
+		 *     @5x5@       @5x5@       @5x5@   n-17
+		 *     @@@@@       @@@@@       @@@@@      | |
+		 *       #                                | |
+		 * //////                                 v |
+		 * //////#                               ---|
+		 * +-------+       @@@@@       @@@@@        |
+		 * |       |       @5x5@       @5x5@        |
+		 * |  8x9  |       @@@@@       @@@@@        |
+		 * |       |                                v
+		 * +-------+                             ----
+		 *
+		 * when the entire code has n^2 modules and there are m^2-3 alignment
+		 * patterns, we have:
+		 * - 225 (= 9x9 + 9x8 + 8x9) modules for finder patterns and
+		 *   format information;
+		 * - 2n-34 (= 2(n-17)) modules for timing patterns;
+		 * - 36 (= 3x6 + 6x3) modules for version information, if any;
+		 * - 25m^2-75 (= (m^2-3)(5x5)) modules for alignment patterns
+		 *   if any, but 10m-20 (= 2(m-2)x5) of them overlaps with
+		 *   timing patterns.
+		 */
+		var v = VERSIONS[ver];
+		var nbits = 16 * ver * ver + 128 * ver + 64; // finder, timing and format info.
+		if (needsverinfo(ver))
+			nbits -= 36; // version information
+		if (v[2].length) { // alignment patterns
+			nbits -= 25 * v[2].length * v[2].length - 10 * v[2].length - 55;
+		}
+		return nbits;
+	};
+
+	// returns the number of bits available for data portions (i.e. excludes ECC
+	// bits but includes mode and length bits) in this version and ECC level.
+	var ndatabits = function (ver, ecclevel) {
+		var nbits = nfullbits(ver) & ~7; // no sub-octet code words
+		var v = VERSIONS[ver];
+		nbits -= 8 * v[0][ecclevel] * v[1][ecclevel]; // ecc bits
+		return nbits;
+	};
+
+	// returns the number of bits required for the length of data.
+	// (cf. Table 3 in JIS X 0510:2004 p. 16)
+	var ndatalenbits = function (ver, mode) {
+		switch (mode) {
+			case MODE_NUMERIC:
+				return (ver < 10 ? 10 : ver < 27 ? 12 : 14);
+			case MODE_ALPHANUMERIC:
+				return (ver < 10 ? 9 : ver < 27 ? 11 : 13);
+			case MODE_OCTET:
+				return (ver < 10 ? 8 : 16);
+			case MODE_KANJI:
+				return (ver < 10 ? 8 : ver < 27 ? 10 : 12);
+		}
+	};
+
+	// returns the maximum length of data possible in given configuration.
+	var getmaxdatalen = function (ver, mode, ecclevel) {
+		var nbits = ndatabits(ver, ecclevel) - 4 - ndatalenbits(ver, mode); // 4 for mode bits
+		switch (mode) {
+			case MODE_NUMERIC:
+				return ((nbits / 10) | 0) * 3 + (nbits % 10 < 4 ? 0 : nbits % 10 < 7 ? 1 : 2);
+			case MODE_ALPHANUMERIC:
+				return ((nbits / 11) | 0) * 2 + (nbits % 11 < 6 ? 0 : 1);
+			case MODE_OCTET:
+				return (nbits / 8) | 0;
+			case MODE_KANJI:
+				return (nbits / 13) | 0;
+		}
+	};
+
+	// checks if the given data can be encoded in given mode, and returns
+	// the converted data for the further processing if possible. otherwise
+	// returns null.
+	//
+	// this function does not check the length of data; it is a duty of
+	// encode function below (as it depends on the version and ECC level too).
+	var validatedata = function (mode, data) {
+		switch (mode) {
+			case MODE_NUMERIC:
+				if (!data.match(NUMERIC_REGEXP))
+					return null;
+				return data;
+
+			case MODE_ALPHANUMERIC:
+				if (!data.match(ALPHANUMERIC_REGEXP))
+					return null;
+				return data.toUpperCase();
+
+			case MODE_OCTET:
+				if (typeof data === 'string') { // encode as utf-8 string
+					var newdata = [];
+					for (var i = 0; i < data.length; ++i) {
+						var ch = data.charCodeAt(i);
+						if (ch < 0x80) {
+							newdata.push(ch);
+						} else if (ch < 0x800) {
+							newdata.push(0xc0 | (ch >> 6),
+								0x80 | (ch & 0x3f));
+						} else if (ch < 0x10000) {
+							newdata.push(0xe0 | (ch >> 12),
+								0x80 | ((ch >> 6) & 0x3f),
+								0x80 | (ch & 0x3f));
+						} else {
+							newdata.push(0xf0 | (ch >> 18),
+								0x80 | ((ch >> 12) & 0x3f),
+								0x80 | ((ch >> 6) & 0x3f),
+								0x80 | (ch & 0x3f));
+						}
+					}
+					return newdata;
+				} else {
+					return data;
+				}
+		}
+	};
+
+	// returns the code words (sans ECC bits) for given data and configurations.
+	// re
