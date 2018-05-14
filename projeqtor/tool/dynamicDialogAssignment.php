@@ -81,6 +81,7 @@ if ($planningMode=='RECW') {
     $assRec[$ar->day]=$ar->value;
   }
 }
+$resource=new ResourceAll($idResource);
 ?>
   <table>
     <tr>
@@ -106,7 +107,7 @@ if ($planningMode=='RECW') {
                 <?php if($mode=='edit'){                      
                           htmlDrawOptionForReference('idResource', $idResource,null,true,'idProject',$idProject);
                 }else{
-                          htmlDrawOptionForReference('idResourceAll', null,false);
+                          htmlDrawOptionForReference('idResourceAll', null,null,true,'idProject',$idProject);
                 }?>
                </select>  
              </td>
@@ -160,7 +161,7 @@ if ($planningMode=='RECW') {
                      echo i18n('shortDay'); ?>
              </td>
            </tr>
-           <tr id="assignmentRate2" name="assignmentRate2">
+           <tr id="assignmentRateRow" name="assignmentRateRow" <?php if ($resource->isResourceTeam) echo 'style="display:none"';?>>
              <td class="dialogLabel" >
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
@@ -177,17 +178,18 @@ if ($planningMode=='RECW') {
              </td>
            </tr>
            
-             <tr id="assignmentCapacityResourceTeam" name="assignmentCapacityResourceTeam" style="display:none;">
+             <tr id="assignmentCapacityResourceTeam" name="assignmentCapacityResourceTeam" <?php if (! $resource->isResourceTeam) echo 'style="display:none"';?>>
                <td class="dialogLabel" >
                  <label for="assignmentCapacity" ><?php echo i18n("colCapacity");?>&nbsp;:&nbsp;</label>
                </td>
                <td>
-                 <div id="assignmentCapacity" name="assignmentCapacity" value=""
+                 <div id="assignmentCapacity" name="assignmentCapacity" value="<?php echo ($mode=='edit')?$assignmentObj->capacity:"1";?>"
                    dojoType="dijit.form.NumberTextBox" 
                    style="width:97px" 
                    <?php if ($planningMode=='RECW') echo ' readonly';?>
                    missingMessage="<?php echo i18n('messageMandatory',array(i18n('colCapacity')));?>" 
                    required="true" >
+                   <?php echo $keyDownEventScript;?>
                    </div>
                </td>
              </tr>

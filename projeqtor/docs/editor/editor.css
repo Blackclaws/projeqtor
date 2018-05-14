@@ -98,8 +98,8 @@ div.blockquote {
     margin-left:40px !important;
 }
 div.glossary {
-    font-weight: bold;
-    font-size: 1.1em;
+   /* font-weight: bold;
+    font-size: 1.1em; */
 }
 div.list-table ul {
 	list-style: none;

@@ -247,8 +247,10 @@ if ($refType=='Meeting' or $refType=='PeriodicMeeting') {
 
 if ($idOrigin){
   $assignmentOrigin = new Assignment($idOrigin);
-    $assignmentOrigin->assignedWork=$assignmentOrigin->assignedWork-$assignedWork;
-    $assignmentOrigin->leftWork=$assignmentOrigin->leftWork-$leftWork;
+    $assignmentOrigin->assignedWork=$assignmentOrigin->assignedWork-Work::convertWork($assignedWork);
+    if ($assignmentOrigin->assignedWork<0) $assignmentOrigin->assignedWork=0;
+    $assignmentOrigin->leftWork=$assignmentOrigin->leftWork-Work::convertWork($leftWork);
+    if ($assignmentOrigin->leftWork<0) $assignmentOrigin->leftWork=0;
     $assignmentOrigin->save();
 }
   

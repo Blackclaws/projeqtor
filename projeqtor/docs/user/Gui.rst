@@ -433,7 +433,7 @@ The advanced filter allows to define clause to filter and sort.
 
 * The advanced filter definition dialog box is divided into two sections.
 
-.. figure:: /images/GUI/BOX_AdvancedFilterDefinition.png
+.. figure:: /images/GUI/Filters.png
    :alt: Dialog box - Advanced filter definition
    :align: center
  
@@ -448,6 +448,24 @@ The advanced filter allows to define clause to filter and sort.
     * Click on |buttonAdd| to add additional criteria. 
     * Click on **OK** button to apply the filter.
     * Click on **Cancel** button to revert to previous filter.
+    
+    
+    * Possibility to select the logical operator **OR** between the criteria of a filter instead of **AND**. 
+      Applies logical operator with preceeding criteria (by default AND). Be careful, 
+      operator AND is applies before OR. Example :  A or B and C is equivalent to A or(B(+)C)
+      
+    * Operator "starts with" to select sort clauses without displaying this list. 
+      
+    * **Dynamic filters** (the value of the critera is entered when the filter is activated).
+      So Click on Dynamic value creating this filter.
+      Dynamics filters are available for all users in them session.
+
+ .. figure:: /images/GUI/FILTREd.png
+   :alt: Dialog box - Advanced filter definition with shared filter 
+   :align: center
+      
+      
+    
 
  .. compound:: **Remove criteria**
 
@@ -500,7 +518,7 @@ Shared filters are available for all users in them session.
 
     \newpage
 
-.. rubric:: List of filters
+.. rubric:: - List of filters
 
 * The filter list allows to select a stored filter.
 * To see the filter list, move the cursor over the advanced filter icon.
@@ -514,9 +532,6 @@ Shared filters are available for all users in them session.
 
 
 .. raw:: latex
-
-    \newpage
-
 
 .. _displayed-columns:
 

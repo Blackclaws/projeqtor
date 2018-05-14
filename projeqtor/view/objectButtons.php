@@ -224,16 +224,6 @@
           }else{
             echo "copyObjectBox('$paramCopy');";
           }
-          /*if ( $_REQUEST['objectClass'] == "Project") {
-            echo "copyProject();";
-          } else {
-            $copyable=SqlElement::getSingleSqlElementFromCriteria('Copyable', $crit);
-	          if ($copyable->id) {
-	            echo "copyObjectTo('" . $_REQUEST['objectClass'] . "');";
-	          } else {
-	            echo "copyObject('" .$_REQUEST['objectClass'] . "');";
-	          }
-          }*/
           ?>
         </script>
       </button>    
@@ -241,7 +231,7 @@
       <?php organizeButtons();?>
       <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndo', array(i18n($_REQUEST['objectClass'])));?>"
-       <?php if ($noselect or 1) {echo "disabled";} ?>
+       <?php if ($noselect or 1) {echo "disabled style=\"display:none;\"";} ?>
        iconClass="dijitButtonIcon dijitButtonIconUndo" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
@@ -265,24 +255,8 @@
 // END COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
           formChangeInProgress=false;
         </script>
-      </button>    
-      <?php organizeButtons();?>
-      <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
-       title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
-       <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton">
-        <script type="dojo/connect" event="onClick" args="evt">
-          dojo.byId("deleteButton").blur();
-          hideExtraButtons('extraButtonsDetail');
-		      action=function(){
-		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
-            if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
-          };
-          var alsoDelete="";
-          showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
-        </script>
-      </button>    
-      <?php organizeButtons();?>
+      </button>
+      <?php // organizeButtons(); // removed on V7.1 : buttons undo and refresh not visible at same time?>
      <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonRefresh', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -307,6 +281,22 @@
 // COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
 //          loadContent("objectDetail.php", "detailDiv", 'listForm');
 // END COMMENT BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT        </script>
+      </button>        
+      <?php organizeButtons();?>
+      <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
+       title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton">
+        <script type="dojo/connect" event="onClick" args="evt">
+          dojo.byId("deleteButton").blur();
+          hideExtraButtons('extraButtonsDetail');
+		      action=function(){
+		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
+            if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
+          };
+          var alsoDelete="";
+          showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
+        </script>
       </button>    
     <?php 
     $clsObj=get_class($obj);

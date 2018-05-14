@@ -46,6 +46,12 @@ It is composed with two areas:
 
     \newpage
 
+.. note::
+    
+   * All modifications about assignement (rate, name or numbers of resources, dates...) done from an  **activity**  are not displayed on the planning screen (with the new recalculated mode) until having for this purpose activited the planning calculation, either in an automatic run plan or not.
+
+
+
 .. rubric:: 4 - Buttons
 
 * Click on |iconEnableCalendar| to validate planning.
@@ -55,6 +61,7 @@ It is composed with two areas:
 * Click on |msProject| to export planning to MS-Project xml format.
 * Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)
 * Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)
+* Check the box "save date" to keep registered displayed date of the overview planning, otherwise dates removing to general mode after navitating away from this page.  
 
 .. rubric:: 5 - Show Baseline
 
@@ -437,7 +444,12 @@ Project planning and activity planning calculation can be done in the Gantt.
 .. raw:: latex
 
     \newpage
+    
 
+.. note::
+    
+   * All modifications about assignement (rate, name or numbers of resources, dates...) done are not displayed on the new planning screen until having, for this purpose, activited the planning calculation, either in an automatic run plan or not.
+     On the contrary, the screen planning will not change even if modifications have been loaded yet.
 .. rubric:: 6 - Store planned dates
 
 * Allows to store planned dates into requested and validated dates.

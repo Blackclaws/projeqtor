@@ -40,6 +40,7 @@ if ($refType=='TicketSimple') {
 $refId=RequestHandler::getId("noteRefId",false);
 
 $noteNote=RequestHandler::getValue("noteNoteStream",false);
+$noteNote='<div>'.htmlEncode($noteNote,"html").'</div>'; // Encode for security
 
 $notePrivacy=null;
 $notePrivacy=RequestHandler::getValue("notePrivacyStream",false);
