@@ -415,7 +415,7 @@
   	          $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
   	        }
   	        foreach ($assList as $ass) {       	
-  	        	$res=new Resource($ass->idResource,true);
+  	        	$res=new ResourceAll($ass->idResource,true);
   	        	if (! isset($arrayResource[$res->id])) {
     	        	$display=$res->$displayResource;
     	        	if ($displayResource=='initials' and ! $display) {

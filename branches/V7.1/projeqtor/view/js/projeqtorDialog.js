@@ -912,11 +912,20 @@ function planningPDFBox(copyType) {
  * Display a add note Box
  * 
  */
+// Hack to remove on.focus on body, to be able to interact with ck_editor popups
+// NEEDS TO CHANGE projeqtorDojo.js the 
+//                 var fih=on(body,'focus'...
+//              to 
+//                 var fih=null; //(external to main line) 
+//                 fih=on.pausable(body,'focus'...
+function pauseBodyFocus() {if (fih) { fih.pause(); }}      
+function resumeBodyFocus() {if (fih) { fih.resume(); }}   
 function addNote() {
   if (dijit.byId("noteToolTip")) {
     dijit.byId("noteToolTip").destroy();
     dijit.byId("noteNote").set("class", "");
   }
+  pauseBodyFocus();
   var callBack=function() {
     var editorType=dojo.byId("noteEditorType").value;
     if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
@@ -967,6 +976,7 @@ function editNote(noteId, privacy) {
     dijit.byId("noteToolTip").destroy();
     dijit.byId("noteNote").set("class", "");
   }
+  pauseBodyFocus();
   var callBack=function() {
     //dijit.byId('notePrivacyPublic').set('checked', 'true');
     var editorType=dojo.byId("noteEditorType").value;
@@ -2351,10 +2361,10 @@ function assignmentChangeResourceTeamForCapacity() {
     handleAs : "text",
     load : function(data) {
       if(data == 'isResourceTeam'){
-        dojo.byId('assignmentRate2').style.display="none";
+        dojo.byId('assignmentRateRow').style.display="none";
         dojo.byId('assignmentCapacityResourceTeam').style.display="table-row";
       }else{
-        dojo.byId('assignmentRate2').style.display="table-row";
+        dojo.byId('assignmentRateRow').style.display="table-row";
         dojo.byId('assignmentCapacityResourceTeam').style.display="none";
       }
     }
@@ -2371,7 +2381,8 @@ function assignmentChangeResource() {
     url : '../tool/getSingleData.php?dataType=resourceRole&idResource='+idResource,
     handleAs : "text",
     load : function(data) {
-      if (data) dijit.byId('assignmentCapacity').set('value', parseInt(data));
+      //if (data) dijit.byId('assignmentCapacity').set('value', parseInt(data)); // Error fixed by PBER : we retreive an idRole (and must)
+      if (data) dijit.byId('assignmentIdRole').set('value', parseInt(data));
     }
   });
 }
@@ -5573,9 +5584,6 @@ function hideShowMenu(noRefresh,noStore) {
 function hideMenuBarShowMode() {
   hideShowMenu(false);
 }
-function hideMenuBarShowMode2() {
-  hideShowMenu(true);
-}
 
 //gautier menu top
 function hideMenuBarShowModeTop(){ 
@@ -6982,10 +6990,12 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
 // END CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT
   if(typeof closable =='undefined')closable=true;
   var hideCallback=function() {
+    if (dialogDiv=='dialogNote') resumeBodyFocus();
   };
   if (clearOnHide) {
     hideCallback=function() {
       dijit.byId(dialogDiv).set('content', null);
+      if (dialogDiv=='dialogNote') resumeBodyFocus();
     };
   }
   

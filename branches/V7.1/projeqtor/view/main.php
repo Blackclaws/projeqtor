@@ -75,7 +75,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="../external/dojox/form/resources/CheckedMultiSelect.css" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  
   <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
   <?php if (isHtml5()) {?>
   <script type="text/javascript" src="../external/pdfmake/pdfmake.min.js?version=<?php echo $version.'.'.$build;?>"></script>
@@ -118,9 +117,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dojo.dom-geometry");
     dojo.require("dojo.i18n");
     dojo.require("dojo.fx.easing");
-    //dojo.require("dojox.fx.ext-dojo.NodeList-style"); // ====================NEW
     dojo.require("dojo.NodeList-fx");
-    dojo.require("dojo.parser");   // ===================== NEW
+    dojo.require("dojo.parser");
     dojo.require("dojo.query");
     dojo.require("dojo.store.DataStore");
     dojo.require("dijit.ColorPalette");
@@ -131,8 +129,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     dojo.require("dijit._editor.plugins.FontChoice");
     dojo.require("dijit._editor.plugins.Print");
     dojo.require("dijit._editor.plugins.TextColor");
-    //dojo.require("dijit._editor.plugins.LinkDialog");
-    //dojo.require("dojox.editor.plugins.LocalImage");
     dojo.require("dijit.Fieldset");
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.CheckBox");
@@ -314,21 +310,6 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       aboutMessage+='&nbsp;&nbsp;&nbsp;phpMailer 6.0.3 '+'<br/><br/>';
       // Relaunch Cron (if stopped, any connexion will restart it)
       adminCronRelaunch();
-//       var onKeyPressFunc = function(event) {
-//         if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
-//           event.preventDefault();
-//           if (dojo.isFF) stopDef(event);
-//           globalSave();
-//         } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
-//           event.preventDefault();
-//           if (dojo.isFF) stopDef(event);
-//           showHelp();
-//         }else if(event.keyCode==27){
-//           if(editorInFullScreen() && whichFullScreen!=-1){
-//             editorArray[whichFullScreen].execCommand('maximize');
-//           }
-//         }
-//       };
       if (dojo.isIE) {
         document.onhelp = function() { return (false); };
         window.onhelp = function() { return (false); };
@@ -451,7 +432,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       }
       ?>
       showHideMoveButtons();
-    }); 
+    }); // End of dojo.addOnload 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
     if (! ganttPlanningScale) ganttPlanningScale='day';
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
@@ -597,7 +578,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div> 
   
   <div id="hideMenuBarShowButton2" style="cursor:pointer;position:absolute; display:block; left:<?php echo $IconSizeMenuHide2 ?>; bottom:2px;z-index:999998">
-	  <a onClick="hideMenuBarShowMode2();" id="buttonSwitchedMenuBarShow" title="" >
+	  <a onClick="hideMenuBarShowMode();" id="buttonSwitchedMenuBarShow" title="" >
 	    <span style='top:0px;display:inline-block;width:22px;height:22px;'>
 	      <div class='iconHideStream22' style='' >&nbsp;</div>
 	    </span>

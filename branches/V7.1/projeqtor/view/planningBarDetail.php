@@ -42,8 +42,16 @@ foreach($wkLst as $wk) {
   if (!$end or $end<$wk->workDate) $end=$wk->workDate;
   if (! isset($work[$wk->idAssignment])) $work[$wk->idAssignment]=array();
   if (! isset($work[$wk->idAssignment]['resource'])) {
-    $work[$wk->idAssignment]['resource']=SqlList::getNameFromId('Resource', $wk->idResource);
-    $work[$wk->idAssignment]['capacity']=SqlList::getFieldFromId('Resource', $wk->idResource,'capacity');
+    $ress=new ResourceAll($wk->idResource);
+    $work[$wk->idAssignment]['capacity']=($ress->capacity>1)?$ress->capacity:'1';
+    $work[$wk->idAssignment]['resource']=$ress->name;
+    if ($ress->isResourceTeam) {
+      $ass=new Assignment($wk->idAssignment);
+      $work[$wk->idAssignment]['capacity']=($ass->capacity>1)?$ass->capacity:'1';
+    }
+    if ($work[$wk->idAssignment]['capacity']>1) {
+      $work[$wk->idAssignment]['resource'].=' ('.i18n('max').' = '.htmlDisplayNumericWithoutTrailingZeros($work[$wk->idAssignment]['capacity']).' '.i18n('days').')';
+    }
   }
   $work[$wk->idAssignment][$wk->workDate]=array('work'=>$wk->work,'type'=>'real');
 }
@@ -56,8 +64,16 @@ foreach($wkLst as $wk) {
   if (!$end or $end<$wk->workDate) $end=$wk->workDate;
   if (! isset($work[$wk->idAssignment])) $work[$wk->idAssignment]=array();
   if (! isset($work[$wk->idAssignment]['resource'])) {
-    $work[$wk->idAssignment]['resource']=SqlList::getNameFromId('Resource', $wk->idResource);
-    $work[$wk->idAssignment]['capacity']=SqlList::getFieldFromId('Resource', $wk->idResource,'capacity');
+    $ress=new ResourceAll($wk->idResource);
+    $work[$wk->idAssignment]['capacity']=($ress->capacity>1)?$ress->capacity:'1';
+    $work[$wk->idAssignment]['resource']=$ress->name;
+    if ($ress->isResourceTeam) {
+      $ass=new Assignment($wk->idAssignment);
+      $work[$wk->idAssignment]['capacity']=($ass->capacity>1)?$ass->capacity:'1';
+    }
+    if ($work[$wk->idAssignment]['capacity']>1) {
+      $work[$wk->idAssignment]['resource'].=' ('.i18n('max').' = '.htmlDisplayNumericWithoutTrailingZeros($work[$wk->idAssignment]['capacity']).' '.i18n('days').')';
+    }
   }
   if (! isset($work[$wk->idAssignment][$wk->workDate]) ) {
     $work[$wk->idAssignment][$wk->workDate]=array('work'=>$wk->work,'type'=>'planned');

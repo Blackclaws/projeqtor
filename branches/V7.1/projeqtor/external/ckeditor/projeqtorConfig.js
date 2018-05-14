@@ -16,7 +16,6 @@ CKEDITOR.editorConfig = function( config ) {
   config.enterMode = CKEDITOR.ENTER_DIV;
   //config.enterMode = CKEDITOR.ENTER_BR;
   config.removeDialogTabs = 'link:advanced;image:advanced;image:link';
-  config.extraPlugins = 'uploadimage';
   config.removePlugins='magicline';
   config.uploadUrl = '../tool/uploadImage.php';
   config.imageUploadUrl = '../tool/uploadImage.php';
@@ -27,6 +26,8 @@ CKEDITOR.editorConfig = function( config ) {
   config.resize_minHeight = 150;
   config.extraPlugins = 'openlink';
   config.extraPlugins += ',sourcearea';
+  //config.extraPlugins += ',image2';
+  //config.extraPlugins += ',uploadimage';
   //gautier
   if (dojo.byId('ckeditorType')){
     var cktype=dojo.byId('ckeditorType').value;
