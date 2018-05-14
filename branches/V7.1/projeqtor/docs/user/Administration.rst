@@ -104,6 +104,8 @@ Global parameters screen allows configuration of application settings.
 
    * Moving the mouse over the caption of a parameter will display a tooltip with more description about the parameter.
 
+.. rubric:: GENERAL SECTION 1: Work time
+
 .. _daily-work-hours-section:
 
 .. rubric:: Section: Daily work hours
@@ -145,8 +147,47 @@ Global parameters screen allows configuration of application settings.
 
     * Allows to set number of hours per day.
 
+.. rubric:: Section: Real work allocation
 
+    .. index:: ! Real work allocation (Behavior)
 
+.. _realWorkAllocation-section:
+
+.. rubric:: Section: Real work allocation
+
+* Defines behavior of tasks in the real work allocation screen.
+
+ .. compound:: **Display only handled tasks**
+
+    * Display only tasks with "handled" status.
+
+ .. compound:: **Set to first 'handled' status**
+
+    * Change status of the task to the first "handled" status when  real work is entered.
+
+ .. compound:: **Set to first 'done' status**
+
+    * Change status of the task to the first "done" status when no left work remains.
+
+ .. compound:: **Max days to book work (warning) :**
+
+    * Number of days that user can enter real work in the future before getting a warning.
+    
+    .. note::
+        * this parameter does not apply to administrative projects
+    
+ .. compound:: **Max days to book work (blocking)**
+
+    * Number of days that user can enter real work in the future. This limit is blocking.
+  
+  .. note::
+        * this parameter does not apply to administrative projects
+  
+ .. compound:: **Alert resource on input done by someone else**
+
+    * Select your type of alert : Internal, Email, both or none.
+
+.. rubric:: GENERAL SECTION 2 : Activity
 
 .. rubric:: Section: Planning
 
@@ -160,25 +201,93 @@ Global parameters screen allows configuration of application settings.
 
     * Defines maximum number of projects to display.
     * To avoid performance issues.
+    
+.. rubric:: Section: Tickets
+.. compound:: **Only responsible works on ticket**
 
- .. compound:: **Print Gantt with 'old style' format**
-
-    * Propose possibility to display “old style” Gantt.
-    * May cause performance issues, but could fix some display issue on browsers.
-
- .. compound:: **Consolidate validated work & cost**
+    * Only responsible can enter some real work on the ticket.
+    
+.. rubric:: Section: Organization
+.. rubric:: Section: Automation
+.. compound:: **Consolidate validated work & cost**
 
     * Select if validated work & cost are consolidated on top activities and projects :
   
       * **Never** : Not consolidate
       * **Always** : Values are replaced on activities and project.
       * **Only is set** : Replaces values, only if not already set. 
+.. rubric:: Section: Milestones
+.. rubric:: Section: Controls and restrictions    
+   
+.. rubric:: GENERAL SECTION 3 : Display
+.. rubric:: Section: Display
+.. rubric:: Section: Localization
+.. rubric:: Section: Default values for user parameters
+.. rubric:: GENERAL SECTION 4 : Miscellaneous
+.. rubric:: Section: Format for reference numbering
+* Allows to define reference formats for items of element, documents and bills.
+  * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
 
- .. compound:: **Apply strict mode for dependencies**
+.. rubric:: Section: Document reference format
+* Format : can contain {PROJ} for project code, {TYPE} for type code, {NUM} for number as computed for reference, and {NAME} for document name.
 
-    * Defines if a task can begin the same day as the preceding one.
- 
- 
+* Suffix : can contain {VERS} for version name.
+    
+.. rubric:: Section: Bill reference format
+.. rubric:: Section: Product and Component
+
+.. rubric:: GENERAL SECTION 5 : Mailing
+
+.. rubric:: Section: Emailing
+.. rubric:: Section: Mail titles
+.. rubric:: Section: Automatic emails grouping
+.. rubric:: Section: Test email configuration
+
+.. rubric:: GENERAL SECTION 6 : Authentication
+.. rubric:: Section: Ldap management parameters
+
+* Information about LDAP connection and behavior on creation of new user from LDAP connection.
+
+.. rubric:: Section: User and password
+
+* Security constraints about users and passwords.
+
+.. rubric:: GENERAL SECTION 7 : Automation
+.. rubric:: Section: Management of automated service (CRON)
+Parameters for the “Cron” process.
+
+.. topic:: Defined frequency for these automatic functions
+
+   * It will manage :
+
+     * Alert generation : Frequency for recalculation of indicators values.
+
+     * Check alert : Frequency for client side browser to check if alert has to be displayed.
+
+     * Import : Automatic import parameters as below.
+     
+.. rubric:: Section: Automatic import of files
+.. warning:: Cron working directory
+
+      Should be set out of web reach.
+
+.. warning:: Directory of automated integration files
+     
+      Should must be set out of web reach.
+.. rubric:: Section: Automatic import of replies to emails
+.. topic:: Defined parameters for the “Reply to” process
+   
+   * It will manage connection to IMAP INBOX to retrieve email answers.
+
+   .. note:: Email input check cron delay
+
+      * Delay of -1 deactivates this functionality. 
+
+   .. note:: IMAP host
+
+      * Must be an IMAP connection string.
+   
+      * Ex: to connect to GMAIL input box, host must be: {imap.gmail.com:993/imap/ssl}INBOX
 .. rubric:: Section: Generation of alerts if real work is not entered
 
 * Specific parameters about alerts.
@@ -220,126 +329,11 @@ Global parameters screen allows configuration of application settings.
  .. compound:: **Send alert to team manager**   
       
       * Select how send alert to team manager
-  
-  
-.. index:: ! Real work allocation (Behavior)
-
-.. _realWorkAllocation-section:
-
-.. rubric:: Section: Real work allocation
-
-* Defines behavior of tasks in the real work allocation screen.
-
- .. compound:: **Display only handled tasks**
-
-    * Display only tasks with "handled" status.
-
- .. compound:: **Set to first 'handled' status**
-
-    * Change status of the task to the first "handled" status when  real work is entered.
-
- .. compound:: **Set to first 'done' status**
-
-    * Change status of the task to the first "done" status when no left work remains.
-
- .. compound:: **Max days to book work (warning) :**
-
-    * Number of days that user can enter real work in the future before getting a warning.
-    
-    .. note::
-        * this parameter does not apply to administrative projects
-    
- .. compound:: **Max days to book work (blocking)**
-
-    * Number of days that user can enter real work in the future. This limit is blocking.
-  
-  .. note::
-        * this parameter does not apply to administrative projects
-  
- .. compound:: **Alert resource on input done by someone else**
-
-    * Select your type of alert : Internal, Email, both or none.
-
-.. _responsible-section:
-
-.. rubric:: Section: Responsible
-
-* Behavior about management of responsible, including automatic initialization of responsible.
-
- .. compound:: **Auto set responsible if single resource**
-
-    * Automatically set responsible if not set and only one resource if allocated to the project.
-
- .. compound:: **Auto set responsible if needed**
-
-    * Automatically set responsible to current resource if not set and the responsible is required (depending on status).
-
- .. compound:: **Only responsible works on ticket**
-
-    * Only responsible can enter some real work on the ticket.
+.. rubric:: Section: Automatic planning calculation
 
 
-
-.. _user-password-section:
-
-.. rubric:: Section: User and password
-
-* Security constraints about users and passwords.
-
-.. _ldap-management-section:
-
-.. rubric:: Section: Ldap management parameters
-
-* Information about LDAP connection and behavior on creation of new user from LDAP connection.
-
-.. _format-reference-numbering-section:
-
-.. rubric:: Section: Format for reference numbering
-
-* Allows to define reference formats for items of element, documents and bills.
-
- .. compound:: **Global parameters for reference formatting**
-
-    * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
-
- .. compound:: **Global parameters for document reference formatting**
-
-    * format : can contain {PROJ} for project code, {TYPE} for type code, {NUM} for number as computed for reference, and {NAME} for document name.
-    * Suffix : can contain {VERS} for version name.
-
-.. rubric:: Section: Localization
-
-Localization and internationalization (i18n) parameters.
-
-* **charset to save files on server**
-
-    keep empty for Linux servers, files names will be stored in UTF8. For windows OS server, define charset as "windows-1252" (for western europe) or similar corresponding to your localization.
-
-
-.. rubric:: Section: Miscellanous
-
-Miscellaneous parameters :
- 
-* Auto check (or not) for existing new version of the tool (only administrator is informed);
-
-* Separator for CSV files (on export and export);
-
-* Memory limit for PDF generation.
-
-
-.. _global-display-section:
-
-.. rubric:: Section: Display
-
-* Selection of graphic interface behavior and generic display parameter for users.
-
-* Icon size are default : user can overwrite these values
-
-
-.. _file-directory-section:
-
-.. rubric:: Section: Files and Directories
-
+.. rubric:: GENERAL SECTION 8 : System
+.. rubric:: Section: Files and directories
 Definition of directories and other parameters used for Files management.
 
 .. warning:: Attachments Directory
@@ -359,6 +353,78 @@ Definition of directories and other parameters used for Documents management.
 .. warning:: Root directory for documents
 
    Should be set out of web reach. 
+.. rubric:: Section: Localization data
+
+* **Charset to save files on server**
+
+    Keep empty for Linux servers, files names will be stored in UTF8. For windows OS server, define charset as "windows-1252" (for western europe) or similar corresponding to your localization.
+    
+* **Separator for CSV files (on export and export)**
+  
+.. rubric:: Section: Miscellaneous
+* Auto check (or not) for existing new version of the tool (only administrator is informed);
+.. rubric:: Section: PDF export
+
+* Memory limit for PDF generation.
+
+.. rubric:: Section: SSL connection to database
+
+* SSL Key
+* SSL Certification
+* SSL Certificate Authority
+* Enter patch to corresponding files to enable SSL connection to the database.
+
+  .. warning:: Take care that these files must exist and be valid SSL files.
+  
+     If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database.  
+    
+ 666666666666666666666666666666666666666666666666666666666666666666666666666666666666666 
+.. compound:: **Print Gantt with 'old style' format**
+
+    * Propose possibility to display “old style” Gantt.
+    * May cause performance issues, but could fix some display issue on browsers.
+
+
+
+.. compound:: **Apply strict mode for dependencies**
+
+    * Defines if a task can begin the same day as the preceding one.
+ 
+ 
+
+  
+  
+
+
+.. _responsible-section:
+
+.. rubric:: Section: Responsible
+
+* Behavior about management of responsible, including automatic initialization of responsible.
+
+ .. compound:: **Auto set responsible if single resource**
+
+    * Automatically set responsible if not set and only one resource if allocated to the project.
+
+ .. compound:: **Auto set responsible if needed**
+
+    * Automatically set responsible to current resource if not set and the responsible is required (depending on status).
+
+
+
+
+
+
+.. _global-display-section:
+
+.. rubric:: Section: Display
+
+* Selection of graphic interface behavior and generic display parameter for users.
+
+* Icon size are default : user can overwrite these values
+
+
+
 
 -----------------------
 
@@ -366,39 +432,10 @@ Definition of directories and other parameters used for Documents management.
 
 .. rubric:: Section: Management of automated service (CRON)
 
-Parameters for the “Cron” process.
 
-.. topic:: Defined frequency for these automatic functions
 
-   * It will manage :
 
-     * Alert generation : Frequency for recalculation of indicators values.
 
-     * Check alert : Frequency for client side browser to check if alert has to be displayed.
-
-     * Import : Automatic import parameters.
-
-   .. warning:: Cron working directory
-
-      Should be set out of web reach.
-
-   .. warning:: Directory of automated integration files
-     
-      Should must be set out of web reach.
-
-.. topic:: Defined parameters for the “Reply to” process
-   
-   * It will manage connection to IMAP INBOX to retrieve email answers.
-
-   .. note:: Email input check cron delay
-
-      * Delay of -1 deactivates this functionality. 
-
-   .. note:: IMAP host
-
-      * Must be an IMAP connection string.
-   
-      * Ex: to connect to GMAIL input box, host must be: {imap.gmail.com:993/imap/ssl}INBOX
 
 .. _automatic-import:
 
@@ -430,14 +467,7 @@ Parameters to allow the application to send emails.
 
 .. rubric:: Section: SSL connection to database
 
-* SSL Key
-* SSL Certification
-* SSL Certificate Authority
-* Enter patch to corresponding files to enable SSL connection to the database.
 
-  .. warning:: Take care that these files must exist and be valid SSL files.
-  
-     If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database.
 
 
 .. index:: ! Email (Formatted message)

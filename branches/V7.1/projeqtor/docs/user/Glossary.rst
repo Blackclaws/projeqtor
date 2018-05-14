@@ -6,6 +6,7 @@ Glossary
 .. glossary::
    
    Closed
+
      * Flag to indicate that item is archived.
      * Item will not appear in lists any more, unless “show closed” is checked.
 
@@ -19,9 +20,7 @@ Glossary
        * It is possible to define that description field is mandatory.
        * The element type screens allow to set this parameter to several elements. 
        * More detail, see: :ref:`behavior-section`. 
- 
- 
-  
+
    Done
 
     * Flag to indicate that item has been done.
@@ -46,15 +45,6 @@ Glossary
     * Every item has a unique Id, automatically generated on creation.
     * Id is chronologically allocated, for all kind of items (Activity, Ticket).
     * Id is shared for all projects and all types (i.e. incident) of the same kind items (i.e. Ticket).
-    * **Reference** is displayed after id, automatically generated on creation. 
-
-    * Reference depends on defined format, see under "Format for reference numbering" section in :ref:`global-parameters` screen.
-  
-
-    * Default format defines an numbering specific for each project and each type of items.
-
-
-
 
    Origin
 
@@ -74,11 +64,11 @@ Glossary
        * This button allows to skip to the next status.
        * More detail, see: :ref:`Move to next status button<moveToNextStatus-button>`.    
    
- 
-
- 
-
-
+   Reference
+    
+    * Reference is displayed after id, automatically generated on creation. 
+    * Reference depends on defined format, see under "Format for reference numbering" section in :ref:`global-parameters` screen.
+    * Default format defines a specific numbering format that can provide unique numbering sequence for each project and/or each type of items.
 
    Result
 
@@ -91,11 +81,9 @@ Glossary
        * The element type screens allow to set this parameter to several elements. 
        * More detail, see: :ref:`behavior-section`. 
 
-
-
    WBS
 
-    * Work Breakdown Structure. 
-    * Hierarchical position of the element in the global planning.    
+    * Work Breakdown Structure.
+    * Hierarchical position of the element in the global planning.
+    * WBS also defines the index of an item in the WBS structure. This index is calculated like paragraphs in a word document.
        
-

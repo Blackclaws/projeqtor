@@ -2685,7 +2685,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   $labelStyle=$style["caption"];
   $extraHiddenFields=$obj->getExtraHiddenFields();
   if (!$print) {
-    $arrayPosition=array(
+/*    $arrayPosition=array(
         'treatment'=>array('clear'=>(($nbCol==2)?'right':'none')), 
         'progress'=>array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')), 
         'predecessor'=>array('clear'=>(($nbCol==2)?'both':(($classObj=='Activity')?'left':'none'))), 
@@ -2709,22 +2709,22 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
         'billline'=>array('clear'=>'left'), 
         'link'=>array('clear'=>(($nbCol==3)?'left':'left')), 
         'attachment'=>array('float'=>'left', 'clear'=>'none'), 
-        'note'=>array('float'=>'right', 'clear'=>'none'));
+        'note'=>array('float'=>'right', 'clear'=>'none')); */
 
     
     $float='left';
     $clear='none';
     $lc=strtolower($section);
-    if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
-    if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
-    if ($nbCol==3 and ($lc=='note' or $lc=='link' or $lc=='attachment')) {
+    //if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
+    //if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
+    /*if ($nbCol==3 and ($lc=='note' or $lc=='link' or $lc=='attachment')) {
       $float='right';
       $clear='right';
     }
     if ($reorg) {
       $float='left';
       $clear='none';
-    }
+    }*/
     $titlePane=$classObj."_".$section;
     startBuffering($included);
     // $sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
@@ -5794,20 +5794,14 @@ function startBuffering() {
 function endBuffering($prevSection, $included) {
   global $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes;
   $sectionPosition=array(
-      // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
       'notification'=>array('3'=>'bottom', '3'=>'extra'), 
       'target'=>array('3'=>'bottom', '3'=>'extra'), 
       'receivers'=>array('3'=>'bottom', '3'=>'extra'), 
       'helpallowedwords'=>array('3'=>'bottom', '3'=>'extra'), 
       'helpallowedreceivers'=>array('3'=>'bottom', '3'=>'extra'), 
-      // END - ADD BY TABARY - NOTIFICATION SYSTEM
-      // ADD BY Marc TABARY - 2017-03-03 - OBJECTS LINKED BY ID TO MAIN OBJECT
       'projectsofobject'=>array('2'=>'bottom', '3'=>'extra'), 
       'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'), 
-      // END ADD BY Marc TABARY - 2017-03-03 - OBJECTS LINKED BY ID TO MAIN OBJECT
-      // ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION
       'hierarchicorganizationprojects'=>array('2'=>'bottom', '3'=>'extra'), 
-      // END ADD BY Marc TABARY - 2017-03-16 - LIST OF PROJECTS LINKED BY HIERARCHY TO ORGANIZATION 'approver' =>array('2'=>'right', '3'=>'extra'),
       'assignment'=>array('2'=>'left', '3'=>'extra'), 
       'attachment'=>array('2'=>'bottom', '3'=>'extra'), 
       'attendees'=>array('2'=>'right', '3'=>'extra'), 
@@ -5830,6 +5824,7 @@ function endBuffering($prevSection, $included) {
       'notificationcontent'=>array('2'=>'left', '3'=>'right'), 
       'progress'=>array('2'=>'right', '3'=>'extra'), 
       'progress_left'=>array('2'=>'left', '3'=>'extra'), 
+      'linkrequirement'=>array('2'=>'bottom', '3'=>'extra'),
       'resourcecost'=>array('2'=>'right', '3'=>'extra'), 
       'submissions'=>array('2'=>'right', '3'=>'extra'), 
       'testcaselist'=>array('2'=>'bottom', '3'=>'extra'), 

@@ -96,7 +96,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $critVal=$listPrf;
     // Attention, this case will then use standard process$table is not retreived yet)
   }
-  if (($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and $critFld=='idProject') {
+  if (($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible') and $critFld=='idProject') {
     // List of "affectable" with restriction to project : restrict on allocation to project (object Affectation)
   	$prj=new Project($critVal, true);
     $lstTopPrj=$prj->getTopProjectList(true);
@@ -116,7 +116,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     foreach ($list as $aff) {
       if (! array_key_exists($aff->idResource, $table)) {
         $id=$aff->idResource;
-        $name=SqlList::getNameFromId('Resource', $id);
+        $name=SqlList::getNameFromId('Affectable', $id);
         //if ($name==$id and $col=='idResource') { // PBE V6.0 : this would insert users in Reosurce list (for instance responsible on Ticket)
         //	$name=SqlList::getNameFromId('User', $id);
         //}
@@ -443,12 +443,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     // End of $obj not set
   }
-  if ( ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and Affectable::getVisibilityScope()!="all") {
+  if ( ($col=='idResource'  or $col=='idResourceAll'  or $col=='idAccountable' or $col=='idResponsible') and Affectable::getVisibilityScope()!="all") {
     // Restrict List of affectables : restrict visibility (same Organization, or same Team or All)
     $restrictArray = getUserVisibleResourcesList(true);
     if ($selection) $restrictArray[$selection]="OK";
   }
-  if ($col=='idResource' and $obj and get_class($obj)==='Organization') {
+  if (($col=='idResource' or $col=='idResourceAll') and $obj and get_class($obj)==='Organization') {
     // An organization's manager must belong to the organization (no cascade on parent organizations)
     // Get resources linked by id to organization
     $resourcesOfThisOrga = $obj->getResourcesOfOrganizationsListAsArray();
@@ -498,7 +498,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     echo '<option value=" " ></option>';
   }
   // For affectables, get the correct name
-  if ($selection and ($col=='idResource'  or $col=='idAccountable' or $col=='idResponsible') and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
+  if ($selection and ($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible') and (! isset($table[$selection]) or $table[$selection]==$selection) ) {
     $table[$selection]=SqlList::getNameFromId('Affectable', $selection);
   }
   // Sort array of classes
@@ -600,7 +600,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }      
 // END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
 
-      if ($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') {
+      if ($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible') {
       	if ($key==$user->id) {
       		$next=$key;
       	}

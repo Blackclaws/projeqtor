@@ -129,7 +129,7 @@ $resourcesTeam=array();
 $resourceCapacity=array();
 //gautier #2441
 $idRessource=getSessionUser()->id;
-$resss=new Resource($idRessource);
+$resss=new ResourceAll($idRessource);
 $resourcesFull = array();
 $resourcesAffect= array();
 $resourcesFull2 = array();
@@ -138,25 +138,25 @@ $commonElement = getListForSpecificRights($specific);
 //$commonElement = $table;
 //no parameters
 if(!$paramProject && !$paramTeam){
-  $resourcesFull =SqlList::getList('Resource');
+  $resourcesFull =SqlList::getList('ResourceAll');
   $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
 }
 //project
 if($paramProject && !$paramTeam ){
   $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
-  $resourcesFull = SqlList::getListWithCrit('Resource', array('id'=>$resourcesAffect));
+  $resourcesFull = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
   $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
 }
 //team
 if($paramTeam && !$paramProject){
-  $resourcesFull =SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
+  $resourcesFull =SqlList::getListWithCrit('ResourceAll', array('idTeam'=>$paramTeam));
   $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
 }
 //team and project
 if($paramTeam && $paramProject){
   $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
-  $resourcesFullProject = SqlList::getListWithCrit('Resource', array('id'=>$resourcesAffect));
-  $resourcesFullTeam = SqlList::getListWithCrit('Resource', array('idTeam'=>$paramTeam));
+  $resourcesFullProject = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
+  $resourcesFullTeam = SqlList::getListWithCrit('ResourceAll', array('idTeam'=>$paramTeam));
   $resourcesFull = array_intersect($resourcesFullProject,$resourcesFullTeam);
   $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
 }

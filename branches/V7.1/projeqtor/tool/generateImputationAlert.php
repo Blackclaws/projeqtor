@@ -51,7 +51,22 @@ function generateImputationAlert() {
   $sendToProjectLeader=Parameter::getGlobalParameter('imputationAlertSendToProjectLeader');
   $sendToTeamManager=Parameter::getGlobalParameter('imputationAlertSendToTeamManager');
 
-  $lstResource=SqlList::getList('Resource',null,null,false);
+  $tmpDate=$startDate;
+  $emptyArray=array(
+    'name'=>$name,
+    'full'=>false,
+    'days'=>array(),
+    'capacity'=>1,
+    'projects'=>array()
+  );
+  while ($tmpDate<=$endDate) {  
+    $emptyArray['days'][$tmpDate]=array(
+        'open'=>isOpenDay($tmpDate),
+        'work'=>0
+    );
+    $tmpDate=addDaysToDate($tmpDate, 1);
+  }
+  $lstResource=SqlList::getList('Resource','name',null,false);
   $lstProject=SqlList::getList('Project');
   // Initialize list of resources
   $lstRes=array();
@@ -86,7 +101,7 @@ function generateImputationAlert() {
   $wk=new Work();
   $workList=$wk->getSqlElementsFromCriteria(null,false,$where);
   foreach ($workList as $wk) {
-    if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=array();
+    if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=$emptyArray;
     if (!isset($lstRes[$wk->idResource]['days'])) $lstRes[$wk->idResource]['days']=array();
     if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate])) $lstRes[$wk->idResource]['days'][$wk->workDate]=array();
     if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate]['work'])) $lstRes[$wk->idResource]['days'][$wk->workDate]['work']=0;
@@ -97,7 +112,7 @@ function generateImputationAlert() {
     $tmpDate=$startDate;
     $full=true;
     while ($tmpDate<=$endDate) {
-      if ($res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
+      if (isset($res['days'][$tmpDate]) and $res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
         $full=false;
       }
       $tmpDate=addDaysToDate($tmpDate, 1);

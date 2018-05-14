@@ -792,6 +792,7 @@ function loadContent(page, destination, formName, isResultMessage,
                   }).play();
                   hideWait();
                   formInitialize();
+                  if (whichFullScreen>=0 && editorArray[whichFullScreen]) editorArray[whichFullScreen].focus();
                 }
               }
             }).play();
@@ -1220,13 +1221,12 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if ( validationType=='linkObject') {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
       }else if( (validationType =='link' || validationType.substr(0,4)=='link') && validationType !='linkObject'){
-        
         var refTypeName=validationType.substr(4);     
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);  
         }
-        if(refTypeName && dojo.byId('objectClass').value+ '_Link'+refTypeName){
+        if(refTypeName && dijit.byId(dojo.byId('objectClass').value+'_Link'+refTypeName)){
           var url = "objectDetail.php?refreshLinks="+refTypeName;
           loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link'+refTypeName,'listForm');        
         }else{
@@ -1305,10 +1305,9 @@ function finalizeMessageDisplay(destination, validationType) {
         }
         // loadContent("planningList.php", "listDiv", 'listForm');
       }
-      // last operations depending on the executed operatoin (insert, delete,
-      // ...)
-      if (dojo.byId('id') && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
-        dojo.byId('id').value = lastSaveId.value;
+      // last operations depending on the executed operatoin (insert, delete, ...)
+      if (dojo.byId('id') && lastOperation && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
+        dojo.byId('id').value = (lastSaveId)?lastSaveId.value:null;
         if (dojo.byId('objectClass')
             && dojo.byId('objectClass').value == "Project") {
           needProjectListRefresh = true;
@@ -1794,8 +1793,10 @@ function formChanged(specificWidgetArray) {
   disableWidget('printButtonPdf');
   disableWidget('copyButton');
   enableWidget('undoButton');
+  showWidget('undoButton');
   disableWidget('deleteButton');
   disableWidget('refreshButton');
+  hideWidget('refreshButton');
   disableWidget('mailButton');
   disableWidget('multiUpdateButton');
   disableWidget('indentDecreaseButton');
@@ -1868,8 +1869,10 @@ function formInitialize(specificWidgetArray) {
   enableWidget('printButtonPdf');
   enableWidget('copyButton');
   disableWidget('undoButton');
+  hideWidget('undoButton');
   enableWidget('deleteButton');
   enableWidget('refreshButton');
+  showWidget('refreshButton');
   enableWidget('mailButton');
   if ( (dojo.byId("id") && dojo.byId("id").value != "") || (dojo.byId("lastSaveId") && dojo.byId("lastSaveId")!= "") ) {
     enableWidget('changeStatusButton');
@@ -1903,8 +1906,10 @@ function formLock() {
   disableWidget('printButtonPdf');
   disableWidget('copyButton');
   disableWidget('undoButton');
+  hideWidget('undoButton');
   disableWidget('deleteButton');
   disableWidget('refreshButton');
+  showWidget('refreshButton');
   disableWidget('mailButton');
   disableWidget('multiUpdateButton');
   disableWidget('indentDecreaseButton');
@@ -1969,6 +1974,32 @@ function enableWidget(widgetName) {
   }
 }
 
+/**
+ * ============================================================================
+ * Hide a widget, testing it exists before to avoid error
+ * 
+ * @return void
+ */
+function hideWidget(widgetName) {
+  if (dojo.byId(widgetName)) {
+    dojo.style(dijit.byId(widgetName).domNode, {
+      display : 'none'
+    });
+  }
+}
+/**
+ * ============================================================================
+ * Show a widget, testing it exists before to avoid error
+ * 
+ * @return void
+ */
+function showWidget(widgetName) {
+  if (dojo.byId(widgetName)) {
+    dojo.style(dijit.byId(widgetName).domNode, {
+      display : 'inline-block'
+    });
+  }
+}
 /**
  * ============================================================================
  * Loack a widget, testing it exists before to avoid error
@@ -2732,19 +2763,18 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
     return '';
   if (!isDate(paramEndDate))
     return '';
-  currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate
-      .getMonth(), paramStartDate.getDate());
-  currentDate.setHours(paramStartDate.getHours());
-  currentDate.setMinutes(paramStartDate.getMinutes());
-  currentDate.setSeconds(paramStartDate.getSeconds());
-  currentDate.setMilliseconds(paramStartDate.getMilliseconds());
-  var endDate = paramEndDate;
-  if (paramEndDate < paramStartDate) {
+  currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate.getMonth(), paramStartDate.getDate());
+  currentDate.setHours(0,0,0,0);
+  var endDate = new Date();
+  endDate.setFullYear(paramEndDate.getFullYear(), paramEndDate.getMonth(), paramEndDate.getDate());
+  endDate.setHours(0,0,0,0);
+  if (endDate < currentDate) {
     return 0;
   }
-  var duration = 1;
+  var duration = 0;
+  if (isOffDay(currentDate) && currentDate.valueOf()!=endDate.valueOf()) duration++;
   while (currentDate <= endDate) {
-    if (!isOffDay(currentDate)) {
+    if (!isOffDay(currentDate) || currentDate.valueOf()==endDate.valueOf()) {
       duration++;
     }
     currentDate = addDaysToDate(currentDate, 1);
@@ -4737,7 +4767,7 @@ function saveNoteStream(event){
 }
 
 var menuRightDivSize=null;
-function hideStreamMode(){
+function hideStreamMode(noRefresh){
   if (! dijit.byId('detailRightDiv')) return;
   if(dijit.byId("detailRightDiv").w != '0'){
     menuRightDivSize=dojo.byId("detailRightDiv").offsetWidth;
@@ -4752,6 +4782,11 @@ function hideStreamMode(){
       w : menuRightDivSize
     });
     dijit.byId("centerDiv").resize();
+  }
+  var detailHidden=false;
+  if (dojo.byId('detailBarShow') && dojo.byId('detailBarShow').style.display=='block') detailHidden=true;
+  if (!noRefresh && !formChangeInProgress && dojo.byId('id') && dojo.byId('id').value && !detailHidden) {
+    setTimeout('loadContent("objectDetail.php", "detailDiv", "listForm");', 50);
   }
 }
 
