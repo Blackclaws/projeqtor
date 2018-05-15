@@ -116,7 +116,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     foreach ($list as $aff) {
       if (! array_key_exists($aff->idResource, $table)) {
         $id=$aff->idResource;
-        $name=SqlList::getNameFromId('Affectable', $id);
+        $name=SqlList::getNameFromId(substr($col, 2), $id);
         //if ($name==$id and $col=='idResource') { // PBE V6.0 : this would insert users in Reosurce list (for instance responsible on Ticket)
         //	$name=SqlList::getNameFromId('User', $id);
         //}

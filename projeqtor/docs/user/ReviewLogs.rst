@@ -158,7 +158,8 @@ Periodic meeting is a way to define some meetings that will occur on a regular b
 
 .. rubric:: Attendees assignment
 
-* Attendees can be defined on a periodic meeting.
+* Attendees can be defined on a periodic meeting. 
+* Allocation of the entire project team to a periodic meeting (as existing for a simple meeting) is possible.
 * They will be copied on the elementary meetings. 
 * The periodic meetings will not be planned, only elementary meetings will be. 
 * So left work will always be set to zero on periodic meetings.  
@@ -263,7 +264,9 @@ This section allows to define the list of attendees to the meeting.
 .. rubric:: Attendee list
 
 * Meeting is a task you can assign project resources.
-* A possibility to assign work to some attendees (project resources). So meeting works of these attendees are booked in the project. 
+* A possibility to assign work to some attendees (project resources). So meeting works of these attendees are booked in the project.
+* Ability to assign to a meeting a resource or a contact or a user not member of the project team
+ 
 * More detail about how assigned project resources, see: :ref:`assignment-section` section.
    
 .. rubric:: Other attendees
