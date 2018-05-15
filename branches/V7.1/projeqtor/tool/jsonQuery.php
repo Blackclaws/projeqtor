@@ -756,7 +756,8 @@
                   $disp="";
                 }
               } else if (substr($formatter[$numField],0,5)=='thumb') {
-	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
+                $thumClass=($objectClass=='ResourceTeam')?'Resource':$objectClass;
+	            	$disp=thumbFormatter($thumClass,$line['id'],substr($formatter[$numField],5));
 	            } else if ($formatter[$numField]=="privateFormatter") {
 	              $disp=privateFormatter($val);
 	            } else {

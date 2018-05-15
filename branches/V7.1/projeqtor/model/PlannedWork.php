@@ -995,21 +995,36 @@ class PlannedWork extends GeneralWork {
                         $r=new ResourceAll($idRT,true);
                         $resources[$idRT]=$r->getWork($startDate, $withProjectRepartition);
                       }
-                      if (! isset($resources[$idRT]['periods'])) {
-                        debugLog("no period for $idRT");
-                        debugLog("Assignment $ass->id");
-                        debugLog($ress['isMemberOf']);
-                        debugLog($resources[$idRT]);
-                        
-                      }
                       $period=ResourceTeamAffectation::findPeriod($currentDate, $resources[$idRT]['periods']);
+                      $alreadyPlannedOnTeam=0;
 //                      debugLog("   Period found = $period");
                       if ($period and isset($resources[$idRT][$currentDate])) {
                         $leftOnDate=$resources[$idRT]['periods'][$period]['rate']-$resources[$idRT][$currentDate]; // = team capacity - already planned
+                        foreach ($resources[$idRT]['members'] as $idMember=>$workMember) {
+                          if (isset($workMember[$currentDate])) {
+                            if (isset($resources[$idMember]) and isset($resources[$idMember]['capacity'])) {
+                              $capaMember=$resources[$idMember]['capacity'];
+                            } else {
+                              $capaMember=SqlList::getFieldFromId('Resource', $idMember, 'capacity');
+                            }
+                            if (isset($resources[$idRT]['periods'][$period]['idResource'][$idMember])) {
+                              $capaAffected=$resources[$idRT]['periods'][$period]['idResource'][$idMember];
+                            } else {
+                              $capaAffected=$capaMember;
+                            }
+                            $leftOnDate-=$workMember[$currentDate]-($capaMember-$capaAffected);
+                          }
+                        }
                         if (isset($resources[$idRT]['periods'][$period]['idResource'][$ass->idResource])) {
                           $capaRes=$resources[$idRT]['periods'][$period]['idResource'][$ass->idResource];
-                          if ($leftOnDate<$capaRes or $leftOnDate<$value) { // there is not enough left for the whole capacity
-                            $value=min($capaRes,$leftOnDate);
+                          $valueLeftOnTeam=$capaRes;
+                          if ($leftOnDate<$capaRes) {
+                            $valueLeftOnTeam=$leftOnDate;
+                          }
+                          $valueLeftOnResource=$capacity-$capaRes+$valueLeftOnTeam;
+                          if ($valueLeftOnResource<0) $valueLeftOnResource=0;
+                          if ($value>$valueLeftOnResource) {
+                            $value=$valueLeftOnResource;
                           }
                         }                  
                       }

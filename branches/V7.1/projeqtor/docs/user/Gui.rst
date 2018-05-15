@@ -21,7 +21,7 @@ Those areas are :
 * :ref:`detail-window` |six|
 * :ref:`info-bar` |seven|
 
-.. figure:: /images/GUI/SCR_GeneralwithArea.png
+.. figure:: /images/GUI/globalview0.png
    :alt: Global view
    :align: center
 
@@ -44,7 +44,7 @@ Those areas are :
 
    * The  position of splitters is saved and retrieved on each connection.
 
-.. figure:: /images/GUI/SCR_WindowsSplitters.png
+.. figure:: /images/GUI/splitter1.png
    :alt: Windows splitters
    :align: center
 
@@ -60,7 +60,7 @@ Those areas are :
 Top bar
 -------
 
-.. figure:: /images/GUI/ZONE_TopBar.png
+.. figure:: /images/GUI/topbar1.png
    :alt: Top bar
    :align: center
 
@@ -198,7 +198,7 @@ Menu on top bar allows a rapid access to elements.
 Logo area
 ---------
 
-.. figure:: /images/GUI/logoArea.png
+.. figure:: /images/GUI/logoArea.PNG
    :alt: Logo area
    :align: center
 
@@ -208,7 +208,7 @@ Logo area
 
 * Click on «Logo Area» will display the software information box.
 
-.. figure:: /images/GUI/INFO_SoftwareInformation.png
+.. figure:: /images/GUI/logoinfo.png
    :alt: Box - Software information
    :align: center
 
@@ -317,7 +317,7 @@ List window
    :local: 
    :backlinks: top
 
-.. figure:: /images/GUI/ZONE_ListWindow.png
+.. figure:: /images/GUI/zonelistwindows.png
    :alt: List window
    :align: center
 
@@ -460,14 +460,9 @@ The advanced filter allows to define clause to filter and sort.
       So Click on Dynamic value creating this filter.
       Dynamics filters are available for all users in them session.
 
- .. figure:: /images/GUI/FILTREd.png
-   :alt: Dialog box - Advanced filter definition with shared filter 
-   :align: center
+  
       
-      
-    
-
- .. compound:: **Remove criteria**
+  .. compound:: **Remove criteria**
 
     * To remove a criteria, click on |buttonIconDelete| on the line.
     * To remove all criteria, click on |buttonIconDelete| on the header.
@@ -685,7 +680,7 @@ Detail window
 * Click on |buttonIconDelete| to delete the item.      
 * Click on |buttonIconRefresh| to refresh the display.      
 * Click on |buttonIconEmail| to send details of item by email. (See: :ref:`email-detail`)
-* Click on |buttonIconSubscribe| to susbcribe of item. (See: :ref:`subscribe-detail`)
+* Click on |ButtonIconSubscribe| to susbcribe of item. (See: :ref:`subscribe-detail`)
 * Click on |buttonIconMultipleUpdate| to update several items in one operation. (See: :ref:`multiple-update`)
 
  .. note::
@@ -1138,7 +1133,8 @@ Accelerator buttons
 .. rubric:: Move to next status button
 
 * This button allows to skip to the next status without having to open the list.
-* The next status is defined by the workflow linked to the type of element. 
+* The next status is defined by the workflow linked to the type of element.
+* The mouse tracking over this colored button allows to show the workflow. 
 
 .. figure:: /images/GUI/BUTTON_MoveToNextStatus.png
    :alt: Button - Move to next status 
@@ -1349,13 +1345,24 @@ Indicates the visibility level defined in a note or attachment.
 Info bar
 --------
 
-.. figure:: /images/GUI/ZONE_Infobar.png
+.. figure:: /images/GUI/infobar3.png
    :alt: Info bar zone
    :align: center
 
    Info bar
 
-.. rubric:: 1 - Log out button
+.. rubric:: 1 - Version button
+
+* Displays the application version.
+* Click on button to access to ProjeQtOr site.
+
+
+.. rubric:: 2 -Session 
+.. figure:: /images/GUI/infobar2.png
+
+
+
+.. rubric:: a - Log out button
 
 * Allows to disconnect the user.
 
@@ -1363,19 +1370,64 @@ Info bar
 
     * This parameter defines whether a  disconnection confirmation will be displayed before.
 
-.. rubric:: 2 - User parameters button
+
+
+.. rubric:: b - User parameters button
 
 * Allows to access user parameters.
 
-.. rubric:: 3 - Hide and show menu button
 
-* Allows to hide or show the menu section.
+.. rubric:: c - Language
+ProjeQtOr is multilingual.
 
- .. note:: User parameter “Hide menu”
+Each user can choose the language to display all the captions.
 
-    * This parameter defines whether the menu is hidden by default.
 
-.. rubric:: 4 - Switched mode button
+.. note:: User parameter “Language”
+
+   * This parameter defines the language used to display captions.
+
+.. rubric:: d - Theme
+Users can select Theme to display the interface. 
+
+.. rubric:: User parameter “Theme”
+* This parameter defines the theme to display.
+* The new theme is automatically applied when selected.
+
+.. figure:: /images/GUI/theme.png
+
+.. note:: Default theme
+
+  * By default your selected theme is "ProjeQtOr 'Flat Desgin' Blue".
+  * Screenshoots has been taken with "ProjeQtOr Standard" theme. 
+
+
+.. rubric:: e - Fist page
+Scrolling the list, it is possible to choose  the screen that will be displayed first, on each connection, among items of the general menu.
+
+
+.. rubric:: f - Change password 
+Validate the new one clicking and activating the next combo box 
+
+.. rubric:: g - Online manual
+or press F1
+
+.. rubric:: h - Keyboard shorcuts
+.. rubric:: Shortcut keys
+
+* :kbd:`Control-s` to save the changes. 
+* :kbd:`F1` to open the online user manual, to the page corresponding to the actual screen.
+* :kbd:`ESC` to exit full screen mode of CK Editor.
+
+.. rubric:: Numeric keypad
+
+* The point will be replaced by a comma if the numeric format requires it.
+
+.. rubric:: i - About ProjeQtOr
+
+* Display database name.
+
+.. rubric:: 3 - Switched mode button
 
 * Allows to enable or disable switched mode that allows to switch between list and detail windows.
 * Window selected is displayed in "full screen" mode.
@@ -1386,18 +1438,28 @@ Info bar
 
     * This parameter defines whether switching mode is enabled or not.
 
-.. rubric:: 5 - Database name
-
-* Display database name.
-
-.. rubric:: 6 - Version button
-
-* Displays the application version.
-* Click on button to access to ProjeQtOr site.
-
-.. rubric:: 7 - "Full-screen" button
+.. rubric:: 4 - "Full-screen" button
 
 * One-click to displays in full Screen view.
+
+
+.. rubric:: 5 - Hide and show menu button
+
+* Allows to hide or show the menu section.
+
+ .. note:: User parameter “Hide menu”
+
+    * This parameter defines whether the menu is hidden by default.
+
+
+
+
+
+
+
+
+
+
 
 
 .. raw:: latex
@@ -1497,46 +1559,8 @@ Just move the mouse over the red line to display, which indicator has been raise
 
     \newpage
 
-Themes
-======
-
-Users can select Theme to display the interface. 
-
-.. rubric:: User parameter “Theme”
-* This parameter defines the theme to display.
-* The new theme is automatically applied when selected.
-
-.. figure:: /images/GUI/theme.png
-
-.. note:: Default theme
-
-  * By default your selected theme is "ProjeQtOr 'Flat Desgin' Blue".
-  * Screenshoots has been taken with "ProjeQtOr Standard" theme. 
-
-Multilingual
-============
-
-ProjeQtOr is multilingual.
-
-Each user can choose the language to display all the captions.
 
 
-.. note:: User parameter “Language”
 
-   * This parameter defines the language used to display captions.
-
-
-Keyboard functionality
-======================
-
-.. rubric:: Shortcut keys
-
-* :kbd:`Control-s` to save the changes. 
-* :kbd:`F1` to open the online user manual, to the page corresponding to the actual screen.
-* :kbd:`ESC` to exit full screen mode of CK Editor.
-
-.. rubric:: Numeric keypad
-
-* The point will be replaced by a comma if the numeric format requires it.
 
 

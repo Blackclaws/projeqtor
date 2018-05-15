@@ -39,13 +39,14 @@ class Affectable extends SqlElement {
   public $isResource;
   public $isUser;
   public $isContact;
+  public $isResourceTeam;
   public $email;
   public $idTeam;
   public $idOrganization;
   public $idle;
   public $_constructForName=true;
   public $_calculateForColumn=array("name" => "coalesce(fullName,concat(name,' #'))","userName" => "coalesce(name,concat(fullName,' *'))");
-  private static $_fieldsAttributes=array("name" => "required","isContact" => "readonly","isUser" => "readonly","isResource" => "readonly","idle" => "hidden");
+  private static $_fieldsAttributes=array("name" => "required","isContact" => "readonly","isUser" => "readonly","isResource" => "readonly","isResourceTeam"=>"readonly","idle" => "hidden");
   private static $_databaseTableName='resource';
   private static $_databaseColumnName=array('name' => 'fullName','userName' => 'name');
   private static $_databaseCriteria=array();
@@ -297,7 +298,7 @@ class Affectable extends SqlElement {
   }
   public static function isAffectable($objectClass=null) {
     if ($objectClass) {
-      if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' 
+      if ($objectClass=='Resource' or $objectClass=='ResourceTeam' or $objectClass=='User' or $objectClass=='Contact' 
        or $objectClass=='Affectable' or $objectClass=='ResourceSelect' or $objectClass=='Accountable' or $objectClass=='Responsible') {
         return true;
       }

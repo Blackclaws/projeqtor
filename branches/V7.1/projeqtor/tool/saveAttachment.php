@@ -159,7 +159,7 @@ if (! $error) {
 if ($refType=='TicketSimple') {
   $refType='Ticket';    
 }
-if ($refType=='User' or $refType=='Contact') {
+if ($refType=='User' or $refType=='Contact' or $refType=='ResourceTeam') {
 	$refType='Resource';
 }
 

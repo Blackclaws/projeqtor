@@ -1152,8 +1152,9 @@ function finalizeMessageDisplay(destination, validationType) {
           
         } else if (dojo.byId('objectClass')
             && (dojo.byId('objectClass').value == 'Resource'
-                || dojo.byId('objectClass').value == 'User' || dojo
-                .byId('objectClass').value == 'Contact')) {
+                || dojo.byId('objectClass').value == 'ResourceTeam'  
+                || dojo.byId('objectClass').value == 'User' 
+                || dojo.byId('objectClass').value == 'Contact')) {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv",
               'listForm');
           refreshGrid();

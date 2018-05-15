@@ -61,7 +61,7 @@ It is composed with two areas:
 * Click on |msProject| to export planning to MS-Project xml format.
 * Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)
 * Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)
-* Check the box "save date" to keep registered displayed date of the overview planning, otherwise dates removing to general mode after navitating away from this page.  
+* **Check the box** "save date" to keep registered displayed date of the overview planning, otherwise dates removing to general mode, after navigating away from this page.  
 
 .. rubric:: 5 - Show Baseline
 
@@ -294,9 +294,17 @@ For each planning element, a Gantt bar is displayed at them right.
 
 * To modify dependency link, click on dependency to displays a pop-up
 
-.. figure:: /images/GUI/ZONE_dependency_gantt.png
+.. figure:: /images/GUI/dependencies.png
    :alt: Multiple mode
-   
+   3 options : 
+* end-start. The second activity can not start before the end of the first activity.
+* Start-Start: the successor can not begin before the beginning of the predecessor. Anyway, the successor can begin after the beginning of the predecessor.
+* End-End: The successor should not end after the end of the predecessor, which leads to planning "as late as possible". Anyway, the successor can end before the predecessor.
+Note that the successor "should" not end after the end of predecessor, but in some cases this will not be respected:
+if the resource is already 100% used until the end of the successor
+if the successor has another predecessor of type "End-Start" or "Start-Start" and the remaining time is not enough to complete the task
+if the delay from the planning start date does not allow to complete the task
+ 
 .. note:: Pop-up
 
      * You can modify the delay, add a comment or remove the dependency.

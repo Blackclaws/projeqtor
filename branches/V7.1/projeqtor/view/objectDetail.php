@@ -2735,9 +2735,6 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     $attrs=splitCssAttributes($labelStyle);
     $fontSize=(isset($attrs['font-size']))?intval($attrs['font-size']):'';
     //gautier #resourceTeam
-//     if($section == 'AffectationsResourceTeam'){
-//       $nbBadge = 2;
-//     }
     echo '<div dojoType="dijit.TitlePane" title="'.i18n('section'.ucfirst($sectionName)).(($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="'.(array_key_exists($titlePane, $collapsedList)?'false':'true').'" ';
     echo ' id="'.$titlePane.'" ';
@@ -4845,8 +4842,15 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" style="width:'.(($print)?'40':'30').'%;vertical-align:middle">';
     echo '<table width="100%"><tr>';
     $goto="";
-    if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
-      $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
+    $resource=new ResourceAll($assignment->idResource);
+    if($resource->isResourceTeam){
+      if(securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES"){
+       $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
+      }
+    }else{
+      if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
+          $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
+      }
     }
     echo '<td '.$goto.'>'.$resName;
     echo ($assignment->idRole)?' ('.SqlList::getNameFromId('Role', $assignment->idRole).')':'';
@@ -4867,11 +4871,18 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Favorite', 16, i18n('mandatoryAttendant')).'</a>';
       echo '</td>';
     }
+    //resourceTeam
+    if($resource->isResourceTeam){
+      echo '<td>';
+      echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Team', 16, i18n('ResourceTeam')).'</a>';
+      echo '</td>';
+    }
     echo '</tr></table>';
     echo '</td>';
     //gautier #resourceTeam
-    if($assignment->capacity){
-      echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.$fmt->format(htmlEncode($assignment->capacity)).' '.i18n('unitCapacity').'</td>';
+   
+    if($resource->isResourceTeam){
+      echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlDisplayNumericWithoutTrailingZeros($assignment->capacity).' '.i18n('unitCapacity').'</td>';
     }else{
       echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlEncode($assignment->rate).' '.i18n('percent').'</td>';
     }   
@@ -5288,7 +5299,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
     echo '</td>';
   }
   echo '<td class="assignHeader" style="width:8%">'.i18n('colId').'</td>';
-  echo '<td class="assignHeader" style="width:'.(($print)?'35':'20').'%">'.i18n('colName').'</td>';
+  echo '<td class="assignHeader" style="width:39%">'.i18n('colName').'</td>';
   echo '<td class="assignHeader" style="width:13%">'.i18n('colStartDate').'</td>';
   echo '<td class="assignHeader" style="width:13%">'.i18n('colEndDate').'</td>';
   echo '<td class="assignHeader" style="width:12%">'.i18n('colRate').'</td>';
@@ -5442,10 +5453,24 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     } else {
       $name=$aff->name;
       $typeAffectable=$type;
-      
-      if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
-        $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+      #resourceTeam 
+      if($typeAffectable=='ResourceAll'){
+        $resource=new ResourceAll($aff->idResource);
+        if($resource->isResourceTeam){
+          if(securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES"){
+            $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+          }
+        }else{
+          if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
+            $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+          }
+        }
+      }else{
+        if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
+          $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+        }
       }
+     
     }
     if ($aff->idResource!=$name and trim($name)) {
       echo '<tr>';
@@ -5478,6 +5503,13 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
        * }
        */
       echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
+      //resourceTeam
+      if(isset($typeAffectable)=='ResourceAll'){
+        $resource=new ResourceAll($aff->idResource);
+        if($resource->isResourceTeam){
+          echo '<div style="float:right; vertical-align:middle;"> '.formatIcon('Team', 16, i18n('ResourceTeam')).'</div>';
+        }
+      }
       if ($aff->description and !$print) {
         echo '<div style="float:right">'.formatCommentThumb($aff->description).'</div>';
       }

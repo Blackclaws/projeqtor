@@ -986,6 +986,13 @@ Planning mode
              - 0.25
              - 0.25
 
+
+  .. compound:: **Recurring (on a weekly basis)**
+* This new mode allows reserving availability on recurring tasks on a weekly basis, for example 1/2 day every Monday, 1h every day, ...
+Activities in this mode dynamically assign the work based on the start and end bounds:
+start defined with a dependence End-Start or Start-Start
+end defined with an end-end dependency. This is the first planning mode in ProjeQtOr that defines activities whose assigned work is not fixed, but adapts to the duration of the project.
+
 .. rubric:: Fixed duration
 
 * The task is planned by duration.
