@@ -55,7 +55,6 @@ if($refType=="Meeting" || $refType=="PeriodicMeeting") {
 	$delay=Work::displayWork(workTimeDiffDateTime('2000-01-01T'.$obj->meetingStartTime,'2000-01-01T'.$obj->meetingEndTime));
 }
 $mode = RequestHandler::getValue('mode',false,true);
-
 $arrayDefaultOffDays=array();
 if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') $arrayDefaultOffDays[]=1;
 if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') $arrayDefaultOffDays[]=2;
@@ -105,9 +104,9 @@ $resource=new ResourceAll($idResource);
                 onChange="assignmentChangeResource();assignmentChangeResourceTeamForCapacity();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" <?php echo ($realWork!=0 && $mode=='edit')?"readonly=readonly":"";?>>
                 <?php if($mode=='edit'){                      
-                          htmlDrawOptionForReference('idResource', $idResource,null,true,'idProject',$idProject);
+                          htmlDrawOptionForReference('idResourceAll', $idResource,null,true,'idProject',$idProject);
                 }else{
-                          htmlDrawOptionForReference('idResourceAll', null,null,true,'idProject',$idProject);
+                          htmlDrawOptionForReference('idResourceAll', null,null,false,'idProject',$idProject);
                 }?>
                </select>  
              </td>
@@ -161,6 +160,7 @@ $resource=new ResourceAll($idResource);
                      echo i18n('shortDay'); ?>
              </td>
            </tr>
+
            <tr id="assignmentRateRow" name="assignmentRateRow" <?php if ($resource->isResourceTeam) echo 'style="display:none"';?>>
              <td class="dialogLabel" >
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
@@ -172,7 +172,7 @@ $resource=new ResourceAll($idResource);
                  style="width:97px" 
                  <?php if ($planningMode=='RECW') echo ' readonly';?>
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 
-                 required="true" >
+              <?php if (!$resource->isResourceTeam) { ?>  required="true" <?php } ?> >
                  <?php echo $keyDownEventScript;?>
                  </div>
              </td>

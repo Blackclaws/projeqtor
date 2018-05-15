@@ -58,7 +58,6 @@ class ResourceTeamAffectation extends SqlElement {
     parent::__destruct();
   }
   
-  
   public static $maxAffectationDate='2029-12-31';
   public static $minAffectationDate='1970-01-01';
   
@@ -72,7 +71,7 @@ class ResourceTeamAffectation extends SqlElement {
     return htmlFormatDate($date);
   }
   
-  
+  private static $_resourcePeriodsPerProject=array();
   public static function buildResourcePeriodsPerResourceTeam($idResource, $showIdle=false){
     if (isset(self::$_resourcePeriodsPerProject[$idResource][$showIdle])) {
     		return self::$_resourcePeriodsPerProject[$idResource][$showIdle];
@@ -107,8 +106,7 @@ class ResourceTeamAffectation extends SqlElement {
     return $projects;
   }
   
-  
-  
+  private static $_resourcePeriods=array();
   public static function buildResourcePeriods($idResourceAff,$showIdle=false) {
     if (isset(self::$_resourcePeriods[$idResourceAff][$showIdle])) {
       return self::$_resourcePeriods[$idResourceAff][$showIdle];
