@@ -59,6 +59,8 @@ if (array_key_exists('dependencyDelay',$_REQUEST)) {
 }
 Sql::beginTransaction();
 $result="";
+if ($ref1Type=='Replan') $ref1Type='Project';
+if ($ref2Type=='Replan') $ref2Type='Project';
 $critPredecessor=array("refType"=>$ref1Type,"refId"=>$ref1Id);
 $critSuccessor=array("refType"=>$ref2Type,"refId"=>$ref2Id);
 
